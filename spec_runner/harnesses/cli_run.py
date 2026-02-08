@@ -1,5 +1,3 @@
-import re
-
 import builtins
 import io
 import os
@@ -9,7 +7,9 @@ import importlib
 
 from spec_runner.assertions import (
     assert_stdout_path_exists,
+    assert_text_op,
     eval_assert_tree,
+    is_text_op,
     iter_leaf_assertions,
     parse_json,
 )
@@ -165,14 +165,8 @@ def run(case, *, ctx) -> None:
             else:
                 raise ValueError(f"unknown assert target: {target}")
 
-            if op == "contains":
-                assert str(value) in subject
-            elif op == "not_contains":
-                assert str(value) not in subject
-            elif op == "regex":
-                assert re.search(str(value), subject) is not None
-            elif op == "not_regex":
-                assert re.search(str(value), subject) is None
+            if is_text_op(op):
+                assert_text_op(subject, op, value)
             elif op == "json_type":
                 parsed = parse_json(subject)
                 want = str(value).lower()
