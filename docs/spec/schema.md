@@ -20,7 +20,7 @@ This schema defines the stable shape of executable spec tests embedded in
 Runner-only inputs MUST live under `harness:` to preserve separation of
 concerns and keep the spec format portable.
 
-For `kind: cli.run`, supported `harness` keys include:
+For `type: cli.run`, supported `harness` keys include:
 
 - `entrypoint` (string): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI

@@ -25,7 +25,7 @@ python -m pip install -e '.[dev]'
 
 ```yaml
 id: EX-CLI-001
-kind: cli.run
+type: cli.run
 argv: ["--help"]
 exit_code: 0
 harness:
