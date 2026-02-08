@@ -20,8 +20,12 @@ def iter_cases(spec_dir: Path) -> list[SpecDocTest]:
 def default_kind_runners() -> dict[str, object]:
     # Lazy import to avoid circular imports during collection.
     from spec_runner.harnesses.cli_run import run as run_cli
+    from spec_runner.harnesses.text_file import run as run_text_file
 
-    return {"cli.run": run_cli}
+    return {
+        "cli.run": run_cli,
+        "text.file": run_text_file,
+    }
 
 
 def run_case(case: SpecDocTest, *, ctx: SpecRunContext, kind_runners: dict[str, object] | None = None) -> None:
