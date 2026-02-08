@@ -15,6 +15,21 @@ This schema defines the stable shape of executable spec tests embedded in
 - `type` (string, required): dispatch key (e.g. `cli.run`)
 - `title` (string, optional): human description
 
+## Type-Specific Fields
+
+### `type: text.file`
+
+`text.file` asserts against file content.
+
+- If `path` is omitted, the runner asserts against the spec document that
+  contains the `yaml spec-test` block.
+- If `path` is provided, it MUST be a relative path and is resolved relative to
+  the spec document path.
+
+Fields:
+
+- `path` (string, optional): relative path to the file to read
+
 ## `harness` Namespace
 
 Runner-only inputs MUST live under `harness:` to preserve separation of
@@ -38,5 +53,6 @@ For `type: cli.run`, supported `harness` keys include:
 Currently supported types:
 
 - `cli.run` (core)
+- `text.file` (core)
 
 Other kinds are adapters provided by the system under test.
