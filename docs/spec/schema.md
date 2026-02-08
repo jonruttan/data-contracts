@@ -29,7 +29,8 @@ For `type: cli.run`, supported `harness` keys include:
 - `block_imports` (list[string]): make imports fail with `ModuleNotFoundError`
 - `stub_modules` (list[string]): pre-populate `sys.modules` with stubs
 - `setup_files` (list[{path, text}]): write files under the runner temp dir
-- `hook` (string): hook entrypoint (e.g. `myproj.tests.hooks:check`)
+- `hook_before` (string): hook entrypoint invoked before running the CLI
+- `hook_after` (string): hook entrypoint invoked after running the CLI
 - `hook_kwargs` (mapping): keyword arguments passed through to the hook
 
 ## Types

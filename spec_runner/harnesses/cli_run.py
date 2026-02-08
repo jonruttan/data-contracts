@@ -42,7 +42,8 @@ def run(case, *, ctx) -> None:
         "block_imports",
         "stub_modules",
         "setup_files",
-        "hook",
+        "hook_before",
+        "hook_after",
         "hook_kwargs",
     }
     unknown = sorted(str(k) for k in h.keys() if k not in supported_harness_keys)
@@ -146,6 +147,23 @@ def run(case, *, ctx) -> None:
     if block_imports:
         ctx.monkeypatch.setattr(builtins, "__import__", _blocked_import)
 
+    # Optional hooks for complex setup/assertions.
+    hook_kwargs = h.get("hook_kwargs") or {}
+    if not isinstance(hook_kwargs, dict):
+        raise TypeError("harness.hook_kwargs must be a mapping")
+
+    hook_before_ep = h.get("hook_before")
+    hook_after_ep = h.get("hook_after")
+
+    if hook_before_ep is not None and not str(hook_before_ep).strip():
+        hook_before_ep = None
+    if hook_after_ep is not None and not str(hook_after_ep).strip():
+        hook_after_ep = None
+
+    if hook_before_ep:
+        hook_before_fn = _load_entrypoint(str(hook_before_ep))
+        hook_before_fn(case=case, ctx=ctx, harness=h, **{str(k): v for k, v in hook_kwargs.items()})
+
     entrypoint = str(h.get("entrypoint") or os.environ.get("SPEC_RUNNER_ENTRYPOINT") or "").strip()
     if not entrypoint:
         raise RuntimeError("cli.run requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT")
@@ -160,22 +178,16 @@ def run(case, *, ctx) -> None:
     captured = ctx.capsys.readouterr()
     assert int(code) == int(t.get("exit_code", 0))
 
-    # Optional hook for complex assertions/setup that don't fit the declarative DSL.
-    hook_ep = h.get("hook")
-    hook_kwargs = h.get("hook_kwargs") or {}
-    if hook_ep is not None and not str(hook_ep).strip():
-        hook_ep = None
-    if hook_ep:
-        if not isinstance(hook_kwargs, dict):
-            raise TypeError("harness.hook_kwargs must be a mapping")
+    # Optional hook_after for complex assertions/setup that don't fit the declarative DSL.
+    if hook_after_ep:
         # Best-effort derive stdout_path for convenience.
         stdout_path = None
         try:
             stdout_path = assert_stdout_path_exists(captured.out)
         except Exception:
             stdout_path = None
-        hook_fn = _load_entrypoint(str(hook_ep))
-        hook_fn(
+        hook_after_fn = _load_entrypoint(str(hook_after_ep))
+        hook_after_fn(
             case=case,
             ctx=ctx,
             result={

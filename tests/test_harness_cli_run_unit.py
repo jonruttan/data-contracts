@@ -363,7 +363,7 @@ def test_cli_type_hook_runs_after_command(tmp_path, monkeypatch, capsys):
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
-            "harness": {"entrypoint": ep, "hook": hook_ep, "hook_kwargs": {"extra": "v"}},
+            "harness": {"entrypoint": ep, "hook_after": hook_ep, "hook_kwargs": {"extra": "v"}},
             "assert": [{"target": "stdout", "json_type": ["dict"]}],
         },
     )
@@ -372,3 +372,40 @@ def test_cli_type_hook_runs_after_command(tmp_path, monkeypatch, capsys):
 
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
     assert seen == {"ran": True, "extra": "v"}
+
+
+def test_cli_type_hook_before_runs_before_command(tmp_path, monkeypatch, capsys):
+    seen = {}
+
+    def hook_before(*, case, ctx, harness, extra=None):
+        assert case.test["id"] == "SR-CLI-UNIT-016"
+        ctx.monkeypatch.setenv("X_BEFORE", "yes")
+        seen["ran"] = True
+        seen["extra"] = extra
+        assert isinstance(harness, dict)
+
+    def fake_main(_argv):
+        import os
+
+        print(os.environ.get("X_BEFORE", "no"))
+        return 0
+
+    ep = _install_sut(monkeypatch, fake_main)
+    hook_ep = _install_hook(monkeypatch, hook_before)
+
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-016",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": ep, "hook_before": hook_ep, "hook_kwargs": {"extra": "v2"}},
+            "assert": [{"target": "stdout", "contains": ["yes"]}],
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    assert seen == {"ran": True, "extra": "v2"}
