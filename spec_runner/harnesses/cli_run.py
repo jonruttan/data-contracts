@@ -34,6 +34,21 @@ def run(case, *, ctx) -> None:
     if not isinstance(h, dict):
         raise TypeError("harness must be a mapping")
 
+    supported_harness_keys = {
+        "entrypoint",
+        "env",
+        "stdin_isatty",
+        "stdin_text",
+        "block_imports",
+        "stub_modules",
+        "setup_files",
+        "hook",
+        "hook_kwargs",
+    }
+    unknown = sorted(str(k) for k in h.keys() if k not in supported_harness_keys)
+    if unknown:
+        raise ValueError(f"unsupported harness key(s): {', '.join(unknown)}")
+
     legacy_keys = {
         "stub_modules",
         "setup_files",
@@ -144,6 +159,33 @@ def run(case, *, ctx) -> None:
 
     captured = ctx.capsys.readouterr()
     assert int(code) == int(t.get("exit_code", 0))
+
+    # Optional hook for complex assertions/setup that don't fit the declarative DSL.
+    hook_ep = h.get("hook")
+    hook_kwargs = h.get("hook_kwargs") or {}
+    if hook_ep is not None and not str(hook_ep).strip():
+        hook_ep = None
+    if hook_ep:
+        if not isinstance(hook_kwargs, dict):
+            raise TypeError("harness.hook_kwargs must be a mapping")
+        # Best-effort derive stdout_path for convenience.
+        stdout_path = None
+        try:
+            stdout_path = assert_stdout_path_exists(captured.out)
+        except Exception:
+            stdout_path = None
+        hook_fn = _load_entrypoint(str(hook_ep))
+        hook_fn(
+            case=case,
+            ctx=ctx,
+            result={
+                "exit_code": int(code),
+                "stdout": captured.out,
+                "stderr": captured.err,
+                "stdout_path": stdout_path,
+            },
+            **{str(k): v for k, v in hook_kwargs.items()},
+        )
 
     def _eval_leaf(leaf: dict) -> None:
         for target, op, value in iter_leaf_assertions(leaf):

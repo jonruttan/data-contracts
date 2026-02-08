@@ -12,7 +12,7 @@ This schema defines the stable shape of executable spec tests embedded in
 ## Common Fields
 
 - `id` (string, required): stable identifier like `CK-CLI-001`
-- `kind` (string, required): dispatch key (e.g. `cli.run`)
+- `type` (string, required): dispatch key (e.g. `cli.run`)
 - `title` (string, optional): human description
 
 ## `harness` Namespace
@@ -29,10 +29,12 @@ For `type: cli.run`, supported `harness` keys include:
 - `block_imports` (list[string]): make imports fail with `ModuleNotFoundError`
 - `stub_modules` (list[string]): pre-populate `sys.modules` with stubs
 - `setup_files` (list[{path, text}]): write files under the runner temp dir
+- `hook` (string): hook entrypoint (e.g. `myproj.tests.hooks:check`)
+- `hook_kwargs` (mapping): keyword arguments passed through to the hook
 
-## Kinds
+## Types
 
-Currently supported kinds:
+Currently supported types:
 
 - `cli.run` (core)
 

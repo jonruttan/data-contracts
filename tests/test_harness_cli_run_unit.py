@@ -23,6 +23,17 @@ def _install_sut(monkeypatch, fn) -> str:
     return f"{mod_name}:main"
 
 
+def _install_hook(monkeypatch, fn) -> str:
+    """
+    Install a fake hook module with a `hook(**kwargs)` function.
+    """
+    mod_name = "spec_runner_test_hook"
+    m = types.ModuleType(mod_name)
+    m.hook = fn  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, mod_name, m)
+    return f"{mod_name}:hook"
+
+
 def test_cli_type_accepts_string_argv_and_systemexit(tmp_path, monkeypatch, capsys):
     def fake_main(argv):
         print("[]")  # stdout
@@ -325,3 +336,39 @@ def test_cli_type_any_group_or_semantics(tmp_path, monkeypatch, capsys):
     from spec_runner.harnesses.cli_run import run
 
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_hook_runs_after_command(tmp_path, monkeypatch, capsys):
+    seen = {}
+
+    def fake_main(_argv):
+        print("{\"ok\": true}")
+        return 0
+
+    def hook(*, case, ctx, result, extra=None):
+        assert case.test["id"] == "SR-CLI-UNIT-015"
+        assert result["exit_code"] == 0
+        assert "\"ok\"" in result["stdout"]
+        assert isinstance(ctx.tmp_path, Path)
+        seen["ran"] = True
+        seen["extra"] = extra
+
+    ep = _install_sut(monkeypatch, fake_main)
+    hook_ep = _install_hook(monkeypatch, hook)
+
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-015",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": ep, "hook": hook_ep, "hook_kwargs": {"extra": "v"}},
+            "assert": [{"target": "stdout", "json_type": ["dict"]}],
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    assert seen == {"ran": True, "extra": "v"}
