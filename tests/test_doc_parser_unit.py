@@ -18,7 +18,7 @@ def test_iter_spec_doc_tests_parses_single_mapping(tmp_path):
 ```yaml spec-test
 id: CK-CLI-001
 title: Example
-kind: cli.example
+type: cli.example
 ```
 """,
     )
@@ -27,7 +27,7 @@ kind: cli.example
     assert len(cases) == 1
     assert cases[0].doc_path.name == "a.md"
     assert cases[0].test["id"] == "CK-CLI-001"
-    assert cases[0].test["kind"] == "cli.example"
+    assert cases[0].test["type"] == "cli.example"
 
 
 def test_iter_spec_doc_tests_parses_list_of_mappings(tmp_path):
@@ -38,10 +38,10 @@ def test_iter_spec_doc_tests_parses_list_of_mappings(tmp_path):
 ```yaml spec-test
 - id: CK-CLI-001
   title: One
-  kind: cli.one
+  type: cli.one
 - id: CK-CLI-002
   title: Two
-  kind: cli.two
+  type: cli.two
 ```
 """,
     )
@@ -50,17 +50,17 @@ def test_iter_spec_doc_tests_parses_list_of_mappings(tmp_path):
     assert [c.test["id"] for c in cases] == ["CK-CLI-001", "CK-CLI-002"]
 
 
-def test_iter_spec_doc_tests_requires_id_and_kind(tmp_path):
+def test_iter_spec_doc_tests_requires_id_and_type(tmp_path):
     _write(
         tmp_path / "a.md",
         """```yaml spec-test
-title: Missing kind
+title: Missing type
 id: CK-CLI-001
 ```
 """,
     )
 
-    with pytest.raises(ValueError, match="must include 'id' and 'kind'"):
+    with pytest.raises(ValueError, match="must include 'id' and 'type'"):
         list(iter_spec_doc_tests(tmp_path))
 
 
@@ -83,7 +83,7 @@ def test_iter_spec_doc_tests_rejects_non_mapping_in_list(tmp_path):
         """```yaml spec-test
 - id: CK-CLI-001
   title: ok
-  kind: cli.ok
+  type: cli.ok
 - 123
 ```
 """,

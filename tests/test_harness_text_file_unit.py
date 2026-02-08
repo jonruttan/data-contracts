@@ -14,7 +14,7 @@ def test_text_file_contains(tmp_path, monkeypatch, capsys):
         doc_path=p,
         test={
             "id": "X",
-            "kind": "text.file",
+            "type": "text.file",
             "assert": [{"target": "text", "contains": ["hello"]}],
         },
     )
@@ -32,7 +32,7 @@ def test_text_file_unknown_target(tmp_path, monkeypatch, capsys):
         doc_path=p,
         test={
             "id": "X",
-            "kind": "text.file",
+            "type": "text.file",
             "assert": [{"target": "stdout", "contains": ["hello"]}],
         },
     )
@@ -44,8 +44,7 @@ def test_text_file_unknown_target(tmp_path, monkeypatch, capsys):
 
 
 def test_dispatcher_includes_text_file_kind():
-    from spec_runner.dispatcher import default_kind_runners
+    from spec_runner.dispatcher import default_type_runners
 
-    runners = default_kind_runners()
+    runners = default_type_runners()
     assert "text.file" in runners
-

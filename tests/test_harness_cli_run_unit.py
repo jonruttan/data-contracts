@@ -23,7 +23,7 @@ def _install_sut(monkeypatch, fn) -> str:
     return f"{mod_name}:main"
 
 
-def test_cli_kind_accepts_string_argv_and_systemexit(tmp_path, monkeypatch, capsys):
+def test_cli_type_accepts_string_argv_and_systemexit(tmp_path, monkeypatch, capsys):
     def fake_main(argv):
         print("[]")  # stdout
         raise SystemExit(0)
@@ -33,7 +33,7 @@ def test_cli_kind_accepts_string_argv_and_systemexit(tmp_path, monkeypatch, caps
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-001",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": "plugins",
             "exit_code": 0,
             "harness": {"entrypoint": ep},
@@ -46,7 +46,7 @@ def test_cli_kind_accepts_string_argv_and_systemexit(tmp_path, monkeypatch, caps
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_unsupported_stdout_json_type_raises(tmp_path, monkeypatch, capsys):
+def test_cli_type_unsupported_stdout_json_type_raises(tmp_path, monkeypatch, capsys):
     def fake_main(argv):
         print("[]")
         return 0
@@ -56,7 +56,7 @@ def test_cli_kind_unsupported_stdout_json_type_raises(tmp_path, monkeypatch, cap
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-002",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
@@ -70,7 +70,7 @@ def test_cli_kind_unsupported_stdout_json_type_raises(tmp_path, monkeypatch, cap
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_stdout_json_dict(tmp_path, monkeypatch, capsys):
+def test_cli_type_stdout_json_dict(tmp_path, monkeypatch, capsys):
     def fake_main(argv):
         print("{}")
         return 0
@@ -80,7 +80,7 @@ def test_cli_kind_stdout_json_dict(tmp_path, monkeypatch, capsys):
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-003",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
@@ -93,7 +93,7 @@ def test_cli_kind_stdout_json_dict(tmp_path, monkeypatch, capsys):
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_contains_and_regex_and_negation(tmp_path, monkeypatch, capsys):
+def test_cli_type_contains_and_regex_and_negation(tmp_path, monkeypatch, capsys):
     def fake_main(argv):
         print("hello world")
         print("ERR", file=sys.stderr)
@@ -104,7 +104,7 @@ def test_cli_kind_contains_and_regex_and_negation(tmp_path, monkeypatch, capsys)
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-004",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
@@ -120,7 +120,7 @@ def test_cli_kind_contains_and_regex_and_negation(tmp_path, monkeypatch, capsys)
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_stdout_path_text(tmp_path, monkeypatch, capsys):
+def test_cli_type_stdout_path_text(tmp_path, monkeypatch, capsys):
     note = tmp_path / "n.md"
     note.write_text("hello", encoding="utf-8")
 
@@ -133,7 +133,7 @@ def test_cli_kind_stdout_path_text(tmp_path, monkeypatch, capsys):
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-005",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
@@ -146,7 +146,7 @@ def test_cli_kind_stdout_path_text(tmp_path, monkeypatch, capsys):
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
+def test_cli_type_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
     def fake_main(argv):
         print("x")
         return 0
@@ -156,7 +156,7 @@ def test_cli_kind_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-006",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
@@ -170,7 +170,7 @@ def test_cli_kind_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
+def test_cli_type_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
     note = tmp_path / "n.md"
     note.write_text("hello", encoding="utf-8")
 
@@ -183,7 +183,7 @@ def test_cli_kind_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-007",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
@@ -197,13 +197,13 @@ def test_cli_kind_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_unsupported_op_raises(tmp_path, monkeypatch, capsys):
+def test_cli_type_unsupported_op_raises(tmp_path, monkeypatch, capsys):
     ep = _install_sut(monkeypatch, lambda _argv: 0)
     case = SpecDocTest(
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-008",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
@@ -217,7 +217,7 @@ def test_cli_kind_unsupported_op_raises(tmp_path, monkeypatch, capsys):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
+def test_cli_type_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
     seen = {}
 
     def fake_main(_argv):
@@ -233,7 +233,7 @@ def test_cli_kind_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-011",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {
@@ -251,7 +251,7 @@ def test_cli_kind_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
     assert seen["cfg"] == str((tmp_path / "cfg.txt").resolve())
 
 
-def test_cli_kind_can_stub_modules(tmp_path, monkeypatch, capsys):
+def test_cli_type_can_stub_modules(tmp_path, monkeypatch, capsys):
     def fake_main(_argv):
         import openai  # noqa: F401
 
@@ -263,7 +263,7 @@ def test_cli_kind_can_stub_modules(tmp_path, monkeypatch, capsys):
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-014",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stub_modules": ["openai"]},
@@ -276,7 +276,7 @@ def test_cli_kind_can_stub_modules(tmp_path, monkeypatch, capsys):
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys):
+def test_cli_type_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys):
     def fake_main(_argv):
         data = sys.stdin.read()
         print(f"stdin={data}")
@@ -287,7 +287,7 @@ def test_cli_kind_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-012",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stdin_isatty": False, "stdin_text": "hello"},
@@ -300,7 +300,7 @@ def test_cli_kind_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_kind_any_group_or_semantics(tmp_path, monkeypatch, capsys):
+def test_cli_type_any_group_or_semantics(tmp_path, monkeypatch, capsys):
     def fake_main(_argv):
         print("ok")
         print("WARN: something", file=sys.stderr)
@@ -311,7 +311,7 @@ def test_cli_kind_any_group_or_semantics(tmp_path, monkeypatch, capsys):
         doc_path=Path("docs/spec/cli.md"),
         test={
             "id": "SR-CLI-UNIT-010",
-            "kind": "cli.run",
+            "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
