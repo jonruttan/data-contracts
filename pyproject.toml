@@ -9,15 +9,21 @@ description = "Executable spec runner for yaml spec-test blocks in Markdown."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
+license-files = ["LICENSE"]
 authors = [{name = "jon"}]
 
 dependencies = [
   "PyYAML>=6",
 ]
 
+[project.urls]
+Repository = "https://example.invalid/spec-runner"
+
 [project.optional-dependencies]
 dev = [
   "pytest>=8",
+  "build>=1",
+  "twine>=6",
 ]
 
 [tool.setuptools]
@@ -26,4 +32,3 @@ package-dir = {"" = "."}
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["spec_runner*"]
-
