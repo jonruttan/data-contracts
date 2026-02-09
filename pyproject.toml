@@ -8,7 +8,8 @@ version = "0.1.0"
 description = "Executable spec runner for yaml spec-test blocks in Markdown."
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "MIT"}
+# Keep this as a string for compatibility with setuptools' PEP 621 validation.
+license = "MIT"
 license-files = ["LICENSE"]
 authors = [{name = "jon"}]
 
