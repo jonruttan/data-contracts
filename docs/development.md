@@ -3,7 +3,7 @@
 ## Install (Editable)
 
 ```sh
-python -m pip install -e '.[dev]'
+python3 -m pip install -e '.[dev]'
 ```
 
 ## Run Tests
@@ -15,8 +15,7 @@ python -m pytest
 ## Build / Publish
 
 ```sh
-python -m pip install -U build twine
-python -m build
-python -m twine check dist/*
+python3 -m pip install -U build twine
+python3 -m build
+python3 -m twine check dist/*
 ```
-
