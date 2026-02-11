@@ -121,7 +121,7 @@ def test_cli_type_contains_and_regex_and_negation(tmp_path, monkeypatch, capsys)
             "harness": {"entrypoint": ep},
             "assert": [
                 {"target": "stdout", "contains": ["hello"], "regex": ["world\\s*$"]},
-                {"target": "stderr", "not_contains": ["ERROR:"]},
+                {"target": "stderr", "contains": ["ERROR:"], "is": False},
             ],
         },
     )
@@ -330,6 +330,29 @@ def test_cli_type_any_group_or_semantics(tmp_path, monkeypatch, capsys):
                 {"any": [{"target": "stderr", "contains": ["INFO:"]}, {"target": "stderr", "contains": ["WARN:"]}]},
                 {"target": "stderr", "not_contains": ["ERROR:"]},
             ],
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_json_type_is_false(tmp_path, monkeypatch, capsys):
+    def fake_main(_argv):
+        print("{}")
+        return 0
+
+    ep = _install_sut(monkeypatch, fake_main)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-017",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": ep},
+            "assert": [{"target": "stdout", "json_type": ["list"], "is": False}],
         },
     )
 

@@ -17,9 +17,9 @@ def run(case, *, ctx) -> None:
     text = p.read_text(encoding="utf-8")
 
     def _eval_leaf(leaf: dict) -> None:
-        for target, op, value in iter_leaf_assertions(leaf):
+        for target, op, value, is_true in iter_leaf_assertions(leaf):
             if target != "text":
                 raise ValueError(f"unknown assert target for text.file: {target}")
-            assert_text_op(text, op, value)
+            assert_text_op(text, op, value, is_true=is_true)
 
     eval_assert_tree(t.get("assert", []) or [], eval_leaf=_eval_leaf)

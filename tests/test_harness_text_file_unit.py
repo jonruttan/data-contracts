@@ -24,6 +24,24 @@ def test_text_file_contains(tmp_path, monkeypatch, capsys):
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
+def test_text_file_contains_is_false(tmp_path, monkeypatch, capsys):
+    p = tmp_path / "doc.md"
+    p.write_text("hello world\n", encoding="utf-8")
+
+    case = SpecDocTest(
+        doc_path=p,
+        test={
+            "id": "X",
+            "type": "text.file",
+            "assert": [{"target": "text", "contains": ["ERROR:"], "is": False}],
+        },
+    )
+
+    from spec_runner.harnesses.text_file import run
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
 def test_text_file_can_read_relative_path(tmp_path, monkeypatch, capsys):
     doc = tmp_path / "spec.md"
     doc.write_text("spec doc\n", encoding="utf-8")

@@ -9,6 +9,7 @@ from spec_runner.assertions import (
     assert_stdout_path_exists,
     assert_text_op,
     eval_assert_tree,
+    first_nonempty_line,
     is_text_op,
     iter_leaf_assertions,
     parse_json,
@@ -200,18 +201,23 @@ def run(case, *, ctx) -> None:
         )
 
     def _eval_leaf(leaf: dict) -> None:
-        for target, op, value in iter_leaf_assertions(leaf):
+        for target, op, value, is_true in iter_leaf_assertions(leaf):
             if target == "stdout":
                 subject = captured.out
             elif target == "stderr":
                 subject = captured.err
             elif target == "stdout_path":
-                p = assert_stdout_path_exists(captured.out)
+                line = first_nonempty_line(captured.out)
+                if not line:
+                    raise AssertionError("expected stdout to contain a path")
                 if op != "exists":
                     raise ValueError(f"unsupported op for stdout_path: {op}")
                 if value not in (None, True):
                     raise ValueError("stdout_path.exists only supports value: true (or null)")
-                assert p.exists()
+                from pathlib import Path
+
+                p = Path(line)
+                assert p.exists() is bool(is_true)
                 continue
             elif target == "stdout_path_text":
                 p = assert_stdout_path_exists(captured.out)
@@ -220,14 +226,14 @@ def run(case, *, ctx) -> None:
                 raise ValueError(f"unknown assert target: {target}")
 
             if is_text_op(op):
-                assert_text_op(subject, op, value)
+                assert_text_op(subject, op, value, is_true=is_true)
             elif op == "json_type":
                 parsed = parse_json(subject)
                 want = str(value).lower()
                 if want == "list":
-                    assert isinstance(parsed, list)
+                    assert isinstance(parsed, list) is bool(is_true)
                 elif want == "dict":
-                    assert isinstance(parsed, dict)
+                    assert isinstance(parsed, dict) is bool(is_true)
                 else:
                     raise ValueError(f"unsupported json_type: {value}")
             else:

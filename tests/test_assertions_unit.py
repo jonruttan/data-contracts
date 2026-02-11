@@ -36,24 +36,35 @@ def test_iter_leaf_assertions_requires_mapping_target_and_op_key():
 def test_iter_leaf_assertions_requires_list_values_and_rejects_legacy():
     with pytest.raises(TypeError, match="must be a list"):
         list(iter_leaf_assertions({"target": "stderr", "contains": "x"}))
+    with pytest.raises(TypeError, match="key 'is' must be a bool"):
+        list(iter_leaf_assertions({"target": "stderr", "contains": ["x"], "is": "yes"}))
     with pytest.raises(ValueError, match="legacy assertion shape"):
         list(iter_leaf_assertions({"target": "stderr", "op": "contains", "value": "x"}))
     with pytest.raises(ValueError, match="unsupported op"):
         list(iter_leaf_assertions({"target": "stderr", "wat": ["x"]}))
     with pytest.raises(ValueError, match="must not include 'any' or 'all'"):
         list(iter_leaf_assertions({"target": "stderr", "any": []}))
+    with pytest.raises(ValueError, match="do not combine 'is' with not_contains"):
+        list(iter_leaf_assertions({"target": "stderr", "not_contains": ["x"], "is": False}))
 
 
-def test_iter_leaf_assertions_happy_path():
+def test_iter_leaf_assertions_happy_path_and_is_normalization():
     assert list(
         iter_leaf_assertions(
-            {"target": "stderr", "contains": ["ok"], "not_contains": ["ERROR:", "nope"], "regex": ["x.*"]}
+            {
+                "target": "stderr",
+                "contains": ["ok"],
+                "regex": ["x.*"],
+                "is": False,
+            }
         )
     ) == [
-        ("stderr", "contains", "ok"),
-        ("stderr", "not_contains", "ERROR:"),
-        ("stderr", "not_contains", "nope"),
-        ("stderr", "regex", "x.*"),
+        ("stderr", "contains", "ok", False),
+        ("stderr", "regex", "x.*", False),
+    ]
+
+    assert list(iter_leaf_assertions({"target": "stderr", "not_contains": ["ERROR:"]})) == [
+        ("stderr", "contains", "ERROR:", False)
     ]
 
 

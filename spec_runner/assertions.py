@@ -25,25 +25,22 @@ def assert_stdout_path_exists(stdout: str, *, suffix: str | None = None) -> Path
     return p
 
 
-_TEXT_OPS = {"contains", "not_contains", "regex", "not_regex"}
+_TEXT_OPS = {"contains", "regex"}
 
 
-def assert_text_op(subject: str, op: str, value: Any) -> None:
+def assert_text_op(subject: str, op: str, value: Any, *, is_true: bool = True) -> None:
     """
     Shared implementation for text-match ops across harnesses.
 
     Keeping this centralized avoids subtly different semantics in different kinds.
     """
     if op == "contains":
-        assert str(value) in subject
-    elif op == "not_contains":
-        assert str(value) not in subject
+        ok = str(value) in subject
     elif op == "regex":
-        assert re.search(str(value), subject) is not None
-    elif op == "not_regex":
-        assert re.search(str(value), subject) is None
+        ok = re.search(str(value), subject) is not None
     else:
         raise ValueError(f"unsupported text op: {op}")
+    assert ok is bool(is_true)
 
 
 def is_text_op(op: str) -> bool:
@@ -52,13 +49,14 @@ def is_text_op(op: str) -> bool:
 
 def iter_leaf_assertions(leaf: Any):
     """
-    Yield (target, op, value) triplets from a leaf assertion mapping.
+    Yield (target, op, value, is_true) tuples from a leaf assertion mapping.
 
     Canonical leaf shape:
 
     - target: stderr
       contains: ["WARN:"]
-      not_contains: ["ERROR:"]
+      regex: ["traceback"]
+      is: false
 
     Rules:
     - `target` is required.
@@ -74,6 +72,9 @@ def iter_leaf_assertions(leaf: Any):
         raise ValueError("legacy assertion shape (op/value) is not supported")
     if "any" in leaf or "all" in leaf:
         raise ValueError("leaf assertion must not include 'any' or 'all'")
+    default_is_true = leaf.get("is", True)
+    if not isinstance(default_is_true, bool):
+        raise TypeError("assertion key 'is' must be a bool")
 
     known_ops = {
         "exists",
@@ -82,19 +83,32 @@ def iter_leaf_assertions(leaf: Any):
         "regex",
         "not_regex",
         "json_type",
+        "is",
     }
 
     any_found = False
     for op, raw in leaf.items():
-        if op == "target":
+        if op in ("target", "is"):
             continue
         if op not in known_ops:
             raise ValueError(f"unsupported op: {op}")
         any_found = True
         if not isinstance(raw, list):
             raise TypeError(f"assertion op '{op}' must be a list")
+        canonical = op
+        is_true = default_is_true
+        if op == "not_contains":
+            canonical = "contains"
+            if "is" in leaf:
+                raise ValueError("do not combine 'is' with not_contains; use contains + is: false")
+            is_true = False
+        elif op == "not_regex":
+            canonical = "regex"
+            if "is" in leaf:
+                raise ValueError("do not combine 'is' with not_regex; use regex + is: false")
+            is_true = False
         for v in raw:
-            yield target, op, v
+            yield target, canonical, v, is_true
     if not any_found:
         raise ValueError("assertion missing an op key (e.g. contains:, regex:, ...)")
 

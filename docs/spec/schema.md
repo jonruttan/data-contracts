@@ -56,3 +56,34 @@ Currently supported types:
 - `text.file` (core)
 
 Other kinds are adapters provided by the system under test.
+
+## Assertion Leaf Shape
+
+Assertion leaves are mappings with:
+
+- `target` (string, required)
+- one or more operator keys with list values
+- optional `is` (bool, defaults to `true`) to invert assertion polarity
+
+Supported operators:
+
+- text operators: `contains`, `regex`
+- compatibility aliases: `not_contains`, `not_regex`
+- additional per-harness operators such as `json_type` and `exists`
+
+Canonical negation uses `is: false`:
+
+```yaml
+assert:
+  - target: stderr
+    contains: ["ERROR:"]
+    is: false
+```
+
+Legacy negated text operators remain supported for compatibility:
+
+```yaml
+assert:
+  - target: stderr
+    not_contains: ["ERROR:"]
+```

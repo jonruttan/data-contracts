@@ -59,14 +59,23 @@ def test_specs_from_docs(tmp_path, monkeypatch, capsys):
 Each `yaml spec-test` test case is a mapping with:
 
 - `id` (required)
-- `kind` (required)
+- `type` (required)
 - `title` (optional)
-- kind-specific keys (e.g. `argv`, `exit_code`, `assert` for `cli.run`)
+- type-specific keys (e.g. `argv`, `exit_code`, `assert` for `cli.run`)
 - `harness` (optional): runner-only setup inputs (fixture files, stubs, stdin)
 
 Runner-only keys MUST live under `harness:` to keep the spec format clean.
 
-Canonical schema doc: `docs/spec/schema.md`.
+Assertion leaves support optional `is` (defaults to `true`), so negation can be
+written as:
+
+```yaml
+- target: stderr
+  contains: ["ERROR:"]
+  is: false
+```
+
+Canonical schema doc: `tools/spec_runner/docs/spec/schema.md`.
 
 ## Reuse / Publishing Notes
 
