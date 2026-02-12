@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -21,6 +22,7 @@ _NORMATIVE_CONTRACT_DOCS = [
 _REGEX_PROFILE_DOC = "docs/spec/contract/03a-regex-portability-v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 _CONFORMANCE_MAX_BLOCK_LINES = 50
+_CONFORMANCE_CASE_ID_PATTERN = re.compile(r"\bSRCONF-[A-Z0-9-]+\b")
 
 
 def _read_yaml(path: Path) -> Any:
@@ -114,6 +116,24 @@ def _collect_fixture_case_ids(path: Path) -> set[str]:
         if rid:
             ids.add(rid)
     return ids
+
+
+def _lint_conformance_case_index(cases_dir: Path, fixture_ids: set[str]) -> list[str]:
+    errs: list[str] = []
+    index_path = cases_dir / "README.md"
+    if not fixture_ids and not index_path.exists():
+        return errs
+    if not index_path.exists():
+        errs.append(f"conformance case index missing: {index_path}")
+        return errs
+
+    raw = index_path.read_text(encoding="utf-8")
+    indexed_ids = set(_CONFORMANCE_CASE_ID_PATTERN.findall(raw))
+    for rid in sorted(fixture_ids - indexed_ids):
+        errs.append(f"conformance case index missing id: {rid}")
+    for rid in sorted(indexed_ids - fixture_ids):
+        errs.append(f"conformance case index has stale id: {rid}")
+    return errs
 
 
 @dataclass(frozen=True)
@@ -249,6 +269,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
     cases_dir = repo_root / "tools/spec_runner/docs/spec/conformance/cases"
     if cases_dir.exists():
         errs.extend(_lint_conformance_case_docs(cases_dir))
+        errs.extend(_lint_conformance_case_index(cases_dir, conformance_ids))
     rules = policy.get("rules") or []
     links = trace.get("links") or []
     if not isinstance(rules, list):

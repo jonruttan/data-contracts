@@ -489,3 +489,59 @@ expect:
     )
     errs = check_contract_governance(tmp_path)
     assert any("expected heading '## SRCONF-BAD-003'" in e for e in errs)
+
+
+def test_contract_governance_fails_when_case_index_missing_fixture_id(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R11")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/sample.spec.md",
+        """# Sample
+
+## SRCONF-IDX-001
+
+```yaml spec-test
+id: SRCONF-IDX-001
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-OTHER-999\n",
+    )
+
+    errs = check_contract_governance(tmp_path)
+    assert any("conformance case index missing id: SRCONF-IDX-001" in e for e in errs)
+
+
+def test_contract_governance_fails_when_case_index_has_stale_id(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R12")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/sample.spec.md",
+        """# Sample
+
+## SRCONF-IDX-002
+
+```yaml spec-test
+id: SRCONF-IDX-002
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-IDX-002\n- SRCONF-STALE-123\n",
+    )
+
+    errs = check_contract_governance(tmp_path)
+    assert any("conformance case index has stale id: SRCONF-STALE-123" in e for e in errs)

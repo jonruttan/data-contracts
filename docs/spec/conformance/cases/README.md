@@ -13,3 +13,29 @@ Recommendations:
   - optional `expect.impl.<runtime>` overrides
 - Conformance fixture cases should always include `expect.portable.status`.
 - Style details are defined in `docs/spec/conformance/style.md`.
+
+## Case Index
+
+- `SRCONF-AH-001`
+- `SRCONF-AH-002`
+- `SRCONF-AH-003`
+- `SRCONF-AH-004`
+- `SRCONF-AH-005`
+- `SRCONF-AH-006`
+- `SRCONF-CLI-001`
+- `SRCONF-CLI-002`
+- `SRCONF-ERR-001`
+- `SRCONF-PHP-TEXT-001`
+- `SRCONF-PHP-TEXT-002`
+- `SRCONF-PHP-TEXT-003`
+- `SRCONF-PHP-TEXT-004`
+- `SRCONF-PHP-TEXT-005`
+- `SRCONF-PHP-TEXT-006`
+- `SRCONF-PHP-TEXT-007`
+- `SRCONF-PHP-TEXT-008`
+- `SRCONF-PHP-TEXT-009`
+- `SRCONF-PHP-TEXT-010`
+- `SRCONF-PHP-TEXT-011`
+- `SRCONF-PHP-TEXT-012`
+- `SRCONF-PHP-TEXT-013`
+- `SRCONF-PHP-TEXT-014`

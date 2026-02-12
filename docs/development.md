@@ -31,6 +31,10 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 - artifact upload of `.artifacts/contract-coverage.json`
 - artifact upload of `.artifacts/conformance-parity.json`
 
+`check_contract_governance.py` enforces conformance case doc freshness:
+every `SRCONF-*` fixture case id must be listed in
+`docs/spec/conformance/cases/README.md`, and stale ids in that index fail CI.
+
 Local equivalent:
 
 ```sh
