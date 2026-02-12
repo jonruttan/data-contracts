@@ -28,8 +28,8 @@ def _to_markdown(payload: dict) -> str:
         "",
         "## Warnings",
         "",
-        "| id | type | code | warning | file |",
-        "| --- | --- | --- | --- | --- |",
+        "| id | type | code | warning | hint | file |",
+        "| --- | --- | --- | --- | --- | --- |",
         ]
     )
     had_any = False
@@ -42,13 +42,16 @@ def _to_markdown(payload: dict) -> str:
             if isinstance(w, dict):
                 code = str(w.get("code", "")).strip()
                 message = str(w.get("message", "")).strip()
+                hint = str(w.get("hint", "")).strip()
             else:
                 code = "PUR004"
                 message = str(w).strip()
+                hint = "Review warning details and update purpose lint configuration."
             ww = message.replace("|", "\\|")
-            lines.append(f"| {rid} | {rtype} | {code} | {ww} | {file_} |")
+            hh = hint.replace("|", "\\|")
+            lines.append(f"| {rid} | {rtype} | {code} | {ww} | {hh} | {file_} |")
     if not had_any:
-        lines.append("| - | - | - | none | - |")
+        lines.append("| - | - | - | none | - | - |")
     return "\n".join(lines) + "\n"
 
 

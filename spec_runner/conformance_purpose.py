@@ -19,6 +19,12 @@ PURPOSE_WARNING_CODE_TO_DESCRIPTION = {
     "PUR003": "purpose contains placeholder token",
     "PUR004": "purpose lint configuration/policy error",
 }
+PURPOSE_WARNING_CODE_TO_HINT = {
+    "PUR001": "Rewrite purpose to explain intent or risk not already stated in title.",
+    "PUR002": "Expand purpose to meet the configured minimum word count.",
+    "PUR003": "Replace placeholder tokens with concrete, implementation-neutral intent.",
+    "PUR004": "Fix purpose_lint settings or policy file shape/version before rerunning.",
+}
 
 
 @dataclass(frozen=True)
@@ -39,8 +45,12 @@ def _display_path(path: Path, *, cwd: Path) -> str:
         return str(path.resolve())
 
 
-def _warning(code: str, message: str) -> dict[str, str]:
-    return {"code": code, "message": message}
+def _warning(code: str, message: str) -> dict[str, Any]:
+    return {
+        "code": code,
+        "message": message,
+        "hint": PURPOSE_WARNING_CODE_TO_HINT.get(code, "Review warning details and update purpose lint configuration."),
+    }
 
 
 def _quality_warning_to_structured(msg: str) -> dict[str, str]:

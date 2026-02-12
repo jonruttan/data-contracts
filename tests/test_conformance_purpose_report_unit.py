@@ -156,7 +156,12 @@ expect:
     payload = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)
     assert payload["summary"]["total_warning_count"] >= 1
     row = payload["rows"][0]
-    assert any(w["code"] == "PUR001" and w["message"] == "purpose duplicates title" for w in row["warnings"])
+    assert any(
+        w["code"] == "PUR001"
+        and w["message"] == "purpose duplicates title"
+        and "Rewrite purpose" in w["hint"]
+        for w in row["warnings"]
+    )
 
 
 def test_conformance_purpose_report_warning_codes_are_grouped(tmp_path):
@@ -183,3 +188,33 @@ expect:
     assert counts["PUR001"] == 1
     assert counts["PUR002"] == 1
     assert counts["PUR003"] == 1
+
+
+def test_conformance_purpose_report_uses_safe_default_hint_for_unknown_warning(monkeypatch, tmp_path):
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir(parents=True)
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "sample.spec.md").write_text(
+        """# Sample
+## SRCONF-PURPOSE-REPORT-600
+```yaml spec-test
+id: SRCONF-PURPOSE-REPORT-600
+title: sample title
+purpose: Purpose text with enough words to avoid quality warnings.
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        "spec_runner.conformance_purpose.purpose_quality_warnings",
+        lambda *_a, **_k: ["some new warning shape"],
+    )
+    payload = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)
+    row = payload["rows"][0]
+    assert row["warnings"][0]["code"] == "PUR004"
+    assert row["warnings"][0]["message"] == "some new warning shape"
+    assert row["warnings"][0]["hint"] == "Fix purpose_lint settings or policy file shape/version before rerunning."

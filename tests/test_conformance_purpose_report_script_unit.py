@@ -38,7 +38,13 @@ def test_script_json_mode_and_fail_on_warn(monkeypatch, tmp_path):
                     "type": "text.file",
                     "file": "a.spec.md",
                     "purpose_lint": {"enabled": True},
-                    "warnings": [{"code": "PUR001", "message": "purpose duplicates title"}],
+                    "warnings": [
+                        {
+                            "code": "PUR001",
+                            "message": "purpose duplicates title",
+                            "hint": "Rewrite purpose to explain intent or risk not already stated in title.",
+                        }
+                    ],
                 }
             ],
         },
@@ -74,7 +80,13 @@ def test_script_markdown_mode(monkeypatch, tmp_path):
                     "type": "text.file",
                     "file": "x.spec.md",
                     "purpose_lint": {"enabled": False},
-                    "warnings": [{"code": "PUR002", "message": "purpose word count 2 below minimum 8"}],
+                    "warnings": [
+                        {
+                            "code": "PUR002",
+                            "message": "purpose word count 2 below minimum 8",
+                            "hint": "Expand purpose to meet the configured minimum word count.",
+                        }
+                    ],
                 }
             ],
         },
@@ -83,7 +95,10 @@ def test_script_markdown_mode(monkeypatch, tmp_path):
     assert code == 0
     text = out.read_text(encoding="utf-8")
     assert text.startswith("# Conformance Purpose Report")
-    assert "| SRCONF-X | text.file | PUR002 | purpose word count 2 below minimum 8 | x.spec.md |" in text
+    assert (
+        "| SRCONF-X | text.file | PUR002 | purpose word count 2 below minimum 8 | "
+        "Expand purpose to meet the configured minimum word count. | x.spec.md |"
+    ) in text
 
 
 def test_script_only_warnings_filters_rows(monkeypatch, tmp_path):
@@ -111,7 +126,13 @@ def test_script_only_warnings_filters_rows(monkeypatch, tmp_path):
                     "type": "text.file",
                     "file": "a.spec.md",
                     "purpose_lint": {"enabled": True},
-                    "warnings": [{"code": "PUR001", "message": "purpose duplicates title"}],
+                    "warnings": [
+                        {
+                            "code": "PUR001",
+                            "message": "purpose duplicates title",
+                            "hint": "Rewrite purpose to explain intent or risk not already stated in title.",
+                        }
+                    ],
                 },
                 {
                     "id": "B",
