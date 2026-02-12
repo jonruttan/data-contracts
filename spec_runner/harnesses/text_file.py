@@ -16,8 +16,8 @@ def run(case, *, ctx) -> None:
         p = (case.doc_path.parent / rel_p).resolve()
     text = p.read_text(encoding="utf-8")
 
-    def _eval_leaf(leaf: dict) -> None:
-        for target, op, value, is_true in iter_leaf_assertions(leaf):
+    def _eval_leaf(leaf: dict, *, inherited_target: str | None = None) -> None:
+        for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
             if target != "text":
                 raise ValueError(f"unknown assert target for text.file: {target}")
             assert_text_op(text, op, value, is_true=is_true)

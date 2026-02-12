@@ -32,10 +32,12 @@ harness:
   entrypoint: "myproj.cli:main"
 assert:
   - target: stdout
-    contains: ["usage:", "options:"]
+    contain: ["usage:", "options:"]
   - target: stderr
-    contains: ["ERROR:"]
-    is: false
+    must:
+      - contain: ["WARN:"]
+    cannot:
+      - contain: ["ERROR:"]
 ```
 
 2. In your test suite, run the collected cases:
@@ -69,14 +71,20 @@ Each `yaml spec-test` test case is a mapping with:
 
 Runner-only keys MUST live under `harness:` to keep the spec format clean.
 
-Assertion leaves support optional `is` (defaults to `true`), so negation can be
-written as:
+Canonical boolean groups are `must`, `can`, and `cannot` (legacy aliases
+`all`/`any` are still accepted). Text assertions use `contain` (legacy
+`contains` is accepted).
+
+Legacy leaf-level negation remains available via `is: false`:
 
 ```yaml
 - target: stderr
-  contains: ["ERROR:"]
+  contain: ["ERROR:"]
   is: false
 ```
+
+Assertion groups can carry a shared `target`, which child
+leaves inherit unless overridden.
 
 Canonical schema doc: `tools/spec_runner/docs/spec/schema.md`.
 

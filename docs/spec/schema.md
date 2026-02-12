@@ -77,13 +77,21 @@ Other kinds are adapters provided by the system under test.
 
 Assertion leaves are mappings with:
 
-- `target` (string, required)
+- `target` (string, required unless inherited from a parent group node)
 - one or more operator keys with list values
-- optional `is` (bool, defaults to `true`) to invert assertion polarity
+- optional `is` (bool, defaults to `true`) for legacy leaf-level negation
+
+Assertion group nodes (`must` / `can` / `cannot`) MAY include `target`; child leaves
+inherit that target unless a child leaf sets its own `target`.
+
+Legacy aliases:
+
+- `all` is accepted as an alias of `must`
+- `any` is accepted as an alias of `can`
 
 Supported operators:
 
-- text operators: `contains`, `regex`
+- text operators: `contain`, `regex` (`contains` is accepted as an alias of `contain`)
 - additional per-harness operators such as `json_type` and `exists`
 
 Operator constraints:
@@ -91,15 +99,30 @@ Operator constraints:
 - all operator values MUST be lists
 - `json_type` supports `dict` and `list`
 - `exists` is currently supported only for `target: stdout_path`
-- `stdout_path.exists` only accepts `true` (or `null`) values; negation is via `is: false`
+- `stdout_path.exists` only accepts `true` (or `null`) values; negation may use `is: false`
 
-Canonical negation uses `is: false`:
+Canonical negation uses `cannot`:
 
 ```yaml
 assert:
   - target: stderr
-    contains: ["ERROR:"]
-    is: false
+    cannot:
+      - contain: ["ERROR:"]
 ```
 
 Legacy negated text operators (`not_contains`, `not_regex`) are not supported.
+
+Example with target inheritance:
+
+```yaml
+assert:
+  - target: stderr
+    must:
+      - contain: ["WARN:"]
+    cannot:
+      - contain: ["ERROR:"]
+  - target: stdout
+    can:
+      - json_type: ["list"]
+      - contain: ["[]"]
+```

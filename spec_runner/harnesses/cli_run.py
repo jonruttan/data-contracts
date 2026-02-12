@@ -200,8 +200,8 @@ def run(case, *, ctx) -> None:
             **{str(k): v for k, v in hook_kwargs.items()},
         )
 
-    def _eval_leaf(leaf: dict) -> None:
-        for target, op, value, is_true in iter_leaf_assertions(leaf):
+    def _eval_leaf(leaf: dict, *, inherited_target: str | None = None) -> None:
+        for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
             if target == "stdout":
                 subject = captured.out
             elif target == "stderr":
