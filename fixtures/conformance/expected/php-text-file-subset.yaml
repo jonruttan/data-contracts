@@ -11,3 +11,23 @@ results:
   - id: SRCONF-PHP-TEXT-003
     status: pass
     category: null
+
+  - id: SRCONF-PHP-TEXT-004
+    status: pass
+    category: null
+
+  - id: SRCONF-PHP-TEXT-005
+    status: fail
+    category: assertion
+
+  - id: SRCONF-PHP-TEXT-006
+    status: pass
+    category: null
+
+  - id: SRCONF-PHP-TEXT-007
+    status: fail
+    category: assertion
+
+  - id: SRCONF-PHP-TEXT-008
+    status: pass
+    category: null

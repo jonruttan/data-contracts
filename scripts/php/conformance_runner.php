@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This script is intentionally minimal and deterministic:
  * - Reads conformance case fixtures from a directory.
  * - Executes a small text.file subset using real YAML parsing.
- * - Supports assertion tree subset: list + must groups + contain/regex leaves.
+ * - Supports assertion tree subset: list + must/can/cannot groups + contain/regex leaves.
  * - Emits JSON report envelope matching report-format.md.
  * - Marks unsupported case types as runtime failures.
  *
@@ -148,15 +148,77 @@ function evalTextAssertNode(mixed $node, string $subject, ?string $inheritedTarg
     if (array_key_exists('target', $node)) {
         $target = trim((string)$node['target']);
     }
-    if (array_key_exists('must', $node)) {
-        $children = $node['must'];
+
+    if (array_key_exists('all', $node) || array_key_exists('any', $node)) {
+        throw new SchemaError("assert group aliases 'all'/'any' are not supported; use 'must'/'can'");
+    }
+
+    $presentGroups = [];
+    foreach (['must', 'can', 'cannot'] as $g) {
+        if (array_key_exists($g, $node)) {
+            $presentGroups[] = $g;
+        }
+    }
+
+    if (count($presentGroups) > 1) {
+        throw new SchemaError('assert group must include exactly one key (must/can/cannot)');
+    }
+
+    if (count($presentGroups) === 1) {
+        $group = $presentGroups[0];
+        $children = $node[$group];
         if (!is_array($children) || !isListArray($children) || count($children) === 0) {
-            throw new SchemaError('assert.must must be a non-empty list');
+            throw new SchemaError("assert.{$group} must be a non-empty list");
         }
-        foreach ($children as $i => $child) {
-            evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.must[{$i}]");
+        $extra = array_diff(array_keys($node), [$group, 'target']);
+        if (count($extra) > 0) {
+            throw new SchemaError('unknown key in assert group: ' . (string)array_values($extra)[0]);
         }
-        return;
+
+        if ($group === 'must') {
+            foreach ($children as $i => $child) {
+                evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.must[{$i}]");
+            }
+            return;
+        }
+        if ($group === 'can') {
+            $anyPassed = false;
+            foreach ($children as $i => $child) {
+                try {
+                    evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.can[{$i}]");
+                    $anyPassed = true;
+                    break;
+                } catch (AssertionFailure $e) {
+                    // Continue trying other branches.
+                }
+            }
+            if (!$anyPassed) {
+                throw new AssertionFailure("all 'can' branches failed");
+            }
+            return;
+        }
+        if ($group === 'cannot') {
+            $passed = 0;
+            foreach ($children as $i => $child) {
+                try {
+                    evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.cannot[{$i}]");
+                    $passed += 1;
+                } catch (AssertionFailure $e) {
+                    // Expected failing branch for cannot.
+                }
+            }
+            if ($passed > 0) {
+                throw new AssertionFailure("'cannot' failed: {$passed} branch(es) passed");
+            }
+            return;
+        }
+    }
+
+    if (array_key_exists('target', $node)) {
+        throw new SchemaError('leaf assertion must not include key: target; move target to a parent group');
+    }
+    if ($target === null || $target === '') {
+        throw new SchemaError('assertion leaf requires inherited target from a parent group');
     }
     if ($target !== 'text') {
         throw new SchemaError('unknown assert target for text.file');

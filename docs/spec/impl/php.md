@@ -22,7 +22,7 @@ Current bootstrap behavior:
 
 - Reads fixtures from `fixtures/conformance/cases/*.yaml`
 - Executes `text.file` cases with:
-  - `must` groups
+  - `must`, `can`, `cannot` groups
   - `contain` and `regex` operators
 - Emits report JSON envelope:
   - `version: 1`
