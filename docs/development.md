@@ -63,6 +63,14 @@ Validate bootstrap report shape:
 python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report.json
 ```
 
+Run end-to-end Python/PHP parity over canonical conformance cases:
+
+```sh
+python3 scripts/compare_conformance_parity.py \
+  --cases docs/spec/conformance/cases \
+  --php-runner scripts/php/conformance_runner.php
+```
+
 ## Build / Publish
 
 ```sh
