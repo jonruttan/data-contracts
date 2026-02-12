@@ -1,0 +1,34 @@
+version: 1
+title: Spec Runner Portable Contract Policy
+rules:
+  - id: CLI_RUN_ENTRYPOINT_REQUIRED
+    scope: case
+    applies_to: cli.run.harness.entrypoint
+    norm: MUST
+    requirement: present
+    description: For cli.run, harness.entrypoint must be set in each case.
+
+  - id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
+    scope: implementation
+    applies_to: cli.run.entrypoint_resolution
+    norm: SHOULD
+    requirement: support_env_fallback_when_feasible
+    description: >
+      Implementations should support environment fallback for local/CI
+      ergonomics when runtime constraints allow.
+    examples:
+      - SPEC_RUNNER_ENTRYPOINT
+
+  - id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
+    scope: conformance
+    applies_to: fixtures.cli.run
+    norm: MUST
+    requirement: explicit_harness_entrypoint
+    description: Portable conformance fixtures must set harness.entrypoint.
+
+  - id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
+    scope: conformance
+    applies_to: fixtures.cli.run
+    norm: MUST_NOT
+    requirement: rely_on_env_fallback
+    description: Portable conformance fixtures must not depend on env fallback.

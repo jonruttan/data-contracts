@@ -2,6 +2,10 @@
 
 Language-neutral contract docs for `spec_runner` implementations.
 
+Machine-readable normative policy:
+
+- `docs/spec/contract/policy-v1.yaml` (`MUST` / `SHOULD` / `MUST_NOT`)
+
 Read in order:
 
 1. `docs/spec/contract/00-design-goals.md`

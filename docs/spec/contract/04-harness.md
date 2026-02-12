@@ -15,6 +15,9 @@ For `type: cli.run`:
 - Portable conformance fixtures MUST provide `harness.entrypoint` explicitly
   and MUST NOT rely on environment fallback behavior.
 
+Policy ids for these requirements are listed in
+`docs/spec/contract/policy-v1.yaml`.
+
 ## Canonical Targets
 
 For `cli.run`:
