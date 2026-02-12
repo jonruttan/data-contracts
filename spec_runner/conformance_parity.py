@@ -146,6 +146,31 @@ def compare_parity_reports(
     return diffs
 
 
+def build_parity_artifact(errors: list[str]) -> dict[str, Any]:
+    artifact: dict[str, Any] = {
+        "version": 1,
+        "missing": [],
+        "mismatch": [],
+        "shape_errors": [],
+    }
+    missing = artifact["missing"]
+    mismatch = artifact["mismatch"]
+    shape = artifact["shape_errors"]
+    for e in errors:
+        if e.startswith("missing in "):
+            missing.append(e)
+            continue
+        if e.startswith("mismatch for "):
+            mismatch.append(e)
+            continue
+        if e.startswith("python vs expected:") or e.startswith("php vs expected:"):
+            mismatch.append(e)
+            continue
+        # Keep all non-diff failures visible in shape_errors for CI diagnostics.
+        shape.append(e)
+    return artifact
+
+
 def _shared_expectation_ids(cases_dir: Path) -> set[str]:
     py_expected = load_expected_results(cases_dir, implementation="python")
     php_expected = load_expected_results(cases_dir, implementation="php")

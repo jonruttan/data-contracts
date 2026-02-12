@@ -2,7 +2,12 @@ from pathlib import Path
 
 import pytest
 
-from spec_runner.conformance_parity import ParityConfig, compare_parity_reports, run_parity_check
+from spec_runner.conformance_parity import (
+    ParityConfig,
+    build_parity_artifact,
+    compare_parity_reports,
+    run_parity_check,
+)
 
 
 def test_compare_parity_reports_matches_status_and_category_only():
@@ -59,6 +64,22 @@ def test_compare_parity_reports_respects_include_ids_filter():
     }
     errs = compare_parity_reports(py, php, include_ids={"B"})
     assert errs == []
+
+
+def test_build_parity_artifact_schema_is_stable():
+    artifact = build_parity_artifact(
+        [
+            "missing in php report: A",
+            "mismatch for B: python(status=pass, category=None) != php(status=fail, category=runtime)",
+            "python report invalid: report.version must equal 1",
+            "php vs expected: status mismatch for X: expected=pass actual=fail",
+        ]
+    )
+    assert set(artifact.keys()) == {"version", "missing", "mismatch", "shape_errors"}
+    assert artifact["version"] == 1
+    assert artifact["missing"] == ["missing in php report: A"]
+    assert len(artifact["mismatch"]) == 2
+    assert artifact["shape_errors"] == ["python report invalid: report.version must equal 1"]
 
 
 def test_run_parity_check_returns_report_shape_errors(monkeypatch, tmp_path):

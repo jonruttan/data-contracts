@@ -2,11 +2,17 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import sys
 from pathlib import Path
 
-from spec_runner.conformance_parity import ParityConfig, run_parity_check
+from spec_runner.conformance_parity import ParityConfig, build_parity_artifact, run_parity_check
+
+
+def _write_artifact(path: Path, artifact: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(artifact, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -23,10 +29,19 @@ def main(argv: list[str] | None = None) -> int:
         default="scripts/php/conformance_runner.php",
         help="Path to PHP conformance runner script",
     )
+    ap.add_argument(
+        "--out",
+        default="",
+        help="Optional path to write JSON parity artifact",
+    )
     ns = ap.parse_args(argv)
+    out_path = Path(str(ns.out)).resolve() if str(ns.out).strip() else None
 
     if shutil.which("php") is None:
-        print("ERROR: php executable not found in PATH", file=sys.stderr)
+        msg = "php executable not found in PATH"
+        if out_path is not None:
+            _write_artifact(out_path, build_parity_artifact([msg]))
+        print(f"ERROR: {msg}", file=sys.stderr)
         return 2
 
     cfg = ParityConfig(
@@ -36,8 +51,12 @@ def main(argv: list[str] | None = None) -> int:
     try:
         errs = run_parity_check(cfg)
     except RuntimeError as e:
+        if out_path is not None:
+            _write_artifact(out_path, build_parity_artifact([str(e)]))
         print(f"ERROR: {e}", file=sys.stderr)
         return 1
+    if out_path is not None:
+        _write_artifact(out_path, build_parity_artifact(errs))
     if errs:
         print("ERROR: conformance parity check failed", file=sys.stderr)
         for e in errs:

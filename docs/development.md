@@ -20,8 +20,10 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 
 - contract governance check
 - contract coverage report generation
+- Python/PHP conformance parity command
 - `tools/spec_runner` pytest suite
 - artifact upload of `.artifacts/contract-coverage.json`
+- artifact upload of `.artifacts/conformance-parity.json`
 
 ## Contract Governance Check
 
@@ -68,7 +70,8 @@ Run end-to-end Python/PHP parity over canonical conformance cases:
 ```sh
 python3 scripts/compare_conformance_parity.py \
   --cases docs/spec/conformance/cases \
-  --php-runner scripts/php/conformance_runner.php
+  --php-runner scripts/php/conformance_runner.php \
+  --out .artifacts/conformance-parity.json
 ```
 
 Parity diffs are evaluated on case IDs where `expect` resolves to the same
