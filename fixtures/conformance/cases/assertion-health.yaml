@@ -39,3 +39,14 @@ cases:
       - target: text
         must:
           - contain: [""]
+
+  - id: SRCONF-AH-005
+    title: redundant sibling branches fail when assert_health mode is error
+    type: text.file
+    assert_health:
+      mode: error
+    assert:
+      - target: text
+        can:
+          - contain: ["version: 1"]
+          - contain: ["version: 1"]

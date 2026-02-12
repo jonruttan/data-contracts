@@ -48,6 +48,25 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                 break
         if group_key:
             children = node.get(group_key)
+            if isinstance(children, list):
+                seen: set[str] = set()
+                for child in children:
+                    try:
+                        import json
+
+                        key = json.dumps(child, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+                    except Exception:
+                        key = repr(child)
+                    if key in seen:
+                        out.append(
+                            AssertionHealthDiagnostic(
+                                code="AH004",
+                                message=f"redundant sibling assertion branch in '{group_key}'",
+                                path=f"{path}.{group_key}",
+                            )
+                        )
+                        break
+                    seen.add(key)
             _walk(children, path=f"{path}.{group_key}", group_ctx=group_key)
             return
 

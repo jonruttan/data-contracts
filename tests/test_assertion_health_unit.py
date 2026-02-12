@@ -31,3 +31,18 @@ def test_lint_detects_always_true_and_duplicates():
     assert {"AH001", "AH002", "AH003"} <= codes
     msg = format_assertion_health_error(diags)
     assert "assertion health check failed" in msg
+
+
+def test_lint_detects_redundant_group_branches():
+    diags = lint_assert_tree(
+        [
+            {
+                "target": "text",
+                "can": [
+                    {"contain": ["version: 1"]},
+                    {"contain": ["version: 1"]},
+                ],
+            }
+        ]
+    )
+    assert any(d.code == "AH004" for d in diags)

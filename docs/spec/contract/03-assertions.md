@@ -32,3 +32,9 @@ Canonical operators:
 - `exists`
 
 Operator values MUST be lists.
+
+## Assertion Health Note
+
+Redundant sibling branches within a group (for example duplicate `can` branch
+expressions) are considered assertion-health diagnostics and may be surfaced as
+warnings/errors depending on policy mode.

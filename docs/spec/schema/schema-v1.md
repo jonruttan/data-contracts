@@ -29,6 +29,7 @@ Parser behavior:
 
 - `mode` (string): one of `ignore`, `warn`, `error`
 - if omitted, implementations may use a global default (for example env policy)
+- policy-driven diagnostics may include redundant sibling assertion branches
 
 ## Type-Specific Fields
 

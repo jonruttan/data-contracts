@@ -87,3 +87,20 @@ rules:
     references:
       - docs/spec/contract/00-design-goals.md
       - docs/spec/contract/02-case-shape.md
+
+  - id: ASSERT_HEALTH_REDUNDANT_BRANCH_DIAGNOSTIC
+    introduced_in: v1
+    scope: case
+    applies_to: assert.tree.group_children
+    norm: SHOULD
+    requirement: detect_redundant_sibling_branches
+    description: >
+      Implementations should diagnose redundant sibling assertion branches
+      within a group (`must`, `can`, `cannot`) and surface them via
+      assertion-health policy modes.
+    rationale: Redundant branches hide intent and create maintenance noise.
+    risk_if_violated: Specs can pass while carrying misleading duplicate logic.
+    references:
+      - docs/spec/contract/00-design-goals.md
+      - docs/spec/contract/03-assertions.md
+      - docs/spec/schema/schema-v1.md

@@ -15,3 +15,9 @@ results:
   - id: SRCONF-AH-004
     status: pass
     category: null
+
+  - id: SRCONF-AH-005
+    status: fail
+    category: assertion
+    message_tokens:
+      - AH004

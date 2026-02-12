@@ -31,7 +31,7 @@ cases:
     assert:
       - target: text
         can:
-          - contain: ["___missing___"]
+          - regex: ["(?!)"]
           - contain: ["version: 1"]
 
   - id: SRCONF-PHP-TEXT-005
@@ -41,7 +41,7 @@ cases:
       - target: text
         can:
           - regex: ["\\A\\Z"]
-          - regex: ["\\A\\Z"]
+          - regex: ["(?!)"]
 
   - id: SRCONF-PHP-TEXT-006
     title: cannot passes when all branches fail
@@ -50,7 +50,7 @@ cases:
       - target: text
         cannot:
           - regex: ["\\A\\Z"]
-          - regex: ["\\A\\Z"]
+          - regex: ["(?!)"]
 
   - id: SRCONF-PHP-TEXT-007
     title: cannot fails when any branch passes
@@ -59,7 +59,7 @@ cases:
       - target: text
         cannot:
           - contain: ["version: 1"]
-          - contain: ["___missing___"]
+          - regex: ["(?!)"]
 
   - id: SRCONF-PHP-TEXT-008
     title: nested mixed groups with inherited target passes
