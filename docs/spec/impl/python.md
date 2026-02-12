@@ -9,3 +9,9 @@ Current implementation locations:
 - assertion engine: `spec_runner/assertions.py`
 - dispatch: `spec_runner/dispatcher.py`
 - harnesses: `spec_runner/harnesses/`
+
+Implementation convenience:
+
+- `cli.run` supports `SPEC_RUNNER_ENTRYPOINT` fallback when
+  `harness.entrypoint` is not set.
+- Portable fixtures should still set `harness.entrypoint` explicitly.

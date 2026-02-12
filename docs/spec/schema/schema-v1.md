@@ -46,7 +46,7 @@ concerns and keep the spec format portable.
 
 For `type: cli.run`, supported `harness` keys include:
 
-- `entrypoint` (string): CLI entrypoint to call (e.g. `myproj.cli:main`)
+- `entrypoint` (string, required): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI
 - `stdin_isatty` (bool): simulate TTY vs piped stdin
 - `stdin_text` (string): text to provide on stdin
@@ -56,6 +56,12 @@ For `type: cli.run`, supported `harness` keys include:
 - `hook_before` (string): hook entrypoint invoked before running the CLI
 - `hook_after` (string): hook entrypoint invoked after running the CLI
 - `hook_kwargs` (mapping): keyword arguments passed through to the hook
+
+Implementation note (non-portable convenience):
+
+- Runners MAY offer an environment fallback (for example
+  `SPEC_RUNNER_ENTRYPOINT`) when `harness.entrypoint` is omitted.
+- Conformance fixtures SHOULD always set `harness.entrypoint` explicitly.
 
 Assertion targets for `cli.run`:
 
