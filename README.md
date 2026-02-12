@@ -33,7 +33,7 @@ harness:
 assert:
   - target: stdout
     contains: ["usage:", "options:"]
-  - target: stdout
+  - target: stderr
     contains: ["ERROR:"]
     is: false
 ```
