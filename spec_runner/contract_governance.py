@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.doc_parser import iter_spec_doc_tests
 from spec_runner.purpose_lint import (
     load_purpose_lint_policy,
@@ -28,6 +29,7 @@ _REGEX_PROFILE_DOC = "docs/spec/contract/03a-regex-portability-v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 _CONFORMANCE_MAX_BLOCK_LINES = 50
 _CONFORMANCE_CASE_ID_PATTERN = re.compile(r"\bSRCONF-[A-Z0-9-]+\b")
+_PURPOSE_WARNING_CODES_DOC = "tools/spec_runner/docs/spec/conformance/purpose-warning-codes.md"
 
 
 def _read_yaml(path: Path) -> Any:
@@ -161,6 +163,21 @@ def _lint_conformance_case_index(cases_dir: Path, fixture_ids: set[str]) -> list
         errs.append(f"conformance case index missing id: {rid}")
     for rid in sorted(indexed_ids - fixture_ids):
         errs.append(f"conformance case index has stale id: {rid}")
+    return errs
+
+
+def _lint_purpose_warning_code_doc(repo_root: Path) -> list[str]:
+    errs: list[str] = []
+    p = repo_root / _PURPOSE_WARNING_CODES_DOC
+    if not p.exists():
+        return [f"purpose warning code doc missing: {_PURPOSE_WARNING_CODES_DOC}"]
+    raw = p.read_text(encoding="utf-8")
+    doc_codes = set(re.findall(r"\bPUR\d{3}\b", raw))
+    impl_codes = set(PURPOSE_WARNING_CODES)
+    for c in sorted(impl_codes - doc_codes):
+        errs.append(f"purpose warning code doc missing code: {c}")
+    for c in sorted(doc_codes - impl_codes):
+        errs.append(f"purpose warning code doc has stale code: {c}")
     return errs
 
 
@@ -301,6 +318,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
     if cases_dir.exists():
         errs.extend(_lint_conformance_case_docs(cases_dir, purpose_policy=purpose_policy))
         errs.extend(_lint_conformance_case_index(cases_dir, conformance_ids))
+    errs.extend(_lint_purpose_warning_code_doc(repo_root))
     rules = policy.get("rules") or []
     links = trace.get("links") or []
     if not isinstance(rules, list):

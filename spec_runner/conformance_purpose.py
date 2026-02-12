@@ -12,6 +12,14 @@ from spec_runner.purpose_lint import (
     resolve_purpose_lint_config,
 )
 
+PURPOSE_WARNING_CODES = ("PUR001", "PUR002", "PUR003", "PUR004")
+PURPOSE_WARNING_CODE_TO_DESCRIPTION = {
+    "PUR001": "purpose duplicates title",
+    "PUR002": "purpose word count below minimum",
+    "PUR003": "purpose contains placeholder token",
+    "PUR004": "purpose lint configuration/policy error",
+}
+
 
 @dataclass(frozen=True)
 class ConformancePurposeRow:

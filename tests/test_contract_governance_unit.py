@@ -34,6 +34,16 @@ def _seed_governance_repo(tmp_path: Path) -> None:
             content = "contain regex docs/spec/contract/03a-regex-portability-v1.md\n"
         _write_text(tmp_path / "tools/spec_runner/docs/spec/contract" / name, content)
     _write_text(tmp_path / "tools/spec_runner/tests/test_contract_governance_unit.py", "x\n")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/purpose-warning-codes.md",
+        """# Purpose Warning Codes
+
+- PUR001
+- PUR002
+- PUR003
+- PUR004
+""",
+    )
     (tmp_path / "tools/spec_runner/docs/spec/conformance/cases").mkdir(parents=True, exist_ok=True)
     (tmp_path / "tools/spec_runner/docs/spec/conformance/expected").mkdir(parents=True, exist_ok=True)
 
@@ -798,3 +808,61 @@ expect:
     )
     errs = check_contract_governance(tmp_path)
     assert any("purpose_lint.runtime references unknown runtime profile: ruby" in e for e in errs)
+
+
+def test_contract_governance_fails_when_purpose_warning_code_doc_missing_code(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R21")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/purpose-warning-codes.md",
+        "# Purpose Warning Codes\n\n- PUR001\n- PUR002\n- PUR003\n",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/sample.spec.md",
+        """# Sample
+## SRCONF-PURPOSE-CODE-001
+```yaml spec-test
+id: SRCONF-PURPOSE-CODE-001
+title: t
+purpose: Purpose text with enough words to keep checks deterministic.
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-CODE-001\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("purpose warning code doc missing code: PUR004" in e for e in errs)
+
+
+def test_contract_governance_fails_when_purpose_warning_code_doc_has_stale_code(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R22")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/purpose-warning-codes.md",
+        "# Purpose Warning Codes\n\n- PUR001\n- PUR002\n- PUR003\n- PUR004\n- PUR999\n",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/sample.spec.md",
+        """# Sample
+## SRCONF-PURPOSE-CODE-002
+```yaml spec-test
+id: SRCONF-PURPOSE-CODE-002
+title: t
+purpose: Purpose text with enough words to keep checks deterministic.
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-CODE-002\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("purpose warning code doc has stale code: PUR999" in e for e in errs)

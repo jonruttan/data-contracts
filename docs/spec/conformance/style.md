@@ -23,6 +23,10 @@ Purpose lint policy:
   - `forbid_title_copy`: boolean override
   - `enabled`: boolean override (when false, skips purpose quality checks; non-empty purpose is still required)
 
+Warning code contract:
+
+- canonical warning code definitions live in `docs/spec/conformance/purpose-warning-codes.md`
+
 Rationale:
 
 - keeps fixtures readable in code review

@@ -84,6 +84,10 @@ Purpose warning codes:
 - `PUR003`: purpose contains placeholder token
 - `PUR004`: purpose lint configuration/policy error
 
+Canonical source for these codes:
+
+- `docs/spec/conformance/purpose-warning-codes.md`
+
 ## Conformance Fixture Layout
 
 Cross-language fixture data lives in:
