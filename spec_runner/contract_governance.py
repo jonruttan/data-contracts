@@ -43,6 +43,10 @@ def _collect_expected_ids(path: Path) -> set[str]:
 class RuleCoverage:
     rule_id: str
     norm: str
+    lifecycle_status: str
+    introduced_in: str
+    deprecated_in: str | None
+    removed_in: str | None
     has_traceability: bool
     has_tests: bool
     has_conformance_cases: bool
@@ -68,6 +72,16 @@ def _load_policy_and_trace(repo_root: Path) -> tuple[dict[str, Any], dict[str, A
     return policy, trace, conformance_ids, expected_ids
 
 
+def _parse_contract_version(label: str) -> int | None:
+    s = str(label).strip().lower()
+    if len(s) < 2 or not s.startswith("v"):
+        return None
+    n = s[1:]
+    if not n.isdigit():
+        return None
+    return int(n)
+
+
 def build_contract_coverage(repo_root: Path) -> list[RuleCoverage]:
     repo_root = repo_root.resolve()
     policy, trace, _conformance_ids, _expected_ids = _load_policy_and_trace(repo_root)
@@ -91,6 +105,15 @@ def build_contract_coverage(repo_root: Path) -> list[RuleCoverage]:
         if not rid:
             continue
         norm = str(r.get("norm", "")).upper()
+        introduced_in = None if r.get("introduced_in") is None else str(r.get("introduced_in"))
+        deprecated_in = None if r.get("deprecated_in") is None else str(r.get("deprecated_in"))
+        removed_in = None if r.get("removed_in") is None else str(r.get("removed_in"))
+        if removed_in:
+            lifecycle_status = "removed"
+        elif deprecated_in:
+            lifecycle_status = "deprecated"
+        else:
+            lifecycle_status = "active"
         link = links_by_rule.get(rid)
         has_trace = link is not None
         conformance_case_ids = (link.get("conformance_case_ids") if isinstance(link, dict) else []) or []
@@ -105,6 +128,10 @@ def build_contract_coverage(repo_root: Path) -> list[RuleCoverage]:
             RuleCoverage(
                 rule_id=rid,
                 norm=norm,
+                lifecycle_status=lifecycle_status,
+                introduced_in="" if introduced_in is None else introduced_in,
+                deprecated_in=deprecated_in,
+                removed_in=removed_in,
                 has_traceability=has_trace,
                 has_tests=has_tests,
                 has_conformance_cases=has_conf,
@@ -120,6 +147,9 @@ def contract_coverage_jsonable(repo_root: Path) -> dict[str, Any]:
     covered = sum(1 for r in coverage if r.is_covered)
     must_total = sum(1 for r in coverage if r.norm == "MUST")
     must_covered = sum(1 for r in coverage if r.norm == "MUST" and r.is_covered)
+    active_total = sum(1 for r in coverage if r.lifecycle_status == "active")
+    deprecated_total = sum(1 for r in coverage if r.lifecycle_status == "deprecated")
+    removed_total = sum(1 for r in coverage if r.lifecycle_status == "removed")
     return {
         "version": 1,
         "summary": {
@@ -128,6 +158,9 @@ def contract_coverage_jsonable(repo_root: Path) -> dict[str, Any]:
             "coverage_ratio": 0.0 if total == 0 else covered / total,
             "must_rules": must_total,
             "must_covered": must_covered,
+            "active_rules": active_total,
+            "deprecated_rules": deprecated_total,
+            "removed_rules": removed_total,
         },
         "rules": [asdict(r) for r in coverage],
     }
@@ -162,6 +195,28 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         norm = str(r.get("norm", "")).upper()
         if norm not in allowed_norms:
             errs.append(f"invalid norm for {rid}: {norm!r}")
+        introduced = str(r.get("introduced_in", "")).strip()
+        if not introduced:
+            errs.append(f"policy rule missing introduced_in: {rid}")
+        introduced_n = _parse_contract_version(introduced) if introduced else None
+        if introduced and introduced_n is None:
+            errs.append(f"invalid introduced_in for {rid}: {introduced!r}")
+        deprecated = str(r.get("deprecated_in", "")).strip()
+        deprecated_n = _parse_contract_version(deprecated) if deprecated else None
+        if deprecated and deprecated_n is None:
+            errs.append(f"invalid deprecated_in for {rid}: {deprecated!r}")
+        removed = str(r.get("removed_in", "")).strip()
+        removed_n = _parse_contract_version(removed) if removed else None
+        if removed and removed_n is None:
+            errs.append(f"invalid removed_in for {rid}: {removed!r}")
+        if removed and not deprecated:
+            errs.append(f"removed_in requires deprecated_in for {rid}")
+        if introduced_n is not None and deprecated_n is not None and deprecated_n < introduced_n:
+            errs.append(f"deprecated_in precedes introduced_in for {rid}")
+        if introduced_n is not None and removed_n is not None and removed_n <= introduced_n:
+            errs.append(f"removed_in must be greater than introduced_in for {rid}")
+        if deprecated_n is not None and removed_n is not None and removed_n <= deprecated_n:
+            errs.append(f"removed_in must be greater than deprecated_in for {rid}")
         for field in ("rationale", "risk_if_violated"):
             if not str(r.get(field, "")).strip():
                 errs.append(f"policy rule missing {field}: {rid}")

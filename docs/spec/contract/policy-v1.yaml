@@ -2,6 +2,7 @@ version: 1
 title: Spec Runner Portable Contract Policy
 rules:
   - id: CLI_RUN_ENTRYPOINT_REQUIRED
+    introduced_in: v1
     scope: case
     applies_to: cli.run.harness.entrypoint
     norm: MUST
@@ -14,6 +15,7 @@ rules:
       - docs/spec/schema/schema-v1.md
 
   - id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
+    introduced_in: v1
     scope: implementation
     applies_to: cli.run.entrypoint_resolution
     norm: SHOULD
@@ -31,6 +33,7 @@ rules:
       - docs/spec/impl/python.md
 
   - id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
+    introduced_in: v1
     scope: conformance
     applies_to: fixtures.cli.run
     norm: MUST
@@ -43,6 +46,7 @@ rules:
       - docs/spec/contract/06-conformance.md
 
   - id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
+    introduced_in: v1
     scope: conformance
     applies_to: fixtures.cli.run
     norm: MUST_NOT
@@ -55,6 +59,7 @@ rules:
       - docs/spec/contract/06-conformance.md
 
   - id: ASSERT_HEALTH_MODE_VALID_VALUES
+    introduced_in: v1
     scope: case
     applies_to: assert_health.mode
     norm: MUST
@@ -69,6 +74,7 @@ rules:
       - docs/spec/schema/schema-v1.md
 
   - id: ASSERT_HEALTH_GLOBAL_AND_PER_CASE_POLICY
+    introduced_in: v1
     scope: implementation
     applies_to: assertion_health.policy_resolution
     norm: SHOULD

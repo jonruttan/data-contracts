@@ -2,7 +2,11 @@ from pathlib import Path
 
 import yaml
 
-from spec_runner.contract_governance import build_contract_coverage, check_contract_governance
+from spec_runner.contract_governance import (
+    build_contract_coverage,
+    check_contract_governance,
+    contract_coverage_jsonable,
+)
 
 
 def test_contract_governance_passes_on_repo_state():
@@ -23,6 +27,7 @@ def test_contract_governance_fails_when_must_rule_has_no_evidence(tmp_path):
         "rules": [
             {
                 "id": "R1",
+                "introduced_in": "v1",
                 "norm": "MUST",
                 "scope": "case",
                 "applies_to": "x",
@@ -67,6 +72,7 @@ def test_contract_governance_fails_on_invalid_norm_and_missing_metadata(tmp_path
         "rules": [
             {
                 "id": "R2",
+                "introduced_in": "v1",
                 "norm": "MUSTBE",
                 "scope": "case",
                 "applies_to": "x",
@@ -115,6 +121,7 @@ def test_contract_governance_fails_on_policy_ref_mismatch(tmp_path):
         "rules": [
             {
                 "id": "R3",
+                "introduced_in": "v1",
                 "norm": "SHOULD",
                 "scope": "implementation",
                 "applies_to": "x",
@@ -157,6 +164,9 @@ def test_contract_coverage_marks_must_rules_covered_on_repo_state():
     must_rules = [r for r in coverage if r.norm == "MUST"]
     assert must_rules
     assert all(r.is_covered for r in must_rules)
+    payload = contract_coverage_jsonable(repo_root)
+    summary = payload["summary"]
+    assert {"active_rules", "deprecated_rules", "removed_rules"} <= set(summary.keys())
 
 
 def test_contract_coverage_marks_uncovered_must(tmp_path):
@@ -167,6 +177,7 @@ def test_contract_coverage_marks_uncovered_must(tmp_path):
         "rules": [
             {
                 "id": "R4",
+                "introduced_in": "v1",
                 "norm": "MUST",
                 "scope": "case",
                 "applies_to": "x",
@@ -200,3 +211,75 @@ def test_contract_coverage_marks_uncovered_must(tmp_path):
     assert len(coverage) == 1
     assert coverage[0].norm == "MUST"
     assert coverage[0].is_covered is False
+
+
+def test_contract_governance_fails_on_lifecycle_ordering(tmp_path):
+    (tmp_path / "tools/spec_runner/docs/spec/contract").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/fixtures/conformance/cases").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/contract/04-harness.md").write_text("x", encoding="utf-8")
+    (tmp_path / "tools/spec_runner/docs/spec/schema").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/schema/schema-v1.md").write_text("x", encoding="utf-8")
+
+    policy = {
+        "rules": [
+            {
+                "id": "R5",
+                "introduced_in": "v2",
+                "deprecated_in": "v1",
+                "norm": "SHOULD",
+                "scope": "implementation",
+                "applies_to": "x",
+                "requirement": "y",
+                "rationale": "because",
+                "risk_if_violated": "risk",
+                "references": ["tools/spec_runner/docs/spec/contract/04-harness.md"],
+            },
+            {
+                "id": "R6",
+                "introduced_in": "v1",
+                "removed_in": "v2",
+                "norm": "SHOULD",
+                "scope": "implementation",
+                "applies_to": "x",
+                "requirement": "y",
+                "rationale": "because",
+                "risk_if_violated": "risk",
+                "references": ["tools/spec_runner/docs/spec/contract/04-harness.md"],
+            },
+        ]
+    }
+    trace = {
+        "links": [
+            {
+                "rule_id": "R5",
+                "policy_ref": "docs/spec/contract/policy-v1.yaml#R5",
+                "contract_refs": ["tools/spec_runner/docs/spec/contract/04-harness.md"],
+                "schema_refs": ["tools/spec_runner/docs/spec/schema/schema-v1.md"],
+                "conformance_case_ids": [],
+                "unit_test_refs": [],
+                "implementation_refs": [],
+            },
+            {
+                "rule_id": "R6",
+                "policy_ref": "docs/spec/contract/policy-v1.yaml#R6",
+                "contract_refs": ["tools/spec_runner/docs/spec/contract/04-harness.md"],
+                "schema_refs": ["tools/spec_runner/docs/spec/schema/schema-v1.md"],
+                "conformance_case_ids": [],
+                "unit_test_refs": [],
+                "implementation_refs": [],
+            },
+        ]
+    }
+    (tmp_path / "tools/spec_runner/docs/spec/contract/policy-v1.yaml").write_text(
+        yaml.safe_dump(policy, sort_keys=False),
+        encoding="utf-8",
+    )
+    (tmp_path / "tools/spec_runner/docs/spec/contract/traceability-v1.yaml").write_text(
+        yaml.safe_dump(trace, sort_keys=False),
+        encoding="utf-8",
+    )
+
+    errs = check_contract_governance(tmp_path)
+    assert any("deprecated_in precedes introduced_in" in e for e in errs)
+    assert any("removed_in requires deprecated_in" in e for e in errs)
