@@ -8,6 +8,35 @@ from spec_runner.contract_governance import (
     contract_coverage_jsonable,
 )
 
+_NORMATIVE_DOCS = [
+    "00-design-goals.md",
+    "versioning.md",
+    "01-discovery.md",
+    "02-case-shape.md",
+    "03-assertions.md",
+    "03a-regex-portability-v1.md",
+    "04-harness.md",
+    "05-errors.md",
+    "06-conformance.md",
+]
+
+
+def _write_text(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def _seed_governance_repo(tmp_path: Path) -> None:
+    _write_text(tmp_path / "tools/spec_runner/docs/spec/schema/schema-v1.md", "contain regex docs/spec/contract/03a-regex-portability-v1.md\n")
+    for name in _NORMATIVE_DOCS:
+        content = "x\n"
+        if name == "03-assertions.md":
+            content = "contain regex docs/spec/contract/03a-regex-portability-v1.md\n"
+        _write_text(tmp_path / "tools/spec_runner/docs/spec/contract" / name, content)
+    _write_text(tmp_path / "tools/spec_runner/tests/test_contract_governance_unit.py", "x\n")
+    (tmp_path / "tools/spec_runner/fixtures/conformance/cases").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True, exist_ok=True)
+
 
 def test_contract_governance_passes_on_repo_state():
     repo_root = Path(__file__).resolve().parents[3]
@@ -283,3 +312,94 @@ def test_contract_governance_fails_on_lifecycle_ordering(tmp_path):
     errs = check_contract_governance(tmp_path)
     assert any("deprecated_in precedes introduced_in" in e for e in errs)
     assert any("removed_in requires deprecated_in" in e for e in errs)
+
+
+def test_contract_governance_fails_when_normative_doc_missing_traceability_coverage(tmp_path):
+    _seed_governance_repo(tmp_path)
+    policy = {
+        "rules": [
+            {
+                "id": "R7",
+                "introduced_in": "v1",
+                "norm": "MUST",
+                "scope": "governance",
+                "applies_to": "docs",
+                "requirement": "traceability",
+                "rationale": "because",
+                "risk_if_violated": "risk",
+                "references": ["docs/spec/contract/README.md"],
+            }
+        ]
+    }
+    trace = {
+        "links": [
+            {
+                "rule_id": "R7",
+                "policy_ref": "docs/spec/contract/policy-v1.yaml#R7",
+                "contract_refs": [f"docs/spec/contract/{x}" for x in _NORMATIVE_DOCS if x != "05-errors.md"],
+                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "conformance_case_ids": [],
+                "unit_test_refs": ["tools/spec_runner/tests/test_contract_governance_unit.py"],
+                "implementation_refs": [],
+            }
+        ]
+    }
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/contract/policy-v1.yaml",
+        yaml.safe_dump(policy, sort_keys=False),
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/contract/traceability-v1.yaml",
+        yaml.safe_dump(trace, sort_keys=False),
+    )
+    _write_text(tmp_path / "tools/spec_runner/docs/spec/contract/README.md", "x\n")
+
+    errs = check_contract_governance(tmp_path)
+    assert any("normative contract doc missing traceability coverage: docs/spec/contract/05-errors.md" in e for e in errs)
+
+
+def test_contract_governance_fails_when_regex_profile_linkage_is_missing(tmp_path):
+    _seed_governance_repo(tmp_path)
+    policy = {
+        "rules": [
+            {
+                "id": "R8",
+                "introduced_in": "v1",
+                "norm": "MUST",
+                "scope": "governance",
+                "applies_to": "regex.profile",
+                "requirement": "linked",
+                "rationale": "because",
+                "risk_if_violated": "risk",
+                "references": ["docs/spec/contract/03-assertions.md"],
+            }
+        ]
+    }
+    trace = {
+        "links": [
+            {
+                "rule_id": "R8",
+                "policy_ref": "docs/spec/contract/policy-v1.yaml#R8",
+                "contract_refs": [f"docs/spec/contract/{x}" for x in _NORMATIVE_DOCS],
+                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "conformance_case_ids": [],
+                "unit_test_refs": ["tools/spec_runner/tests/test_contract_governance_unit.py"],
+                "implementation_refs": [],
+            }
+        ]
+    }
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/contract/policy-v1.yaml",
+        yaml.safe_dump(policy, sort_keys=False),
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/contract/traceability-v1.yaml",
+        yaml.safe_dump(trace, sort_keys=False),
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/contract/03-assertions.md",
+        "contain regex\n",
+    )
+
+    errs = check_contract_governance(tmp_path)
+    assert any("assertions doc missing regex portability profile reference" in e for e in errs)

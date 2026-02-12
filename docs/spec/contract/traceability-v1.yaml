@@ -117,6 +117,7 @@ links:
     contract_refs:
       - docs/spec/contract/00-design-goals.md
       - docs/spec/contract/03-assertions.md
+      - docs/spec/contract/03a-regex-portability-v1.md
     schema_refs:
       - docs/spec/schema/schema-v1.md
     conformance_case_ids:
@@ -129,3 +130,51 @@ links:
       - spec_runner/harnesses/text_file.py
       - spec_runner/harnesses/cli_run.py
     notes: "Python emits AH005 for non-portable regex constructs."
+
+  - rule_id: DOC_NORMATIVE_PAGE_TRACEABILITY
+    policy_ref: docs/spec/contract/policy-v1.yaml#DOC_NORMATIVE_PAGE_TRACEABILITY
+    contract_refs:
+      - docs/spec/contract/00-design-goals.md
+      - docs/spec/contract/versioning.md
+      - docs/spec/contract/01-discovery.md
+      - docs/spec/contract/02-case-shape.md
+      - docs/spec/contract/03-assertions.md
+      - docs/spec/contract/03a-regex-portability-v1.md
+      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/05-errors.md
+      - docs/spec/contract/06-conformance.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tools/spec_runner/tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/contract_governance.py
+    notes: "Governance enforces traceability coverage across normative contract pages."
+
+  - rule_id: DOC_REGEX_PROFILE_LINKAGE
+    policy_ref: docs/spec/contract/policy-v1.yaml#DOC_REGEX_PROFILE_LINKAGE
+    contract_refs:
+      - docs/spec/contract/03-assertions.md
+      - docs/spec/contract/03a-regex-portability-v1.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tools/spec_runner/tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/contract_governance.py
+    notes: "Governance checks profile references across assertion, schema, and policy docs."
+
+  - rule_id: DOC_ASSERTION_OPERATOR_DOC_SYNC
+    policy_ref: docs/spec/contract/policy-v1.yaml#DOC_ASSERTION_OPERATOR_DOC_SYNC
+    contract_refs:
+      - docs/spec/contract/03-assertions.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tools/spec_runner/tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/contract_governance.py
+    notes: "Governance checks synchronized core operator tokens between docs."

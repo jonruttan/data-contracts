@@ -45,6 +45,10 @@ non-portable constructs, including:
 - conditional groups
 - atomic groups / possessive quantifiers
 
+Canonical profile:
+
+- `docs/spec/contract/03a-regex-portability-v1.md`
+
 ## Assertion Health Note
 
 Redundant sibling branches within a group (for example duplicate `can` branch

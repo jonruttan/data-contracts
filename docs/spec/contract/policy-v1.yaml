@@ -103,6 +103,7 @@ rules:
     references:
       - docs/spec/contract/00-design-goals.md
       - docs/spec/contract/03-assertions.md
+      - docs/spec/contract/03a-regex-portability-v1.md
       - docs/spec/schema/schema-v1.md
 
   - id: ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
@@ -118,5 +119,52 @@ rules:
     risk_if_violated: Specs may pass in one runtime and fail in another.
     references:
       - docs/spec/contract/00-design-goals.md
+      - docs/spec/contract/03-assertions.md
+      - docs/spec/schema/schema-v1.md
+
+  - id: DOC_NORMATIVE_PAGE_TRACEABILITY
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.contract.normative_pages
+    norm: MUST
+    requirement: every_normative_contract_page_has_traceability_coverage
+    description: >
+      Every normative contract page must be covered by at least one
+      traceability contract_ref entry.
+    rationale: Prevents contract pages from drifting stale without governance signal.
+    risk_if_violated: Normative docs can silently diverge from enforced behavior.
+    references:
+      - docs/spec/contract/README.md
+      - docs/spec/contract/traceability-v1.yaml
+
+  - id: DOC_REGEX_PROFILE_LINKAGE
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.regex_portability_profile
+    norm: MUST
+    requirement: regex_portability_profile_linked_in_assertions_schema_and_policy
+    description: >
+      The regex portability profile doc must be explicitly referenced by the
+      assertion contract, schema, and policy.
+    rationale: Keeps portability constraints visible at all normative layers.
+    risk_if_violated: Portability guidance can be orphaned and ignored by implementers.
+    references:
+      - docs/spec/contract/03-assertions.md
+      - docs/spec/contract/03a-regex-portability-v1.md
+      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/policy-v1.yaml
+
+  - id: DOC_ASSERTION_OPERATOR_DOC_SYNC
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.assertion_operators
+    norm: MUST
+    requirement: core_assertion_operator_tokens_synced_between_contract_and_schema
+    description: >
+      Core assertion operator names must remain synchronized between assertion
+      contract docs and schema docs.
+    rationale: Prevents stale naming drift between reader-oriented and schema docs.
+    risk_if_violated: Users and implementers follow conflicting operator names.
+    references:
       - docs/spec/contract/03-assertions.md
       - docs/spec/schema/schema-v1.md

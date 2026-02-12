@@ -15,6 +15,7 @@ Read in order:
 3. `docs/spec/contract/01-discovery.md`
 4. `docs/spec/contract/02-case-shape.md`
 5. `docs/spec/contract/03-assertions.md`
-6. `docs/spec/contract/04-harness.md`
-7. `docs/spec/contract/05-errors.md`
-8. `docs/spec/contract/06-conformance.md`
+6. `docs/spec/contract/03a-regex-portability-v1.md`
+7. `docs/spec/contract/04-harness.md`
+8. `docs/spec/contract/05-errors.md`
+9. `docs/spec/contract/06-conformance.md`

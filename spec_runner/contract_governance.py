@@ -6,6 +6,20 @@ from typing import Any
 
 import yaml
 
+_NORMATIVE_CONTRACT_DOCS = [
+    "docs/spec/contract/00-design-goals.md",
+    "docs/spec/contract/versioning.md",
+    "docs/spec/contract/01-discovery.md",
+    "docs/spec/contract/02-case-shape.md",
+    "docs/spec/contract/03-assertions.md",
+    "docs/spec/contract/03a-regex-portability-v1.md",
+    "docs/spec/contract/04-harness.md",
+    "docs/spec/contract/05-errors.md",
+    "docs/spec/contract/06-conformance.md",
+]
+_REGEX_PROFILE_DOC = "docs/spec/contract/03a-regex-portability-v1.md"
+_ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
+
 
 def _read_yaml(path: Path) -> Any:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -230,6 +244,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
                 errs.append(f"missing policy reference for {rid}: {srel}")
 
     links_by_rule: dict[str, dict[str, Any]] = {}
+    referenced_contract_docs: set[str] = set()
     for l in links:
         if not isinstance(l, dict):
             errs.append("traceability link entries must be mappings")
@@ -250,6 +265,10 @@ def check_contract_governance(repo_root: Path) -> list[str]:
                 f"traceability policy_ref mismatch for {rid}: "
                 f"expected {want_policy_ref}, got {got_policy_ref or '<missing>'}"
             )
+        cref = l.get("contract_refs") or []
+        if isinstance(cref, list):
+            for rel in cref:
+                referenced_contract_docs.add(str(rel))
 
     for rid in rules_by_id:
         if rid not in links_by_rule:
@@ -292,5 +311,30 @@ def check_contract_governance(repo_root: Path) -> list[str]:
                 errs.append(f"missing conformance case id for {rid}: {c}")
             if c not in expected_ids:
                 errs.append(f"missing expected result id for {rid}: {c}")
+
+    for rel in _NORMATIVE_CONTRACT_DOCS:
+        if not _exists_repo_or_runner(repo_root, rel):
+            errs.append(f"missing normative contract doc: {rel}")
+        elif rel not in referenced_contract_docs:
+            errs.append(f"normative contract doc missing traceability coverage: {rel}")
+
+    assertions_doc = repo_root / "tools/spec_runner/docs/spec/contract/03-assertions.md"
+    schema_doc = repo_root / "tools/spec_runner/docs/spec/schema/schema-v1.md"
+    policy_doc = repo_root / "tools/spec_runner/docs/spec/contract/policy-v1.yaml"
+    if assertions_doc.exists() and schema_doc.exists() and policy_doc.exists():
+        assertions_text = assertions_doc.read_text(encoding="utf-8")
+        schema_text = schema_doc.read_text(encoding="utf-8")
+        policy_text = policy_doc.read_text(encoding="utf-8")
+        if _REGEX_PROFILE_DOC not in assertions_text:
+            errs.append(f"assertions doc missing regex portability profile reference: {_REGEX_PROFILE_DOC}")
+        if _REGEX_PROFILE_DOC not in schema_text:
+            errs.append(f"schema doc missing regex portability profile reference: {_REGEX_PROFILE_DOC}")
+        if _REGEX_PROFILE_DOC not in policy_text:
+            errs.append(f"policy doc missing regex portability profile reference: {_REGEX_PROFILE_DOC}")
+        for tok in _ASSERTION_OPERATOR_DOC_SYNC_TOKENS:
+            if tok not in assertions_text:
+                errs.append(f"assertions doc missing operator token: {tok}")
+            if tok not in schema_text:
+                errs.append(f"schema doc missing operator token: {tok}")
 
     return errs
