@@ -1,0 +1,41 @@
+version: 1
+cases:
+  - id: SRCONF-AH-001
+    title: assert_health warn emits diagnostics but case still passes
+    type: text.file
+    assert_health:
+      mode: warn
+    assert:
+      - target: text
+        must:
+          - contain: [""]
+
+  - id: SRCONF-AH-002
+    title: assert_health error fails the case
+    type: text.file
+    assert_health:
+      mode: error
+    assert:
+      - target: text
+        must:
+          - contain: [""]
+
+  - id: SRCONF-AH-003
+    title: invalid assert_health.mode is a schema error
+    type: text.file
+    assert_health:
+      mode: nope
+    assert:
+      - target: text
+        must:
+          - contain: ["spec-test"]
+
+  - id: SRCONF-AH-004
+    title: per-case ignore override can neutralize global strict mode
+    type: text.file
+    assert_health:
+      mode: ignore
+    assert:
+      - target: text
+        must:
+          - contain: [""]

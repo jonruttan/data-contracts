@@ -12,7 +12,9 @@ Planned contents:
 Current seed:
 
 - `fixtures/conformance/cases/cli-run-entrypoint.yaml`
+- `fixtures/conformance/cases/assertion-health.yaml`
 - `fixtures/conformance/expected/cli-run-entrypoint.yaml`
+- `fixtures/conformance/expected/assertion-health.yaml`
 
 Python reference execution is covered by:
 

@@ -1,0 +1,17 @@
+version: 1
+results:
+  - id: SRCONF-AH-001
+    status: pass
+    category: null
+
+  - id: SRCONF-AH-002
+    status: fail
+    category: assertion
+
+  - id: SRCONF-AH-003
+    status: fail
+    category: schema
+
+  - id: SRCONF-AH-004
+    status: pass
+    category: null
