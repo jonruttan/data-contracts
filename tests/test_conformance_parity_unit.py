@@ -42,6 +42,25 @@ def test_compare_parity_reports_flags_mismatches_and_missing_ids():
     assert any(e.startswith("mismatch for B:") for e in errs)
 
 
+def test_compare_parity_reports_respects_include_ids_filter():
+    py = {
+        "version": 1,
+        "results": [
+            {"id": "A", "status": "pass", "category": None, "message": None},
+            {"id": "B", "status": "fail", "category": "assertion", "message": None},
+        ],
+    }
+    php = {
+        "version": 1,
+        "results": [
+            {"id": "A", "status": "fail", "category": "runtime", "message": None},
+            {"id": "B", "status": "fail", "category": "assertion", "message": None},
+        ],
+    }
+    errs = compare_parity_reports(py, php, include_ids={"B"})
+    assert errs == []
+
+
 def test_run_parity_check_returns_report_shape_errors(monkeypatch, tmp_path):
     monkeypatch.setattr(
         "spec_runner.conformance_parity.run_python_report",

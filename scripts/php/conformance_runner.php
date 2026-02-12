@@ -530,15 +530,6 @@ function evaluateCase(string $fixturePath, mixed $case): array {
         ];
     }
 
-    if ($type !== 'text.file') {
-        return [
-            'id' => $id,
-            'status' => 'fail',
-            'category' => 'runtime',
-            'message' => "unsupported type for php bootstrap: {$type}",
-        ];
-    }
-
     $requiresResult = evaluateRequires($case);
     if ($requiresResult !== null) {
         return [
@@ -546,6 +537,15 @@ function evaluateCase(string $fixturePath, mixed $case): array {
             'status' => $requiresResult['status'],
             'category' => $requiresResult['category'],
             'message' => $requiresResult['message'],
+        ];
+    }
+
+    if ($type !== 'text.file') {
+        return [
+            'id' => $id,
+            'status' => 'fail',
+            'category' => 'runtime',
+            'message' => "unsupported type for php bootstrap: {$type}",
         ];
     }
 

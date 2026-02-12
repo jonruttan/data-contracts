@@ -168,3 +168,50 @@ assert:
     assert payload["results"] == [
         {"id": "SRCONF-PHP-MD-REQ-001", "status": "skip", "category": None, "message": None}
     ]
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_bootstrap_runner_applies_requires_before_type_support_check(tmp_path):
+    repo_root = Path(__file__).resolve().parents[3]
+    php_runner = repo_root / "tools/spec_runner/scripts/php/conformance_runner.php"
+    cases_dir = tmp_path / "docs_spec"
+    out_json = tmp_path / "php-md-report.json"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "requires-cli.spec.md").write_text(
+        """# Example
+
+```yaml spec-test
+id: SRCONF-PHP-MD-REQ-CLI
+type: cli.run
+requires:
+  capabilities: ["cli.run"]
+  when_missing: skip
+expect:
+  portable:
+    status: skip
+    category: null
+```
+""",
+        encoding="utf-8",
+    )
+    subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    errs = validate_conformance_report_payload(payload)
+    assert errs == []
+    assert payload["results"] == [
+        {"id": "SRCONF-PHP-MD-REQ-CLI", "status": "skip", "category": None, "message": None}
+    ]

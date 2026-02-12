@@ -117,11 +117,20 @@ def _normalize_report(payload: dict[str, Any]) -> dict[str, tuple[str, str | Non
     return out
 
 
-def compare_parity_reports(python_payload: dict[str, Any], php_payload: dict[str, Any]) -> list[str]:
+def compare_parity_reports(
+    python_payload: dict[str, Any],
+    php_payload: dict[str, Any],
+    *,
+    include_ids: set[str] | None = None,
+) -> list[str]:
     py = _normalize_report(python_payload)
     php = _normalize_report(php_payload)
+    if include_ids is None:
+        ids = set(py.keys()) | set(php.keys())
+    else:
+        ids = set(include_ids)
     diffs: list[str] = []
-    for rid in sorted(set(py.keys()) | set(php.keys())):
+    for rid in sorted(ids):
         if rid not in py:
             diffs.append(f"missing in python report: {rid}")
             continue
@@ -135,6 +144,18 @@ def compare_parity_reports(python_payload: dict[str, Any], php_payload: dict[str
                 f"!= php(status={php[rid][0]}, category={php[rid][1]})"
             )
     return diffs
+
+
+def _shared_expectation_ids(cases_dir: Path) -> set[str]:
+    py_expected = load_expected_results(cases_dir, implementation="python")
+    php_expected = load_expected_results(cases_dir, implementation="php")
+    shared: set[str] = set()
+    for rid in sorted(set(py_expected.keys()) & set(php_expected.keys())):
+        py = py_expected[rid]
+        php = php_expected[rid]
+        if py.status == php.status and py.category == php.category:
+            shared.add(rid)
+    return shared
 
 
 def run_python_report(cases_dir: Path) -> dict[str, Any]:
@@ -211,5 +232,11 @@ def run_parity_check(config: ParityConfig) -> list[str]:
     ]
     errors.extend([f"python vs expected: {e}" for e in compare_conformance_results(expected, python_actual)])
     errors.extend([f"php vs expected: {e}" for e in compare_conformance_results(php_expected, php_actual)])
-    errors.extend(compare_parity_reports(python_payload, php_payload))
+    errors.extend(
+        compare_parity_reports(
+            python_payload,
+            php_payload,
+            include_ids=_shared_expectation_ids(config.cases_dir),
+        )
+    )
     return errors

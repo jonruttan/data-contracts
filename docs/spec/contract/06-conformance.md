@@ -34,6 +34,7 @@ Cases may declare capability requirements under `requires`:
 
 - `capabilities`: list of required capability strings
 - `when_missing`: `skip` or `fail` (default `fail`)
+- capability names are implementation-defined strings (for example `cli.run`)
 
 Execution behavior:
 

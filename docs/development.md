@@ -71,6 +71,9 @@ python3 scripts/compare_conformance_parity.py \
   --php-runner scripts/php/conformance_runner.php
 ```
 
+Parity diffs are evaluated on case IDs where `expect` resolves to the same
+`status` + `category` for both implementations.
+
 ## Build / Publish
 
 ```sh
