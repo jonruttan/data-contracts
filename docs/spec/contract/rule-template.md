@@ -1,0 +1,39 @@
+# Contract Rule Template
+
+Use this template when adding or revising a portable contract rule.
+
+## Rule Metadata
+
+- Rule ID: `RULE-ID`
+- Norm: `MUST | SHOULD | MUST_NOT`
+- Scope: `case | implementation | conformance | runner`
+- Applies To: `path/to/subject`
+
+## Requirement
+
+State the requirement in one sentence.
+
+## Rationale
+
+Explain why this rule exists.
+
+## Risk If Violated
+
+Describe likely failure modes or operational risk.
+
+## Non-Goals
+
+State what this rule intentionally does not require.
+
+## Examples
+
+- Positive example(s)
+- Negative/counter example(s)
+
+## Evidence Mapping
+
+- Policy entry: `docs/spec/contract/policy-v1.yaml`
+- Traceability entry: `docs/spec/contract/traceability-v1.yaml`
+- Conformance case id(s): `...`
+- Unit/integration tests: `...`
+- Implementation paths: `...`

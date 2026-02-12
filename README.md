@@ -60,6 +60,7 @@ def test_specs_from_docs(tmp_path, monkeypatch, capsys):
 
 - `spec_runner/`: runner implementation (parser, dispatcher, harnesses)
 - `tests/`: unit tests for runner internals
+- `docs/design-philosophy.md`: project design principles and change bar
 - `docs/spec/contract/`: language-neutral contract docs
 - `docs/spec/schema/`: schema docs (syntax/shape)
 - `docs/spec/impl/`: implementation-specific notes (Python/PHP)
@@ -92,6 +93,10 @@ Leaf assertions do not carry `target` directly.
 
 Canonical schema doc: `tools/spec_runner/docs/spec/schema/schema-v1.md`.
 Portable contract docs: `tools/spec_runner/docs/spec/contract/`.
+Machine-readable policy:
+`tools/spec_runner/docs/spec/contract/policy-v1.yaml`.
+Traceability mapping:
+`tools/spec_runner/docs/spec/contract/traceability-v1.yaml`.
 
 Discovery note: `iter_cases(Path(...))` currently scans only `*.md` files in
 that directory (non-recursive).

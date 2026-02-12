@@ -3,6 +3,9 @@
 These are cross-language design goals for `spec_runner`. Contract and schema
 changes SHOULD be evaluated against this list.
 
+Project-level philosophy and process bar:
+`docs/design-philosophy.md`.
+
 ## Determinism
 
 - Same spec inputs MUST produce the same pass/fail outcomes.

@@ -1,0 +1,50 @@
+version: 1
+title: Spec Runner Contract Traceability
+links:
+  - rule_id: CLI_RUN_ENTRYPOINT_REQUIRED
+    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_ENTRYPOINT_REQUIRED
+    contract_refs:
+      - docs/spec/contract/04-harness.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs: []
+    implementation_refs:
+      - spec_runner/harnesses/cli_run.py
+    notes: "Conformance fixture ids to be added in conformance slice."
+
+  - rule_id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
+    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_ENTRYPOINT_ENV_FALLBACK
+    contract_refs:
+      - docs/spec/contract/04-harness.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs: []
+    implementation_refs:
+      - spec_runner/harnesses/cli_run.py
+    notes: "Implementation SHOULD; not required for conformance."
+
+  - rule_id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
+    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
+    contract_refs:
+      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/06-conformance.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs: []
+    implementation_refs: []
+    notes: "Requires conformance fixture work to populate evidence."
+
+  - rule_id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
+    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
+    contract_refs:
+      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/06-conformance.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs: []
+    implementation_refs: []
+    notes: "Requires conformance fixture work to populate evidence."

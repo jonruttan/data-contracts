@@ -5,6 +5,8 @@ Language-neutral contract docs for `spec_runner` implementations.
 Machine-readable normative policy:
 
 - `docs/spec/contract/policy-v1.yaml` (`MUST` / `SHOULD` / `MUST_NOT`)
+- `docs/spec/contract/traceability-v1.yaml` (rule -> evidence mapping)
+- `docs/spec/contract/rule-template.md` (authoring template)
 
 Read in order:
 

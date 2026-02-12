@@ -7,6 +7,11 @@ rules:
     norm: MUST
     requirement: present
     description: For cli.run, harness.entrypoint must be set in each case.
+    rationale: Ensures portable, explicit invocation without hidden runner state.
+    risk_if_violated: Cases become environment-dependent and non-portable.
+    references:
+      - docs/spec/contract/04-harness.md
+      - docs/spec/schema/schema-v1.md
 
   - id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
     scope: implementation
@@ -16,8 +21,13 @@ rules:
     description: >
       Implementations should support environment fallback for local/CI
       ergonomics when runtime constraints allow.
+    rationale: Improves ergonomics in local and containerized workflows.
+    risk_if_violated: Higher setup friction in some environments.
     examples:
       - SPEC_RUNNER_ENTRYPOINT
+    references:
+      - docs/spec/contract/04-harness.md
+      - docs/spec/impl/python.md
 
   - id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
     scope: conformance
@@ -25,6 +35,11 @@ rules:
     norm: MUST
     requirement: explicit_harness_entrypoint
     description: Portable conformance fixtures must set harness.entrypoint.
+    rationale: Keeps parity checks independent of implementation conveniences.
+    risk_if_violated: Conformance results can diverge across runtimes.
+    references:
+      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/06-conformance.md
 
   - id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
     scope: conformance
@@ -32,3 +47,8 @@ rules:
     norm: MUST_NOT
     requirement: rely_on_env_fallback
     description: Portable conformance fixtures must not depend on env fallback.
+    rationale: Prevents ambient-environment coupling in parity tests.
+    risk_if_violated: Flaky or non-reproducible cross-language conformance.
+    references:
+      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/06-conformance.md
