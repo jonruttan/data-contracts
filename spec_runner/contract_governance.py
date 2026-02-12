@@ -57,6 +57,14 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         return ["traceability-v1.yaml links must be a list"]
 
     rules_by_id: dict[str, dict[str, Any]] = {}
+    allowed_norms = {"MUST", "SHOULD", "MUST_NOT"}
+
+    def _exists_repo_or_runner(rel: str) -> bool:
+        p = repo_root / rel
+        if p.exists():
+            return True
+        return (repo_root / "tools/spec_runner" / rel).exists()
+
     for r in rules:
         if not isinstance(r, dict):
             errs.append("policy rule entries must be mappings")
@@ -68,6 +76,20 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         if rid in rules_by_id:
             errs.append(f"duplicate policy rule id: {rid}")
         rules_by_id[rid] = r
+        norm = str(r.get("norm", "")).upper()
+        if norm not in allowed_norms:
+            errs.append(f"invalid norm for {rid}: {norm!r}")
+        for field in ("rationale", "risk_if_violated"):
+            if not str(r.get(field, "")).strip():
+                errs.append(f"policy rule missing {field}: {rid}")
+        refs = r.get("references")
+        if not isinstance(refs, list) or not refs:
+            errs.append(f"policy rule references must be a non-empty list: {rid}")
+            refs = []
+        for rel in refs:
+            srel = str(rel)
+            if not _exists_repo_or_runner(srel):
+                errs.append(f"missing policy reference for {rid}: {srel}")
 
     links_by_rule: dict[str, dict[str, Any]] = {}
     for l in links:
@@ -83,23 +105,25 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         links_by_rule[rid] = l
         if rid not in rules_by_id:
             errs.append(f"traceability references unknown policy rule: {rid}")
+        want_policy_ref = f"docs/spec/contract/policy-v1.yaml#{rid}"
+        got_policy_ref = str(l.get("policy_ref", "")).strip()
+        if got_policy_ref != want_policy_ref:
+            errs.append(
+                f"traceability policy_ref mismatch for {rid}: "
+                f"expected {want_policy_ref}, got {got_policy_ref or '<missing>'}"
+            )
 
     conformance_ids = _collect_fixture_case_ids(cases_dir)
     expected_ids = _collect_expected_ids(expected_dir)
 
-    def _exists_repo_or_runner(rel: str) -> bool:
-        p = repo_root / rel
-        if p.exists():
-            return True
-        return (repo_root / "tools/spec_runner" / rel).exists()
+    for rid in rules_by_id:
+        if rid not in links_by_rule:
+            errs.append(f"policy rule missing traceability link: {rid}")
 
     for rid, rule in rules_by_id.items():
         norm = str(rule.get("norm", "")).upper()
-        if norm != "MUST":
-            continue
         link = links_by_rule.get(rid)
         if not link:
-            errs.append(f"MUST rule missing traceability link: {rid}")
             continue
 
         conformance_case_ids = link.get("conformance_case_ids") or []
@@ -111,7 +135,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
             errs.append(f"traceability unit_test_refs must be a list: {rid}")
             unit_test_refs = []
 
-        if not conformance_case_ids and not unit_test_refs:
+        if norm == "MUST" and not conformance_case_ids and not unit_test_refs:
             errs.append(f"MUST rule missing test evidence (conformance_case_ids/unit_test_refs): {rid}")
 
         for rel in link.get("contract_refs") or []:

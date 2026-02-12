@@ -17,10 +17,11 @@ rules:
     scope: implementation
     applies_to: cli.run.entrypoint_resolution
     norm: SHOULD
-    requirement: support_env_fallback_when_feasible
+    requirement: support_env_fallback_when_process_env_and_dynamic_entrypoint_loading_are_available
     description: >
       Implementations should support environment fallback for local/CI
-      ergonomics when runtime constraints allow.
+      ergonomics when they can read process environment variables and resolve
+      dynamic module:attribute entrypoints at runtime.
     rationale: Improves ergonomics in local and containerized workflows.
     risk_if_violated: Higher setup friction in some environments.
     examples:

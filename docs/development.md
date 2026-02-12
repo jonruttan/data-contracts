@@ -9,6 +9,7 @@ python3 -m pip install -e '.[dev]'
 ## Run Tests
 
 ```sh
+python3 scripts/check_contract_governance.py
 python3 -m pytest
 ```
 

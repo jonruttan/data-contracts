@@ -11,7 +11,8 @@ For `type: cli.run`:
 
 - `harness.entrypoint` MUST be provided by the spec.
 - Implementations SHOULD support an environment fallback (for example
-  `SPEC_RUNNER_ENTRYPOINT`) when feasible for local/CI ergonomics.
+  `SPEC_RUNNER_ENTRYPOINT`) for local/CI ergonomics when they can read process
+  environment variables and resolve dynamic `module:attr` entrypoints.
 - Portable conformance fixtures MUST provide `harness.entrypoint` explicitly
   and MUST NOT rely on environment fallback behavior.
 
