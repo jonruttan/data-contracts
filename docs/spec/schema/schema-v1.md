@@ -34,6 +34,8 @@ Parser behavior:
   contains the `yaml spec-test` block.
 - If `path` is provided, it MUST be a relative path and is resolved relative to
   the spec document path.
+- Resolved `path` MUST remain within the implementation's configured contract
+  root/workspace boundary (path traversal outside that boundary is invalid).
 
 Fields:
 
@@ -60,6 +62,11 @@ For `type: cli.run`, supported `harness` keys include:
 - `hook_before` (string): hook entrypoint invoked before running the CLI
 - `hook_after` (string): hook entrypoint invoked after running the CLI
 - `hook_kwargs` (mapping): keyword arguments passed through to the hook
+
+`setup_files[*].path` constraints:
+
+- MUST be relative
+- MUST resolve within the runner temp directory (no path escape)
 
 Implementation note (non-portable convenience):
 

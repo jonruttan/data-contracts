@@ -30,3 +30,10 @@ For `cli.run`:
 For `text.file`:
 
 - `text`
+
+## Path Safety
+
+- `cli.run` `harness.setup_files[*].path` MUST be relative and MUST resolve
+  within the runner temp directory.
+- `text.file` `path` MUST be relative and MUST resolve within the
+  implementation's contract root/workspace boundary.

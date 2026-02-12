@@ -432,3 +432,86 @@ def test_cli_type_hook_before_runs_before_command(tmp_path, monkeypatch, capsys)
 
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
     assert seen == {"ran": True, "extra": "v2"}
+
+
+def test_cli_type_stub_modules_do_not_leak_between_cases(tmp_path, monkeypatch, capsys):
+    mod_name = "spec_runner_stub_mod_unique"
+
+    def fake_main(_argv):
+        try:
+            __import__(mod_name)
+            print("imported")
+        except ModuleNotFoundError:
+            print("missing")
+        return 0
+
+    ep = _install_sut(monkeypatch, fake_main)
+    from spec_runner.harnesses.cli_run import run
+
+    case_with_stub = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-018",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": ep, "stub_modules": [mod_name]},
+            "assert": [{"target": "stdout", "must": [{"contain": ["imported"]}]}],
+        },
+    )
+    run(case_with_stub, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+    case_without_stub = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-019",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": ep},
+            "assert": [{"target": "stdout", "must": [{"contain": ["missing"]}]}],
+        },
+    )
+    run(case_without_stub, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_setup_files_rejects_absolute_path(tmp_path, monkeypatch, capsys):
+    ep = _install_sut(monkeypatch, lambda _argv: 0)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-020",
+            "type": "cli.run",
+            "exit_code": 0,
+            "harness": {
+                "entrypoint": ep,
+                "setup_files": [{"path": str((tmp_path / "x.txt").resolve()), "text": "x"}],
+            },
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(ValueError, match="setup_files item path must be relative"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_setup_files_rejects_path_escape(tmp_path, monkeypatch, capsys):
+    ep = _install_sut(monkeypatch, lambda _argv: 0)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-021",
+            "type": "cli.run",
+            "exit_code": 0,
+            "harness": {
+                "entrypoint": ep,
+                "setup_files": [{"path": "../escape.txt", "text": "x"}],
+            },
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(ValueError, match="setup_files item path escapes tmp_path"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
