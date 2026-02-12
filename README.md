@@ -82,7 +82,8 @@ Assertion groups can carry a shared `target`, which child
 leaves inherit unless overridden.
 Leaf assertions do not carry `target` directly.
 
-Canonical schema doc: `tools/spec_runner/docs/spec/schema.md`.
+Canonical schema doc: `tools/spec_runner/docs/spec/schema/schema-v1.md`.
+Portable contract docs: `tools/spec_runner/docs/spec/contract/`.
 
 Discovery note: `iter_cases(Path(...))` currently scans only `*.md` files in
 that directory (non-recursive).

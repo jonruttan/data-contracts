@@ -11,5 +11,6 @@ Notes:
 
 Canonical spec docs:
 
-- `docs/spec/schema.md`
+- `docs/spec/schema/schema-v1.md`
+- `docs/spec/contract/`
 - `docs/spec/backlog.md`
