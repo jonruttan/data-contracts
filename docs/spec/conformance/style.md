@@ -11,6 +11,7 @@ Style rules:
 - each fenced block should stay small (50 lines max) for readability
 - each case must include a non-empty `purpose` field describing the intent
 - `purpose` should add context beyond `title` (not a copy)
+- `purpose` should be at least 8 words and avoid placeholders (`todo`, `tbd`, `fixme`, `xxx`)
 
 Rationale:
 

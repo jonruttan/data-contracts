@@ -75,7 +75,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-005
 title: can fails when all branches fail
-purpose: Verifies can fails when every branch fails.
+purpose: Verifies can fails when every branch assertion fails.
 type: text.file
 expect:
   portable:
@@ -93,7 +93,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-006
 title: cannot passes when all branches fail
-purpose: Verifies cannot succeeds when every branch fails.
+purpose: Verifies cannot succeeds when every branch assertion fails.
 type: text.file
 expect:
   portable:

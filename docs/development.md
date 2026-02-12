@@ -11,6 +11,7 @@ python3 -m pip install -e '.[dev]'
 ```sh
 python3 scripts/check_contract_governance.py
 python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
+python3 scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
 python3 -m pytest
 ```
 
@@ -26,9 +27,11 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 
 - contract governance check
 - contract coverage report generation
+- conformance purpose report generation
 - Python/PHP conformance parity command
 - `tools/spec_runner` pytest suite
 - artifact upload of `.artifacts/contract-coverage.json`
+- artifact upload of `.artifacts/conformance-purpose.json`
 - artifact upload of `.artifacts/conformance-parity.json`
 
 `check_contract_governance.py` enforces conformance case doc freshness:
@@ -51,6 +54,12 @@ python3 scripts/check_contract_governance.py
 
 ```sh
 python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
+```
+
+## Conformance Purpose Report
+
+```sh
+python3 scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
 ```
 
 ## Conformance Fixture Layout

@@ -632,3 +632,61 @@ expect:
     )
     errs = check_contract_governance(tmp_path)
     assert any("purpose must add context beyond title" in e for e in errs)
+
+
+def test_contract_governance_fails_when_case_purpose_is_too_short(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R16")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/short-purpose.spec.md",
+        """# Sample
+
+## SRCONF-PURPOSE-004
+
+```yaml spec-test
+id: SRCONF-PURPOSE-004
+title: short purpose should fail lint
+purpose: too short on words here
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-004\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("case purpose must be at least" in e for e in errs)
+
+
+def test_contract_governance_fails_when_case_purpose_has_placeholder_token(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R17")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/placeholder-purpose.spec.md",
+        """# Sample
+
+## SRCONF-PURPOSE-005
+
+```yaml spec-test
+id: SRCONF-PURPOSE-005
+title: placeholder purpose should fail lint
+purpose: TODO replace this placeholder text with a final explanation.
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-005\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("purpose contains placeholder token(s)" in e for e in errs)

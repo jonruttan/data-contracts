@@ -14,6 +14,7 @@ fi
 
 "${PYTHON_BIN}" scripts/check_contract_governance.py
 "${PYTHON_BIN}" scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
+"${PYTHON_BIN}" scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
 "${PYTHON_BIN}" scripts/compare_conformance_parity.py \
   --cases docs/spec/conformance/cases \
   --php-runner scripts/php/conformance_runner.php \
