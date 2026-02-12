@@ -77,11 +77,15 @@ Other kinds are adapters provided by the system under test.
 
 Assertion leaves are mappings with:
 
-- `target` (string, required unless inherited from a parent group node)
 - one or more operator keys with list values
 
 Assertion group nodes (`must` / `can` / `cannot`) MAY include `target`; child leaves
-inherit that target unless a child leaf sets its own `target`.
+inherit that target.
+
+Leaf constraints:
+
+- leaf assertions MUST NOT include `target`
+- leaves require inherited target from a parent group
 
 Supported operators:
 

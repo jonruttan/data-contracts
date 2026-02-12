@@ -27,37 +27,39 @@ def test_assert_stdout_path_exists(tmp_path):
 def test_iter_leaf_assertions_requires_mapping_target_and_op_key():
     with pytest.raises(TypeError, match="assert leaf must be a mapping"):
         list(iter_leaf_assertions(["nope"]))
-    with pytest.raises(ValueError, match="missing required key: target"):
+    with pytest.raises(ValueError, match="requires inherited target"):
         list(iter_leaf_assertions({"contain": ["x"]}))
-    with pytest.raises(ValueError, match="missing an op key"):
+    with pytest.raises(ValueError, match="must not include key: target"):
         list(iter_leaf_assertions({"target": "stderr"}))
 
 
 def test_iter_leaf_assertions_requires_list_values_and_rejects_legacy():
+    with pytest.raises(ValueError, match="must not include key: target"):
+        list(iter_leaf_assertions({"target": "stderr", "contain": ["x"]}, target_override="stderr"))
     with pytest.raises(TypeError, match="must be a list"):
-        list(iter_leaf_assertions({"target": "stderr", "contain": "x"}))
+        list(iter_leaf_assertions({"contain": "x"}, target_override="stderr"))
     with pytest.raises(ValueError, match="key 'is' is not supported"):
-        list(iter_leaf_assertions({"target": "stderr", "contain": ["x"], "is": False}))
+        list(iter_leaf_assertions({"contain": ["x"], "is": False}, target_override="stderr"))
     with pytest.raises(ValueError, match="legacy assertion shape"):
-        list(iter_leaf_assertions({"target": "stderr", "op": "contains", "value": "x"}))
+        list(iter_leaf_assertions({"op": "contains", "value": "x"}, target_override="stderr"))
     with pytest.raises(ValueError, match="unsupported op"):
-        list(iter_leaf_assertions({"target": "stderr", "wat": ["x"]}))
+        list(iter_leaf_assertions({"wat": ["x"]}, target_override="stderr"))
     with pytest.raises(ValueError, match="must not include group keys"):
-        list(iter_leaf_assertions({"target": "stderr", "any": []}))
+        list(iter_leaf_assertions({"any": []}, target_override="stderr"))
     with pytest.raises(ValueError, match="unsupported op: not_contains"):
-        list(iter_leaf_assertions({"target": "stderr", "not_contains": ["x"]}))
+        list(iter_leaf_assertions({"not_contains": ["x"]}, target_override="stderr"))
     with pytest.raises(ValueError, match="unsupported op: not_regex"):
-        list(iter_leaf_assertions({"target": "stderr", "not_regex": ["x"]}))
+        list(iter_leaf_assertions({"not_regex": ["x"]}, target_override="stderr"))
 
 
 def test_iter_leaf_assertions_happy_path():
     assert list(
         iter_leaf_assertions(
             {
-                "target": "stderr",
                 "contain": ["ok"],
                 "regex": ["x.*"],
-            }
+            },
+            target_override="stderr",
         )
     ) == [
         ("stderr", "contain", "ok", True),
@@ -73,7 +75,7 @@ def test_iter_leaf_assertions_accepts_target_override():
 
 def test_iter_leaf_assertions_rejects_contains_alias():
     with pytest.raises(ValueError, match="unsupported op: contains"):
-        list(iter_leaf_assertions({"target": "stderr", "contains": ["ok"]}))
+        list(iter_leaf_assertions({"contains": ["ok"]}, target_override="stderr"))
 
 
 def test_eval_assert_tree_list_is_and():
@@ -180,7 +182,7 @@ def test_eval_assert_tree_child_target_overrides_group_target():
             "target": "stderr",
             "must": [
                 {"contain": ["WARN:"]},
-                {"target": "stdout", "contain": ["ok"]},
+                {"target": "stdout", "must": [{"contain": ["ok"]}]},
             ],
         },
         eval_leaf=leaf,
@@ -192,7 +194,7 @@ def test_eval_assert_tree_child_target_overrides_group_target():
 
 
 def test_eval_assert_tree_missing_target_without_inheritance_raises():
-    with pytest.raises(ValueError, match="missing required key: target"):
+    with pytest.raises(ValueError, match="requires inherited target"):
         eval_assert_tree(
             {"must": [{"contain": ["x"]}]},
             eval_leaf=lambda x: list(iter_leaf_assertions(x)),

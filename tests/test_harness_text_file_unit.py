@@ -15,7 +15,7 @@ def test_text_file_contains(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "assert": [{"target": "text", "contain": ["hello"]}],
+            "assert": [{"target": "text", "must": [{"contain": ["hello"]}]}],
         },
     )
 
@@ -54,7 +54,7 @@ def test_text_file_can_read_relative_path(tmp_path, monkeypatch, capsys):
             "id": "X",
             "type": "text.file",
             "path": "other.txt",
-            "assert": [{"target": "text", "contain": ["hello other"]}],
+            "assert": [{"target": "text", "must": [{"contain": ["hello other"]}]}],
         },
     )
 
@@ -73,7 +73,7 @@ def test_text_file_rejects_absolute_path(tmp_path, monkeypatch, capsys):
             "id": "X",
             "type": "text.file",
             "path": str(doc.resolve()),
-            "assert": [{"target": "text", "contain": ["spec doc"]}],
+            "assert": [{"target": "text", "must": [{"contain": ["spec doc"]}]}],
         },
     )
 
@@ -92,7 +92,7 @@ def test_text_file_unknown_target(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "assert": [{"target": "stdout", "contain": ["hello"]}],
+            "assert": [{"target": "stdout", "must": [{"contain": ["hello"]}]}],
         },
     )
 

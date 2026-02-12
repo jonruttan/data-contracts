@@ -32,7 +32,8 @@ harness:
   entrypoint: "myproj.cli:main"
 assert:
   - target: stdout
-    contain: ["usage:", "options:"]
+    must:
+      - contain: ["usage:", "options:"]
   - target: stderr
     must:
       - contain: ["WARN:"]
@@ -79,6 +80,7 @@ supported.
 
 Assertion groups can carry a shared `target`, which child
 leaves inherit unless overridden.
+Leaf assertions do not carry `target` directly.
 
 Canonical schema doc: `tools/spec_runner/docs/spec/schema.md`.
 

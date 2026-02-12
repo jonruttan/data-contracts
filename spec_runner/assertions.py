@@ -59,17 +59,18 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
       regex: ["traceback"]
 
     Rules:
-    - `target` is required unless a non-empty `target_override` is provided.
+    - leaf assertions MUST NOT define `target`; target is inherited from a
+      parent group (`must` / `can` / `cannot`).
     - Each op key's value MUST be a list.
     - Duplicate keys are not allowed by YAML; multi-checks use lists.
     """
     if not isinstance(leaf, dict):
         raise TypeError("assert leaf must be a mapping")
-    target = str(leaf.get("target", "")).strip()
+    if "target" in leaf:
+        raise ValueError("leaf assertion must not include key: target; move target to a parent group")
+    target = str(target_override or "").strip()
     if not target:
-        target = str(target_override or "").strip()
-    if not target:
-        raise ValueError("assertion missing required key: target")
+        raise ValueError("assertion leaf requires inherited target from a parent group")
     if "op" in leaf or "value" in leaf:
         raise ValueError("legacy assertion shape (op/value) is not supported")
     if any(k in leaf for k in ("all", "any", "must", "can", "cannot")):
@@ -85,8 +86,6 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
 
     any_found = False
     for op, raw in leaf.items():
-        if op == "target":
-            continue
         if op not in known_ops:
             raise ValueError(f"unsupported op: {op}")
         any_found = True
@@ -110,7 +109,7 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
     - mapping with `can:`: OR across child nodes (at least one must pass)
     - mapping with `cannot:`: NONE across child nodes (no child may pass)
     - group nodes may include `target:`; child leaves inherit that target
-    - leaf mapping with `target:` plus op keys
+    - leaf mapping with op keys (target inherited from parent group)
     """
 
     leaf_sig = inspect.signature(eval_leaf)

@@ -48,7 +48,7 @@ def test_cli_type_accepts_string_argv_and_systemexit(tmp_path, monkeypatch, caps
             "argv": "plugins",
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "json_type": ["list"]}],
+            "assert": [{"target": "stdout", "must": [{"json_type": ["list"]}]}],
         },
     )
 
@@ -71,7 +71,7 @@ def test_cli_type_unsupported_stdout_json_type_raises(tmp_path, monkeypatch, cap
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "json_type": ["nope"]}],
+            "assert": [{"target": "stdout", "must": [{"json_type": ["nope"]}]}],
         },
     )
 
@@ -95,7 +95,7 @@ def test_cli_type_stdout_json_dict(tmp_path, monkeypatch, capsys):
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "json_type": ["dict"]}],
+            "assert": [{"target": "stdout", "must": [{"json_type": ["dict"]}]}],
         },
     )
 
@@ -120,7 +120,7 @@ def test_cli_type_contain_regex_and_cannot(tmp_path, monkeypatch, capsys):
             "exit_code": 0,
             "harness": {"entrypoint": ep},
             "assert": [
-                {"target": "stdout", "contain": ["hello"], "regex": ["world\\s*$"]},
+                {"target": "stdout", "must": [{"contain": ["hello"], "regex": ["world\\s*$"]}]},
                 {"target": "stderr", "cannot": [{"contain": ["ERROR:"]}]},
             ],
         },
@@ -148,7 +148,7 @@ def test_cli_type_stdout_path_text(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout_path_text", "contain": ["hello"]}],
+            "assert": [{"target": "stdout_path_text", "must": [{"contain": ["hello"]}]}],
         },
     )
 
@@ -171,7 +171,7 @@ def test_cli_type_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "nope", "contain": ["x"]}],
+            "assert": [{"target": "nope", "must": [{"contain": ["x"]}]}],
         },
     )
 
@@ -198,7 +198,7 @@ def test_cli_type_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout_path", "contain": ["x"]}],
+            "assert": [{"target": "stdout_path", "must": [{"contain": ["x"]}]}],
         },
     )
 
@@ -218,7 +218,7 @@ def test_cli_type_unsupported_op_raises(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "nope": ["x"]}],
+            "assert": [{"target": "stdout", "must": [{"nope": ["x"]}]}],
         },
     )
 
@@ -252,7 +252,7 @@ def test_cli_type_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
                 "setup_files": [{"path": "cfg.txt", "text": "hello"}],
                 "env": {"X_CFG": "cfg.txt"},
             },
-            "assert": [{"target": "stdout", "contain": ["hello"]}],
+            "assert": [{"target": "stdout", "must": [{"contain": ["hello"]}]}],
         },
     )
 
@@ -278,7 +278,7 @@ def test_cli_type_can_stub_modules(tmp_path, monkeypatch, capsys):
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stub_modules": ["openai"]},
-            "assert": [{"target": "stdout", "contain": ["ok"]}],
+            "assert": [{"target": "stdout", "must": [{"contain": ["ok"]}]}],
         },
     )
 
@@ -302,7 +302,7 @@ def test_cli_type_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stdin_isatty": False, "stdin_text": "hello"},
-            "assert": [{"target": "stdout", "contain": ["stdin=hello"]}],
+            "assert": [{"target": "stdout", "must": [{"contain": ["stdin=hello"]}]}],
         },
     )
 
@@ -327,7 +327,7 @@ def test_cli_type_can_group_or_semantics(tmp_path, monkeypatch, capsys):
             "exit_code": 0,
             "harness": {"entrypoint": ep},
             "assert": [
-                {"can": [{"target": "stderr", "contain": ["INFO:"]}, {"target": "stderr", "contain": ["WARN:"]}]},
+                {"can": [{"target": "stderr", "must": [{"contain": ["INFO:"]}]}, {"target": "stderr", "must": [{"contain": ["WARN:"]}]}]},
                 {"target": "stderr", "cannot": [{"contain": ["ERROR:"]}]},
             ],
         },
@@ -387,7 +387,7 @@ def test_cli_type_hook_runs_after_command(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "hook_after": hook_ep, "hook_kwargs": {"extra": "v"}},
-            "assert": [{"target": "stdout", "json_type": ["dict"]}],
+            "assert": [{"target": "stdout", "must": [{"json_type": ["dict"]}]}],
         },
     )
 
@@ -424,7 +424,7 @@ def test_cli_type_hook_before_runs_before_command(tmp_path, monkeypatch, capsys)
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "hook_before": hook_ep, "hook_kwargs": {"extra": "v2"}},
-            "assert": [{"target": "stdout", "contain": ["yes"]}],
+            "assert": [{"target": "stdout", "must": [{"contain": ["yes"]}]}],
         },
     )
 
