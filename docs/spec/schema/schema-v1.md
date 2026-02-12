@@ -38,7 +38,7 @@ Parser behavior:
 - `portable` (mapping): shared expectation baseline
 - `impl` (mapping): per-implementation overlays keyed by runtime name
 - expected keys in `portable`/`impl.*`:
-  - `status`: `pass` or `fail`
+  - `status`: `pass`, `fail`, or `skip`
   - `category`: `schema` / `assertion` / `runtime` / `null`
   - `message_tokens`: optional list of expected message tokens
 - for conformance fixture cases, `expect.portable` with `status` is required
@@ -46,6 +46,7 @@ Parser behavior:
 `requires` (metadata):
 
 - `capabilities` (list[string], optional): declared capabilities for the case
+- `when_missing` (string, optional): `skip` or `fail` (default `fail`)
 
 ## Type-Specific Fields
 

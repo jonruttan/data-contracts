@@ -77,6 +77,15 @@ function listCaseFiles(string $path): array {
 
 class SchemaError extends RuntimeException {}
 class AssertionFailure extends RuntimeException {}
+const PHP_CAPABILITIES = [
+    'assert.op.contain',
+    'assert.op.regex',
+    'assert.group.must',
+    'assert.group.can',
+    'assert.group.cannot',
+    'assert_health.ah005',
+    'requires.capabilities',
+];
 
 function isListArray(mixed $value): bool {
     if (!is_array($value)) {
@@ -391,6 +400,53 @@ function evaluateTextFileCase(array $case, string $subject): array {
     return ['status' => 'pass', 'category' => null, 'message' => null];
 }
 
+function evaluateRequires(array $case): ?array {
+    if (!array_key_exists('requires', $case)) {
+        return null;
+    }
+    $requires = $case['requires'];
+    if (!is_array($requires)) {
+        return ['status' => 'fail', 'category' => 'schema', 'message' => 'requires must be a mapping when provided'];
+    }
+    $caps = $requires['capabilities'] ?? [];
+    if (!is_array($caps) || !isListArray($caps)) {
+        return ['status' => 'fail', 'category' => 'schema', 'message' => 'requires.capabilities must be a list'];
+    }
+    $needed = [];
+    foreach ($caps as $c) {
+        $s = trim((string)$c);
+        if ($s !== '') {
+            $needed[] = $s;
+        }
+    }
+    $whenMissing = strtolower(trim((string)($requires['when_missing'] ?? 'fail')));
+    if ($whenMissing === '') {
+        $whenMissing = 'fail';
+    }
+    if ($whenMissing !== 'skip' && $whenMissing !== 'fail') {
+        return ['status' => 'fail', 'category' => 'schema', 'message' => 'requires.when_missing must be one of: skip, fail'];
+    }
+    $capsSet = array_fill_keys(PHP_CAPABILITIES, true);
+    $missing = [];
+    foreach ($needed as $cap) {
+        if (!array_key_exists($cap, $capsSet)) {
+            $missing[] = $cap;
+        }
+    }
+    if (count($missing) === 0) {
+        return null;
+    }
+    sort($missing, SORT_STRING);
+    if ($whenMissing === 'skip') {
+        return ['status' => 'skip', 'category' => null, 'message' => null];
+    }
+    return [
+        'status' => 'fail',
+        'category' => 'runtime',
+        'message' => "missing required capabilities for implementation 'php': " . implode(', ', $missing),
+    ];
+}
+
 function evaluateCase(string $fixturePath, mixed $case): array {
     if (!is_array($case)) {
         return [
@@ -417,6 +473,16 @@ function evaluateCase(string $fixturePath, mixed $case): array {
             'status' => 'fail',
             'category' => 'runtime',
             'message' => "unsupported type for php bootstrap: {$type}",
+        ];
+    }
+
+    $requiresResult = evaluateRequires($case);
+    if ($requiresResult !== null) {
+        return [
+            'id' => $id,
+            'status' => $requiresResult['status'],
+            'category' => $requiresResult['category'],
+            'message' => $requiresResult['message'],
         ];
     }
 

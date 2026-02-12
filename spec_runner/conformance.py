@@ -26,8 +26,32 @@ class ExpectedConformanceResult:
     message_tokens: list[str] | None = None
 
 
-_VALID_STATUS = {"pass", "fail"}
+_VALID_STATUS = {"pass", "fail", "skip"}
 _VALID_CATEGORY = {"schema", "assertion", "runtime"}
+_DEFAULT_CAPABILITIES: dict[str, set[str]] = {
+    "python": {
+        "assert.op.contain",
+        "assert.op.regex",
+        "assert.group.must",
+        "assert.group.can",
+        "assert.group.cannot",
+        "assert_health.ah001",
+        "assert_health.ah002",
+        "assert_health.ah003",
+        "assert_health.ah004",
+        "assert_health.ah005",
+        "requires.capabilities",
+    },
+    "php": {
+        "assert.op.contain",
+        "assert.op.regex",
+        "assert.group.must",
+        "assert.group.can",
+        "assert.group.cannot",
+        "assert_health.ah005",
+        "requires.capabilities",
+    },
+}
 
 
 def _read_yaml(path: Path) -> Any:
@@ -104,15 +128,69 @@ def _category_for_exception(exc: BaseException) -> str:
     return "runtime"
 
 
+def _requires_outcome(
+    case: dict[str, Any],
+    *,
+    implementation: str,
+    capabilities: set[str],
+) -> ConformanceResult | None:
+    rid = str(case.get("id", ""))
+    raw = case.get("requires")
+    if raw is None:
+        return None
+    if not isinstance(raw, dict):
+        return ConformanceResult(
+            id=rid,
+            status="fail",
+            category="schema",
+            message="requires must be a mapping when provided",
+        )
+    caps = raw.get("capabilities") or []
+    if not isinstance(caps, list):
+        return ConformanceResult(
+            id=rid,
+            status="fail",
+            category="schema",
+            message="requires.capabilities must be a list",
+        )
+    needed = [str(x).strip() for x in caps if str(x).strip()]
+    when_missing = str(raw.get("when_missing", "fail")).strip().lower() or "fail"
+    if when_missing not in {"skip", "fail"}:
+        return ConformanceResult(
+            id=rid,
+            status="fail",
+            category="schema",
+            message="requires.when_missing must be one of: skip, fail",
+        )
+    missing = sorted(c for c in needed if c not in capabilities)
+    if not missing:
+        return None
+    if when_missing == "skip":
+        return ConformanceResult(id=rid, status="skip", category=None, message=None)
+    msg = (
+        f"missing required capabilities for implementation '{implementation}': "
+        + ", ".join(missing)
+    )
+    return ConformanceResult(id=rid, status="fail", category="runtime", message=msg)
+
+
 def run_conformance_cases(
     cases_dir: Path,
     *,
     ctx: SpecRunContext,
+    implementation: str = "python",
+    capabilities: set[str] | None = None,
 ) -> list[ConformanceResult]:
+    impl = str(implementation).strip() or "python"
+    caps = set(capabilities) if capabilities is not None else set(_DEFAULT_CAPABILITIES.get(impl, set()))
     results: list[ConformanceResult] = []
     for fixture_path, case in load_conformance_cases(cases_dir):
         test = dict(case)
         case_id = str(test.get("id", ""))
+        pre = _requires_outcome(test, implementation=impl, capabilities=caps)
+        if pre is not None:
+            results.append(pre)
+            continue
         try:
             run_case(
                 SpecDocTest(doc_path=fixture_path, test=test),
@@ -183,18 +261,18 @@ def validate_conformance_report_payload(payload: Any) -> list[str]:
             errs.append(f"{pfx}.id must be a non-empty string")
         status = item.get("status")
         if status not in _VALID_STATUS:
-            errs.append(f"{pfx}.status must be one of: pass, fail")
+            errs.append(f"{pfx}.status must be one of: pass, fail, skip")
         category = item.get("category")
-        if status == "pass":
+        if status in {"pass", "skip"}:
             if category is not None:
-                errs.append(f"{pfx}.category must be null when status=pass")
+                errs.append(f"{pfx}.category must be null when status={status}")
         elif status == "fail":
             if category not in _VALID_CATEGORY:
                 errs.append(f"{pfx}.category must be one of: schema, assertion, runtime when status=fail")
         message = item.get("message")
-        if status == "pass":
+        if status in {"pass", "skip"}:
             if message is not None:
-                errs.append(f"{pfx}.message must be null when status=pass")
+                errs.append(f"{pfx}.message must be null when status={status}")
         elif status == "fail":
             if not isinstance(message, str) or not message.strip():
                 errs.append(f"{pfx}.message must be a non-empty string when status=fail")

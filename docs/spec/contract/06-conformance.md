@@ -17,7 +17,7 @@ Conformance cases define expected outcomes directly in case records using:
 
 Expected keys:
 
-- `status`: `pass` or `fail`
+- `status`: `pass`, `fail`, or `skip`
 - `category`: `schema` / `assertion` / `runtime` / `null`
 - `message_tokens`: optional list of tokens expected in failure messages
 
@@ -27,3 +27,17 @@ Resolution order:
 2. If `expect.impl.<implementation>` exists, overlay its keys.
 
 `expect` is required for conformance fixture cases.
+
+## Capability Requirements
+
+Cases may declare capability requirements under `requires`:
+
+- `capabilities`: list of required capability strings
+- `when_missing`: `skip` or `fail` (default `fail`)
+
+Execution behavior:
+
+- if all required capabilities are present: evaluate the case normally
+- if required capabilities are missing and `when_missing=skip`: result is `skip`
+- if required capabilities are missing and `when_missing=fail`: result is `fail`
+  with category `runtime`

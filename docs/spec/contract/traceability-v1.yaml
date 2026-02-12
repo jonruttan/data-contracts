@@ -205,3 +205,18 @@ links:
     implementation_refs:
       - spec_runner/contract_governance.py
     notes: "Governance enforces conformance case doc readability/style constraints."
+
+  - rule_id: CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
+    policy_ref: docs/spec/contract/policy-v1.yaml#CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
+    contract_refs:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/conformance/report-format.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tools/spec_runner/tests/test_conformance_runner_unit.py
+      - tools/spec_runner/tests/test_validate_conformance_report_unit.py
+    implementation_refs:
+      - spec_runner/conformance.py
+    notes: "Conformance runner enforces requires.capabilities with skip/fail policy."

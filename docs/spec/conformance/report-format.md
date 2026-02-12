@@ -8,13 +8,14 @@ Conformance reports MUST use a mapping payload:
 Each result mapping MUST include:
 
 - `id`
-- `status` (`pass`/`fail`)
+- `status` (`pass`/`fail`/`skip`)
 - `category`
 - `message`
 
 Field constraints:
 
 - when `status=pass`: `category` MUST be `null`, `message` MUST be `null`
+- when `status=skip`: `category` MUST be `null`, `message` MUST be `null`
 - when `status=fail`: `category` MUST be one of `schema|assertion|runtime`
 - when `status=fail`: `message` MUST be a non-empty string
 

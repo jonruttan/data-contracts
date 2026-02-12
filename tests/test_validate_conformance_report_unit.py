@@ -21,3 +21,19 @@ def test_validate_sample_php_bootstrap_report_shape(tmp_path):
     loaded = json.loads(p.read_text(encoding="utf-8"))
     errs = validate_conformance_report_payload(loaded)
     assert errs == []
+
+
+def test_validate_report_accepts_skip_status():
+    report = {
+        "version": 1,
+        "results": [
+            {
+                "id": "SRCONF-SKIP-001",
+                "status": "skip",
+                "category": None,
+                "message": None,
+            }
+        ],
+    }
+    errs = validate_conformance_report_payload(report)
+    assert errs == []

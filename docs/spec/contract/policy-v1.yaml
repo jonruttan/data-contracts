@@ -200,3 +200,19 @@ rules:
     references:
       - docs/spec/conformance/style.md
       - docs/spec/contract/06-conformance.md
+
+  - id: CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
+    introduced_in: v1
+    scope: conformance
+    applies_to: fixtures.requires.capabilities
+    norm: MUST
+    requirement: honor_requires_capabilities_and_when_missing_policy
+    description: >
+      Implementations must evaluate requires.capabilities and apply
+      when_missing policy (`skip` or `fail`) deterministically.
+    rationale: Keeps feature-gated conformance behavior portable and explicit.
+    risk_if_violated: Capability-dependent cases drift across implementations.
+    references:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/schema/schema-v1.md
+      - docs/spec/conformance/report-format.md

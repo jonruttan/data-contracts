@@ -86,7 +86,7 @@ def test_conformance_report_validator_rejects_invalid_payload():
         }
     )
     assert errs
-    assert any("status must be one of: pass, fail" in e for e in errs)
+    assert any("status must be one of: pass, fail, skip" in e for e in errs)
     assert any("category must be null when status=pass" in e for e in errs)
 
 
@@ -140,3 +140,101 @@ expect:
     )
     with pytest.raises(ValueError, match="expect.portable must include status"):
         load_expected_results(cases_dir)
+
+
+def test_conformance_requires_capabilities_skip_when_missing(tmp_path, monkeypatch, capsys):
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "requires.spec.md").write_text(
+        """```yaml spec-test
+id: SRCONF-TMP-REQ-SKIP
+type: text.file
+requires:
+  capabilities: ["feature.x"]
+  when_missing: skip
+expect:
+  portable:
+    status: skip
+    category: null
+assert:
+  - target: text
+    must:
+      - contain: ["version: 1"]
+```
+""",
+        encoding="utf-8",
+    )
+    actual = run_conformance_cases(
+        cases_dir,
+        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        implementation="python",
+        capabilities=set(),
+    )
+    expected = load_expected_results(cases_dir, implementation="python")
+    assert compare_conformance_results(expected, actual) == []
+
+
+def test_conformance_requires_capabilities_fail_when_missing(tmp_path, monkeypatch, capsys):
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "requires-fail.spec.md").write_text(
+        """```yaml spec-test
+id: SRCONF-TMP-REQ-FAIL
+type: text.file
+requires:
+  capabilities: ["feature.y"]
+  when_missing: fail
+expect:
+  portable:
+    status: fail
+    category: runtime
+    message_tokens: ["feature.y"]
+assert:
+  - target: text
+    must:
+      - contain: ["version: 1"]
+```
+""",
+        encoding="utf-8",
+    )
+    actual = run_conformance_cases(
+        cases_dir,
+        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        implementation="python",
+        capabilities=set(),
+    )
+    expected = load_expected_results(cases_dir, implementation="python")
+    assert compare_conformance_results(expected, actual) == []
+
+
+def test_conformance_requires_rejects_invalid_when_missing(tmp_path, monkeypatch, capsys):
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "requires-invalid.spec.md").write_text(
+        """```yaml spec-test
+id: SRCONF-TMP-REQ-BAD
+type: text.file
+requires:
+  capabilities: ["feature.z"]
+  when_missing: maybe
+expect:
+  portable:
+    status: fail
+    category: schema
+    message_tokens: ["requires.when_missing"]
+assert:
+  - target: text
+    must:
+      - contain: ["version: 1"]
+```
+""",
+        encoding="utf-8",
+    )
+    actual = run_conformance_cases(
+        cases_dir,
+        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        implementation="python",
+        capabilities=set(),
+    )
+    expected = load_expected_results(cases_dir, implementation="python")
+    assert compare_conformance_results(expected, actual) == []
