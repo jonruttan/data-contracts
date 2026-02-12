@@ -103,10 +103,5 @@ assert:
     is: false
 ```
 
-Legacy negated text operators remain supported for compatibility:
-
-```yaml
-assert:
-  - target: stderr
-    not_contains: ["ERROR:"]
-```
+Legacy negated text operators remain supported for compatibility, but docs
+should use the canonical `contains`/`regex` form with `is: false`.

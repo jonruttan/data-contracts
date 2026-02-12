@@ -30,11 +30,8 @@ assert:
 
 Equivalent legacy shape (still supported):
 
-```yaml
-assert:
-  - target: stderr
-    not_contains: ["ERROR:"]
-```
+`not_contains`/`not_regex` remain accepted for compatibility, but canonical
+docs should use `contains`/`regex` with `is: false`.
 
 Default `is: true` (omitted):
 
