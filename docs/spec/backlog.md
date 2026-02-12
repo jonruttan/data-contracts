@@ -11,4 +11,4 @@ and low-risk scaffolding first).
 
 ## Next
 
-(no items)
+- `SR-PORT-001`: `docs/spec/pending/SR-PORT-001-portable-runner-contract.md`
