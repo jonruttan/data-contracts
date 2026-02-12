@@ -14,6 +14,12 @@ python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.j
 python3 -m pytest
 ```
 
+Canonical pre-merge check:
+
+```sh
+./scripts/ci_gate.sh
+```
+
 ## Required CI Gate
 
 Merges are expected to pass the `spec_runner` CI job, which runs:
@@ -24,6 +30,12 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 - `tools/spec_runner` pytest suite
 - artifact upload of `.artifacts/contract-coverage.json`
 - artifact upload of `.artifacts/conformance-parity.json`
+
+Local equivalent:
+
+```sh
+./scripts/ci_gate.sh
+```
 
 ## Contract Governance Check
 
