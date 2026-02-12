@@ -47,6 +47,22 @@ Contract docs for interpreting those fixtures live in:
 - `docs/spec/contract/06-conformance.md`
 - `docs/spec/conformance/report-format.md`
 
+## PHP Bootstrap Parity
+
+Generate a bootstrap PHP report:
+
+```sh
+php scripts/php/conformance_runner.php \
+  --cases fixtures/conformance/cases \
+  --out .artifacts/php-conformance-report.json
+```
+
+Validate bootstrap report shape:
+
+```sh
+python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report.json
+```
+
 ## Build / Publish
 
 ```sh
