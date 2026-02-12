@@ -5,6 +5,7 @@
 ```yaml spec-test
 id: SRCONF-ERR-001
 title: failing assertion includes context tokens in message
+why: failing assertion includes context tokens in message
 type: text.file
 expect:
   portable:

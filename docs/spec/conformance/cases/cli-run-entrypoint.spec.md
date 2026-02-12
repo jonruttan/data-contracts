@@ -5,6 +5,7 @@
 ```yaml spec-test
 id: SRCONF-CLI-001
 title: conformance fixture sets explicit cli.run harness.entrypoint
+why: conformance fixture sets explicit cli.run harness.entrypoint
 type: cli.run
 requires:
   capabilities: ["cli.run"]
@@ -29,6 +30,7 @@ assert: []
 ```yaml spec-test
 id: SRCONF-CLI-002
 title: explicit entrypoint is used even if env fallback var is set
+why: explicit entrypoint is used even if env fallback var is set
 type: cli.run
 requires:
   capabilities: ["cli.run"]

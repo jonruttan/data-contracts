@@ -5,6 +5,7 @@
 ```yaml spec-test
 id: SRCONF-AH-001
 title: assert_health warn emits diagnostics but case still passes
+why: assert_health warn emits diagnostics but case still passes
 type: text.file
 expect:
   portable:
@@ -23,6 +24,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-002
 title: assert_health error fails the case
+why: assert_health error fails the case
 type: text.file
 expect:
   portable:
@@ -41,6 +43,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-003
 title: invalid assert_health.mode is a schema error
+why: invalid assert_health.mode is a schema error
 type: text.file
 expect:
   portable:
@@ -59,6 +62,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-004
 title: per-case ignore override can neutralize global strict mode
+why: per-case ignore override can neutralize global strict mode
 type: text.file
 expect:
   portable:
@@ -77,6 +81,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-005
 title: redundant sibling branches fail when assert_health mode is error
+why: redundant sibling branches fail when assert_health mode is error
 type: text.file
 expect:
   portable:
@@ -98,6 +103,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-006
 title: non-portable regex fails when assert_health mode is error
+why: non-portable regex fails when assert_health mode is error
 type: text.file
 expect:
   portable:

@@ -479,6 +479,7 @@ def test_contract_governance_fails_on_missing_case_heading(tmp_path):
 
 ```yaml spec-test
 id: SRCONF-BAD-003
+why: validate heading placement rule independently
 type: text.file
 expect:
   portable:
@@ -502,6 +503,7 @@ def test_contract_governance_fails_when_case_index_missing_fixture_id(tmp_path):
 
 ```yaml spec-test
 id: SRCONF-IDX-001
+why: validate index coverage catches missing ids
 type: text.file
 expect:
   portable:
@@ -530,6 +532,7 @@ def test_contract_governance_fails_when_case_index_has_stale_id(tmp_path):
 
 ```yaml spec-test
 id: SRCONF-IDX-002
+why: validate index coverage catches stale ids
 type: text.file
 expect:
   portable:
@@ -545,3 +548,58 @@ expect:
 
     errs = check_contract_governance(tmp_path)
     assert any("conformance case index has stale id: SRCONF-STALE-123" in e for e in errs)
+
+
+def test_contract_governance_fails_when_case_why_is_missing(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R13")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/missing-why.spec.md",
+        """# Sample
+
+## SRCONF-WHY-001
+
+```yaml spec-test
+id: SRCONF-WHY-001
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-WHY-001\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("case must include non-empty why" in e for e in errs)
+
+
+def test_contract_governance_fails_when_case_why_is_empty(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R14")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/empty-why.spec.md",
+        """# Sample
+
+## SRCONF-WHY-002
+
+```yaml spec-test
+id: SRCONF-WHY-002
+why: "   "
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-WHY-002\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("case must include non-empty why" in e for e in errs)

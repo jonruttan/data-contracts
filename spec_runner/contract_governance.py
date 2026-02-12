@@ -89,6 +89,9 @@ def _lint_conformance_case_docs(cases_dir: Path) -> list[str]:
                 errs.append(f"conformance style: one case per spec-test block required in {p}:{start + 1}")
             if isinstance(payload, dict):
                 rid = str(payload.get("id", "")).strip()
+                why = str(payload.get("why", "")).strip()
+                if not why:
+                    errs.append(f"conformance style: case must include non-empty why: {p}:{start + 1}")
                 if rid:
                     ids_in_file.append(rid)
                     if rid in global_ids:

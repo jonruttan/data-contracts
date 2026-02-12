@@ -5,6 +5,7 @@
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-001
 title: text.file contain assertion passes in php bootstrap
+why: text.file contain assertion passes in php bootstrap
 type: text.file
 expect:
   portable:
@@ -21,6 +22,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-002
 title: text.file regex assertion can fail in php bootstrap
+why: text.file regex assertion can fail in php bootstrap
 type: text.file
 expect:
   portable:
@@ -37,6 +39,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-003
 title: nested must group with inherited target passes
+why: nested must group with inherited target passes
 type: text.file
 expect:
   portable:
@@ -54,6 +57,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-004
 title: can passes when at least one branch passes
+why: can passes when at least one branch passes
 type: text.file
 expect:
   portable:
@@ -71,6 +75,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-005
 title: can fails when all branches fail
+why: can fails when all branches fail
 type: text.file
 expect:
   portable:
@@ -88,6 +93,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-006
 title: cannot passes when all branches fail
+why: cannot passes when all branches fail
 type: text.file
 expect:
   portable:
@@ -105,6 +111,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-007
 title: cannot fails when any branch passes
+why: cannot fails when any branch passes
 type: text.file
 expect:
   portable:
@@ -122,6 +129,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-008
 title: nested mixed groups with inherited target passes
+why: nested mixed groups with inherited target passes
 type: text.file
 expect:
   portable:
@@ -142,6 +150,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-009
 title: non-portable regex fails under assert_health error mode
+why: non-portable regex fails under assert_health error mode
 type: text.file
 expect:
   portable:
@@ -162,6 +171,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-010
 title: AH001 empty contain fails under assert_health error mode
+why: AH001 empty contain fails under assert_health error mode
 type: text.file
 expect:
   portable:
@@ -182,6 +192,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-011
 title: AH002 always-true regex fails under assert_health error mode
+why: AH002 always-true regex fails under assert_health error mode
 type: text.file
 expect:
   portable:
@@ -202,6 +213,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-012
 title: AH003 duplicate contain values fail under assert_health error mode
+why: AH003 duplicate contain values fail under assert_health error mode
 type: text.file
 expect:
   portable:
@@ -222,6 +234,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-013
 title: AH004 redundant branch fails under assert_health error mode
+why: AH004 redundant branch fails under assert_health error mode
 type: text.file
 expect:
   portable:
@@ -243,6 +256,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-014
 title: warn mode emits diagnostics without failing the case
+why: warn mode emits diagnostics without failing the case
 type: text.file
 expect:
   portable:

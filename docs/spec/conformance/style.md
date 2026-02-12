@@ -9,6 +9,7 @@ Style rules:
 - each block must be immediately preceded by `## <case-id>`
 - case ids must be sorted ascending within each file
 - each fenced block should stay small (50 lines max) for readability
+- each case must include a non-empty `why` field describing the intent
 
 Rationale:
 
