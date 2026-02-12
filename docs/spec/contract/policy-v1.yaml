@@ -104,3 +104,19 @@ rules:
       - docs/spec/contract/00-design-goals.md
       - docs/spec/contract/03-assertions.md
       - docs/spec/schema/schema-v1.md
+
+  - id: ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
+    introduced_in: v1
+    scope: case
+    applies_to: assert.tree.regex
+    norm: SHOULD
+    requirement: detect_non_portable_regex_constructs
+    description: >
+      Implementations should diagnose regex patterns that use non-portable
+      constructs and surface them via assertion-health policy modes.
+    rationale: Preserves cross-language determinism and reduces portability drift.
+    risk_if_violated: Specs may pass in one runtime and fail in another.
+    references:
+      - docs/spec/contract/00-design-goals.md
+      - docs/spec/contract/03-assertions.md
+      - docs/spec/schema/schema-v1.md

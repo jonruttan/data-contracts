@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 from typing import Any
 
 
@@ -13,6 +14,15 @@ class AssertionHealthDiagnostic:
 
 _ALWAYS_TRUE_REGEX = {".*", "^.*$", r"\A.*\Z"}
 _VALID_MODES = {"ignore", "warn", "error"}
+_NON_PORTABLE_REGEX_TOKENS: tuple[tuple[str, str], ...] = (
+    (r"\(\?<=|\(\?<!", "lookbehind"),
+    (r"\(\?P<|\(\?<([A-Za-z_][A-Za-z0-9_]*)>", "named capture group"),
+    (r"\\k<", "named backreference"),
+    (r"\(\?\(", "conditional group"),
+    (r"\(\?[aiLmsux-]+:|\(\?[aiLmsux-]+\)", "inline flags"),
+    (r"\(\?>", "atomic group"),
+    (r"(?<!\\)(?:\\\\)*[+*?]\+", "possessive quantifier"),
+)
 
 
 def resolve_assert_health_mode(test: dict[str, Any], *, env: dict[str, str]) -> str:
@@ -99,6 +109,16 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                         if group_ctx == "cannot":
                             msg = "cannot(regex always-true) is always false"
                         out.append(AssertionHealthDiagnostic(code=code, message=msg, path=f"{path}.regex"))
+                    for pattern, reason in _NON_PORTABLE_REGEX_TOKENS:
+                        if re.search(pattern, v):
+                            out.append(
+                                AssertionHealthDiagnostic(
+                                    code="AH005",
+                                    message=f"regex uses non-portable construct ({reason})",
+                                    path=f"{path}.regex",
+                                )
+                            )
+                            break
 
     _walk(assert_spec, path="assert", group_ctx=None)
     return out

@@ -50,3 +50,13 @@ cases:
         can:
           - contain: ["version: 1"]
           - contain: ["version: 1"]
+
+  - id: SRCONF-AH-006
+    title: non-portable regex fails when assert_health mode is error
+    type: text.file
+    assert_health:
+      mode: error
+    assert:
+      - target: text
+        must:
+          - regex: ["(?<=version: )1"]

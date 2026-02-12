@@ -33,6 +33,18 @@ Canonical operators:
 
 Operator values MUST be lists.
 
+## Portable Regex Subset
+
+`regex` patterns SHOULD stay within a portable subset across implementations.
+Runners SHOULD emit assertion-health diagnostics for patterns that use
+non-portable constructs, including:
+
+- lookbehind (`(?<=...)`, `(?<!...)`)
+- named capture groups / named backreferences
+- inline flags (`(?i)`, `(?m:...)`, etc.)
+- conditional groups
+- atomic groups / possessive quantifiers
+
 ## Assertion Health Note
 
 Redundant sibling branches within a group (for example duplicate `can` branch

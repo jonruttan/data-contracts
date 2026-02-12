@@ -46,3 +46,15 @@ def test_lint_detects_redundant_group_branches():
         ]
     )
     assert any(d.code == "AH004" for d in diags)
+
+
+def test_lint_detects_non_portable_regex_constructs():
+    diags = lint_assert_tree(
+        [
+            {
+                "target": "stderr",
+                "must": [{"regex": [r"(?<=ERROR: )detail"]}],
+            }
+        ]
+    )
+    assert any(d.code == "AH005" for d in diags)

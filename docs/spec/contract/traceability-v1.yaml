@@ -111,3 +111,21 @@ links:
       - spec_runner/assertion_health.py
       - spec_runner/harnesses/cli_run.py
     notes: "Python emits AH004 for redundant sibling branches."
+
+  - rule_id: ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
+    policy_ref: docs/spec/contract/policy-v1.yaml#ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
+    contract_refs:
+      - docs/spec/contract/00-design-goals.md
+      - docs/spec/contract/03-assertions.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids:
+      - SRCONF-AH-006
+    unit_test_refs:
+      - tools/spec_runner/tests/test_assertion_health_unit.py
+      - tools/spec_runner/tests/test_conformance_runner_unit.py
+    implementation_refs:
+      - spec_runner/assertion_health.py
+      - spec_runner/harnesses/text_file.py
+      - spec_runner/harnesses/cli_run.py
+    notes: "Python emits AH005 for non-portable regex constructs."

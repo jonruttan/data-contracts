@@ -120,6 +120,8 @@ Supported operators:
 Operator constraints:
 
 - all operator values MUST be lists
+- `regex` SHOULD use a portable subset; implementations SHOULD diagnose
+  non-portable constructs via assertion-health policy
 - `json_type` supports `dict` and `list`
 - `exists` is currently supported only for `target: stdout_path`
 - `stdout_path.exists` only accepts `true` (or `null`) values

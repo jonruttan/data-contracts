@@ -21,3 +21,9 @@ results:
     category: assertion
     message_tokens:
       - AH004
+
+  - id: SRCONF-AH-006
+    status: fail
+    category: assertion
+    message_tokens:
+      - AH005
