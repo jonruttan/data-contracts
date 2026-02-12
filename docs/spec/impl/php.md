@@ -20,7 +20,9 @@ Runtime requirement:
 
 Current bootstrap behavior:
 
-- Reads fixtures from `fixtures/conformance/cases/*.yaml`
+- Reads case inputs from Markdown spec docs (`*.spec.md`)
+- For Markdown docs, parses fenced `spec-test` YAML blocks
+  (backticks or tildes, matching Python fence/token rules)
 - Executes `text.file` cases with:
   - `must`, `can`, `cannot` groups
   - `contain` and `regex` operators
@@ -35,7 +37,7 @@ Example:
 
 ```sh
 php scripts/php/conformance_runner.php \
-  --cases fixtures/conformance/cases/php-text-file-subset.yaml \
+  --cases fixtures/conformance/cases/php-text-file-subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
 
@@ -47,5 +49,4 @@ python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report
 
 Bootstrap parity subset fixture:
 
-- `fixtures/conformance/cases/php-text-file-subset.yaml`
-- `fixtures/conformance/expected/php-text-file-subset.yaml`
+- `fixtures/conformance/cases/php-text-file-subset.spec.md`

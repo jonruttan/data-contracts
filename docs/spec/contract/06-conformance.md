@@ -6,3 +6,24 @@ Implementations are conformant when equivalent fixture sets produce equivalent:
 - failure category per case id
 
 Stack traces and language-specific exception classes need not match.
+
+## Expected Outcomes DSL
+
+Conformance cases define expected outcomes directly in case records using:
+
+- `expect.portable`: shared expectations for all implementations
+- `expect.impl.<name>`: implementation-specific overrides (for example
+  `python`, `php`)
+
+Expected keys:
+
+- `status`: `pass` or `fail`
+- `category`: `schema` / `assertion` / `runtime` / `null`
+- `message_tokens`: optional list of tokens expected in failure messages
+
+Resolution order:
+
+1. Start from `expect.portable`.
+2. If `expect.impl.<implementation>` exists, overlay its keys.
+
+`expect` is required for conformance fixture cases.

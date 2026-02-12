@@ -168,3 +168,19 @@ rules:
     references:
       - docs/spec/contract/03-assertions.md
       - docs/spec/schema/schema-v1.md
+
+  - id: CONFORMANCE_EXPECT_OVERLAY_RESOLUTION
+    introduced_in: v1
+    scope: conformance
+    applies_to: fixtures.expect
+    norm: MUST
+    requirement: resolve_expectations_portable_then_impl_overlay
+    description: >
+      When conformance cases define inline expect metadata, implementations must
+      resolve expected outcomes by starting from expect.portable and then
+      overlaying expect.impl.<implementation> keys.
+    rationale: Keeps portable intent primary while allowing explicit runtime deltas.
+    risk_if_violated: Implementations drift on expectation resolution semantics.
+    references:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/schema/schema-v1.md

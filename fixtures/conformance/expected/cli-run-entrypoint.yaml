@@ -1,9 +1,0 @@
-version: 1
-results:
-  - id: SRCONF-CLI-001
-    status: pass
-    category: null
-
-  - id: SRCONF-CLI-002
-    status: pass
-    category: null

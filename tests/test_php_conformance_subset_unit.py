@@ -30,17 +30,13 @@ def _php_has_yaml_extension() -> bool:
 def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
     repo_root = Path(__file__).resolve().parents[3]
 
-    cases_src = repo_root / "tools/spec_runner/fixtures/conformance/cases/php-text-file-subset.yaml"
-    expected_src = repo_root / "tools/spec_runner/fixtures/conformance/expected/php-text-file-subset.yaml"
+    cases_src = repo_root / "tools/spec_runner/fixtures/conformance/cases/php-text-file-subset.spec.md"
     php_runner = repo_root / "tools/spec_runner/scripts/php/conformance_runner.php"
 
     cases_dir = tmp_path / "cases"
-    expected_dir = tmp_path / "expected"
     out_json = tmp_path / "php-report.json"
     cases_dir.mkdir(parents=True)
-    expected_dir.mkdir(parents=True)
     (cases_dir / cases_src.name).write_text(cases_src.read_text(encoding="utf-8"), encoding="utf-8")
-    (expected_dir / expected_src.name).write_text(expected_src.read_text(encoding="utf-8"), encoding="utf-8")
 
     subprocess.run(
         [
@@ -70,6 +66,51 @@ def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
         )
         for r in payload.get("results", [])
     ]
-    expected = load_expected_results(expected_dir)
+    expected = load_expected_results(cases_dir, implementation="php")
     errs = compare_conformance_results(expected, actual)
     assert errs == []
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_bootstrap_runner_can_parse_markdown_spec_test_blocks(tmp_path):
+    repo_root = Path(__file__).resolve().parents[3]
+    php_runner = repo_root / "tools/spec_runner/scripts/php/conformance_runner.php"
+    cases_dir = tmp_path / "docs_spec"
+    out_json = tmp_path / "php-md-report.json"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "sample.spec.md").write_text(
+        """# Example
+
+```yaml spec-test
+id: SRCONF-PHP-MD-001
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["SRCONF-PHP-MD-001"]
+```
+""",
+        encoding="utf-8",
+    )
+
+    subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    errs = validate_conformance_report_payload(payload)
+    assert errs == []
+    assert payload["results"] == [
+        {"id": "SRCONF-PHP-MD-001", "status": "pass", "category": None, "message": None}
+    ]

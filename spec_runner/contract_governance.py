@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from spec_runner.doc_parser import iter_spec_doc_tests
 
 _NORMATIVE_CONTRACT_DOCS = [
     "docs/spec/contract/00-design-goals.md",
@@ -27,29 +28,10 @@ def _read_yaml(path: Path) -> Any:
 
 def _collect_fixture_case_ids(path: Path) -> set[str]:
     ids: set[str] = set()
-    for p in sorted(path.glob("*.y*ml")):
-        payload = _read_yaml(p)
-        if not isinstance(payload, dict):
-            continue
-        cases = payload.get("cases") or []
-        if isinstance(cases, list):
-            for c in cases:
-                if isinstance(c, dict) and c.get("id"):
-                    ids.add(str(c["id"]))
-    return ids
-
-
-def _collect_expected_ids(path: Path) -> set[str]:
-    ids: set[str] = set()
-    for p in sorted(path.glob("*.y*ml")):
-        payload = _read_yaml(p)
-        if not isinstance(payload, dict):
-            continue
-        results = payload.get("results") or []
-        if isinstance(results, list):
-            for r in results:
-                if isinstance(r, dict) and r.get("id"):
-                    ids.add(str(r["id"]))
+    for spec in iter_spec_doc_tests(path):
+        rid = str(spec.test.get("id", "")).strip()
+        if rid:
+            ids.add(rid)
     return ids
 
 
@@ -74,16 +56,14 @@ def _exists_repo_or_runner(repo_root: Path, rel: str) -> bool:
     return (repo_root / "tools/spec_runner" / rel).exists()
 
 
-def _load_policy_and_trace(repo_root: Path) -> tuple[dict[str, Any], dict[str, Any], set[str], set[str]]:
+def _load_policy_and_trace(repo_root: Path) -> tuple[dict[str, Any], dict[str, Any], set[str]]:
     policy_path = repo_root / "tools/spec_runner/docs/spec/contract/policy-v1.yaml"
     trace_path = repo_root / "tools/spec_runner/docs/spec/contract/traceability-v1.yaml"
     cases_dir = repo_root / "tools/spec_runner/fixtures/conformance/cases"
-    expected_dir = repo_root / "tools/spec_runner/fixtures/conformance/expected"
     policy = _read_yaml(policy_path) or {}
     trace = _read_yaml(trace_path) or {}
     conformance_ids = _collect_fixture_case_ids(cases_dir)
-    expected_ids = _collect_expected_ids(expected_dir)
-    return policy, trace, conformance_ids, expected_ids
+    return policy, trace, conformance_ids
 
 
 def _parse_contract_version(label: str) -> int | None:
@@ -98,7 +78,7 @@ def _parse_contract_version(label: str) -> int | None:
 
 def build_contract_coverage(repo_root: Path) -> list[RuleCoverage]:
     repo_root = repo_root.resolve()
-    policy, trace, _conformance_ids, _expected_ids = _load_policy_and_trace(repo_root)
+    policy, trace, _conformance_ids = _load_policy_and_trace(repo_root)
     rules = policy.get("rules") or []
     links = trace.get("links") or []
     if not isinstance(rules, list) or not isinstance(links, list):
@@ -184,7 +164,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
     errs: list[str] = []
     repo_root = repo_root.resolve()
 
-    policy, trace, conformance_ids, expected_ids = _load_policy_and_trace(repo_root)
+    policy, trace, conformance_ids = _load_policy_and_trace(repo_root)
     rules = policy.get("rules") or []
     links = trace.get("links") or []
     if not isinstance(rules, list):
@@ -309,8 +289,6 @@ def check_contract_governance(repo_root: Path) -> list[str]:
             c = str(cid)
             if c not in conformance_ids:
                 errs.append(f"missing conformance case id for {rid}: {c}")
-            if c not in expected_ids:
-                errs.append(f"missing expected result id for {rid}: {c}")
 
     for rel in _NORMATIVE_CONTRACT_DOCS:
         if not _exists_repo_or_runner(repo_root, rel):

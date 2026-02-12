@@ -7,7 +7,7 @@ from typing import Any
 import yaml
 
 from spec_runner.dispatcher import SpecRunContext, run_case
-from spec_runner.doc_parser import SpecDocTest
+from spec_runner.doc_parser import SpecDocTest, iter_spec_doc_tests
 
 
 @dataclass(frozen=True)
@@ -36,48 +36,63 @@ def _read_yaml(path: Path) -> Any:
 
 def load_conformance_cases(cases_dir: Path) -> list[tuple[Path, dict[str, Any]]]:
     out: list[tuple[Path, dict[str, Any]]] = []
-    for p in sorted(cases_dir.glob("*.y*ml")):
-        payload = _read_yaml(p)
-        if not isinstance(payload, dict):
-            raise TypeError(f"conformance cases file must be a mapping: {p}")
-        cases = payload.get("cases") or []
-        if not isinstance(cases, list):
-            raise TypeError(f"conformance cases must be a list: {p}")
-        for c in cases:
-            if not isinstance(c, dict):
-                raise TypeError(f"conformance case must be a mapping: {p}")
-            if "id" not in c or "type" not in c:
-                raise ValueError(f"conformance case must include 'id' and 'type': {p}")
-            out.append((p, c))
+    for spec in iter_spec_doc_tests(cases_dir):
+        out.append((spec.doc_path, dict(spec.test)))
     return out
 
 
-def load_expected_results(expected_dir: Path) -> dict[str, ExpectedConformanceResult]:
+def _parse_expected_entry(raw: dict[str, Any], *, where: str) -> ExpectedConformanceResult:
+    rid = str(raw.get("id", "")).strip()
+    if not rid:
+        raise ValueError(f"conformance expect entry missing id: {where}")
+    msg_tokens = raw.get("message_tokens")
+    if msg_tokens is not None:
+        if not isinstance(msg_tokens, list):
+            raise TypeError(f"conformance expect message_tokens must be a list: {where}")
+        msg_tokens = [str(x) for x in msg_tokens]
+    return ExpectedConformanceResult(
+        id=rid,
+        status=str(raw.get("status", "")).strip(),
+        category=None if raw.get("category") is None else str(raw.get("category")),
+        message_tokens=msg_tokens,
+    )
+
+
+def load_expected_results(
+    cases_dir: Path,
+    *,
+    implementation: str = "python",
+) -> dict[str, ExpectedConformanceResult]:
     out: dict[str, ExpectedConformanceResult] = {}
-    for p in sorted(expected_dir.glob("*.y*ml")):
-        payload = _read_yaml(p)
-        if not isinstance(payload, dict):
-            raise TypeError(f"conformance expected file must be a mapping: {p}")
-        results = payload.get("results") or []
-        if not isinstance(results, list):
-            raise TypeError(f"conformance expected results must be a list: {p}")
-        for r in results:
-            if not isinstance(r, dict):
-                raise TypeError(f"conformance expected item must be a mapping: {p}")
-            rid = str(r.get("id", "")).strip()
-            if not rid:
-                raise ValueError(f"conformance expected item missing id: {p}")
-            msg_tokens = r.get("message_tokens")
-            if msg_tokens is not None:
-                if not isinstance(msg_tokens, list):
-                    raise TypeError(f"conformance expected message_tokens must be a list: {p}")
-                msg_tokens = [str(x) for x in msg_tokens]
-            out[rid] = ExpectedConformanceResult(
-                id=rid,
-                status=str(r.get("status", "")).strip(),
-                category=None if r.get("category") is None else str(r.get("category")),
-                message_tokens=msg_tokens,
-            )
+    impl = str(implementation).strip() or "python"
+    for i, spec in enumerate(iter_spec_doc_tests(cases_dir)):
+        p = spec.doc_path
+        c = spec.test
+        case_id = str(c.get("id", "")).strip()
+        raw_expect = c.get("expect")
+        if raw_expect is None:
+            raise ValueError(f"conformance case expect is required: {p} cases[{i}]")
+        if not isinstance(raw_expect, dict):
+            raise TypeError(f"conformance case expect must be a mapping: {p} cases[{i}]")
+        portable = raw_expect.get("portable")
+        if portable is None:
+            portable = {k: v for k, v in raw_expect.items() if k in ("status", "category", "message_tokens")}
+        if not isinstance(portable, dict) or "status" not in portable:
+            raise ValueError(f"conformance case expect.portable must include status: {p} cases[{i}]")
+
+        merged: dict[str, Any] = {"id": case_id, **portable}
+        impl_map = raw_expect.get("impl")
+        if impl_map is not None:
+            if not isinstance(impl_map, dict):
+                raise TypeError(f"conformance case expect.impl must be a mapping: {p} cases[{i}]")
+            impl_exp = impl_map.get(impl)
+            if impl_exp is not None:
+                if not isinstance(impl_exp, dict):
+                    raise TypeError(
+                        f"conformance case expect.impl.{impl} must be a mapping: {p} cases[{i}]"
+                    )
+                merged.update({k: v for k, v in impl_exp.items() if k in ("status", "category", "message_tokens")})
+        out[case_id] = _parse_expected_entry(merged, where=f"{p} cases[{i}] expect")
     return out
 
 

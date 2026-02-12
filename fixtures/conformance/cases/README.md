@@ -7,4 +7,8 @@ Recommendations:
 - Keep case ids stable.
 - Prefer small, focused cases per behavior.
 - Include both pass and fail cases.
-- Use YAML files with top-level `cases:`.
+- Use Markdown `.spec.md` files with fenced `yaml spec-test` blocks.
+- Prefer inline expectations via:
+  - `expect.portable`
+  - optional `expect.impl.<runtime>` overrides
+- Conformance fixture cases should always include `expect.portable.status`.

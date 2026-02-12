@@ -15,6 +15,8 @@ This schema defines the stable shape of executable spec tests embedded in
 - `type` (string, required): dispatch key (e.g. `cli.run`)
 - `title` (string, optional): human description
 - `assert_health` (mapping, optional): assertion-health policy override
+- `expect` (mapping, optional): conformance outcome expectations
+- `requires` (mapping, optional): capability requirements metadata
 
 Parser behavior:
 
@@ -30,6 +32,20 @@ Parser behavior:
 - `mode` (string): one of `ignore`, `warn`, `error`
 - if omitted, implementations may use a global default (for example env policy)
 - policy-driven diagnostics may include redundant sibling assertion branches
+
+`expect` (conformance metadata):
+
+- `portable` (mapping): shared expectation baseline
+- `impl` (mapping): per-implementation overlays keyed by runtime name
+- expected keys in `portable`/`impl.*`:
+  - `status`: `pass` or `fail`
+  - `category`: `schema` / `assertion` / `runtime` / `null`
+  - `message_tokens`: optional list of expected message tokens
+- for conformance fixture cases, `expect.portable` with `status` is required
+
+`requires` (metadata):
+
+- `capabilities` (list[string], optional): declared capabilities for the case
 
 ## Type-Specific Fields
 

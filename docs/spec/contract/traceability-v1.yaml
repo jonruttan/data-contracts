@@ -178,3 +178,17 @@ links:
     implementation_refs:
       - spec_runner/contract_governance.py
     notes: "Governance checks synchronized core operator tokens between docs."
+
+  - rule_id: CONFORMANCE_EXPECT_OVERLAY_RESOLUTION
+    policy_ref: docs/spec/contract/policy-v1.yaml#CONFORMANCE_EXPECT_OVERLAY_RESOLUTION
+    contract_refs:
+      - docs/spec/contract/06-conformance.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tools/spec_runner/tests/test_conformance_runner_unit.py
+      - tools/spec_runner/tests/test_php_conformance_subset_unit.py
+    implementation_refs:
+      - spec_runner/conformance.py
+    notes: "Conformance expectations resolve portable baseline with implementation overlays."

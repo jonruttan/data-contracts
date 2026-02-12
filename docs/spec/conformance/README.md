@@ -6,19 +6,15 @@ parity.
 Planned contents:
 
 - fixture case files
-- expected outcome files
+- inline expected outcomes on case records
 - parity checks between Python and PHP implementations
 
 Current seed:
 
-- `fixtures/conformance/cases/cli-run-entrypoint.yaml`
-- `fixtures/conformance/cases/assertion-health.yaml`
-- `fixtures/conformance/cases/failure-context.yaml`
-- `fixtures/conformance/cases/php-text-file-subset.yaml`
-- `fixtures/conformance/expected/cli-run-entrypoint.yaml`
-- `fixtures/conformance/expected/assertion-health.yaml`
-- `fixtures/conformance/expected/failure-context.yaml`
-- `fixtures/conformance/expected/php-text-file-subset.yaml`
+- `fixtures/conformance/cases/cli-run-entrypoint.spec.md`
+- `fixtures/conformance/cases/assertion-health.spec.md`
+- `fixtures/conformance/cases/failure-context.spec.md`
+- `fixtures/conformance/cases/php-text-file-subset.spec.md`
 
 Python reference execution is covered by:
 

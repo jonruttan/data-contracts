@@ -1,9 +1,0 @@
-version: 1
-cases:
-  - id: SRCONF-ERR-001
-    title: failing assertion includes context tokens in message
-    type: text.file
-    assert:
-      - target: text
-        must:
-          - regex: ["\\A\\Z"]

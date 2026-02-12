@@ -47,12 +47,12 @@ function parseArgs(array $argv): array {
     return ['out' => $out, 'cases' => $cases];
 }
 
-function listYamlFiles(string $path): array {
+function listCaseFiles(string $path): array {
     if (is_file($path)) {
-        if (preg_match('/\.ya?ml$/i', $path) === 1) {
+        if (preg_match('/\.spec\.md$/i', $path) === 1) {
             return [$path];
         }
-        throw new RuntimeException("cases path is a file but not YAML: {$path}");
+        throw new RuntimeException("cases path is a file but not supported (*.spec.md): {$path}");
     }
     $files = [];
     $items = scandir($path);
@@ -67,7 +67,7 @@ function listYamlFiles(string $path): array {
         if (!is_file($itemPath)) {
             continue;
         }
-        if (preg_match('/\.ya?ml$/i', $item)) {
+        if (preg_match('/\.spec\.md$/i', $item)) {
             $files[] = $itemPath;
         }
     }
@@ -88,7 +88,49 @@ function isListArray(mixed $value): bool {
     return array_keys($value) === range(0, count($value) - 1);
 }
 
-function parseYamlCases(string $path): array {
+function isSpecTestOpeningFence(string $line): ?array {
+    $trimmed = ltrim($line, " \t");
+    if ($trimmed === '') {
+        return null;
+    }
+    $first = $trimmed[0];
+    if ($first !== '`' && $first !== '~') {
+        return null;
+    }
+    $i = 0;
+    $n = strlen($trimmed);
+    while ($i < $n && $trimmed[$i] === $first) {
+        $i++;
+    }
+    if ($i < 3) {
+        return null;
+    }
+    $info = trim(substr($trimmed, $i));
+    if ($info === '') {
+        return null;
+    }
+    $tokens = preg_split('/\s+/', strtolower($info)) ?: [];
+    $set = array_fill_keys($tokens, true);
+    if (!isset($set['spec-test']) || (!isset($set['yaml']) && !isset($set['yml']))) {
+        return null;
+    }
+    return [$first, $i];
+}
+
+function isClosingFence(string $line, string $char, int $minLen): bool {
+    $trimmed = rtrim(ltrim($line, " \t"));
+    if ($trimmed === '' || $trimmed[0] !== $char) {
+        return false;
+    }
+    $i = 0;
+    $n = strlen($trimmed);
+    while ($i < $n && $trimmed[$i] === $char) {
+        $i++;
+    }
+    return $i >= $minLen && $i === $n;
+}
+
+function parseMarkdownCases(string $path): array {
     if (!function_exists('yaml_parse')) {
         throw new RuntimeException('yaml_parse extension is required for PHP conformance runner');
     }
@@ -96,15 +138,59 @@ function parseYamlCases(string $path): array {
     if ($raw === false) {
         throw new RuntimeException("cannot read fixture file: {$path}");
     }
-    $payload = @yaml_parse($raw);
-    if (!is_array($payload)) {
-        throw new RuntimeException("invalid YAML payload in fixture file: {$path}");
-    }
-    $cases = $payload['cases'] ?? null;
-    if (!is_array($cases) || !isListArray($cases)) {
-        throw new RuntimeException("fixture cases must be a list: {$path}");
+    $lines = preg_split('/\R/', $raw) ?: [];
+    $i = 0;
+    $cases = [];
+    while ($i < count($lines)) {
+        $open = isSpecTestOpeningFence($lines[$i]);
+        if ($open === null) {
+            $i++;
+            continue;
+        }
+        [$fenceChar, $fenceLen] = $open;
+        $i++;
+        $blockLines = [];
+        while ($i < count($lines) && !isClosingFence($lines[$i], $fenceChar, $fenceLen)) {
+            $blockLines[] = $lines[$i];
+            $i++;
+        }
+        if ($i >= count($lines)) {
+            break;
+        }
+        $payload = @yaml_parse(implode("\n", $blockLines));
+        if (is_array($payload) && isListArray($payload)) {
+            foreach ($payload as $test) {
+                if (!is_array($test)) {
+                    throw new RuntimeException("spec-test block in {$path} contains a non-mapping test");
+                }
+                if (!array_key_exists('type', $test) && array_key_exists('kind', $test)) {
+                    $test['type'] = $test['kind'];
+                    unset($test['kind']);
+                }
+                if (!array_key_exists('id', $test) || !array_key_exists('type', $test)) {
+                    throw new RuntimeException("spec-test in {$path} must include 'id' and 'type'");
+                }
+                $cases[] = $test;
+            }
+        } elseif (is_array($payload)) {
+            if (!array_key_exists('type', $payload) && array_key_exists('kind', $payload)) {
+                $payload['type'] = $payload['kind'];
+                unset($payload['kind']);
+            }
+            if (!array_key_exists('id', $payload) || !array_key_exists('type', $payload)) {
+                throw new RuntimeException("spec-test in {$path} must include 'id' and 'type'");
+            }
+            $cases[] = $payload;
+        } else {
+            throw new RuntimeException("spec-test block in {$path} must be a mapping or a list of mappings");
+        }
+        $i++;
     }
     return $cases;
+}
+
+function parseCases(string $path): array {
+    return parseMarkdownCases($path);
 }
 
 function lintAssertionHealth(mixed $node, string $path = 'assert'): array {
@@ -354,11 +440,11 @@ function evaluateCase(string $fixturePath, mixed $case): array {
 
 function main(array $argv): int {
     $args = parseArgs($argv);
-    $caseFiles = listYamlFiles($args['cases']);
+    $caseFiles = listCaseFiles($args['cases']);
 
     $results = [];
     foreach ($caseFiles as $path) {
-        foreach (parseYamlCases($path) as $case) {
+        foreach (parseCases($path) as $case) {
             $results[] = evaluateCase($path, $case);
         }
     }

@@ -2,6 +2,9 @@
 
 Expected conformance results for fixtures in `../cases/`.
 
+This directory is legacy-only while the fixture corpus is being consolidated on
+inline `expect` metadata in case records.
+
 Expected records should include:
 
 - `id`
