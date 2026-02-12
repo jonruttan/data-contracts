@@ -13,7 +13,20 @@ from spec_runner.conformance import (
 )
 
 
+def _php_has_yaml_extension() -> bool:
+    if shutil.which("php") is None:
+        return False
+    cp = subprocess.run(
+        ["php", "-r", "echo function_exists('yaml_parse') ? '1' : '0';"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return cp.stdout.strip() == "1"
+
+
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
     repo_root = Path(__file__).resolve().parents[3]
 

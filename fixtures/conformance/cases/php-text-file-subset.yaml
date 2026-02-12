@@ -15,3 +15,12 @@ cases:
       - target: text
         must:
           - regex: ["\\A\\Z"]
+
+  - id: SRCONF-PHP-TEXT-003
+    title: nested must group with inherited target passes
+    type: text.file
+    assert:
+      - target: text
+        must:
+          - must:
+              - contain: ["version: 1"]

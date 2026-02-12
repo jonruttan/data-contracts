@@ -7,7 +7,8 @@ declare(strict_types=1);
  *
  * This script is intentionally minimal and deterministic:
  * - Reads conformance case fixtures from a directory.
- * - Executes a small text.file subset (must + contain/regex).
+ * - Executes a small text.file subset using real YAML parsing.
+ * - Supports assertion tree subset: list + must groups + contain/regex leaves.
  * - Emits JSON report envelope matching report-format.md.
  * - Marks unsupported case types as runtime failures.
  *
@@ -74,109 +75,125 @@ function listYamlFiles(string $path): array {
     return $files;
 }
 
-function splitCaseBlocks(string $raw): array {
-    $lines = preg_split("/\r\n|\n|\r/", $raw);
-    $blocks = [];
-    $current = [];
-    foreach ($lines as $line) {
-        if (preg_match('/^\s*-\s*id:\s*(.+)\s*$/', $line) === 1) {
-            if (!empty($current)) {
-                $blocks[] = implode("\n", $current);
-                $current = [];
+class SchemaError extends RuntimeException {}
+class AssertionFailure extends RuntimeException {}
+
+function isListArray(mixed $value): bool {
+    if (!is_array($value)) {
+        return false;
+    }
+    if ($value === []) {
+        return true;
+    }
+    return array_keys($value) === range(0, count($value) - 1);
+}
+
+function parseYamlCases(string $path): array {
+    if (!function_exists('yaml_parse')) {
+        throw new RuntimeException('yaml_parse extension is required for PHP conformance runner');
+    }
+    $raw = file_get_contents($path);
+    if ($raw === false) {
+        throw new RuntimeException("cannot read fixture file: {$path}");
+    }
+    $payload = @yaml_parse($raw);
+    if (!is_array($payload)) {
+        throw new RuntimeException("invalid YAML payload in fixture file: {$path}");
+    }
+    $cases = $payload['cases'] ?? null;
+    if (!is_array($cases) || !isListArray($cases)) {
+        throw new RuntimeException("fixture cases must be a list: {$path}");
+    }
+    return $cases;
+}
+
+function evalTextLeaf(array $leaf, string $subject, string $target, string $caseId, string $path): void {
+    foreach ($leaf as $op => $raw) {
+        if ($op === 'target') {
+            continue;
+        }
+        if ($op !== 'contain' && $op !== 'regex') {
+            throw new SchemaError("unsupported op: {$op}");
+        }
+        if (!is_array($raw) || !isListArray($raw)) {
+            throw new SchemaError("assertion op '{$op}' must be a list");
+        }
+        foreach ($raw as $value) {
+            $v = (string)$value;
+            if ($op === 'contain') {
+                if (strpos($subject, $v) === false) {
+                    throw new AssertionFailure("[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed");
+                }
+            } else {
+                $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
+                if ($ok !== 1) {
+                    throw new AssertionFailure("[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed");
+                }
             }
         }
-        if (!empty($current) || preg_match('/^\s*-\s*id:\s*(.+)\s*$/', $line) === 1) {
-            $current[] = $line;
-        }
     }
-    if (!empty($current)) {
-        $blocks[] = implode("\n", $current);
-    }
-    return $blocks;
 }
 
-function parseInlineList(string $body): array {
-    $out = [];
-    $s = trim($body);
-    if ($s === '') {
-        return $out;
-    }
-    preg_match_all('/"((?:[^"\\\\]|\\\\.)*)"|\'((?:[^\'\\\\]|\\\\.)*)\'|([^,\s][^,]*)/', $s, $m, PREG_SET_ORDER);
-    foreach ($m as $g) {
-        if ($g[1] !== '') {
-            $out[] = stripcslashes($g[1]);
-        } elseif ($g[2] !== '') {
-            $out[] = stripcslashes($g[2]);
-        } else {
-            $out[] = trim($g[3]);
+function evalTextAssertNode(mixed $node, string $subject, ?string $inheritedTarget, string $caseId, string $path): void {
+    if (is_array($node) && isListArray($node)) {
+        foreach ($node as $i => $child) {
+            evalTextAssertNode($child, $subject, $inheritedTarget, $caseId, "{$path}[{$i}]");
         }
+        return;
     }
-    return $out;
-}
-
-function parseCaseBlock(string $block): array {
-    $id = null;
-    $type = null;
-    $assertHealthMode = null;
-    $contains = [];
-    $regexes = [];
-
-    if (preg_match('/^\s*-\s*id:\s*(.+)\s*$/m', $block, $m) === 1) {
-        $id = trim($m[1], " \"'");
+    if (!is_array($node)) {
+        throw new SchemaError('assert node must be a mapping or list');
     }
-    if (preg_match('/^\s*type:\s*(.+)\s*$/m', $block, $m) === 1) {
-        $type = trim($m[1], " \"'");
+    $target = $inheritedTarget;
+    if (array_key_exists('target', $node)) {
+        $target = trim((string)$node['target']);
     }
-    if (preg_match('/^\s*mode:\s*(.+)\s*$/m', $block, $m) === 1) {
-        $assertHealthMode = trim($m[1], " \"'");
-    }
-
-    preg_match_all('/^\s*-\s*contain:\s*\[(.*)\]\s*$/m', $block, $mContain, PREG_SET_ORDER);
-    foreach ($mContain as $row) {
-        foreach (parseInlineList($row[1]) as $v) {
-            $contains[] = $v;
+    if (array_key_exists('must', $node)) {
+        $children = $node['must'];
+        if (!is_array($children) || !isListArray($children) || count($children) === 0) {
+            throw new SchemaError('assert.must must be a non-empty list');
         }
-    }
-
-    preg_match_all('/^\s*-\s*regex:\s*\[(.*)\]\s*$/m', $block, $mRegex, PREG_SET_ORDER);
-    foreach ($mRegex as $row) {
-        foreach (parseInlineList($row[1]) as $v) {
-            $regexes[] = $v;
+        foreach ($children as $i => $child) {
+            evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.must[{$i}]");
         }
+        return;
     }
-
-    return [
-        'id' => $id,
-        'type' => $type,
-        'assert_health_mode' => $assertHealthMode,
-        'contain' => $contains,
-        'regex' => $regexes,
-    ];
+    if ($target !== 'text') {
+        throw new SchemaError('unknown assert target for text.file');
+    }
+    evalTextLeaf($node, $subject, $target, $caseId, $path);
 }
 
 function evaluateTextFileCase(array $case, string $subject): array {
-    $mode = $case['assert_health_mode'];
+    $mode = isset($case['assert_health']['mode']) ? (string)$case['assert_health']['mode'] : null;
     if ($mode !== null && !in_array(strtolower($mode), ['ignore', 'warn', 'error'], true)) {
         return ['status' => 'fail', 'category' => 'schema', 'message' => 'invalid assert_health.mode'];
     }
 
-    foreach ($case['contain'] as $value) {
-        if (strpos($subject, $value) === false) {
-            return ['status' => 'fail', 'category' => 'assertion', 'message' => "contain assertion failed"];
-        }
-    }
-    foreach ($case['regex'] as $pattern) {
-        $ok = @preg_match('/' . str_replace('/', '\/', $pattern) . '/u', $subject);
-        if ($ok !== 1) {
-            return ['status' => 'fail', 'category' => 'assertion', 'message' => "regex assertion failed"];
-        }
+    try {
+        $assertSpec = $case['assert'] ?? [];
+        evalTextAssertNode($assertSpec, $subject, null, (string)$case['id'], 'assert');
+    } catch (SchemaError $e) {
+        return ['status' => 'fail', 'category' => 'schema', 'message' => $e->getMessage()];
+    } catch (AssertionFailure $e) {
+        return ['status' => 'fail', 'category' => 'assertion', 'message' => $e->getMessage()];
+    } catch (Throwable $e) {
+        return ['status' => 'fail', 'category' => 'runtime', 'message' => $e->getMessage()];
     }
     return ['status' => 'pass', 'category' => null, 'message' => null];
 }
 
-function evaluateCase(string $fixturePath, array $case): array {
-    $id = (string)($case['id'] ?? '');
-    $type = (string)($case['type'] ?? '');
+function evaluateCase(string $fixturePath, mixed $case): array {
+    if (!is_array($case)) {
+        return [
+            'id' => 'UNKNOWN',
+            'status' => 'fail',
+            'category' => 'schema',
+            'message' => 'case must be a mapping',
+        ];
+    }
+    $id = isset($case['id']) ? (string)$case['id'] : '';
+    $type = isset($case['type']) ? (string)$case['type'] : '';
     if ($id === '' || $type === '') {
         return [
             'id' => $id !== '' ? $id : 'UNKNOWN',
@@ -219,12 +236,8 @@ function main(array $argv): int {
 
     $results = [];
     foreach ($caseFiles as $path) {
-        $raw = file_get_contents($path);
-        if ($raw === false) {
-            throw new RuntimeException("cannot read fixture file: {$path}");
-        }
-        foreach (splitCaseBlocks($raw) as $block) {
-            $results[] = evaluateCase($path, parseCaseBlock($block));
+        foreach (parseYamlCases($path) as $case) {
+            $results[] = evaluateCase($path, $case);
         }
     }
 

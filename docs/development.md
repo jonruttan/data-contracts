@@ -52,6 +52,7 @@ Contract docs for interpreting those fixtures live in:
 Generate a bootstrap PHP report:
 
 ```sh
+# Requires PHP yaml_parse extension.
 php scripts/php/conformance_runner.php \
   --cases fixtures/conformance/cases/php-text-file-subset.yaml \
   --out .artifacts/php-conformance-report.json

@@ -7,3 +7,7 @@ results:
   - id: SRCONF-PHP-TEXT-002
     status: fail
     category: assertion
+
+  - id: SRCONF-PHP-TEXT-003
+    status: pass
+    category: null

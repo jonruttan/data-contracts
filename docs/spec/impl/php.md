@@ -14,6 +14,10 @@ Bootstrap script path:
 
 - `scripts/php/conformance_runner.php`
 
+Runtime requirement:
+
+- PHP `yaml_parse` extension (for structured fixture parsing)
+
 Current bootstrap behavior:
 
 - Reads fixtures from `fixtures/conformance/cases/*.yaml`
