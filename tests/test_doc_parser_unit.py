@@ -91,3 +91,72 @@ def test_iter_spec_doc_tests_rejects_non_mapping_in_list(tmp_path):
 
     with pytest.raises(TypeError, match="contains a non-mapping test"):
         list(iter_spec_doc_tests(tmp_path))
+
+
+def test_iter_spec_doc_tests_supports_tilde_fence_and_yml_token(tmp_path):
+    _write(
+        tmp_path / "a.md",
+        """# Doc
+
+~~~spec-test yml
+id: CK-CLI-010
+type: cli.example
+~~~
+""",
+    )
+
+    cases = list(iter_spec_doc_tests(tmp_path))
+    assert len(cases) == 1
+    assert cases[0].test["id"] == "CK-CLI-010"
+
+
+def test_iter_spec_doc_tests_accepts_info_tokens_in_any_order(tmp_path):
+    _write(
+        tmp_path / "a.md",
+        """# Doc
+
+```spec-test yaml
+id: CK-CLI-011
+type: cli.example
+```
+""",
+    )
+
+    cases = list(iter_spec_doc_tests(tmp_path))
+    assert len(cases) == 1
+    assert cases[0].test["id"] == "CK-CLI-011"
+
+
+def test_iter_spec_doc_tests_requires_matching_closing_fence_length(tmp_path):
+    _write(
+        tmp_path / "a.md",
+        """# Doc
+
+````yaml spec-test
+id: CK-CLI-012
+type: cli.example
+note: |
+  ```
+````
+""",
+    )
+
+    cases = list(iter_spec_doc_tests(tmp_path))
+    assert len(cases) == 1
+    assert cases[0].test["id"] == "CK-CLI-012"
+
+
+def test_iter_spec_doc_tests_ignores_non_spec_fences(tmp_path):
+    _write(
+        tmp_path / "a.md",
+        """# Doc
+
+```yaml
+id: CK-CLI-013
+type: cli.example
+```
+""",
+    )
+
+    cases = list(iter_spec_doc_tests(tmp_path))
+    assert cases == []

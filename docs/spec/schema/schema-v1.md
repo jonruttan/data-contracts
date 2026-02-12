@@ -18,6 +18,10 @@ This schema defines the stable shape of executable spec tests embedded in
 Parser behavior:
 
 - discovery scans `*.md` in the provided directory (non-recursive)
+- fence extraction accepts Markdown fences using either backticks or tildes
+  (3+), with info tokens including `spec-test` and `yaml`/`yml`
+- closing fences must use the same fence character and at least the opener
+  length
 - legacy `kind` is accepted and normalized to `type`
 
 ## Type-Specific Fields

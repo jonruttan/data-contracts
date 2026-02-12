@@ -7,8 +7,15 @@
 
 ## Fence Extraction
 
-- Extract fenced blocks with opening line exactly: ```` ```yaml spec-test ````.
-- Closing fence is: ```` ``` ````.
+- Extract fenced blocks using Markdown fence syntax with either:
+  - backticks: ```` ``` ```` (3+), or
+  - tildes: `~~~` (3+).
+- Opening fence info string MUST include:
+  - `spec-test`
+  - and one of: `yaml`, `yml`
+- Info-string token order is not significant.
+- Closing fence MUST use the same fence character as the opener and a fence
+  length greater than or equal to the opener.
 - Fence body is parsed as YAML.
 
 ## Case Shapes
