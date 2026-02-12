@@ -30,7 +30,7 @@ def _php_has_yaml_extension() -> bool:
 def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
     repo_root = Path(__file__).resolve().parents[3]
 
-    cases_src = repo_root / "tools/spec_runner/fixtures/conformance/cases/php-text-file-subset.spec.md"
+    cases_src = repo_root / "tools/spec_runner/docs/spec/conformance/cases/php-text-file-subset.spec.md"
     php_runner = repo_root / "tools/spec_runner/scripts/php/conformance_runner.php"
 
     cases_dir = tmp_path / "cases"

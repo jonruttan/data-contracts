@@ -34,8 +34,8 @@ def _seed_governance_repo(tmp_path: Path) -> None:
             content = "contain regex docs/spec/contract/03a-regex-portability-v1.md\n"
         _write_text(tmp_path / "tools/spec_runner/docs/spec/contract" / name, content)
     _write_text(tmp_path / "tools/spec_runner/tests/test_contract_governance_unit.py", "x\n")
-    (tmp_path / "tools/spec_runner/fixtures/conformance/cases").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/cases").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/expected").mkdir(parents=True, exist_ok=True)
 
 
 def _write_min_policy_trace(tmp_path: Path, *, rule_id: str) -> None:
@@ -86,8 +86,8 @@ def test_contract_governance_passes_on_repo_state():
 
 def test_contract_governance_fails_when_must_rule_has_no_evidence(tmp_path):
     (tmp_path / "tools/spec_runner/docs/spec/contract").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/cases").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/cases").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/expected").mkdir(parents=True)
     (tmp_path / "tools/spec_runner/docs/spec/contract/04-harness.md").write_text("x", encoding="utf-8")
     (tmp_path / "tools/spec_runner/docs/spec/schema").mkdir(parents=True)
     (tmp_path / "tools/spec_runner/docs/spec/schema/schema-v1.md").write_text("x", encoding="utf-8")
@@ -131,8 +131,8 @@ def test_contract_governance_fails_when_must_rule_has_no_evidence(tmp_path):
 
 def test_contract_governance_fails_on_invalid_norm_and_missing_metadata(tmp_path):
     (tmp_path / "tools/spec_runner/docs/spec/contract").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/cases").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/cases").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/expected").mkdir(parents=True)
     (tmp_path / "tools/spec_runner/docs/spec/contract/04-harness.md").write_text("x", encoding="utf-8")
     (tmp_path / "tools/spec_runner/docs/spec/schema").mkdir(parents=True)
     (tmp_path / "tools/spec_runner/docs/spec/schema/schema-v1.md").write_text("x", encoding="utf-8")
@@ -180,8 +180,8 @@ def test_contract_governance_fails_on_invalid_norm_and_missing_metadata(tmp_path
 
 def test_contract_governance_fails_on_policy_ref_mismatch(tmp_path):
     (tmp_path / "tools/spec_runner/docs/spec/contract").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/cases").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/cases").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/expected").mkdir(parents=True)
     (tmp_path / "tools/spec_runner/docs/spec/contract/04-harness.md").write_text("x", encoding="utf-8")
     (tmp_path / "tools/spec_runner/docs/spec/schema").mkdir(parents=True)
     (tmp_path / "tools/spec_runner/docs/spec/schema/schema-v1.md").write_text("x", encoding="utf-8")
@@ -240,8 +240,8 @@ def test_contract_coverage_marks_must_rules_covered_on_repo_state():
 
 def test_contract_coverage_marks_uncovered_must(tmp_path):
     (tmp_path / "tools/spec_runner/docs/spec/contract").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/cases").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/cases").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/expected").mkdir(parents=True)
     policy = {
         "rules": [
             {
@@ -284,8 +284,8 @@ def test_contract_coverage_marks_uncovered_must(tmp_path):
 
 def test_contract_governance_fails_on_lifecycle_ordering(tmp_path):
     (tmp_path / "tools/spec_runner/docs/spec/contract").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/cases").mkdir(parents=True)
-    (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/cases").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/docs/spec/conformance/expected").mkdir(parents=True)
     (tmp_path / "tools/spec_runner/docs/spec/contract/04-harness.md").write_text("x", encoding="utf-8")
     (tmp_path / "tools/spec_runner/docs/spec/schema").mkdir(parents=True)
     (tmp_path / "tools/spec_runner/docs/spec/schema/schema-v1.md").write_text("x", encoding="utf-8")
@@ -449,7 +449,7 @@ def test_contract_governance_fails_on_multi_case_spec_block(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R9")
     _write_text(
-        tmp_path / "tools/spec_runner/fixtures/conformance/cases/bad.spec.md",
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/bad.spec.md",
         """# Bad
 
 ## SRCONF-BAD-001
@@ -474,7 +474,7 @@ def test_contract_governance_fails_on_missing_case_heading(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R10")
     _write_text(
-        tmp_path / "tools/spec_runner/fixtures/conformance/cases/bad2.spec.md",
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/bad2.spec.md",
         """# Bad
 
 ```yaml spec-test

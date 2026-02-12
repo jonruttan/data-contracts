@@ -15,7 +15,7 @@ from spec_runner.dispatcher import SpecRunContext
 
 def test_run_conformance_cases_matches_expected(tmp_path, monkeypatch, capsys):
     repo_root = Path(__file__).resolve().parents[3]
-    cases_dir = repo_root / "tools/spec_runner/fixtures/conformance/cases"
+    cases_dir = repo_root / "tools/spec_runner/docs/spec/conformance/cases"
 
     actual = run_conformance_cases(
         cases_dir,
@@ -28,7 +28,7 @@ def test_run_conformance_cases_matches_expected(tmp_path, monkeypatch, capsys):
 
 def test_conformance_results_are_jsonable(tmp_path, monkeypatch, capsys):
     repo_root = Path(__file__).resolve().parents[3]
-    cases_dir = repo_root / "tools/spec_runner/fixtures/conformance/cases"
+    cases_dir = repo_root / "tools/spec_runner/docs/spec/conformance/cases"
     actual = run_conformance_cases(
         cases_dir,
         ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),

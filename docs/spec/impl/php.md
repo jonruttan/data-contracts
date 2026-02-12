@@ -37,7 +37,7 @@ Example:
 
 ```sh
 php scripts/php/conformance_runner.php \
-  --cases fixtures/conformance/cases/php-text-file-subset.spec.md \
+  --cases docs/spec/conformance/cases/php-text-file-subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
 
@@ -49,4 +49,4 @@ python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report
 
 Bootstrap parity subset fixture:
 
-- `fixtures/conformance/cases/php-text-file-subset.spec.md`
+- `docs/spec/conformance/cases/php-text-file-subset.spec.md`

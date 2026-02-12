@@ -15,10 +15,10 @@ Planned contents:
 
 Current seed:
 
-- `fixtures/conformance/cases/cli-run-entrypoint.spec.md`
-- `fixtures/conformance/cases/assertion-health.spec.md`
-- `fixtures/conformance/cases/failure-context.spec.md`
-- `fixtures/conformance/cases/php-text-file-subset.spec.md`
+- `docs/spec/conformance/cases/cli-run-entrypoint.spec.md`
+- `docs/spec/conformance/cases/assertion-health.spec.md`
+- `docs/spec/conformance/cases/failure-context.spec.md`
+- `docs/spec/conformance/cases/php-text-file-subset.spec.md`
 
 Python reference execution is covered by:
 

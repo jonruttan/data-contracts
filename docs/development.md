@@ -39,7 +39,7 @@ python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.j
 
 Cross-language fixture data lives in:
 
-- `fixtures/conformance/cases/`
+- `docs/spec/conformance/cases/`
 
 Contract docs for interpreting those fixtures live in:
 
@@ -53,7 +53,7 @@ Generate a bootstrap PHP report:
 ```sh
 # Requires PHP yaml_parse extension.
 php scripts/php/conformance_runner.php \
-  --cases fixtures/conformance/cases/php-text-file-subset.spec.md \
+  --cases docs/spec/conformance/cases/php-text-file-subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
 
