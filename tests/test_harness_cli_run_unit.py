@@ -104,7 +104,7 @@ def test_cli_type_stdout_json_dict(tmp_path, monkeypatch, capsys):
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_type_contains_and_regex_and_negation(tmp_path, monkeypatch, capsys):
+def test_cli_type_contain_regex_and_cannot(tmp_path, monkeypatch, capsys):
     def fake_main(argv):
         print("hello world")
         print("ERR", file=sys.stderr)
@@ -120,8 +120,8 @@ def test_cli_type_contains_and_regex_and_negation(tmp_path, monkeypatch, capsys)
             "exit_code": 0,
             "harness": {"entrypoint": ep},
             "assert": [
-                {"target": "stdout", "contains": ["hello"], "regex": ["world\\s*$"]},
-                {"target": "stderr", "contains": ["ERROR:"], "is": False},
+                {"target": "stdout", "contain": ["hello"], "regex": ["world\\s*$"]},
+                {"target": "stderr", "cannot": [{"contain": ["ERROR:"]}]},
             ],
         },
     )
@@ -148,7 +148,7 @@ def test_cli_type_stdout_path_text(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout_path_text", "contains": ["hello"]}],
+            "assert": [{"target": "stdout_path_text", "contain": ["hello"]}],
         },
     )
 
@@ -171,7 +171,7 @@ def test_cli_type_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "nope", "contains": ["x"]}],
+            "assert": [{"target": "nope", "contain": ["x"]}],
         },
     )
 
@@ -198,7 +198,7 @@ def test_cli_type_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout_path", "contains": ["x"]}],
+            "assert": [{"target": "stdout_path", "contain": ["x"]}],
         },
     )
 
@@ -252,7 +252,7 @@ def test_cli_type_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
                 "setup_files": [{"path": "cfg.txt", "text": "hello"}],
                 "env": {"X_CFG": "cfg.txt"},
             },
-            "assert": [{"target": "stdout", "contains": ["hello"]}],
+            "assert": [{"target": "stdout", "contain": ["hello"]}],
         },
     )
 
@@ -278,7 +278,7 @@ def test_cli_type_can_stub_modules(tmp_path, monkeypatch, capsys):
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stub_modules": ["openai"]},
-            "assert": [{"target": "stdout", "contains": ["ok"]}],
+            "assert": [{"target": "stdout", "contain": ["ok"]}],
         },
     )
 
@@ -302,7 +302,7 @@ def test_cli_type_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stdin_isatty": False, "stdin_text": "hello"},
-            "assert": [{"target": "stdout", "contains": ["stdin=hello"]}],
+            "assert": [{"target": "stdout", "contain": ["stdin=hello"]}],
         },
     )
 
@@ -311,7 +311,7 @@ def test_cli_type_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_type_any_group_or_semantics(tmp_path, monkeypatch, capsys):
+def test_cli_type_can_group_or_semantics(tmp_path, monkeypatch, capsys):
     def fake_main(_argv):
         print("ok")
         print("WARN: something", file=sys.stderr)
@@ -327,8 +327,8 @@ def test_cli_type_any_group_or_semantics(tmp_path, monkeypatch, capsys):
             "exit_code": 0,
             "harness": {"entrypoint": ep},
             "assert": [
-                {"any": [{"target": "stderr", "contains": ["INFO:"]}, {"target": "stderr", "contains": ["WARN:"]}]},
-                {"target": "stderr", "contains": ["ERROR:"], "is": False},
+                {"can": [{"target": "stderr", "contain": ["INFO:"]}, {"target": "stderr", "contain": ["WARN:"]}]},
+                {"target": "stderr", "cannot": [{"contain": ["ERROR:"]}]},
             ],
         },
     )
@@ -338,7 +338,7 @@ def test_cli_type_any_group_or_semantics(tmp_path, monkeypatch, capsys):
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_cli_type_json_type_is_false(tmp_path, monkeypatch, capsys):
+def test_cli_type_cannot_json_type(tmp_path, monkeypatch, capsys):
     def fake_main(_argv):
         print("{}")
         return 0
@@ -352,7 +352,7 @@ def test_cli_type_json_type_is_false(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "json_type": ["list"], "is": False}],
+            "assert": [{"target": "stdout", "cannot": [{"json_type": ["list"]}]}],
         },
     )
 
@@ -424,7 +424,7 @@ def test_cli_type_hook_before_runs_before_command(tmp_path, monkeypatch, capsys)
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "hook_before": hook_ep, "hook_kwargs": {"extra": "v2"}},
-            "assert": [{"target": "stdout", "contains": ["yes"]}],
+            "assert": [{"target": "stdout", "contain": ["yes"]}],
         },
     )
 

@@ -79,19 +79,13 @@ Assertion leaves are mappings with:
 
 - `target` (string, required unless inherited from a parent group node)
 - one or more operator keys with list values
-- optional `is` (bool, defaults to `true`) for legacy leaf-level negation
 
 Assertion group nodes (`must` / `can` / `cannot`) MAY include `target`; child leaves
 inherit that target unless a child leaf sets its own `target`.
 
-Legacy aliases:
-
-- `all` is accepted as an alias of `must`
-- `any` is accepted as an alias of `can`
-
 Supported operators:
 
-- text operators: `contain`, `regex` (`contains` is accepted as an alias of `contain`)
+- text operators: `contain`, `regex`
 - additional per-harness operators such as `json_type` and `exists`
 
 Operator constraints:
@@ -99,7 +93,7 @@ Operator constraints:
 - all operator values MUST be lists
 - `json_type` supports `dict` and `list`
 - `exists` is currently supported only for `target: stdout_path`
-- `stdout_path.exists` only accepts `true` (or `null`) values; negation may use `is: false`
+- `stdout_path.exists` only accepts `true` (or `null`) values
 
 Canonical negation uses `cannot`:
 
@@ -111,6 +105,8 @@ assert:
 ```
 
 Legacy negated text operators (`not_contains`, `not_regex`) are not supported.
+Legacy aliases/shorthand (`all`, `any`, `contains`, leaf-level `is`) are not
+supported.
 
 Example with target inheritance:
 

@@ -71,17 +71,11 @@ Each `yaml spec-test` test case is a mapping with:
 
 Runner-only keys MUST live under `harness:` to keep the spec format clean.
 
-Canonical boolean groups are `must`, `can`, and `cannot` (legacy aliases
-`all`/`any` are still accepted). Text assertions use `contain` (legacy
-`contains` is accepted).
+Canonical boolean groups are `must`, `can`, and `cannot`.
+Text assertions use `contain`.
 
-Legacy leaf-level negation remains available via `is: false`:
-
-```yaml
-- target: stderr
-  contain: ["ERROR:"]
-  is: false
-```
+Legacy aliases/shorthand (`all`, `any`, `contains`, leaf-level `is`) are not
+supported.
 
 Assertion groups can carry a shared `target`, which child
 leaves inherit unless overridden.

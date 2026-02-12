@@ -26,10 +26,10 @@ Rules:
 ```yaml
 assert:
   - target: stderr
-    all:
-      - contains: ["WARN:"]
-      - contains: ["ERROR:"]
-        is: false
+    must:
+      - contain: ["WARN:"]
+    cannot:
+      - contain: ["ERROR:"]
 ```
 
 Per-child override:
@@ -37,10 +37,10 @@ Per-child override:
 ```yaml
 assert:
   - target: stderr
-    all:
-      - contains: ["WARN:"]
+    must:
+      - contain: ["WARN:"]
       - target: stdout
-        contains: ["ok"]
+        contain: ["ok"]
 ```
 
 ## Compatibility

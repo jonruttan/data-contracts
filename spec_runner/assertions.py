@@ -57,9 +57,6 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
     - target: stderr
       contain: ["WARN:"]
       regex: ["traceback"]
-    - target: stderr
-      cannot:
-        - contain: ["ERROR:"]
 
     Rules:
     - `target` is required unless a non-empty `target_override` is provided.
@@ -76,36 +73,31 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
     if "op" in leaf or "value" in leaf:
         raise ValueError("legacy assertion shape (op/value) is not supported")
     if any(k in leaf for k in ("all", "any", "must", "can", "cannot")):
-        raise ValueError("leaf assertion must not include group keys (all/any/must/can/cannot)")
+        raise ValueError("leaf assertion must not include group keys")
+    if "is" in leaf:
+        raise ValueError("leaf assertion key 'is' is not supported; use a 'cannot' group")
     known_ops = {
         "exists",
         "contain",
-        "contains",
         "regex",
         "json_type",
-        "is",
     }
 
     any_found = False
     for op, raw in leaf.items():
-        if op in ("target", "is"):
+        if op == "target":
             continue
         if op not in known_ops:
             raise ValueError(f"unsupported op: {op}")
         any_found = True
         if not isinstance(raw, list):
             raise TypeError(f"assertion op '{op}' must be a list")
-        canonical = "contain" if op == "contains" else op
-        default_is_true = leaf.get("is", True)
-        if not isinstance(default_is_true, bool):
-            raise TypeError("assertion key 'is' must be a bool")
-        is_true = default_is_true
+        canonical = op
+        is_true = True
         for v in raw:
             yield target, canonical, v, is_true
-    if "is" in leaf and not any_found:
-        raise ValueError("assertion key 'is' requires at least one operator")
     if not any_found:
-        raise ValueError("assertion missing an op key (e.g. contains:, regex:, ...)")
+        raise ValueError("assertion missing an op key (e.g. contain:, regex:, ...)")
 
 
 def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
@@ -114,8 +106,8 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
 
     Supported shapes:
     - list: implicit AND across items (top-level `assert:` is typically a list)
-    - mapping with `must:` / `all:`: AND across child nodes
-    - mapping with `can:` / `any:`: OR across child nodes (at least one must pass)
+    - mapping with `must:`: AND across child nodes
+    - mapping with `can:`: OR across child nodes (at least one must pass)
     - mapping with `cannot:`: NONE across child nodes (no child may pass)
     - group nodes may include `target:`; child leaves inherit that target
     - leaf mapping with `target:` plus op keys
@@ -143,28 +135,31 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
         if not isinstance(node, dict):
             raise TypeError("assert node must be a mapping or a list")
 
-        has_all = "all" in node or "must" in node
-        has_any = "any" in node or "can" in node
+        if "all" in node or "any" in node:
+            raise ValueError("assert group aliases 'all'/'any' are not supported; use 'must'/'can'")
+
+        has_all = "must" in node
+        has_any = "can" in node
         has_cannot = "cannot" in node
         if has_all or has_any or has_cannot:
             node_target = str(node.get("target", "")).strip() or inherited_target
-            extra = [k for k in node.keys() if k not in ("all", "any", "must", "can", "cannot", "target")]
+            extra = [k for k in node.keys() if k not in ("must", "can", "cannot", "target")]
             if extra:
                 bad = sorted(str(k) for k in extra)[0]
                 raise ValueError(f"unknown key in assert group: {bad}")
 
             if has_all:
-                children = node.get("must", node.get("all"))
+                children = node.get("must")
                 if not isinstance(children, list):
-                    raise TypeError("assert.must/all must be a list")
+                    raise TypeError("assert.must must be a list")
                 for child in children:
                     _eval_node(child, inherited_target=node_target)
 
             if has_any:
-                children = node.get("can", node.get("any"))
+                children = node.get("can")
                 if not isinstance(children, list):
-                    raise TypeError("assert.can/any must be a list")
-                # can/any: pass if at least one child passes; if all fail, raise a helpful message.
+                    raise TypeError("assert.can must be a list")
+                # can: pass if at least one child passes; if all fail, raise a helpful message.
                 failures: list[BaseException] = []
                 any_passed = False
                 for child in children:
@@ -175,7 +170,7 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                     except AssertionError as e:
                         failures.append(e)
                 if not any_passed:
-                    msg = "all 'can/any' branches failed"
+                    msg = "all 'can' branches failed"
                     if failures:
                         details = "\n".join(f"- {str(e) or e.__class__.__name__}" for e in failures[:5])
                         msg = f"{msg}:\n{details}"

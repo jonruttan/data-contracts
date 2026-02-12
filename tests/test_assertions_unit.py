@@ -28,16 +28,16 @@ def test_iter_leaf_assertions_requires_mapping_target_and_op_key():
     with pytest.raises(TypeError, match="assert leaf must be a mapping"):
         list(iter_leaf_assertions(["nope"]))
     with pytest.raises(ValueError, match="missing required key: target"):
-        list(iter_leaf_assertions({"contains": ["x"]}))
+        list(iter_leaf_assertions({"contain": ["x"]}))
     with pytest.raises(ValueError, match="missing an op key"):
         list(iter_leaf_assertions({"target": "stderr"}))
 
 
 def test_iter_leaf_assertions_requires_list_values_and_rejects_legacy():
     with pytest.raises(TypeError, match="must be a list"):
-        list(iter_leaf_assertions({"target": "stderr", "contains": "x"}))
-    with pytest.raises(TypeError, match="key 'is' must be a bool"):
-        list(iter_leaf_assertions({"target": "stderr", "contains": ["x"], "is": "yes"}))
+        list(iter_leaf_assertions({"target": "stderr", "contain": "x"}))
+    with pytest.raises(ValueError, match="key 'is' is not supported"):
+        list(iter_leaf_assertions({"target": "stderr", "contain": ["x"], "is": False}))
     with pytest.raises(ValueError, match="legacy assertion shape"):
         list(iter_leaf_assertions({"target": "stderr", "op": "contains", "value": "x"}))
     with pytest.raises(ValueError, match="unsupported op"):
@@ -50,19 +50,18 @@ def test_iter_leaf_assertions_requires_list_values_and_rejects_legacy():
         list(iter_leaf_assertions({"target": "stderr", "not_regex": ["x"]}))
 
 
-def test_iter_leaf_assertions_happy_path_with_is_false():
+def test_iter_leaf_assertions_happy_path():
     assert list(
         iter_leaf_assertions(
             {
                 "target": "stderr",
                 "contain": ["ok"],
                 "regex": ["x.*"],
-                "is": False,
             }
         )
     ) == [
-        ("stderr", "contain", "ok", False),
-        ("stderr", "regex", "x.*", False),
+        ("stderr", "contain", "ok", True),
+        ("stderr", "regex", "x.*", True),
     ]
 
 
@@ -72,13 +71,12 @@ def test_iter_leaf_assertions_accepts_target_override():
     ]
 
 
-def test_iter_leaf_assertions_contains_alias_canonicalizes_to_contain():
-    assert list(iter_leaf_assertions({"target": "stderr", "contains": ["ok"]})) == [
-        ("stderr", "contain", "ok", True),
-    ]
+def test_iter_leaf_assertions_rejects_contains_alias():
+    with pytest.raises(ValueError, match="unsupported op: contains"):
+        list(iter_leaf_assertions({"target": "stderr", "contains": ["ok"]}))
 
 
-def test_eval_assert_tree_all_list_is_and():
+def test_eval_assert_tree_list_is_and():
     seen = []
 
     def leaf(x):
@@ -89,26 +87,26 @@ def test_eval_assert_tree_all_list_is_and():
     assert seen == ["a", "b"]
 
 
-def test_eval_assert_tree_any_is_or():
+def test_eval_assert_tree_can_is_or():
     seen = []
 
     def leaf(x):
         seen.append(x["name"])
         assert x["ok"] is True
 
-    eval_assert_tree({"any": [{"name": "a", "ok": False}, {"name": "b", "ok": True}]}, eval_leaf=leaf)
+    eval_assert_tree({"can": [{"name": "a", "ok": False}, {"name": "b", "ok": True}]}, eval_leaf=leaf)
     assert seen == ["a", "b"]
 
 
-def test_eval_assert_tree_any_all_fail_raises_helpful_error():
+def test_eval_assert_tree_can_all_fail_raises_helpful_error():
     def leaf(x):
         assert False, x["msg"]
 
-    with pytest.raises(AssertionError, match="all 'can/any' branches failed"):
-        eval_assert_tree({"any": [{"msg": "nope1"}, {"msg": "nope2"}]}, eval_leaf=leaf)
+    with pytest.raises(AssertionError, match="all 'can' branches failed"):
+        eval_assert_tree({"can": [{"msg": "nope1"}, {"msg": "nope2"}]}, eval_leaf=leaf)
 
 
-def test_eval_assert_tree_all_and_any_can_coexist_in_one_node():
+def test_eval_assert_tree_must_and_can_can_coexist_in_one_node():
     seen = []
 
     def leaf(x):
@@ -117,27 +115,34 @@ def test_eval_assert_tree_all_and_any_can_coexist_in_one_node():
 
     eval_assert_tree(
         {
-            "all": [{"name": "a", "ok": True}],
-            "any": [{"name": "b", "ok": False}, {"name": "c", "ok": True}],
+            "must": [{"name": "a", "ok": True}],
+            "can": [{"name": "b", "ok": False}, {"name": "c", "ok": True}],
         },
         eval_leaf=leaf,
     )
     assert seen == ["a", "b", "c"]
 
 
-def test_eval_assert_tree_all_only_does_not_evaluate_leaf():
+def test_eval_assert_tree_must_only_does_not_evaluate_leaf():
     seen = []
 
     def leaf(x):
         seen.append(x["name"])
 
-    eval_assert_tree({"all": [{"name": "a"}]}, eval_leaf=leaf)
+    eval_assert_tree({"must": [{"name": "a"}]}, eval_leaf=leaf)
     assert seen == ["a"]
 
 
 def test_eval_assert_tree_group_rejects_extra_keys():
     with pytest.raises(ValueError, match="unknown key in assert group"):
-        eval_assert_tree({"any": [], "wat": 1}, eval_leaf=lambda _x: None)
+        eval_assert_tree({"can": [], "wat": 1}, eval_leaf=lambda _x: None)
+
+
+def test_eval_assert_tree_rejects_legacy_group_aliases():
+    with pytest.raises(ValueError, match="aliases 'all'/'any' are not supported"):
+        eval_assert_tree({"all": []}, eval_leaf=lambda _x: None)
+    with pytest.raises(ValueError, match="aliases 'all'/'any' are not supported"):
+        eval_assert_tree({"any": []}, eval_leaf=lambda _x: None)
 
 
 def test_eval_assert_tree_group_target_inherited_by_children():
@@ -152,14 +157,14 @@ def test_eval_assert_tree_group_target_inherited_by_children():
             "target": "stderr",
             "must": [
                 {"contain": ["WARN:"]},
-                {"regex": ["boom"], "is": False},
+                {"regex": ["boom"]},
             ],
         },
         eval_leaf=leaf,
     )
     assert seen == [
         ("stderr", "contain", "WARN:", True),
-        ("stderr", "regex", "boom", False),
+        ("stderr", "regex", "boom", True),
     ]
 
 
@@ -189,7 +194,7 @@ def test_eval_assert_tree_child_target_overrides_group_target():
 def test_eval_assert_tree_missing_target_without_inheritance_raises():
     with pytest.raises(ValueError, match="missing required key: target"):
         eval_assert_tree(
-            {"all": [{"contains": ["x"]}]},
+            {"must": [{"contain": ["x"]}]},
             eval_leaf=lambda x: list(iter_leaf_assertions(x)),
         )
 

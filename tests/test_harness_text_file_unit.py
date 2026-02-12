@@ -15,7 +15,7 @@ def test_text_file_contains(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "assert": [{"target": "text", "contains": ["hello"]}],
+            "assert": [{"target": "text", "contain": ["hello"]}],
         },
     )
 
@@ -24,7 +24,7 @@ def test_text_file_contains(tmp_path, monkeypatch, capsys):
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
 
 
-def test_text_file_contains_is_false(tmp_path, monkeypatch, capsys):
+def test_text_file_cannot_group(tmp_path, monkeypatch, capsys):
     p = tmp_path / "doc.md"
     p.write_text("hello world\n", encoding="utf-8")
 
@@ -33,7 +33,7 @@ def test_text_file_contains_is_false(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "assert": [{"target": "text", "contains": ["ERROR:"], "is": False}],
+            "assert": [{"target": "text", "cannot": [{"contain": ["ERROR:"]}]}],
         },
     )
 
@@ -54,7 +54,7 @@ def test_text_file_can_read_relative_path(tmp_path, monkeypatch, capsys):
             "id": "X",
             "type": "text.file",
             "path": "other.txt",
-            "assert": [{"target": "text", "contains": ["hello other"]}],
+            "assert": [{"target": "text", "contain": ["hello other"]}],
         },
     )
 
@@ -73,7 +73,7 @@ def test_text_file_rejects_absolute_path(tmp_path, monkeypatch, capsys):
             "id": "X",
             "type": "text.file",
             "path": str(doc.resolve()),
-            "assert": [{"target": "text", "contains": ["spec doc"]}],
+            "assert": [{"target": "text", "contain": ["spec doc"]}],
         },
     )
 
@@ -92,7 +92,7 @@ def test_text_file_unknown_target(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "assert": [{"target": "stdout", "contains": ["hello"]}],
+            "assert": [{"target": "stdout", "contain": ["hello"]}],
         },
     )
 

@@ -1,6 +1,6 @@
 # SR-ASSERT-003: Natural-Language Assertion Groups
 
-Status: Draft
+Status: Draft (Superseded by SR-ASSERT-004)
 Created: 2026-02-12
 
 ## Problem
@@ -40,7 +40,5 @@ assert:
 
 ## Compatibility
 
-- `all` is accepted as an alias of `must`.
-- `any` is accepted as an alias of `can`.
-- `contains` is accepted as an alias of `contain`.
-- Leaf-level `is: false` remains accepted for backward compatibility.
+Superseded by `SR-ASSERT-004`, which removes shorthand/alias keys and supports
+canonical keys only.
