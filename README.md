@@ -31,6 +31,12 @@ Conformance reference test:
 python -m pytest tests/test_conformance_runner_unit.py
 ```
 
+CI merge gate (GitHub Actions `spec_runner` job) runs:
+
+- `python scripts/check_contract_governance.py`
+- `python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`
+- `python -m pytest`
+
 ## Quickstart
 
 1. Create a spec doc with a fenced `yaml spec-test` block:
