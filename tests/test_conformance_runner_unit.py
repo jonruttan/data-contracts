@@ -3,8 +3,10 @@ from pathlib import Path
 from spec_runner.conformance import (
     compare_conformance_results,
     load_expected_results,
+    report_to_jsonable,
     results_to_jsonable,
     run_conformance_cases,
+    validate_conformance_report_payload,
 )
 from spec_runner.dispatcher import SpecRunContext
 
@@ -34,6 +36,9 @@ def test_conformance_results_are_jsonable(tmp_path, monkeypatch, capsys):
     assert isinstance(payload, list)
     assert all(isinstance(x, dict) for x in payload)
     assert all({"id", "status", "category", "message"} <= set(x.keys()) for x in payload)
+    report = report_to_jsonable(actual)
+    errs = validate_conformance_report_payload(report)
+    assert errs == []
 
 
 def test_conformance_per_case_override_beats_global_assert_health_env(tmp_path, monkeypatch, capsys):
@@ -62,3 +67,19 @@ cases:
     assert actual[0].id == "SRCONF-TMP-OVERRIDE"
     assert actual[0].status == "pass"
     assert actual[0].category is None
+
+
+def test_conformance_report_validator_rejects_invalid_payload():
+    errs = validate_conformance_report_payload(
+        {
+            "version": 1,
+            "results": [
+                {"id": "", "status": "maybe", "category": "oops", "message": None},
+                {"id": "X", "status": "pass", "category": "schema", "message": "bad"},
+                {"id": "Y", "status": "fail", "category": None, "message": ""},
+            ],
+        }
+    )
+    assert errs
+    assert any("status must be one of: pass, fail" in e for e in errs)
+    assert any("category must be null when status=pass" in e for e in errs)
