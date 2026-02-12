@@ -53,3 +53,31 @@ rules:
     references:
       - docs/spec/contract/04-harness.md
       - docs/spec/contract/06-conformance.md
+
+  - id: ASSERT_HEALTH_MODE_VALID_VALUES
+    scope: case
+    applies_to: assert_health.mode
+    norm: MUST
+    requirement: accept_only_ignore_warn_error
+    description: >
+      When assert_health.mode is provided, only ignore, warn, or error are
+      valid values.
+    rationale: Keeps diagnostics policy deterministic and portable.
+    risk_if_violated: Implementations diverge on policy interpretation.
+    references:
+      - docs/spec/contract/02-case-shape.md
+      - docs/spec/schema/schema-v1.md
+
+  - id: ASSERT_HEALTH_GLOBAL_AND_PER_CASE_POLICY
+    scope: implementation
+    applies_to: assertion_health.policy_resolution
+    norm: SHOULD
+    requirement: support_global_default_and_per_case_override
+    description: >
+      Implementations should support both a global default policy and a
+      per-case override for assertion-health diagnostics.
+    rationale: Enables gradual rollout and targeted strictness.
+    risk_if_violated: Hard to adopt diagnostics without broad breakage.
+    references:
+      - docs/spec/contract/00-design-goals.md
+      - docs/spec/contract/02-case-shape.md

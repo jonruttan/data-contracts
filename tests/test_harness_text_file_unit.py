@@ -154,3 +154,42 @@ def test_text_file_allows_parent_reference_with_repo_root(tmp_path, monkeypatch,
     from spec_runner.harnesses.text_file import run
 
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_text_file_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsys):
+    p = tmp_path / "doc.md"
+    p.write_text("hello\n", encoding="utf-8")
+    case = SpecDocTest(
+        doc_path=p,
+        test={
+            "id": "X",
+            "type": "text.file",
+            "assert_health": {"mode": "warn"},
+            "assert": [{"target": "text", "must": [{"contain": [""]}]}],
+        },
+    )
+
+    from spec_runner.harnesses.text_file import run
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    captured = capsys.readouterr()
+    assert "WARN: ASSERT_HEALTH AH001" in captured.err
+
+
+def test_text_file_assert_health_error_fails(tmp_path, monkeypatch, capsys):
+    p = tmp_path / "doc.md"
+    p.write_text("hello\n", encoding="utf-8")
+    case = SpecDocTest(
+        doc_path=p,
+        test={
+            "id": "X",
+            "type": "text.file",
+            "assert_health": {"mode": "error"},
+            "assert": [{"target": "text", "must": [{"contain": [""]}]}],
+        },
+    )
+
+    from spec_runner.harnesses.text_file import run
+
+    with pytest.raises(AssertionError, match="assertion health check failed"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))

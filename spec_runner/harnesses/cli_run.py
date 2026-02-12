@@ -14,6 +14,12 @@ from spec_runner.assertions import (
     iter_leaf_assertions,
     parse_json,
 )
+from spec_runner.assertion_health import (
+    format_assertion_health_error,
+    format_assertion_health_warning,
+    lint_assert_tree,
+    resolve_assert_health_mode,
+)
 
 def _load_entrypoint(ep: str):
     """
@@ -79,6 +85,15 @@ def run(case, *, ctx) -> None:
         hook_before_ep = None
     if hook_after_ep is not None and not str(hook_after_ep).strip():
         hook_after_ep = None
+
+    mode = resolve_assert_health_mode(t, env=dict(os.environ))
+    assert_spec = t.get("assert", []) or []
+    diags = lint_assert_tree(assert_spec)
+    if diags and mode == "error":
+        raise AssertionError(format_assertion_health_error(diags))
+    if diags and mode == "warn":
+        for d in diags:
+            print(format_assertion_health_warning(d), file=sys.stderr)
 
     with ctx.monkeypatch.context() as mp:
         # Runner-provided setup features. These are deliberately small and generic
@@ -252,4 +267,4 @@ def run(case, *, ctx) -> None:
             else:
                 raise ValueError(f"unsupported op: {op}")
 
-    eval_assert_tree(t.get("assert", []) or [], eval_leaf=_eval_leaf)
+    eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)

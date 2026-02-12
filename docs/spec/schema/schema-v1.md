@@ -14,6 +14,7 @@ This schema defines the stable shape of executable spec tests embedded in
 - `id` (string, required): stable identifier like `CK-CLI-001`
 - `type` (string, required): dispatch key (e.g. `cli.run`)
 - `title` (string, optional): human description
+- `assert_health` (mapping, optional): assertion-health policy override
 
 Parser behavior:
 
@@ -23,6 +24,11 @@ Parser behavior:
 - closing fences must use the same fence character and at least the opener
   length
 - legacy `kind` is accepted and normalized to `type`
+
+`assert_health`:
+
+- `mode` (string): one of `ignore`, `warn`, `error`
+- if omitted, implementations may use a global default (for example env policy)
 
 ## Type-Specific Fields
 
