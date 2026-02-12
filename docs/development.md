@@ -12,6 +12,18 @@ python3 -m pip install -e '.[dev]'
 python3 -m pytest
 ```
 
+## Conformance Fixture Layout
+
+Cross-language fixture data lives in:
+
+- `fixtures/conformance/cases/`
+- `fixtures/conformance/expected/`
+
+Contract docs for interpreting those fixtures live in:
+
+- `docs/spec/contract/06-conformance.md`
+- `docs/spec/conformance/report-format.md`
+
 ## Build / Publish
 
 ```sh

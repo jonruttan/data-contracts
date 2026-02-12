@@ -58,7 +58,12 @@ def test_specs_from_docs(tmp_path, monkeypatch, capsys):
 ## Layout
 
 - `spec_runner/`: runner implementation (parser, dispatcher, harnesses)
-- `tests/`: unit tests for the runner
+- `tests/`: unit tests for runner internals
+- `docs/spec/contract/`: language-neutral contract docs
+- `docs/spec/schema/`: schema docs (syntax/shape)
+- `docs/spec/impl/`: implementation-specific notes (Python/PHP)
+- `docs/spec/conformance/`: cross-language conformance contract docs
+- `fixtures/conformance/`: cross-language conformance fixture data
 
 ## Schema (v1)
 
