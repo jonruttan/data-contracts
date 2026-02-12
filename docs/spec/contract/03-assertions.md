@@ -5,7 +5,7 @@
 `assert` is an assertion tree with:
 
 - list: implicit AND
-- group mapping with `must` / `can` / `cannot`
+- group mapping with exactly one of `must` / `can` / `cannot`
 - leaf mapping with operator keys
 
 ## Group Semantics
@@ -13,6 +13,7 @@
 - `must`: all children must pass
 - `can`: at least one child must pass
 - `cannot`: no child may pass
+- group child lists must be non-empty
 
 ## Target Rules
 

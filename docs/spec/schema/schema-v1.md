@@ -81,6 +81,7 @@ Assertion leaves are mappings with:
 
 Assertion group nodes (`must` / `can` / `cannot`) MAY include `target`; child leaves
 inherit that target.
+Each group node MUST include exactly one of `must`, `can`, or `cannot`.
 
 Leaf constraints:
 
@@ -98,6 +99,11 @@ Operator constraints:
 - `json_type` supports `dict` and `list`
 - `exists` is currently supported only for `target: stdout_path`
 - `stdout_path.exists` only accepts `true` (or `null`) values
+
+Group constraints:
+
+- `must`, `can`, and `cannot` values MUST be lists
+- `must`, `can`, and `cannot` lists MUST NOT be empty
 
 Canonical negation uses `cannot`:
 
@@ -119,6 +125,7 @@ assert:
   - target: stderr
     must:
       - contain: ["WARN:"]
+  - target: stderr
     cannot:
       - contain: ["ERROR:"]
   - target: stdout

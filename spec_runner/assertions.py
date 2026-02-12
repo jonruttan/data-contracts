@@ -105,9 +105,10 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
 
     Supported shapes:
     - list: implicit AND across items (top-level `assert:` is typically a list)
-    - mapping with `must:`: AND across child nodes
-    - mapping with `can:`: OR across child nodes (at least one must pass)
-    - mapping with `cannot:`: NONE across child nodes (no child may pass)
+    - mapping with exactly one group key:
+      - `must:`: AND across child nodes
+      - `can:`: OR across child nodes (at least one must pass)
+      - `cannot:`: NONE across child nodes (no child may pass)
     - group nodes may include `target:`; child leaves inherit that target
     - leaf mapping with op keys (target inherited from parent group)
     """
@@ -137,27 +138,33 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
         if "all" in node or "any" in node:
             raise ValueError("assert group aliases 'all'/'any' are not supported; use 'must'/'can'")
 
-        has_all = "must" in node
-        has_any = "can" in node
-        has_cannot = "cannot" in node
-        if has_all or has_any or has_cannot:
+        present_groups = [k for k in ("must", "can", "cannot") if k in node]
+        if present_groups:
+            if len(present_groups) > 1:
+                keys = ", ".join(present_groups)
+                raise ValueError(f"assert group must include exactly one key (must/can/cannot), got: {keys}")
             node_target = str(node.get("target", "")).strip() or inherited_target
-            extra = [k for k in node.keys() if k not in ("must", "can", "cannot", "target")]
+            group_key = present_groups[0]
+            extra = [k for k in node.keys() if k not in (group_key, "target")]
             if extra:
                 bad = sorted(str(k) for k in extra)[0]
                 raise ValueError(f"unknown key in assert group: {bad}")
 
-            if has_all:
+            if group_key == "must":
                 children = node.get("must")
                 if not isinstance(children, list):
                     raise TypeError("assert.must must be a list")
+                if not children:
+                    raise ValueError("assert.must must not be empty")
                 for child in children:
                     _eval_node(child, inherited_target=node_target)
 
-            if has_any:
+            if group_key == "can":
                 children = node.get("can")
                 if not isinstance(children, list):
                     raise TypeError("assert.can must be a list")
+                if not children:
+                    raise ValueError("assert.can must not be empty")
                 # can: pass if at least one child passes; if all fail, raise a helpful message.
                 failures: list[BaseException] = []
                 any_passed = False
@@ -175,10 +182,12 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                         msg = f"{msg}:\n{details}"
                     raise AssertionError(msg)
 
-            if has_cannot:
+            if group_key == "cannot":
                 children = node.get("cannot")
                 if not isinstance(children, list):
                     raise TypeError("assert.cannot must be a list")
+                if not children:
+                    raise ValueError("assert.cannot must not be empty")
                 # cannot: pass only when every child assertion fails.
                 passed = 0
                 for child in children:

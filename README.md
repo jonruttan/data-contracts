@@ -37,6 +37,7 @@ assert:
   - target: stderr
     must:
       - contain: ["WARN:"]
+  - target: stderr
     cannot:
       - contain: ["ERROR:"]
 ```
@@ -79,6 +80,8 @@ Runner-only keys MUST live under `harness:` to keep the spec format clean.
 
 Canonical boolean groups are `must`, `can`, and `cannot`.
 Text assertions use `contain`.
+Each assertion group uses exactly one of `must` / `can` / `cannot`, and group
+lists must be non-empty.
 
 Legacy aliases/shorthand (`all`, `any`, `contains`, leaf-level `is`) are not
 supported.

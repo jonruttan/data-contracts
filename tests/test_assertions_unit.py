@@ -108,21 +108,15 @@ def test_eval_assert_tree_can_all_fail_raises_helpful_error():
         eval_assert_tree({"can": [{"msg": "nope1"}, {"msg": "nope2"}]}, eval_leaf=leaf)
 
 
-def test_eval_assert_tree_must_and_can_can_coexist_in_one_node():
-    seen = []
-
-    def leaf(x):
-        seen.append(x["name"])
-        assert x["ok"] is True
-
-    eval_assert_tree(
-        {
-            "must": [{"name": "a", "ok": True}],
-            "can": [{"name": "b", "ok": False}, {"name": "c", "ok": True}],
-        },
-        eval_leaf=leaf,
-    )
-    assert seen == ["a", "b", "c"]
+def test_eval_assert_tree_group_rejects_multiple_group_keys():
+    with pytest.raises(ValueError, match="exactly one key"):
+        eval_assert_tree(
+            {
+                "must": [{"name": "a", "ok": True}],
+                "can": [{"name": "b", "ok": False}, {"name": "c", "ok": True}],
+            },
+            eval_leaf=lambda _x: None,
+        )
 
 
 def test_eval_assert_tree_must_only_does_not_evaluate_leaf():
@@ -138,6 +132,15 @@ def test_eval_assert_tree_must_only_does_not_evaluate_leaf():
 def test_eval_assert_tree_group_rejects_extra_keys():
     with pytest.raises(ValueError, match="unknown key in assert group"):
         eval_assert_tree({"can": [], "wat": 1}, eval_leaf=lambda _x: None)
+
+
+def test_eval_assert_tree_group_rejects_empty_children():
+    with pytest.raises(ValueError, match="must not be empty"):
+        eval_assert_tree({"must": []}, eval_leaf=lambda _x: None)
+    with pytest.raises(ValueError, match="must not be empty"):
+        eval_assert_tree({"can": []}, eval_leaf=lambda _x: None)
+    with pytest.raises(ValueError, match="must not be empty"):
+        eval_assert_tree({"cannot": []}, eval_leaf=lambda _x: None)
 
 
 def test_eval_assert_tree_rejects_legacy_group_aliases():
