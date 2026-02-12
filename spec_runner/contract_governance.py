@@ -29,6 +29,10 @@ def _read_yaml(path: Path) -> Any:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
+def _normalize_sentence(s: str) -> str:
+    return re.sub(r"\s+", " ", str(s).strip().lower())
+
+
 def _is_spec_opening_fence(line: str) -> tuple[str, int] | None:
     stripped = line.lstrip(" \t")
     if not stripped:
@@ -89,9 +93,15 @@ def _lint_conformance_case_docs(cases_dir: Path) -> list[str]:
                 errs.append(f"conformance style: one case per spec-test block required in {p}:{start + 1}")
             if isinstance(payload, dict):
                 rid = str(payload.get("id", "")).strip()
-                why = str(payload.get("why", "")).strip()
-                if not why:
-                    errs.append(f"conformance style: case must include non-empty why: {p}:{start + 1}")
+                rationale = str(payload.get("rationale", "")).strip()
+                if not rationale:
+                    errs.append(f"conformance style: case must include non-empty rationale: {p}:{start + 1}")
+                title = str(payload.get("title", "")).strip()
+                if title and _normalize_sentence(title) == _normalize_sentence(rationale):
+                    errs.append(
+                        "conformance style: rationale must add context beyond title "
+                        f"for case {rid or '<unknown>'}: {p}:{start + 1}"
+                    )
                 if rid:
                     ids_in_file.append(rid)
                     if rid in global_ids:

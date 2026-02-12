@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRCONF-ERR-001
 title: failing assertion includes context tokens in message
-why: failing assertion includes context tokens in message
+rationale: Guarantees failure messages carry deterministic context tokens for debugging and parity.
 type: text.file
 expect:
   portable:
