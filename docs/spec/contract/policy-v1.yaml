@@ -184,3 +184,19 @@ rules:
     references:
       - docs/spec/contract/06-conformance.md
       - docs/spec/schema/schema-v1.md
+
+  - id: CONFORMANCE_CASE_STYLE_GUARD
+    introduced_in: v1
+    scope: governance
+    applies_to: fixtures.conformance.cases_style
+    norm: MUST
+    requirement: enforce_conformance_case_authoring_style
+    description: >
+      Conformance case docs must follow readability/style constraints enforced
+      by governance checks (one case per block, heading alignment, sorted ids,
+      bounded block size).
+    rationale: Keeps conformance specs readable and reviewable as the corpus grows.
+    risk_if_violated: Fixture docs become noisy and brittle to maintain.
+    references:
+      - docs/spec/conformance/style.md
+      - docs/spec/contract/06-conformance.md

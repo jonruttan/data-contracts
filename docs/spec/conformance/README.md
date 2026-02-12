@@ -3,6 +3,10 @@
 This folder defines cross-language fixture conventions for validating runner
 parity.
 
+Authoring style:
+
+- `docs/spec/conformance/style.md`
+
 Planned contents:
 
 - fixture case files

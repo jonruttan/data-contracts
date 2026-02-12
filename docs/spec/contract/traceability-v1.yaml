@@ -192,3 +192,16 @@ links:
     implementation_refs:
       - spec_runner/conformance.py
     notes: "Conformance expectations resolve portable baseline with implementation overlays."
+
+  - rule_id: CONFORMANCE_CASE_STYLE_GUARD
+    policy_ref: docs/spec/contract/policy-v1.yaml#CONFORMANCE_CASE_STYLE_GUARD
+    contract_refs:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/conformance/style.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tools/spec_runner/tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/contract_governance.py
+    notes: "Governance enforces conformance case doc readability/style constraints."

@@ -20,10 +20,91 @@ _NORMATIVE_CONTRACT_DOCS = [
 ]
 _REGEX_PROFILE_DOC = "docs/spec/contract/03a-regex-portability-v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
+_CONFORMANCE_MAX_BLOCK_LINES = 50
 
 
 def _read_yaml(path: Path) -> Any:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def _is_spec_opening_fence(line: str) -> tuple[str, int] | None:
+    stripped = line.lstrip(" \t")
+    if not stripped:
+        return None
+    if stripped[0] not in ("`", "~"):
+        return None
+    ch = stripped[0]
+    i = 0
+    while i < len(stripped) and stripped[i] == ch:
+        i += 1
+    if i < 3:
+        return None
+    info = stripped[i:].strip().lower().split()
+    if "spec-test" not in info:
+        return None
+    if "yaml" not in info and "yml" not in info:
+        return None
+    return ch, i
+
+
+def _is_closing_fence(line: str, *, ch: str, min_len: int) -> bool:
+    stripped = line.lstrip(" \t").rstrip()
+    if not stripped or stripped[0] != ch:
+        return False
+    i = 0
+    while i < len(stripped) and stripped[i] == ch:
+        i += 1
+    return i >= min_len and i == len(stripped)
+
+
+def _lint_conformance_case_docs(cases_dir: Path) -> list[str]:
+    errs: list[str] = []
+    global_ids: set[str] = set()
+    for p in sorted(cases_dir.glob("*.spec.md")):
+        raw = p.read_text(encoding="utf-8")
+        lines = raw.splitlines()
+        i = 0
+        ids_in_file: list[str] = []
+        while i < len(lines):
+            opening = _is_spec_opening_fence(lines[i])
+            if not opening:
+                i += 1
+                continue
+            ch, fence_len = opening
+            start = i
+            i += 1
+            block_lines: list[str] = []
+            while i < len(lines) and not _is_closing_fence(lines[i], ch=ch, min_len=fence_len):
+                block_lines.append(lines[i])
+                i += 1
+            if len(block_lines) > _CONFORMANCE_MAX_BLOCK_LINES:
+                errs.append(
+                    f"conformance style: block exceeds {_CONFORMANCE_MAX_BLOCK_LINES} lines "
+                    f"in {p}:{start + 1}"
+                )
+            payload = yaml.safe_load("\n".join(block_lines)) if block_lines else None
+            if isinstance(payload, list):
+                errs.append(f"conformance style: one case per spec-test block required in {p}:{start + 1}")
+            if isinstance(payload, dict):
+                rid = str(payload.get("id", "")).strip()
+                if rid:
+                    ids_in_file.append(rid)
+                    if rid in global_ids:
+                        errs.append(f"duplicate conformance case id across files: {rid}")
+                    global_ids.add(rid)
+                    prev_idx = start - 1
+                    while prev_idx >= 0 and not lines[prev_idx].strip():
+                        prev_idx -= 1
+                    expected_heading = f"## {rid}"
+                    if prev_idx < 0 or lines[prev_idx].strip() != expected_heading:
+                        errs.append(
+                            f"conformance style: expected heading '{expected_heading}' immediately before block "
+                            f"in {p}:{start + 1}"
+                        )
+            i += 1
+        if ids_in_file != sorted(ids_in_file):
+            errs.append(f"conformance style: case ids must be sorted within file: {p}")
+    return errs
 
 
 def _collect_fixture_case_ids(path: Path) -> set[str]:
@@ -165,6 +246,9 @@ def check_contract_governance(repo_root: Path) -> list[str]:
     repo_root = repo_root.resolve()
 
     policy, trace, conformance_ids = _load_policy_and_trace(repo_root)
+    cases_dir = repo_root / "tools/spec_runner/fixtures/conformance/cases"
+    if cases_dir.exists():
+        errs.extend(_lint_conformance_case_docs(cases_dir))
     rules = policy.get("rules") or []
     links = trace.get("links") or []
     if not isinstance(rules, list):

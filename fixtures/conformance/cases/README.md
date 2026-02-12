@@ -12,3 +12,4 @@ Recommendations:
   - `expect.portable`
   - optional `expect.impl.<runtime>` overrides
 - Conformance fixture cases should always include `expect.portable.status`.
+- Style details are defined in `docs/spec/conformance/style.md`.

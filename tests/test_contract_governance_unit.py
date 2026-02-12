@@ -38,6 +38,46 @@ def _seed_governance_repo(tmp_path: Path) -> None:
     (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True, exist_ok=True)
 
 
+def _write_min_policy_trace(tmp_path: Path, *, rule_id: str) -> None:
+    policy = {
+        "rules": [
+            {
+                "id": rule_id,
+                "introduced_in": "v1",
+                "norm": "SHOULD",
+                "scope": "governance",
+                "applies_to": "docs",
+                "requirement": "x",
+                "rationale": "because",
+                "risk_if_violated": "risk",
+                "references": ["docs/spec/contract/README.md"],
+            }
+        ]
+    }
+    trace = {
+        "links": [
+            {
+                "rule_id": rule_id,
+                "policy_ref": f"docs/spec/contract/policy-v1.yaml#{rule_id}",
+                "contract_refs": [f"docs/spec/contract/{x}" for x in _NORMATIVE_DOCS],
+                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "conformance_case_ids": [],
+                "unit_test_refs": ["tools/spec_runner/tests/test_contract_governance_unit.py"],
+                "implementation_refs": [],
+            }
+        ]
+    }
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/contract/policy-v1.yaml",
+        yaml.safe_dump(policy, sort_keys=False),
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/contract/traceability-v1.yaml",
+        yaml.safe_dump(trace, sort_keys=False),
+    )
+    _write_text(tmp_path / "tools/spec_runner/docs/spec/contract/README.md", "x\n")
+
+
 def test_contract_governance_passes_on_repo_state():
     repo_root = Path(__file__).resolve().parents[3]
     errs = check_contract_governance(repo_root)
@@ -403,3 +443,49 @@ def test_contract_governance_fails_when_regex_profile_linkage_is_missing(tmp_pat
 
     errs = check_contract_governance(tmp_path)
     assert any("assertions doc missing regex portability profile reference" in e for e in errs)
+
+
+def test_contract_governance_fails_on_multi_case_spec_block(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R9")
+    _write_text(
+        tmp_path / "tools/spec_runner/fixtures/conformance/cases/bad.spec.md",
+        """# Bad
+
+## SRCONF-BAD-001
+
+```yaml spec-test
+- id: SRCONF-BAD-001
+  type: text.file
+  expect:
+    portable: {status: pass, category: null}
+- id: SRCONF-BAD-002
+  type: text.file
+  expect:
+    portable: {status: pass, category: null}
+```
+""",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("one case per spec-test block required" in e for e in errs)
+
+
+def test_contract_governance_fails_on_missing_case_heading(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R10")
+    _write_text(
+        tmp_path / "tools/spec_runner/fixtures/conformance/cases/bad2.spec.md",
+        """# Bad
+
+```yaml spec-test
+id: SRCONF-BAD-003
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("expected heading '## SRCONF-BAD-003'" in e for e in errs)
