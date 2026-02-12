@@ -26,6 +26,12 @@ PURPOSE_WARNING_CODE_TO_HINT = {
     "PUR003": "Replace placeholder tokens with concrete, implementation-neutral intent.",
     "PUR004": "Fix purpose_lint settings or policy file shape/version before rerunning.",
 }
+PURPOSE_WARNING_CODE_TO_SUGGESTED_EDIT = {
+    "PUR001": "Rewrite `purpose` to state intent or risk not already present in `title`.",
+    "PUR002": "Expand `purpose` with concrete behavior intent to meet the minimum word count.",
+    "PUR003": "Replace placeholder tokens with concrete, implementation-neutral intent text.",
+    "PUR004": "Fix `purpose_lint` configuration or policy schema/version before rerunning.",
+}
 
 
 @dataclass(frozen=True)
@@ -47,11 +53,22 @@ def _display_path(path: Path, *, cwd: Path) -> str:
 
 
 def _warning(code: str, message: str, *, cfg: dict[str, Any]) -> dict[str, Any]:
+    suggested = PURPOSE_WARNING_CODE_TO_SUGGESTED_EDIT.get(
+        code,
+        "Update purpose lint configuration and provide concrete purpose text.",
+    )
+    if code == "PUR002":
+        min_words = int(cfg.get("min_words", 8))
+        suggested = (
+            "Expand `purpose` with concrete behavior intent "
+            f"to at least {min_words} words."
+        )
     return {
         "code": code,
         "message": message,
         "severity": warning_severity_for_code(code, cfg),
         "hint": PURPOSE_WARNING_CODE_TO_HINT.get(code, "Review warning details and update purpose lint configuration."),
+        "suggested_edit": suggested,
     }
 
 

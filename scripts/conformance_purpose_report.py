@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -32,8 +33,8 @@ def _to_markdown(payload: dict) -> str:
         "",
         "## Warnings",
         "",
-        "| id | type | severity | code | warning | hint | file |",
-        "| --- | --- | --- | --- | --- | --- | --- |",
+        "| id | type | severity | code | warning | hint | suggested edit | file |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
         ]
     )
     had_any = False
@@ -48,16 +49,19 @@ def _to_markdown(payload: dict) -> str:
                 message = str(w.get("message", "")).strip()
                 severity = str(w.get("severity", "")).strip().lower() or "warn"
                 hint = str(w.get("hint", "")).strip()
+                suggested_edit = str(w.get("suggested_edit", "")).strip()
             else:
                 code = "PUR004"
                 message = str(w).strip()
                 severity = "error"
                 hint = "Review warning details and update purpose lint configuration."
+                suggested_edit = "Update purpose lint configuration and provide concrete purpose text."
             ww = message.replace("|", "\\|")
             hh = hint.replace("|", "\\|")
-            lines.append(f"| {rid} | {rtype} | {severity} | {code} | {ww} | {hh} | {file_} |")
+            ee = suggested_edit.replace("|", "\\|")
+            lines.append(f"| {rid} | {rtype} | {severity} | {code} | {ww} | {hh} | {ee} | {file_} |")
     if not had_any:
-        lines.append("| - | - | - | - | none | - | - |")
+        lines.append("| - | - | - | - | none | - | - | - |")
     return "\n".join(lines) + "\n"
 
 
@@ -93,6 +97,51 @@ def _filtered_only_warnings(payload: dict) -> dict:
     return out
 
 
+def _safe_slug(case_id: str) -> str:
+    s = re.sub(r"[^A-Za-z0-9._-]+", "-", str(case_id).strip())
+    s = s.strip("-")
+    return s or "unknown-case"
+
+
+def _emit_patch_snippets(payload: dict, out_dir: Path) -> int:
+    out_dir.mkdir(parents=True, exist_ok=True)
+    created = 0
+    for row in payload.get("rows", []):
+        warnings = row.get("warnings") or []
+        if not warnings:
+            continue
+        rid = str(row.get("id", "")).strip() or "UNKNOWN"
+        path = out_dir / f"{_safe_slug(rid)}.md"
+        lines = [f"# {rid}", "", f"file: `{row.get('file', '')}`", ""]
+        for i, w in enumerate(warnings, start=1):
+            if isinstance(w, dict):
+                code = str(w.get("code", "")).strip()
+                msg = str(w.get("message", "")).strip()
+                hint = str(w.get("hint", "")).strip()
+                edit = str(w.get("suggested_edit", "")).strip()
+            else:
+                code = "PUR004"
+                msg = str(w).strip()
+                hint = "Review warning details and update purpose lint configuration."
+                edit = "Update purpose lint configuration and provide concrete purpose text."
+            lines.extend(
+                [
+                    f"## Warning {i} ({code})",
+                    f"- message: {msg}",
+                    f"- hint: {hint}",
+                    f"- suggested_edit: {edit}",
+                    "",
+                    "```yaml",
+                    f"purpose: \"{edit}\"",
+                    "```",
+                    "",
+                ]
+            )
+        path.write_text("\n".join(lines), encoding="utf-8")
+        created += 1
+    return created
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Emit conformance purpose report.")
     ap.add_argument(
@@ -123,12 +172,21 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Emit only rows that contain warnings.",
     )
+    ap.add_argument(
+        "--emit-patches",
+        default="",
+        help="Optional directory to write per-case remediation snippet markdown files.",
+    )
     ns = ap.parse_args(argv)
 
     repo_root = Path(__file__).resolve().parents[3]
     payload = conformance_purpose_report_jsonable(Path(ns.cases), repo_root=repo_root)
     if ns.only_warnings:
         payload = _filtered_only_warnings(payload)
+    if str(ns.emit_patches).strip():
+        patch_dir = Path(str(ns.emit_patches))
+        count = _emit_patch_snippets(payload, patch_dir)
+        print(f"wrote {count} patch snippet file(s) to {patch_dir}")
     if ns.format == "md":
         raw = _to_markdown(payload)
     else:

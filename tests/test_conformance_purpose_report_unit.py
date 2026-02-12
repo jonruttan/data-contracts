@@ -163,6 +163,7 @@ expect:
         and w["message"] == "purpose duplicates title"
         and w["severity"] == "warn"
         and "Rewrite purpose" in w["hint"]
+        and "Rewrite `purpose`" in w["suggested_edit"]
         for w in row["warnings"]
     )
 
@@ -224,6 +225,7 @@ expect:
     assert row["warnings"][0]["message"] == "some new warning shape"
     assert row["warnings"][0]["severity"] == "error"
     assert row["warnings"][0]["hint"] == "Fix purpose_lint settings or policy file shape/version before rerunning."
+    assert row["warnings"][0]["suggested_edit"] == "Fix `purpose_lint` configuration or policy schema/version before rerunning."
 
 
 def test_conformance_purpose_report_severity_override_from_policy(tmp_path):
@@ -261,4 +263,5 @@ expect:
     payload = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)
     row = payload["rows"][0]
     assert any(w["code"] == "PUR002" and w["severity"] == "info" for w in row["warnings"])
+    assert any("at least 8 words" in w["suggested_edit"] for w in row["warnings"] if w["code"] == "PUR002")
     assert payload["summary"]["warning_severity_counts"]["info"] >= 1
