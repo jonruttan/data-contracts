@@ -156,3 +156,102 @@ assert:
     must:
       - regex: ["(?<=version: )1"]
 ```
+
+## SRCONF-PHP-TEXT-010
+
+```yaml spec-test
+id: SRCONF-PHP-TEXT-010
+title: AH001 empty contain fails under assert_health error mode
+type: text.file
+expect:
+  portable:
+    status: fail
+    category: assertion
+    message_tokens:
+      - AH001
+assert_health:
+  mode: error
+assert:
+  - target: text
+    must:
+      - contain: [""]
+```
+
+## SRCONF-PHP-TEXT-011
+
+```yaml spec-test
+id: SRCONF-PHP-TEXT-011
+title: AH002 always-true regex fails under assert_health error mode
+type: text.file
+expect:
+  portable:
+    status: fail
+    category: assertion
+    message_tokens:
+      - AH002
+assert_health:
+  mode: error
+assert:
+  - target: text
+    must:
+      - regex: [".*"]
+```
+
+## SRCONF-PHP-TEXT-012
+
+```yaml spec-test
+id: SRCONF-PHP-TEXT-012
+title: AH003 duplicate contain values fail under assert_health error mode
+type: text.file
+expect:
+  portable:
+    status: fail
+    category: assertion
+    message_tokens:
+      - AH003
+assert_health:
+  mode: error
+assert:
+  - target: text
+    must:
+      - contain: ["version: 1", "version: 1"]
+```
+
+## SRCONF-PHP-TEXT-013
+
+```yaml spec-test
+id: SRCONF-PHP-TEXT-013
+title: AH004 redundant branch fails under assert_health error mode
+type: text.file
+expect:
+  portable:
+    status: fail
+    category: assertion
+    message_tokens:
+      - AH004
+assert_health:
+  mode: error
+assert:
+  - target: text
+    can:
+      - contain: ["version: 1"]
+      - contain: ["version: 1"]
+```
+
+## SRCONF-PHP-TEXT-014
+
+```yaml spec-test
+id: SRCONF-PHP-TEXT-014
+title: warn mode emits diagnostics without failing the case
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+assert_health:
+  mode: warn
+assert:
+  - target: text
+    must:
+      - contain: [""]
+```

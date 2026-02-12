@@ -38,7 +38,7 @@ def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
     cases_dir.mkdir(parents=True)
     (cases_dir / cases_src.name).write_text(cases_src.read_text(encoding="utf-8"), encoding="utf-8")
 
-    subprocess.run(
+    cp = subprocess.run(
         [
             "php",
             str(php_runner),
@@ -56,6 +56,7 @@ def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
     payload = json.loads(out_json.read_text(encoding="utf-8"))
     report_errs = validate_conformance_report_payload(payload)
     assert report_errs == []
+    assert "WARN: ASSERT_HEALTH AH001" in cp.stderr
 
     actual = [
         ConformanceResult(

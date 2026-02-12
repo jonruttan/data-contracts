@@ -83,9 +83,14 @@ const PHP_CAPABILITIES = [
     'assert.group.must',
     'assert.group.can',
     'assert.group.cannot',
+    'assert_health.ah001',
+    'assert_health.ah002',
+    'assert_health.ah003',
+    'assert_health.ah004',
     'assert_health.ah005',
     'requires.capabilities',
 ];
+const ALWAYS_TRUE_REGEX = ['.*', '^.*$', '\\A.*\\Z'];
 
 function isListArray(mixed $value): bool {
     if (!is_array($value)) {
@@ -202,11 +207,11 @@ function parseCases(string $path): array {
     return parseMarkdownCases($path);
 }
 
-function lintAssertionHealth(mixed $node, string $path = 'assert'): array {
+function lintAssertionHealth(mixed $node, string $path = 'assert', ?string $groupCtx = null): array {
     $diags = [];
     if (is_array($node) && isListArray($node)) {
         foreach ($node as $i => $child) {
-            $diags = array_merge($diags, lintAssertionHealth($child, "{$path}[{$i}]"));
+            $diags = array_merge($diags, lintAssertionHealth($child, "{$path}[{$i}]", $groupCtx));
         }
         return $diags;
     }
@@ -215,38 +220,95 @@ function lintAssertionHealth(mixed $node, string $path = 'assert'): array {
     }
     foreach (['must', 'can', 'cannot'] as $group) {
         if (array_key_exists($group, $node)) {
-            return array_merge($diags, lintAssertionHealth($node[$group], "{$path}.{$group}"));
+            $children = $node[$group];
+            if (is_array($children) && isListArray($children)) {
+                $seen = [];
+                foreach ($children as $child) {
+                    $key = @json_encode($child, JSON_UNESCAPED_SLASHES);
+                    if (!is_string($key) || $key === '') {
+                        $key = serialize($child);
+                    }
+                    if (array_key_exists($key, $seen)) {
+                        $diags[] = [
+                            'code' => 'AH004',
+                            'path' => "{$path}.{$group}",
+                            'message' => "redundant sibling assertion branch in '{$group}'",
+                        ];
+                        break;
+                    }
+                    $seen[$key] = true;
+                }
+            }
+            return array_merge($diags, lintAssertionHealth($children, "{$path}.{$group}", $group));
         }
     }
-    if (!array_key_exists('regex', $node)) {
-        return $diags;
-    }
-    $raw = $node['regex'];
-    if (!is_array($raw) || !isListArray($raw)) {
-        return $diags;
-    }
-    foreach ($raw as $value) {
-        $v = (string)$value;
-        if (
-            str_contains($v, '(?<=') ||
-            str_contains($v, '(?<!') ||
-            str_contains($v, '(?P<') ||
-            preg_match('/\(\?<([A-Za-z_][A-Za-z0-9_]*)>/', $v) === 1 ||
-            str_contains($v, '\\k<') ||
-            str_contains($v, '(?(') ||
-            str_contains($v, '(?>') ||
-            preg_match('/\(\?[aiLmsux-]+(?::|\))/', $v) === 1 ||
-            preg_match('/(?<!\\\\)(?:\\\\\\\\)*[+*?]\+/', $v) === 1
-        ) {
+    foreach (['contain', 'regex'] as $op) {
+        if (!array_key_exists($op, $node)) {
+            continue;
+        }
+        $raw = $node[$op];
+        if (!is_array($raw) || !isListArray($raw)) {
+            continue;
+        }
+        $vals = array_map(static fn($x) => (string)$x, $raw);
+        if (count($vals) !== count(array_unique($vals))) {
             $diags[] = [
-                'code' => 'AH005',
-                'path' => "{$path}.regex",
-                'message' => 'regex uses non-portable construct',
+                'code' => 'AH003',
+                'path' => "{$path}.{$op}",
+                'message' => "duplicate values in '{$op}' list can hide intent drift",
             ];
-            break;
+        }
+        if ($op === 'contain' && in_array('', $vals, true)) {
+            $msg = 'contain with empty string is always true';
+            if ($groupCtx === 'cannot') {
+                $msg = "cannot(contain:'') is always false";
+            }
+            $diags[] = ['code' => 'AH001', 'path' => "{$path}.contain", 'message' => $msg];
+        }
+        if ($op !== 'regex') {
+            continue;
+        }
+        foreach ($vals as $v) {
+            if (in_array($v, ALWAYS_TRUE_REGEX, true)) {
+                $msg = 'regex pattern is trivially always true';
+                if ($groupCtx === 'cannot') {
+                    $msg = 'cannot(regex always-true) is always false';
+                }
+                $diags[] = ['code' => 'AH002', 'path' => "{$path}.regex", 'message' => $msg];
+            }
+            if (
+                str_contains($v, '(?<=') ||
+                str_contains($v, '(?<!') ||
+                str_contains($v, '(?P<') ||
+                preg_match('/\(\?<([A-Za-z_][A-Za-z0-9_]*)>/', $v) === 1 ||
+                str_contains($v, '\\k<') ||
+                str_contains($v, '(?(') ||
+                str_contains($v, '(?>') ||
+                preg_match('/\(\?[aiLmsux-]+(?::|\))/', $v) === 1 ||
+                preg_match('/(?<!\\\\)(?:\\\\\\\\)*[+*?]\+/', $v) === 1
+            ) {
+                $diags[] = [
+                    'code' => 'AH005',
+                    'path' => "{$path}.regex",
+                    'message' => 'regex uses non-portable construct',
+                ];
+                break;
+            }
         }
     }
     return $diags;
+}
+
+function formatAssertionHealthWarning(array $d): string {
+    return "WARN: ASSERT_HEALTH {$d['code']} at {$d['path']}: {$d['message']}";
+}
+
+function formatAssertionHealthError(array $diags): string {
+    $parts = [];
+    foreach ($diags as $d) {
+        $parts[] = "{$d['code']}@{$d['path']}";
+    }
+    return "assertion health check failed (" . count($diags) . " issue(s)): " . implode('; ', $parts);
 }
 
 function evalTextLeaf(array $leaf, string $subject, string $target, string $caseId, string $path): void {
@@ -376,15 +438,16 @@ function evaluateTextFileCase(array $case, string $subject): array {
     $resolvedMode = strtolower((string)($mode ?? 'ignore'));
     $diags = lintAssertionHealth($case['assert'] ?? []);
     if (count($diags) > 0 && $resolvedMode === 'error') {
-        $parts = [];
-        foreach ($diags as $d) {
-            $parts[] = "{$d['code']}@{$d['path']}";
-        }
         return [
             'status' => 'fail',
             'category' => 'assertion',
-            'message' => "assertion health check failed (" . count($diags) . " issue(s)): " . implode('; ', $parts),
+            'message' => formatAssertionHealthError($diags),
         ];
+    }
+    if (count($diags) > 0 && $resolvedMode === 'warn') {
+        foreach ($diags as $d) {
+            fwrite(STDERR, formatAssertionHealthWarning($d) . PHP_EOL);
+        }
     }
 
     try {

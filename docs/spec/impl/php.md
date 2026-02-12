@@ -27,7 +27,8 @@ Current bootstrap behavior:
   - `must`, `can`, `cannot` groups
   - `contain` and `regex` operators
   - `assert_health.mode` validation (`ignore`/`warn`/`error`)
-  - `AH005` non-portable-regex diagnostics in `error` mode
+  - assertion-health diagnostics `AH001`..`AH005`
+  - `warn` mode emits `WARN: ASSERT_HEALTH ...` lines on stderr
 - Emits report JSON envelope:
   - `version: 1`
   - `results: [{id,status,category,message}]`
