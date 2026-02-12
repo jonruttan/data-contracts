@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import sys
 from pathlib import Path
@@ -11,18 +12,26 @@ from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 
 def _to_markdown(payload: dict) -> str:
     summary = payload.get("summary") or {}
+    code_counts = summary.get("warning_code_counts") or {}
     lines = [
         "# Conformance Purpose Report",
         "",
         f"- total cases: {int(summary.get('total_rows', 0))}",
         f"- rows with warnings: {int(summary.get('rows_with_warnings', 0))}",
         f"- total warnings: {int(summary.get('total_warning_count', 0))}",
+    ]
+    if code_counts:
+        parts = [f"{k}={int(v)}" for k, v in sorted(code_counts.items())]
+        lines.append(f"- warning codes: {', '.join(parts)}")
+    lines.extend(
+        [
         "",
         "## Warnings",
         "",
-        "| id | type | warning | file |",
-        "| --- | --- | --- | --- |",
-    ]
+        "| id | type | code | warning | file |",
+        "| --- | --- | --- | --- | --- |",
+        ]
+    )
     had_any = False
     for row in payload.get("rows", []):
         rid = str(row.get("id", "")).strip()
@@ -30,11 +39,42 @@ def _to_markdown(payload: dict) -> str:
         file_ = str(row.get("file", "")).strip()
         for w in row.get("warnings", []) or []:
             had_any = True
-            ww = str(w).replace("|", "\\|")
-            lines.append(f"| {rid} | {rtype} | {ww} | {file_} |")
+            if isinstance(w, dict):
+                code = str(w.get("code", "")).strip()
+                message = str(w.get("message", "")).strip()
+            else:
+                code = "PUR004"
+                message = str(w).strip()
+            ww = message.replace("|", "\\|")
+            lines.append(f"| {rid} | {rtype} | {code} | {ww} | {file_} |")
     if not had_any:
-        lines.append("| - | - | none | - |")
+        lines.append("| - | - | - | none | - |")
     return "\n".join(lines) + "\n"
+
+
+def _filtered_only_warnings(payload: dict) -> dict:
+    out = copy.deepcopy(payload)
+    rows = [r for r in out.get("rows", []) if (r.get("warnings") or [])]
+    out["rows"] = rows
+    summary = out.get("summary") or {}
+    summary["total_rows"] = len(rows)
+    summary["rows_with_warnings"] = len(rows)
+    summary["row_warning_count"] = sum(len(r.get("warnings") or []) for r in rows)
+    summary["total_warning_count"] = int(summary.get("row_warning_count", 0)) + int(summary.get("policy_error_count", 0))
+    code_counts: dict[str, int] = {}
+    for r in rows:
+        for w in r.get("warnings") or []:
+            if isinstance(w, dict):
+                code = str(w.get("code", "")).strip() or "PUR004"
+            else:
+                code = "PUR004"
+            code_counts[code] = code_counts.get(code, 0) + 1
+    if int(summary.get("policy_error_count", 0)) > 0:
+        code_counts["PUR004"] = code_counts.get("PUR004", 0) + int(summary.get("policy_error_count", 0))
+    summary["warning_code_counts"] = code_counts
+    summary["only_warnings"] = True
+    out["summary"] = summary
+    return out
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -56,10 +96,17 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Return non-zero exit when the report contains warnings.",
     )
+    ap.add_argument(
+        "--only-warnings",
+        action="store_true",
+        help="Emit only rows that contain warnings.",
+    )
     ns = ap.parse_args(argv)
 
     repo_root = Path(__file__).resolve().parents[3]
     payload = conformance_purpose_report_jsonable(Path(ns.cases), repo_root=repo_root)
+    if ns.only_warnings:
+        payload = _filtered_only_warnings(payload)
     if ns.format == "md":
         raw = _to_markdown(payload)
     else:

@@ -33,6 +33,7 @@ expect:
         "row_warning_count",
         "policy_error_count",
         "total_warning_count",
+        "warning_code_counts",
     }
     assert set(payload["policy"].keys()) == {"path", "exists", "config", "errors"}
     assert payload["policy"]["path"].endswith("docs/spec/conformance/purpose-lint-v1.yaml")
@@ -49,6 +50,7 @@ expect:
     assert row["file"].endswith("sample.spec.md")
     assert row["purpose_lint"]["min_words"] == 8
     assert row["warnings"] == []
+    assert payload["summary"]["warning_code_counts"] == {}
 
 
 def test_conformance_purpose_report_rows_are_sorted_by_id(tmp_path):
@@ -154,4 +156,30 @@ expect:
     payload = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)
     assert payload["summary"]["total_warning_count"] >= 1
     row = payload["rows"][0]
-    assert "purpose duplicates title" in row["warnings"]
+    assert any(w["code"] == "PUR001" and w["message"] == "purpose duplicates title" for w in row["warnings"])
+
+
+def test_conformance_purpose_report_warning_codes_are_grouped(tmp_path):
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir(parents=True)
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "sample.spec.md").write_text(
+        """# Sample
+## SRCONF-PURPOSE-REPORT-500
+```yaml spec-test
+id: SRCONF-PURPOSE-REPORT-500
+title: TODO
+purpose: TODO
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+        encoding="utf-8",
+    )
+    payload = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)
+    counts = payload["summary"]["warning_code_counts"]
+    assert counts["PUR001"] == 1
+    assert counts["PUR002"] == 1
+    assert counts["PUR003"] == 1

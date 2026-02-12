@@ -74,7 +74,15 @@ Optional strict mode for automation:
 
 ```sh
 python3 scripts/conformance_purpose_report.py --fail-on-warn
+python3 scripts/conformance_purpose_report.py --only-warnings --format md --out .artifacts/conformance-purpose-warnings.md
 ```
+
+Purpose warning codes:
+
+- `PUR001`: purpose duplicates title
+- `PUR002`: purpose word count below minimum
+- `PUR003`: purpose contains placeholder token
+- `PUR004`: purpose lint configuration/policy error
 
 ## Conformance Fixture Layout
 

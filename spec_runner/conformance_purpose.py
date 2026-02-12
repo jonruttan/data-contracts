@@ -21,7 +21,7 @@ class ConformancePurposeRow:
     type: str
     file: str
     purpose_lint: dict[str, Any]
-    warnings: list[str]
+    warnings: list[dict[str, str]]
 
 
 def _display_path(path: Path, *, cwd: Path) -> str:
@@ -31,15 +31,30 @@ def _display_path(path: Path, *, cwd: Path) -> str:
         return str(path.resolve())
 
 
+def _warning(code: str, message: str) -> dict[str, str]:
+    return {"code": code, "message": message}
+
+
+def _quality_warning_to_structured(msg: str) -> dict[str, str]:
+    if msg == "purpose duplicates title":
+        return _warning("PUR001", msg)
+    if msg.startswith("purpose word count "):
+        return _warning("PUR002", msg)
+    if msg.startswith("purpose contains placeholder token(s):"):
+        return _warning("PUR003", msg)
+    return _warning("PUR004", msg)
+
+
 def collect_conformance_purpose_rows(cases_dir: Path, *, purpose_policy: dict[str, Any]) -> list[ConformancePurposeRow]:
     cwd = Path.cwd()
     rows: list[ConformancePurposeRow] = []
     for spec in iter_spec_doc_tests(cases_dir):
         test = dict(spec.test)
         cfg, cfg_errs = resolve_purpose_lint_config(test, purpose_policy)
-        warns = list(cfg_errs)
+        warns: list[dict[str, str]] = [_warning("PUR004", str(e)) for e in cfg_errs]
         warns.extend(
-            purpose_quality_warnings(
+            _quality_warning_to_structured(w)
+            for w in purpose_quality_warnings(
                 str(test.get("title", "")).strip(),
                 str(test.get("purpose", "")).strip(),
                 cfg,
@@ -65,6 +80,13 @@ def conformance_purpose_report_jsonable(cases_dir: Path, *, repo_root: Path) -> 
     policy, policy_errs, policy_path = load_purpose_lint_policy(repo_root)
     rows = collect_conformance_purpose_rows(cases_dir, purpose_policy=policy)
     row_warning_count = sum(len(r.warnings) for r in rows)
+    warning_code_counts: dict[str, int] = {}
+    for row in rows:
+        for w in row.warnings:
+            code = str(w.get("code", "")).strip() or "PUR004"
+            warning_code_counts[code] = warning_code_counts.get(code, 0) + 1
+    if policy_errs:
+        warning_code_counts["PUR004"] = warning_code_counts.get("PUR004", 0) + len(policy_errs)
     return {
         "version": 1,
         "summary": {
@@ -73,6 +95,7 @@ def conformance_purpose_report_jsonable(cases_dir: Path, *, repo_root: Path) -> 
             "row_warning_count": row_warning_count,
             "policy_error_count": len(policy_errs),
             "total_warning_count": row_warning_count + len(policy_errs),
+            "warning_code_counts": warning_code_counts,
         },
         "policy": {
             "path": POLICY_REL_PATH,
