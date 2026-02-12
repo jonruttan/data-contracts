@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRCONF-CLI-001
 title: conformance fixture sets explicit cli.run harness.entrypoint
-rationale: Defines portable behavior for explicit cli.run entrypoint when capability is present.
+purpose: Defines portable behavior for explicit cli.run entrypoint when capability is present.
 type: cli.run
 requires:
   capabilities: ["cli.run"]
@@ -30,7 +30,7 @@ assert: []
 ```yaml spec-test
 id: SRCONF-CLI-002
 title: explicit entrypoint is used even if env fallback var is set
-rationale: Prevents env fallback from overriding an explicitly declared harness entrypoint.
+purpose: Prevents env fallback from overriding an explicitly declared harness entrypoint.
 type: cli.run
 requires:
   capabilities: ["cli.run"]

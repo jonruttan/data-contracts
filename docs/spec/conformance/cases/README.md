@@ -12,7 +12,7 @@ Recommendations:
   - `expect.portable`
   - optional `expect.impl.<runtime>` overrides
 - Conformance fixture cases should always include `expect.portable.status`.
-- Conformance fixture cases must include a non-empty `rationale`.
+- Conformance fixture cases must include a non-empty `purpose`.
 - Style details are defined in `docs/spec/conformance/style.md`.
 
 ## Case Index

@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-001
 title: text.file contain assertion passes in php bootstrap
-rationale: Baseline positive contain check for the php text.file subset.
+purpose: Baseline positive contain check for the php text.file subset.
 type: text.file
 expect:
   portable:
@@ -22,7 +22,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-002
 title: text.file regex assertion can fail in php bootstrap
-rationale: Baseline failing regex check for the php text.file subset.
+purpose: Baseline failing regex check for the php text.file subset.
 type: text.file
 expect:
   portable:
@@ -39,7 +39,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-003
 title: nested must group with inherited target passes
-rationale: Verifies nested must groups inherit target from parent nodes.
+purpose: Verifies nested must groups inherit target from parent nodes.
 type: text.file
 expect:
   portable:
@@ -57,7 +57,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-004
 title: can passes when at least one branch passes
-rationale: Verifies can succeeds when at least one branch succeeds.
+purpose: Verifies can succeeds when at least one branch succeeds.
 type: text.file
 expect:
   portable:
@@ -75,7 +75,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-005
 title: can fails when all branches fail
-rationale: Verifies can fails when every branch fails.
+purpose: Verifies can fails when every branch fails.
 type: text.file
 expect:
   portable:
@@ -93,7 +93,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-006
 title: cannot passes when all branches fail
-rationale: Verifies cannot succeeds when every branch fails.
+purpose: Verifies cannot succeeds when every branch fails.
 type: text.file
 expect:
   portable:
@@ -111,7 +111,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-007
 title: cannot fails when any branch passes
-rationale: Verifies cannot fails when at least one branch succeeds.
+purpose: Verifies cannot fails when at least one branch succeeds.
 type: text.file
 expect:
   portable:
@@ -129,7 +129,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-008
 title: nested mixed groups with inherited target passes
-rationale: Covers mixed nested must/can/cannot evaluation with inherited targets.
+purpose: Covers mixed nested must/can/cannot evaluation with inherited targets.
 type: text.file
 expect:
   portable:
@@ -150,7 +150,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-009
 title: non-portable regex fails under assert_health error mode
-rationale: Ensures AH005 is emitted for non-portable regex in error mode.
+purpose: Ensures AH005 is emitted for non-portable regex in error mode.
 type: text.file
 expect:
   portable:
@@ -171,7 +171,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-010
 title: AH001 empty contain fails under assert_health error mode
-rationale: Ensures AH001 is emitted for contain with empty string in error mode.
+purpose: Ensures AH001 is emitted for contain with empty string in error mode.
 type: text.file
 expect:
   portable:
@@ -192,7 +192,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-011
 title: AH002 always-true regex fails under assert_health error mode
-rationale: Ensures AH002 is emitted for always-true regex in error mode.
+purpose: Ensures AH002 is emitted for always-true regex in error mode.
 type: text.file
 expect:
   portable:
@@ -213,7 +213,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-012
 title: AH003 duplicate contain values fail under assert_health error mode
-rationale: Ensures AH003 is emitted for duplicate contain list values in error mode.
+purpose: Ensures AH003 is emitted for duplicate contain list values in error mode.
 type: text.file
 expect:
   portable:
@@ -234,7 +234,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-013
 title: AH004 redundant branch fails under assert_health error mode
-rationale: Ensures AH004 is emitted for redundant sibling branches in error mode.
+purpose: Ensures AH004 is emitted for redundant sibling branches in error mode.
 type: text.file
 expect:
   portable:
@@ -256,7 +256,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-014
 title: warn mode emits diagnostics without failing the case
-rationale: Checks warn mode emits diagnostics without converting the case to failure.
+purpose: Checks warn mode emits diagnostics without converting the case to failure.
 type: text.file
 expect:
   portable:

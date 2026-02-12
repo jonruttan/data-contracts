@@ -479,7 +479,7 @@ def test_contract_governance_fails_on_missing_case_heading(tmp_path):
 
 ```yaml spec-test
 id: SRCONF-BAD-003
-rationale: validate heading placement rule independently
+purpose: validate heading placement rule independently
 type: text.file
 expect:
   portable:
@@ -503,7 +503,7 @@ def test_contract_governance_fails_when_case_index_missing_fixture_id(tmp_path):
 
 ```yaml spec-test
 id: SRCONF-IDX-001
-rationale: validate index coverage catches missing ids
+purpose: validate index coverage catches missing ids
 type: text.file
 expect:
   portable:
@@ -532,7 +532,7 @@ def test_contract_governance_fails_when_case_index_has_stale_id(tmp_path):
 
 ```yaml spec-test
 id: SRCONF-IDX-002
-rationale: validate index coverage catches stale ids
+purpose: validate index coverage catches stale ids
 type: text.file
 expect:
   portable:
@@ -550,17 +550,17 @@ expect:
     assert any("conformance case index has stale id: SRCONF-STALE-123" in e for e in errs)
 
 
-def test_contract_governance_fails_when_case_rationale_is_missing(tmp_path):
+def test_contract_governance_fails_when_case_purpose_is_missing(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R13")
     _write_text(
-        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/missing-rationale.spec.md",
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/missing-purpose.spec.md",
         """# Sample
 
-## SRCONF-RATIONALE-001
+## SRCONF-PURPOSE-001
 
 ```yaml spec-test
-id: SRCONF-RATIONALE-001
+id: SRCONF-PURPOSE-001
 type: text.file
 expect:
   portable:
@@ -571,24 +571,24 @@ expect:
     )
     _write_text(
         tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
-        "# Conformance Cases\n\n- SRCONF-RATIONALE-001\n",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-001\n",
     )
     errs = check_contract_governance(tmp_path)
-    assert any("case must include non-empty rationale" in e for e in errs)
+    assert any("case must include non-empty purpose" in e for e in errs)
 
 
-def test_contract_governance_fails_when_case_rationale_is_empty(tmp_path):
+def test_contract_governance_fails_when_case_purpose_is_empty(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R14")
     _write_text(
-        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/empty-rationale.spec.md",
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/empty-purpose.spec.md",
         """# Sample
 
-## SRCONF-RATIONALE-002
+## SRCONF-PURPOSE-002
 
 ```yaml spec-test
-id: SRCONF-RATIONALE-002
-rationale: "   "
+id: SRCONF-PURPOSE-002
+purpose: "   "
 type: text.file
 expect:
   portable:
@@ -599,25 +599,25 @@ expect:
     )
     _write_text(
         tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
-        "# Conformance Cases\n\n- SRCONF-RATIONALE-002\n",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-002\n",
     )
     errs = check_contract_governance(tmp_path)
-    assert any("case must include non-empty rationale" in e for e in errs)
+    assert any("case must include non-empty purpose" in e for e in errs)
 
 
-def test_contract_governance_fails_when_case_rationale_duplicates_title(tmp_path):
+def test_contract_governance_fails_when_case_purpose_duplicates_title(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R15")
     _write_text(
-        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/dup-rationale.spec.md",
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/dup-purpose.spec.md",
         """# Sample
 
-## SRCONF-RATIONALE-003
+## SRCONF-PURPOSE-003
 
 ```yaml spec-test
-id: SRCONF-RATIONALE-003
-title: duplicate rationale text is not useful
-rationale: duplicate rationale text is not useful
+id: SRCONF-PURPOSE-003
+title: duplicate purpose text is not useful
+purpose: duplicate purpose text is not useful
 type: text.file
 expect:
   portable:
@@ -628,7 +628,7 @@ expect:
     )
     _write_text(
         tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
-        "# Conformance Cases\n\n- SRCONF-RATIONALE-003\n",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-003\n",
     )
     errs = check_contract_governance(tmp_path)
-    assert any("rationale must add context beyond title" in e for e in errs)
+    assert any("purpose must add context beyond title" in e for e in errs)

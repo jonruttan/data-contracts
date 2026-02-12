@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRCONF-AH-001
 title: assert_health warn emits diagnostics but case still passes
-rationale: Covers warn mode behavior where diagnostics are emitted but verdict remains pass.
+purpose: Covers warn mode behavior where diagnostics are emitted but verdict remains pass.
 type: text.file
 expect:
   portable:
@@ -24,7 +24,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-002
 title: assert_health error fails the case
-rationale: Confirms error mode promotes assertion-health findings into assertion failures.
+purpose: Confirms error mode promotes assertion-health findings into assertion failures.
 type: text.file
 expect:
   portable:
@@ -43,7 +43,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-003
 title: invalid assert_health.mode is a schema error
-rationale: Ensures unsupported assert_health modes are rejected as schema violations.
+purpose: Ensures unsupported assert_health modes are rejected as schema violations.
 type: text.file
 expect:
   portable:
@@ -62,7 +62,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-004
 title: per-case ignore override can neutralize global strict mode
-rationale: Verifies local mode override can disable stricter global assertion-health settings.
+purpose: Verifies local mode override can disable stricter global assertion-health settings.
 type: text.file
 expect:
   portable:
@@ -81,7 +81,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-005
 title: redundant sibling branches fail when assert_health mode is error
-rationale: Guards against redundant can branches by requiring AH004 in error mode.
+purpose: Guards against redundant can branches by requiring AH004 in error mode.
 type: text.file
 expect:
   portable:
@@ -103,7 +103,7 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-006
 title: non-portable regex fails when assert_health mode is error
-rationale: Checks non-portable regex constructs trigger AH005 in error mode.
+purpose: Checks non-portable regex constructs trigger AH005 in error mode.
 type: text.file
 expect:
   portable:
