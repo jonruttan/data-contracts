@@ -6,6 +6,7 @@ import types
 import importlib
 
 from spec_runner.assertions import (
+    _raise_with_assert_context,
     assert_stdout_path_exists,
     assert_text_op,
     eval_assert_tree,
@@ -37,6 +38,7 @@ def _load_entrypoint(ep: str):
 
 def run(case, *, ctx) -> None:
     t = case.test
+    case_id = str(t.get("id", ""))
     h = t.get("harness") or {}
     if not isinstance(h, dict):
         raise TypeError("harness must be a mapping")
@@ -205,7 +207,9 @@ def run(case, *, ctx) -> None:
             code = 1 if ec is None else int(ec)
 
         captured = ctx.capsys.readouterr()
-        assert int(code) == int(t.get("exit_code", 0))
+        got = int(code)
+        want = int(t.get("exit_code", 0))
+        assert got == want, f"[case_id={case_id}] exit_code expected={want} actual={got}"
 
         # Optional hook_after for complex assertions/setup that don't fit the declarative DSL.
         if hook_after_ep:
@@ -228,43 +232,52 @@ def run(case, *, ctx) -> None:
                 **{str(k): v for k, v in hook_kwargs.items()},
             )
 
-    def _eval_leaf(leaf: dict, *, inherited_target: str | None = None) -> None:
+    def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
         for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
-            if target == "stdout":
-                subject = captured.out
-            elif target == "stderr":
-                subject = captured.err
-            elif target == "stdout_path":
-                line = first_nonempty_line(captured.out)
-                if not line:
-                    raise AssertionError("expected stdout to contain a path")
-                if op != "exists":
-                    raise ValueError(f"unsupported op for stdout_path: {op}")
-                if value not in (None, True):
-                    raise ValueError("stdout_path.exists only supports value: true (or null)")
-                from pathlib import Path
+            try:
+                if target == "stdout":
+                    subject = captured.out
+                elif target == "stderr":
+                    subject = captured.err
+                elif target == "stdout_path":
+                    line = first_nonempty_line(captured.out)
+                    if not line:
+                        raise AssertionError("expected stdout to contain a path")
+                    if op != "exists":
+                        raise ValueError(f"unsupported op for stdout_path: {op}")
+                    if value not in (None, True):
+                        raise ValueError("stdout_path.exists only supports value: true (or null)")
+                    from pathlib import Path
 
-                p = Path(line)
-                assert p.exists() is bool(is_true)
-                continue
-            elif target == "stdout_path_text":
-                p = assert_stdout_path_exists(captured.out)
-                subject = p.read_text(encoding="utf-8")
-            else:
-                raise ValueError(f"unknown assert target: {target}")
-
-            if is_text_op(op):
-                assert_text_op(subject, op, value, is_true=is_true)
-            elif op == "json_type":
-                parsed = parse_json(subject)
-                want = str(value).lower()
-                if want == "list":
-                    assert isinstance(parsed, list) is bool(is_true)
-                elif want == "dict":
-                    assert isinstance(parsed, dict) is bool(is_true)
+                    p = Path(line)
+                    assert p.exists() is bool(is_true)
+                    continue
+                elif target == "stdout_path_text":
+                    p = assert_stdout_path_exists(captured.out)
+                    subject = p.read_text(encoding="utf-8")
                 else:
-                    raise ValueError(f"unsupported json_type: {value}")
-            else:
-                raise ValueError(f"unsupported op: {op}")
+                    raise ValueError(f"unknown assert target: {target}")
+
+                if is_text_op(op):
+                    assert_text_op(subject, op, value, is_true=is_true)
+                elif op == "json_type":
+                    parsed = parse_json(subject)
+                    want = str(value).lower()
+                    if want == "list":
+                        assert isinstance(parsed, list) is bool(is_true)
+                    elif want == "dict":
+                        assert isinstance(parsed, dict) is bool(is_true)
+                    else:
+                        raise ValueError(f"unsupported json_type: {value}")
+                else:
+                    raise ValueError(f"unsupported op: {op}")
+            except BaseException as e:  # noqa: BLE001
+                _raise_with_assert_context(
+                    e,
+                    case_id=case_id,
+                    assert_path=assert_path,
+                    target=target,
+                    op=op,
+                )
 
     eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)

@@ -1,7 +1,12 @@
 import os
 import sys
 
-from spec_runner.assertions import assert_text_op, eval_assert_tree, iter_leaf_assertions
+from spec_runner.assertions import (
+    _raise_with_assert_context,
+    assert_text_op,
+    eval_assert_tree,
+    iter_leaf_assertions,
+)
 from spec_runner.assertion_health import (
     format_assertion_health_error,
     format_assertion_health_warning,
@@ -22,6 +27,7 @@ def _contract_root_for(doc_path):
 
 def run(case, *, ctx) -> None:
     t = case.test
+    case_id = str(t.get("id", ""))
     # By default, assert against the spec doc that contains the spec-test.
     # If `path` is provided, assert against that file (relative to the spec doc).
     p = case.doc_path
@@ -48,10 +54,19 @@ def run(case, *, ctx) -> None:
         for d in diags:
             print(format_assertion_health_warning(d), file=sys.stderr)
 
-    def _eval_leaf(leaf: dict, *, inherited_target: str | None = None) -> None:
+    def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
         for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
-            if target != "text":
-                raise ValueError(f"unknown assert target for text.file: {target}")
-            assert_text_op(text, op, value, is_true=is_true)
+            try:
+                if target != "text":
+                    raise ValueError(f"unknown assert target for text.file: {target}")
+                assert_text_op(text, op, value, is_true=is_true)
+            except BaseException as e:  # noqa: BLE001
+                _raise_with_assert_context(
+                    e,
+                    case_id=case_id,
+                    assert_path=assert_path,
+                    target=target,
+                    op=op,
+                )
 
     eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)

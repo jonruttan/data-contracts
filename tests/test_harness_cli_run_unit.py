@@ -577,3 +577,28 @@ def test_cli_type_assert_health_error_fails(tmp_path, monkeypatch, capsys):
 
     with pytest.raises(AssertionError, match="assertion health check failed"):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_failure_includes_case_and_assert_context(tmp_path, monkeypatch, capsys):
+    ep = _install_sut(monkeypatch, lambda _argv: 0)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-025",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": ep},
+            "assert": [{"target": "stdout", "must": [{"contain": ["missing-value"]}]}],
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(AssertionError) as ei:
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    msg = str(ei.value)
+    assert "case_id=SR-CLI-UNIT-025" in msg
+    assert "assert_path=assert[0].must[0]" in msg
+    assert "target=stdout" in msg
+    assert "op=contain" in msg

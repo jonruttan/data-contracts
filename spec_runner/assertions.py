@@ -48,6 +48,31 @@ def is_text_op(op: str) -> bool:
     return op in _TEXT_OPS
 
 
+def _raise_with_assert_context(
+    exc: BaseException,
+    *,
+    case_id: str,
+    assert_path: str,
+    target: str | None = None,
+    op: str | None = None,
+) -> None:
+    ctx = f"[case_id={case_id} assert_path={assert_path}"
+    if target is not None:
+        ctx += f" target={target}"
+    if op is not None:
+        ctx += f" op={op}"
+    ctx += "]"
+    detail = str(exc).strip()
+    msg = ctx if not detail else f"{ctx} {detail}"
+    if isinstance(exc, AssertionError):
+        raise AssertionError(msg) from exc
+    if isinstance(exc, TypeError):
+        raise TypeError(msg) from exc
+    if isinstance(exc, ValueError):
+        raise ValueError(msg) from exc
+    raise RuntimeError(msg) from exc
+
+
 def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
     """
     Yield (target, op, value, is_true) tuples from a leaf assertion mapping.
@@ -118,19 +143,28 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
         "inherited_target" in leaf_sig.parameters
         or any(p.kind == inspect.Parameter.VAR_KEYWORD for p in leaf_sig.parameters.values())
     )
+    accepts_assert_path = (
+        "assert_path" in leaf_sig.parameters
+        or any(p.kind == inspect.Parameter.VAR_KEYWORD for p in leaf_sig.parameters.values())
+    )
 
-    def _call_leaf(node: dict, *, inherited_target: str | None) -> None:
+    def _call_leaf(node: dict, *, inherited_target: str | None, assert_path: str) -> None:
+        kwargs = {}
         if accepts_inherited_target:
-            eval_leaf(node, inherited_target=inherited_target)
+            kwargs["inherited_target"] = inherited_target
+        if accepts_assert_path:
+            kwargs["assert_path"] = assert_path
+        if kwargs:
+            eval_leaf(node, **kwargs)
         else:
             eval_leaf(node)
 
-    def _eval_node(node: Any, *, inherited_target: str | None = None) -> None:
+    def _eval_node(node: Any, *, inherited_target: str | None = None, path: str = "assert") -> None:
         if node is None:
             return
         if isinstance(node, list):
-            for child in node:
-                _eval_node(child, inherited_target=inherited_target)
+            for idx, child in enumerate(node):
+                _eval_node(child, inherited_target=inherited_target, path=f"{path}[{idx}]")
             return
         if not isinstance(node, dict):
             raise TypeError("assert node must be a mapping or a list")
@@ -156,8 +190,8 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                     raise TypeError("assert.must must be a list")
                 if not children:
                     raise ValueError("assert.must must not be empty")
-                for child in children:
-                    _eval_node(child, inherited_target=node_target)
+                for idx, child in enumerate(children):
+                    _eval_node(child, inherited_target=node_target, path=f"{path}.must[{idx}]")
 
             if group_key == "can":
                 children = node.get("can")
@@ -168,9 +202,9 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                 # can: pass if at least one child passes; if all fail, raise a helpful message.
                 failures: list[BaseException] = []
                 any_passed = False
-                for child in children:
+                for idx, child in enumerate(children):
                     try:
-                        _eval_node(child, inherited_target=node_target)
+                        _eval_node(child, inherited_target=node_target, path=f"{path}.can[{idx}]")
                         any_passed = True
                         break
                     except AssertionError as e:
@@ -190,9 +224,9 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                     raise ValueError("assert.cannot must not be empty")
                 # cannot: pass only when every child assertion fails.
                 passed = 0
-                for child in children:
+                for idx, child in enumerate(children):
                     try:
-                        _eval_node(child, inherited_target=node_target)
+                        _eval_node(child, inherited_target=node_target, path=f"{path}.cannot[{idx}]")
                         passed += 1
                     except AssertionError:
                         continue
@@ -202,6 +236,6 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
             return
 
         # Leaf
-        _call_leaf(node, inherited_target=inherited_target)
+        _call_leaf(node, inherited_target=inherited_target, assert_path=path)
 
     _eval_node(assert_spec)

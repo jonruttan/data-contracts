@@ -193,3 +193,26 @@ def test_text_file_assert_health_error_fails(tmp_path, monkeypatch, capsys):
 
     with pytest.raises(AssertionError, match="assertion health check failed"):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_text_file_failure_includes_case_and_assert_context(tmp_path, monkeypatch, capsys):
+    p = tmp_path / "doc.md"
+    p.write_text("hello\n", encoding="utf-8")
+    case = SpecDocTest(
+        doc_path=p,
+        test={
+            "id": "SR-TEXT-UNIT-001",
+            "type": "text.file",
+            "assert": [{"target": "text", "must": [{"contain": ["missing-value"]}]}],
+        },
+    )
+
+    from spec_runner.harnesses.text_file import run
+
+    with pytest.raises(AssertionError) as ei:
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    msg = str(ei.value)
+    assert "case_id=SR-TEXT-UNIT-001" in msg
+    assert "assert_path=assert[0].must[0]" in msg
+    assert "target=text" in msg
+    assert "op=contain" in msg
