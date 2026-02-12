@@ -11,6 +11,7 @@ links:
       - SRCONF-CLI-001
     unit_test_refs:
       - tools/spec_runner/tests/test_harness_cli_run_unit.py
+      - tools/spec_runner/tests/test_conformance_runner_unit.py
     implementation_refs:
       - spec_runner/harnesses/cli_run.py
     notes: "Entry point requirement is covered by conformance seed and unit tests."
@@ -39,6 +40,7 @@ links:
       - SRCONF-CLI-002
     unit_test_refs:
       - tools/spec_runner/tests/test_contract_governance_unit.py
+      - tools/spec_runner/tests/test_conformance_runner_unit.py
     implementation_refs: []
     notes: "Conformance seed fixtures include explicit harness.entrypoint values."
 
@@ -54,5 +56,6 @@ links:
       - SRCONF-CLI-002
     unit_test_refs:
       - tools/spec_runner/tests/test_contract_governance_unit.py
+      - tools/spec_runner/tests/test_conformance_runner_unit.py
     implementation_refs: []
     notes: "Conformance fixtures are explicit and do not require env fallback."

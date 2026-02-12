@@ -25,6 +25,12 @@ Contract governance check:
 python scripts/check_contract_governance.py
 ```
 
+Conformance reference test:
+
+```sh
+python -m pytest tests/test_conformance_runner_unit.py
+```
+
 ## Quickstart
 
 1. Create a spec doc with a fenced `yaml spec-test` block:

@@ -13,3 +13,7 @@ Current seed:
 
 - `fixtures/conformance/cases/cli-run-entrypoint.yaml`
 - `fixtures/conformance/expected/cli-run-entrypoint.yaml`
+
+Python reference execution is covered by:
+
+- `tools/spec_runner/tests/test_conformance_runner_unit.py`
