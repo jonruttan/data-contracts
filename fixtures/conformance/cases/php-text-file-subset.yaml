@@ -72,3 +72,13 @@ cases:
               - contain: ["version: 1"]
           - cannot:
               - regex: ["\\A\\Z"]
+
+  - id: SRCONF-PHP-TEXT-009
+    title: non-portable regex fails under assert_health error mode
+    type: text.file
+    assert_health:
+      mode: error
+    assert:
+      - target: text
+        must:
+          - regex: ["(?<=version: )1"]

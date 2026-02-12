@@ -31,3 +31,9 @@ results:
   - id: SRCONF-PHP-TEXT-008
     status: pass
     category: null
+
+  - id: SRCONF-PHP-TEXT-009
+    status: fail
+    category: assertion
+    message_tokens:
+      - AH005

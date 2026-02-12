@@ -24,6 +24,8 @@ Current bootstrap behavior:
 - Executes `text.file` cases with:
   - `must`, `can`, `cannot` groups
   - `contain` and `regex` operators
+  - `assert_health.mode` validation (`ignore`/`warn`/`error`)
+  - `AH005` non-portable-regex diagnostics in `error` mode
 - Emits report JSON envelope:
   - `version: 1`
   - `results: [{id,status,category,message}]`

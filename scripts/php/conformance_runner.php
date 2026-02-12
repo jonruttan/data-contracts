@@ -107,6 +107,53 @@ function parseYamlCases(string $path): array {
     return $cases;
 }
 
+function lintAssertionHealth(mixed $node, string $path = 'assert'): array {
+    $diags = [];
+    if (is_array($node) && isListArray($node)) {
+        foreach ($node as $i => $child) {
+            $diags = array_merge($diags, lintAssertionHealth($child, "{$path}[{$i}]"));
+        }
+        return $diags;
+    }
+    if (!is_array($node)) {
+        return $diags;
+    }
+    foreach (['must', 'can', 'cannot'] as $group) {
+        if (array_key_exists($group, $node)) {
+            return array_merge($diags, lintAssertionHealth($node[$group], "{$path}.{$group}"));
+        }
+    }
+    if (!array_key_exists('regex', $node)) {
+        return $diags;
+    }
+    $raw = $node['regex'];
+    if (!is_array($raw) || !isListArray($raw)) {
+        return $diags;
+    }
+    foreach ($raw as $value) {
+        $v = (string)$value;
+        if (
+            str_contains($v, '(?<=') ||
+            str_contains($v, '(?<!') ||
+            str_contains($v, '(?P<') ||
+            preg_match('/\(\?<([A-Za-z_][A-Za-z0-9_]*)>/', $v) === 1 ||
+            str_contains($v, '\\k<') ||
+            str_contains($v, '(?(') ||
+            str_contains($v, '(?>') ||
+            preg_match('/\(\?[aiLmsux-]+(?::|\))/', $v) === 1 ||
+            preg_match('/(?<!\\\\)(?:\\\\\\\\)*[+*?]\+/', $v) === 1
+        ) {
+            $diags[] = [
+                'code' => 'AH005',
+                'path' => "{$path}.regex",
+                'message' => 'regex uses non-portable construct',
+            ];
+            break;
+        }
+    }
+    return $diags;
+}
+
 function evalTextLeaf(array $leaf, string $subject, string $target, string $caseId, string $path): void {
     foreach ($leaf as $op => $raw) {
         if ($op === 'target') {
@@ -230,6 +277,19 @@ function evaluateTextFileCase(array $case, string $subject): array {
     $mode = isset($case['assert_health']['mode']) ? (string)$case['assert_health']['mode'] : null;
     if ($mode !== null && !in_array(strtolower($mode), ['ignore', 'warn', 'error'], true)) {
         return ['status' => 'fail', 'category' => 'schema', 'message' => 'invalid assert_health.mode'];
+    }
+    $resolvedMode = strtolower((string)($mode ?? 'ignore'));
+    $diags = lintAssertionHealth($case['assert'] ?? []);
+    if (count($diags) > 0 && $resolvedMode === 'error') {
+        $parts = [];
+        foreach ($diags as $d) {
+            $parts[] = "{$d['code']}@{$d['path']}";
+        }
+        return [
+            'status' => 'fail',
+            'category' => 'assertion',
+            'message' => "assertion health check failed (" . count($diags) . " issue(s)): " . implode('; ', $parts),
+        ];
     }
 
     try {
