@@ -1,0 +1,17 @@
+version: 1
+cases:
+  - id: SRCONF-PHP-TEXT-001
+    title: text.file contain assertion passes in php bootstrap
+    type: text.file
+    assert:
+      - target: text
+        must:
+          - contain: ["version: 1"]
+
+  - id: SRCONF-PHP-TEXT-002
+    title: text.file regex assertion can fail in php bootstrap
+    type: text.file
+    assert:
+      - target: text
+        must:
+          - regex: ["\\A\\Z"]

@@ -16,17 +16,20 @@ Bootstrap script path:
 
 Current bootstrap behavior:
 
-- Reads fixture case IDs from `fixtures/conformance/cases/*.yaml`
+- Reads fixtures from `fixtures/conformance/cases/*.yaml`
+- Executes `text.file` cases with:
+  - `must` groups
+  - `contain` and `regex` operators
 - Emits report JSON envelope:
   - `version: 1`
   - `results: [{id,status,category,message}]`
-- Uses placeholder runtime failures until PHP parser/assertion parity is built
+- Marks unsupported types as `runtime` failures
 
 Example:
 
 ```sh
 php scripts/php/conformance_runner.php \
-  --cases fixtures/conformance/cases \
+  --cases fixtures/conformance/cases/php-text-file-subset.yaml \
   --out .artifacts/php-conformance-report.json
 ```
 
@@ -35,3 +38,8 @@ Validate the produced report against the Python contract validator:
 ```sh
 python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report.json
 ```
+
+Bootstrap parity subset fixture:
+
+- `fixtures/conformance/cases/php-text-file-subset.yaml`
+- `fixtures/conformance/expected/php-text-file-subset.yaml`

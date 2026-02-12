@@ -1,0 +1,9 @@
+version: 1
+results:
+  - id: SRCONF-PHP-TEXT-001
+    status: pass
+    category: null
+
+  - id: SRCONF-PHP-TEXT-002
+    status: fail
+    category: assertion

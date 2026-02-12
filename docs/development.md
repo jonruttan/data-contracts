@@ -53,7 +53,7 @@ Generate a bootstrap PHP report:
 
 ```sh
 php scripts/php/conformance_runner.php \
-  --cases fixtures/conformance/cases \
+  --cases fixtures/conformance/cases/php-text-file-subset.yaml \
   --out .artifacts/php-conformance-report.json
 ```
 
