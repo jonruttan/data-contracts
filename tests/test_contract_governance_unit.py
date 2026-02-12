@@ -2,7 +2,7 @@ from pathlib import Path
 
 import yaml
 
-from spec_runner.contract_governance import check_contract_governance
+from spec_runner.contract_governance import build_contract_coverage, check_contract_governance
 
 
 def test_contract_governance_passes_on_repo_state():
@@ -149,3 +149,54 @@ def test_contract_governance_fails_on_policy_ref_mismatch(tmp_path):
 
     errs = check_contract_governance(tmp_path)
     assert any("policy_ref mismatch" in e for e in errs)
+
+
+def test_contract_coverage_marks_must_rules_covered_on_repo_state():
+    repo_root = Path(__file__).resolve().parents[3]
+    coverage = build_contract_coverage(repo_root)
+    must_rules = [r for r in coverage if r.norm == "MUST"]
+    assert must_rules
+    assert all(r.is_covered for r in must_rules)
+
+
+def test_contract_coverage_marks_uncovered_must(tmp_path):
+    (tmp_path / "tools/spec_runner/docs/spec/contract").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/fixtures/conformance/cases").mkdir(parents=True)
+    (tmp_path / "tools/spec_runner/fixtures/conformance/expected").mkdir(parents=True)
+    policy = {
+        "rules": [
+            {
+                "id": "R4",
+                "norm": "MUST",
+                "scope": "case",
+                "applies_to": "x",
+                "requirement": "y",
+                "rationale": "because",
+                "risk_if_violated": "risk",
+                "references": [],
+            }
+        ]
+    }
+    trace = {
+        "links": [
+            {
+                "rule_id": "R4",
+                "policy_ref": "docs/spec/contract/policy-v1.yaml#R4",
+                "conformance_case_ids": [],
+                "unit_test_refs": [],
+            }
+        ]
+    }
+    (tmp_path / "tools/spec_runner/docs/spec/contract/policy-v1.yaml").write_text(
+        yaml.safe_dump(policy, sort_keys=False),
+        encoding="utf-8",
+    )
+    (tmp_path / "tools/spec_runner/docs/spec/contract/traceability-v1.yaml").write_text(
+        yaml.safe_dump(trace, sort_keys=False),
+        encoding="utf-8",
+    )
+
+    coverage = build_contract_coverage(tmp_path)
+    assert len(coverage) == 1
+    assert coverage[0].norm == "MUST"
+    assert coverage[0].is_covered is False

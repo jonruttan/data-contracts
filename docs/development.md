@@ -10,6 +10,7 @@ python3 -m pip install -e '.[dev]'
 
 ```sh
 python3 scripts/check_contract_governance.py
+python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
 python3 -m pytest
 ```
 
@@ -17,6 +18,12 @@ python3 -m pytest
 
 ```sh
 python3 scripts/check_contract_governance.py
+```
+
+## Contract Coverage Report
+
+```sh
+python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
 ```
 
 ## Conformance Fixture Layout
