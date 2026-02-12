@@ -10,6 +10,7 @@ from spec_runner.purpose_lint import (
     load_purpose_lint_policy,
     purpose_quality_warnings,
     resolve_purpose_lint_config,
+    warning_severity_for_code,
 )
 
 PURPOSE_WARNING_CODES = ("PUR001", "PUR002", "PUR003", "PUR004")
@@ -45,22 +46,23 @@ def _display_path(path: Path, *, cwd: Path) -> str:
         return str(path.resolve())
 
 
-def _warning(code: str, message: str) -> dict[str, Any]:
+def _warning(code: str, message: str, *, cfg: dict[str, Any]) -> dict[str, Any]:
     return {
         "code": code,
         "message": message,
+        "severity": warning_severity_for_code(code, cfg),
         "hint": PURPOSE_WARNING_CODE_TO_HINT.get(code, "Review warning details and update purpose lint configuration."),
     }
 
 
-def _quality_warning_to_structured(msg: str) -> dict[str, str]:
+def _quality_warning_to_structured(msg: str, *, cfg: dict[str, Any]) -> dict[str, str]:
     if msg == "purpose duplicates title":
-        return _warning("PUR001", msg)
+        return _warning("PUR001", msg, cfg=cfg)
     if msg.startswith("purpose word count "):
-        return _warning("PUR002", msg)
+        return _warning("PUR002", msg, cfg=cfg)
     if msg.startswith("purpose contains placeholder token(s):"):
-        return _warning("PUR003", msg)
-    return _warning("PUR004", msg)
+        return _warning("PUR003", msg, cfg=cfg)
+    return _warning("PUR004", msg, cfg=cfg)
 
 
 def collect_conformance_purpose_rows(cases_dir: Path, *, purpose_policy: dict[str, Any]) -> list[ConformancePurposeRow]:
@@ -69,9 +71,9 @@ def collect_conformance_purpose_rows(cases_dir: Path, *, purpose_policy: dict[st
     for spec in iter_spec_doc_tests(cases_dir):
         test = dict(spec.test)
         cfg, cfg_errs = resolve_purpose_lint_config(test, purpose_policy)
-        warns: list[dict[str, str]] = [_warning("PUR004", str(e)) for e in cfg_errs]
+        warns: list[dict[str, str]] = [_warning("PUR004", str(e), cfg=cfg) for e in cfg_errs]
         warns.extend(
-            _quality_warning_to_structured(w)
+            _quality_warning_to_structured(w, cfg=cfg)
             for w in purpose_quality_warnings(
                 str(test.get("title", "")).strip(),
                 str(test.get("purpose", "")).strip(),
@@ -99,12 +101,17 @@ def conformance_purpose_report_jsonable(cases_dir: Path, *, repo_root: Path) -> 
     rows = collect_conformance_purpose_rows(cases_dir, purpose_policy=policy)
     row_warning_count = sum(len(r.warnings) for r in rows)
     warning_code_counts: dict[str, int] = {}
+    warning_severity_counts: dict[str, int] = {}
     for row in rows:
         for w in row.warnings:
             code = str(w.get("code", "")).strip() or "PUR004"
             warning_code_counts[code] = warning_code_counts.get(code, 0) + 1
+            sev = str(w.get("severity", "")).strip().lower()
+            if sev in {"info", "warn", "error"}:
+                warning_severity_counts[sev] = warning_severity_counts.get(sev, 0) + 1
     if policy_errs:
         warning_code_counts["PUR004"] = warning_code_counts.get("PUR004", 0) + len(policy_errs)
+        warning_severity_counts["error"] = warning_severity_counts.get("error", 0) + len(policy_errs)
     return {
         "version": 1,
         "summary": {
@@ -114,6 +121,7 @@ def conformance_purpose_report_jsonable(cases_dir: Path, *, repo_root: Path) -> 
             "policy_error_count": len(policy_errs),
             "total_warning_count": row_warning_count + len(policy_errs),
             "warning_code_counts": warning_code_counts,
+            "warning_severity_counts": warning_severity_counts,
         },
         "policy": {
             "path": POLICY_REL_PATH,

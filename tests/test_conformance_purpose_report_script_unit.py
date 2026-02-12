@@ -28,6 +28,7 @@ def test_script_json_mode_and_fail_on_warn(monkeypatch, tmp_path):
                 "policy_error_count": 0,
                 "total_warning_count": 1,
                 "warning_code_counts": {"PUR001": 1},
+                "warning_severity_counts": {"warn": 1},
             },
             "policy": {"path": "x", "exists": False, "config": {}, "errors": []},
             "rows": [
@@ -42,6 +43,7 @@ def test_script_json_mode_and_fail_on_warn(monkeypatch, tmp_path):
                         {
                             "code": "PUR001",
                             "message": "purpose duplicates title",
+                            "severity": "warn",
                             "hint": "Rewrite purpose to explain intent or risk not already stated in title.",
                         }
                     ],
@@ -70,6 +72,7 @@ def test_script_markdown_mode(monkeypatch, tmp_path):
                 "policy_error_count": 0,
                 "total_warning_count": 1,
                 "warning_code_counts": {"PUR002": 1},
+                "warning_severity_counts": {"warn": 1},
             },
             "policy": {"path": "x", "exists": True, "config": {}, "errors": []},
             "rows": [
@@ -84,6 +87,7 @@ def test_script_markdown_mode(monkeypatch, tmp_path):
                         {
                             "code": "PUR002",
                             "message": "purpose word count 2 below minimum 8",
+                            "severity": "warn",
                             "hint": "Expand purpose to meet the configured minimum word count.",
                         }
                     ],
@@ -96,7 +100,7 @@ def test_script_markdown_mode(monkeypatch, tmp_path):
     text = out.read_text(encoding="utf-8")
     assert text.startswith("# Conformance Purpose Report")
     assert (
-        "| SRCONF-X | text.file | PUR002 | purpose word count 2 below minimum 8 | "
+        "| SRCONF-X | text.file | warn | PUR002 | purpose word count 2 below minimum 8 | "
         "Expand purpose to meet the configured minimum word count. | x.spec.md |"
     ) in text
 
@@ -116,6 +120,7 @@ def test_script_only_warnings_filters_rows(monkeypatch, tmp_path):
                 "policy_error_count": 0,
                 "total_warning_count": 1,
                 "warning_code_counts": {"PUR001": 1},
+                "warning_severity_counts": {"warn": 1},
             },
             "policy": {"path": "x", "exists": False, "config": {}, "errors": []},
             "rows": [
@@ -130,6 +135,7 @@ def test_script_only_warnings_filters_rows(monkeypatch, tmp_path):
                         {
                             "code": "PUR001",
                             "message": "purpose duplicates title",
+                            "severity": "warn",
                             "hint": "Rewrite purpose to explain intent or risk not already stated in title.",
                         }
                     ],
@@ -152,3 +158,38 @@ def test_script_only_warnings_filters_rows(monkeypatch, tmp_path):
     assert payload["summary"]["only_warnings"] is True
     assert payload["summary"]["total_rows"] == 1
     assert [r["id"] for r in payload["rows"]] == ["A"]
+
+
+def test_script_fail_on_severity_warn_and_error(monkeypatch, tmp_path):
+    mod = _load_script_module()
+    out = tmp_path / "purpose.json"
+    monkeypatch.setattr(
+        mod,
+        "conformance_purpose_report_jsonable",
+        lambda *_a, **_k: {
+            "version": 1,
+            "summary": {
+                "total_rows": 1,
+                "rows_with_warnings": 1,
+                "row_warning_count": 1,
+                "policy_error_count": 0,
+                "total_warning_count": 1,
+                "warning_code_counts": {"PUR002": 1},
+                "warning_severity_counts": {"warn": 1},
+            },
+            "policy": {"path": "x", "exists": False, "config": {}, "errors": []},
+            "rows": [
+                {
+                    "id": "A",
+                    "title": "t",
+                    "purpose": "p",
+                    "type": "text.file",
+                    "file": "a.spec.md",
+                    "purpose_lint": {"enabled": True},
+                    "warnings": [{"code": "PUR002", "message": "x", "severity": "warn", "hint": "h"}],
+                }
+            ],
+        },
+    )
+    assert mod.main(["--out", str(out), "--fail-on-severity", "warn"]) == 1
+    assert mod.main(["--out", str(out), "--fail-on-severity", "error"]) == 0

@@ -13,6 +13,7 @@ from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 def _to_markdown(payload: dict) -> str:
     summary = payload.get("summary") or {}
     code_counts = summary.get("warning_code_counts") or {}
+    severity_counts = summary.get("warning_severity_counts") or {}
     lines = [
         "# Conformance Purpose Report",
         "",
@@ -23,13 +24,16 @@ def _to_markdown(payload: dict) -> str:
     if code_counts:
         parts = [f"{k}={int(v)}" for k, v in sorted(code_counts.items())]
         lines.append(f"- warning codes: {', '.join(parts)}")
+    if severity_counts:
+        parts = [f"{k}={int(v)}" for k, v in sorted(severity_counts.items())]
+        lines.append(f"- warning severities: {', '.join(parts)}")
     lines.extend(
         [
         "",
         "## Warnings",
         "",
-        "| id | type | code | warning | hint | file |",
-        "| --- | --- | --- | --- | --- | --- |",
+        "| id | type | severity | code | warning | hint | file |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
         ]
     )
     had_any = False
@@ -42,16 +46,18 @@ def _to_markdown(payload: dict) -> str:
             if isinstance(w, dict):
                 code = str(w.get("code", "")).strip()
                 message = str(w.get("message", "")).strip()
+                severity = str(w.get("severity", "")).strip().lower() or "warn"
                 hint = str(w.get("hint", "")).strip()
             else:
                 code = "PUR004"
                 message = str(w).strip()
+                severity = "error"
                 hint = "Review warning details and update purpose lint configuration."
             ww = message.replace("|", "\\|")
             hh = hint.replace("|", "\\|")
-            lines.append(f"| {rid} | {rtype} | {code} | {ww} | {hh} | {file_} |")
+            lines.append(f"| {rid} | {rtype} | {severity} | {code} | {ww} | {hh} | {file_} |")
     if not had_any:
-        lines.append("| - | - | - | none | - | - |")
+        lines.append("| - | - | - | - | none | - | - |")
     return "\n".join(lines) + "\n"
 
 
@@ -65,16 +71,23 @@ def _filtered_only_warnings(payload: dict) -> dict:
     summary["row_warning_count"] = sum(len(r.get("warnings") or []) for r in rows)
     summary["total_warning_count"] = int(summary.get("row_warning_count", 0)) + int(summary.get("policy_error_count", 0))
     code_counts: dict[str, int] = {}
+    severity_counts: dict[str, int] = {}
     for r in rows:
         for w in r.get("warnings") or []:
             if isinstance(w, dict):
                 code = str(w.get("code", "")).strip() or "PUR004"
+                sev = str(w.get("severity", "")).strip().lower()
             else:
                 code = "PUR004"
+                sev = "error"
             code_counts[code] = code_counts.get(code, 0) + 1
+            if sev in {"info", "warn", "error"}:
+                severity_counts[sev] = severity_counts.get(sev, 0) + 1
     if int(summary.get("policy_error_count", 0)) > 0:
         code_counts["PUR004"] = code_counts.get("PUR004", 0) + int(summary.get("policy_error_count", 0))
+        severity_counts["error"] = severity_counts.get("error", 0) + int(summary.get("policy_error_count", 0))
     summary["warning_code_counts"] = code_counts
+    summary["warning_severity_counts"] = severity_counts
     summary["only_warnings"] = True
     out["summary"] = summary
     return out
@@ -100,6 +113,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Return non-zero exit when the report contains warnings.",
     )
     ap.add_argument(
+        "--fail-on-severity",
+        choices=("warn", "error"),
+        default="",
+        help="Return non-zero exit when warnings at or above this severity are present.",
+    )
+    ap.add_argument(
         "--only-warnings",
         action="store_true",
         help="Emit only rows that contain warnings.",
@@ -121,8 +140,23 @@ def main(argv: list[str] | None = None) -> int:
         print(f"wrote {out}")
     else:
         print(raw, end="")
-    total_warn = int((payload.get("summary") or {}).get("total_warning_count", 0))
-    if ns.fail_on_warn and total_warn > 0:
+    summary = payload.get("summary") or {}
+    total_warn = int(summary.get("total_warning_count", 0))
+    threshold = str(ns.fail_on_severity).strip().lower()
+    if not threshold and ns.fail_on_warn:
+        threshold = "warn"
+    if threshold:
+        sev_counts = summary.get("warning_severity_counts") or {}
+        warn_count = int(sev_counts.get("warn", 0))
+        error_count = int(sev_counts.get("error", 0))
+        at_or_above = error_count if threshold == "error" else (warn_count + error_count)
+        if at_or_above > 0:
+            print(
+                f"ERROR: conformance purpose report has {at_or_above} warning(s) at or above severity '{threshold}'",
+                file=sys.stderr,
+            )
+            return 1
+    elif ns.fail_on_warn and total_warn > 0:
         print(
             f"ERROR: conformance purpose report has {total_warn} warning(s)",
             file=sys.stderr,

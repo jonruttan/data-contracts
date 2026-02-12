@@ -21,6 +21,7 @@ Purpose lint policy:
   - `min_words`: integer override
   - `placeholders`: list override
   - `forbid_title_copy`: boolean override
+  - `severity_by_code`: mapping override (code -> `info|warn|error`)
   - `enabled`: boolean override (when false, skips purpose quality checks; non-empty purpose is still required)
 
 Warning code contract:

@@ -74,6 +74,8 @@ Optional strict mode for automation:
 
 ```sh
 python3 scripts/conformance_purpose_report.py --fail-on-warn
+python3 scripts/conformance_purpose_report.py --fail-on-severity warn
+python3 scripts/conformance_purpose_report.py --fail-on-severity error
 python3 scripts/conformance_purpose_report.py --only-warnings --format md --out .artifacts/conformance-purpose-warnings.md
 ```
 

@@ -34,6 +34,7 @@ expect:
         "policy_error_count",
         "total_warning_count",
         "warning_code_counts",
+        "warning_severity_counts",
     }
     assert set(payload["policy"].keys()) == {"path", "exists", "config", "errors"}
     assert payload["policy"]["path"].endswith("docs/spec/conformance/purpose-lint-v1.yaml")
@@ -51,6 +52,7 @@ expect:
     assert row["purpose_lint"]["min_words"] == 8
     assert row["warnings"] == []
     assert payload["summary"]["warning_code_counts"] == {}
+    assert payload["summary"]["warning_severity_counts"] == {}
 
 
 def test_conformance_purpose_report_rows_are_sorted_by_id(tmp_path):
@@ -159,6 +161,7 @@ expect:
     assert any(
         w["code"] == "PUR001"
         and w["message"] == "purpose duplicates title"
+        and w["severity"] == "warn"
         and "Rewrite purpose" in w["hint"]
         for w in row["warnings"]
     )
@@ -188,6 +191,8 @@ expect:
     assert counts["PUR001"] == 1
     assert counts["PUR002"] == 1
     assert counts["PUR003"] == 1
+    sev = payload["summary"]["warning_severity_counts"]
+    assert sev["warn"] == 3
 
 
 def test_conformance_purpose_report_uses_safe_default_hint_for_unknown_warning(monkeypatch, tmp_path):
@@ -217,4 +222,43 @@ expect:
     row = payload["rows"][0]
     assert row["warnings"][0]["code"] == "PUR004"
     assert row["warnings"][0]["message"] == "some new warning shape"
+    assert row["warnings"][0]["severity"] == "error"
     assert row["warnings"][0]["hint"] == "Fix purpose_lint settings or policy file shape/version before rerunning."
+
+
+def test_conformance_purpose_report_severity_override_from_policy(tmp_path):
+    repo_root = tmp_path / "repo"
+    policy_path = repo_root / "tools/spec_runner/docs/spec/conformance/purpose-lint-v1.yaml"
+    policy_path.parent.mkdir(parents=True, exist_ok=True)
+    policy_path.write_text(
+        """version: 1
+default:
+  min_words: 8
+  placeholders: [todo]
+  forbid_title_copy: true
+  severity_by_code:
+    PUR002: info
+runtime: {}
+""",
+        encoding="utf-8",
+    )
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "sample.spec.md").write_text(
+        """# Sample
+## SRCONF-PURPOSE-REPORT-700
+```yaml spec-test
+id: SRCONF-PURPOSE-REPORT-700
+title: short purpose case
+purpose: tiny purpose
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+        encoding="utf-8",
+    )
+    payload = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)
+    row = payload["rows"][0]
+    assert any(w["code"] == "PUR002" and w["severity"] == "info" for w in row["warnings"])
+    assert payload["summary"]["warning_severity_counts"]["info"] >= 1

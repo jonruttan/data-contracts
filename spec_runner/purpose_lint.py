@@ -9,6 +9,13 @@ import yaml
 POLICY_REL_PATH = "tools/spec_runner/docs/spec/conformance/purpose-lint-v1.yaml"
 _DEFAULT_MIN_WORDS = 8
 _DEFAULT_PLACEHOLDERS = ("todo", "tbd", "fixme", "xxx")
+_DEFAULT_SEVERITY_BY_CODE = {
+    "PUR001": "warn",
+    "PUR002": "warn",
+    "PUR003": "warn",
+    "PUR004": "error",
+}
+_VALID_SEVERITIES = {"info", "warn", "error"}
 
 
 def default_purpose_lint_policy() -> dict[str, Any]:
@@ -18,6 +25,7 @@ def default_purpose_lint_policy() -> dict[str, Any]:
             "min_words": _DEFAULT_MIN_WORDS,
             "placeholders": list(_DEFAULT_PLACEHOLDERS),
             "forbid_title_copy": True,
+            "severity_by_code": dict(_DEFAULT_SEVERITY_BY_CODE),
         },
         "runtime": {},
     }
@@ -37,7 +45,7 @@ def _parse_profile(raw: Any, *, where: str, allow_enabled: bool, allow_runtime: 
         raw = {}
     if not isinstance(raw, dict):
         return {}, [f"{where} must be a mapping"]
-    allowed = {"min_words", "placeholders", "forbid_title_copy"}
+    allowed = {"min_words", "placeholders", "forbid_title_copy", "severity_by_code"}
     if allow_enabled:
         allowed.add("enabled")
     if allow_runtime:
@@ -64,6 +72,25 @@ def _parse_profile(raw: Any, *, where: str, allow_enabled: bool, allow_runtime: 
             errs.append(f"{where}.forbid_title_copy must be a boolean")
         else:
             out["forbid_title_copy"] = bool(v)
+    if "severity_by_code" in raw:
+        v = raw.get("severity_by_code")
+        if not isinstance(v, dict):
+            errs.append(f"{where}.severity_by_code must be a mapping")
+        else:
+            sev_out: dict[str, str] = {}
+            for k, val in v.items():
+                code = str(k).strip().upper()
+                sev = str(val).strip().lower()
+                if not code:
+                    errs.append(f"{where}.severity_by_code key must be non-empty")
+                    continue
+                if sev not in _VALID_SEVERITIES:
+                    errs.append(
+                        f"{where}.severity_by_code.{code} must be one of: info, warn, error"
+                    )
+                    continue
+                sev_out[code] = sev
+            out["severity_by_code"] = sev_out
     if allow_enabled and "enabled" in raw:
         v = raw.get("enabled")
         if not isinstance(v, bool):
@@ -152,10 +179,24 @@ def resolve_purpose_lint_config(case: dict[str, Any], policy: dict[str, Any]) ->
             cfg.update(profile)
 
     cfg.update({k: v for k, v in override.items() if k in {"min_words", "placeholders", "forbid_title_copy", "enabled"}})
+    if "severity_by_code" in override:
+        merged_sev = dict(cfg.get("severity_by_code") or {})
+        merged_sev.update(override.get("severity_by_code") or {})
+        cfg["severity_by_code"] = merged_sev
     cfg.setdefault("enabled", True)
     cfg["min_words"] = int(cfg.get("min_words", _DEFAULT_MIN_WORDS))
     cfg["forbid_title_copy"] = bool(cfg.get("forbid_title_copy", True))
     cfg["placeholders"] = [str(x).strip().lower() for x in cfg.get("placeholders", list(_DEFAULT_PLACEHOLDERS))]
+    sev = cfg.get("severity_by_code")
+    if not isinstance(sev, dict):
+        sev = {}
+    merged_sev = dict(_DEFAULT_SEVERITY_BY_CODE)
+    for k, v in sev.items():
+        code = str(k).strip().upper()
+        level = str(v).strip().lower()
+        if code and level in _VALID_SEVERITIES:
+            merged_sev[code] = level
+    cfg["severity_by_code"] = merged_sev
     cfg["runtime"] = runtime_name or None
     return cfg, errs
 
@@ -178,3 +219,12 @@ def purpose_quality_warnings(title: str, purpose: str, cfg: dict[str, Any], *, h
     if bad_tokens:
         warns.append(f"purpose contains placeholder token(s): {', '.join(bad_tokens)}")
     return warns
+
+
+def warning_severity_for_code(code: str, cfg: dict[str, Any]) -> str:
+    sev = cfg.get("severity_by_code")
+    if isinstance(sev, dict):
+        level = str(sev.get(str(code).upper(), "")).strip().lower()
+        if level in _VALID_SEVERITIES:
+            return level
+    return _DEFAULT_SEVERITY_BY_CODE.get(str(code).upper(), "warn")
