@@ -7,7 +7,11 @@ from typing import Any
 
 import yaml
 from spec_runner.doc_parser import iter_spec_doc_tests
-from spec_runner.purpose_lint import load_purpose_lint_policy, resolve_purpose_lint_config
+from spec_runner.purpose_lint import (
+    load_purpose_lint_policy,
+    purpose_quality_warnings,
+    resolve_purpose_lint_config,
+)
 
 _NORMATIVE_CONTRACT_DOCS = [
     "docs/spec/contract/00-design-goals.md",
@@ -28,14 +32,6 @@ _CONFORMANCE_CASE_ID_PATTERN = re.compile(r"\bSRCONF-[A-Z0-9-]+\b")
 
 def _read_yaml(path: Path) -> Any:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
-
-
-def _normalize_sentence(s: str) -> str:
-    return re.sub(r"\s+", " ", str(s).strip().lower())
-
-
-def _word_count(s: str) -> int:
-    return len(re.findall(r"[A-Za-z0-9]+", str(s)))
 
 
 def _is_spec_opening_fence(line: str) -> tuple[str, int] | None:
@@ -105,26 +101,21 @@ def _lint_conformance_case_docs(cases_dir: Path, *, purpose_policy: dict[str, An
                 if not purpose:
                     errs.append(f"conformance style: case must include non-empty purpose: {p}:{start + 1}")
                 title = str(payload.get("title", "")).strip()
-                if cfg.get("enabled", True):
-                    if cfg.get("forbid_title_copy", True) and title and _normalize_sentence(title) == _normalize_sentence(purpose):
+                for w in purpose_quality_warnings(title, purpose, cfg, honor_enabled=True):
+                    if w == "purpose duplicates title":
                         errs.append(
                             "conformance style: purpose must add context beyond title "
                             f"for case {rid or '<unknown>'}: {p}:{start + 1}"
                         )
-                    min_words = int(cfg.get("min_words", 8))
-                    wc = _word_count(purpose)
-                    if wc and wc < min_words:
+                    elif w.startswith("purpose word count "):
                         errs.append(
                             "conformance style: case purpose must be at least "
-                            f"{min_words} words for case {rid or '<unknown>'}: {p}:{start + 1}"
+                            f"{int(cfg.get('min_words', 8))} words for case {rid or '<unknown>'}: {p}:{start + 1}"
                         )
-                    placeholder_set = {str(x).lower() for x in cfg.get("placeholders", [])}
-                    purpose_tokens = {tok.lower() for tok in re.findall(r"[A-Za-z0-9_]+", purpose)}
-                    bad_tokens = sorted(tok for tok in purpose_tokens if tok in placeholder_set)
-                    if bad_tokens:
+                    elif w.startswith("purpose contains placeholder token(s): "):
                         errs.append(
                             "conformance style: case purpose contains placeholder token(s) "
-                            f"{', '.join(bad_tokens)} for case {rid or '<unknown>'}: {p}:{start + 1}"
+                            f"{w.split(': ', 1)[1]} for case {rid or '<unknown>'}: {p}:{start + 1}"
                         )
                 if rid:
                     ids_in_file.append(rid)

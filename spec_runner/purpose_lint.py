@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +21,14 @@ def default_purpose_lint_policy() -> dict[str, Any]:
         },
         "runtime": {},
     }
+
+
+def _normalize_sentence(s: str) -> str:
+    return re.sub(r"\s+", " ", str(s).strip().lower())
+
+
+def _word_count(s: str) -> int:
+    return len(re.findall(r"[A-Za-z0-9]+", str(s)))
 
 
 def _parse_profile(raw: Any, *, where: str, allow_enabled: bool, allow_runtime: bool) -> tuple[dict[str, Any], list[str]]:
@@ -149,3 +158,23 @@ def resolve_purpose_lint_config(case: dict[str, Any], policy: dict[str, Any]) ->
     cfg["placeholders"] = [str(x).strip().lower() for x in cfg.get("placeholders", list(_DEFAULT_PLACEHOLDERS))]
     cfg["runtime"] = runtime_name or None
     return cfg, errs
+
+
+def purpose_quality_warnings(title: str, purpose: str, cfg: dict[str, Any], *, honor_enabled: bool = True) -> list[str]:
+    if honor_enabled and not bool(cfg.get("enabled", True)):
+        return []
+    warns: list[str] = []
+    stitle = str(title).strip()
+    spurpose = str(purpose).strip()
+    if bool(cfg.get("forbid_title_copy", True)) and stitle and _normalize_sentence(stitle) == _normalize_sentence(spurpose):
+        warns.append("purpose duplicates title")
+    min_words = int(cfg.get("min_words", _DEFAULT_MIN_WORDS))
+    wc = _word_count(spurpose)
+    if wc and wc < min_words:
+        warns.append(f"purpose word count {wc} below minimum {min_words}")
+    placeholder_set = {str(x).lower() for x in cfg.get("placeholders", [])}
+    purpose_tokens = {tok.lower() for tok in re.findall(r"[A-Za-z0-9_]+", spurpose)}
+    bad_tokens = sorted(tok for tok in purpose_tokens if tok in placeholder_set)
+    if bad_tokens:
+        warns.append(f"purpose contains placeholder token(s): {', '.join(bad_tokens)}")
+    return warns

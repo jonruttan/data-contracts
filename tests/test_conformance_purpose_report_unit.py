@@ -27,6 +27,13 @@ expect:
 
     payload = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)
     assert payload["version"] == 1
+    assert set(payload["summary"].keys()) == {
+        "total_rows",
+        "rows_with_warnings",
+        "row_warning_count",
+        "policy_error_count",
+        "total_warning_count",
+    }
     assert set(payload["policy"].keys()) == {"path", "exists", "config", "errors"}
     assert payload["policy"]["path"].endswith("docs/spec/conformance/purpose-lint-v1.yaml")
     assert payload["policy"]["exists"] is False
@@ -34,13 +41,14 @@ expect:
     assert isinstance(payload["rows"], list)
     assert len(payload["rows"]) == 1
     row = payload["rows"][0]
-    assert set(row.keys()) == {"id", "title", "purpose", "type", "file", "purpose_lint"}
+    assert set(row.keys()) == {"id", "title", "purpose", "type", "file", "purpose_lint", "warnings"}
     assert row["id"] == "SRCONF-PURPOSE-REPORT-001"
     assert row["title"] == "report row contains purpose metadata"
     assert row["type"] == "text.file"
     assert "machine-readable case intent metadata" in row["purpose"]
     assert row["file"].endswith("sample.spec.md")
     assert row["purpose_lint"]["min_words"] == 8
+    assert row["warnings"] == []
 
 
 def test_conformance_purpose_report_rows_are_sorted_by_id(tmp_path):
@@ -120,3 +128,30 @@ expect:
     assert row["purpose_lint"]["runtime"] == "php"
     assert row["purpose_lint"]["min_words"] == 3
     assert row["purpose_lint"]["forbid_title_copy"] is False
+
+
+def test_conformance_purpose_report_includes_warnings_even_when_case_lint_disabled(tmp_path):
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir(parents=True)
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "sample.spec.md").write_text(
+        """# Sample
+## SRCONF-PURPOSE-REPORT-400
+```yaml spec-test
+id: SRCONF-PURPOSE-REPORT-400
+title: same text
+purpose: same text
+purpose_lint:
+  enabled: false
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+        encoding="utf-8",
+    )
+    payload = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)
+    assert payload["summary"]["total_warning_count"] >= 1
+    row = payload["rows"][0]
+    assert "purpose duplicates title" in row["warnings"]
