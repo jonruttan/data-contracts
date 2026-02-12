@@ -2,10 +2,10 @@
 
 `spec_runner` is a small **executable-spec runner**: it scans Markdown
 documents for fenced blocks tagged `yaml spec-test`, parses them, and executes
-them via pluggable harnesses keyed by `kind`.
+them via pluggable harnesses keyed by `type`.
 
 It is designed to be publishable and reusable across projects; each project
-can provide its own `kind` adapters.
+can provide its own `type` adapters.
 
 ## Install
 
@@ -32,7 +32,8 @@ harness:
   entrypoint: "myproj.cli:main"
 assert:
   - target: stdout
-    contains: ["usage:"]
+    contains: ["Error:"]
+    is: false
 ```
 
 2. In your test suite, run the collected cases:
@@ -77,8 +78,11 @@ written as:
 
 Canonical schema doc: `tools/spec_runner/docs/spec/schema.md`.
 
+Discovery note: `iter_cases(Path(...))` currently scans only `*.md` files in
+that directory (non-recursive).
+
 ## Reuse / Publishing Notes
 
-The runner core is generic, but individual `kind` harnesses may be specific to
+The runner core is generic, but individual `type` harnesses may be specific to
 the system under test. Keep `spec_runner` focused on stable parsing,
 dispatching, and assertions; treat adapters as project-owned code.

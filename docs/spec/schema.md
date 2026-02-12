@@ -15,6 +15,11 @@ This schema defines the stable shape of executable spec tests embedded in
 - `type` (string, required): dispatch key (e.g. `cli.run`)
 - `title` (string, optional): human description
 
+Parser behavior:
+
+- discovery scans `*.md` in the provided directory (non-recursive)
+- legacy `kind` is accepted and normalized to `type`
+
 ## Type-Specific Fields
 
 ### `type: text.file`
@@ -29,6 +34,10 @@ This schema defines the stable shape of executable spec tests embedded in
 Fields:
 
 - `path` (string, optional): relative path to the file to read
+
+Assertion targets for `text.file`:
+
+- `text`
 
 ## `harness` Namespace
 
@@ -47,6 +56,13 @@ For `type: cli.run`, supported `harness` keys include:
 - `hook_before` (string): hook entrypoint invoked before running the CLI
 - `hook_after` (string): hook entrypoint invoked after running the CLI
 - `hook_kwargs` (mapping): keyword arguments passed through to the hook
+
+Assertion targets for `cli.run`:
+
+- `stdout`: text output from command stdout
+- `stderr`: text output from command stderr
+- `stdout_path`: path printed on first non-empty stdout line (supports `exists` only)
+- `stdout_path_text`: UTF-8 text from file at `stdout_path`
 
 ## Types
 
@@ -70,6 +86,13 @@ Supported operators:
 - text operators: `contains`, `regex`
 - compatibility aliases: `not_contains`, `not_regex`
 - additional per-harness operators such as `json_type` and `exists`
+
+Operator constraints:
+
+- all operator values MUST be lists
+- `json_type` supports `dict` and `list`
+- `exists` is currently supported only for `target: stdout_path`
+- `stdout_path.exists` only accepts `true` (or `null`) values; negation is via `is: false`
 
 Canonical negation uses `is: false`:
 

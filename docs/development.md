@@ -9,7 +9,7 @@ python3 -m pip install -e '.[dev]'
 ## Run Tests
 
 ```sh
-python -m pytest
+python3 -m pytest
 ```
 
 ## Build / Publish
