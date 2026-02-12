@@ -7,6 +7,7 @@ from typing import Any
 
 import yaml
 from spec_runner.doc_parser import iter_spec_doc_tests
+from spec_runner.purpose_lint import load_purpose_lint_policy, resolve_purpose_lint_config
 
 _NORMATIVE_CONTRACT_DOCS = [
     "docs/spec/contract/00-design-goals.md",
@@ -23,8 +24,6 @@ _REGEX_PROFILE_DOC = "docs/spec/contract/03a-regex-portability-v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 _CONFORMANCE_MAX_BLOCK_LINES = 50
 _CONFORMANCE_CASE_ID_PATTERN = re.compile(r"\bSRCONF-[A-Z0-9-]+\b")
-_CONFORMANCE_PURPOSE_MIN_WORDS = 8
-_CONFORMANCE_PURPOSE_PLACEHOLDERS = {"todo", "tbd", "fixme", "xxx"}
 
 
 def _read_yaml(path: Path) -> Any:
@@ -69,7 +68,7 @@ def _is_closing_fence(line: str, *, ch: str, min_len: int) -> bool:
     return i >= min_len and i == len(stripped)
 
 
-def _lint_conformance_case_docs(cases_dir: Path) -> list[str]:
+def _lint_conformance_case_docs(cases_dir: Path, *, purpose_policy: dict[str, Any]) -> list[str]:
     errs: list[str] = []
     global_ids: set[str] = set()
     for p in sorted(cases_dir.glob("*.spec.md")):
@@ -100,27 +99,33 @@ def _lint_conformance_case_docs(cases_dir: Path) -> list[str]:
             if isinstance(payload, dict):
                 rid = str(payload.get("id", "")).strip()
                 purpose = str(payload.get("purpose", "")).strip()
+                cfg, cfg_errs = resolve_purpose_lint_config(payload, purpose_policy)
+                for e in cfg_errs:
+                    errs.append(f"{e} in {p}:{start + 1}")
                 if not purpose:
                     errs.append(f"conformance style: case must include non-empty purpose: {p}:{start + 1}")
                 title = str(payload.get("title", "")).strip()
-                if title and _normalize_sentence(title) == _normalize_sentence(purpose):
-                    errs.append(
-                        "conformance style: purpose must add context beyond title "
-                        f"for case {rid or '<unknown>'}: {p}:{start + 1}"
-                    )
-                wc = _word_count(purpose)
-                if wc and wc < _CONFORMANCE_PURPOSE_MIN_WORDS:
-                    errs.append(
-                        "conformance style: case purpose must be at least "
-                        f"{_CONFORMANCE_PURPOSE_MIN_WORDS} words for case {rid or '<unknown>'}: {p}:{start + 1}"
-                    )
-                purpose_tokens = {tok.lower() for tok in re.findall(r"[A-Za-z0-9_]+", purpose)}
-                bad_tokens = sorted(tok for tok in purpose_tokens if tok in _CONFORMANCE_PURPOSE_PLACEHOLDERS)
-                if bad_tokens:
-                    errs.append(
-                        "conformance style: case purpose contains placeholder token(s) "
-                        f"{', '.join(bad_tokens)} for case {rid or '<unknown>'}: {p}:{start + 1}"
-                    )
+                if cfg.get("enabled", True):
+                    if cfg.get("forbid_title_copy", True) and title and _normalize_sentence(title) == _normalize_sentence(purpose):
+                        errs.append(
+                            "conformance style: purpose must add context beyond title "
+                            f"for case {rid or '<unknown>'}: {p}:{start + 1}"
+                        )
+                    min_words = int(cfg.get("min_words", 8))
+                    wc = _word_count(purpose)
+                    if wc and wc < min_words:
+                        errs.append(
+                            "conformance style: case purpose must be at least "
+                            f"{min_words} words for case {rid or '<unknown>'}: {p}:{start + 1}"
+                        )
+                    placeholder_set = {str(x).lower() for x in cfg.get("placeholders", [])}
+                    purpose_tokens = {tok.lower() for tok in re.findall(r"[A-Za-z0-9_]+", purpose)}
+                    bad_tokens = sorted(tok for tok in purpose_tokens if tok in placeholder_set)
+                    if bad_tokens:
+                        errs.append(
+                            "conformance style: case purpose contains placeholder token(s) "
+                            f"{', '.join(bad_tokens)} for case {rid or '<unknown>'}: {p}:{start + 1}"
+                        )
                 if rid:
                     ids_in_file.append(rid)
                     if rid in global_ids:
@@ -298,9 +303,12 @@ def check_contract_governance(repo_root: Path) -> list[str]:
     repo_root = repo_root.resolve()
 
     policy, trace, conformance_ids = _load_policy_and_trace(repo_root)
+    purpose_policy, purpose_policy_errs, _ = load_purpose_lint_policy(repo_root)
+    for e in purpose_policy_errs:
+        errs.append(f"{e}")
     cases_dir = repo_root / "tools/spec_runner/docs/spec/conformance/cases"
     if cases_dir.exists():
-        errs.extend(_lint_conformance_case_docs(cases_dir))
+        errs.extend(_lint_conformance_case_docs(cases_dir, purpose_policy=purpose_policy))
         errs.extend(_lint_conformance_case_index(cases_dir, conformance_ids))
     rules = policy.get("rules") or []
     links = trace.get("links") or []

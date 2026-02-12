@@ -15,6 +15,7 @@ Planned contents:
 
 Current seed:
 
+- `docs/spec/conformance/purpose-lint-v1.yaml`
 - `docs/spec/conformance/cases/cli-run-entrypoint.spec.md`
 - `docs/spec/conformance/cases/assertion-health.spec.md`
 - `docs/spec/conformance/cases/failure-context.spec.md`

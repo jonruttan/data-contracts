@@ -690,3 +690,111 @@ expect:
     )
     errs = check_contract_governance(tmp_path)
     assert any("purpose contains placeholder token(s)" in e for e in errs)
+
+
+def test_contract_governance_runtime_profile_can_relax_min_words(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R18")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/purpose-lint-v1.yaml",
+        """version: 1
+default:
+  min_words: 8
+  placeholders: [todo, tbd]
+  forbid_title_copy: true
+runtime:
+  php:
+    min_words: 3
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/runtime-purpose.spec.md",
+        """# Sample
+
+## SRCONF-PURPOSE-006
+
+```yaml spec-test
+id: SRCONF-PURPOSE-006
+title: runtime profile should relax minimum
+purpose: tiny words pass
+purpose_lint:
+  runtime: php
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-006\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert not any("case purpose must be at least" in e for e in errs)
+    assert not any("purpose_lint.runtime references unknown runtime profile" in e for e in errs)
+
+
+def test_contract_governance_case_override_can_disable_quality_checks(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R19")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/override-purpose.spec.md",
+        """# Sample
+
+## SRCONF-PURPOSE-007
+
+```yaml spec-test
+id: SRCONF-PURPOSE-007
+title: copy
+purpose: copy
+purpose_lint:
+  enabled: false
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-007\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert not any("purpose must add context beyond title" in e for e in errs)
+    assert not any("case purpose must be at least" in e for e in errs)
+    assert not any("purpose contains placeholder token(s)" in e for e in errs)
+
+
+def test_contract_governance_fails_on_unknown_purpose_lint_runtime(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R20")
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/unknown-runtime-purpose.spec.md",
+        """# Sample
+
+## SRCONF-PURPOSE-008
+
+```yaml spec-test
+id: SRCONF-PURPOSE-008
+title: unknown runtime profile should fail
+purpose: Purpose text has enough words to avoid unrelated lint errors here.
+purpose_lint:
+  runtime: ruby
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(
+        tmp_path / "tools/spec_runner/docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-PURPOSE-008\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("purpose_lint.runtime references unknown runtime profile: ruby" in e for e in errs)

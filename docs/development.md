@@ -62,6 +62,10 @@ python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.j
 python3 scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
 ```
 
+The purpose report includes `policy` metadata resolved from:
+
+- `docs/spec/conformance/purpose-lint-v1.yaml`
+
 ## Conformance Fixture Layout
 
 Cross-language fixture data lives in:

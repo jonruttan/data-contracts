@@ -1,0 +1,10 @@
+version: 1
+default:
+  min_words: 8
+  placeholders: [todo, tbd, fixme, xxx]
+  forbid_title_copy: true
+runtime:
+  python:
+    min_words: 8
+  php:
+    min_words: 8

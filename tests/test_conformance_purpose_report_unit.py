@@ -1,9 +1,9 @@
-from pathlib import Path
-
 from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 
 
 def test_conformance_purpose_report_schema_and_fields(tmp_path):
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir(parents=True)
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
     (cases_dir / "sample.spec.md").write_text(
@@ -25,20 +25,27 @@ expect:
         encoding="utf-8",
     )
 
-    payload = conformance_purpose_report_jsonable(cases_dir)
+    payload = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)
     assert payload["version"] == 1
+    assert set(payload["policy"].keys()) == {"path", "exists", "config", "errors"}
+    assert payload["policy"]["path"].endswith("docs/spec/conformance/purpose-lint-v1.yaml")
+    assert payload["policy"]["exists"] is False
+    assert payload["policy"]["errors"] == []
     assert isinstance(payload["rows"], list)
     assert len(payload["rows"]) == 1
     row = payload["rows"][0]
-    assert set(row.keys()) == {"id", "title", "purpose", "type", "file"}
+    assert set(row.keys()) == {"id", "title", "purpose", "type", "file", "purpose_lint"}
     assert row["id"] == "SRCONF-PURPOSE-REPORT-001"
     assert row["title"] == "report row contains purpose metadata"
     assert row["type"] == "text.file"
     assert "machine-readable case intent metadata" in row["purpose"]
     assert row["file"].endswith("sample.spec.md")
+    assert row["purpose_lint"]["min_words"] == 8
 
 
 def test_conformance_purpose_report_rows_are_sorted_by_id(tmp_path):
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir(parents=True)
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
     (cases_dir / "b.spec.md").write_text(
@@ -70,5 +77,46 @@ expect:
         encoding="utf-8",
     )
 
-    rows = conformance_purpose_report_jsonable(cases_dir)["rows"]
+    rows = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)["rows"]
     assert [r["id"] for r in rows] == ["SRCONF-PURPOSE-REPORT-100", "SRCONF-PURPOSE-REPORT-200"]
+
+
+def test_conformance_purpose_report_uses_runtime_profile_and_override(tmp_path):
+    repo_root = tmp_path / "repo"
+    policy_path = repo_root / "tools/spec_runner/docs/spec/conformance/purpose-lint-v1.yaml"
+    policy_path.parent.mkdir(parents=True, exist_ok=True)
+    policy_path.write_text(
+        """version: 1
+default:
+  min_words: 8
+  placeholders: [todo]
+  forbid_title_copy: true
+runtime:
+  php:
+    min_words: 3
+""",
+        encoding="utf-8",
+    )
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "sample.spec.md").write_text(
+        """# Sample
+## SRCONF-PURPOSE-REPORT-300
+```yaml spec-test
+id: SRCONF-PURPOSE-REPORT-300
+title: sample
+purpose: tiny words pass here
+purpose_lint:
+  runtime: php
+  forbid_title_copy: false
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+        encoding="utf-8",
+    )
+    row = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)["rows"][0]
+    assert row["purpose_lint"]["runtime"] == "php"
+    assert row["purpose_lint"]["min_words"] == 3
+    assert row["purpose_lint"]["forbid_title_copy"] is False

@@ -18,7 +18,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", help="Optional output path for JSON report.")
     ns = ap.parse_args(argv)
 
-    payload = conformance_purpose_report_jsonable(Path(ns.cases))
+    repo_root = Path(__file__).resolve().parents[3]
+    payload = conformance_purpose_report_jsonable(Path(ns.cases), repo_root=repo_root)
     raw = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if ns.out:
         out = Path(ns.out)
