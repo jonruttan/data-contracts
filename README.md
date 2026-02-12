@@ -32,7 +32,9 @@ harness:
   entrypoint: "myproj.cli:main"
 assert:
   - target: stdout
-    contains: ["Error:"]
+    contains: ["usage:", "options:"]
+  - target: stdout
+    contains: ["ERROR:"]
     is: false
 ```
 
