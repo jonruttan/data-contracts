@@ -79,9 +79,7 @@ def iter_leaf_assertions(leaf: Any):
     known_ops = {
         "exists",
         "contains",
-        "not_contains",
         "regex",
-        "not_regex",
         "json_type",
         "is",
     }
@@ -97,16 +95,6 @@ def iter_leaf_assertions(leaf: Any):
             raise TypeError(f"assertion op '{op}' must be a list")
         canonical = op
         is_true = default_is_true
-        if op == "not_contains":
-            canonical = "contains"
-            if "is" in leaf:
-                raise ValueError("do not combine 'is' with not_contains; use contains + is: false")
-            is_true = False
-        elif op == "not_regex":
-            canonical = "regex"
-            if "is" in leaf:
-                raise ValueError("do not combine 'is' with not_regex; use regex + is: false")
-            is_true = False
         for v in raw:
             yield target, canonical, v, is_true
     if not any_found:

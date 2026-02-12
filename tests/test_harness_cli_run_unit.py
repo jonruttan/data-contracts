@@ -328,7 +328,7 @@ def test_cli_type_any_group_or_semantics(tmp_path, monkeypatch, capsys):
             "harness": {"entrypoint": ep},
             "assert": [
                 {"any": [{"target": "stderr", "contains": ["INFO:"]}, {"target": "stderr", "contains": ["WARN:"]}]},
-                {"target": "stderr", "not_contains": ["ERROR:"]},
+                {"target": "stderr", "contains": ["ERROR:"], "is": False},
             ],
         },
     )

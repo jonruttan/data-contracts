@@ -44,11 +44,13 @@ def test_iter_leaf_assertions_requires_list_values_and_rejects_legacy():
         list(iter_leaf_assertions({"target": "stderr", "wat": ["x"]}))
     with pytest.raises(ValueError, match="must not include 'any' or 'all'"):
         list(iter_leaf_assertions({"target": "stderr", "any": []}))
-    with pytest.raises(ValueError, match="do not combine 'is' with not_contains"):
-        list(iter_leaf_assertions({"target": "stderr", "not_contains": ["x"], "is": False}))
+    with pytest.raises(ValueError, match="unsupported op: not_contains"):
+        list(iter_leaf_assertions({"target": "stderr", "not_contains": ["x"]}))
+    with pytest.raises(ValueError, match="unsupported op: not_regex"):
+        list(iter_leaf_assertions({"target": "stderr", "not_regex": ["x"]}))
 
 
-def test_iter_leaf_assertions_happy_path_and_is_normalization():
+def test_iter_leaf_assertions_happy_path_with_is_false():
     assert list(
         iter_leaf_assertions(
             {
@@ -61,10 +63,6 @@ def test_iter_leaf_assertions_happy_path_and_is_normalization():
     ) == [
         ("stderr", "contains", "ok", False),
         ("stderr", "regex", "x.*", False),
-    ]
-
-    assert list(iter_leaf_assertions({"target": "stderr", "not_contains": ["ERROR:"]})) == [
-        ("stderr", "contains", "ERROR:", False)
     ]
 
 

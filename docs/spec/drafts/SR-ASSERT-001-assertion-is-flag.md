@@ -15,7 +15,7 @@ Add optional `is` to assertion leaves:
 - `is` is optional and defaults to `true`.
 - `is: false` inverts assertion polarity.
 - For text assertions, canonical operators are `contains` and `regex`.
-- `not_contains` and `not_regex` remain supported as backward-compatible aliases.
+- `not_contains` and `not_regex` are not supported.
 
 ## Examples
 
@@ -28,10 +28,8 @@ assert:
     is: false
 ```
 
-Equivalent legacy shape (still supported):
-
-`not_contains`/`not_regex` remain accepted for compatibility, but canonical
-docs should use `contains`/`regex` with `is: false`.
+Legacy `not_contains`/`not_regex` shapes are rejected. Use canonical
+`contains`/`regex` with `is: false`.
 
 Default `is: true` (omitted):
 
@@ -43,5 +41,4 @@ assert:
 
 ## Compatibility
 
-- Existing specs using `not_contains` and `not_regex` continue to pass.
-- New docs and examples should prefer canonical `contains`/`regex` plus `is`.
+- This intentionally removes support for legacy `not_*` text operators.

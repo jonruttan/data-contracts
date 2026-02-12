@@ -84,7 +84,6 @@ Assertion leaves are mappings with:
 Supported operators:
 
 - text operators: `contains`, `regex`
-- compatibility aliases: `not_contains`, `not_regex`
 - additional per-harness operators such as `json_type` and `exists`
 
 Operator constraints:
@@ -103,5 +102,4 @@ assert:
     is: false
 ```
 
-Legacy negated text operators remain supported for compatibility, but docs
-should use the canonical `contains`/`regex` form with `is: false`.
+Legacy negated text operators (`not_contains`, `not_regex`) are not supported.
