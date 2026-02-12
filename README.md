@@ -19,6 +19,12 @@ For development:
 python -m pip install -e '.[dev]'
 ```
 
+Contract governance check:
+
+```sh
+python scripts/check_contract_governance.py
+```
+
 ## Quickstart
 
 1. Create a spec doc with a fenced `yaml spec-test` block:

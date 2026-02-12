@@ -7,3 +7,4 @@ Recommendations:
 - Keep case ids stable.
 - Prefer small, focused cases per behavior.
 - Include both pass and fail cases.
+- Use YAML files with top-level `cases:`.

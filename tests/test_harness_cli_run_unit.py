@@ -515,3 +515,21 @@ def test_cli_type_setup_files_rejects_path_escape(tmp_path, monkeypatch, capsys)
 
     with pytest.raises(ValueError, match="setup_files item path escapes tmp_path"):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_requires_entrypoint_or_env_fallback(tmp_path, monkeypatch, capsys):
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-022",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {},
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(RuntimeError, match="requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))

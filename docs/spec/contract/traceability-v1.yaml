@@ -7,11 +7,13 @@ links:
       - docs/spec/contract/04-harness.md
     schema_refs:
       - docs/spec/schema/schema-v1.md
-    conformance_case_ids: []
-    unit_test_refs: []
+    conformance_case_ids:
+      - SRCONF-CLI-001
+    unit_test_refs:
+      - tools/spec_runner/tests/test_harness_cli_run_unit.py
     implementation_refs:
       - spec_runner/harnesses/cli_run.py
-    notes: "Conformance fixture ids to be added in conformance slice."
+    notes: "Entry point requirement is covered by conformance seed and unit tests."
 
   - rule_id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
     policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_ENTRYPOINT_ENV_FALLBACK
@@ -32,10 +34,13 @@ links:
       - docs/spec/contract/06-conformance.md
     schema_refs:
       - docs/spec/schema/schema-v1.md
-    conformance_case_ids: []
-    unit_test_refs: []
+    conformance_case_ids:
+      - SRCONF-CLI-001
+      - SRCONF-CLI-002
+    unit_test_refs:
+      - tools/spec_runner/tests/test_contract_governance_unit.py
     implementation_refs: []
-    notes: "Requires conformance fixture work to populate evidence."
+    notes: "Conformance seed fixtures include explicit harness.entrypoint values."
 
   - rule_id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
     policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
@@ -44,7 +49,10 @@ links:
       - docs/spec/contract/06-conformance.md
     schema_refs:
       - docs/spec/schema/schema-v1.md
-    conformance_case_ids: []
-    unit_test_refs: []
+    conformance_case_ids:
+      - SRCONF-CLI-001
+      - SRCONF-CLI-002
+    unit_test_refs:
+      - tools/spec_runner/tests/test_contract_governance_unit.py
     implementation_refs: []
-    notes: "Requires conformance fixture work to populate evidence."
+    notes: "Conformance fixtures are explicit and do not require env fallback."

@@ -12,6 +12,12 @@ python3 -m pip install -e '.[dev]'
 python3 -m pytest
 ```
 
+## Contract Governance Check
+
+```sh
+python3 scripts/check_contract_governance.py
+```
+
 ## Conformance Fixture Layout
 
 Cross-language fixture data lives in:

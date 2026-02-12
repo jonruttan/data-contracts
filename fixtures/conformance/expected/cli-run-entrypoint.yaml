@@ -1,0 +1,11 @@
+version: 1
+results:
+  - id: SRCONF-CLI-001
+    status: fail
+    category: runtime
+    message: placeholder expected until conformance runner is wired
+
+  - id: SRCONF-CLI-002
+    status: fail
+    category: runtime
+    message: placeholder expected until conformance runner is wired

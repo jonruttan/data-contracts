@@ -1,0 +1,20 @@
+version: 1
+cases:
+  - id: SRCONF-CLI-001
+    title: conformance fixture sets explicit cli.run harness.entrypoint
+    type: cli.run
+    argv: ["--help"]
+    exit_code: 0
+    harness:
+      entrypoint: conformance.example.cli:main
+    assert: []
+
+  - id: SRCONF-CLI-002
+    title: conformance fixture is explicit and does not require env fallback
+    type: cli.run
+    argv: ["--help"]
+    exit_code: 0
+    harness:
+      entrypoint: conformance.example.cli:main
+      env: {}
+    assert: []
