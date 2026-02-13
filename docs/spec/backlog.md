@@ -10,5 +10,3 @@ Within the same priority, order reflects dependency/throughput (shared tooling
 and low-risk scaffolding first).
 
 ## Next
-
-- `SR-SEC-001`: `docs/spec/pending/SR-SEC-001-cli-run-safety-and-policy-alignment.md`
