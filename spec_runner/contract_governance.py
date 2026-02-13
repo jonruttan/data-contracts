@@ -16,22 +16,22 @@ from spec_runner.purpose_lint import (
 )
 
 _NORMATIVE_CONTRACT_DOCS = [
-    "docs/spec/contract/00-design-goals.md",
+    "docs/spec/contract/00_design_goals.md",
     "docs/spec/contract/versioning.md",
-    "docs/spec/contract/01-discovery.md",
-    "docs/spec/contract/02-case-shape.md",
-    "docs/spec/contract/03-assertions.md",
-    "docs/spec/contract/03a-regex-portability-v1.md",
-    "docs/spec/contract/04-harness.md",
-    "docs/spec/contract/05-errors.md",
-    "docs/spec/contract/06-conformance.md",
-    "docs/spec/contract/07-portable-spec-authoring.md",
+    "docs/spec/contract/01_discovery.md",
+    "docs/spec/contract/02_case_shape.md",
+    "docs/spec/contract/03_assertions.md",
+    "docs/spec/contract/03a_regex_portability_v1.md",
+    "docs/spec/contract/04_harness.md",
+    "docs/spec/contract/05_errors.md",
+    "docs/spec/contract/06_conformance.md",
+    "docs/spec/contract/07_portable_spec_authoring.md",
 ]
-_REGEX_PROFILE_DOC = "docs/spec/contract/03a-regex-portability-v1.md"
+_REGEX_PROFILE_DOC = "docs/spec/contract/03a_regex_portability_v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 _CONFORMANCE_MAX_BLOCK_LINES = 50
 _CONFORMANCE_CASE_ID_PATTERN = re.compile(r"\bSRCONF-[A-Z0-9-]+\b")
-_PURPOSE_WARNING_CODES_DOC = "docs/spec/conformance/purpose-warning-codes.md"
+_PURPOSE_WARNING_CODES_DOC = "docs/spec/conformance/purpose_warning_codes.md"
 
 
 def _read_yaml(path: Path) -> Any:
@@ -205,8 +205,8 @@ def _exists_repo_or_runner(repo_root: Path, rel: str) -> bool:
 
 
 def _load_policy_and_trace(repo_root: Path) -> tuple[dict[str, Any], dict[str, Any], set[str]]:
-    policy_path = repo_root / "docs/spec/contract/policy-v1.yaml"
-    trace_path = repo_root / "docs/spec/contract/traceability-v1.yaml"
+    policy_path = repo_root / "docs/spec/contract/policy_v1.yaml"
+    trace_path = repo_root / "docs/spec/contract/traceability_v1.yaml"
     cases_dir = repo_root / "docs/spec/conformance/cases"
     policy = _read_yaml(policy_path) or {}
     trace = _read_yaml(trace_path) or {}
@@ -394,7 +394,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         links_by_rule[rid] = l
         if rid not in rules_by_id:
             errs.append(f"traceability references unknown policy rule: {rid}")
-        want_policy_ref = f"docs/spec/contract/policy-v1.yaml#{rid}"
+        want_policy_ref = f"docs/spec/contract/policy_v1.yaml#{rid}"
         got_policy_ref = str(l.get("policy_ref", "")).strip()
         if got_policy_ref != want_policy_ref:
             errs.append(
@@ -452,9 +452,9 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         elif rel not in referenced_contract_docs:
             errs.append(f"normative contract doc missing traceability coverage: {rel}")
 
-    assertions_doc = repo_root / "docs/spec/contract/03-assertions.md"
-    schema_doc = repo_root / "docs/spec/schema/schema-v1.md"
-    policy_doc = repo_root / "docs/spec/contract/policy-v1.yaml"
+    assertions_doc = repo_root / "docs/spec/contract/03_assertions.md"
+    schema_doc = repo_root / "docs/spec/schema/schema_v1.md"
+    policy_doc = repo_root / "docs/spec/contract/policy_v1.yaml"
     if assertions_doc.exists() and schema_doc.exists() and policy_doc.exists():
         assertions_text = assertions_doc.read_text(encoding="utf-8")
         schema_text = schema_doc.read_text(encoding="utf-8")

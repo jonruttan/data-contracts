@@ -20,8 +20,8 @@ Alternate runner script path:
 
 Fixture-driven runner suites:
 
-- `docs/spec/impl/php/cases/runner-pass.spec.md`
-- `docs/spec/impl/php/cases/runner-failures.spec.md`
+- `docs/spec/impl/php/cases/runner_pass.spec.md`
+- `docs/spec/impl/php/cases/runner_failures.spec.md`
 
 Runtime requirement:
 
@@ -51,7 +51,7 @@ Example:
 
 ```sh
 php scripts/php/conformance_runner.php \
-  --cases docs/spec/conformance/cases/php-text-file-subset.spec.md \
+  --cases docs/spec/conformance/cases/php_text_file_subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
 
@@ -63,7 +63,7 @@ python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report
 
 Bootstrap parity subset fixture:
 
-- `docs/spec/conformance/cases/php-text-file-subset.spec.md`
+- `docs/spec/conformance/cases/php_text_file_subset.spec.md`
 
 ## Alternate Runner Behavior (`spec_runner.php`)
 

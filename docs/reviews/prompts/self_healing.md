@@ -4,7 +4,7 @@ A staged sequence for the `spec_runner` Python library (`tools/spec_runner/`) th
 ## Repository Context (Hard Requirements)
 - Project: small reusable Python library that runs executable spec tests from Markdown fenced blocks tagged `yaml spec-test`.
 - Core behavior: parse spec-test blocks and dispatch by `type` to harnesses.
-- Schema reference: `docs/spec/schema/schema-v1.md`.
+- Schema reference: `docs/spec/schema/schema_v1.md`.
 - Runner-only setup inputs must be under `harness:` (never arbitrary top-level keys).
 - Keep dependencies minimal: stdlib preferred, small stable deps only if justified (for example `PyYAML`).
 - Prefer adapters/harnesses over expanding core DSL.
@@ -151,7 +151,7 @@ Output:
 You are a schema reliability engineer.
 
 Goal:
-- preserve compatibility with `docs/spec/schema/schema-v1.md`
+- preserve compatibility with `docs/spec/schema/schema_v1.md`
 - prevent unsafe top-level runner config drift
 - ensure `harness:` contract is enforced
 

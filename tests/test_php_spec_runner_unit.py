@@ -41,13 +41,13 @@ def test_php_spec_runner_matches_pass_fixture_suite(tmp_path):
     cases_dir = tmp_path / "cases"
     out_json = tmp_path / "php-report.json"
     cases_dir.mkdir(parents=True)
-    pass_case = case_file_name("runner-pass")
+    pass_case = case_file_name("runner_pass")
     (cases_dir / pass_case).write_text(
         (fixtures_root / pass_case).read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (cases_dir / "fixtures").mkdir(parents=True)
-    for name in ("sample.txt", "path-target.txt"):
+    for name in ("sample.txt", "path_target.txt"):
         (cases_dir / "fixtures" / name).write_text(
             (fixtures_root / "fixtures" / name).read_text(encoding="utf-8"),
             encoding="utf-8",
@@ -95,7 +95,7 @@ def test_php_spec_runner_matches_failure_fixture_suite(tmp_path):
     cases_dir = tmp_path / "cases"
     out_json = tmp_path / "php-report.json"
     cases_dir.mkdir(parents=True)
-    failures_case = case_file_name("runner-failures")
+    failures_case = case_file_name("runner_failures")
     (cases_dir / failures_case).write_text(
         (fixtures_root / failures_case).read_text(encoding="utf-8"),
         encoding="utf-8",
@@ -145,7 +145,7 @@ def test_php_spec_runner_matches_assert_health_fixture_suite(tmp_path):
     cases_dir = tmp_path / "cases"
     out_json = tmp_path / "php-report.json"
     cases_dir.mkdir(parents=True)
-    assert_health_case = case_file_name("runner-assert-health")
+    assert_health_case = case_file_name("runner_assert_health")
     (cases_dir / assert_health_case).write_text(
         (fixtures_root / assert_health_case).read_text(encoding="utf-8"),
         encoding="utf-8",
@@ -196,14 +196,14 @@ def test_php_spec_runner_matches_portability_fixture_suite(tmp_path):
     cases_dir = tmp_path / "cases"
     out_json = tmp_path / "php-report.json"
     cases_dir.mkdir(parents=True)
-    portability_case = case_file_name("runner-portability")
+    portability_case = case_file_name("runner_portability")
     (cases_dir / portability_case).write_text(
         (fixtures_root / portability_case).read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (cases_dir / "fixtures").mkdir(parents=True)
-    (cases_dir / "fixtures" / "path-target.txt").write_text(
-        (fixtures_root / "fixtures" / "path-target.txt").read_text(encoding="utf-8"),
+    (cases_dir / "fixtures" / "path_target.txt").write_text(
+        (fixtures_root / "fixtures" / "path_target.txt").read_text(encoding="utf-8"),
         encoding="utf-8",
     )
 

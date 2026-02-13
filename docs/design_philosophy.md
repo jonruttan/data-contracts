@@ -22,13 +22,13 @@ they need:
 - Design and rationale:
   `docs/spec/contract/*.md`
 - Machine-readable normative policy:
-  `docs/spec/contract/policy-v1.yaml`
+  `docs/spec/contract/policy_v1.yaml`
 - Schema and DSL shape:
-  `docs/spec/schema/schema-v1.md`
+  `docs/spec/schema/schema_v1.md`
 - Evidence and traceability:
-  `docs/spec/contract/traceability-v1.yaml`
+  `docs/spec/contract/traceability_v1.yaml`
 - Conformance report shape:
-  `docs/spec/conformance/report-format.md`
+  `docs/spec/conformance/report_format.md`
 
 ## Quality Bar
 

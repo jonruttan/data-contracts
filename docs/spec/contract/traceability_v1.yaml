@@ -2,11 +2,11 @@ version: 1
 title: Spec Runner Contract Traceability
 links:
   - rule_id: CLI_RUN_ENTRYPOINT_REQUIRED
-    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_ENTRYPOINT_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#CLI_RUN_ENTRYPOINT_REQUIRED
     contract_refs:
-      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/04_harness.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids:
       - SRCONF-CLI-001
     unit_test_refs:
@@ -17,11 +17,11 @@ links:
     notes: "Explicit entrypoint is recommended for project specs and enforced for portable conformance fixtures."
 
   - rule_id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
-    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_ENTRYPOINT_ENV_FALLBACK
+    policy_ref: docs/spec/contract/policy_v1.yaml#CLI_RUN_ENTRYPOINT_ENV_FALLBACK
     contract_refs:
-      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/04_harness.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs: []
     implementation_refs:
@@ -29,11 +29,11 @@ links:
     notes: "Implementation SHOULD; not required for conformance."
 
   - rule_id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
-    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
+    policy_ref: docs/spec/contract/policy_v1.yaml#CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
     contract_refs:
-      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/04_harness.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs:
       - tests/test_harness_cli_run_unit.py
@@ -42,11 +42,11 @@ links:
     notes: "Python safe mode disables hooks and env fallback when enabled."
 
   - rule_id: CLI_RUN_ENV_ALLOWLIST_CONTROL
-    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_ENV_ALLOWLIST_CONTROL
+    policy_ref: docs/spec/contract/policy_v1.yaml#CLI_RUN_ENV_ALLOWLIST_CONTROL
     contract_refs:
-      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/04_harness.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs:
       - tests/test_php_spec_runner_unit.py
@@ -55,12 +55,12 @@ links:
     notes: "PHP runner supports allowlisting ambient env for cli.run subprocesses."
 
   - rule_id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
-    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
+    policy_ref: docs/spec/contract/policy_v1.yaml#CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
     contract_refs:
-      - docs/spec/contract/04-harness.md
-      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/04_harness.md
+      - docs/spec/contract/06_conformance.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids:
       - SRCONF-CLI-001
       - SRCONF-CLI-002
@@ -71,12 +71,12 @@ links:
     notes: "Conformance seed fixtures include explicit harness.entrypoint values."
 
   - rule_id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
-    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
+    policy_ref: docs/spec/contract/policy_v1.yaml#CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
     contract_refs:
-      - docs/spec/contract/04-harness.md
-      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/04_harness.md
+      - docs/spec/contract/06_conformance.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids:
       - SRCONF-CLI-001
       - SRCONF-CLI-002
@@ -87,11 +87,11 @@ links:
     notes: "Conformance fixtures are explicit and do not require env fallback."
 
   - rule_id: ASSERT_HEALTH_MODE_VALID_VALUES
-    policy_ref: docs/spec/contract/policy-v1.yaml#ASSERT_HEALTH_MODE_VALID_VALUES
+    policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_HEALTH_MODE_VALID_VALUES
     contract_refs:
-      - docs/spec/contract/02-case-shape.md
+      - docs/spec/contract/02_case_shape.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids:
       - SRCONF-AH-003
     unit_test_refs:
@@ -101,12 +101,12 @@ links:
     notes: "Value validation and mode parsing are enforced in assertion_health."
 
   - rule_id: ASSERT_HEALTH_GLOBAL_AND_PER_CASE_POLICY
-    policy_ref: docs/spec/contract/policy-v1.yaml#ASSERT_HEALTH_GLOBAL_AND_PER_CASE_POLICY
+    policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_HEALTH_GLOBAL_AND_PER_CASE_POLICY
     contract_refs:
-      - docs/spec/contract/00-design-goals.md
-      - docs/spec/contract/02-case-shape.md
+      - docs/spec/contract/00_design_goals.md
+      - docs/spec/contract/02_case_shape.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids:
       - SRCONF-AH-001
       - SRCONF-AH-002
@@ -122,12 +122,12 @@ links:
     notes: "Global env policy plus per-case override implemented for Python harnesses."
 
   - rule_id: ASSERT_HEALTH_REDUNDANT_BRANCH_DIAGNOSTIC
-    policy_ref: docs/spec/contract/policy-v1.yaml#ASSERT_HEALTH_REDUNDANT_BRANCH_DIAGNOSTIC
+    policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_HEALTH_REDUNDANT_BRANCH_DIAGNOSTIC
     contract_refs:
-      - docs/spec/contract/00-design-goals.md
-      - docs/spec/contract/03-assertions.md
+      - docs/spec/contract/00_design_goals.md
+      - docs/spec/contract/03_assertions.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids:
       - SRCONF-AH-005
     unit_test_refs:
@@ -139,13 +139,13 @@ links:
     notes: "Python emits AH004 for redundant sibling branches."
 
   - rule_id: ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
-    policy_ref: docs/spec/contract/policy-v1.yaml#ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
+    policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
     contract_refs:
-      - docs/spec/contract/00-design-goals.md
-      - docs/spec/contract/03-assertions.md
-      - docs/spec/contract/03a-regex-portability-v1.md
+      - docs/spec/contract/00_design_goals.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/03a_regex_portability_v1.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids:
       - SRCONF-AH-006
     unit_test_refs:
@@ -158,20 +158,20 @@ links:
     notes: "Python emits AH005 for non-portable regex constructs."
 
   - rule_id: DOC_NORMATIVE_PAGE_TRACEABILITY
-    policy_ref: docs/spec/contract/policy-v1.yaml#DOC_NORMATIVE_PAGE_TRACEABILITY
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOC_NORMATIVE_PAGE_TRACEABILITY
     contract_refs:
-      - docs/spec/contract/00-design-goals.md
+      - docs/spec/contract/00_design_goals.md
       - docs/spec/contract/versioning.md
-      - docs/spec/contract/01-discovery.md
-      - docs/spec/contract/02-case-shape.md
-      - docs/spec/contract/03-assertions.md
-      - docs/spec/contract/03a-regex-portability-v1.md
-      - docs/spec/contract/04-harness.md
-      - docs/spec/contract/05-errors.md
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/contract/07-portable-spec-authoring.md
+      - docs/spec/contract/01_discovery.md
+      - docs/spec/contract/02_case_shape.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/03a_regex_portability_v1.md
+      - docs/spec/contract/04_harness.md
+      - docs/spec/contract/05_errors.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/contract/07_portable_spec_authoring.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs:
       - tests/test_contract_governance_unit.py
@@ -180,12 +180,12 @@ links:
     notes: "Governance enforces traceability coverage across normative contract pages."
 
   - rule_id: DOC_REGEX_PROFILE_LINKAGE
-    policy_ref: docs/spec/contract/policy-v1.yaml#DOC_REGEX_PROFILE_LINKAGE
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOC_REGEX_PROFILE_LINKAGE
     contract_refs:
-      - docs/spec/contract/03-assertions.md
-      - docs/spec/contract/03a-regex-portability-v1.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/03a_regex_portability_v1.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs:
       - tests/test_contract_governance_unit.py
@@ -194,11 +194,11 @@ links:
     notes: "Governance checks profile references across assertion, schema, and policy docs."
 
   - rule_id: DOC_ASSERTION_OPERATOR_DOC_SYNC
-    policy_ref: docs/spec/contract/policy-v1.yaml#DOC_ASSERTION_OPERATOR_DOC_SYNC
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOC_ASSERTION_OPERATOR_DOC_SYNC
     contract_refs:
-      - docs/spec/contract/03-assertions.md
+      - docs/spec/contract/03_assertions.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs:
       - tests/test_contract_governance_unit.py
@@ -207,11 +207,11 @@ links:
     notes: "Governance checks synchronized core operator tokens between docs."
 
   - rule_id: CONFORMANCE_EXPECT_OVERLAY_RESOLUTION
-    policy_ref: docs/spec/contract/policy-v1.yaml#CONFORMANCE_EXPECT_OVERLAY_RESOLUTION
+    policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_EXPECT_OVERLAY_RESOLUTION
     contract_refs:
-      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/06_conformance.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs:
       - tests/test_conformance_runner_unit.py
@@ -221,9 +221,9 @@ links:
     notes: "Conformance expectations resolve portable baseline with implementation overlays."
 
   - rule_id: CONFORMANCE_CASE_STYLE_GUARD
-    policy_ref: docs/spec/contract/policy-v1.yaml#CONFORMANCE_CASE_STYLE_GUARD
+    policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_CASE_STYLE_GUARD
     contract_refs:
-      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/06_conformance.md
       - docs/spec/conformance/style.md
     schema_refs: []
     conformance_case_ids: []
@@ -234,12 +234,12 @@ links:
     notes: "Governance enforces conformance case doc readability/style constraints."
 
   - rule_id: CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
-    policy_ref: docs/spec/contract/policy-v1.yaml#CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
+    policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
     contract_refs:
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/conformance/report-format.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/conformance/report_format.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs:
       - tests/test_conformance_runner_unit.py
@@ -249,13 +249,13 @@ links:
     notes: "Conformance runner enforces requires.capabilities with skip/fail policy."
 
   - rule_id: PORTABLE_SPEC_CANONICAL_SINGLE_SET
-    policy_ref: docs/spec/contract/policy-v1.yaml#PORTABLE_SPEC_CANONICAL_SINGLE_SET
+    policy_ref: docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_CANONICAL_SINGLE_SET
     contract_refs:
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/contract/07-portable-spec-authoring.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/contract/07_portable_spec_authoring.md
       - docs/spec/conformance/README.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs:
       - tests/test_contract_governance_unit.py
@@ -266,12 +266,12 @@ links:
     notes: "Portable behavior source is the canonical conformance case set."
 
   - rule_id: PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
-    policy_ref: docs/spec/contract/policy-v1.yaml#PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
+    policy_ref: docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
     contract_refs:
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/contract/07-portable-spec-authoring.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/contract/07_portable_spec_authoring.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
     unit_test_refs:
       - tests/test_conformance_runner_unit.py
@@ -281,12 +281,12 @@ links:
     notes: "Expectations resolve from portable baseline with optional runtime overlays."
 
   - rule_id: PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION
-    policy_ref: docs/spec/contract/policy-v1.yaml#PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION
+    policy_ref: docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION
     contract_refs:
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/contract/07-portable-spec-authoring.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/contract/07_portable_spec_authoring.md
     schema_refs:
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/schema/schema_v1.md
     conformance_case_ids:
       - SRCONF-CLI-001
       - SRCONF-AH-004

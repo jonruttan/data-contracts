@@ -52,7 +52,7 @@ id: SRPHP-PORT-003
 title: relative stdout path resolves from runner cwd
 purpose: Detects portability differences in cwd/path handling for stdout_path assertions.
 type: cli.run
-argv: ["docs/spec/impl/php/cases/fixtures/path-target.txt"]
+argv: ["docs/spec/impl/php/cases/fixtures/path_target.txt"]
 exit_code: 0
 harness:
   entrypoint: /bin/echo

@@ -18,7 +18,7 @@ _NORMATIVE_DOCS = [
     "03-assertions.md",
     "03a-regex-portability-v1.md",
     "04-harness.md",
-    "05-errors.md",
+    "05_errors.md",
     "06-conformance.md",
     "07-portable-spec-authoring.md",
 ]
@@ -34,15 +34,15 @@ def _case_doc_path(root: Path, stem: str) -> Path:
 
 
 def _seed_governance_repo(tmp_path: Path) -> None:
-    _write_text(tmp_path / "docs/spec/schema/schema-v1.md", "contain regex docs/spec/contract/03a-regex-portability-v1.md\n")
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "contain regex docs/spec/contract/03a_regex_portability_v1.md\n")
     for name in _NORMATIVE_DOCS:
         content = "x\n"
         if name == "03-assertions.md":
-            content = "contain regex docs/spec/contract/03a-regex-portability-v1.md\n"
+            content = "contain regex docs/spec/contract/03a_regex_portability_v1.md\n"
         _write_text(tmp_path / "docs/spec/contract" / name, content)
     _write_text(tmp_path / "tests/test_contract_governance_unit.py", "x\n")
     _write_text(
-        tmp_path / "docs/spec/conformance/purpose-warning-codes.md",
+        tmp_path / "docs/spec/conformance/purpose_warning_codes.md",
         """# Purpose Warning Codes
 
 - PUR001
@@ -75,9 +75,9 @@ def _write_min_policy_trace(tmp_path: Path, *, rule_id: str) -> None:
         "links": [
             {
                 "rule_id": rule_id,
-                "policy_ref": f"docs/spec/contract/policy-v1.yaml#{rule_id}",
+                "policy_ref": f"docs/spec/contract/policy_v1.yaml#{rule_id}",
                 "contract_refs": [f"docs/spec/contract/{x}" for x in _NORMATIVE_DOCS],
-                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "schema_refs": ["docs/spec/schema/schema_v1.md"],
                 "conformance_case_ids": [],
                 "unit_test_refs": ["tests/test_contract_governance_unit.py"],
                 "implementation_refs": [],
@@ -85,11 +85,11 @@ def _write_min_policy_trace(tmp_path: Path, *, rule_id: str) -> None:
         ]
     }
     _write_text(
-        tmp_path / "docs/spec/contract/policy-v1.yaml",
+        tmp_path / "docs/spec/contract/policy_v1.yaml",
         yaml.safe_dump(policy, sort_keys=False),
     )
     _write_text(
-        tmp_path / "docs/spec/contract/traceability-v1.yaml",
+        tmp_path / "docs/spec/contract/traceability_v1.yaml",
         yaml.safe_dump(trace, sort_keys=False),
     )
     _write_text(tmp_path / "docs/spec/contract/README.md", "x\n")
@@ -105,9 +105,9 @@ def test_contract_governance_fails_when_must_rule_has_no_evidence(tmp_path):
     (tmp_path / "docs/spec/contract").mkdir(parents=True)
     (tmp_path / "docs/spec/conformance/cases").mkdir(parents=True)
     (tmp_path / "docs/spec/conformance/expected").mkdir(parents=True)
-    (tmp_path / "docs/spec/contract/04-harness.md").write_text("x", encoding="utf-8")
+    (tmp_path / "docs/spec/contract/04_harness.md").write_text("x", encoding="utf-8")
     (tmp_path / "docs/spec/schema").mkdir(parents=True)
-    (tmp_path / "docs/spec/schema/schema-v1.md").write_text("x", encoding="utf-8")
+    (tmp_path / "docs/spec/schema/schema_v1.md").write_text("x", encoding="utf-8")
 
     policy = {
         "rules": [
@@ -125,19 +125,19 @@ def test_contract_governance_fails_when_must_rule_has_no_evidence(tmp_path):
         "links": [
             {
                 "rule_id": "R1",
-                "contract_refs": ["docs/spec/contract/04-harness.md"],
-                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "contract_refs": ["docs/spec/contract/04_harness.md"],
+                "schema_refs": ["docs/spec/schema/schema_v1.md"],
                 "conformance_case_ids": [],
                 "unit_test_refs": [],
                 "implementation_refs": [],
             }
         ]
     }
-    (tmp_path / "docs/spec/contract/policy-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/policy_v1.yaml").write_text(
         yaml.safe_dump(policy, sort_keys=False),
         encoding="utf-8",
     )
-    (tmp_path / "docs/spec/contract/traceability-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/traceability_v1.yaml").write_text(
         yaml.safe_dump(trace, sort_keys=False),
         encoding="utf-8",
     )
@@ -150,9 +150,9 @@ def test_contract_governance_fails_on_invalid_norm_and_missing_metadata(tmp_path
     (tmp_path / "docs/spec/contract").mkdir(parents=True)
     (tmp_path / "docs/spec/conformance/cases").mkdir(parents=True)
     (tmp_path / "docs/spec/conformance/expected").mkdir(parents=True)
-    (tmp_path / "docs/spec/contract/04-harness.md").write_text("x", encoding="utf-8")
+    (tmp_path / "docs/spec/contract/04_harness.md").write_text("x", encoding="utf-8")
     (tmp_path / "docs/spec/schema").mkdir(parents=True)
-    (tmp_path / "docs/spec/schema/schema-v1.md").write_text("x", encoding="utf-8")
+    (tmp_path / "docs/spec/schema/schema_v1.md").write_text("x", encoding="utf-8")
 
     policy = {
         "rules": [
@@ -163,7 +163,7 @@ def test_contract_governance_fails_on_invalid_norm_and_missing_metadata(tmp_path
                 "scope": "case",
                 "applies_to": "x",
                 "requirement": "y",
-                "references": ["docs/spec/contract/04-harness.md"],
+                "references": ["docs/spec/contract/04_harness.md"],
             }
         ]
     }
@@ -171,20 +171,20 @@ def test_contract_governance_fails_on_invalid_norm_and_missing_metadata(tmp_path
         "links": [
             {
                 "rule_id": "R2",
-                "policy_ref": "docs/spec/contract/policy-v1.yaml#R2",
-                "contract_refs": ["docs/spec/contract/04-harness.md"],
-                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "policy_ref": "docs/spec/contract/policy_v1.yaml#R2",
+                "contract_refs": ["docs/spec/contract/04_harness.md"],
+                "schema_refs": ["docs/spec/schema/schema_v1.md"],
                 "conformance_case_ids": [],
                 "unit_test_refs": [],
                 "implementation_refs": [],
             }
         ]
     }
-    (tmp_path / "docs/spec/contract/policy-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/policy_v1.yaml").write_text(
         yaml.safe_dump(policy, sort_keys=False),
         encoding="utf-8",
     )
-    (tmp_path / "docs/spec/contract/traceability-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/traceability_v1.yaml").write_text(
         yaml.safe_dump(trace, sort_keys=False),
         encoding="utf-8",
     )
@@ -199,9 +199,9 @@ def test_contract_governance_fails_on_policy_ref_mismatch(tmp_path):
     (tmp_path / "docs/spec/contract").mkdir(parents=True)
     (tmp_path / "docs/spec/conformance/cases").mkdir(parents=True)
     (tmp_path / "docs/spec/conformance/expected").mkdir(parents=True)
-    (tmp_path / "docs/spec/contract/04-harness.md").write_text("x", encoding="utf-8")
+    (tmp_path / "docs/spec/contract/04_harness.md").write_text("x", encoding="utf-8")
     (tmp_path / "docs/spec/schema").mkdir(parents=True)
-    (tmp_path / "docs/spec/schema/schema-v1.md").write_text("x", encoding="utf-8")
+    (tmp_path / "docs/spec/schema/schema_v1.md").write_text("x", encoding="utf-8")
 
     policy = {
         "rules": [
@@ -214,7 +214,7 @@ def test_contract_governance_fails_on_policy_ref_mismatch(tmp_path):
                 "requirement": "y",
                 "rationale": "because",
                 "risk_if_violated": "risk",
-                "references": ["docs/spec/contract/04-harness.md"],
+                "references": ["docs/spec/contract/04_harness.md"],
             }
         ]
     }
@@ -222,20 +222,20 @@ def test_contract_governance_fails_on_policy_ref_mismatch(tmp_path):
         "links": [
             {
                 "rule_id": "R3",
-                "policy_ref": "docs/spec/contract/policy-v1.yaml#WRONG",
-                "contract_refs": ["docs/spec/contract/04-harness.md"],
-                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "policy_ref": "docs/spec/contract/policy_v1.yaml#WRONG",
+                "contract_refs": ["docs/spec/contract/04_harness.md"],
+                "schema_refs": ["docs/spec/schema/schema_v1.md"],
                 "conformance_case_ids": [],
                 "unit_test_refs": [],
                 "implementation_refs": [],
             }
         ]
     }
-    (tmp_path / "docs/spec/contract/policy-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/policy_v1.yaml").write_text(
         yaml.safe_dump(policy, sort_keys=False),
         encoding="utf-8",
     )
-    (tmp_path / "docs/spec/contract/traceability-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/traceability_v1.yaml").write_text(
         yaml.safe_dump(trace, sort_keys=False),
         encoding="utf-8",
     )
@@ -278,17 +278,17 @@ def test_contract_coverage_marks_uncovered_must(tmp_path):
         "links": [
             {
                 "rule_id": "R4",
-                "policy_ref": "docs/spec/contract/policy-v1.yaml#R4",
+                "policy_ref": "docs/spec/contract/policy_v1.yaml#R4",
                 "conformance_case_ids": [],
                 "unit_test_refs": [],
             }
         ]
     }
-    (tmp_path / "docs/spec/contract/policy-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/policy_v1.yaml").write_text(
         yaml.safe_dump(policy, sort_keys=False),
         encoding="utf-8",
     )
-    (tmp_path / "docs/spec/contract/traceability-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/traceability_v1.yaml").write_text(
         yaml.safe_dump(trace, sort_keys=False),
         encoding="utf-8",
     )
@@ -303,9 +303,9 @@ def test_contract_governance_fails_on_lifecycle_ordering(tmp_path):
     (tmp_path / "docs/spec/contract").mkdir(parents=True)
     (tmp_path / "docs/spec/conformance/cases").mkdir(parents=True)
     (tmp_path / "docs/spec/conformance/expected").mkdir(parents=True)
-    (tmp_path / "docs/spec/contract/04-harness.md").write_text("x", encoding="utf-8")
+    (tmp_path / "docs/spec/contract/04_harness.md").write_text("x", encoding="utf-8")
     (tmp_path / "docs/spec/schema").mkdir(parents=True)
-    (tmp_path / "docs/spec/schema/schema-v1.md").write_text("x", encoding="utf-8")
+    (tmp_path / "docs/spec/schema/schema_v1.md").write_text("x", encoding="utf-8")
 
     policy = {
         "rules": [
@@ -319,7 +319,7 @@ def test_contract_governance_fails_on_lifecycle_ordering(tmp_path):
                 "requirement": "y",
                 "rationale": "because",
                 "risk_if_violated": "risk",
-                "references": ["docs/spec/contract/04-harness.md"],
+                "references": ["docs/spec/contract/04_harness.md"],
             },
             {
                 "id": "R6",
@@ -331,7 +331,7 @@ def test_contract_governance_fails_on_lifecycle_ordering(tmp_path):
                 "requirement": "y",
                 "rationale": "because",
                 "risk_if_violated": "risk",
-                "references": ["docs/spec/contract/04-harness.md"],
+                "references": ["docs/spec/contract/04_harness.md"],
             },
         ]
     }
@@ -339,29 +339,29 @@ def test_contract_governance_fails_on_lifecycle_ordering(tmp_path):
         "links": [
             {
                 "rule_id": "R5",
-                "policy_ref": "docs/spec/contract/policy-v1.yaml#R5",
-                "contract_refs": ["docs/spec/contract/04-harness.md"],
-                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "policy_ref": "docs/spec/contract/policy_v1.yaml#R5",
+                "contract_refs": ["docs/spec/contract/04_harness.md"],
+                "schema_refs": ["docs/spec/schema/schema_v1.md"],
                 "conformance_case_ids": [],
                 "unit_test_refs": [],
                 "implementation_refs": [],
             },
             {
                 "rule_id": "R6",
-                "policy_ref": "docs/spec/contract/policy-v1.yaml#R6",
-                "contract_refs": ["docs/spec/contract/04-harness.md"],
-                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "policy_ref": "docs/spec/contract/policy_v1.yaml#R6",
+                "contract_refs": ["docs/spec/contract/04_harness.md"],
+                "schema_refs": ["docs/spec/schema/schema_v1.md"],
                 "conformance_case_ids": [],
                 "unit_test_refs": [],
                 "implementation_refs": [],
             },
         ]
     }
-    (tmp_path / "docs/spec/contract/policy-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/policy_v1.yaml").write_text(
         yaml.safe_dump(policy, sort_keys=False),
         encoding="utf-8",
     )
-    (tmp_path / "docs/spec/contract/traceability-v1.yaml").write_text(
+    (tmp_path / "docs/spec/contract/traceability_v1.yaml").write_text(
         yaml.safe_dump(trace, sort_keys=False),
         encoding="utf-8",
     )
@@ -392,9 +392,9 @@ def test_contract_governance_fails_when_normative_doc_missing_traceability_cover
         "links": [
             {
                 "rule_id": "R7",
-                "policy_ref": "docs/spec/contract/policy-v1.yaml#R7",
-                "contract_refs": [f"docs/spec/contract/{x}" for x in _NORMATIVE_DOCS if x != "05-errors.md"],
-                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "policy_ref": "docs/spec/contract/policy_v1.yaml#R7",
+                "contract_refs": [f"docs/spec/contract/{x}" for x in _NORMATIVE_DOCS if x != "05_errors.md"],
+                "schema_refs": ["docs/spec/schema/schema_v1.md"],
                 "conformance_case_ids": [],
                 "unit_test_refs": ["tests/test_contract_governance_unit.py"],
                 "implementation_refs": [],
@@ -402,17 +402,17 @@ def test_contract_governance_fails_when_normative_doc_missing_traceability_cover
         ]
     }
     _write_text(
-        tmp_path / "docs/spec/contract/policy-v1.yaml",
+        tmp_path / "docs/spec/contract/policy_v1.yaml",
         yaml.safe_dump(policy, sort_keys=False),
     )
     _write_text(
-        tmp_path / "docs/spec/contract/traceability-v1.yaml",
+        tmp_path / "docs/spec/contract/traceability_v1.yaml",
         yaml.safe_dump(trace, sort_keys=False),
     )
     _write_text(tmp_path / "docs/spec/contract/README.md", "x\n")
 
     errs = check_contract_governance(tmp_path)
-    assert any("normative contract doc missing traceability coverage: docs/spec/contract/05-errors.md" in e for e in errs)
+    assert any("normative contract doc missing traceability coverage: docs/spec/contract/05_errors.md" in e for e in errs)
 
 
 def test_contract_governance_fails_when_regex_profile_linkage_is_missing(tmp_path):
@@ -428,7 +428,7 @@ def test_contract_governance_fails_when_regex_profile_linkage_is_missing(tmp_pat
                 "requirement": "linked",
                 "rationale": "because",
                 "risk_if_violated": "risk",
-                "references": ["docs/spec/contract/03-assertions.md"],
+                "references": ["docs/spec/contract/03_assertions.md"],
             }
         ]
     }
@@ -436,9 +436,9 @@ def test_contract_governance_fails_when_regex_profile_linkage_is_missing(tmp_pat
         "links": [
             {
                 "rule_id": "R8",
-                "policy_ref": "docs/spec/contract/policy-v1.yaml#R8",
+                "policy_ref": "docs/spec/contract/policy_v1.yaml#R8",
                 "contract_refs": [f"docs/spec/contract/{x}" for x in _NORMATIVE_DOCS],
-                "schema_refs": ["docs/spec/schema/schema-v1.md"],
+                "schema_refs": ["docs/spec/schema/schema_v1.md"],
                 "conformance_case_ids": [],
                 "unit_test_refs": ["tests/test_contract_governance_unit.py"],
                 "implementation_refs": [],
@@ -446,15 +446,15 @@ def test_contract_governance_fails_when_regex_profile_linkage_is_missing(tmp_pat
         ]
     }
     _write_text(
-        tmp_path / "docs/spec/contract/policy-v1.yaml",
+        tmp_path / "docs/spec/contract/policy_v1.yaml",
         yaml.safe_dump(policy, sort_keys=False),
     )
     _write_text(
-        tmp_path / "docs/spec/contract/traceability-v1.yaml",
+        tmp_path / "docs/spec/contract/traceability_v1.yaml",
         yaml.safe_dump(trace, sort_keys=False),
     )
     _write_text(
-        tmp_path / "docs/spec/contract/03-assertions.md",
+        tmp_path / "docs/spec/contract/03_assertions.md",
         "contain regex\n",
     )
 
@@ -713,7 +713,7 @@ def test_contract_governance_runtime_profile_can_relax_min_words(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R18")
     _write_text(
-        tmp_path / "docs/spec/conformance/purpose-lint-v1.yaml",
+        tmp_path / "docs/spec/conformance/purpose_lint_v1.yaml",
         """version: 1
 default:
   min_words: 8
@@ -821,7 +821,7 @@ def test_contract_governance_fails_when_purpose_warning_code_doc_missing_code(tm
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R21")
     _write_text(
-        tmp_path / "docs/spec/conformance/purpose-warning-codes.md",
+        tmp_path / "docs/spec/conformance/purpose_warning_codes.md",
         "# Purpose Warning Codes\n\n- PUR001\n- PUR002\n- PUR003\n",
     )
     _write_text(
@@ -850,7 +850,7 @@ def test_contract_governance_fails_when_purpose_warning_code_doc_has_stale_code(
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R22")
     _write_text(
-        tmp_path / "docs/spec/conformance/purpose-warning-codes.md",
+        tmp_path / "docs/spec/conformance/purpose_warning_codes.md",
         "# Purpose Warning Codes\n\n- PUR001\n- PUR002\n- PUR003\n- PUR004\n- PUR999\n",
     )
     _write_text(

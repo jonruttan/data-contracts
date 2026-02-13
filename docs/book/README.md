@@ -12,15 +12,15 @@ Practical guide for authoring and running executable spec tests in this repo.
 
 Fast start:
 
-1. `docs/book/01-quickstart.md`
-2. `docs/book/appendix-cheatsheet.md`
+1. `docs/book/01_quickstart.md`
+2. `docs/book/appendix_cheatsheet.md`
 
 Full authoring:
 
-1. `docs/book/01-quickstart.md`
-2. `docs/book/02-core-model.md`
-3. `docs/book/03-assertions.md`
-4. `docs/spec/schema/schema-v1.md`
+1. `docs/book/01_quickstart.md`
+2. `docs/book/02_core_model.md`
+3. `docs/book/03_assertions.md`
+4. `docs/spec/schema/schema_v1.md`
 5. `docs/spec/contract/`
 
 Portability and conformance:
@@ -31,7 +31,7 @@ Portability and conformance:
 
 ## Canonical Sources
 
-- Stable schema: `docs/spec/schema/schema-v1.md`
+- Stable schema: `docs/spec/schema/schema_v1.md`
 - Portable contract: `docs/spec/contract/`
 - Conformance fixtures: `docs/spec/conformance/cases/`
 - PHP implementation fixtures: `docs/spec/impl/php/cases/`

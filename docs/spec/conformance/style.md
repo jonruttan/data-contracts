@@ -15,7 +15,7 @@ Style rules:
 
 Purpose lint policy:
 
-- defaults and runtime profiles are configured in `docs/spec/conformance/purpose-lint-v1.yaml`
+- defaults and runtime profiles are configured in `docs/spec/conformance/purpose_lint_v1.yaml`
 - per-case override is optional via `purpose_lint` mapping:
   - `runtime`: runtime profile name from policy (for example `php`)
   - `min_words`: integer override
@@ -26,7 +26,7 @@ Purpose lint policy:
 
 Warning code contract:
 
-- canonical warning code definitions live in `docs/spec/conformance/purpose-warning-codes.md`
+- canonical warning code definitions live in `docs/spec/conformance/purpose_warning_codes.md`
 
 Rationale:
 

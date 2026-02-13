@@ -7,7 +7,7 @@ as Python and PHP.
 Normative policy linkage:
 
 - `ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC`
-  (`docs/spec/contract/policy-v1.yaml`)
+  (`docs/spec/contract/policy_v1.yaml`)
 
 ## Guidance
 

@@ -103,7 +103,7 @@ python scripts/conformance_purpose_report.py --format md --out .artifacts/confor
 
 The purpose report includes `policy` metadata resolved from:
 
-- `docs/spec/conformance/purpose-lint-v1.yaml`
+- `docs/spec/conformance/purpose_lint_v1.yaml`
 
 Optional strict mode for automation:
 
@@ -124,7 +124,7 @@ Purpose warning codes:
 
 Canonical source for these codes:
 
-- `docs/spec/conformance/purpose-warning-codes.md`
+- `docs/spec/conformance/purpose_warning_codes.md`
 
 ## Conformance Fixture Layout
 
@@ -134,8 +134,8 @@ Cross-language fixture data lives in:
 
 Contract docs for interpreting those fixtures live in:
 
-- `docs/spec/contract/06-conformance.md`
-- `docs/spec/conformance/report-format.md`
+- `docs/spec/contract/06_conformance.md`
+- `docs/spec/conformance/report_format.md`
 
 ## PHP Bootstrap Parity
 
@@ -158,7 +158,7 @@ Generate a bootstrap PHP report:
 ```sh
 # Requires PHP yaml_parse extension.
 php scripts/php/conformance_runner.php \
-  --cases docs/spec/conformance/cases/php-text-file-subset.spec.md \
+  --cases docs/spec/conformance/cases/php_text_file_subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
 

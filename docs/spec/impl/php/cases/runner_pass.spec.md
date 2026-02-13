@@ -167,7 +167,7 @@ id: SRPHP-RUN-009
 title: cli.run supports stdout_path and stdout_path_text targets
 purpose: Verifies path-based assertions for stdout_path existence and stdout_path_text content.
 type: cli.run
-argv: ["docs/spec/impl/php/cases/fixtures/path-target.txt"]
+argv: ["docs/spec/impl/php/cases/fixtures/path_target.txt"]
 exit_code: 0
 harness:
   entrypoint: /bin/echo

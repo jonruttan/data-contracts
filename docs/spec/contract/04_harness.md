@@ -21,7 +21,7 @@ For `type: cli.run`:
   executions (for example `SPEC_RUNNER_ENV_ALLOWLIST=K1,K2`).
 
 Policy ids for these requirements are listed in
-`docs/spec/contract/policy-v1.yaml`.
+`docs/spec/contract/policy_v1.yaml`.
 
 ## Canonical Targets
 

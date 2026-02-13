@@ -47,7 +47,7 @@ non-portable constructs, including:
 
 Canonical profile:
 
-- `docs/spec/contract/03a-regex-portability-v1.md`
+- `docs/spec/contract/03a_regex_portability_v1.md`
 
 ## Assertion Health Note
 

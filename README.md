@@ -93,7 +93,7 @@ def test_specs_from_docs(tmp_path, monkeypatch, capsys):
 
 - `spec_runner/`: runner implementation (parser, dispatcher, harnesses)
 - `tests/`: unit tests for runner internals
-- `docs/design-philosophy.md`: project design principles and change bar
+- `docs/design_philosophy.md`: project design principles and change bar
 - `docs/spec/contract/`: language-neutral contract docs
 - `docs/spec/schema/`: schema docs (syntax/shape)
 - `docs/spec/impl/`: implementation-specific notes (Python/PHP)
@@ -124,12 +124,12 @@ Assertion groups can carry a shared `target`, which child
 leaves inherit unless overridden.
 Leaf assertions do not carry `target` directly.
 
-Canonical schema doc: `docs/spec/schema/schema-v1.md`.
+Canonical schema doc: `docs/spec/schema/schema_v1.md`.
 Portable contract docs: `docs/spec/contract/`.
 Machine-readable policy:
-`docs/spec/contract/policy-v1.yaml`.
+`docs/spec/contract/policy_v1.yaml`.
 Traceability mapping:
-`docs/spec/contract/traceability-v1.yaml`.
+`docs/spec/contract/traceability_v1.yaml`.
 
 Discovery note: `iter_cases(Path(...))` scans files matching the configured
 default case-file pattern in that directory (non-recursive). You can pass a

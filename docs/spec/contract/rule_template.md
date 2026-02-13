@@ -35,8 +35,8 @@ State what this rule intentionally does not require.
 
 ## Evidence Mapping
 
-- Policy entry: `docs/spec/contract/policy-v1.yaml`
-- Traceability entry: `docs/spec/contract/traceability-v1.yaml`
+- Policy entry: `docs/spec/contract/policy_v1.yaml`
+- Traceability entry: `docs/spec/contract/traceability_v1.yaml`
 - Conformance case id(s): `...`
 - Unit/integration tests: `...`
 - Implementation paths: `...`

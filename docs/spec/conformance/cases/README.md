@@ -13,7 +13,7 @@ Case fixtures that portable runner implementations execute.
   - optional `expect.impl.<runtime>` overrides
 - Conformance fixture cases should always include `expect.portable.status`.
 - Conformance fixture cases must include a non-empty `purpose`.
-- Purpose lint defaults/runtime profiles live in `docs/spec/conformance/purpose-lint-v1.yaml`.
+- Purpose lint defaults/runtime profiles live in `docs/spec/conformance/purpose_lint_v1.yaml`.
 - Style details are defined in `docs/spec/conformance/style.md`.
 
 ## Fixture File Guide

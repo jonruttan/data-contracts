@@ -5,9 +5,9 @@ This folder contains the normative and working specification docs for
 
 ## How To Navigate
 
-- Start with design intent: `docs/design-philosophy.md`
+- Start with design intent: `docs/design_philosophy.md`
 - Start with guided authoring: `docs/book/README.md`
-- Use stable schema shape: `docs/spec/schema/schema-v1.md`
+- Use stable schema shape: `docs/spec/schema/schema_v1.md`
 - Use portable behavior contract: `docs/spec/contract/`
 - Check open gaps: `docs/spec/backlog.md`
 
@@ -25,4 +25,4 @@ This folder contains the normative and working specification docs for
 - Put runner-only setup under `harness:` in case examples (never as arbitrary
   top-level case keys).
 - Keep examples executable when possible using fenced `yaml spec-test` blocks.
-- Keep traceability current in `docs/spec/contract/traceability-v1.yaml`.
+- Keep traceability current in `docs/spec/contract/traceability_v1.yaml`.

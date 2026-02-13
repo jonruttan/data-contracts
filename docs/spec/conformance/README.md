@@ -6,16 +6,16 @@ runner behavior (currently Python and PHP bootstrap subset coverage).
 ## What Lives Here
 
 - Authoring rules: `docs/spec/conformance/style.md`
-- Report shape contract: `docs/spec/conformance/report-format.md`
-- Purpose lint policy: `docs/spec/conformance/purpose-lint-v1.yaml`
+- Report shape contract: `docs/spec/conformance/report_format.md`
+- Purpose lint policy: `docs/spec/conformance/purpose_lint_v1.yaml`
 - Case fixtures: `docs/spec/conformance/cases/*.spec.md`
 
 ## Case Set (Current)
 
-- `docs/spec/conformance/cases/cli-run-entrypoint.spec.md`
-- `docs/spec/conformance/cases/assertion-health.spec.md`
-- `docs/spec/conformance/cases/failure-context.spec.md`
-- `docs/spec/conformance/cases/php-text-file-subset.spec.md`
+- `docs/spec/conformance/cases/cli_run_entrypoint.spec.md`
+- `docs/spec/conformance/cases/assertion_health.spec.md`
+- `docs/spec/conformance/cases/failure_context.spec.md`
+- `docs/spec/conformance/cases/php_text_file_subset.spec.md`
 
 ## Execution Coverage
 

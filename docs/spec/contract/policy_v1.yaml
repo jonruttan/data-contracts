@@ -11,8 +11,8 @@ rules:
     rationale: Keeps invocation explicit and reduces environment coupling.
     risk_if_violated: Cases can become environment-dependent outside conformance.
     references:
-      - docs/spec/contract/04-harness.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/04_harness.md
+      - docs/spec/schema/schema_v1.md
 
   - id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
     introduced_in: v1
@@ -26,8 +26,8 @@ rules:
     rationale: Reduces code-execution risk for hardened or semi-trusted workflows.
     risk_if_violated: Untrusted or mixed-trust specs have higher exploitability.
     references:
-      - docs/spec/contract/04-harness.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/04_harness.md
+      - docs/spec/schema/schema_v1.md
       - docs/spec/impl/python.md
 
   - id: CLI_RUN_ENV_ALLOWLIST_CONTROL
@@ -42,8 +42,8 @@ rules:
     rationale: Limits accidental secret exposure from ambient CI/dev shells.
     risk_if_violated: Commands under test can read unrelated sensitive env.
     references:
-      - docs/spec/contract/04-harness.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/04_harness.md
+      - docs/spec/schema/schema_v1.md
       - docs/spec/impl/php.md
 
   - id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
@@ -61,7 +61,7 @@ rules:
     examples:
       - SPEC_RUNNER_ENTRYPOINT
     references:
-      - docs/spec/contract/04-harness.md
+      - docs/spec/contract/04_harness.md
       - docs/spec/impl/python.md
 
   - id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
@@ -74,8 +74,8 @@ rules:
     rationale: Keeps parity checks independent of implementation conveniences.
     risk_if_violated: Conformance results can diverge across runtimes.
     references:
-      - docs/spec/contract/04-harness.md
-      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/04_harness.md
+      - docs/spec/contract/06_conformance.md
 
   - id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
     introduced_in: v1
@@ -87,8 +87,8 @@ rules:
     rationale: Prevents ambient-environment coupling in parity tests.
     risk_if_violated: Flaky or non-reproducible cross-language conformance.
     references:
-      - docs/spec/contract/04-harness.md
-      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/04_harness.md
+      - docs/spec/contract/06_conformance.md
 
   - id: ASSERT_HEALTH_MODE_VALID_VALUES
     introduced_in: v1
@@ -102,8 +102,8 @@ rules:
     rationale: Keeps diagnostics policy deterministic and portable.
     risk_if_violated: Implementations diverge on policy interpretation.
     references:
-      - docs/spec/contract/02-case-shape.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/02_case_shape.md
+      - docs/spec/schema/schema_v1.md
 
   - id: ASSERT_HEALTH_GLOBAL_AND_PER_CASE_POLICY
     introduced_in: v1
@@ -117,8 +117,8 @@ rules:
     rationale: Enables gradual rollout and targeted strictness.
     risk_if_violated: Hard to adopt diagnostics without broad breakage.
     references:
-      - docs/spec/contract/00-design-goals.md
-      - docs/spec/contract/02-case-shape.md
+      - docs/spec/contract/00_design_goals.md
+      - docs/spec/contract/02_case_shape.md
 
   - id: ASSERT_HEALTH_REDUNDANT_BRANCH_DIAGNOSTIC
     introduced_in: v1
@@ -133,10 +133,10 @@ rules:
     rationale: Redundant branches hide intent and create maintenance noise.
     risk_if_violated: Specs can pass while carrying misleading duplicate logic.
     references:
-      - docs/spec/contract/00-design-goals.md
-      - docs/spec/contract/03-assertions.md
-      - docs/spec/contract/03a-regex-portability-v1.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/00_design_goals.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/03a_regex_portability_v1.md
+      - docs/spec/schema/schema_v1.md
 
   - id: ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
     introduced_in: v1
@@ -150,9 +150,9 @@ rules:
     rationale: Preserves cross-language determinism and reduces portability drift.
     risk_if_violated: Specs may pass in one runtime and fail in another.
     references:
-      - docs/spec/contract/00-design-goals.md
-      - docs/spec/contract/03-assertions.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/00_design_goals.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/schema/schema_v1.md
 
   - id: DOC_NORMATIVE_PAGE_TRACEABILITY
     introduced_in: v1
@@ -167,7 +167,7 @@ rules:
     risk_if_violated: Normative docs can silently diverge from enforced behavior.
     references:
       - docs/spec/contract/README.md
-      - docs/spec/contract/traceability-v1.yaml
+      - docs/spec/contract/traceability_v1.yaml
 
   - id: DOC_REGEX_PROFILE_LINKAGE
     introduced_in: v1
@@ -181,10 +181,10 @@ rules:
     rationale: Keeps portability constraints visible at all normative layers.
     risk_if_violated: Portability guidance can be orphaned and ignored by implementers.
     references:
-      - docs/spec/contract/03-assertions.md
-      - docs/spec/contract/03a-regex-portability-v1.md
-      - docs/spec/schema/schema-v1.md
-      - docs/spec/contract/policy-v1.yaml
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/03a_regex_portability_v1.md
+      - docs/spec/schema/schema_v1.md
+      - docs/spec/contract/policy_v1.yaml
 
   - id: DOC_ASSERTION_OPERATOR_DOC_SYNC
     introduced_in: v1
@@ -198,8 +198,8 @@ rules:
     rationale: Prevents stale naming drift between reader-oriented and schema docs.
     risk_if_violated: Users and implementers follow conflicting operator names.
     references:
-      - docs/spec/contract/03-assertions.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/schema/schema_v1.md
 
   - id: CONFORMANCE_EXPECT_OVERLAY_RESOLUTION
     introduced_in: v1
@@ -214,8 +214,8 @@ rules:
     rationale: Keeps portable intent primary while allowing explicit runtime deltas.
     risk_if_violated: Implementations drift on expectation resolution semantics.
     references:
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/schema/schema_v1.md
 
   - id: CONFORMANCE_CASE_STYLE_GUARD
     introduced_in: v1
@@ -231,7 +231,7 @@ rules:
     risk_if_violated: Fixture docs become noisy and brittle to maintain.
     references:
       - docs/spec/conformance/style.md
-      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/06_conformance.md
 
   - id: CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
     introduced_in: v1
@@ -245,9 +245,9 @@ rules:
     rationale: Keeps feature-gated conformance behavior portable and explicit.
     risk_if_violated: Capability-dependent cases drift across implementations.
     references:
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/schema/schema-v1.md
-      - docs/spec/conformance/report-format.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/schema/schema_v1.md
+      - docs/spec/conformance/report_format.md
 
   - id: PORTABLE_SPEC_CANONICAL_SINGLE_SET
     introduced_in: v1
@@ -261,8 +261,8 @@ rules:
     rationale: Keeps one executable source of truth across implementations.
     risk_if_violated: Spec behavior drifts across duplicated fixture sets.
     references:
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/contract/07-portable-spec-authoring.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/contract/07_portable_spec_authoring.md
       - docs/spec/conformance/README.md
 
   - id: PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
@@ -277,9 +277,9 @@ rules:
     rationale: Preserves a single portable baseline while allowing explicit deltas.
     risk_if_violated: Runtime-specific forks become implicit and hard to audit.
     references:
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/contract/07-portable-spec-authoring.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/contract/07_portable_spec_authoring.md
+      - docs/spec/schema/schema_v1.md
 
   - id: PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION
     introduced_in: v1
@@ -293,6 +293,6 @@ rules:
     rationale: Determinism is required for stable cross-runtime parity.
     risk_if_violated: Flaky parity and implementation-specific false negatives.
     references:
-      - docs/spec/contract/06-conformance.md
-      - docs/spec/contract/07-portable-spec-authoring.md
-      - docs/spec/schema/schema-v1.md
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/contract/07_portable_spec_authoring.md
+      - docs/spec/schema/schema_v1.md
