@@ -131,7 +131,7 @@ def run(case, *, ctx) -> None:
             print(format_assertion_health_warning(d), file=sys.stderr)
 
     with _GLOBAL_SIDE_EFFECT_LOCK:
-        with ctx.monkeypatch.context() as mp:
+        with ctx.patch_context() as mp:
             # Runner-provided setup features. These are deliberately small and generic
             # to avoid hook proliferation for common cases.
             stub_modules = h.get("stub_modules") or []
@@ -203,7 +203,7 @@ def run(case, *, ctx) -> None:
                         super().__init__(text)
                         self._isatty = bool(isatty)
 
-                    def isatty(self) -> bool:  # type: ignore[override]
+                    def isatty(self) -> bool:
                         return self._isatty
 
                 fake = _FakeStdin("" if stdin_text is None else str(stdin_text), bool(stdin_isatty))
@@ -245,7 +245,7 @@ def run(case, *, ctx) -> None:
                 ec = getattr(e, "code", 1)
                 code = 1 if ec is None else int(ec)
 
-            captured = ctx.capsys.readouterr()
+            captured = ctx.read_capture()
             got = int(code)
             want = int(t.get("exit_code", 0))
             assert got == want, f"[case_id={case_id}] exit_code expected={want} actual={got}"

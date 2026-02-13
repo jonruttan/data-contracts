@@ -192,7 +192,7 @@ def run_python_report(cases_dir: Path) -> dict[str, Any]:
         tmp_path = Path(td)
         monkeypatch = _MiniMonkeyPatch()
         capsys = _MiniCapsys()
-        ctx = SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys)
+        ctx = SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys)
         with capsys.capture():
             results = run_conformance_cases(
                 cases_dir,

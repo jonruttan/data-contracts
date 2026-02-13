@@ -15,6 +15,7 @@ Using Homebrew/system Python without a venv may fail with
 
 ```sh
 python -m ruff check .
+python -m mypy spec_runner
 python -m compileall -q spec_runner scripts tests
 ```
 
@@ -41,6 +42,7 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 
 - contract governance check
 - ruff lint check (`F` + `E9` rules)
+- mypy type check (`spec_runner` package)
 - Python bytecode compile pass (`compileall`)
 - contract coverage report generation
 - conformance purpose report generation
@@ -72,6 +74,12 @@ python scripts/check_contract_governance.py
 
 ```sh
 python -m ruff check .
+```
+
+## Type Check
+
+```sh
+python -m mypy spec_runner
 ```
 
 ## Static Analysis (Syntax/Import-Time Parse)

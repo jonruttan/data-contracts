@@ -18,3 +18,12 @@ def test_unknown_type_raises_clear_error(tmp_path, monkeypatch, capsys):
             ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
             type_runners={"cli.run": lambda *_a, **_k: None},
         )
+
+
+def test_run_context_adapter_methods_support_new_fields(tmp_path, monkeypatch, capsys):
+    ctx = SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys)
+    with ctx.patch_context():
+        pass
+    got = ctx.read_capture()
+    assert hasattr(got, "out")
+    assert hasattr(got, "err")

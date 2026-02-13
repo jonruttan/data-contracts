@@ -157,7 +157,8 @@ def load_purpose_lint_policy(repo_root: Path) -> tuple[dict[str, Any], list[str]
 def resolve_purpose_lint_config(case: dict[str, Any], policy: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
     errs: list[str] = []
     cfg = dict(policy.get("default") or {})
-    runtime_map = policy.get("runtime") if isinstance(policy.get("runtime"), dict) else {}
+    raw_runtime = policy.get("runtime")
+    runtime_map: dict[str, Any] = raw_runtime if isinstance(raw_runtime, dict) else {}
     override_raw = case.get("purpose_lint")
     override: dict[str, Any] = {}
     if override_raw is not None:
