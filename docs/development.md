@@ -159,6 +159,9 @@ python scripts/compare_conformance_parity.py \
 Parity diffs are evaluated on case IDs where `expect` resolves to the same
 `status` + `category` for both implementations.
 
+On slower CI runners, increase `--php-timeout-seconds` (for example `60`) to
+avoid false-negative parity failures caused by host contention.
+
 ## Build / Publish
 
 ```sh
