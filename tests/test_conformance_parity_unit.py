@@ -22,6 +22,17 @@ def test_run_php_report_times_out_with_actionable_error(monkeypatch, tmp_path):
         run_php_report(tmp_path, tmp_path / "runner.php", timeout_seconds=1)
 
 
+def test_run_python_report_times_out_with_actionable_error(monkeypatch, tmp_path):
+    from spec_runner.conformance_parity import run_python_report
+
+    def _timeout(*_args, **_kwargs):
+        raise subprocess.TimeoutExpired(cmd=["python"], timeout=1)
+
+    monkeypatch.setattr("spec_runner.conformance_parity.subprocess.run", _timeout)
+    with pytest.raises(RuntimeError, match="python conformance runner timed out after 1s"):
+        run_python_report(tmp_path, tmp_path / "runner.py", timeout_seconds=1)
+
+
 def test_compare_parity_reports_matches_status_and_category_only():
     py = {
         "version": 1,
@@ -97,7 +108,7 @@ def test_build_parity_artifact_schema_is_stable():
 def test_run_parity_check_returns_report_shape_errors(monkeypatch, tmp_path):
     monkeypatch.setattr(
         "spec_runner.conformance_parity.run_python_report",
-        lambda _cases: {"version": 2, "results": []},
+        lambda _cases, _runner, **_kwargs: {"version": 2, "results": []},
     )
     monkeypatch.setattr(
         "spec_runner.conformance_parity.run_php_report",
@@ -107,6 +118,7 @@ def test_run_parity_check_returns_report_shape_errors(monkeypatch, tmp_path):
         ParityConfig(
             cases_dir=tmp_path,
             php_runner=Path("scripts/php/conformance_runner.php"),
+            python_runner=Path("scripts/python/conformance_runner.py"),
         )
     )
     assert errs
@@ -116,7 +128,7 @@ def test_run_parity_check_returns_report_shape_errors(monkeypatch, tmp_path):
 def test_run_parity_check_surfaces_php_runner_failure(monkeypatch, tmp_path):
     monkeypatch.setattr(
         "spec_runner.conformance_parity.run_python_report",
-        lambda _cases: {"version": 1, "results": []},
+        lambda _cases, _runner, **_kwargs: {"version": 1, "results": []},
     )
 
     def _raise(_cases, _runner, **_kwargs):
@@ -128,6 +140,7 @@ def test_run_parity_check_surfaces_php_runner_failure(monkeypatch, tmp_path):
             ParityConfig(
                 cases_dir=tmp_path,
                 php_runner=Path("scripts/php/conformance_runner.php"),
+                python_runner=Path("scripts/python/conformance_runner.py"),
             )
         )
 
@@ -135,7 +148,7 @@ def test_run_parity_check_surfaces_php_runner_failure(monkeypatch, tmp_path):
 def test_run_parity_check_loads_expected_once_per_implementation(monkeypatch, tmp_path):
     monkeypatch.setattr(
         "spec_runner.conformance_parity.run_python_report",
-        lambda _cases: {"version": 1, "results": []},
+        lambda _cases, _runner, **_kwargs: {"version": 1, "results": []},
     )
     monkeypatch.setattr(
         "spec_runner.conformance_parity.run_php_report",
@@ -163,6 +176,7 @@ def test_run_parity_check_loads_expected_once_per_implementation(monkeypatch, tm
         ParityConfig(
             cases_dir=tmp_path,
             php_runner=Path("scripts/php/conformance_runner.php"),
+            python_runner=Path("scripts/python/conformance_runner.py"),
         )
     )
 

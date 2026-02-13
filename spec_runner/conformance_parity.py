@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -11,18 +12,16 @@ from spec_runner.conformance import (
     ConformanceResult,
     compare_conformance_results,
     load_expected_results,
-    report_to_jsonable,
-    run_conformance_cases,
     validate_conformance_report_payload,
 )
-from spec_runner.dispatcher import SpecRunContext
-from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 
 
 @dataclass(frozen=True)
 class ParityConfig:
     cases_dir: Path
     php_runner: Path
+    python_runner: Path = Path("scripts/python/conformance_runner.py")
+    python_timeout_seconds: int = 30
     php_timeout_seconds: int = 30
 
 
@@ -104,19 +103,41 @@ def _shared_expectation_ids_from_expected(
     return shared
 
 
-def run_python_report(cases_dir: Path) -> dict[str, Any]:
+def run_python_report(
+    cases_dir: Path,
+    python_runner: Path,
+    *,
+    timeout_seconds: int = 30,
+) -> dict[str, Any]:
     with TemporaryDirectory(prefix="spec-runner-parity-") as td:
-        tmp_path = Path(td)
-        monkeypatch = MiniMonkeyPatch()
-        capsys = MiniCapsys()
-        ctx = SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys)
-        with capsys.capture():
-            results = run_conformance_cases(
-                cases_dir,
-                ctx=ctx,
-                implementation="python",
+        out_path = Path(td) / "python-conformance-report.json"
+        try:
+            cp = subprocess.run(
+                [
+                    sys.executable,
+                    str(python_runner),
+                    "--cases",
+                    str(cases_dir),
+                    "--out",
+                    str(out_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=timeout_seconds,
             )
-    return report_to_jsonable(results)
+        except subprocess.TimeoutExpired as e:
+            raise RuntimeError(
+                f"python conformance runner timed out after {timeout_seconds}s "
+                f"(runner={python_runner}, cases={cases_dir})"
+            ) from e
+        if cp.returncode not in {0, 1}:
+            stderr = cp.stderr.strip()
+            raise RuntimeError(
+                f"python conformance runner failed with exit {cp.returncode}"
+                + (f": {stderr}" if stderr else "")
+            )
+        return json.loads(out_path.read_text(encoding="utf-8"))
 
 
 def run_php_report(cases_dir: Path, php_runner: Path, *, timeout_seconds: int = 30) -> dict[str, Any]:
@@ -152,7 +173,11 @@ def run_php_report(cases_dir: Path, php_runner: Path, *, timeout_seconds: int = 
 
 
 def run_parity_check(config: ParityConfig) -> list[str]:
-    python_payload = run_python_report(config.cases_dir)
+    python_payload = run_python_report(
+        config.cases_dir,
+        config.python_runner,
+        timeout_seconds=int(config.python_timeout_seconds),
+    )
     php_payload = run_php_report(
         config.cases_dir,
         config.php_runner,

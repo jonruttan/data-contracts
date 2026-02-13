@@ -30,6 +30,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Path to PHP conformance runner script",
     )
     ap.add_argument(
+        "--python-runner",
+        default="scripts/python/conformance_runner.py",
+        help="Path to Python conformance runner script",
+    )
+    ap.add_argument(
         "--out",
         default="",
         help="Optional path to write JSON parity artifact",
@@ -39,6 +44,12 @@ def main(argv: list[str] | None = None) -> int:
         type=int,
         default=30,
         help="Timeout in seconds for the PHP parity runner subprocess (default: 30)",
+    )
+    ap.add_argument(
+        "--python-timeout-seconds",
+        type=int,
+        default=30,
+        help="Timeout in seconds for the Python parity runner subprocess (default: 30)",
     )
     ns = ap.parse_args(argv)
     out_path = Path(str(ns.out)).resolve() if str(ns.out).strip() else None
@@ -53,6 +64,8 @@ def main(argv: list[str] | None = None) -> int:
     cfg = ParityConfig(
         cases_dir=Path(ns.cases),
         php_runner=Path(ns.php_runner),
+        python_runner=Path(ns.python_runner),
+        python_timeout_seconds=int(ns.python_timeout_seconds),
         php_timeout_seconds=int(ns.php_timeout_seconds),
     )
     try:
