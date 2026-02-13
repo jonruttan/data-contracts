@@ -40,8 +40,8 @@ class SpecRunContext:
         return capture.readouterr()
 
 
-def iter_cases(spec_dir: Path) -> list[SpecDocTest]:
-    return list(iter_spec_doc_tests(spec_dir))
+def iter_cases(spec_dir: Path, *, file_pattern: str | None = None) -> list[SpecDocTest]:
+    return list(iter_spec_doc_tests(spec_dir, file_pattern=file_pattern))
 
 
 def default_type_runners() -> dict[str, TypeRunner]:

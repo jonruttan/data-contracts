@@ -12,6 +12,7 @@ from spec_runner.conformance import (
     load_expected_results,
     validate_conformance_report_payload,
 )
+from spec_runner.settings import case_file_name
 
 
 def _php_has_yaml_extension() -> bool:
@@ -39,8 +40,9 @@ def test_php_spec_runner_matches_pass_fixture_suite(tmp_path):
     cases_dir = tmp_path / "cases"
     out_json = tmp_path / "php-report.json"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "runner-pass.spec.md").write_text(
-        (fixtures_root / "runner-pass.spec.md").read_text(encoding="utf-8"),
+    pass_case = case_file_name("runner-pass")
+    (cases_dir / pass_case).write_text(
+        (fixtures_root / pass_case).read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (cases_dir / "fixtures").mkdir(parents=True)
@@ -92,8 +94,9 @@ def test_php_spec_runner_matches_failure_fixture_suite(tmp_path):
     cases_dir = tmp_path / "cases"
     out_json = tmp_path / "php-report.json"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "runner-failures.spec.md").write_text(
-        (fixtures_root / "runner-failures.spec.md").read_text(encoding="utf-8"),
+    failures_case = case_file_name("runner-failures")
+    (cases_dir / failures_case).write_text(
+        (fixtures_root / failures_case).read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (cases_dir / "fixtures").mkdir(parents=True)
@@ -141,8 +144,9 @@ def test_php_spec_runner_matches_assert_health_fixture_suite(tmp_path):
     cases_dir = tmp_path / "cases"
     out_json = tmp_path / "php-report.json"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "runner-assert-health.spec.md").write_text(
-        (fixtures_root / "runner-assert-health.spec.md").read_text(encoding="utf-8"),
+    assert_health_case = case_file_name("runner-assert-health")
+    (cases_dir / assert_health_case).write_text(
+        (fixtures_root / assert_health_case).read_text(encoding="utf-8"),
         encoding="utf-8",
     )
 
@@ -187,8 +191,9 @@ def test_php_spec_runner_matches_portability_fixture_suite(tmp_path):
     cases_dir = tmp_path / "cases"
     out_json = tmp_path / "php-report.json"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "runner-portability.spec.md").write_text(
-        (fixtures_root / "runner-portability.spec.md").read_text(encoding="utf-8"),
+    portability_case = case_file_name("runner-portability")
+    (cases_dir / portability_case).write_text(
+        (fixtures_root / portability_case).read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (cases_dir / "fixtures").mkdir(parents=True)
@@ -239,7 +244,7 @@ def test_php_spec_runner_env_allowlist_filters_ambient_env(tmp_path):
     env_bin = _env_bin()
     assert env_bin
 
-    cases_dir.joinpath("env-allowlist.spec.md").write_text(
+    cases_dir.joinpath(case_file_name("env-allowlist")).write_text(
         f"""# Env allowlist
 
 ```yaml spec-test

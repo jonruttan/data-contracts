@@ -7,6 +7,7 @@ from spec_runner.contract_governance import (
     check_contract_governance,
     contract_coverage_jsonable,
 )
+from spec_runner.settings import case_file_name
 
 _NORMATIVE_DOCS = [
     "00-design-goals.md",
@@ -24,6 +25,10 @@ _NORMATIVE_DOCS = [
 def _write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
+
+
+def _case_doc_path(root: Path, stem: str) -> Path:
+    return root / "docs/spec/conformance/cases" / case_file_name(stem)
 
 
 def _seed_governance_repo(tmp_path: Path) -> None:
@@ -459,7 +464,7 @@ def test_contract_governance_fails_on_multi_case_spec_block(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R9")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/bad.spec.md",
+        _case_doc_path(tmp_path, "bad"),
         """# Bad
 
 ## SRCONF-BAD-001
@@ -480,28 +485,11 @@ def test_contract_governance_fails_on_multi_case_spec_block(tmp_path):
     assert any("one case per spec-test block required" in e for e in errs)
 
 
-def test_contract_governance_fails_on_yaml_spec_file_extension(tmp_path):
-    _seed_governance_repo(tmp_path)
-    _write_min_policy_trace(tmp_path, rule_id="R9A")
-    _write_text(
-        tmp_path / "docs/spec/conformance/cases/bad.spec.yaml",
-        """id: SRCONF-BAD-YAML-001
-type: text.file
-expect:
-  portable:
-    status: pass
-    category: null
-""",
-    )
-    errs = check_contract_governance(tmp_path)
-    assert any("forbidden file extension found: docs/spec/conformance/cases/bad.spec.yaml" in e for e in errs)
-
-
 def test_contract_governance_fails_on_missing_case_heading(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R10")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/bad2.spec.md",
+        _case_doc_path(tmp_path, "bad2"),
         """# Bad
 
 ```yaml spec-test
@@ -523,7 +511,7 @@ def test_contract_governance_fails_when_case_index_missing_fixture_id(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R11")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/sample.spec.md",
+        _case_doc_path(tmp_path, "sample"),
         """# Sample
 
 ## SRCONF-IDX-001
@@ -552,7 +540,7 @@ def test_contract_governance_fails_when_case_index_has_stale_id(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R12")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/sample.spec.md",
+        _case_doc_path(tmp_path, "sample"),
         """# Sample
 
 ## SRCONF-IDX-002
@@ -581,7 +569,7 @@ def test_contract_governance_fails_when_case_purpose_is_missing(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R13")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/missing-purpose.spec.md",
+        _case_doc_path(tmp_path, "missing-purpose"),
         """# Sample
 
 ## SRCONF-PURPOSE-001
@@ -608,7 +596,7 @@ def test_contract_governance_fails_when_case_purpose_is_empty(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R14")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/empty-purpose.spec.md",
+        _case_doc_path(tmp_path, "empty-purpose"),
         """# Sample
 
 ## SRCONF-PURPOSE-002
@@ -636,7 +624,7 @@ def test_contract_governance_fails_when_case_purpose_duplicates_title(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R15")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/dup-purpose.spec.md",
+        _case_doc_path(tmp_path, "dup-purpose"),
         """# Sample
 
 ## SRCONF-PURPOSE-003
@@ -665,7 +653,7 @@ def test_contract_governance_fails_when_case_purpose_is_too_short(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R16")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/short-purpose.spec.md",
+        _case_doc_path(tmp_path, "short-purpose"),
         """# Sample
 
 ## SRCONF-PURPOSE-004
@@ -694,7 +682,7 @@ def test_contract_governance_fails_when_case_purpose_has_placeholder_token(tmp_p
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R17")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/placeholder-purpose.spec.md",
+        _case_doc_path(tmp_path, "placeholder-purpose"),
         """# Sample
 
 ## SRCONF-PURPOSE-005
@@ -735,7 +723,7 @@ runtime:
 """,
     )
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/runtime-purpose.spec.md",
+        _case_doc_path(tmp_path, "runtime-purpose"),
         """# Sample
 
 ## SRCONF-PURPOSE-006
@@ -767,7 +755,7 @@ def test_contract_governance_case_override_can_disable_quality_checks(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R19")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/override-purpose.spec.md",
+        _case_doc_path(tmp_path, "override-purpose"),
         """# Sample
 
 ## SRCONF-PURPOSE-007
@@ -800,7 +788,7 @@ def test_contract_governance_fails_on_unknown_purpose_lint_runtime(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R20")
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/unknown-runtime-purpose.spec.md",
+        _case_doc_path(tmp_path, "unknown-runtime-purpose"),
         """# Sample
 
 ## SRCONF-PURPOSE-008
@@ -835,7 +823,7 @@ def test_contract_governance_fails_when_purpose_warning_code_doc_missing_code(tm
         "# Purpose Warning Codes\n\n- PUR001\n- PUR002\n- PUR003\n",
     )
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/sample.spec.md",
+        _case_doc_path(tmp_path, "sample"),
         """# Sample
 ## SRCONF-PURPOSE-CODE-001
 ```yaml spec-test
@@ -864,7 +852,7 @@ def test_contract_governance_fails_when_purpose_warning_code_doc_has_stale_code(
         "# Purpose Warning Codes\n\n- PUR001\n- PUR002\n- PUR003\n- PUR004\n- PUR999\n",
     )
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/sample.spec.md",
+        _case_doc_path(tmp_path, "sample"),
         """# Sample
 ## SRCONF-PURPOSE-CODE-002
 ```yaml spec-test

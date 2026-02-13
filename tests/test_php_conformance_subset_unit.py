@@ -11,6 +11,7 @@ from spec_runner.conformance import (
     load_expected_results,
     validate_conformance_report_payload,
 )
+from spec_runner.settings import case_file_name
 
 
 def _php_has_yaml_extension() -> bool:
@@ -30,7 +31,7 @@ def _php_has_yaml_extension() -> bool:
 def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
     repo_root = Path(__file__).resolve().parents[1]
 
-    cases_src = repo_root / "docs/spec/conformance/cases/php-text-file-subset.spec.md"
+    cases_src = repo_root / "docs/spec/conformance/cases" / case_file_name("php-text-file-subset")
     php_runner = repo_root / "scripts/php/conformance_runner.php"
 
     cases_dir = tmp_path / "cases"
@@ -80,7 +81,7 @@ def test_php_bootstrap_runner_can_parse_markdown_spec_test_blocks(tmp_path):
     cases_dir = tmp_path / "docs_spec"
     out_json = tmp_path / "php-md-report.json"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "sample.spec.md").write_text(
+    (cases_dir / case_file_name("sample")).write_text(
         """# Example
 
 ```yaml spec-test
@@ -119,7 +120,7 @@ assert:
 
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
-def test_php_bootstrap_runner_accepts_plain_md_case_file(tmp_path):
+def test_php_bootstrap_runner_ignores_plain_md_case_file(tmp_path):
     repo_root = Path(__file__).resolve().parents[1]
     php_runner = repo_root / "scripts/php/conformance_runner.php"
     cases_dir = tmp_path / "docs_spec"
@@ -157,8 +158,53 @@ assert:
     payload = json.loads(out_json.read_text(encoding="utf-8"))
     errs = validate_conformance_report_payload(payload)
     assert errs == []
+    assert payload["results"] == []
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_bootstrap_runner_allows_pattern_override(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
+    cases_dir = tmp_path / "docs_spec"
+    out_json = tmp_path / "php-md-report.json"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "sample.md").write_text(
+        """# Example
+
+```yaml spec-test
+id: SRCONF-PHP-MD-003
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["SRCONF-PHP-MD-003"]
+```
+""",
+        encoding="utf-8",
+    )
+
+    subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--out",
+            str(out_json),
+            "--case-file-pattern",
+            "*.md",
+        ],
+        check=True,
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    errs = validate_conformance_report_payload(payload)
+    assert errs == []
     assert payload["results"] == [
-        {"id": "SRCONF-PHP-MD-002", "status": "pass", "category": None, "message": None}
+        {"id": "SRCONF-PHP-MD-003", "status": "pass", "category": None, "message": None}
     ]
 
 
@@ -170,7 +216,7 @@ def test_php_bootstrap_runner_honors_requires_capabilities_skip(tmp_path):
     cases_dir = tmp_path / "docs_spec"
     out_json = tmp_path / "php-md-report.json"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "requires.spec.md").write_text(
+    (cases_dir / case_file_name("requires")).write_text(
         """# Example
 
 ## SRCONF-PHP-MD-REQ-001
@@ -223,7 +269,7 @@ def test_php_bootstrap_runner_applies_requires_before_type_support_check(tmp_pat
     cases_dir = tmp_path / "docs_spec"
     out_json = tmp_path / "php-md-report.json"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "requires-cli.spec.md").write_text(
+    (cases_dir / case_file_name("requires-cli")).write_text(
         """# Example
 
 ```yaml spec-test
@@ -274,7 +320,7 @@ def test_php_bootstrap_runner_supports_text_file_relative_path_and_escape_guard(
     (cases_dir / "data").mkdir(parents=True)
     (cases_dir / "data" / "target.txt").write_text("hello from path fixture\n", encoding="utf-8")
     (cases_dir.parent / "outside.txt").write_text("outside\n", encoding="utf-8")
-    (cases_dir / "sub" / "path.spec.md").write_text(
+    (cases_dir / "sub" / case_file_name("path")).write_text(
         """# Path Cases
 
 ## SRCONF-PHP-MD-PATH-001

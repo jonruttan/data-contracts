@@ -2,6 +2,7 @@ import importlib.util
 import json
 from pathlib import Path
 
+from spec_runner.settings import case_file_name
 
 def _load_script_module():
     repo_root = Path(__file__).resolve().parents[1]
@@ -14,6 +15,7 @@ def _load_script_module():
 
 
 def test_script_json_mode_and_fail_on_warn(monkeypatch, tmp_path):
+    case_file = case_file_name("a")
     mod = _load_script_module()
     out = tmp_path / "purpose.json"
     monkeypatch.setattr(
@@ -37,7 +39,7 @@ def test_script_json_mode_and_fail_on_warn(monkeypatch, tmp_path):
                     "title": "t",
                     "purpose": "p",
                     "type": "text.file",
-                    "file": "a.spec.md",
+                    "file": case_file,
                     "purpose_lint": {"enabled": True},
                     "warnings": [
                         {
@@ -59,6 +61,7 @@ def test_script_json_mode_and_fail_on_warn(monkeypatch, tmp_path):
 
 
 def test_script_markdown_mode(monkeypatch, tmp_path):
+    case_file = case_file_name("x")
     mod = _load_script_module()
     out = tmp_path / "purpose.md"
     monkeypatch.setattr(
@@ -82,7 +85,7 @@ def test_script_markdown_mode(monkeypatch, tmp_path):
                     "title": "t",
                     "purpose": "p",
                     "type": "text.file",
-                    "file": "x.spec.md",
+                    "file": case_file,
                     "purpose_lint": {"enabled": False},
                     "warnings": [
                         {
@@ -104,11 +107,13 @@ def test_script_markdown_mode(monkeypatch, tmp_path):
     assert (
         "| SRCONF-X | text.file | warn | PUR002 | purpose word count 2 below minimum 8 | "
         "Expand purpose to meet the configured minimum word count. | "
-        "Expand `purpose` with concrete behavior intent to at least 8 words. | x.spec.md |"
+        f"Expand `purpose` with concrete behavior intent to at least 8 words. | {case_file} |"
     ) in text
 
 
 def test_script_only_warnings_filters_rows(monkeypatch, tmp_path):
+    case_file_a = case_file_name("a")
+    case_file_b = case_file_name("b")
     mod = _load_script_module()
     out = tmp_path / "purpose.json"
     monkeypatch.setattr(
@@ -132,7 +137,7 @@ def test_script_only_warnings_filters_rows(monkeypatch, tmp_path):
                     "title": "t",
                     "purpose": "p",
                     "type": "text.file",
-                    "file": "a.spec.md",
+                    "file": case_file_a,
                     "purpose_lint": {"enabled": True},
                     "warnings": [
                         {
@@ -149,7 +154,7 @@ def test_script_only_warnings_filters_rows(monkeypatch, tmp_path):
                     "title": "u",
                     "purpose": "v",
                     "type": "text.file",
-                    "file": "b.spec.md",
+                    "file": case_file_b,
                     "purpose_lint": {"enabled": True},
                     "warnings": [],
                 },
@@ -165,6 +170,7 @@ def test_script_only_warnings_filters_rows(monkeypatch, tmp_path):
 
 
 def test_script_fail_on_severity_warn_and_error(monkeypatch, tmp_path):
+    case_file = case_file_name("a")
     mod = _load_script_module()
     out = tmp_path / "purpose.json"
     monkeypatch.setattr(
@@ -188,7 +194,7 @@ def test_script_fail_on_severity_warn_and_error(monkeypatch, tmp_path):
                     "title": "t",
                     "purpose": "p",
                     "type": "text.file",
-                    "file": "a.spec.md",
+                    "file": case_file,
                     "purpose_lint": {"enabled": True},
                     "warnings": [{"code": "PUR002", "message": "x", "severity": "warn", "hint": "h"}],
                 }
@@ -200,6 +206,7 @@ def test_script_fail_on_severity_warn_and_error(monkeypatch, tmp_path):
 
 
 def test_script_emit_patches_writes_case_snippets(monkeypatch, tmp_path):
+    case_file = case_file_name("x")
     mod = _load_script_module()
     out = tmp_path / "purpose.json"
     patch_dir = tmp_path / "patches"
@@ -224,7 +231,7 @@ def test_script_emit_patches_writes_case_snippets(monkeypatch, tmp_path):
                     "title": "t",
                     "purpose": "p",
                     "type": "text.file",
-                    "file": "x.spec.md",
+                    "file": case_file,
                     "purpose_lint": {"enabled": True},
                     "warnings": [
                         {

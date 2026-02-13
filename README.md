@@ -131,8 +131,9 @@ Machine-readable policy:
 Traceability mapping:
 `docs/spec/contract/traceability-v1.yaml`.
 
-Discovery note: `iter_cases(Path(...))` currently scans only `*.md` files in
-that directory (non-recursive).
+Discovery note: `iter_cases(Path(...))` scans files matching the configured
+default case-file pattern in that directory (non-recursive). You can pass a
+custom pattern with `iter_cases(Path(...), file_pattern="*.md")`.
 
 ## Reuse / Publishing Notes
 

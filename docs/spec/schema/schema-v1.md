@@ -1,7 +1,7 @@
 # Spec-Test Schema (v1)
 
 This schema defines the stable shape of executable spec tests embedded in
-`docs/spec/*.md` as fenced blocks:
+Markdown files selected by case-file pattern (default `*.spec.md`) as fenced blocks:
 
 ```text
 ```yaml spec-test
@@ -20,7 +20,8 @@ This schema defines the stable shape of executable spec tests embedded in
 
 Parser behavior:
 
-- discovery scans `*.md` in the provided directory (non-recursive)
+- discovery scans files matching case-file pattern (default `*.spec.md`) in
+  the provided directory (non-recursive)
 - fence extraction accepts Markdown fences using either backticks or tildes
   (3+), with info tokens including `spec-test` and `yaml`/`yml`
 - closing fences must use the same fence character and at least the opener

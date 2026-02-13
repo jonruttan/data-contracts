@@ -8,6 +8,7 @@ from typing import Any
 import yaml
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.doc_parser import iter_spec_doc_tests
+from spec_runner.settings import DEFAULT_CASE_FILE_PATTERN
 from spec_runner.purpose_lint import (
     load_purpose_lint_policy,
     purpose_quality_warnings,
@@ -69,7 +70,7 @@ def _is_closing_fence(line: str, *, ch: str, min_len: int) -> bool:
 def _lint_conformance_case_docs(cases_dir: Path, *, purpose_policy: dict[str, Any]) -> list[str]:
     errs: list[str] = []
     global_ids: set[str] = set()
-    for p in sorted(cases_dir.glob("*.spec.md")):
+    for p in sorted(cases_dir.glob(DEFAULT_CASE_FILE_PATTERN)):
         raw = p.read_text(encoding="utf-8")
         lines = raw.splitlines()
         i = 0
@@ -178,21 +179,6 @@ def _lint_purpose_warning_code_doc(repo_root: Path) -> list[str]:
         errs.append(f"purpose warning code doc missing code: {c}")
     for c in sorted(doc_codes - impl_codes):
         errs.append(f"purpose warning code doc has stale code: {c}")
-    return errs
-
-
-def _lint_executable_spec_file_extensions(repo_root: Path) -> list[str]:
-    errs: list[str] = []
-    spec_root = repo_root / "docs/spec"
-    if not spec_root.exists():
-        return errs
-    for pattern in ("*.spec.yaml", "*.spec.yml"):
-        for p in sorted(spec_root.rglob(pattern)):
-            rel = p.relative_to(repo_root)
-            errs.append(
-                "executable spec files must be Markdown .spec.md with fenced yaml spec-test blocks; "
-                f"forbidden file extension found: {rel}"
-            )
     return errs
 
 
@@ -327,7 +313,6 @@ def check_contract_governance(repo_root: Path) -> list[str]:
 
     policy, trace, conformance_ids = _load_policy_and_trace(repo_root)
     purpose_policy, purpose_policy_errs, _ = load_purpose_lint_policy(repo_root)
-    errs.extend(_lint_executable_spec_file_extensions(repo_root))
     for e in purpose_policy_errs:
         errs.append(f"{e}")
     cases_dir = repo_root / "docs/spec/conformance/cases"

@@ -1,4 +1,5 @@
 from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
+from spec_runner.settings import case_file_name
 
 
 def test_conformance_purpose_report_schema_and_fields(tmp_path):
@@ -6,7 +7,7 @@ def test_conformance_purpose_report_schema_and_fields(tmp_path):
     repo_root.mkdir(parents=True)
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "sample.spec.md").write_text(
+    (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 
 ## SRCONF-PURPOSE-REPORT-001
@@ -48,7 +49,7 @@ expect:
     assert row["title"] == "report row contains purpose metadata"
     assert row["type"] == "text.file"
     assert "machine-readable case intent metadata" in row["purpose"]
-    assert row["file"].endswith("sample.spec.md")
+    assert row["file"].endswith(case_file_name("sample"))
     assert row["purpose_lint"]["min_words"] == 8
     assert row["warnings"] == []
     assert payload["summary"]["warning_code_counts"] == {}
@@ -60,7 +61,7 @@ def test_conformance_purpose_report_rows_are_sorted_by_id(tmp_path):
     repo_root.mkdir(parents=True)
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "b.spec.md").write_text(
+    (cases_dir / case_file_name("b")).write_text(
         """# B
 ## SRCONF-PURPOSE-REPORT-200
 ```yaml spec-test
@@ -74,7 +75,7 @@ expect:
 """,
         encoding="utf-8",
     )
-    (cases_dir / "a.spec.md").write_text(
+    (cases_dir / case_file_name("a")).write_text(
         """# A
 ## SRCONF-PURPOSE-REPORT-100
 ```yaml spec-test
@@ -111,7 +112,7 @@ runtime:
     )
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "sample.spec.md").write_text(
+    (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-300
 ```yaml spec-test
@@ -139,7 +140,7 @@ def test_conformance_purpose_report_includes_warnings_even_when_case_lint_disabl
     repo_root.mkdir(parents=True)
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "sample.spec.md").write_text(
+    (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-400
 ```yaml spec-test
@@ -173,7 +174,7 @@ def test_conformance_purpose_report_warning_codes_are_grouped(tmp_path):
     repo_root.mkdir(parents=True)
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "sample.spec.md").write_text(
+    (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-500
 ```yaml spec-test
@@ -201,7 +202,7 @@ def test_conformance_purpose_report_uses_safe_default_hint_for_unknown_warning(m
     repo_root.mkdir(parents=True)
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "sample.spec.md").write_text(
+    (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-600
 ```yaml spec-test
@@ -246,7 +247,7 @@ runtime: {}
     )
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "sample.spec.md").write_text(
+    (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-700
 ```yaml spec-test

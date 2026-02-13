@@ -3,7 +3,8 @@
 ## Inputs
 
 - Input is a directory path.
-- Runner scans `*.md` files in that directory (non-recursive).
+- Runner scans files matching configurable case-file pattern in that
+  directory (non-recursive).
 
 ## Fence Extraction
 

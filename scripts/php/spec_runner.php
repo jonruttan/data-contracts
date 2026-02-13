@@ -13,12 +13,13 @@ declare(strict_types=1);
  */
 
 function usage(): void {
-    fwrite(STDOUT, "usage: spec_runner.php --cases <dir-or-file> --out <file>\n");
+    fwrite(STDOUT, "usage: spec_runner.php --cases <dir-or-file> --out <file> [--case-file-pattern <glob>]\n");
 }
 
 function parseArgs(array $argv): array {
     $out = null;
     $cases = null;
+    $casePattern = '*.spec.md';
     for ($i = 1; $i < count($argv); $i++) {
         $arg = $argv[$i];
         if ($arg === '--help' || $arg === '-h') {
@@ -33,20 +34,36 @@ function parseArgs(array $argv): array {
             $cases = $argv[++$i];
             continue;
         }
+        if ($arg === '--case-file-pattern' && $i + 1 < count($argv)) {
+            $casePattern = trim((string)$argv[++$i]);
+            if ($casePattern === '') {
+                $casePattern = '*.spec.md';
+            }
+            continue;
+        }
     }
     if ($out === null || $cases === null) {
         usage();
         exit(2);
     }
-    return ['out' => $out, 'cases' => $cases];
+    return ['out' => $out, 'cases' => $cases, 'case_pattern' => $casePattern];
 }
 
-function listCaseFiles(string $path): array {
+function matchesCasePattern(string $name, string $pattern): bool {
+    $regex = '/^' . str_replace(
+        ['\*', '\?'],
+        ['.*', '.'],
+        preg_quote($pattern, '/')
+    ) . '$/i';
+    return preg_match($regex, $name) === 1;
+}
+
+function listCaseFiles(string $path, string $pattern): array {
     if (is_file($path)) {
-        if (preg_match('/\.md$/i', $path) === 1) {
+        if (matchesCasePattern(basename($path), $pattern)) {
             return [$path];
         }
-        throw new RuntimeException("cases path is a file but not supported (*.md): {$path}");
+        throw new RuntimeException("cases path is a file but does not match case pattern ({$pattern}): {$path}");
     }
     $files = [];
     $items = scandir($path);
@@ -61,7 +78,7 @@ function listCaseFiles(string $path): array {
         if (!is_file($itemPath)) {
             continue;
         }
-        if (preg_match('/\.md$/i', $item) === 1) {
+        if (matchesCasePattern($item, $pattern)) {
             $files[] = $itemPath;
         }
     }
@@ -869,7 +886,7 @@ function evaluateCase(string $fixturePath, mixed $case): array {
 
 function main(array $argv): int {
     $args = parseArgs($argv);
-    $caseFiles = listCaseFiles($args['cases']);
+    $caseFiles = listCaseFiles($args['cases'], (string)$args['case_pattern']);
 
     $results = [];
     foreach ($caseFiles as $path) {

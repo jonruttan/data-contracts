@@ -11,6 +11,7 @@ from spec_runner.conformance import (
     validate_conformance_report_payload,
 )
 from spec_runner.dispatcher import SpecRunContext
+from spec_runner.settings import case_file_name
 
 
 def test_run_conformance_cases_matches_expected(tmp_path, monkeypatch, capsys):
@@ -45,7 +46,7 @@ def test_conformance_results_are_jsonable(tmp_path, monkeypatch, capsys):
 def test_conformance_per_case_override_beats_global_assert_health_env(tmp_path, monkeypatch, capsys):
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "override.spec.md").write_text(
+    (cases_dir / case_file_name("override")).write_text(
         """```yaml spec-test
 id: SRCONF-TMP-OVERRIDE
 type: text.file
@@ -93,7 +94,7 @@ def test_conformance_report_validator_rejects_invalid_payload():
 def test_conformance_inline_expect_merges_portable_and_impl_override(tmp_path, monkeypatch, capsys):
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "inline.spec.md").write_text(
+    (cases_dir / case_file_name("inline")).write_text(
         """```yaml spec-test
 id: SRCONF-TMP-INLINE
 type: text.file
@@ -127,7 +128,7 @@ assert:
 def test_conformance_inline_expect_requires_portable_status(tmp_path):
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "bad.spec.md").write_text(
+    (cases_dir / case_file_name("bad")).write_text(
         """```yaml spec-test
 id: SRCONF-TMP-BAD
 type: text.file
@@ -145,7 +146,7 @@ expect:
 def test_conformance_requires_capabilities_skip_when_missing(tmp_path, monkeypatch, capsys):
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "requires.spec.md").write_text(
+    (cases_dir / case_file_name("requires")).write_text(
         """```yaml spec-test
 id: SRCONF-TMP-REQ-SKIP
 type: text.file
@@ -177,7 +178,7 @@ assert:
 def test_conformance_requires_capabilities_fail_when_missing(tmp_path, monkeypatch, capsys):
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "requires-fail.spec.md").write_text(
+    (cases_dir / case_file_name("requires-fail")).write_text(
         """```yaml spec-test
 id: SRCONF-TMP-REQ-FAIL
 type: text.file
@@ -210,7 +211,7 @@ assert:
 def test_conformance_requires_rejects_invalid_when_missing(tmp_path, monkeypatch, capsys):
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
-    (cases_dir / "requires-invalid.spec.md").write_text(
+    (cases_dir / case_file_name("requires-invalid")).write_text(
         """```yaml spec-test
 id: SRCONF-TMP-REQ-BAD
 type: text.file

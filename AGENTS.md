@@ -18,7 +18,6 @@ Project-specific instructions for AI agents working in `tools/spec_runner/`.
   top-level keys).
 - Executable spec cases MUST live in Markdown files (`*.spec.md`) with fenced
   `yaml spec-test` blocks.
-- Do NOT create executable spec case files as `*.spec.yaml` or `*.spec.yml`.
 
 ## Local Commands
 

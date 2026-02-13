@@ -29,7 +29,8 @@ Runtime requirement:
 
 Current bootstrap behavior:
 
-- Reads case inputs from Markdown spec docs (`*.md`)
+- Reads case inputs from Markdown spec docs matching the default
+  case-file pattern
 - For Markdown docs, parses fenced `spec-test` YAML blocks
   (backticks or tildes, matching Python fence/token rules)
 - Executes `text.file` cases with:
@@ -66,7 +67,9 @@ Bootstrap parity subset fixture:
 
 ## Alternate Runner Behavior (`spec_runner.php`)
 
-- Reads Markdown case files (`*.md`) from a directory or a single file path.
+- Reads Markdown case files from a directory or single file path using
+  case-file pattern, overrideable via
+  `--case-file-pattern`.
 - Executes core case types:
   - `text.file`
   - `cli.run`
