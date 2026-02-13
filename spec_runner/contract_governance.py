@@ -33,21 +33,6 @@ _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 _CONFORMANCE_MAX_BLOCK_LINES = 50
 _CONFORMANCE_CASE_ID_PATTERN = re.compile(r"\bSRCONF-[A-Z0-9-]+\b")
 _PURPOSE_WARNING_CODES_DOC = "docs/spec/conformance/purpose_warning_codes.md"
-_SECURITY_WARNING_DOCS = (
-    "README.md",
-    "docs/book/00_first_10_minutes.md",
-    "docs/spec/schema/schema_v1.md",
-)
-_SECURITY_WARNING_TOKENS = (
-    "not a sandbox",
-    "trusted inputs",
-    "untrusted spec",
-)
-_V1_SCOPE_REQUIRED_TOKENS = (
-    "v1 in scope",
-    "v1 non-goals",
-    "compatibility commitments",
-)
 
 
 def _read_yaml(path: Path) -> Any:
@@ -245,36 +230,6 @@ def _lint_settings_constant_imports(repo_root: Path) -> list[str]:
     return errs
 
 
-def _lint_security_warning_docs(repo_root: Path) -> list[str]:
-    errs: list[str] = []
-    for rel in _SECURITY_WARNING_DOCS:
-        p = repo_root / rel
-        if not p.exists():
-            errs.append(f"security warning doc missing: {rel}")
-            continue
-        lower = p.read_text(encoding="utf-8").lower()
-        missing = [tok for tok in _SECURITY_WARNING_TOKENS if tok not in lower]
-        if missing:
-            errs.append(
-                "security warning docs must state trust/sandbox model; "
-                f"{rel} missing token(s): {', '.join(missing)}"
-            )
-    return errs
-
-
-def _lint_v1_scope_doc(repo_root: Path) -> list[str]:
-    errs: list[str] = []
-    rel = "docs/spec/contract/08_v1_scope.md"
-    p = repo_root / rel
-    if not p.exists():
-        return [f"v1 scope doc missing: {rel}"]
-    lower = p.read_text(encoding="utf-8").lower()
-    missing = [tok for tok in _V1_SCOPE_REQUIRED_TOKENS if tok not in lower]
-    if missing:
-        errs.append(f"v1 scope doc missing required section token(s): {', '.join(missing)}")
-    return errs
-
-
 @dataclass(frozen=True)
 class RuleCoverage:
     rule_id: str
@@ -414,8 +369,6 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         errs.extend(_lint_conformance_case_index(cases_dir, conformance_ids))
     errs.extend(_lint_python_config_literals(repo_root))
     errs.extend(_lint_settings_constant_imports(repo_root))
-    errs.extend(_lint_security_warning_docs(repo_root))
-    errs.extend(_lint_v1_scope_doc(repo_root))
     errs.extend(_lint_purpose_warning_code_doc(repo_root))
     rules = policy.get("rules") or []
     links = trace.get("links") or []

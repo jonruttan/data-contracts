@@ -13,6 +13,24 @@ from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import SETTINGS
 
 
+_SECURITY_WARNING_DOCS = (
+    "README.md",
+    "docs/book/00_first_10_minutes.md",
+    "docs/spec/schema/schema_v1.md",
+)
+_SECURITY_WARNING_TOKENS = (
+    "not a sandbox",
+    "trusted inputs",
+    "untrusted spec",
+)
+_V1_SCOPE_DOC = "docs/spec/contract/08_v1_scope.md"
+_V1_SCOPE_REQUIRED_TOKENS = (
+    "v1 in scope",
+    "v1 non-goals",
+    "compatibility commitments",
+)
+
+
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
     pending_dir = root / "docs/spec/pending"
     if not pending_dir.exists():
@@ -27,10 +45,37 @@ def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
     return violations
 
 
+def _scan_security_warning_docs(root: Path) -> list[str]:
+    violations: list[str] = []
+    for rel in _SECURITY_WARNING_DOCS:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}: missing required doc")
+            continue
+        lower = p.read_text(encoding="utf-8").lower()
+        missing = [tok for tok in _SECURITY_WARNING_TOKENS if tok not in lower]
+        if missing:
+            violations.append(f"{rel}: missing token(s): {', '.join(missing)}")
+    return violations
+
+
+def _scan_v1_scope_doc(root: Path) -> list[str]:
+    p = root / _V1_SCOPE_DOC
+    if not p.exists():
+        return [f"{_V1_SCOPE_DOC}: missing required doc"]
+    lower = p.read_text(encoding="utf-8").lower()
+    missing = [tok for tok in _V1_SCOPE_REQUIRED_TOKENS if tok not in lower]
+    if missing:
+        return [f"{_V1_SCOPE_DOC}: missing token(s): {', '.join(missing)}"]
+    return []
+
+
 GovernanceCheck = Callable[[Path], list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
     "pending.no_resolved_markers": _scan_pending_no_resolved_markers,
+    "docs.security_warning_contract": _scan_security_warning_docs,
+    "docs.v1_scope_contract": _scan_v1_scope_doc,
 }
 
 

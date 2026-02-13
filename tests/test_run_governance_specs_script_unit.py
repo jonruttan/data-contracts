@@ -37,6 +37,25 @@ assert:
 """
 
 
+def _case_for_check(case_id: str, check: str, root: Path) -> str:
+    return f"""# Governance
+
+## {case_id}
+
+```yaml spec-test
+id: {case_id}
+type: governance.check
+check: {check}
+harness:
+  root: {root}
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: {check}"]
+```
+"""
+
+
 def test_script_returns_zero_when_governance_case_passes(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"
@@ -67,3 +86,42 @@ def test_script_rejects_empty_case_pattern(tmp_path):
 
     code = mod.main(["--cases", str(cases_dir), "--case-file-pattern", ""])
     assert code == 2
+
+
+def test_script_enforces_security_warning_doc_tokens(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "security.spec.md",
+        _case_for_check("SRGOV-TEST-SEC-001", "docs.security_warning_contract", tmp_path),
+    )
+    _write_text(tmp_path / "README.md", "trusted inputs\nnot a sandbox\nuntrusted spec\n")
+    _write_text(tmp_path / "docs/book/00_first_10_minutes.md", "trusted inputs\nnot a sandbox\nuntrusted spec\n")
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "trusted inputs\nnot a sandbox\nuntrusted spec\n")
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "trusted inputs only\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_v1_scope_doc_tokens(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "v1scope.spec.md",
+        _case_for_check("SRGOV-TEST-V1-001", "docs.v1_scope_contract", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/08_v1_scope.md",
+        "# V1 In Scope\n\n## V1 In Scope\n\n## V1 Non-Goals\n\n## Compatibility Commitments (v1)\n",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/spec/contract/08_v1_scope.md", "# scope\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
