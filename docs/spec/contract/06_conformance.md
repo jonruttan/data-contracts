@@ -43,6 +43,19 @@ Execution behavior:
 - if required capabilities are missing and `when_missing=fail`: result is `fail`
   with category `runtime`
 
+## Capability Parity Scope
+
+Parity comparison across implementations MUST be evaluated on the intersection
+of:
+
+- shared expected-outcome ids (`expect` overlay resolved per implementation), and
+- shared capability ids (cases whose `requires.capabilities` are satisfied by
+  both implementations).
+
+For extension/domain types, parity mismatches are actionable only when both
+implementations declare and satisfy the same required capabilities for that
+case.
+
 ## Test Authoring Policy
 
 - Behavior tests SHOULD be represented as executable `.spec.md` fixtures.

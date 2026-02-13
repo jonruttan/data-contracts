@@ -6,6 +6,7 @@ import pytest
 
 from spec_runner.conformance_parity import (
     ParityConfig,
+    _shared_capability_ids,
     build_parity_artifact,
     compare_parity_reports,
     run_parity_check,
@@ -184,3 +185,89 @@ def test_run_parity_check_loads_expected_once_per_implementation(monkeypatch, tm
     assert errs == []
     assert calls["python"] == 1
     assert calls["php"] == 1
+
+
+def test_shared_capability_ids_filters_by_requires_capabilities(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        "spec_runner.conformance_parity.load_conformance_cases",
+        lambda _cases: [
+            (Path("a.spec.md"), {"id": "A", "type": "text.file"}),
+            (
+                Path("b.spec.md"),
+                {
+                    "id": "B",
+                    "type": "api.http",
+                    "requires": {"capabilities": ["api.http"]},
+                },
+            ),
+            (
+                Path("c.spec.md"),
+                {
+                    "id": "C",
+                    "type": "cli.run",
+                    "requires": {"capabilities": ["cli.run"]},
+                },
+            ),
+        ],
+    )
+    ids = _shared_capability_ids(
+        tmp_path,
+        python_capabilities={"cli.run", "api.http"},
+        php_capabilities={"cli.run"},
+    )
+    assert ids == {"A", "C"}
+
+
+def test_run_parity_check_intersects_expected_and_shared_capabilities(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        "spec_runner.conformance_parity.run_python_report",
+        lambda _cases, _runner, **_kwargs: {
+            "version": 1,
+            "results": [
+                {"id": "A", "status": "pass", "category": None, "message": None},
+                {"id": "B", "status": "fail", "category": "runtime", "message": "x"},
+            ],
+        },
+    )
+    monkeypatch.setattr(
+        "spec_runner.conformance_parity.run_php_report",
+        lambda _cases, _runner, **_kwargs: {
+            "version": 1,
+            "results": [
+                {"id": "A", "status": "pass", "category": None, "message": None},
+                {"id": "B", "status": "pass", "category": None, "message": None},
+            ],
+        },
+    )
+
+    class _Expected:
+        def __init__(self, status: str, category):
+            self.status = status
+            self.category = category
+
+    def _load_expected(_cases, *, implementation="python"):
+        if implementation == "python":
+            return {"A": _Expected("pass", None), "B": _Expected("fail", "runtime")}
+        return {"A": _Expected("pass", None), "B": _Expected("pass", None)}
+
+    monkeypatch.setattr("spec_runner.conformance_parity.load_expected_results", _load_expected)
+    monkeypatch.setattr("spec_runner.conformance_parity.compare_conformance_results", lambda _exp, _act: [])
+    monkeypatch.setattr(
+        "spec_runner.conformance_parity.load_conformance_cases",
+        lambda _cases: [
+            (Path("a.spec.md"), {"id": "A", "type": "text.file"}),
+            (Path("b.spec.md"), {"id": "B", "type": "api.http", "requires": {"capabilities": ["api.http"]}}),
+        ],
+    )
+    monkeypatch.setattr("spec_runner.conformance_parity.default_capabilities_for", lambda impl: {"cli.run"} if impl == "php" else {"cli.run", "api.http"})
+
+    errs = run_parity_check(
+        ParityConfig(
+            cases_dir=tmp_path,
+            php_runner=Path("scripts/php/conformance_runner.php"),
+            python_runner=Path("scripts/python/conformance_runner.py"),
+        )
+    )
+
+    # B is excluded from parity mismatch because api.http is not a shared capability.
+    assert errs == []

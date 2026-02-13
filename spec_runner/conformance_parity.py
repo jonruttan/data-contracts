@@ -11,6 +11,8 @@ from typing import Any
 from spec_runner.conformance import (
     ConformanceResult,
     compare_conformance_results,
+    default_capabilities_for,
+    load_conformance_cases,
     load_expected_results,
     validate_conformance_report_payload,
 )
@@ -101,6 +103,34 @@ def _shared_expectation_ids_from_expected(
         if py.status == php.status and py.category == php.category:
             shared.add(rid)
     return shared
+
+
+def _shared_capability_ids(
+    cases_dir: Path,
+    *,
+    python_capabilities: set[str],
+    php_capabilities: set[str],
+) -> set[str]:
+    shared_caps = set(python_capabilities) & set(php_capabilities)
+    shared_ids: set[str] = set()
+    for _fixture, case in load_conformance_cases(cases_dir):
+        rid = str(case.get("id", "")).strip()
+        if not rid:
+            continue
+        requires = case.get("requires")
+        # Invalid/missing requires is handled by conformance result comparison;
+        # include it in parity scope rather than silently filtering it out.
+        if not isinstance(requires, dict):
+            shared_ids.add(rid)
+            continue
+        raw_caps = requires.get("capabilities")
+        if not isinstance(raw_caps, list):
+            shared_ids.add(rid)
+            continue
+        needed = {str(x).strip() for x in raw_caps if str(x).strip()}
+        if needed.issubset(shared_caps):
+            shared_ids.add(rid)
+    return shared_ids
 
 
 def run_python_report(
@@ -214,5 +244,12 @@ def run_parity_check(config: ParityConfig) -> list[str]:
     ]
     errors.extend([f"python vs expected: {e}" for e in compare_conformance_results(expected, python_actual)])
     errors.extend([f"php vs expected: {e}" for e in compare_conformance_results(php_expected, php_actual)])
-    errors.extend(compare_parity_reports(python_payload, php_payload, include_ids=_shared_expectation_ids_from_expected(expected, php_expected)))
+    expected_shared = _shared_expectation_ids_from_expected(expected, php_expected)
+    capability_shared = _shared_capability_ids(
+        config.cases_dir,
+        python_capabilities=default_capabilities_for("python"),
+        php_capabilities=default_capabilities_for("php"),
+    )
+    parity_scope_ids = expected_shared & capability_shared
+    errors.extend(compare_parity_reports(python_payload, php_payload, include_ids=parity_scope_ids))
     return errors

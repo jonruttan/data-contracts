@@ -55,6 +55,11 @@ _DEFAULT_CAPABILITIES: dict[str, set[str]] = {
 }
 
 
+def default_capabilities_for(implementation: str) -> set[str]:
+    impl = str(implementation).strip() or "python"
+    return set(_DEFAULT_CAPABILITIES.get(impl, set()))
+
+
 def _read_yaml(path: Path) -> Any:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
 
@@ -188,7 +193,7 @@ def run_conformance_cases(
     case_file_pattern: str | None = None,
 ) -> list[ConformanceResult]:
     impl = str(implementation).strip() or "python"
-    caps = set(capabilities) if capabilities is not None else set(_DEFAULT_CAPABILITIES.get(impl, set()))
+    caps = set(capabilities) if capabilities is not None else default_capabilities_for(impl)
     results: list[ConformanceResult] = []
     for fixture_path, case in load_conformance_cases(
         cases_dir,
