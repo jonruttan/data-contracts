@@ -242,3 +242,50 @@ def test_script_enforces_conformance_purpose_warning_code_sync(tmp_path):
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_conformance_case_doc_style_guard(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "style_guard.spec.md",
+        _case_for_check("SRGOV-TEST-CONF-STYLE-001", "conformance.case_doc_style_guard", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/good.spec.md",
+        """# Good
+
+## SRCONF-STYLE-001
+
+```yaml spec-test
+id: SRCONF-STYLE-001
+title: good style case
+purpose: Purpose text with enough words to satisfy quality checks here.
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+```
+""",
+    )
+    _write_text(tmp_path / "docs/spec/conformance/cases/README.md", "# Cases\n\n- SRCONF-STYLE-001\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/bad.spec.md",
+        """# Bad
+
+## SRCONF-STYLE-002
+
+```yaml spec-test
+- id: SRCONF-STYLE-002
+  type: text.file
+  expect:
+    portable: {status: pass, category: null}
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

@@ -24,3 +24,5 @@ Current checks:
   fixture case ids.
 - `conformance.purpose_warning_codes_sync`: ensures purpose warning code docs
   match implementation warning codes.
+- `conformance.case_doc_style_guard`: enforces conformance doc style and
+  purpose-lint rules (one case/block, heading placement, sorted ids, quality checks).
