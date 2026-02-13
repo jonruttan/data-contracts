@@ -14,7 +14,7 @@ This folder holds review assets with clear lifecycle separation.
 - Prompt: `docs/reviews/prompts/adoption_7_personas.md`
 - Self-healing prompt: `docs/reviews/prompts/self_healing.md`
 - Snapshot template: `docs/reviews/templates/review_snapshot.md`
-- Hardening framework: `docs/reviews/frameworks/hardening_pipeline.md`
+- Framework pointer (compat): `docs/reviews/frameworks/hardening_pipeline.md` -> `docs/reviews/prompts/self_healing.md`
 
 ## Workflow
 
@@ -43,5 +43,5 @@ python scripts/review_to_pending.py docs/reviews/snapshots/<snapshot>.md
 ## Recommended Cadence
 
 - Persona review: run anytime; use extraction script to feed pending specs.
-- Hardening framework: run when actively fixing quality/reliability issues.
+- Self-healing pipeline: run when actively fixing quality/reliability issues.
 - Final boss review: run near release/merge readiness for high-signal blockers.
