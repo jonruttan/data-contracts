@@ -335,6 +335,276 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_conformance_no_runner_logic_outside_harness(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "no_runner_logic.spec.md",
+        _case_for_check("SRGOV-TEST-CONF-PORT-001", "conformance.no_runner_logic_outside_harness", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/good.spec.md",
+        """# Good
+
+## SRCONF-PORT-001
+
+```yaml spec-test
+id: SRCONF-PORT-001
+type: cli.run
+argv: ["--help"]
+exit_code: 0
+harness:
+  entrypoint: /bin/echo
+assert:
+  - target: stdout
+    must:
+      - contain: ["--help"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/bad.spec.md",
+        """# Bad
+
+## SRCONF-PORT-002
+
+```yaml spec-test
+id: SRCONF-PORT-002
+type: cli.run
+argv: ["--help"]
+exit_code: 0
+entrypoint: /bin/echo
+assert:
+  - target: stdout
+    must:
+      - contain: ["--help"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_conformance_portable_determinism_guard(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "determinism.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONF-PORT-002
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-PORT-002
+type: governance.check
+check: conformance.portable_determinism_guard
+harness:
+  root: {tmp_path}
+  determinism:
+    exclude_case_keys: ["id", "title", "purpose", "expect", "requires", "assert_health"]
+    patterns:
+      - "\\\\bdatetime\\\\.now\\\\s*\\\\("
+      - "\\\\bdatetime\\\\.utcnow\\\\s*\\\\("
+      - "\\\\btime\\\\.time\\\\s*\\\\("
+      - "\\\\bdate\\\\.today\\\\s*\\\\("
+      - "\\\\bDate\\\\.now\\\\s*\\\\("
+      - "\\\\bnew\\\\s+Date\\\\s*\\\\("
+      - "\\\\brandom\\\\."
+      - "\\\\brand(?:int|range)?\\\\s*\\\\("
+      - "\\\\bMath\\\\.random\\\\s*\\\\("
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: conformance.portable_determinism_guard"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/good.spec.md",
+        """# Good
+
+## SRCONF-PORT-003
+
+```yaml spec-test
+id: SRCONF-PORT-003
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["fixed-value"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/bad.spec.md",
+        """# Bad
+
+## SRCONF-PORT-004
+
+```yaml spec-test
+id: SRCONF-PORT-004
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["datetime.now()"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_requires_determinism_patterns_in_governance_spec(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "determinism_missing_patterns.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONF-PORT-002-MISS
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-PORT-002-MISS
+type: governance.check
+check: conformance.portable_determinism_guard
+harness:
+  root: {tmp_path}
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: conformance.portable_determinism_guard"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_conformance_extension_requires_capabilities(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "extension_caps.spec.md",
+        _case_for_check("SRGOV-TEST-CONF-PORT-003", "conformance.extension_requires_capabilities", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/good.spec.md",
+        """# Good
+
+## SRCONF-PORT-005
+
+```yaml spec-test
+id: SRCONF-PORT-005
+type: api.http
+request:
+  method: GET
+  url: https://example.test/ping
+requires:
+  capabilities: ["api.http"]
+assert:
+  - target: status
+    must:
+      - contain: ["200"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/bad.spec.md",
+        """# Bad
+
+## SRCONF-PORT-006
+
+```yaml spec-test
+id: SRCONF-PORT-006
+type: api.http
+request:
+  method: GET
+  url: https://example.test/ping
+assert:
+  - target: status
+    must:
+      - contain: ["200"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_conformance_type_contract_field_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "type_field_sync.spec.md",
+        _case_for_check("SRGOV-TEST-CONF-PORT-004", "conformance.type_contract_field_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/types/text_file.md",
+        """# Type Contract: text.file
+
+## Required Fields
+
+- `id`
+- `type`
+- `assert`
+
+## Optional Fields
+
+- `path`
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/good.spec.md",
+        """# Good
+
+## SRCONF-PORT-007
+
+```yaml spec-test
+id: SRCONF-PORT-007
+type: text.file
+path: fixtures/a.txt
+assert:
+  - target: text
+    must:
+      - contain: ["a"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/bad.spec.md",
+        """# Bad
+
+## SRCONF-PORT-008
+
+```yaml spec-test
+id: SRCONF-PORT-008
+type: text.file
+path: fixtures/a.txt
+foobar: 1
+assert:
+  - target: text
+    must:
+      - contain: ["a"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_conformance_purpose_warning_code_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

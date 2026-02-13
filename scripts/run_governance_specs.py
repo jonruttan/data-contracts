@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import inspect
 import sys
 import re
 from pathlib import Path
@@ -66,6 +67,33 @@ _CURRENT_SPEC_FORBIDDEN_PATTERNS = (
     r"backward[- ]compatible",
 )
 _TYPE_CONTRACTS_DIR = "docs/spec/contract/types"
+_CORE_TYPES = {"text.file", "cli.run"}
+_COMMON_CASE_TOP_LEVEL_KEYS = {
+    "id",
+    "type",
+    "title",
+    "purpose",
+    "assert",
+    "expect",
+    "requires",
+    "assert_health",
+    "harness",
+}
+_RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
+    "entrypoint",
+    "env",
+    "stdin_isatty",
+    "stdin_text",
+    "block_imports",
+    "stub_modules",
+    "setup_files",
+    "hook_before",
+    "hook_after",
+    "hook_kwargs",
+    "tmp_path",
+    "patcher",
+    "capture",
+}
 _API_HTTP_ALLOWED_TOP_LEVEL_KEYS = {
     "id",
     "type",
@@ -451,7 +479,164 @@ def _scan_conformance_api_http_portable_shape(root: Path) -> list[str]:
     return violations
 
 
-GovernanceCheck = Callable[[Path], list[str]]
+def _iter_string_values(node: object):
+    if isinstance(node, dict):
+        for v in node.values():
+            yield from _iter_string_values(v)
+        return
+    if isinstance(node, list):
+        for v in node:
+            yield from _iter_string_values(v)
+        return
+    if isinstance(node, str):
+        yield node
+
+
+def _scan_conformance_no_runner_logic_outside_harness(root: Path) -> list[str]:
+    violations: list[str] = []
+    cases_dir = root / "docs/spec/conformance/cases"
+    if not cases_dir.exists():
+        return violations
+
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        case = spec.test
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        bad = sorted(k for k in case.keys() if str(k) in _RUNNER_KEYS_MUST_BE_UNDER_HARNESS)
+        if bad:
+            violations.append(
+                f"{case_id}: runner/setup key(s) must be under harness: {', '.join(bad)}"
+            )
+    return violations
+
+
+def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    determinism = h.get("determinism")
+    if not isinstance(determinism, dict):
+        return ["conformance.portable_determinism_guard requires harness.determinism mapping in governance spec"]
+    raw_patterns = determinism.get("patterns")
+    if not isinstance(raw_patterns, list) or not raw_patterns:
+        return ["conformance.portable_determinism_guard requires non-empty harness.determinism.patterns list"]
+    compiled_patterns: list[re.Pattern[str]] = []
+    for raw in raw_patterns:
+        if not isinstance(raw, str) or not raw.strip():
+            violations.append("harness.determinism.patterns entries must be non-empty strings")
+            continue
+        try:
+            compiled_patterns.append(re.compile(raw, re.IGNORECASE))
+        except re.error as e:
+            violations.append(f"invalid regex in harness.determinism.patterns: {raw!r} ({e})")
+    raw_exclude = determinism.get("exclude_case_keys", ["id", "title", "purpose", "expect", "requires", "assert_health"])
+    if not isinstance(raw_exclude, list) or any(not isinstance(x, str) for x in raw_exclude):
+        violations.append("harness.determinism.exclude_case_keys must be a list of strings")
+        return violations
+    exclude_case_keys = {x for x in raw_exclude if x}
+    if not compiled_patterns:
+        return violations
+    cases_dir = root / "docs/spec/conformance/cases"
+    if not cases_dir.exists():
+        return violations
+
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        case = spec.test
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        scoped = {
+            k: v
+            for k, v in case.items()
+            if str(k) not in exclude_case_keys
+        }
+        for s in _iter_string_values(scoped):
+            for pat in compiled_patterns:
+                if pat.search(s):
+                    violations.append(
+                        f"{case_id}: non-deterministic token matched /{pat.pattern}/ in case content"
+                    )
+                    break
+    return violations
+
+
+def _scan_conformance_extension_requires_capabilities(root: Path) -> list[str]:
+    violations: list[str] = []
+    cases_dir = root / "docs/spec/conformance/cases"
+    if not cases_dir.exists():
+        return violations
+
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        case = spec.test
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        case_type = str(case.get("type", "")).strip()
+        if not case_type or case_type in _CORE_TYPES:
+            continue
+
+        requires = case.get("requires")
+        if not isinstance(requires, dict):
+            violations.append(f"{case_id}: extension type '{case_type}' requires mapping 'requires'")
+            continue
+        capabilities = requires.get("capabilities")
+        if not isinstance(capabilities, list):
+            violations.append(f"{case_id}: extension type '{case_type}' requires list requires.capabilities")
+            continue
+        cap_values = {str(v).strip() for v in capabilities if str(v).strip()}
+        if case_type not in cap_values:
+            violations.append(
+                f"{case_id}: requires.capabilities must include extension type '{case_type}'"
+            )
+    return violations
+
+
+def _load_type_contract_top_level_fields(root: Path, case_type: str) -> set[str]:
+    rel = _type_contract_doc_rel_for(case_type)
+    p = root / rel
+    if not p.exists():
+        return set()
+    fields: set[str] = set()
+    in_fields_section = False
+    current_section = ""
+    for raw in p.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if line.startswith("## "):
+            current_section = line[3:].strip().lower()
+            in_fields_section = current_section in {"required fields", "optional fields"}
+            continue
+        if not in_fields_section or not line.startswith("- "):
+            continue
+        m = re.search(r"`([^`]+)`", line)
+        if not m:
+            continue
+        token = m.group(1).strip()
+        if not token:
+            continue
+        fields.add(token.split(".", 1)[0])
+    return fields
+
+
+def _scan_conformance_type_contract_field_sync(root: Path) -> list[str]:
+    violations: list[str] = []
+    cases_dir = root / "docs/spec/conformance/cases"
+    if not cases_dir.exists():
+        return violations
+
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        case = spec.test
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        case_type = str(case.get("type", "")).strip()
+        if not case_type:
+            continue
+        type_fields = _load_type_contract_top_level_fields(root, case_type)
+        if not type_fields:
+            # Missing type doc is handled by conformance.type_contract_docs.
+            continue
+        allowed = _COMMON_CASE_TOP_LEVEL_KEYS | type_fields
+        bad = sorted(k for k in case.keys() if str(k) not in allowed)
+        if bad:
+            violations.append(
+                f"{case_id}: key(s) not declared in type contract for {case_type}: {', '.join(bad)}"
+            )
+    return violations
+
+
+GovernanceCheck = Callable[..., list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
     "pending.no_resolved_markers": _scan_pending_no_resolved_markers,
@@ -466,6 +651,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
     "conformance.type_contract_docs": _scan_conformance_type_contract_docs,
     "conformance.api_http_portable_shape": _scan_conformance_api_http_portable_shape,
+    "conformance.no_runner_logic_outside_harness": _scan_conformance_no_runner_logic_outside_harness,
+    "conformance.portable_determinism_guard": _scan_conformance_portable_determinism_guard,
+    "conformance.extension_requires_capabilities": _scan_conformance_extension_requires_capabilities,
+    "conformance.type_contract_field_sync": _scan_conformance_type_contract_field_sync,
 }
 
 
@@ -483,7 +672,11 @@ def run_governance_check(case, *, ctx) -> None:
     if not isinstance(h, dict):
         raise TypeError("harness must be a mapping")
     root = Path(str(h.get("root", "."))).resolve()
-    violations = fn(root)
+    fn_params = inspect.signature(fn).parameters
+    if "harness" in fn_params:
+        violations = fn(root, harness=h)
+    else:
+        violations = fn(root)
 
     text = (
         f"PASS: {check_id}"

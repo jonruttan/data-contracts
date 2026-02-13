@@ -33,6 +33,8 @@ maintenance decisions stay predictable.
   - docs and runtime behavior MUST describe and execute only the current schema
   - do not add wording about prior schema forms
   - do not add compatibility code paths that rewrite/accept prior schema forms
+- Governance checks SHOULD keep rule-data (for example token/regex lists) in
+  governance `.spec.md` harness config instead of hardcoded script globals.
 - Contract-breaking changes require versioning:
   - update policy lifecycle metadata (`introduced_in` / `deprecated_in` /
     `removed_in`)
