@@ -3,23 +3,17 @@
 declare(strict_types=1);
 
 /*
- * PHP conformance runner bootstrap.
+ * PHP spec runner.
  *
- * This script is intentionally minimal and deterministic:
- * - Reads conformance case fixtures from a directory.
- * - Executes a small text.file subset using real YAML parsing.
- * - Supports assertion tree subset: list + must/can/cannot groups + contain/regex leaves.
- * - Emits JSON report envelope matching report-format.md.
- * - Marks unsupported case types as runtime failures.
+ * Executes Markdown-embedded `yaml spec-test` cases and emits a normalized
+ * JSON report.
  *
  * Usage:
- *   php scripts/php/conformance_runner.php \
- *     --cases docs/spec/conformance/cases \
- *     --out .artifacts/php-conformance-report.json
+ *   php scripts/php/spec_runner.php --cases <dir-or-file> --out <file>
  */
 
 function usage(): void {
-    fwrite(STDOUT, "usage: conformance_runner.php --cases <dir-or-file> --out <file>\n");
+    fwrite(STDOUT, "usage: spec_runner.php --cases <dir-or-file> --out <file>\n");
 }
 
 function parseArgs(array $argv): array {
@@ -67,7 +61,7 @@ function listCaseFiles(string $path): array {
         if (!is_file($itemPath)) {
             continue;
         }
-        if (preg_match('/\.md$/i', $item)) {
+        if (preg_match('/\.md$/i', $item) === 1) {
             $files[] = $itemPath;
         }
     }
@@ -77,19 +71,7 @@ function listCaseFiles(string $path): array {
 
 class SchemaError extends RuntimeException {}
 class AssertionFailure extends RuntimeException {}
-const PHP_CAPABILITIES = [
-    'assert.op.contain',
-    'assert.op.regex',
-    'assert.group.must',
-    'assert.group.can',
-    'assert.group.cannot',
-    'assert_health.ah001',
-    'assert_health.ah002',
-    'assert_health.ah003',
-    'assert_health.ah004',
-    'assert_health.ah005',
-    'requires.capabilities',
-];
+
 const ALWAYS_TRUE_REGEX = ['.*', '^.*$', '\\A.*\\Z'];
 
 function isListArray(mixed $value): bool {
@@ -146,7 +128,7 @@ function isClosingFence(string $line, string $char, int $minLen): bool {
 
 function parseMarkdownCases(string $path): array {
     if (!function_exists('yaml_parse')) {
-        throw new RuntimeException('yaml_parse extension is required for PHP conformance runner');
+        throw new RuntimeException('yaml_parse extension is required for PHP spec runner');
     }
     $raw = file_get_contents($path);
     if ($raw === false) {
@@ -390,37 +372,35 @@ function formatAssertionHealthError(array $diags): string {
     return "assertion health check failed (" . count($diags) . " issue(s)): " . implode('; ', $parts);
 }
 
-function evalTextLeaf(array $leaf, string $subject, string $target, string $caseId, string $path): void {
-    foreach ($leaf as $op => $raw) {
-        if ($op === 'target') {
-            continue;
+function resolveAssertHealthMode(array $case): string {
+    $mode = strtolower(trim((string)(getenv('SPEC_RUNNER_ASSERT_HEALTH') ?: 'ignore')));
+    if ($mode === '') {
+        $mode = 'ignore';
+    }
+    if (isset($case['assert_health'])) {
+        if (!is_array($case['assert_health'])) {
+            throw new SchemaError('assert_health must be a mapping when provided');
         }
-        if ($op !== 'contain' && $op !== 'regex') {
-            throw new SchemaError("unsupported op: {$op}");
-        }
-        if (!is_array($raw) || !isListArray($raw)) {
-            throw new SchemaError("assertion op '{$op}' must be a list");
-        }
-        foreach ($raw as $value) {
-            $v = (string)$value;
-            if ($op === 'contain') {
-                if (strpos($subject, $v) === false) {
-                    throw new AssertionFailure("[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed");
-                }
-            } else {
-                $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
-                if ($ok !== 1) {
-                    throw new AssertionFailure("[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed");
-                }
-            }
+        if (array_key_exists('mode', $case['assert_health'])) {
+            $mode = strtolower(trim((string)$case['assert_health']['mode']));
         }
     }
+    if (!in_array($mode, ['ignore', 'warn', 'error'], true)) {
+        throw new SchemaError('assert_health.mode must be one of: ignore, warn, error');
+    }
+    return $mode;
 }
 
-function evalTextAssertNode(mixed $node, string $subject, ?string $inheritedTarget, string $caseId, string $path): void {
+function evalAssertNode(
+    mixed $node,
+    ?string $inheritedTarget,
+    string $caseId,
+    string $path,
+    callable $evalLeaf
+): void {
     if (is_array($node) && isListArray($node)) {
         foreach ($node as $i => $child) {
-            evalTextAssertNode($child, $subject, $inheritedTarget, $caseId, "{$path}[{$i}]");
+            evalAssertNode($child, $inheritedTarget, $caseId, "{$path}[{$i}]", $evalLeaf);
         }
         return;
     }
@@ -460,7 +440,7 @@ function evalTextAssertNode(mixed $node, string $subject, ?string $inheritedTarg
 
         if ($group === 'must') {
             foreach ($children as $i => $child) {
-                evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.must[{$i}]");
+                evalAssertNode($child, $target, $caseId, "{$path}.must[{$i}]", $evalLeaf);
             }
             return;
         }
@@ -468,11 +448,11 @@ function evalTextAssertNode(mixed $node, string $subject, ?string $inheritedTarg
             $anyPassed = false;
             foreach ($children as $i => $child) {
                 try {
-                    evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.can[{$i}]");
+                    evalAssertNode($child, $target, $caseId, "{$path}.can[{$i}]", $evalLeaf);
                     $anyPassed = true;
                     break;
                 } catch (AssertionFailure $e) {
-                    // Continue trying other branches.
+                    // Try next branch.
                 }
             }
             if (!$anyPassed) {
@@ -484,7 +464,7 @@ function evalTextAssertNode(mixed $node, string $subject, ?string $inheritedTarg
             $passed = 0;
             foreach ($children as $i => $child) {
                 try {
-                    evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.cannot[{$i}]");
+                    evalAssertNode($child, $target, $caseId, "{$path}.cannot[{$i}]", $evalLeaf);
                     $passed += 1;
                 } catch (AssertionFailure $e) {
                     // Expected failing branch for cannot.
@@ -503,90 +483,318 @@ function evalTextAssertNode(mixed $node, string $subject, ?string $inheritedTarg
     if ($target === null || $target === '') {
         throw new SchemaError('assertion leaf requires inherited target from a parent group');
     }
+    $evalLeaf($node, $target, $caseId, $path);
+}
+
+function evalTextLeaf(array $leaf, string $subject, string $target, string $caseId, string $path): void {
     if ($target !== 'text') {
         throw new SchemaError('unknown assert target for text.file');
     }
-    evalTextLeaf($node, $subject, $target, $caseId, $path);
+    foreach ($leaf as $op => $raw) {
+        if ($op !== 'contain' && $op !== 'regex') {
+            throw new SchemaError("unsupported op: {$op}");
+        }
+        if (!is_array($raw) || !isListArray($raw)) {
+            throw new SchemaError("assertion op '{$op}' must be a list");
+        }
+        foreach ($raw as $value) {
+            $v = (string)$value;
+            if ($op === 'contain') {
+                if (strpos($subject, $v) === false) {
+                    throw new AssertionFailure(
+                        "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
+                    );
+                }
+            } else {
+                $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
+                if ($ok !== 1) {
+                    throw new AssertionFailure(
+                        "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
+                    );
+                }
+            }
+        }
+    }
 }
 
-function evaluateTextFileCase(array $case, string $subject): array {
-    $mode = isset($case['assert_health']['mode']) ? (string)$case['assert_health']['mode'] : null;
-    if ($mode !== null && !in_array(strtolower($mode), ['ignore', 'warn', 'error'], true)) {
-        return ['status' => 'fail', 'category' => 'schema', 'message' => 'invalid assert_health.mode'];
+function firstNonEmptyLine(string $text): ?string {
+    $lines = preg_split('/\R/', $text) ?: [];
+    foreach ($lines as $line) {
+        $trim = trim((string)$line);
+        if ($trim !== '') {
+            return $trim;
+        }
     }
-    $resolvedMode = strtolower((string)($mode ?? 'ignore'));
+    return null;
+}
+
+function evalCliLeaf(array $leaf, array $captured, string $target, string $caseId, string $path): void {
+    foreach ($leaf as $op => $raw) {
+        if (!is_array($raw) || !isListArray($raw)) {
+            throw new SchemaError("assertion op '{$op}' must be a list");
+        }
+        if ($target === 'stdout' || $target === 'stderr') {
+            $subject = $target === 'stdout' ? (string)$captured['stdout'] : (string)$captured['stderr'];
+            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type') {
+                throw new SchemaError("unsupported op: {$op}");
+            }
+            foreach ($raw as $value) {
+                if ($op === 'contain') {
+                    $v = (string)$value;
+                    if (strpos($subject, $v) === false) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
+                        );
+                    }
+                    continue;
+                }
+                if ($op === 'regex') {
+                    $v = (string)$value;
+                    $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
+                    if ($ok !== 1) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
+                        );
+                    }
+                    continue;
+                }
+                $want = strtolower(trim((string)$value));
+                $parsed = json_decode($subject, true);
+                if ($want === 'list') {
+                    if (!is_array($parsed) || !isListArray($parsed)) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(list) failed"
+                        );
+                    }
+                } elseif ($want === 'dict') {
+                    if (!is_array($parsed) || isListArray($parsed)) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(dict) failed"
+                        );
+                    }
+                } else {
+                    throw new SchemaError("unsupported json_type: {$value}");
+                }
+            }
+            continue;
+        }
+        if ($target === 'stdout_path') {
+            if ($op !== 'exists') {
+                throw new SchemaError("unsupported op for stdout_path: {$op}");
+            }
+            $line = firstNonEmptyLine((string)$captured['stdout']);
+            if ($line === null) {
+                throw new AssertionFailure(
+                    "[case_id={$caseId} assert_path={$path} target={$target} op=exists] expected stdout to contain a path"
+                );
+            }
+            foreach ($raw as $value) {
+                if ($value !== true && $value !== null) {
+                    throw new SchemaError('stdout_path.exists only supports value: true (or null)');
+                }
+                if (!file_exists($line)) {
+                    throw new AssertionFailure(
+                        "[case_id={$caseId} assert_path={$path} target={$target} op=exists] path does not exist"
+                    );
+                }
+            }
+            continue;
+        }
+        if ($target === 'stdout_path_text') {
+            $line = firstNonEmptyLine((string)$captured['stdout']);
+            if ($line === null) {
+                throw new AssertionFailure(
+                    "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] expected stdout to contain a path"
+                );
+            }
+            $subject = file_get_contents($line);
+            if ($subject === false) {
+                throw new AssertionFailure(
+                    "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] cannot read stdout path"
+                );
+            }
+            if ($op !== 'contain' && $op !== 'regex') {
+                throw new SchemaError("unsupported op: {$op}");
+            }
+            foreach ($raw as $value) {
+                $v = (string)$value;
+                if ($op === 'contain') {
+                    if (strpos($subject, $v) === false) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
+                        );
+                    }
+                } else {
+                    $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
+                    if ($ok !== 1) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
+                        );
+                    }
+                }
+            }
+            continue;
+        }
+        throw new SchemaError("unknown assert target: {$target}");
+    }
+}
+
+function evaluateTextFileCase(string $fixturePath, array $case): array {
+    $mode = resolveAssertHealthMode($case);
     $diags = lintAssertionHealth($case['assert'] ?? []);
-    if (count($diags) > 0 && $resolvedMode === 'error') {
+    if (count($diags) > 0 && $mode === 'error') {
         return [
             'status' => 'fail',
             'category' => 'assertion',
             'message' => formatAssertionHealthError($diags),
         ];
     }
-    if (count($diags) > 0 && $resolvedMode === 'warn') {
+    if (count($diags) > 0 && $mode === 'warn') {
         foreach ($diags as $d) {
             fwrite(STDERR, formatAssertionHealthWarning($d) . PHP_EOL);
         }
     }
 
-    try {
-        $assertSpec = $case['assert'] ?? [];
-        evalTextAssertNode($assertSpec, $subject, null, (string)$case['id'], 'assert');
-    } catch (SchemaError $e) {
-        return ['status' => 'fail', 'category' => 'schema', 'message' => $e->getMessage()];
-    } catch (AssertionFailure $e) {
-        return ['status' => 'fail', 'category' => 'assertion', 'message' => $e->getMessage()];
-    } catch (Throwable $e) {
-        return ['status' => 'fail', 'category' => 'runtime', 'message' => $e->getMessage()];
+    $subjectPath = resolveTextFilePath($fixturePath, $case);
+    $subject = file_get_contents($subjectPath);
+    if ($subject === false) {
+        throw new RuntimeException("cannot read fixture file: {$subjectPath}");
     }
+    $assertSpec = $case['assert'] ?? [];
+    evalAssertNode(
+        $assertSpec,
+        null,
+        (string)$case['id'],
+        'assert',
+        static fn(array $leaf, string $target, string $caseId, string $path) => evalTextLeaf(
+            $leaf,
+            $subject,
+            $target,
+            $caseId,
+            $path
+        )
+    );
     return ['status' => 'pass', 'category' => null, 'message' => null];
 }
 
-function evaluateRequires(array $case): ?array {
-    if (!array_key_exists('requires', $case)) {
-        return null;
-    }
-    $requires = $case['requires'];
-    if (!is_array($requires)) {
-        return ['status' => 'fail', 'category' => 'schema', 'message' => 'requires must be a mapping when provided'];
-    }
-    $caps = $requires['capabilities'] ?? [];
-    if (!is_array($caps) || !isListArray($caps)) {
-        return ['status' => 'fail', 'category' => 'schema', 'message' => 'requires.capabilities must be a list'];
-    }
-    $needed = [];
-    foreach ($caps as $c) {
-        $s = trim((string)$c);
-        if ($s !== '') {
-            $needed[] = $s;
+function parseEntrypointCommand(string $entrypoint): array {
+    $parts = str_getcsv($entrypoint, ' ', '"', '\\');
+    $cmd = [];
+    foreach ($parts as $part) {
+        $p = trim((string)$part);
+        if ($p !== '') {
+            $cmd[] = $p;
         }
     }
-    $whenMissing = strtolower(trim((string)($requires['when_missing'] ?? 'fail')));
-    if ($whenMissing === '') {
-        $whenMissing = 'fail';
+    if (count($cmd) === 0) {
+        throw new SchemaError('cli.run requires non-empty harness.entrypoint');
     }
-    if ($whenMissing !== 'skip' && $whenMissing !== 'fail') {
-        return ['status' => 'fail', 'category' => 'schema', 'message' => 'requires.when_missing must be one of: skip, fail'];
+    return $cmd;
+}
+
+function evaluateCliRunCase(array $case): array {
+    $mode = resolveAssertHealthMode($case);
+    $diags = lintAssertionHealth($case['assert'] ?? []);
+    if (count($diags) > 0 && $mode === 'error') {
+        return [
+            'status' => 'fail',
+            'category' => 'assertion',
+            'message' => formatAssertionHealthError($diags),
+        ];
     }
-    $capsSet = array_fill_keys(PHP_CAPABILITIES, true);
-    $missing = [];
-    foreach ($needed as $cap) {
-        if (!array_key_exists($cap, $capsSet)) {
-            $missing[] = $cap;
+    if (count($diags) > 0 && $mode === 'warn') {
+        foreach ($diags as $d) {
+            fwrite(STDERR, formatAssertionHealthWarning($d) . PHP_EOL);
         }
     }
-    if (count($missing) === 0) {
-        return null;
+
+    $h = $case['harness'] ?? [];
+    if (!is_array($h)) {
+        throw new SchemaError('harness must be a mapping');
     }
-    sort($missing, SORT_STRING);
-    if ($whenMissing === 'skip') {
-        return ['status' => 'skip', 'category' => null, 'message' => null];
+    $supportedHarnessKeys = ['entrypoint', 'env'];
+    foreach (array_keys($h) as $k) {
+        if (!in_array((string)$k, $supportedHarnessKeys, true)) {
+            throw new SchemaError("unsupported harness key(s): {$k}");
+        }
     }
-    return [
-        'status' => 'fail',
-        'category' => 'runtime',
-        'message' => "missing required capabilities for implementation 'php': " . implode(', ', $missing),
+
+    $entrypoint = trim((string)($h['entrypoint'] ?? getenv('SPEC_RUNNER_ENTRYPOINT') ?: ''));
+    if ($entrypoint === '') {
+        throw new RuntimeException('cli.run requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT');
+    }
+    $command = parseEntrypointCommand($entrypoint);
+
+    $argv = $case['argv'] ?? [];
+    if (is_string($argv)) {
+        $argv = [$argv];
+    }
+    if (!is_array($argv) || !isListArray($argv)) {
+        throw new SchemaError('argv must be a list or string');
+    }
+    foreach ($argv as $arg) {
+        $command[] = (string)$arg;
+    }
+
+    $env = getenv();
+    if (!is_array($env)) {
+        $env = [];
+    }
+    if (array_key_exists('env', $h)) {
+        if (!is_array($h['env'])) {
+            throw new SchemaError('harness.env must be a mapping');
+        }
+        foreach ($h['env'] as $k => $v) {
+            $name = (string)$k;
+            if ($v === null) {
+                unset($env[$name]);
+            } else {
+                $env[$name] = (string)$v;
+            }
+        }
+    }
+
+    $descriptors = [
+        0 => ['pipe', 'r'],
+        1 => ['pipe', 'w'],
+        2 => ['pipe', 'w'],
     ];
+    $proc = proc_open($command, $descriptors, $pipes, null, $env);
+    if (!is_resource($proc)) {
+        throw new RuntimeException('failed to launch cli.run entrypoint');
+    }
+
+    fwrite($pipes[0], '');
+    fclose($pipes[0]);
+    $stdout = stream_get_contents($pipes[1]);
+    fclose($pipes[1]);
+    $stderr = stream_get_contents($pipes[2]);
+    fclose($pipes[2]);
+    $exitCode = proc_close($proc);
+
+    $got = (int)$exitCode;
+    $want = isset($case['exit_code']) ? (int)$case['exit_code'] : 0;
+    if ($got !== $want) {
+        throw new AssertionFailure("[case_id={$case['id']}] exit_code expected={$want} actual={$got}");
+    }
+
+    $captured = ['stdout' => (string)$stdout, 'stderr' => (string)$stderr];
+    $assertSpec = $case['assert'] ?? [];
+    evalAssertNode(
+        $assertSpec,
+        null,
+        (string)$case['id'],
+        'assert',
+        static fn(array $leaf, string $target, string $caseId, string $path) => evalCliLeaf(
+            $leaf,
+            $captured,
+            $target,
+            $caseId,
+            $path
+        )
+    );
+
+    return ['status' => 'pass', 'category' => null, 'message' => null];
 }
 
 function evaluateCase(string $fixturePath, mixed $case): array {
@@ -609,52 +817,28 @@ function evaluateCase(string $fixturePath, mixed $case): array {
         ];
     }
 
-    $requiresResult = evaluateRequires($case);
-    if ($requiresResult !== null) {
-        return [
-            'id' => $id,
-            'status' => $requiresResult['status'],
-            'category' => $requiresResult['category'],
-            'message' => $requiresResult['message'],
-        ];
-    }
-
-    if ($type !== 'text.file') {
-        return [
-            'id' => $id,
-            'status' => 'fail',
-            'category' => 'runtime',
-            'message' => "unsupported type for php bootstrap: {$type}",
-        ];
-    }
-
     try {
-        $subjectPath = resolveTextFilePath($fixturePath, $case);
+        if ($type === 'text.file') {
+            $res = evaluateTextFileCase($fixturePath, $case);
+        } elseif ($type === 'cli.run') {
+            $res = evaluateCliRunCase($case);
+        } else {
+            return [
+                'id' => $id,
+                'status' => 'fail',
+                'category' => 'runtime',
+                'message' => "unknown spec-test type: {$type}",
+            ];
+        }
     } catch (SchemaError $e) {
-        return [
-            'id' => $id,
-            'status' => 'fail',
-            'category' => 'schema',
-            'message' => $e->getMessage(),
-        ];
+        return ['id' => $id, 'status' => 'fail', 'category' => 'schema', 'message' => $e->getMessage()];
+    } catch (AssertionFailure $e) {
+        return ['id' => $id, 'status' => 'fail', 'category' => 'assertion', 'message' => $e->getMessage()];
+    } catch (Throwable $e) {
+        return ['id' => $id, 'status' => 'fail', 'category' => 'runtime', 'message' => $e->getMessage()];
     }
 
-    $subject = file_get_contents($subjectPath);
-    if ($subject === false) {
-        return [
-            'id' => $id,
-            'status' => 'fail',
-            'category' => 'runtime',
-            'message' => "cannot read fixture file: {$subjectPath}",
-        ];
-    }
-    $res = evaluateTextFileCase($case, $subject);
-    return [
-        'id' => $id,
-        'status' => $res['status'],
-        'category' => $res['category'],
-        'message' => $res['message'],
-    ];
+    return ['id' => $id, 'status' => $res['status'], 'category' => $res['category'], 'message' => $res['message']];
 }
 
 function main(array $argv): int {
@@ -668,15 +852,11 @@ function main(array $argv): int {
         }
     }
 
-    $report = [
-        'version' => 1,
-        'results' => $results,
-    ];
+    $report = ['version' => 1, 'results' => $results];
     $json = json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     if ($json === false) {
         throw new RuntimeException('failed to encode JSON report');
     }
-
     $outPath = $args['out'];
     $parent = dirname($outPath);
     if (!is_dir($parent)) {
@@ -688,6 +868,12 @@ function main(array $argv): int {
         throw new RuntimeException("cannot write report: {$outPath}");
     }
     fwrite(STDOUT, "wrote {$outPath}\n");
+
+    foreach ($results as $r) {
+        if (($r['status'] ?? '') === 'fail') {
+            return 1;
+        }
+    }
     return 0;
 }
 

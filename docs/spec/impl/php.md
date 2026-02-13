@@ -10,9 +10,13 @@ Guidance:
 
 ## Bootstrap Runner
 
-Bootstrap script path:
+Conformance bootstrap script path:
 
 - `scripts/php/conformance_runner.php`
+
+Alternate runner script path:
+
+- `scripts/php/spec_runner.php`
 
 Runtime requirement:
 
@@ -20,10 +24,13 @@ Runtime requirement:
 
 Current bootstrap behavior:
 
-- Reads case inputs from Markdown spec docs (`*.spec.md`)
+- Reads case inputs from Markdown spec docs (`*.md`)
 - For Markdown docs, parses fenced `spec-test` YAML blocks
   (backticks or tildes, matching Python fence/token rules)
 - Executes `text.file` cases with:
+  - default subject from the containing spec document
+  - optional `path` (relative to spec doc)
+  - contract-root escape protection for `path`
   - `must`, `can`, `cannot` groups
   - `contain` and `regex` operators
   - `assert_health.mode` validation (`ignore`/`warn`/`error`)
@@ -51,3 +58,34 @@ python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report
 Bootstrap parity subset fixture:
 
 - `docs/spec/conformance/cases/php-text-file-subset.spec.md`
+
+## Alternate Runner Behavior (`spec_runner.php`)
+
+- Reads Markdown case files (`*.md`) from a directory or a single file path.
+- Executes core case types:
+  - `text.file`
+  - `cli.run`
+- Supports `text.file.path` with the same relative-path and contract-root
+  escape checks used by the Python runner.
+- Supports `cli.run` harness keys:
+  - `entrypoint` (or `SPEC_RUNNER_ENTRYPOINT` fallback)
+  - `env` (set/unset command environment variables)
+- Emits report JSON: `{version: 1, results: [{id,status,category,message}]}`.
+- Exits non-zero when any case fails.
+
+Example:
+
+```sh
+php scripts/php/spec_runner.php \
+  --cases docs/spec/conformance/cases \
+  --out .artifacts/php-spec-runner-report.json
+```
+
+## Remaining Work To Reach Full Runner
+
+- Expand `cli.run` harness parity (`stdin`, setup files, import stubs, hooks)
+  if those features are needed for PHP-driven specs.
+- Add implementation-owned adapter/harness strategy for project-specific PHP
+  systems under test.
+- Decide whether conformance capability map should promote `cli.run` from
+  `skip` to executable parity for shared fixture sets.

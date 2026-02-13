@@ -119,6 +119,51 @@ assert:
 
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_bootstrap_runner_accepts_plain_md_case_file(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
+    cases_dir = tmp_path / "docs_spec"
+    out_json = tmp_path / "php-md-report.json"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "sample.md").write_text(
+        """# Example
+
+```yaml spec-test
+id: SRCONF-PHP-MD-002
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["SRCONF-PHP-MD-002"]
+```
+""",
+        encoding="utf-8",
+    )
+
+    subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    errs = validate_conformance_report_payload(payload)
+    assert errs == []
+    assert payload["results"] == [
+        {"id": "SRCONF-PHP-MD-002", "status": "pass", "category": None, "message": None}
+    ]
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_bootstrap_runner_honors_requires_capabilities_skip(tmp_path):
     repo_root = Path(__file__).resolve().parents[1]
     php_runner = repo_root / "scripts/php/conformance_runner.php"
@@ -214,4 +259,74 @@ expect:
     assert errs == []
     assert payload["results"] == [
         {"id": "SRCONF-PHP-MD-REQ-CLI", "status": "skip", "category": None, "message": None}
+    ]
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_bootstrap_runner_supports_text_file_relative_path_and_escape_guard(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
+    cases_dir = tmp_path / "docs_spec"
+    out_json = tmp_path / "php-md-report.json"
+    (cases_dir / ".git").mkdir(parents=True)
+    (cases_dir / "sub").mkdir(parents=True)
+    (cases_dir / "data").mkdir(parents=True)
+    (cases_dir / "data" / "target.txt").write_text("hello from path fixture\n", encoding="utf-8")
+    (cases_dir.parent / "outside.txt").write_text("outside\n", encoding="utf-8")
+    (cases_dir / "sub" / "path.spec.md").write_text(
+        """# Path Cases
+
+## SRCONF-PHP-MD-PATH-001
+
+```yaml spec-test
+id: SRCONF-PHP-MD-PATH-001
+type: text.file
+path: ../data/target.txt
+assert:
+  - target: text
+    must:
+      - contain: ["hello from path fixture"]
+```
+
+## SRCONF-PHP-MD-PATH-002
+
+```yaml spec-test
+id: SRCONF-PHP-MD-PATH-002
+type: text.file
+path: ../../outside.txt
+assert:
+  - target: text
+    must:
+      - contain: ["outside"]
+```
+""",
+        encoding="utf-8",
+    )
+
+    subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir / "sub"),
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    errs = validate_conformance_report_payload(payload)
+    assert errs == []
+    assert payload["results"] == [
+        {"id": "SRCONF-PHP-MD-PATH-001", "status": "pass", "category": None, "message": None},
+        {
+            "id": "SRCONF-PHP-MD-PATH-002",
+            "status": "fail",
+            "category": "schema",
+            "message": "text.file path escapes contract root",
+        },
     ]
