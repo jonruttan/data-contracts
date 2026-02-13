@@ -40,6 +40,8 @@ _V1_SCOPE_REQUIRED_TOKENS = (
 _PYTHON_RUNTIME_ROOTS = ("spec_runner", "scripts/python")
 _CONFORMANCE_CASE_ID_PATTERN = r"\bSRCONF-[A-Z0-9-]+\b"
 _CONFORMANCE_MAX_BLOCK_LINES = 50
+_REGEX_PROFILE_DOC = "docs/spec/contract/03a_regex_portability_v1.md"
+_ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 
 
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
@@ -273,6 +275,39 @@ def _scan_conformance_case_doc_style_guard(root: Path) -> list[str]:
     return violations
 
 
+def _scan_regex_doc_sync(root: Path) -> list[str]:
+    violations: list[str] = []
+    assertions_doc = root / "docs/spec/contract/03_assertions.md"
+    schema_doc = root / "docs/spec/schema/schema_v1.md"
+    policy_doc = root / "docs/spec/contract/policy_v1.yaml"
+    if not assertions_doc.exists() or not schema_doc.exists() or not policy_doc.exists():
+        return violations
+
+    assertions_text = assertions_doc.read_text(encoding="utf-8")
+    schema_text = schema_doc.read_text(encoding="utf-8")
+    policy_text = policy_doc.read_text(encoding="utf-8")
+
+    if _REGEX_PROFILE_DOC not in assertions_text:
+        violations.append(
+            "docs/spec/contract/03_assertions.md: missing regex portability profile reference"
+        )
+    if _REGEX_PROFILE_DOC not in schema_text:
+        violations.append(
+            "docs/spec/schema/schema_v1.md: missing regex portability profile reference"
+        )
+    if _REGEX_PROFILE_DOC not in policy_text:
+        violations.append(
+            "docs/spec/contract/policy_v1.yaml: missing regex portability profile reference"
+        )
+
+    for tok in _ASSERTION_OPERATOR_DOC_SYNC_TOKENS:
+        if tok not in assertions_text:
+            violations.append(f"docs/spec/contract/03_assertions.md: missing operator token {tok}")
+        if tok not in schema_text:
+            violations.append(f"docs/spec/schema/schema_v1.md: missing operator token {tok}")
+    return violations
+
+
 GovernanceCheck = Callable[[Path], list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
@@ -284,6 +319,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.case_index_sync": _scan_conformance_case_index_sync,
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
+    "docs.regex_doc_sync": _scan_regex_doc_sync,
 }
 
 

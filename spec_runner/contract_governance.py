@@ -21,8 +21,6 @@ _NORMATIVE_CONTRACT_DOCS = [
     "docs/spec/contract/07_portable_spec_authoring.md",
     "docs/spec/contract/08_v1_scope.md",
 ]
-_REGEX_PROFILE_DOC = "docs/spec/contract/03a_regex_portability_v1.md"
-_ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 
 
 def _read_yaml(path: Path) -> Any:
@@ -301,24 +299,5 @@ def check_contract_governance(repo_root: Path) -> list[str]:
             errs.append(f"missing normative contract doc: {rel}")
         elif rel not in referenced_contract_docs:
             errs.append(f"normative contract doc missing traceability coverage: {rel}")
-
-    assertions_doc = repo_root / "docs/spec/contract/03_assertions.md"
-    schema_doc = repo_root / "docs/spec/schema/schema_v1.md"
-    policy_doc = repo_root / "docs/spec/contract/policy_v1.yaml"
-    if assertions_doc.exists() and schema_doc.exists() and policy_doc.exists():
-        assertions_text = assertions_doc.read_text(encoding="utf-8")
-        schema_text = schema_doc.read_text(encoding="utf-8")
-        policy_text = policy_doc.read_text(encoding="utf-8")
-        if _REGEX_PROFILE_DOC not in assertions_text:
-            errs.append(f"assertions doc missing regex portability profile reference: {_REGEX_PROFILE_DOC}")
-        if _REGEX_PROFILE_DOC not in schema_text:
-            errs.append(f"schema doc missing regex portability profile reference: {_REGEX_PROFILE_DOC}")
-        if _REGEX_PROFILE_DOC not in policy_text:
-            errs.append(f"policy doc missing regex portability profile reference: {_REGEX_PROFILE_DOC}")
-        for tok in _ASSERTION_OPERATOR_DOC_SYNC_TOKENS:
-            if tok not in assertions_text:
-                errs.append(f"assertions doc missing operator token: {tok}")
-            if tok not in schema_text:
-                errs.append(f"schema doc missing operator token: {tok}")
 
     return errs

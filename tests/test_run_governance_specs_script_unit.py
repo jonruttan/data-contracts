@@ -289,3 +289,30 @@ expect:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_regex_doc_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "regex_sync.spec.md",
+        _case_for_check("SRGOV-TEST-DOC-REGEX-001", "docs.regex_doc_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/03_assertions.md",
+        "contain regex docs/spec/contract/03a_regex_portability_v1.md\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/schema/schema_v1.md",
+        "contain regex docs/spec/contract/03a_regex_portability_v1.md\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/policy_v1.yaml",
+        "rules: []\n# docs/spec/contract/03a_regex_portability_v1.md\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/spec/contract/03_assertions.md", "contain regex\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

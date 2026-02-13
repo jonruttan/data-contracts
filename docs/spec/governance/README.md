@@ -26,3 +26,5 @@ Current checks:
   match implementation warning codes.
 - `conformance.case_doc_style_guard`: enforces conformance doc style and
   purpose-lint rules (one case/block, heading placement, sorted ids, quality checks).
+- `docs.regex_doc_sync`: enforces regex portability profile linkage and
+  assertion-operator token sync across contract/schema/policy docs.
