@@ -11,6 +11,7 @@ from spec_runner.assertions import assert_text_op, eval_assert_tree, iter_leaf_a
 from spec_runner.dispatcher import SpecRunContext, iter_cases, run_case
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import SETTINGS, governed_config_literals
+from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 
 
 _SECURITY_WARNING_DOCS = (
@@ -30,6 +31,7 @@ _V1_SCOPE_REQUIRED_TOKENS = (
     "compatibility commitments",
 )
 _PYTHON_RUNTIME_ROOTS = ("spec_runner", "scripts/python")
+_CONFORMANCE_CASE_ID_PATTERN = r"\bSRCONF-[A-Z0-9-]+\b"
 
 
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
@@ -113,6 +115,56 @@ def _scan_runtime_settings_import_policy(root: Path) -> list[str]:
     return violations
 
 
+def _collect_conformance_fixture_ids(root: Path) -> set[str]:
+    ids: set[str] = set()
+    cases_dir = root / "docs/spec/conformance/cases"
+    if not cases_dir.exists():
+        return ids
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        rid = str(spec.test.get("id", "")).strip()
+        if rid:
+            ids.add(rid)
+    return ids
+
+
+def _scan_conformance_case_index_sync(root: Path) -> list[str]:
+    import re
+
+    violations: list[str] = []
+    cases_dir = root / "docs/spec/conformance/cases"
+    fixture_ids = _collect_conformance_fixture_ids(root)
+    index_path = cases_dir / "README.md"
+    if not fixture_ids and not index_path.exists():
+        return violations
+    if not index_path.exists():
+        return [f"{index_path.relative_to(root)}: missing conformance case index"]
+
+    raw = index_path.read_text(encoding="utf-8")
+    indexed_ids = set(re.findall(_CONFORMANCE_CASE_ID_PATTERN, raw))
+    for rid in sorted(fixture_ids - indexed_ids):
+        violations.append(f"{index_path.relative_to(root)}: missing id {rid}")
+    for rid in sorted(indexed_ids - fixture_ids):
+        violations.append(f"{index_path.relative_to(root)}: stale id {rid}")
+    return violations
+
+
+def _scan_conformance_purpose_warning_codes_sync(root: Path) -> list[str]:
+    import re
+
+    p = root / "docs/spec/conformance/purpose_warning_codes.md"
+    if not p.exists():
+        return [f"{p.relative_to(root)}: missing purpose warning code doc"]
+    raw = p.read_text(encoding="utf-8")
+    doc_codes = set(re.findall(r"\bPUR\d{3}\b", raw))
+    impl_codes = set(PURPOSE_WARNING_CODES)
+    violations: list[str] = []
+    for c in sorted(impl_codes - doc_codes):
+        violations.append(f"{p.relative_to(root)}: missing code {c}")
+    for c in sorted(doc_codes - impl_codes):
+        violations.append(f"{p.relative_to(root)}: stale code {c}")
+    return violations
+
+
 GovernanceCheck = Callable[[Path], list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
@@ -121,6 +173,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.v1_scope_contract": _scan_v1_scope_doc,
     "runtime.config_literals": _scan_runtime_config_literals,
     "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
+    "conformance.case_index_sync": _scan_conformance_case_index_sync,
+    "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
 }
 
 

@@ -184,3 +184,61 @@ def test_script_enforces_runtime_settings_import_policy(tmp_path):
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_conformance_case_index_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "index_sync.spec.md",
+        _case_for_check("SRGOV-TEST-CONF-INDEX-001", "conformance.case_index_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/sample.spec.md",
+        """# Sample
+
+## SRCONF-IDX-001
+
+```yaml spec-test
+id: SRCONF-IDX-001
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["SRCONF-IDX-001"]
+```
+""",
+    )
+    _write_text(tmp_path / "docs/spec/conformance/cases/README.md", "# Cases\n\n- SRCONF-IDX-001\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/spec/conformance/cases/README.md", "# Cases\n\n- SRCONF-STALE-999\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_conformance_purpose_warning_code_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "purpose_sync.spec.md",
+        _case_for_check(
+            "SRGOV-TEST-CONF-PURPOSE-001",
+            "conformance.purpose_warning_codes_sync",
+            tmp_path,
+        ),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/purpose_warning_codes.md",
+        "# Purpose Warning Codes\n\n- PUR001\n- PUR002\n- PUR003\n- PUR004\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/purpose_warning_codes.md",
+        "# Purpose Warning Codes\n\n- PUR001\n- PUR002\n- PUR003\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

@@ -20,3 +20,7 @@ Current checks:
   in runtime Python code.
 - `runtime.settings_import_policy`: rejects importing `DEFAULT_*`/`ENV_*`
   constants from `spec_runner.settings` in runtime Python code.
+- `conformance.case_index_sync`: ensures conformance case index ids match
+  fixture case ids.
+- `conformance.purpose_warning_codes_sync`: ensures purpose warning code docs
+  match implementation warning codes.
