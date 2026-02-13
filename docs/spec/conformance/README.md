@@ -1,34 +1,32 @@
 # Conformance Fixtures
 
-This folder defines cross-language fixture conventions for validating runner
-parity.
+This folder defines the cross-runtime conformance contract used to compare
+runner behavior (currently Python and PHP bootstrap subset coverage).
 
-Authoring style:
+## What Lives Here
 
-- `docs/spec/conformance/style.md`
+- Authoring rules: `docs/spec/conformance/style.md`
+- Report shape contract: `docs/spec/conformance/report-format.md`
+- Purpose lint policy: `docs/spec/conformance/purpose-lint-v1.yaml`
+- Case fixtures: `docs/spec/conformance/cases/*.spec.md`
 
-Planned contents:
+## Case Set (Current)
 
-- fixture case files
-- inline expected outcomes on case records
-- parity checks between Python and PHP implementations
-
-Current seed:
-
-- `docs/spec/conformance/purpose-lint-v1.yaml`
 - `docs/spec/conformance/cases/cli-run-entrypoint.spec.md`
 - `docs/spec/conformance/cases/assertion-health.spec.md`
 - `docs/spec/conformance/cases/failure-context.spec.md`
 - `docs/spec/conformance/cases/php-text-file-subset.spec.md`
 
-Python reference execution is covered by:
+## Execution Coverage
 
-- `tests/test_conformance_runner_unit.py`
+- Python reference conformance: `tests/test_conformance_runner_unit.py`
+- PHP bootstrap subset: `tests/test_php_conformance_subset_unit.py`
+- Python/PHP parity command:
+  - `python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases --php-runner scripts/php/conformance_runner.php --php-timeout-seconds 30 --out .artifacts/conformance-parity.json`
 
-PHP bootstrap parity subset is covered by:
+## Artifacts
 
-- `tests/test_php_conformance_subset_unit.py`
-
-Coverage artifact command:
-
-- `python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`
+- Contract coverage:
+  - `python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`
+- Purpose report:
+  - `python scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json`

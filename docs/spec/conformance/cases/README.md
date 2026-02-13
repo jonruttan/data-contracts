@@ -2,7 +2,7 @@
 
 Case fixtures that portable runner implementations execute.
 
-Recommendations:
+## Authoring Quick Rules
 
 - Keep case ids stable.
 - Prefer small, focused cases per behavior.
@@ -15,6 +15,13 @@ Recommendations:
 - Conformance fixture cases must include a non-empty `purpose`.
 - Purpose lint defaults/runtime profiles live in `docs/spec/conformance/purpose-lint-v1.yaml`.
 - Style details are defined in `docs/spec/conformance/style.md`.
+
+## Fixture File Guide
+
+- `assertion-health.spec.md`: assertion-health diagnostics and mode behavior
+- `cli-run-entrypoint.spec.md`: entrypoint precedence and capability gating
+- `failure-context.spec.md`: deterministic failure context tokens
+- `php-text-file-subset.spec.md`: portable `text.file` subset used for PHP parity
 
 ## Case Index
 

@@ -1,5 +1,8 @@
 # Failure Context Conformance Cases
 
+These fixtures ensure assertion failures expose stable context tokens so
+debugging and parity checks remain deterministic.
+
 ## SRCONF-ERR-001
 
 ```yaml spec-test

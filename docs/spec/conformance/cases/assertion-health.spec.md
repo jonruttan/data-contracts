@@ -1,5 +1,14 @@
 # Assertion Health Conformance Cases
 
+These fixtures validate assertion-health behavior independent of a specific
+runtime implementation.
+
+Coverage focus:
+
+- per-case `assert_health.mode` behavior (`warn`, `error`, `ignore`)
+- canonical diagnostic codes (`AH001`-`AH005`)
+- expected outcome category (`pass` vs assertion/schema failure)
+
 ## SRCONF-AH-001
 
 ```yaml spec-test

@@ -1,5 +1,13 @@
 # CLI Entry Point Conformance Cases
 
+These fixtures pin down entrypoint resolution behavior for `type: cli.run`.
+
+Coverage focus:
+
+- explicit `harness.entrypoint` behavior
+- precedence over env fallback values
+- capability-gated skip behavior for runtimes without `cli.run`
+
 ## SRCONF-CLI-001
 
 ```yaml spec-test
