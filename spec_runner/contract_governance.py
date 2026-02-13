@@ -33,7 +33,6 @@ _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 _CONFORMANCE_MAX_BLOCK_LINES = 50
 _CONFORMANCE_CASE_ID_PATTERN = re.compile(r"\bSRCONF-[A-Z0-9-]+\b")
 _PURPOSE_WARNING_CODES_DOC = "docs/spec/conformance/purpose_warning_codes.md"
-_PENDING_FORBIDDEN_STATUS_TOKENS = ("resolved:", "completed:")
 _SECURITY_WARNING_DOCS = (
     "README.md",
     "docs/book/00_first_10_minutes.md",
@@ -197,22 +196,6 @@ def _lint_purpose_warning_code_doc(repo_root: Path) -> list[str]:
         errs.append(f"purpose warning code doc missing code: {c}")
     for c in sorted(doc_codes - impl_codes):
         errs.append(f"purpose warning code doc has stale code: {c}")
-    return errs
-
-
-def _lint_pending_specs(pending_dir: Path) -> list[str]:
-    errs: list[str] = []
-    if not pending_dir.exists():
-        return errs
-    for p in sorted(pending_dir.glob("*.md")):
-        raw = p.read_text(encoding="utf-8")
-        lower = raw.lower()
-        for tok in _PENDING_FORBIDDEN_STATUS_TOKENS:
-            if tok in lower:
-                errs.append(
-                    "pending spec must not include resolved/completed status; "
-                    f"remove completed item from pending file: {p} (found '{tok}')"
-                )
     return errs
 
 
@@ -426,11 +409,9 @@ def check_contract_governance(repo_root: Path) -> list[str]:
     for e in purpose_policy_errs:
         errs.append(f"{e}")
     cases_dir = repo_root / "docs/spec/conformance/cases"
-    pending_dir = repo_root / "docs/spec/pending"
     if cases_dir.exists():
         errs.extend(_lint_conformance_case_docs(cases_dir, purpose_policy=purpose_policy))
         errs.extend(_lint_conformance_case_index(cases_dir, conformance_ids))
-    errs.extend(_lint_pending_specs(pending_dir))
     errs.extend(_lint_python_config_literals(repo_root))
     errs.extend(_lint_settings_constant_imports(repo_root))
     errs.extend(_lint_security_warning_docs(repo_root))

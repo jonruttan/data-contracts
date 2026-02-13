@@ -1,0 +1,14 @@
+# Governance Spec Cases
+
+Governance checks expressed as executable `yaml spec-test` cases.
+
+Run:
+
+```sh
+python scripts/run_governance_specs.py
+```
+
+Current checks:
+
+- `pending.no_resolved_markers`: fails when files in `docs/spec/pending/`
+  contain `resolved:` or `completed:` markers.

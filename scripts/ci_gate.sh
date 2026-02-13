@@ -15,6 +15,7 @@ if [[ -z "${PYTHON_BIN:-}" ]]; then
 fi
 
 "${PYTHON_BIN}" scripts/check_contract_governance.py
+"${PYTHON_BIN}" scripts/run_governance_specs.py
 "${PYTHON_BIN}" -m ruff check .
 "${PYTHON_BIN}" -m mypy spec_runner
 "${PYTHON_BIN}" -m compileall -q spec_runner scripts tests

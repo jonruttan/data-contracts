@@ -876,42 +876,6 @@ expect:
     assert any("purpose warning code doc has stale code: PUR999" in e for e in errs)
 
 
-def test_contract_governance_fails_when_pending_file_marks_item_resolved(tmp_path):
-    _seed_governance_repo(tmp_path)
-    _write_min_policy_trace(tmp_path, rule_id="R23")
-    _write_text(
-        tmp_path / "docs/spec/pending/sample_pending.md",
-        """---
-id: SAMPLE
----
-
-# Sample Pending
-
-- resolved: 2026-02-13
-""",
-    )
-    errs = check_contract_governance(tmp_path)
-    assert any("pending spec must not include resolved/completed status" in e for e in errs)
-
-
-def test_contract_governance_allows_pending_file_without_resolution_markers(tmp_path):
-    _seed_governance_repo(tmp_path)
-    _write_min_policy_trace(tmp_path, rule_id="R24")
-    _write_text(
-        tmp_path / "docs/spec/pending/sample_pending.md",
-        """---
-id: SAMPLE
----
-
-# Sample Pending
-
-- statement: SHOULD add deterministic onboarding checks
-""",
-    )
-    errs = check_contract_governance(tmp_path)
-    assert not any("pending spec must not include resolved/completed status" in e for e in errs)
-
-
 def test_contract_governance_fails_when_runtime_python_duplicates_config_literal(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R25")

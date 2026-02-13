@@ -17,6 +17,7 @@ This folder contains the normative and working specification docs for
 - `docs/spec/contract/`: versioned portable rules and policy files
 - `docs/spec/schema/`: schema docs for executable `spec-test` case shape
 - `docs/spec/conformance/`: cross-runtime conformance rules and fixtures
+- `docs/spec/governance/`: executable governance checks run via `spec_runner`
 - `docs/spec/impl/`: implementation-specific notes (Python/PHP)
 - `docs/spec/pending/`: draft proposals not yet adopted
 
