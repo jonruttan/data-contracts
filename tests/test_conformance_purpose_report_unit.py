@@ -95,7 +95,7 @@ expect:
 
 def test_conformance_purpose_report_uses_runtime_profile_and_override(tmp_path):
     repo_root = tmp_path / "repo"
-    policy_path = repo_root / "tools/spec_runner/docs/spec/conformance/purpose-lint-v1.yaml"
+    policy_path = repo_root / "docs/spec/conformance/purpose-lint-v1.yaml"
     policy_path.parent.mkdir(parents=True, exist_ok=True)
     policy_path.write_text(
         """version: 1
@@ -230,7 +230,7 @@ expect:
 
 def test_conformance_purpose_report_severity_override_from_policy(tmp_path):
     repo_root = tmp_path / "repo"
-    policy_path = repo_root / "tools/spec_runner/docs/spec/conformance/purpose-lint-v1.yaml"
+    policy_path = repo_root / "docs/spec/conformance/purpose-lint-v1.yaml"
     policy_path.parent.mkdir(parents=True, exist_ok=True)
     policy_path.write_text(
         """version: 1

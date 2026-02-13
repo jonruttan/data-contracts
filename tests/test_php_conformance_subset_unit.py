@@ -28,10 +28,10 @@ def _php_has_yaml_extension() -> bool:
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
-    repo_root = Path(__file__).resolve().parents[3]
+    repo_root = Path(__file__).resolve().parents[1]
 
-    cases_src = repo_root / "tools/spec_runner/docs/spec/conformance/cases/php-text-file-subset.spec.md"
-    php_runner = repo_root / "tools/spec_runner/scripts/php/conformance_runner.php"
+    cases_src = repo_root / "docs/spec/conformance/cases/php-text-file-subset.spec.md"
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
 
     cases_dir = tmp_path / "cases"
     out_json = tmp_path / "php-report.json"
@@ -75,8 +75,8 @@ def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_bootstrap_runner_can_parse_markdown_spec_test_blocks(tmp_path):
-    repo_root = Path(__file__).resolve().parents[3]
-    php_runner = repo_root / "tools/spec_runner/scripts/php/conformance_runner.php"
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
     cases_dir = tmp_path / "docs_spec"
     out_json = tmp_path / "php-md-report.json"
     cases_dir.mkdir(parents=True)
@@ -120,8 +120,8 @@ assert:
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_bootstrap_runner_honors_requires_capabilities_skip(tmp_path):
-    repo_root = Path(__file__).resolve().parents[3]
-    php_runner = repo_root / "tools/spec_runner/scripts/php/conformance_runner.php"
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
     cases_dir = tmp_path / "docs_spec"
     out_json = tmp_path / "php-md-report.json"
     cases_dir.mkdir(parents=True)
@@ -173,8 +173,8 @@ assert:
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_bootstrap_runner_applies_requires_before_type_support_check(tmp_path):
-    repo_root = Path(__file__).resolve().parents[3]
-    php_runner = repo_root / "tools/spec_runner/scripts/php/conformance_runner.php"
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
     cases_dir = tmp_path / "docs_spec"
     out_json = tmp_path / "php-md-report.json"
     cases_dir.mkdir(parents=True)

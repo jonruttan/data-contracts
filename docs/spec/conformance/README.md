@@ -23,11 +23,11 @@ Current seed:
 
 Python reference execution is covered by:
 
-- `tools/spec_runner/tests/test_conformance_runner_unit.py`
+- `tests/test_conformance_runner_unit.py`
 
 PHP bootstrap parity subset is covered by:
 
-- `tools/spec_runner/tests/test_php_conformance_subset_unit.py`
+- `tests/test_php_conformance_subset_unit.py`
 
 Coverage artifact command:
 

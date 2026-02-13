@@ -60,7 +60,7 @@ a path for validating compatible alternative implementations.
 
 ## Test Plan
 
-- Add conformance fixtures under `tools/spec_runner/docs/spec/conformance/`.
+- Add conformance fixtures under `docs/spec/conformance/`.
 - Add Python tests that execute all conformance fixtures and emit normalized
   results.
 - Add a parity test plan for PHP implementation to compare against Python

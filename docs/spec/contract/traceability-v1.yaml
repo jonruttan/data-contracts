@@ -10,8 +10,8 @@ links:
     conformance_case_ids:
       - SRCONF-CLI-001
     unit_test_refs:
-      - tools/spec_runner/tests/test_harness_cli_run_unit.py
-      - tools/spec_runner/tests/test_conformance_runner_unit.py
+      - tests/test_harness_cli_run_unit.py
+      - tests/test_conformance_runner_unit.py
     implementation_refs:
       - spec_runner/harnesses/cli_run.py
     notes: "Entry point requirement is covered by conformance seed and unit tests."
@@ -39,8 +39,8 @@ links:
       - SRCONF-CLI-001
       - SRCONF-CLI-002
     unit_test_refs:
-      - tools/spec_runner/tests/test_contract_governance_unit.py
-      - tools/spec_runner/tests/test_conformance_runner_unit.py
+      - tests/test_contract_governance_unit.py
+      - tests/test_conformance_runner_unit.py
     implementation_refs: []
     notes: "Conformance seed fixtures include explicit harness.entrypoint values."
 
@@ -55,8 +55,8 @@ links:
       - SRCONF-CLI-001
       - SRCONF-CLI-002
     unit_test_refs:
-      - tools/spec_runner/tests/test_contract_governance_unit.py
-      - tools/spec_runner/tests/test_conformance_runner_unit.py
+      - tests/test_contract_governance_unit.py
+      - tests/test_conformance_runner_unit.py
     implementation_refs: []
     notes: "Conformance fixtures are explicit and do not require env fallback."
 
@@ -69,7 +69,7 @@ links:
     conformance_case_ids:
       - SRCONF-AH-003
     unit_test_refs:
-      - tools/spec_runner/tests/test_assertion_health_unit.py
+      - tests/test_assertion_health_unit.py
     implementation_refs:
       - spec_runner/assertion_health.py
     notes: "Value validation and mode parsing are enforced in assertion_health."
@@ -86,9 +86,9 @@ links:
       - SRCONF-AH-002
       - SRCONF-AH-004
     unit_test_refs:
-      - tools/spec_runner/tests/test_assertion_health_unit.py
-      - tools/spec_runner/tests/test_harness_cli_run_unit.py
-      - tools/spec_runner/tests/test_harness_text_file_unit.py
+      - tests/test_assertion_health_unit.py
+      - tests/test_harness_cli_run_unit.py
+      - tests/test_harness_text_file_unit.py
     implementation_refs:
       - spec_runner/assertion_health.py
       - spec_runner/harnesses/cli_run.py
@@ -105,8 +105,8 @@ links:
     conformance_case_ids:
       - SRCONF-AH-005
     unit_test_refs:
-      - tools/spec_runner/tests/test_assertion_health_unit.py
-      - tools/spec_runner/tests/test_harness_cli_run_unit.py
+      - tests/test_assertion_health_unit.py
+      - tests/test_harness_cli_run_unit.py
     implementation_refs:
       - spec_runner/assertion_health.py
       - spec_runner/harnesses/cli_run.py
@@ -123,8 +123,8 @@ links:
     conformance_case_ids:
       - SRCONF-AH-006
     unit_test_refs:
-      - tools/spec_runner/tests/test_assertion_health_unit.py
-      - tools/spec_runner/tests/test_conformance_runner_unit.py
+      - tests/test_assertion_health_unit.py
+      - tests/test_conformance_runner_unit.py
     implementation_refs:
       - spec_runner/assertion_health.py
       - spec_runner/harnesses/text_file.py
@@ -147,7 +147,7 @@ links:
       - docs/spec/schema/schema-v1.md
     conformance_case_ids: []
     unit_test_refs:
-      - tools/spec_runner/tests/test_contract_governance_unit.py
+      - tests/test_contract_governance_unit.py
     implementation_refs:
       - spec_runner/contract_governance.py
     notes: "Governance enforces traceability coverage across normative contract pages."
@@ -161,7 +161,7 @@ links:
       - docs/spec/schema/schema-v1.md
     conformance_case_ids: []
     unit_test_refs:
-      - tools/spec_runner/tests/test_contract_governance_unit.py
+      - tests/test_contract_governance_unit.py
     implementation_refs:
       - spec_runner/contract_governance.py
     notes: "Governance checks profile references across assertion, schema, and policy docs."
@@ -174,7 +174,7 @@ links:
       - docs/spec/schema/schema-v1.md
     conformance_case_ids: []
     unit_test_refs:
-      - tools/spec_runner/tests/test_contract_governance_unit.py
+      - tests/test_contract_governance_unit.py
     implementation_refs:
       - spec_runner/contract_governance.py
     notes: "Governance checks synchronized core operator tokens between docs."
@@ -187,8 +187,8 @@ links:
       - docs/spec/schema/schema-v1.md
     conformance_case_ids: []
     unit_test_refs:
-      - tools/spec_runner/tests/test_conformance_runner_unit.py
-      - tools/spec_runner/tests/test_php_conformance_subset_unit.py
+      - tests/test_conformance_runner_unit.py
+      - tests/test_php_conformance_subset_unit.py
     implementation_refs:
       - spec_runner/conformance.py
     notes: "Conformance expectations resolve portable baseline with implementation overlays."
@@ -201,7 +201,7 @@ links:
     schema_refs: []
     conformance_case_ids: []
     unit_test_refs:
-      - tools/spec_runner/tests/test_contract_governance_unit.py
+      - tests/test_contract_governance_unit.py
     implementation_refs:
       - spec_runner/contract_governance.py
     notes: "Governance enforces conformance case doc readability/style constraints."
@@ -215,8 +215,8 @@ links:
       - docs/spec/schema/schema-v1.md
     conformance_case_ids: []
     unit_test_refs:
-      - tools/spec_runner/tests/test_conformance_runner_unit.py
-      - tools/spec_runner/tests/test_validate_conformance_report_unit.py
+      - tests/test_conformance_runner_unit.py
+      - tests/test_validate_conformance_report_unit.py
     implementation_refs:
       - spec_runner/conformance.py
     notes: "Conformance runner enforces requires.capabilities with skip/fail policy."

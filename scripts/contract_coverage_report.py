@@ -13,7 +13,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", help="Optional output path for JSON report.")
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[3]
+    repo_root = Path(__file__).resolve().parents[1]
     payload = contract_coverage_jsonable(repo_root)
     raw = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if ns.out:

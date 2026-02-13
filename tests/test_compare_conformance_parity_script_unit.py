@@ -4,8 +4,8 @@ from pathlib import Path
 
 
 def _load_script_module():
-    repo_root = Path(__file__).resolve().parents[3]
-    script_path = repo_root / "tools/spec_runner/scripts/compare_conformance_parity.py"
+    repo_root = Path(__file__).resolve().parents[1]
+    script_path = repo_root / "scripts/compare_conformance_parity.py"
     spec = importlib.util.spec_from_file_location("compare_conformance_parity_script", script_path)
     assert spec is not None and spec.loader is not None
     mod = importlib.util.module_from_spec(spec)

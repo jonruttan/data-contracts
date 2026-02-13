@@ -1,3 +1,20 @@
+Metadata-Version: 2.4
+Name: spec-runner
+Version: 0.1.0
+Summary: Executable spec runner for yaml spec-test blocks in Markdown.
+Author: jon
+License-Expression: MIT
+Project-URL: Repository, https://example.invalid/spec-runner
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PyYAML>=6
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: build>=1; extra == "dev"
+Requires-Dist: twine>=6; extra == "dev"
+Dynamic: license-file
+
 # Spec Runner
 
 `spec_runner` is a small **executable-spec runner**: it scans Markdown

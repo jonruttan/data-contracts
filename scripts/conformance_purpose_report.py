@@ -179,7 +179,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[3]
+    repo_root = Path(__file__).resolve().parents[1]
     payload = conformance_purpose_report_jsonable(Path(ns.cases), repo_root=repo_root)
     if ns.only_warnings:
         payload = _filtered_only_warnings(payload)

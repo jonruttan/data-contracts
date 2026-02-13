@@ -1,0 +1,6 @@
+PyYAML>=6
+
+[dev]
+pytest>=8
+build>=1
+twine>=6

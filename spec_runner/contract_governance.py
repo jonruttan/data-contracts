@@ -29,7 +29,7 @@ _REGEX_PROFILE_DOC = "docs/spec/contract/03a-regex-portability-v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 _CONFORMANCE_MAX_BLOCK_LINES = 50
 _CONFORMANCE_CASE_ID_PATTERN = re.compile(r"\bSRCONF-[A-Z0-9-]+\b")
-_PURPOSE_WARNING_CODES_DOC = "tools/spec_runner/docs/spec/conformance/purpose-warning-codes.md"
+_PURPOSE_WARNING_CODES_DOC = "docs/spec/conformance/purpose-warning-codes.md"
 
 
 def _read_yaml(path: Path) -> Any:
@@ -203,9 +203,9 @@ def _exists_repo_or_runner(repo_root: Path, rel: str) -> bool:
 
 
 def _load_policy_and_trace(repo_root: Path) -> tuple[dict[str, Any], dict[str, Any], set[str]]:
-    policy_path = repo_root / "tools/spec_runner/docs/spec/contract/policy-v1.yaml"
-    trace_path = repo_root / "tools/spec_runner/docs/spec/contract/traceability-v1.yaml"
-    cases_dir = repo_root / "tools/spec_runner/docs/spec/conformance/cases"
+    policy_path = repo_root / "docs/spec/contract/policy-v1.yaml"
+    trace_path = repo_root / "docs/spec/contract/traceability-v1.yaml"
+    cases_dir = repo_root / "docs/spec/conformance/cases"
     policy = _read_yaml(policy_path) or {}
     trace = _read_yaml(trace_path) or {}
     conformance_ids = _collect_fixture_case_ids(cases_dir)
@@ -314,7 +314,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
     purpose_policy, purpose_policy_errs, _ = load_purpose_lint_policy(repo_root)
     for e in purpose_policy_errs:
         errs.append(f"{e}")
-    cases_dir = repo_root / "tools/spec_runner/docs/spec/conformance/cases"
+    cases_dir = repo_root / "docs/spec/conformance/cases"
     if cases_dir.exists():
         errs.extend(_lint_conformance_case_docs(cases_dir, purpose_policy=purpose_policy))
         errs.extend(_lint_conformance_case_index(cases_dir, conformance_ids))
@@ -436,7 +436,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
             if not _exists_repo_or_runner(repo_root, str(rel)):
                 errs.append(f"missing unit_test_ref for {rid}: {rel}")
         for rel in link.get("implementation_refs") or []:
-            if not (repo_root / "tools/spec_runner" / str(rel)).exists():
+            if not _exists_repo_or_runner(repo_root, str(rel)):
                 errs.append(f"missing implementation_ref for {rid}: {rel}")
 
         for cid in conformance_case_ids:
@@ -450,9 +450,9 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         elif rel not in referenced_contract_docs:
             errs.append(f"normative contract doc missing traceability coverage: {rel}")
 
-    assertions_doc = repo_root / "tools/spec_runner/docs/spec/contract/03-assertions.md"
-    schema_doc = repo_root / "tools/spec_runner/docs/spec/schema/schema-v1.md"
-    policy_doc = repo_root / "tools/spec_runner/docs/spec/contract/policy-v1.yaml"
+    assertions_doc = repo_root / "docs/spec/contract/03-assertions.md"
+    schema_doc = repo_root / "docs/spec/schema/schema-v1.md"
+    policy_doc = repo_root / "docs/spec/contract/policy-v1.yaml"
     if assertions_doc.exists() and schema_doc.exists() and policy_doc.exists():
         assertions_text = assertions_doc.read_text(encoding="utf-8")
         schema_text = schema_doc.read_text(encoding="utf-8")

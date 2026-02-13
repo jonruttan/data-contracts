@@ -8,7 +8,7 @@ from spec_runner.contract_governance import check_contract_governance
 
 
 def main() -> int:
-    repo_root = Path(__file__).resolve().parents[3]
+    repo_root = Path(__file__).resolve().parents[1]
     errs = check_contract_governance(repo_root)
     if errs:
         for e in errs:
