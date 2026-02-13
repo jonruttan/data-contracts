@@ -54,6 +54,10 @@ CI merge gate (GitHub Actions `spec_runner` job) runs:
 
 ## Quickstart
 
+Deterministic first-run walkthrough:
+
+- `docs/book/00_first_10_minutes.md`
+
 1. Create a spec doc with a fenced `yaml spec-test` block:
 
 ```yaml

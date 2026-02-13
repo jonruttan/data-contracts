@@ -20,11 +20,8 @@ Source snapshot: `docs/reviews/snapshots/2026-02-13_persona-review.md`
 
 ### CK-DOC-IMP-002
 
-- where: `docs/spec/backlog.md`
-- priority: `P1`
-- statement: SHOULD add a "first 10 minutes" deterministic onboarding walkthrough
-- rationale: Inferred from repeated narrative concerns in the review output; requires human triage.
-- verification: Define as yaml spec-test where possible; otherwise add a governance check with deterministic output.
+- resolved: `2026-02-13`
+- outcome: `Implemented via docs/book/00_first_10_minutes.md and linked from README/book index.`
 
 ### CK-CLI-IMP-003
 

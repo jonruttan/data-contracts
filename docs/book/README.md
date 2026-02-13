@@ -15,6 +15,11 @@ Fast start:
 1. `docs/book/01_quickstart.md`
 2. `docs/book/appendix_cheatsheet.md`
 
+Deterministic onboarding:
+
+1. `docs/book/00_first_10_minutes.md`
+2. `docs/book/01_quickstart.md`
+
 Full authoring:
 
 1. `docs/book/01_quickstart.md`
