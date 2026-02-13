@@ -480,6 +480,23 @@ def test_contract_governance_fails_on_multi_case_spec_block(tmp_path):
     assert any("one case per spec-test block required" in e for e in errs)
 
 
+def test_contract_governance_fails_on_yaml_spec_file_extension(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R9A")
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/bad.spec.yaml",
+        """id: SRCONF-BAD-YAML-001
+type: text.file
+expect:
+  portable:
+    status: pass
+    category: null
+""",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("forbidden file extension found: docs/spec/conformance/cases/bad.spec.yaml" in e for e in errs)
+
+
 def test_contract_governance_fails_on_missing_case_heading(tmp_path):
     _seed_governance_repo(tmp_path)
     _write_min_policy_trace(tmp_path, rule_id="R10")

@@ -26,6 +26,10 @@ def _php_has_yaml_extension() -> bool:
     return cp.stdout.strip() == "1"
 
 
+def _env_bin() -> str | None:
+    return shutil.which("env")
+
+
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_spec_runner_matches_pass_fixture_suite(tmp_path):
@@ -221,3 +225,70 @@ def test_php_spec_runner_matches_portability_fixture_suite(tmp_path):
     ]
     expected = load_expected_results(cases_dir, implementation="php")
     assert compare_conformance_results(expected, actual) == []
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+@pytest.mark.skipif(_env_bin() is None, reason="env command is not available")
+def test_php_spec_runner_env_allowlist_filters_ambient_env(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/spec_runner.php"
+    cases_dir = tmp_path / "cases"
+    out_json = tmp_path / "php-report.json"
+    cases_dir.mkdir(parents=True)
+    env_bin = _env_bin()
+    assert env_bin
+
+    cases_dir.joinpath("env-allowlist.spec.md").write_text(
+        f"""# Env allowlist
+
+```yaml spec-test
+id: SR-PHP-ENV-ALLOWLIST-001
+type: cli.run
+argv: []
+exit_code: 0
+harness:
+  entrypoint: {env_bin}
+assert:
+  - target: stdout
+    must:
+      - contain: ["CK_ALLOWED=ok"]
+  - target: stdout
+    cannot:
+      - contain: ["CK_SECRET=shh"]
+```
+""",
+        encoding="utf-8",
+    )
+
+    env = os.environ.copy()
+    env["CK_ALLOWED"] = "ok"
+    env["CK_SECRET"] = "shh"
+    env["SPEC_RUNNER_ENV_ALLOWLIST"] = "CK_ALLOWED"
+
+    cp = subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    assert cp.returncode == 0
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    assert validate_conformance_report_payload(payload) == []
+    assert payload["results"] == [
+        {
+            "id": "SR-PHP-ENV-ALLOWLIST-001",
+            "status": "pass",
+            "category": None,
+            "message": None,
+        }
+    ]

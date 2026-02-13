@@ -14,7 +14,7 @@ links:
       - tests/test_conformance_runner_unit.py
     implementation_refs:
       - spec_runner/harnesses/cli_run.py
-    notes: "Entry point requirement is covered by conformance seed and unit tests."
+    notes: "Explicit entrypoint is recommended for project specs and enforced for portable conformance fixtures."
 
   - rule_id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
     policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_ENTRYPOINT_ENV_FALLBACK
@@ -27,6 +27,32 @@ links:
     implementation_refs:
       - spec_runner/harnesses/cli_run.py
     notes: "Implementation SHOULD; not required for conformance."
+
+  - rule_id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
+    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
+    contract_refs:
+      - docs/spec/contract/04-harness.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_harness_cli_run_unit.py
+    implementation_refs:
+      - spec_runner/harnesses/cli_run.py
+    notes: "Python safe mode disables hooks and env fallback when enabled."
+
+  - rule_id: CLI_RUN_ENV_ALLOWLIST_CONTROL
+    policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_ENV_ALLOWLIST_CONTROL
+    contract_refs:
+      - docs/spec/contract/04-harness.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_php_spec_runner_unit.py
+    implementation_refs:
+      - scripts/php/spec_runner.php
+    notes: "PHP runner supports allowlisting ambient env for cli.run subprocesses."
 
   - rule_id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
     policy_ref: docs/spec/contract/policy-v1.yaml#CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT

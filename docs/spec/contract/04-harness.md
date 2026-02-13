@@ -9,12 +9,16 @@
 
 For `type: cli.run`:
 
-- `harness.entrypoint` MUST be provided by the spec.
+- `harness.entrypoint` SHOULD be provided by the spec.
 - Implementations SHOULD support an environment fallback (for example
   `SPEC_RUNNER_ENTRYPOINT`) for local/CI ergonomics when they can read process
   environment variables and resolve dynamic `module:attr` entrypoints.
 - Portable conformance fixtures MUST provide `harness.entrypoint` explicitly
   and MUST NOT rely on environment fallback behavior.
+- Implementations SHOULD provide a safe mode that disables hook entrypoints and
+  env fallback (for example `SPEC_RUNNER_SAFE_MODE=1`).
+- Implementations SHOULD support a process-env allowlist control for `cli.run`
+  executions (for example `SPEC_RUNNER_ENV_ALLOWLIST=K1,K2`).
 
 Policy ids for these requirements are listed in
 `docs/spec/contract/policy-v1.yaml`.

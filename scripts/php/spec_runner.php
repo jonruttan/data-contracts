@@ -692,6 +692,31 @@ function parseEntrypointCommand(string $entrypoint): array {
     return $cmd;
 }
 
+function applyEnvAllowlist(array $env): array {
+    $raw = getenv('SPEC_RUNNER_ENV_ALLOWLIST');
+    if ($raw === false) {
+        return $env;
+    }
+    $raw = trim((string)$raw);
+    if ($raw === '') {
+        return $env;
+    }
+    $allowed = array_filter(
+        array_map('trim', explode(',', $raw)),
+        static fn(string $name): bool => $name !== ''
+    );
+    if (count($allowed) === 0) {
+        return [];
+    }
+    $filtered = [];
+    foreach ($allowed as $name) {
+        if (array_key_exists($name, $env)) {
+            $filtered[$name] = (string)$env[$name];
+        }
+    }
+    return $filtered;
+}
+
 function evaluateCliRunCase(array $case): array {
     $mode = resolveAssertHealthMode($case);
     $diags = lintAssertionHealth($case['assert'] ?? []);
@@ -740,6 +765,7 @@ function evaluateCliRunCase(array $case): array {
     if (!is_array($env)) {
         $env = [];
     }
+    $env = applyEnvAllowlist($env);
     if (array_key_exists('env', $h)) {
         if (!is_array($h['env'])) {
             throw new SchemaError('harness.env must be a mapping');

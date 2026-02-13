@@ -181,6 +181,21 @@ def _lint_purpose_warning_code_doc(repo_root: Path) -> list[str]:
     return errs
 
 
+def _lint_executable_spec_file_extensions(repo_root: Path) -> list[str]:
+    errs: list[str] = []
+    spec_root = repo_root / "docs/spec"
+    if not spec_root.exists():
+        return errs
+    for pattern in ("*.spec.yaml", "*.spec.yml"):
+        for p in sorted(spec_root.rglob(pattern)):
+            rel = p.relative_to(repo_root)
+            errs.append(
+                "executable spec files must be Markdown .spec.md with fenced yaml spec-test blocks; "
+                f"forbidden file extension found: {rel}"
+            )
+    return errs
+
+
 @dataclass(frozen=True)
 class RuleCoverage:
     rule_id: str
@@ -312,6 +327,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
 
     policy, trace, conformance_ids = _load_policy_and_trace(repo_root)
     purpose_policy, purpose_policy_errs, _ = load_purpose_lint_policy(repo_root)
+    errs.extend(_lint_executable_spec_file_extensions(repo_root))
     for e in purpose_policy_errs:
         errs.append(f"{e}")
     cases_dir = repo_root / "docs/spec/conformance/cases"

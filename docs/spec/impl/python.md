@@ -14,4 +14,6 @@ Implementation convenience:
 
 - `cli.run` supports `SPEC_RUNNER_ENTRYPOINT` fallback when
   `harness.entrypoint` is not set.
+- `SPEC_RUNNER_SAFE_MODE=1` hardens `cli.run` by disabling hook entrypoints
+  and env fallback; explicit `harness.entrypoint` is required in this mode.
 - Portable fixtures should still set `harness.entrypoint` explicitly.

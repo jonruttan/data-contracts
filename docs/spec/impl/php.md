@@ -75,6 +75,9 @@ Bootstrap parity subset fixture:
 - Supports `cli.run` harness keys:
   - `entrypoint` (or `SPEC_RUNNER_ENTRYPOINT` fallback)
   - `env` (set/unset command environment variables)
+- Supports process env allowlisting for `cli.run` via:
+  - `SPEC_RUNNER_ENV_ALLOWLIST=K1,K2,...`
+    (only allowlisted ambient env vars are inherited by subprocesses)
 - Emits report JSON: `{version: 1, results: [{id,status,category,message}]}`.
 - Exits non-zero when any case fails.
 

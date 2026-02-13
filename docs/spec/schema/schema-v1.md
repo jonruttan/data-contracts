@@ -84,7 +84,7 @@ Security model:
 
 For `type: cli.run`, supported `harness` keys include:
 
-- `entrypoint` (string, required): CLI entrypoint to call (e.g. `myproj.cli:main`)
+- `entrypoint` (string, recommended): CLI entrypoint to call (e.g. `myproj.cli:main`)
 - `env` (mapping): env vars to set/unset before running the CLI
 - `stdin_isatty` (bool): simulate TTY vs piped stdin
 - `stdin_text` (string): text to provide on stdin
@@ -105,6 +105,10 @@ Implementation note (non-portable convenience):
 - Runners MAY offer an environment fallback (for example
   `SPEC_RUNNER_ENTRYPOINT`) when `harness.entrypoint` is omitted.
 - Conformance fixtures SHOULD always set `harness.entrypoint` explicitly.
+- Runners MAY provide a safe mode (for example `SPEC_RUNNER_SAFE_MODE=1`) that
+  disables hook execution and env fallback for `cli.run`.
+- Runners MAY provide environment allowlisting for subprocess execution (for
+  example `SPEC_RUNNER_ENV_ALLOWLIST=K1,K2`).
 
 Assertion targets for `cli.run`:
 

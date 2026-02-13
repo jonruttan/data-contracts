@@ -782,3 +782,68 @@ def test_cli_type_context_env_entrypoint_overrides_harness_env(tmp_path, monkeyp
             env={"SPEC_RUNNER_ENTRYPOINT": ep_ctx},
         ),
     )
+
+
+def test_cli_type_safe_mode_requires_explicit_entrypoint(tmp_path, monkeypatch, capsys):
+    def fake_main(_argv):
+        print("ok")
+        return 0
+
+    ep = _install_sut(monkeypatch, fake_main)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-033",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {},
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(RuntimeError, match="safe mode requires explicit harness.entrypoint"):
+        run(
+            case,
+            ctx=SpecRunContext(
+                tmp_path=tmp_path,
+                monkeypatch=monkeypatch,
+                capsys=capsys,
+                env={"SPEC_RUNNER_ENTRYPOINT": ep, "SPEC_RUNNER_SAFE_MODE": "1"},
+            ),
+        )
+
+
+def test_cli_type_safe_mode_forbids_hooks(tmp_path, monkeypatch, capsys):
+    def fake_main(_argv):
+        return 0
+
+    def hook_after(*, case, ctx, result):
+        raise AssertionError("hook must not execute in safe mode")
+
+    ep = _install_sut(monkeypatch, fake_main)
+    hook_ep = _install_hook(monkeypatch, hook_after)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-034",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": ep, "hook_after": hook_ep},
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(RuntimeError, match="safe mode forbids hook_before/hook_after"):
+        run(
+            case,
+            ctx=SpecRunContext(
+                tmp_path=tmp_path,
+                monkeypatch=monkeypatch,
+                capsys=capsys,
+                env={"SPEC_RUNNER_SAFE_MODE": "true"},
+            ),
+        )

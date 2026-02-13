@@ -16,6 +16,9 @@ Project-specific instructions for AI agents working in `tools/spec_runner/`.
 - The spec-test schema is documented in `docs/spec/schema/schema-v1.md`.
 - Runner-only setup inputs MUST live under `harness:` (never as arbitrary
   top-level keys).
+- Executable spec cases MUST live in Markdown files (`*.spec.md`) with fenced
+  `yaml spec-test` blocks.
+- Do NOT create executable spec case files as `*.spec.yaml` or `*.spec.yml`.
 
 ## Local Commands
 

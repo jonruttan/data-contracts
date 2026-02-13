@@ -43,6 +43,11 @@ def _entrypoint_from_env(ctx, *, runtime_env: dict[str, str], harness_env: dict[
     return str(runtime_env.get("SPEC_RUNNER_ENTRYPOINT", ""))
 
 
+def _is_safe_mode_enabled(runtime_env: dict[str, str]) -> bool:
+    raw = str(runtime_env.get("SPEC_RUNNER_SAFE_MODE", "")).strip().lower()
+    return raw in {"1", "true", "yes", "on"}
+
+
 def _load_entrypoint(ep: str):
     """
     Load a call target from an entrypoint-like string: "module.sub:func".
@@ -121,6 +126,7 @@ def run(case, *, ctx) -> None:
         hook_after_ep = None
 
     runtime_env = _runtime_env(ctx)
+    safe_mode = _is_safe_mode_enabled(runtime_env)
     mode = resolve_assert_health_mode(t, env=runtime_env)
     assert_spec = t.get("assert", []) or []
     diags = lint_assert_tree(assert_spec)
@@ -226,16 +232,26 @@ def run(case, *, ctx) -> None:
             if block_imports:
                 mp.setattr(builtins, "__import__", _blocked_import)
 
+            if safe_mode and (hook_before_ep or hook_after_ep):
+                raise RuntimeError(
+                    "cli.run safe mode forbids hook_before/hook_after; unset SPEC_RUNNER_SAFE_MODE to use hooks"
+                )
+
             if hook_before_ep:
                 hook_before_fn = _load_entrypoint(str(hook_before_ep))
                 hook_before_fn(case=case, ctx=ctx, harness=h, **{str(k): v for k, v in hook_kwargs.items()})
 
-            entrypoint = str(
-                h.get("entrypoint")
-                or _entrypoint_from_env(ctx, runtime_env=runtime_env, harness_env=harness_env)
-                or ""
-            ).strip()
+            if safe_mode:
+                entrypoint = str(h.get("entrypoint") or "").strip()
+            else:
+                entrypoint = str(
+                    h.get("entrypoint")
+                    or _entrypoint_from_env(ctx, runtime_env=runtime_env, harness_env=harness_env)
+                    or ""
+                ).strip()
             if not entrypoint:
+                if safe_mode:
+                    raise RuntimeError("cli.run safe mode requires explicit harness.entrypoint")
                 raise RuntimeError("cli.run requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT")
             cli_main = _load_entrypoint(entrypoint)
 

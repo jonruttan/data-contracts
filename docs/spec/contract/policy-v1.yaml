@@ -5,14 +5,46 @@ rules:
     introduced_in: v1
     scope: case
     applies_to: cli.run.harness.entrypoint
-    norm: MUST
-    requirement: present
-    description: For cli.run, harness.entrypoint must be set in each case.
-    rationale: Ensures portable, explicit invocation without hidden runner state.
-    risk_if_violated: Cases become environment-dependent and non-portable.
+    norm: SHOULD
+    requirement: prefer_present
+    description: For cli.run, harness.entrypoint should be set in each case.
+    rationale: Keeps invocation explicit and reduces environment coupling.
+    risk_if_violated: Cases can become environment-dependent outside conformance.
     references:
       - docs/spec/contract/04-harness.md
       - docs/spec/schema/schema-v1.md
+
+  - id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
+    introduced_in: v1
+    scope: implementation
+    applies_to: cli.run.safe_mode
+    norm: SHOULD
+    requirement: disable_hooks_and_env_fallback_when_safe_mode_enabled
+    description: >
+      Implementations should provide a safe mode that disables hook entrypoints
+      and entrypoint env fallback for `cli.run`.
+    rationale: Reduces code-execution risk for hardened or semi-trusted workflows.
+    risk_if_violated: Untrusted or mixed-trust specs have higher exploitability.
+    references:
+      - docs/spec/contract/04-harness.md
+      - docs/spec/schema/schema-v1.md
+      - docs/spec/impl/python.md
+
+  - id: CLI_RUN_ENV_ALLOWLIST_CONTROL
+    introduced_in: v1
+    scope: implementation
+    applies_to: cli.run.process_environment
+    norm: SHOULD
+    requirement: support_allowlist_for_inherited_environment
+    description: >
+      Implementations should provide a control to limit inherited process
+      environment variables passed to cli.run executions.
+    rationale: Limits accidental secret exposure from ambient CI/dev shells.
+    risk_if_violated: Commands under test can read unrelated sensitive env.
+    references:
+      - docs/spec/contract/04-harness.md
+      - docs/spec/schema/schema-v1.md
+      - docs/spec/impl/php.md
 
   - id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
     introduced_in: v1
