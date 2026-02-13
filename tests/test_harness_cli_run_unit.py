@@ -718,3 +718,26 @@ def test_cli_type_can_use_entrypoint_from_context_env(tmp_path, monkeypatch, cap
             env={"SPEC_RUNNER_ENTRYPOINT": ep},
         ),
     )
+
+
+def test_cli_type_can_use_entrypoint_from_harness_env(tmp_path, monkeypatch, capsys):
+    def fake_main(_argv):
+        print("ok")
+        return 0
+
+    ep = _install_sut(monkeypatch, fake_main)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-031",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"env": {"SPEC_RUNNER_ENTRYPOINT": ep}},
+            "assert": [{"target": "stdout", "must": [{"contain": ["ok"]}]}],
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))

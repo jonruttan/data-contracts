@@ -30,6 +30,13 @@ def _runtime_env(ctx) -> dict[str, str]:
     return {str(k): str(v) for k, v in raw_env.items()}
 
 
+def _entrypoint_from_env(ctx) -> str:
+    raw_env = getattr(ctx, "env", None)
+    if raw_env is not None and "SPEC_RUNNER_ENTRYPOINT" in raw_env:
+        return str(raw_env["SPEC_RUNNER_ENTRYPOINT"])
+    return os.environ.get("SPEC_RUNNER_ENTRYPOINT", "")
+
+
 def _load_entrypoint(ep: str):
     """
     Load a call target from an entrypoint-like string: "module.sub:func".
@@ -215,7 +222,7 @@ def run(case, *, ctx) -> None:
             hook_before_fn = _load_entrypoint(str(hook_before_ep))
             hook_before_fn(case=case, ctx=ctx, harness=h, **{str(k): v for k, v in hook_kwargs.items()})
 
-        entrypoint = str(h.get("entrypoint") or runtime_env.get("SPEC_RUNNER_ENTRYPOINT") or "").strip()
+        entrypoint = str(h.get("entrypoint") or _entrypoint_from_env(ctx) or "").strip()
         if not entrypoint:
             raise RuntimeError("cli.run requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT")
         cli_main = _load_entrypoint(entrypoint)
