@@ -29,8 +29,19 @@ def _load_entrypoint(ep: str):
     if ":" not in ep:
         raise ValueError(f"invalid entrypoint (expected module:attr): {ep}")
     mod_name, attr = ep.split(":", 1)
-    mod = importlib.import_module(mod_name)
+    mod_name = mod_name.strip()
+    attr = attr.strip()
+    if not mod_name or not attr:
+        raise ValueError(f"invalid entrypoint (expected module:attr): {ep}")
+    try:
+        mod = importlib.import_module(mod_name)
+    except ModuleNotFoundError as e:
+        raise ModuleNotFoundError(f"entrypoint module not found: {mod_name}") from e
+    except ImportError as e:
+        raise ImportError(f"failed to import entrypoint module: {mod_name}") from e
     fn = getattr(mod, attr, None)
+    if fn is None:
+        raise AttributeError(f"entrypoint attribute not found: {ep}")
     if not callable(fn):
         raise TypeError(f"entrypoint is not callable: {ep}")
     return fn

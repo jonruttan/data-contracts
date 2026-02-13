@@ -631,3 +631,59 @@ def test_cli_type_assert_health_warns_on_redundant_branches(tmp_path, monkeypatc
     from spec_runner.harnesses.cli_run import run
 
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_rejects_entrypoint_without_colon(tmp_path, monkeypatch, capsys):
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-027",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": "not-an-entrypoint"},
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(ValueError, match="invalid entrypoint"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_rejects_missing_entrypoint_module(tmp_path, monkeypatch, capsys):
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-028",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": "missing_module_xyz:main"},
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(ModuleNotFoundError, match="entrypoint module not found"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_rejects_missing_entrypoint_attribute(tmp_path, monkeypatch, capsys):
+    m = types.ModuleType("spec_runner_test_missing_attr")
+    monkeypatch.setitem(sys.modules, "spec_runner_test_missing_attr", m)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-029",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": "spec_runner_test_missing_attr:main"},
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(AttributeError, match="entrypoint attribute not found"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
