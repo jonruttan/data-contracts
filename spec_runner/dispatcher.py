@@ -38,10 +38,12 @@ def iter_cases(spec_dir: Path, *, file_pattern: str | None = None) -> list[SpecD
 
 def default_type_runners() -> dict[str, TypeRunner]:
     # Lazy import to avoid circular imports during collection.
+    from spec_runner.harnesses.api_http import run as run_api_http
     from spec_runner.harnesses.cli_run import run as run_cli
     from spec_runner.harnesses.text_file import run as run_text_file
 
     return {
+        "api.http": run_api_http,
         "cli.run": run_cli,
         "text.file": run_text_file,
     }

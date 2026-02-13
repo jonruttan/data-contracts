@@ -19,6 +19,7 @@ Case fixtures that portable runner implementations execute.
 ## Fixture File Guide
 
 - `assertion-health.spec.md`: assertion-health diagnostics and mode behavior
+- `api-http.spec.md`: portable `api.http` extension behavior and capability gating
 - `cli-run-entrypoint.spec.md`: entrypoint precedence and capability gating
 - `failure-context.spec.md`: deterministic failure context tokens
 - `php-text-file-subset.spec.md`: portable `text.file` subset used for PHP parity
@@ -31,6 +32,9 @@ Case fixtures that portable runner implementations execute.
 - `SRCONF-AH-004`
 - `SRCONF-AH-005`
 - `SRCONF-AH-006`
+- `SRCONF-API-001`
+- `SRCONF-API-002`
+- `SRCONF-API-003`
 - `SRCONF-CLI-001`
 - `SRCONF-CLI-002`
 - `SRCONF-ERR-001`

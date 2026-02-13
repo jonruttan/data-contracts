@@ -30,6 +30,7 @@ _VALID_STATUS = {"pass", "fail", "skip"}
 _VALID_CATEGORY = {"schema", "assertion", "runtime"}
 _DEFAULT_CAPABILITIES: dict[str, set[str]] = {
     "python": {
+        "api.http",
         "cli.run",
         "assert.op.contain",
         "assert.op.regex",
@@ -44,6 +45,7 @@ _DEFAULT_CAPABILITIES: dict[str, set[str]] = {
         "requires.capabilities",
     },
     "php": {
+        "api.http",
         "assert.op.contain",
         "assert.op.regex",
         "assert.group.must",

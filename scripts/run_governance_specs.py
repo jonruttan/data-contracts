@@ -451,6 +451,15 @@ def _scan_conformance_api_http_portable_shape(root: Path) -> list[str]:
         case_type = str(case.get("type", "")).strip()
         if case_type != "api.http":
             continue
+        expect = case.get("expect")
+        schema_failure_fixture = False
+        if isinstance(expect, dict):
+            portable = expect.get("portable")
+            if isinstance(portable, dict):
+                status = str(portable.get("status", "")).strip().lower()
+                category_raw = portable.get("category")
+                category = None if category_raw is None else str(category_raw).strip().lower()
+                schema_failure_fixture = status == "fail" and category == "schema"
 
         extra_top = sorted(k for k in case.keys() if str(k) not in _API_HTTP_ALLOWED_TOP_LEVEL_KEYS)
         if extra_top:
@@ -461,7 +470,7 @@ def _scan_conformance_api_http_portable_shape(root: Path) -> list[str]:
         request = case.get("request")
         if not isinstance(request, dict):
             violations.append(f"{case_id}: api.http requires request mapping")
-        else:
+        elif not schema_failure_fixture:
             method = str(request.get("method", "")).strip()
             url = str(request.get("url", "")).strip()
             if not method:

@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from spec_runner.dispatcher import SpecRunContext, run_case
+from spec_runner.dispatcher import SpecRunContext, default_type_runners, run_case
 from spec_runner.doc_parser import SpecDocTest
 
 
@@ -33,3 +33,8 @@ def test_run_context_adapter_methods_require_explicit_fields(tmp_path, monkeypat
 def test_run_context_requires_patcher_and_capture(tmp_path):
     with pytest.raises(TypeError):
         SpecRunContext(tmp_path=tmp_path)  # type: ignore[call-arg]
+
+
+def test_default_type_runners_include_api_http():
+    runners = default_type_runners()
+    assert "api.http" in runners

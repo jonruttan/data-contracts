@@ -841,6 +841,239 @@ function evaluateCliRunCase(array $case): array {
     return ['status' => 'pass', 'category' => null, 'message' => null];
 }
 
+function resolveApiHttpUrl(string $fixturePath, string $url): array {
+    $trim = trim($url);
+    if ($trim === '') {
+        throw new SchemaError('api.http request.url is required');
+    }
+    $parts = @parse_url($trim);
+    if ($parts !== false && is_array($parts) && array_key_exists('scheme', $parts)) {
+        return ['source_type' => 'url', 'url' => $trim];
+    }
+    if (isAbsolutePath($trim)) {
+        throw new SchemaError('api.http request.url relative path must not be absolute');
+    }
+    $docAbs = (string)realpath($fixturePath);
+    if ($docAbs === '') {
+        throw new RuntimeException("cannot resolve fixture path: {$fixturePath}");
+    }
+    $candidate = normalizePath(dirname($docAbs) . '/' . $trim);
+    $root = contractRootFor($docAbs);
+    if (!pathWithinRoot($candidate, $root)) {
+        throw new SchemaError('api.http request.url relative path escapes contract root');
+    }
+    return ['source_type' => 'file', 'path' => $candidate];
+}
+
+function evalApiHttpLeaf(array $leaf, array $resp, string $target, string $caseId, string $path): void {
+    foreach ($leaf as $op => $raw) {
+        if (!is_array($raw) || !isListArray($raw)) {
+            throw new SchemaError("assertion op '{$op}' must be a list");
+        }
+        if ($target === 'status' || $target === 'headers' || $target === 'body_text') {
+            $subject = $target === 'status'
+                ? (string)$resp['status']
+                : ($target === 'headers' ? (string)$resp['headers_text'] : (string)$resp['body_text']);
+            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type') {
+                throw new SchemaError("unsupported op: {$op}");
+            }
+            foreach ($raw as $value) {
+                if ($op === 'contain') {
+                    $v = (string)$value;
+                    if (strpos($subject, $v) === false) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
+                        );
+                    }
+                    continue;
+                }
+                if ($op === 'regex') {
+                    $v = (string)$value;
+                    $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
+                    if ($ok !== 1) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
+                        );
+                    }
+                    continue;
+                }
+                $parsed = json_decode($subject, true);
+                $want = strtolower(trim((string)$value));
+                if ($want === 'list') {
+                    if (!is_array($parsed) || !isListArray($parsed)) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(list) failed"
+                        );
+                    }
+                } elseif ($want === 'dict') {
+                    if (!is_array($parsed) || isListArray($parsed)) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(dict) failed"
+                        );
+                    }
+                } else {
+                    throw new SchemaError("unsupported json_type: {$value}");
+                }
+            }
+            continue;
+        }
+        if ($target === 'body_json') {
+            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type') {
+                throw new SchemaError("unsupported op: {$op}");
+            }
+            $parsed = json_decode((string)$resp['body_text'], true);
+            if ($parsed === null && trim((string)$resp['body_text']) !== 'null') {
+                throw new AssertionFailure(
+                    "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] body_json parse failed"
+                );
+            }
+            foreach ($raw as $value) {
+                if ($op === 'json_type') {
+                    $want = strtolower(trim((string)$value));
+                    if ($want === 'list') {
+                        if (!is_array($parsed) || !isListArray($parsed)) {
+                            throw new AssertionFailure(
+                                "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(list) failed"
+                            );
+                        }
+                    } elseif ($want === 'dict') {
+                        if (!is_array($parsed) || isListArray($parsed)) {
+                            throw new AssertionFailure(
+                                "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(dict) failed"
+                            );
+                        }
+                    } else {
+                        throw new SchemaError("unsupported json_type: {$value}");
+                    }
+                    continue;
+                }
+                $subject = json_encode($parsed, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                if ($subject === false) {
+                    throw new RuntimeException('failed to serialize body_json');
+                }
+                if ($op === 'contain') {
+                    if (strpos($subject, (string)$value) === false) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
+                        );
+                    }
+                } else {
+                    $v = (string)$value;
+                    $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
+                    if ($ok !== 1) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
+                        );
+                    }
+                }
+            }
+            continue;
+        }
+        throw new SchemaError("unknown assert target for api.http: {$target}");
+    }
+}
+
+function evaluateApiHttpCase(string $fixturePath, array $case): array {
+    $request = $case['request'] ?? null;
+    if (!is_array($request)) {
+        throw new SchemaError('api.http requires request mapping');
+    }
+    $method = strtoupper(trim((string)($request['method'] ?? '')));
+    if ($method === '') {
+        throw new SchemaError('api.http request.method is required');
+    }
+    if (!array_key_exists('url', $request) || trim((string)$request['url']) === '') {
+        throw new SchemaError('api.http request.url is required');
+    }
+    $resolved = resolveApiHttpUrl($fixturePath, (string)$request['url']);
+    $headersText = '';
+    $status = 200;
+    $bodyText = '';
+    if ($resolved['source_type'] === 'file') {
+        $body = file_get_contents((string)$resolved['path']);
+        if ($body === false) {
+            throw new RuntimeException("cannot read fixture file: {$resolved['path']}");
+        }
+        $bodyText = (string)$body;
+    } else {
+        $headers = [];
+        $hdrs = $request['headers'] ?? [];
+        if ($hdrs !== null && !is_array($hdrs)) {
+            throw new SchemaError('api.http request.headers must be a mapping');
+        }
+        if (is_array($hdrs)) {
+            foreach ($hdrs as $k => $v) {
+                $headers[] = (string)$k . ': ' . (string)$v;
+            }
+        }
+        $bodyData = null;
+        if (array_key_exists('body_text', $request) && array_key_exists('body_json', $request)) {
+            throw new SchemaError('api.http request.body_text and request.body_json are mutually exclusive');
+        }
+        if (array_key_exists('body_text', $request)) {
+            $bodyData = (string)$request['body_text'];
+        } elseif (array_key_exists('body_json', $request)) {
+            $encoded = json_encode($request['body_json'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            if ($encoded === false) {
+                throw new SchemaError('api.http request.body_json must be json-serializable');
+            }
+            $bodyData = $encoded;
+            $headers[] = 'Content-Type: application/json';
+        }
+        $timeout = 5;
+        if (isset($case['harness']) && is_array($case['harness']) && array_key_exists('timeout_seconds', $case['harness'])) {
+            $timeout = (int)$case['harness']['timeout_seconds'];
+            if ($timeout <= 0) {
+                $timeout = 5;
+            }
+        }
+        $opts = [
+            'http' => [
+                'method' => $method,
+                'header' => implode("\r\n", $headers),
+                'ignore_errors' => true,
+                'timeout' => $timeout,
+            ],
+        ];
+        if ($bodyData !== null) {
+            $opts['http']['content'] = $bodyData;
+        }
+        $ctx = stream_context_create($opts);
+        $body = @file_get_contents((string)$resolved['url'], false, $ctx);
+        if ($body === false) {
+            throw new RuntimeException("api.http request failed: {$resolved['url']}");
+        }
+        $bodyText = (string)$body;
+        $responseHeaders = $http_response_header ?? [];
+        if (is_array($responseHeaders) && count($responseHeaders) > 0) {
+            $headersText = implode("\n", $responseHeaders);
+            if (preg_match('/\s(\d{3})\s/', (string)$responseHeaders[0], $m) === 1) {
+                $status = (int)$m[1];
+            }
+        }
+    }
+
+    $assertSpec = $case['assert'] ?? [];
+    evalAssertNode(
+        $assertSpec,
+        null,
+        (string)$case['id'],
+        'assert',
+        static fn(array $leaf, string $target, string $caseId, string $path) => evalApiHttpLeaf(
+            $leaf,
+            [
+                'status' => $status,
+                'headers_text' => $headersText,
+                'body_text' => $bodyText,
+            ],
+            $target,
+            $caseId,
+            $path
+        )
+    );
+    return ['status' => 'pass', 'category' => null, 'message' => null];
+}
+
 function evaluateCase(string $fixturePath, mixed $case): array {
     if (!is_array($case)) {
         return [
@@ -866,6 +1099,8 @@ function evaluateCase(string $fixturePath, mixed $case): array {
             $res = evaluateTextFileCase($fixturePath, $case);
         } elseif ($type === 'cli.run') {
             $res = evaluateCliRunCase($case);
+        } elseif ($type === 'api.http') {
+            $res = evaluateApiHttpCase($fixturePath, $case);
         } else {
             return [
                 'id' => $id,
