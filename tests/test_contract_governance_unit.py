@@ -20,6 +20,7 @@ _NORMATIVE_DOCS = [
     "04-harness.md",
     "05-errors.md",
     "06-conformance.md",
+    "07-portable-spec-authoring.md",
 ]
 
 

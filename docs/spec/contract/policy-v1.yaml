@@ -248,3 +248,51 @@ rules:
       - docs/spec/contract/06-conformance.md
       - docs/spec/schema/schema-v1.md
       - docs/spec/conformance/report-format.md
+
+  - id: PORTABLE_SPEC_CANONICAL_SINGLE_SET
+    introduced_in: v1
+    scope: conformance
+    applies_to: fixtures.portable.canonical_set
+    norm: MUST
+    requirement: use_docs_spec_conformance_cases_as_portable_behavior_source
+    description: >
+      Portable, implementation-independent behavior coverage must live in the
+      canonical conformance case set under docs/spec/conformance/cases.
+    rationale: Keeps one executable source of truth across implementations.
+    risk_if_violated: Spec behavior drifts across duplicated fixture sets.
+    references:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/07-portable-spec-authoring.md
+      - docs/spec/conformance/README.md
+
+  - id: PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
+    introduced_in: v1
+    scope: conformance
+    applies_to: fixtures.expect_shape
+    norm: MUST
+    requirement: portable_baseline_with_runtime_overlays_only
+    description: >
+      Portable expectations must be defined in expect.portable; runtime deltas
+      must be represented only via expect.impl.<runtime> overlays.
+    rationale: Preserves a single portable baseline while allowing explicit deltas.
+    risk_if_violated: Runtime-specific forks become implicit and hard to audit.
+    references:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/07-portable-spec-authoring.md
+      - docs/spec/schema/schema-v1.md
+
+  - id: PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION
+    introduced_in: v1
+    scope: conformance
+    applies_to: fixtures.portable.determinism
+    norm: SHOULD
+    requirement: avoid_ambient_time_random_network_and_undeclared_env
+    description: >
+      Portable conformance cases should be deterministic by construction and
+      avoid ambient dependencies (time, randomness, network, undeclared env).
+    rationale: Determinism is required for stable cross-runtime parity.
+    risk_if_violated: Flaky parity and implementation-specific false negatives.
+    references:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/07-portable-spec-authoring.md
+      - docs/spec/schema/schema-v1.md

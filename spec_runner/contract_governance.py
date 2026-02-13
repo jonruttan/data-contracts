@@ -25,6 +25,7 @@ _NORMATIVE_CONTRACT_DOCS = [
     "docs/spec/contract/04-harness.md",
     "docs/spec/contract/05-errors.md",
     "docs/spec/contract/06-conformance.md",
+    "docs/spec/contract/07-portable-spec-authoring.md",
 ]
 _REGEX_PROFILE_DOC = "docs/spec/contract/03a-regex-portability-v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")

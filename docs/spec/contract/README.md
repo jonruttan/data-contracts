@@ -19,3 +19,4 @@ Read in order:
 7. `docs/spec/contract/04-harness.md`
 8. `docs/spec/contract/05-errors.md`
 9. `docs/spec/contract/06-conformance.md`
+10. `docs/spec/contract/07-portable-spec-authoring.md`

@@ -169,6 +169,7 @@ links:
       - docs/spec/contract/04-harness.md
       - docs/spec/contract/05-errors.md
       - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/07-portable-spec-authoring.md
     schema_refs:
       - docs/spec/schema/schema-v1.md
     conformance_case_ids: []
@@ -246,3 +247,51 @@ links:
     implementation_refs:
       - spec_runner/conformance.py
     notes: "Conformance runner enforces requires.capabilities with skip/fail policy."
+
+  - rule_id: PORTABLE_SPEC_CANONICAL_SINGLE_SET
+    policy_ref: docs/spec/contract/policy-v1.yaml#PORTABLE_SPEC_CANONICAL_SINGLE_SET
+    contract_refs:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/07-portable-spec-authoring.md
+      - docs/spec/conformance/README.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_contract_governance_unit.py
+      - tests/test_conformance_runner_unit.py
+    implementation_refs:
+      - spec_runner/contract_governance.py
+      - spec_runner/conformance.py
+    notes: "Portable behavior source is the canonical conformance case set."
+
+  - rule_id: PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
+    policy_ref: docs/spec/contract/policy-v1.yaml#PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
+    contract_refs:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/07-portable-spec-authoring.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_conformance_runner_unit.py
+      - tests/test_php_conformance_subset_unit.py
+    implementation_refs:
+      - spec_runner/conformance.py
+    notes: "Expectations resolve from portable baseline with optional runtime overlays."
+
+  - rule_id: PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION
+    policy_ref: docs/spec/contract/policy-v1.yaml#PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION
+    contract_refs:
+      - docs/spec/contract/06-conformance.md
+      - docs/spec/contract/07-portable-spec-authoring.md
+    schema_refs:
+      - docs/spec/schema/schema-v1.md
+    conformance_case_ids:
+      - SRCONF-CLI-001
+      - SRCONF-AH-004
+    unit_test_refs:
+      - tests/test_conformance_runner_unit.py
+    implementation_refs:
+      - spec_runner/conformance.py
+    notes: "Portable cases should avoid ambient dependencies and express variability explicitly."

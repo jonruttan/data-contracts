@@ -49,6 +49,24 @@ Parser behavior:
 - `capabilities` (list[string], optional): declared capabilities for the case
 - `when_missing` (string, optional): `skip` or `fail` (default `fail`)
 
+## Portable Authoring Profile
+
+For implementation-independent conformance specs:
+
+- Canonical case set lives in `docs/spec/conformance/cases/*.spec.md`.
+- Portable expectations are defined in `expect.portable`.
+- Runtime deltas are expressed via `expect.impl.<runtime>`.
+- Portable cases SHOULD be deterministic and avoid ambient dependency on:
+  - time/date/timezone
+  - randomness without explicit seeded input
+  - network access
+  - undeclared environment variables
+
+Normative contract details:
+
+- `docs/spec/contract/06-conformance.md`
+- `docs/spec/contract/07-portable-spec-authoring.md`
+
 ## Type-Specific Fields
 
 ### `type: text.file`
