@@ -687,3 +687,34 @@ def test_cli_type_rejects_missing_entrypoint_attribute(tmp_path, monkeypatch, ca
 
     with pytest.raises(AttributeError, match="entrypoint attribute not found"):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_can_use_entrypoint_from_context_env(tmp_path, monkeypatch, capsys):
+    def fake_main(_argv):
+        print("ok")
+        return 0
+
+    ep = _install_sut(monkeypatch, fake_main)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-030",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {},
+            "assert": [{"target": "stdout", "must": [{"contain": ["ok"]}]}],
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    run(
+        case,
+        ctx=SpecRunContext(
+            tmp_path=tmp_path,
+            monkeypatch=monkeypatch,
+            capsys=capsys,
+            env={"SPEC_RUNNER_ENTRYPOINT": ep},
+        ),
+    )

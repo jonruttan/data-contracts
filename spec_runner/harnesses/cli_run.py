@@ -22,6 +22,14 @@ from spec_runner.assertion_health import (
     resolve_assert_health_mode,
 )
 
+
+def _runtime_env(ctx) -> dict[str, str]:
+    raw_env = getattr(ctx, "env", None)
+    if raw_env is None:
+        return dict(os.environ)
+    return {str(k): str(v) for k, v in raw_env.items()}
+
+
 def _load_entrypoint(ep: str):
     """
     Load a call target from an entrypoint-like string: "module.sub:func".
@@ -99,7 +107,8 @@ def run(case, *, ctx) -> None:
     if hook_after_ep is not None and not str(hook_after_ep).strip():
         hook_after_ep = None
 
-    mode = resolve_assert_health_mode(t, env=dict(os.environ))
+    runtime_env = _runtime_env(ctx)
+    mode = resolve_assert_health_mode(t, env=runtime_env)
     assert_spec = t.get("assert", []) or []
     diags = lint_assert_tree(assert_spec)
     if diags and mode == "error":
@@ -206,7 +215,7 @@ def run(case, *, ctx) -> None:
             hook_before_fn = _load_entrypoint(str(hook_before_ep))
             hook_before_fn(case=case, ctx=ctx, harness=h, **{str(k): v for k, v in hook_kwargs.items()})
 
-        entrypoint = str(h.get("entrypoint") or os.environ.get("SPEC_RUNNER_ENTRYPOINT") or "").strip()
+        entrypoint = str(h.get("entrypoint") or runtime_env.get("SPEC_RUNNER_ENTRYPOINT") or "").strip()
         if not entrypoint:
             raise RuntimeError("cli.run requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT")
         cli_main = _load_entrypoint(entrypoint)

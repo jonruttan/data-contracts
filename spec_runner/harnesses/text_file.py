@@ -15,6 +15,13 @@ from spec_runner.assertion_health import (
 )
 
 
+def _runtime_env(ctx) -> dict[str, str]:
+    raw_env = getattr(ctx, "env", None)
+    if raw_env is None:
+        return dict(os.environ)
+    return {str(k): str(v) for k, v in raw_env.items()}
+
+
 def _contract_root_for(doc_path):
     # Use repository/workspace root when detectable; otherwise fallback to the
     # spec document directory for safe defaults in isolated tests.
@@ -46,7 +53,7 @@ def run(case, *, ctx) -> None:
             raise ValueError("text.file path escapes contract root") from e
     text = p.read_text(encoding="utf-8")
     assert_spec = t.get("assert", []) or []
-    mode = resolve_assert_health_mode(t, env=dict(os.environ))
+    mode = resolve_assert_health_mode(t, env=_runtime_env(ctx))
     diags = lint_assert_tree(assert_spec)
     if diags and mode == "error":
         raise AssertionError(format_assertion_health_error(diags))

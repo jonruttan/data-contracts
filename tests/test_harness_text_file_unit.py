@@ -214,3 +214,30 @@ def test_text_file_failure_includes_case_and_assert_context(tmp_path, monkeypatc
     assert "assert_path=assert[0].must[0]" in msg
     assert "target=text" in msg
     assert "op=contain" in msg
+
+
+def test_text_file_uses_assert_health_mode_from_context_env(tmp_path, monkeypatch, capsys):
+    p = tmp_path / "doc.md"
+    p.write_text("hello\n", encoding="utf-8")
+    case = SpecDocTest(
+        doc_path=p,
+        test={
+            "id": "SR-TEXT-UNIT-002",
+            "type": "text.file",
+            "assert": [{"target": "text", "must": [{"contain": [""]}]}],
+        },
+    )
+
+    from spec_runner.harnesses.text_file import run
+
+    run(
+        case,
+        ctx=SpecRunContext(
+            tmp_path=tmp_path,
+            monkeypatch=monkeypatch,
+            capsys=capsys,
+            env={"SPEC_RUNNER_ASSERT_HEALTH": "warn"},
+        ),
+    )
+    captured = capsys.readouterr()
+    assert "WARN: ASSERT_HEALTH AH001" in captured.err

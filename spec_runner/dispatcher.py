@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Mapping
 
 from spec_runner.doc_parser import SpecDocTest, iter_spec_doc_tests
 
@@ -11,6 +12,7 @@ class SpecRunContext:
     tmp_path: Path
     monkeypatch: object
     capsys: object
+    env: Mapping[str, str] | None = None
 
 
 def iter_cases(spec_dir: Path) -> list[SpecDocTest]:
