@@ -97,7 +97,7 @@ def test_specs_from_docs(tmp_path, monkeypatch, capsys):
     cases = iter_cases(Path("docs/spec"))
     monkeypatch.setenv("SPEC_RUNNER_ENTRYPOINT", "myproj.cli:main")
     for case in cases:
-        run_case(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run_case(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 ```
 
 ## Layout
@@ -124,12 +124,14 @@ Each `yaml spec-test` test case is a mapping with:
 Runner-only keys MUST live under `harness:` to keep the spec format clean.
 
 Canonical boolean groups are `must`, `can`, and `cannot`.
-Text assertions use `contain`.
+Text assertions use `contain` and `regex`.
 Each assertion group uses exactly one of `must` / `can` / `cannot`, and group
 lists must be non-empty.
 
-Legacy aliases/shorthand (`all`, `any`, `contains`, leaf-level `is`) are not
-supported.
+Write assertions in canonical form:
+- use `must` (AND), `can` (OR), `cannot` (negation)
+- use `contain` / `regex` as leaf operators
+- put all operator values in lists
 
 Assertion groups can carry a shared `target`, which child
 leaves inherit unless overridden.

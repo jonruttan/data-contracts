@@ -28,9 +28,9 @@ assert:
 
 ## Group Semantics
 
-- `must`: all
-- `can`: any
-- `cannot`: none
+- `must`: AND
+- `can`: OR
+- `cannot`: NONE
 
 ## Frequent Schema Rules
 

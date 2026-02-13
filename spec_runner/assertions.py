@@ -96,12 +96,8 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
     target = str(target_override or "").strip()
     if not target:
         raise ValueError("assertion leaf requires inherited target from a parent group")
-    if "op" in leaf or "value" in leaf:
-        raise ValueError("legacy assertion shape (op/value) is not supported")
-    if any(k in leaf for k in ("all", "any", "must", "can", "cannot")):
+    if any(k in leaf for k in ("must", "can", "cannot")):
         raise ValueError("leaf assertion must not include group keys")
-    if "is" in leaf:
-        raise ValueError("leaf assertion key 'is' is not supported; use a 'cannot' group")
     known_ops = {
         "exists",
         "contain",
@@ -139,14 +135,9 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
     """
 
     leaf_sig = inspect.signature(eval_leaf)
-    accepts_inherited_target = (
-        "inherited_target" in leaf_sig.parameters
-        or any(p.kind == inspect.Parameter.VAR_KEYWORD for p in leaf_sig.parameters.values())
-    )
-    accepts_assert_path = (
-        "assert_path" in leaf_sig.parameters
-        or any(p.kind == inspect.Parameter.VAR_KEYWORD for p in leaf_sig.parameters.values())
-    )
+    accepts_kwargs = "**" in str(leaf_sig)
+    accepts_inherited_target = "inherited_target" in leaf_sig.parameters or accepts_kwargs
+    accepts_assert_path = "assert_path" in leaf_sig.parameters or accepts_kwargs
 
     def _call_leaf(node: dict, *, inherited_target: str | None, assert_path: str) -> None:
         kwargs = {}
@@ -168,10 +159,6 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
             return
         if not isinstance(node, dict):
             raise TypeError("assert node must be a mapping or a list")
-
-        if "all" in node or "any" in node:
-            raise ValueError("assert group aliases 'all'/'any' are not supported; use 'must'/'can'")
-
         present_groups = [k for k in ("must", "can", "cannot") if k in node]
         if present_groups:
             if len(present_groups) > 1:

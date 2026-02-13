@@ -34,23 +34,15 @@ def test_iter_leaf_assertions_requires_mapping_target_and_op_key():
         list(iter_leaf_assertions({"target": "stderr"}))
 
 
-def test_iter_leaf_assertions_requires_list_values_and_rejects_legacy():
+def test_iter_leaf_assertions_requires_list_values_and_rejects_unsupported_shapes():
     with pytest.raises(ValueError, match="must not include key: target"):
         list(iter_leaf_assertions({"target": "stderr", "contain": ["x"]}, target_override="stderr"))
     with pytest.raises(TypeError, match="must be a list"):
         list(iter_leaf_assertions({"contain": "x"}, target_override="stderr"))
-    with pytest.raises(ValueError, match="key 'is' is not supported"):
-        list(iter_leaf_assertions({"contain": ["x"], "is": False}, target_override="stderr"))
-    with pytest.raises(ValueError, match="legacy assertion shape"):
-        list(iter_leaf_assertions({"op": "contains", "value": "x"}, target_override="stderr"))
     with pytest.raises(ValueError, match="unsupported op"):
         list(iter_leaf_assertions({"wat": ["x"]}, target_override="stderr"))
     with pytest.raises(ValueError, match="must not include group keys"):
-        list(iter_leaf_assertions({"any": []}, target_override="stderr"))
-    with pytest.raises(ValueError, match="unsupported op: not_contains"):
-        list(iter_leaf_assertions({"not_contains": ["x"]}, target_override="stderr"))
-    with pytest.raises(ValueError, match="unsupported op: not_regex"):
-        list(iter_leaf_assertions({"not_regex": ["x"]}, target_override="stderr"))
+        list(iter_leaf_assertions({"must": []}, target_override="stderr"))
 
 
 def test_iter_leaf_assertions_happy_path():
@@ -74,9 +66,9 @@ def test_iter_leaf_assertions_accepts_target_override():
     ]
 
 
-def test_iter_leaf_assertions_rejects_contains_alias():
-    with pytest.raises(ValueError, match="unsupported op: contains"):
-        list(iter_leaf_assertions({"contains": ["ok"]}, target_override="stderr"))
+def test_iter_leaf_assertions_rejects_unknown_operator():
+    with pytest.raises(ValueError, match="unsupported op: unknown_op"):
+        list(iter_leaf_assertions({"unknown_op": ["ok"]}, target_override="stderr"))
 
 
 def test_eval_assert_tree_list_is_and():
@@ -142,13 +134,6 @@ def test_eval_assert_tree_group_rejects_empty_children():
         eval_assert_tree({"can": []}, eval_leaf=lambda _x: None)
     with pytest.raises(ValueError, match="must not be empty"):
         eval_assert_tree({"cannot": []}, eval_leaf=lambda _x: None)
-
-
-def test_eval_assert_tree_rejects_legacy_group_aliases():
-    with pytest.raises(ValueError, match="aliases 'all'/'any' are not supported"):
-        eval_assert_tree({"all": []}, eval_leaf=lambda _x: None)
-    with pytest.raises(ValueError, match="aliases 'all'/'any' are not supported"):
-        eval_assert_tree({"any": []}, eval_leaf=lambda _x: None)
 
 
 def test_eval_assert_tree_group_target_inherited_by_children():

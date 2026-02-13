@@ -16,12 +16,12 @@ def test_unknown_type_raises_clear_error(tmp_path, monkeypatch, capsys):
     with pytest.raises(RuntimeError, match=r"unknown spec-test type: unknown\.type"):
         run_case(
             case,
-            ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+            ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys),
             type_runners={"cli.run": lambda *_a, **_k: None},
         )
 
 
-def test_run_context_adapter_methods_support_new_fields(tmp_path, monkeypatch, capsys):
+def test_run_context_adapter_methods_require_explicit_fields(tmp_path, monkeypatch, capsys):
     ctx = SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys)
     with ctx.patch_context():
         pass
@@ -30,13 +30,6 @@ def test_run_context_adapter_methods_support_new_fields(tmp_path, monkeypatch, c
     assert hasattr(got, "err")
 
 
-def test_run_context_patch_context_requires_adapter(tmp_path):
-    ctx = SpecRunContext(tmp_path=tmp_path)
-    with pytest.raises(RuntimeError, match="requires patcher"):
-        ctx.patch_context()
-
-
-def test_run_context_read_capture_requires_adapter(tmp_path):
-    ctx = SpecRunContext(tmp_path=tmp_path)
-    with pytest.raises(RuntimeError, match="requires capture"):
-        ctx.read_capture()
+def test_run_context_requires_patcher_and_capture(tmp_path):
+    with pytest.raises(TypeError):
+        SpecRunContext(tmp_path=tmp_path)  # type: ignore[call-arg]

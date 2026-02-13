@@ -29,6 +29,10 @@ maintenance decisions stay predictable.
 
 - Existing v1 canonical DSL forms (`must` / `can` / `cannot`, `contain`,
   `regex`) remain stable.
+- Current-spec-only rule (pre-v1):
+  - docs and runtime behavior MUST describe and execute only the current schema
+  - do not add wording about prior schema forms
+  - do not add compatibility code paths that rewrite/accept prior schema forms
 - Contract-breaking changes require versioning:
   - update policy lifecycle metadata (`introduced_in` / `deprecated_in` /
     `removed_in`)

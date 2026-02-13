@@ -20,7 +20,7 @@ def test_text_file_contains(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.text_file import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_text_file_cannot_group(tmp_path, monkeypatch, capsys):
@@ -38,7 +38,7 @@ def test_text_file_cannot_group(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.text_file import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_text_file_can_read_relative_path(tmp_path, monkeypatch, capsys):
@@ -59,7 +59,7 @@ def test_text_file_can_read_relative_path(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.text_file import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_text_file_rejects_absolute_path(tmp_path, monkeypatch, capsys):
@@ -79,7 +79,7 @@ def test_text_file_rejects_absolute_path(tmp_path, monkeypatch, capsys):
     from spec_runner.harnesses.text_file import run
 
     with pytest.raises(ValueError, match="must be relative"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_text_file_unknown_target(tmp_path, monkeypatch, capsys):
@@ -98,7 +98,7 @@ def test_text_file_unknown_target(tmp_path, monkeypatch, capsys):
     from spec_runner.harnesses.text_file import run
 
     with pytest.raises(ValueError, match="unknown assert target"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_dispatcher_includes_text_file_kind():
@@ -127,7 +127,7 @@ def test_text_file_rejects_path_escape_without_repo_root(tmp_path, monkeypatch, 
     from spec_runner.harnesses.text_file import run
 
     with pytest.raises(ValueError, match="escapes contract root"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_text_file_allows_parent_reference_with_repo_root(tmp_path, monkeypatch, capsys):
@@ -152,7 +152,7 @@ def test_text_file_allows_parent_reference_with_repo_root(tmp_path, monkeypatch,
 
     from spec_runner.harnesses.text_file import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_text_file_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsys):
@@ -170,7 +170,7 @@ def test_text_file_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsy
 
     from spec_runner.harnesses.text_file import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
     captured = capsys.readouterr()
     assert "WARN: ASSERT_HEALTH AH001" in captured.err
 
@@ -191,7 +191,7 @@ def test_text_file_assert_health_error_fails(tmp_path, monkeypatch, capsys):
     from spec_runner.harnesses.text_file import run
 
     with pytest.raises(AssertionError, match="assertion health check failed"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_text_file_failure_includes_case_and_assert_context(tmp_path, monkeypatch, capsys):
@@ -209,7 +209,7 @@ def test_text_file_failure_includes_case_and_assert_context(tmp_path, monkeypatc
     from spec_runner.harnesses.text_file import run
 
     with pytest.raises(AssertionError) as ei:
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
     msg = str(ei.value)
     assert "case_id=SR-TEXT-UNIT-001" in msg
     assert "assert_path=assert[0].must[0]" in msg
@@ -235,8 +235,8 @@ def test_text_file_uses_assert_health_mode_from_context_env(tmp_path, monkeypatc
         case,
         ctx=SpecRunContext(
             tmp_path=tmp_path,
-            monkeypatch=monkeypatch,
-            capsys=capsys,
+            patcher=monkeypatch,
+            capture=capsys,
             env={"SPEC_RUNNER_ASSERT_HEALTH": "warn"},
         ),
     )

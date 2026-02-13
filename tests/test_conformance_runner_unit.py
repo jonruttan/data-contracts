@@ -21,7 +21,7 @@ def test_run_conformance_cases_matches_expected(tmp_path, monkeypatch, capsys):
 
     actual = run_conformance_cases(
         cases_dir,
-        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys),
     )
     expected = load_expected_results(cases_dir, implementation="python")
     errs = compare_conformance_results(expected, actual)
@@ -33,7 +33,7 @@ def test_conformance_results_are_jsonable(tmp_path, monkeypatch, capsys):
     cases_dir = repo_root / "docs/spec/conformance/cases"
     actual = run_conformance_cases(
         cases_dir,
-        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys),
     )
     payload = results_to_jsonable(actual)
     assert isinstance(payload, list)
@@ -68,7 +68,7 @@ assert:
     monkeypatch.setenv("SPEC_RUNNER_ASSERT_HEALTH", "error")
     actual = run_conformance_cases(
         cases_dir,
-        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys),
     )
     assert len(actual) == 1
     assert actual[0].id == "SRCONF-TMP-OVERRIDE"
@@ -117,7 +117,7 @@ assert:
     )
     actual = run_conformance_cases(
         cases_dir,
-        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys),
     )
     exp_python = load_expected_results(cases_dir, implementation="python")
     assert compare_conformance_results(exp_python, actual) == []
@@ -168,7 +168,7 @@ assert:
     )
     actual = run_conformance_cases(
         cases_dir,
-        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys),
         implementation="python",
         capabilities=set(),
     )
@@ -201,7 +201,7 @@ assert:
     )
     actual = run_conformance_cases(
         cases_dir,
-        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys),
         implementation="python",
         capabilities=set(),
     )
@@ -234,7 +234,7 @@ assert:
     )
     actual = run_conformance_cases(
         cases_dir,
-        ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys),
+        ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys),
         implementation="python",
         capabilities=set(),
     )

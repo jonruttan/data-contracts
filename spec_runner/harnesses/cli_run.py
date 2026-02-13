@@ -98,16 +98,16 @@ def run(case, *, ctx) -> None:
     if unknown:
         raise ValueError(f"unsupported harness key(s): {', '.join(unknown)}")
 
-    legacy_keys = {
+    forbidden_top_level_keys = {
         "stub_modules",
         "setup_files",
         "stdin_text",
         "stdin_isatty",
         "block_imports",
     }
-    found_legacy = sorted(k for k in legacy_keys if k in t)
-    if found_legacy:
-        raise ValueError(f"move harness-only keys under 'harness:': {', '.join(found_legacy)}")
+    found_forbidden = sorted(k for k in forbidden_top_level_keys if k in t)
+    if found_forbidden:
+        raise ValueError(f"move harness-only keys under 'harness:': {', '.join(found_forbidden)}")
 
     argv = t.get("argv", [])
     if isinstance(argv, str):

@@ -21,23 +21,15 @@ TypeRunner = Callable[..., None]
 @dataclass(frozen=True)
 class SpecRunContext:
     tmp_path: Path
-    monkeypatch: RuntimePatcher | None = None
-    capsys: RuntimeCapture | None = None
+    patcher: RuntimePatcher
+    capture: RuntimeCapture
     env: Mapping[str, str] | None = None
-    patcher: RuntimePatcher | None = None
-    capture: RuntimeCapture | None = None
 
     def patch_context(self) -> Any:
-        patcher = self.patcher or self.monkeypatch
-        if patcher is None:
-            raise RuntimeError("SpecRunContext requires patcher (or legacy monkeypatch)")
-        return patcher.context()
+        return self.patcher.context()
 
     def read_capture(self) -> Any:
-        capture = self.capture or self.capsys
-        if capture is None:
-            raise RuntimeError("SpecRunContext requires capture (or legacy capsys)")
-        return capture.readouterr()
+        return self.capture.readouterr()
 
 
 def iter_cases(spec_dir: Path, *, file_pattern: str | None = None) -> list[SpecDocTest]:

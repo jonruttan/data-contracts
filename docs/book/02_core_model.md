@@ -22,7 +22,7 @@ Typical optional keys:
 - They parse fenced blocks tagged with both:
   - `spec-test`
   - `yaml` or `yml`
-- Legacy `kind` is normalized to `type`.
+- `type` is required.
 
 ## Type Model
 

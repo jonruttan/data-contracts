@@ -55,7 +55,7 @@ def test_cli_type_accepts_string_argv_and_systemexit(tmp_path, monkeypatch, caps
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_unsupported_stdout_json_type_raises(tmp_path, monkeypatch, capsys):
@@ -79,7 +79,7 @@ def test_cli_type_unsupported_stdout_json_type_raises(tmp_path, monkeypatch, cap
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(ValueError, match="unsupported json_type"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_stdout_json_dict(tmp_path, monkeypatch, capsys):
@@ -102,7 +102,7 @@ def test_cli_type_stdout_json_dict(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_contain_regex_and_cannot(tmp_path, monkeypatch, capsys):
@@ -129,7 +129,7 @@ def test_cli_type_contain_regex_and_cannot(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_stdout_path_text(tmp_path, monkeypatch, capsys):
@@ -155,7 +155,7 @@ def test_cli_type_stdout_path_text(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
@@ -179,7 +179,7 @@ def test_cli_type_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(ValueError, match="unknown assert target"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
@@ -206,7 +206,7 @@ def test_cli_type_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(ValueError, match="unsupported op for stdout_path"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_unsupported_op_raises(tmp_path, monkeypatch, capsys):
@@ -226,7 +226,7 @@ def test_cli_type_unsupported_op_raises(tmp_path, monkeypatch, capsys):
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(ValueError, match="unsupported op"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
@@ -259,7 +259,7 @@ def test_cli_type_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
     assert seen["cfg"] == str((tmp_path / "cfg.txt").resolve())
 
 
@@ -285,7 +285,7 @@ def test_cli_type_can_stub_modules(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys):
@@ -309,7 +309,7 @@ def test_cli_type_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_can_group_or_semantics(tmp_path, monkeypatch, capsys):
@@ -336,7 +336,7 @@ def test_cli_type_can_group_or_semantics(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_cannot_json_type(tmp_path, monkeypatch, capsys):
@@ -359,7 +359,7 @@ def test_cli_type_cannot_json_type(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_hook_runs_after_command(tmp_path, monkeypatch, capsys):
@@ -394,7 +394,7 @@ def test_cli_type_hook_runs_after_command(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
     assert seen == {"ran": True, "extra": "v"}
 
 
@@ -403,7 +403,7 @@ def test_cli_type_hook_before_runs_before_command(tmp_path, monkeypatch, capsys)
 
     def hook_before(*, case, ctx, harness, extra=None):
         assert case.test["id"] == "SR-CLI-UNIT-016"
-        ctx.monkeypatch.setenv("X_BEFORE", "yes")
+        ctx.patcher.setenv("X_BEFORE", "yes")
         seen["ran"] = True
         seen["extra"] = extra
         assert isinstance(harness, dict)
@@ -431,7 +431,7 @@ def test_cli_type_hook_before_runs_before_command(tmp_path, monkeypatch, capsys)
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
     assert seen == {"ran": True, "extra": "v2"}
 
 
@@ -460,7 +460,7 @@ def test_cli_type_stub_modules_do_not_leak_between_cases(tmp_path, monkeypatch, 
             "assert": [{"target": "stdout", "must": [{"contain": ["imported"]}]}],
         },
     )
-    run(case_with_stub, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case_with_stub, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
     case_without_stub = SpecDocTest(
         doc_path=Path("docs/spec/cli.md"),
@@ -473,7 +473,7 @@ def test_cli_type_stub_modules_do_not_leak_between_cases(tmp_path, monkeypatch, 
             "assert": [{"target": "stdout", "must": [{"contain": ["missing"]}]}],
         },
     )
-    run(case_without_stub, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case_without_stub, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_setup_files_rejects_absolute_path(tmp_path, monkeypatch, capsys):
@@ -494,7 +494,7 @@ def test_cli_type_setup_files_rejects_absolute_path(tmp_path, monkeypatch, capsy
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(ValueError, match="setup_files item path must be relative"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_setup_files_rejects_path_escape(tmp_path, monkeypatch, capsys):
@@ -515,7 +515,7 @@ def test_cli_type_setup_files_rejects_path_escape(tmp_path, monkeypatch, capsys)
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(ValueError, match="setup_files item path escapes tmp_path"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_requires_entrypoint_or_env_fallback(tmp_path, monkeypatch, capsys):
@@ -533,7 +533,7 @@ def test_cli_type_requires_entrypoint_or_env_fallback(tmp_path, monkeypatch, cap
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(RuntimeError, match="requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsys):
@@ -556,7 +556,7 @@ def test_cli_type_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsys
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_assert_health_error_fails(tmp_path, monkeypatch, capsys):
@@ -577,7 +577,7 @@ def test_cli_type_assert_health_error_fails(tmp_path, monkeypatch, capsys):
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(AssertionError, match="assertion health check failed"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_failure_includes_case_and_assert_context(tmp_path, monkeypatch, capsys):
@@ -597,7 +597,7 @@ def test_cli_type_failure_includes_case_and_assert_context(tmp_path, monkeypatch
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(AssertionError) as ei:
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
     msg = str(ei.value)
     assert "case_id=SR-CLI-UNIT-025" in msg
     assert "assert_path=assert[0].must[0]" in msg
@@ -631,7 +631,7 @@ def test_cli_type_assert_health_warns_on_redundant_branches(tmp_path, monkeypatc
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_rejects_entrypoint_without_colon(tmp_path, monkeypatch, capsys):
@@ -649,7 +649,7 @@ def test_cli_type_rejects_entrypoint_without_colon(tmp_path, monkeypatch, capsys
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(ValueError, match="invalid entrypoint"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_rejects_missing_entrypoint_module(tmp_path, monkeypatch, capsys):
@@ -667,7 +667,7 @@ def test_cli_type_rejects_missing_entrypoint_module(tmp_path, monkeypatch, capsy
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(ModuleNotFoundError, match="entrypoint module not found"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_rejects_missing_entrypoint_attribute(tmp_path, monkeypatch, capsys):
@@ -687,7 +687,7 @@ def test_cli_type_rejects_missing_entrypoint_attribute(tmp_path, monkeypatch, ca
     from spec_runner.harnesses.cli_run import run
 
     with pytest.raises(AttributeError, match="entrypoint attribute not found"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_can_use_entrypoint_from_context_env(tmp_path, monkeypatch, capsys):
@@ -714,8 +714,8 @@ def test_cli_type_can_use_entrypoint_from_context_env(tmp_path, monkeypatch, cap
         case,
         ctx=SpecRunContext(
             tmp_path=tmp_path,
-            monkeypatch=monkeypatch,
-            capsys=capsys,
+            patcher=monkeypatch,
+            capture=capsys,
             env={"SPEC_RUNNER_ENTRYPOINT": ep},
         ),
     )
@@ -741,7 +741,7 @@ def test_cli_type_can_use_entrypoint_from_harness_env(tmp_path, monkeypatch, cap
 
     from spec_runner.harnesses.cli_run import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_context_env_entrypoint_overrides_harness_env(tmp_path, monkeypatch, capsys):
@@ -778,8 +778,8 @@ def test_cli_type_context_env_entrypoint_overrides_harness_env(tmp_path, monkeyp
         case,
         ctx=SpecRunContext(
             tmp_path=tmp_path,
-            monkeypatch=monkeypatch,
-            capsys=capsys,
+            patcher=monkeypatch,
+            capture=capsys,
             env={"SPEC_RUNNER_ENTRYPOINT": ep_ctx},
         ),
     )
@@ -809,8 +809,8 @@ def test_cli_type_safe_mode_requires_explicit_entrypoint(tmp_path, monkeypatch, 
             case,
             ctx=SpecRunContext(
                 tmp_path=tmp_path,
-                monkeypatch=monkeypatch,
-                capsys=capsys,
+                patcher=monkeypatch,
+                capture=capsys,
                 env={"SPEC_RUNNER_ENTRYPOINT": ep, "SPEC_RUNNER_SAFE_MODE": "1"},
             ),
         )
@@ -843,8 +843,8 @@ def test_cli_type_safe_mode_forbids_hooks(tmp_path, monkeypatch, capsys):
             case,
             ctx=SpecRunContext(
                 tmp_path=tmp_path,
-                monkeypatch=monkeypatch,
-                capsys=capsys,
+                patcher=monkeypatch,
+                capture=capsys,
                 env={"SPEC_RUNNER_SAFE_MODE": "true"},
             ),
         )

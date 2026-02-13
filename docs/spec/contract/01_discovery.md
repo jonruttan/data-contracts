@@ -25,4 +25,3 @@
   - a mapping (one case), or
   - a list of mappings (many cases).
 - Each case MUST include `id` and `type`.
-- Legacy `kind` is accepted and normalized to `type`.

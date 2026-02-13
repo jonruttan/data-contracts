@@ -45,7 +45,7 @@ Operate as 7 distinct personas. Keep them clearly separated and consistent:
 
 Context you should assume about this repo:
 - Markdown docs can contain executable `yaml spec-test` blocks.
-- The canonical assertion DSL is `must` / `can` / `cannot` (not `all` / `any`).
+- The canonical assertion DSL is `must` / `can` / `cannot`.
 - Leaf operators are list-valued and include `contain`, `regex`, plus harness-specific ops (`json_type`, `exists`).
 - Core types currently include `text.file` and `cli.run`.
 - Runner-only setup keys must live under `harness:`.

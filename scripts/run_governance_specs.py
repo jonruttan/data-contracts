@@ -36,12 +36,35 @@ _V1_SCOPE_REQUIRED_TOKENS = (
     "v1 in scope",
     "v1 non-goals",
     "compatibility commitments",
+    "current-spec-only rule",
 )
 _PYTHON_RUNTIME_ROOTS = ("spec_runner", "scripts/python")
 _CONFORMANCE_CASE_ID_PATTERN = r"\bSRCONF-[A-Z0-9-]+\b"
 _CONFORMANCE_MAX_BLOCK_LINES = 50
 _REGEX_PROFILE_DOC = "docs/spec/contract/03a_regex_portability_v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
+_CURRENT_SPEC_ONLY_DOCS = (
+    "README.md",
+    "docs/book/02_core_model.md",
+    "docs/spec/schema/schema_v1.md",
+    "docs/spec/contract/01_discovery.md",
+    "docs/spec/contract/02_case_shape.md",
+    "docs/spec/contract/03_assertions.md",
+    "docs/spec/contract/04_harness.md",
+    "docs/spec/contract/08_v1_scope.md",
+)
+_CURRENT_SPEC_ONLY_CODE_FILES = (
+    "spec_runner/doc_parser.py",
+    "scripts/php/spec_runner.php",
+    "scripts/php/conformance_runner.php",
+)
+_CURRENT_SPEC_FORBIDDEN_PATTERNS = (
+    r"\blegacy\b",
+    r"\bkind\b",
+    r"previous\s+spec",
+    r"prior\s+spec",
+    r"backward[- ]compatible",
+)
 
 
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
@@ -308,6 +331,23 @@ def _scan_regex_doc_sync(root: Path) -> list[str]:
     return violations
 
 
+def _scan_current_spec_only_contract(root: Path) -> list[str]:
+    violations: list[str] = []
+    patterns = [re.compile(p, re.IGNORECASE) for p in _CURRENT_SPEC_FORBIDDEN_PATTERNS]
+    for rel in (*_CURRENT_SPEC_ONLY_DOCS, *_CURRENT_SPEC_ONLY_CODE_FILES):
+        p = root / rel
+        if not p.exists():
+            continue
+        for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
+            for pat in patterns:
+                if pat.search(line):
+                    violations.append(
+                        f"{rel}:{i}: forbidden pre-current-spec reference matched /{pat.pattern}/"
+                    )
+                    break
+    return violations
+
+
 GovernanceCheck = Callable[[Path], list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
@@ -320,6 +360,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
+    "docs.current_spec_only_contract": _scan_current_spec_only_contract,
 }
 
 

@@ -116,13 +116,39 @@ def test_script_enforces_v1_scope_doc_tokens(tmp_path):
     )
     _write_text(
         tmp_path / "docs/spec/contract/08_v1_scope.md",
-        "# V1 In Scope\n\n## V1 In Scope\n\n## V1 Non-Goals\n\n## Compatibility Commitments (v1)\n",
+        "# V1 In Scope\n\n## V1 In Scope\n\n## V1 Non-Goals\n\n## Compatibility Commitments (v1)\n\n- Current-spec-only rule\n",
     )
 
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
 
     _write_text(tmp_path / "docs/spec/contract/08_v1_scope.md", "# scope\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_current_spec_only_contract(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "current_spec_only.spec.md",
+        _case_for_check("SRGOV-TEST-CURRENT-001", "docs.current_spec_only_contract", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/schema/schema_v1.md",
+        "# Schema v1\n\n- type is required.\n",
+    )
+    _write_text(
+        tmp_path / "spec_runner/doc_parser.py",
+        "def parse_case(payload):\n    return payload.get('type')\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/schema/schema_v1.md",
+        "# Schema v1\n\n- legacy note\n",
+    )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
 

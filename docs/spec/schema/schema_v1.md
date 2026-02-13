@@ -26,7 +26,7 @@ Parser behavior:
   (3+), with info tokens including `spec-test` and `yaml`/`yml`
 - closing fences must use the same fence character and at least the opener
   length
-- legacy `kind` is accepted and normalized to `type`
+- `type` is required
 
 `assert_health`:
 
@@ -191,9 +191,11 @@ assert:
       - contain: ["ERROR:"]
 ```
 
-Legacy negated text operators (`not_contains`, `not_regex`) are not supported.
-Legacy aliases/shorthand (`all`, `any`, `contains`, leaf-level `is`) are not
-supported.
+Author in canonical form:
+
+- use `must` / `can` / `cannot` for boolean groups
+- use `contain` / `regex` for text operators
+- put every operator value in a list
 
 Example with target inheritance:
 

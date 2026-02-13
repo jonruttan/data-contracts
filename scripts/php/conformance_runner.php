@@ -203,20 +203,12 @@ function parseMarkdownCases(string $path): array {
                 if (!is_array($test)) {
                     throw new RuntimeException("spec-test block in {$path} contains a non-mapping test");
                 }
-                if (!array_key_exists('type', $test) && array_key_exists('kind', $test)) {
-                    $test['type'] = $test['kind'];
-                    unset($test['kind']);
-                }
                 if (!array_key_exists('id', $test) || !array_key_exists('type', $test)) {
                     throw new RuntimeException("spec-test in {$path} must include 'id' and 'type'");
                 }
                 $cases[] = $test;
             }
         } elseif (is_array($payload)) {
-            if (!array_key_exists('type', $payload) && array_key_exists('kind', $payload)) {
-                $payload['type'] = $payload['kind'];
-                unset($payload['kind']);
-            }
             if (!array_key_exists('id', $payload) || !array_key_exists('type', $payload)) {
                 throw new RuntimeException("spec-test in {$path} must include 'id' and 'type'");
             }
