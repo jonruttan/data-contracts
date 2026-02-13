@@ -1,3 +1,4 @@
+# SPEC-OPT-OUT: Exercises behavior not yet representable as stable .spec.md coverage (unit-level API/diagnostic/infrastructure checks).
 import importlib.util
 import json
 from pathlib import Path

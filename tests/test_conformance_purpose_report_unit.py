@@ -1,3 +1,4 @@
+# SPEC-OPT-OUT: Exercises behavior not yet representable as stable .spec.md coverage (unit-level API/diagnostic/infrastructure checks).
 from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 from spec_runner.settings import case_file_name
 

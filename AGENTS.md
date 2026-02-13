@@ -41,6 +41,15 @@ Project-specific instructions for AI agents working in `tools/spec_runner/`.
     versioned
 - Error messages should be direct and actionable (schema violations should
   explain what to change).
+- Test authoring policy:
+  - New behavior tests SHOULD be authored as executable `.spec.md` cases.
+  - Explicit Python unit tests (`tests/test_*_unit.py`) are disallowed by
+    default.
+  - Unit tests are allowed only when a case cannot be represented safely or
+    clearly in the `.spec.md` DSL/harness model.
+  - Any `tests/test_*_unit.py` file MUST include a top-of-file opt-out reason
+    line in this format:
+    `# SPEC-OPT-OUT: <specific reason>`
 
 ## Change Hygiene
 

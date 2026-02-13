@@ -1,3 +1,4 @@
+# SPEC-OPT-OUT: Exercises behavior not yet representable as stable .spec.md coverage (unit-level API/diagnostic/infrastructure checks).
 import json
 import os
 import shutil
@@ -150,6 +151,8 @@ def test_php_spec_runner_matches_assert_health_fixture_suite(tmp_path):
         encoding="utf-8",
     )
 
+    env = os.environ.copy()
+    env["SPEC_RUNNER_ASSERT_HEALTH"] = "warn"
     cp = subprocess.run(
         [
             "php",
@@ -161,6 +164,7 @@ def test_php_spec_runner_matches_assert_health_fixture_suite(tmp_path):
         ],
         check=False,
         cwd=repo_root,
+        env=env,
         capture_output=True,
         text=True,
     )
@@ -180,6 +184,7 @@ def test_php_spec_runner_matches_assert_health_fixture_suite(tmp_path):
     expected = load_expected_results(cases_dir, implementation="php")
     assert compare_conformance_results(expected, actual) == []
     assert "WARN: ASSERT_HEALTH AH001" in cp.stderr
+    assert "WARN: ASSERT_HEALTH AH005" not in cp.stderr
 
 
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")

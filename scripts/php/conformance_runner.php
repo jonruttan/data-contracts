@@ -416,6 +416,25 @@ function formatAssertionHealthError(array $diags): string {
     return "assertion health check failed (" . count($diags) . " issue(s)): " . implode('; ', $parts);
 }
 
+function resolveAssertHealthMode(array $case): string {
+    $mode = strtolower(trim((string)(getenv('SPEC_RUNNER_ASSERT_HEALTH') ?: 'ignore')));
+    if ($mode === '') {
+        $mode = 'ignore';
+    }
+    if (isset($case['assert_health'])) {
+        if (!is_array($case['assert_health'])) {
+            throw new SchemaError('assert_health must be a mapping when provided');
+        }
+        if (array_key_exists('mode', $case['assert_health'])) {
+            $mode = strtolower(trim((string)$case['assert_health']['mode']));
+        }
+    }
+    if (!in_array($mode, ['ignore', 'warn', 'error'], true)) {
+        throw new SchemaError('assert_health.mode must be one of: ignore, warn, error');
+    }
+    return $mode;
+}
+
 function evalTextLeaf(array $leaf, string $subject, string $target, string $caseId, string $path): void {
     foreach ($leaf as $op => $raw) {
         if ($op === 'target') {
@@ -536,11 +555,11 @@ function evalTextAssertNode(mixed $node, string $subject, ?string $inheritedTarg
 }
 
 function evaluateTextFileCase(array $case, string $subject): array {
-    $mode = isset($case['assert_health']['mode']) ? (string)$case['assert_health']['mode'] : null;
-    if ($mode !== null && !in_array(strtolower($mode), ['ignore', 'warn', 'error'], true)) {
-        return ['status' => 'fail', 'category' => 'schema', 'message' => 'invalid assert_health.mode'];
+    try {
+        $resolvedMode = resolveAssertHealthMode($case);
+    } catch (SchemaError $e) {
+        return ['status' => 'fail', 'category' => 'schema', 'message' => $e->getMessage()];
     }
-    $resolvedMode = strtolower((string)($mode ?? 'ignore'));
     $diags = lintAssertionHealth($case['assert'] ?? []);
     if (count($diags) > 0 && $resolvedMode === 'error') {
         return [

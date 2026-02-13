@@ -12,4 +12,3 @@ and low-risk scaffolding first).
 ## Next
 
 - `SR-SEC-001`: `docs/spec/pending/SR-SEC-001-cli-run-safety-and-policy-alignment.md`
-- `SR-PORT-002`: `docs/spec/pending/SR-PORT-002-assertion-health-policy.md`

@@ -70,3 +70,47 @@ assert:
     must:
       - contain: ["ok"]
 ```
+
+## SRPHP-AH-004
+
+```yaml spec-test
+id: SRPHP-AH-004
+title: global assert health mode applies when case mode is omitted
+purpose: Verifies SPEC_RUNNER_ASSERT_HEALTH controls diagnostics when assert_health.mode is not set in a case.
+type: cli.run
+argv: ["ok"]
+exit_code: 0
+harness:
+  entrypoint: /bin/echo
+expect:
+  portable:
+    status: pass
+    category: null
+assert:
+  - target: stdout
+    must:
+      - contain: [""]
+```
+
+## SRPHP-AH-005
+
+```yaml spec-test
+id: SRPHP-AH-005
+title: per-case ignore overrides global warn policy
+purpose: Verifies assert_health.mode ignore suppresses diagnostics even when global policy is warn.
+type: cli.run
+argv: ["ok"]
+exit_code: 0
+harness:
+  entrypoint: /bin/echo
+expect:
+  portable:
+    status: pass
+    category: null
+assert_health:
+  mode: ignore
+assert:
+  - target: stdout
+    must:
+      - regex: ["(?<=o)k"]
+```

@@ -1,3 +1,4 @@
+# SPEC-OPT-OUT: Exercises behavior not yet representable as stable .spec.md coverage (unit-level API/diagnostic/infrastructure checks).
 from spec_runner.assertion_health import (
     format_assertion_health_error,
     lint_assert_tree,

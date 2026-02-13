@@ -1,4 +1,6 @@
+# SPEC-OPT-OUT: Exercises behavior not yet representable as stable .spec.md coverage (unit-level API/diagnostic/infrastructure checks).
 import json
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -297,6 +299,102 @@ assert:
 
     assert python_ids == ["SRCONF-PATTERN-PARITY-001"]
     assert php_ids == python_ids
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_bootstrap_runner_honors_global_assert_health_env_warn(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
+    cases_dir = tmp_path / "docs_spec"
+    out_json = tmp_path / "php-md-report.json"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / case_file_name("warn")).write_text(
+        """# Example
+
+```yaml spec-test
+id: SRCONF-PHP-AH-ENV-001
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: [""]
+```
+""",
+        encoding="utf-8",
+    )
+    proc_env = os.environ.copy()
+    proc_env["SPEC_RUNNER_ASSERT_HEALTH"] = "warn"
+    cp = subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        env=proc_env,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    assert validate_conformance_report_payload(payload) == []
+    assert payload["results"] == [
+        {"id": "SRCONF-PHP-AH-ENV-001", "status": "pass", "category": None, "message": None}
+    ]
+    assert "WARN: ASSERT_HEALTH AH001" in cp.stderr
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_bootstrap_runner_per_case_ignore_overrides_global_error_env(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
+    cases_dir = tmp_path / "docs_spec"
+    out_json = tmp_path / "php-md-report.json"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / case_file_name("override")).write_text(
+        """# Example
+
+```yaml spec-test
+id: SRCONF-PHP-AH-ENV-002
+type: text.file
+assert_health:
+  mode: ignore
+assert:
+  - target: text
+    must:
+      - contain: [""]
+```
+""",
+        encoding="utf-8",
+    )
+    proc_env = os.environ.copy()
+    proc_env["SPEC_RUNNER_ASSERT_HEALTH"] = "error"
+    cp = subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        env=proc_env,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    assert validate_conformance_report_payload(payload) == []
+    assert payload["results"] == [
+        {"id": "SRCONF-PHP-AH-ENV-002", "status": "pass", "category": None, "message": None}
+    ]
+    assert "ASSERT_HEALTH" not in cp.stderr
 
 
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")

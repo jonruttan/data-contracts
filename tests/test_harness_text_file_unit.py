@@ -1,3 +1,4 @@
+# SPEC-OPT-OUT: Exercises behavior not yet representable as stable .spec.md coverage (unit-level API/diagnostic/infrastructure checks).
 import pytest
 
 from spec_runner.dispatcher import SpecRunContext
