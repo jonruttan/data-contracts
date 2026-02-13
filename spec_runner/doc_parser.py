@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any, Iterator
 
 import yaml
-from spec_runner.settings import DEFAULT_CASE_FILE_PATTERN, resolve_case_file_pattern
+from spec_runner.settings import SETTINGS, resolve_case_file_pattern
 
 
 @dataclass(frozen=True)
@@ -70,7 +70,7 @@ def _iter_spec_test_blocks(raw: str) -> Iterator[str]:
 
 
 def iter_spec_doc_tests(spec_dir: Path, *, file_pattern: str | None = None) -> Iterator[SpecDocTest]:
-    pattern = resolve_case_file_pattern(file_pattern or DEFAULT_CASE_FILE_PATTERN)
+    pattern = resolve_case_file_pattern(file_pattern or SETTINGS.case.default_file_pattern)
     for p in sorted(spec_dir.glob(pattern)):
         raw = p.read_text(encoding="utf-8")
         for block in _iter_spec_test_blocks(raw):

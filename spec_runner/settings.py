@@ -1,24 +1,66 @@
-DEFAULT_CASE_FILE_PATTERN = "*.spec.md"
-ENV_ASSERT_HEALTH = "SPEC_RUNNER_ASSERT_HEALTH"
-ENV_ENTRYPOINT = "SPEC_RUNNER_ENTRYPOINT"
-ENV_SAFE_MODE = "SPEC_RUNNER_SAFE_MODE"
-ENV_ENV_ALLOWLIST = "SPEC_RUNNER_ENV_ALLOWLIST"
-DEFAULT_ASSERT_HEALTH_MODE = "ignore"
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class CaseSettings:
+    default_file_pattern: str
+
+
+@dataclass(frozen=True)
+class EnvSettings:
+    assert_health: str
+    entrypoint: str
+    safe_mode: str
+    env_allowlist: str
+
+
+@dataclass(frozen=True)
+class AssertionHealthSettings:
+    default_mode: str
+
+
+@dataclass(frozen=True)
+class RunnerSettings:
+    case: CaseSettings
+    env: EnvSettings
+    assertion_health: AssertionHealthSettings
+
+
+SETTINGS = RunnerSettings(
+    case=CaseSettings(default_file_pattern="*.spec.md"),
+    env=EnvSettings(
+        assert_health="SPEC_RUNNER_ASSERT_HEALTH",
+        entrypoint="SPEC_RUNNER_ENTRYPOINT",
+        safe_mode="SPEC_RUNNER_SAFE_MODE",
+        env_allowlist="SPEC_RUNNER_ENV_ALLOWLIST",
+    ),
+    assertion_health=AssertionHealthSettings(default_mode="ignore"),
+)
+
+# Backward-compatible aliases for existing call sites/tests.
+DEFAULT_CASE_FILE_PATTERN = SETTINGS.case.default_file_pattern
+ENV_ASSERT_HEALTH = SETTINGS.env.assert_health
+ENV_ENTRYPOINT = SETTINGS.env.entrypoint
+ENV_SAFE_MODE = SETTINGS.env.safe_mode
+ENV_ENV_ALLOWLIST = SETTINGS.env.env_allowlist
+DEFAULT_ASSERT_HEALTH_MODE = SETTINGS.assertion_health.default_mode
 
 
 def governed_config_literals() -> dict[str, str]:
     return {
-        DEFAULT_CASE_FILE_PATTERN: "DEFAULT_CASE_FILE_PATTERN",
-        ENV_ASSERT_HEALTH: "ENV_ASSERT_HEALTH",
-        ENV_ENTRYPOINT: "ENV_ENTRYPOINT",
-        ENV_SAFE_MODE: "ENV_SAFE_MODE",
-        ENV_ENV_ALLOWLIST: "ENV_ENV_ALLOWLIST",
+        SETTINGS.case.default_file_pattern: "SETTINGS.case.default_file_pattern",
+        SETTINGS.env.assert_health: "SETTINGS.env.assert_health",
+        SETTINGS.env.entrypoint: "SETTINGS.env.entrypoint",
+        SETTINGS.env.safe_mode: "SETTINGS.env.safe_mode",
+        SETTINGS.env.env_allowlist: "SETTINGS.env.env_allowlist",
     }
 
 
 def resolve_case_file_pattern(file_pattern: str | None) -> str:
     raw = str(file_pattern or "").strip()
-    return raw or DEFAULT_CASE_FILE_PATTERN
+    return raw or SETTINGS.case.default_file_pattern
 
 
 def case_file_name(stem: str, *, file_pattern: str | None = None) -> str:

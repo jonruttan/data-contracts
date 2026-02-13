@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import re
 from typing import Any
 
-from spec_runner.settings import DEFAULT_ASSERT_HEALTH_MODE, ENV_ASSERT_HEALTH
+from spec_runner.settings import SETTINGS
 
 @dataclass(frozen=True)
 class AssertionHealthDiagnostic:
@@ -27,7 +27,8 @@ _NON_PORTABLE_REGEX_TOKENS: tuple[tuple[str, str], ...] = (
 
 
 def resolve_assert_health_mode(test: dict[str, Any], *, env: dict[str, str]) -> str:
-    mode = str(env.get(ENV_ASSERT_HEALTH, DEFAULT_ASSERT_HEALTH_MODE)).strip().lower() or DEFAULT_ASSERT_HEALTH_MODE
+    default_mode = SETTINGS.assertion_health.default_mode
+    mode = str(env.get(SETTINGS.env.assert_health, default_mode)).strip().lower() or default_mode
     cfg = test.get("assert_health")
     if cfg is not None:
         if not isinstance(cfg, dict):

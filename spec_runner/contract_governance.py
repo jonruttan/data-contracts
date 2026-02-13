@@ -8,7 +8,7 @@ from typing import Any
 import yaml
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.doc_parser import iter_spec_doc_tests
-from spec_runner.settings import DEFAULT_CASE_FILE_PATTERN, governed_config_literals
+from spec_runner.settings import SETTINGS, governed_config_literals
 from spec_runner.purpose_lint import (
     load_purpose_lint_policy,
     purpose_quality_warnings,
@@ -72,7 +72,7 @@ def _is_closing_fence(line: str, *, ch: str, min_len: int) -> bool:
 def _lint_conformance_case_docs(cases_dir: Path, *, purpose_policy: dict[str, Any]) -> list[str]:
     errs: list[str] = []
     global_ids: set[str] = set()
-    for p in sorted(cases_dir.glob(DEFAULT_CASE_FILE_PATTERN)):
+    for p in sorted(cases_dir.glob(SETTINGS.case.default_file_pattern)):
         raw = p.read_text(encoding="utf-8")
         lines = raw.splitlines()
         i = 0
@@ -221,6 +221,31 @@ def _lint_python_config_literals(repo_root: Path) -> list[str]:
     return errs
 
 
+def _lint_settings_constant_imports(repo_root: Path) -> list[str]:
+    errs: list[str] = []
+    roots = [repo_root / "spec_runner", repo_root / "scripts/python"]
+    for root in roots:
+        if not root.exists():
+            continue
+        for p in sorted(root.rglob("*.py")):
+            if p.name == "settings.py":
+                continue
+            rel = str(p.relative_to(repo_root))
+            for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
+                s = line.strip()
+                if not s.startswith("from spec_runner.settings import "):
+                    continue
+                imported = s.split("import ", 1)[1]
+                names = [x.strip() for x in imported.split(",")]
+                bad = [n for n in names if n.isupper() and n.startswith(("DEFAULT_", "ENV_"))]
+                if bad:
+                    errs.append(
+                        "runtime code must use SETTINGS object, not constant import: "
+                        f"{rel}:{i} imports {', '.join(bad)}"
+                    )
+    return errs
+
+
 @dataclass(frozen=True)
 class RuleCoverage:
     rule_id: str
@@ -361,6 +386,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         errs.extend(_lint_conformance_case_index(cases_dir, conformance_ids))
     errs.extend(_lint_pending_specs(pending_dir))
     errs.extend(_lint_python_config_literals(repo_root))
+    errs.extend(_lint_settings_constant_imports(repo_root))
     errs.extend(_lint_purpose_warning_code_doc(repo_root))
     rules = policy.get("rules") or []
     links = trace.get("links") or []
