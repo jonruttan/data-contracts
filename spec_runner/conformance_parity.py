@@ -175,9 +175,10 @@ def build_parity_artifact(errors: list[str]) -> dict[str, Any]:
     return artifact
 
 
-def _shared_expectation_ids(cases_dir: Path) -> set[str]:
-    py_expected = load_expected_results(cases_dir, implementation="python")
-    php_expected = load_expected_results(cases_dir, implementation="php")
+def _shared_expectation_ids_from_expected(
+    py_expected: dict[str, Any],
+    php_expected: dict[str, Any],
+) -> set[str]:
     shared: set[str] = set()
     for rid in sorted(set(py_expected.keys()) & set(php_expected.keys())):
         py = py_expected[rid]
@@ -272,11 +273,5 @@ def run_parity_check(config: ParityConfig) -> list[str]:
     ]
     errors.extend([f"python vs expected: {e}" for e in compare_conformance_results(expected, python_actual)])
     errors.extend([f"php vs expected: {e}" for e in compare_conformance_results(php_expected, php_actual)])
-    errors.extend(
-        compare_parity_reports(
-            python_payload,
-            php_payload,
-            include_ids=_shared_expectation_ids(config.cases_dir),
-        )
-    )
+    errors.extend(compare_parity_reports(python_payload, php_payload, include_ids=_shared_expectation_ids_from_expected(expected, php_expected)))
     return errors
