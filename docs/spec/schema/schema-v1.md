@@ -74,6 +74,14 @@ Assertion targets for `text.file`:
 Runner-only inputs MUST live under `harness:` to preserve separation of
 concerns and keep the spec format portable.
 
+Security model:
+
+- Spec tests are trusted inputs. `cli.run` and hook entrypoints can execute
+  project code/commands with runner process privileges.
+- Running untrusted spec documents is unsafe and out of scope for v1.
+- Implementations MAY pass process environment variables to `cli.run`; keep
+  sensitive env values out of runner contexts where possible.
+
 For `type: cli.run`, supported `harness` keys include:
 
 - `entrypoint` (string, required): CLI entrypoint to call (e.g. `myproj.cli:main`)

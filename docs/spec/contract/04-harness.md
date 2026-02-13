@@ -38,3 +38,15 @@ For `text.file`:
   within the runner temp directory.
 - `text.file` `path` MUST be relative and MUST resolve within the
   implementation's contract root/workspace boundary.
+
+## Trust Model
+
+- Spec files are trusted inputs. `cli.run` executes commands/module entrypoints
+  declared in spec data and harness config.
+- Runner hook entrypoints (`hook_before` / `hook_after`) execute project code
+  with the same process privileges as the test runner.
+- Implementations MAY inherit process environment variables for `cli.run`.
+  Operators MUST treat process environment as potentially exposed to the system
+  under test and SHOULD avoid loading unrelated secrets in runner environments.
+- Running specs from untrusted sources is out of scope for v1 and MUST be
+  treated as unsafe.
