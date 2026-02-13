@@ -10,7 +10,7 @@ from typing import Callable
 from spec_runner.assertions import assert_text_op, eval_assert_tree, iter_leaf_assertions
 from spec_runner.dispatcher import SpecRunContext, iter_cases, run_case
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
-from spec_runner.settings import SETTINGS
+from spec_runner.settings import SETTINGS, governed_config_literals
 
 
 _SECURITY_WARNING_DOCS = (
@@ -29,6 +29,7 @@ _V1_SCOPE_REQUIRED_TOKENS = (
     "v1 non-goals",
     "compatibility commitments",
 )
+_PYTHON_RUNTIME_ROOTS = ("spec_runner", "scripts/python")
 
 
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
@@ -70,12 +71,56 @@ def _scan_v1_scope_doc(root: Path) -> list[str]:
     return []
 
 
+def _scan_runtime_config_literals(root: Path) -> list[str]:
+    violations: list[str] = []
+    governed = governed_config_literals()
+    for rel_root in _PYTHON_RUNTIME_ROOTS:
+        runtime_root = root / rel_root
+        if not runtime_root.exists():
+            continue
+        for p in sorted(runtime_root.rglob("*.py")):
+            if p.name == "settings.py":
+                continue
+            raw = p.read_text(encoding="utf-8")
+            rel = p.relative_to(root)
+            for literal, const_path in governed.items():
+                if f'"{literal}"' in raw or f"'{literal}'" in raw:
+                    violations.append(
+                        f"{rel}: literal {literal!r} duplicated; use {const_path}"
+                    )
+    return violations
+
+
+def _scan_runtime_settings_import_policy(root: Path) -> list[str]:
+    violations: list[str] = []
+    for rel_root in _PYTHON_RUNTIME_ROOTS:
+        runtime_root = root / rel_root
+        if not runtime_root.exists():
+            continue
+        for p in sorted(runtime_root.rglob("*.py")):
+            if p.name == "settings.py":
+                continue
+            rel = p.relative_to(root)
+            for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
+                s = line.strip()
+                if not s.startswith("from spec_runner.settings import "):
+                    continue
+                imported = s.split("import ", 1)[1]
+                names = [x.strip() for x in imported.split(",")]
+                bad = [n for n in names if n.isupper() and n.startswith(("DEFAULT_", "ENV_"))]
+                if bad:
+                    violations.append(f"{rel}:{i}: banned settings constant import(s): {', '.join(bad)}")
+    return violations
+
+
 GovernanceCheck = Callable[[Path], list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
     "pending.no_resolved_markers": _scan_pending_no_resolved_markers,
     "docs.security_warning_contract": _scan_security_warning_docs,
     "docs.v1_scope_contract": _scan_v1_scope_doc,
+    "runtime.config_literals": _scan_runtime_config_literals,
+    "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
 }
 
 

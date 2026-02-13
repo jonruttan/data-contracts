@@ -8,7 +8,7 @@ from typing import Any
 import yaml
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.doc_parser import iter_spec_doc_tests
-from spec_runner.settings import SETTINGS, governed_config_literals
+from spec_runner.settings import SETTINGS
 from spec_runner.purpose_lint import (
     load_purpose_lint_policy,
     purpose_quality_warnings,
@@ -184,52 +184,6 @@ def _lint_purpose_warning_code_doc(repo_root: Path) -> list[str]:
     return errs
 
 
-def _lint_python_config_literals(repo_root: Path) -> list[str]:
-    errs: list[str] = []
-    governed = governed_config_literals()
-    roots = [repo_root / "spec_runner", repo_root / "scripts/python"]
-    for root in roots:
-        if not root.exists():
-            continue
-        for p in sorted(root.rglob("*.py")):
-            if p.name == "settings.py":
-                continue
-            raw = p.read_text(encoding="utf-8")
-            rel = str(p.relative_to(repo_root))
-            for literal, const_name in governed.items():
-                if f'"{literal}"' in raw or f"'{literal}'" in raw:
-                    errs.append(
-                        "config literal duplicated outside settings: "
-                        f"{rel} contains {literal!r}; use spec_runner.settings.{const_name}"
-                    )
-    return errs
-
-
-def _lint_settings_constant_imports(repo_root: Path) -> list[str]:
-    errs: list[str] = []
-    roots = [repo_root / "spec_runner", repo_root / "scripts/python"]
-    for root in roots:
-        if not root.exists():
-            continue
-        for p in sorted(root.rglob("*.py")):
-            if p.name == "settings.py":
-                continue
-            rel = str(p.relative_to(repo_root))
-            for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
-                s = line.strip()
-                if not s.startswith("from spec_runner.settings import "):
-                    continue
-                imported = s.split("import ", 1)[1]
-                names = [x.strip() for x in imported.split(",")]
-                bad = [n for n in names if n.isupper() and n.startswith(("DEFAULT_", "ENV_"))]
-                if bad:
-                    errs.append(
-                        "runtime code must use SETTINGS object, not constant import: "
-                        f"{rel}:{i} imports {', '.join(bad)}"
-                    )
-    return errs
-
-
 @dataclass(frozen=True)
 class RuleCoverage:
     rule_id: str
@@ -367,8 +321,6 @@ def check_contract_governance(repo_root: Path) -> list[str]:
     if cases_dir.exists():
         errs.extend(_lint_conformance_case_docs(cases_dir, purpose_policy=purpose_policy))
         errs.extend(_lint_conformance_case_index(cases_dir, conformance_ids))
-    errs.extend(_lint_python_config_literals(repo_root))
-    errs.extend(_lint_settings_constant_imports(repo_root))
     errs.extend(_lint_purpose_warning_code_doc(repo_root))
     rules = policy.get("rules") or []
     links = trace.get("links") or []

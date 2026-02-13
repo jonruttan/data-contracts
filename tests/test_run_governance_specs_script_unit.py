@@ -125,3 +125,62 @@ def test_script_enforces_v1_scope_doc_tokens(tmp_path):
     _write_text(tmp_path / "docs/spec/contract/08_v1_scope.md", "# scope\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_runtime_config_literal_policy(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_literals.spec.md",
+        _case_for_check("SRGOV-TEST-RUNTIME-CONFIG-001", "runtime.config_literals", tmp_path),
+    )
+    (tmp_path / "spec_runner").mkdir(parents=True, exist_ok=True)
+    _write_text(
+        tmp_path / "spec_runner/settings.py",
+        """DEFAULT_CASE_FILE_PATTERN = "*.spec.md"
+ENV_ASSERT_HEALTH = "SPEC_RUNNER_ASSERT_HEALTH"
+ENV_ENTRYPOINT = "SPEC_RUNNER_ENTRYPOINT"
+ENV_SAFE_MODE = "SPEC_RUNNER_SAFE_MODE"
+ENV_ENV_ALLOWLIST = "SPEC_RUNNER_ENV_ALLOWLIST"
+
+def governed_config_literals():
+    return {
+        DEFAULT_CASE_FILE_PATTERN: "SETTINGS.case.default_file_pattern",
+        ENV_ASSERT_HEALTH: "SETTINGS.env.assert_health",
+        ENV_ENTRYPOINT: "SETTINGS.env.entrypoint",
+        ENV_SAFE_MODE: "SETTINGS.env.safe_mode",
+        ENV_ENV_ALLOWLIST: "SETTINGS.env.env_allowlist",
+    }
+""",
+    )
+    _write_text(
+        tmp_path / "spec_runner/good.py",
+        "from spec_runner.settings import SETTINGS\n"
+        "CASE_PATTERN = SETTINGS.case.default_file_pattern\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "spec_runner/bad.py", 'PATTERN = "*.spec.md"\n')
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runtime_settings_import_policy(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_imports.spec.md",
+        _case_for_check("SRGOV-TEST-RUNTIME-IMPORT-001", "runtime.settings_import_policy", tmp_path),
+    )
+    (tmp_path / "spec_runner").mkdir(parents=True, exist_ok=True)
+    _write_text(tmp_path / "spec_runner/good.py", "from spec_runner.settings import SETTINGS\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "spec_runner/bad_import.py",
+        "from spec_runner.settings import DEFAULT_CASE_FILE_PATTERN\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

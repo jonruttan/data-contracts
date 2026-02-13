@@ -16,3 +16,7 @@ Current checks:
   non-sandboxed/trusted-input/untrusted-spec language.
 - `docs.v1_scope_contract`: requires
   `docs/spec/contract/08_v1_scope.md` and core section tokens.
+- `runtime.config_literals`: rejects duplicated governed config string literals
+  in runtime Python code.
+- `runtime.settings_import_policy`: rejects importing `DEFAULT_*`/`ENV_*`
+  constants from `spec_runner.settings` in runtime Python code.
