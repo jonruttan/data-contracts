@@ -6,6 +6,7 @@ This folder contains the normative and working specification docs for
 ## How To Navigate
 
 - Start with design intent: `docs/design-philosophy.md`
+- Start with guided authoring: `docs/book/README.md`
 - Use stable schema shape: `docs/spec/schema/schema-v1.md`
 - Use portable behavior contract: `docs/spec/contract/`
 - Check open gaps: `docs/spec/backlog.md`
