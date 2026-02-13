@@ -27,3 +27,15 @@ def test_run_context_adapter_methods_support_new_fields(tmp_path, monkeypatch, c
     got = ctx.read_capture()
     assert hasattr(got, "out")
     assert hasattr(got, "err")
+
+
+def test_run_context_patch_context_requires_adapter(tmp_path):
+    ctx = SpecRunContext(tmp_path=tmp_path)
+    with pytest.raises(RuntimeError, match="requires patcher"):
+        ctx.patch_context()
+
+
+def test_run_context_read_capture_requires_adapter(tmp_path):
+    ctx = SpecRunContext(tmp_path=tmp_path)
+    with pytest.raises(RuntimeError, match="requires capture"):
+        ctx.read_capture()

@@ -130,3 +130,42 @@ def test_run_parity_check_surfaces_php_runner_failure(monkeypatch, tmp_path):
                 php_runner=Path("scripts/php/conformance_runner.php"),
             )
         )
+
+
+def test_run_parity_check_loads_expected_once_per_implementation(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        "spec_runner.conformance_parity.run_python_report",
+        lambda _cases: {"version": 1, "results": []},
+    )
+    monkeypatch.setattr(
+        "spec_runner.conformance_parity.run_php_report",
+        lambda _cases, _runner, **_kwargs: {"version": 1, "results": []},
+    )
+
+    calls = {"python": 0, "php": 0}
+
+    class _Expected:
+        def __init__(self, status: str, category):
+            self.status = status
+            self.category = category
+
+    def _load_expected(_cases, *, implementation="python"):
+        calls[implementation] += 1
+        if implementation == "python":
+            return {"X": _Expected("pass", None)}
+        return {"X": _Expected("pass", None)}
+
+    monkeypatch.setattr("spec_runner.conformance_parity.load_expected_results", _load_expected)
+    monkeypatch.setattr("spec_runner.conformance_parity.compare_conformance_results", lambda _exp, _act: [])
+    monkeypatch.setattr("spec_runner.conformance_parity.compare_parity_reports", lambda _py, _php, include_ids=None: [])
+
+    errs = run_parity_check(
+        ParityConfig(
+            cases_dir=tmp_path,
+            php_runner=Path("scripts/php/conformance_runner.php"),
+        )
+    )
+
+    assert errs == []
+    assert calls["python"] == 1
+    assert calls["php"] == 1
