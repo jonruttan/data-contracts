@@ -1,20 +1,5 @@
 # Pending Type-Model Extensions
 
-## SR-TYPE-API-001
-
-```yaml
-id: SR-TYPE-API-001
-where: docs/spec/schema/schema_v1.md
-priority: P1
-statement: MUST define a portable type contract for `api.http` before treating it as a supported conformance type.
-rationale: >
-  Portable endpoint checks require a stable field/target contract so Python, PHP,
-  and future runners evaluate equivalent behavior.
-verification: >
-  Add conformance fixtures using `type: api.http` only after schema and
-  docs/spec/contract/types/api_http.md are both normative and governance-enforced.
-```
-
 ## SR-TYPE-API-002
 
 ```yaml

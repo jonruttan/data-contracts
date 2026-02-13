@@ -151,6 +151,10 @@ Type contracts live under:
 Domain-specific adapters are expected to publish a matching type contract doc
 before portable conformance usage.
 
+Published extension type contracts:
+
+- `api.http` (see `docs/spec/contract/types/api_http.md`)
+
 ## Assertion Leaf Shape
 
 Assertion leaves are mappings with:
