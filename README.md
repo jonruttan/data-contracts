@@ -16,13 +16,24 @@ python -m pip install spec-runner
 For development:
 
 ```sh
+python3 -m venv .venv
+. .venv/bin/activate
 python -m pip install -e '.[dev]'
 ```
+
+If system Python is externally managed (PEP 668), use the venv flow above.
 
 Contract governance check:
 
 ```sh
 python scripts/check_contract_governance.py
+```
+
+Lint and static syntax checks:
+
+```sh
+python -m ruff check .
+python -m compileall -q spec_runner scripts tests
 ```
 
 Conformance reference test:
@@ -34,6 +45,8 @@ python -m pytest tests/test_conformance_runner_unit.py
 CI merge gate (GitHub Actions `spec_runner` job) runs:
 
 - `python scripts/check_contract_governance.py`
+- `python -m ruff check .`
+- `python -m compileall -q spec_runner scripts tests`
 - `python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`
 - `python -m pytest`
 

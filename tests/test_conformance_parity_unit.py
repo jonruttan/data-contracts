@@ -1,4 +1,5 @@
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -8,6 +9,17 @@ from spec_runner.conformance_parity import (
     compare_parity_reports,
     run_parity_check,
 )
+
+
+def test_run_php_report_times_out_with_actionable_error(monkeypatch, tmp_path):
+    from spec_runner.conformance_parity import run_php_report
+
+    def _timeout(*_args, **_kwargs):
+        raise subprocess.TimeoutExpired(cmd=["php"], timeout=1)
+
+    monkeypatch.setattr("spec_runner.conformance_parity.subprocess.run", _timeout)
+    with pytest.raises(RuntimeError, match="timed out after 1s"):
+        run_php_report(tmp_path, tmp_path / "runner.php", timeout_seconds=1)
 
 
 def test_compare_parity_reports_matches_status_and_category_only():
@@ -89,7 +101,7 @@ def test_run_parity_check_returns_report_shape_errors(monkeypatch, tmp_path):
     )
     monkeypatch.setattr(
         "spec_runner.conformance_parity.run_php_report",
-        lambda _cases, _runner: {"version": 1, "results": []},
+        lambda _cases, _runner, **_kwargs: {"version": 1, "results": []},
     )
     errs = run_parity_check(
         ParityConfig(
@@ -107,7 +119,7 @@ def test_run_parity_check_surfaces_php_runner_failure(monkeypatch, tmp_path):
         lambda _cases: {"version": 1, "results": []},
     )
 
-    def _raise(_cases, _runner):
+    def _raise(_cases, _runner, **_kwargs):
         raise RuntimeError("php conformance runner failed with exit 2")
 
     monkeypatch.setattr("spec_runner.conformance_parity.run_php_report", _raise)

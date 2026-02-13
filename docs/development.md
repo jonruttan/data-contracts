@@ -3,17 +3,30 @@
 ## Install (Editable)
 
 ```sh
-python3 -m pip install -e '.[dev]'
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -e '.[dev]'
 ```
 
-## Run Tests
+Using Homebrew/system Python without a venv may fail with
+`externally-managed-environment` (PEP 668). Prefer the venv flow above.
+
+## Run Checks
 
 ```sh
-python3 scripts/check_contract_governance.py
-python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
-python3 scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
-python3 scripts/conformance_purpose_report.py --format md --out .artifacts/conformance-purpose-summary.md
-python3 -m pytest
+python -m ruff check .
+python -m compileall -q spec_runner scripts tests
+```
+
+## Run Core Gate Checks
+
+```sh
+python scripts/check_contract_governance.py
+python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
+python scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
+python scripts/conformance_purpose_report.py --format md --out .artifacts/conformance-purpose-summary.md
+python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases --php-runner scripts/php/conformance_runner.php --out .artifacts/conformance-parity.json
+python -m pytest
 ```
 
 Canonical pre-merge check:
@@ -27,6 +40,8 @@ Canonical pre-merge check:
 Merges are expected to pass the `spec_runner` CI job, which runs:
 
 - contract governance check
+- ruff lint check (`F` + `E9` rules)
+- Python bytecode compile pass (`compileall`)
 - contract coverage report generation
 - conformance purpose report generation
 - conformance purpose markdown summary generation
@@ -50,20 +65,32 @@ Local equivalent:
 ## Contract Governance Check
 
 ```sh
-python3 scripts/check_contract_governance.py
+python scripts/check_contract_governance.py
+```
+
+## Lint
+
+```sh
+python -m ruff check .
+```
+
+## Static Analysis (Syntax/Import-Time Parse)
+
+```sh
+python -m compileall -q spec_runner scripts tests
 ```
 
 ## Contract Coverage Report
 
 ```sh
-python3 scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
+python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
 ```
 
 ## Conformance Purpose Report
 
 ```sh
-python3 scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
-python3 scripts/conformance_purpose_report.py --format md --out .artifacts/conformance-purpose-summary.md
+python scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
+python scripts/conformance_purpose_report.py --format md --out .artifacts/conformance-purpose-summary.md
 ```
 
 The purpose report includes `policy` metadata resolved from:
@@ -73,11 +100,11 @@ The purpose report includes `policy` metadata resolved from:
 Optional strict mode for automation:
 
 ```sh
-python3 scripts/conformance_purpose_report.py --fail-on-warn
-python3 scripts/conformance_purpose_report.py --fail-on-severity warn
-python3 scripts/conformance_purpose_report.py --fail-on-severity error
-python3 scripts/conformance_purpose_report.py --only-warnings --format md --out .artifacts/conformance-purpose-warnings.md
-python3 scripts/conformance_purpose_report.py --only-warnings --emit-patches .artifacts/conformance-purpose-patches
+python scripts/conformance_purpose_report.py --fail-on-warn
+python scripts/conformance_purpose_report.py --fail-on-severity warn
+python scripts/conformance_purpose_report.py --fail-on-severity error
+python scripts/conformance_purpose_report.py --only-warnings --format md --out .artifacts/conformance-purpose-warnings.md
+python scripts/conformance_purpose_report.py --only-warnings --emit-patches .artifacts/conformance-purpose-patches
 ```
 
 Purpose warning codes:
@@ -116,15 +143,16 @@ php scripts/php/conformance_runner.php \
 Validate bootstrap report shape:
 
 ```sh
-python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report.json
+python scripts/validate_conformance_report.py .artifacts/php-conformance-report.json
 ```
 
 Run end-to-end Python/PHP parity over canonical conformance cases:
 
 ```sh
-python3 scripts/compare_conformance_parity.py \
+python scripts/compare_conformance_parity.py \
   --cases docs/spec/conformance/cases \
   --php-runner scripts/php/conformance_runner.php \
+  --php-timeout-seconds 30 \
   --out .artifacts/conformance-parity.json
 ```
 
@@ -134,7 +162,7 @@ Parity diffs are evaluated on case IDs where `expect` resolves to the same
 ## Build / Publish
 
 ```sh
-python3 -m pip install -U build twine
-python3 -m build
-python3 -m twine check dist/*
+python -m pip install -U build twine
+python -m build
+python -m twine check dist/*
 ```

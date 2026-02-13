@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 
 from spec_runner.conformance import validate_conformance_report_payload
 

@@ -25,6 +25,7 @@ dev = [
   "pytest>=8",
   "build>=1",
   "twine>=6",
+  "ruff>=0.8",
 ]
 
 [tool.setuptools]
@@ -33,3 +34,9 @@ package-dir = {"" = "."}
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["spec_runner*"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["F", "E9"]

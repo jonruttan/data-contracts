@@ -34,6 +34,12 @@ def main(argv: list[str] | None = None) -> int:
         default="",
         help="Optional path to write JSON parity artifact",
     )
+    ap.add_argument(
+        "--php-timeout-seconds",
+        type=int,
+        default=30,
+        help="Timeout in seconds for the PHP parity runner subprocess (default: 30)",
+    )
     ns = ap.parse_args(argv)
     out_path = Path(str(ns.out)).resolve() if str(ns.out).strip() else None
 
@@ -47,6 +53,7 @@ def main(argv: list[str] | None = None) -> int:
     cfg = ParityConfig(
         cases_dir=Path(ns.cases),
         php_runner=Path(ns.php_runner),
+        php_timeout_seconds=int(ns.php_timeout_seconds),
     )
     try:
         errs = run_parity_check(cfg)

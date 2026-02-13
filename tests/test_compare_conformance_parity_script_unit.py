@@ -34,6 +34,8 @@ def test_script_writes_stable_artifact_on_failure(monkeypatch, tmp_path):
             str(tmp_path / "cases"),
             "--php-runner",
             str(tmp_path / "runner.php"),
+            "--php-timeout-seconds",
+            "45",
             "--out",
             str(out_path),
         ]
@@ -63,6 +65,8 @@ def test_script_writes_empty_artifact_on_success(monkeypatch, tmp_path):
             str(tmp_path / "cases"),
             "--php-runner",
             str(tmp_path / "runner.php"),
+            "--php-timeout-seconds",
+            "45",
             "--out",
             str(out_path),
         ]

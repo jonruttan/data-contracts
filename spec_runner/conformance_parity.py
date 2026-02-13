@@ -26,6 +26,7 @@ from spec_runner.dispatcher import SpecRunContext
 class ParityConfig:
     cases_dir: Path
     php_runner: Path
+    php_timeout_seconds: int = 30
 
 
 class _MiniMonkeyPatch:
@@ -198,22 +199,29 @@ def run_python_report(cases_dir: Path) -> dict[str, Any]:
     return report_to_jsonable(results)
 
 
-def run_php_report(cases_dir: Path, php_runner: Path) -> dict[str, Any]:
+def run_php_report(cases_dir: Path, php_runner: Path, *, timeout_seconds: int = 30) -> dict[str, Any]:
     with TemporaryDirectory(prefix="spec-runner-parity-") as td:
         out_path = Path(td) / "php-conformance-report.json"
-        cp = subprocess.run(
-            [
-                "php",
-                str(php_runner),
-                "--cases",
-                str(cases_dir),
-                "--out",
-                str(out_path),
-            ],
-            check=False,
-            capture_output=True,
-            text=True,
-        )
+        try:
+            cp = subprocess.run(
+                [
+                    "php",
+                    str(php_runner),
+                    "--cases",
+                    str(cases_dir),
+                    "--out",
+                    str(out_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=timeout_seconds,
+            )
+        except subprocess.TimeoutExpired as e:
+            raise RuntimeError(
+                f"php conformance runner timed out after {timeout_seconds}s "
+                f"(runner={php_runner}, cases={cases_dir})"
+            ) from e
         if cp.returncode != 0:
             stderr = cp.stderr.strip()
             raise RuntimeError(
@@ -225,7 +233,11 @@ def run_php_report(cases_dir: Path, php_runner: Path) -> dict[str, Any]:
 
 def run_parity_check(config: ParityConfig) -> list[str]:
     python_payload = run_python_report(config.cases_dir)
-    php_payload = run_php_report(config.cases_dir, config.php_runner)
+    php_payload = run_php_report(
+        config.cases_dir,
+        config.php_runner,
+        timeout_seconds=int(config.php_timeout_seconds),
+    )
 
     errors: list[str] = []
     py_shape = validate_conformance_report_payload(python_payload)
