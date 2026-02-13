@@ -21,3 +21,7 @@ Read in order:
 9. `docs/spec/contract/06_conformance.md`
 10. `docs/spec/contract/07_portable_spec_authoring.md`
 11. `docs/spec/contract/08_v1_scope.md`
+
+Type contracts:
+
+- `docs/spec/contract/types/`

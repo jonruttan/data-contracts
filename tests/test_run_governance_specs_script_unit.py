@@ -244,6 +244,44 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_conformance_type_contract_docs(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "type_contracts.spec.md",
+        _case_for_check("SRGOV-TEST-CONF-TYPE-001", "conformance.type_contract_docs", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/sample.spec.md",
+        """# Sample
+
+## SRCONF-TYPE-001
+
+```yaml spec-test
+id: SRCONF-TYPE-001
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["SRCONF-TYPE-001"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/types/text_file.md",
+        "# Type Contract: text.file\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/contract/types/text_file.md",
+        "# Wrong Heading\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_conformance_purpose_warning_code_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

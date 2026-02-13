@@ -65,6 +65,7 @@ _CURRENT_SPEC_FORBIDDEN_PATTERNS = (
     r"prior\s+spec",
     r"backward[- ]compatible",
 )
+_TYPE_CONTRACTS_DIR = "docs/spec/contract/types"
 
 
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
@@ -348,6 +349,37 @@ def _scan_current_spec_only_contract(root: Path) -> list[str]:
     return violations
 
 
+def _type_contract_doc_rel_for(case_type: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "_", case_type.lower()).strip("_")
+    return f"{_TYPE_CONTRACTS_DIR}/{slug}.md"
+
+
+def _scan_conformance_type_contract_docs(root: Path) -> list[str]:
+    violations: list[str] = []
+    cases_dir = root / "docs/spec/conformance/cases"
+    if not cases_dir.exists():
+        return violations
+
+    seen_types: set[str] = set()
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        case_type = str(spec.test.get("type", "")).strip()
+        if not case_type:
+            continue
+        seen_types.add(case_type)
+
+    for case_type in sorted(seen_types):
+        rel = _type_contract_doc_rel_for(case_type)
+        p = root / rel
+        if not p.exists():
+            violations.append(f"missing type contract doc for '{case_type}': {rel}")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        heading = f"# Type Contract: {case_type}"
+        if heading not in raw:
+            violations.append(f"{rel}: missing heading '{heading}'")
+    return violations
+
+
 GovernanceCheck = Callable[[Path], list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
@@ -361,6 +393,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
+    "conformance.type_contract_docs": _scan_conformance_type_contract_docs,
 }
 
 

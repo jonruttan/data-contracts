@@ -144,7 +144,12 @@ Currently supported types:
 - `cli.run` (core)
 - `text.file` (core)
 
-Other kinds are adapters provided by the system under test.
+Type contracts live under:
+
+- `docs/spec/contract/types/`
+
+Domain-specific adapters are expected to publish a matching type contract doc
+before portable conformance usage.
 
 ## Assertion Leaf Shape
 

@@ -1,0 +1,41 @@
+# Type Contract: cli.run
+
+## Status
+
+- v1 core type
+
+## Purpose
+
+Run a command entrypoint and assert against process outputs.
+
+## Required Fields
+
+- `id` (string)
+- `type` (must equal `cli.run`)
+- `argv` (list)
+- `exit_code` (int)
+- `assert` (assertion tree)
+
+## Optional Fields
+
+- `harness` (mapping, runner setup keys only)
+- common optional fields from schema v1 (`title`, `assert_health`, `expect`, `requires`)
+
+## Targets
+
+- `stdout`
+- `stderr`
+- `stdout_path`
+- `stdout_path_text`
+
+## Type Rules
+
+- runner setup keys MUST live under `harness`
+- `stdout_path` target only supports `exists`
+- `stdout_path_text` resolves from first non-empty stdout line path
+
+## Failure Category Guidance
+
+- schema violations -> `schema`
+- assertion mismatches -> `assertion`
+- process/runtime faults -> `runtime`
