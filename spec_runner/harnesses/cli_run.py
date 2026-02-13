@@ -4,6 +4,7 @@ import os
 import sys
 import types
 import importlib
+import threading
 
 from spec_runner.assertions import (
     _raise_with_assert_context,
@@ -23,6 +24,9 @@ from spec_runner.assertion_health import (
 )
 
 
+_GLOBAL_SIDE_EFFECT_LOCK = threading.RLock()
+
+
 def _runtime_env(ctx) -> dict[str, str]:
     raw_env = getattr(ctx, "env", None)
     if raw_env is None:
@@ -30,11 +34,13 @@ def _runtime_env(ctx) -> dict[str, str]:
     return {str(k): str(v) for k, v in raw_env.items()}
 
 
-def _entrypoint_from_env(ctx) -> str:
+def _entrypoint_from_env(ctx, *, runtime_env: dict[str, str], harness_env: dict[str, object]) -> str:
     raw_env = getattr(ctx, "env", None)
     if raw_env is not None and "SPEC_RUNNER_ENTRYPOINT" in raw_env:
         return str(raw_env["SPEC_RUNNER_ENTRYPOINT"])
-    return os.environ.get("SPEC_RUNNER_ENTRYPOINT", "")
+    if "SPEC_RUNNER_ENTRYPOINT" in harness_env:
+        return str(harness_env["SPEC_RUNNER_ENTRYPOINT"])
+    return str(runtime_env.get("SPEC_RUNNER_ENTRYPOINT", ""))
 
 
 def _load_entrypoint(ep: str):
@@ -124,140 +130,146 @@ def run(case, *, ctx) -> None:
         for d in diags:
             print(format_assertion_health_warning(d), file=sys.stderr)
 
-    with ctx.monkeypatch.context() as mp:
-        # Runner-provided setup features. These are deliberately small and generic
-        # to avoid hook proliferation for common cases.
-        stub_modules = h.get("stub_modules") or []
-        if isinstance(stub_modules, str):
-            stub_modules = [stub_modules]
-        for name in [str(x).strip() for x in stub_modules if str(x).strip()]:
-            if name in sys.modules:
-                continue
-            if name == "openai":
-                mp.setitem(sys.modules, "openai", types.SimpleNamespace(OpenAI=object))
-            else:
-                mp.setitem(sys.modules, name, types.SimpleNamespace())
-
-        setup_files = h.get("setup_files") or []
-        if isinstance(setup_files, dict):
-            setup_files = [setup_files]
-        if setup_files:
-            if not isinstance(setup_files, list):
-                raise TypeError("setup_files must be a list (or mapping for a single file)")
-            tmp_root = ctx.tmp_path.resolve()
-            for item in setup_files:
-                if not isinstance(item, dict):
-                    raise TypeError("setup_files item must be a mapping")
-                rel = item.get("path")
-                if not rel:
-                    raise ValueError("setup_files item missing required key: path")
-                text = item.get("text", "")
-                from pathlib import Path
-
-                rel_p = Path(str(rel)).expanduser()
-                if rel_p.is_absolute():
-                    raise ValueError("setup_files item path must be relative")
-                p = (tmp_root / rel_p).resolve()
-                try:
-                    p.relative_to(tmp_root)
-                except ValueError as e:
-                    raise ValueError("setup_files item path escapes tmp_path") from e
-                p.parent.mkdir(parents=True, exist_ok=True)
-                p.write_text(str(text), encoding="utf-8")
-
-        env = h.get("env") or {}
-        if env:
-            if not isinstance(env, dict):
-                raise TypeError("harness.env must be a mapping")
-            for k, v in env.items():
-                k = str(k)
-                if v is None:
-                    mp.delenv(k, raising=False)
+    with _GLOBAL_SIDE_EFFECT_LOCK:
+        with ctx.monkeypatch.context() as mp:
+            # Runner-provided setup features. These are deliberately small and generic
+            # to avoid hook proliferation for common cases.
+            stub_modules = h.get("stub_modules") or []
+            if isinstance(stub_modules, str):
+                stub_modules = [stub_modules]
+            for name in [str(x).strip() for x in stub_modules if str(x).strip()]:
+                if name in sys.modules:
+                    continue
+                if name == "openai":
+                    mp.setitem(sys.modules, "openai", types.SimpleNamespace(OpenAI=object))
                 else:
-                    sv = str(v)
-                    # Convenience: if an env value looks like a relative path and a
-                    # file exists under the runner temp dir, pass the absolute path.
+                    mp.setitem(sys.modules, name, types.SimpleNamespace())
+
+            setup_files = h.get("setup_files") or []
+            if isinstance(setup_files, dict):
+                setup_files = [setup_files]
+            if setup_files:
+                if not isinstance(setup_files, list):
+                    raise TypeError("setup_files must be a list (or mapping for a single file)")
+                tmp_root = ctx.tmp_path.resolve()
+                for item in setup_files:
+                    if not isinstance(item, dict):
+                        raise TypeError("setup_files item must be a mapping")
+                    rel = item.get("path")
+                    if not rel:
+                        raise ValueError("setup_files item missing required key: path")
+                    text = item.get("text", "")
+                    from pathlib import Path
+
+                    rel_p = Path(str(rel)).expanduser()
+                    if rel_p.is_absolute():
+                        raise ValueError("setup_files item path must be relative")
+                    p = (tmp_root / rel_p).resolve()
                     try:
-                        from pathlib import Path
+                        p.relative_to(tmp_root)
+                    except ValueError as e:
+                        raise ValueError("setup_files item path escapes tmp_path") from e
+                    p.parent.mkdir(parents=True, exist_ok=True)
+                    p.write_text(str(text), encoding="utf-8")
 
-                        pv = Path(sv).expanduser()
-                        if not pv.is_absolute() and (ctx.tmp_path / pv).exists():
-                            sv = str((ctx.tmp_path / pv).resolve())
-                    except (OSError, ValueError):
-                        pass
-                    mp.setenv(k, sv)
+            harness_env_raw = h.get("env") or {}
+            harness_env: dict[str, object] = {}
+            if harness_env_raw:
+                if not isinstance(harness_env_raw, dict):
+                    raise TypeError("harness.env must be a mapping")
+                harness_env = {str(k): v for k, v in harness_env_raw.items()}
+                for k, v in harness_env.items():
+                    if v is None:
+                        mp.delenv(k, raising=False)
+                    else:
+                        sv = str(v)
+                        # Convenience: if an env value looks like a relative path and a
+                        # file exists under the runner temp dir, pass the absolute path.
+                        try:
+                            from pathlib import Path
 
-        stdin_text = h.get("stdin_text")
-        stdin_isatty = h.get("stdin_isatty")
-        if stdin_text is not None or stdin_isatty is not None:
-            class _FakeStdin(io.StringIO):
-                def __init__(self, text: str, isatty: bool):
-                    super().__init__(text)
-                    self._isatty = bool(isatty)
+                            pv = Path(sv).expanduser()
+                            if not pv.is_absolute() and (ctx.tmp_path / pv).exists():
+                                sv = str((ctx.tmp_path / pv).resolve())
+                        except (OSError, ValueError):
+                            pass
+                        mp.setenv(k, sv)
 
-                def isatty(self) -> bool:  # type: ignore[override]
-                    return self._isatty
+            stdin_text = h.get("stdin_text")
+            stdin_isatty = h.get("stdin_isatty")
+            if stdin_text is not None or stdin_isatty is not None:
+                class _FakeStdin(io.StringIO):
+                    def __init__(self, text: str, isatty: bool):
+                        super().__init__(text)
+                        self._isatty = bool(isatty)
 
-            fake = _FakeStdin("" if stdin_text is None else str(stdin_text), bool(stdin_isatty))
-            mp.setattr(sys, "stdin", fake)
+                    def isatty(self) -> bool:  # type: ignore[override]
+                        return self._isatty
 
-        # Test-only affordance: allow docs-embedded spec-tests to simulate missing
-        # optional dependencies in a deterministic way.
-        block_imports = h.get("block_imports") or []
-        if isinstance(block_imports, str):
-            block_imports = [block_imports]
-        block_imports = {str(x) for x in block_imports if str(x).strip()}
+                fake = _FakeStdin("" if stdin_text is None else str(stdin_text), bool(stdin_isatty))
+                mp.setattr(sys, "stdin", fake)
 
-        real_import = builtins.__import__
+            # Test-only affordance: allow docs-embedded spec-tests to simulate missing
+            # optional dependencies in a deterministic way.
+            block_imports = h.get("block_imports") or []
+            if isinstance(block_imports, str):
+                block_imports = [block_imports]
+            block_imports = {str(x) for x in block_imports if str(x).strip()}
 
-        def _blocked_import(name, globals=None, locals=None, fromlist=(), level=0):
-            if name in block_imports or any(name.startswith(m + ".") for m in block_imports):
-                raise ModuleNotFoundError(name)
-            return real_import(name, globals, locals, fromlist, level)
+            real_import = builtins.__import__
 
-        if block_imports:
-            mp.setattr(builtins, "__import__", _blocked_import)
+            def _blocked_import(name, globals=None, locals=None, fromlist=(), level=0):
+                if name in block_imports or any(name.startswith(m + ".") for m in block_imports):
+                    raise ModuleNotFoundError(name)
+                return real_import(name, globals, locals, fromlist, level)
 
-        if hook_before_ep:
-            hook_before_fn = _load_entrypoint(str(hook_before_ep))
-            hook_before_fn(case=case, ctx=ctx, harness=h, **{str(k): v for k, v in hook_kwargs.items()})
+            if block_imports:
+                mp.setattr(builtins, "__import__", _blocked_import)
 
-        entrypoint = str(h.get("entrypoint") or _entrypoint_from_env(ctx) or "").strip()
-        if not entrypoint:
-            raise RuntimeError("cli.run requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT")
-        cli_main = _load_entrypoint(entrypoint)
+            if hook_before_ep:
+                hook_before_fn = _load_entrypoint(str(hook_before_ep))
+                hook_before_fn(case=case, ctx=ctx, harness=h, **{str(k): v for k, v in hook_kwargs.items()})
 
-        try:
-            code = cli_main(argv)
-        except SystemExit as e:
-            ec = getattr(e, "code", 1)
-            code = 1 if ec is None else int(ec)
+            entrypoint = str(
+                h.get("entrypoint")
+                or _entrypoint_from_env(ctx, runtime_env=runtime_env, harness_env=harness_env)
+                or ""
+            ).strip()
+            if not entrypoint:
+                raise RuntimeError("cli.run requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT")
+            cli_main = _load_entrypoint(entrypoint)
 
-        captured = ctx.capsys.readouterr()
-        got = int(code)
-        want = int(t.get("exit_code", 0))
-        assert got == want, f"[case_id={case_id}] exit_code expected={want} actual={got}"
-
-        # Optional hook_after for complex assertions/setup that don't fit the declarative DSL.
-        if hook_after_ep:
-            # Best-effort derive stdout_path for convenience.
-            stdout_path = None
             try:
-                stdout_path = assert_stdout_path_exists(captured.out)
-            except AssertionError:
+                code = cli_main(argv)
+            except SystemExit as e:
+                ec = getattr(e, "code", 1)
+                code = 1 if ec is None else int(ec)
+
+            captured = ctx.capsys.readouterr()
+            got = int(code)
+            want = int(t.get("exit_code", 0))
+            assert got == want, f"[case_id={case_id}] exit_code expected={want} actual={got}"
+
+            # Optional hook_after for complex assertions/setup that don't fit the declarative DSL.
+            if hook_after_ep:
+                # Best-effort derive stdout_path for convenience.
                 stdout_path = None
-            hook_after_fn = _load_entrypoint(str(hook_after_ep))
-            hook_after_fn(
-                case=case,
-                ctx=ctx,
-                result={
-                    "exit_code": int(code),
-                    "stdout": captured.out,
-                    "stderr": captured.err,
-                    "stdout_path": stdout_path,
-                },
-                **{str(k): v for k, v in hook_kwargs.items()},
-            )
+                try:
+                    stdout_path = assert_stdout_path_exists(captured.out)
+                except AssertionError:
+                    stdout_path = None
+                hook_after_fn = _load_entrypoint(str(hook_after_ep))
+                hook_after_fn(
+                    case=case,
+                    ctx=ctx,
+                    result={
+                        "exit_code": int(code),
+                        "stdout": captured.out,
+                        "stderr": captured.err,
+                        "stdout_path": stdout_path,
+                    },
+                    **{str(k): v for k, v in hook_kwargs.items()},
+                )
 
     def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
         for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):

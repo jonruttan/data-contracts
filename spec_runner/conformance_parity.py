@@ -4,6 +4,7 @@ import io
 import json
 import os
 import subprocess
+import threading
 from contextlib import contextmanager, redirect_stderr, redirect_stdout
 from dataclasses import dataclass
 from pathlib import Path
@@ -35,27 +36,28 @@ class _MiniMonkeyPatch:
 
     @contextmanager
     def context(self) -> Iterator[_MiniMonkeyPatch]:
-        mark = len(self._undo)
-        try:
-            yield self
-        finally:
-            while len(self._undo) > mark:
-                mode, obj, key, old = self._undo.pop()
-                if mode == "attr":
-                    if old is _MISSING:
-                        delattr(obj, key)
-                    else:
-                        setattr(obj, key, old)
-                elif mode == "item":
-                    if old is _MISSING:
-                        del obj[key]
-                    else:
-                        obj[key] = old
-                elif mode == "env":
-                    if old is _MISSING:
-                        os.environ.pop(key, None)
-                    else:
-                        os.environ[key] = old
+        with _GLOBAL_PATCH_LOCK:
+            mark = len(self._undo)
+            try:
+                yield self
+            finally:
+                while len(self._undo) > mark:
+                    mode, obj, key, old = self._undo.pop()
+                    if mode == "attr":
+                        if old is _MISSING:
+                            delattr(obj, key)
+                        else:
+                            setattr(obj, key, old)
+                    elif mode == "item":
+                        if old is _MISSING:
+                            del obj[key]
+                        else:
+                            obj[key] = old
+                    elif mode == "env":
+                        if old is _MISSING:
+                            os.environ.pop(key, None)
+                        else:
+                            os.environ[key] = old
 
     def setattr(self, obj: Any, name: str, value: Any) -> None:
         old = getattr(obj, name, _MISSING)
@@ -83,6 +85,7 @@ class _MiniMonkeyPatch:
 
 
 _MISSING = object()
+_GLOBAL_PATCH_LOCK = threading.RLock()
 
 
 class _MiniCapsys:

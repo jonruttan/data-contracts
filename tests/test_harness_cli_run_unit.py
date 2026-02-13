@@ -741,3 +741,44 @@ def test_cli_type_can_use_entrypoint_from_harness_env(tmp_path, monkeypatch, cap
     from spec_runner.harnesses.cli_run import run
 
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, monkeypatch=monkeypatch, capsys=capsys))
+
+
+def test_cli_type_context_env_entrypoint_overrides_harness_env(tmp_path, monkeypatch, capsys):
+    def fake_main_ctx(_argv):
+        print("ctx")
+        return 0
+
+    def fake_main_harness(_argv):
+        print("harness")
+        return 0
+
+    ep_ctx = _install_sut(monkeypatch, fake_main_ctx)
+    mod_name = "spec_runner_test_sut_harness"
+    m = types.ModuleType(mod_name)
+    m.main = fake_main_harness  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, mod_name, m)
+    ep_harness = f"{mod_name}:main"
+
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-032",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"env": {"SPEC_RUNNER_ENTRYPOINT": ep_harness}},
+            "assert": [{"target": "stdout", "must": [{"contain": ["ctx"]}]}],
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    run(
+        case,
+        ctx=SpecRunContext(
+            tmp_path=tmp_path,
+            monkeypatch=monkeypatch,
+            capsys=capsys,
+            env={"SPEC_RUNNER_ENTRYPOINT": ep_ctx},
+        ),
+    )
