@@ -11,5 +11,7 @@ Files:
 
 - `runner-pass.spec.md`: positive-path runner behavior checks
 - `runner-failures.spec.md`: expected schema/assertion/runtime failures
+- `runner-assert-health.spec.md`: assertion-health policy behavior on cli.run
+- `runner-portability.spec.md`: portability-sensitive shell/env/path cases
 - `fixtures/`: supporting files referenced by `text.file path` and
   `stdout_path_text` checks
