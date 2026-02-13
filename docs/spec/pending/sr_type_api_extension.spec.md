@@ -1,20 +1,5 @@
 # Pending Type-Model Extensions
 
-## SR-TYPE-API-002
-
-```yaml
-id: SR-TYPE-API-002
-where: docs/spec/contract/07_portable_spec_authoring.md
-priority: P1
-statement: MUST keep transport/setup details under `harness` and keep API behavior assertions in canonical `assert` targets.
-rationale: >
-  This preserves implementation independence by isolating runner-specific setup from
-  portable behavior claims.
-verification: >
-  Add governance checks that reject runner-specific setup keys outside `harness`
-  for portable conformance cases.
-```
-
 ## SR-TYPE-API-003
 
 ```yaml

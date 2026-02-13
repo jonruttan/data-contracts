@@ -38,3 +38,11 @@ Portable conformance cases SHOULD be deterministic by construction:
   - `expect.impl.<runtime>`
 - Portable case text SHOULD avoid language/runtime branding unless the case is
   explicitly testing portability deltas.
+
+## API Extension Authoring Rule
+
+For `type: api.http` portable cases:
+
+- transport/setup details MUST live under `harness`
+- HTTP behavior assertions MUST live under canonical `assert` targets
+- portable assertion targets are: `status`, `headers`, `body_text`, `body_json`

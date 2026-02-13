@@ -66,6 +66,19 @@ _CURRENT_SPEC_FORBIDDEN_PATTERNS = (
     r"backward[- ]compatible",
 )
 _TYPE_CONTRACTS_DIR = "docs/spec/contract/types"
+_API_HTTP_ALLOWED_TOP_LEVEL_KEYS = {
+    "id",
+    "type",
+    "title",
+    "purpose",
+    "request",
+    "assert",
+    "expect",
+    "requires",
+    "assert_health",
+    "harness",
+}
+_API_HTTP_ALLOWED_ASSERT_TARGETS = {"status", "headers", "body_text", "body_json"}
 
 
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
@@ -380,6 +393,64 @@ def _scan_conformance_type_contract_docs(root: Path) -> list[str]:
     return violations
 
 
+def _collect_assert_targets(node: object) -> list[str]:
+    targets: list[str] = []
+    if isinstance(node, list):
+        for child in node:
+            targets.extend(_collect_assert_targets(child))
+        return targets
+    if not isinstance(node, dict):
+        return targets
+    target = node.get("target")
+    if isinstance(target, str) and target.strip():
+        targets.append(target.strip())
+    for key in ("must", "can", "cannot"):
+        child = node.get(key)
+        if child is not None:
+            targets.extend(_collect_assert_targets(child))
+    return targets
+
+
+def _scan_conformance_api_http_portable_shape(root: Path) -> list[str]:
+    violations: list[str] = []
+    cases_dir = root / "docs/spec/conformance/cases"
+    if not cases_dir.exists():
+        return violations
+
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        case = spec.test
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        case_type = str(case.get("type", "")).strip()
+        if case_type != "api.http":
+            continue
+
+        extra_top = sorted(k for k in case.keys() if str(k) not in _API_HTTP_ALLOWED_TOP_LEVEL_KEYS)
+        if extra_top:
+            violations.append(
+                f"{case_id}: unsupported top-level key(s) for api.http portable case: {', '.join(extra_top)}"
+            )
+
+        request = case.get("request")
+        if not isinstance(request, dict):
+            violations.append(f"{case_id}: api.http requires request mapping")
+        else:
+            method = str(request.get("method", "")).strip()
+            url = str(request.get("url", "")).strip()
+            if not method:
+                violations.append(f"{case_id}: api.http request.method is required")
+            if not url:
+                violations.append(f"{case_id}: api.http request.url is required")
+
+        targets = _collect_assert_targets(case.get("assert", []))
+        for t in targets:
+            if t not in _API_HTTP_ALLOWED_ASSERT_TARGETS:
+                violations.append(
+                    f"{case_id}: unsupported api.http assert target '{t}' "
+                    f"(allowed: {', '.join(sorted(_API_HTTP_ALLOWED_ASSERT_TARGETS))})"
+                )
+    return violations
+
+
 GovernanceCheck = Callable[[Path], list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
@@ -394,6 +465,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.regex_doc_sync": _scan_regex_doc_sync,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
     "conformance.type_contract_docs": _scan_conformance_type_contract_docs,
+    "conformance.api_http_portable_shape": _scan_conformance_api_http_portable_shape,
 }
 
 

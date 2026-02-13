@@ -282,6 +282,59 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_conformance_api_http_portable_shape(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "api_shape.spec.md",
+        _case_for_check("SRGOV-TEST-CONF-API-001", "conformance.api_http_portable_shape", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api_ok.spec.md",
+        """# API
+
+## SRCONF-API-001
+
+```yaml spec-test
+id: SRCONF-API-001
+type: api.http
+request:
+  method: GET
+  url: https://example.test/v1/ping
+assert:
+  - target: status
+    must:
+      - contain: ["200"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api_bad.spec.md",
+        """# API Bad
+
+## SRCONF-API-002
+
+```yaml spec-test
+id: SRCONF-API-002
+type: api.http
+method: GET
+request:
+  method: GET
+  url: https://example.test/v1/ping
+assert:
+  - target: stdout
+    must:
+      - contain: ["200"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_conformance_purpose_warning_code_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"
