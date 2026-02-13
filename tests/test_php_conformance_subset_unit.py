@@ -11,6 +11,7 @@ from spec_runner.conformance import (
     load_expected_results,
     validate_conformance_report_payload,
 )
+from spec_runner.doc_parser import iter_spec_doc_tests
 from spec_runner.settings import case_file_name
 
 
@@ -235,6 +236,67 @@ def test_php_bootstrap_runner_rejects_empty_pattern_arg(tmp_path):
     )
     assert cp.returncode == 2
     assert "case-file-pattern requires a non-empty value" in cp.stderr
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_default_case_pattern_parity_between_python_and_php(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
+    cases_dir = tmp_path / "docs_spec"
+    out_json = tmp_path / "php-md-report.json"
+    cases_dir.mkdir(parents=True)
+
+    (cases_dir / case_file_name("match")).write_text(
+        """# Match
+
+```yaml spec-test
+id: SRCONF-PATTERN-PARITY-001
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["SRCONF-PATTERN-PARITY-001"]
+```
+""",
+        encoding="utf-8",
+    )
+    (cases_dir / "plain.md").write_text(
+        """# Plain
+
+```yaml spec-test
+id: SRCONF-PATTERN-PARITY-002
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["SRCONF-PATTERN-PARITY-002"]
+```
+""",
+        encoding="utf-8",
+    )
+
+    python_ids = [c.test["id"] for c in iter_spec_doc_tests(cases_dir)]
+
+    subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    php_ids = [str(r["id"]) for r in payload.get("results", [])]
+
+    assert python_ids == ["SRCONF-PATTERN-PARITY-001"]
+    assert php_ids == python_ids
 
 
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
