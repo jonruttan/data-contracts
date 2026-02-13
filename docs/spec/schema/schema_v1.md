@@ -100,6 +100,7 @@ Security model:
 - Running untrusted spec documents is unsafe and out of scope for v1.
 - Implementations MAY pass process environment variables to `cli.run`; keep
   sensitive env values out of runner contexts where possible.
+- `spec_runner` is not a sandbox and MUST NOT be presented/documented as one.
 
 For `type: cli.run`, supported `harness` keys include:
 

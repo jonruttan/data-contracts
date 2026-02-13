@@ -3,6 +3,13 @@
 This walkthrough gives a deterministic first success with `spec_runner` from a
 clean clone.
 
+## Safety First (Required)
+
+- `spec_runner` is not a sandbox.
+- Spec files are trusted inputs; `cli.run` and hook entrypoints execute project
+  code with runner process privileges.
+- Do not run untrusted spec documents.
+
 ## 1) Create And Activate A Virtual Environment
 
 ```sh

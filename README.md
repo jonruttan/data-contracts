@@ -58,6 +58,13 @@ Deterministic first-run walkthrough:
 
 - `docs/book/00_first_10_minutes.md`
 
+Trust/safety model (read before running specs from outside your repo):
+
+- `spec_runner` is not a sandbox.
+- Spec files are trusted inputs; `cli.run` and hooks execute project code with
+  runner process privileges.
+- Running untrusted spec documents is unsafe and out of scope for v1.
+
 1. Create a spec doc with a fenced `yaml spec-test` block:
 
 ```yaml

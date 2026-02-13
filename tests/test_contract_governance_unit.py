@@ -986,3 +986,62 @@ def governed_config_literals():
     )
     errs = check_contract_governance(tmp_path)
     assert any("runtime code must use SETTINGS object" in e for e in errs)
+
+
+def test_contract_governance_fails_when_required_security_warning_doc_is_missing(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R28")
+    _write_text(
+        _case_doc_path(tmp_path, "sample"),
+        """# Sample
+## SRCONF-SEC-001
+```yaml spec-test
+id: SRCONF-SEC-001
+title: t
+purpose: Purpose text with enough words to keep checks deterministic.
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-SEC-001\n",
+    )
+    _write_text(tmp_path / "README.md", "trusted inputs\nnot a sandbox\nuntrusted spec\n")
+    _write_text(tmp_path / "docs/book/00_first_10_minutes.md", "trusted inputs\nnot a sandbox\nuntrusted spec\n")
+    (tmp_path / "docs/spec/schema/schema_v1.md").unlink()
+    errs = check_contract_governance(tmp_path)
+    assert any("security warning doc missing: docs/spec/schema/schema_v1.md" in e for e in errs)
+
+
+def test_contract_governance_fails_when_security_warning_tokens_missing(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R29")
+    _write_text(
+        _case_doc_path(tmp_path, "sample"),
+        """# Sample
+## SRCONF-SEC-002
+```yaml spec-test
+id: SRCONF-SEC-002
+title: t
+purpose: Purpose text with enough words to keep checks deterministic.
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-SEC-002\n",
+    )
+    _write_text(tmp_path / "README.md", "trusted inputs only\n")
+    _write_text(tmp_path / "docs/book/00_first_10_minutes.md", "trusted inputs only\n")
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "trusted inputs only\n")
+    errs = check_contract_governance(tmp_path)
+    assert any(
+        "security warning docs must state trust/sandbox model; README.md missing token(s)" in e
+        for e in errs
+    )
