@@ -22,10 +22,12 @@ function usage(): void {
     fwrite(STDOUT, "usage: conformance_runner.php --cases <dir-or-file> --out <file> [--case-file-pattern <glob>]\n");
 }
 
+const DEFAULT_CASE_FILE_PATTERN = '*.spec.md';
+
 function parseArgs(array $argv): array {
     $out = null;
     $cases = null;
-    $casePattern = '*.spec.md';
+    $casePattern = DEFAULT_CASE_FILE_PATTERN;
     for ($i = 1; $i < count($argv); $i++) {
         $arg = $argv[$i];
         if ($arg === '--help' || $arg === '-h') {
@@ -40,10 +42,17 @@ function parseArgs(array $argv): array {
             $cases = $argv[++$i];
             continue;
         }
-        if ($arg === '--case-file-pattern' && $i + 1 < count($argv)) {
+        if ($arg === '--case-file-pattern') {
+            if ($i + 1 >= count($argv)) {
+                fwrite(STDERR, "error: --case-file-pattern requires a non-empty value\n");
+                usage();
+                exit(2);
+            }
             $casePattern = trim((string)$argv[++$i]);
             if ($casePattern === '') {
-                $casePattern = '*.spec.md';
+                fwrite(STDERR, "error: --case-file-pattern requires a non-empty value\n");
+                usage();
+                exit(2);
             }
             continue;
         }

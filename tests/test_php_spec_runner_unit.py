@@ -297,3 +297,32 @@ assert:
             "message": None,
         }
     ]
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_spec_runner_rejects_empty_pattern_arg(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/spec_runner.php"
+    cases_dir = tmp_path / "cases"
+    out_json = tmp_path / "php-report.json"
+    cases_dir.mkdir(parents=True)
+
+    cp = subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--out",
+            str(out_json),
+            "--case-file-pattern",
+            "",
+        ],
+        check=False,
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    assert cp.returncode == 2
+    assert "case-file-pattern requires a non-empty value" in cp.stderr
