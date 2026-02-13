@@ -94,19 +94,6 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
     "patcher",
     "capture",
 }
-_API_HTTP_ALLOWED_TOP_LEVEL_KEYS = {
-    "id",
-    "type",
-    "title",
-    "purpose",
-    "request",
-    "assert",
-    "expect",
-    "requires",
-    "assert_health",
-    "harness",
-}
-_API_HTTP_ALLOWED_ASSERT_TARGETS = {"status", "headers", "body_text", "body_json"}
 
 
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
@@ -439,8 +426,34 @@ def _collect_assert_targets(node: object) -> list[str]:
     return targets
 
 
-def _scan_conformance_api_http_portable_shape(root: Path) -> list[str]:
+def _scan_conformance_api_http_portable_shape(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("api_http")
+    if not isinstance(cfg, dict):
+        return ["conformance.api_http_portable_shape requires harness.api_http mapping in governance spec"]
+    raw_allowed_keys = cfg.get("allowed_top_level_keys")
+    if not isinstance(raw_allowed_keys, list) or not raw_allowed_keys or any(not isinstance(x, str) for x in raw_allowed_keys):
+        return ["harness.api_http.allowed_top_level_keys must be a non-empty list of strings"]
+    allowed_top_level_keys = {x.strip() for x in raw_allowed_keys if x.strip()}
+    if not allowed_top_level_keys:
+        return ["harness.api_http.allowed_top_level_keys must include at least one non-empty key"]
+    raw_allowed_targets = cfg.get("allowed_assert_targets")
+    if not isinstance(raw_allowed_targets, list) or not raw_allowed_targets or any(not isinstance(x, str) for x in raw_allowed_targets):
+        return ["harness.api_http.allowed_assert_targets must be a non-empty list of strings"]
+    allowed_assert_targets = {x.strip() for x in raw_allowed_targets if x.strip()}
+    if not allowed_assert_targets:
+        return ["harness.api_http.allowed_assert_targets must include at least one non-empty target"]
+    raw_required_request_fields = cfg.get("required_request_fields", ["method", "url"])
+    if (
+        not isinstance(raw_required_request_fields, list)
+        or not raw_required_request_fields
+        or any(not isinstance(x, str) for x in raw_required_request_fields)
+    ):
+        return ["harness.api_http.required_request_fields must be a non-empty list of strings"]
+    required_request_fields = {x.strip() for x in raw_required_request_fields if x.strip()}
+    if not required_request_fields:
+        return ["harness.api_http.required_request_fields must include at least one non-empty field"]
     cases_dir = root / "docs/spec/conformance/cases"
     if not cases_dir.exists():
         return violations
@@ -461,7 +474,7 @@ def _scan_conformance_api_http_portable_shape(root: Path) -> list[str]:
                 category = None if category_raw is None else str(category_raw).strip().lower()
                 schema_failure_fixture = status == "fail" and category == "schema"
 
-        extra_top = sorted(k for k in case.keys() if str(k) not in _API_HTTP_ALLOWED_TOP_LEVEL_KEYS)
+        extra_top = sorted(k for k in case.keys() if str(k) not in allowed_top_level_keys)
         if extra_top:
             violations.append(
                 f"{case_id}: unsupported top-level key(s) for api.http portable case: {', '.join(extra_top)}"
@@ -471,19 +484,17 @@ def _scan_conformance_api_http_portable_shape(root: Path) -> list[str]:
         if not isinstance(request, dict):
             violations.append(f"{case_id}: api.http requires request mapping")
         elif not schema_failure_fixture:
-            method = str(request.get("method", "")).strip()
-            url = str(request.get("url", "")).strip()
-            if not method:
-                violations.append(f"{case_id}: api.http request.method is required")
-            if not url:
-                violations.append(f"{case_id}: api.http request.url is required")
+            for field in sorted(required_request_fields):
+                value = str(request.get(field, "")).strip()
+                if not value:
+                    violations.append(f"{case_id}: api.http request.{field} is required")
 
         targets = _collect_assert_targets(case.get("assert", []))
         for t in targets:
-            if t not in _API_HTTP_ALLOWED_ASSERT_TARGETS:
+            if t not in allowed_assert_targets:
                 violations.append(
                     f"{case_id}: unsupported api.http assert target '{t}' "
-                    f"(allowed: {', '.join(sorted(_API_HTTP_ALLOWED_ASSERT_TARGETS))})"
+                    f"(allowed: {', '.join(sorted(allowed_assert_targets))})"
                 )
     return violations
 

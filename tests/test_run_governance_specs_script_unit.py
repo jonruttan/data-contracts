@@ -287,7 +287,26 @@ def test_script_enforces_conformance_api_http_portable_shape(tmp_path):
     cases_dir = tmp_path / "cases"
     _write_text(
         cases_dir / "api_shape.spec.md",
-        _case_for_check("SRGOV-TEST-CONF-API-001", "conformance.api_http_portable_shape", tmp_path),
+        f"""# Governance
+
+## SRGOV-TEST-CONF-API-001
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-API-001
+type: governance.check
+check: conformance.api_http_portable_shape
+harness:
+  root: {tmp_path}
+  api_http:
+    allowed_top_level_keys: ["id", "type", "title", "purpose", "request", "assert", "expect", "requires", "assert_health", "harness"]
+    allowed_assert_targets: ["status", "headers", "body_text", "body_json"]
+    required_request_fields: ["method", "url"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: conformance.api_http_portable_shape"]
+```
+""",
     )
     _write_text(
         tmp_path / "docs/spec/conformance/cases/api_ok.spec.md",
@@ -330,6 +349,17 @@ assert:
       - contain: ["200"]
 ```
 """,
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_requires_api_http_shape_policy_in_governance_spec(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "api_shape_missing_policy.spec.md",
+        _case_for_check("SRGOV-TEST-CONF-API-001-MISS", "conformance.api_http_portable_shape", tmp_path),
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
