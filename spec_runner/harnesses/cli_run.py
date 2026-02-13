@@ -156,7 +156,7 @@ def run(case, *, ctx) -> None:
                         pv = Path(sv).expanduser()
                         if not pv.is_absolute() and (ctx.tmp_path / pv).exists():
                             sv = str((ctx.tmp_path / pv).resolve())
-                    except Exception:
+                    except (OSError, ValueError):
                         pass
                     mp.setenv(k, sv)
 
@@ -217,7 +217,7 @@ def run(case, *, ctx) -> None:
             stdout_path = None
             try:
                 stdout_path = assert_stdout_path_exists(captured.out)
-            except Exception:
+            except AssertionError:
                 stdout_path = None
             hook_after_fn = _load_entrypoint(str(hook_after_ep))
             hook_after_fn(

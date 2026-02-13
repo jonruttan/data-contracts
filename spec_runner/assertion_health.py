@@ -65,7 +65,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                         import json
 
                         key = json.dumps(child, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-                    except Exception:
+                    except (TypeError, ValueError):
                         key = repr(child)
                     if key in seen:
                         out.append(
