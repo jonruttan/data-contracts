@@ -18,6 +18,11 @@ Alternate runner script path:
 
 - `scripts/php/spec_runner.php`
 
+Fixture-driven runner suites:
+
+- `docs/spec/impl/php/cases/runner-pass.spec.md`
+- `docs/spec/impl/php/cases/runner-failures.spec.md`
+
 Runtime requirement:
 
 - PHP `yaml_parse` extension (for structured fixture parsing)
@@ -79,6 +84,14 @@ Example:
 php scripts/php/spec_runner.php \
   --cases docs/spec/conformance/cases \
   --out .artifacts/php-spec-runner-report.json
+```
+
+To run the implementation-owned fixture suites:
+
+```sh
+php scripts/php/spec_runner.php \
+  --cases docs/spec/impl/php/cases \
+  --out .artifacts/php-spec-runner-impl-report.json
 ```
 
 ## Remaining Work To Reach Full Runner
