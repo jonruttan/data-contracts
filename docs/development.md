@@ -139,6 +139,20 @@ Contract docs for interpreting those fixtures live in:
 
 ## PHP Bootstrap Parity
 
+Generate a Python conformance report:
+
+```sh
+python scripts/python/conformance_runner.py \
+  --cases docs/spec/conformance/cases \
+  --out .artifacts/python-conformance-report.json
+```
+
+Validate report shape:
+
+```sh
+python scripts/validate_conformance_report.py .artifacts/python-conformance-report.json
+```
+
 Generate a bootstrap PHP report:
 
 ```sh

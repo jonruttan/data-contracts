@@ -59,9 +59,13 @@ def _read_yaml(path: Path) -> Any:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
-def load_conformance_cases(cases_dir: Path) -> list[tuple[Path, dict[str, Any]]]:
+def load_conformance_cases(
+    cases_dir: Path,
+    *,
+    case_file_pattern: str | None = None,
+) -> list[tuple[Path, dict[str, Any]]]:
     out: list[tuple[Path, dict[str, Any]]] = []
-    for spec in iter_spec_doc_tests(cases_dir):
+    for spec in iter_spec_doc_tests(cases_dir, file_pattern=case_file_pattern):
         out.append((spec.doc_path, dict(spec.test)))
     return out
 
@@ -181,11 +185,15 @@ def run_conformance_cases(
     ctx: SpecRunContext,
     implementation: str = "python",
     capabilities: set[str] | None = None,
+    case_file_pattern: str | None = None,
 ) -> list[ConformanceResult]:
     impl = str(implementation).strip() or "python"
     caps = set(capabilities) if capabilities is not None else set(_DEFAULT_CAPABILITIES.get(impl, set()))
     results: list[ConformanceResult] = []
-    for fixture_path, case in load_conformance_cases(cases_dir):
+    for fixture_path, case in load_conformance_cases(
+        cases_dir,
+        case_file_pattern=case_file_pattern,
+    ):
         test = dict(case)
         case_id = str(test.get("id", ""))
         pre = _requires_outcome(test, implementation=impl, capabilities=caps)
