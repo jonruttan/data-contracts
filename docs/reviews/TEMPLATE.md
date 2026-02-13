@@ -1,16 +1,5 @@
-# Review
+# Template (Moved)
 
-Date:
-Version:
-Reviewer:
+Canonical location:
 
-## Summary
-
-## Strengths
-
-## Weaknesses
-
-## Risks
-
-## Recommended Next Steps
-
+- `docs/reviews/templates/review_snapshot.md`

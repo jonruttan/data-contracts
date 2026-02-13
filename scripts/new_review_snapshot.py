@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import re
+import subprocess
+from pathlib import Path
+
+
+def _git_sha(short: bool = False) -> str:
+    args = ["git", "rev-parse"]
+    if short:
+        args.append("--short")
+    args.append("HEAD")
+    cp = subprocess.run(args, check=True, capture_output=True, text=True)
+    return cp.stdout.strip()
+
+
+def _slug(value: str) -> str:
+    s = re.sub(r"[^a-zA-Z0-9]+", "-", value.strip().lower()).strip("-")
+    return s or "review"
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(
+        description="Create a dated review snapshot markdown file with prompt/repo revisions prefilled.",
+    )
+    ap.add_argument(
+        "--prompt",
+        default="docs/reviews/prompts/adoption_7_personas.md",
+        help="Path to prompt file used for the review",
+    )
+    ap.add_argument(
+        "--label",
+        default="persona_review",
+        help="Label used in snapshot filename",
+    )
+    ap.add_argument(
+        "--model",
+        default="<fill in>",
+        help="Model name to prefill",
+    )
+    ap.add_argument(
+        "--out-dir",
+        default="docs/reviews/snapshots",
+        help="Directory where snapshot file is written",
+    )
+    ns = ap.parse_args(argv)
+
+    today = dt.date.today().isoformat()
+    prompt_path = Path(ns.prompt)
+    out_dir = Path(ns.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    prompt_sha = _git_sha(short=True)
+    repo_sha = _git_sha(short=True)
+    stem = f"{today}_{_slug(ns.label)}"
+    out_path = out_dir / f"{stem}.md"
+    if out_path.exists():
+        i = 2
+        while True:
+            alt = out_dir / f"{stem}_{i}.md"
+            if not alt.exists():
+                out_path = alt
+                break
+            i += 1
+
+    body = f"""# Review Snapshot\n\nDate: {today}\nModel: {ns.model}\nPrompt: `{prompt_path.as_posix()}`\nPrompt revision: {prompt_sha}\nRepo revision: {repo_sha}\n\n## Notes (optional)\n\n- What changed since last time:\n- What you asked the reviewer to focus on:\n- Where spec candidates were copied:\n  - backlog: yes/no\n  - promoted specs: (list files) or none\n\n## Raw Output\n\nPaste the full AI output here. Do not edit it beyond formatting fixes.\n"""
+    out_path.write_text(body, encoding="utf-8")
+    print(out_path.as_posix())
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
