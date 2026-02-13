@@ -9,6 +9,7 @@ This folder contains the normative and working specification docs for
 - Start with guided authoring: `docs/book/README.md`
 - Use stable schema shape: `docs/spec/schema/schema_v1.md`
 - Use portable behavior contract: `docs/spec/contract/`
+- Use explicit v1 scope/non-goals: `docs/spec/contract/08_v1_scope.md`
 - Check open gaps: `docs/spec/backlog.md`
 
 ## Folder Layout

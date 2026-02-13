@@ -26,14 +26,6 @@ Source snapshot: `docs/reviews/snapshots/2026-02-13_persona-review.md`
 - rationale: Inferred from repeated narrative concerns in the review output; requires human triage.
 - verification: Define as yaml spec-test where possible; otherwise add a governance check with deterministic output.
 
-### CK-OPS-IMP-005
-
-- where: `docs/spec/backlog.md`
-- priority: `P1`
-- statement: SHOULD publish explicit v1 scope/non-goals and compatibility commitments
-- rationale: Inferred from repeated narrative concerns in the review output; requires human triage.
-- verification: Define as yaml spec-test where possible; otherwise add a governance check with deterministic output.
-
 ### CK-CORE-IMP-006
 
 - where: `docs/spec/backlog.md`

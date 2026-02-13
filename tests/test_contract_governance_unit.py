@@ -21,6 +21,7 @@ _NORMATIVE_DOCS = [
     "05_errors.md",
     "06-conformance.md",
     "07-portable-spec-authoring.md",
+    "08_v1_scope.md",
 ]
 
 
@@ -1045,3 +1046,55 @@ expect:
         "security warning docs must state trust/sandbox model; README.md missing token(s)" in e
         for e in errs
     )
+
+
+def test_contract_governance_fails_when_v1_scope_doc_missing(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R30")
+    _write_text(
+        _case_doc_path(tmp_path, "sample"),
+        """# Sample
+## SRCONF-V1SCOPE-001
+```yaml spec-test
+id: SRCONF-V1SCOPE-001
+title: t
+purpose: Purpose text with enough words to keep checks deterministic.
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-V1SCOPE-001\n",
+    )
+    (tmp_path / "docs/spec/contract/08_v1_scope.md").unlink()
+    errs = check_contract_governance(tmp_path)
+    assert any("v1 scope doc missing: docs/spec/contract/08_v1_scope.md" in e for e in errs)
+
+
+def test_contract_governance_fails_when_v1_scope_doc_missing_required_tokens(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R31")
+    _write_text(
+        _case_doc_path(tmp_path, "sample"),
+        """# Sample
+## SRCONF-V1SCOPE-002
+```yaml spec-test
+id: SRCONF-V1SCOPE-002
+title: t
+purpose: Purpose text with enough words to keep checks deterministic.
+type: text.file
+expect:
+  portable: {status: pass, category: null}
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/README.md",
+        "# Conformance Cases\n\n- SRCONF-V1SCOPE-002\n",
+    )
+    _write_text(tmp_path / "docs/spec/contract/08_v1_scope.md", "# scope\n")
+    errs = check_contract_governance(tmp_path)
+    assert any("v1 scope doc missing required section token(s)" in e for e in errs)

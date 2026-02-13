@@ -1,0 +1,47 @@
+# V1 Scope And Compatibility Commitments
+
+This document defines explicit v1 boundaries for `spec_runner` so adoption and
+maintenance decisions stay predictable.
+
+## V1 In Scope
+
+- Execute Markdown-embedded `yaml spec-test` blocks for core types:
+  - `text.file`
+  - `cli.run`
+- Enforce stable case shape and assertion DSL from:
+  - `docs/spec/schema/schema_v1.md`
+  - `docs/spec/contract/`
+- Maintain deterministic conformance and parity checks across:
+  - Python runner
+  - PHP runner
+- Keep a dependency-minimal core suitable for library reuse.
+
+## V1 Non-Goals
+
+- No sandboxing of untrusted specs or runner isolation guarantees.
+- No expansion into a broad generalized workflow engine.
+- No requirement to support all implementation-specific harness features in the
+  portable contract.
+- No guarantee that project-specific adapters/harnesses are portable across
+  runtimes.
+
+## Compatibility Commitments (v1)
+
+- Existing v1 canonical DSL forms (`must` / `can` / `cannot`, `contain`,
+  `regex`) remain stable.
+- Contract-breaking changes require versioning:
+  - update policy lifecycle metadata (`introduced_in` / `deprecated_in` /
+    `removed_in`)
+  - update schema/contract docs and traceability in the same change slice
+  - include conformance or unit evidence for changed `MUST` behavior
+- Portable conformance case format remains Markdown `*.spec.md` with fenced
+  `yaml spec-test` blocks.
+
+## Release Boundary
+
+`spec_runner` v1 readiness requires:
+
+- deterministic CI gate (`./scripts/ci_gate.sh`) green
+- contract governance checks green
+- conformance parity check green for the canonical case set
+- no unresolved P0/P1 contract risks in active review backlog

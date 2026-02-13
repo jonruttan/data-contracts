@@ -141,6 +141,8 @@ Machine-readable policy:
 `docs/spec/contract/policy_v1.yaml`.
 Traceability mapping:
 `docs/spec/contract/traceability_v1.yaml`.
+V1 scope/non-goals/compatibility commitments:
+`docs/spec/contract/08_v1_scope.md`.
 
 Discovery note: `iter_cases(Path(...))` scans files matching the configured
 default case-file pattern in that directory (non-recursive). You can pass a

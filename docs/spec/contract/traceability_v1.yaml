@@ -170,6 +170,7 @@ links:
       - docs/spec/contract/05_errors.md
       - docs/spec/contract/06_conformance.md
       - docs/spec/contract/07_portable_spec_authoring.md
+      - docs/spec/contract/08_v1_scope.md
     schema_refs:
       - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
