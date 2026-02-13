@@ -22,6 +22,7 @@ from spec_runner.assertion_health import (
     lint_assert_tree,
     resolve_assert_health_mode,
 )
+from spec_runner.settings import ENV_ENTRYPOINT, ENV_SAFE_MODE
 
 
 _GLOBAL_SIDE_EFFECT_LOCK = threading.RLock()
@@ -36,15 +37,15 @@ def _runtime_env(ctx) -> dict[str, str]:
 
 def _entrypoint_from_env(ctx, *, runtime_env: dict[str, str], harness_env: dict[str, object]) -> str:
     raw_env = getattr(ctx, "env", None)
-    if raw_env is not None and "SPEC_RUNNER_ENTRYPOINT" in raw_env:
-        return str(raw_env["SPEC_RUNNER_ENTRYPOINT"])
-    if "SPEC_RUNNER_ENTRYPOINT" in harness_env:
-        return str(harness_env["SPEC_RUNNER_ENTRYPOINT"])
-    return str(runtime_env.get("SPEC_RUNNER_ENTRYPOINT", ""))
+    if raw_env is not None and ENV_ENTRYPOINT in raw_env:
+        return str(raw_env[ENV_ENTRYPOINT])
+    if ENV_ENTRYPOINT in harness_env:
+        return str(harness_env[ENV_ENTRYPOINT])
+    return str(runtime_env.get(ENV_ENTRYPOINT, ""))
 
 
 def _is_safe_mode_enabled(runtime_env: dict[str, str]) -> bool:
-    raw = str(runtime_env.get("SPEC_RUNNER_SAFE_MODE", "")).strip().lower()
+    raw = str(runtime_env.get(ENV_SAFE_MODE, "")).strip().lower()
     return raw in {"1", "true", "yes", "on"}
 
 
@@ -234,7 +235,7 @@ def run(case, *, ctx) -> None:
 
             if safe_mode and (hook_before_ep or hook_after_ep):
                 raise RuntimeError(
-                    "cli.run safe mode forbids hook_before/hook_after; unset SPEC_RUNNER_SAFE_MODE to use hooks"
+                    f"cli.run safe mode forbids hook_before/hook_after; unset {ENV_SAFE_MODE} to use hooks"
                 )
 
             if hook_before_ep:
@@ -252,7 +253,7 @@ def run(case, *, ctx) -> None:
             if not entrypoint:
                 if safe_mode:
                     raise RuntimeError("cli.run safe mode requires explicit harness.entrypoint")
-                raise RuntimeError("cli.run requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT")
+                raise RuntimeError(f"cli.run requires harness.entrypoint or {ENV_ENTRYPOINT}")
             cli_main = _load_entrypoint(entrypoint)
 
             try:

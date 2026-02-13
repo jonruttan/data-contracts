@@ -36,6 +36,22 @@ Canonical pre-merge check:
 ./scripts/ci_gate.sh
 ```
 
+## Runner Exit-Code Contract
+
+The following exit codes are stable command contracts for CI/scripting.
+
+| Command | `0` | `1` | `2` |
+| --- | --- | --- | --- |
+| `python scripts/python/conformance_runner.py` | runner completed and all case statuses are `pass`/`skip` | at least one case status is `fail`, or runtime execution error occurred | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`, nonexistent `--cases` path) |
+| `php scripts/php/conformance_runner.php` | runner completed and report written (case-level failures are reported in JSON, not promoted to process failure) | fatal runtime error (for example YAML extension missing, unreadable path, write failure) | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`) |
+| `php scripts/php/spec_runner.php` | runner completed, report written, and all cases passed | one or more cases failed, or fatal runtime error occurred | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`) |
+
+Notes:
+
+- `--help` exits `0` for all three commands.
+- `2` is reserved for invocation/argument issues so automation can distinguish
+  operator errors from runner/case failures.
+
 ## Required CI Gate
 
 Merges are expected to pass the `spec_runner` CI job, which runs:

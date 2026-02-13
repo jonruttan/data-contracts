@@ -873,3 +873,92 @@ expect:
     )
     errs = check_contract_governance(tmp_path)
     assert any("purpose warning code doc has stale code: PUR999" in e for e in errs)
+
+
+def test_contract_governance_fails_when_pending_file_marks_item_resolved(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R23")
+    _write_text(
+        tmp_path / "docs/spec/pending/sample_pending.md",
+        """---
+id: SAMPLE
+---
+
+# Sample Pending
+
+- resolved: 2026-02-13
+""",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("pending spec must not include resolved/completed status" in e for e in errs)
+
+
+def test_contract_governance_allows_pending_file_without_resolution_markers(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R24")
+    _write_text(
+        tmp_path / "docs/spec/pending/sample_pending.md",
+        """---
+id: SAMPLE
+---
+
+# Sample Pending
+
+- statement: SHOULD add deterministic onboarding checks
+""",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert not any("pending spec must not include resolved/completed status" in e for e in errs)
+
+
+def test_contract_governance_fails_when_runtime_python_duplicates_config_literal(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R25")
+    _write_text(
+        tmp_path / "spec_runner/settings.py",
+        """DEFAULT_CASE_FILE_PATTERN = "*.spec.md"
+ENV_ASSERT_HEALTH = "SPEC_RUNNER_ASSERT_HEALTH"
+ENV_ENTRYPOINT = "SPEC_RUNNER_ENTRYPOINT"
+ENV_SAFE_MODE = "SPEC_RUNNER_SAFE_MODE"
+ENV_ENV_ALLOWLIST = "SPEC_RUNNER_ENV_ALLOWLIST"
+
+def governed_config_literals():
+    return {}
+""",
+    )
+    _write_text(
+        tmp_path / "spec_runner/bad.py",
+        'PATTERN = "*.spec.md"\n',
+    )
+    errs = check_contract_governance(tmp_path)
+    assert any("config literal duplicated outside settings" in e for e in errs)
+
+
+def test_contract_governance_allows_runtime_python_using_settings_constants(tmp_path):
+    _seed_governance_repo(tmp_path)
+    _write_min_policy_trace(tmp_path, rule_id="R26")
+    _write_text(
+        tmp_path / "spec_runner/settings.py",
+        """DEFAULT_CASE_FILE_PATTERN = "*.spec.md"
+ENV_ASSERT_HEALTH = "SPEC_RUNNER_ASSERT_HEALTH"
+ENV_ENTRYPOINT = "SPEC_RUNNER_ENTRYPOINT"
+ENV_SAFE_MODE = "SPEC_RUNNER_SAFE_MODE"
+ENV_ENV_ALLOWLIST = "SPEC_RUNNER_ENV_ALLOWLIST"
+
+def governed_config_literals():
+    return {
+        DEFAULT_CASE_FILE_PATTERN: "DEFAULT_CASE_FILE_PATTERN",
+        ENV_ASSERT_HEALTH: "ENV_ASSERT_HEALTH",
+        ENV_ENTRYPOINT: "ENV_ENTRYPOINT",
+        ENV_SAFE_MODE: "ENV_SAFE_MODE",
+        ENV_ENV_ALLOWLIST: "ENV_ENV_ALLOWLIST",
+    }
+""",
+    )
+    _write_text(
+        tmp_path / "spec_runner/good.py",
+        "from spec_runner.settings import DEFAULT_CASE_FILE_PATTERN\n"
+        "CASE_PATTERN = DEFAULT_CASE_FILE_PATTERN\n",
+    )
+    errs = check_contract_governance(tmp_path)
+    assert not any("config literal duplicated outside settings" in e for e in errs)

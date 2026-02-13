@@ -10,6 +10,7 @@ from tempfile import TemporaryDirectory
 from spec_runner.conformance import report_to_jsonable, run_conformance_cases
 from spec_runner.dispatcher import SpecRunContext
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
+from spec_runner.settings import DEFAULT_CASE_FILE_PATTERN
 
 
 def _write_report(path: Path, payload: dict[str, object]) -> None:
@@ -25,7 +26,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", required=True, help="Path to write JSON report")
     ap.add_argument(
         "--case-file-pattern",
-        default="*.spec.md",
+        default=DEFAULT_CASE_FILE_PATTERN,
         help="Glob pattern for case files when --cases points to a directory",
     )
     ns = ap.parse_args(argv)

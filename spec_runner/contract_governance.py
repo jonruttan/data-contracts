@@ -8,7 +8,7 @@ from typing import Any
 import yaml
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.doc_parser import iter_spec_doc_tests
-from spec_runner.settings import DEFAULT_CASE_FILE_PATTERN
+from spec_runner.settings import DEFAULT_CASE_FILE_PATTERN, governed_config_literals
 from spec_runner.purpose_lint import (
     load_purpose_lint_policy,
     purpose_quality_warnings,
@@ -32,6 +32,7 @@ _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
 _CONFORMANCE_MAX_BLOCK_LINES = 50
 _CONFORMANCE_CASE_ID_PATTERN = re.compile(r"\bSRCONF-[A-Z0-9-]+\b")
 _PURPOSE_WARNING_CODES_DOC = "docs/spec/conformance/purpose_warning_codes.md"
+_PENDING_FORBIDDEN_STATUS_TOKENS = ("resolved:", "completed:")
 
 
 def _read_yaml(path: Path) -> Any:
@@ -183,6 +184,43 @@ def _lint_purpose_warning_code_doc(repo_root: Path) -> list[str]:
     return errs
 
 
+def _lint_pending_specs(pending_dir: Path) -> list[str]:
+    errs: list[str] = []
+    if not pending_dir.exists():
+        return errs
+    for p in sorted(pending_dir.glob("*.md")):
+        raw = p.read_text(encoding="utf-8")
+        lower = raw.lower()
+        for tok in _PENDING_FORBIDDEN_STATUS_TOKENS:
+            if tok in lower:
+                errs.append(
+                    "pending spec must not include resolved/completed status; "
+                    f"remove completed item from pending file: {p} (found '{tok}')"
+                )
+    return errs
+
+
+def _lint_python_config_literals(repo_root: Path) -> list[str]:
+    errs: list[str] = []
+    governed = governed_config_literals()
+    roots = [repo_root / "spec_runner", repo_root / "scripts/python"]
+    for root in roots:
+        if not root.exists():
+            continue
+        for p in sorted(root.rglob("*.py")):
+            if p.name == "settings.py":
+                continue
+            raw = p.read_text(encoding="utf-8")
+            rel = str(p.relative_to(repo_root))
+            for literal, const_name in governed.items():
+                if f'"{literal}"' in raw or f"'{literal}'" in raw:
+                    errs.append(
+                        "config literal duplicated outside settings: "
+                        f"{rel} contains {literal!r}; use spec_runner.settings.{const_name}"
+                    )
+    return errs
+
+
 @dataclass(frozen=True)
 class RuleCoverage:
     rule_id: str
@@ -317,9 +355,12 @@ def check_contract_governance(repo_root: Path) -> list[str]:
     for e in purpose_policy_errs:
         errs.append(f"{e}")
     cases_dir = repo_root / "docs/spec/conformance/cases"
+    pending_dir = repo_root / "docs/spec/pending"
     if cases_dir.exists():
         errs.extend(_lint_conformance_case_docs(cases_dir, purpose_policy=purpose_policy))
         errs.extend(_lint_conformance_case_index(cases_dir, conformance_ids))
+    errs.extend(_lint_pending_specs(pending_dir))
+    errs.extend(_lint_python_config_literals(repo_root))
     errs.extend(_lint_purpose_warning_code_doc(repo_root))
     rules = policy.get("rules") or []
     links = trace.get("links") or []
