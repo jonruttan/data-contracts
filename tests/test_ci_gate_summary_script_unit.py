@@ -28,7 +28,7 @@ def test_script_writes_pass_summary(monkeypatch, tmp_path):
     )
     monkeypatch.setattr(mod, "_run_command", lambda _cmd: 0)
 
-    code = mod.main(["--out", str(out), "--python-bin", "python3"])
+    code = mod.main(["--out", str(out), "--runner-bin", "./scripts/runner_adapter.sh"])
     assert code == 0
     payload = json.loads(out.read_text(encoding="utf-8"))
     assert payload["version"] == 1
@@ -53,7 +53,7 @@ def test_script_stops_at_first_failure_and_writes_summary(monkeypatch, tmp_path)
     codes = iter((0, 3, 0))
     monkeypatch.setattr(mod, "_run_command", lambda _cmd: next(codes))
 
-    code = mod.main(["--out", str(out), "--python-bin", "python3"])
+    code = mod.main(["--out", str(out), "--runner-bin", "./scripts/runner_adapter.sh"])
     assert code == 3
     payload = json.loads(out.read_text(encoding="utf-8"))
     assert payload["status"] == "fail"

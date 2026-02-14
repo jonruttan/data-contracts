@@ -14,8 +14,6 @@ harness:
     helper: scripts/lib/python_bin.sh
     files:
       - scripts/ci_gate.sh
-      - scripts/docs_doctor.sh
-      - scripts/core_gate.sh
     required_tokens:
       - source "${ROOT_DIR}/scripts/lib/python_bin.sh"
       - resolve_python_bin "${ROOT_DIR}"

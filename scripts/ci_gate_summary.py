@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
-import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
@@ -14,42 +13,17 @@ def _now_iso_utc() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def _default_steps(python_bin: str) -> list[tuple[str, list[str]]]:
+def _default_steps(runner_bin: str) -> list[tuple[str, list[str]]]:
     return [
-        ("governance", [python_bin, "scripts/run_governance_specs.py"]),
-        ("evaluate_style", [python_bin, "scripts/evaluate_style.py", "--check", "docs/spec"]),
-        ("ruff", [python_bin, "-m", "ruff", "check", "."]),
-        ("mypy", [python_bin, "-m", "mypy", "spec_runner"]),
-        ("compileall", [python_bin, "-m", "compileall", "-q", "spec_runner", "scripts", "tests"]),
-        (
-            "conformance_purpose_json",
-            [python_bin, "scripts/conformance_purpose_report.py", "--out", ".artifacts/conformance-purpose.json"],
-        ),
-        (
-            "conformance_purpose_md",
-            [
-                python_bin,
-                "scripts/conformance_purpose_report.py",
-                "--format",
-                "md",
-                "--out",
-                ".artifacts/conformance-purpose-summary.md",
-            ],
-        ),
-        (
-            "conformance_parity",
-            [
-                python_bin,
-                "scripts/compare_conformance_parity.py",
-                "--cases",
-                "docs/spec/conformance/cases",
-                "--php-runner",
-                "scripts/php/conformance_runner.php",
-                "--out",
-                ".artifacts/conformance-parity.json",
-            ],
-        ),
-        ("pytest", [python_bin, "-m", "pytest"]),
+        ("governance", [runner_bin, "governance"]),
+        ("evaluate_style", [runner_bin, "style-check"]),
+        ("ruff", [runner_bin, "lint"]),
+        ("mypy", [runner_bin, "typecheck"]),
+        ("compileall", [runner_bin, "compilecheck"]),
+        ("conformance_purpose_json", [runner_bin, "conformance-purpose-json"]),
+        ("conformance_purpose_md", [runner_bin, "conformance-purpose-md"]),
+        ("conformance_parity", [runner_bin, "conformance-parity"]),
+        ("pytest", [runner_bin, "test-full"]),
     ]
 
 
@@ -89,11 +63,7 @@ def main(argv: list[str] | None = None) -> int:
         default=".artifacts/gate-summary.json",
         help="Output path for gate summary JSON (default: .artifacts/gate-summary.json)",
     )
-    ap.add_argument(
-        "--python-bin",
-        default=sys.executable,
-        help="Python interpreter used for Python-based gate steps (default: current interpreter)",
-    )
+    ap.add_argument("--runner-bin", required=True, help="Path to runner interface command")
     ns = ap.parse_args(argv)
 
     out_path = Path(str(ns.out))
@@ -101,7 +71,7 @@ def main(argv: list[str] | None = None) -> int:
 
     started = _now_iso_utc()
     t0 = time.perf_counter()
-    steps, exit_code = _run_steps(_default_steps(str(ns.python_bin)))
+    steps, exit_code = _run_steps(_default_steps(str(ns.runner_bin)))
     total_duration_ms = int((time.perf_counter() - t0) * 1000)
     finished = _now_iso_utc()
 

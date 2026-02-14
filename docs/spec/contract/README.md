@@ -25,6 +25,7 @@ Read in order:
 13. `docs/spec/contract/09_internal_representation.md`
 14. `docs/spec/contract/10_docs_quality.md`
 15. `docs/spec/contract/11_adoption_profiles.md`
+16. `docs/spec/contract/12_runner_interface.md`
 
 Type contracts:
 

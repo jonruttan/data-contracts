@@ -41,6 +41,17 @@ Core profile runs:
 
 Full profile runs the complete CI-equivalent gate including parity and full test suite.
 
+Runner interface override:
+
+- Gate scripts call `SPEC_RUNNER_BIN` (default: `scripts/runner_adapter.sh`).
+- To exercise a non-Python runner implementation while keeping gate orchestration
+  unchanged:
+
+```sh
+SPEC_RUNNER_BIN=/path/to/compatible-runner ./scripts/core_gate.sh
+SPEC_RUNNER_BIN=/path/to/compatible-runner ./scripts/ci_gate.sh
+```
+
 ## Run Core Gate Checks
 
 ```sh

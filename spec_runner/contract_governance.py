@@ -24,6 +24,7 @@ _NORMATIVE_CONTRACT_DOCS = [
     "docs/spec/contract/09_internal_representation.md",
     "docs/spec/contract/10_docs_quality.md",
     "docs/spec/contract/11_adoption_profiles.md",
+    "docs/spec/contract/12_runner_interface.md",
 ]
 
 
