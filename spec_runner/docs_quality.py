@@ -434,7 +434,7 @@ def build_docs_graph(repo_root: Path, metas: dict[str, dict[str, Any]]) -> dict[
             edges.append({"from": rel, "to": str(ex.get("id", "")), "kind": "example"})
     return {
         "version": 1,
-        "root": str(repo_root),
+        "root": ".",
         "nodes": nodes,
         "edges": edges,
     }
@@ -466,4 +466,3 @@ def render_reference_coverage(repo_root: Path, metas: dict[str, dict[str, Any]])
         lines.append(f"- `{rel}` ({meta.get('doc_id', '')})")
     lines.append("")
     return "\n".join(lines)
-

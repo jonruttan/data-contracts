@@ -220,6 +220,6 @@
       "title": "Appendix Cheatsheet"
     }
   ],
-  "root": "/Users/jon/Workspace/Development/spec_runner",
+  "root": ".",
   "version": 1
 }
