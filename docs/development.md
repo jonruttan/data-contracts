@@ -35,6 +35,7 @@ Canonical pre-merge check:
 
 ```sh
 ./scripts/ci_gate.sh
+make check
 ```
 
 Fast docs-only gate:

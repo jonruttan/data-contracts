@@ -504,6 +504,21 @@ links:
       - spec_runner/contract_governance.py
     notes: "Core assertion token vocabulary remains synchronized across book/contract/schema docs."
 
+  - rule_id: DOCS_MAKE_COMMANDS_SYNC
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_MAKE_COMMANDS_SYNC
+    contract_refs:
+      - README.md
+      - docs/development.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/contract_governance.py
+    notes: "Governance enforces canonical make command entrypoints in core contributor docs."
+
   - rule_id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
     policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_ASSERTIONS_VIA_SPEC_LANG
     contract_refs:

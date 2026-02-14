@@ -485,6 +485,21 @@ rules:
       - docs/spec/contract/03_assertions.md
       - docs/spec/schema/schema_v1.md
 
+  - id: DOCS_MAKE_COMMANDS_SYNC
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.command.entrypoints
+    norm: MUST
+    requirement: key_docs_reference_canonical_make_command_entrypoints
+    description: >
+      Key contributor docs must reference canonical make command entrypoints
+      used for docs verification and full gate execution.
+    rationale: Reduces command drift and onboarding ambiguity.
+    risk_if_violated: Contributors run stale commands and miss required checks.
+    references:
+      - README.md
+      - docs/development.md
+
   - id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
     introduced_in: v1
     scope: implementation

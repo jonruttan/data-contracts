@@ -73,6 +73,7 @@ Before editing/running local checks:
 ```sh
 make setup
 make verify-docs
+make check
 ```
 
 1. Create a spec doc with a fenced `yaml spec-test` block:

@@ -1412,3 +1412,42 @@ links:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_docs_make_commands_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_make_commands.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-007
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-007
+type: governance.check
+check: docs.make_commands_sync
+harness:
+  root: {tmp_path}
+  make_commands:
+    files:
+      - README.md
+      - docs/development.md
+    required_tokens:
+      - make verify-docs
+      - make check
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.make_commands_sync"]
+```
+""",
+    )
+    _write_text(tmp_path / "README.md", "make verify-docs\nmake check\n")
+    _write_text(tmp_path / "docs/development.md", "make verify-docs\nmake check\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/development.md", "make verify-docs\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

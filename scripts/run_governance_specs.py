@@ -1102,6 +1102,38 @@ def _scan_docs_contract_schema_book_sync(root: Path, *, harness: dict | None = N
     return violations
 
 
+def _scan_docs_make_commands_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("make_commands")
+    if not isinstance(cfg, dict):
+        return ["docs.make_commands_sync requires harness.make_commands mapping in governance spec"]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens")
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.make_commands.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.make_commands.required_tokens must be a non-empty list of non-empty strings"]
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing docs file for make command sync check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing required make command token {tok}")
+    return violations
+
+
 GovernanceCheck = Callable[..., list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
@@ -1131,6 +1163,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.examples_runnable": _scan_docs_examples_runnable,
     "docs.cli_flags_documented": _scan_docs_cli_flags_documented,
     "docs.contract_schema_book_sync": _scan_docs_contract_schema_book_sync,
+    "docs.make_commands_sync": _scan_docs_make_commands_sync,
 }
 
 
