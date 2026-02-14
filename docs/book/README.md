@@ -25,8 +25,9 @@ Full authoring:
 1. `docs/book/01_quickstart.md`
 2. `docs/book/02_core_model.md`
 3. `docs/book/03_assertions.md`
-4. `docs/spec/schema/schema_v1.md`
-5. `docs/spec/contract/`
+4. `docs/book/04_spec_lang_reference.md`
+5. `docs/spec/schema/schema_v1.md`
+6. `docs/spec/contract/`
 
 Portability and conformance:
 
@@ -40,3 +41,11 @@ Portability and conformance:
 - Portable contract: `docs/spec/contract/`
 - Conformance fixtures: `docs/spec/conformance/cases/`
 - PHP implementation fixtures: `docs/spec/impl/php/cases/`
+
+## Chapter Guide
+
+- `00_first_10_minutes.md`: deterministic first run and safety model
+- `01_quickstart.md`: smallest runnable examples
+- `02_core_model.md`: case shape, discovery, types, harness rules
+- `03_assertions.md`: assertion tree and operators
+- `04_spec_lang_reference.md`: complete `evaluate`/spec-lang reference

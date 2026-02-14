@@ -45,7 +45,22 @@ assert:
       - contain: ["hello"]
 ```
 
-## 4) Common Authoring Mistakes
+## 4) Add A First `evaluate` Assertion
+
+```yaml
+id: BK-QS-002B
+type: text.file
+assert:
+  - target: text
+    must:
+      - evaluate:
+          - ["and", ["contains", "BK-QS-002B"], ["starts_with", ["subject"], "id:"]]
+```
+
+Use `evaluate` when simple text checks are not enough and you need portable
+boolean/value logic in the spec itself.
+
+## 5) Common Authoring Mistakes
 
 Invalid:
 
@@ -70,7 +85,7 @@ harness:
 assert: []
 ```
 
-## 5) Checklist
+## 6) Checklist
 
 - Case has `id` and `type`.
 - Runner-only config lives under `harness:`.

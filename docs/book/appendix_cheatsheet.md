@@ -26,6 +26,18 @@ assert:
       - contain: ["hello"]
 ```
 
+## Minimal `evaluate`
+
+```yaml
+id: CHEAT-003
+type: text.file
+assert:
+  - target: text
+    must:
+      - evaluate:
+          - ["contains", "CHEAT-003"]
+```
+
 ## Group Semantics
 
 - `must`: AND
@@ -38,6 +50,7 @@ assert:
 - runner-only keys must be under `harness:`
 - operator values are lists
 - leaf nodes do not carry `target`
+- `evaluate` expression roots are YAML lists (`["symbol", ...]`)
 
 ## Common Error -> Fix
 

@@ -64,6 +64,11 @@ assert:
           - ["and", ["contains", "version"], ["starts_with", ["subject"], "#"]]
 ```
 
+Reference:
+
+- `docs/book/04_spec_lang_reference.md`
+- `docs/spec/contract/03b_spec_lang_v1.md`
+
 Tail-recursive example:
 
 ```yaml

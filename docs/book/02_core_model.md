@@ -18,10 +18,11 @@ Typical optional keys:
 
 ## Discovery Model
 
-- Runners scan Markdown `*.md` files.
+- Runners scan Markdown files matching case-file pattern (default `*.spec.md`).
 - They parse fenced blocks tagged with both:
   - `spec-test`
   - `yaml` or `yml`
+- Discovery is non-recursive for the provided directory.
 - `type` is required.
 
 ## Type Model
@@ -96,3 +97,4 @@ requires:
 - Runner-only keys only under `harness:`.
 - If using `path`, it is relative and safe.
 - If using `expect`, include `expect.portable.status`.
+- If using feature-gated behavior, declare `requires.capabilities`.

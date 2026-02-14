@@ -125,6 +125,7 @@ Runner-only keys MUST live under `harness:` to keep the spec format clean.
 
 Canonical boolean groups are `must`, `can`, and `cannot`.
 Text assertions use `contain` and `regex`.
+Expression assertions use `evaluate` (spec-lang list S-expressions).
 Each assertion group uses exactly one of `must` / `can` / `cannot`, and group
 lists must be non-empty.
 
