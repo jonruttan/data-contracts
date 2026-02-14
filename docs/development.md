@@ -73,6 +73,10 @@ make core-check
 make check
 ```
 
+Release readiness checklist:
+
+- `docs/release_checklist.md`
+
 Gate summary artifact produced by `ci_gate.sh`:
 
 - `.artifacts/gate-summary.json` (machine-readable step status, exit code, and duration)

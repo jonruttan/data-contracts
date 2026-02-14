@@ -1583,6 +1583,54 @@ def _scan_docs_adoption_profiles_sync(root: Path, *, harness: dict | None = None
     return violations
 
 
+def _scan_docs_release_contract_automation_policy(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("release_contract")
+    if not isinstance(cfg, dict):
+        return ["docs.release_contract_automation_policy requires harness.release_contract mapping in governance spec"]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens")
+    forbidden_patterns = cfg.get("forbidden_patterns", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.release_contract.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.release_contract.required_tokens must be a non-empty list of non-empty strings"]
+    if not isinstance(forbidden_patterns, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_patterns):
+        return ["harness.release_contract.forbidden_patterns must be a list of non-empty strings"]
+
+    compiled: list[re.Pattern[str]] = []
+    for pat in forbidden_patterns:
+        try:
+            compiled.append(re.compile(str(pat), re.MULTILINE))
+        except re.error as exc:
+            return [f"harness.release_contract.forbidden_patterns invalid regex {pat!r}: {exc}"]
+
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing release contract doc")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing required release-contract token {tok}")
+        for pat in compiled:
+            if pat.search(text):
+                violations.append(
+                    f"{rel}:1: forbidden manual-choreography pattern matched /{pat.pattern}/"
+                )
+    return violations
+
+
 def _scan_runtime_scope_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1810,6 +1858,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.contract_schema_book_sync": _scan_docs_contract_schema_book_sync,
     "docs.make_commands_sync": _scan_docs_make_commands_sync,
     "docs.adoption_profiles_sync": _scan_docs_adoption_profiles_sync,
+    "docs.release_contract_automation_policy": _scan_docs_release_contract_automation_policy,
     "runtime.scope_sync": _scan_runtime_scope_sync,
     "naming.filename_policy": _scan_naming_filename_policy,
 }

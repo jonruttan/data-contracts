@@ -736,6 +736,22 @@ rules:
       - README.md
       - docs/development.md
 
+  - id: DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.release.contract
+    norm: MUST
+    requirement: release_guidance_uses_executable_gate_entrypoints_not_manual_choreography
+    description: >
+      Release guidance must define executable gate entrypoints and must not
+      prescribe sequential manual do-X-then-inspect-Y checklist choreography.
+    rationale: Keeps release quality deterministic and automation-first.
+    risk_if_violated: Human-orchestrated release flow drifts and becomes unreliable.
+    references:
+      - docs/release_checklist.md
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/governance/cases/docs_release_contract_automation_policy.spec.md
+
   - id: RUNTIME_RUNNER_INTERFACE_GATE_SYNC
     introduced_in: v1
     scope: governance

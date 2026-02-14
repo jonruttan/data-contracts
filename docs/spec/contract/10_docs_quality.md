@@ -87,3 +87,11 @@ Reference generation and graph artifacts:
 
 These requirements are enforced by governance checks and CI gates as hard
 failures.
+
+## Release Guidance Policy
+
+MUST:
+
+- release guidance MUST point to executable gate entrypoints.
+- sequential manual "do X, then inspect Y" checklist choreography is an
+  anti-pattern for this repo and MUST NOT be documented as normative process.

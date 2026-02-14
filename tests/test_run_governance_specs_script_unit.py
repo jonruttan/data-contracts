@@ -2145,3 +2145,61 @@ def test_docs_generated_files_clean_reports_first_mismatch_context(tmp_path):
     first = "\n".join(violations)
     assert "docs/book/reference_index.md:1:" in first
     assert "expected=" in first and "actual=" in first
+
+
+def test_script_enforces_docs_release_contract_automation_policy(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_release_contract.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-QUAL-009
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-QUAL-009
+type: governance.check
+check: docs.release_contract_automation_policy
+harness:
+  root: {tmp_path}
+  release_contract:
+    files:
+      - docs/release_checklist.md
+    required_tokens:
+      - Release readiness is defined by executable gates, not manual checklists.
+      - make ci-smoke
+      - ./scripts/ci_gate.sh
+      - convert it into an executable
+    forbidden_patterns:
+      - "(?m)^##\\\\s+[0-9]+\\\\)"
+      - "(?m)^\\\\s*[0-9]+\\\\.\\\\s+(Run|Then|Check|Inspect)\\\\b"
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.release_contract_automation_policy"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/release_checklist.md",
+        """# Release Contract
+
+Release readiness is defined by executable gates, not manual checklists.
+make ci-smoke
+./scripts/ci_gate.sh
+convert it into an executable check
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/release_checklist.md",
+        """# Release Contract
+
+Release readiness is defined by executable gates, not manual checklists.
+1. Run ci gate
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

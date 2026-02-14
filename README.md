@@ -142,6 +142,7 @@ def test_specs_from_docs(tmp_path, monkeypatch, capsys):
 - `docs/spec/impl/`: implementation-specific notes (Python/PHP)
 - `docs/spec/conformance/`: cross-language conformance contract docs
 - `docs/spec/conformance/cases/`: cross-language conformance case specs
+- `docs/release_checklist.md`: executable release contract entrypoints
 
 ## Schema (v1)
 
