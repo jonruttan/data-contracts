@@ -970,6 +970,67 @@ function specLangEvalPredicate(mixed $expr, mixed $subject, array $limits): bool
     return (bool)$value;
 }
 
+function compileLeafExpr(string $op, mixed $value, string $target): array {
+    if ($op === 'evaluate') {
+        if (!is_array($value) || !isListArray($value)) {
+            throw new SchemaError('evaluate value must be list-based s-expr');
+        }
+        return $value;
+    }
+    if ($op === 'contain') {
+        return ['contains', ['subject'], (string)$value];
+    }
+    if ($op === 'regex') {
+        return ['regex_match', ['subject'], (string)$value];
+    }
+    if ($op === 'json_type') {
+        $want = strtolower(trim((string)$value));
+        if ($want !== 'list' && $want !== 'dict') {
+            throw new SchemaError("unsupported json_type: {$value}");
+        }
+        if ($target === 'body_json') {
+            return ['json_type', ['subject'], $want];
+        }
+        return ['json_type', ['json_parse', ['subject']], $want];
+    }
+    if ($op === 'exists') {
+        if ($target !== 'stdout_path') {
+            throw new SchemaError("unsupported op for target '{$target}': exists");
+        }
+        if ($value !== true && $value !== null) {
+            throw new SchemaError('stdout_path.exists only supports value: true (or null)');
+        }
+        return ['path_exists', ['subject']];
+    }
+    throw new SchemaError("unsupported op: {$op}");
+}
+
+function assertLeafPredicate(
+    string $caseId,
+    string $path,
+    string $target,
+    string $op,
+    mixed $expr,
+    mixed $subject,
+    array $specLangLimits
+): void {
+    if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
+        if ($op === 'json_type') {
+            $want = '';
+            if (is_array($expr) && count($expr) >= 3) {
+                $want = (string)$expr[2];
+            }
+            throw new AssertionFailure(
+                "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type({$want}) failed"
+            );
+        }
+        $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
+        throw new AssertionFailure(
+            "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
+        );
+    }
+}
+
 function evalAssertNode(
     mixed $node,
     ?string $inheritedTarget,
@@ -1070,6 +1131,9 @@ function evalTextLeaf(array $leaf, string $subject, string $target, string $case
         throw new SchemaError('unknown assert target for text.file');
     }
     foreach ($leaf as $op => $raw) {
+        if ($op === 'target') {
+            continue;
+        }
         if ($op !== 'contain' && $op !== 'regex' && $op !== 'evaluate') {
             throw new SchemaError("unsupported op: {$op}");
         }
@@ -1077,20 +1141,8 @@ function evalTextLeaf(array $leaf, string $subject, string $target, string $case
             throw new SchemaError("assertion op '{$op}' must be a list");
         }
         foreach ($raw as $value) {
-            $expr = null;
-            if ($op === 'evaluate') {
-                $expr = $value;
-            } elseif ($op === 'contain') {
-                $expr = ['contains', ['subject'], (string)$value];
-            } else {
-                $expr = ['regex_match', ['subject'], (string)$value];
-            }
-            if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
-                $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
-                throw new AssertionFailure(
-                    "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
-                );
-            }
+            $expr = compileLeafExpr($op, $value, $target);
+            assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits);
         }
     }
 }
@@ -1115,6 +1167,9 @@ function evalCliLeaf(
     array $specLangLimits
 ): void {
     foreach ($leaf as $op => $raw) {
+        if ($op === 'target') {
+            continue;
+        }
         if (!is_array($raw) || !isListArray($raw)) {
             throw new SchemaError("assertion op '{$op}' must be a list");
         }
@@ -1124,32 +1179,8 @@ function evalCliLeaf(
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
-                $expr = null;
-                if ($op === 'evaluate') {
-                    $expr = $value;
-                } elseif ($op === 'contain') {
-                    $expr = ['contains', ['subject'], (string)$value];
-                } elseif ($op === 'regex') {
-                    $expr = ['regex_match', ['subject'], (string)$value];
-                } else {
-                    $want = strtolower(trim((string)$value));
-                    if ($want !== 'list' && $want !== 'dict') {
-                        throw new SchemaError("unsupported json_type: {$value}");
-                    }
-                    $expr = ['json_type', ['json_parse', ['subject']], $want];
-                }
-                if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
-                    if ($op === 'json_type') {
-                        $want = strtolower(trim((string)$value));
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type({$want}) failed"
-                        );
-                    }
-                    $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
-                    throw new AssertionFailure(
-                        "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
-                    );
-                }
+                $expr = compileLeafExpr($op, $value, $target);
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits);
             }
             continue;
         }
@@ -1164,10 +1195,8 @@ function evalCliLeaf(
                 );
             }
             foreach ($raw as $value) {
-                if ($value !== true && $value !== null) {
-                    throw new SchemaError('stdout_path.exists only supports value: true (or null)');
-                }
-                if (!specLangEvalPredicate(['path_exists', ['subject']], $line, $specLangLimits)) {
+                $expr = compileLeafExpr($op, $value, $target);
+                if (!specLangEvalPredicate($expr, $line, $specLangLimits)) {
                     throw new AssertionFailure(
                         "[case_id={$caseId} assert_path={$path} target={$target} op=exists] path does not exist"
                     );
@@ -1192,20 +1221,8 @@ function evalCliLeaf(
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
-                $expr = null;
-                if ($op === 'evaluate') {
-                    $expr = $value;
-                } elseif ($op === 'contain') {
-                    $expr = ['contains', ['subject'], (string)$value];
-                } else {
-                    $expr = ['regex_match', ['subject'], (string)$value];
-                }
-                if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
-                    $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
-                    throw new AssertionFailure(
-                        "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
-                    );
-                }
+                $expr = compileLeafExpr($op, $value, $target);
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits);
             }
             continue;
         }
@@ -1434,6 +1451,9 @@ function evalApiHttpLeaf(
     array $specLangLimits
 ): void {
     foreach ($leaf as $op => $raw) {
+        if ($op === 'target') {
+            continue;
+        }
         if (!is_array($raw) || !isListArray($raw)) {
             throw new SchemaError("assertion op '{$op}' must be a list");
         }
@@ -1445,32 +1465,8 @@ function evalApiHttpLeaf(
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
-                $expr = null;
-                if ($op === 'evaluate') {
-                    $expr = $value;
-                } elseif ($op === 'contain') {
-                    $expr = ['contains', ['subject'], (string)$value];
-                } elseif ($op === 'regex') {
-                    $expr = ['regex_match', ['subject'], (string)$value];
-                } else {
-                    $want = strtolower(trim((string)$value));
-                    if ($want !== 'list' && $want !== 'dict') {
-                        throw new SchemaError("unsupported json_type: {$value}");
-                    }
-                    $expr = ['json_type', ['json_parse', ['subject']], $want];
-                }
-                if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
-                    if ($op === 'json_type') {
-                        $want = strtolower(trim((string)$value));
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type({$want}) failed"
-                        );
-                    }
-                    $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
-                    throw new AssertionFailure(
-                        "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
-                    );
-                }
+                $expr = compileLeafExpr($op, $value, $target);
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits);
             }
             continue;
         }
@@ -1484,39 +1480,14 @@ function evalApiHttpLeaf(
                     "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] body_json parse failed"
                 );
             }
+            $jsonText = json_encode($parsed, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            if ($jsonText === false) {
+                throw new RuntimeException('failed to serialize body_json');
+            }
             foreach ($raw as $value) {
-                if ($op === 'evaluate') {
-                    if (!specLangEvalPredicate($value, $parsed, $specLangLimits)) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] evaluate assertion failed"
-                        );
-                    }
-                    continue;
-                }
-                if ($op === 'json_type') {
-                    $want = strtolower(trim((string)$value));
-                    if ($want !== 'list' && $want !== 'dict') {
-                        throw new SchemaError("unsupported json_type: {$value}");
-                    }
-                    if (!specLangEvalPredicate(['json_type', ['subject'], $want], $parsed, $specLangLimits)) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type({$want}) failed"
-                        );
-                    }
-                    continue;
-                }
-                $subject = json_encode($parsed, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                if ($subject === false) {
-                    throw new RuntimeException('failed to serialize body_json');
-                }
-                $expr = $op === 'contain'
-                    ? ['contains', ['subject'], (string)$value]
-                    : ['regex_match', ['subject'], (string)$value];
-                if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
-                    throw new AssertionFailure(
-                        "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$op} assertion failed"
-                    );
-                }
+                $expr = compileLeafExpr($op, $value, $target);
+                $subject = $op === 'evaluate' || $op === 'json_type' ? $parsed : $jsonText;
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits);
             }
             continue;
         }

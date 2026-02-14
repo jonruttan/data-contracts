@@ -20,6 +20,14 @@ harness:
         forbidden_tokens:
           - "strpos($subject, $v)"
           - "preg_match('/' . str_replace('/', '\\/', $v) . '/u', $subject)"
+      - path: scripts/php/spec_runner.php
+        required_tokens:
+          - "compileLeafExpr("
+          - "assertLeafPredicate("
+          - "specLangEvalPredicate("
+        forbidden_tokens:
+          - "strpos($subject, $v)"
+          - "preg_match('/' . str_replace('/', '\\/', $v) . '/u', $subject)"
       - path: scripts/run_governance_specs.py
         required_tokens:
           - "eval_predicate("

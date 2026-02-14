@@ -502,4 +502,5 @@ links:
     implementation_refs:
       - scripts/run_governance_specs.py
       - scripts/php/conformance_runner.php
+      - scripts/php/spec_runner.php
     notes: "Governance enforces spec-lang-backed assertion execution paths for runtime scanners/runners."

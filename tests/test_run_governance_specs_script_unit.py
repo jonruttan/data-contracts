@@ -1142,6 +1142,11 @@ harness:
         forbidden_tokens:
           - "strpos($subject, $v)"
           - "preg_match('/' . str_replace('/', '\\\\/', $v) . '/u', $subject)"
+      - path: scripts/php/spec_runner.php
+        required_tokens: ["compileLeafExpr(", "assertLeafPredicate(", "specLangEvalPredicate("]
+        forbidden_tokens:
+          - "strpos($subject, $v)"
+          - "preg_match('/' . str_replace('/', '\\\\/', $v) . '/u', $subject)"
 assert:
   - target: text
     must:
@@ -1153,11 +1158,15 @@ assert:
         tmp_path / "scripts/php/conformance_runner.php",
         "function evalTextLeaf() { compileLeafExpr('contain','x','text'); assertLeafPredicate('id','assert','text','contain',['contains',['subject'],'x'],'x',[]); specLangEvalPredicate(['contains',['subject'],'x'],'x',[]); }\n",
     )
+    _write_text(
+        tmp_path / "scripts/php/spec_runner.php",
+        "function evalTextLeaf() { compileLeafExpr('contain','x','text'); assertLeafPredicate('id','assert','text','contain',['contains',['subject'],'x'],'x',[]); specLangEvalPredicate(['contains',['subject'],'x'],'x',[]); }\n",
+    )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
 
     _write_text(
-        tmp_path / "scripts/php/conformance_runner.php",
+        tmp_path / "scripts/php/spec_runner.php",
         "function evalTextLeaf() { strpos($subject, 'x'); }\n",
     )
     code = mod.main(["--cases", str(cases_dir)])
