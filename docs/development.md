@@ -85,7 +85,39 @@ make docs-doctor
 make verify-docs
 make docs-build
 make docs-check
+make ci-smoke
 ```
+
+## CI Triage (Docs Quality)
+
+When CI fails with `SRGOV-DOCS-QUAL-*`:
+
+1. Reproduce quickly:
+
+```sh
+make ci-smoke
+```
+
+2. Regenerate docs artifacts:
+
+```sh
+make docs-build
+```
+
+3. Re-run docs checks:
+
+```sh
+make docs-check
+```
+
+Common failures:
+
+- `SRGOV-DOCS-QUAL-002`: `docs/book/reference_index.md` is out of sync with
+  `docs/book/reference_manifest.yaml`.
+- `SRGOV-DOCS-QUAL-008`: generated files drifted
+  (`reference_index.md`, `reference_coverage.md`, `docs_graph.json`).
+- `SRGOV-DOCS-QUAL-003/004`: token ownership/dependency issues in chapter
+  `doc-meta`.
 
 Suggested pre-commit hook:
 

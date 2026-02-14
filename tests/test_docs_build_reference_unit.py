@@ -128,3 +128,44 @@ chapters:
         assert str(tmp_path) not in json.dumps(graph, sort_keys=True)
     finally:
         os.chdir(old)
+
+
+def test_docs_build_outputs_are_deterministic_across_different_roots(tmp_path: Path) -> None:
+    mod = _load_docs_build_module()
+    root_a = tmp_path / "repo_a"
+    root_b = tmp_path / "repo_b"
+    for root in (root_a, root_b):
+        _write_text(
+            root / "docs/book/reference_manifest.yaml",
+            """version: 1
+chapters:
+  - path: docs/book/a.md
+    summary: A.
+  - path: docs/book/b.md
+    summary: B.
+""",
+        )
+        _write_text(root / "docs/book/a.md", _chapter("DOC-REF-001", "tok.a", "tok.b", "EX-A-001"))
+        _write_text(root / "docs/book/b.md", _chapter("DOC-REF-002", "tok.b", "tok.a", "EX-B-001"))
+
+    old = Path.cwd()
+    try:
+        import os
+
+        os.chdir(root_a)
+        assert mod.main([]) == 0
+        index_a = (root_a / "docs/book/reference_index.md").read_text(encoding="utf-8")
+        coverage_a = (root_a / "docs/book/reference_coverage.md").read_text(encoding="utf-8")
+        graph_a = (root_a / "docs/book/docs_graph.json").read_text(encoding="utf-8")
+
+        os.chdir(root_b)
+        assert mod.main([]) == 0
+        index_b = (root_b / "docs/book/reference_index.md").read_text(encoding="utf-8")
+        coverage_b = (root_b / "docs/book/reference_coverage.md").read_text(encoding="utf-8")
+        graph_b = (root_b / "docs/book/docs_graph.json").read_text(encoding="utf-8")
+    finally:
+        os.chdir(old)
+
+    assert index_a == index_b
+    assert coverage_a == coverage_b
+    assert graph_a == graph_b

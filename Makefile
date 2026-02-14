@@ -1,4 +1,4 @@
-.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check core-check check ci-gate test
+.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check ci-smoke core-check check ci-gate test
 .DEFAULT_GOAL := help
 
 help: ## Display this help section
@@ -24,6 +24,12 @@ docs-lint: ## Run docs metadata/schema and quality lint checks
 docs-check: ## Verify generated docs artifacts are up-to-date and lint passes
 	@./scripts/runner_adapter.sh docs-build-check
 	@./scripts/runner_adapter.sh docs-lint
+
+ci-smoke: ## Fast CI preflight (governance + docs + style)
+	@./scripts/runner_adapter.sh governance
+	@./scripts/runner_adapter.sh docs-build-check
+	@./scripts/runner_adapter.sh docs-lint
+	@./scripts/runner_adapter.sh style-check
 
 check: ## Alias for ci-gate
 	@$(MAKE) ci-gate
