@@ -10,10 +10,36 @@ Current implementation locations:
 - dispatch: `spec_runner/dispatcher.py`
 - harnesses: `spec_runner/harnesses/`
 
-Implementation convenience:
+## Supported Flags
 
-- `cli.run` supports `SPEC_RUNNER_ENTRYPOINT` fallback when
-  `harness.entrypoint` is not set.
-- `SPEC_RUNNER_SAFE_MODE=1` hardens `cli.run` by disabling hook entrypoints
-  and env fallback; explicit `harness.entrypoint` is required in this mode.
-- Portable fixtures should still set `harness.entrypoint` explicitly.
+Python conformance runner script:
+
+- `scripts/python/conformance_runner.py`
+
+Public flags:
+
+- `--cases` (required): case file or directory path.
+- `--out` (required): JSON report output path.
+- `--case-file-pattern` (default: `*.spec.md`): directory-mode case glob.
+- `--case-formats` (default: `md`): comma-separated formats (`md,yaml,json`).
+
+## Default Behavior
+
+- discovery default is Markdown-only (`md`) with case pattern `*.spec.md`.
+- report is always written when invocation succeeds.
+- exit code is `0` only when all case statuses are `pass` or `skip`.
+
+## Opt-In Behavior
+
+- external formats (`yaml`, `json`) require explicit `--case-formats`.
+- `cli.run` may use `SPEC_RUNNER_ENTRYPOINT` fallback if `harness.entrypoint`
+  is omitted.
+- `SPEC_RUNNER_SAFE_MODE=1` disables hook entrypoints and env fallback.
+
+## Failure Mode Notes
+
+- CLI usage/argument errors return exit code `2` (for example empty
+  `--case-file-pattern`, empty `--case-formats`, missing paths).
+- runtime execution or unexpected runner failures return exit code `1`.
+- portable fixtures should still set `harness.entrypoint` explicitly to avoid
+  environment coupling.

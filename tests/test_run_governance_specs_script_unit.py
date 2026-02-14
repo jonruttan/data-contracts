@@ -733,3 +733,276 @@ def test_script_enforces_regex_doc_sync(tmp_path):
     _write_text(tmp_path / "docs/spec/contract/03_assertions.md", "contain regex\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_docs_reference_surface_complete(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_surface.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-001
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-001
+type: governance.check
+check: docs.reference_surface_complete
+harness:
+  root: {tmp_path}
+  docs_reference_surface:
+    required_files:
+      - docs/book/reference_index.md
+      - docs/spec/schema/schema_v1.md
+    required_globs:
+      - docs/spec/contract/*.md
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.reference_surface_complete"]
+```
+""",
+    )
+    _write_text(tmp_path / "docs/book/reference_index.md", "# index\n")
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "# schema\n")
+    _write_text(tmp_path / "docs/spec/contract/03_assertions.md", "# assertions\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    (tmp_path / "docs/spec/schema/schema_v1.md").unlink()
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_docs_reference_index_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_index.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-002
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-002
+type: governance.check
+check: docs.reference_index_sync
+harness:
+  root: {tmp_path}
+  reference_index:
+    path: docs/book/reference_index.md
+    include_glob: docs/book/*.md
+    exclude_files: ["docs/book/reference_index.md"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.reference_index_sync"]
+```
+""",
+    )
+    _write_text(tmp_path / "docs/book/00_first_10_minutes.md", "# 00\n")
+    _write_text(tmp_path / "docs/book/01_quickstart.md", "# 01\n")
+    _write_text(
+        tmp_path / "docs/book/reference_index.md",
+        "1. `docs/book/00_first_10_minutes.md`\n2. `docs/book/01_quickstart.md`\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/book/reference_index.md", "1. `docs/book/00_first_10_minutes.md`\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_docs_examples_runnable(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_examples.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-004
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-004
+type: governance.check
+check: docs.examples_runnable
+harness:
+  root: {tmp_path}
+  docs_examples:
+    files: ["docs/book/03_assertions.md"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.examples_runnable"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/book/03_assertions.md",
+        """# Assertions
+
+```yaml spec-test
+id: T-1
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["x"]
+```
+
+```python
+print("ok")
+```
+
+```sh
+python -m pytest -q
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/book/03_assertions.md",
+        """# Assertions
+
+```python
+if True print("bad")
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+    _write_text(
+        tmp_path / "docs/book/03_assertions.md",
+        """# Assertions
+
+DOCS-EXAMPLE-OPT-OUT: temporary invalid snippet under rewrite
+
+```python
+if True print("bad")
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+def test_script_enforces_docs_required_sections(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_sections.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-003
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-003
+type: governance.check
+check: docs.required_sections
+harness:
+  root: {tmp_path}
+  required_sections:
+    docs/book/02_core_model.md: ["## Required Keys", "## Discovery Model"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.required_sections"]
+```
+""",
+    )
+    _write_text(tmp_path / "docs/book/02_core_model.md", "## Required Keys\n## Discovery Model\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/book/02_core_model.md", "## Required Keys\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_docs_cli_flags_documented(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_cli_flags.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-005
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-005
+type: governance.check
+check: docs.cli_flags_documented
+harness:
+  root: {tmp_path}
+  cli_docs:
+    python_scripts: ["scripts/python/conformance_runner.py"]
+    php_scripts: ["scripts/php/spec_runner.php"]
+    python_docs: ["docs/development.md", "docs/spec/impl/python.md"]
+    php_docs: ["docs/development.md", "docs/spec/impl/php.md"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.cli_flags_documented"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "scripts/python/conformance_runner.py",
+        "ap.add_argument('--cases')\nap.add_argument('--out')\n",
+    )
+    _write_text(
+        tmp_path / "scripts/php/spec_runner.php",
+        "if ($arg === '--cases') {}\nif ($arg === '--out') {}\n",
+    )
+    _write_text(tmp_path / "docs/development.md", "--cases --out\n")
+    _write_text(tmp_path / "docs/spec/impl/python.md", "--cases --out\n")
+    _write_text(tmp_path / "docs/spec/impl/php.md", "--cases --out\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/spec/impl/php.md", "--cases\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_docs_contract_schema_book_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_sync.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-006
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-006
+type: governance.check
+check: docs.contract_schema_book_sync
+harness:
+  root: {tmp_path}
+  doc_sync:
+    files:
+      - docs/book/03_assertions.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/schema/schema_v1.md
+    tokens: ["must", "can", "cannot", "contain", "regex", "evaluate"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.contract_schema_book_sync"]
+```
+""",
+    )
+    _write_text(tmp_path / "docs/book/03_assertions.md", "must can cannot contain regex evaluate\n")
+    _write_text(tmp_path / "docs/spec/contract/03_assertions.md", "must can cannot contain regex evaluate\n")
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "must can cannot contain regex evaluate\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "must can cannot contain regex\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

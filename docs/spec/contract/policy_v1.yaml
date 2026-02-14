@@ -372,3 +372,100 @@ rules:
       - docs/spec/contract/06_conformance.md
       - docs/spec/contract/07_portable_spec_authoring.md
       - docs/spec/schema/schema_v1.md
+
+  - id: DOCS_REF_SURFACE_COMPLETE
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.surface
+    norm: MUST
+    requirement: required_reference_surface_files_exist
+    description: >
+      The canonical docs reference surface files must exist and remain present
+      as an enforced product surface.
+    rationale: Prevents accidental deletion/drift of required reference material.
+    risk_if_violated: Missing reference pages break onboarding and contract lookup.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/reference_index.md
+      - docs/spec/schema/schema_v1.md
+
+  - id: DOCS_REFERENCE_INDEX_SYNC
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.index
+    norm: MUST
+    requirement: reference_index_matches_actual_book_chapter_set_and_order
+    description: >
+      The machine-checked reference index must stay synchronized with the actual
+      reference-manual chapter files and ordering.
+    rationale: Keeps the reference manual deterministic and reviewable.
+    risk_if_violated: Index/doc drift causes broken navigation and stale guidance.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/reference_index.md
+
+  - id: DOCS_REQUIRED_SECTIONS_PRESENT
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.sections
+    norm: MUST
+    requirement: required_section_tokens_present_in_reference_chapters
+    description: >
+      Required reference chapters must include required section tokens defined by
+      governance policy.
+    rationale: Maintains a consistent reference-manual structure.
+    risk_if_violated: Critical usage/failure guidance disappears over time.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/02_core_model.md
+      - docs/book/03_assertions.md
+      - docs/book/04_spec_lang_reference.md
+
+  - id: DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.examples
+    norm: MUST
+    requirement: examples_parse_or_have_explicit_opt_out_marker_with_reason
+    description: >
+      Documentation examples must be parseable/runnable by default, or include
+      an explicit and justified opt-out marker.
+    rationale: Ensures examples are trustworthy for real users.
+    risk_if_violated: Copy/paste examples fail and increase support load.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/README.md
+
+  - id: DOCS_CLI_FLAGS_DOCUMENTED
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.cli.flags
+    norm: MUST
+    requirement: public_runner_flags_documented_in_dev_and_impl_docs
+    description: >
+      Public runner CLI flags must be documented in required development and
+      implementation docs.
+    rationale: Keeps automation-facing interfaces discoverable and stable.
+    risk_if_violated: Users guess flags and misuse runner commands.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/development.md
+      - docs/spec/impl/python.md
+      - docs/spec/impl/php.md
+
+  - id: DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.contract.schema.book.tokens
+    norm: MUST
+    requirement: core_assertion_tokens_synchronized_across_book_contract_schema
+    description: >
+      Core assertion token vocabulary must stay synchronized across reference
+      book docs, contract docs, and schema docs.
+    rationale: Prevents readers from seeing conflicting terminology.
+    risk_if_violated: Authoring and implementation drift leads to false failures.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/03_assertions.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/schema/schema_v1.md

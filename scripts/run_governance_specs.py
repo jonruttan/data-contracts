@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import inspect
+import shlex
 import sys
 import re
 from pathlib import Path
@@ -251,6 +252,21 @@ def _is_closing_fence(line: str, *, ch: str, min_len: int) -> bool:
     while i < len(stripped) and stripped[i] == ch:
         i += 1
     return i >= min_len and i == len(stripped)
+
+
+def _is_markdown_fence_opening(line: str) -> tuple[str, int, str] | None:
+    stripped = line.lstrip(" \t")
+    if not stripped:
+        return None
+    if stripped[0] not in ("`", "~"):
+        return None
+    ch = stripped[0]
+    i = 0
+    while i < len(stripped) and stripped[i] == ch:
+        i += 1
+    if i < 3:
+        return None
+    return ch, i, stripped[i:].strip()
 
 
 def _scan_conformance_case_doc_style_guard(root: Path) -> list[str]:
@@ -656,6 +672,318 @@ def _scan_conformance_type_contract_field_sync(root: Path) -> list[str]:
     return violations
 
 
+def _scan_docs_reference_surface_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("docs_reference_surface")
+    if not isinstance(cfg, dict):
+        return ["docs.reference_surface_complete requires harness.docs_reference_surface mapping in governance spec"]
+
+    required_files = cfg.get("required_files")
+    if (
+        not isinstance(required_files, list)
+        or not required_files
+        or any(not isinstance(x, str) or not x.strip() for x in required_files)
+    ):
+        return ["harness.docs_reference_surface.required_files must be a non-empty list of non-empty strings"]
+
+    required_globs = cfg.get("required_globs", [])
+    if not isinstance(required_globs, list) or any(not isinstance(x, str) or not x.strip() for x in required_globs):
+        return ["harness.docs_reference_surface.required_globs must be a list of non-empty strings"]
+
+    for rel in required_files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}: missing required reference file")
+
+    for pattern in required_globs:
+        matches = sorted(root.glob(pattern))
+        if not matches:
+            violations.append(f"{pattern}: glob matched no files")
+    return violations
+
+
+def _extract_backtick_paths(text: str) -> list[str]:
+    return [m.group(1).strip() for m in re.finditer(r"`([^`]+)`", text) if m.group(1).strip()]
+
+
+def _scan_docs_reference_index_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("reference_index")
+    if not isinstance(cfg, dict):
+        return ["docs.reference_index_sync requires harness.reference_index mapping in governance spec"]
+
+    index_rel = str(cfg.get("path", "")).strip()
+    include_glob = str(cfg.get("include_glob", "")).strip()
+    if not index_rel:
+        return ["harness.reference_index.path must be a non-empty string"]
+    if not include_glob:
+        return ["harness.reference_index.include_glob must be a non-empty string"]
+
+    exclude_files = cfg.get("exclude_files", [])
+    if not isinstance(exclude_files, list) or any(not isinstance(x, str) for x in exclude_files):
+        return ["harness.reference_index.exclude_files must be a list of strings"]
+    exclude = {x.strip() for x in exclude_files if x.strip()}
+
+    index_path = root / index_rel
+    if not index_path.exists():
+        return [f"{index_rel}: missing reference index file"]
+
+    expected = [
+        str(p.relative_to(root))
+        for p in sorted(root.glob(include_glob))
+        if str(p.relative_to(root)) not in exclude
+    ]
+    raw = index_path.read_text(encoding="utf-8")
+    listed = [p for p in _extract_backtick_paths(raw) if p.startswith("docs/book/") and p.endswith(".md")]
+    seen: set[str] = set()
+    deduped_listed: list[str] = []
+    for rel in listed:
+        if rel in seen:
+            violations.append(f"{index_rel}: duplicate entry {rel}")
+            continue
+        seen.add(rel)
+        deduped_listed.append(rel)
+
+    for rel in expected:
+        if rel not in seen:
+            violations.append(f"{index_rel}: missing entry {rel}")
+    for rel in deduped_listed:
+        if rel not in expected:
+            violations.append(f"{index_rel}: stale entry {rel}")
+    if deduped_listed and expected and deduped_listed != expected:
+        violations.append(f"{index_rel}: entries are out of sync or out of order with {include_glob}")
+    return violations
+
+
+def _scan_docs_required_sections(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("required_sections")
+    if not isinstance(cfg, dict) or not cfg:
+        return ["docs.required_sections requires non-empty harness.required_sections mapping in governance spec"]
+
+    for rel, tokens in cfg.items():
+        if not isinstance(rel, str) or not rel.strip():
+            violations.append("harness.required_sections keys must be non-empty file paths")
+            continue
+        if not isinstance(tokens, list) or not tokens or any(not isinstance(x, str) or not x.strip() for x in tokens):
+            violations.append(f"harness.required_sections[{rel!r}] must be a non-empty list of non-empty strings")
+            continue
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}: missing required section-checked file")
+            continue
+        lower = p.read_text(encoding="utf-8").lower()
+        missing = [tok for tok in tokens if tok.lower() not in lower]
+        if missing:
+            violations.append(f"{rel}: missing required token(s): {', '.join(missing)}")
+    return violations
+
+
+def _has_docs_example_opt_out(lines: list[str], start: int, end: int) -> bool:
+    lo = max(0, start - 3)
+    hi = min(len(lines), end + 4)
+    marker = re.compile(r"DOCS-EXAMPLE-OPT-OUT:\s*(.+)")
+    for idx in range(lo, hi):
+        m = marker.search(lines[idx])
+        if m and m.group(1).strip():
+            return True
+    return False
+
+
+def _validate_shell_block(block_lines: list[str]) -> str | None:
+    pending = ""
+    pending_start = 0
+    for i, raw in enumerate(block_lines, start=1):
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if pending:
+            line = f"{pending} {line}"
+            pending = ""
+        else:
+            pending_start = i
+        if line.startswith("$"):
+            return f"shell line {i}: leading '$' prompt markers are not allowed"
+        if line.endswith("\\"):
+            pending = line[:-1].rstrip()
+            continue
+        try:
+            parts = shlex.split(line)
+        except ValueError as e:
+            return f"shell line {i}: {e}"
+        if not parts:
+            continue
+    if pending:
+        return f"shell line {pending_start}: trailing line-continuation without command tail"
+    return None
+
+
+def _validate_python_block(block_lines: list[str]) -> str | None:
+    src = "\n".join(block_lines)
+    try:
+        compile(src, "<docs-python-example>", "exec")
+    except SyntaxError as e:
+        return f"python syntax error: line {e.lineno}: {e.msg}"
+    return None
+
+
+def _scan_docs_examples_runnable(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("docs_examples")
+    if not isinstance(cfg, dict):
+        return ["docs.examples_runnable requires harness.docs_examples mapping in governance spec"]
+    docs = cfg.get("files")
+    if not isinstance(docs, list) or not docs or any(not isinstance(x, str) or not x.strip() for x in docs):
+        return ["harness.docs_examples.files must be a non-empty list of non-empty strings"]
+
+    for rel in docs:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}: missing docs file for example scan")
+            continue
+        lines = p.read_text(encoding="utf-8").splitlines()
+        i = 0
+        while i < len(lines):
+            opening = _is_markdown_fence_opening(lines[i])
+            if not opening:
+                i += 1
+                continue
+            ch, fence_len, info = opening
+            start = i
+            info_tokens = info.lower().split()
+            i += 1
+            block_lines: list[str] = []
+            while i < len(lines) and not _is_closing_fence(lines[i], ch=ch, min_len=fence_len):
+                block_lines.append(lines[i])
+                i += 1
+            end = i
+            err: str | None = None
+            if "spec-test" in info_tokens and ("yaml" in info_tokens or "yml" in info_tokens):
+                try:
+                    payload = yaml.safe_load("\n".join(block_lines))
+                    if payload is None:
+                        err = "empty spec-test block"
+                except Exception as e:  # noqa: BLE001
+                    err = f"yaml parse error: {e}"
+            elif info_tokens and info_tokens[0] in {"sh", "bash", "shell", "zsh"}:
+                err = _validate_shell_block(block_lines)
+            elif info_tokens and info_tokens[0] == "python":
+                err = _validate_python_block(block_lines)
+            if err and not _has_docs_example_opt_out(lines, start, end):
+                violations.append(f"{rel}:{start + 1}: invalid example block ({err})")
+            i += 1
+    return violations
+
+
+def _extract_python_script_flags(path: Path) -> set[str]:
+    raw = path.read_text(encoding="utf-8")
+    return set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", raw))
+
+
+def _extract_php_script_flags(path: Path) -> set[str]:
+    raw = path.read_text(encoding="utf-8")
+    return set(re.findall(r"\$arg\s*===\s*['\"](--[a-z0-9-]+)['\"]", raw))
+
+
+def _scan_docs_cli_flags_documented(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("cli_docs")
+    if not isinstance(cfg, dict):
+        return ["docs.cli_flags_documented requires harness.cli_docs mapping in governance spec"]
+
+    python_scripts = cfg.get("python_scripts", [])
+    php_scripts = cfg.get("php_scripts", [])
+    python_docs = cfg.get("python_docs", [])
+    php_docs = cfg.get("php_docs", [])
+    for name, value in (
+        ("python_scripts", python_scripts),
+        ("php_scripts", php_scripts),
+        ("python_docs", python_docs),
+        ("php_docs", php_docs),
+    ):
+        if not isinstance(value, list) or any(not isinstance(x, str) or not x.strip() for x in value):
+            return [f"harness.cli_docs.{name} must be a list of non-empty strings"]
+
+    python_flags: dict[str, set[str]] = {}
+    for rel in python_scripts:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}: missing python script for CLI docs scan")
+            continue
+        python_flags[rel] = _extract_python_script_flags(p)
+
+    php_flags: dict[str, set[str]] = {}
+    for rel in php_scripts:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}: missing php script for CLI docs scan")
+            continue
+        php_flags[rel] = _extract_php_script_flags(p)
+
+    doc_cache: dict[str, str] = {}
+    for rel in [*python_docs, *php_docs]:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}: missing documentation file for CLI docs scan")
+            continue
+        doc_cache[rel] = p.read_text(encoding="utf-8")
+
+    for script_rel, flags in sorted(python_flags.items()):
+        for flag in sorted(flags):
+            for doc_rel in python_docs:
+                text = doc_cache.get(doc_rel)
+                if text is None:
+                    continue
+                if flag not in text:
+                    violations.append(f"{doc_rel}: missing CLI flag {flag} documented from {script_rel}")
+
+    for script_rel, flags in sorted(php_flags.items()):
+        for flag in sorted(flags):
+            for doc_rel in php_docs:
+                text = doc_cache.get(doc_rel)
+                if text is None:
+                    continue
+                if flag not in text:
+                    violations.append(f"{doc_rel}: missing CLI flag {flag} documented from {script_rel}")
+    return violations
+
+
+def _scan_docs_contract_schema_book_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("doc_sync")
+    if not isinstance(cfg, dict):
+        return ["docs.contract_schema_book_sync requires harness.doc_sync mapping in governance spec"]
+    files = cfg.get("files")
+    tokens = cfg.get("tokens")
+    if not isinstance(files, list) or len(files) < 2 or any(not isinstance(x, str) or not x.strip() for x in files):
+        return ["harness.doc_sync.files must be a list of at least two non-empty strings"]
+    if not isinstance(tokens, list) or not tokens or any(not isinstance(x, str) or not x.strip() for x in tokens):
+        return ["harness.doc_sync.tokens must be a non-empty list of non-empty strings"]
+
+    loaded: dict[str, str] = {}
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}: missing doc_sync file")
+            continue
+        loaded[rel] = p.read_text(encoding="utf-8").lower()
+    if len(loaded) < 2:
+        return violations
+
+    for tok in tokens:
+        want = tok.lower()
+        for rel, text in loaded.items():
+            if want not in text:
+                violations.append(f"{rel}: missing sync token {tok}")
+    return violations
+
+
 GovernanceCheck = Callable[..., list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
@@ -675,6 +1003,12 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.portable_determinism_guard": _scan_conformance_portable_determinism_guard,
     "conformance.extension_requires_capabilities": _scan_conformance_extension_requires_capabilities,
     "conformance.type_contract_field_sync": _scan_conformance_type_contract_field_sync,
+    "docs.reference_surface_complete": _scan_docs_reference_surface_complete,
+    "docs.reference_index_sync": _scan_docs_reference_index_sync,
+    "docs.required_sections": _scan_docs_required_sections,
+    "docs.examples_runnable": _scan_docs_examples_runnable,
+    "docs.cli_flags_documented": _scan_docs_cli_flags_documented,
+    "docs.contract_schema_book_sync": _scan_docs_contract_schema_book_sync,
 }
 
 

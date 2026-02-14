@@ -23,6 +23,7 @@ Read in order:
 11. `docs/spec/contract/07_portable_spec_authoring.md`
 12. `docs/spec/contract/08_v1_scope.md`
 13. `docs/spec/contract/09_internal_representation.md`
+14. `docs/spec/contract/10_docs_quality.md`
 
 Type contracts:
 

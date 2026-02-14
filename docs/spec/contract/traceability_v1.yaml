@@ -264,6 +264,7 @@ links:
       - docs/spec/contract/06_conformance.md
       - docs/spec/contract/07_portable_spec_authoring.md
       - docs/spec/contract/08_v1_scope.md
+      - docs/spec/contract/09_internal_representation.md
     schema_refs:
       - docs/spec/schema/schema_v1.md
     conformance_case_ids: []
@@ -389,3 +390,100 @@ links:
     implementation_refs:
       - spec_runner/conformance.py
     notes: "Portable cases should avoid ambient dependencies and express variability explicitly."
+
+  - rule_id: DOCS_REF_SURFACE_COMPLETE
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_REF_SURFACE_COMPLETE
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/reference_index.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/contract_governance.py
+    notes: "Governance enforces required reference surface file presence."
+
+  - rule_id: DOCS_REFERENCE_INDEX_SYNC
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_REFERENCE_INDEX_SYNC
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/reference_index.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/contract_governance.py
+    notes: "Reference index entries must match actual chapter files and order."
+
+  - rule_id: DOCS_REQUIRED_SECTIONS_PRESENT
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_REQUIRED_SECTIONS_PRESENT
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/02_core_model.md
+      - docs/book/03_assertions.md
+      - docs/book/04_spec_lang_reference.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/contract_governance.py
+    notes: "Required section tokens in reference chapters are hard-gated."
+
+  - rule_id: DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/contract_governance.py
+    notes: "Invalid doc examples fail unless an explicit opt-out marker with reason is present."
+
+  - rule_id: DOCS_CLI_FLAGS_DOCUMENTED
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_CLI_FLAGS_DOCUMENTED
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/development.md
+      - docs/spec/impl/python.md
+      - docs/spec/impl/php.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/contract_governance.py
+    notes: "Public runner flags extracted from script parsers must be documented."
+
+  - rule_id: DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/03_assertions.md
+      - docs/spec/contract/03_assertions.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/contract_governance.py
+    notes: "Core assertion token vocabulary remains synchronized across book/contract/schema docs."

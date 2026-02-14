@@ -8,6 +8,44 @@ Guidance:
 - Validate parity using conformance fixtures and report format docs.
 - Keep PHP-specific runtime concerns in this file only.
 
+## Supported Flags
+
+Conformance runner (`scripts/php/conformance_runner.php`) flags:
+
+- `--help` / `-h`: print usage and exit `0`.
+- `--cases` (required): case file or directory path.
+- `--out` (required): JSON report output path.
+- `--case-file-pattern` (default: `*.spec.md`): directory-mode case glob.
+- `--case-formats` (default: `md`): comma-separated formats (`md,yaml,json`).
+
+Alternate runner (`scripts/php/spec_runner.php`) flags:
+
+- `--help` / `-h`: print usage and exit `0`.
+- `--cases` (required): case file or directory path.
+- `--out` (required): JSON report output path.
+- `--case-file-pattern` (default: `*.spec.md`): directory-mode case glob.
+- `--case-formats` (default: `md`): comma-separated formats (`md,yaml,json`).
+
+## Default Behavior
+
+- discovery default is Markdown-only (`md`) with case pattern `*.spec.md`.
+- conformance runner writes report JSON even when case-level failures exist.
+- alternate runner exits non-zero when any case fails.
+
+## Opt-In Behavior
+
+- external formats (`yaml`, `json`) require explicit `--case-formats`.
+- process env allowlisting can be enabled with `SPEC_RUNNER_ENV_ALLOWLIST`.
+- `SPEC_RUNNER_ENTRYPOINT` fallback may be used when `harness.entrypoint` is
+  omitted.
+
+## Failure Mode Notes
+
+- CLI usage/argument validation errors return exit code `2`.
+- conformance runner runtime bootstrap failures return exit code `1`.
+- alternate runner returns exit code `1` for runtime errors or failing cases.
+- missing PHP `yaml_parse` extension is a runtime failure.
+
 ## Bootstrap Runner
 
 Conformance bootstrap script path:
