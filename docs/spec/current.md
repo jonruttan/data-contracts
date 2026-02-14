@@ -12,6 +12,8 @@ Notes:
   internal predicates before runtime evaluation.
 - Canonical authoring remains `.spec.md`; `.spec.yaml/.spec.yml/.spec.json`
   are opt-in external adapter formats.
+- Portability reporting includes a segmented self-containment metric across
+  conformance/governance/impl `.spec.md` corpora.
 
 Canonical spec docs:
 

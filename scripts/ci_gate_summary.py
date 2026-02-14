@@ -16,6 +16,8 @@ def _now_iso_utc() -> str:
 def _default_steps(runner_bin: str) -> list[tuple[str, list[str]]]:
     return [
         ("governance", [runner_bin, "governance"]),
+        ("spec_portability_json", [runner_bin, "spec-portability-json"]),
+        ("spec_portability_md", [runner_bin, "spec-portability-md"]),
         ("evaluate_style", [runner_bin, "style-check"]),
         ("ruff", [runner_bin, "lint"]),
         ("mypy", [runner_bin, "typecheck"]),

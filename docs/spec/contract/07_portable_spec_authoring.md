@@ -51,3 +51,19 @@ For `type: api.http` portable cases:
 - transport/setup details MUST live under `harness`
 - HTTP behavior assertions MUST live under canonical `assert` targets
 - portable assertion targets are: `status`, `headers`, `body_text`, `body_json`
+
+## Self-Containment Metric
+
+Portable authoring quality is measured with a portability metric that scores
+how self-contained each spec case is versus how implementation-coupled it is.
+
+- The metric scans all canonical `.spec.md` roots and reports:
+  - segment scores (`conformance`, `governance`, `impl`, fallback `other`)
+  - overall score (case-count-weighted mean)
+  - worst-case breakdown with concrete reasons
+- Score interpretation:
+  - `self_contained_ratio`: `0.0` to `1.0`, higher is better
+  - `implementation_reliance_ratio`: `1.0 - self_contained_ratio`
+- Phase-v1 policy is report-first:
+  - metric generation and shape are enforced
+  - threshold gating is intentionally deferred until baseline stabilization

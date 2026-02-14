@@ -1,0 +1,396 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+from spec_runner.assertions import iter_leaf_assertions
+from spec_runner.dispatcher import iter_cases
+from spec_runner.settings import SETTINGS
+
+
+def _as_list_of_strings(value: object) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    out: list[str] = []
+    for item in value:
+        if isinstance(item, str):
+            s = item.strip()
+            if s:
+                out.append(s)
+    return out
+
+
+def default_spec_portability_config() -> dict[str, Any]:
+    cfg = SETTINGS.spec_portability
+    return {
+        "roots": list(cfg.roots),
+        "core_types": list(cfg.core_types),
+        "segment_rules": [{"prefix": r.prefix, "segment": r.segment} for r in cfg.segment_rules],
+        "runtime_capability_tokens": list(cfg.runtime_capability_tokens),
+        "runtime_capability_prefixes": list(cfg.runtime_capability_prefixes),
+        "weights": {
+            "non_evaluate_leaf_share": float(cfg.weights.non_evaluate_leaf_share),
+            "expect_impl_overlay": float(cfg.weights.expect_impl_overlay),
+            "runtime_specific_capability": float(cfg.weights.runtime_specific_capability),
+            "non_core_type": float(cfg.weights.non_core_type),
+        },
+        "report": {"top_n": int(cfg.report.top_n)},
+        "min_overall_ratio": cfg.min_overall_ratio,
+        "min_segment_ratios": dict(cfg.min_segment_ratios),
+        "enforce": bool(cfg.enforce),
+    }
+
+
+def resolve_spec_portability_config(raw: dict[str, Any] | None = None) -> tuple[dict[str, Any], list[str]]:
+    cfg = default_spec_portability_config()
+    errs: list[str] = []
+    override = raw or {}
+    if not isinstance(override, dict):
+        return cfg, ["portability metric config must be a mapping"]
+
+    for key in (
+        "roots",
+        "core_types",
+        "segment_rules",
+        "runtime_capability_tokens",
+        "runtime_capability_prefixes",
+        "min_overall_ratio",
+        "min_segment_ratios",
+        "enforce",
+    ):
+        if key in override:
+            cfg[key] = override[key]
+
+    if "weights" in override:
+        w = override["weights"]
+        if not isinstance(w, dict):
+            errs.append("portability_metric.weights must be a mapping")
+        else:
+            merged = dict(cfg["weights"])
+            merged.update(w)
+            cfg["weights"] = merged
+
+    if "report" in override:
+        r = override["report"]
+        if not isinstance(r, dict):
+            errs.append("portability_metric.report must be a mapping")
+        else:
+            merged = dict(cfg["report"])
+            merged.update(r)
+            cfg["report"] = merged
+
+    roots = _as_list_of_strings(cfg.get("roots"))
+    if not roots:
+        errs.append("portability_metric.roots must be a non-empty list of non-empty strings")
+    cfg["roots"] = roots
+
+    core_types = _as_list_of_strings(cfg.get("core_types"))
+    if not core_types:
+        errs.append("portability_metric.core_types must be a non-empty list of non-empty strings")
+    cfg["core_types"] = core_types
+
+    raw_rules = cfg.get("segment_rules")
+    segment_rules: list[dict[str, str]] = []
+    if not isinstance(raw_rules, list) or not raw_rules:
+        errs.append("portability_metric.segment_rules must be a non-empty list of mappings")
+    else:
+        for i, item in enumerate(raw_rules):
+            if not isinstance(item, dict):
+                errs.append(f"portability_metric.segment_rules[{i}] must be a mapping")
+                continue
+            prefix = str(item.get("prefix", "")).strip()
+            segment = str(item.get("segment", "")).strip()
+            if not prefix or not segment:
+                errs.append(f"portability_metric.segment_rules[{i}] requires non-empty prefix and segment")
+                continue
+            segment_rules.append({"prefix": prefix, "segment": segment})
+    cfg["segment_rules"] = segment_rules
+
+    cfg["runtime_capability_tokens"] = _as_list_of_strings(cfg.get("runtime_capability_tokens"))
+    cfg["runtime_capability_prefixes"] = _as_list_of_strings(cfg.get("runtime_capability_prefixes"))
+
+    weights = cfg.get("weights")
+    if not isinstance(weights, dict):
+        errs.append("portability_metric.weights must be a mapping")
+    else:
+        for key in (
+            "non_evaluate_leaf_share",
+            "expect_impl_overlay",
+            "runtime_specific_capability",
+            "non_core_type",
+        ):
+            try:
+                raw_val = weights.get(key, 0.0)
+                val = float(raw_val)
+            except (TypeError, ValueError):
+                errs.append(f"portability_metric.weights.{key} must be a number")
+                continue
+            if val < 0:
+                errs.append(f"portability_metric.weights.{key} must be >= 0")
+            weights[key] = val
+        cfg["weights"] = weights
+
+    report = cfg.get("report")
+    if not isinstance(report, dict):
+        errs.append("portability_metric.report must be a mapping")
+    else:
+        try:
+            raw_top_n = report.get("top_n", 0)
+            top_n = int(raw_top_n)
+        except (TypeError, ValueError):
+            errs.append("portability_metric.report.top_n must be an integer")
+            top_n = 0
+        if top_n < 1:
+            errs.append("portability_metric.report.top_n must be >= 1")
+        report["top_n"] = top_n
+        cfg["report"] = report
+
+    if cfg.get("min_overall_ratio") is not None:
+        try:
+            cfg["min_overall_ratio"] = float(cfg["min_overall_ratio"])
+        except (TypeError, ValueError):
+            errs.append("portability_metric.min_overall_ratio must be a number when provided")
+
+    msr = cfg.get("min_segment_ratios")
+    if msr is None:
+        cfg["min_segment_ratios"] = {}
+    elif not isinstance(msr, dict):
+        errs.append("portability_metric.min_segment_ratios must be a mapping when provided")
+        cfg["min_segment_ratios"] = {}
+    else:
+        clean_msr: dict[str, float] = {}
+        for k, v in msr.items():
+            name = str(k).strip()
+            if not name:
+                errs.append("portability_metric.min_segment_ratios contains empty segment key")
+                continue
+            try:
+                clean_msr[name] = float(v)
+            except (TypeError, ValueError):
+                errs.append(f"portability_metric.min_segment_ratios.{name} must be numeric")
+        cfg["min_segment_ratios"] = clean_msr
+
+    cfg["enforce"] = bool(cfg.get("enforce", False))
+    return cfg, errs
+
+
+def _match_segment(rel_path: str, segment_rules: list[dict[str, str]]) -> str:
+    normalized = rel_path.replace("\\", "/")
+    for rule in segment_rules:
+        prefix = str(rule["prefix"]).replace("\\", "/").rstrip("/")
+        if normalized == prefix or normalized.startswith(prefix + "/"):
+            return str(rule["segment"])
+    return "other"
+
+
+def _collect_leaf_ops(node: object, *, inherited_target: str | None = None) -> list[str]:
+    ops: list[str] = []
+    if isinstance(node, list):
+        for child in node:
+            ops.extend(_collect_leaf_ops(child, inherited_target=inherited_target))
+        return ops
+    if not isinstance(node, dict):
+        return ops
+    present_groups = [k for k in ("must", "can", "cannot") if k in node]
+    if present_groups:
+        node_target = str(node.get("target", "")).strip() or inherited_target
+        for key in present_groups:
+            children = node.get(key, [])
+            if isinstance(children, list):
+                for child in children:
+                    ops.extend(_collect_leaf_ops(child, inherited_target=node_target))
+        return ops
+    for _target, op, _value, _is_true in iter_leaf_assertions(node, target_override=inherited_target):
+        ops.append(op)
+    return ops
+
+
+def _has_runtime_specific_capability(
+    caps: list[str],
+    *,
+    tokens: set[str],
+    prefixes: tuple[str, ...],
+) -> bool:
+    for raw in caps:
+        cap = raw.strip()
+        if not cap:
+            continue
+        if cap in tokens:
+            return True
+        for prefix in prefixes:
+            if cap.startswith(prefix):
+                return True
+    return False
+
+
+def _summarize_segment(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    count = len(rows)
+    if count == 0:
+        return {
+            "case_count": 0,
+            "mean_self_contained_ratio": 0.0,
+            "mean_implementation_reliance_ratio": 0.0,
+            "penalty_counts": {
+                "non_evaluate_leaf": 0,
+                "expect_impl_overlay": 0,
+                "runtime_specific_capability": 0,
+                "non_core_type": 0,
+            },
+        }
+    total_self = sum(float(r["self_contained_ratio"]) for r in rows)
+    total_impl = sum(float(r["implementation_reliance_ratio"]) for r in rows)
+    return {
+        "case_count": count,
+        "mean_self_contained_ratio": total_self / count,
+        "mean_implementation_reliance_ratio": total_impl / count,
+        "penalty_counts": {
+            "non_evaluate_leaf": sum(1 for r in rows if float(r["penalties"]["non_evaluate_leaf_share"]) > 0.0),
+            "expect_impl_overlay": sum(1 for r in rows if float(r["penalties"]["expect_impl_overlay"]) > 0.0),
+            "runtime_specific_capability": sum(
+                1 for r in rows if float(r["penalties"]["runtime_specific_capability"]) > 0.0
+            ),
+            "non_core_type": sum(1 for r in rows if float(r["penalties"]["non_core_type"]) > 0.0),
+        },
+    }
+
+
+def spec_portability_report_jsonable(repo_root: Path, config: dict[str, Any] | None = None) -> dict[str, Any]:
+    root = repo_root.resolve()
+    cfg, config_errors = resolve_spec_portability_config(config)
+    rows: list[dict[str, Any]] = []
+    scan_errors: list[str] = []
+
+    core_types = set(cfg["core_types"])
+    token_set = set(cfg["runtime_capability_tokens"])
+    prefix_tuple = tuple(cfg["runtime_capability_prefixes"])
+    weights = cfg["weights"]
+
+    for rel_root in cfg["roots"]:
+        base = root / rel_root
+        if not base.exists() or not base.is_dir():
+            scan_errors.append(f"{rel_root}: missing spec root directory")
+            continue
+
+        for spec in iter_cases(base, file_pattern=SETTINGS.case.default_file_pattern):
+            case = spec.test
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            case_type = str(case.get("type", "")).strip()
+            try:
+                rel_path = str(spec.doc_path.resolve().relative_to(root)).replace("\\", "/")
+            except ValueError:
+                rel_path = str(spec.doc_path)
+            segment = _match_segment(rel_path, cfg["segment_rules"])
+
+            try:
+                ops = _collect_leaf_ops(case.get("assert", []) or [])
+            except BaseException as exc:  # noqa: BLE001
+                scan_errors.append(f"{rel_path}: case {case_id}: failed to inspect assert tree ({exc})")
+                continue
+
+            total_leaf = len(ops)
+            non_eval_leaf = sum(1 for op in ops if op != "evaluate")
+            non_eval_share = 0.0 if total_leaf == 0 else non_eval_leaf / total_leaf
+
+            expect = case.get("expect")
+            has_expect_impl = False
+            if isinstance(expect, dict):
+                impl = expect.get("impl")
+                has_expect_impl = isinstance(impl, dict) and len(impl) > 0
+
+            requires = case.get("requires")
+            caps = []
+            if isinstance(requires, dict):
+                caps = _as_list_of_strings(requires.get("capabilities"))
+            has_runtime_capability = _has_runtime_specific_capability(
+                caps,
+                tokens=token_set,
+                prefixes=prefix_tuple,
+            )
+
+            non_core_type = bool(case_type) and case_type not in core_types
+
+            penalties = {
+                "non_evaluate_leaf_share": weights["non_evaluate_leaf_share"] * non_eval_share,
+                "expect_impl_overlay": weights["expect_impl_overlay"] if has_expect_impl else 0.0,
+                "runtime_specific_capability": (
+                    weights["runtime_specific_capability"] if has_runtime_capability else 0.0
+                ),
+                "non_core_type": weights["non_core_type"] if non_core_type else 0.0,
+            }
+            total_penalty = sum(float(x) for x in penalties.values())
+            score = max(0.0, min(1.0, 1.0 - total_penalty))
+
+            reasons: list[str] = []
+            if penalties["non_evaluate_leaf_share"] > 0:
+                reasons.append(
+                    f"non-evaluate leaf share {non_eval_leaf}/{total_leaf}"
+                )
+            if penalties["expect_impl_overlay"] > 0:
+                reasons.append("expect.impl overlay present")
+            if penalties["runtime_specific_capability"] > 0:
+                reasons.append("runtime-specific capability declared")
+            if penalties["non_core_type"] > 0:
+                reasons.append(f"non-core type {case_type}")
+
+            rows.append(
+                {
+                    "id": case_id,
+                    "type": case_type,
+                    "segment": segment,
+                    "file": rel_path,
+                    "leaf_counts": {
+                        "total": total_leaf,
+                        "evaluate": total_leaf - non_eval_leaf,
+                        "non_evaluate": non_eval_leaf,
+                    },
+                    "penalties": penalties,
+                    "self_contained_ratio": score,
+                    "implementation_reliance_ratio": 1.0 - score,
+                    "reasons": reasons,
+                }
+            )
+
+    rows.sort(key=lambda r: (str(r["segment"]), float(r["self_contained_ratio"]), str(r["file"]), str(r["id"])))
+
+    segments_order = [str(rule["segment"]) for rule in cfg["segment_rules"]] + ["other"]
+    segments_unique: list[str] = []
+    for s in segments_order:
+        if s not in segments_unique:
+            segments_unique.append(s)
+    for row in rows:
+        seg = str(row["segment"])
+        if seg not in segments_unique:
+            segments_unique.append(seg)
+
+    segments: dict[str, Any] = {}
+    for seg in segments_unique:
+        seg_rows = [r for r in rows if r["segment"] == seg]
+        segments[seg] = _summarize_segment(seg_rows)
+
+    total_cases = len(rows)
+    if total_cases:
+        overall_self = sum(float(r["self_contained_ratio"]) for r in rows) / total_cases
+        overall_impl = sum(float(r["implementation_reliance_ratio"]) for r in rows) / total_cases
+    else:
+        overall_self = 0.0
+        overall_impl = 0.0
+
+    top_n = int(cfg["report"]["top_n"])
+    worst_cases = sorted(
+        rows,
+        key=lambda r: (float(r["self_contained_ratio"]), str(r["file"]), str(r["id"])),
+    )[:top_n]
+
+    return {
+        "version": 1,
+        "summary": {
+            "total_cases": total_cases,
+            "overall_self_contained_ratio": overall_self,
+            "overall_implementation_reliance_ratio": overall_impl,
+        },
+        "segments": segments,
+        "worst_cases": worst_cases,
+        "cases": rows,
+        "config": cfg,
+        "errors": [*config_errors, *scan_errors],
+    }

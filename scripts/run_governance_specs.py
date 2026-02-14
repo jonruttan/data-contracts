@@ -25,6 +25,7 @@ from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 from spec_runner.contract_governance import check_contract_governance
 from spec_runner.contract_governance import contract_coverage_jsonable
+from spec_runner.spec_portability import spec_portability_report_jsonable
 
 
 _SECURITY_WARNING_DOCS = (
@@ -334,6 +335,18 @@ def _scan_contract_coverage_threshold(root: Path, *, harness: dict | None = None
             f"coverage_ratio={coverage_ratio:.4f} below min_coverage_ratio={min_coverage_ratio:.4f}"
         )
     return violations
+
+
+def _scan_spec_portability_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("portability_metric")
+    if not isinstance(cfg, dict):
+        return ["spec.portability_metric requires harness.portability_metric mapping in governance spec"]
+    payload = spec_portability_report_jsonable(root, config=cfg)
+    errs = payload.get("errors") or []
+    if not isinstance(errs, list):
+        return ["spec.portability_metric report contains invalid errors shape"]
+    return [str(e) for e in errs if str(e).strip()]
 
 
 def _is_spec_opening_fence(line: str) -> tuple[str, int] | None:
@@ -1479,6 +1492,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
     "conformance.purpose_quality_gate": _scan_conformance_purpose_quality_gate,
     "contract.coverage_threshold": _scan_contract_coverage_threshold,
+    "spec.portability_metric": _scan_spec_portability_metric,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,

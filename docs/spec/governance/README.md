@@ -35,6 +35,8 @@ Current checks:
 - `conformance.spec_lang_preferred`: enforces spec-lang-first conformance
   authoring and requires explicit temporary allowlisting for non-`evaluate`
   assertion files.
+- `spec.portability_metric`: computes segmented spec self-containment and
+  implementation-reliance scores from configured `.spec.md` roots.
 - `conformance.no_ambient_assumptions`: rejects ambient environment/time/random
   assumption tokens in portable conformance case content.
 - `conformance.portable_determinism_guard`: checks configured non-determinism

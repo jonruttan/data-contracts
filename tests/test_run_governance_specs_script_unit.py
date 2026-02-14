@@ -1851,3 +1851,118 @@ assert:
     _write_text(tmp_path / "docs/Bad Name.md", "# bad\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_spec_portability_metric(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "spec_portability_metric.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-SPEC-PORT-001
+
+```yaml spec-test
+id: SRGOV-TEST-SPEC-PORT-001
+type: governance.check
+check: spec.portability_metric
+harness:
+  root: {tmp_path}
+  portability_metric:
+    roots: ["docs/spec/conformance/cases"]
+    core_types: ["text.file", "cli.run"]
+    segment_rules:
+      - prefix: docs/spec/conformance/cases
+        segment: conformance
+    runtime_capability_tokens: ["api.http"]
+    runtime_capability_prefixes: ["runtime."]
+    weights:
+      non_evaluate_leaf_share: 0.45
+      expect_impl_overlay: 0.25
+      runtime_specific_capability: 0.15
+      non_core_type: 0.15
+    report:
+      top_n: 5
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: spec.portability_metric"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/a.spec.md",
+        """# A
+
+## C1
+
+```yaml spec-test
+id: C1
+type: text.file
+assert:
+  - target: text
+    must:
+      - evaluate:
+          - ["contains", ["subject"], "x"]
+```
+""",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+
+def test_script_rejects_invalid_spec_portability_metric_config(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "spec_portability_metric_bad.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-SPEC-PORT-002
+
+```yaml spec-test
+id: SRGOV-TEST-SPEC-PORT-002
+type: governance.check
+check: spec.portability_metric
+harness:
+  root: {tmp_path}
+  portability_metric:
+    roots: ["docs/spec/conformance/cases"]
+    core_types: ["text.file", "cli.run"]
+    segment_rules:
+      - prefix: docs/spec/conformance/cases
+        segment: conformance
+    runtime_capability_tokens: ["api.http"]
+    runtime_capability_prefixes: ["runtime."]
+    weights:
+      non_evaluate_leaf_share: 0.45
+      expect_impl_overlay: 0.25
+      runtime_specific_capability: 0.15
+      non_core_type: 0.15
+    report:
+      top_n: 0
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: spec.portability_metric"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/a.spec.md",
+        """# A
+
+## C1
+
+```yaml spec-test
+id: C1
+type: text.file
+assert: []
+```
+""",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

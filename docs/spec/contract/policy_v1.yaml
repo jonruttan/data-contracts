@@ -421,6 +421,40 @@ rules:
       - docs/spec/conformance/purpose_lint_v1.yaml
       - docs/spec/contract/06_conformance.md
 
+  - id: SPEC_PORTABILITY_METRIC_REPORTED
+    introduced_in: v1
+    scope: governance
+    applies_to: specs.portability.metric_report
+    norm: MUST
+    requirement: portability_metric_report_generation_and_shape_valid
+    description: >
+      Governance must compute and emit the spec self-containment metric report
+      over configured `.spec.md` roots with segmented and overall summaries.
+    rationale: Provides a measurable portability signal and makes coupling debt visible.
+    risk_if_violated: Portability regressions accumulate without objective feedback.
+    references:
+      - docs/spec/contract/07_portable_spec_authoring.md
+      - docs/spec/governance/cases/spec_portability_metric.spec.md
+      - scripts/spec_portability_report.py
+      - spec_runner/spec_portability.py
+
+  - id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
+    introduced_in: v1
+    scope: governance
+    applies_to: specs.portability.metric_thresholds
+    norm: SHOULD
+    requirement: portability_metric_thresholds_enforced_when_enabled
+    description: >
+      Governance should support threshold-based portability gating
+      (`min_overall_ratio`, `min_segment_ratios`) when explicit enforcement is
+      enabled in configuration.
+    rationale: Enables gradual transition from report-only to hard quality gates.
+    risk_if_violated: Teams cannot ratchet portability quality over time.
+    references:
+      - docs/spec/contract/07_portable_spec_authoring.md
+      - docs/spec/governance/cases/spec_portability_metric.spec.md
+      - spec_runner/spec_portability.py
+
   - id: DOCS_REF_SURFACE_COMPLETE
     introduced_in: v1
     scope: governance

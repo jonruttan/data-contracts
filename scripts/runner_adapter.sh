@@ -36,6 +36,12 @@ case "${subcommand}" in
   conformance-purpose-md)
     exec "${PYTHON_BIN}" scripts/conformance_purpose_report.py --format md --out .artifacts/conformance-purpose-summary.md "$@"
     ;;
+  spec-portability-json)
+    exec "${PYTHON_BIN}" scripts/spec_portability_report.py --out .artifacts/spec-portability.json "$@"
+    ;;
+  spec-portability-md)
+    exec "${PYTHON_BIN}" scripts/spec_portability_report.py --format md --out .artifacts/spec-portability-summary.md "$@"
+    ;;
   conformance-parity)
     exec "${PYTHON_BIN}" scripts/compare_conformance_parity.py \
       --cases docs/spec/conformance/cases \
