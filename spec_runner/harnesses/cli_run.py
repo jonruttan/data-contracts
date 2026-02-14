@@ -23,6 +23,7 @@ from spec_runner.assertion_health import (
     resolve_assert_health_mode,
 )
 from spec_runner.settings import SETTINGS
+from spec_runner.spec_lang import eval_predicate, limits_from_harness
 
 
 _GLOBAL_SIDE_EFFECT_LOCK = threading.RLock()
@@ -93,6 +94,7 @@ def run(case, *, ctx) -> None:
         "hook_before",
         "hook_after",
         "hook_kwargs",
+        "spec_lang",
     }
     unknown = sorted(str(k) for k in h.keys() if k not in supported_harness_keys)
     if unknown:
@@ -128,6 +130,7 @@ def run(case, *, ctx) -> None:
         hook_after_ep = None
 
     runtime_env = _runtime_env(ctx)
+    spec_lang_limits = limits_from_harness(h)
     safe_mode = _is_safe_mode_enabled(runtime_env)
     mode = resolve_assert_health_mode(t, env=runtime_env)
     assert_spec = t.get("assert", []) or []
@@ -321,6 +324,9 @@ def run(case, *, ctx) -> None:
 
                 if is_text_op(op):
                     assert_text_op(subject, op, value, is_true=is_true)
+                elif op == "expr":
+                    ok = eval_predicate(value, subject=subject, limits=spec_lang_limits)
+                    assert ok is bool(is_true), "expr assertion failed"
                 elif op == "json_type":
                     parsed = parse_json(subject)
                     want = str(value).lower()

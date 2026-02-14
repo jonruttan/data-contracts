@@ -16,11 +16,12 @@ Read in order:
 4. `docs/spec/contract/02_case_shape.md`
 5. `docs/spec/contract/03_assertions.md`
 6. `docs/spec/contract/03a_regex_portability_v1.md`
-7. `docs/spec/contract/04_harness.md`
-8. `docs/spec/contract/05_errors.md`
-9. `docs/spec/contract/06_conformance.md`
-10. `docs/spec/contract/07_portable_spec_authoring.md`
-11. `docs/spec/contract/08_v1_scope.md`
+7. `docs/spec/contract/03b_spec_lang_v1.md`
+8. `docs/spec/contract/04_harness.md`
+9. `docs/spec/contract/05_errors.md`
+10. `docs/spec/contract/06_conformance.md`
+11. `docs/spec/contract/07_portable_spec_authoring.md`
+12. `docs/spec/contract/08_v1_scope.md`
 
 Type contracts:
 

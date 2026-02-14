@@ -5,8 +5,8 @@ Date: 2026-02-12
 
 Notes:
 
-- The canonical assertion DSL is `must` / `can` / `cannot` with `contain` /
-  `regex`.
+- The canonical assertion DSL is `must` / `can` / `cannot` with `contain`,
+  `regex`, and `expr` (spec-lang v1 list S-expressions).
 - `target` is defined on group nodes; leaf assertions are op-only.
 
 Canonical spec docs:

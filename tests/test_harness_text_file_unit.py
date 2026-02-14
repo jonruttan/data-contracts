@@ -242,3 +242,21 @@ def test_text_file_uses_assert_health_mode_from_context_env(tmp_path, monkeypatc
     )
     captured = capsys.readouterr()
     assert "WARN: ASSERT_HEALTH AH001" in captured.err
+
+
+def test_text_file_expr_operator(tmp_path, monkeypatch, capsys):
+    p = tmp_path / "doc.md"
+    p.write_text("hello world\n", encoding="utf-8")
+    case = SpecDocTest(
+        doc_path=p,
+        test={
+            "id": "SR-TEXT-UNIT-EXPR-001",
+            "type": "text.file",
+            "assert": [
+                {"target": "text", "must": [{"expr": [["contains", "hello"], ["ends_with", "world\n"]]}]}
+            ],
+        },
+    )
+    from spec_runner.harnesses.text_file import run
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))

@@ -13,6 +13,7 @@ from spec_runner.assertion_health import (
     lint_assert_tree,
     resolve_assert_health_mode,
 )
+from spec_runner.spec_lang import eval_predicate, limits_from_harness
 
 
 def _runtime_env(ctx) -> dict[str, str]:
@@ -53,6 +54,7 @@ def run(case, *, ctx) -> None:
             raise ValueError("text.file path escapes contract root") from e
     text = p.read_text(encoding="utf-8")
     assert_spec = t.get("assert", []) or []
+    spec_lang_limits = limits_from_harness(t.get("harness") if isinstance(t.get("harness"), dict) else None)
     mode = resolve_assert_health_mode(t, env=_runtime_env(ctx))
     diags = lint_assert_tree(assert_spec)
     if diags and mode == "error":
@@ -66,7 +68,11 @@ def run(case, *, ctx) -> None:
             try:
                 if target != "text":
                     raise ValueError(f"unknown assert target for text.file: {target}")
-                assert_text_op(text, op, value, is_true=is_true)
+                if op == "expr":
+                    ok = eval_predicate(value, subject=text, limits=spec_lang_limits)
+                    assert ok is bool(is_true), "expr assertion failed"
+                else:
+                    assert_text_op(text, op, value, is_true=is_true)
             except BaseException as e:  # noqa: BLE001
                 _raise_with_assert_context(
                     e,

@@ -13,6 +13,7 @@ from spec_runner.assertions import (
     is_text_op,
     iter_leaf_assertions,
 )
+from spec_runner.spec_lang import eval_predicate, limits_from_harness
 
 
 def _contract_root_for(doc_path: Path) -> Path:
@@ -91,6 +92,7 @@ def run(case, *, ctx) -> None:
     h = t.get("harness") or {}
     if not isinstance(h, dict):
         raise TypeError("harness must be a mapping")
+    spec_lang_limits = limits_from_harness(h)
     timeout_seconds = float(h.get("timeout_seconds", 5))
 
     response = _fetch_response(
@@ -110,13 +112,21 @@ def run(case, *, ctx) -> None:
         for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
             try:
                 if target == "status":
-                    if not is_text_op(op):
+                    if op == "expr":
+                        ok = eval_predicate(value, subject=status_text, limits=spec_lang_limits)
+                        assert ok is bool(is_true), "expr assertion failed"
+                    elif not is_text_op(op):
                         raise ValueError(f"unsupported op for status: {op}")
-                    assert_text_op(status_text, op, value, is_true=is_true)
+                    else:
+                        assert_text_op(status_text, op, value, is_true=is_true)
                 elif target == "headers":
-                    if not is_text_op(op):
+                    if op == "expr":
+                        ok = eval_predicate(value, subject=headers_text, limits=spec_lang_limits)
+                        assert ok is bool(is_true), "expr assertion failed"
+                    elif not is_text_op(op):
                         raise ValueError(f"unsupported op for headers: {op}")
-                    assert_text_op(headers_text, op, value, is_true=is_true)
+                    else:
+                        assert_text_op(headers_text, op, value, is_true=is_true)
                 elif target == "body_text":
                     if op == "json_type":
                         want = str(value).strip().lower()
@@ -126,6 +136,9 @@ def run(case, *, ctx) -> None:
                             assert isinstance(body_json_value, list)
                         else:
                             raise ValueError(f"unsupported json_type: {value}")
+                    elif op == "expr":
+                        ok = eval_predicate(value, subject=body_text_value, limits=spec_lang_limits)
+                        assert ok is bool(is_true), "expr assertion failed"
                     elif is_text_op(op):
                         assert_text_op(body_text_value, op, value, is_true=is_true)
                     else:
@@ -139,6 +152,9 @@ def run(case, *, ctx) -> None:
                             assert isinstance(body_json_value, list)
                         else:
                             raise ValueError(f"unsupported json_type: {value}")
+                    elif op == "expr":
+                        ok = eval_predicate(value, subject=body_json_value, limits=spec_lang_limits)
+                        assert ok is bool(is_true), "expr assertion failed"
                     elif is_text_op(op):
                         assert_text_op(json.dumps(body_json_value, sort_keys=True), op, value, is_true=is_true)
                     else:

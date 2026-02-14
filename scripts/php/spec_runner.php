@@ -17,6 +17,22 @@ function usage(): void {
 }
 
 const DEFAULT_CASE_FILE_PATTERN = '*.spec.md';
+const PHP_CAPABILITIES = [
+    'api.http',
+    'assert.op.contain',
+    'assert.op.regex',
+    'assert.op.expr',
+    'assert.group.must',
+    'assert.group.can',
+    'assert.group.cannot',
+    'assert_health.ah001',
+    'assert_health.ah002',
+    'assert_health.ah003',
+    'assert_health.ah004',
+    'assert_health.ah005',
+    'expr.spec_lang.v1',
+    'requires.capabilities',
+];
 
 function parseArgs(array $argv): array {
     $out = null;
@@ -409,6 +425,403 @@ function resolveAssertHealthMode(array $case): string {
     return $mode;
 }
 
+final class SpecLangEnv {
+    public array $vars;
+    public ?SpecLangEnv $parent;
+
+    public function __construct(array $vars, ?SpecLangEnv $parent) {
+        $this->vars = $vars;
+        $this->parent = $parent;
+    }
+}
+
+function specLangDefaultLimits(): array {
+    return [
+        'max_steps' => 20000,
+        'max_nodes' => 20000,
+        'max_literal_bytes' => 262144,
+        'timeout_ms' => 200,
+    ];
+}
+
+function specLangLimitsFromHarness(array $case): array {
+    $defaults = specLangDefaultLimits();
+    $harness = $case['harness'] ?? [];
+    if (!is_array($harness)) {
+        throw new SchemaError('harness must be a mapping');
+    }
+    $cfg = $harness['spec_lang'] ?? [];
+    if ($cfg === null || $cfg === []) {
+        return $defaults;
+    }
+    if (!is_array($cfg)) {
+        throw new SchemaError('harness.spec_lang must be a mapping');
+    }
+    foreach ($defaults as $field => $default) {
+        if (!array_key_exists($field, $cfg)) {
+            continue;
+        }
+        $raw = $cfg[$field];
+        if (!is_int($raw)) {
+            throw new SchemaError("harness.spec_lang.{$field} must be an integer");
+        }
+        $min = $field === 'timeout_ms' ? 0 : 1;
+        if ($raw < $min) {
+            throw new SchemaError("harness.spec_lang.{$field} must be >= {$min}");
+        }
+        $defaults[$field] = $raw;
+    }
+    return $defaults;
+}
+
+function specLangUnsetSentinel(): object {
+    static $sentinel = null;
+    if ($sentinel === null) {
+        $sentinel = new stdClass();
+    }
+    return $sentinel;
+}
+
+function specLangTick(array &$state): void {
+    $state['steps'] += 1;
+    if ($state['steps'] > $state['limits']['max_steps']) {
+        throw new RuntimeException('spec_lang budget exceeded: steps');
+    }
+    $timeout = (int)$state['limits']['timeout_ms'];
+    if ($timeout > 0) {
+        $elapsedMs = (int)floor((microtime(true) - (float)$state['started']) * 1000.0);
+        if ($elapsedMs > $timeout) {
+            throw new RuntimeException('spec_lang budget exceeded: timeout');
+        }
+    }
+}
+
+function specLangValidateExprShape(mixed $expr, array $limits): void {
+    $stack = [$expr];
+    $nodes = 0;
+    $literalBytes = 0;
+    while (count($stack) > 0) {
+        $cur = array_pop($stack);
+        $nodes += 1;
+        if ($nodes > $limits['max_nodes']) {
+            throw new RuntimeException('spec_lang budget exceeded: nodes');
+        }
+        if (is_string($cur)) {
+            $literalBytes += strlen($cur);
+        }
+        if ($literalBytes > $limits['max_literal_bytes']) {
+            throw new RuntimeException('spec_lang budget exceeded: literal_size');
+        }
+        if (is_array($cur) && isListArray($cur)) {
+            foreach ($cur as $child) {
+                $stack[] = $child;
+            }
+        }
+    }
+}
+
+function specLangLookup(SpecLangEnv $env, string $name): mixed {
+    $cur = $env;
+    $unset = specLangUnsetSentinel();
+    while ($cur !== null) {
+        if (array_key_exists($name, $cur->vars)) {
+            $value = $cur->vars[$name];
+            if ($value === $unset) {
+                throw new SchemaError("uninitialized variable: {$name}");
+            }
+            return $value;
+        }
+        $cur = $cur->parent;
+    }
+    throw new SchemaError("undefined variable: {$name}");
+}
+
+function specLangJsonTypeName(mixed $value): string {
+    if ($value === null) {
+        return 'null';
+    }
+    if (is_bool($value)) {
+        return 'bool';
+    }
+    if (is_int($value) || is_float($value)) {
+        return 'number';
+    }
+    if (is_string($value)) {
+        return 'string';
+    }
+    if (is_array($value)) {
+        return isListArray($value) ? 'list' : 'dict';
+    }
+    return 'unknown';
+}
+
+function specLangIsClosure(mixed $value): bool {
+    return is_array($value) && ($value['__type'] ?? null) === 'closure' && ($value['env'] ?? null) instanceof SpecLangEnv;
+}
+
+function specLangRequireArity(string $op, array $args, int $n): void {
+    if (count($args) !== $n) {
+        throw new SchemaError("spec_lang arity error for {$op}: expected {$n} got " . count($args));
+    }
+}
+
+function specLangRequireMinArity(string $op, array $args, int $n): void {
+    if (count($args) < $n) {
+        throw new SchemaError("spec_lang arity error for {$op}: expected at least {$n} got " . count($args));
+    }
+}
+
+function specLangEvalNonTail(mixed $expr, SpecLangEnv $env, mixed $subject, array $limits, array &$state): mixed {
+    return specLangEvalTail($expr, $env, $subject, $limits, $state);
+}
+
+function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $subject, array $limits, array &$state): mixed {
+    if ($op === 'subject') {
+        specLangRequireArity($op, $args, 0);
+        return $subject;
+    }
+    if ($op === 'var') {
+        specLangRequireArity($op, $args, 1);
+        $name = $args[0];
+        if (!is_string($name) || trim($name) === '') {
+            throw new SchemaError('spec_lang var requires non-empty string name');
+        }
+        return specLangLookup($env, trim($name));
+    }
+    if ($op === 'and') {
+        specLangRequireMinArity($op, $args, 1);
+        foreach ($args as $arg) {
+            if (!((bool)specLangEvalNonTail($arg, $env, $subject, $limits, $state))) {
+                return false;
+            }
+        }
+        return true;
+    }
+    if ($op === 'or') {
+        specLangRequireMinArity($op, $args, 1);
+        foreach ($args as $arg) {
+            if ((bool)specLangEvalNonTail($arg, $env, $subject, $limits, $state)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    if ($op === 'not') {
+        specLangRequireArity($op, $args, 1);
+        return !((bool)specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+    }
+    if ($op === 'contains' || $op === 'starts_with' || $op === 'ends_with' || $op === 'json_type' || $op === 'has_key') {
+        if (count($args) === 1) {
+            $left = $subject;
+            $right = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        } elseif (count($args) === 2) {
+            $left = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+            $right = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        } else {
+            throw new SchemaError("spec_lang arity error for {$op}");
+        }
+        if ($op === 'contains') {
+            return str_contains((string)$left, (string)$right);
+        }
+        if ($op === 'starts_with') {
+            return str_starts_with((string)$left, (string)$right);
+        }
+        if ($op === 'ends_with') {
+            return str_ends_with((string)$left, (string)$right);
+        }
+        if ($op === 'json_type') {
+            return specLangJsonTypeName($left) === strtolower(trim((string)$right));
+        }
+        if (!is_array($left) || isListArray($left)) {
+            return false;
+        }
+        return array_key_exists((string)$right, $left);
+    }
+    if ($op === 'eq') {
+        specLangRequireArity($op, $args, 2);
+        return specLangEvalNonTail($args[0], $env, $subject, $limits, $state) === specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+    }
+    if ($op === 'neq') {
+        specLangRequireArity($op, $args, 2);
+        return specLangEvalNonTail($args[0], $env, $subject, $limits, $state) !== specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+    }
+    if ($op === 'in') {
+        specLangRequireArity($op, $args, 2);
+        $member = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $container = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if (is_array($container)) {
+            if (isListArray($container)) {
+                return in_array($member, $container, true);
+            }
+            return array_key_exists((string)$member, $container);
+        }
+        if (is_string($container)) {
+            return str_contains($container, (string)$member);
+        }
+        throw new SchemaError('spec_lang in expects list/dict/string container');
+    }
+    if ($op === 'get') {
+        specLangRequireArity($op, $args, 2);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $key = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if (is_array($obj) && !isListArray($obj)) {
+            return $obj[(string)$key] ?? null;
+        }
+        if (is_array($obj) && isListArray($obj)) {
+            if (!is_int($key) || $key < 0 || $key >= count($obj)) {
+                return null;
+            }
+            return $obj[$key];
+        }
+        throw new SchemaError('spec_lang get expects dict or list');
+    }
+    if ($op === 'len') {
+        specLangRequireArity($op, $args, 1);
+        $value = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (is_string($value)) {
+            return strlen($value);
+        }
+        if (is_array($value)) {
+            return count($value);
+        }
+        throw new SchemaError('spec_lang len expects string/list/dict');
+    }
+    if ($op === 'trim' || $op === 'lower' || $op === 'upper') {
+        specLangRequireArity($op, $args, 1);
+        $value = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if ($op === 'trim') {
+            return trim($value);
+        }
+        if ($op === 'lower') {
+            return strtolower($value);
+        }
+        return strtoupper($value);
+    }
+    if ($op === 'add' || $op === 'sub') {
+        specLangRequireArity($op, $args, 2);
+        $left = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $right = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if ((!is_int($left) && !is_float($left)) || (!is_int($right) && !is_float($right))) {
+            throw new SchemaError("spec_lang {$op} expects numeric args");
+        }
+        return $op === 'add' ? $left + $right : $left - $right;
+    }
+    throw new SchemaError("unsupported spec_lang symbol: {$op}");
+}
+
+function specLangEvalTail(mixed $expr, SpecLangEnv $env, mixed $subject, array $limits, array &$state): mixed {
+    $currentExpr = $expr;
+    $currentEnv = $env;
+    while (true) {
+        specLangTick($state);
+        if (is_string($currentExpr) || is_int($currentExpr) || is_float($currentExpr) || is_bool($currentExpr) || $currentExpr === null) {
+            return $currentExpr;
+        }
+        if (!is_array($currentExpr) || !isListArray($currentExpr)) {
+            throw new SchemaError('spec_lang expression must be list-based s-expr or scalar literal');
+        }
+        if (count($currentExpr) === 0) {
+            throw new SchemaError('spec_lang expression list must not be empty');
+        }
+        $head = $currentExpr[0];
+        if (!is_string($head) || trim($head) === '') {
+            throw new SchemaError('spec_lang expression head must be non-empty string symbol');
+        }
+        $op = $head;
+        $args = array_slice($currentExpr, 1);
+
+        if ($op === 'if') {
+            specLangRequireArity($op, $args, 3);
+            $cond = specLangEvalNonTail($args[0], $currentEnv, $subject, $limits, $state);
+            $currentExpr = ((bool)$cond) ? $args[1] : $args[2];
+            continue;
+        }
+        if ($op === 'let') {
+            specLangRequireArity($op, $args, 2);
+            $rawBindings = $args[0];
+            $body = $args[1];
+            if (!is_array($rawBindings) || !isListArray($rawBindings)) {
+                throw new SchemaError('spec_lang let bindings must be a list');
+            }
+            $nextEnv = new SpecLangEnv([], $currentEnv);
+            $pairs = [];
+            $unset = specLangUnsetSentinel();
+            foreach ($rawBindings as $binding) {
+                if (!is_array($binding) || !isListArray($binding) || count($binding) !== 2) {
+                    throw new SchemaError('spec_lang let binding must be [name, expr]');
+                }
+                $name = $binding[0];
+                if (!is_string($name) || trim($name) === '') {
+                    throw new SchemaError('spec_lang let binding name must be non-empty string');
+                }
+                $key = trim($name);
+                if (array_key_exists($key, $nextEnv->vars)) {
+                    throw new SchemaError("duplicate let binding: {$key}");
+                }
+                $nextEnv->vars[$key] = $unset;
+                $pairs[] = [$key, $binding[1]];
+            }
+            foreach ($pairs as $pair) {
+                [$key, $rhs] = $pair;
+                $nextEnv->vars[$key] = specLangEvalNonTail($rhs, $nextEnv, $subject, $limits, $state);
+            }
+            $currentExpr = $body;
+            $currentEnv = $nextEnv;
+            continue;
+        }
+        if ($op === 'fn') {
+            specLangRequireArity($op, $args, 2);
+            $rawParams = $args[0];
+            $body = $args[1];
+            if (!is_array($rawParams) || !isListArray($rawParams)) {
+                throw new SchemaError('spec_lang fn params must be a list');
+            }
+            $params = [];
+            foreach ($rawParams as $param) {
+                if (!is_string($param) || trim($param) === '') {
+                    throw new SchemaError('spec_lang fn param must be non-empty string');
+                }
+                $key = trim($param);
+                if (in_array($key, $params, true)) {
+                    throw new SchemaError("duplicate fn param: {$key}");
+                }
+                $params[] = $key;
+            }
+            return ['__type' => 'closure', 'params' => $params, 'body' => $body, 'env' => $currentEnv];
+        }
+        if ($op === 'call') {
+            specLangRequireMinArity($op, $args, 1);
+            $fnValue = specLangEvalNonTail($args[0], $currentEnv, $subject, $limits, $state);
+            $evalArgs = [];
+            foreach (array_slice($args, 1) as $arg) {
+                $evalArgs[] = specLangEvalNonTail($arg, $currentEnv, $subject, $limits, $state);
+            }
+            if (!specLangIsClosure($fnValue)) {
+                throw new SchemaError('spec_lang call expects fn closure');
+            }
+            $params = $fnValue['params'];
+            if (count($evalArgs) !== count($params)) {
+                throw new SchemaError('spec_lang call argument count mismatch');
+            }
+            $vars = [];
+            foreach ($params as $i => $name) {
+                $vars[(string)$name] = $evalArgs[$i];
+            }
+            $currentEnv = new SpecLangEnv($vars, $fnValue['env']);
+            $currentExpr = $fnValue['body'];
+            continue;
+        }
+        return specLangEvalBuiltin($op, $args, $currentEnv, $subject, $limits, $state);
+    }
+}
+
+function specLangEvalPredicate(mixed $expr, mixed $subject, array $limits): bool {
+    specLangValidateExprShape($expr, $limits);
+    $state = ['steps' => 0, 'started' => microtime(true), 'limits' => $limits];
+    $value = specLangEvalTail($expr, new SpecLangEnv([], null), $subject, $limits, $state);
+    return (bool)$value;
+}
+
 function evalAssertNode(
     mixed $node,
     ?string $inheritedTarget,
@@ -504,18 +917,26 @@ function evalAssertNode(
     $evalLeaf($node, $target, $caseId, $path);
 }
 
-function evalTextLeaf(array $leaf, string $subject, string $target, string $caseId, string $path): void {
+function evalTextLeaf(array $leaf, string $subject, string $target, string $caseId, string $path, array $specLangLimits): void {
     if ($target !== 'text') {
         throw new SchemaError('unknown assert target for text.file');
     }
     foreach ($leaf as $op => $raw) {
-        if ($op !== 'contain' && $op !== 'regex') {
+        if ($op !== 'contain' && $op !== 'regex' && $op !== 'expr') {
             throw new SchemaError("unsupported op: {$op}");
         }
         if (!is_array($raw) || !isListArray($raw)) {
             throw new SchemaError("assertion op '{$op}' must be a list");
         }
         foreach ($raw as $value) {
+            if ($op === 'expr') {
+                if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
+                    throw new AssertionFailure(
+                        "[case_id={$caseId} assert_path={$path} target={$target} op=expr] expr assertion failed"
+                    );
+                }
+                continue;
+            }
             $v = (string)$value;
             if ($op === 'contain') {
                 if (strpos($subject, $v) === false) {
@@ -546,17 +967,32 @@ function firstNonEmptyLine(string $text): ?string {
     return null;
 }
 
-function evalCliLeaf(array $leaf, array $captured, string $target, string $caseId, string $path): void {
+function evalCliLeaf(
+    array $leaf,
+    array $captured,
+    string $target,
+    string $caseId,
+    string $path,
+    array $specLangLimits
+): void {
     foreach ($leaf as $op => $raw) {
         if (!is_array($raw) || !isListArray($raw)) {
             throw new SchemaError("assertion op '{$op}' must be a list");
         }
         if ($target === 'stdout' || $target === 'stderr') {
             $subject = $target === 'stdout' ? (string)$captured['stdout'] : (string)$captured['stderr'];
-            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type') {
+            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type' && $op !== 'expr') {
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
+                if ($op === 'expr') {
+                    if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=expr] expr assertion failed"
+                        );
+                    }
+                    continue;
+                }
                 if ($op === 'contain') {
                     $v = (string)$value;
                     if (strpos($subject, $v) === false) {
@@ -631,10 +1067,18 @@ function evalCliLeaf(array $leaf, array $captured, string $target, string $caseI
                     "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] cannot read stdout path"
                 );
             }
-            if ($op !== 'contain' && $op !== 'regex') {
+            if ($op !== 'contain' && $op !== 'regex' && $op !== 'expr') {
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
+                if ($op === 'expr') {
+                    if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=expr] expr assertion failed"
+                        );
+                    }
+                    continue;
+                }
                 $v = (string)$value;
                 if ($op === 'contain') {
                     if (strpos($subject, $v) === false) {
@@ -679,6 +1123,7 @@ function evaluateTextFileCase(string $fixturePath, array $case): array {
         throw new RuntimeException("cannot read fixture file: {$subjectPath}");
     }
     $assertSpec = $case['assert'] ?? [];
+    $specLangLimits = specLangLimitsFromHarness($case);
     evalAssertNode(
         $assertSpec,
         null,
@@ -689,7 +1134,8 @@ function evaluateTextFileCase(string $fixturePath, array $case): array {
             $subject,
             $target,
             $caseId,
-            $path
+            $path,
+            $specLangLimits
         )
     );
     return ['status' => 'pass', 'category' => null, 'message' => null];
@@ -755,7 +1201,7 @@ function evaluateCliRunCase(array $case): array {
     if (!is_array($h)) {
         throw new SchemaError('harness must be a mapping');
     }
-    $supportedHarnessKeys = ['entrypoint', 'env'];
+    $supportedHarnessKeys = ['entrypoint', 'env', 'spec_lang'];
     foreach (array_keys($h) as $k) {
         if (!in_array((string)$k, $supportedHarnessKeys, true)) {
             throw new SchemaError("unsupported harness key(s): {$k}");
@@ -824,6 +1270,7 @@ function evaluateCliRunCase(array $case): array {
 
     $captured = ['stdout' => (string)$stdout, 'stderr' => (string)$stderr];
     $assertSpec = $case['assert'] ?? [];
+    $specLangLimits = specLangLimitsFromHarness($case);
     evalAssertNode(
         $assertSpec,
         null,
@@ -834,7 +1281,8 @@ function evaluateCliRunCase(array $case): array {
             $captured,
             $target,
             $caseId,
-            $path
+            $path,
+            $specLangLimits
         )
     );
 
@@ -865,7 +1313,14 @@ function resolveApiHttpUrl(string $fixturePath, string $url): array {
     return ['source_type' => 'file', 'path' => $candidate];
 }
 
-function evalApiHttpLeaf(array $leaf, array $resp, string $target, string $caseId, string $path): void {
+function evalApiHttpLeaf(
+    array $leaf,
+    array $resp,
+    string $target,
+    string $caseId,
+    string $path,
+    array $specLangLimits
+): void {
     foreach ($leaf as $op => $raw) {
         if (!is_array($raw) || !isListArray($raw)) {
             throw new SchemaError("assertion op '{$op}' must be a list");
@@ -874,10 +1329,18 @@ function evalApiHttpLeaf(array $leaf, array $resp, string $target, string $caseI
             $subject = $target === 'status'
                 ? (string)$resp['status']
                 : ($target === 'headers' ? (string)$resp['headers_text'] : (string)$resp['body_text']);
-            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type') {
+            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type' && $op !== 'expr') {
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
+                if ($op === 'expr') {
+                    if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=expr] expr assertion failed"
+                        );
+                    }
+                    continue;
+                }
                 if ($op === 'contain') {
                     $v = (string)$value;
                     if (strpos($subject, $v) === false) {
@@ -918,7 +1381,7 @@ function evalApiHttpLeaf(array $leaf, array $resp, string $target, string $caseI
             continue;
         }
         if ($target === 'body_json') {
-            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type') {
+            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type' && $op !== 'expr') {
                 throw new SchemaError("unsupported op: {$op}");
             }
             $parsed = json_decode((string)$resp['body_text'], true);
@@ -928,6 +1391,14 @@ function evalApiHttpLeaf(array $leaf, array $resp, string $target, string $caseI
                 );
             }
             foreach ($raw as $value) {
+                if ($op === 'expr') {
+                    if (!specLangEvalPredicate($value, $parsed, $specLangLimits)) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=expr] expr assertion failed"
+                        );
+                    }
+                    continue;
+                }
                 if ($op === 'json_type') {
                     $want = strtolower(trim((string)$value));
                     if ($want === 'list') {
@@ -1054,6 +1525,7 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
     }
 
     $assertSpec = $case['assert'] ?? [];
+    $specLangLimits = specLangLimitsFromHarness($case);
     evalAssertNode(
         $assertSpec,
         null,
@@ -1068,7 +1540,8 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
             ],
             $target,
             $caseId,
-            $path
+            $path,
+            $specLangLimits
         )
     );
     return ['status' => 'pass', 'category' => null, 'message' => null];

@@ -15,6 +15,7 @@ _NORMATIVE_CONTRACT_DOCS = [
     "docs/spec/contract/02_case_shape.md",
     "docs/spec/contract/03_assertions.md",
     "docs/spec/contract/03a_regex_portability_v1.md",
+    "docs/spec/contract/03b_spec_lang_v1.md",
     "docs/spec/contract/04_harness.md",
     "docs/spec/contract/05_errors.md",
     "docs/spec/contract/06_conformance.md",

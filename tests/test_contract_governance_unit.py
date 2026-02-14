@@ -17,6 +17,7 @@ _NORMATIVE_DOCS = [
     "02-case-shape.md",
     "03-assertions.md",
     "03a-regex-portability-v1.md",
+    "03b_spec_lang_v1.md",
     "04-harness.md",
     "05_errors.md",
     "06-conformance.md",
@@ -414,5 +415,4 @@ def test_contract_governance_fails_when_normative_doc_missing_traceability_cover
 
     errs = check_contract_governance(tmp_path)
     assert any("normative contract doc missing traceability coverage: docs/spec/contract/05_errors.md" in e for e in errs)
-
 

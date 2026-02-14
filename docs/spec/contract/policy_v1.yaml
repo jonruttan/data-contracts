@@ -154,6 +154,82 @@ rules:
       - docs/spec/contract/03_assertions.md
       - docs/spec/schema/schema_v1.md
 
+  - id: SPEC_LANG_EXPR_LIST_SHAPE
+    introduced_in: v1
+    scope: case
+    applies_to: assert.tree.expr
+    norm: MUST
+    requirement: expr_values_use_yaml_list_s_expressions
+    description: >
+      `expr` assertion values must use YAML list S-expression encoding.
+    rationale: Keeps parsing deterministic and implementation-independent.
+    risk_if_violated: Runtimes may interpret expressions inconsistently.
+    references:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/schema/schema_v1.md
+
+  - id: SPEC_LANG_PURE_EVALUATOR
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.expr.evaluator
+    norm: MUST
+    requirement: evaluator_is_pure_and_deterministic
+    description: >
+      The spec-lang evaluator must be pure and deterministic with no ambient
+      side effects.
+    rationale: Preserves cross-runtime parity and reproducibility.
+    risk_if_violated: Expression outcomes can drift by environment/runtime.
+    references:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/contract/06_conformance.md
+
+  - id: SPEC_LANG_PROPER_TCO_REQUIRED
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.expr.recursion
+    norm: MUST
+    requirement: proper_tail_call_optimization_for_tail_position_calls
+    description: >
+      Implementations must provide proper tail-call optimization for
+      tail-position `call` expressions.
+    rationale: Avoids host-stack-dependent failures in portable recursive specs.
+    risk_if_violated: Tail-recursive cases can fail by recursion depth.
+    references:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/conformance/cases/spec_lang.spec.md
+
+  - id: SPEC_LANG_EVAL_BUDGETS_REQUIRED
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.expr.budgets
+    norm: MUST
+    requirement: enforce_steps_nodes_literal_and_optional_timeout_budgets
+    description: >
+      Evaluators must enforce steps, nodes, literal-size, and optional timeout
+      budgets for expression execution.
+    rationale: Provides deterministic failure bounds for recursive expressions.
+    risk_if_violated: Unbounded expression execution can hang or exhaust resources.
+    references:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/schema/schema_v1.md
+
+  - id: SPEC_LANG_ERROR_CLASSIFICATION
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.expr.errors
+    norm: MUST
+    requirement: classify_schema_assertion_runtime_errors_consistently
+    description: >
+      Spec-lang expression failures must map to schema/assertion/runtime
+      categories consistently across implementations.
+    rationale: Keeps conformance outcome contracts portable and debuggable.
+    risk_if_violated: Same failing case reports different categories by runtime.
+    references:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/contract/05_errors.md
+      - docs/spec/schema/schema_v1.md
+
   - id: DOC_NORMATIVE_PAGE_TRACEABILITY
     introduced_in: v1
     scope: governance

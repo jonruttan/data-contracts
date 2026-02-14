@@ -848,3 +848,59 @@ def test_cli_type_safe_mode_forbids_hooks(tmp_path, monkeypatch, capsys):
                 env={"SPEC_RUNNER_SAFE_MODE": "true"},
             ),
         )
+
+
+def test_cli_type_expr_operator(tmp_path, monkeypatch, capsys):
+    def fake_main(_argv):
+        print("hello world")
+        return 0
+
+    ep = _install_sut(monkeypatch, fake_main)
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-EXPR-001",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": ep},
+            "assert": [
+                {
+                    "target": "stdout",
+                    "must": [{"expr": [["and", ["contains", "hello"], ["contains", "world"]]]}],
+                }
+            ],
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
+
+
+def test_cli_type_expr_runtime_budget_failure(tmp_path, monkeypatch, capsys):
+    def fake_main(_argv):
+        print("x")
+        return 0
+
+    ep = _install_sut(monkeypatch, fake_main)
+    deep = ["contains", "x"]
+    for _ in range(150):
+        deep = ["not", ["not", deep]]
+
+    case = SpecDocTest(
+        doc_path=Path("docs/spec/cli.md"),
+        test={
+            "id": "SR-CLI-UNIT-EXPR-002",
+            "type": "cli.run",
+            "argv": ["x"],
+            "exit_code": 0,
+            "harness": {"entrypoint": ep, "spec_lang": {"max_steps": 10}},
+            "assert": [{"target": "stdout", "must": [{"expr": [deep]}]}],
+        },
+    )
+
+    from spec_runner.harnesses.cli_run import run
+
+    with pytest.raises(RuntimeError, match="budget exceeded: steps"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))

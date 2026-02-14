@@ -103,6 +103,7 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
         "contain",
         "regex",
         "json_type",
+        "expr",
     }
 
     any_found = False

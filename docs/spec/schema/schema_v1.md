@@ -114,11 +114,19 @@ For `type: cli.run`, supported `harness` keys include:
 - `hook_before` (string): hook entrypoint invoked before running the CLI
 - `hook_after` (string): hook entrypoint invoked after running the CLI
 - `hook_kwargs` (mapping): keyword arguments passed through to the hook
+- `spec_lang` (mapping): evaluator budgets for `expr` leaves
 
 `setup_files[*].path` constraints:
 
 - MUST be relative
 - MUST resolve within the runner temp directory (no path escape)
+
+`harness.spec_lang` fields:
+
+- `max_steps` (int, >=1)
+- `max_nodes` (int, >=1)
+- `max_literal_bytes` (int, >=1)
+- `timeout_ms` (int, >=0, `0` disables timeout)
 
 Implementation note (non-portable convenience):
 
@@ -173,11 +181,15 @@ Leaf constraints:
 Supported operators:
 
 - text operators: `contain`, `regex`
+- expression operator: `expr` (spec-lang v1)
 - additional per-harness operators such as `json_type` and `exists`
 
 Operator constraints:
 
 - all operator values MUST be lists
+- `expr` values MUST be list-encoded spec-lang expressions
+- spec-lang semantics and budget model are defined in
+  `docs/spec/contract/03b_spec_lang_v1.md`
 - `regex` SHOULD use a portable subset; implementations SHOULD diagnose
   non-portable constructs via assertion-health policy
 - the portable profile is defined in
