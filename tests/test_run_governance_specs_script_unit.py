@@ -1211,3 +1211,72 @@ assert:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_conformance_purpose_quality_gate(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "purpose_quality.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONF-PURPOSE-002
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-PURPOSE-002
+type: governance.check
+check: conformance.purpose_quality_gate
+harness:
+  root: {tmp_path}
+  purpose_quality:
+    cases: docs/spec/conformance/cases
+    max_total_warnings: 0
+    fail_on_policy_errors: true
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: conformance.purpose_quality_gate"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/sample.spec.md",
+        """# Sample
+
+## SRCONF-PURPOSE-001
+
+```yaml spec-test
+id: SRCONF-PURPOSE-001
+title: stable purpose sentence for quality checks
+purpose: This purpose sentence provides concrete deterministic intent for this case.
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["ok"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/sample.spec.md",
+        """# Sample
+
+## SRCONF-PURPOSE-001
+
+```yaml spec-test
+id: SRCONF-PURPOSE-001
+title: stable purpose sentence for quality checks
+purpose: short words only
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["ok"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

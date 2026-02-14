@@ -391,6 +391,22 @@ links:
       - spec_runner/conformance.py
     notes: "Portable cases should avoid ambient dependencies and express variability explicitly."
 
+  - rule_id: CONFORMANCE_PURPOSE_QUALITY_GATE
+    policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_PURPOSE_QUALITY_GATE
+    contract_refs:
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/conformance/purpose_lint_v1.yaml
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_conformance_purpose_report_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/conformance_purpose.py
+    notes: "Governance enforces conformance purpose warning budget and policy integrity."
+
   - rule_id: DOCS_REF_SURFACE_COMPLETE
     policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_REF_SURFACE_COMPLETE
     contract_refs:

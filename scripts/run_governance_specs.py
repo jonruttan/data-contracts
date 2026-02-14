@@ -22,6 +22,7 @@ from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import SETTINGS, governed_config_literals
 from spec_runner.spec_lang import SpecLangLimits, eval_predicate
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
+from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 from spec_runner.contract_governance import check_contract_governance
 
 
@@ -266,6 +267,33 @@ def _scan_conformance_purpose_warning_codes_sync(root: Path) -> list[str]:
         violations.append(f"{p.relative_to(root)}: missing code {c}")
     for c in sorted(doc_codes - impl_codes):
         violations.append(f"{p.relative_to(root)}: stale code {c}")
+    return violations
+
+
+def _scan_conformance_purpose_quality_gate(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("purpose_quality")
+    if not isinstance(cfg, dict):
+        return ["conformance.purpose_quality_gate requires harness.purpose_quality mapping in governance spec"]
+    cases_rel = str(cfg.get("cases", "docs/spec/conformance/cases")).strip() or "docs/spec/conformance/cases"
+    cases_dir = root / cases_rel
+    if not cases_dir.exists():
+        return [f"{cases_rel}:1: conformance cases path does not exist"]
+    max_total_warnings = int(cfg.get("max_total_warnings", 0))
+    fail_on_policy_errors = bool(cfg.get("fail_on_policy_errors", True))
+    payload = conformance_purpose_report_jsonable(cases_dir, repo_root=root)
+    summary = payload.get("summary") or {}
+    total_warning_count = int(summary.get("total_warning_count", 0))
+    policy_error_count = int(summary.get("policy_error_count", 0))
+    violations: list[str] = []
+    if fail_on_policy_errors and policy_error_count > 0:
+        violations.append(
+            f"docs/spec/conformance/purpose_lint_v1.yaml:1: policy error count {policy_error_count} > 0"
+        )
+    if total_warning_count > max_total_warnings:
+        violations.append(
+            f"{cases_rel}:1: total purpose warnings {total_warning_count} exceed max_total_warnings={max_total_warnings}"
+        )
     return violations
 
 
@@ -1047,6 +1075,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
     "conformance.case_index_sync": _scan_conformance_case_index_sync,
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
+    "conformance.purpose_quality_gate": _scan_conformance_purpose_quality_gate,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,

@@ -373,6 +373,21 @@ rules:
       - docs/spec/contract/07_portable_spec_authoring.md
       - docs/spec/schema/schema_v1.md
 
+  - id: CONFORMANCE_PURPOSE_QUALITY_GATE
+    introduced_in: v1
+    scope: governance
+    applies_to: fixtures.conformance.purpose_quality
+    norm: MUST
+    requirement: conformance_purpose_policy_and_cases_remain_within_warning_budget
+    description: >
+      Conformance purpose lint policy integrity and purpose text quality must
+      satisfy governance warning budgets.
+    rationale: Keeps fixture intent clear and avoids silent quality debt.
+    risk_if_violated: Conformance cases lose clarity and increase review burden.
+    references:
+      - docs/spec/conformance/purpose_lint_v1.yaml
+      - docs/spec/contract/06_conformance.md
+
   - id: DOCS_REF_SURFACE_COMPLETE
     introduced_in: v1
     scope: governance
