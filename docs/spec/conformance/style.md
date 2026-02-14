@@ -17,6 +17,16 @@ Purpose lint policy:
 
 - defaults and runtime profiles are configured in `docs/spec/conformance/purpose_lint_v1.yaml`
 - per-case override is optional via `purpose_lint` mapping:
+
+## `evaluate` Expression Layout
+
+Conformance cases using `evaluate` SHOULD keep spec-lang expressions in wrapped
+flow-sequence form for readability and deterministic review diffs.
+
+Use tooling to enforce/normalize:
+
+- lint: `python scripts/evaluate_style.py --check docs/spec`
+- format: `python scripts/evaluate_style.py --write docs/spec`
   - `runtime`: runtime profile name from policy (for example `php`)
   - `min_words`: integer override
   - `placeholders`: list override

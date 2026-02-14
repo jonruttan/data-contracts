@@ -33,6 +33,7 @@ Lint and static syntax checks:
 
 ```sh
 python -m ruff check .
+python scripts/evaluate_style.py --check docs/spec
 python -m mypy spec_runner
 python -m compileall -q spec_runner scripts tests
 ```
@@ -47,6 +48,7 @@ CI merge gate (GitHub Actions `spec_runner` job) runs:
 
 - `python scripts/check_contract_governance.py`
 - `python -m ruff check .`
+- `python scripts/evaluate_style.py --check docs/spec`
 - `python -m mypy spec_runner`
 - `python -m compileall -q spec_runner scripts tests`
 - `python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`

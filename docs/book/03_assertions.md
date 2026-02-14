@@ -61,7 +61,9 @@ assert:
   - target: text
     must:
       - evaluate:
-          - ["and", ["contains", "version"], ["starts_with", ["subject"], "#"]]
+          - ["and",
+             ["contains", "version"],
+             ["starts_with", ["subject"], "#"]]
 ```
 
 Reference:
@@ -76,7 +78,18 @@ assert:
   - target: text
     must:
       - evaluate:
-          - ["let", [["loop", ["fn", ["n", "acc"], ["if", ["eq", ["var", "n"], 0], ["var", "acc"], ["call", ["var", "loop"], ["sub", ["var", "n"], 1], ["add", ["var", "acc"], 1]]]]]], ["eq", ["call", ["var", "loop"], 100, 0], 100]]
+          - ["let",
+             [["loop",
+                  ["fn",
+                      ["n", "acc"],
+                      ["if",
+                           ["eq", ["var", "n"], 0],
+                           ["var", "acc"],
+                           ["call",
+                                 ["var", "loop"],
+                                 ["sub", ["var", "n"], 1],
+                                 ["add", ["var", "acc"], 1]]]]]],
+             ["eq", ["call", ["var", "loop"], 100, 0], 100]]
 ```
 
 ## Example: Mixed Assertions

@@ -54,7 +54,9 @@ assert:
   - target: text
     must:
       - evaluate:
-          - ["and", ["contains", "BK-QS-002B"], ["starts_with", ["subject"], "id:"]]
+          - ["and",
+             ["contains", "BK-QS-002B"],
+             ["starts_with", ["subject"], "id:"]]
 ```
 
 Use `evaluate` when simple text checks are not enough and you need portable

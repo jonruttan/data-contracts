@@ -25,7 +25,7 @@ boolean for assertion pass/fail.
 Valid form:
 
 ```yaml
-["symbol", arg1, arg2, ...]
+['symbol', arg1, arg2, ...]
 ```
 
 Invalid forms:
@@ -81,21 +81,36 @@ Text + boolean composition:
 
 ```yaml
 - evaluate:
-    - ["and", ["contains", "WARN"], ["not", ["contains", "ERROR"]]]
+    - ["and",
+       ["contains", "WARN"],
+       ["not", ["contains", "ERROR"]]]
 ```
 
 JSON field check (for `target: body_json`):
 
 ```yaml
 - evaluate:
-    - ["and", ["has_key", "items"], ["eq", ["json_type", ["get", ["subject"], "items"]], true]]
+    - ["and",
+       ["has_key", "items"],
+       ["eq", ["json_type", ["get", ["subject"], "items"]], true]]
 ```
 
 Tail recursion (stack-safe by contract):
 
 ```yaml
 - evaluate:
-    - ["let", [["loop", ["fn", ["n", "acc"], ["if", ["eq", ["var", "n"], 0], ["var", "acc"], ["call", ["var", "loop"], ["sub", ["var", "n"], 1], ["add", ["var", "acc"], 1]]]]]], ["eq", ["call", ["var", "loop"], 1000, 0], 1000]]
+    - ["let",
+       [["loop",
+            ["fn",
+                ["n", "acc"],
+                ["if",
+                     ["eq", ["var", "n"], 0],
+                     ["var", "acc"],
+                     ["call",
+                           ["var", "loop"],
+                           ["sub", ["var", "n"], 1],
+                           ["add", ["var", "acc"], 1]]]]]],
+       ["eq", ["call", ["var", "loop"], 1000, 0], 1000]]
 ```
 
 ## 5) Budgets (`harness.spec_lang`)
@@ -145,3 +160,12 @@ Use `evaluate` when you need:
 - `docs/spec/contract/03_assertions.md`
 - `docs/spec/contract/03b_spec_lang_v1.md`
 - `docs/spec/conformance/cases/spec_lang.spec.md`
+
+## 9) Lint + Format
+
+Use the repo tool to keep `evaluate` layout canonical:
+
+```sh
+python scripts/evaluate_style.py --check docs/spec
+python scripts/evaluate_style.py --write docs/spec
+```

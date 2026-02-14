@@ -116,3 +116,18 @@ harness:
 ```
 
 All values are integers; `timeout_ms` MAY be `0` to disable timeout enforcement.
+
+## Canonical Authoring Format
+
+For readability and deterministic diffs, implementations in this repo standardize
+`evaluate` expression formatting to:
+
+- one expression item per `evaluate` list entry
+- flow-sequence S-expressions (`["symbol", ...]`)
+- quoted string atoms in expressions (single-quote style in this repo tooling)
+- wrapped lines with closing brackets preserved in flow style
+
+Tooling:
+
+- lint: `python scripts/evaluate_style.py --check docs/spec`
+- format: `python scripts/evaluate_style.py --write docs/spec`
