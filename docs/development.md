@@ -44,6 +44,7 @@ Fast docs-only gate:
 ```sh
 ./scripts/docs_doctor.sh
 make docs-doctor
+make verify-docs
 ```
 
 Suggested pre-commit hook:

@@ -6,7 +6,7 @@
 ## Validation
 
 - [ ] `./scripts/ci_gate.sh`
-- [ ] `./scripts/docs_doctor.sh` (or `make docs-doctor`)
+- [ ] `./scripts/docs_doctor.sh` (or `make verify-docs`)
 
 ## Docs Drift Checklist
 

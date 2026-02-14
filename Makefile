@@ -1,4 +1,4 @@
-.PHONY: help setup docs-doctor check ci-gate test
+.PHONY: help setup docs-doctor verify-docs check ci-gate test
 .DEFAULT_GOAL := help
 
 help: ## Display this help section
@@ -11,6 +11,9 @@ setup: ## Create .venv and install editable package with dev deps
 
 docs-doctor: ## Run fast docs quality checks
 	@./scripts/docs_doctor.sh
+
+verify-docs: ## Alias for docs-doctor
+	@$(MAKE) docs-doctor
 
 check: ## Alias for ci-gate
 	@$(MAKE) ci-gate
