@@ -1205,6 +1205,38 @@ def _scan_docs_make_commands_sync(root: Path, *, harness: dict | None = None) ->
     return violations
 
 
+def _scan_docs_adoption_profiles_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("adoption_profiles")
+    if not isinstance(cfg, dict):
+        return ["docs.adoption_profiles_sync requires harness.adoption_profiles mapping in governance spec"]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens")
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.adoption_profiles.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.adoption_profiles.required_tokens must be a non-empty list of non-empty strings"]
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing docs file for adoption profile sync check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing required adoption-profile token {tok}")
+    return violations
+
+
 def _scan_runtime_python_bin_resolver_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1337,6 +1369,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.cli_flags_documented": _scan_docs_cli_flags_documented,
     "docs.contract_schema_book_sync": _scan_docs_contract_schema_book_sync,
     "docs.make_commands_sync": _scan_docs_make_commands_sync,
+    "docs.adoption_profiles_sync": _scan_docs_adoption_profiles_sync,
     "naming.filename_policy": _scan_naming_filename_policy,
 }
 

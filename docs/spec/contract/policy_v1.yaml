@@ -517,6 +517,22 @@ rules:
       - README.md
       - docs/development.md
 
+  - id: DOCS_ADOPTION_PROFILES_SYNC
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.adoption.profiles
+    norm: MUST
+    requirement: key_docs_define_and_sync_core_and_full_profiles
+    description: >
+      Key contributor docs must define core and full adoption profiles and
+      keep their command entrypoints synchronized.
+    rationale: Keeps onboarding clear for lightweight and full-gate workflows.
+    risk_if_violated: Teams run inconsistent command lanes and miss expected checks.
+    references:
+      - docs/spec/contract/11_adoption_profiles.md
+      - README.md
+      - docs/development.md
+
   - id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
     introduced_in: v1
     scope: implementation

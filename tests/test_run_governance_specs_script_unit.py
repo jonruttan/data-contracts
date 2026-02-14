@@ -1573,6 +1573,53 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_docs_adoption_profiles_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_adoption_profiles.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-009
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-009
+type: governance.check
+check: docs.adoption_profiles_sync
+harness:
+  root: {tmp_path}
+  adoption_profiles:
+    files:
+      - README.md
+      - docs/development.md
+    required_tokens:
+      - Core profile
+      - Full profile
+      - make core-check
+      - make check
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.adoption_profiles_sync"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "README.md",
+        "Core profile\nFull profile\nmake core-check\nmake check\n",
+    )
+    _write_text(
+        tmp_path / "docs/development.md",
+        "Core profile\nFull profile\nmake core-check\nmake check\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/development.md", "Core profile\nmake core-check\nmake check\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_naming_filename_policy(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

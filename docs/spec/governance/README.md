@@ -33,5 +33,7 @@ Current checks:
   assertion files.
 - `docs.regex_doc_sync`: enforces regex portability profile linkage and
   assertion-operator token sync across contract/schema/policy docs.
+- `docs.adoption_profiles_sync`: enforces synchronized Core/Full adoption
+  profile wording and commands in key contributor docs.
 - `naming.filename_policy`: enforces configured filename shape rules
   (lowercase separators, allowlist exceptions, and extension scope).

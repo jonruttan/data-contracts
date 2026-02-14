@@ -24,6 +24,7 @@ Read in order:
 12. `docs/spec/contract/08_v1_scope.md`
 13. `docs/spec/contract/09_internal_representation.md`
 14. `docs/spec/contract/10_docs_quality.md`
+15. `docs/spec/contract/11_adoption_profiles.md`
 
 Type contracts:
 

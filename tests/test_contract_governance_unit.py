@@ -25,6 +25,7 @@ _NORMATIVE_DOCS = [
     "08_v1_scope.md",
     "09_internal_representation.md",
     "10_docs_quality.md",
+    "11_adoption_profiles.md",
 ]
 
 
