@@ -43,6 +43,7 @@ Fast docs-only gate:
 
 ```sh
 ./scripts/docs_doctor.sh
+make docs-doctor
 ```
 
 Suggested pre-commit hook:
