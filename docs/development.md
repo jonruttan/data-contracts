@@ -44,6 +44,10 @@ Canonical pre-merge check:
 make check
 ```
 
+Gate summary artifact produced by `ci_gate.sh`:
+
+- `.artifacts/gate-summary.json` (machine-readable step status, exit code, and duration)
+
 Fast docs-only gate:
 
 ```sh
@@ -96,6 +100,7 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 - artifact upload of `.artifacts/conformance-purpose.json`
 - artifact upload of `.artifacts/conformance-purpose-summary.md`
 - artifact upload of `.artifacts/conformance-parity.json`
+- artifact upload of `.artifacts/gate-summary.json`
 
 `run_governance_specs.py` (via `contract.governance_check`) enforces
 conformance case doc freshness:

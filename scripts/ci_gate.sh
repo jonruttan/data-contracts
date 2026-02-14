@@ -14,15 +14,4 @@ if [[ -z "${PYTHON_BIN:-}" ]]; then
   fi
 fi
 
-"${PYTHON_BIN}" scripts/run_governance_specs.py
-"${PYTHON_BIN}" scripts/evaluate_style.py --check docs/spec
-"${PYTHON_BIN}" -m ruff check .
-"${PYTHON_BIN}" -m mypy spec_runner
-"${PYTHON_BIN}" -m compileall -q spec_runner scripts tests
-"${PYTHON_BIN}" scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
-"${PYTHON_BIN}" scripts/conformance_purpose_report.py --format md --out .artifacts/conformance-purpose-summary.md
-"${PYTHON_BIN}" scripts/compare_conformance_parity.py \
-  --cases docs/spec/conformance/cases \
-  --php-runner scripts/php/conformance_runner.php \
-  --out .artifacts/conformance-parity.json
-"${PYTHON_BIN}" -m pytest
+"${PYTHON_BIN}" scripts/ci_gate_summary.py --python-bin "${PYTHON_BIN}" --out .artifacts/gate-summary.json

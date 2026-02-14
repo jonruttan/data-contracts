@@ -59,6 +59,10 @@ CI merge gate (GitHub Actions `spec_runner` job) runs:
 - `python -m compileall -q spec_runner scripts tests`
 - `python -m pytest`
 
+Machine-readable gate summary artifact:
+
+- `.artifacts/gate-summary.json` (versioned per-step status/exit code/duration)
+
 Optional reporting wrapper:
 
 - `python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`
