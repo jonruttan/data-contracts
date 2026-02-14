@@ -1280,3 +1280,85 @@ assert:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_contract_coverage_threshold(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "coverage_threshold.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONTRACT-002
+
+```yaml spec-test
+id: SRGOV-TEST-CONTRACT-002
+type: governance.check
+check: contract.coverage_threshold
+harness:
+  root: {tmp_path}
+  contract_coverage:
+    require_all_must_covered: true
+    min_coverage_ratio: 0.50
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: contract.coverage_threshold"]
+```
+""",
+    )
+
+    (tmp_path / "docs/spec/contract").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs/spec/schema").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs/spec/conformance/cases").mkdir(parents=True, exist_ok=True)
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "# schema\n")
+    _write_text(
+        tmp_path / "docs/spec/contract/policy_v1.yaml",
+        """version: 1
+rules:
+  - id: R-MUST-001
+    introduced_in: v1
+    scope: governance
+    applies_to: docs
+    norm: MUST
+    requirement: x
+    rationale: x
+    risk_if_violated: x
+    references:
+      - docs/spec/schema/schema_v1.md
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/traceability_v1.yaml",
+        """version: 1
+links:
+  - rule_id: R-MUST-001
+    policy_ref: docs/spec/contract/policy_v1.yaml#R-MUST-001
+    contract_refs: []
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs: []
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/contract/traceability_v1.yaml",
+        """version: 1
+links:
+  - rule_id: R-MUST-001
+    policy_ref: docs/spec/contract/policy_v1.yaml#R-MUST-001
+    contract_refs: []
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs: []
+    implementation_refs: []
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

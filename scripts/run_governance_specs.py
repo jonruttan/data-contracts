@@ -24,6 +24,7 @@ from spec_runner.spec_lang import SpecLangLimits, eval_predicate
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 from spec_runner.contract_governance import check_contract_governance
+from spec_runner.contract_governance import contract_coverage_jsonable
 
 
 _SECURITY_WARNING_DOCS = (
@@ -293,6 +294,32 @@ def _scan_conformance_purpose_quality_gate(root: Path, *, harness: dict | None =
     if total_warning_count > max_total_warnings:
         violations.append(
             f"{cases_rel}:1: total purpose warnings {total_warning_count} exceed max_total_warnings={max_total_warnings}"
+        )
+    return violations
+
+
+def _scan_contract_coverage_threshold(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("contract_coverage")
+    if not isinstance(cfg, dict):
+        return ["contract.coverage_threshold requires harness.contract_coverage mapping in governance spec"]
+    require_all_must = bool(cfg.get("require_all_must_covered", True))
+    min_coverage_ratio = float(cfg.get("min_coverage_ratio", 0.0))
+    payload = contract_coverage_jsonable(root)
+    summary = payload.get("summary") or {}
+    must_rules = int(summary.get("must_rules", 0))
+    must_covered = int(summary.get("must_covered", 0))
+    coverage_ratio = float(summary.get("coverage_ratio", 0.0))
+    violations: list[str] = []
+    if require_all_must and must_covered != must_rules:
+        violations.append(
+            "docs/spec/contract/traceability_v1.yaml:1: "
+            f"must_covered={must_covered} does not equal must_rules={must_rules}"
+        )
+    if coverage_ratio < min_coverage_ratio:
+        violations.append(
+            "docs/spec/contract/traceability_v1.yaml:1: "
+            f"coverage_ratio={coverage_ratio:.4f} below min_coverage_ratio={min_coverage_ratio:.4f}"
         )
     return violations
 
@@ -1076,6 +1103,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.case_index_sync": _scan_conformance_case_index_sync,
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
     "conformance.purpose_quality_gate": _scan_conformance_purpose_quality_gate,
+    "contract.coverage_threshold": _scan_contract_coverage_threshold,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,

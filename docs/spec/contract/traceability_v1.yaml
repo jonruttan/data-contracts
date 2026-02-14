@@ -524,3 +524,19 @@ links:
       - spec_runner/harnesses/cli_run.py
       - spec_runner/harnesses/api_http.py
     notes: "Governance enforces spec-lang-backed assertion execution paths for runtime scanners/runners."
+
+  - rule_id: CONTRACT_MUST_RULE_COVERAGE_COMPLETE
+    policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_MUST_RULE_COVERAGE_COMPLETE
+    contract_refs:
+      - docs/spec/contract/policy_v1.yaml
+      - docs/spec/contract/traceability_v1.yaml
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_contract_governance_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/contract_governance.py
+      - scripts/run_governance_specs.py
+    notes: "Governance enforces complete coverage for active MUST contract rules."

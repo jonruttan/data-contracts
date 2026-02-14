@@ -500,3 +500,18 @@ rules:
     references:
       - docs/spec/contract/09_internal_representation.md
       - docs/spec/contract/03b_spec_lang_v1.md
+
+  - id: CONTRACT_MUST_RULE_COVERAGE_COMPLETE
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.contract.coverage
+    norm: MUST
+    requirement: all_must_rules_have_traceability_evidence
+    description: >
+      All active MUST contract rules must remain covered by traceability
+      evidence (unit tests and/or conformance fixtures).
+    rationale: Prevents normative MUST requirements from becoming unenforced.
+    risk_if_violated: Contract claims can drift from executable guarantees.
+    references:
+      - docs/spec/contract/policy_v1.yaml
+      - docs/spec/contract/traceability_v1.yaml
