@@ -282,10 +282,16 @@ def _scan_conformance_purpose_quality_gate(root: Path, *, harness: dict | None =
         return [f"{cases_rel}:1: conformance cases path does not exist"]
     max_total_warnings = int(cfg.get("max_total_warnings", 0))
     fail_on_policy_errors = bool(cfg.get("fail_on_policy_errors", True))
+    fail_on_severity = str(cfg.get("fail_on_severity", "")).strip().lower()
+    if fail_on_severity and fail_on_severity not in {"warn", "error"}:
+        return ["harness.purpose_quality.fail_on_severity must be one of: warn, error"]
     payload = conformance_purpose_report_jsonable(cases_dir, repo_root=root)
     summary = payload.get("summary") or {}
     total_warning_count = int(summary.get("total_warning_count", 0))
     policy_error_count = int(summary.get("policy_error_count", 0))
+    severity_counts = summary.get("warning_severity_counts") or {}
+    warn_count = int(severity_counts.get("warn", 0))
+    error_count = int(severity_counts.get("error", 0))
     violations: list[str] = []
     if fail_on_policy_errors and policy_error_count > 0:
         violations.append(
@@ -295,6 +301,12 @@ def _scan_conformance_purpose_quality_gate(root: Path, *, harness: dict | None =
         violations.append(
             f"{cases_rel}:1: total purpose warnings {total_warning_count} exceed max_total_warnings={max_total_warnings}"
         )
+    if fail_on_severity:
+        at_or_above = error_count if fail_on_severity == "error" else (warn_count + error_count)
+        if at_or_above > 0:
+            violations.append(
+                f"{cases_rel}:1: warnings at or above severity '{fail_on_severity}' = {at_or_above}"
+            )
     return violations
 
 

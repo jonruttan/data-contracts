@@ -14,6 +14,7 @@ harness:
     cases: docs/spec/conformance/cases
     max_total_warnings: 0
     fail_on_policy_errors: true
+    fail_on_severity: warn
 assert:
   - target: text
     must:
