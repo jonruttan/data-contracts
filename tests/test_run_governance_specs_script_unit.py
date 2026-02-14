@@ -1451,3 +1451,43 @@ assert:
     _write_text(tmp_path / "docs/development.md", "make verify-docs\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_naming_filename_policy(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "naming_filename_policy.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-NAME-001
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-NAME-001
+type: governance.check
+check: naming.filename_policy
+harness:
+  root: {tmp_path}
+  filename_policy:
+    paths:
+      - docs
+    include_extensions:
+      - .md
+    allow_exact:
+      - README.md
+    allowed_name_regex: "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: naming.filename_policy"]
+```
+""",
+    )
+    _write_text(tmp_path / "docs/good_name.md", "# ok\n")
+    _write_text(tmp_path / "docs/README.md", "# allowed\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/Bad Name.md", "# bad\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

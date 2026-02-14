@@ -28,3 +28,5 @@ Current checks:
   purpose-lint rules (one case/block, heading placement, sorted ids, quality checks).
 - `docs.regex_doc_sync`: enforces regex portability profile linkage and
   assertion-operator token sync across contract/schema/policy docs.
+- `naming.filename_policy`: enforces configured filename shape rules
+  (lowercase separators, allowlist exceptions, and extension scope).

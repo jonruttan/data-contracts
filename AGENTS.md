@@ -55,6 +55,11 @@ Project-specific instructions for AI agents working in `tools/spec_runner/`.
 
 - Keep diffs focused.
 - Prefer small, composable changes to schema and harness behavior.
+- Filename convention:
+  - Use lowercase filenames.
+  - Use `_` to replace spaces in words.
+  - Use `-` to separate major sections (for example date prefixes or section
+    tokens).
 
 ## Commits
 

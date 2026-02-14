@@ -1134,6 +1134,62 @@ def _scan_docs_make_commands_sync(root: Path, *, harness: dict | None = None) ->
     return violations
 
 
+def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("filename_policy")
+    if not isinstance(cfg, dict):
+        return ["naming.filename_policy requires harness.filename_policy mapping in governance spec"]
+
+    paths = cfg.get("paths")
+    if not isinstance(paths, list) or not paths or any(not isinstance(x, str) or not x.strip() for x in paths):
+        return ["harness.filename_policy.paths must be a non-empty list of non-empty strings"]
+
+    include_exts = cfg.get("include_extensions", [])
+    if not isinstance(include_exts, list) or any(not isinstance(x, str) or not x.strip() for x in include_exts):
+        return ["harness.filename_policy.include_extensions must be a list of non-empty strings"]
+    include_exts_set = {x.strip().lower() for x in include_exts}
+
+    allow_exact = cfg.get("allow_exact", [])
+    if not isinstance(allow_exact, list) or any(not isinstance(x, str) or not x.strip() for x in allow_exact):
+        return ["harness.filename_policy.allow_exact must be a list of non-empty strings"]
+    allow_exact_set = {x.strip() for x in allow_exact}
+
+    allowed_name_regex = str(
+        cfg.get("allowed_name_regex", r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$")
+    ).strip()
+    if not allowed_name_regex:
+        return ["harness.filename_policy.allowed_name_regex must be non-empty"]
+    try:
+        allowed_re = re.compile(allowed_name_regex)
+    except re.error as exc:
+        return [f"harness.filename_policy.allowed_name_regex invalid: {exc}"]
+
+    for rel_root in paths:
+        base = root / rel_root
+        if not base.exists():
+            violations.append(f"{rel_root}:1: missing path for filename policy scan")
+            continue
+        if not base.is_dir():
+            violations.append(f"{rel_root}:1: expected directory for filename policy scan")
+            continue
+        for p in sorted(base.rglob("*")):
+            if not p.is_file():
+                continue
+            if include_exts_set and p.suffix.lower() not in include_exts_set:
+                continue
+            name = p.name
+            if name in allow_exact_set:
+                continue
+            if not allowed_re.fullmatch(name):
+                rel = p.relative_to(root)
+                violations.append(
+                    f"{rel}: filename {name!r} must match {allowed_name_regex} "
+                    "(lowercase words with '_' for spaces and '-' for section separators)"
+                )
+    return violations
+
+
 GovernanceCheck = Callable[..., list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
@@ -1164,6 +1220,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.cli_flags_documented": _scan_docs_cli_flags_documented,
     "docs.contract_schema_book_sync": _scan_docs_contract_schema_book_sync,
     "docs.make_commands_sync": _scan_docs_make_commands_sync,
+    "naming.filename_policy": _scan_naming_filename_policy,
 }
 
 
