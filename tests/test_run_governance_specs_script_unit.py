@@ -635,6 +635,74 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_conformance_spec_lang_preferred(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "spec_lang_preferred.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONF-SPECLANG-001
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-SPECLANG-001
+type: governance.check
+check: conformance.spec_lang_preferred
+harness:
+  root: {tmp_path}
+  spec_lang_preferred:
+    roots:
+      - docs/spec/conformance/cases
+    allow_non_evaluate_files: []
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: conformance.spec_lang_preferred"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/good.spec.md",
+        """# Good
+
+## SRCONF-SPECLANG-001
+
+```yaml spec-test
+id: SRCONF-SPECLANG-001
+type: text.file
+path: fixtures/a.txt
+assert:
+  - target: text
+    must:
+      - evaluate:
+          - ["contains", ["subject"], "a"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/bad.spec.md",
+        """# Bad
+
+## SRCONF-SPECLANG-002
+
+```yaml spec-test
+id: SRCONF-SPECLANG-002
+type: text.file
+path: fixtures/a.txt
+assert:
+  - target: text
+    must:
+      - contain: ["a"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_conformance_purpose_warning_code_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

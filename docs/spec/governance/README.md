@@ -26,6 +26,9 @@ Current checks:
   match implementation warning codes.
 - `conformance.case_doc_style_guard`: enforces conformance doc style and
   purpose-lint rules (one case/block, heading placement, sorted ids, quality checks).
+- `conformance.spec_lang_preferred`: enforces spec-lang-first conformance
+  authoring and requires explicit temporary allowlisting for non-`evaluate`
+  assertion files.
 - `docs.regex_doc_sync`: enforces regex portability profile linkage and
   assertion-operator token sync across contract/schema/policy docs.
 - `naming.filename_policy`: enforces configured filename shape rules

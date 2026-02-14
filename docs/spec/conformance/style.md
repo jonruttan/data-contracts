@@ -12,6 +12,8 @@ Style rules:
 - each case must include a non-empty `purpose` field describing the intent
 - `purpose` should add context beyond `title` (not a copy)
 - `purpose` should be at least 8 words and avoid placeholders (`todo`, `tbd`, `fixme`, `xxx`)
+- prefer `evaluate` (spec-lang) for new assertion authoring; non-`evaluate`
+  leaves should be treated as migration exceptions
 
 Purpose lint policy:
 

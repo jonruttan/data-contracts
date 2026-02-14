@@ -46,6 +46,18 @@ Internal execution model:
 - compile mapping/invariants are documented in
   `docs/spec/contract/09_internal_representation.md`
 
+## Spec-Lang-First Authoring
+
+Conformance specs SHOULD use `evaluate` (spec-lang) as the preferred assertion
+authoring form.
+
+- `contain` / `regex` / `exists` / `json_type` remain valid leaf operators in
+  schema v1.
+- New portable conformance behavior should be expressed with `evaluate` where
+  possible.
+- Governance may require explicit allowlisting for non-`evaluate` fixtures
+  during migration.
+
 ## Portable Regex Subset
 
 `regex` patterns SHOULD stay within a portable subset across implementations.

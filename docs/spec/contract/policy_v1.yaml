@@ -169,6 +169,23 @@ rules:
       - docs/spec/contract/03b_spec_lang_v1.md
       - docs/spec/schema/schema_v1.md
 
+  - id: SPEC_LANG_PREFERRED_AUTHORING
+    introduced_in: v1
+    scope: conformance
+    applies_to: fixtures.assert.tree
+    norm: SHOULD
+    requirement: prefer_evaluate_spec_lang_for_new_assertions
+    description: >
+      Conformance fixtures should prefer `evaluate` (spec-lang) assertions as
+      the primary authoring form. Non-`evaluate` leaf operators may remain only
+      where explicitly allowlisted during migration.
+    rationale: Keeps spec intent implementation-independent and reduces operator drift.
+    risk_if_violated: Assertion semantics split across ad-hoc leaf operators and diverge across runtimes.
+    references:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/07_portable_spec_authoring.md
+      - docs/spec/conformance/style.md
+
   - id: SPEC_LANG_PURE_EVALUATOR
     introduced_in: v1
     scope: implementation

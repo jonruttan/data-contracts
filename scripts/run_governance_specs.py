@@ -784,6 +784,77 @@ def _scan_conformance_type_contract_field_sync(root: Path) -> list[str]:
     return violations
 
 
+def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("spec_lang_preferred")
+    if not isinstance(cfg, dict):
+        return ["conformance.spec_lang_preferred requires harness.spec_lang_preferred mapping in governance spec"]
+    roots = cfg.get("roots")
+    allow_non_evaluate_files = cfg.get("allow_non_evaluate_files", [])
+    if (
+        not isinstance(roots, list)
+        or not roots
+        or any(not isinstance(x, str) or not x.strip() for x in roots)
+    ):
+        return ["harness.spec_lang_preferred.roots must be a non-empty list of non-empty strings"]
+    if not isinstance(allow_non_evaluate_files, list) or any(
+        not isinstance(x, str) or not x.strip() for x in allow_non_evaluate_files
+    ):
+        return ["harness.spec_lang_preferred.allow_non_evaluate_files must be a list of non-empty strings"]
+
+    allow = {str(x).strip() for x in allow_non_evaluate_files}
+
+    for rel_root in roots:
+        base = root / rel_root
+        if not base.exists():
+            violations.append(f"{rel_root}:1: missing conformance root for spec-lang preference scan")
+            continue
+        for spec in iter_cases(base, file_pattern=SETTINGS.case.default_file_pattern):
+            try:
+                rel = str(spec.doc_path.resolve().relative_to(root))
+            except ValueError:
+                rel = str(spec.doc_path)
+            if rel in allow:
+                continue
+
+            non_eval_ops: set[str] = set()
+
+            def _collect_ops(node: object, *, inherited_target: str | None = None) -> None:
+                if node is None:
+                    return
+                if isinstance(node, list):
+                    for child in node:
+                        _collect_ops(child, inherited_target=inherited_target)
+                    return
+                if not isinstance(node, dict):
+                    return
+                present_groups = [k for k in ("must", "can", "cannot") if k in node]
+                if present_groups:
+                    node_target = str(node.get("target", "")).strip() or inherited_target
+                    for key in present_groups:
+                        children = node.get(key, [])
+                        if isinstance(children, list):
+                            for child in children:
+                                _collect_ops(child, inherited_target=node_target)
+                    return
+                for _target, op, _value, _is_true in iter_leaf_assertions(
+                    node, target_override=inherited_target
+                ):
+                    if op != "evaluate":
+                        non_eval_ops.add(op)
+
+            _collect_ops(spec.test.get("assert", []) or [])
+            if non_eval_ops:
+                case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
+                found = ", ".join(sorted(non_eval_ops))
+                violations.append(
+                    f"{rel}: case {case_id} uses non-evaluate ops ({found}); "
+                    "prefer evaluate/spec-lang assertions or add explicit temporary allowlist entry"
+                )
+    return violations
+
+
 def _scan_docs_reference_surface_complete(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1213,6 +1284,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.portable_determinism_guard": _scan_conformance_portable_determinism_guard,
     "conformance.extension_requires_capabilities": _scan_conformance_extension_requires_capabilities,
     "conformance.type_contract_field_sync": _scan_conformance_type_contract_field_sync,
+    "conformance.spec_lang_preferred": _scan_conformance_spec_lang_preferred,
     "docs.reference_surface_complete": _scan_docs_reference_surface_complete,
     "docs.reference_index_sync": _scan_docs_reference_index_sync,
     "docs.required_sections": _scan_docs_required_sections,

@@ -178,6 +178,21 @@ links:
       - scripts/php/conformance_runner.php
     notes: "Evaluate leaves accept list-encoded S-expressions and reject malformed forms."
 
+  - rule_id: SPEC_LANG_PREFERRED_AUTHORING
+    policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PREFERRED_AUTHORING
+    contract_refs:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/07_portable_spec_authoring.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/conformance_spec_lang_preferred.spec.md
+    notes: "Governance enforces spec-lang-first authoring with explicit migration allowlist for non-evaluate fixtures."
+
   - rule_id: SPEC_LANG_PURE_EVALUATOR
     policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PURE_EVALUATOR
     contract_refs:
