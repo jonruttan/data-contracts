@@ -24,7 +24,7 @@ If system Python is externally managed (PEP 668), use the venv flow above.
 Contract governance check:
 
 ```sh
-python scripts/check_contract_governance.py
+python scripts/run_governance_specs.py
 ```
 
 Lint and static syntax checks:
@@ -44,7 +44,7 @@ python -m pytest tests/test_conformance_runner_unit.py
 
 CI merge gate (GitHub Actions `spec_runner` job) runs:
 
-- `python scripts/check_contract_governance.py`
+- `python scripts/run_governance_specs.py`
 - `python -m ruff check .`
 - `python scripts/evaluate_style.py --check docs/spec`
 - `python -m mypy spec_runner`

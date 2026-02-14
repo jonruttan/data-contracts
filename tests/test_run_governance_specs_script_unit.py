@@ -1185,3 +1185,29 @@ assert:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_can_run_contract_governance_check(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "contract.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONTRACT-001
+
+```yaml spec-test
+id: SRGOV-TEST-CONTRACT-001
+type: governance.check
+check: contract.governance_check
+harness:
+  root: {tmp_path}
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: contract.governance_check"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

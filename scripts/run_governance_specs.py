@@ -22,6 +22,7 @@ from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import SETTINGS, governed_config_literals
 from spec_runner.spec_lang import SpecLangLimits, eval_predicate
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
+from spec_runner.contract_governance import check_contract_governance
 
 
 _SECURITY_WARNING_DOCS = (
@@ -96,6 +97,10 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
     "patcher",
     "capture",
 }
+
+
+def _scan_contract_governance_check(root: Path) -> list[str]:
+    return list(check_contract_governance(root))
 
 
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
@@ -1033,6 +1038,7 @@ def _scan_docs_contract_schema_book_sync(root: Path, *, harness: dict | None = N
 GovernanceCheck = Callable[..., list[str]]
 
 _CHECKS: dict[str, GovernanceCheck] = {
+    "contract.governance_check": _scan_contract_governance_check,
     "pending.no_resolved_markers": _scan_pending_no_resolved_markers,
     "docs.security_warning_contract": _scan_security_warning_docs,
     "docs.v1_scope_contract": _scan_v1_scope_doc,

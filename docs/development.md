@@ -23,7 +23,6 @@ python scripts/evaluate_style.py --check docs/spec
 ## Run Core Gate Checks
 
 ```sh
-python scripts/check_contract_governance.py
 python scripts/run_governance_specs.py
 python scripts/evaluate_style.py --check docs/spec
 python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
@@ -94,7 +93,8 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 - artifact upload of `.artifacts/conformance-purpose-summary.md`
 - artifact upload of `.artifacts/conformance-parity.json`
 
-`check_contract_governance.py` enforces conformance case doc freshness:
+`run_governance_specs.py` (via `contract.governance_check`) enforces
+conformance case doc freshness:
 every `SRCONF-*` fixture case id must be listed in
 `docs/spec/conformance/cases/README.md`, and stale ids in that index fail CI.
 
@@ -104,10 +104,10 @@ Local equivalent:
 ./scripts/ci_gate.sh
 ```
 
-## Contract Governance Check
+## Contract Governance Check (via Governance Specs)
 
 ```sh
-python scripts/check_contract_governance.py
+python scripts/run_governance_specs.py
 ```
 
 ## Lint
