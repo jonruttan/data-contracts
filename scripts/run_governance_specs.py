@@ -11,7 +11,7 @@ from tempfile import TemporaryDirectory
 from typing import Callable
 
 import yaml
-from spec_runner.assertions import assert_text_op, eval_assert_tree, iter_leaf_assertions
+from spec_runner.assertions import eval_assert_tree, iter_leaf_assertions
 from spec_runner.dispatcher import SpecRunContext, iter_cases, run_case
 from spec_runner.purpose_lint import (
     load_purpose_lint_policy,
@@ -20,6 +20,7 @@ from spec_runner.purpose_lint import (
 )
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import SETTINGS, governed_config_literals
+from spec_runner.spec_lang import SpecLangLimits, eval_predicate
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 
 
@@ -1045,12 +1046,25 @@ def run_governance_check(case, *, ctx) -> None:
     )
 
     assert_spec = t.get("assert", []) or []
+    spec_lang_limits = SpecLangLimits()
 
     def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
         for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
             if target != "text":
                 raise ValueError(f"unknown assert target for governance.check: {target}")
-            assert_text_op(text, op, value, is_true=is_true)
+            if op == "contain":
+                expr = ["contains", ["subject"], str(value)]
+            elif op == "regex":
+                expr = ["regex_match", ["subject"], str(value)]
+            elif op == "evaluate":
+                if not isinstance(value, list):
+                    raise TypeError("evaluate assertion op value must be a list")
+                expr = value
+            else:
+                raise ValueError(f"unsupported text op: {op}")
+            ok = eval_predicate(expr, subject=text, limits=spec_lang_limits)
+            if bool(ok) is not bool(is_true):
+                raise AssertionError(f"{op} assertion failed")
 
     eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)
     if violations:
