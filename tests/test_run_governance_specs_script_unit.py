@@ -1118,3 +1118,47 @@ assert:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_runtime_assertions_via_spec_lang(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_assert_engine.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-ASSERT-001
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-ASSERT-001
+type: governance.check
+check: runtime.assertions_via_spec_lang
+harness:
+  root: {tmp_path}
+  assert_engine:
+    files:
+      - path: scripts/php/conformance_runner.php
+        required_tokens: ["compileLeafExpr(", "assertLeafPredicate(", "specLangEvalPredicate("]
+        forbidden_tokens:
+          - "strpos($subject, $v)"
+          - "preg_match('/' . str_replace('/', '\\\\/', $v) . '/u', $subject)"
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.assertions_via_spec_lang"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "scripts/php/conformance_runner.php",
+        "function evalTextLeaf() { compileLeafExpr('contain','x','text'); assertLeafPredicate('id','assert','text','contain',['contains',['subject'],'x'],'x',[]); specLangEvalPredicate(['contains',['subject'],'x'],'x',[]); }\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "scripts/php/conformance_runner.php",
+        "function evalTextLeaf() { strpos($subject, 'x'); }\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

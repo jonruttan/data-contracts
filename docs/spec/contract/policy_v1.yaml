@@ -469,3 +469,19 @@ rules:
       - docs/book/03_assertions.md
       - docs/spec/contract/03_assertions.md
       - docs/spec/schema/schema_v1.md
+
+  - id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
+    introduced_in: v1
+    scope: implementation
+    applies_to: runtime.assertion_execution
+    norm: MUST
+    requirement: compile_leaf_ops_to_spec_lang_predicates_before_execution
+    description: >
+      Runtime assertion paths must compile external leaf ops to spec-lang
+      predicates and evaluate through the spec-lang engine, rather than direct
+      ad-hoc operator execution branches.
+    rationale: Preserves one semantic execution model across implementations.
+    risk_if_violated: Cross-runner drift and hidden behavior inconsistencies.
+    references:
+      - docs/spec/contract/09_internal_representation.md
+      - docs/spec/contract/03b_spec_lang_v1.md

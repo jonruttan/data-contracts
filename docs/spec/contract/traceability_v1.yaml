@@ -487,3 +487,19 @@ links:
       - scripts/run_governance_specs.py
       - spec_runner/contract_governance.py
     notes: "Core assertion token vocabulary remains synchronized across book/contract/schema docs."
+
+  - rule_id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_ASSERTIONS_VIA_SPEC_LANG
+    contract_refs:
+      - docs/spec/contract/09_internal_representation.md
+      - docs/spec/contract/03b_spec_lang_v1.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_php_conformance_subset_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - scripts/php/conformance_runner.php
+    notes: "Governance enforces spec-lang-backed assertion execution paths for runtime scanners/runners."

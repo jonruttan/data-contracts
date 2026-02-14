@@ -66,3 +66,13 @@ The compile contract is semantic-lossless:
 - External codecs are adapters; they must not change runtime semantics.
 - Non-core custom runners may still receive external-case objects for
   compatibility; core runner types execute compiled internal cases.
+
+## Assertion Execution Invariant
+
+MUST:
+
+- runtime assertion execution MUST evaluate compiled spec-lang predicates.
+- external leaf operators (`contain`, `regex`, `json_type`, `exists`,
+  `evaluate`) MUST be compiled to spec-lang expression form before execution.
+- runners MUST NOT introduce direct ad-hoc leaf-op execution branches that
+  bypass the spec-lang evaluator.

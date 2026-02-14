@@ -179,6 +179,45 @@ def _scan_runtime_settings_import_policy(root: Path) -> list[str]:
     return violations
 
 
+def _scan_runtime_assertions_via_spec_lang(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("assert_engine")
+    if not isinstance(cfg, dict):
+        return ["runtime.assertions_via_spec_lang requires harness.assert_engine mapping in governance spec"]
+    files = cfg.get("files")
+    if not isinstance(files, list) or not files:
+        return ["harness.assert_engine.files must be a non-empty list"]
+    for entry in files:
+        if not isinstance(entry, dict):
+            violations.append("harness.assert_engine.files entries must be mappings")
+            continue
+        rel = str(entry.get("path", "")).strip()
+        if not rel:
+            violations.append("harness.assert_engine.files[].path must be non-empty")
+            continue
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing runtime assertion file")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        required = entry.get("required_tokens", [])
+        forbidden = entry.get("forbidden_tokens", [])
+        if not isinstance(required, list) or any(not isinstance(x, str) or not x.strip() for x in required):
+            violations.append(f"{rel}:1: required_tokens must be list of non-empty strings")
+            continue
+        if not isinstance(forbidden, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden):
+            violations.append(f"{rel}:1: forbidden_tokens must be list of non-empty strings")
+            continue
+        for tok in required:
+            if tok not in raw:
+                violations.append(f"{rel}:1: missing required token for spec-lang assertion path: {tok}")
+        for tok in forbidden:
+            if tok in raw:
+                violations.append(f"{rel}:1: forbidden direct assertion token present: {tok}")
+    return violations
+
+
 def _collect_conformance_fixture_ids(root: Path) -> set[str]:
     ids: set[str] = set()
     cases_dir = root / "docs/spec/conformance/cases"
@@ -999,6 +1038,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.v1_scope_contract": _scan_v1_scope_doc,
     "runtime.config_literals": _scan_runtime_config_literals,
     "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
+    "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
     "conformance.case_index_sync": _scan_conformance_case_index_sync,
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
