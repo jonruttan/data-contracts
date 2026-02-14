@@ -49,8 +49,11 @@ CI merge gate (GitHub Actions `spec_runner` job) runs:
 - `python scripts/evaluate_style.py --check docs/spec`
 - `python -m mypy spec_runner`
 - `python -m compileall -q spec_runner scripts tests`
-- `python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`
 - `python -m pytest`
+
+Optional reporting wrapper:
+
+- `python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`
 
 ## Quickstart
 

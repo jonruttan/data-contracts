@@ -25,7 +25,6 @@ python scripts/evaluate_style.py --check docs/spec
 ```sh
 python scripts/run_governance_specs.py
 python scripts/evaluate_style.py --check docs/spec
-python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
 python scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
 python scripts/conformance_purpose_report.py --format md --out .artifacts/conformance-purpose-summary.md
 python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases --php-runner scripts/php/conformance_runner.php --out .artifacts/conformance-parity.json
@@ -83,12 +82,10 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 - ruff lint check (`F` + `E9` rules)
 - mypy type check (`spec_runner` package)
 - Python bytecode compile pass (`compileall`)
-- contract coverage report generation
 - conformance purpose report generation
 - conformance purpose markdown summary generation
 - Python/PHP conformance parity command
 - `tools/spec_runner` pytest suite
-- artifact upload of `.artifacts/contract-coverage.json`
 - artifact upload of `.artifacts/conformance-purpose.json`
 - artifact upload of `.artifacts/conformance-purpose-summary.md`
 - artifact upload of `.artifacts/conformance-parity.json`
@@ -130,6 +127,8 @@ python -m compileall -q spec_runner scripts tests
 ```
 
 ## Contract Coverage Report
+
+Optional wrapper (reporting artifact; not a primary gate):
 
 ```sh
 python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json

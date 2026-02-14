@@ -9,7 +9,12 @@ from spec_runner.contract_governance import contract_coverage_jsonable
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Emit spec_runner contract coverage report as JSON.")
+    ap = argparse.ArgumentParser(
+        description=(
+            "Emit optional spec_runner contract coverage report as JSON "
+            "(artifact/reporting helper; not a primary gate)."
+        )
+    )
     ap.add_argument("--out", help="Optional output path for JSON report.")
     ns = ap.parse_args(argv)
 

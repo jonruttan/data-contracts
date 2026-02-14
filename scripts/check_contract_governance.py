@@ -8,6 +8,10 @@ from spec_runner.contract_governance import check_contract_governance
 
 
 def main() -> int:
+    print(
+        "INFO: check_contract_governance.py is an optional wrapper. "
+        "Primary enforcement runs via scripts/run_governance_specs.py (contract.governance_check)."
+    )
     repo_root = Path(__file__).resolve().parents[1]
     errs = check_contract_governance(repo_root)
     if errs:
