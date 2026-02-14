@@ -68,9 +68,9 @@ def run(case, *, ctx) -> None:
             try:
                 if target != "text":
                     raise ValueError(f"unknown assert target for text.file: {target}")
-                if op == "expr":
+                if op == "evaluate":
                     ok = eval_predicate(value, subject=text, limits=spec_lang_limits)
-                    assert ok is bool(is_true), "expr assertion failed"
+                    assert ok is bool(is_true), "evaluate assertion failed"
                 else:
                     assert_text_op(text, op, value, is_true=is_true)
             except BaseException as e:  # noqa: BLE001

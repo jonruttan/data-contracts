@@ -3,7 +3,7 @@
 ## Scope
 
 `spec-lang` is a pure, deterministic expression DSL used only through the
-assertion leaf operator `expr`.
+assertion leaf operator `evaluate`.
 
 Expression encoding is YAML list S-expression form:
 

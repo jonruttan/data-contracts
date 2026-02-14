@@ -253,7 +253,7 @@ def test_text_file_expr_operator(tmp_path, monkeypatch, capsys):
             "id": "SR-TEXT-UNIT-EXPR-001",
             "type": "text.file",
             "assert": [
-                {"target": "text", "must": [{"expr": [["contains", "hello"], ["ends_with", "world\n"]]}]}
+                {"target": "text", "must": [{"evaluate": [["contains", "hello"], ["ends_with", "world\n"]]}]}
             ],
         },
     )

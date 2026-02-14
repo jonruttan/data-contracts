@@ -4,11 +4,11 @@
 
 ```yaml spec-test
 id: SRCONF-EXPR-001
-title: expr simple predicate passes
-purpose: Verifies expr evaluates a basic true predicate against the target subject.
+title: evaluate simple predicate passes
+purpose: Verifies evaluate runs a basic true predicate against the target subject.
 type: text.file
 requires:
-  capabilities: ["expr.spec_lang.v1"]
+  capabilities: ["evaluate.spec_lang.v1"]
 expect:
   portable:
     status: pass
@@ -16,7 +16,7 @@ expect:
 assert:
   - target: text
     must:
-      - expr:
+      - evaluate:
           - ["contains", "version: 1"]
 ```
 
@@ -24,11 +24,11 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-EXPR-002
-title: expr composed boolean passes
+title: evaluate composed boolean passes
 purpose: Verifies composed boolean expressions evaluate correctly across both runner implementations.
 type: text.file
 requires:
-  capabilities: ["expr.spec_lang.v1"]
+  capabilities: ["evaluate.spec_lang.v1"]
 expect:
   portable:
     status: pass
@@ -36,7 +36,7 @@ expect:
 assert:
   - target: text
     must:
-      - expr:
+      - evaluate:
           - ["and", ["contains", "version"], ["starts_with", ["subject"], "#"]]
 ```
 
@@ -44,11 +44,11 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-EXPR-003
-title: expr tail recursion is stack safe
+title: evaluate tail recursion is stack safe
 purpose: Verifies deep tail-recursive evaluation succeeds under proper TCO.
 type: text.file
 requires:
-  capabilities: ["expr.spec_lang.v1"]
+  capabilities: ["evaluate.spec_lang.v1"]
 expect:
   portable:
     status: pass
@@ -56,7 +56,7 @@ expect:
 assert:
   - target: text
     must:
-      - expr:
+      - evaluate:
           - ["let", [["loop", ["fn", ["n", "acc"], ["if", ["eq", ["var", "n"], 0], ["var", "acc"], ["call", ["var", "loop"], ["sub", ["var", "n"], 1], ["add", ["var", "acc"], 1]]]]]], ["eq", ["call", ["var", "loop"], 1500, 0], 1500]]
 ```
 
@@ -64,20 +64,20 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-EXPR-004
-title: expr false predicate fails assertion
-purpose: Verifies expr false result is categorized as assertion failure.
+title: evaluate false predicate fails assertion
+purpose: Verifies evaluate false result is categorized as assertion failure.
 type: text.file
 requires:
-  capabilities: ["expr.spec_lang.v1"]
+  capabilities: ["evaluate.spec_lang.v1"]
 expect:
   portable:
     status: fail
     category: assertion
-    message_tokens: ["op=expr"]
+    message_tokens: ["op=evaluate"]
 assert:
   - target: text
     must:
-      - expr:
+      - evaluate:
           - ["starts_with", ["subject"], "NOPE_PREFIX"]
 ```
 
@@ -85,11 +85,11 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-EXPR-005
-title: expr malformed form fails schema
-purpose: Verifies malformed expr forms fail with schema classification.
+title: evaluate malformed form fails schema
+purpose: Verifies malformed evaluate forms fail with schema classification.
 type: text.file
 requires:
-  capabilities: ["expr.spec_lang.v1"]
+  capabilities: ["evaluate.spec_lang.v1"]
 expect:
   portable:
     status: fail
@@ -98,7 +98,7 @@ expect:
 assert:
   - target: text
     must:
-      - expr:
+      - evaluate:
           - {bad: shape}
 ```
 
@@ -106,11 +106,11 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-EXPR-006
-title: expr unknown symbol fails schema
+title: evaluate unknown symbol fails schema
 purpose: Verifies unknown symbols are rejected as schema violations.
 type: text.file
 requires:
-  capabilities: ["expr.spec_lang.v1"]
+  capabilities: ["evaluate.spec_lang.v1"]
 expect:
   portable:
     status: fail
@@ -119,7 +119,7 @@ expect:
 assert:
   - target: text
     must:
-      - expr:
+      - evaluate:
           - ["unknown_symbol", 1]
 ```
 
@@ -127,11 +127,11 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-EXPR-007
-title: expr budget exhaustion fails runtime
+title: evaluate budget exhaustion fails runtime
 purpose: Verifies deterministic runtime failure when evaluator budgets are exceeded.
 type: text.file
 requires:
-  capabilities: ["expr.spec_lang.v1"]
+  capabilities: ["evaluate.spec_lang.v1"]
 expect:
   portable:
     status: fail
@@ -143,6 +143,6 @@ harness:
 assert:
   - target: text
     must:
-      - expr:
+      - evaluate:
           - ["let", [["loop", ["fn", ["n"], ["if", ["eq", ["var", "n"], 0], true, ["call", ["var", "loop"], ["sub", ["var", "n"], 1]]]]]], ["call", ["var", "loop"], 1000]]
 ```

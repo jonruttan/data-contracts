@@ -20,7 +20,7 @@ Case fixtures that portable runner implementations execute.
 
 - `assertion-health.spec.md`: assertion-health diagnostics and mode behavior
 - `api-http.spec.md`: portable `api.http` extension behavior and capability gating
-- `spec_lang.spec.md`: `expr` operator behavior, schema/runtime failures, and TCO conformance
+- `spec_lang.spec.md`: `evaluate` operator behavior, schema/runtime failures, and TCO conformance
 - `cli-run-entrypoint.spec.md`: entrypoint precedence and capability gating
 - `failure-context.spec.md`: deterministic failure context tokens
 - `php-text-file-subset.spec.md`: portable `text.file` subset used for PHP parity

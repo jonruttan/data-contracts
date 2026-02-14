@@ -50,17 +50,17 @@ Canonical operators:
 - `regex`
 - `json_type`
 - `exists`
-- `expr`
+- `evaluate`
 
 All operator values are lists.
 
-`expr` uses spec-lang v1 YAML list S-expressions:
+`evaluate` uses spec-lang v1 YAML list S-expressions:
 
 ```yaml
 assert:
   - target: text
     must:
-      - expr:
+      - evaluate:
           - ["and", ["contains", "version"], ["starts_with", ["subject"], "#"]]
 ```
 
@@ -70,7 +70,7 @@ Tail-recursive example:
 assert:
   - target: text
     must:
-      - expr:
+      - evaluate:
           - ["let", [["loop", ["fn", ["n", "acc"], ["if", ["eq", ["var", "n"], 0], ["var", "acc"], ["call", ["var", "loop"], ["sub", ["var", "n"], 1], ["add", ["var", "acc"], 1]]]]]], ["eq", ["call", ["var", "loop"], 100, 0], 100]]
 ```
 

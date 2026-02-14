@@ -867,7 +867,7 @@ def test_cli_type_expr_operator(tmp_path, monkeypatch, capsys):
             "assert": [
                 {
                     "target": "stdout",
-                    "must": [{"expr": [["and", ["contains", "hello"], ["contains", "world"]]]}],
+                    "must": [{"evaluate": [["and", ["contains", "hello"], ["contains", "world"]]]}],
                 }
             ],
         },
@@ -896,7 +896,7 @@ def test_cli_type_expr_runtime_budget_failure(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "spec_lang": {"max_steps": 10}},
-            "assert": [{"target": "stdout", "must": [{"expr": [deep]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [deep]}]}],
         },
     )
 

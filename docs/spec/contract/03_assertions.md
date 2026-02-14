@@ -30,11 +30,11 @@ Canonical operators:
 - `regex`
 - `json_type`
 - `exists`
-- `expr`
+- `evaluate`
 
 Operator values MUST be lists.
 
-`expr` values are spec-lang v1 expressions encoded as YAML list S-expressions.
+`evaluate` values are spec-lang v1 expressions encoded as YAML list S-expressions.
 Normative contract:
 
 - `docs/spec/contract/03b_spec_lang_v1.md`

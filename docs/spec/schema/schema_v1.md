@@ -114,7 +114,7 @@ For `type: cli.run`, supported `harness` keys include:
 - `hook_before` (string): hook entrypoint invoked before running the CLI
 - `hook_after` (string): hook entrypoint invoked after running the CLI
 - `hook_kwargs` (mapping): keyword arguments passed through to the hook
-- `spec_lang` (mapping): evaluator budgets for `expr` leaves
+- `spec_lang` (mapping): evaluator budgets for `evaluate` leaves
 
 `setup_files[*].path` constraints:
 
@@ -181,13 +181,13 @@ Leaf constraints:
 Supported operators:
 
 - text operators: `contain`, `regex`
-- expression operator: `expr` (spec-lang v1)
+- expression operator: `evaluate` (spec-lang v1)
 - additional per-harness operators such as `json_type` and `exists`
 
 Operator constraints:
 
 - all operator values MUST be lists
-- `expr` values MUST be list-encoded spec-lang expressions
+- `evaluate` values MUST be list-encoded spec-lang expressions
 - spec-lang semantics and budget model are defined in
   `docs/spec/contract/03b_spec_lang_v1.md`
 - `regex` SHOULD use a portable subset; implementations SHOULD diagnose

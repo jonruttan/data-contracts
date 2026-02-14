@@ -324,9 +324,9 @@ def run(case, *, ctx) -> None:
 
                 if is_text_op(op):
                     assert_text_op(subject, op, value, is_true=is_true)
-                elif op == "expr":
+                elif op == "evaluate":
                     ok = eval_predicate(value, subject=subject, limits=spec_lang_limits)
-                    assert ok is bool(is_true), "expr assertion failed"
+                    assert ok is bool(is_true), "evaluate assertion failed"
                 elif op == "json_type":
                     parsed = parse_json(subject)
                     want = str(value).lower()

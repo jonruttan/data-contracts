@@ -112,17 +112,17 @@ def run(case, *, ctx) -> None:
         for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
             try:
                 if target == "status":
-                    if op == "expr":
+                    if op == "evaluate":
                         ok = eval_predicate(value, subject=status_text, limits=spec_lang_limits)
-                        assert ok is bool(is_true), "expr assertion failed"
+                        assert ok is bool(is_true), "evaluate assertion failed"
                     elif not is_text_op(op):
                         raise ValueError(f"unsupported op for status: {op}")
                     else:
                         assert_text_op(status_text, op, value, is_true=is_true)
                 elif target == "headers":
-                    if op == "expr":
+                    if op == "evaluate":
                         ok = eval_predicate(value, subject=headers_text, limits=spec_lang_limits)
-                        assert ok is bool(is_true), "expr assertion failed"
+                        assert ok is bool(is_true), "evaluate assertion failed"
                     elif not is_text_op(op):
                         raise ValueError(f"unsupported op for headers: {op}")
                     else:
@@ -136,9 +136,9 @@ def run(case, *, ctx) -> None:
                             assert isinstance(body_json_value, list)
                         else:
                             raise ValueError(f"unsupported json_type: {value}")
-                    elif op == "expr":
+                    elif op == "evaluate":
                         ok = eval_predicate(value, subject=body_text_value, limits=spec_lang_limits)
-                        assert ok is bool(is_true), "expr assertion failed"
+                        assert ok is bool(is_true), "evaluate assertion failed"
                     elif is_text_op(op):
                         assert_text_op(body_text_value, op, value, is_true=is_true)
                     else:
@@ -152,9 +152,9 @@ def run(case, *, ctx) -> None:
                             assert isinstance(body_json_value, list)
                         else:
                             raise ValueError(f"unsupported json_type: {value}")
-                    elif op == "expr":
+                    elif op == "evaluate":
                         ok = eval_predicate(value, subject=body_json_value, limits=spec_lang_limits)
-                        assert ok is bool(is_true), "expr assertion failed"
+                        assert ok is bool(is_true), "evaluate assertion failed"
                     elif is_text_op(op):
                         assert_text_op(json.dumps(body_json_value, sort_keys=True), op, value, is_true=is_true)
                     else:

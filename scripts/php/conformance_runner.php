@@ -107,8 +107,8 @@ const PHP_CAPABILITIES = [
     'api.http',
     'assert.op.contain',
     'assert.op.regex',
-    'assert.op.expr',
-    'expr.spec_lang.v1',
+    'assert.op.evaluate',
+    'evaluate.spec_lang.v1',
     'assert.group.must',
     'assert.group.can',
     'assert.group.cannot',
@@ -839,17 +839,17 @@ function evalTextLeaf(
         if ($op === 'target') {
             continue;
         }
-        if ($op !== 'contain' && $op !== 'regex' && $op !== 'expr') {
+        if ($op !== 'contain' && $op !== 'regex' && $op !== 'evaluate') {
             throw new SchemaError("unsupported op: {$op}");
         }
         if (!is_array($raw) || !isListArray($raw)) {
             throw new SchemaError("assertion op '{$op}' must be a list");
         }
         foreach ($raw as $value) {
-            if ($op === 'expr') {
+            if ($op === 'evaluate') {
                 if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
                     throw new AssertionFailure(
-                        "[case_id={$caseId} assert_path={$path} target={$target} op=expr] expr assertion failed"
+                        "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] evaluate assertion failed"
                     );
                 }
                 continue;
@@ -1042,14 +1042,14 @@ function evalApiHttpLeaf(
             $subject = $target === 'status'
                 ? (string)$resp['status']
                 : ($target === 'headers' ? (string)$resp['headers_text'] : (string)$resp['body_text']);
-            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type' && $op !== 'expr') {
+            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type' && $op !== 'evaluate') {
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
-                if ($op === 'expr') {
+                if ($op === 'evaluate') {
                     if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
                         throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=expr] expr assertion failed"
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] evaluate assertion failed"
                         );
                     }
                     continue;
@@ -1094,7 +1094,7 @@ function evalApiHttpLeaf(
             continue;
         }
         if ($target === 'body_json') {
-            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type' && $op !== 'expr') {
+            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type' && $op !== 'evaluate') {
                 throw new SchemaError("unsupported op: {$op}");
             }
             $parsed = json_decode((string)$resp['body_text'], true);
@@ -1104,10 +1104,10 @@ function evalApiHttpLeaf(
                 );
             }
             foreach ($raw as $value) {
-                if ($op === 'expr') {
+                if ($op === 'evaluate') {
                     if (!specLangEvalPredicate($value, $parsed, $specLangLimits)) {
                         throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=expr] expr assertion failed"
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] evaluate assertion failed"
                         );
                     }
                     continue;
