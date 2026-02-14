@@ -30,6 +30,11 @@ Portable conformance cases SHOULD be deterministic by construction:
 - No ambient environment dependency unless declared via case-level inputs
   (`harness.*`, explicit fixture files, or explicit capability requirements).
 
+Governance enforcement:
+
+- `conformance.no_ambient_assumptions` rejects common ambient
+  environment/time/random dependency tokens in portable case content.
+
 ## Portability Boundaries
 
 - Portable case IDs use `SRCONF-*`.

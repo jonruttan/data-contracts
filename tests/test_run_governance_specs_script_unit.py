@@ -263,6 +263,55 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_runtime_runner_interface_gate_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_runner_interface.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-CONFIG-003
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-CONFIG-003
+type: governance.check
+check: runtime.runner_interface_gate_sync
+harness:
+  root: {tmp_path}
+  runner_interface:
+    required_paths:
+      - scripts/runner_adapter.sh
+    files:
+      - scripts/ci_gate.sh
+    required_tokens:
+      - SPEC_RUNNER_BIN
+      - scripts/runner_adapter.sh
+    forbidden_tokens:
+      - scripts/run_governance_specs.py
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.runner_interface_gate_sync"]
+```
+""",
+    )
+    _write_text(tmp_path / "scripts/runner_adapter.sh", "#!/usr/bin/env bash\n")
+    _write_text(
+        tmp_path / "scripts/ci_gate.sh",
+        "SPEC_RUNNER_BIN=\"${ROOT_DIR}/scripts/runner_adapter.sh\"\n"
+        "\"${SPEC_RUNNER_BIN}\" governance\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "scripts/ci_gate.sh",
+        "python scripts/run_governance_specs.py\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_conformance_case_index_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"
@@ -561,6 +610,98 @@ assert:
   - target: text
     must:
       - contain: ["PASS: conformance.portable_determinism_guard"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_conformance_no_ambient_assumptions(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "ambient_assumptions.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONF-PORT-003
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-PORT-003
+type: governance.check
+check: conformance.no_ambient_assumptions
+harness:
+  root: {tmp_path}
+  ambient_assumptions:
+    exclude_case_keys: ["id", "title", "purpose", "expect", "requires", "assert_health"]
+    patterns:
+      - "\\\\bos\\\\.getenv\\\\s*\\\\("
+      - "\\\\bdatetime\\\\.now\\\\s*\\\\("
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: conformance.no_ambient_assumptions"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/good.spec.md",
+        """# Good
+
+## SRCONF-PORT-005
+
+```yaml spec-test
+id: SRCONF-PORT-005
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["fixed-value"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/bad.spec.md",
+        """# Bad
+
+## SRCONF-PORT-006
+
+```yaml spec-test
+id: SRCONF-PORT-006
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["os.getenv('HOME')"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_requires_ambient_assumption_patterns_in_governance_spec(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "ambient_missing_patterns.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONF-PORT-003-MISS
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-PORT-003-MISS
+type: governance.check
+check: conformance.no_ambient_assumptions
+harness:
+  root: {tmp_path}
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: conformance.no_ambient_assumptions"]
 ```
 """,
     )

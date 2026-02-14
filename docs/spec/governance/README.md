@@ -22,6 +22,8 @@ Current checks:
   constants from `spec_runner.settings` in runtime Python code.
 - `runtime.python_bin_resolver_sync`: enforces shared shell helper usage for
   Python interpreter resolution in gate scripts.
+- `runtime.runner_interface_gate_sync`: enforces gate scripts call the runner
+  interface boundary rather than hardcoded Python script entrypoints.
 - `conformance.case_index_sync`: ensures conformance case index ids match
   fixture case ids.
 - `conformance.purpose_warning_codes_sync`: ensures purpose warning code docs
@@ -31,6 +33,10 @@ Current checks:
 - `conformance.spec_lang_preferred`: enforces spec-lang-first conformance
   authoring and requires explicit temporary allowlisting for non-`evaluate`
   assertion files.
+- `conformance.no_ambient_assumptions`: rejects ambient environment/time/random
+  assumption tokens in portable conformance case content.
+- `conformance.portable_determinism_guard`: checks configured non-determinism
+  token patterns in portable case content.
 - `docs.regex_doc_sync`: enforces regex portability profile linkage and
   assertion-operator token sync across contract/schema/policy docs.
 - `docs.adoption_profiles_sync`: enforces synchronized Core/Full adoption

@@ -704,6 +704,49 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
     return violations
 
 
+def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    ambient = h.get("ambient_assumptions")
+    if not isinstance(ambient, dict):
+        return ["conformance.no_ambient_assumptions requires harness.ambient_assumptions mapping in governance spec"]
+    raw_patterns = ambient.get("patterns")
+    if not isinstance(raw_patterns, list) or not raw_patterns:
+        return ["conformance.no_ambient_assumptions requires non-empty harness.ambient_assumptions.patterns list"]
+    compiled_patterns: list[re.Pattern[str]] = []
+    for raw in raw_patterns:
+        if not isinstance(raw, str) or not raw.strip():
+            violations.append("harness.ambient_assumptions.patterns entries must be non-empty strings")
+            continue
+        try:
+            compiled_patterns.append(re.compile(raw, re.IGNORECASE))
+        except re.error as e:
+            violations.append(f"invalid regex in harness.ambient_assumptions.patterns: {raw!r} ({e})")
+    raw_exclude = ambient.get("exclude_case_keys", ["id", "title", "purpose", "expect", "requires", "assert_health"])
+    if not isinstance(raw_exclude, list) or any(not isinstance(x, str) for x in raw_exclude):
+        violations.append("harness.ambient_assumptions.exclude_case_keys must be a list of strings")
+        return violations
+    exclude_case_keys = {x for x in raw_exclude if x}
+    if not compiled_patterns:
+        return violations
+    cases_dir = root / "docs/spec/conformance/cases"
+    if not cases_dir.exists():
+        return violations
+
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        case = spec.test
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        scoped = {k: v for k, v in case.items() if str(k) not in exclude_case_keys}
+        for s in _iter_string_values(scoped):
+            for pat in compiled_patterns:
+                if pat.search(s):
+                    violations.append(
+                        f"{case_id}: ambient-assumption token matched /{pat.pattern}/ in case content"
+                    )
+                    break
+    return violations
+
+
 def _scan_conformance_extension_requires_capabilities(root: Path) -> list[str]:
     violations: list[str] = []
     cases_dir = root / "docs/spec/conformance/cases"
@@ -1281,6 +1324,51 @@ def _scan_runtime_python_bin_resolver_sync(root: Path, *, harness: dict | None =
     return violations
 
 
+def _scan_runtime_runner_interface_gate_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("runner_interface")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.runner_interface_gate_sync requires harness.runner_interface mapping in governance spec"
+        ]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    required_paths = cfg.get("required_paths", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.runner_interface.files must be a non-empty list of non-empty strings"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.runner_interface.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.runner_interface.forbidden_tokens must be a list of non-empty strings"]
+    if not isinstance(required_paths, list) or any(not isinstance(x, str) or not x.strip() for x in required_paths):
+        return ["harness.runner_interface.required_paths must be a list of non-empty strings"]
+
+    for rel in required_paths:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing required runner interface path")
+
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing gate file for runner interface sync check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing required runner-interface token {tok}")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden direct runtime token {tok}")
+    return violations
+
+
 def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1347,6 +1435,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.config_literals": _scan_runtime_config_literals,
     "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
     "runtime.python_bin_resolver_sync": _scan_runtime_python_bin_resolver_sync,
+    "runtime.runner_interface_gate_sync": _scan_runtime_runner_interface_gate_sync,
     "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
     "conformance.case_index_sync": _scan_conformance_case_index_sync,
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
@@ -1359,6 +1448,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.api_http_portable_shape": _scan_conformance_api_http_portable_shape,
     "conformance.no_runner_logic_outside_harness": _scan_conformance_no_runner_logic_outside_harness,
     "conformance.portable_determinism_guard": _scan_conformance_portable_determinism_guard,
+    "conformance.no_ambient_assumptions": _scan_conformance_no_ambient_assumptions,
     "conformance.extension_requires_capabilities": _scan_conformance_extension_requires_capabilities,
     "conformance.type_contract_field_sync": _scan_conformance_type_contract_field_sync,
     "conformance.spec_lang_preferred": _scan_conformance_spec_lang_preferred,

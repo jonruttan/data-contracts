@@ -390,6 +390,22 @@ rules:
       - docs/spec/contract/07_portable_spec_authoring.md
       - docs/spec/schema/schema_v1.md
 
+  - id: CONFORMANCE_NO_AMBIENT_ASSUMPTIONS_GUARD
+    introduced_in: v1
+    scope: governance
+    applies_to: fixtures.portable.ambient_assumptions
+    norm: MUST
+    requirement: reject_ambient_env_time_random_tokens_in_portable_case_content
+    description: >
+      Governance must reject portable conformance case content that includes
+      ambient environment/time/random assumption tokens.
+    rationale: Converts determinism guidance into an executable portability guardrail.
+    risk_if_violated: Portable fixtures become host-dependent and parity drifts.
+    references:
+      - docs/spec/contract/06_conformance.md
+      - docs/spec/contract/07_portable_spec_authoring.md
+      - docs/spec/governance/cases/conformance_no_ambient_assumptions.spec.md
+
   - id: CONFORMANCE_PURPOSE_QUALITY_GATE
     introduced_in: v1
     scope: governance
@@ -532,6 +548,24 @@ rules:
       - docs/spec/contract/11_adoption_profiles.md
       - README.md
       - docs/development.md
+
+  - id: RUNTIME_RUNNER_INTERFACE_GATE_SYNC
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.gate_orchestration
+    norm: SHOULD
+    requirement: gate_scripts_call_runner_interface_boundary
+    description: >
+      Gate shell scripts should call a runner interface command boundary
+      (`SPEC_RUNNER_BIN`) instead of hardcoding Python script entrypoints.
+    rationale: Keeps orchestration portable across compliant runner implementations.
+    risk_if_violated: Removing Python requires rewriting gate orchestration logic.
+    references:
+      - docs/spec/contract/12_runner_interface.md
+      - scripts/runner_adapter.sh
+      - scripts/ci_gate.sh
+      - scripts/core_gate.sh
+      - scripts/docs_doctor.sh
 
   - id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
     introduced_in: v1
