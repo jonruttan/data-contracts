@@ -1,6 +1,45 @@
 # Chapter 1: Quickstart
 
+```yaml doc-meta
+doc_id: DOC-REF-002
+title: Chapter 1 Quickstart
+status: active
+audience: author
+owns_tokens: ["quickstart_minimal_case", "quickstart_gate"]
+requires_tokens: ["core_case_model"]
+commands:
+  - run: "./scripts/ci_gate.sh"
+    purpose: Run full local quality gate.
+examples:
+  - id: EX-QUICKSTART-001
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
 This chapter gets you from zero to a passing executable spec in minutes.
+
+## Purpose
+
+Provide the shortest path from no case to passing case execution.
+
+## Inputs
+
+- a writable `.spec.md` file
+- repository root shell
+
+## Outputs
+
+- runnable `text.file` and `cli.run` examples
+- first `evaluate` assertion example
+
+## Failure Modes
+
+- misplaced runner-only keys outside `harness:`
+- invalid assertion tree structure
 
 ## 1) Write A Minimal Case
 

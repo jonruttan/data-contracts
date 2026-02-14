@@ -1,6 +1,44 @@
 # Chapter 4: Spec-Lang Reference (`evaluate`)
 
+```yaml doc-meta
+doc_id: DOC-REF-005
+title: Chapter 4 Spec-Lang Reference
+status: active
+audience: reviewer
+owns_tokens: ["spec-lang", "tail-call-optimization", "spec_lang_forms"]
+requires_tokens: ["minimal_examples"]
+commands:
+  - run: "python scripts/evaluate_style.py --check docs/spec"
+    purpose: Enforce canonical evaluate formatting in specs.
+examples:
+  - id: EX-SPECLANG-001
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
 This chapter is the practical reference for the `evaluate` assertion leaf.
+
+## Purpose
+
+Provide a complete, deterministic reference for spec-lang `evaluate`.
+
+## Inputs
+
+- assertion leaf expressions encoded as YAML list s-expressions
+
+## Outputs
+
+- portable predicate behavior and consistent evaluator diagnostics
+
+## Failure Modes
+
+- malformed expression shape
+- unsupported symbols/arity/type mismatches
+- evaluator budget exhaustion
 
 ## 1) What `evaluate` Is
 

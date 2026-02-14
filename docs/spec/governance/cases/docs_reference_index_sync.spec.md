@@ -16,6 +16,7 @@ harness:
     exclude_files:
       - docs/book/README.md
       - docs/book/reference_index.md
+      - docs/book/reference_coverage.md
 assert:
   - target: text
     must:

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import inspect
 import shlex
 import sys
@@ -25,6 +26,17 @@ from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 from spec_runner.contract_governance import check_contract_governance
 from spec_runner.contract_governance import contract_coverage_jsonable
+from spec_runner.docs_quality import build_docs_graph
+from spec_runner.docs_quality import check_command_examples_verified
+from spec_runner.docs_quality import check_example_id_uniqueness
+from spec_runner.docs_quality import check_instructions_complete
+from spec_runner.docs_quality import check_token_dependency_resolved
+from spec_runner.docs_quality import check_token_ownership_unique
+from spec_runner.docs_quality import load_docs_meta_for_paths
+from spec_runner.docs_quality import load_reference_manifest
+from spec_runner.docs_quality import manifest_chapter_paths
+from spec_runner.docs_quality import render_reference_coverage
+from spec_runner.docs_quality import render_reference_index
 from spec_runner.spec_portability import spec_portability_report_jsonable
 
 
@@ -1146,6 +1158,116 @@ def _scan_docs_reference_index_sync(root: Path, *, harness: dict | None = None) 
     return violations
 
 
+def _load_docs_v2_context(root: Path, harness: dict | None = None) -> tuple[dict, list[str], dict[str, dict], list[str]]:
+    h = harness or {}
+    cfg = h.get("docs_v2")
+    if not isinstance(cfg, dict):
+        return {}, [], {}, ["docs_v2 config required in harness.docs_v2"]
+    manifest_rel = str(cfg.get("manifest", "")).strip()
+    if not manifest_rel:
+        return {}, [], {}, ["harness.docs_v2.manifest must be a non-empty string"]
+    manifest, manifest_issues = load_reference_manifest(root, manifest_rel)
+    if manifest_issues:
+        return {}, [], {}, [x.render() for x in manifest_issues]
+    docs = manifest_chapter_paths(manifest)
+    metas, meta_issues, _meta_lines = load_docs_meta_for_paths(root, docs)
+    meta_msgs = [x.render() for x in meta_issues]
+    for rel in docs:
+        if rel in metas:
+            metas[rel]["__text__"] = (root / rel).read_text(encoding="utf-8")
+    return manifest, docs, metas, meta_msgs
+
+
+def _scan_docs_meta_schema_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    _manifest, _docs, _metas, meta_msgs = _load_docs_v2_context(root, harness)
+    if meta_msgs:
+        return meta_msgs
+    return []
+
+
+def _scan_docs_reference_manifest_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("docs_v2")
+    if not isinstance(cfg, dict):
+        return ["docs.reference_manifest_sync requires harness.docs_v2 mapping in governance spec"]
+    manifest, _docs, _metas, msgs = _load_docs_v2_context(root, harness)
+    if msgs:
+        return msgs
+    index_rel = str(cfg.get("index_out", "docs/book/reference_index.md")).strip()
+    index_path = root / index_rel
+    expected = render_reference_index(manifest)
+    if not index_path.exists():
+        return [f"{index_rel}:1: missing generated reference index"]
+    if index_path.read_text(encoding="utf-8") != expected:
+        return [f"{index_rel}:1: out of sync with docs_v2 manifest"]
+    return []
+
+
+def _scan_docs_token_ownership_unique(root: Path, *, harness: dict | None = None) -> list[str]:
+    _manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+    if msgs:
+        return msgs
+    return [x.render() for x in check_token_ownership_unique(metas)]
+
+
+def _scan_docs_token_dependency_resolved(root: Path, *, harness: dict | None = None) -> list[str]:
+    _manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+    if msgs:
+        return msgs
+    return [x.render() for x in check_token_dependency_resolved(metas)]
+
+
+def _scan_docs_instructions_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    _manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+    if msgs:
+        return msgs
+    return [x.render() for x in check_instructions_complete(root, metas)]
+
+
+def _scan_docs_command_examples_verified(root: Path, *, harness: dict | None = None) -> list[str]:
+    _manifest, docs, _metas, msgs = _load_docs_v2_context(root, harness)
+    if msgs:
+        return msgs
+    return [x.render() for x in check_command_examples_verified(root, docs)]
+
+
+def _scan_docs_example_id_uniqueness(root: Path, *, harness: dict | None = None) -> list[str]:
+    _manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+    if msgs:
+        return msgs
+    return [x.render() for x in check_example_id_uniqueness(metas)]
+
+
+def _scan_docs_generated_files_clean(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("docs_v2")
+    if not isinstance(cfg, dict):
+        return ["docs.generated_files_clean requires harness.docs_v2 mapping in governance spec"]
+    manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+    if msgs:
+        return msgs
+
+    index_rel = str(cfg.get("index_out", "docs/book/reference_index.md")).strip()
+    coverage_rel = str(cfg.get("coverage_out", "docs/book/reference_coverage.md")).strip()
+    graph_rel = str(cfg.get("graph_out", ".artifacts/docs_graph.json")).strip()
+    index_path = root / index_rel
+    coverage_path = root / coverage_rel
+    graph_path = root / graph_rel
+
+    out: list[str] = []
+    expected_index = render_reference_index(manifest)
+    expected_coverage = render_reference_coverage(root, metas)
+    expected_graph = json.dumps(build_docs_graph(root, metas), indent=2, sort_keys=True) + "\n"
+
+    if not index_path.exists() or index_path.read_text(encoding="utf-8") != expected_index:
+        out.append(f"{index_rel}:1: generated file out of date")
+    if not coverage_path.exists() or coverage_path.read_text(encoding="utf-8") != expected_coverage:
+        out.append(f"{coverage_rel}:1: generated file out of date")
+    if not graph_path.exists() or graph_path.read_text(encoding="utf-8") != expected_graph:
+        out.append(f"{graph_rel}:1: generated file out of date")
+    return out
+
+
 def _scan_docs_required_sections(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1654,6 +1776,14 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.spec_lang_preferred": _scan_conformance_spec_lang_preferred,
     "docs.reference_surface_complete": _scan_docs_reference_surface_complete,
     "docs.reference_index_sync": _scan_docs_reference_index_sync,
+    "docs.meta_schema_valid": _scan_docs_meta_schema_valid,
+    "docs.reference_manifest_sync": _scan_docs_reference_manifest_sync,
+    "docs.token_ownership_unique": _scan_docs_token_ownership_unique,
+    "docs.token_dependency_resolved": _scan_docs_token_dependency_resolved,
+    "docs.instructions_complete": _scan_docs_instructions_complete,
+    "docs.command_examples_verified": _scan_docs_command_examples_verified,
+    "docs.example_id_uniqueness": _scan_docs_example_id_uniqueness,
+    "docs.generated_files_clean": _scan_docs_generated_files_clean,
     "docs.required_sections": _scan_docs_required_sections,
     "docs.examples_runnable": _scan_docs_examples_runnable,
     "docs.cli_flags_documented": _scan_docs_cli_flags_documented,

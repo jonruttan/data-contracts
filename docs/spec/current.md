@@ -16,6 +16,9 @@ Notes:
   conformance/governance/impl `.spec.md` corpora.
 - Spec-lang now supports reusable library symbols via
   `harness.spec_lang.library_paths` and optional `exports` allowlists.
+- Docs quality v2 adds schema-backed `doc-meta`, manifest-driven reference
+  generation, and governance checks for docs token ownership/dependencies and
+  generated artifact freshness.
 
 Canonical spec docs:
 

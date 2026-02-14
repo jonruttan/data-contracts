@@ -1,6 +1,44 @@
 # Chapter 3: Assertions
 
+```yaml doc-meta
+doc_id: DOC-REF-004
+title: Chapter 3 Assertions
+status: active
+audience: author
+owns_tokens: ["must", "can", "cannot", "evaluate"]
+requires_tokens: ["spec-lang"]
+commands:
+  - run: "python scripts/evaluate_style.py --check docs/spec"
+    purpose: Validate canonical evaluate formatting.
+examples:
+  - id: EX-ASSERTIONS-001
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
 Assertions are an expression tree with explicit group semantics.
+
+## Purpose
+
+Define assertion-tree semantics and canonical leaf operator usage.
+
+## Inputs
+
+- `assert` trees with group nodes and leaf operators
+
+## Outputs
+
+- deterministic assertion evaluation semantics across runners
+
+## Failure Modes
+
+- leaf `target` misuse
+- non-list operator values
+- invalid `evaluate` expression roots
 
 ## Tree Shape
 

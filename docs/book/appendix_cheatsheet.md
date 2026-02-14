@@ -1,5 +1,43 @@
 # Appendix: Cheatsheet
 
+```yaml doc-meta
+doc_id: DOC-REF-006
+title: Appendix Cheatsheet
+status: active
+audience: author
+owns_tokens: ["cheatsheet", "minimal_examples"]
+requires_tokens: ["first_run_walkthrough"]
+commands:
+  - run: "python scripts/evaluate_style.py --check docs/spec"
+    purpose: Verify canonical evaluate style.
+examples:
+  - id: EX-CHEATSHEET-001
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
+## Purpose
+
+Provide a compact, copyable set of minimal valid case patterns.
+
+## Inputs
+
+- an author creating or reviewing new `yaml spec-test` cases
+
+## Outputs
+
+- minimal templates for core types and assertion forms
+
+## Failure Modes
+
+- missing required keys
+- operators not list-valued
+- misplaced runner-only configuration
+
 ## Minimal `text.file`
 
 ```yaml

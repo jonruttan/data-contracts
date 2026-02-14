@@ -24,6 +24,8 @@ python -m ruff check .
 python -m mypy spec_runner
 python -m compileall -q spec_runner scripts tests
 python scripts/evaluate_style.py --check docs/spec
+python scripts/docs_build_reference.py --check
+python scripts/docs_lint.py
 ```
 
 ## Adoption Profiles
@@ -81,6 +83,8 @@ Fast docs-only gate:
 ./scripts/docs_doctor.sh
 make docs-doctor
 make verify-docs
+make docs-build
+make docs-check
 ```
 
 Suggested pre-commit hook:

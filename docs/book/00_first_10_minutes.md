@@ -1,7 +1,49 @@
 # First 10 Minutes (Deterministic Walkthrough)
 
+```yaml doc-meta
+doc_id: DOC-REF-001
+title: First 10 Minutes (Deterministic Walkthrough)
+status: active
+audience: author
+owns_tokens: ["first_run_walkthrough", "trusted_inputs_required"]
+requires_tokens: ["quickstart_minimal_case"]
+commands:
+  - run: "python -m pip install -e '.[dev]'"
+    purpose: Install editable package with dev dependencies.
+  - run: "./scripts/ci_gate.sh"
+    purpose: Execute canonical local gate.
+examples:
+  - id: EX-FIRST10-001
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
 This walkthrough gives a deterministic first success with `spec_runner` from a
 clean clone.
+
+## Purpose
+
+Establish a deterministic first successful run from a clean clone.
+
+## Inputs
+
+- local repo checkout
+- Python toolchain for virtualenv and package install
+
+## Outputs
+
+- one passing executable case
+- successful local gate execution
+
+## Failure Modes
+
+- missing virtualenv/python tooling
+- invalid fenced `yaml spec-test` syntax
+- failing local gate checks
 
 ## Safety First (Required)
 

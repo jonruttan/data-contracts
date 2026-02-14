@@ -11,5 +11,5 @@ reference anchors during implementation and conformance review.
 2. `docs/book/01_quickstart.md` - minimal runnable path.
 3. `docs/book/02_core_model.md` - case model and discovery contract.
 4. `docs/book/03_assertions.md` - assertion tree and operators.
-5. `docs/book/04_spec_lang_reference.md` - `evaluate` language reference.
+5. `docs/book/04_spec_lang_reference.md` - evaluate language reference.
 6. `docs/book/appendix_cheatsheet.md` - compact authoring cheatsheet.

@@ -7,6 +7,11 @@ Markdown files selected by case-file pattern (default `*.spec.md`) as fenced blo
 ```yaml spec-test
 ...
 ```
+
+Related docs/reference schemas:
+
+- `docs/spec/schema/docs_schema_v1.md`
+- `docs/spec/schema/reference_manifest_v1.md`
 ```
 
 ## Common Fields

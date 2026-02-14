@@ -42,6 +42,18 @@ case "${subcommand}" in
   spec-portability-md)
     exec "${PYTHON_BIN}" scripts/spec_portability_report.py --format md --out .artifacts/spec-portability-summary.md "$@"
     ;;
+  docs-build)
+    exec "${PYTHON_BIN}" scripts/docs_build_reference.py "$@"
+    ;;
+  docs-build-check)
+    exec "${PYTHON_BIN}" scripts/docs_build_reference.py --check "$@"
+    ;;
+  docs-lint)
+    exec "${PYTHON_BIN}" scripts/docs_lint.py "$@"
+    ;;
+  docs-graph)
+    exec "${PYTHON_BIN}" scripts/docs_graph_export.py "$@"
+    ;;
   conformance-parity)
     exec "${PYTHON_BIN}" scripts/compare_conformance_parity.py \
       --cases docs/spec/conformance/cases \

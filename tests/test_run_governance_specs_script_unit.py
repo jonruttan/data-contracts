@@ -1966,3 +1966,137 @@ assert: []
 
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def _docs_v2_chapter(doc_id: str, own: str, req: str, ex_id: str) -> str:
+    return f"""# Chapter
+
+```yaml doc-meta
+doc_id: {doc_id}
+title: {doc_id}
+status: active
+audience: author
+owns_tokens: ["{own}"]
+requires_tokens: ["{req}"]
+commands:
+  - run: "./scripts/ci_gate.sh"
+    purpose: run gate
+examples:
+  - id: {ex_id}
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
+## Purpose
+x
+## Inputs
+x
+## Outputs
+x
+## Failure Modes
+x
+"""
+
+
+def _seed_docs_v2(tmp_path: Path) -> None:
+    _write_text(
+        tmp_path / "docs/book/reference_manifest.yaml",
+        """version: 1
+chapters:
+  - path: docs/book/a.md
+    summary: A.
+  - path: docs/book/b.md
+    summary: B.
+""",
+    )
+    _write_text(tmp_path / "docs/book/a.md", _docs_v2_chapter("DOC-REF-001", "tok.a", "tok.b", "EX-A-001"))
+    _write_text(tmp_path / "docs/book/b.md", _docs_v2_chapter("DOC-REF-002", "tok.b", "tok.a", "EX-B-001"))
+
+
+def test_script_enforces_docs_meta_schema_valid(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_meta_schema.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-V2-001
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-V2-001
+type: governance.check
+check: docs.meta_schema_valid
+harness:
+  root: {tmp_path}
+  docs_v2:
+    manifest: docs/book/reference_manifest.yaml
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.meta_schema_valid"]
+```
+""",
+    )
+    _seed_docs_v2(tmp_path)
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/book/b.md", "# missing meta\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_docs_generated_files_clean(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_generated.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-V2-002
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-V2-002
+type: governance.check
+check: docs.generated_files_clean
+harness:
+  root: {tmp_path}
+  docs_v2:
+    manifest: docs/book/reference_manifest.yaml
+    index_out: docs/book/reference_index.md
+    coverage_out: docs/book/reference_coverage.md
+    graph_out: .artifacts/docs_graph.json
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.generated_files_clean"]
+```
+""",
+    )
+    _seed_docs_v2(tmp_path)
+    from spec_runner.docs_quality import build_docs_graph, load_docs_meta_for_paths, load_reference_manifest, manifest_chapter_paths, render_reference_coverage, render_reference_index
+    import json as _json
+
+    manifest, _errs = load_reference_manifest(tmp_path, "docs/book/reference_manifest.yaml")
+    docs = manifest_chapter_paths(manifest)
+    metas, _meta_errs, _ = load_docs_meta_for_paths(tmp_path, docs)
+    for rel in docs:
+        if rel in metas:
+            metas[rel]["__text__"] = (tmp_path / rel).read_text(encoding="utf-8")
+    _write_text(tmp_path / "docs/book/reference_index.md", render_reference_index(manifest))
+    _write_text(tmp_path / "docs/book/reference_coverage.md", render_reference_coverage(tmp_path, metas))
+    _write_text(
+        tmp_path / ".artifacts/docs_graph.json",
+        _json.dumps(build_docs_graph(tmp_path, metas), indent=2, sort_keys=True) + "\n",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/book/reference_index.md", "# stale\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

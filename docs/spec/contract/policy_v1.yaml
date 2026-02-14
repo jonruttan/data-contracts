@@ -582,6 +582,129 @@ rules:
       - docs/spec/contract/03_assertions.md
       - docs/spec/schema/schema_v1.md
 
+  - id: DOCS_META_SCHEMA_VALID
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.doc_meta
+    norm: MUST
+    requirement: canonical_reference_docs_include_valid_doc_meta
+    description: >
+      Canonical reference docs must include machine-checkable doc metadata that
+      validates against docs metadata schema requirements.
+    rationale: Makes reference docs testable as structured product surfaces.
+    risk_if_violated: Docs quality checks become heuristic and brittle.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/schema/docs_schema_v1.md
+      - docs/book/reference_manifest.yaml
+
+  - id: DOCS_REFERENCE_MANIFEST_SYNC
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.manifest
+    norm: MUST
+    requirement: generated_reference_index_matches_manifest_source_of_truth
+    description: >
+      Generated reference index output must remain synchronized with the
+      canonical reference manifest chapter order and summaries.
+    rationale: Keeps the docs reference manual deterministic and reviewable.
+    risk_if_violated: Users see stale or misleading navigation/coverage docs.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/schema/reference_manifest_v1.md
+      - docs/book/reference_manifest.yaml
+
+  - id: DOCS_TOKEN_OWNERSHIP_UNIQUE
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.tokens
+    norm: MUST
+    requirement: canonical_token_ownership_is_unique
+    description: >
+      Canonical documentation tokens must have exactly one owner doc in the
+      reference surface metadata.
+    rationale: Prevents conflicting definitions across reference chapters.
+    risk_if_violated: Contract vocabulary drifts and authors get mixed guidance.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/schema/docs_schema_v1.md
+
+  - id: DOCS_TOKEN_DEPENDENCY_RESOLVED
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.token_dependencies
+    norm: MUST
+    requirement: required_tokens_resolve_to_owner_docs_and_owner_text
+    description: >
+      Each docs metadata requires_tokens entry must map to an owner doc token
+      and be present in owner doc content.
+    rationale: Maintains integrity of cross-doc vocabulary references.
+    risk_if_violated: Broken links between docs concepts degrade maintainability.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/schema/docs_schema_v1.md
+
+  - id: DOCS_INSTRUCTIONS_REQUIRED_SECTIONS
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.instructions
+    norm: MUST
+    requirement: instruction_docs_include_required_operational_sections
+    description: >
+      Instruction/reference docs must include required operational sections
+      declared in doc metadata.
+    rationale: Ensures docs remain operationally useful beyond examples.
+    risk_if_violated: Repeated support questions and weak onboarding quality.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/schema/docs_schema_v1.md
+
+  - id: DOCS_COMMAND_EXAMPLES_VERIFIED
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.examples_v2
+    norm: MUST
+    requirement: docs_examples_validate_or_explicitly_opt_out_with_reason
+    description: >
+      Shell/python/spec-test examples in canonical reference chapters must pass
+      static validation unless explicitly opted out with a reason marker.
+    rationale: Keeps copy/paste docs trustworthy for users.
+    risk_if_violated: Documentation examples fail at runtime and waste time.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/schema/docs_schema_v1.md
+
+  - id: DOCS_EXAMPLE_IDS_UNIQUE
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.example_ids
+    norm: MUST
+    requirement: docs_metadata_example_ids_unique_across_reference_surface
+    description: >
+      Example IDs declared in docs metadata must be unique across canonical
+      reference chapters.
+    rationale: Keeps docs example references stable and unambiguous.
+    risk_if_violated: Ambiguous references break traceability and review flow.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/schema/docs_schema_v1.md
+
+  - id: DOCS_GENERATED_ARTIFACTS_FRESH
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.reference.generated_artifacts
+    norm: SHOULD
+    requirement: generated_docs_artifacts_match_manifest_and_doc_meta
+    description: >
+      Generated reference index, coverage, and graph artifacts should remain in
+      sync with manifest and docs metadata as part of CI checks.
+    rationale: Provides deterministic docs telemetry and drift detection.
+    risk_if_violated: Artifact-driven quality signals become stale.
+    references:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/reference_manifest.yaml
+      - scripts/docs_build_reference.py
+
   - id: DOCS_MAKE_COMMANDS_SYNC
     introduced_in: v1
     scope: governance

@@ -15,6 +15,8 @@ MUST:
 - reference-surface files required by governance MUST exist.
 - the machine-checked book index (`docs/book/reference_index.md`) MUST match
   the actual reference-manual chapter set and order.
+- the machine-readable reference manifest (`docs/book/reference_manifest.yaml`)
+  MUST remain synchronized with generated reference artifacts.
 
 ## Required Section Coverage
 
@@ -23,6 +25,18 @@ MUST:
 - core reference chapters MUST include required section tokens defined by
   governance policy.
 - missing required section tokens MUST fail governance checks.
+
+## Metadata Schema
+
+MUST:
+
+- canonical reference chapters MUST include valid `doc-meta` metadata in front
+  matter or `yaml doc-meta` fenced form.
+- metadata MUST conform to `docs/spec/schema/docs_schema_v1.md`.
+- each metadata `owns_tokens` entry MUST have unique ownership across the
+  canonical reference surface.
+- each metadata `requires_tokens` entry MUST resolve to an owner doc and appear
+  in owner text.
 
 ## Executable Example Policy
 
@@ -63,4 +77,13 @@ MUST:
 
 ## Enforcement
 
-These requirements are enforced by governance checks and are hard CI gates.
+Reference generation and graph artifacts:
+
+- `scripts/docs_build_reference.py` renders:
+  - `docs/book/reference_index.md`
+  - `docs/book/reference_coverage.md`
+  - `.artifacts/docs_graph.json`
+- `scripts/docs_build_reference.py --check` enforces freshness.
+
+These requirements are enforced by governance checks and CI gates. During
+rollout, report-only checks may be used before promotion to hard-fail.

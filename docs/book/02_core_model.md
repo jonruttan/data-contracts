@@ -1,6 +1,44 @@
 # Chapter 2: Core Model
 
+```yaml doc-meta
+doc_id: DOC-REF-003
+title: Chapter 2 Core Model
+status: active
+audience: maintainer
+owns_tokens: ["core_case_model", "harness_namespace_rule", "discovery_model"]
+requires_tokens: ["must"]
+commands:
+  - run: "python scripts/run_governance_specs.py"
+    purpose: Validate core contract and governance assumptions.
+examples:
+  - id: EX-COREMODEL-001
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
 The `yaml spec-test` syntax is a case model with strict structure.
+
+## Purpose
+
+Define the stable structural model for executable spec cases.
+
+## Inputs
+
+- markdown docs containing `yaml spec-test` fenced blocks
+
+## Outputs
+
+- validated case model ready for type dispatch and harness execution
+
+## Failure Modes
+
+- missing required keys (`id`, `type`)
+- runner keys placed outside `harness:`
+- invalid path constraints for `text.file`
 
 ## Required Keys
 

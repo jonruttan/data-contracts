@@ -601,6 +601,154 @@ links:
       - spec_runner/contract_governance.py
     notes: "Core assertion token vocabulary remains synchronized across book/contract/schema docs."
 
+  - rule_id: DOCS_META_SCHEMA_VALID
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_META_SCHEMA_VALID
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+    schema_refs:
+      - docs/spec/schema/docs_schema_v1.md
+      - docs/spec/schema/reference_manifest_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_docs_lint_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/docs_quality.py
+      - scripts/docs_lint.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_meta_schema_valid.spec.md
+    notes: "Reference chapter doc-meta blocks are schema-validated."
+
+  - rule_id: DOCS_REFERENCE_MANIFEST_SYNC
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_REFERENCE_MANIFEST_SYNC
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/reference_manifest.yaml
+    schema_refs:
+      - docs/spec/schema/reference_manifest_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_docs_build_reference_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/docs_quality.py
+      - scripts/docs_build_reference.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_reference_manifest_sync.spec.md
+    notes: "Reference index generation/sync is enforced against manifest source data."
+
+  - rule_id: DOCS_TOKEN_OWNERSHIP_UNIQUE
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_TOKEN_OWNERSHIP_UNIQUE
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+    schema_refs:
+      - docs/spec/schema/docs_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_docs_lint_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/docs_quality.py
+      - scripts/docs_lint.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_token_ownership_unique.spec.md
+    notes: "Canonical doc tokens must have exactly one owner page."
+
+  - rule_id: DOCS_TOKEN_DEPENDENCY_RESOLVED
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_TOKEN_DEPENDENCY_RESOLVED
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+    schema_refs:
+      - docs/spec/schema/docs_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_docs_lint_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/docs_quality.py
+      - scripts/docs_lint.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_token_dependency_resolved.spec.md
+    notes: "Requires-token dependencies must resolve to owner docs and owner content."
+
+  - rule_id: DOCS_INSTRUCTIONS_REQUIRED_SECTIONS
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_INSTRUCTIONS_REQUIRED_SECTIONS
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+    schema_refs:
+      - docs/spec/schema/docs_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_docs_lint_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/docs_quality.py
+      - scripts/docs_lint.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_instructions_complete.spec.md
+    notes: "Instruction docs must retain required operational sections."
+
+  - rule_id: DOCS_COMMAND_EXAMPLES_VERIFIED
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_COMMAND_EXAMPLES_VERIFIED
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+    schema_refs:
+      - docs/spec/schema/docs_schema_v1.md
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_docs_lint_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/docs_quality.py
+      - scripts/docs_lint.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_command_examples_verified.spec.md
+    notes: "Docs examples are validated or explicitly opted out with reason."
+
+  - rule_id: DOCS_EXAMPLE_IDS_UNIQUE
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_EXAMPLE_IDS_UNIQUE
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+    schema_refs:
+      - docs/spec/schema/docs_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_docs_lint_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/docs_quality.py
+      - scripts/docs_lint.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_example_id_uniqueness.spec.md
+    notes: "Example identifiers remain unique across canonical docs metadata."
+
+  - rule_id: DOCS_GENERATED_ARTIFACTS_FRESH
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_ARTIFACTS_FRESH
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/book/reference_manifest.yaml
+    schema_refs:
+      - docs/spec/schema/reference_manifest_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_docs_build_reference_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - spec_runner/docs_quality.py
+      - scripts/docs_build_reference.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_generated_files_clean.spec.md
+    notes: "Generated docs artifacts must stay synchronized with manifest and metadata."
+
   - rule_id: DOCS_MAKE_COMMANDS_SYNC
     policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_MAKE_COMMANDS_SYNC
     contract_refs:

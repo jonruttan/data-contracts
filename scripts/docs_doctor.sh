@@ -9,6 +9,8 @@ if [[ -z "${SPEC_RUNNER_BIN:-}" ]]; then
 fi
 
 "${SPEC_RUNNER_BIN}" governance
+"${SPEC_RUNNER_BIN}" docs-build-check
+"${SPEC_RUNNER_BIN}" docs-lint
 "${SPEC_RUNNER_BIN}" style-check
 
 echo "OK: docs doctor checks passed"
