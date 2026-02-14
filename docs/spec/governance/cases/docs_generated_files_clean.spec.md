@@ -1,16 +1,16 @@
 # Governance Cases
 
-## SRGOV-DOCS-V2-008
+## SRGOV-DOCS-QUAL-008
 
 ```yaml spec-test
-id: SRGOV-DOCS-V2-008
+id: SRGOV-DOCS-QUAL-008
 title: generated docs artifacts are up-to-date
 purpose: Ensures generated reference index, coverage, and docs graph artifacts are kept fresh.
 type: governance.check
 check: docs.generated_files_clean
 harness:
   root: .
-  docs_v2:
+  docs_quality:
     manifest: docs/book/reference_manifest.yaml
     index_out: docs/book/reference_index.md
     coverage_out: docs/book/reference_coverage.md

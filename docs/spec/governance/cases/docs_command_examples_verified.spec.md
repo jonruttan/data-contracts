@@ -1,16 +1,16 @@
 # Governance Cases
 
-## SRGOV-DOCS-V2-006
+## SRGOV-DOCS-QUAL-006
 
 ```yaml spec-test
-id: SRGOV-DOCS-V2-006
+id: SRGOV-DOCS-QUAL-006
 title: docs command and example blocks are validated
 purpose: Ensures runnable example blocks parse/validate unless explicitly opted out.
 type: governance.check
 check: docs.command_examples_verified
 harness:
   root: .
-  docs_v2:
+  docs_quality:
     manifest: docs/book/reference_manifest.yaml
 assert:
   - target: text

@@ -1968,7 +1968,7 @@ assert: []
     assert code == 1
 
 
-def _docs_v2_chapter(doc_id: str, own: str, req: str, ex_id: str) -> str:
+def _docs_quality_chapter(doc_id: str, own: str, req: str, ex_id: str) -> str:
     return f"""# Chapter
 
 ```yaml doc-meta
@@ -2002,7 +2002,7 @@ x
 """
 
 
-def _seed_docs_v2(tmp_path: Path) -> None:
+def _seed_docs_quality(tmp_path: Path) -> None:
     _write_text(
         tmp_path / "docs/book/reference_manifest.yaml",
         """version: 1
@@ -2013,8 +2013,8 @@ chapters:
     summary: B.
 """,
     )
-    _write_text(tmp_path / "docs/book/a.md", _docs_v2_chapter("DOC-REF-001", "tok.a", "tok.b", "EX-A-001"))
-    _write_text(tmp_path / "docs/book/b.md", _docs_v2_chapter("DOC-REF-002", "tok.b", "tok.a", "EX-B-001"))
+    _write_text(tmp_path / "docs/book/a.md", _docs_quality_chapter("DOC-REF-001", "tok.a", "tok.b", "EX-A-001"))
+    _write_text(tmp_path / "docs/book/b.md", _docs_quality_chapter("DOC-REF-002", "tok.b", "tok.a", "EX-B-001"))
 
 
 def test_script_enforces_docs_meta_schema_valid(tmp_path):
@@ -2024,15 +2024,15 @@ def test_script_enforces_docs_meta_schema_valid(tmp_path):
         cases_dir / "docs_meta_schema.spec.md",
         f"""# Governance
 
-## SRGOV-TEST-DOCS-V2-001
+## SRGOV-TEST-DOCS-QUAL-001
 
 ```yaml spec-test
-id: SRGOV-TEST-DOCS-V2-001
+id: SRGOV-TEST-DOCS-QUAL-001
 type: governance.check
 check: docs.meta_schema_valid
 harness:
   root: {tmp_path}
-  docs_v2:
+  docs_quality:
     manifest: docs/book/reference_manifest.yaml
 assert:
   - target: text
@@ -2041,7 +2041,7 @@ assert:
 ```
 """,
     )
-    _seed_docs_v2(tmp_path)
+    _seed_docs_quality(tmp_path)
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
 
@@ -2057,15 +2057,15 @@ def test_script_enforces_docs_generated_files_clean(tmp_path):
         cases_dir / "docs_generated.spec.md",
         f"""# Governance
 
-## SRGOV-TEST-DOCS-V2-002
+## SRGOV-TEST-DOCS-QUAL-002
 
 ```yaml spec-test
-id: SRGOV-TEST-DOCS-V2-002
+id: SRGOV-TEST-DOCS-QUAL-002
 type: governance.check
 check: docs.generated_files_clean
 harness:
   root: {tmp_path}
-  docs_v2:
+  docs_quality:
     manifest: docs/book/reference_manifest.yaml
     index_out: docs/book/reference_index.md
     coverage_out: docs/book/reference_coverage.md
@@ -2077,7 +2077,7 @@ assert:
 ```
 """,
     )
-    _seed_docs_v2(tmp_path)
+    _seed_docs_quality(tmp_path)
     from spec_runner.docs_quality import build_docs_graph, load_docs_meta_for_paths, load_reference_manifest, manifest_chapter_paths, render_reference_coverage, render_reference_index
     import json as _json
 

@@ -1158,14 +1158,14 @@ def _scan_docs_reference_index_sync(root: Path, *, harness: dict | None = None) 
     return violations
 
 
-def _load_docs_v2_context(root: Path, harness: dict | None = None) -> tuple[dict, list[str], dict[str, dict], list[str]]:
+def _load_docs_quality_context(root: Path, harness: dict | None = None) -> tuple[dict, list[str], dict[str, dict], list[str]]:
     h = harness or {}
-    cfg = h.get("docs_v2")
+    cfg = h.get("docs_quality")
     if not isinstance(cfg, dict):
-        return {}, [], {}, ["docs_v2 config required in harness.docs_v2"]
+        return {}, [], {}, ["docs_quality config required in harness.docs_quality"]
     manifest_rel = str(cfg.get("manifest", "")).strip()
     if not manifest_rel:
-        return {}, [], {}, ["harness.docs_v2.manifest must be a non-empty string"]
+        return {}, [], {}, ["harness.docs_quality.manifest must be a non-empty string"]
     manifest, manifest_issues = load_reference_manifest(root, manifest_rel)
     if manifest_issues:
         return {}, [], {}, [x.render() for x in manifest_issues]
@@ -1179,7 +1179,7 @@ def _load_docs_v2_context(root: Path, harness: dict | None = None) -> tuple[dict
 
 
 def _scan_docs_meta_schema_valid(root: Path, *, harness: dict | None = None) -> list[str]:
-    _manifest, _docs, _metas, meta_msgs = _load_docs_v2_context(root, harness)
+    _manifest, _docs, _metas, meta_msgs = _load_docs_quality_context(root, harness)
     if meta_msgs:
         return meta_msgs
     return []
@@ -1187,10 +1187,10 @@ def _scan_docs_meta_schema_valid(root: Path, *, harness: dict | None = None) -> 
 
 def _scan_docs_reference_manifest_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
-    cfg = h.get("docs_v2")
+    cfg = h.get("docs_quality")
     if not isinstance(cfg, dict):
-        return ["docs.reference_manifest_sync requires harness.docs_v2 mapping in governance spec"]
-    manifest, _docs, _metas, msgs = _load_docs_v2_context(root, harness)
+        return ["docs.reference_manifest_sync requires harness.docs_quality mapping in governance spec"]
+    manifest, _docs, _metas, msgs = _load_docs_quality_context(root, harness)
     if msgs:
         return msgs
     index_rel = str(cfg.get("index_out", "docs/book/reference_index.md")).strip()
@@ -1199,40 +1199,40 @@ def _scan_docs_reference_manifest_sync(root: Path, *, harness: dict | None = Non
     if not index_path.exists():
         return [f"{index_rel}:1: missing generated reference index"]
     if index_path.read_text(encoding="utf-8") != expected:
-        return [f"{index_rel}:1: out of sync with docs_v2 manifest"]
+        return [f"{index_rel}:1: out of sync with docs_quality manifest"]
     return []
 
 
 def _scan_docs_token_ownership_unique(root: Path, *, harness: dict | None = None) -> list[str]:
-    _manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+    _manifest, _docs, metas, msgs = _load_docs_quality_context(root, harness)
     if msgs:
         return msgs
     return [x.render() for x in check_token_ownership_unique(metas)]
 
 
 def _scan_docs_token_dependency_resolved(root: Path, *, harness: dict | None = None) -> list[str]:
-    _manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+    _manifest, _docs, metas, msgs = _load_docs_quality_context(root, harness)
     if msgs:
         return msgs
     return [x.render() for x in check_token_dependency_resolved(metas)]
 
 
 def _scan_docs_instructions_complete(root: Path, *, harness: dict | None = None) -> list[str]:
-    _manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+    _manifest, _docs, metas, msgs = _load_docs_quality_context(root, harness)
     if msgs:
         return msgs
     return [x.render() for x in check_instructions_complete(root, metas)]
 
 
 def _scan_docs_command_examples_verified(root: Path, *, harness: dict | None = None) -> list[str]:
-    _manifest, docs, _metas, msgs = _load_docs_v2_context(root, harness)
+    _manifest, docs, _metas, msgs = _load_docs_quality_context(root, harness)
     if msgs:
         return msgs
     return [x.render() for x in check_command_examples_verified(root, docs)]
 
 
 def _scan_docs_example_id_uniqueness(root: Path, *, harness: dict | None = None) -> list[str]:
-    _manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+    _manifest, _docs, metas, msgs = _load_docs_quality_context(root, harness)
     if msgs:
         return msgs
     return [x.render() for x in check_example_id_uniqueness(metas)]
@@ -1240,10 +1240,10 @@ def _scan_docs_example_id_uniqueness(root: Path, *, harness: dict | None = None)
 
 def _scan_docs_generated_files_clean(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
-    cfg = h.get("docs_v2")
+    cfg = h.get("docs_quality")
     if not isinstance(cfg, dict):
-        return ["docs.generated_files_clean requires harness.docs_v2 mapping in governance spec"]
-    manifest, _docs, metas, msgs = _load_docs_v2_context(root, harness)
+        return ["docs.generated_files_clean requires harness.docs_quality mapping in governance spec"]
+    manifest, _docs, metas, msgs = _load_docs_quality_context(root, harness)
     if msgs:
         return msgs
 
