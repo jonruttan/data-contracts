@@ -85,5 +85,5 @@ Reference generation and graph artifacts:
   - `.artifacts/docs_graph.json`
 - `scripts/docs_build_reference.py --check` enforces freshness.
 
-These requirements are enforced by governance checks and CI gates. During
-rollout, report-only checks may be used before promotion to hard-fail.
+These requirements are enforced by governance checks and CI gates as hard
+failures.

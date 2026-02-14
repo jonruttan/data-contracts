@@ -693,7 +693,7 @@ rules:
     introduced_in: v1
     scope: governance
     applies_to: docs.reference.generated_artifacts
-    norm: SHOULD
+    norm: MUST
     requirement: generated_docs_artifacts_match_manifest_and_doc_meta
     description: >
       Generated reference index, coverage, and graph artifacts should remain in
