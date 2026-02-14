@@ -27,6 +27,7 @@ _NORMATIVE_DOCS = [
     "10_docs_quality.md",
     "11_adoption_profiles.md",
     "12_runner_interface.md",
+    "13_runtime_scope.md",
 ]
 
 

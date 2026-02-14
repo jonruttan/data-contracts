@@ -1280,6 +1280,44 @@ def _scan_docs_adoption_profiles_sync(root: Path, *, harness: dict | None = None
     return violations
 
 
+def _scan_runtime_scope_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("runtime_scope")
+    if not isinstance(cfg, dict):
+        return ["runtime.scope_sync requires harness.runtime_scope mapping in governance spec"]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens")
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.runtime_scope.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.runtime_scope.required_tokens must be a non-empty list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.runtime_scope.forbidden_tokens must be a list of non-empty strings"]
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing runtime-scope doc")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing required runtime-scope token {tok}")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden runtime-scope token present {tok}")
+    return violations
+
+
 def _scan_runtime_python_bin_resolver_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1460,6 +1498,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.contract_schema_book_sync": _scan_docs_contract_schema_book_sync,
     "docs.make_commands_sync": _scan_docs_make_commands_sync,
     "docs.adoption_profiles_sync": _scan_docs_adoption_profiles_sync,
+    "runtime.scope_sync": _scan_runtime_scope_sync,
     "naming.filename_policy": _scan_naming_filename_policy,
 }
 

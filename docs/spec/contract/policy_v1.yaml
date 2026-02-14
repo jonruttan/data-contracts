@@ -567,6 +567,22 @@ rules:
       - scripts/core_gate.sh
       - scripts/docs_doctor.sh
 
+  - id: RUNTIME_SCOPE_BOUNDED_FOR_V1
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.support.matrix
+    norm: SHOULD
+    requirement: v1_runtime_scope_explicitly_bounded_to_declared_targets
+    description: >
+      Runtime support scope should remain explicitly bounded in v1 contract
+      docs to avoid uncontrolled cross-runtime expansion.
+    rationale: Keeps maintenance scope predictable and prevents parity matrix sprawl.
+    risk_if_violated: Runtime support expectations expand without ownership or gate coverage.
+    references:
+      - docs/spec/contract/08_v1_scope.md
+      - docs/spec/contract/13_runtime_scope.md
+      - docs/spec/governance/cases/runtime_scope_sync.spec.md
+
   - id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
     introduced_in: v1
     scope: implementation

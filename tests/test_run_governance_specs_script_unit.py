@@ -312,6 +312,58 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_runtime_scope_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_scope.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-SCOPE-001
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-SCOPE-001
+type: governance.check
+check: runtime.scope_sync
+harness:
+  root: {tmp_path}
+  runtime_scope:
+    files:
+      - docs/spec/contract/08_v1_scope.md
+      - docs/spec/contract/13_runtime_scope.md
+    required_tokens:
+      - Python runner
+      - PHP runner
+      - required support targets
+      - contract/governance expansion
+    forbidden_tokens:
+      - Node.js runner
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.scope_sync"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/08_v1_scope.md",
+        "Python runner\nPHP runner\nrequired support targets\ncontract/governance expansion\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/13_runtime_scope.md",
+        "Python runner\nPHP runner\nrequired support targets\ncontract/governance expansion\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/contract/13_runtime_scope.md",
+        "Python runner\nrequired support targets\ncontract/governance expansion\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_conformance_case_index_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

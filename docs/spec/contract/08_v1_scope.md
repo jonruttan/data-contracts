@@ -14,6 +14,10 @@ maintenance decisions stay predictable.
 - Maintain deterministic conformance and parity checks across:
   - Python runner
   - PHP runner
+- Runtime scope is explicitly bounded in v1:
+  - only Python and PHP are required support targets
+  - additional runtimes require explicit contract/governance expansion
+  - required support targets in v1 are exactly: Python runner, PHP runner
 - Keep a dependency-minimal core suitable for library reuse.
 
 ## V1 Non-Goals

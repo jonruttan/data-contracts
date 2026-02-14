@@ -26,6 +26,7 @@ Read in order:
 14. `docs/spec/contract/10_docs_quality.md`
 15. `docs/spec/contract/11_adoption_profiles.md`
 16. `docs/spec/contract/12_runner_interface.md`
+17. `docs/spec/contract/13_runtime_scope.md`
 
 Type contracts:
 

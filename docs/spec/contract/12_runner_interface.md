@@ -30,6 +30,11 @@ The default adapter may call Python implementation scripts internally.
 Alternative implementations can replace it by setting `SPEC_RUNNER_BIN` to a
 different compatible command.
 
+Runtime scope note:
+
+- required support targets in v1 remain Python runner and PHP runner
+- adding required support targets requires contract/governance expansion
+
 ## Compatibility Expectation
 
 - Runner interface subcommand names are contributor-facing operational contract.

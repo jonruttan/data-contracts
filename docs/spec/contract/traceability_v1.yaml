@@ -582,6 +582,21 @@ links:
       - scripts/runner_adapter.sh
     notes: "Governance enforces runner-interface boundary usage in gate shell scripts."
 
+  - rule_id: RUNTIME_SCOPE_BOUNDED_FOR_V1
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_SCOPE_BOUNDED_FOR_V1
+    contract_refs:
+      - docs/spec/contract/08_v1_scope.md
+      - docs/spec/contract/13_runtime_scope.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+      - tests/test_contract_governance_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/runtime_scope_sync.spec.md
+    notes: "Governance keeps v1 runtime support scope explicitly bounded to declared targets."
+
   - rule_id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
     policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_ASSERTIONS_VIA_SPEC_LANG
     contract_refs:

@@ -24,6 +24,8 @@ Current checks:
   Python interpreter resolution in gate scripts.
 - `runtime.runner_interface_gate_sync`: enforces gate scripts call the runner
   interface boundary rather than hardcoded Python script entrypoints.
+- `runtime.scope_sync`: enforces explicit v1 runtime support bounds in contract
+  docs to prevent uncontrolled cross-runtime scope growth.
 - `conformance.case_index_sync`: ensures conformance case index ids match
   fixture case ids.
 - `conformance.purpose_warning_codes_sync`: ensures purpose warning code docs
