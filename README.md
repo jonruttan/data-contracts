@@ -16,9 +16,7 @@ python -m pip install spec-runner
 For development:
 
 ```sh
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install -e '.[dev]'
+make setup
 ```
 
 If system Python is externally managed (PEP 668), use the venv flow above.
@@ -66,6 +64,13 @@ Trust/safety model (read before running specs from outside your repo):
 - Spec files are trusted inputs; `cli.run` and hooks execute project code with
   runner process privileges.
 - Running untrusted spec documents is unsafe and out of scope for v1.
+
+Before editing/running local checks:
+
+```sh
+make setup
+make docs-doctor
+```
 
 1. Create a spec doc with a fenced `yaml spec-test` block:
 
