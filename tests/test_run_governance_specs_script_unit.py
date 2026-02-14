@@ -1503,6 +1503,7 @@ harness:
       - docs/development.md
     required_tokens:
       - make verify-docs
+      - make core-check
       - make check
 assert:
   - target: text
@@ -1511,12 +1512,12 @@ assert:
 ```
 """,
     )
-    _write_text(tmp_path / "README.md", "make verify-docs\nmake check\n")
-    _write_text(tmp_path / "docs/development.md", "make verify-docs\nmake check\n")
+    _write_text(tmp_path / "README.md", "make verify-docs\nmake core-check\nmake check\n")
+    _write_text(tmp_path / "docs/development.md", "make verify-docs\nmake core-check\nmake check\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
 
-    _write_text(tmp_path / "docs/development.md", "make verify-docs\n")
+    _write_text(tmp_path / "docs/development.md", "make verify-docs\nmake check\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
 

@@ -16,6 +16,7 @@ harness:
       - docs/development.md
     required_tokens:
       - make verify-docs
+      - make core-check
       - make check
 assert:
   - target: text

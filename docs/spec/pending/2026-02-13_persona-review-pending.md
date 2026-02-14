@@ -18,14 +18,6 @@ Source snapshot: `docs/reviews/snapshots/2026-02-13_persona-review.md`
 - rationale: Inferred from repeated narrative concerns in the review output; requires human triage.
 - verification: Define as yaml spec-test where possible; otherwise add a governance check with deterministic output.
 
-### CK-CORE-IMP-008
-
-- where: `docs/spec/backlog.md`
-- priority: `P1`
-- statement: SHOULD provide a lightweight adoption profile for teams that only need simple behavior checks
-- rationale: Inferred from repeated narrative concerns in the review output; requires human triage.
-- verification: Define as yaml spec-test where possible; otherwise add a governance check with deterministic output.
-
 ### CK-CORE-IMP-009
 
 - where: `docs/spec/backlog.md`

@@ -26,6 +26,21 @@ python -m compileall -q spec_runner scripts tests
 python scripts/evaluate_style.py --check docs/spec
 ```
 
+## Adoption Profiles
+
+Use one of these lanes depending on depth needed:
+
+- Core profile (lightweight, fast local confidence): `make core-check`
+- Full profile (release/pre-merge parity confidence): `make check`
+
+Core profile runs:
+
+- governance specs
+- evaluate-style checks
+- focused core runner unit tests (`doc_parser`, `dispatcher`, `assertions`, `conformance_runner`)
+
+Full profile runs the complete CI-equivalent gate including parity and full test suite.
+
 ## Run Core Gate Checks
 
 ```sh
@@ -41,6 +56,7 @@ Canonical pre-merge check:
 
 ```sh
 ./scripts/ci_gate.sh
+make core-check
 make check
 ```
 

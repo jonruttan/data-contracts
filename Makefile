@@ -1,4 +1,4 @@
-.PHONY: help setup docs-doctor verify-docs check ci-gate test
+.PHONY: help setup docs-doctor verify-docs core-check check ci-gate test
 .DEFAULT_GOAL := help
 
 help: ## Display this help section
@@ -17,6 +17,9 @@ verify-docs: ## Alias for docs-doctor
 
 check: ## Alias for ci-gate
 	@$(MAKE) ci-gate
+
+core-check: ## Run lightweight core adoption checks
+	@./scripts/core_gate.sh
 
 ci-gate: ## Run full CI gate locally
 	@./scripts/ci_gate.sh
