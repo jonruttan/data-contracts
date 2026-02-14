@@ -27,6 +27,14 @@ Contract governance check:
 python scripts/run_governance_specs.py
 ```
 
+Installable CLI entrypoints (packaging surface for conformance flow):
+
+```sh
+spec-runner-conformance --help
+spec-runner-parity --help
+spec-runner-validate-report --help
+```
+
 Lint and static syntax checks:
 
 ```sh

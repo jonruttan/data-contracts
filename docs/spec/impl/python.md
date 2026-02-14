@@ -15,6 +15,7 @@ Current implementation locations:
 Python conformance runner script:
 
 - `scripts/python/conformance_runner.py`
+- `spec-runner-conformance`
 
 Public flags:
 

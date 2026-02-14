@@ -11,6 +11,12 @@ python -m pip install -e '.[dev]'
 Using Homebrew/system Python without a venv may fail with
 `externally-managed-environment` (PEP 668). Prefer the venv flow above.
 
+Installable CLI entrypoints exposed by packaging metadata:
+
+- `spec-runner-conformance` (Python conformance runner)
+- `spec-runner-parity` (Python/PHP parity comparison)
+- `spec-runner-validate-report` (conformance report validator)
+
 ## Run Checks
 
 ```sh
@@ -183,7 +189,7 @@ Contract docs for interpreting those fixtures live in:
 Generate a Python conformance report:
 
 ```sh
-python scripts/python/conformance_runner.py \
+spec-runner-conformance \
   --cases docs/spec/conformance/cases \
   --case-formats md \
   --out .artifacts/python-conformance-report.json
@@ -192,7 +198,7 @@ python scripts/python/conformance_runner.py \
 Validate report shape:
 
 ```sh
-python scripts/validate_conformance_report.py .artifacts/python-conformance-report.json
+spec-runner-validate-report .artifacts/python-conformance-report.json
 ```
 
 Generate a bootstrap PHP report:
@@ -207,13 +213,13 @@ php scripts/php/conformance_runner.php \
 Validate bootstrap report shape:
 
 ```sh
-python scripts/validate_conformance_report.py .artifacts/php-conformance-report.json
+spec-runner-validate-report .artifacts/php-conformance-report.json
 ```
 
 Run end-to-end Python/PHP parity over canonical conformance cases:
 
 ```sh
-python scripts/compare_conformance_parity.py \
+spec-runner-parity \
   --cases docs/spec/conformance/cases \
   --case-formats md \
   --php-runner scripts/php/conformance_runner.php \

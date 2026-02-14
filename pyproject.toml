@@ -20,6 +20,11 @@ dependencies = [
 [project.urls]
 Repository = "https://example.invalid/spec-runner"
 
+[project.scripts]
+spec-runner-conformance = "spec_runner.cli:conformance_runner_main"
+spec-runner-parity = "spec_runner.cli:compare_parity_main"
+spec-runner-validate-report = "spec_runner.cli:validate_report_main"
+
 [project.optional-dependencies]
 dev = [
   "pytest>=8",

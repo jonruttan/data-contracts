@@ -10,14 +10,6 @@ Source snapshot: `docs/reviews/snapshots/2026-02-13_persona-review.md`
 
 ## Implicit Suggestions (Inferred, Needs Review)
 
-### CK-CLI-IMP-001
-
-- where: `docs/spec/backlog.md`
-- priority: `P1`
-- statement: SHOULD publish installable CLI entrypoints for core scripts
-- rationale: Inferred from repeated narrative concerns in the review output; requires human triage.
-- verification: Define as yaml spec-test where possible; otherwise add a governance check with deterministic output.
-
 ### CK-CORE-IMP-004
 
 - where: `docs/spec/backlog.md`
