@@ -26,19 +26,16 @@ title: evaluate composed boolean passes
 purpose: Verifies composed boolean expressions evaluate correctly across both runner implementations.
 type: text.file
 requires:
-  capabilities:
-    - evaluate.spec_lang.v1
+  capabilities: [evaluate.spec_lang.v1]
 expect:
-  portable:
-    status: pass
-    category: null
+  portable: {status: pass, category: null}
 assert:
   - target: text
     must:
       - evaluate:
-          - ["and"
-              ["contains", "version"],
-              ["starts_with", ["subject"], "#"]]
+          - ["and",
+             ["contains", "version"],
+             ["starts_with", ["subject"], "#"]]
 ```
 
 ## SRCONF-EXPR-003
@@ -49,28 +46,25 @@ title: evaluate tail recursion is stack safe
 purpose: Verifies deep tail-recursive evaluation succeeds under proper TCO.
 type: text.file
 requires:
-  capabilities:
-    - evaluate.spec_lang.v1
+  capabilities: [evaluate.spec_lang.v1]
 expect:
-  portable:
-    status: pass
-    category: null
+  portable: {status: pass, category: null}
 assert:
   - target: text
     must:
       - evaluate:
-          - ["let"
-              [["loop"
-                   ["fn"
-                          ["n", "acc"],
-                          ["if"
-                                   ["eq", ["var", "n"], 0],
-                                   ["var", "acc"],
-                                   ["call"
-                                              ["var", "loop"],
-                                              ["sub", ["var", "n"], 1],
-                                              ["add", ["var", "acc"], 1]]]]]],
-              ["eq", ["call", ["var", "loop"], 1500, 0], 1500]]
+          - ["let",
+             [["loop",
+                  ["fn",
+                      ["n", "acc"],
+                      ["if",
+                           ["eq", ["var", "n"], 0],
+                           ["var", "acc"],
+                           ["call",
+                                 ["var", "loop"],
+                                 ["sub", ["var", "n"], 1],
+                                 ["add", ["var", "acc"], 1]]]]]],
+             ["eq", ["call", ["var", "loop"], 1500, 0], 1500]]
 ```
 
 ## SRCONF-EXPR-004
@@ -144,28 +138,25 @@ title: evaluate budget exhaustion fails runtime
 purpose: Verifies deterministic runtime failure when evaluator budgets are exceeded.
 type: text.file
 requires:
-  capabilities:
-    - evaluate.spec_lang.v1
+  capabilities: [evaluate.spec_lang.v1]
 expect:
   portable:
     status: fail
     category: runtime
-    message_tokens:
-      - 'budget exceeded: steps'
+    message_tokens: ['budget exceeded: steps']
 harness:
-  spec_lang:
-    max_steps: 20
+  spec_lang: {max_steps: 20}
 assert:
   - target: text
     must:
       - evaluate:
-          - ["let"
-              [["loop"
-                   ["fn"
-                          ["n"],
-                          ["if"
-                                   ["eq", ["var", "n"], 0],
-                                   true,
-                                   ["call", ["var", "loop"], ["sub", ["var", "n"], 1]]]]]],
-              ["call", ["var", "loop"], 1000]]
+          - ["let",
+             [["loop",
+                  ["fn",
+                      ["n"],
+                      ["if",
+                           ["eq", ["var", "n"], 0],
+                           true,
+                           ["call", ["var", "loop"], ["sub", ["var", "n"], 1]]]]]],
+             ["call", ["var", "loop"], 1000]]
 ```

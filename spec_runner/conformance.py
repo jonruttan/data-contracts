@@ -6,8 +6,9 @@ from typing import Any
 
 import yaml
 
+from spec_runner.codecs import load_external_cases
 from spec_runner.dispatcher import SpecRunContext, run_case
-from spec_runner.doc_parser import SpecDocTest, iter_spec_doc_tests
+from spec_runner.doc_parser import SpecDocTest
 
 
 @dataclass(frozen=True)
@@ -74,10 +75,15 @@ def load_conformance_cases(
     cases_dir: Path,
     *,
     case_file_pattern: str | None = None,
+    case_formats: set[str] | None = None,
 ) -> list[tuple[Path, dict[str, Any]]]:
     out: list[tuple[Path, dict[str, Any]]] = []
-    for spec in iter_spec_doc_tests(cases_dir, file_pattern=case_file_pattern):
-        out.append((spec.doc_path, dict(spec.test)))
+    for doc_path, test in load_external_cases(
+        cases_dir,
+        formats=case_formats or {"md"},
+        md_pattern=case_file_pattern,
+    ):
+        out.append((doc_path, dict(test)))
     return out
 
 
@@ -102,12 +108,18 @@ def load_expected_results(
     cases_dir: Path,
     *,
     implementation: str = "python",
+    case_file_pattern: str | None = None,
+    case_formats: set[str] | None = None,
 ) -> dict[str, ExpectedConformanceResult]:
     out: dict[str, ExpectedConformanceResult] = {}
     impl = str(implementation).strip() or "python"
-    for i, spec in enumerate(iter_spec_doc_tests(cases_dir)):
-        p = spec.doc_path
-        c = spec.test
+    for i, (p, c) in enumerate(
+        load_external_cases(
+            cases_dir,
+            formats=case_formats or {"md"},
+            md_pattern=case_file_pattern,
+        )
+    ):
         case_id = str(c.get("id", "")).strip()
         raw_expect = c.get("expect")
         if raw_expect is None:
@@ -197,6 +209,7 @@ def run_conformance_cases(
     implementation: str = "python",
     capabilities: set[str] | None = None,
     case_file_pattern: str | None = None,
+    case_formats: set[str] | None = None,
 ) -> list[ConformanceResult]:
     impl = str(implementation).strip() or "python"
     caps = set(capabilities) if capabilities is not None else default_capabilities_for(impl)
@@ -204,6 +217,7 @@ def run_conformance_cases(
     for fixture_path, case in load_conformance_cases(
         cases_dir,
         case_file_pattern=case_file_pattern,
+        case_formats=case_formats,
     ):
         test = dict(case)
         case_id = str(test.get("id", ""))

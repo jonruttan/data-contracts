@@ -2,8 +2,10 @@ import json
 import re
 import inspect
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
+from spec_runner.internal_model import GroupNode, InternalAssertNode, PredicateLeaf
+from spec_runner.spec_lang import SpecLangLimits, eval_predicate
 
 def parse_json(text: str) -> Any:
     return json.loads(text)
@@ -227,3 +229,72 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
         _call_leaf(node, inherited_target=inherited_target, assert_path=path)
 
     _eval_node(assert_spec)
+
+
+def evaluate_internal_assert_tree(
+    assert_tree: InternalAssertNode,
+    *,
+    case_id: str,
+    subject_for_target: Callable[[str], Any],
+    limits: SpecLangLimits,
+) -> None:
+    """
+    Evaluate compiled internal assertion tree nodes.
+
+    Harnesses provide target -> subject resolution; all predicate checks run
+    through spec-lang expressions.
+    """
+
+    def _eval_node(node: InternalAssertNode) -> None:
+        if isinstance(node, PredicateLeaf):
+            try:
+                subject = subject_for_target(node.target)
+                ok = eval_predicate(node.expr, subject=subject, limits=limits)
+                assert ok, "evaluate assertion failed"
+            except BaseException as e:  # noqa: BLE001
+                _raise_with_assert_context(
+                    e,
+                    case_id=case_id,
+                    assert_path=node.assert_path,
+                    target=node.target,
+                    op=node.op,
+                )
+            return
+
+        if not isinstance(node, GroupNode):
+            raise TypeError("internal assert node must be GroupNode or PredicateLeaf")
+
+        if node.op == "must":
+            for child in node.children:
+                _eval_node(child)
+            return
+
+        if node.op == "can":
+            failures: list[BaseException] = []
+            for child in node.children:
+                try:
+                    _eval_node(child)
+                    return
+                except AssertionError as e:
+                    failures.append(e)
+            msg = "all 'can' branches failed"
+            if failures:
+                details = "\n".join(f"- {str(e) or e.__class__.__name__}" for e in failures[:5])
+                msg = f"{msg}:\n{details}"
+            raise AssertionError(msg)
+
+        if node.op == "cannot":
+            passed = 0
+            for child in node.children:
+                try:
+                    _eval_node(child)
+                    passed += 1
+                except AssertionError:
+                    continue
+            if passed:
+                raise AssertionError(f"'cannot' failed: {passed} branch(es) passed")
+            return
+
+        raise ValueError(f"unknown internal assert group op: {node.op}")
+
+    _eval_node(assert_tree)

@@ -7,13 +7,10 @@ from pathlib import Path
 from typing import Any
 
 from spec_runner.assertions import (
-    _raise_with_assert_context,
-    assert_text_op,
-    eval_assert_tree,
-    is_text_op,
-    iter_leaf_assertions,
+    evaluate_internal_assert_tree,
 )
-from spec_runner.spec_lang import eval_predicate, limits_from_harness
+from spec_runner.compiler import compile_external_case
+from spec_runner.spec_lang import limits_from_harness
 
 
 def _contract_root_for(doc_path: Path) -> Path:
@@ -59,8 +56,10 @@ def _fetch_response(case, *, method: str, url: str, headers: dict[str, str], bod
 
 
 def run(case, *, ctx) -> None:
-    t = case.test
-    case_id = str(t.get("id", ""))
+    if hasattr(case, "test") and hasattr(case, "doc_path"):
+        case = compile_external_case(case.test, doc_path=case.doc_path)
+    t = case.raw_case
+    case_id = case.id
     request = t.get("request")
     if not isinstance(request, dict):
         raise TypeError("api.http requires request mapping")
@@ -89,9 +88,7 @@ def run(case, *, ctx) -> None:
         if "Content-Type" not in headers:
             headers["Content-Type"] = "application/json"
 
-    h = t.get("harness") or {}
-    if not isinstance(h, dict):
-        raise TypeError("harness must be a mapping")
+    h = case.harness
     spec_lang_limits = limits_from_harness(h)
     timeout_seconds = float(h.get("timeout_seconds", 5))
 
@@ -108,66 +105,20 @@ def run(case, *, ctx) -> None:
     body_text_value = str(response["body_text"])
     body_json_value = json.loads(body_text_value)
 
-    def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
-        for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
-            try:
-                if target == "status":
-                    if op == "evaluate":
-                        ok = eval_predicate(value, subject=status_text, limits=spec_lang_limits)
-                        assert ok is bool(is_true), "evaluate assertion failed"
-                    elif not is_text_op(op):
-                        raise ValueError(f"unsupported op for status: {op}")
-                    else:
-                        assert_text_op(status_text, op, value, is_true=is_true)
-                elif target == "headers":
-                    if op == "evaluate":
-                        ok = eval_predicate(value, subject=headers_text, limits=spec_lang_limits)
-                        assert ok is bool(is_true), "evaluate assertion failed"
-                    elif not is_text_op(op):
-                        raise ValueError(f"unsupported op for headers: {op}")
-                    else:
-                        assert_text_op(headers_text, op, value, is_true=is_true)
-                elif target == "body_text":
-                    if op == "json_type":
-                        want = str(value).strip().lower()
-                        if want == "dict":
-                            assert isinstance(body_json_value, dict)
-                        elif want == "list":
-                            assert isinstance(body_json_value, list)
-                        else:
-                            raise ValueError(f"unsupported json_type: {value}")
-                    elif op == "evaluate":
-                        ok = eval_predicate(value, subject=body_text_value, limits=spec_lang_limits)
-                        assert ok is bool(is_true), "evaluate assertion failed"
-                    elif is_text_op(op):
-                        assert_text_op(body_text_value, op, value, is_true=is_true)
-                    else:
-                        raise ValueError(f"unsupported op for body_text: {op}")
-                elif target == "body_json":
-                    if op == "json_type":
-                        want = str(value).strip().lower()
-                        if want == "dict":
-                            assert isinstance(body_json_value, dict)
-                        elif want == "list":
-                            assert isinstance(body_json_value, list)
-                        else:
-                            raise ValueError(f"unsupported json_type: {value}")
-                    elif op == "evaluate":
-                        ok = eval_predicate(value, subject=body_json_value, limits=spec_lang_limits)
-                        assert ok is bool(is_true), "evaluate assertion failed"
-                    elif is_text_op(op):
-                        assert_text_op(json.dumps(body_json_value, sort_keys=True), op, value, is_true=is_true)
-                    else:
-                        raise ValueError(f"unsupported op for body_json: {op}")
-                else:
-                    raise ValueError(f"unknown assert target for api.http: {target}")
-            except BaseException as e:  # noqa: BLE001
-                _raise_with_assert_context(
-                    e,
-                    case_id=case_id,
-                    assert_path=assert_path,
-                    target=target,
-                    op=op,
-                )
+    def _subject_for_target(target: str):
+        if target == "status":
+            return status_text
+        if target == "headers":
+            return headers_text
+        if target == "body_text":
+            return body_text_value
+        if target == "body_json":
+            return body_json_value
+        raise ValueError(f"unknown assert target for api.http: {target}")
 
-    eval_assert_tree(t.get("assert", []) or [], eval_leaf=_eval_leaf)
+    evaluate_internal_assert_tree(
+        case.assert_tree,
+        case_id=case_id,
+        subject_for_target=_subject_for_target,
+        limits=spec_lang_limits,
+    )

@@ -89,3 +89,15 @@ def test_limits_from_harness_validates_fields() -> None:
     limits = limits_from_harness({"spec_lang": {"max_steps": 10, "timeout_ms": 0}})
     assert limits.max_steps == 10
     assert limits.timeout_ms == 0
+
+
+def test_spec_lang_regex_match_builtin() -> None:
+    assert eval_predicate(["regex_match", ["subject"], "^hello"], subject="hello world") is True
+    assert eval_predicate(["regex_match", ["subject"], "^bye"], subject="hello world") is False
+
+
+def test_spec_lang_path_exists_builtin(tmp_path) -> None:
+    p = tmp_path / "x.txt"
+    p.write_text("ok", encoding="utf-8")
+    assert eval_predicate(["path_exists", str(p)], subject=None) is True
+    assert eval_predicate(["path_exists", str(tmp_path / "missing.txt")], subject=None) is False

@@ -637,6 +637,16 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         return array_key_exists((string)$right, $left);
     }
+    if ($op === 'regex_match') {
+        specLangRequireArity($op, $args, 2);
+        $subjectText = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $pattern = (string)specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        $ok = @preg_match('/' . str_replace('/', '\\/', $pattern) . '/u', $subjectText);
+        if ($ok === false) {
+            throw new SchemaError("invalid regex pattern: {$pattern}");
+        }
+        return $ok === 1;
+    }
     if ($op === 'eq') {
         specLangRequireArity($op, $args, 2);
         return specLangEvalNonTail($args[0], $env, $subject, $limits, $state) === specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
@@ -696,6 +706,26 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             return strtolower($value);
         }
         return strtoupper($value);
+    }
+    if ($op === 'json_parse') {
+        specLangRequireArity($op, $args, 1);
+        $raw = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!is_string($raw)) {
+            throw new SchemaError('spec_lang json_parse expects string input');
+        }
+        try {
+            return json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new SchemaError('spec_lang json_parse invalid JSON');
+        }
+    }
+    if ($op === 'path_exists') {
+        specLangRequireArity($op, $args, 1);
+        $path = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if ($path === '') {
+            return false;
+        }
+        return file_exists($path);
     }
     if ($op === 'add' || $op === 'sub') {
         specLangRequireArity($op, $args, 2);

@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import time
+import re
+import json
 from collections.abc import Mapping
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 
@@ -180,6 +183,11 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
         else:
             raise ValueError("spec_lang arity error for ends_with")
         return str(hay).endswith(str(suffix))
+    if op == "regex_match":
+        _require_arity(op, args, 2)
+        hay = _eval_non_tail(args[0], env, st)
+        pattern = _eval_non_tail(args[1], env, st)
+        return re.search(str(pattern), str(hay)) is not None
     if op == "eq":
         _require_arity(op, args, 2)
         return _eval_non_tail(args[0], env, st) == _eval_non_tail(args[1], env, st)
@@ -262,6 +270,19 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
     if op == "upper":
         _require_arity(op, args, 1)
         return str(_eval_non_tail(args[0], env, st)).upper()
+    if op == "json_parse":
+        _require_arity(op, args, 1)
+        raw = _eval_non_tail(args[0], env, st)
+        if not isinstance(raw, str):
+            raise ValueError("spec_lang json_parse expects string input")
+        return json.loads(raw)
+    if op == "path_exists":
+        _require_arity(op, args, 1)
+        p = Path(str(_eval_non_tail(args[0], env, st)))
+        try:
+            return p.exists()
+        except (OSError, ValueError):
+            return False
     raise ValueError(f"unsupported spec_lang symbol: {op}")
 
 

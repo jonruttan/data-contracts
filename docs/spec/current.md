@@ -8,6 +8,10 @@ Notes:
 - The canonical assertion DSL is `must` / `can` / `cannot` with `contain`,
   `regex`, and `evaluate` (spec-lang v1 list S-expressions).
 - `target` is defined on group nodes; leaf assertions are op-only.
+- Execution is internal-IR based: external cases compile to spec-lang-backed
+  internal predicates before runtime evaluation.
+- Canonical authoring remains `.spec.md`; `.spec.yaml/.spec.yml/.spec.json`
+  are opt-in external adapter formats.
 
 Canonical spec docs:
 

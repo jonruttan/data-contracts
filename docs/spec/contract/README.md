@@ -22,6 +22,7 @@ Read in order:
 10. `docs/spec/contract/06_conformance.md`
 11. `docs/spec/contract/07_portable_spec_authoring.md`
 12. `docs/spec/contract/08_v1_scope.md`
+13. `docs/spec/contract/09_internal_representation.md`
 
 Type contracts:
 

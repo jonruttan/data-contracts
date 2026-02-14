@@ -39,6 +39,13 @@ Normative contract:
 
 - `docs/spec/contract/03b_spec_lang_v1.md`
 
+Internal execution model:
+
+- runners compile external leaf operators into spec-lang predicate expressions
+- evaluation executes compiled spec-lang predicates only
+- compile mapping/invariants are documented in
+  `docs/spec/contract/09_internal_representation.md`
+
 ## Portable Regex Subset
 
 `regex` patterns SHOULD stay within a portable subset across implementations.

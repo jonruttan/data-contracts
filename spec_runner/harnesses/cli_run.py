@@ -7,14 +7,9 @@ import importlib
 import threading
 
 from spec_runner.assertions import (
-    _raise_with_assert_context,
+    evaluate_internal_assert_tree,
     assert_stdout_path_exists,
-    assert_text_op,
-    eval_assert_tree,
     first_nonempty_line,
-    is_text_op,
-    iter_leaf_assertions,
-    parse_json,
 )
 from spec_runner.assertion_health import (
     format_assertion_health_error,
@@ -22,8 +17,9 @@ from spec_runner.assertion_health import (
     lint_assert_tree,
     resolve_assert_health_mode,
 )
+from spec_runner.compiler import compile_external_case
 from spec_runner.settings import SETTINGS
-from spec_runner.spec_lang import eval_predicate, limits_from_harness
+from spec_runner.spec_lang import limits_from_harness
 
 
 _GLOBAL_SIDE_EFFECT_LOCK = threading.RLock()
@@ -77,11 +73,12 @@ def _load_entrypoint(ep: str):
 
 
 def run(case, *, ctx) -> None:
-    t = case.test
-    case_id = str(t.get("id", ""))
-    h = t.get("harness") or {}
-    if not isinstance(h, dict):
-        raise TypeError("harness must be a mapping")
+    hook_case = case
+    if hasattr(case, "test") and hasattr(case, "doc_path"):
+        case = compile_external_case(case.test, doc_path=case.doc_path)
+    t = case.raw_case
+    case_id = case.id
+    h = case.harness
 
     supported_harness_keys = {
         "entrypoint",
@@ -245,7 +242,7 @@ def run(case, *, ctx) -> None:
 
             if hook_before_ep:
                 hook_before_fn = _load_entrypoint(str(hook_before_ep))
-                hook_before_fn(case=case, ctx=ctx, harness=h, **{str(k): v for k, v in hook_kwargs.items()})
+                hook_before_fn(case=hook_case, ctx=ctx, harness=h, **{str(k): v for k, v in hook_kwargs.items()})
 
             if safe_mode:
                 entrypoint = str(h.get("entrypoint") or "").strip()
@@ -285,7 +282,7 @@ def run(case, *, ctx) -> None:
                     stdout_path = None
                 hook_after_fn = _load_entrypoint(str(hook_after_ep))
                 hook_after_fn(
-                    case=case,
+                    case=hook_case,
                     ctx=ctx,
                     result={
                         "exit_code": int(code),
@@ -296,55 +293,24 @@ def run(case, *, ctx) -> None:
                     **{str(k): v for k, v in hook_kwargs.items()},
                 )
 
-    def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
-        for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
-            try:
-                if target == "stdout":
-                    subject = captured.out
-                elif target == "stderr":
-                    subject = captured.err
-                elif target == "stdout_path":
-                    line = first_nonempty_line(captured.out)
-                    if not line:
-                        raise AssertionError("expected stdout to contain a path")
-                    if op != "exists":
-                        raise ValueError(f"unsupported op for stdout_path: {op}")
-                    if value not in (None, True):
-                        raise ValueError("stdout_path.exists only supports value: true (or null)")
-                    from pathlib import Path
+    def _subject_for_target(target: str):
+        if target == "stdout":
+            return captured.out
+        if target == "stderr":
+            return captured.err
+        if target == "stdout_path":
+            line = first_nonempty_line(captured.out)
+            if not line:
+                raise AssertionError("expected stdout to contain a path")
+            return line
+        if target == "stdout_path_text":
+            p = assert_stdout_path_exists(captured.out)
+            return p.read_text(encoding="utf-8")
+        raise ValueError(f"unknown assert target: {target}")
 
-                    p = Path(line)
-                    assert p.exists() is bool(is_true)
-                    continue
-                elif target == "stdout_path_text":
-                    p = assert_stdout_path_exists(captured.out)
-                    subject = p.read_text(encoding="utf-8")
-                else:
-                    raise ValueError(f"unknown assert target: {target}")
-
-                if is_text_op(op):
-                    assert_text_op(subject, op, value, is_true=is_true)
-                elif op == "evaluate":
-                    ok = eval_predicate(value, subject=subject, limits=spec_lang_limits)
-                    assert ok is bool(is_true), "evaluate assertion failed"
-                elif op == "json_type":
-                    parsed = parse_json(subject)
-                    want = str(value).lower()
-                    if want == "list":
-                        assert isinstance(parsed, list) is bool(is_true)
-                    elif want == "dict":
-                        assert isinstance(parsed, dict) is bool(is_true)
-                    else:
-                        raise ValueError(f"unsupported json_type: {value}")
-                else:
-                    raise ValueError(f"unsupported op: {op}")
-            except BaseException as e:  # noqa: BLE001
-                _raise_with_assert_context(
-                    e,
-                    case_id=case_id,
-                    assert_path=assert_path,
-                    target=target,
-                    op=op,
-                )
-
-    eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)
+    evaluate_internal_assert_tree(
+        case.assert_tree,
+        case_id=case_id,
+        subject_for_target=_subject_for_target,
+        limits=spec_lang_limits,
+    )

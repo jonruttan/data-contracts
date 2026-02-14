@@ -29,11 +29,20 @@ def main(argv: list[str] | None = None) -> int:
         default=SETTINGS.case.default_file_pattern,
         help="Glob pattern for case files when --cases points to a directory",
     )
+    ap.add_argument(
+        "--case-formats",
+        default="md",
+        help="Comma-separated case formats to load (md,yaml,json). Default: md",
+    )
     ns = ap.parse_args(argv)
 
     case_pattern = str(ns.case_file_pattern).strip()
     if not case_pattern:
         print("ERROR: --case-file-pattern requires a non-empty value", file=sys.stderr)
+        return 2
+    case_formats = {x.strip() for x in str(ns.case_formats).split(",") if x.strip()}
+    if not case_formats:
+        print("ERROR: --case-formats requires at least one format", file=sys.stderr)
         return 2
 
     cases_path = Path(str(ns.cases))
@@ -53,6 +62,7 @@ def main(argv: list[str] | None = None) -> int:
                     ctx=ctx,
                     implementation="python",
                     case_file_pattern=case_pattern,
+                    case_formats=case_formats,
                 )
             except BaseException as e:  # noqa: BLE001
                 print(f"ERROR: {e}", file=sys.stderr)

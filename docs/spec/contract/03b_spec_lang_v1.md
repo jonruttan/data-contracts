@@ -46,6 +46,9 @@ Utility:
 - `var`
 - `add`
 - `sub`
+- `json_parse`
+- `path_exists`
+- `regex_match`
 
 Recursion/control:
 

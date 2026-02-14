@@ -22,6 +22,9 @@ Parser behavior:
 
 - discovery scans files matching case-file pattern (default `*.spec.md`) in
   the provided directory (non-recursive)
+- default discovery is Markdown-only (`*.spec.md`)
+- runners MAY opt in additional external case formats via explicit format
+  selection (`yaml`, `json`)
 - fence extraction accepts Markdown fences using either backticks or tildes
   (3+), with info tokens including `spec-test` and `yaml`/`yml`
 - closing fences must use the same fence character and at least the opener
@@ -190,6 +193,9 @@ Operator constraints:
 - `evaluate` values MUST be list-encoded spec-lang expressions
 - spec-lang semantics and budget model are defined in
   `docs/spec/contract/03b_spec_lang_v1.md`
+- runners compile external leaf operators into internal spec-lang predicates;
+  compile invariants are defined in
+  `docs/spec/contract/09_internal_representation.md`
 - `regex` SHOULD use a portable subset; implementations SHOULD diagnose
   non-portable constructs via assertion-health policy
 - the portable profile is defined in
