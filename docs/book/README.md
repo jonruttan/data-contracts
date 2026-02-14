@@ -49,3 +49,123 @@ Portability and conformance:
 - `02_core_model.md`: case shape, discovery, types, harness rules
 - `03_assertions.md`: assertion tree and operators
 - `04_spec_lang_reference.md`: complete `evaluate`/spec-lang reference
+
+## Docs Quality Authoring Guide
+
+Reference docs are machine-checked product surfaces. Canonical chapters listed
+in `docs/book/reference_manifest.yaml` must include valid `doc-meta`.
+
+### `doc-meta` Template
+
+Use either front matter or a fenced `yaml doc-meta` block near the top of the
+document. Canonical template:
+
+```yaml doc-meta
+doc_id: DOC-REF-###
+title: Chapter title
+status: active
+audience: author
+owns_tokens: ["token_defined_here"]
+requires_tokens: ["token_defined_elsewhere"]
+commands:
+  - run: "./scripts/ci_gate.sh"
+    purpose: One-line reason this command is in the doc.
+examples:
+  - id: EX-CHAPTER-001
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
+### Field Rules
+
+- `doc_id`: `DOC-<AREA>-###`
+- `status`: `active` or `draft`
+- `audience`: `author`, `reviewer`, or `maintainer`
+- `owns_tokens`: tokens this doc is canonical owner of (must be unique across
+  canonical chapters)
+- `requires_tokens`: tokens this doc depends on (must resolve to owner docs)
+- `commands[*]`: each entry requires non-empty `run` and `purpose`
+- `examples[*].id`: `EX-...` unique across canonical chapters
+- `examples[*].runnable`: boolean
+- `examples[*].opt_out_reason`: required when `runnable: false`
+
+### Valid Example
+
+```yaml doc-meta
+doc_id: DOC-REF-007
+title: Example Chapter
+status: active
+audience: reviewer
+owns_tokens: ["example_token_owner"]
+requires_tokens: ["quickstart_minimal_case"]
+commands:
+  - run: "make docs-check"
+    purpose: Validate generated docs artifacts and metadata lint checks.
+examples:
+  - id: EX-EXAMPLE-001
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
+### Invalid Examples
+
+Missing `opt_out_reason` when example is non-runnable:
+
+```yaml doc-meta
+doc_id: DOC-REF-008
+title: Bad Example
+status: active
+audience: author
+owns_tokens: ["bad_owner"]
+requires_tokens: ["quickstart_minimal_case"]
+commands:
+  - run: "make docs-check"
+    purpose: Check docs.
+examples:
+  - id: EX-BAD-001
+    runnable: false
+sections_required:
+  - "## Purpose"
+```
+
+Duplicate token ownership across chapters (fails ownership uniqueness):
+
+```yaml doc-meta
+doc_id: DOC-REF-009
+title: Also Defines Existing Token
+status: active
+audience: maintainer
+owns_tokens: ["quickstart_minimal_case"]
+requires_tokens: ["core_case_model"]
+commands:
+  - run: "./scripts/docs_doctor.sh"
+    purpose: Run fast docs checks.
+examples:
+  - id: EX-BAD-002
+    runnable: true
+sections_required:
+  - "## Purpose"
+  - "## Inputs"
+  - "## Outputs"
+  - "## Failure Modes"
+```
+
+### Authoring Workflow
+
+1. Edit chapter content + `doc-meta`.
+2. Regenerate artifacts:
+   - `make docs-build`
+3. Verify generated + lint checks:
+   - `make docs-check`
+4. Run fast docs gate:
+   - `./scripts/docs_doctor.sh`
+5. Before merge, run full gate:
+   - `./scripts/ci_gate.sh`
