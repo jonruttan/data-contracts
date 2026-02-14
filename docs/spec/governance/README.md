@@ -20,6 +20,8 @@ Current checks:
   in runtime Python code.
 - `runtime.settings_import_policy`: rejects importing `DEFAULT_*`/`ENV_*`
   constants from `spec_runner.settings` in runtime Python code.
+- `runtime.python_bin_resolver_sync`: enforces shared shell helper usage for
+  Python interpreter resolution in gate scripts.
 - `conformance.case_index_sync`: ensures conformance case index ids match
   fixture case ids.
 - `conformance.purpose_warning_codes_sync`: ensures purpose warning code docs

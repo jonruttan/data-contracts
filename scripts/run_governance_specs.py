@@ -1205,6 +1205,50 @@ def _scan_docs_make_commands_sync(root: Path, *, harness: dict | None = None) ->
     return violations
 
 
+def _scan_runtime_python_bin_resolver_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("python_bin_resolver")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.python_bin_resolver_sync requires harness.python_bin_resolver mapping in governance spec"
+        ]
+    files = cfg.get("files")
+    helper = str(cfg.get("helper", "")).strip()
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    required_tokens = cfg.get("required_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.python_bin_resolver.files must be a non-empty list of non-empty strings"]
+    if not helper:
+        return ["harness.python_bin_resolver.helper must be a non-empty string"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.python_bin_resolver.forbidden_tokens must be a list of non-empty strings"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.python_bin_resolver.required_tokens must be a list of non-empty strings"]
+
+    helper_path = root / helper
+    if not helper_path.exists():
+        violations.append(f"{helper}:1: missing shared python-bin resolver helper")
+
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing script for python-bin resolver sync check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing required python-bin resolver token {tok}")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden inline python-bin resolver token {tok}")
+    return violations
+
+
 def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1270,6 +1314,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.v1_scope_contract": _scan_v1_scope_doc,
     "runtime.config_literals": _scan_runtime_config_literals,
     "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
+    "runtime.python_bin_resolver_sync": _scan_runtime_python_bin_resolver_sync,
     "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
     "conformance.case_index_sync": _scan_conformance_case_index_sync,
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,

@@ -212,6 +212,57 @@ def test_script_enforces_runtime_settings_import_policy(tmp_path):
     assert code == 1
 
 
+def test_script_enforces_runtime_python_bin_resolver_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_python_bin.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-CONFIG-002
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-CONFIG-002
+type: governance.check
+check: runtime.python_bin_resolver_sync
+harness:
+  root: {tmp_path}
+  python_bin_resolver:
+    helper: scripts/lib/python_bin.sh
+    files:
+      - scripts/ci_gate.sh
+    required_tokens:
+      - source "${{ROOT_DIR}}/scripts/lib/python_bin.sh"
+      - resolve_python_bin "${{ROOT_DIR}}"
+    forbidden_tokens:
+      - ROOT_DIR}}/.venv/bin/python
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.python_bin_resolver_sync"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "scripts/lib/python_bin.sh",
+        "resolve_python_bin() {\n  printf '%s\\n' \"python3\"\n}\n",
+    )
+    _write_text(
+        tmp_path / "scripts/ci_gate.sh",
+        "source \"${ROOT_DIR}/scripts/lib/python_bin.sh\"\n"
+        "PYTHON_BIN=\"$(resolve_python_bin \"${ROOT_DIR}\")\"\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "scripts/ci_gate.sh",
+        "PYTHON_BIN=\"${ROOT_DIR}/.venv/bin/python\"\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_conformance_case_index_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"
