@@ -2100,3 +2100,48 @@ assert:
     _write_text(tmp_path / "docs/book/reference_index.md", "# stale\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_docs_generated_files_clean_reports_first_mismatch_context(tmp_path):
+    mod = _load_script_module()
+    _seed_docs_quality(tmp_path)
+    from spec_runner.docs_quality import (
+        build_docs_graph,
+        load_docs_meta_for_paths,
+        load_reference_manifest,
+        manifest_chapter_paths,
+        render_reference_coverage,
+        render_reference_index,
+    )
+    import json as _json
+
+    manifest, _errs = load_reference_manifest(tmp_path, "docs/book/reference_manifest.yaml")
+    docs = manifest_chapter_paths(manifest)
+    metas, _meta_errs, _ = load_docs_meta_for_paths(tmp_path, docs)
+    for rel in docs:
+        if rel in metas:
+            metas[rel]["__text__"] = (tmp_path / rel).read_text(encoding="utf-8")
+
+    _write_text(tmp_path / "docs/book/reference_index.md", render_reference_index(manifest))
+    _write_text(tmp_path / "docs/book/reference_coverage.md", render_reference_coverage(tmp_path, metas))
+    _write_text(
+        tmp_path / "docs/book/docs_graph.json",
+        _json.dumps(build_docs_graph(tmp_path, metas), indent=2, sort_keys=True) + "\n",
+    )
+    _write_text(tmp_path / "docs/book/reference_index.md", "# stale\n")
+
+    violations = mod._scan_docs_generated_files_clean(  # noqa: SLF001
+        tmp_path,
+        harness={
+            "docs_quality": {
+                "manifest": "docs/book/reference_manifest.yaml",
+                "index_out": "docs/book/reference_index.md",
+                "coverage_out": "docs/book/reference_coverage.md",
+                "graph_out": "docs/book/docs_graph.json",
+            }
+        },
+    )
+    assert violations
+    first = "\n".join(violations)
+    assert "docs/book/reference_index.md:1:" in first
+    assert "expected=" in first and "actual=" in first

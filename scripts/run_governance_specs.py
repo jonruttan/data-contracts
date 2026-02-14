@@ -1259,12 +1259,32 @@ def _scan_docs_generated_files_clean(root: Path, *, harness: dict | None = None)
     expected_coverage = render_reference_coverage(root, metas)
     expected_graph = json.dumps(build_docs_graph(root, metas), indent=2, sort_keys=True) + "\n"
 
-    if not index_path.exists() or index_path.read_text(encoding="utf-8") != expected_index:
-        out.append(f"{index_rel}:1: generated file out of date")
-    if not coverage_path.exists() or coverage_path.read_text(encoding="utf-8") != expected_coverage:
-        out.append(f"{coverage_rel}:1: generated file out of date")
-    if not graph_path.exists() or graph_path.read_text(encoding="utf-8") != expected_graph:
-        out.append(f"{graph_rel}:1: generated file out of date")
+    def _append_mismatch(rel: str, path: Path, expected: str) -> None:
+        if not path.exists():
+            out.append(f"{rel}:1: generated file missing")
+            return
+        actual = path.read_text(encoding="utf-8")
+        if actual == expected:
+            return
+        exp_lines = expected.splitlines()
+        act_lines = actual.splitlines()
+        max_len = max(len(exp_lines), len(act_lines))
+        line_no = 1
+        for i in range(max_len):
+            e = exp_lines[i] if i < len(exp_lines) else "<EOF>"
+            a = act_lines[i] if i < len(act_lines) else "<EOF>"
+            if e != a:
+                line_no = i + 1
+                out.append(
+                    f"{rel}:{line_no}: generated file out of date "
+                    f"(expected={e!r} actual={a!r})"
+                )
+                return
+        out.append(f"{rel}:1: generated file out of date")
+
+    _append_mismatch(index_rel, index_path, expected_index)
+    _append_mismatch(coverage_rel, coverage_path, expected_coverage)
+    _append_mismatch(graph_rel, graph_path, expected_graph)
     return out
 
 

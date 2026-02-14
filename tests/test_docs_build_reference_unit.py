@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 
 
@@ -101,5 +102,29 @@ chapters:
         assert mod.main([]) == 0
         _write_text(tmp_path / "docs/book/reference_index.md", "# stale\n")
         assert mod.main(["--check"]) == 1
+    finally:
+        os.chdir(old)
+
+
+def test_docs_build_graph_is_path_stable(tmp_path: Path) -> None:
+    mod = _load_docs_build_module()
+    _write_text(
+        tmp_path / "docs/book/reference_manifest.yaml",
+        """version: 1
+chapters:
+  - path: docs/book/a.md
+    summary: A.
+""",
+    )
+    _write_text(tmp_path / "docs/book/a.md", _chapter("DOC-REF-001", "tok.a", "tok.a", "EX-A-001"))
+    old = Path.cwd()
+    try:
+        import os
+
+        os.chdir(tmp_path)
+        assert mod.main([]) == 0
+        graph = json.loads((tmp_path / "docs/book/docs_graph.json").read_text(encoding="utf-8"))
+        assert graph["root"] == "."
+        assert str(tmp_path) not in json.dumps(graph, sort_keys=True)
     finally:
         os.chdir(old)
