@@ -29,6 +29,10 @@ harness:
       - "## 5) Budgets (`harness.spec_lang`)"
       - "## 6) Error Categories"
       - "## 9) Lint + Format"
+    docs/book/reference_index.md:
+      - "# Reference Index"
+      - "Canonical order for reference-manual chapters."
+      - "how to use"
 assert:
   - target: text
     must:

@@ -1006,3 +1006,115 @@ assert:
     _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "must can cannot contain regex\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_docs_examples_opt_out_requires_non_empty_reason(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_examples_optout.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-007
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-007
+type: governance.check
+check: docs.examples_runnable
+harness:
+  root: {tmp_path}
+  docs_examples:
+    files: ["docs/book/03_assertions.md"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.examples_runnable"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/book/03_assertions.md",
+        """# Assertions
+
+DOCS-EXAMPLE-OPT-OUT:
+
+```python
+if True print("bad")
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_docs_examples_shell_prompt_marker_fails_without_opt_out(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_examples_shell.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-008
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-008
+type: governance.check
+check: docs.examples_runnable
+harness:
+  root: {tmp_path}
+  docs_examples:
+    files: ["docs/book/01_quickstart.md"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.examples_runnable"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/book/01_quickstart.md",
+        """# Quickstart
+
+```sh
+$ python -m pytest -q
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_docs_reference_index_detects_duplicate_entries(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_index_duplicates.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DOCS-REF-009
+
+```yaml spec-test
+id: SRGOV-TEST-DOCS-REF-009
+type: governance.check
+check: docs.reference_index_sync
+harness:
+  root: {tmp_path}
+  reference_index:
+    path: docs/book/reference_index.md
+    include_glob: docs/book/*.md
+    exclude_files: ["docs/book/reference_index.md"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.reference_index_sync"]
+```
+""",
+    )
+    _write_text(tmp_path / "docs/book/00_first_10_minutes.md", "# 00\n")
+    _write_text(tmp_path / "docs/book/01_quickstart.md", "# 01\n")
+    _write_text(
+        tmp_path / "docs/book/reference_index.md",
+        "1. `docs/book/00_first_10_minutes.md`\n2. `docs/book/00_first_10_minutes.md`\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

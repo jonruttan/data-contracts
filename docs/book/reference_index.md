@@ -2,6 +2,11 @@
 
 Canonical order for reference-manual chapters.
 
+## How To Use This Manual
+
+Read top-to-bottom for first adoption, then use chapter links as stable
+reference anchors during implementation and conformance review.
+
 1. `docs/book/00_first_10_minutes.md` - first-run setup and safety model.
 2. `docs/book/01_quickstart.md` - minimal runnable path.
 3. `docs/book/02_core_model.md` - case model and discovery contract.

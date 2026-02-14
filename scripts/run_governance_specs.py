@@ -694,12 +694,12 @@ def _scan_docs_reference_surface_complete(root: Path, *, harness: dict | None = 
     for rel in required_files:
         p = root / rel
         if not p.exists():
-            violations.append(f"{rel}: missing required reference file")
+            violations.append(f"{rel}:1: missing required reference file")
 
     for pattern in required_globs:
         matches = sorted(root.glob(pattern))
         if not matches:
-            violations.append(f"{pattern}: glob matched no files")
+            violations.append(f"{pattern}:1: glob matched no files")
     return violations
 
 
@@ -728,7 +728,7 @@ def _scan_docs_reference_index_sync(root: Path, *, harness: dict | None = None) 
 
     index_path = root / index_rel
     if not index_path.exists():
-        return [f"{index_rel}: missing reference index file"]
+        return [f"{index_rel}:1: missing reference index file"]
 
     expected = [
         str(p.relative_to(root))
@@ -741,19 +741,21 @@ def _scan_docs_reference_index_sync(root: Path, *, harness: dict | None = None) 
     deduped_listed: list[str] = []
     for rel in listed:
         if rel in seen:
-            violations.append(f"{index_rel}: duplicate entry {rel}")
+            violations.append(f"{index_rel}:1: duplicate entry {rel}")
             continue
         seen.add(rel)
         deduped_listed.append(rel)
 
     for rel in expected:
         if rel not in seen:
-            violations.append(f"{index_rel}: missing entry {rel}")
+            violations.append(f"{index_rel}:1: missing entry {rel}")
     for rel in deduped_listed:
         if rel not in expected:
-            violations.append(f"{index_rel}: stale entry {rel}")
+            violations.append(f"{index_rel}:1: stale entry {rel}")
     if deduped_listed and expected and deduped_listed != expected:
-        violations.append(f"{index_rel}: entries are out of sync or out of order with {include_glob}")
+        violations.append(
+            f"{index_rel}:1: entries are out of sync or out of order with {include_glob}"
+        )
     return violations
 
 
@@ -773,12 +775,12 @@ def _scan_docs_required_sections(root: Path, *, harness: dict | None = None) -> 
             continue
         p = root / rel
         if not p.exists():
-            violations.append(f"{rel}: missing required section-checked file")
+            violations.append(f"{rel}:1: missing required section-checked file")
             continue
         lower = p.read_text(encoding="utf-8").lower()
         missing = [tok for tok in tokens if tok.lower() not in lower]
         if missing:
-            violations.append(f"{rel}: missing required token(s): {', '.join(missing)}")
+            violations.append(f"{rel}:1: missing required token(s): {', '.join(missing)}")
     return violations
 
 
@@ -913,7 +915,7 @@ def _scan_docs_cli_flags_documented(root: Path, *, harness: dict | None = None) 
     for rel in python_scripts:
         p = root / rel
         if not p.exists():
-            violations.append(f"{rel}: missing python script for CLI docs scan")
+            violations.append(f"{rel}:1: missing python script for CLI docs scan")
             continue
         python_flags[rel] = _extract_python_script_flags(p)
 
@@ -921,7 +923,7 @@ def _scan_docs_cli_flags_documented(root: Path, *, harness: dict | None = None) 
     for rel in php_scripts:
         p = root / rel
         if not p.exists():
-            violations.append(f"{rel}: missing php script for CLI docs scan")
+            violations.append(f"{rel}:1: missing php script for CLI docs scan")
             continue
         php_flags[rel] = _extract_php_script_flags(p)
 
@@ -929,7 +931,7 @@ def _scan_docs_cli_flags_documented(root: Path, *, harness: dict | None = None) 
     for rel in [*python_docs, *php_docs]:
         p = root / rel
         if not p.exists():
-            violations.append(f"{rel}: missing documentation file for CLI docs scan")
+            violations.append(f"{rel}:1: missing documentation file for CLI docs scan")
             continue
         doc_cache[rel] = p.read_text(encoding="utf-8")
 
@@ -940,7 +942,9 @@ def _scan_docs_cli_flags_documented(root: Path, *, harness: dict | None = None) 
                 if text is None:
                     continue
                 if flag not in text:
-                    violations.append(f"{doc_rel}: missing CLI flag {flag} documented from {script_rel}")
+                    violations.append(
+                        f"{doc_rel}:1: missing CLI flag {flag} documented from {script_rel}"
+                    )
 
     for script_rel, flags in sorted(php_flags.items()):
         for flag in sorted(flags):
@@ -949,7 +953,9 @@ def _scan_docs_cli_flags_documented(root: Path, *, harness: dict | None = None) 
                 if text is None:
                     continue
                 if flag not in text:
-                    violations.append(f"{doc_rel}: missing CLI flag {flag} documented from {script_rel}")
+                    violations.append(
+                        f"{doc_rel}:1: missing CLI flag {flag} documented from {script_rel}"
+                    )
     return violations
 
 
@@ -970,7 +976,7 @@ def _scan_docs_contract_schema_book_sync(root: Path, *, harness: dict | None = N
     for rel in files:
         p = root / rel
         if not p.exists():
-            violations.append(f"{rel}: missing doc_sync file")
+            violations.append(f"{rel}:1: missing doc_sync file")
             continue
         loaded[rel] = p.read_text(encoding="utf-8").lower()
     if len(loaded) < 2:
@@ -980,7 +986,7 @@ def _scan_docs_contract_schema_book_sync(root: Path, *, harness: dict | None = N
         want = tok.lower()
         for rel, text in loaded.items():
             if want not in text:
-                violations.append(f"{rel}: missing sync token {tok}")
+                violations.append(f"{rel}:1: missing sync token {tok}")
     return violations
 
 

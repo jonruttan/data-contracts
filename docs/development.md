@@ -39,6 +39,23 @@ Canonical pre-merge check:
 ./scripts/ci_gate.sh
 ```
 
+Fast docs-only gate:
+
+```sh
+./scripts/docs_doctor.sh
+```
+
+Suggested pre-commit hook:
+
+```sh
+cat > .git/hooks/pre-commit <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+./scripts/docs_doctor.sh
+SH
+chmod +x .git/hooks/pre-commit
+```
+
 ## Runner Exit-Code Contract
 
 The following exit codes are stable command contracts for CI/scripting.
