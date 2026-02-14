@@ -1147,6 +1147,12 @@ harness:
         forbidden_tokens:
           - "strpos($subject, $v)"
           - "preg_match('/' . str_replace('/', '\\\\/', $v) . '/u', $subject)"
+      - path: spec_runner/assertions.py
+        required_tokens: ["evaluate_internal_assert_tree(", "eval_predicate("]
+        forbidden_tokens: ["def assert_text_op("]
+      - path: spec_runner/harnesses/text_file.py
+        required_tokens: ["evaluate_internal_assert_tree("]
+        forbidden_tokens: ["contain assertion failed"]
 assert:
   - target: text
     must:
@@ -1162,12 +1168,20 @@ assert:
         tmp_path / "scripts/php/spec_runner.php",
         "function evalTextLeaf() { compileLeafExpr('contain','x','text'); assertLeafPredicate('id','assert','text','contain',['contains',['subject'],'x'],'x',[]); specLangEvalPredicate(['contains',['subject'],'x'],'x',[]); }\n",
     )
+    _write_text(
+        tmp_path / "spec_runner/assertions.py",
+        "def evaluate_internal_assert_tree():\n    eval_predicate(['contains',['subject'],'x'], subject='x')\n",
+    )
+    _write_text(
+        tmp_path / "spec_runner/harnesses/text_file.py",
+        "def run(case, ctx):\n    evaluate_internal_assert_tree(case.assert_tree, case_id=case.id, subject_for_target=lambda t: '', limits=None)\n",
+    )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
 
     _write_text(
-        tmp_path / "scripts/php/spec_runner.php",
-        "function evalTextLeaf() { strpos($subject, 'x'); }\n",
+        tmp_path / "spec_runner/assertions.py",
+        "def assert_text_op(subject, op, value):\n    return value in subject\n",
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1

@@ -33,6 +33,27 @@ harness:
           - "eval_predicate("
         forbidden_tokens:
           - "assert_text_op("
+      - path: spec_runner/assertions.py
+        required_tokens:
+          - "evaluate_internal_assert_tree("
+          - "eval_predicate("
+        forbidden_tokens:
+          - "def assert_text_op("
+      - path: spec_runner/harnesses/text_file.py
+        required_tokens:
+          - "evaluate_internal_assert_tree("
+        forbidden_tokens:
+          - "contain assertion failed"
+      - path: spec_runner/harnesses/cli_run.py
+        required_tokens:
+          - "evaluate_internal_assert_tree("
+        forbidden_tokens:
+          - "contain assertion failed"
+      - path: spec_runner/harnesses/api_http.py
+        required_tokens:
+          - "evaluate_internal_assert_tree("
+        forbidden_tokens:
+          - "contain assertion failed"
 assert:
   - target: text
     must:

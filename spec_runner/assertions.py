@@ -1,5 +1,4 @@
 import json
-import re
 import inspect
 from pathlib import Path
 from typing import Any, Callable
@@ -26,28 +25,6 @@ def assert_stdout_path_exists(stdout: str, *, suffix: str | None = None) -> Path
     if suffix:
         assert p.name.endswith(str(suffix))
     return p
-
-
-_TEXT_OPS = {"contain", "regex"}
-
-
-def assert_text_op(subject: str, op: str, value: Any, *, is_true: bool = True) -> None:
-    """
-    Shared implementation for text-match ops across harnesses.
-
-    Keeping this centralized avoids subtly different semantics in different kinds.
-    """
-    if op == "contain":
-        ok = str(value) in subject
-    elif op == "regex":
-        ok = re.search(str(value), subject) is not None
-    else:
-        raise ValueError(f"unsupported text op: {op}")
-    assert ok is bool(is_true)
-
-
-def is_text_op(op: str) -> bool:
-    return op in _TEXT_OPS
 
 
 def _raise_with_assert_context(

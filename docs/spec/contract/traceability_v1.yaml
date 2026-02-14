@@ -503,4 +503,8 @@ links:
       - scripts/run_governance_specs.py
       - scripts/php/conformance_runner.php
       - scripts/php/spec_runner.php
+      - spec_runner/assertions.py
+      - spec_runner/harnesses/text_file.py
+      - spec_runner/harnesses/cli_run.py
+      - spec_runner/harnesses/api_http.py
     notes: "Governance enforces spec-lang-backed assertion execution paths for runtime scanners/runners."
