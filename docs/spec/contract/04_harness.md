@@ -36,6 +36,13 @@ For `text.file`:
 
 - `text`
 
+## Spec-Lang Reuse
+
+- `harness.spec_lang.library_paths` MAY provide ordered library docs/files
+  containing `type: spec_lang.library` reusable function definitions.
+- `harness.spec_lang.exports` MAY constrain visible imported symbols to an
+  explicit allowlist.
+
 ## Path Safety
 
 - `cli.run` `harness.setup_files[*].path` MUST be relative and MUST resolve

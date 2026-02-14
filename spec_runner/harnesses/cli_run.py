@@ -19,6 +19,7 @@ from spec_runner.assertion_health import (
 )
 from spec_runner.compiler import compile_external_case
 from spec_runner.settings import SETTINGS
+from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang import limits_from_harness
 
 
@@ -128,6 +129,11 @@ def run(case, *, ctx) -> None:
 
     runtime_env = _runtime_env(ctx)
     spec_lang_limits = limits_from_harness(h)
+    spec_lang_symbols = load_spec_lang_symbols_for_case(
+        doc_path=case.doc_path,
+        harness=h,
+        limits=spec_lang_limits,
+    )
     safe_mode = _is_safe_mode_enabled(runtime_env)
     mode = resolve_assert_health_mode(t, env=runtime_env)
     assert_spec = t.get("assert", []) or []
@@ -313,4 +319,5 @@ def run(case, *, ctx) -> None:
         case_id=case_id,
         subject_for_target=_subject_for_target,
         limits=spec_lang_limits,
+        symbols=spec_lang_symbols,
     )

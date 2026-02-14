@@ -653,6 +653,13 @@ def _iter_string_values(node: object):
         yield node
 
 
+def _any_pattern_matches(text: str, patterns: list[re.Pattern[str]]) -> bool:
+    for pat in patterns:
+        if pat.search(text):
+            return True
+    return False
+
+
 def _scan_conformance_no_runner_logic_outside_harness(root: Path) -> list[str]:
     violations: list[str] = []
     cases_dir = root / "docs/spec/conformance/cases"
@@ -699,6 +706,7 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
     if not cases_dir.exists():
         return violations
 
+    rows: list[dict[str, object]] = []
     for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
         case = spec.test
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
@@ -707,13 +715,69 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
             for k, v in case.items()
             if str(k) not in exclude_case_keys
         }
-        for s in _iter_string_values(scoped):
-            for pat in compiled_patterns:
-                if pat.search(s):
-                    violations.append(
-                        f"{case_id}: non-deterministic token matched /{pat.pattern}/ in case content"
-                    )
-                    break
+        rows.append(
+            {
+                "id": case_id,
+                "strings": list(_iter_string_values(scoped)),
+            }
+        )
+
+    pattern_values = [p.pattern for p in compiled_patterns]
+    # Evaluate decision logic via spec-lang over extracted row subjects.
+    decision_expr = [
+        "eq",
+        [
+            "count",
+            [
+                "filter",
+                [
+                    "fn",
+                    ["row"],
+                    [
+                        "gt",
+                        [
+                            "count",
+                            [
+                                "filter",
+                                [
+                                    "fn",
+                                    ["s"],
+                                    [
+                                        "any",
+                                        [
+                                            "map",
+                                            ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
+                                            ["var", "patterns"],
+                                        ],
+                                    ],
+                                ],
+                                ["get", ["var", "row"], "strings"],
+                            ],
+                        ],
+                        0,
+                    ],
+                ],
+                ["subject"],
+            ],
+        ],
+        0,
+    ]
+    ok = eval_predicate(
+        decision_expr,
+        subject=rows,
+        limits=SpecLangLimits(),
+        symbols={"patterns": pattern_values},
+    )
+    if not ok:
+        for row in rows:
+            case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
+            strings = row.get("strings")
+            if not isinstance(strings, list):
+                continue
+            if any(_any_pattern_matches(str(s), compiled_patterns) for s in strings):
+                violations.append(
+                    f"{case_id}: non-deterministic token matched configured pattern in case content"
+                )
     return violations
 
 
@@ -746,17 +810,73 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
     if not cases_dir.exists():
         return violations
 
+    rows: list[dict[str, object]] = []
     for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
         case = spec.test
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
         scoped = {k: v for k, v in case.items() if str(k) not in exclude_case_keys}
-        for s in _iter_string_values(scoped):
-            for pat in compiled_patterns:
-                if pat.search(s):
-                    violations.append(
-                        f"{case_id}: ambient-assumption token matched /{pat.pattern}/ in case content"
-                    )
-                    break
+        rows.append(
+            {
+                "id": case_id,
+                "strings": list(_iter_string_values(scoped)),
+            }
+        )
+
+    pattern_values = [p.pattern for p in compiled_patterns]
+    decision_expr = [
+        "eq",
+        [
+            "count",
+            [
+                "filter",
+                [
+                    "fn",
+                    ["row"],
+                    [
+                        "gt",
+                        [
+                            "count",
+                            [
+                                "filter",
+                                [
+                                    "fn",
+                                    ["s"],
+                                    [
+                                        "any",
+                                        [
+                                            "map",
+                                            ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
+                                            ["var", "patterns"],
+                                        ],
+                                    ],
+                                ],
+                                ["get", ["var", "row"], "strings"],
+                            ],
+                        ],
+                        0,
+                    ],
+                ],
+                ["subject"],
+            ],
+        ],
+        0,
+    ]
+    ok = eval_predicate(
+        decision_expr,
+        subject=rows,
+        limits=SpecLangLimits(),
+        symbols={"patterns": pattern_values},
+    )
+    if not ok:
+        for row in rows:
+            case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
+            strings = row.get("strings")
+            if not isinstance(strings, list):
+                continue
+            if any(_any_pattern_matches(str(s), compiled_patterns) for s in strings):
+                violations.append(
+                    f"{case_id}: ambient-assumption token matched configured pattern in case content"
+                )
     return violations
 
 
@@ -866,6 +986,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
         if not base.exists():
             violations.append(f"{rel_root}:1: missing conformance root for spec-lang preference scan")
             continue
+        rows: list[dict[str, object]] = []
         for spec in iter_cases(base, file_pattern=SETTINGS.case.default_file_pattern):
             try:
                 rel = str(spec.doc_path.resolve().relative_to(root))
@@ -901,9 +1022,36 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                         non_eval_ops.add(op)
 
             _collect_ops(spec.test.get("assert", []) or [])
-            if non_eval_ops:
-                case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
-                found = ", ".join(sorted(non_eval_ops))
+            case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
+            rows.append(
+                {
+                    "id": case_id,
+                    "file": rel,
+                    "non_eval_ops": sorted(non_eval_ops),
+                }
+            )
+
+        decision_expr = [
+            "eq",
+            [
+                "count",
+                [
+                    "filter",
+                    ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "non_eval_ops"]], 0]],
+                    ["subject"],
+                ],
+            ],
+            0,
+        ]
+        ok = eval_predicate(decision_expr, subject=rows, limits=SpecLangLimits())
+        if not ok:
+            for row in rows:
+                ops = row.get("non_eval_ops")
+                if not isinstance(ops, list) or not ops:
+                    continue
+                case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
+                rel = str(row.get("file", "<unknown>"))
+                found = ", ".join(str(x) for x in ops)
                 violations.append(
                     f"{rel}: case {case_id} uses non-evaluate ops ({found}); "
                     "prefer evaluate/spec-lang assertions or add explicit temporary allowlist entry"

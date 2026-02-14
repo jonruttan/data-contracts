@@ -1,7 +1,7 @@
 import json
 import inspect
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Mapping
 
 from spec_runner.internal_model import GroupNode, InternalAssertNode, PredicateLeaf
 from spec_runner.spec_lang import SpecLangLimits, eval_predicate
@@ -214,6 +214,7 @@ def evaluate_internal_assert_tree(
     case_id: str,
     subject_for_target: Callable[[str], Any],
     limits: SpecLangLimits,
+    symbols: Mapping[str, Any] | None = None,
 ) -> None:
     """
     Evaluate compiled internal assertion tree nodes.
@@ -226,7 +227,7 @@ def evaluate_internal_assert_tree(
         if isinstance(node, PredicateLeaf):
             try:
                 subject = subject_for_target(node.target)
-                ok = eval_predicate(node.expr, subject=subject, limits=limits)
+                ok = eval_predicate(node.expr, subject=subject, limits=limits, symbols=symbols)
                 assert ok, "evaluate assertion failed"
             except BaseException as e:  # noqa: BLE001
                 _raise_with_assert_context(

@@ -23,11 +23,19 @@ def _to_markdown(payload: dict) -> str:
             "- overall implementation-reliance ratio: "
             f"{float(summary.get('overall_implementation_reliance_ratio', 0.0)):.4f}"
         ),
+        (
+            "- overall logic self-contained ratio: "
+            f"{float(summary.get('overall_logic_self_contained_ratio', 0.0)):.4f}"
+        ),
+        (
+            "- overall execution portability ratio: "
+            f"{float(summary.get('overall_execution_portability_ratio', 0.0)):.4f}"
+        ),
         "",
         "## Segment Summary",
         "",
-        "| segment | case_count | self_contained_ratio | implementation_reliance_ratio |",
-        "| --- | ---: | ---: | ---: |",
+        "| segment | case_count | self_contained_ratio | implementation_reliance_ratio | logic_self_contained_ratio | execution_portability_ratio |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
     ]
     segments = payload.get("segments") or {}
     for segment in sorted(segments):
@@ -36,7 +44,9 @@ def _to_markdown(payload: dict) -> str:
             "| "
             f"{segment} | {int(row.get('case_count', 0))} | "
             f"{float(row.get('mean_self_contained_ratio', 0.0)):.4f} | "
-            f"{float(row.get('mean_implementation_reliance_ratio', 0.0)):.4f} |"
+            f"{float(row.get('mean_implementation_reliance_ratio', 0.0)):.4f} | "
+            f"{float(row.get('mean_logic_self_contained_ratio', 0.0)):.4f} | "
+            f"{float(row.get('mean_execution_portability_ratio', 0.0)):.4f} |"
         )
 
     lines.extend(

@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from spec_runner.assertions import iter_leaf_assertions
+from spec_runner.codecs import load_external_cases
 from spec_runner.dispatcher import iter_cases
 from spec_runner.settings import SETTINGS
 
@@ -35,6 +35,7 @@ def default_spec_portability_config() -> dict[str, Any]:
             "non_core_type": float(cfg.weights.non_core_type),
         },
         "report": {"top_n": int(cfg.report.top_n)},
+        "recursive": bool(cfg.recursive),
         "min_overall_ratio": cfg.min_overall_ratio,
         "min_segment_ratios": dict(cfg.min_segment_ratios),
         "enforce": bool(cfg.enforce),
@@ -54,6 +55,7 @@ def resolve_spec_portability_config(raw: dict[str, Any] | None = None) -> tuple[
         "segment_rules",
         "runtime_capability_tokens",
         "runtime_capability_prefixes",
+        "recursive",
         "min_overall_ratio",
         "min_segment_ratios",
         "enforce",
@@ -108,6 +110,7 @@ def resolve_spec_portability_config(raw: dict[str, Any] | None = None) -> tuple[
 
     cfg["runtime_capability_tokens"] = _as_list_of_strings(cfg.get("runtime_capability_tokens"))
     cfg["runtime_capability_prefixes"] = _as_list_of_strings(cfg.get("runtime_capability_prefixes"))
+    cfg["recursive"] = bool(cfg.get("recursive", True))
 
     weights = cfg.get("weights")
     if not isinstance(weights, dict):
@@ -200,8 +203,12 @@ def _collect_leaf_ops(node: object, *, inherited_target: str | None = None) -> l
                 for child in children:
                     ops.extend(_collect_leaf_ops(child, inherited_target=node_target))
         return ops
-    for _target, op, _value, _is_true in iter_leaf_assertions(node, target_override=inherited_target):
-        ops.append(op)
+    known_ops = {"contain", "regex", "json_type", "exists", "evaluate"}
+    for key, value in node.items():
+        if key in {"target", "must", "can", "cannot"}:
+            continue
+        if key in known_ops and isinstance(value, list):
+            ops.extend([key] * len(value))
     return ops
 
 
@@ -230,6 +237,10 @@ def _summarize_segment(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "case_count": 0,
             "mean_self_contained_ratio": 0.0,
             "mean_implementation_reliance_ratio": 0.0,
+            "mean_logic_self_contained_ratio": 0.0,
+            "mean_logic_reliance_ratio": 0.0,
+            "mean_execution_portability_ratio": 0.0,
+            "mean_execution_coupling_ratio": 0.0,
             "penalty_counts": {
                 "non_evaluate_leaf": 0,
                 "expect_impl_overlay": 0,
@@ -239,10 +250,18 @@ def _summarize_segment(rows: list[dict[str, Any]]) -> dict[str, Any]:
         }
     total_self = sum(float(r["self_contained_ratio"]) for r in rows)
     total_impl = sum(float(r["implementation_reliance_ratio"]) for r in rows)
+    total_logic_self = sum(float(r["logic_self_contained_ratio"]) for r in rows)
+    total_logic_rel = sum(float(r["logic_reliance_ratio"]) for r in rows)
+    total_exec_port = sum(float(r["execution_portability_ratio"]) for r in rows)
+    total_exec_coupling = sum(float(r["execution_coupling_ratio"]) for r in rows)
     return {
         "case_count": count,
         "mean_self_contained_ratio": total_self / count,
         "mean_implementation_reliance_ratio": total_impl / count,
+        "mean_logic_self_contained_ratio": total_logic_self / count,
+        "mean_logic_reliance_ratio": total_logic_rel / count,
+        "mean_execution_portability_ratio": total_exec_port / count,
+        "mean_execution_coupling_ratio": total_exec_coupling / count,
         "penalty_counts": {
             "non_evaluate_leaf": sum(1 for r in rows if float(r["penalties"]["non_evaluate_leaf_share"]) > 0.0),
             "expect_impl_overlay": sum(1 for r in rows if float(r["penalties"]["expect_impl_overlay"]) > 0.0),
@@ -264,6 +283,7 @@ def spec_portability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
     token_set = set(cfg["runtime_capability_tokens"])
     prefix_tuple = tuple(cfg["runtime_capability_prefixes"])
     weights = cfg["weights"]
+    recursive = bool(cfg["recursive"])
 
     for rel_root in cfg["roots"]:
         base = root / rel_root
@@ -271,14 +291,25 @@ def spec_portability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
             scan_errors.append(f"{rel_root}: missing spec root directory")
             continue
 
-        for spec in iter_cases(base, file_pattern=SETTINGS.case.default_file_pattern):
-            case = spec.test
+        case_pairs: list[tuple[Path, dict[str, Any]]] = []
+        if recursive:
+            files = sorted(base.rglob(SETTINGS.case.default_file_pattern))
+            for file_path in files:
+                if not file_path.is_file():
+                    continue
+                for doc_path, case in load_external_cases(file_path, formats={"md"}):
+                    case_pairs.append((doc_path, case))
+        else:
+            for spec in iter_cases(base, file_pattern=SETTINGS.case.default_file_pattern):
+                case_pairs.append((spec.doc_path, spec.test))
+
+        for doc_path, case in case_pairs:
             case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
             case_type = str(case.get("type", "")).strip()
             try:
-                rel_path = str(spec.doc_path.resolve().relative_to(root)).replace("\\", "/")
+                rel_path = str(doc_path.resolve().relative_to(root)).replace("\\", "/")
             except ValueError:
-                rel_path = str(spec.doc_path)
+                rel_path = str(doc_path)
             segment = _match_segment(rel_path, cfg["segment_rules"])
 
             try:
@@ -319,6 +350,15 @@ def spec_portability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
             }
             total_penalty = sum(float(x) for x in penalties.values())
             score = max(0.0, min(1.0, 1.0 - total_penalty))
+            logic_self = 1.0 - non_eval_share
+            logic_rel = non_eval_share
+            execution_penalty = (
+                float(penalties["expect_impl_overlay"])
+                + float(penalties["runtime_specific_capability"])
+                + float(penalties["non_core_type"])
+            )
+            execution_portability = max(0.0, min(1.0, 1.0 - execution_penalty))
+            execution_coupling = 1.0 - execution_portability
 
             reasons: list[str] = []
             if penalties["non_evaluate_leaf_share"] > 0:
@@ -346,6 +386,10 @@ def spec_portability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
                     "penalties": penalties,
                     "self_contained_ratio": score,
                     "implementation_reliance_ratio": 1.0 - score,
+                    "logic_self_contained_ratio": logic_self,
+                    "logic_reliance_ratio": logic_rel,
+                    "execution_portability_ratio": execution_portability,
+                    "execution_coupling_ratio": execution_coupling,
                     "reasons": reasons,
                 }
             )
@@ -371,9 +415,17 @@ def spec_portability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
     if total_cases:
         overall_self = sum(float(r["self_contained_ratio"]) for r in rows) / total_cases
         overall_impl = sum(float(r["implementation_reliance_ratio"]) for r in rows) / total_cases
+        overall_logic_self = sum(float(r["logic_self_contained_ratio"]) for r in rows) / total_cases
+        overall_logic_rel = sum(float(r["logic_reliance_ratio"]) for r in rows) / total_cases
+        overall_exec_port = sum(float(r["execution_portability_ratio"]) for r in rows) / total_cases
+        overall_exec_coupling = sum(float(r["execution_coupling_ratio"]) for r in rows) / total_cases
     else:
         overall_self = 0.0
         overall_impl = 0.0
+        overall_logic_self = 0.0
+        overall_logic_rel = 0.0
+        overall_exec_port = 0.0
+        overall_exec_coupling = 0.0
 
     top_n = int(cfg["report"]["top_n"])
     worst_cases = sorted(
@@ -387,6 +439,10 @@ def spec_portability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
             "total_cases": total_cases,
             "overall_self_contained_ratio": overall_self,
             "overall_implementation_reliance_ratio": overall_impl,
+            "overall_logic_self_contained_ratio": overall_logic_self,
+            "overall_logic_reliance_ratio": overall_logic_rel,
+            "overall_execution_portability_ratio": overall_exec_port,
+            "overall_execution_coupling_ratio": overall_exec_coupling,
         },
         "segments": segments,
         "worst_cases": worst_cases,

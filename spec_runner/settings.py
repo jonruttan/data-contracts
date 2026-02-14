@@ -49,6 +49,7 @@ class SpecPortabilitySettings:
     runtime_capability_prefixes: tuple[str, ...]
     weights: SpecPortabilityWeightsSettings
     report: SpecPortabilityReportSettings
+    recursive: bool
     min_overall_ratio: float | None
     min_segment_ratios: dict[str, float]
     enforce: bool
@@ -101,6 +102,7 @@ SETTINGS = RunnerSettings(
             non_core_type=0.15,
         ),
         report=SpecPortabilityReportSettings(top_n=10),
+        recursive=True,
         min_overall_ratio=None,
         min_segment_ratios={},
         enforce=False,

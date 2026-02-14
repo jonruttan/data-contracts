@@ -130,6 +130,8 @@ For `type: cli.run`, supported `harness` keys include:
 - `max_nodes` (int, >=1)
 - `max_literal_bytes` (int, >=1)
 - `timeout_ms` (int, >=0, `0` disables timeout)
+- `library_paths` (list[string], optional): ordered spec-lang library files
+- `exports` (list[string], optional): symbol allowlist exposed to this case
 
 Implementation note (non-portable convenience):
 
@@ -193,6 +195,8 @@ Operator constraints:
 - `evaluate` values MUST be list-encoded spec-lang expressions
 - spec-lang semantics and budget model are defined in
   `docs/spec/contract/03b_spec_lang_v1.md`
+- spec-lang shared library loading rules are defined in
+  `docs/spec/contract/14_spec_lang_libraries.md`
 - runners compile external leaf operators into internal spec-lang predicates;
   compile invariants are defined in
   `docs/spec/contract/09_internal_representation.md`

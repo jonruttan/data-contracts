@@ -128,6 +128,18 @@ def _eval_non_tail(expr: Any, env: _Env, st: _EvalState) -> Any:
     return _eval_tail(expr, env, st)
 
 
+def _eval_callable_like(fn_val: Any, call_args: list[Any], st: _EvalState) -> Any:
+    if isinstance(fn_val, _Closure):
+        if len(call_args) != len(fn_val.params):
+            raise ValueError("spec_lang call argument count mismatch")
+        next_env = _Env(
+            vars={k: v for k, v in zip(fn_val.params, call_args)},
+            parent=fn_val.env,
+        )
+        return _eval_tail(fn_val.body, next_env, st)
+    raise ValueError("spec_lang callable expects fn closure")
+
+
 def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
     if op == "subject":
         _require_arity(op, args, 0)
@@ -188,12 +200,37 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
         hay = _eval_non_tail(args[0], env, st)
         pattern = _eval_non_tail(args[1], env, st)
         return re.search(str(pattern), str(hay)) is not None
+    if op == "matches":
+        _require_arity(op, args, 2)
+        hay = _eval_non_tail(args[0], env, st)
+        pattern = _eval_non_tail(args[1], env, st)
+        return re.search(str(pattern), str(hay)) is not None
     if op == "eq":
         _require_arity(op, args, 2)
         return _eval_non_tail(args[0], env, st) == _eval_non_tail(args[1], env, st)
     if op == "neq":
         _require_arity(op, args, 2)
         return _eval_non_tail(args[0], env, st) != _eval_non_tail(args[1], env, st)
+    if op == "lt":
+        _require_arity(op, args, 2)
+        left = _eval_non_tail(args[0], env, st)
+        right = _eval_non_tail(args[1], env, st)
+        return left < right
+    if op == "lte":
+        _require_arity(op, args, 2)
+        left = _eval_non_tail(args[0], env, st)
+        right = _eval_non_tail(args[1], env, st)
+        return left <= right
+    if op == "gt":
+        _require_arity(op, args, 2)
+        left = _eval_non_tail(args[0], env, st)
+        right = _eval_non_tail(args[1], env, st)
+        return left > right
+    if op == "gte":
+        _require_arity(op, args, 2)
+        left = _eval_non_tail(args[0], env, st)
+        right = _eval_non_tail(args[1], env, st)
+        return left >= right
     if op == "in":
         _require_arity(op, args, 2)
         member = _eval_non_tail(args[0], env, st)
@@ -261,6 +298,80 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
         if isinstance(v, (str, list, dict)):
             return len(v)
         raise ValueError("spec_lang len expects string/list/dict")
+    if op == "count":
+        _require_arity(op, args, 1)
+        v = _eval_non_tail(args[0], env, st)
+        if isinstance(v, (str, list, dict)):
+            return len(v)
+        raise ValueError("spec_lang count expects string/list/dict")
+    if op == "first":
+        _require_arity(op, args, 1)
+        v = _eval_non_tail(args[0], env, st)
+        if not isinstance(v, list):
+            raise ValueError("spec_lang first expects list")
+        return None if not v else v[0]
+    if op == "rest":
+        _require_arity(op, args, 1)
+        v = _eval_non_tail(args[0], env, st)
+        if not isinstance(v, list):
+            raise ValueError("spec_lang rest expects list")
+        return [] if len(v) <= 1 else v[1:]
+    if op == "all":
+        _require_arity(op, args, 1)
+        seq = _eval_non_tail(args[0], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang all expects list")
+        return all(_truthy(item) for item in seq)
+    if op == "any":
+        _require_arity(op, args, 1)
+        seq = _eval_non_tail(args[0], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang any expects list")
+        return any(_truthy(item) for item in seq)
+    if op == "none":
+        _require_arity(op, args, 1)
+        seq = _eval_non_tail(args[0], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang none expects list")
+        return not any(_truthy(item) for item in seq)
+    if op == "split":
+        if len(args) == 1:
+            text = _eval_non_tail(args[0], env, st)
+            return str(text).split()
+        if len(args) == 2:
+            text = _eval_non_tail(args[0], env, st)
+            sep = _eval_non_tail(args[1], env, st)
+            return str(text).split(str(sep))
+        raise ValueError("spec_lang arity error for split")
+    if op == "join":
+        _require_arity(op, args, 2)
+        seq = _eval_non_tail(args[0], env, st)
+        sep = _eval_non_tail(args[1], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang join expects list")
+        return str(sep).join(str(x) for x in seq)
+    if op == "map":
+        _require_arity(op, args, 2)
+        fn_val = _eval_non_tail(args[0], env, st)
+        seq = _eval_non_tail(args[1], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang map expects list")
+        map_out: list[Any] = []
+        for item in seq:
+            map_out.append(_eval_callable_like(fn_val, [item], st))
+        return map_out
+    if op == "filter":
+        _require_arity(op, args, 2)
+        fn_val = _eval_non_tail(args[0], env, st)
+        seq = _eval_non_tail(args[1], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang filter expects list")
+        filter_out: list[Any] = []
+        for item in seq:
+            keep = _eval_callable_like(fn_val, [item], st)
+            if _truthy(keep):
+                filter_out.append(item)
+        return filter_out
     if op == "trim":
         _require_arity(op, args, 1)
         return str(_eval_non_tail(args[0], env, st)).strip()
@@ -371,15 +482,57 @@ def _eval_tail(expr: Any, env: _Env, st: _EvalState) -> Any:
         return _eval_builtin(op, args, current_env, st)
 
 
-def eval_expr(expr: Any, *, subject: Any, limits: SpecLangLimits | None = None) -> Any:
+def compile_symbol_bindings(
+    bindings: Mapping[str, Any],
+    *,
+    limits: SpecLangLimits | None = None,
+) -> dict[str, Any]:
+    cfg = limits or SpecLangLimits()
+    st = _EvalState(subject=None, limits=cfg, started=time.perf_counter())
+    slots: dict[str, Any] = {}
+    env = _Env(vars=slots, parent=None)
+    for raw_name, raw_expr in bindings.items():
+        name = str(raw_name).strip()
+        if not name:
+            raise ValueError("spec_lang symbol binding name must be non-empty")
+        if name in slots:
+            raise ValueError(f"duplicate symbol binding: {name}")
+        slots[name] = _UNSET
+    for raw_name, raw_expr in bindings.items():
+        name = str(raw_name).strip()
+        validate_expr_shape(raw_expr, limits=cfg)
+        slots[name] = _eval_non_tail(raw_expr, env, st)
+    return dict(slots)
+
+
+def eval_expr(
+    expr: Any,
+    *,
+    subject: Any,
+    limits: SpecLangLimits | None = None,
+    symbols: Mapping[str, Any] | None = None,
+) -> Any:
     cfg = limits or SpecLangLimits()
     validate_expr_shape(expr, limits=cfg)
     st = _EvalState(subject=subject, limits=cfg, started=time.perf_counter())
-    return _eval_tail(expr, _Env(vars={}, parent=None), st)
+    root_symbols: dict[str, Any] = {}
+    if symbols:
+        for raw_name, value in symbols.items():
+            name = str(raw_name).strip()
+            if not name:
+                raise ValueError("spec_lang symbol name must be non-empty")
+            root_symbols[name] = value
+    return _eval_tail(expr, _Env(vars=root_symbols, parent=None), st)
 
 
-def eval_predicate(expr: Any, *, subject: Any, limits: SpecLangLimits | None = None) -> bool:
-    got = eval_expr(expr, subject=subject, limits=limits)
+def eval_predicate(
+    expr: Any,
+    *,
+    subject: Any,
+    limits: SpecLangLimits | None = None,
+    symbols: Mapping[str, Any] | None = None,
+) -> bool:
+    got = eval_expr(expr, subject=subject, limits=limits, symbols=symbols)
     return bool(got)
 
 

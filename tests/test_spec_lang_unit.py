@@ -3,7 +3,13 @@ from __future__ import annotations
 
 import pytest
 
-from spec_runner.spec_lang import SpecLangLimits, eval_expr, eval_predicate, limits_from_harness
+from spec_runner.spec_lang import (
+    SpecLangLimits,
+    compile_symbol_bindings,
+    eval_expr,
+    eval_predicate,
+    limits_from_harness,
+)
 
 
 def test_spec_lang_basic_predicate_true() -> None:
@@ -101,3 +107,41 @@ def test_spec_lang_path_exists_builtin(tmp_path) -> None:
     p.write_text("ok", encoding="utf-8")
     assert eval_predicate(["path_exists", str(p)], subject=None) is True
     assert eval_predicate(["path_exists", str(tmp_path / "missing.txt")], subject=None) is False
+
+
+def test_spec_lang_collection_and_compare_builtins() -> None:
+    assert eval_predicate(["lt", 1, 2], subject=None) is True
+    assert eval_predicate(["lte", 2, 2], subject=None) is True
+    assert eval_predicate(["gt", 3, 2], subject=None) is True
+    assert eval_predicate(["gte", 3, 3], subject=None) is True
+    assert eval_expr(["count", ["split", "a,b,c", ","]], subject=None) == 3
+    assert eval_expr(["join", ["split", "a,b,c", ","], "-"], subject=None) == "a-b-c"
+    assert eval_expr(["first", ["split", "1,2,3", ","]], subject=None) == "1"
+    assert eval_expr(["rest", ["split", "1,2,3", ","]], subject=None) == ["2", "3"]
+    assert eval_predicate(["all", ["split", "x y z"]], subject=None) is True
+    assert eval_predicate(["any", ["split", "x  y", " "]], subject=None) is True
+    assert eval_predicate(["none", ["split", "", ","]], subject=None) is True
+    assert eval_expr(
+        ["map", ["fn", ["x"], ["upper", ["var", "x"]]], ["split", "a,b,c", ","]],
+        subject=None,
+    ) == ["A", "B", "C"]
+    assert eval_expr(
+        ["filter", ["fn", ["x"], ["matches", ["var", "x"], "^[23]$"]], ["split", "0,1,2,3", ","]],
+        subject=None,
+    ) == ["2", "3"]
+    assert eval_predicate(["matches", "abc-123", "^[a-z]+-[0-9]+$"], subject=None) is True
+
+
+def test_spec_lang_symbol_bindings() -> None:
+    symbols = compile_symbol_bindings(
+        {
+            "is_warn": ["fn", ["t"], ["contains", ["var", "t"], "WARN"]],
+            "is_error": ["fn", ["t"], ["contains", ["var", "t"], "ERROR"]],
+        }
+    )
+    expr = [
+        "and",
+        ["call", ["var", "is_warn"], ["subject"]],
+        ["not", ["call", ["var", "is_error"], ["subject"]]],
+    ]
+    assert eval_predicate(expr, subject="WARN: hello", symbols=symbols) is True

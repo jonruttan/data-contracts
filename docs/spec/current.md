@@ -14,6 +14,8 @@ Notes:
   are opt-in external adapter formats.
 - Portability reporting includes a segmented self-containment metric across
   conformance/governance/impl `.spec.md` corpora.
+- Spec-lang now supports reusable library symbols via
+  `harness.spec_lang.library_paths` and optional `exports` allowlists.
 
 Canonical spec docs:
 

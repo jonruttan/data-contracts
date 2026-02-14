@@ -16,6 +16,7 @@ def _base_config(root_name: str = "cases") -> dict:
         "roots": [root_name],
         "core_types": ["text.file", "cli.run"],
         "segment_rules": [{"prefix": root_name, "segment": "conformance"}],
+        "recursive": True,
         "runtime_capability_tokens": ["api.http"],
         "runtime_capability_prefixes": ["runtime.", "php."],
         "weights": {
@@ -181,4 +182,6 @@ assert:
     assert payload["summary"]["total_cases"] == 2
     assert payload["segments"]["conformance"]["case_count"] == 1
     assert payload["segments"]["governance"]["case_count"] == 1
+    assert "overall_logic_self_contained_ratio" in payload["summary"]
+    assert "overall_execution_portability_ratio" in payload["summary"]
     assert payload["worst_cases"]

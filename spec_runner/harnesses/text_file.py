@@ -11,6 +11,7 @@ from spec_runner.assertion_health import (
     resolve_assert_health_mode,
 )
 from spec_runner.compiler import compile_external_case
+from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang import limits_from_harness
 
 
@@ -55,6 +56,11 @@ def run(case, *, ctx) -> None:
     text = p.read_text(encoding="utf-8")
     assert_spec = t.get("assert", []) or []
     spec_lang_limits = limits_from_harness(case.harness)
+    spec_lang_symbols = load_spec_lang_symbols_for_case(
+        doc_path=case.doc_path,
+        harness=case.harness,
+        limits=spec_lang_limits,
+    )
     mode = resolve_assert_health_mode(t, env=_runtime_env(ctx))
     diags = lint_assert_tree(assert_spec)
     if diags and mode == "error":
@@ -73,4 +79,5 @@ def run(case, *, ctx) -> None:
         case_id=case_id,
         subject_for_target=_subject_for_target,
         limits=spec_lang_limits,
+        symbols=spec_lang_symbols,
     )

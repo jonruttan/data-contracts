@@ -10,6 +10,7 @@ from spec_runner.assertions import (
     evaluate_internal_assert_tree,
 )
 from spec_runner.compiler import compile_external_case
+from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang import limits_from_harness
 
 
@@ -90,6 +91,11 @@ def run(case, *, ctx) -> None:
 
     h = case.harness
     spec_lang_limits = limits_from_harness(h)
+    spec_lang_symbols = load_spec_lang_symbols_for_case(
+        doc_path=case.doc_path,
+        harness=h,
+        limits=spec_lang_limits,
+    )
     timeout_seconds = float(h.get("timeout_seconds", 5))
 
     response = _fetch_response(
@@ -121,4 +127,5 @@ def run(case, *, ctx) -> None:
         case_id=case_id,
         subject_for_target=_subject_for_target,
         limits=spec_lang_limits,
+        symbols=spec_lang_symbols,
     )

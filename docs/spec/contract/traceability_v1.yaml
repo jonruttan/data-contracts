@@ -265,6 +265,38 @@ links:
       - scripts/php/conformance_runner.php
     notes: "Conformance maps evaluate failures to schema/assertion/runtime categories."
 
+  - rule_id: SPEC_LANG_LIBRARY_REUSE_MODEL
+    policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_LIBRARY_REUSE_MODEL
+    contract_refs:
+      - docs/spec/contract/14_spec_lang_libraries.md
+      - docs/spec/contract/04_harness.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_spec_lang_libraries_unit.py
+      - tests/test_spec_lang_unit.py
+    implementation_refs:
+      - spec_runner/spec_lang_libraries.py
+      - spec_runner/spec_lang.py
+      - spec_runner/harnesses/text_file.py
+      - spec_runner/harnesses/cli_run.py
+      - spec_runner/harnesses/api_http.py
+    notes: "Library symbol loading and evaluation wiring are deterministic and covered by unit tests."
+
+  - rule_id: GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS
+    policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS
+    contract_refs:
+      - docs/spec/contract/15_governance_subject_model.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+    notes: "Initial governance checks use subject extraction with spec-lang decision expressions."
+
   - rule_id: DOC_NORMATIVE_PAGE_TRACEABILITY
     policy_ref: docs/spec/contract/policy_v1.yaml#DOC_NORMATIVE_PAGE_TRACEABILITY
     contract_refs:

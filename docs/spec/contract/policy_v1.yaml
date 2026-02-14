@@ -247,6 +247,36 @@ rules:
       - docs/spec/contract/05_errors.md
       - docs/spec/schema/schema_v1.md
 
+  - id: SPEC_LANG_LIBRARY_REUSE_MODEL
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.evaluate.library_symbols
+    norm: SHOULD
+    requirement: support_ordered_library_symbol_loading_with_deterministic_resolution
+    description: >
+      Implementations should support reusable spec-lang libraries through
+      ordered symbol loading with deterministic duplicate/cycle failure modes.
+    rationale: Reduces repeated expression logic and shifts reusable behavior into portable specs.
+    risk_if_violated: Authoring remains copy/paste heavy and falls back to host-language helpers.
+    references:
+      - docs/spec/contract/14_spec_lang_libraries.md
+      - docs/spec/schema/schema_v1.md
+
+  - id: GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS
+    introduced_in: v1
+    scope: governance
+    applies_to: governance.check.subject_decision_split
+    norm: SHOULD
+    requirement: keep_repo_extraction_in_adapter_and_decision_logic_in_spec_lang
+    description: >
+      Governance checks should separate deterministic repository-data extraction
+      from spec-lang decision expressions to reduce Python-only decision logic.
+    rationale: Enables progressive migration toward implementation-independent executable governance specs.
+    risk_if_violated: Governance logic remains scanner-bound and harder to port across runtimes.
+    references:
+      - docs/spec/contract/15_governance_subject_model.md
+      - scripts/run_governance_specs.py
+
   - id: DOC_NORMATIVE_PAGE_TRACEABILITY
     introduced_in: v1
     scope: governance

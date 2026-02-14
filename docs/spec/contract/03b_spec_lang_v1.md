@@ -40,15 +40,30 @@ Utility:
 
 - `subject`
 - `len`
+- `count`
+- `first`
+- `rest`
 - `trim`
 - `lower`
 - `upper`
+- `split`
+- `join`
+- `map`
+- `filter`
+- `any`
+- `all`
+- `none`
 - `var`
 - `add`
 - `sub`
 - `json_parse`
 - `path_exists`
 - `regex_match`
+- `matches`
+- `lt`
+- `lte`
+- `gt`
+- `gte`
 
 Recursion/control:
 
@@ -119,6 +134,20 @@ harness:
 ```
 
 All values are integers; `timeout_ms` MAY be `0` to disable timeout enforcement.
+
+Library configuration (optional):
+
+```yaml
+harness:
+  spec_lang:
+    library_paths:
+      - docs/spec/libraries/common.spec.md
+    exports: ["is_portable_case"]
+```
+
+Library contract details:
+
+- `docs/spec/contract/14_spec_lang_libraries.md`
 
 ## Canonical Authoring Format
 

@@ -28,12 +28,20 @@ def test_script_writes_json(monkeypatch, tmp_path: Path) -> None:
                 "total_cases": 2,
                 "overall_self_contained_ratio": 0.8,
                 "overall_implementation_reliance_ratio": 0.2,
+                "overall_logic_self_contained_ratio": 0.9,
+                "overall_logic_reliance_ratio": 0.1,
+                "overall_execution_portability_ratio": 0.7,
+                "overall_execution_coupling_ratio": 0.3,
             },
             "segments": {
                 "conformance": {
                     "case_count": 2,
                     "mean_self_contained_ratio": 0.8,
                     "mean_implementation_reliance_ratio": 0.2,
+                    "mean_logic_self_contained_ratio": 0.9,
+                    "mean_logic_reliance_ratio": 0.1,
+                    "mean_execution_portability_ratio": 0.7,
+                    "mean_execution_coupling_ratio": 0.3,
                     "penalty_counts": {},
                 }
             },
@@ -63,12 +71,20 @@ def test_script_writes_markdown(monkeypatch, tmp_path: Path) -> None:
                 "total_cases": 1,
                 "overall_self_contained_ratio": 1.0,
                 "overall_implementation_reliance_ratio": 0.0,
+                "overall_logic_self_contained_ratio": 1.0,
+                "overall_logic_reliance_ratio": 0.0,
+                "overall_execution_portability_ratio": 1.0,
+                "overall_execution_coupling_ratio": 0.0,
             },
             "segments": {
                 "conformance": {
                     "case_count": 1,
                     "mean_self_contained_ratio": 1.0,
                     "mean_implementation_reliance_ratio": 0.0,
+                    "mean_logic_self_contained_ratio": 1.0,
+                    "mean_logic_reliance_ratio": 0.0,
+                    "mean_execution_portability_ratio": 1.0,
+                    "mean_execution_coupling_ratio": 0.0,
                     "penalty_counts": {},
                 }
             },
@@ -92,7 +108,7 @@ def test_script_writes_markdown(monkeypatch, tmp_path: Path) -> None:
     assert code == 0
     text = out.read_text(encoding="utf-8")
     assert text.startswith("# Spec Portability Report")
-    assert "| conformance | 1 | 1.0000 | 0.0000 |" in text
+    assert "| conformance | 1 | 1.0000 | 0.0000 | 1.0000 | 1.0000 |" in text
 
 
 def test_script_top_n_override_and_external_config(monkeypatch, tmp_path: Path) -> None:
@@ -118,6 +134,10 @@ report:
                 "total_cases": 0,
                 "overall_self_contained_ratio": 0.0,
                 "overall_implementation_reliance_ratio": 0.0,
+                "overall_logic_self_contained_ratio": 0.0,
+                "overall_logic_reliance_ratio": 0.0,
+                "overall_execution_portability_ratio": 0.0,
+                "overall_execution_coupling_ratio": 0.0,
             },
             "segments": {},
             "worst_cases": [],
