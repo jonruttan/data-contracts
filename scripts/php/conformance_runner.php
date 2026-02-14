@@ -19,7 +19,7 @@ declare(strict_types=1);
  */
 
 function usage(): void {
-    fwrite(STDOUT, "usage: conformance_runner.php --cases <dir-or-file> --out <file> [--case-file-pattern <glob>]\n");
+    fwrite(STDOUT, "usage: conformance_runner.php --cases <dir-or-file> --out <file> [--case-file-pattern <glob>] [--case-formats <csv>]\n");
 }
 
 const DEFAULT_CASE_FILE_PATTERN = '*.spec.md';
@@ -28,6 +28,7 @@ function parseArgs(array $argv): array {
     $out = null;
     $cases = null;
     $casePattern = DEFAULT_CASE_FILE_PATTERN;
+    $caseFormatsRaw = 'md';
     for ($i = 1; $i < count($argv); $i++) {
         $arg = $argv[$i];
         if ($arg === '--help' || $arg === '-h') {
@@ -56,12 +57,50 @@ function parseArgs(array $argv): array {
             }
             continue;
         }
+        if ($arg === '--case-formats') {
+            if ($i + 1 >= count($argv)) {
+                fwrite(STDERR, "error: --case-formats requires a non-empty value\n");
+                usage();
+                exit(2);
+            }
+            $caseFormatsRaw = trim((string)$argv[++$i]);
+            if ($caseFormatsRaw === '') {
+                fwrite(STDERR, "error: --case-formats requires a non-empty value\n");
+                usage();
+                exit(2);
+            }
+            continue;
+        }
     }
     if ($out === null || $cases === null) {
         usage();
         exit(2);
     }
-    return ['out' => $out, 'cases' => $cases, 'case_pattern' => $casePattern];
+    $parts = preg_split('/\s*,\s*/', strtolower($caseFormatsRaw)) ?: [];
+    $formats = [];
+    foreach ($parts as $p) {
+        $v = trim((string)$p);
+        if ($v === '') {
+            continue;
+        }
+        if ($v !== 'md' && $v !== 'yaml' && $v !== 'json') {
+            fwrite(STDERR, "error: unsupported case format: {$v}\n");
+            usage();
+            exit(2);
+        }
+        $formats[$v] = true;
+    }
+    if (count($formats) === 0) {
+        fwrite(STDERR, "error: --case-formats requires at least one format\n");
+        usage();
+        exit(2);
+    }
+    return [
+        'out' => $out,
+        'cases' => $cases,
+        'case_pattern' => $casePattern,
+        'case_formats' => array_keys($formats),
+    ];
 }
 
 function matchesCasePattern(string $name, string $pattern): bool {
@@ -73,12 +112,36 @@ function matchesCasePattern(string $name, string $pattern): bool {
     return preg_match($regex, $name) === 1;
 }
 
-function listCaseFiles(string $path, string $pattern): array {
+function _pathMatchesFormat(string $name, array $formats, string $pattern): bool {
+    $lower = strtolower($name);
+    foreach ($formats as $fmt) {
+        if ($fmt === 'md') {
+            if (matchesCasePattern($name, $pattern)) {
+                return true;
+            }
+            continue;
+        }
+        if ($fmt === 'yaml') {
+            if (str_ends_with($lower, '.spec.yaml') || str_ends_with($lower, '.spec.yml')) {
+                return true;
+            }
+            continue;
+        }
+        if ($fmt === 'json') {
+            if (str_ends_with($lower, '.spec.json')) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function listCaseFiles(string $path, string $pattern, array $formats): array {
     if (is_file($path)) {
-        if (matchesCasePattern(basename($path), $pattern)) {
+        if (_pathMatchesFormat(basename($path), $formats, $pattern)) {
             return [$path];
         }
-        throw new RuntimeException("cases path is a file but does not match case pattern ({$pattern}): {$path}");
+        throw new RuntimeException("cases path is a file but does not match enabled formats/pattern: {$path}");
     }
     $files = [];
     $items = scandir($path);
@@ -93,7 +156,7 @@ function listCaseFiles(string $path, string $pattern): array {
         if (!is_file($itemPath)) {
             continue;
         }
-        if (matchesCasePattern($item, $pattern)) {
+        if (_pathMatchesFormat($item, $formats, $pattern)) {
             $files[] = $itemPath;
         }
     }
@@ -224,7 +287,62 @@ function parseMarkdownCases(string $path): array {
     return $cases;
 }
 
+function _validateParsedCasePayload(mixed $payload, string $path): array {
+    if (is_array($payload) && isListArray($payload)) {
+        $cases = [];
+        foreach ($payload as $test) {
+            if (!is_array($test)) {
+                throw new RuntimeException("spec payload in {$path} contains a non-mapping test");
+            }
+            if (!array_key_exists('id', $test) || !array_key_exists('type', $test)) {
+                throw new RuntimeException("spec in {$path} must include 'id' and 'type'");
+            }
+            $cases[] = $test;
+        }
+        return $cases;
+    }
+    if (is_array($payload)) {
+        if (!array_key_exists('id', $payload) || !array_key_exists('type', $payload)) {
+            throw new RuntimeException("spec in {$path} must include 'id' and 'type'");
+        }
+        return [$payload];
+    }
+    throw new RuntimeException("spec payload in {$path} must be a mapping or a list of mappings");
+}
+
+function parseYamlCases(string $path): array {
+    if (!function_exists('yaml_parse')) {
+        throw new RuntimeException('yaml_parse extension is required for YAML spec cases');
+    }
+    $raw = file_get_contents($path);
+    if ($raw === false) {
+        throw new RuntimeException("cannot read fixture file: {$path}");
+    }
+    $payload = @yaml_parse($raw);
+    return _validateParsedCasePayload($payload, $path);
+}
+
+function parseJsonCases(string $path): array {
+    $raw = file_get_contents($path);
+    if ($raw === false) {
+        throw new RuntimeException("cannot read fixture file: {$path}");
+    }
+    try {
+        $payload = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+    } catch (JsonException $e) {
+        throw new RuntimeException("invalid JSON in {$path}: " . $e->getMessage());
+    }
+    return _validateParsedCasePayload($payload, $path);
+}
+
 function parseCases(string $path): array {
+    $lower = strtolower($path);
+    if (str_ends_with($lower, '.spec.yaml') || str_ends_with($lower, '.spec.yml')) {
+        return parseYamlCases($path);
+    }
+    if (str_ends_with($lower, '.spec.json')) {
+        return parseJsonCases($path);
+    }
     return parseMarkdownCases($path);
 }
 
@@ -642,6 +760,16 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         return array_key_exists((string)$right, $left);
     }
+    if ($op === 'regex_match') {
+        specLangRequireArity($op, $args, 2);
+        $subjectText = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $pattern = (string)specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        $ok = @preg_match('/' . str_replace('/', '\\/', $pattern) . '/u', $subjectText);
+        if ($ok === false) {
+            throw new SchemaError("invalid regex pattern: {$pattern}");
+        }
+        return $ok === 1;
+    }
     if ($op === 'eq') {
         specLangRequireArity($op, $args, 2);
         return specLangEvalNonTail($args[0], $env, $subject, $limits, $state) === specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
@@ -701,6 +829,26 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             return strtolower($value);
         }
         return strtoupper($value);
+    }
+    if ($op === 'json_parse') {
+        specLangRequireArity($op, $args, 1);
+        $raw = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!is_string($raw)) {
+            throw new SchemaError('spec_lang json_parse expects string input');
+        }
+        try {
+            return json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new SchemaError('spec_lang json_parse invalid JSON');
+        }
+    }
+    if ($op === 'path_exists') {
+        specLangRequireArity($op, $args, 1);
+        $path = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if ($path === '') {
+            return false;
+        }
+        return file_exists($path);
     }
     if ($op === 'add' || $op === 'sub') {
         specLangRequireArity($op, $args, 2);
@@ -1483,7 +1631,7 @@ function evaluateCase(string $fixturePath, mixed $case): array {
 
 function main(array $argv): int {
     $args = parseArgs($argv);
-    $caseFiles = listCaseFiles($args['cases'], (string)$args['case_pattern']);
+    $caseFiles = listCaseFiles($args['cases'], (string)$args['case_pattern'], $args['case_formats']);
 
     $results = [];
     foreach ($caseFiles as $path) {

@@ -331,3 +331,56 @@ def test_php_spec_runner_rejects_empty_pattern_arg(tmp_path):
     )
     assert cp.returncode == 2
     assert "case-file-pattern requires a non-empty value" in cp.stderr
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_spec_runner_can_load_yaml_and_json_cases_with_opt_in_formats(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/spec_runner.php"
+    cases_dir = tmp_path / "cases"
+    out_json = tmp_path / "php-report.json"
+    cases_dir.mkdir(parents=True)
+
+    (cases_dir / "yaml_case.spec.yaml").write_text(
+        """id: SR-PHP-FMT-001
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["SR-PHP-FMT-001"]
+""",
+        encoding="utf-8",
+    )
+    (cases_dir / "json_case.spec.json").write_text(
+        json.dumps(
+            {
+                "id": "SR-PHP-FMT-002",
+                "type": "text.file",
+                "assert": [{"target": "text", "must": [{"contain": ["SR-PHP-FMT-002"]}]}],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    cp = subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--case-formats",
+            "yaml,json",
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    assert cp.returncode == 0
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    assert validate_conformance_report_payload(payload) == []
+    ids = [str(x["id"]) for x in payload.get("results", [])]
+    assert sorted(ids) == ["SR-PHP-FMT-001", "SR-PHP-FMT-002"]

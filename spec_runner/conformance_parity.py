@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
@@ -23,6 +23,7 @@ class ParityConfig:
     cases_dir: Path
     php_runner: Path
     python_runner: Path = Path("scripts/python/conformance_runner.py")
+    case_formats: set[str] = field(default_factory=lambda: {"md"})
     python_timeout_seconds: int = 30
     php_timeout_seconds: int = 30
 
@@ -110,10 +111,16 @@ def _shared_capability_ids(
     *,
     python_capabilities: set[str],
     php_capabilities: set[str],
+    case_formats: set[str] | None = None,
 ) -> set[str]:
     shared_caps = set(python_capabilities) & set(php_capabilities)
     shared_ids: set[str] = set()
-    for _fixture, case in load_conformance_cases(cases_dir):
+    try:
+        cases = load_conformance_cases(cases_dir, case_formats=case_formats)
+    except TypeError:
+        # Backward compatibility for tests/mocks that patch the old signature.
+        cases = load_conformance_cases(cases_dir)
+    for _fixture, case in cases:
         rid = str(case.get("id", "")).strip()
         if not rid:
             continue
@@ -137,6 +144,7 @@ def run_python_report(
     cases_dir: Path,
     python_runner: Path,
     *,
+    case_formats: set[str] | None = None,
     timeout_seconds: int = 30,
 ) -> dict[str, Any]:
     with TemporaryDirectory(prefix="spec-runner-parity-") as td:
@@ -148,6 +156,8 @@ def run_python_report(
                     str(python_runner),
                     "--cases",
                     str(cases_dir),
+                    "--case-formats",
+                    ",".join(sorted(case_formats or {"md"})),
                     "--out",
                     str(out_path),
                 ],
@@ -170,7 +180,13 @@ def run_python_report(
         return json.loads(out_path.read_text(encoding="utf-8"))
 
 
-def run_php_report(cases_dir: Path, php_runner: Path, *, timeout_seconds: int = 30) -> dict[str, Any]:
+def run_php_report(
+    cases_dir: Path,
+    php_runner: Path,
+    *,
+    case_formats: set[str] | None = None,
+    timeout_seconds: int = 30,
+) -> dict[str, Any]:
     with TemporaryDirectory(prefix="spec-runner-parity-") as td:
         out_path = Path(td) / "php-conformance-report.json"
         try:
@@ -180,6 +196,8 @@ def run_php_report(cases_dir: Path, php_runner: Path, *, timeout_seconds: int = 
                     str(php_runner),
                     "--cases",
                     str(cases_dir),
+                    "--case-formats",
+                    ",".join(sorted(case_formats or {"md"})),
                     "--out",
                     str(out_path),
                 ],
@@ -206,11 +224,13 @@ def run_parity_check(config: ParityConfig) -> list[str]:
     python_payload = run_python_report(
         config.cases_dir,
         config.python_runner,
+        case_formats=config.case_formats,
         timeout_seconds=int(config.python_timeout_seconds),
     )
     php_payload = run_php_report(
         config.cases_dir,
         config.php_runner,
+        case_formats=config.case_formats,
         timeout_seconds=int(config.php_timeout_seconds),
     )
 
@@ -222,7 +242,14 @@ def run_parity_check(config: ParityConfig) -> list[str]:
     if errors:
         return errors
 
-    expected = load_expected_results(config.cases_dir, implementation="python")
+    try:
+        expected = load_expected_results(
+            config.cases_dir,
+            implementation="python",
+            case_formats=config.case_formats,
+        )
+    except TypeError:
+        expected = load_expected_results(config.cases_dir, implementation="python")
     python_actual = [
         ConformanceResult(
             id=str(r.get("id", "")),
@@ -232,7 +259,14 @@ def run_parity_check(config: ParityConfig) -> list[str]:
         )
         for r in python_payload.get("results", [])
     ]
-    php_expected = load_expected_results(config.cases_dir, implementation="php")
+    try:
+        php_expected = load_expected_results(
+            config.cases_dir,
+            implementation="php",
+            case_formats=config.case_formats,
+        )
+    except TypeError:
+        php_expected = load_expected_results(config.cases_dir, implementation="php")
     php_actual = [
         ConformanceResult(
             id=str(r.get("id", "")),
@@ -249,6 +283,7 @@ def run_parity_check(config: ParityConfig) -> list[str]:
         config.cases_dir,
         python_capabilities=default_capabilities_for("python"),
         php_capabilities=default_capabilities_for("php"),
+        case_formats=config.case_formats,
     )
     parity_scope_ids = expected_shared & capability_shared
     errors.extend(compare_parity_reports(python_payload, php_payload, include_ids=parity_scope_ids))

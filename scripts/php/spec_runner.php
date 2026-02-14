@@ -13,7 +13,7 @@ declare(strict_types=1);
  */
 
 function usage(): void {
-    fwrite(STDOUT, "usage: spec_runner.php --cases <dir-or-file> --out <file> [--case-file-pattern <glob>]\n");
+    fwrite(STDOUT, "usage: spec_runner.php --cases <dir-or-file> --out <file> [--case-file-pattern <glob>] [--case-formats <csv>]\n");
 }
 
 const DEFAULT_CASE_FILE_PATTERN = '*.spec.md';
@@ -38,6 +38,7 @@ function parseArgs(array $argv): array {
     $out = null;
     $cases = null;
     $casePattern = DEFAULT_CASE_FILE_PATTERN;
+    $caseFormatsRaw = 'md';
     for ($i = 1; $i < count($argv); $i++) {
         $arg = $argv[$i];
         if ($arg === '--help' || $arg === '-h') {
@@ -66,12 +67,50 @@ function parseArgs(array $argv): array {
             }
             continue;
         }
+        if ($arg === '--case-formats') {
+            if ($i + 1 >= count($argv)) {
+                fwrite(STDERR, "error: --case-formats requires a non-empty value\n");
+                usage();
+                exit(2);
+            }
+            $caseFormatsRaw = trim((string)$argv[++$i]);
+            if ($caseFormatsRaw === '') {
+                fwrite(STDERR, "error: --case-formats requires a non-empty value\n");
+                usage();
+                exit(2);
+            }
+            continue;
+        }
     }
     if ($out === null || $cases === null) {
         usage();
         exit(2);
     }
-    return ['out' => $out, 'cases' => $cases, 'case_pattern' => $casePattern];
+    $parts = preg_split('/\s*,\s*/', strtolower($caseFormatsRaw)) ?: [];
+    $formats = [];
+    foreach ($parts as $p) {
+        $v = trim((string)$p);
+        if ($v === '') {
+            continue;
+        }
+        if ($v !== 'md' && $v !== 'yaml' && $v !== 'json') {
+            fwrite(STDERR, "error: unsupported case format: {$v}\n");
+            usage();
+            exit(2);
+        }
+        $formats[$v] = true;
+    }
+    if (count($formats) === 0) {
+        fwrite(STDERR, "error: --case-formats requires at least one format\n");
+        usage();
+        exit(2);
+    }
+    return [
+        'out' => $out,
+        'cases' => $cases,
+        'case_pattern' => $casePattern,
+        'case_formats' => array_keys($formats),
+    ];
 }
 
 function matchesCasePattern(string $name, string $pattern): bool {
@@ -83,12 +122,36 @@ function matchesCasePattern(string $name, string $pattern): bool {
     return preg_match($regex, $name) === 1;
 }
 
-function listCaseFiles(string $path, string $pattern): array {
+function _pathMatchesFormat(string $name, array $formats, string $pattern): bool {
+    $lower = strtolower($name);
+    foreach ($formats as $fmt) {
+        if ($fmt === 'md') {
+            if (matchesCasePattern($name, $pattern)) {
+                return true;
+            }
+            continue;
+        }
+        if ($fmt === 'yaml') {
+            if (str_ends_with($lower, '.spec.yaml') || str_ends_with($lower, '.spec.yml')) {
+                return true;
+            }
+            continue;
+        }
+        if ($fmt === 'json') {
+            if (str_ends_with($lower, '.spec.json')) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function listCaseFiles(string $path, string $pattern, array $formats): array {
     if (is_file($path)) {
-        if (matchesCasePattern(basename($path), $pattern)) {
+        if (_pathMatchesFormat(basename($path), $formats, $pattern)) {
             return [$path];
         }
-        throw new RuntimeException("cases path is a file but does not match case pattern ({$pattern}): {$path}");
+        throw new RuntimeException("cases path is a file but does not match enabled formats/pattern: {$path}");
     }
     $files = [];
     $items = scandir($path);
@@ -103,7 +166,7 @@ function listCaseFiles(string $path, string $pattern): array {
         if (!is_file($itemPath)) {
             continue;
         }
-        if (matchesCasePattern($item, $pattern)) {
+        if (_pathMatchesFormat($item, $formats, $pattern)) {
             $files[] = $itemPath;
         }
     }
@@ -219,7 +282,62 @@ function parseMarkdownCases(string $path): array {
     return $cases;
 }
 
+function _validateParsedCasePayload(mixed $payload, string $path): array {
+    if (is_array($payload) && isListArray($payload)) {
+        $cases = [];
+        foreach ($payload as $test) {
+            if (!is_array($test)) {
+                throw new RuntimeException("spec payload in {$path} contains a non-mapping test");
+            }
+            if (!array_key_exists('id', $test) || !array_key_exists('type', $test)) {
+                throw new RuntimeException("spec in {$path} must include 'id' and 'type'");
+            }
+            $cases[] = $test;
+        }
+        return $cases;
+    }
+    if (is_array($payload)) {
+        if (!array_key_exists('id', $payload) || !array_key_exists('type', $payload)) {
+            throw new RuntimeException("spec in {$path} must include 'id' and 'type'");
+        }
+        return [$payload];
+    }
+    throw new RuntimeException("spec payload in {$path} must be a mapping or a list of mappings");
+}
+
+function parseYamlCases(string $path): array {
+    if (!function_exists('yaml_parse')) {
+        throw new RuntimeException('yaml_parse extension is required for YAML spec cases');
+    }
+    $raw = file_get_contents($path);
+    if ($raw === false) {
+        throw new RuntimeException("cannot read fixture file: {$path}");
+    }
+    $payload = @yaml_parse($raw);
+    return _validateParsedCasePayload($payload, $path);
+}
+
+function parseJsonCases(string $path): array {
+    $raw = file_get_contents($path);
+    if ($raw === false) {
+        throw new RuntimeException("cannot read fixture file: {$path}");
+    }
+    try {
+        $payload = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+    } catch (JsonException $e) {
+        throw new RuntimeException("invalid JSON in {$path}: " . $e->getMessage());
+    }
+    return _validateParsedCasePayload($payload, $path);
+}
+
 function parseCases(string $path): array {
+    $lower = strtolower($path);
+    if (str_ends_with($lower, '.spec.yaml') || str_ends_with($lower, '.spec.yml')) {
+        return parseYamlCases($path);
+    }
+    if (str_ends_with($lower, '.spec.json')) {
+        return parseJsonCases($path);
+    }
     return parseMarkdownCases($path);
 }
 
@@ -959,28 +1077,19 @@ function evalTextLeaf(array $leaf, string $subject, string $target, string $case
             throw new SchemaError("assertion op '{$op}' must be a list");
         }
         foreach ($raw as $value) {
+            $expr = null;
             if ($op === 'evaluate') {
-                if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
-                    throw new AssertionFailure(
-                        "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] evaluate assertion failed"
-                    );
-                }
-                continue;
-            }
-            $v = (string)$value;
-            if ($op === 'contain') {
-                if (strpos($subject, $v) === false) {
-                    throw new AssertionFailure(
-                        "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
-                    );
-                }
+                $expr = $value;
+            } elseif ($op === 'contain') {
+                $expr = ['contains', ['subject'], (string)$value];
             } else {
-                $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
-                if ($ok !== 1) {
-                    throw new AssertionFailure(
-                        "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
-                    );
-                }
+                $expr = ['regex_match', ['subject'], (string)$value];
+            }
+            if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
+                $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
+                throw new AssertionFailure(
+                    "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
+                );
             }
         }
     }
@@ -1015,49 +1124,31 @@ function evalCliLeaf(
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
+                $expr = null;
                 if ($op === 'evaluate') {
-                    if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] evaluate assertion failed"
-                        );
-                    }
-                    continue;
-                }
-                if ($op === 'contain') {
-                    $v = (string)$value;
-                    if (strpos($subject, $v) === false) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
-                        );
-                    }
-                    continue;
-                }
-                if ($op === 'regex') {
-                    $v = (string)$value;
-                    $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
-                    if ($ok !== 1) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
-                        );
-                    }
-                    continue;
-                }
-                $want = strtolower(trim((string)$value));
-                $parsed = json_decode($subject, true);
-                if ($want === 'list') {
-                    if (!is_array($parsed) || !isListArray($parsed)) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(list) failed"
-                        );
-                    }
-                } elseif ($want === 'dict') {
-                    if (!is_array($parsed) || isListArray($parsed)) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(dict) failed"
-                        );
-                    }
+                    $expr = $value;
+                } elseif ($op === 'contain') {
+                    $expr = ['contains', ['subject'], (string)$value];
+                } elseif ($op === 'regex') {
+                    $expr = ['regex_match', ['subject'], (string)$value];
                 } else {
-                    throw new SchemaError("unsupported json_type: {$value}");
+                    $want = strtolower(trim((string)$value));
+                    if ($want !== 'list' && $want !== 'dict') {
+                        throw new SchemaError("unsupported json_type: {$value}");
+                    }
+                    $expr = ['json_type', ['json_parse', ['subject']], $want];
+                }
+                if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
+                    if ($op === 'json_type') {
+                        $want = strtolower(trim((string)$value));
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type({$want}) failed"
+                        );
+                    }
+                    $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
+                    throw new AssertionFailure(
+                        "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
+                    );
                 }
             }
             continue;
@@ -1076,7 +1167,7 @@ function evalCliLeaf(
                 if ($value !== true && $value !== null) {
                     throw new SchemaError('stdout_path.exists only supports value: true (or null)');
                 }
-                if (!file_exists($line)) {
+                if (!specLangEvalPredicate(['path_exists', ['subject']], $line, $specLangLimits)) {
                     throw new AssertionFailure(
                         "[case_id={$caseId} assert_path={$path} target={$target} op=exists] path does not exist"
                     );
@@ -1101,28 +1192,19 @@ function evalCliLeaf(
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
+                $expr = null;
                 if ($op === 'evaluate') {
-                    if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] evaluate assertion failed"
-                        );
-                    }
-                    continue;
-                }
-                $v = (string)$value;
-                if ($op === 'contain') {
-                    if (strpos($subject, $v) === false) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
-                        );
-                    }
+                    $expr = $value;
+                } elseif ($op === 'contain') {
+                    $expr = ['contains', ['subject'], (string)$value];
                 } else {
-                    $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
-                    if ($ok !== 1) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
-                        );
-                    }
+                    $expr = ['regex_match', ['subject'], (string)$value];
+                }
+                if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
+                    $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
+                    throw new AssertionFailure(
+                        "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
+                    );
                 }
             }
             continue;
@@ -1363,49 +1445,31 @@ function evalApiHttpLeaf(
                 throw new SchemaError("unsupported op: {$op}");
             }
             foreach ($raw as $value) {
+                $expr = null;
                 if ($op === 'evaluate') {
-                    if (!specLangEvalPredicate($value, $subject, $specLangLimits)) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] evaluate assertion failed"
-                        );
-                    }
-                    continue;
-                }
-                if ($op === 'contain') {
-                    $v = (string)$value;
-                    if (strpos($subject, $v) === false) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
-                        );
-                    }
-                    continue;
-                }
-                if ($op === 'regex') {
-                    $v = (string)$value;
-                    $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
-                    if ($ok !== 1) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
-                        );
-                    }
-                    continue;
-                }
-                $parsed = json_decode($subject, true);
-                $want = strtolower(trim((string)$value));
-                if ($want === 'list') {
-                    if (!is_array($parsed) || !isListArray($parsed)) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(list) failed"
-                        );
-                    }
-                } elseif ($want === 'dict') {
-                    if (!is_array($parsed) || isListArray($parsed)) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(dict) failed"
-                        );
-                    }
+                    $expr = $value;
+                } elseif ($op === 'contain') {
+                    $expr = ['contains', ['subject'], (string)$value];
+                } elseif ($op === 'regex') {
+                    $expr = ['regex_match', ['subject'], (string)$value];
                 } else {
-                    throw new SchemaError("unsupported json_type: {$value}");
+                    $want = strtolower(trim((string)$value));
+                    if ($want !== 'list' && $want !== 'dict') {
+                        throw new SchemaError("unsupported json_type: {$value}");
+                    }
+                    $expr = ['json_type', ['json_parse', ['subject']], $want];
+                }
+                if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
+                    if ($op === 'json_type') {
+                        $want = strtolower(trim((string)$value));
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type({$want}) failed"
+                        );
+                    }
+                    $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
+                    throw new AssertionFailure(
+                        "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
+                    );
                 }
             }
             continue;
@@ -1431,20 +1495,13 @@ function evalApiHttpLeaf(
                 }
                 if ($op === 'json_type') {
                     $want = strtolower(trim((string)$value));
-                    if ($want === 'list') {
-                        if (!is_array($parsed) || !isListArray($parsed)) {
-                            throw new AssertionFailure(
-                                "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(list) failed"
-                            );
-                        }
-                    } elseif ($want === 'dict') {
-                        if (!is_array($parsed) || isListArray($parsed)) {
-                            throw new AssertionFailure(
-                                "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type(dict) failed"
-                            );
-                        }
-                    } else {
+                    if ($want !== 'list' && $want !== 'dict') {
                         throw new SchemaError("unsupported json_type: {$value}");
+                    }
+                    if (!specLangEvalPredicate(['json_type', ['subject'], $want], $parsed, $specLangLimits)) {
+                        throw new AssertionFailure(
+                            "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type({$want}) failed"
+                        );
                     }
                     continue;
                 }
@@ -1452,20 +1509,13 @@ function evalApiHttpLeaf(
                 if ($subject === false) {
                     throw new RuntimeException('failed to serialize body_json');
                 }
-                if ($op === 'contain') {
-                    if (strpos($subject, (string)$value) === false) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=contain] contain assertion failed"
-                        );
-                    }
-                } else {
-                    $v = (string)$value;
-                    $ok = @preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject);
-                    if ($ok !== 1) {
-                        throw new AssertionFailure(
-                            "[case_id={$caseId} assert_path={$path} target={$target} op=regex] regex assertion failed"
-                        );
-                    }
+                $expr = $op === 'contain'
+                    ? ['contains', ['subject'], (string)$value]
+                    : ['regex_match', ['subject'], (string)$value];
+                if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
+                    throw new AssertionFailure(
+                        "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$op} assertion failed"
+                    );
                 }
             }
             continue;
@@ -1625,7 +1675,7 @@ function evaluateCase(string $fixturePath, mixed $case): array {
 
 function main(array $argv): int {
     $args = parseArgs($argv);
-    $caseFiles = listCaseFiles($args['cases'], (string)$args['case_pattern']);
+    $caseFiles = listCaseFiles($args['cases'], (string)$args['case_pattern'], $args['case_formats']);
 
     $results = [];
     foreach ($caseFiles as $path) {

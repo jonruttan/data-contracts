@@ -196,6 +196,7 @@ Run end-to-end Python/PHP parity over canonical conformance cases:
 ```sh
 python scripts/compare_conformance_parity.py \
   --cases docs/spec/conformance/cases \
+  --case-formats md \
   --php-runner scripts/php/conformance_runner.php \
   --php-timeout-seconds 30 \
   --out .artifacts/conformance-parity.json

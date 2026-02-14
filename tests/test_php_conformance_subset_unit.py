@@ -303,6 +303,57 @@ assert:
 
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_bootstrap_runner_can_load_yaml_and_json_cases_with_opt_in_formats(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
+    cases_dir = tmp_path / "docs_spec"
+    out_json = tmp_path / "php-md-report.json"
+    cases_dir.mkdir(parents=True)
+    (cases_dir / "a.spec.yaml").write_text(
+        """id: SRCONF-PHP-FMT-001
+type: text.file
+assert:
+  - target: text
+    must:
+      - contain: ["SRCONF-PHP-FMT-001"]
+""",
+        encoding="utf-8",
+    )
+    (cases_dir / "b.spec.json").write_text(
+        json.dumps(
+            {
+                "id": "SRCONF-PHP-FMT-002",
+                "type": "text.file",
+                "assert": [{"target": "text", "must": [{"contain": ["SRCONF-PHP-FMT-002"]}]}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(cases_dir),
+            "--case-formats",
+            "yaml,json",
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    errs = validate_conformance_report_payload(payload)
+    assert errs == []
+    ids = [str(r["id"]) for r in payload.get("results", [])]
+    assert sorted(ids) == ["SRCONF-PHP-FMT-001", "SRCONF-PHP-FMT-002"]
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_bootstrap_runner_honors_global_assert_health_env_warn(tmp_path):
     repo_root = Path(__file__).resolve().parents[1]
     php_runner = repo_root / "scripts/php/conformance_runner.php"

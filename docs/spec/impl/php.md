@@ -70,6 +70,8 @@ Bootstrap parity subset fixture:
 - Reads Markdown case files from a directory or single file path using
   case-file pattern, overrideable via
   `--case-file-pattern`.
+- Default discovery format is Markdown (`md`); opt-in formats are available via
+  `--case-formats md,yaml,json` (default: `md`).
 - Executes core case types:
   - `text.file`
   - `cli.run`

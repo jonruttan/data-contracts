@@ -40,6 +40,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional path to write JSON parity artifact",
     )
     ap.add_argument(
+        "--case-formats",
+        default="md",
+        help="Comma-separated case formats to load (md,yaml,json). Default: md",
+    )
+    ap.add_argument(
         "--php-timeout-seconds",
         type=int,
         default=30,
@@ -61,10 +66,19 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: {msg}", file=sys.stderr)
         return 2
 
+    case_formats = {x.strip() for x in str(ns.case_formats).split(",") if x.strip()}
+    if not case_formats:
+        msg = "--case-formats requires at least one format"
+        if out_path is not None:
+            _write_artifact(out_path, build_parity_artifact([msg]))
+        print(f"ERROR: {msg}", file=sys.stderr)
+        return 2
+
     cfg = ParityConfig(
         cases_dir=Path(ns.cases),
         php_runner=Path(ns.php_runner),
         python_runner=Path(ns.python_runner),
+        case_formats=case_formats,
         python_timeout_seconds=int(ns.python_timeout_seconds),
         php_timeout_seconds=int(ns.php_timeout_seconds),
     )
