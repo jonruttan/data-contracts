@@ -2069,7 +2069,7 @@ harness:
     manifest: docs/book/reference_manifest.yaml
     index_out: docs/book/reference_index.md
     coverage_out: docs/book/reference_coverage.md
-    graph_out: .artifacts/docs_graph.json
+    graph_out: docs/book/docs_graph.json
 assert:
   - target: text
     must:
@@ -2090,7 +2090,7 @@ assert:
     _write_text(tmp_path / "docs/book/reference_index.md", render_reference_index(manifest))
     _write_text(tmp_path / "docs/book/reference_coverage.md", render_reference_coverage(tmp_path, metas))
     _write_text(
-        tmp_path / ".artifacts/docs_graph.json",
+        tmp_path / "docs/book/docs_graph.json",
         _json.dumps(build_docs_graph(tmp_path, metas), indent=2, sort_keys=True) + "\n",
     )
 

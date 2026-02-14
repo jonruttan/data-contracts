@@ -14,7 +14,7 @@ harness:
     manifest: docs/book/reference_manifest.yaml
     index_out: docs/book/reference_index.md
     coverage_out: docs/book/reference_coverage.md
-    graph_out: .artifacts/docs_graph.json
+    graph_out: docs/book/docs_graph.json
 assert:
   - target: text
     must:

@@ -28,7 +28,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--manifest", default="docs/book/reference_manifest.yaml")
     ap.add_argument("--index-out", default="docs/book/reference_index.md")
     ap.add_argument("--coverage-out", default="docs/book/reference_coverage.md")
-    ap.add_argument("--graph-out", default=".artifacts/docs_graph.json")
+    ap.add_argument("--graph-out", default="docs/book/docs_graph.json")
     ap.add_argument("--check", action="store_true", help="Verify generated files are up-to-date")
     ns = ap.parse_args(argv)
 

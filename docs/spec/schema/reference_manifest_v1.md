@@ -39,6 +39,6 @@ Generation/verification:
 - `scripts/docs_build_reference.py` renders:
   - `docs/book/reference_index.md`
   - `docs/book/reference_coverage.md`
-  - `.artifacts/docs_graph.json`
+  - `docs/book/docs_graph.json`
 - `scripts/docs_build_reference.py --check` fails when generated files are out
   of date with manifest + docs metadata.

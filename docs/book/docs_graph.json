@@ -1,0 +1,225 @@
+{
+  "edges": [
+    {
+      "from": "docs/book/00_first_10_minutes.md",
+      "kind": "owns_token",
+      "to": "first_run_walkthrough"
+    },
+    {
+      "from": "docs/book/00_first_10_minutes.md",
+      "kind": "owns_token",
+      "to": "trusted_inputs_required"
+    },
+    {
+      "from": "docs/book/00_first_10_minutes.md",
+      "kind": "requires_token",
+      "to": "quickstart_minimal_case"
+    },
+    {
+      "from": "docs/book/00_first_10_minutes.md",
+      "kind": "command",
+      "to": "python -m pip install -e '.[dev]'"
+    },
+    {
+      "from": "docs/book/00_first_10_minutes.md",
+      "kind": "command",
+      "to": "./scripts/ci_gate.sh"
+    },
+    {
+      "from": "docs/book/00_first_10_minutes.md",
+      "kind": "example",
+      "to": "EX-FIRST10-001"
+    },
+    {
+      "from": "docs/book/01_quickstart.md",
+      "kind": "owns_token",
+      "to": "quickstart_minimal_case"
+    },
+    {
+      "from": "docs/book/01_quickstart.md",
+      "kind": "owns_token",
+      "to": "quickstart_gate"
+    },
+    {
+      "from": "docs/book/01_quickstart.md",
+      "kind": "requires_token",
+      "to": "core_case_model"
+    },
+    {
+      "from": "docs/book/01_quickstart.md",
+      "kind": "command",
+      "to": "./scripts/ci_gate.sh"
+    },
+    {
+      "from": "docs/book/01_quickstart.md",
+      "kind": "example",
+      "to": "EX-QUICKSTART-001"
+    },
+    {
+      "from": "docs/book/02_core_model.md",
+      "kind": "owns_token",
+      "to": "core_case_model"
+    },
+    {
+      "from": "docs/book/02_core_model.md",
+      "kind": "owns_token",
+      "to": "harness_namespace_rule"
+    },
+    {
+      "from": "docs/book/02_core_model.md",
+      "kind": "owns_token",
+      "to": "discovery_model"
+    },
+    {
+      "from": "docs/book/02_core_model.md",
+      "kind": "requires_token",
+      "to": "must"
+    },
+    {
+      "from": "docs/book/02_core_model.md",
+      "kind": "command",
+      "to": "python scripts/run_governance_specs.py"
+    },
+    {
+      "from": "docs/book/02_core_model.md",
+      "kind": "example",
+      "to": "EX-COREMODEL-001"
+    },
+    {
+      "from": "docs/book/03_assertions.md",
+      "kind": "owns_token",
+      "to": "must"
+    },
+    {
+      "from": "docs/book/03_assertions.md",
+      "kind": "owns_token",
+      "to": "can"
+    },
+    {
+      "from": "docs/book/03_assertions.md",
+      "kind": "owns_token",
+      "to": "cannot"
+    },
+    {
+      "from": "docs/book/03_assertions.md",
+      "kind": "owns_token",
+      "to": "evaluate"
+    },
+    {
+      "from": "docs/book/03_assertions.md",
+      "kind": "requires_token",
+      "to": "spec-lang"
+    },
+    {
+      "from": "docs/book/03_assertions.md",
+      "kind": "command",
+      "to": "python scripts/evaluate_style.py --check docs/spec"
+    },
+    {
+      "from": "docs/book/03_assertions.md",
+      "kind": "example",
+      "to": "EX-ASSERTIONS-001"
+    },
+    {
+      "from": "docs/book/04_spec_lang_reference.md",
+      "kind": "owns_token",
+      "to": "spec-lang"
+    },
+    {
+      "from": "docs/book/04_spec_lang_reference.md",
+      "kind": "owns_token",
+      "to": "tail-call-optimization"
+    },
+    {
+      "from": "docs/book/04_spec_lang_reference.md",
+      "kind": "owns_token",
+      "to": "spec_lang_forms"
+    },
+    {
+      "from": "docs/book/04_spec_lang_reference.md",
+      "kind": "requires_token",
+      "to": "minimal_examples"
+    },
+    {
+      "from": "docs/book/04_spec_lang_reference.md",
+      "kind": "command",
+      "to": "python scripts/evaluate_style.py --check docs/spec"
+    },
+    {
+      "from": "docs/book/04_spec_lang_reference.md",
+      "kind": "example",
+      "to": "EX-SPECLANG-001"
+    },
+    {
+      "from": "docs/book/appendix_cheatsheet.md",
+      "kind": "owns_token",
+      "to": "cheatsheet"
+    },
+    {
+      "from": "docs/book/appendix_cheatsheet.md",
+      "kind": "owns_token",
+      "to": "minimal_examples"
+    },
+    {
+      "from": "docs/book/appendix_cheatsheet.md",
+      "kind": "requires_token",
+      "to": "first_run_walkthrough"
+    },
+    {
+      "from": "docs/book/appendix_cheatsheet.md",
+      "kind": "command",
+      "to": "python scripts/evaluate_style.py --check docs/spec"
+    },
+    {
+      "from": "docs/book/appendix_cheatsheet.md",
+      "kind": "example",
+      "to": "EX-CHEATSHEET-001"
+    }
+  ],
+  "nodes": [
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-001",
+      "path": "docs/book/00_first_10_minutes.md",
+      "status": "active",
+      "title": "First 10 Minutes (Deterministic Walkthrough)"
+    },
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-002",
+      "path": "docs/book/01_quickstart.md",
+      "status": "active",
+      "title": "Chapter 1 Quickstart"
+    },
+    {
+      "audience": "maintainer",
+      "doc_id": "DOC-REF-003",
+      "path": "docs/book/02_core_model.md",
+      "status": "active",
+      "title": "Chapter 2 Core Model"
+    },
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-004",
+      "path": "docs/book/03_assertions.md",
+      "status": "active",
+      "title": "Chapter 3 Assertions"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-005",
+      "path": "docs/book/04_spec_lang_reference.md",
+      "status": "active",
+      "title": "Chapter 4 Spec-Lang Reference"
+    },
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-006",
+      "path": "docs/book/appendix_cheatsheet.md",
+      "status": "active",
+      "title": "Appendix Cheatsheet"
+    }
+  ],
+  "root": "/Users/jon/Workspace/Development/spec_runner",
+  "version": 1
+}

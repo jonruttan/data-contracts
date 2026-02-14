@@ -1249,7 +1249,7 @@ def _scan_docs_generated_files_clean(root: Path, *, harness: dict | None = None)
 
     index_rel = str(cfg.get("index_out", "docs/book/reference_index.md")).strip()
     coverage_rel = str(cfg.get("coverage_out", "docs/book/reference_coverage.md")).strip()
-    graph_rel = str(cfg.get("graph_out", ".artifacts/docs_graph.json")).strip()
+    graph_rel = str(cfg.get("graph_out", "docs/book/docs_graph.json")).strip()
     index_path = root / index_rel
     coverage_path = root / coverage_rel
     graph_path = root / graph_rel

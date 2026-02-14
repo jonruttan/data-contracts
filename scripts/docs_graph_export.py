@@ -11,7 +11,7 @@ from spec_runner.docs_quality import build_docs_graph, load_docs_meta_for_paths,
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Export docs relationship graph JSON.")
     ap.add_argument("--manifest", default="docs/book/reference_manifest.yaml")
-    ap.add_argument("--out", default=".artifacts/docs_graph.json")
+    ap.add_argument("--out", default="docs/book/docs_graph.json")
     ns = ap.parse_args(argv)
 
     root = Path.cwd()

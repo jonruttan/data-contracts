@@ -82,7 +82,7 @@ Reference generation and graph artifacts:
 - `scripts/docs_build_reference.py` renders:
   - `docs/book/reference_index.md`
   - `docs/book/reference_coverage.md`
-  - `.artifacts/docs_graph.json`
+  - `docs/book/docs_graph.json`
 - `scripts/docs_build_reference.py --check` enforces freshness.
 
 These requirements are enforced by governance checks and CI gates as hard
