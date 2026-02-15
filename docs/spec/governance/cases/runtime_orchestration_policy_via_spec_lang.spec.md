@@ -10,6 +10,11 @@ type: governance.check
 check: runtime.orchestration_policy_via_spec_lang
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   orchestration_policy:
     files:
     - path: scripts/ci_gate_summary.py
@@ -34,8 +39,7 @@ harness:
           - {subject: []}
       - 0
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

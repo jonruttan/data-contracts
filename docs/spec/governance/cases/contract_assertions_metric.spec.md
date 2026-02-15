@@ -10,6 +10,11 @@ type: governance.check
 check: spec.contract_assertions_metric
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   contract_assertions:
     paths:
     - docs/spec/contract/03_assertions.md
@@ -24,8 +29,7 @@ harness:
         - {get: [{subject: []}, summary]}
         - overall_contract_assertions_ratio
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

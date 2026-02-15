@@ -10,6 +10,11 @@ type: governance.check
 check: runtime.runner_independence_non_regression
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   runner_independence_non_regression:
     baseline_path: docs/spec/metrics/runner_independence_baseline.json
     summary_fields:
@@ -35,8 +40,7 @@ harness:
       - gate_scripts
       - ci_workflows
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

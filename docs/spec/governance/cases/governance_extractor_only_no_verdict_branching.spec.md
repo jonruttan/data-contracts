@@ -10,6 +10,11 @@ type: governance.check
 check: governance.extractor_only_no_verdict_branching
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   extractor_policy:
     path: scripts/run_governance_specs.py
     forbidden_tokens:

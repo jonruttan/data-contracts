@@ -10,6 +10,11 @@ type: governance.check
 check: runtime.assertions_via_spec_lang
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   assert_engine:
     files:
     - path: scripts/php/conformance_runner.php
@@ -55,8 +60,7 @@ harness:
       forbidden_tokens:
       - contain assertion failed
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

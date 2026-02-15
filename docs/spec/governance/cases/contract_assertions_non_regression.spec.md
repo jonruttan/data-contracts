@@ -10,6 +10,11 @@ type: governance.check
 check: spec.contract_assertions_non_regression
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   contract_assertions_non_regression:
     baseline_path: docs/spec/metrics/contract_assertions_baseline.json
     summary_fields:
@@ -25,8 +30,7 @@ harness:
       - docs/book/03_assertions.md
       - docs/spec/contract/03b_spec_lang_v1.md
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

@@ -10,6 +10,11 @@ type: governance.check
 check: conformance.portable_determinism_guard
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   determinism:
     exclude_case_keys:
     - id
@@ -50,8 +55,7 @@ harness:
           - {subject: []}
       - 0
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

@@ -1536,6 +1536,58 @@ def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | Non
     return violations
 
 
+def _scan_governance_policy_library_usage_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("policy_library_requirements")
+    if not isinstance(cfg, dict):
+        return [
+            "governance.policy_library_usage_required requires harness.policy_library_requirements mapping in governance spec"
+        ]
+    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
+    case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
+    ignore_checks_raw = cfg.get("ignore_checks", [])
+    if not isinstance(ignore_checks_raw, list) or any(not isinstance(x, str) for x in ignore_checks_raw):
+        return ["harness.policy_library_requirements.ignore_checks must be a list of strings"]
+    ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
+
+    require_reason = bool(cfg.get("require_inline_reason", True))
+    reason_key = str(cfg.get("inline_reason_key", "policy_inline_reason")).strip() or "policy_inline_reason"
+
+    cases_dir = root / cases_rel
+    if not cases_dir.exists():
+        return [f"{cases_rel}:1: governance cases path does not exist"]
+
+    violations: list[str] = []
+    for spec in iter_cases(cases_dir, file_pattern=case_pattern):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() != "governance.check":
+            continue
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        check_id = str(case.get("check", "")).strip()
+        if check_id in ignore_checks:
+            continue
+        harness_map = case.get("harness")
+        if not isinstance(harness_map, dict):
+            violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
+            continue
+        spec_lang_cfg = harness_map.get("spec_lang")
+        has_library_paths = False
+        if isinstance(spec_lang_cfg, dict):
+            lib_paths = spec_lang_cfg.get("library_paths")
+            has_library_paths = isinstance(lib_paths, list) and any(
+                isinstance(x, str) and x.strip() for x in lib_paths
+            )
+        if has_library_paths:
+            continue
+        inline_reason = harness_map.get(reason_key)
+        if require_reason and (not isinstance(inline_reason, str) or not inline_reason.strip()):
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare harness.spec_lang.library_paths "
+                f"or non-empty harness.{reason_key}"
+            )
+    return violations
+
+
 def _scan_governance_extractor_only_no_verdict_branching(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
     cfg = h.get("extractor_policy")
@@ -3373,6 +3425,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
     "docs.current_spec_policy_key_names": _scan_current_spec_policy_key_names,
     "governance.policy_evaluate_required": _scan_governance_policy_evaluate_required,
+    "governance.policy_library_usage_required": _scan_governance_policy_library_usage_required,
     "governance.extractor_only_no_verdict_branching": _scan_governance_extractor_only_no_verdict_branching,
     "governance.structured_assertions_required": _scan_governance_structured_assertions_required,
     "runtime.rust_adapter_no_python_exec": _scan_runtime_rust_adapter_no_python_exec,

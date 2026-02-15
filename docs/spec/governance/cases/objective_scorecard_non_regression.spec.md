@@ -10,6 +10,11 @@ type: governance.check
 check: objective.scorecard_non_regression
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   objective_scorecard_non_regression:
     baseline_path: docs/spec/metrics/objective_scorecard_baseline.json
     summary_fields:
@@ -29,8 +34,7 @@ harness:
       - docs/spec/metrics/contract_assertions_baseline.json
       - docs/spec/metrics/objective_scorecard_baseline.json
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

@@ -10,6 +10,11 @@ type: governance.check
 check: docs.cli_flags_documented
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   cli_docs:
     python_scripts:
     - scripts/python/conformance_runner.py
@@ -23,8 +28,7 @@ harness:
     - docs/development.md
     - docs/spec/impl/php.md
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

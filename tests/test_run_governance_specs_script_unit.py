@@ -491,6 +491,94 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_governance_policy_library_usage_required(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "policy_library_required.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-POLICY-LIB-001
+
+```yaml spec-test
+id: SRGOV-TEST-POLICY-LIB-001
+type: governance.check
+check: governance.policy_library_usage_required
+harness:
+  root: {tmp_path}
+  policy_library_requirements:
+    cases_path: cases
+    case_file_pattern: "*.spec.md"
+    ignore_checks:
+      - governance.policy_library_usage_required
+    require_inline_reason: true
+    inline_reason_key: policy_inline_reason
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: governance.policy_library_usage_required"]
+```
+""",
+    )
+    _write_text(
+        cases_dir / "missing_library.spec.md",
+        """# Governance
+
+## SRGOV-TEST-POLICY-LIB-002
+
+```yaml spec-test
+id: SRGOV-TEST-POLICY-LIB-002
+type: governance.check
+check: pending.no_resolved_markers
+harness:
+  root: .
+  policy_evaluate:
+  - eq:
+    - true
+    - true
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: pending.no_resolved_markers"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+    _write_text(
+        cases_dir / "missing_library.spec.md",
+        """# Governance
+
+## SRGOV-TEST-POLICY-LIB-002
+
+```yaml spec-test
+id: SRGOV-TEST-POLICY-LIB-002
+type: governance.check
+check: pending.no_resolved_markers
+harness:
+  root: .
+  policy_inline_reason: case-specific fixture for policy library scanner test
+  policy_evaluate:
+  - eq:
+    - true
+    - true
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: pending.no_resolved_markers"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
 def test_script_enforces_runtime_scope_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

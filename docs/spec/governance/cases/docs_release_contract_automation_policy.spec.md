@@ -10,6 +10,11 @@ type: governance.check
 check: docs.release_contract_automation_policy
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   release_contract:
     files:
     - docs/release_checklist.md
@@ -22,8 +27,7 @@ harness:
     - (?m)^##\s+[0-9]+\)
     - (?m)^\s*[0-9]+\.\s+(Run|Then|Check|Inspect)\b
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

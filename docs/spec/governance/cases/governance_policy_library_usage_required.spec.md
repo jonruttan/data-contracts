@@ -1,13 +1,13 @@
 # Governance Cases
 
-## SRGOV-POLICY-REQ-002
+## SRGOV-POLICY-LIB-002
 
 ```yaml spec-test
-id: SRGOV-POLICY-REQ-002
-title: governance checks require structured assertion targets
-purpose: Ensures governance cases validate deterministic structured result targets instead of relying on PASS text markers as primary contract truth.
+id: SRGOV-POLICY-LIB-002
+title: governance policy expressions require shared library wiring
+purpose: Ensures governance decision policies use shared spec-lang libraries unless an explicit inline-policy reason is documented.
 type: governance.check
-check: governance.structured_assertions_required
+check: governance.policy_library_usage_required
 harness:
   root: .
   spec_lang:
@@ -15,11 +15,13 @@ harness:
     - ../../libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
-  structured_assertions:
+  policy_library_requirements:
     cases_path: docs/spec/governance/cases
     case_file_pattern: '*.spec.md'
     ignore_checks:
-    - governance.structured_assertions_required
+    - governance.policy_library_usage_required
+    require_inline_reason: true
+    inline_reason_key: policy_inline_reason
   policy_evaluate:
   - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
@@ -35,5 +37,5 @@ assert:
       - true
     - eq:
       - {get: [{subject: []}, check_id]}
-      - governance.structured_assertions_required
+      - governance.policy_library_usage_required
 ```

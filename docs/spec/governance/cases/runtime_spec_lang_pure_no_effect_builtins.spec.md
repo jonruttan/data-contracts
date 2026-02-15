@@ -10,6 +10,11 @@ type: governance.check
 check: runtime.spec_lang_pure_no_effect_builtins
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   spec_lang_purity:
     files:
     - spec_runner/spec_lang.py
@@ -18,8 +23,7 @@ harness:
     forbidden_tokens:
     - path_exists
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

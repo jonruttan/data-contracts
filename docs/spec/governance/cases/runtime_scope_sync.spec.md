@@ -10,6 +10,11 @@ type: governance.check
 check: runtime.scope_sync
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   runtime_scope:
     files:
     - docs/spec/contract/08_v1_scope.md
@@ -25,8 +30,7 @@ harness:
     - Ruby runner
     - Java runner
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

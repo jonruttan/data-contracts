@@ -10,6 +10,11 @@ type: governance.check
 check: assert.spec_lang_builtin_surface_sync
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   spec_lang_builtin_sync:
     required_ops:
     - mul
@@ -57,8 +62,7 @@ harness:
     - is_list
     - is_dict
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

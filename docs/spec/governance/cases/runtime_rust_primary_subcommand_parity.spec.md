@@ -10,12 +10,16 @@ type: governance.check
 check: runtime.rust_adapter_subcommand_parity
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   rust_subcommand_parity:
     adapter_path: scripts/rust/runner_adapter.sh
     cli_main_path: scripts/rust/spec_runner_cli/src/main.rs
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

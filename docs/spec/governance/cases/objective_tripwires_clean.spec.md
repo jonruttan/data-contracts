@@ -10,13 +10,17 @@ type: governance.check
 check: objective.tripwires_clean
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   objective_tripwires:
     manifest_path: docs/spec/metrics/objective_manifest.yaml
     cases_path: docs/spec/governance/cases
     case_file_pattern: '*.spec.md'
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

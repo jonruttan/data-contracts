@@ -12,6 +12,12 @@ Cases MAY configure library loading via `harness.spec_lang`:
 - `library_paths` (list[string]): ordered paths to library spec docs/files
 - `exports` (list[string], optional): explicit symbol allowlist visible to case
 
+Governance policy reuse:
+
+- `type: governance.check` cases MUST provide `harness.spec_lang.library_paths`
+  unless a specific inline policy exception is documented in
+  `harness.policy_inline_reason`.
+
 Library paths:
 
 - MAY be relative to the current spec document or absolute

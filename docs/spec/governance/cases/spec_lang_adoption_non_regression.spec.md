@@ -10,6 +10,11 @@ type: governance.check
 check: spec.spec_lang_adoption_non_regression
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   spec_lang_adoption_non_regression:
     baseline_path: docs/spec/metrics/spec_lang_adoption_baseline.json
     summary_fields:
@@ -37,8 +42,7 @@ harness:
         segment: impl
       recursive: true
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

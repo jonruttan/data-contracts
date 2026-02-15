@@ -10,6 +10,11 @@ type: governance.check
 check: docs.examples_runnable
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   docs_examples:
     files:
     - docs/book/01_quickstart.md
@@ -18,8 +23,7 @@ harness:
     - docs/book/04_spec_lang_reference.md
     - docs/development.md
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

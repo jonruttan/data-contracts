@@ -10,6 +10,11 @@ type: governance.check
 check: runtime.rust_adapter_exec_smoke
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   rust_adapter_exec_smoke:
     command:
     - scripts/rust/runner_adapter.sh
@@ -21,8 +26,7 @@ harness:
     - scripts/runner_adapter.sh
     timeout_seconds: 180
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

@@ -10,6 +10,11 @@ type: governance.check
 check: docs.contract_schema_book_sync
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   doc_sync:
     files:
     - docs/book/03_assertions.md
@@ -25,8 +30,7 @@ harness:
     - json_type
     - exists
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:
