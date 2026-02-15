@@ -27,6 +27,10 @@ path while preserving schema/contract behavior guarantees.
 - Shared-capability conformance behavior MUST remain parity-checked across
   implementations.
 
+5. Adapter executable smoke
+- Governance MUST include an executable Rust-adapter smoke check that validates
+  deterministic command behavior (exit code and output tokens).
+
 ## Adoption and Scope
 
 - Contributor docs SHOULD describe Rust-primary operation as the default

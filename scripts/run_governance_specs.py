@@ -5,6 +5,7 @@ import argparse
 import json
 import inspect
 import shlex
+import subprocess
 import sys
 import re
 from pathlib import Path
@@ -2039,6 +2040,84 @@ def _scan_runtime_rust_adapter_no_delegate(root: Path, *, harness: dict | None =
     return violations
 
 
+def _scan_runtime_rust_adapter_exec_smoke(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("rust_adapter_exec_smoke")
+    if not isinstance(cfg, dict):
+        return ["runtime.rust_adapter_exec_smoke requires harness.rust_adapter_exec_smoke mapping in governance spec"]
+
+    raw_command = cfg.get("command")
+    command: list[str]
+    if isinstance(raw_command, str):
+        command = shlex.split(raw_command)
+    elif isinstance(raw_command, list) and raw_command:
+        if any(not isinstance(x, str) or not x.strip() for x in raw_command):
+            return ["harness.rust_adapter_exec_smoke.command list must contain only non-empty strings"]
+        command = [x.strip() for x in raw_command]
+    else:
+        return ["harness.rust_adapter_exec_smoke.command must be a non-empty string or list of strings"]
+    if not command:
+        return ["harness.rust_adapter_exec_smoke.command must not be empty"]
+
+    expected_exit_codes = cfg.get("expected_exit_codes", [0])
+    if (
+        not isinstance(expected_exit_codes, list)
+        or not expected_exit_codes
+        or any(not isinstance(x, int) for x in expected_exit_codes)
+    ):
+        return ["harness.rust_adapter_exec_smoke.expected_exit_codes must be a non-empty list of integers"]
+
+    required_output_tokens = cfg.get("required_output_tokens", [])
+    if not isinstance(required_output_tokens, list) or any(
+        not isinstance(x, str) or not x.strip() for x in required_output_tokens
+    ):
+        return ["harness.rust_adapter_exec_smoke.required_output_tokens must be a list of non-empty strings"]
+
+    forbidden_output_tokens = cfg.get("forbidden_output_tokens", [])
+    if not isinstance(forbidden_output_tokens, list) or any(
+        not isinstance(x, str) or not x.strip() for x in forbidden_output_tokens
+    ):
+        return ["harness.rust_adapter_exec_smoke.forbidden_output_tokens must be a list of non-empty strings"]
+
+    timeout_seconds = cfg.get("timeout_seconds", 120)
+    if not isinstance(timeout_seconds, (int, float)) or timeout_seconds <= 0:
+        return ["harness.rust_adapter_exec_smoke.timeout_seconds must be a positive number"]
+
+    display_cmd = shlex.join(command)
+    try:
+        result = subprocess.run(
+            command,
+            cwd=root,
+            capture_output=True,
+            text=True,
+            timeout=float(timeout_seconds),
+            check=False,
+        )
+    except FileNotFoundError:
+        return [f"{display_cmd}:1: command not found for rust adapter exec smoke"]
+    except PermissionError:
+        return [f"{display_cmd}:1: permission denied for rust adapter exec smoke command"]
+    except subprocess.TimeoutExpired:
+        return [f"{display_cmd}:1: rust adapter exec smoke command timed out after {timeout_seconds}s"]
+
+    violations: list[str] = []
+    if result.returncode not in expected_exit_codes:
+        violations.append(
+            f"{display_cmd}:1: unexpected exit code {result.returncode} "
+            f"(expected one of: {expected_exit_codes})"
+        )
+
+    combined_output = f"{result.stdout}\n{result.stderr}"
+    for tok in required_output_tokens:
+        if tok not in combined_output:
+            violations.append(f"{display_cmd}:1: missing required output token {tok!r}")
+    for tok in forbidden_output_tokens:
+        if tok in combined_output:
+            violations.append(f"{display_cmd}:1: forbidden output token present {tok!r}")
+
+    return violations
+
+
 def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -2109,6 +2188,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,
     "runtime.rust_adapter_no_delegate": _scan_runtime_rust_adapter_no_delegate,
+    "runtime.rust_adapter_exec_smoke": _scan_runtime_rust_adapter_exec_smoke,
     "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
     "runtime.spec_lang_pure_no_effect_builtins": _scan_spec_lang_pure_no_effect_builtins,
     "runtime.orchestration_policy_via_spec_lang": _scan_runtime_orchestration_policy_via_spec_lang,

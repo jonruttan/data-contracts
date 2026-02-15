@@ -2527,6 +2527,56 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_runtime_rust_adapter_exec_smoke(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_rust_adapter_exec_smoke.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-CONFIG-007
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-CONFIG-007
+type: governance.check
+check: runtime.rust_adapter_exec_smoke
+harness:
+  root: {tmp_path}
+  rust_adapter_exec_smoke:
+    command:
+      - scripts/rust/runner_adapter.sh
+      - lint
+    expected_exit_codes: [2]
+    required_output_tokens:
+      - "rust runner adapter subcommand not yet implemented"
+    forbidden_output_tokens:
+      - "scripts/runner_adapter.sh"
+    timeout_seconds: 5
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.rust_adapter_exec_smoke"]
+```
+""",
+    )
+    script = tmp_path / "scripts/rust/runner_adapter.sh"
+    _write_text(
+        script,
+        "#!/usr/bin/env bash\necho 'ERROR: rust runner adapter subcommand not yet implemented' >&2\nexit 2\n",
+    )
+    script.chmod(0o755)
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        script,
+        "#!/usr/bin/env bash\necho 'OK'\nexit 0\n",
+    )
+    script.chmod(0o755)
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_assert_universal_core_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

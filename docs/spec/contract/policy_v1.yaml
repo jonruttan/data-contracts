@@ -891,6 +891,22 @@ rules:
       - docs/spec/contract/16_rust_primary_transition.md
       - docs/spec/governance/cases/runtime_rust_primary_shared_capability_parity.spec.md
 
+  - id: RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.rust_primary.adapter_exec
+    norm: MUST
+    requirement: rust_primary_adapter_executes_deterministic_smoke_command
+    description: >
+      Rust-primary governance must include an execution smoke check that runs
+      the adapter command and validates deterministic output and exit-code
+      behavior.
+    rationale: Ensures the Rust adapter path is executable, not just statically configured.
+    risk_if_violated: Rust adapter can regress at runtime while token/path checks still pass.
+    references:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/governance/cases/runtime_rust_primary_adapter_exec_smoke.spec.md
+
   - id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
     introduced_in: v1
     scope: docs
