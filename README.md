@@ -179,6 +179,8 @@ Traceability mapping:
 `docs/spec/contract/traceability_v1.yaml`.
 V1 scope/non-goals/compatibility commitments:
 `docs/spec/contract/08_v1_scope.md`.
+Rust-primary transition contract:
+`docs/spec/contract/16_rust_primary_transition.md`.
 
 Discovery note: `iter_cases(Path(...))` scans files matching the configured
 default case-file pattern in that directory (non-recursive). You can pass a

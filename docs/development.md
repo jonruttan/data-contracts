@@ -54,6 +54,10 @@ SPEC_RUNNER_BIN=/path/to/compatible-runner ./scripts/core_gate.sh
 SPEC_RUNNER_BIN=/path/to/compatible-runner ./scripts/ci_gate.sh
 ```
 
+Rust-primary transition contract:
+
+- `docs/spec/contract/16_rust_primary_transition.md`
+
 Rust adapter lane (bootstrap):
 
 ```sh
