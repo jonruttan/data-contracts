@@ -60,6 +60,12 @@ Rust adapter lane (bootstrap):
 SPEC_RUNNER_BIN=./scripts/rust/runner_adapter.sh ./scripts/core_gate.sh
 ```
 
+Optional local prebuild for Rust lane:
+
+```sh
+cargo build --manifest-path scripts/rust/spec_runner_cli/Cargo.toml
+```
+
 ## Run Core Gate Checks
 
 ```sh

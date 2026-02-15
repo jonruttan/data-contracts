@@ -4,7 +4,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "${ROOT_DIR}"
 
-DELEGATE="${ROOT_DIR}/scripts/runner_adapter.sh"
+RUST_CLI_MANIFEST="${ROOT_DIR}/scripts/rust/spec_runner_cli/Cargo.toml"
+RUST_CLI_BIN="${ROOT_DIR}/target/debug/spec_runner_cli"
 
 subcommand="${1:-}"
 if [[ -z "${subcommand}" ]]; then
@@ -15,52 +16,100 @@ shift
 
 case "${subcommand}" in
   governance)
-    exec "${DELEGATE}" governance "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   style-check)
-    exec "${DELEGATE}" style-check "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   lint)
-    exec "${DELEGATE}" lint "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   typecheck)
-    exec "${DELEGATE}" typecheck "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   compilecheck)
-    exec "${DELEGATE}" compilecheck "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   conformance-purpose-json)
-    exec "${DELEGATE}" conformance-purpose-json "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   conformance-purpose-md)
-    exec "${DELEGATE}" conformance-purpose-md "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   spec-portability-json)
-    exec "${DELEGATE}" spec-portability-json "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   spec-portability-md)
-    exec "${DELEGATE}" spec-portability-md "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   docs-build)
-    exec "${DELEGATE}" docs-build "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   docs-build-check)
-    exec "${DELEGATE}" docs-build-check "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   docs-lint)
-    exec "${DELEGATE}" docs-lint "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   docs-graph)
-    exec "${DELEGATE}" docs-graph "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   conformance-parity)
-    exec "${DELEGATE}" conformance-parity "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   test-core)
-    exec "${DELEGATE}" test-core "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   test-full)
-    exec "${DELEGATE}" test-full "$@"
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   *)
     echo "ERROR: unsupported runner adapter subcommand: ${subcommand}" >&2

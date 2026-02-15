@@ -2481,3 +2481,47 @@ assert:
     _write_text(tmp_path / ".github/workflows/ci.yml", "name: CI\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_runtime_rust_adapter_no_delegate(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_rust_adapter_no_delegate.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-CONFIG-006
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-CONFIG-006
+type: governance.check
+check: runtime.rust_adapter_no_delegate
+harness:
+  root: {tmp_path}
+  rust_adapter:
+    path: scripts/rust/runner_adapter.sh
+    required_tokens:
+      - "spec_runner_cli"
+      - "cargo run --quiet"
+    forbidden_tokens:
+      - "scripts/runner_adapter.sh"
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.rust_adapter_no_delegate"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "scripts/rust/runner_adapter.sh",
+        "#!/usr/bin/env bash\nRUST_CLI_MANIFEST=scripts/rust/spec_runner_cli/Cargo.toml\nexec cargo run --quiet --manifest-path \"$RUST_CLI_MANIFEST\" -- governance\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "scripts/rust/runner_adapter.sh",
+        "#!/usr/bin/env bash\nexec scripts/runner_adapter.sh governance\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

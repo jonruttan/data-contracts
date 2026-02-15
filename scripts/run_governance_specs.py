@@ -1888,6 +1888,34 @@ def _scan_runtime_runner_interface_ci_lane(root: Path, *, harness: dict | None =
     return violations
 
 
+def _scan_runtime_rust_adapter_no_delegate(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("rust_adapter")
+    if not isinstance(cfg, dict):
+        return ["runtime.rust_adapter_no_delegate requires harness.rust_adapter mapping in governance spec"]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not path:
+        return ["harness.rust_adapter.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.rust_adapter.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.rust_adapter.forbidden_tokens must be a list of non-empty strings"]
+    p = root / path
+    if not p.exists():
+        return [f"{path}:1: missing rust adapter script"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing required rust-adapter token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{path}:1: forbidden rust-adapter delegation token {tok}")
+    return violations
+
+
 def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1957,6 +1985,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.runner_interface_gate_sync": _scan_runtime_runner_interface_gate_sync,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,
+    "runtime.rust_adapter_no_delegate": _scan_runtime_rust_adapter_no_delegate,
     "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
     "runtime.spec_lang_pure_no_effect_builtins": _scan_spec_lang_pure_no_effect_builtins,
     "runtime.orchestration_policy_via_spec_lang": _scan_runtime_orchestration_policy_via_spec_lang,

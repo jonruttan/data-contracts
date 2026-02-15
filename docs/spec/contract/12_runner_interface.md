@@ -30,7 +30,8 @@ CI expectation:
 Repository default adapter:
 
 - `scripts/runner_adapter.sh`
-- `scripts/rust/runner_adapter.sh` (Rust lane bootstrap adapter)
+- `scripts/rust/runner_adapter.sh` (Rust lane adapter; invokes Rust CLI)
+- `scripts/rust/spec_runner_cli` (Rust runner-interface CLI crate)
 
 Adapters may call implementation-specific scripts/tools internally.
 Alternative implementations can replace the adapter by setting `SPEC_RUNNER_BIN`

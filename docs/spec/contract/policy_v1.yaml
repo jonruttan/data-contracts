@@ -816,6 +816,21 @@ rules:
       - docs/spec/contract/12_runner_interface.md
       - docs/spec/governance/cases/runtime_runner_interface_ci_lane.spec.md
 
+  - id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.runner_interface.rust_adapter
+    norm: MUST
+    requirement: rust_adapter_invokes_rust_cli_without_delegating_to_shell_python_adapter
+    description: >
+      The Rust adapter script must invoke the Rust runner-interface CLI
+      directly and must not delegate to scripts/runner_adapter.sh.
+    rationale: Ensures the Rust lane validates real adapter behavior instead of shell delegation.
+    risk_if_violated: Rust lane gives false confidence and misses Rust adapter regressions.
+    references:
+      - docs/spec/contract/12_runner_interface.md
+      - docs/spec/governance/cases/runtime_rust_adapter_no_delegate.spec.md
+
   - id: RUNTIME_SCOPE_BOUNDED_FOR_V1
     introduced_in: v1
     scope: governance

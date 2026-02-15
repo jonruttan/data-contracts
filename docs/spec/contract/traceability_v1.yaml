@@ -969,3 +969,17 @@ links:
       - scripts/run_governance_specs.py
       - docs/spec/governance/cases/runtime_runner_interface_ci_lane.spec.md
     notes: "Governance verifies CI includes a core gate lane with SPEC_RUNNER_BIN set to rust adapter."
+
+  - rule_id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_DELEGATION
+    contract_refs:
+      - docs/spec/contract/12_runner_interface.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/rust/runner_adapter.sh
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/runtime_rust_adapter_no_delegate.spec.md
+    notes: "Governance prevents regression back to shell adapter delegation in the Rust lane."

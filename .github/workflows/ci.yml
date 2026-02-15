@@ -61,6 +61,9 @@ jobs:
           cache-dependency-path: |
             pyproject.toml
 
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
       - name: Install PHP + yaml extension
         run: |
           sudo apt-get update
@@ -71,6 +74,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e '.[dev]'
+
+      - name: Build Rust runner interface CLI
+        run: cargo build --manifest-path scripts/rust/spec_runner_cli/Cargo.toml
 
       - name: Run core gate with Rust adapter interface
         env:
