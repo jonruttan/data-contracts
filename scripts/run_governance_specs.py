@@ -1828,6 +1828,38 @@ def _scan_runtime_runner_interface_gate_sync(root: Path, *, harness: dict | None
     return violations
 
 
+def _scan_runtime_runner_interface_subcommands(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("runner_interface_subcommands")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.runner_interface_subcommands requires harness.runner_interface_subcommands mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_subcommands = cfg.get("required_subcommands")
+    if not path:
+        return ["harness.runner_interface_subcommands.path must be a non-empty string"]
+    if (
+        not isinstance(required_subcommands, list)
+        or not required_subcommands
+        or any(not isinstance(x, str) or not x.strip() for x in required_subcommands)
+    ):
+        return [
+            "harness.runner_interface_subcommands.required_subcommands must be a non-empty list of non-empty strings"
+        ]
+
+    p = root / path
+    if not p.exists():
+        return [f"{path}:1: missing runner adapter script"]
+    text = p.read_text(encoding="utf-8")
+    declared = {m.group(1) for m in re.finditer(r"^\s*([a-z0-9_-]+)\)\s*$", text, flags=re.MULTILINE)}
+    for cmd in required_subcommands:
+        if cmd not in declared:
+            violations.append(f"{path}:1: missing runner-interface subcommand case label: {cmd}")
+    return violations
+
+
 def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1895,6 +1927,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
     "runtime.python_bin_resolver_sync": _scan_runtime_python_bin_resolver_sync,
     "runtime.runner_interface_gate_sync": _scan_runtime_runner_interface_gate_sync,
+    "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
     "runtime.spec_lang_pure_no_effect_builtins": _scan_spec_lang_pure_no_effect_builtins,
     "runtime.orchestration_policy_via_spec_lang": _scan_runtime_orchestration_policy_via_spec_lang,

@@ -786,6 +786,21 @@ rules:
       - scripts/core_gate.sh
       - scripts/docs_doctor.sh
 
+  - id: RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.runner_interface.subcommands
+    norm: MUST
+    requirement: declared_runner_adapters_list_required_subcommand_case_labels
+    description: >
+      Declared runner adapter scripts must include case labels for all required
+      runner-interface subcommands.
+    rationale: Prevents partial adapter drift that breaks interface compatibility.
+    risk_if_violated: Gate commands fail when switching adapters by SPEC_RUNNER_BIN.
+    references:
+      - docs/spec/contract/12_runner_interface.md
+      - docs/spec/governance/cases/runtime_runner_interface_subcommands.spec.md
+
   - id: RUNTIME_SCOPE_BOUNDED_FOR_V1
     introduced_in: v1
     scope: governance

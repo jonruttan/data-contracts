@@ -2398,3 +2398,46 @@ assert:
 
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_runtime_runner_interface_subcommands(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_runner_subcommands.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-CONFIG-004
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-CONFIG-004
+type: governance.check
+check: runtime.runner_interface_subcommands
+harness:
+  root: {tmp_path}
+  runner_interface_subcommands:
+    path: scripts/rust/runner_adapter.sh
+    required_subcommands:
+      - governance
+      - style-check
+assert:
+  - target: text
+    must:
+      - contain: [\"PASS: runtime.runner_interface_subcommands\"]
+```
+""",
+    )
+
+    _write_text(
+        tmp_path / "scripts/rust/runner_adapter.sh",
+        "#!/usr/bin/env bash\ncase \"${1:-}\" in\n  governance)\n    ;;&\n  style-check)\n    ;;&\nesac\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "scripts/rust/runner_adapter.sh",
+        "#!/usr/bin/env bash\ncase \"${1:-}\" in\n  governance)\n    ;;&\nesac\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

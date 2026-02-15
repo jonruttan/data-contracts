@@ -25,10 +25,11 @@ Required subcommands:
 Repository default adapter:
 
 - `scripts/runner_adapter.sh`
+- `scripts/rust/runner_adapter.sh` (Rust lane bootstrap adapter)
 
-The default adapter may call Python implementation scripts internally.
-Alternative implementations can replace it by setting `SPEC_RUNNER_BIN` to a
-different compatible command.
+Adapters may call implementation-specific scripts/tools internally.
+Alternative implementations can replace the adapter by setting `SPEC_RUNNER_BIN`
+to a different compatible command.
 
 Runtime scope note:
 

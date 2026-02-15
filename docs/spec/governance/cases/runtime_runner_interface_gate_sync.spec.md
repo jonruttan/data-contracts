@@ -13,6 +13,7 @@ harness:
   runner_interface:
     required_paths:
       - scripts/runner_adapter.sh
+      - scripts/rust/runner_adapter.sh
     files:
       - scripts/ci_gate.sh
       - scripts/docs_doctor.sh
