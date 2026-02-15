@@ -15,8 +15,7 @@ Cases MAY configure library loading via `harness.spec_lang`:
 Governance policy reuse:
 
 - `type: governance.check` cases MUST provide `harness.spec_lang.library_paths`
-  unless a specific inline policy exception is documented in
-  `harness.policy_inline_reason`.
+  and MUST call exported library symbols from `policy_evaluate`.
 
 Library paths:
 

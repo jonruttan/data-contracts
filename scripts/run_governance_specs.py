@@ -1608,12 +1608,28 @@ def _scan_governance_policy_library_usage_required(root: Path, *, harness: dict 
         return ["harness.policy_library_requirements.ignore_checks must be a list of strings"]
     ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
 
-    require_reason = bool(cfg.get("require_inline_reason", True))
-    reason_key = str(cfg.get("inline_reason_key", "policy_inline_reason")).strip() or "policy_inline_reason"
-
     cases_dir = root / cases_rel
     if not cases_dir.exists():
         return [f"{cases_rel}:1: governance cases path does not exist"]
+
+    def _policy_uses_library_call(expr: object) -> bool:
+        if isinstance(expr, dict):
+            if "call" in expr:
+                raw = expr.get("call")
+                if isinstance(raw, list) and raw:
+                    fn_node = raw[0]
+                    if (
+                        isinstance(fn_node, dict)
+                        and len(fn_node) == 1
+                        and "var" in fn_node
+                        and isinstance(fn_node.get("var"), str)
+                        and str(fn_node.get("var", "")).strip()
+                    ):
+                        return True
+            return any(_policy_uses_library_call(v) for v in expr.values())
+        if isinstance(expr, list):
+            return any(_policy_uses_library_call(v) for v in expr)
+        return False
 
     violations: list[str] = []
     for spec in iter_cases(cases_dir, file_pattern=case_pattern):
@@ -1635,13 +1651,20 @@ def _scan_governance_policy_library_usage_required(root: Path, *, harness: dict 
             has_library_paths = isinstance(lib_paths, list) and any(
                 isinstance(x, str) and x.strip() for x in lib_paths
             )
-        if has_library_paths:
-            continue
-        inline_reason = harness_map.get(reason_key)
-        if require_reason and (not isinstance(inline_reason, str) or not inline_reason.strip()):
+        if not has_library_paths:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare harness.spec_lang.library_paths "
-                f"or non-empty harness.{reason_key}"
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.spec_lang.library_paths"
+            )
+            continue
+        policy = harness_map.get("policy_evaluate")
+        if not isinstance(policy, list) or not policy:
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.policy_evaluate"
+            )
+            continue
+        if not _policy_uses_library_call(policy):
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} policy_evaluate must call library symbol via call -> var"
             )
     return violations
 

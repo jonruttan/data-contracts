@@ -32,8 +32,8 @@ Governance check implementations SHOULD return a structured payload with:
 
 - Final verdict MUST be the result of `policy_evaluate`.
 - Governance checks MUST wire shared policy libraries via
-  `harness.spec_lang.library_paths` unless a documented one-off inline policy
-  reason is present in `harness.policy_inline_reason`.
+  `harness.spec_lang.library_paths`.
+- Governance `policy_evaluate` MUST call exported library symbols.
 - On policy failure, diagnostics MUST include `case_id`, `check_id`, and
   `policy_path`.
 - Check-specific branch text like `"<check> policy_evaluate returned false"`

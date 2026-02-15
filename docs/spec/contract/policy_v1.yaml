@@ -554,8 +554,8 @@ rules:
   scope: governance
   applies_to: governance.check.policy_authoring
   norm: MUST
-  requirement: governance_checks_must_use_library_backed_policy_or_documented_inline_reason
-  description: 'Governance checks must declare shared spec-lang library wiring for policy evaluation, unless a specific inline-policy reason is declared in harness configuration.
+  requirement: governance_checks_must_use_library_backed_policy_calls
+  description: 'Governance checks must declare shared spec-lang library wiring for policy evaluation and call exported library symbols from policy_evaluate.
 
     '
   rationale: Promotes reusable policy logic and prevents ad hoc per-case policy drift.

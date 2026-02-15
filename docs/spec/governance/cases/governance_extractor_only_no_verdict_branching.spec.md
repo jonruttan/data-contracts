@@ -25,7 +25,7 @@ harness:
     - spec.contract_assertions_metric policy_evaluate returned false
     - objective.scorecard_metric policy_evaluate returned false
   policy_evaluate:
-  - {eq: [true, true]}
+  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:
 - target: violation_count
   must:

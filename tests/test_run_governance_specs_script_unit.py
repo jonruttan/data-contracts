@@ -558,8 +558,6 @@ harness:
     case_file_pattern: "*.spec.md"
     ignore_checks:
       - governance.policy_library_usage_required
-    require_inline_reason: true
-    inline_reason_key: policy_inline_reason
   policy_evaluate:
   - is_empty:
     - get:
@@ -630,7 +628,11 @@ type: governance.check
 check: pending.no_resolved_markers
 harness:
   root: .
-  policy_inline_reason: case-specific fixture for policy library scanner test
+  spec_lang:
+    library_paths:
+      - ../../docs/spec/libraries/policy/policy_core.spec.md
+    exports:
+      - policy.pass_when_no_violations
   policy_evaluate:
   - eq:
     - true
@@ -653,7 +655,7 @@ assert:
 """,
     )
     code = mod.main(["--cases", str(cases_dir)])
-    assert code == 0
+    assert code == 1
 
 
 def test_script_enforces_runtime_scope_sync(tmp_path):

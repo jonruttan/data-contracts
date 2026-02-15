@@ -23,7 +23,7 @@ harness:
     - resolve_python_bin
     - scripts/run_governance_specs.py
   policy_evaluate:
-  - {eq: [true, true]}
+  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:
 - target: violation_count
   must:

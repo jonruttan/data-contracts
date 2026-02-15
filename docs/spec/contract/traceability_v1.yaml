@@ -610,7 +610,7 @@ links:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
-  notes: Governance requires library-backed policy wiring or explicit inline-policy rationale.
+  notes: Governance requires library-backed policy wiring and policy_evaluate calls to exported library symbols.
 - rule_id: RUNNER_INDEPENDENCE_METRIC_REPORTED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNNER_INDEPENDENCE_METRIC_REPORTED
   contract_refs:

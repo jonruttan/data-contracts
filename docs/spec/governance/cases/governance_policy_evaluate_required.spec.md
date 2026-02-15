@@ -21,7 +21,7 @@ harness:
     ignore_checks:
     - governance.policy_evaluate_required
   policy_evaluate:
-  - {eq: [true, true]}
+  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:
 - target: violation_count
   must:
