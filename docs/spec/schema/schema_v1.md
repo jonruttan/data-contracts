@@ -35,6 +35,9 @@ Parser behavior:
 - default discovery is Markdown-only (`*.spec.md`)
 - runners MAY opt in additional external case formats via explicit format
   selection (`yaml`, `json`)
+- canonical executable spec trees (`docs/spec/conformance/cases`,
+  `docs/spec/governance/cases`, `docs/spec/impl`) are markdown-only and must
+  not include runnable `.spec.yaml`/`.spec.yml`/`.spec.json` files
 - fence extraction accepts Markdown fences using either backticks or tildes
   (3+), with info tokens including `spec-test` and `yaml`/`yml`
 - closing fences must use the same fence character and at least the opener

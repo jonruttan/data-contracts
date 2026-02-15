@@ -9,6 +9,12 @@ import yaml
 from spec_runner.doc_parser import _iter_spec_test_blocks
 from spec_runner.settings import SETTINGS, resolve_case_file_pattern
 
+_CANONICAL_EXECUTABLE_TREES = (
+    Path("docs/spec/conformance/cases"),
+    Path("docs/spec/governance/cases"),
+    Path("docs/spec/impl"),
+)
+
 
 class ExternalCaseCodec(Protocol):
     def name(self) -> str: ...
@@ -124,6 +130,18 @@ def discover_case_files(
     for f in fmts:
         if f not in codecs:
             raise ValueError(f"unsupported format: {f}")
+    if any(fmt != "md" for fmt in fmts):
+        root_resolved = root.resolve()
+        for tree in _CANONICAL_EXECUTABLE_TREES:
+            tree_resolved = tree.resolve()
+            try:
+                root_resolved.relative_to(tree_resolved)
+            except ValueError:
+                continue
+            raise ValueError(
+                "canonical executable case trees are markdown-only; "
+                "non-md case formats are not allowed"
+            )
 
     out: list[tuple[Path, str]] = []
     if root.is_file():

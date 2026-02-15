@@ -46,6 +46,13 @@ maintenance decisions stay predictable.
   - include conformance or unit evidence for changed `MUST` behavior
 - Portable conformance case format remains Markdown `*.spec.md` with fenced
   `yaml spec-test` blocks.
+- Canonical executable surfaces are markdown-only:
+  - conformance cases (`docs/spec/conformance/cases`)
+  - governance cases (`docs/spec/governance/cases`)
+  - impl executable cases (`docs/spec/impl`)
+  - spec-lang library cases (`docs/spec/libraries`)
+- Machine data artifacts remain YAML/JSON (baselines/manifests/generated
+  reports/schema profiles) and are non-executable surfaces.
 
 ## Release Boundary
 

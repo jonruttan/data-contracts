@@ -12,6 +12,16 @@
 
 Runner-only setup keys MUST live under `harness`.
 
+## Executable Authoring Surface
+
+- Executable contract/spec behavior MUST be authored in `.spec.md` with
+  fenced `yaml spec-test` blocks.
+- This requirement applies to:
+  - conformance cases
+  - governance cases
+  - impl executable cases
+  - `type: spec_lang.library` cases under `docs/spec/libraries`
+
 ## Type-Specific Fields
 
 Type-specific keys are defined per harness contract and schema docs.

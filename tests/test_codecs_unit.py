@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import pytest
 
 from spec_runner.codecs import discover_case_files, load_external_cases
 
@@ -52,3 +53,11 @@ def test_discover_case_files_respects_default_md_pattern(tmp_path: Path) -> None
     _write(tmp_path / "ok.spec.md", "# yes")
     found = discover_case_files(tmp_path)
     assert [p.name for p, _fmt in found] == ["ok.spec.md"]
+
+
+def test_discover_case_files_rejects_non_md_formats_for_canonical_executable_trees() -> None:
+    with pytest.raises(
+        ValueError,
+        match="canonical executable case trees are markdown-only",
+    ):
+        discover_case_files(Path("docs/spec/conformance/cases"), formats={"md", "yaml"})

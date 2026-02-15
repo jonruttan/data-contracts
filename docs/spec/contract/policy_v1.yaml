@@ -2046,3 +2046,60 @@ rules:
   - spec_runner/spec_lang.py
   - docs/spec/contract/03b_spec_lang_v1.md
   - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md
+- id: EXECUTABLE_SURFACES_MUST_BE_SPEC_MD
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.executable_surfaces
+  norm: MUST
+  requirement: canonical_executable_spec_surfaces_are_markdown_only
+  description: 'Canonical executable contract/spec surfaces must be authored as markdown .spec.md files with yaml spec-test blocks.
+
+    '
+  rationale: Keeps executable contract authoring uniform and directly dogfooded by the markdown parser path.
+  risk_if_violated: Executable behavior drifts across file formats and weakens contract portability guarantees.
+  references:
+  - docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md
+  - scripts/run_governance_specs.py
+- id: EXECUTABLE_DISCOVERY_MARKDOWN_ONLY
+  introduced_in: v1
+  scope: runtime
+  applies_to: discovery.canonical_executable_trees
+  norm: MUST
+  requirement: canonical_executable_case_discovery_rejects_non_markdown_formats
+  description: 'Discovery for canonical executable case trees must be markdown-only and reject yaml/json executable case formats.
+
+    '
+  rationale: Prevents hidden alternate execution lanes that bypass canonical markdown contract authoring.
+  risk_if_violated: Policy/execution drift can occur via non-canonical runnable file formats.
+  references:
+  - spec_runner/codecs.py
+  - docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
+- id: DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.data_artifacts
+  norm: MUST
+  requirement: machine_data_artifacts_remain_yaml_or_json_and_non_executable
+  description: 'Baselines, manifests, generated reports, and schema/profile registries must remain machine-native yaml/json artifacts and must not embed executable spec-test blocks.
+
+    '
+  rationale: Preserves deterministic machine parsing surfaces and avoids brittle markdown-embedded data payloads.
+  risk_if_violated: Tooling complexity and parsing ambiguity increase, reducing reliability of governance/report pipelines.
+  references:
+  - docs/spec/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md
+  - scripts/run_governance_specs.py
+- id: NO_EXECUTABLE_YAML_JSON_CASES_IN_CANONICAL_TREES
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.canonical_executable_case_trees
+  norm: MUST
+  requirement: canonical_case_trees_forbid_runnable_yaml_json_cases
+  description: 'Conformance/governance/impl canonical executable case trees must not contain runnable .spec.yaml/.spec.yml/.spec.json files.
+
+    '
+  rationale: Enforces a single executable authoring surface while allowing non-executable machine data artifacts elsewhere.
+  risk_if_violated: Contract behavior becomes split across file-format-specific discovery paths.
+  references:
+  - docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
+  - docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md
+  - scripts/run_governance_specs.py

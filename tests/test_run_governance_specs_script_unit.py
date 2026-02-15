@@ -4801,3 +4801,38 @@ assert:
 
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
+
+
+def test_scan_spec_executable_surface_markdown_only_detects_yaml_case_file(tmp_path):
+    mod = _load_script_module()
+    _write_text(tmp_path / "docs/spec/conformance/cases/core/bad.spec.yaml", "id: BAD\ntype: text.file\n")
+    out = mod._scan_spec_executable_surface_markdown_only(tmp_path)  # noqa: SLF001
+    assert out
+    assert ".spec.yaml" in out[0]
+
+
+def test_scan_spec_no_executable_yaml_json_in_case_trees_detects_json_case_file(tmp_path):
+    mod = _load_script_module()
+    _write_text(tmp_path / "docs/spec/governance/cases/core/bad.spec.json", '{"id":"BAD","type":"governance.check"}')
+    out = mod._scan_spec_no_executable_yaml_json_in_case_trees(tmp_path)  # noqa: SLF001
+    assert out
+    assert ".spec.json" in out[0]
+
+
+def test_scan_spec_library_cases_markdown_only_detects_non_md_library_file(tmp_path):
+    mod = _load_script_module()
+    _write_text(tmp_path / "docs/spec/libraries/domain/bad.spec.yml", "id: BAD\ntype: spec_lang.library\n")
+    out = mod._scan_spec_library_cases_markdown_only(tmp_path)  # noqa: SLF001
+    assert out
+    assert "spec_lang library cases" in out[0]
+
+
+def test_scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks_detects_fence(tmp_path):
+    mod = _load_script_module()
+    _write_text(
+        tmp_path / "docs/spec/metrics/spec_portability_baseline.json",
+        '{\n  "x": 1,\n  "note": "```yaml spec-test"\n}\n',
+    )
+    out = mod._scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks(tmp_path)  # noqa: SLF001
+    assert out
+    assert "must not embed executable spec-test blocks" in out[0]

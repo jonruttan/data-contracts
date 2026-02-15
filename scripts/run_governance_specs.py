@@ -153,6 +153,18 @@ _DOMAIN_TREE_ROOTS = (
     "docs/spec/governance/cases",
     "docs/spec/libraries",
 )
+_EXECUTABLE_CASE_TREE_ROOTS = (
+    "docs/spec/conformance/cases",
+    "docs/spec/governance/cases",
+    "docs/spec/impl",
+)
+_EXECUTABLE_NON_MD_SPEC_GLOBS = ("*.spec.yaml", "*.spec.yml", "*.spec.json")
+_DATA_ARTIFACT_GLOBS = (
+    "docs/spec/metrics/*.json",
+    "docs/spec/metrics/*.yaml",
+    "docs/book/reference_manifest.yaml",
+    "docs/spec/schema/*.yaml",
+)
 _SUBJECT_PROFILE_CONTRACT_DOC = "docs/spec/contract/20_subject_profiles_v1.md"
 _SUBJECT_PROFILE_SCHEMA_DOC = "docs/spec/schema/subject_profiles_v1.yaml"
 _SUBJECT_PROFILE_TYPE_DOCS = (
@@ -4733,6 +4745,69 @@ def _scan_normalization_spec_style_sync(root: Path, *, harness: dict | None = No
     return violations
 
 
+def _iter_non_md_executable_spec_files(root: Path) -> list[Path]:
+    files: list[Path] = []
+    for rel_root in _EXECUTABLE_CASE_TREE_ROOTS:
+        base = _join_contract_path(root, rel_root)
+        if not base.exists() or not base.is_dir():
+            continue
+        for pattern in _EXECUTABLE_NON_MD_SPEC_GLOBS:
+            files.extend(sorted(p for p in base.rglob(pattern) if p.is_file()))
+    return files
+
+
+def _scan_spec_executable_surface_markdown_only(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    for p in _iter_non_md_executable_spec_files(root):
+        rel = p.relative_to(root).as_posix()
+        violations.append(
+            f"{rel}: executable surfaces must use .spec.md markdown case files only"
+        )
+    return violations
+
+
+def _scan_spec_no_executable_yaml_json_in_case_trees(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    for p in _iter_non_md_executable_spec_files(root):
+        rel = p.relative_to(root).as_posix()
+        violations.append(
+            f"{rel}: runnable .spec.yaml/.spec.yml/.spec.json is forbidden in canonical executable case trees"
+        )
+    return violations
+
+
+def _scan_spec_library_cases_markdown_only(root: Path, *, harness: dict | None = None) -> list[str]:
+    libs_root = root / "docs/spec/libraries"
+    if not libs_root.exists():
+        return ["docs/spec/libraries:1: missing libraries root"]
+    violations: list[str] = []
+    for pattern in _EXECUTABLE_NON_MD_SPEC_GLOBS:
+        for p in sorted(x for x in libs_root.rglob(pattern) if x.is_file()):
+            rel = p.relative_to(root).as_posix()
+            violations.append(
+                f"{rel}: spec_lang library cases must be authored in .spec.md"
+            )
+    return violations
+
+
+def _scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    for glob in _DATA_ARTIFACT_GLOBS:
+        for p in sorted(root.glob(glob)):
+            if not p.is_file():
+                continue
+            text = p.read_text(encoding="utf-8")
+            if "```yaml spec-test" in text:
+                rel = p.relative_to(root).as_posix()
+                line = text[: text.find("```yaml spec-test")].count("\n") + 1
+                violations.append(
+                    f"{rel}:{line}: data artifact surfaces must not embed executable spec-test blocks"
+                )
+    return violations
+
+
 GovernanceCheckOutcome = list[str] | dict[str, object]
 GovernanceCheck = Callable[..., GovernanceCheckOutcome]
 
@@ -4861,6 +4936,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "reference.token_anchors_exist": _scan_reference_token_anchors_exist,
     "spec.layout_domain_trees": _scan_spec_layout_domain_trees,
     "spec.domain_index_sync": _scan_spec_domain_index_sync,
+    "spec.executable_surface_markdown_only": _scan_spec_executable_surface_markdown_only,
+    "spec.no_executable_yaml_json_in_case_trees": _scan_spec_no_executable_yaml_json_in_case_trees,
+    "spec.library_cases_markdown_only": _scan_spec_library_cases_markdown_only,
+    "spec.generated_data_artifacts_not_embedded_in_spec_blocks": _scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks,
     "library.domain_ownership": _scan_library_domain_ownership,
     "library.domain_index_sync": _scan_library_domain_index_sync,
     "library.public_surface_model": _scan_library_public_surface_model,

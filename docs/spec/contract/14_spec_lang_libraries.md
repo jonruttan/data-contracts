@@ -26,6 +26,9 @@ Library paths:
 - MAY reference `.spec.md`, `.spec.yaml`, or `.spec.yml` library files
 - external references (`external://provider/id`) are deny-by-default and
   require explicit capability + harness policy allowlist
+- Canonical in-repo library case surfaces under `docs/spec/libraries` MUST be
+  `.spec.md`; yaml/yml include support exists for non-canonical external
+  adapter surfaces only.
 
 ## Library Document Shape
 

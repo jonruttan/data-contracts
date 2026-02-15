@@ -12,6 +12,18 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_PATH = ROOT / "docs/spec/schema/normalization_profile_v1.yaml"
+_EXECUTABLE_CASE_TREE_ROOTS = (
+    "docs/spec/conformance/cases",
+    "docs/spec/governance/cases",
+    "docs/spec/impl",
+)
+_NON_MD_SPEC_GLOBS = ("*.spec.yaml", "*.spec.yml", "*.spec.json")
+_DATA_ARTIFACT_GLOBS = (
+    "docs/spec/metrics/*.json",
+    "docs/spec/metrics/*.yaml",
+    "docs/book/reference_manifest.yaml",
+    "docs/spec/schema/*.yaml",
+)
 
 
 def _load_profile(path: Path) -> dict[str, Any]:
@@ -161,6 +173,41 @@ def _check_replacements_drift(profile: dict[str, Any]) -> list[str]:
     return issues
 
 
+def _check_dogfood_executable_surface() -> list[str]:
+    issues: list[str] = []
+    for rel_root in _EXECUTABLE_CASE_TREE_ROOTS:
+        base = ROOT / rel_root
+        if not base.exists() or not base.is_dir():
+            continue
+        for pattern in _NON_MD_SPEC_GLOBS:
+            for p in sorted(x for x in base.rglob(pattern) if x.is_file()):
+                rel = p.relative_to(ROOT).as_posix()
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_EXECUTABLE_SURFACE_MARKDOWN_ONLY: canonical executable surfaces must use .spec.md"
+                )
+    libs_root = ROOT / "docs/spec/libraries"
+    if libs_root.exists():
+        for pattern in _NON_MD_SPEC_GLOBS:
+            for p in sorted(x for x in libs_root.rglob(pattern) if x.is_file()):
+                rel = p.relative_to(ROOT).as_posix()
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_LIBRARY_CASES_MARKDOWN_ONLY: spec_lang library cases must use .spec.md"
+                )
+    for glob in _DATA_ARTIFACT_GLOBS:
+        for p in sorted(ROOT.glob(glob)):
+            if not p.is_file():
+                continue
+            raw = p.read_text(encoding="utf-8")
+            token = "```yaml spec-test"
+            if token in raw:
+                line = _line_for(raw, token)
+                rel = p.relative_to(ROOT).as_posix()
+                issues.append(
+                    f"{rel}:{line}: NORMALIZATION_DATA_ARTIFACT_NON_EXECUTABLE: data artifacts must not embed yaml spec-test fences"
+                )
+    return issues
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Unified normalization check/fix runner for specs, contracts, and tests.")
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -213,6 +260,7 @@ def main(argv: list[str] | None = None) -> int:
         issues.extend(repl_issues)
         token_issues = _check_docs_tokens(profile)
         issues.extend(token_issues)
+        issues.extend(_check_dogfood_executable_surface())
         if issues:
             for issue in sorted(issues):
                 print(issue)
@@ -222,6 +270,7 @@ def main(argv: list[str] | None = None) -> int:
 
     issues.extend(_check_replacements_drift(profile))
     issues.extend(_check_docs_tokens(profile))
+    issues.extend(_check_dogfood_executable_surface())
     if issues:
         for issue in sorted(issues):
             print(issue)

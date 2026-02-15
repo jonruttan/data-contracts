@@ -5,6 +5,12 @@
 - Input is a directory path.
 - Runner scans files matching configurable case-file pattern in that
   directory (non-recursive).
+- Canonical executable case trees are markdown-only and MUST use `.spec.md`:
+  - `docs/spec/conformance/cases`
+  - `docs/spec/governance/cases`
+  - `docs/spec/impl`
+- Canonical executable case trees MUST NOT include runnable
+  `.spec.yaml`/`.spec.yml`/`.spec.json` files.
 
 ## Fence Extraction
 

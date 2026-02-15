@@ -114,8 +114,12 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md`
 - `/docs/spec/governance/cases/core/security_warning_docs.spec.md`
 - `/docs/spec/governance/cases/core/spec_domain_index_sync.spec.md`
+- `/docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md`
+- `/docs/spec/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md`
+- `/docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md`
 - `/docs/spec/governance/cases/core/spec_lang_adoption_metric.spec.md`
 - `/docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md`
+- `/docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md`
 - `/docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md`
 - `/docs/spec/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md`
 - `/docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md`

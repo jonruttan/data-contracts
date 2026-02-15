@@ -2175,3 +2175,63 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md
   notes: Evaluator rejects non-JSON subject values; adapters project native values to JSON.
+- rule_id: EXECUTABLE_SURFACES_MUST_BE_SPEC_MD
+  policy_ref: docs/spec/contract/policy_v1.yaml#EXECUTABLE_SURFACES_MUST_BE_SPEC_MD
+  contract_refs:
+  - docs/spec/contract/01_discovery.md
+  - docs/spec/contract/02_case_shape.md
+  - docs/spec/contract/08_v1_scope.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md
+  notes: Enforces .spec.md as the canonical executable authoring surface.
+- rule_id: EXECUTABLE_DISCOVERY_MARKDOWN_ONLY
+  policy_ref: docs/spec/contract/policy_v1.yaml#EXECUTABLE_DISCOVERY_MARKDOWN_ONLY
+  contract_refs:
+  - docs/spec/contract/01_discovery.md
+  - docs/spec/contract/08_v1_scope.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_codecs_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/codecs.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
+  notes: Canonical executable trees reject non-markdown format opt-ins.
+- rule_id: DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES
+  policy_ref: docs/spec/contract/policy_v1.yaml#DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES
+  contract_refs:
+  - docs/spec/contract/08_v1_scope.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md
+  notes: Keeps baselines/manifests/schemas as machine data and forbids executable fences in those artifacts.
+- rule_id: NO_EXECUTABLE_YAML_JSON_CASES_IN_CANONICAL_TREES
+  policy_ref: docs/spec/contract/policy_v1.yaml#NO_EXECUTABLE_YAML_JSON_CASES_IN_CANONICAL_TREES
+  contract_refs:
+  - docs/spec/contract/01_discovery.md
+  - docs/spec/contract/08_v1_scope.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_codecs_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
+  - docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md
+  notes: Forbids runnable yaml/json spec case files in canonical executable trees.

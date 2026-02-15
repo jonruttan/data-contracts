@@ -18,8 +18,9 @@ Notes:
 - Spec-lang stdlib completeness and parity are contract-defined by
   `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml` and
   `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`.
-- Canonical authoring remains `.spec.md`; `.spec.yaml/.spec.yml/.spec.json`
-  are opt-in external adapter formats.
+- Canonical executable authoring is `.spec.md` only across conformance,
+  governance, impl, and spec-lang library surfaces; machine data artifacts
+  remain YAML/JSON non-executable files.
 - Portability reporting includes a segmented self-containment metric across
   conformance/governance/impl `.spec.md` corpora.
 - Conformance and governance assertion authoring is evaluate-only for
