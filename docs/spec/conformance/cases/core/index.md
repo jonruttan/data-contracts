@@ -2,6 +2,8 @@
 
 Canonical domain index for executable specs in this subtree.
 
+## Files
+
 - `/docs/spec/conformance/cases/core/api_http.spec.md`
 - `/docs/spec/conformance/cases/core/assertion_health.spec.md`
 - `/docs/spec/conformance/cases/core/cli_run_entrypoint.spec.md`

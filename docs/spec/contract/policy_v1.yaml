@@ -1719,3 +1719,32 @@ rules:
   references:
   - docs/spec/governance/cases/core/spec_domain_index_sync.spec.md
   - scripts/run_governance_specs.py
+- id: LIBRARY_DOMAIN_OWNERSHIP
+  introduced_in: v1
+  scope: governance
+  applies_to: governance_and_conformance_library_paths
+  norm: MUST
+  requirement: library_paths_must_follow_domain_ownership_boundaries
+  description: 'Conformance cases must use conformance libraries; governance cases must use policy/path libraries.
+
+    '
+  rationale: Preserves clear ownership boundaries for reusable decision logic.
+  risk_if_violated: Cross-domain coupling increases brittleness and review ambiguity.
+  references:
+  - docs/spec/governance/cases/core/library_domain_ownership.spec.md
+  - scripts/run_governance_specs.py
+- id: LIBRARY_DOMAIN_INDEX_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: docs/spec/libraries/*/index.md
+  norm: MUST
+  requirement: library_domain_indexes_must_list_files_and_exported_symbols_without_stale_entries
+  description: 'Library domain indexes must include all in-domain library spec files and exported symbol inventory entries.
+
+    '
+  rationale: Ensures reusable library surfaces remain discoverable and machine-checked.
+  risk_if_violated: Missing or stale symbol references break policy reuse at runtime.
+  references:
+  - docs/spec/governance/cases/core/library_domain_index_sync.spec.md
+  - scripts/migrate_spec_layout_domain_trees.py
+  - scripts/run_governance_specs.py

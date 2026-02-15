@@ -4,6 +4,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from spec_runner.codecs import load_external_cases
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SCAN_EXTS = (".md", ".yaml", ".yml", ".json", ".py", ".sh", ".toml")
@@ -39,16 +41,40 @@ def _rewrite_refs(mapping: dict[str, str], *, check_only: bool) -> list[str]:
     return changed
 
 
+def _library_exports_for_file(spec_path: Path) -> list[str]:
+    exports: list[str] = []
+    for _doc_path, case in load_external_cases(spec_path, formats={"md"}):
+        if str(case.get("type", "")).strip() != "spec_lang.library":
+            continue
+        raw_exports = case.get("exports")
+        if not isinstance(raw_exports, list):
+            continue
+        for item in raw_exports:
+            sym = str(item).strip()
+            if sym:
+                exports.append(sym)
+    # Stable unique.
+    return sorted(dict.fromkeys(exports))
+
+
 def _write_domain_index(domain_dir: Path, title: str, spec_files: list[Path], *, check_only: bool) -> bool:
     lines = [
         f"# {title} Domain Index",
         "",
         "Canonical domain index for executable specs in this subtree.",
         "",
+        "## Files",
+        "",
     ]
     for p in sorted(spec_files):
         rel = "/" + p.relative_to(ROOT).as_posix()
         lines.append(f"- `{rel}`")
+    if "/docs/spec/libraries/" in ("/" + domain_dir.relative_to(ROOT).as_posix() + "/"):
+        lines.extend(["", "## Exported Symbols", ""])
+        for p in sorted(spec_files):
+            rel = "/" + p.relative_to(ROOT).as_posix()
+            for sym in _library_exports_for_file(p):
+                lines.append(f"- `{sym}` ({rel})")
     lines.append("")
     body = "\n".join(lines)
     index_path = domain_dir / "index.md"

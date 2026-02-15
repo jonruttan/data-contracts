@@ -2,6 +2,8 @@
 
 Canonical domain index for executable specs in this subtree.
 
+## Files
+
 - `/docs/spec/governance/cases/core/assert_compiler_schema_matrix_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_spec_lang_builtin_surface_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_sugar_compile_only_sync.spec.md`
@@ -52,6 +54,8 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/governance_policy_library_usage_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/governance_policy_library_usage_required.spec.md`
 - `/docs/spec/governance/cases/core/governance_structured_assertions_required.spec.md`
+- `/docs/spec/governance/cases/core/library_domain_index_sync.spec.md`
+- `/docs/spec/governance/cases/core/library_domain_ownership.spec.md`
 - `/docs/spec/governance/cases/core/naming_filename_policy.spec.md`
 - `/docs/spec/governance/cases/core/normalization_docs_token_sync.spec.md`
 - `/docs/spec/governance/cases/core/normalization_library_mapping_ast_only.spec.md`

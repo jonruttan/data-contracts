@@ -1825,3 +1825,32 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/spec_domain_index_sync.spec.md
   notes: Domain index files are checked for completeness and stale entries.
+- rule_id: LIBRARY_DOMAIN_OWNERSHIP
+  policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_OWNERSHIP
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/library_domain_ownership.spec.md
+  notes: Governance enforces domain ownership boundaries for harness.spec_lang.library_paths.
+- rule_id: LIBRARY_DOMAIN_INDEX_SYNC
+  policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_INDEX_SYNC
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/migrate_spec_layout_domain_trees.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/library_domain_index_sync.spec.md
+  notes: Library domain indexes are checked for complete file and exported symbol inventory coverage.

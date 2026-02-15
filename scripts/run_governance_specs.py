@@ -3756,6 +3756,130 @@ def _scan_spec_domain_index_sync(root: Path, *, harness: dict | None = None) -> 
     return violations
 
 
+def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    # Conformance cases: conformance libraries only.
+    conformance_root = root / "docs/spec/conformance/cases"
+    if conformance_root.exists():
+        for doc_path, case in _iter_all_spec_cases(conformance_root):
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            h = case.get("harness")
+            if not isinstance(h, dict):
+                continue
+            spec_lang = h.get("spec_lang")
+            if not isinstance(spec_lang, dict):
+                continue
+            libs = spec_lang.get("library_paths")
+            if not isinstance(libs, list):
+                continue
+            for idx, raw in enumerate(libs):
+                s = str(raw).strip()
+                if not s or s.startswith("external://"):
+                    continue
+                try:
+                    normalized = normalize_contract_path(
+                        s, field=f"{case_id}.harness.spec_lang.library_paths[{idx}]"
+                    )
+                except VirtualPathError:
+                    continue
+                if not normalized.startswith("/docs/spec/libraries/conformance/"):
+                    rel = doc_path.relative_to(root)
+                    violations.append(
+                        f"{rel}: case {case_id} library_paths[{idx}] must be under "
+                        "/docs/spec/libraries/conformance/"
+                    )
+
+    # Governance cases: policy/path libraries only.
+    governance_root = root / "docs/spec/governance/cases"
+    if governance_root.exists():
+        for doc_path, case in _iter_all_spec_cases(governance_root):
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            h = case.get("harness")
+            if not isinstance(h, dict):
+                continue
+            spec_lang = h.get("spec_lang")
+            if not isinstance(spec_lang, dict):
+                continue
+            libs = spec_lang.get("library_paths")
+            if not isinstance(libs, list):
+                continue
+            for idx, raw in enumerate(libs):
+                s = str(raw).strip()
+                if not s or s.startswith("external://"):
+                    continue
+                try:
+                    normalized = normalize_contract_path(
+                        s, field=f"{case_id}.harness.spec_lang.library_paths[{idx}]"
+                    )
+                except VirtualPathError:
+                    continue
+                allowed = (
+                    normalized.startswith("/docs/spec/libraries/policy/")
+                    or normalized.startswith("/docs/spec/libraries/path/")
+                )
+                if not allowed:
+                    rel = doc_path.relative_to(root)
+                    violations.append(
+                        f"{rel}: case {case_id} library_paths[{idx}] must be under "
+                        "/docs/spec/libraries/policy/ or /docs/spec/libraries/path/"
+                    )
+    return violations
+
+
+def _scan_library_domain_index_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    libs_root = root / "docs/spec/libraries"
+    if not libs_root.exists():
+        return ["docs/spec/libraries:1: missing libraries root"]
+
+    for domain_dir in sorted(p for p in libs_root.iterdir() if p.is_dir() and not p.name.startswith(".")):
+        spec_files = sorted(p for p in domain_dir.glob("*.spec.md") if p.is_file())
+        if not spec_files:
+            continue
+        index_path = domain_dir / "index.md"
+        if not index_path.exists():
+            violations.append(f"{index_path.relative_to(root)}: missing required domain index.md")
+            continue
+        raw = index_path.read_text(encoding="utf-8")
+        if "## Exported Symbols" not in raw:
+            violations.append(f"{index_path.relative_to(root)}: missing '## Exported Symbols' section")
+        for p in spec_files:
+            rel = "/" + p.relative_to(root).as_posix()
+            if rel not in raw:
+                violations.append(f"{index_path.relative_to(root)}: missing indexed path: {rel}")
+            try:
+                loaded = load_external_cases(p, formats={"md"})
+            except Exception as exc:  # noqa: BLE001
+                violations.append(f"{p.relative_to(root)}: unable to parse library file ({exc})")
+                continue
+            exports: list[str] = []
+            for _doc_path, case in loaded:
+                if str(case.get("type", "")).strip() != "spec_lang.library":
+                    continue
+                raw_exports = case.get("exports")
+                if not isinstance(raw_exports, list):
+                    continue
+                for item in raw_exports:
+                    sym = str(item).strip()
+                    if sym:
+                        exports.append(sym)
+            for sym in sorted(dict.fromkeys(exports)):
+                token = f"`{sym}` ({rel})"
+                if token not in raw:
+                    violations.append(
+                        f"{index_path.relative_to(root)}: missing exported symbol entry {token}"
+                    )
+        for m in re.finditer(r"`(/docs/spec/libraries/[^`]+\.spec\.md)`", raw):
+            rel = m.group(1)
+            target = _join_contract_path(root, rel)
+            if not target.exists():
+                line = raw[: m.start()].count("\n") + 1
+                violations.append(
+                    f"{index_path.relative_to(root)}:{line}: stale indexed path missing from tree: {rel}"
+                )
+    return violations
+
+
 def _load_normalization_profile(root: Path) -> tuple[dict[str, object] | None, list[str]]:
     p = root / _NORMALIZATION_PROFILE_PATH
     if not p.exists():
@@ -4033,6 +4157,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "reference.token_anchors_exist": _scan_reference_token_anchors_exist,
     "spec.layout_domain_trees": _scan_spec_layout_domain_trees,
     "spec.domain_index_sync": _scan_spec_domain_index_sync,
+    "library.domain_ownership": _scan_library_domain_ownership,
+    "library.domain_index_sync": _scan_library_domain_index_sync,
     "normalization.profile_sync": _scan_normalization_profile_sync,
     "normalization.mapping_ast_only": _scan_normalization_mapping_ast_only,
     "normalization.library_mapping_ast_only": _scan_normalization_library_mapping_ast_only,
