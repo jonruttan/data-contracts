@@ -21,7 +21,7 @@ def test_script_writes_pass_summary(monkeypatch, tmp_path):
     monkeypatch.setattr(
         mod,
         "_default_steps",
-        lambda _python_bin: [
+        lambda _runner_bin, _runner_impl: [
             ("a", ["echo", "a"]),
             ("b", ["echo", "b"]),
         ],
@@ -46,7 +46,7 @@ def test_script_stops_at_first_failure_and_writes_summary(monkeypatch, tmp_path)
     monkeypatch.setattr(
         mod,
         "_default_steps",
-        lambda _python_bin: [
+        lambda _runner_bin, _runner_impl: [
             ("a", ["echo", "a"]),
             ("b", ["echo", "b"]),
             ("c", ["echo", "c"]),

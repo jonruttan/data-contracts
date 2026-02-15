@@ -717,8 +717,8 @@ rules:
   scope: governance
   applies_to: runtime.default_gate.adapter
   norm: MUST
-  requirement: default_gate_scripts_set_rust_adapter_as_default_runner_bin
-  description: 'Default gate scripts must set SPEC_RUNNER_BIN to scripts/rust/runner_adapter.sh when not explicitly overridden.
+  requirement: default_gate_scripts_set_public_runner_adapter_as_default_runner_bin
+  description: 'Default gate scripts must set SPEC_RUNNER_BIN to scripts/runner_adapter.sh when not explicitly overridden.
 
     '
   rationale: Makes rust lane the default operational boundary.
@@ -1116,12 +1116,12 @@ rules:
   scope: governance
   applies_to: runtime.runner_interface.ci_lane
   norm: MUST
-  requirement: ci_includes_non_default_adapter_lane_via_spec_runner_bin
-  description: 'CI must include a lane that runs core gate with SPEC_RUNNER_BIN set to a non-default adapter path.
+  requirement: ci_includes_public_runner_lane_via_spec_runner_bin
+  description: 'CI must include a lane that runs core gate with SPEC_RUNNER_BIN set to scripts/runner_adapter.sh.
 
     '
-  rationale: Ensures adapter switching is continuously exercised in automation.
-  risk_if_violated: Alternate adapter support can silently regress.
+  rationale: Ensures the public runner interface contract is continuously exercised in automation.
+  risk_if_violated: The public entrypoint can drift without CI visibility.
   references:
   - docs/spec/contract/12_runner_interface.md
   - docs/spec/governance/cases/core/runtime_runner_interface_ci_lane.spec.md
@@ -1145,7 +1145,7 @@ rules:
   applies_to: runtime.rust_primary.ci_lane
   norm: MUST
   requirement: rust_primary_ci_lane_executes_core_gate_via_runner_interface
-  description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN pointing to the Rust adapter path.
+  description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN=./scripts/runner_adapter.sh and SPEC_RUNNER_IMPL=rust.
 
     '
   rationale: Makes Rust-primary operation continuously verifiable in automation.
@@ -1167,6 +1167,62 @@ rules:
   references:
   - docs/spec/contract/16_rust_primary_transition.md
   - docs/spec/governance/cases/core/runtime_rust_primary_no_python_dependency.spec.md
+- id: RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.runner_interface.public_entrypoint
+  norm: MUST
+  requirement: gate_scripts_use_single_public_runner_entrypoint
+  description: 'Gate shell scripts must reference scripts/runner_adapter.sh as the single public runner entrypoint.
+
+    '
+  rationale: Keeps runner orchestration stable while allowing internal adapter evolution.
+  risk_if_violated: Public invocation contract fragments across multiple scripts.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/core/runtime_public_runner_entrypoint_single.spec.md
+- id: RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.runner_interface.default_mode
+  norm: MUST
+  requirement: public_runner_entrypoint_defaults_to_rust
+  description: 'scripts/runner_adapter.sh must default to rust mode unless impl is explicitly selected.
+
+    '
+  rationale: Enforces rust-first behavior without changing the public command surface.
+  risk_if_violated: Default lane behavior becomes ambiguous and policy checks lose meaning.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/core/runtime_public_runner_default_rust.spec.md
+- id: RUNTIME_PYTHON_LANE_EXPLICIT_OPT_IN_ONLY
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.runner_interface.python_lane
+  norm: MUST
+  requirement: python_lane_must_be_explicit_opt_in
+  description: 'Python runner lane must require explicit impl selection (`SPEC_RUNNER_IMPL=python` or `--impl python`).
+
+    '
+  rationale: Prevents accidental python execution in default non-python lanes.
+  risk_if_violated: Python dependency can re-enter default workflows silently.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/core/runtime_python_lane_explicit_opt_in.spec.md
+- id: RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.runner_interface.public_usage
+  norm: MUST
+  requirement: public_docs_do_not_instruct_direct_internal_rust_adapter_invocation
+  description: 'Public docs must not instruct direct invocation of scripts/rust/runner_adapter.sh.
+
+    '
+  rationale: Keeps scripts/rust/runner_adapter.sh an internal implementation detail.
+  risk_if_violated: Users bypass canonical interface and couple workflows to internals.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md
 - id: RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
   introduced_in: v1
   scope: governance

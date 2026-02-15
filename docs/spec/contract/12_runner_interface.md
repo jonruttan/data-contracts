@@ -4,8 +4,10 @@ Defines the language-neutral command boundary used by local gate scripts.
 
 Execution classes:
 
-- `default lane`: rust adapter default path (`scripts/rust/runner_adapter.sh`)
-- `python runner lane`: explicit opt-in path (`scripts/runner_adapter.sh`)
+- `default lane`: canonical adapter with rust mode
+  (`scripts/runner_adapter.sh` with `SPEC_RUNNER_IMPL=rust` default)
+- `python runner lane`: explicit opt-in mode through the same adapter
+  (`scripts/runner_adapter.sh --impl python` or `SPEC_RUNNER_IMPL=python`)
 
 ## Required Interface
 
@@ -32,15 +34,17 @@ Required subcommands:
 
 CI expectation:
 
-- CI MUST exercise at least one non-default adapter lane via `SPEC_RUNNER_BIN`
-  (currently `scripts/rust/runner_adapter.sh`) using core gate commands.
+- CI default lane MUST run core gate through `scripts/runner_adapter.sh`
+  in rust mode.
+- Python lane is explicit opt-in and is not required in every merge-gate run.
 
 ## Default Adapter
 
 Repository adapters:
 
-- `scripts/rust/runner_adapter.sh` (default lane adapter; invokes Rust CLI)
-- `scripts/runner_adapter.sh` (explicit Python runner lane adapter)
+- `scripts/runner_adapter.sh` (single public entrypoint; rust default router)
+- `scripts/rust/runner_adapter.sh` (internal rust adapter; invokes Rust CLI)
+- `scripts/python/runner_adapter.sh` (internal python adapter)
 - `scripts/rust/spec_runner_cli` (Rust runner-interface CLI crate)
 
 Adapters may call implementation-specific scripts/tools internally.

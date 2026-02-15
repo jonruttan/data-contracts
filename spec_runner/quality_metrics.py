@@ -484,6 +484,7 @@ def default_runner_independence_config() -> dict[str, Any]:
             "ci_workflows": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
             "adapter_interfaces": [
                 "scripts/runner_adapter.sh",
+                "scripts/python/runner_adapter.sh",
                 "scripts/rust/runner_adapter.sh",
                 "scripts/rust/spec_runner_cli/src/main.rs",
             ],
@@ -496,10 +497,11 @@ def default_runner_independence_config() -> dict[str, Any]:
             "php scripts/php/spec_runner.php",
         ],
         "direct_runtime_token_segments": ["gate_scripts", "ci_workflows"],
-        "gate_required_tokens": ["SPEC_RUNNER_BIN", "scripts/rust/runner_adapter.sh"],
+        "gate_required_tokens": ["SPEC_RUNNER_BIN", "scripts/runner_adapter.sh"],
         "rust_ci_required_tokens": [
             "core-gate-rust-adapter:",
-            "SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh",
+            "SPEC_RUNNER_BIN: ./scripts/runner_adapter.sh",
+            "SPEC_RUNNER_IMPL: rust",
             "run: ./scripts/core_gate.sh",
         ],
     }
@@ -518,12 +520,18 @@ def default_python_dependency_config() -> dict[str, Any]:
     return {
         "segment_files": {
             "default_gate": ["scripts/ci_gate.sh", "scripts/core_gate.sh", "scripts/docs_doctor.sh"],
+            "public_adapter": ["scripts/runner_adapter.sh"],
             "rust_adapter": ["scripts/rust/runner_adapter.sh", "scripts/rust/spec_runner_cli/src/main.rs"],
             "ci_workflows": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
-            "python_surfaces": ["scripts/runner_adapter.sh", "scripts/python/*.py"],
+            "python_surfaces": ["scripts/python/*.sh", "scripts/python/*.py"],
         },
         "non_python_segments": ["default_gate", "rust_adapter"],
-        "python_allowed_globs": ["scripts/runner_adapter.sh", "scripts/python/*.py", ".github/workflows/*.yml", ".github/workflows/*.yaml"],
+        "python_allowed_globs": [
+            "scripts/python/*.sh",
+            "scripts/python/*.py",
+            ".github/workflows/*.yml",
+            ".github/workflows/*.yaml",
+        ],
         "python_tokens": [
             "python -m ",
             "python3 ",
@@ -538,13 +546,14 @@ def default_python_dependency_config() -> dict[str, Any]:
         ],
         "rust_transitive_forbidden_tokens": [
             "scripts/runner_adapter.sh",
+            "scripts/python/runner_adapter.sh",
             "scripts/run_governance_specs.py",
             "scripts/ci_gate_summary.py",
             "python -m ",
             "python3 ",
         ],
         "default_gate_required_tokens": [
-            'SPEC_RUNNER_BIN="${ROOT_DIR}/scripts/rust/runner_adapter.sh"',
+            'SPEC_RUNNER_BIN="${ROOT_DIR}/scripts/runner_adapter.sh"',
         ],
         "runtime_trace_path": ".artifacts/gate-exec-trace.json",
     }
@@ -635,8 +644,8 @@ def python_dependency_report_jsonable(repo_root: Path, config: dict[str, Any] | 
         try:
             payload = json.loads(trace_file.read_text(encoding="utf-8"))
             steps = payload.get("steps") if isinstance(payload, dict) else None
-            runner_bin = str(payload.get("runner_bin", "")).strip() if isinstance(payload, dict) else ""
-            lane = "rust" if "scripts/rust/runner_adapter.sh" in runner_bin else "python"
+            runner_impl = str(payload.get("runner_impl", "")).strip() if isinstance(payload, dict) else ""
+            lane = runner_impl if runner_impl in {"rust", "python"} else "rust"
             if isinstance(steps, list):
                 for row in steps:
                     if not isinstance(row, dict):

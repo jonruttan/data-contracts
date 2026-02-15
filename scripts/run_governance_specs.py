@@ -2041,6 +2041,152 @@ def _scan_runtime_rust_adapter_transitive_no_python(root: Path, *, harness: dict
     return violations
 
 
+def _scan_runtime_public_runner_entrypoint_single(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("public_runner_entrypoint")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.public_runner_entrypoint_single requires harness.public_runner_entrypoint mapping in governance spec"
+        ]
+    required_entrypoint = str(cfg.get("required_entrypoint", "")).strip()
+    gate_files = cfg.get("gate_files")
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not required_entrypoint:
+        return ["harness.public_runner_entrypoint.required_entrypoint must be a non-empty string"]
+    if (
+        not isinstance(gate_files, list)
+        or not gate_files
+        or any(not isinstance(x, str) or not x.strip() for x in gate_files)
+    ):
+        return ["harness.public_runner_entrypoint.gate_files must be a non-empty list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.public_runner_entrypoint.forbidden_tokens must be a list of non-empty strings"]
+
+    violations: list[str] = []
+    for rel in gate_files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing gate file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        if required_entrypoint not in text:
+            violations.append(f"{rel}:1: missing required public runner entrypoint token {required_entrypoint}")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden direct runner token {tok}")
+    return violations
+
+
+def _scan_runtime_public_runner_default_rust(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("public_runner_default")
+    if not isinstance(cfg, dict):
+        return ["runtime.public_runner_default_rust requires harness.public_runner_default mapping in governance spec"]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not path:
+        return ["harness.public_runner_default.path must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.public_runner_default.required_tokens must be a non-empty list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.public_runner_default.forbidden_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing public runner adapter script"]
+    text = p.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing required rust-default token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{path}:1: forbidden default token {tok}")
+    return violations
+
+
+def _scan_runtime_python_lane_explicit_opt_in(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("python_lane_opt_in")
+    if not isinstance(cfg, dict):
+        return ["runtime.python_lane_explicit_opt_in requires harness.python_lane_opt_in mapping in governance spec"]
+    files = cfg.get("files")
+    required_opt_in_tokens = cfg.get("required_opt_in_tokens", [])
+    forbidden_default_tokens = cfg.get("forbidden_default_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.python_lane_opt_in.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_opt_in_tokens, list)
+        or not required_opt_in_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_opt_in_tokens)
+    ):
+        return ["harness.python_lane_opt_in.required_opt_in_tokens must be a non-empty list of non-empty strings"]
+    if not isinstance(forbidden_default_tokens, list) or any(
+        not isinstance(x, str) or not x.strip() for x in forbidden_default_tokens
+    ):
+        return ["harness.python_lane_opt_in.forbidden_default_tokens must be a list of non-empty strings"]
+    violations: list[str] = []
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing file for python lane opt-in policy check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in forbidden_default_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden implicit python-lane token {tok}")
+        if not any(tok in text for tok in required_opt_in_tokens):
+            violations.append(f"{rel}:1: missing explicit python opt-in token")
+    return violations
+
+
+def _scan_runtime_no_public_direct_rust_adapter_docs(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("public_docs")
+    if not isinstance(cfg, dict):
+        return ["runtime.no_public_direct_rust_adapter_docs requires harness.public_docs mapping in governance spec"]
+    files = cfg.get("files")
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    allowlist = cfg.get("allowlist", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.public_docs.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(forbidden_tokens, list)
+        or not forbidden_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+    ):
+        return ["harness.public_docs.forbidden_tokens must be a non-empty list of non-empty strings"]
+    if not isinstance(allowlist, list) or any(not isinstance(x, str) or not x.strip() for x in allowlist):
+        return ["harness.public_docs.allowlist must be a list of non-empty strings"]
+    allow = {str(x).lstrip("/") for x in allowlist}
+    violations: list[str] = []
+    for rel in files:
+        normalized = str(rel).lstrip("/")
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing public doc for rust-adapter invocation check")
+            continue
+        if normalized in allow:
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden direct rust-adapter public doc token {tok}")
+    return violations
+
+
 def _type_contract_doc_rel_for(case_type: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "_", case_type.lower()).strip("_")
     return f"{_TYPE_CONTRACTS_DIR}/{slug}.md"
@@ -4475,6 +4621,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
     "runtime.python_bin_resolver_sync": _scan_runtime_python_bin_resolver_sync,
     "runtime.runner_interface_gate_sync": _scan_runtime_runner_interface_gate_sync,
+    "runtime.public_runner_entrypoint_single": _scan_runtime_public_runner_entrypoint_single,
+    "runtime.public_runner_default_rust": _scan_runtime_public_runner_default_rust,
+    "runtime.python_lane_explicit_opt_in": _scan_runtime_python_lane_explicit_opt_in,
+    "runtime.no_public_direct_rust_adapter_docs": _scan_runtime_no_public_direct_rust_adapter_docs,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,
     "runtime.rust_adapter_no_delegate": _scan_runtime_rust_adapter_no_delegate,

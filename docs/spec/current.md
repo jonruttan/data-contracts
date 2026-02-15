@@ -71,8 +71,9 @@ Notes:
   CI runs `normalize-check` and local workflow uses `normalize-fix`.
 - Gate scripts now invoke CI summary orchestration through runner-interface
   subcommand `ci-gate-summary` (no direct gate-script Python summary call).
-- Gate scripts default to Rust adapter (`scripts/rust/runner_adapter.sh`);
-  Python runner lane remains explicit opt-in via `SPEC_RUNNER_BIN`.
+- Gate scripts default to canonical adapter (`scripts/runner_adapter.sh`)
+  in rust mode; Python runner lane remains explicit opt-in via
+  `SPEC_RUNNER_IMPL=python` (or `--impl python`).
 - Contract path model now uses virtual-root semantics (`/` = contract root)
   with canonical `/...` normalization and explicit deny-by-default
   `external://provider/id` references.

@@ -18,36 +18,46 @@ def _now_iso_utc() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def _default_steps(runner_bin: str) -> list[tuple[str, list[str]]]:
+def _runner_command(runner_bin: str, runner_impl: str, subcommand: str) -> list[str]:
+    normalized = runner_bin.replace("\\", "/")
+    if normalized.endswith("/scripts/runner_adapter.sh") or normalized in {
+        "scripts/runner_adapter.sh",
+        "./scripts/runner_adapter.sh",
+    }:
+        return [runner_bin, "--impl", runner_impl, subcommand]
+    return [runner_bin, subcommand]
+
+
+def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[str]]]:
     return [
-        ("governance", [runner_bin, "governance"]),
-        ("docs_build_check", [runner_bin, "docs-build-check"]),
-        ("docs_lint", [runner_bin, "docs-lint"]),
-        ("normalize_check", [runner_bin, "normalize-check"]),
-        ("spec_portability_json", [runner_bin, "spec-portability-json"]),
-        ("spec_portability_md", [runner_bin, "spec-portability-md"]),
-        ("spec_lang_adoption_json", [runner_bin, "spec-lang-adoption-json"]),
-        ("spec_lang_adoption_md", [runner_bin, "spec-lang-adoption-md"]),
-        ("runner_independence_json", [runner_bin, "runner-independence-json"]),
-        ("runner_independence_md", [runner_bin, "runner-independence-md"]),
-        ("python_dependency_json", [runner_bin, "python-dependency-json"]),
-        ("python_dependency_md", [runner_bin, "python-dependency-md"]),
-        ("docs_operability_json", [runner_bin, "docs-operability-json"]),
-        ("docs_operability_md", [runner_bin, "docs-operability-md"]),
-        ("contract_assertions_json", [runner_bin, "contract-assertions-json"]),
-        ("contract_assertions_md", [runner_bin, "contract-assertions-md"]),
-        ("objective_scorecard_json", [runner_bin, "objective-scorecard-json"]),
-        ("objective_scorecard_md", [runner_bin, "objective-scorecard-md"]),
-        ("spec_lang_stdlib_json", [runner_bin, "spec-lang-stdlib-json"]),
-        ("spec_lang_stdlib_md", [runner_bin, "spec-lang-stdlib-md"]),
-        ("evaluate_style", [runner_bin, "style-check"]),
-        ("ruff", [runner_bin, "lint"]),
-        ("mypy", [runner_bin, "typecheck"]),
-        ("compileall", [runner_bin, "compilecheck"]),
-        ("conformance_purpose_json", [runner_bin, "conformance-purpose-json"]),
-        ("conformance_purpose_md", [runner_bin, "conformance-purpose-md"]),
-        ("conformance_parity", [runner_bin, "conformance-parity"]),
-        ("pytest", [runner_bin, "test-full"]),
+        ("governance", _runner_command(runner_bin, runner_impl, "governance")),
+        ("docs_build_check", _runner_command(runner_bin, runner_impl, "docs-build-check")),
+        ("docs_lint", _runner_command(runner_bin, runner_impl, "docs-lint")),
+        ("normalize_check", _runner_command(runner_bin, runner_impl, "normalize-check")),
+        ("spec_portability_json", _runner_command(runner_bin, runner_impl, "spec-portability-json")),
+        ("spec_portability_md", _runner_command(runner_bin, runner_impl, "spec-portability-md")),
+        ("spec_lang_adoption_json", _runner_command(runner_bin, runner_impl, "spec-lang-adoption-json")),
+        ("spec_lang_adoption_md", _runner_command(runner_bin, runner_impl, "spec-lang-adoption-md")),
+        ("runner_independence_json", _runner_command(runner_bin, runner_impl, "runner-independence-json")),
+        ("runner_independence_md", _runner_command(runner_bin, runner_impl, "runner-independence-md")),
+        ("python_dependency_json", _runner_command(runner_bin, runner_impl, "python-dependency-json")),
+        ("python_dependency_md", _runner_command(runner_bin, runner_impl, "python-dependency-md")),
+        ("docs_operability_json", _runner_command(runner_bin, runner_impl, "docs-operability-json")),
+        ("docs_operability_md", _runner_command(runner_bin, runner_impl, "docs-operability-md")),
+        ("contract_assertions_json", _runner_command(runner_bin, runner_impl, "contract-assertions-json")),
+        ("contract_assertions_md", _runner_command(runner_bin, runner_impl, "contract-assertions-md")),
+        ("objective_scorecard_json", _runner_command(runner_bin, runner_impl, "objective-scorecard-json")),
+        ("objective_scorecard_md", _runner_command(runner_bin, runner_impl, "objective-scorecard-md")),
+        ("spec_lang_stdlib_json", _runner_command(runner_bin, runner_impl, "spec-lang-stdlib-json")),
+        ("spec_lang_stdlib_md", _runner_command(runner_bin, runner_impl, "spec-lang-stdlib-md")),
+        ("evaluate_style", _runner_command(runner_bin, runner_impl, "style-check")),
+        ("ruff", _runner_command(runner_bin, runner_impl, "lint")),
+        ("mypy", _runner_command(runner_bin, runner_impl, "typecheck")),
+        ("compileall", _runner_command(runner_bin, runner_impl, "compilecheck")),
+        ("conformance_purpose_json", _runner_command(runner_bin, runner_impl, "conformance-purpose-json")),
+        ("conformance_purpose_md", _runner_command(runner_bin, runner_impl, "conformance-purpose-md")),
+        ("conformance_parity", _runner_command(runner_bin, runner_impl, "conformance-parity")),
+        ("pytest", _runner_command(runner_bin, runner_impl, "test-full")),
     ]
 
 
@@ -116,6 +126,11 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument("--runner-bin", required=True, help="Path to runner interface command")
     ap.add_argument(
+        "--runner-impl",
+        default=os.environ.get("SPEC_RUNNER_IMPL", "rust"),
+        help="Runner implementation mode passed to runner adapter (default: rust).",
+    )
+    ap.add_argument(
         "--policy-case",
         default="docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md",
         help="Governance spec case containing orchestration policy_evaluate policy.",
@@ -134,7 +149,7 @@ def main(argv: list[str] | None = None) -> int:
 
     started = _now_iso_utc()
     t0 = time.perf_counter()
-    steps = _run_steps(_default_steps(str(ns.runner_bin)))
+    steps = _run_steps(_default_steps(str(ns.runner_bin), str(ns.runner_impl)))
     verdict = _evaluate_gate_policy(rows=steps, policy_evaluate=policy_evaluate)
     first_failure = next((int(step["exit_code"]) for step in steps if int(step["exit_code"]) != 0), 1)
     exit_code = 0 if verdict else first_failure
@@ -152,6 +167,7 @@ def main(argv: list[str] | None = None) -> int:
         "total_duration_ms": total_duration_ms,
         "steps": steps,
         "runner_bin": str(ns.runner_bin),
+        "runner_impl": str(ns.runner_impl),
     }
     out_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     trace_out = str(ns.trace_out or "").strip()
@@ -161,6 +177,7 @@ def main(argv: list[str] | None = None) -> int:
         trace_payload = {
             "version": 1,
             "runner_bin": str(ns.runner_bin),
+            "runner_impl": str(ns.runner_impl),
             "steps": steps,
         }
         trace_path.write_text(json.dumps(trace_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")

@@ -96,6 +96,8 @@ Adoption profiles:
 - Override runner implementation for gate scripts:
   - `SPEC_RUNNER_BIN=/path/to/compatible-runner make core-check`
   - `SPEC_RUNNER_BIN=/path/to/compatible-runner make check`
+  - Canonical local adapter (rust default): `./scripts/runner_adapter.sh governance`
+  - Explicit Python lane: `./scripts/runner_adapter.sh --impl python governance`
 
 1. Create a spec doc with a fenced `yaml spec-test` block:
 

@@ -18,6 +18,7 @@ harness:
   runner_interface:
     required_paths:
     - /scripts/runner_adapter.sh
+    - /scripts/python/runner_adapter.sh
     - /scripts/rust/runner_adapter.sh
     files:
     - scripts/ci_gate.sh
@@ -25,7 +26,7 @@ harness:
     - scripts/core_gate.sh
     required_tokens:
     - SPEC_RUNNER_BIN
-    - scripts/rust/runner_adapter.sh
+    - scripts/runner_adapter.sh
     forbidden_tokens:
     - scripts/run_governance_specs.py
     - scripts/ci_gate_summary.py

@@ -18,7 +18,7 @@ harness:
   python_bin_resolver:
     helper: scripts/lib/python_bin.sh
     files:
-    - scripts/runner_adapter.sh
+    - scripts/python/runner_adapter.sh
     required_tokens:
     - source "${ROOT_DIR}/scripts/lib/python_bin.sh"
     - resolve_python_bin "${ROOT_DIR}"

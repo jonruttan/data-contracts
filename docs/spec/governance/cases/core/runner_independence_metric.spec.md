@@ -25,6 +25,7 @@ harness:
       - .github/workflows/*.yml
       adapter_interfaces:
       - scripts/runner_adapter.sh
+      - scripts/python/runner_adapter.sh
       - scripts/rust/runner_adapter.sh
       - scripts/rust/spec_runner_cli/src/main.rs
     direct_runtime_token_segments:

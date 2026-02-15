@@ -2023,3 +2023,63 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md
   notes: Required stdlib conformance fixture files must exist and remain in canonical paths.
+- rule_id: RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/core_gate.sh
+  - scripts/ci_gate.sh
+  - scripts/docs_doctor.sh
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/runtime_public_runner_entrypoint_single.spec.md
+  notes: Gate scripts must reference scripts/runner_adapter.sh as the single public runner entrypoint.
+- rule_id: RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/contract/16_rust_primary_transition.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/runner_adapter.sh
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/runtime_public_runner_default_rust.spec.md
+  notes: Canonical runner adapter defaults to rust implementation mode.
+- rule_id: RUNTIME_PYTHON_LANE_EXPLICIT_OPT_IN_ONLY
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PYTHON_LANE_EXPLICIT_OPT_IN_ONLY
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/runner_adapter.sh
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/runtime_python_lane_explicit_opt_in.spec.md
+  notes: Python lane must be selected explicitly via --impl python or SPEC_RUNNER_IMPL=python.
+- rule_id: RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - docs/development.md
+  - README.md
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md
+  notes: Public docs avoid directing users to internal rust adapter paths.
