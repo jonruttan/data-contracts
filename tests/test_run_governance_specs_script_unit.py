@@ -4210,6 +4210,7 @@ assert:
 
 def test_script_enforces_policy_library_usage_non_regression(tmp_path):
     mod = _load_script_module()
+    (tmp_path / ".git").mkdir()
     cases_dir = tmp_path / "cases"
     _write_text(
         cases_dir / "policy_library_usage_non_regression.spec.md",
@@ -4223,6 +4224,11 @@ type: governance.check
 check: governance.policy_library_usage_non_regression
 harness:
   root: {tmp_path}
+  spec_lang:
+    library_paths:
+    - /docs/spec/libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   policy_library_usage_non_regression:
     baseline_path: docs/spec/metrics/sla.json
     summary_fields:
@@ -4235,20 +4241,17 @@ harness:
       segment_rules:
       - prefix: docs/spec/governance/cases
         segment: governance
+  policy_evaluate:
+  - call:
+    - {{var: policy.pass_when_no_violations}}
+    - {{var: subject}}
 assert:
-  - target: summary_json
+  - target: violation_count
     must:
       - evaluate:
         - eq:
-          - get:
-            - var: subject
-            - passed
-          - true
-        - eq:
-          - get:
-            - var: subject
-            - check_id
-          - governance.policy_library_usage_non_regression
+          - var: subject
+          - 0
 ```
 """,
     )
@@ -4266,7 +4269,7 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   docs_reference_surface:
@@ -4289,6 +4292,28 @@ assert:
             - var: subject
             - check_id
           - docs.reference_surface_complete
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/libraries/policy/policy_core.spec.md",
+        """# Lib
+
+## L1
+
+```yaml spec-test
+id: L1
+type: spec_lang.library
+functions:
+  policy.pass_when_no_violations:
+    fn:
+    - [subject]
+    - is_empty:
+      - get:
+        - var: subject
+        - violations
+exports:
+- policy.pass_when_no_violations
 ```
 """,
     )

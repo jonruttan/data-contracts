@@ -565,6 +565,21 @@ rules:
   - docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   - spec_runner/quality_metrics.py
+- id: GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION
+  introduced_in: v1
+  scope: governance
+  applies_to: specs.spec_lang_adoption.metric_non_regression
+  norm: MUST
+  requirement: governance_symbol_resolution_ratio_must_not_regress_from_baseline
+  description: 'Governance policy symbol resolution ratio must remain non-regressing and target fully-resolved policy symbols.
+
+    '
+  rationale: Prevents hidden symbol drift where policy expressions reference unavailable library symbols.
+  risk_if_violated: Governance checks can fail late or become implementation-coupled.
+  references:
+  - docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  - spec_runner/quality_metrics.py
 - id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   introduced_in: v1
   scope: governance
@@ -1649,6 +1664,34 @@ rules:
   references:
   - docs/spec/governance/cases/core/reference_symbols_exist.spec.md
   - spec_runner/spec_lang_libraries.py
+- id: REFERENCE_POLICY_SYMBOLS_RESOLVE
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.check.harness.policy_evaluate.var_symbols
+  norm: MUST
+  requirement: dotted_policy_var_symbols_must_resolve_via_declared_library_symbols
+  description: 'Dotted var symbols referenced in governance policy_evaluate expressions must resolve from declared harness.spec_lang library symbols.
+
+    '
+  rationale: Moves policy symbol wiring failures to governance-time validation.
+  risk_if_violated: Broken policy symbols surface only at runtime with brittle failures.
+  references:
+  - docs/spec/governance/cases/core/reference_policy_symbols_resolve.spec.md
+  - scripts/run_governance_specs.py
+- id: REFERENCE_LIBRARY_EXPORTS_USED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs/spec/libraries/* exports
+  norm: MUST
+  requirement: exported_library_symbols_must_be_referenced
+  description: 'Exported library symbols must be referenced by at least one case policy/expression or harness.spec_lang.exports declaration.
+
+    '
+  rationale: Keeps library surfaces minimal and avoids dead exported symbols.
+  risk_if_violated: Unused exported symbols create drift and unclear API surfaces.
+  references:
+  - docs/spec/governance/cases/core/reference_library_exports_used.spec.md
+  - scripts/run_governance_specs.py
 - id: REFERENCE_CHECK_IDS_EXIST
   introduced_in: v1
   scope: governance

@@ -21,12 +21,14 @@ harness:
       overall_logic_self_contained_ratio: non_decrease
       native_logic_escape_case_ratio: non_increase
       governance_library_backed_policy_ratio: non_decrease
+      governance_symbol_resolution_ratio: non_decrease
     segment_fields:
       conformance:
         mean_logic_self_contained_ratio: non_decrease
       governance:
         mean_logic_self_contained_ratio: non_decrease
         library_backed_policy_ratio: non_decrease
+        governance_symbol_resolution_ratio: non_decrease
     epsilon: 1.0e-12
     spec_lang_adoption:
       roots:

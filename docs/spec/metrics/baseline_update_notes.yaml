@@ -5,8 +5,8 @@ entries:
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/spec_lang_adoption_baseline.json
-  sha256: 2986ce8cc3fe6ec788df018596b375c7f7cdcdb4c809a494350e96deaf3971f6
-  rationale: Baseline refreshed after adding governance library-backed policy ratio metric surfaces.
+  sha256: b2ba3db2bc4f88d6533ef35347fd68c8440cb68516b55157016878dd50357662
+  rationale: Baseline refreshed after adding governance symbol-resolution ratio and library export usage enforcement.
   measurement_model_change: 'yes'
 - baseline: docs/spec/metrics/runner_independence_baseline.json
   sha256: 7066ab5a9fb38c0b2815562015914e9ebdf8087ed77ecdb6c533afd3655923f0

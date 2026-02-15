@@ -564,6 +564,23 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Governance enforces non-regression on configured spec-lang adoption metrics.
+- rule_id: GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION
+  policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  - docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - scripts/run_governance_specs.py
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  notes: Spec-lang adoption ratchet enforces governance policy symbol resolution ratio non-regression.
 - rule_id: CONFORMANCE_EVALUATE_FIRST_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_EVALUATE_FIRST_REQUIRED
   contract_refs:
@@ -1755,6 +1772,34 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/reference_symbols_exist.spec.md
   notes: Library exports/symbol references are validated early.
+- rule_id: REFERENCE_POLICY_SYMBOLS_RESOLVE
+  policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_POLICY_SYMBOLS_RESOLVE
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/reference_policy_symbols_resolve.spec.md
+  notes: Dotted policy var symbols must resolve against declared harness.spec_lang library symbols.
+- rule_id: REFERENCE_LIBRARY_EXPORTS_USED
+  policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_LIBRARY_EXPORTS_USED
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/reference_library_exports_used.spec.md
+  notes: Exported library symbols must be referenced by policies/expressions or harness exports.
 - rule_id: REFERENCE_CHECK_IDS_EXIST
   policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_CHECK_IDS_EXIST
   contract_refs:

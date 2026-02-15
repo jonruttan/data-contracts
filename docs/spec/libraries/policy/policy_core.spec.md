@@ -33,7 +33,4 @@ functions:
       - {var: expected}
 exports:
 - policy.pass_when_no_violations
-- policy.fail_when_has_violations
-- policy.check_id_is
-- policy.violation_count_is
 ```

@@ -29,8 +29,4 @@ functions:
     - {json_type: [{var: subject}, {var: type_name}]}
 exports:
 - conf.pass_when_text_contains
-- conf.pass_when_text_regex
-- conf.eq
-- conf.has_error_category
-- conf.json_type_is
 ```

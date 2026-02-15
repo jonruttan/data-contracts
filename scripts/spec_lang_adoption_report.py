@@ -17,6 +17,7 @@ def _to_markdown(payload: dict) -> str:
         f"- total cases: {int(summary.get('total_cases', 0))}",
         f"- overall logic self-contained ratio: {float(summary.get('overall_logic_self_contained_ratio', 0.0)):.4f}",
         f"- native logic escape case ratio: {float(summary.get('native_logic_escape_case_ratio', 0.0)):.4f}",
+        f"- governance symbol resolution ratio: {float(summary.get('governance_symbol_resolution_ratio', 0.0)):.4f}",
         f"- unit opt-out count: {int(summary.get('unit_opt_out_count', 0))}",
         "",
         "## Segment Summary",

@@ -23,7 +23,4 @@ functions:
         - {get: [{var: subject}, {var: field}]}
         - {var: epsilon}
       - {get: [{var: subject}, {var: baseline_field}]}
-exports:
-- policy.metric_non_decrease
-- policy.metric_non_increase
 ```

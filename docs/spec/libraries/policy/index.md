@@ -9,9 +9,4 @@ Canonical domain index for executable specs in this subtree.
 
 ## Exported Symbols
 
-- `policy.check_id_is` (/docs/spec/libraries/policy/policy_core.spec.md)
-- `policy.fail_when_has_violations` (/docs/spec/libraries/policy/policy_core.spec.md)
 - `policy.pass_when_no_violations` (/docs/spec/libraries/policy/policy_core.spec.md)
-- `policy.violation_count_is` (/docs/spec/libraries/policy/policy_core.spec.md)
-- `policy.metric_non_decrease` (/docs/spec/libraries/policy/policy_metrics.spec.md)
-- `policy.metric_non_increase` (/docs/spec/libraries/policy/policy_metrics.spec.md)

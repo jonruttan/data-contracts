@@ -89,12 +89,7 @@ functions:
       - {var: pattern}
 exports:
 - path.normalize_slashes
-- path.trim_dot
 - path.segments
 - path.basename
-- path.dirname
 - path.extension
-- path.has_extension
-- path.is_under
-- path.matches
 ```

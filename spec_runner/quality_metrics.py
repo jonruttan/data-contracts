@@ -21,6 +21,8 @@ from spec_runner.docs_quality import (
     manifest_chapter_paths,
 )
 from spec_runner.settings import SETTINGS
+from spec_runner.spec_lang import SpecLangLimits
+from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_portability import spec_portability_report_jsonable
 from spec_runner.virtual_paths import VirtualPathError, resolve_contract_path
 
@@ -219,6 +221,23 @@ def _contains_key_recursive(payload: object, key: str) -> bool:
     return False
 
 
+def _collect_var_symbols(expr: object) -> set[str]:
+    out: set[str] = set()
+    if isinstance(expr, dict):
+        raw_var = expr.get("var")
+        if isinstance(raw_var, str):
+            sym = raw_var.strip()
+            if sym:
+                out.add(sym)
+        for value in expr.values():
+            out.update(_collect_var_symbols(value))
+        return out
+    if isinstance(expr, list):
+        for value in expr:
+            out.update(_collect_var_symbols(value))
+    return out
+
+
 def _count_python_decision_branches(repo_root: Path) -> int:
     """
     Counts explicit check-level policy verdict branches in governance script.
@@ -294,6 +313,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             has_policy_evaluate = _contains_key_recursive(case.get("harness"), "policy_evaluate")
             harness = case.get("harness")
             has_library_paths = False
+            governance_symbol_resolution = 1.0
             if isinstance(harness, dict):
                 spec_lang_cfg = harness.get("spec_lang")
                 if isinstance(spec_lang_cfg, dict):
@@ -301,6 +321,30 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                     has_library_paths = isinstance(lib_paths, list) and any(
                         isinstance(x, str) and x.strip() for x in lib_paths
                     )
+                if case_type == "governance.check":
+                    raw_policy = harness.get("policy_evaluate")
+                    if isinstance(raw_policy, list):
+                        refs = {sym for sym in _collect_var_symbols(raw_policy) if "." in sym}
+                        if refs:
+                            try:
+                                symbols = load_spec_lang_symbols_for_case(
+                                    doc_path=doc_path,
+                                    harness=harness,
+                                    limits=SpecLangLimits(),
+                                )
+                            except Exception as exc:  # noqa: BLE001
+                                governance_symbol_resolution = 0.0
+                                errs.append(
+                                    f"{rel_path}: case {case_id} unable to load policy symbols ({exc})"
+                                )
+                            else:
+                                unresolved = sorted(sym for sym in refs if sym not in symbols)
+                                if unresolved:
+                                    governance_symbol_resolution = 0.0
+                                    errs.append(
+                                        f"{rel_path}: case {case_id} unresolved policy symbols: "
+                                        + ", ".join(unresolved)
+                                    )
             if case_type == "governance.check":
                 native_hint = not has_policy_evaluate
             rows.append(
@@ -313,6 +357,9 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                     "native_logic_escape_hint": 1.0 if native_hint else 0.0,
                     "has_policy_evaluate": 1.0 if has_policy_evaluate else 0.0,
                     "library_backed_policy": 1.0 if (case_type == "governance.check" and has_library_paths) else 0.0,
+                    "governance_symbol_resolution": governance_symbol_resolution
+                    if case_type == "governance.check"
+                    else 1.0,
                 }
             )
 
@@ -355,6 +402,26 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
         float(gov_total),
         default=0.0,
     )
+    gov_symbol_resolution_ratio = _safe_ratio(
+        sum(float(r.get("governance_symbol_resolution", 0.0)) for r in gov_rows),
+        float(gov_total),
+        default=1.0,
+    )
+
+    for seg, summary in segments.items():
+        seg_gov_rows = [
+            r
+            for r in rows
+            if str(r.get("segment", "")) == seg and str(r.get("type", "")).strip() == "governance.check"
+        ]
+        if not seg_gov_rows:
+            summary["governance_symbol_resolution_ratio"] = 1.0
+        else:
+            summary["governance_symbol_resolution_ratio"] = _safe_ratio(
+                sum(float(r.get("governance_symbol_resolution", 0.0)) for r in seg_gov_rows),
+                float(len(seg_gov_rows)),
+                default=1.0,
+            )
 
     return {
         "version": 1,
@@ -363,6 +430,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             "overall_logic_self_contained_ratio": overall_logic,
             "native_logic_escape_case_ratio": native_ratio,
             "governance_library_backed_policy_ratio": gov_library_ratio,
+            "governance_symbol_resolution_ratio": gov_symbol_resolution_ratio,
             "unit_opt_out_count": unit_opt_out_count,
             "python_decision_branch_count": _count_python_decision_branches(root),
         },

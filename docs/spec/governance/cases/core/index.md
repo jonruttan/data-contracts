@@ -70,6 +70,8 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/reference_check_ids_exist.spec.md`
 - `/docs/spec/governance/cases/core/reference_contract_paths_exist.spec.md`
 - `/docs/spec/governance/cases/core/reference_external_refs_policy.spec.md`
+- `/docs/spec/governance/cases/core/reference_library_exports_used.spec.md`
+- `/docs/spec/governance/cases/core/reference_policy_symbols_resolve.spec.md`
 - `/docs/spec/governance/cases/core/reference_symbols_exist.spec.md`
 - `/docs/spec/governance/cases/core/reference_token_anchors_exist.spec.md`
 - `/docs/spec/governance/cases/core/regex_doc_sync.spec.md`
