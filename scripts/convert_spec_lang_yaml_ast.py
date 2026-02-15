@@ -8,7 +8,6 @@ from typing import Any
 import yaml
 
 from spec_runner.settings import SETTINGS
-from spec_runner.spec_lang_yaml_ast import is_sexpr_node, sexpr_to_yaml_ast
 
 
 def _is_yaml_opening_fence(line: str) -> tuple[str, int] | None:
@@ -40,11 +39,9 @@ def _is_closing_fence(line: str, *, ch: str, min_len: int) -> bool:
 
 
 def _convert_expr_list_value(raw: Any) -> list[Any]:
-    if is_sexpr_node(raw):
-        return [sexpr_to_yaml_ast(raw)]
     if isinstance(raw, list):
-        return [sexpr_to_yaml_ast(item) if is_sexpr_node(item) else item for item in raw]
-    return [sexpr_to_yaml_ast(raw)]
+        return raw
+    return [raw]
 
 
 def _walk_convert(node: Any) -> tuple[Any, bool]:
@@ -157,7 +154,7 @@ def _convert_file(path: Path) -> tuple[bool, str]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Convert spec-lang YAML list s-expr syntax to mapping AST form")
+    ap = argparse.ArgumentParser(description="Normalize spec-lang YAML expression list shape")
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true", help="fail when files require conversion")
     mode.add_argument("--write", action="store_true", help="rewrite files in place")

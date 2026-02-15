@@ -115,11 +115,7 @@ def _shared_capability_ids(
 ) -> set[str]:
     shared_caps = set(python_capabilities) & set(php_capabilities)
     shared_ids: set[str] = set()
-    try:
-        cases = load_conformance_cases(cases_dir, case_formats=case_formats)
-    except TypeError:
-        # Backward compatibility for tests/mocks that patch the old signature.
-        cases = load_conformance_cases(cases_dir)
+    cases = load_conformance_cases(cases_dir, case_formats=case_formats)
     for _fixture, case in cases:
         rid = str(case.get("id", "")).strip()
         if not rid:

@@ -21,10 +21,9 @@ def test_compile_var_subject_happy_path() -> None:
     assert compile_yaml_expr_to_sexpr(expr, field_path="x") == ["contains", ["var", "subject"], "ok"]
 
 
-def test_reject_subject_mapping_form() -> None:
+def test_compile_subject_mapping_form() -> None:
     expr = {"contains": [{"subject": []}, "ok"]}
-    with pytest.raises(SpecLangYamlAstError, match="subject mapping is not supported"):
-        compile_yaml_expr_to_sexpr(expr, field_path="x")
+    assert compile_yaml_expr_to_sexpr(expr, field_path="x") == ["contains", ["subject"], "ok"]
 
 
 def test_compile_bare_subject_is_literal_string() -> None:
@@ -56,10 +55,9 @@ def test_rejects_non_list_operator_args() -> None:
         compile_yaml_expr_to_sexpr({"contains": None}, field_path="x")
 
 
-def test_ref_and_var_list_reject_unsupported_forms() -> None:
-    with pytest.raises(SpecLangYamlAstError, match="ref mapping is not supported"):
-        compile_yaml_expr_to_sexpr({"ref": "subject"}, field_path="x")
-    with pytest.raises(SpecLangYamlAstError, match="var list form is not supported"):
+def test_ref_and_var_list_forms_compile_without_special_rejection() -> None:
+    assert compile_yaml_expr_to_sexpr({"ref": ["subject"]}, field_path="x") == ["ref", "subject"]
+    with pytest.raises(SpecLangYamlAstError, match="variable name must be a non-empty string"):
         compile_yaml_expr_to_sexpr({"var": ["subject"]}, field_path="x")
 
 

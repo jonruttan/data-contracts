@@ -51,20 +51,8 @@ def _compile_node(node: Any, *, field_path: str) -> Any:
     op = str(keys[0]).strip()
     if not op:
         raise SpecLangYamlAstError(f"{field_path}: operator key must be non-empty")
-    if op == "subject":
-        raise SpecLangYamlAstError(
-            f"{field_path}.subject: subject mapping is not supported; use var: subject"
-        )
-    if op == "ref":
-        raise SpecLangYamlAstError(
-            f"{field_path}.ref: ref mapping is not supported; use var: subject"
-        )
     if op == "var":
         symbol = node[keys[0]]
-        if isinstance(symbol, list):
-            raise SpecLangYamlAstError(
-                f"{field_path}.var: var list form is not supported; use var: <name>"
-            )
         if not isinstance(symbol, str) or not symbol.strip():
             raise SpecLangYamlAstError(
                 f"{field_path}.var: variable name must be a non-empty string"

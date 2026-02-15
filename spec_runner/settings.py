@@ -107,14 +107,6 @@ SETTINGS = RunnerSettings(
     ),
 )
 
-# Backward-compatible aliases for existing call sites/tests.
-DEFAULT_CASE_FILE_PATTERN = SETTINGS.case.default_file_pattern
-ENV_ASSERT_HEALTH = SETTINGS.env.assert_health
-ENV_SAFE_MODE = SETTINGS.env.safe_mode
-ENV_ENV_ALLOWLIST = SETTINGS.env.env_allowlist
-DEFAULT_ASSERT_HEALTH_MODE = SETTINGS.assertion_health.default_mode
-
-
 def governed_config_literals() -> dict[str, str]:
     return {
         SETTINGS.case.default_file_pattern: "SETTINGS.case.default_file_pattern",

@@ -190,7 +190,7 @@ def test_run_parity_check_loads_expected_once_per_implementation(monkeypatch, tm
 def test_shared_capability_ids_filters_by_requires_capabilities(monkeypatch, tmp_path):
     monkeypatch.setattr(
         "spec_runner.conformance_parity.load_conformance_cases",
-        lambda _cases: [
+        lambda _cases, **_kwargs: [
             (Path("a.spec.md"), {"id": "A", "type": "text.file"}),
             (
                 Path("b.spec.md"),
@@ -254,7 +254,7 @@ def test_run_parity_check_intersects_expected_and_shared_capabilities(monkeypatc
     monkeypatch.setattr("spec_runner.conformance_parity.compare_conformance_results", lambda _exp, _act: [])
     monkeypatch.setattr(
         "spec_runner.conformance_parity.load_conformance_cases",
-        lambda _cases: [
+        lambda _cases, **_kwargs: [
             (Path("a.spec.md"), {"id": "A", "type": "text.file"}),
             (Path("b.spec.md"), {"id": "B", "type": "api.http", "requires": {"capabilities": ["api.http"]}}),
         ],

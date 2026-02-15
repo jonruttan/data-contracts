@@ -225,7 +225,7 @@ def test_script_enforces_current_spec_only_contract(tmp_path):
 
     _write_text(
         tmp_path / "docs/spec/schema/schema_v1.md",
-        "# Schema v1\n\n- legacy note\n",
+        "# Schema v1\n\n- previous spec note\n",
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1

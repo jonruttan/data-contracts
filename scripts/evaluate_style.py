@@ -133,12 +133,7 @@ def _condense_expr_node(node: Any) -> Any:
         if len(node) == 1:
             op = str(next(iter(node.keys())))
             raw_args = node[op]
-            if op == "ref":
-                # Legacy form rewrite: {var: subject} -> {var: subject}
-                return _FlowMap({"var": "subject"})
             if op == "var":
-                if isinstance(raw_args, list) and len(raw_args) == 1 and isinstance(raw_args[0], str):
-                    return _FlowMap({"var": raw_args[0]})
                 if isinstance(raw_args, str):
                     return _FlowMap({"var": raw_args})
                 return {"var": _condense_expr_node(raw_args)}
@@ -146,11 +141,6 @@ def _condense_expr_node(node: Any) -> Any:
                 params = raw_args[0]
                 if isinstance(params, dict) and "lit" in params and isinstance(params["lit"], list):
                     params = params["lit"]
-                elif isinstance(params, dict) and len(params) == 1:
-                    k = str(next(iter(params.keys())))
-                    v = params[k]
-                    if isinstance(v, list) and not v and k.strip():
-                        params = [k.strip()]
                 if (
                     isinstance(params, list)
                     and all(isinstance(x, str) and str(x).strip() for x in params)
@@ -158,8 +148,6 @@ def _condense_expr_node(node: Any) -> Any:
                     body = _condense_expr_node(raw_args[1])
                     return {"fn": [_FlowSeq([str(x).strip() for x in params]), body]}
             if isinstance(raw_args, list):
-                if op == "subject" and not raw_args:
-                    return _FlowMap({"var": "subject"})
                 args = [_condense_expr_node(x) for x in raw_args]
                 if len(args) <= _COMPACT_MAX_ITEMS and all(_is_compact_atom(x, depth=1) for x in args):
                     return _FlowMap({op: _FlowSeq(args)})

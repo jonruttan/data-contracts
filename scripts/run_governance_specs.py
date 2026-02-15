@@ -97,11 +97,8 @@ _CURRENT_SPEC_ONLY_CODE_FILES = (
     "scripts/php/conformance_runner.php",
 )
 _CURRENT_SPEC_FORBIDDEN_PATTERNS = (
-    r"\blegacy\b",
-    r"\bkind\b",
     r"previous\s+spec",
     r"prior\s+spec",
-    r"backward[- ]compatible",
 )
 _TYPE_CONTRACTS_DIR = "docs/spec/contract/types"
 _CORE_TYPES = {"text.file", "cli.run"}

@@ -157,7 +157,7 @@ def _check_replacements_drift(profile: dict[str, Any]) -> list[str]:
             old = e.get("old")
             if isinstance(old, str) and old and old in text:
                 line = _line_for(text, old)
-                issues.append(f"{rel}:{line}: {rule_id}: legacy token requires normalize-fix")
+                issues.append(f"{rel}:{line}: {rule_id}: normalization drift requires normalize-fix")
     return issues
 
 
