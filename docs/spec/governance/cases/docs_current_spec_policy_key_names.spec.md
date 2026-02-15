@@ -16,8 +16,23 @@ harness:
       - subject: []
       - violations
 assert:
-- target: text
+- target: violation_count
   must:
-  - contain:
-    - 'PASS: docs.current_spec_policy_key_names'
+  - evaluate:
+    - eq:
+      - subject: []
+      - 0
+- target: summary_json
+  must:
+  - evaluate:
+    - eq:
+      - get:
+        - subject: []
+        - passed
+      - true
+    - eq:
+      - get:
+        - subject: []
+        - check_id
+      - docs.current_spec_policy_key_names
 ```

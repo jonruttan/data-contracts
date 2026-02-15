@@ -1447,6 +1447,20 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/governance_engine.py
   notes: Per-check policy verdict branching is replaced by extractor output + central policy engine.
+- rule_id: GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED
+  contract_refs:
+  - docs/spec/contract/15_governance_subject_model.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/governance_structured_assertions_required.spec.md
+  notes: Governance cases use structured result targets for assertion truth instead of PASS text coupling.
 - rule_id: RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
   contract_refs:

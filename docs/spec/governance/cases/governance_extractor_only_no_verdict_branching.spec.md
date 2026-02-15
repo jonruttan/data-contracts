@@ -24,8 +24,23 @@ harness:
     - true
     - true
 assert:
-- target: text
+- target: violation_count
   must:
-  - contain:
-    - 'PASS: governance.extractor_only_no_verdict_branching'
+  - evaluate:
+    - eq:
+      - subject: []
+      - 0
+- target: summary_json
+  must:
+  - evaluate:
+    - eq:
+      - get:
+        - subject: []
+        - passed
+      - true
+    - eq:
+      - get:
+        - subject: []
+        - check_id
+      - governance.extractor_only_no_verdict_branching
 ```

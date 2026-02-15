@@ -16,6 +16,11 @@ Governance check implementations SHOULD return a structured payload with:
 - `symbols` (optional): symbol table values for policy evaluation
 - `policy_evaluate`: operator-keyed mapping-AST spec-lang expression list
 - `policy_path`: source location token for diagnostics
+- `summary` (runtime assertion surface):
+  - `passed` (bool)
+  - `check_id` (string)
+  - `case_id` (string)
+  - `violation_count` (int)
 
 ## Determinism Requirements
 
@@ -30,6 +35,9 @@ Governance check implementations SHOULD return a structured payload with:
   `policy_path`.
 - Check-specific branch text like `"<check> policy_evaluate returned false"`
   MUST NOT be embedded in check implementations.
+- Governance assertion contracts SHOULD prefer structured targets
+  (`violation_count`, `summary_json` + `evaluate`) instead of PASS text
+  markers as primary truth.
 
 ## Migration Notes
 

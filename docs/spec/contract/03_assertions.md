@@ -49,6 +49,15 @@ Internal execution model:
 - `policy_evaluate` is for governance/orchestration policy expressions in
   harness config.
 
+## Governance Assertion Targets
+
+For `type: governance.check`, assertion targets include:
+
+- `text`: human-readable PASS/FAIL summary output
+- `summary_json`: structured summary surface (available to `evaluate` as a
+  mapping with `passed`, `check_id`, `case_id`, `violation_count`)
+- `violation_count`: numeric violation count
+
 ## Spec-Lang-Primary Runtime Contract
 
 - `evaluate` is the only universal assertion operator contract.

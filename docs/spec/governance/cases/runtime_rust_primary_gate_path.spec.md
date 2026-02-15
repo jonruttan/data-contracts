@@ -22,8 +22,23 @@ harness:
       - subject: []
       - violations
 assert:
-- target: text
+- target: violation_count
   must:
-  - contain:
-    - 'PASS: runtime.runner_interface_ci_lane'
+  - evaluate:
+    - eq:
+      - subject: []
+      - 0
+- target: summary_json
+  must:
+  - evaluate:
+    - eq:
+      - get:
+        - subject: []
+        - passed
+      - true
+    - eq:
+      - get:
+        - subject: []
+        - check_id
+      - runtime.runner_interface_ci_lane
 ```

@@ -45,6 +45,8 @@ Hard requirement:
   `harness.policy_evaluate`.
 - Extractor outputs and central policy evaluation contract are defined in:
   `docs/spec/contract/18_governance_subject_extractors.md`.
+- Governance assertion trees SHOULD validate structured result targets
+  (`violation_count`, `summary_json`) rather than relying solely on PASS text.
 
 ## Initial Migration Scope
 

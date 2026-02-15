@@ -23,8 +23,23 @@ harness:
       - subject: []
       - violations
 assert:
-- target: text
+- target: violation_count
   must:
-  - contain:
-    - 'PASS: runtime.spec_lang_pure_no_effect_builtins'
+  - evaluate:
+    - eq:
+      - subject: []
+      - 0
+- target: summary_json
+  must:
+  - evaluate:
+    - eq:
+      - get:
+        - subject: []
+        - passed
+      - true
+    - eq:
+      - get:
+        - subject: []
+        - check_id
+      - runtime.spec_lang_pure_no_effect_builtins
 ```

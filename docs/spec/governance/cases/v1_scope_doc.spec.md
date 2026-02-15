@@ -16,8 +16,23 @@ harness:
       - subject: []
       - violations
 assert:
-- target: text
+- target: violation_count
   must:
-  - contain:
-    - 'PASS: docs.v1_scope_contract'
+  - evaluate:
+    - eq:
+      - subject: []
+      - 0
+- target: summary_json
+  must:
+  - evaluate:
+    - eq:
+      - get:
+        - subject: []
+        - passed
+      - true
+    - eq:
+      - get:
+        - subject: []
+        - check_id
+      - docs.v1_scope_contract
 ```

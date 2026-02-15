@@ -110,6 +110,13 @@ Governance policy contract:
 - Extractors may emit candidate violations and subject payloads, but MUST NOT
   be the source of final decision truth.
 
+Assertion targets for `governance.check`:
+
+- `text`: human-readable PASS/FAIL summary output
+- `summary_json`: structured summary target; `evaluate` receives summary mapping
+  with `passed`, `check_id`, `case_id`, `violation_count`
+- `violation_count`: integer violation count target
+
 Security model:
 
 - Spec tests are trusted inputs. `cli.run` and hook entrypoints can execute

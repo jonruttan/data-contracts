@@ -20,8 +20,23 @@ harness:
     - true
     - true
 assert:
-- target: text
+- target: violation_count
   must:
-  - contain:
-    - 'PASS: governance.policy_evaluate_required'
+  - evaluate:
+    - eq:
+      - subject: []
+      - 0
+- target: summary_json
+  must:
+  - evaluate:
+    - eq:
+      - get:
+        - subject: []
+        - passed
+      - true
+    - eq:
+      - get:
+        - subject: []
+        - check_id
+      - governance.policy_evaluate_required
 ```

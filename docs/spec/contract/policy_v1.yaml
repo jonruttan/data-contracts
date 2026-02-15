@@ -1353,6 +1353,21 @@ rules:
   - docs/spec/contract/15_governance_subject_model.md
   - docs/spec/contract/18_governance_subject_extractors.md
   - docs/spec/governance/cases/governance_extractor_only_no_verdict_branching.spec.md
+- id: GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.check.assertions
+  norm: SHOULD
+  requirement: governance_cases_should_assert_structured_result_targets
+  description: 'Governance cases should assert structured result targets (`violation_count`, `summary_json` with evaluate) and must not rely solely on PASS text markers.
+
+    '
+  rationale: Reduces coupling to human output formatting and keeps governance assertions portable and machine-verifiable.
+  risk_if_violated: Governance checks can pass while structured result contracts drift unnoticed.
+  references:
+  - docs/spec/contract/15_governance_subject_model.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  - docs/spec/governance/cases/governance_structured_assertions_required.spec.md
 - id: RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
   introduced_in: v1
   scope: runtime

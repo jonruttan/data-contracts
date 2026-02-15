@@ -1389,6 +1389,65 @@ def _scan_governance_extractor_only_no_verdict_branching(root: Path, *, harness:
     return violations
 
 
+def _scan_governance_structured_assertions_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("structured_assertions")
+    if not isinstance(cfg, dict):
+        return ["governance.structured_assertions_required requires harness.structured_assertions mapping in governance spec"]
+    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
+    case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
+    ignore_checks_raw = cfg.get("ignore_checks", [])
+    if not isinstance(ignore_checks_raw, list) or any(not isinstance(x, str) for x in ignore_checks_raw):
+        return ["harness.structured_assertions.ignore_checks must be a list of strings"]
+    ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
+
+    cases_dir = root / cases_rel
+    if not cases_dir.exists():
+        return [f"{cases_rel}:1: governance cases path does not exist"]
+
+    violations: list[str] = []
+    for spec in iter_cases(cases_dir, file_pattern=case_pattern):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() != "governance.check":
+            continue
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        check_id = str(case.get("check", "")).strip()
+        if check_id in ignore_checks:
+            continue
+        assert_tree = case.get("assert", []) or []
+        has_structured_target = False
+        text_pass_only = True
+
+        leaf_rows: list[tuple[str, str, object, bool]] = []
+
+        def _collect_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
+            del assert_path  # scanner only needs leaf tuples
+            for row in iter_leaf_assertions(leaf, target_override=inherited_target):
+                leaf_rows.append(row)
+
+        try:
+            eval_assert_tree(assert_tree, eval_leaf=_collect_leaf)
+        except Exception as exc:  # noqa: BLE001
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} has invalid assert tree ({exc})"
+            )
+            continue
+        for target, op, value, _ in leaf_rows:
+            if target in {"summary_json", "violation_count"} and op == "evaluate":
+                has_structured_target = True
+            if not (target == "text" and op == "contain" and str(value).strip().startswith("PASS: ")):
+                text_pass_only = False
+        if not has_structured_target:
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} missing structured evaluate assertions"
+            )
+        elif text_pass_only:
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} relies solely on PASS text assertions"
+            )
+    return violations
+
+
 def _scan_runtime_rust_adapter_no_python_exec(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
     cfg = h.get("rust_no_python_exec")
@@ -3041,6 +3100,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.current_spec_policy_key_names": _scan_current_spec_policy_key_names,
     "governance.policy_evaluate_required": _scan_governance_policy_evaluate_required,
     "governance.extractor_only_no_verdict_branching": _scan_governance_extractor_only_no_verdict_branching,
+    "governance.structured_assertions_required": _scan_governance_structured_assertions_required,
     "runtime.rust_adapter_no_python_exec": _scan_runtime_rust_adapter_no_python_exec,
     "conformance.type_contract_docs": _scan_conformance_type_contract_docs,
     "conformance.api_http_portable_shape": _scan_conformance_api_http_portable_shape,
@@ -3144,6 +3204,14 @@ def run_governance_check(case, *, ctx) -> None:
     else:
         violations = policy_result.diagnostics
 
+    case_id = str(t.get("id", "<unknown>")).strip() or "<unknown>"
+    summary = {
+        "passed": not violations,
+        "check_id": check_id,
+        "case_id": case_id,
+        "violation_count": len(violations),
+    }
+    summary_json = json.dumps(summary, sort_keys=True)
     text = (
         f"PASS: {check_id}"
         if not violations
@@ -3155,19 +3223,31 @@ def run_governance_check(case, *, ctx) -> None:
 
     def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
         for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
-            if target != "text":
+            if target == "text":
+                subject_value = text
+            elif target == "summary_json":
+                subject_value = summary if op == "evaluate" else summary_json
+            elif target == "violation_count":
+                subject_value = len(violations) if op == "evaluate" else str(len(violations))
+            else:
                 raise ValueError(f"unknown assert target for governance.check: {target}")
             if op == "contain":
                 expr = ["contains", ["subject"], str(value)]
             elif op == "regex":
                 expr = ["regex_match", ["subject"], str(value)]
+            elif op == "json_type":
+                expr = ["json_type", ["subject"], str(value)]
             elif op == "evaluate":
-                if not isinstance(value, list):
-                    raise TypeError("evaluate assertion op value must be a list")
-                expr = value
+                if isinstance(value, list):
+                    raw_expr_list = value
+                elif isinstance(value, dict):
+                    raw_expr_list = [value]
+                else:
+                    raise TypeError("evaluate assertion op value must be a list or mapping AST expression")
+                expr = normalize_policy_evaluate(raw_expr_list, field=f"{assert_path}.{target}.evaluate")
             else:
                 raise ValueError(f"unsupported text op: {op}")
-            ok = eval_predicate(expr, subject=text, limits=spec_lang_limits)
+            ok = eval_predicate(expr, subject=subject_value, limits=spec_lang_limits)
             if bool(ok) is not bool(is_true):
                 raise AssertionError(f"{op} assertion failed")
 

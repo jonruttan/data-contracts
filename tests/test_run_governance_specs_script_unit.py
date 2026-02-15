@@ -97,6 +97,53 @@ def test_script_returns_one_when_pending_has_resolved_marker(tmp_path):
     assert code == 1
 
 
+def test_script_supports_governance_structured_assertion_targets(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "governance_structured.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-STRUCTURED-001
+
+```yaml spec-test
+id: SRGOV-TEST-STRUCTURED-001
+type: governance.check
+check: pending.no_resolved_markers
+harness:
+  root: {tmp_path}
+  policy_evaluate:
+  - eq:
+    - true
+    - true
+assert:
+  - target: violation_count
+    must:
+      - evaluate:
+        - eq:
+          - subject: []
+          - 0
+  - target: summary_json
+    must:
+      - evaluate:
+        - eq:
+          - get:
+            - subject: []
+            - check_id
+          - pending.no_resolved_markers
+        - eq:
+          - get:
+            - subject: []
+            - passed
+          - true
+```
+""",
+    )
+    (tmp_path / "docs/spec/pending").mkdir(parents=True, exist_ok=True)
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
 def test_script_rejects_empty_case_pattern(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"
@@ -371,6 +418,68 @@ type: governance.check
 check: pending.no_resolved_markers
 harness:
   root: .
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: pending.no_resolved_markers"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_governance_structured_assertions_required(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "structured_required.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-POLICY-REQ-003
+
+```yaml spec-test
+id: SRGOV-TEST-POLICY-REQ-003
+type: governance.check
+check: governance.structured_assertions_required
+harness:
+  root: {tmp_path}
+  structured_assertions:
+    cases_path: cases
+    case_file_pattern: "*.spec.md"
+    ignore_checks:
+      - governance.structured_assertions_required
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
+assert:
+  - target: violation_count
+    must:
+      - evaluate:
+        - eq:
+          - subject: []
+          - 0
+```
+""",
+    )
+    _write_text(
+        cases_dir / "legacy_text_only.spec.md",
+        """# Governance
+
+## SRGOV-TEST-POLICY-REQ-004
+
+```yaml spec-test
+id: SRGOV-TEST-POLICY-REQ-004
+type: governance.check
+check: pending.no_resolved_markers
+harness:
+  root: .
+  policy_evaluate:
+  - eq:
+    - true
+    - true
 assert:
   - target: text
     must:

@@ -28,6 +28,9 @@ Notes:
 - Governance decision checks are now policy-engine first:
   check extractors emit deterministic subject payloads and
   `policy_evaluate` drives final verdicts.
+- Governance assertions now validate structured result surfaces
+  (`violation_count`, `summary_json`) so pass/fail contracts are not coupled to
+  PASS text output tokens.
 - Spec-lang utility surface now includes collection helpers for governance
   policy authoring (`sum`, `min`, `max`, `sort_by`, `pluck`, `distinct`,
   `is_empty`, `coalesce`, `matches_all`).
