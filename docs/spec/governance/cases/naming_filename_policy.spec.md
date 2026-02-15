@@ -21,6 +21,8 @@ harness:
     allow_exact:
       - README.md
     allowed_name_regex: "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

@@ -14,6 +14,8 @@ harness:
     allowed_top_level_keys: ["id", "type", "title", "purpose", "request", "assert", "expect", "requires", "assert_health", "harness"]
     allowed_assert_targets: ["status", "headers", "body_text", "body_json"]
     required_request_fields: ["method", "url"]
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

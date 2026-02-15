@@ -13,6 +13,8 @@ harness:
   docs_quality:
     manifest: docs/book/reference_manifest.yaml
     index_out: docs/book/reference_index.md
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

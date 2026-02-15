@@ -24,6 +24,8 @@ harness:
         - docs/spec/schema/schema_v1.md
         - docs/book/03_assertions.md
         - docs/spec/contract/03b_spec_lang_v1.md
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

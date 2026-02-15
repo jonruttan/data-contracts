@@ -1346,15 +1346,9 @@ def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | Non
     cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
     case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
     ignore_checks_raw = cfg.get("ignore_checks", [])
-    required_checks_raw = cfg.get("required_checks")
     if not isinstance(ignore_checks_raw, list) or any(not isinstance(x, str) for x in ignore_checks_raw):
         return ["harness.policy_requirements.ignore_checks must be a list of strings"]
     ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
-    required_checks: set[str] | None = None
-    if required_checks_raw is not None:
-        if not isinstance(required_checks_raw, list) or any(not isinstance(x, str) for x in required_checks_raw):
-            return ["harness.policy_requirements.required_checks must be a list of strings when provided"]
-        required_checks = {x.strip() for x in required_checks_raw if x.strip()}
 
     cases_dir = root / cases_rel
     if not cases_dir.exists():
@@ -1368,8 +1362,6 @@ def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | Non
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
         check_id = str(case.get("check", "")).strip()
         if check_id in ignore_checks:
-            continue
-        if required_checks is not None and check_id not in required_checks:
             continue
         harness_map = case.get("harness")
         if not isinstance(harness_map, dict):
@@ -3003,14 +2995,11 @@ def run_governance_check(case, *, ctx) -> None:
 
     if isinstance(subject, dict) and "violations" not in subject:
         subject = {**subject, "violations": list(violations)}
-
-    # Phase-2 migration default: docs/runtime checks run policy verdict through
-    # spec-lang even before all governance cases declare explicit harness policy.
-    if policy_evaluate is None and (
-        check_id.startswith("docs.") or check_id.startswith("runtime.")
-    ):
-        policy_evaluate = ["is_empty", ["get", ["subject"], "violations"]]
-        policy_path = "harness.policy_evaluate (defaulted)"
+    if policy_evaluate is None:
+        raw_case_policy = h.get("policy_evaluate")
+        if raw_case_policy is not None:
+            policy_evaluate = normalize_policy_evaluate(raw_case_policy, field="harness.policy_evaluate")
+            policy_path = "harness.policy_evaluate"
 
     if policy_evaluate is not None:
         policy_result: GovernancePolicyResult = run_governance_policy(

@@ -10,6 +10,8 @@ type: governance.check
 check: conformance.no_runner_logic_outside_harness
 harness:
   root: .
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

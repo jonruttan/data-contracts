@@ -33,6 +33,8 @@ harness:
       - "# Reference Index"
       - "Canonical order for reference-manual chapters."
       - "how to use"
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

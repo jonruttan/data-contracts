@@ -28,6 +28,8 @@ harness:
         - docs/spec/metrics/docs_operability_baseline.json
         - docs/spec/metrics/contract_assertions_baseline.json
         - docs/spec/metrics/objective_scorecard_baseline.json
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

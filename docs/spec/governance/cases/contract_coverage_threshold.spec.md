@@ -13,6 +13,8 @@ harness:
   contract_coverage:
     require_all_must_covered: true
     min_coverage_ratio: 0.50
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

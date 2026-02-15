@@ -20,6 +20,8 @@ harness:
       - docs/book/04_spec_lang_reference.md
     required_globs:
       - docs/spec/contract/*.md
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

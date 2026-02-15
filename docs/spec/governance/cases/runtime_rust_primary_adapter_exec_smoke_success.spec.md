@@ -21,6 +21,8 @@ harness:
       - "unsupported runner adapter subcommand"
       - "rust runner adapter subcommand not yet implemented"
     timeout_seconds: 180
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

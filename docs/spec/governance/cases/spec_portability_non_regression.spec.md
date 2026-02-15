@@ -45,6 +45,8 @@ harness:
       report:
         top_n: 10
       enforce: false
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

@@ -15,6 +15,8 @@ harness:
     max_total_warnings: 0
     fail_on_policy_errors: true
     fail_on_severity: warn
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

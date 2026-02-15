@@ -15,6 +15,8 @@ harness:
     index_out: docs/book/reference_index.md
     coverage_out: docs/book/reference_coverage.md
     graph_out: docs/book/docs_graph.json
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

@@ -10,6 +10,8 @@ type: governance.check
 check: docs.security_warning_contract
 harness:
   root: .
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

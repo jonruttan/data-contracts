@@ -10,6 +10,8 @@ type: governance.check
 check: assert.compiler_schema_matrix_sync
 harness:
   root: .
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

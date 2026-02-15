@@ -10,6 +10,8 @@ type: governance.check
 check: docs.current_spec_only_contract
 harness:
   root: .
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

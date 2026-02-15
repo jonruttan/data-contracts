@@ -10,6 +10,8 @@ type: governance.check
 check: assert.sugar_compile_only_sync
 harness:
   root: .
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

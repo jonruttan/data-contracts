@@ -17,6 +17,8 @@ harness:
       - docs/book/README.md
       - docs/book/reference_index.md
       - docs/book/reference_coverage.md
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

@@ -54,6 +54,8 @@ harness:
           - "evaluate_internal_assert_tree("
         forbidden_tokens:
           - "contain assertion failed"
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

@@ -312,6 +312,56 @@ assert:
     assert code == 1
 
 
+def test_script_fails_when_governance_case_missing_policy_evaluate(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "policy_required.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-POLICY-REQ-001
+
+```yaml spec-test
+id: SRGOV-TEST-POLICY-REQ-001
+type: governance.check
+check: governance.policy_evaluate_required
+harness:
+  root: {tmp_path}
+  policy_requirements:
+    cases_path: cases
+    case_file_pattern: "*.spec.md"
+    ignore_checks:
+      - governance.policy_evaluate_required
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: governance.policy_evaluate_required"]
+```
+""",
+    )
+    _write_text(
+        cases_dir / "missing_policy.spec.md",
+        """# Governance
+
+## SRGOV-TEST-POLICY-REQ-002
+
+```yaml spec-test
+id: SRGOV-TEST-POLICY-REQ-002
+type: governance.check
+check: pending.no_resolved_markers
+harness:
+  root: .
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: pending.no_resolved_markers"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_runtime_scope_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

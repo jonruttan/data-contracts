@@ -29,6 +29,8 @@ harness:
           - scripts/runner_adapter.sh
           - scripts/rust/runner_adapter.sh
           - scripts/rust/spec_runner_cli/src/main.rs
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

@@ -19,6 +19,8 @@ harness:
       - "Full profile"
       - "make core-check"
       - "make check"
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

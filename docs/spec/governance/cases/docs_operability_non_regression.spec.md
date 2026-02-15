@@ -22,6 +22,8 @@ harness:
     epsilon: 0.000000000001
     docs_operability:
       reference_manifest: docs/book/reference_manifest.yaml
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

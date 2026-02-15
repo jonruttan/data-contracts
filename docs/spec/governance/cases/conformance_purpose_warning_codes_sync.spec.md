@@ -10,6 +10,8 @@ type: governance.check
 check: conformance.purpose_warning_codes_sync
 harness:
   root: .
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

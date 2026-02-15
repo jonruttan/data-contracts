@@ -19,6 +19,8 @@ harness:
     forbidden_output_tokens:
       - "scripts/runner_adapter.sh"
     timeout_seconds: 180
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

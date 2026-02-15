@@ -20,6 +20,8 @@ harness:
     forbidden_tokens:
       - ROOT_DIR}/.venv/bin/python
       - ROOT_DIR}/../../.venv/bin/python
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

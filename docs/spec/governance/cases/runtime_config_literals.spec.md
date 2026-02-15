@@ -10,6 +10,8 @@ type: governance.check
 check: runtime.config_literals
 harness:
   root: .
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

@@ -17,6 +17,8 @@ harness:
       - docs/book/03_assertions.md
       - docs/book/04_spec_lang_reference.md
       - docs/development.md
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

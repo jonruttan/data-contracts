@@ -16,6 +16,8 @@ harness:
       - "core-gate-rust-adapter:"
       - "SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh"
       - "run: ./scripts/core_gate.sh"
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

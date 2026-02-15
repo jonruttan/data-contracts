@@ -17,6 +17,8 @@ harness:
       - scripts/php/conformance_runner.php
     forbidden_tokens:
       - "path_exists"
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

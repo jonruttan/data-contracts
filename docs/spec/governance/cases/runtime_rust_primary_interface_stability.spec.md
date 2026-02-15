@@ -29,6 +29,8 @@ harness:
       - conformance-parity
       - test-core
       - test-full
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

@@ -17,6 +17,8 @@ harness:
       - "cargo run --quiet"
     forbidden_tokens:
       - "scripts/runner_adapter.sh"
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

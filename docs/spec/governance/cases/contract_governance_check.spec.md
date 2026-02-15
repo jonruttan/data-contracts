@@ -10,6 +10,8 @@ type: governance.check
 check: contract.governance_check
 harness:
   root: .
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

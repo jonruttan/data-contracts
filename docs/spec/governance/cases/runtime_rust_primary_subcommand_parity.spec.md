@@ -13,6 +13,8 @@ harness:
   rust_subcommand_parity:
     adapter_path: scripts/rust/runner_adapter.sh
     cli_main_path: scripts/rust/spec_runner_cli/src/main.rs
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

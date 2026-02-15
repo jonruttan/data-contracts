@@ -26,6 +26,8 @@ harness:
       - scripts/evaluate_style.py --check docs/spec
       - scripts/conformance_purpose_report.py
       - scripts/compare_conformance_parity.py
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:

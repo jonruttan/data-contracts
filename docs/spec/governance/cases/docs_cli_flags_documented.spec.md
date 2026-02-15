@@ -22,6 +22,8 @@ harness:
     php_docs:
       - docs/development.md
       - docs/spec/impl/php.md
+  policy_evaluate:
+    - ["is_empty", ["get", ["subject"], "violations"]]
 assert:
   - target: text
     must:
