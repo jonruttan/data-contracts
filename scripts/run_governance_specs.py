@@ -1311,18 +1311,40 @@ def _scan_regex_doc_sync(root: Path) -> list[str]:
 
 def _scan_assert_universal_core_sync(root: Path) -> list[str]:
     violations: list[str] = []
-    required_tokens = (
-        "universal core",
-        "evaluate",
-        "authoring sugar",
-    )
+    required_tokens_by_file = {
+        "docs/spec/schema/schema_v1.md": (
+            "universal core",
+            "evaluate",
+            "authoring sugar",
+            "conformance/cases/*.spec.md",
+            "governance/cases/*.spec.md",
+            "evaluate",
+            "must use",
+        ),
+        "docs/spec/contract/03_assertions.md": (
+            "universal core",
+            "evaluate",
+            "compile-only sugar",
+            "conformance/cases/*.spec.md",
+            "governance/cases/*.spec.md",
+            "must use",
+        ),
+        "docs/spec/contract/09_internal_representation.md": (
+            "universal core",
+            "evaluate",
+            "authoring sugar",
+            "evaluate-only",
+            "conformance",
+            "governance",
+        ),
+    }
     for rel in _ASSERT_UNIVERSAL_DOC_FILES:
         p = root / rel
         if not p.exists():
             violations.append(f"{rel}:1: missing assertion universal-core doc")
             continue
         lower = p.read_text(encoding="utf-8").lower()
-        for tok in required_tokens:
+        for tok in required_tokens_by_file.get(rel, ()):
             if tok not in lower:
                 violations.append(f"{rel}:1: missing universal-core token {tok!r}")
     return violations

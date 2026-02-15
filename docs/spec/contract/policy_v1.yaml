@@ -161,12 +161,12 @@ rules:
   scope: governance
   applies_to: conformance.assertion_authoring.metric_ratchet
   norm: MUST
-  requirement: conformance_evaluate_ratio_must_not_regress_until_threshold_cutover
-  description: 'Governance must enforce non-regression of conformance evaluate coverage against checked-in baseline during ratchet phase.
+  requirement: conformance_evaluate_only_ratio_must_not_regress
+  description: 'Governance must enforce non-regression of conformance evaluate-only coverage against checked-in baseline.
 
     '
-  rationale: Provides controlled migration to evaluate-first without destabilizing the full gate.
-  risk_if_violated: Conformance coverage can slide backward while policy intent claims evaluate-first.
+  rationale: Keeps evaluate-only contract coverage pinned after hard-cut adoption.
+  risk_if_violated: Conformance/governance surfaces can drift back to mixed assertion semantics.
   references:
   - docs/spec/governance/cases/conformance_evaluate_first_ratio_non_regression.spec.md
   - docs/spec/metrics/spec_lang_adoption_baseline.json

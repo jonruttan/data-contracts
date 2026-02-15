@@ -69,6 +69,9 @@ The compile contract is semantic-lossless:
 - External codecs are adapters; they must not change runtime semantics.
 - Non-core custom runners may still receive external-case objects for
   compatibility; core runner types execute compiled internal cases.
+- Conformance and governance executable case assertion trees are evaluate-only
+  at authoring level; non-`evaluate` leaf operators are not allowed in these
+  core surfaces.
 
 ## Assertion Execution Invariant
 

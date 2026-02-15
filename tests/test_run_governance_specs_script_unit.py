@@ -3063,15 +3063,22 @@ def test_script_enforces_assert_universal_core_sync(tmp_path):
     )
     _write_text(
         tmp_path / "docs/spec/schema/schema_v1.md",
-        "universal core\nevaluate\nauthoring sugar\n",
+        "universal core\nevaluate\nauthoring sugar\n"
+        "docs/spec/conformance/cases/*.spec.md\n"
+        "docs/spec/governance/cases/*.spec.md\n"
+        "must use\n",
     )
     _write_text(
         tmp_path / "docs/spec/contract/03_assertions.md",
-        "universal core\nevaluate\nauthoring sugar\n",
+        "universal core\nevaluate\ncompile-only sugar\n"
+        "docs/spec/conformance/cases/*.spec.md\n"
+        "docs/spec/governance/cases/*.spec.md\n"
+        "must use\n",
     )
     _write_text(
         tmp_path / "docs/spec/contract/09_internal_representation.md",
-        "universal core\nevaluate\nauthoring sugar\n",
+        "universal core\nevaluate\nauthoring sugar\n"
+        "evaluate-only\nconformance\ngovernance\n",
     )
 
     code = mod.main(["--cases", str(cases_dir)])

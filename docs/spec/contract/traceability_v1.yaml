@@ -580,7 +580,7 @@ links:
   - spec_runner/quality_metrics.py
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
-  notes: Conformance evaluate-first adoption is ratcheted through baseline-backed non-regression checks.
+  notes: Conformance evaluate-only coverage is pinned by baseline-backed non-regression checks.
 - rule_id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   contract_refs:

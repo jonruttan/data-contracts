@@ -58,6 +58,14 @@ For `type: governance.check`, assertion targets include:
   mapping with `passed`, `check_id`, `case_id`, `violation_count`)
 - `violation_count`: numeric violation count
 
+## Core Surface Rule
+
+- Assertion trees in `docs/spec/conformance/cases/*.spec.md` MUST use
+  `evaluate` leaves only.
+- Assertion trees in `docs/spec/governance/cases/*.spec.md` MUST use
+  `evaluate` leaves only.
+- Sugar operators remain compile-only schema forms for non-core surfaces.
+
 ## Spec-Lang-Primary Runtime Contract
 
 - `evaluate` is the only universal assertion operator contract.

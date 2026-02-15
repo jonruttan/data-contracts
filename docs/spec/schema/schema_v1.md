@@ -242,6 +242,15 @@ Supported operators:
 - universal core: `evaluate` (spec-lang v1)
 - compile-only authoring sugar: `contain`, `regex`, `json_type`, `exists`
 
+Core executable-surface rule:
+
+- `docs/spec/conformance/cases/*.spec.md` assertion trees MUST use
+  `evaluate` leaves only.
+- `docs/spec/governance/cases/*.spec.md` assertion trees MUST use
+  `evaluate` leaves only.
+- Sugar operators remain available for non-core surfaces and compile to
+  equivalent spec-lang expressions.
+
 Operator constraints:
 
 - all operator values MUST be lists
@@ -300,7 +309,7 @@ assert:
 Author in canonical form:
 
 - use `must` / `can` / `cannot` for boolean groups
-- use `contain` / `regex` for text operators
+- use `evaluate` for conformance/governance case assertions
 - put every operator value in a list
 
 Example with target inheritance:
