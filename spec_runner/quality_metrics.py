@@ -261,7 +261,7 @@ def _library_public_surface_ratio(repo_root: Path) -> tuple[float, int, int]:
         return 1.0, 0, 0
     public_count = 0
     total_count = 0
-    for lib_file in sorted(libs_root.rglob("*.spec.md")):
+    for lib_file in sorted(libs_root.rglob(SETTINGS.case.default_file_pattern)):
         if not lib_file.is_file():
             continue
         for _doc_path, case in load_external_cases(lib_file, formats={"md"}):
