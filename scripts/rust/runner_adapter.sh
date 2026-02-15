@@ -27,6 +27,18 @@ case "${subcommand}" in
     fi
     exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
+  normalize-check)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  normalize-fix)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
   lint)
     if [[ -x "${RUST_CLI_BIN}" ]]; then
       exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
@@ -88,6 +100,18 @@ case "${subcommand}" in
     exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   runner-independence-md)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  python-dependency-json)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  python-dependency-md)
     if [[ -x "${RUST_CLI_BIN}" ]]; then
       exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
     fi

@@ -43,6 +43,7 @@ from spec_runner.quality_metrics import compare_metric_non_regression
 from spec_runner.quality_metrics import contract_assertions_report_jsonable
 from spec_runner.quality_metrics import docs_operability_report_jsonable
 from spec_runner.quality_metrics import objective_scorecard_report_jsonable
+from spec_runner.quality_metrics import python_dependency_report_jsonable
 from spec_runner.quality_metrics import runner_independence_report_jsonable
 from spec_runner.quality_metrics import spec_lang_adoption_report_jsonable
 from spec_runner.quality_metrics import validate_metric_baseline_notes
@@ -695,6 +696,69 @@ def _scan_runner_independence_non_regression(root: Path, *, harness: dict | None
     current_errs = current.get("errors") or []
     if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
         return [f"current runner independence report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get("summary_fields"),
+        segment_fields=cfg.get("segment_fields", {}),
+        epsilon=epsilon,
+    )
+
+
+def _scan_python_dependency_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("python_dependency")
+    if not isinstance(cfg, dict):
+        return ["runtime.python_dependency_metric requires harness.python_dependency mapping in governance spec"]
+    policy_evaluate = None
+    if "policy_evaluate" in cfg:
+        try:
+            policy_evaluate = normalize_policy_evaluate(
+                cfg.get("policy_evaluate"), field="harness.python_dependency.policy_evaluate"
+            )
+        except ValueError as exc:
+            return [str(exc)]
+    payload = python_dependency_report_jsonable(root, config=cfg)
+    errs = payload.get("errors") or []
+    if not isinstance(errs, list):
+        return ["runtime.python_dependency_metric report contains invalid errors shape"]
+    violations = [str(e) for e in errs if str(e).strip()]
+    return _policy_outcome(
+        subject=payload,
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.python_dependency.policy_evaluate",
+        violations=violations,
+    )
+
+
+def _scan_python_dependency_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("python_dependency_non_regression")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.python_dependency_non_regression requires harness.python_dependency_non_regression mapping in governance spec"
+        ]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.python_dependency_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("python_dependency")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.python_dependency_non_regression.python_dependency must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.python_dependency_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.python_dependency_non_regression.epsilon must be >= 0"]
+
+    current = python_dependency_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current python dependency report has errors: {str(e)}" for e in current_errs if str(e).strip()]
     baseline, baseline_errs = _load_baseline_json(root, baseline_path)
     if baseline is None:
         return baseline_errs
@@ -1469,6 +1533,65 @@ def _scan_runtime_rust_adapter_no_python_exec(root: Path, *, harness: dict | Non
     for tok in forbidden_tokens:
         if tok in raw:
             violations.append(f"{rel}:1: forbidden python-coupling token present: {tok}")
+    return violations
+
+
+def _scan_runtime_non_python_lane_no_python_exec(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("python_dependency")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.non_python_lane_no_python_exec requires harness.python_dependency mapping in governance spec"
+        ]
+    payload = python_dependency_report_jsonable(root, config=cfg)
+    errors = payload.get("errors") or []
+    if isinstance(errors, list) and any(str(e).strip() for e in errors):
+        return [str(e) for e in errors if str(e).strip()]
+    summary = payload.get("summary") if isinstance(payload, dict) else {}
+    if not isinstance(summary, dict):
+        return ["python dependency payload missing summary mapping"]
+    count = int(summary.get("non_python_lane_python_exec_count", 0))
+    violations: list[str] = []
+    if count > 0:
+        violations.append(
+            f".artifacts/python-dependency.json:1: non_python_lane_python_exec_count={count} (expected 0)"
+        )
+    return violations
+
+
+def _scan_runtime_rust_adapter_transitive_no_python(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("rust_transitive_no_python")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.rust_adapter_transitive_no_python requires harness.rust_transitive_no_python mapping in governance spec"
+        ]
+    files = cfg.get("files")
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.rust_transitive_no_python.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(forbidden_tokens, list)
+        or not forbidden_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+    ):
+        return [
+            "harness.rust_transitive_no_python.forbidden_tokens must be a non-empty list of non-empty strings"
+        ]
+    violations: list[str] = []
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing rust adapter file for transitive no-python check")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for tok in forbidden_tokens:
+            if tok in raw:
+                violations.append(f"{rel}:1: forbidden rust transitive python token present: {tok}")
     return violations
 
 
@@ -3083,6 +3206,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,
     "runtime.runner_independence_metric": _scan_runner_independence_metric,
     "runtime.runner_independence_non_regression": _scan_runner_independence_non_regression,
+    "runtime.python_dependency_metric": _scan_python_dependency_metric,
+    "runtime.python_dependency_non_regression": _scan_python_dependency_non_regression,
+    "runtime.non_python_lane_no_python_exec": _scan_runtime_non_python_lane_no_python_exec,
+    "runtime.rust_adapter_transitive_no_python": _scan_runtime_rust_adapter_transitive_no_python,
     "docs.operability_metric": _scan_docs_operability_metric,
     "docs.operability_non_regression": _scan_docs_operability_non_regression,
     "spec.contract_assertions_metric": _scan_contract_assertions_metric,

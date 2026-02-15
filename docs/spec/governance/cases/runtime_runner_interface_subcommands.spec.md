@@ -22,6 +22,10 @@ harness:
     - conformance-purpose-md
     - spec-portability-json
     - spec-portability-md
+    - runner-independence-json
+    - runner-independence-md
+    - python-dependency-json
+    - python-dependency-md
     - ci-gate-summary
     - docs-build
     - docs-build-check

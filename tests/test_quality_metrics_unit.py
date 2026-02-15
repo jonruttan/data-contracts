@@ -6,6 +6,7 @@ from pathlib import Path
 from spec_runner.quality_metrics import compare_metric_non_regression
 from spec_runner.quality_metrics import contract_assertions_report_jsonable
 from spec_runner.quality_metrics import docs_operability_report_jsonable
+from spec_runner.quality_metrics import python_dependency_report_jsonable
 from spec_runner.quality_metrics import runner_independence_report_jsonable
 from spec_runner.quality_metrics import spec_lang_adoption_report_jsonable
 
@@ -88,6 +89,17 @@ def test_runner_independence_report_basic_shape(tmp_path: Path) -> None:
     payload = runner_independence_report_jsonable(tmp_path)
     assert payload["errors"] == []
     assert "overall_runner_independence_ratio" in payload["summary"]
+
+
+def test_python_dependency_report_basic_shape(tmp_path: Path) -> None:
+    _write(tmp_path / "scripts/ci_gate.sh", "SPEC_RUNNER_BIN=\"${ROOT_DIR}/scripts/rust/runner_adapter.sh\"\n")
+    _write(tmp_path / "scripts/core_gate.sh", "SPEC_RUNNER_BIN=\"${ROOT_DIR}/scripts/rust/runner_adapter.sh\"\n")
+    _write(tmp_path / "scripts/docs_doctor.sh", "SPEC_RUNNER_BIN=\"${ROOT_DIR}/scripts/rust/runner_adapter.sh\"\n")
+    _write(tmp_path / "scripts/rust/runner_adapter.sh", "#!/usr/bin/env bash\n")
+    _write(tmp_path / "scripts/rust/spec_runner_cli/src/main.rs", "fn main() {}\n")
+    payload = python_dependency_report_jsonable(tmp_path)
+    assert payload["errors"] == []
+    assert "default_lane_python_free_ratio" in payload["summary"]
 
 
 def test_docs_operability_report_basic_shape(tmp_path: Path) -> None:

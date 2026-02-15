@@ -606,6 +606,93 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/metrics/runner_independence_baseline.json
   notes: Governance enforces non-regression on configured runner-independence metrics.
+- rule_id: RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/runtime_python_dependency_metric.spec.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_quality_metric_report_scripts_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - scripts/python_dependency_report.py
+  - scripts/run_governance_specs.py
+  notes: Python-dependency evidence report is generated and enforced through governance.
+- rule_id: RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/runtime_python_dependency_non_regression.spec.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - scripts/run_governance_specs.py
+  - docs/spec/metrics/python_dependency_baseline.json
+  notes: Python-dependency metrics are ratcheted with checked-in baseline values.
+- rule_id: RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
+  contract_refs:
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/runtime_non_python_lane_no_python_exec.spec.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - scripts/run_governance_specs.py
+  notes: Non-python lane token checks are enforced using python-dependency report inputs.
+- rule_id: RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
+  contract_refs:
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/runtime_rust_adapter_transitive_no_python.spec.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - scripts/rust/runner_adapter.sh
+  notes: Rust adapter shell boundary avoids direct transitive python delegation tokens.
+- rule_id: RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/contract/16_rust_primary_transition.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  implementation_refs:
+  - scripts/ci_gate.sh
+  - scripts/core_gate.sh
+  - scripts/docs_doctor.sh
+  notes: Default gate scripts now set rust adapter as default runner interface boundary.
+- rule_id: RUNTIME_PYTHON_USAGE_SCOPED_TO_PYTHON_RUNNER
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PYTHON_USAGE_SCOPED_TO_PYTHON_RUNNER
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/contract/16_rust_primary_transition.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - docs/spec/governance/cases/runtime_python_dependency_metric.spec.md
+  - docs/spec/governance/cases/runtime_non_python_lane_no_python_exec.spec.md
+  notes: Python usage is scoped to explicit python-runner surfaces via python-dependency metric and lane checks.
 - rule_id: DOCS_OPERABILITY_METRIC_REPORTED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_OPERABILITY_METRIC_REPORTED
   contract_refs:

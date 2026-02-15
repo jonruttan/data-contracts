@@ -60,6 +60,12 @@ case "${subcommand}" in
   runner-independence-md)
     exec "${PYTHON_BIN}" scripts/runner_independence_report.py --format md --out .artifacts/runner-independence-summary.md "$@"
     ;;
+  python-dependency-json)
+    exec "${PYTHON_BIN}" scripts/python_dependency_report.py --out .artifacts/python-dependency.json "$@"
+    ;;
+  python-dependency-md)
+    exec "${PYTHON_BIN}" scripts/python_dependency_report.py --format md --out .artifacts/python-dependency-summary.md "$@"
+    ;;
   docs-operability-json)
     exec "${PYTHON_BIN}" scripts/docs_operability_report.py --out .artifacts/docs-operability.json "$@"
     ;;

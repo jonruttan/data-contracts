@@ -2,6 +2,11 @@
 
 Defines the language-neutral command boundary used by local gate scripts.
 
+Execution classes:
+
+- `default lane`: rust adapter default path (`scripts/rust/runner_adapter.sh`)
+- `python runner lane`: explicit opt-in path (`scripts/runner_adapter.sh`)
+
 ## Required Interface
 
 Gate orchestration MUST invoke a runner command boundary via `SPEC_RUNNER_BIN`
@@ -16,6 +21,10 @@ Required subcommands:
 - `compilecheck`
 - `conformance-purpose-json`
 - `conformance-purpose-md`
+- `runner-independence-json`
+- `runner-independence-md`
+- `python-dependency-json`
+- `python-dependency-md`
 - `ci-gate-summary`
 - `conformance-parity`
 - `test-core`
@@ -28,10 +37,10 @@ CI expectation:
 
 ## Default Adapter
 
-Repository default adapter:
+Repository adapters:
 
-- `scripts/runner_adapter.sh`
-- `scripts/rust/runner_adapter.sh` (Rust lane adapter; invokes Rust CLI)
+- `scripts/rust/runner_adapter.sh` (default lane adapter; invokes Rust CLI)
+- `scripts/runner_adapter.sh` (explicit Python runner lane adapter)
 - `scripts/rust/spec_runner_cli` (Rust runner-interface CLI crate)
 
 Adapters may call implementation-specific scripts/tools internally.

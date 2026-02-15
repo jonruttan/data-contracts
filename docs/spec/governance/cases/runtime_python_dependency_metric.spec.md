@@ -1,0 +1,64 @@
+# Governance Cases
+
+## SRGOV-RUNTIME-PYDEP-001
+
+```yaml spec-test
+id: SRGOV-RUNTIME-PYDEP-001
+title: python dependency metric report generation is valid
+purpose: Ensures python dependency metric report is generated with required summary fields and deterministic structure.
+type: governance.check
+check: runtime.python_dependency_metric
+harness:
+  root: .
+  python_dependency:
+    policy_evaluate:
+    - and:
+      - has_key:
+        - subject: []
+        - summary
+      - has_key:
+        - get:
+          - subject: []
+          - summary
+        - non_python_lane_python_exec_count
+      - has_key:
+        - get:
+          - subject: []
+          - summary
+        - transitive_adapter_python_exec_count
+      - has_key:
+        - get:
+          - subject: []
+          - summary
+        - default_lane_python_free_ratio
+      - has_key:
+        - get:
+          - subject: []
+          - summary
+        - python_usage_scope_violation_count
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
+assert:
+- target: violation_count
+  must:
+  - evaluate:
+    - eq:
+      - subject: []
+      - 0
+- target: summary_json
+  must:
+  - evaluate:
+    - eq:
+      - get:
+        - subject: []
+        - passed
+      - true
+    - eq:
+      - get:
+        - subject: []
+        - check_id
+      - runtime.python_dependency_metric
+```

@@ -564,6 +564,93 @@ rules:
   - docs/spec/governance/cases/runner_independence_non_regression.spec.md
   - docs/spec/metrics/runner_independence_baseline.json
   - spec_runner/quality_metrics.py
+- id: RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.python_dependency.metric_report
+  norm: MUST
+  requirement: python_dependency_metric_report_generation_and_shape_valid
+  description: 'Governance must produce a valid python-dependency evidence report with static and runtime trace evidence surfaces.
+
+    '
+  rationale: Prevents metric gaming by requiring concrete evidence, not token counts alone.
+  risk_if_violated: Python coupling can be hidden behind indirection.
+  references:
+  - docs/spec/governance/cases/runtime_python_dependency_metric.spec.md
+  - spec_runner/quality_metrics.py
+- id: RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.python_dependency.metric_non_regression
+  norm: MUST
+  requirement: python_dependency_metrics_must_not_regress_from_baseline
+  description: 'Governance must enforce non-regression for configured python-dependency metrics using checked-in baseline values.
+
+    '
+  rationale: Creates a ratchet toward lower python coupling in non-python lanes.
+  risk_if_violated: Python dependency can increase silently across merges.
+  references:
+  - docs/spec/governance/cases/runtime_python_dependency_non_regression.spec.md
+  - docs/spec/metrics/python_dependency_baseline.json
+  - spec_runner/quality_metrics.py
+- id: RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.non_python_lanes.exec_tokens
+  norm: MUST
+  requirement: non_python_lane_files_must_not_contain_python_exec_tokens
+  description: 'Default gate and rust adapter lane surfaces must not carry direct python execution tokens.
+
+    '
+  rationale: Preserves a python-free default execution lane.
+  risk_if_violated: Rust/default path remains coupled to Python runtime entrypoints.
+  references:
+  - docs/spec/governance/cases/runtime_non_python_lane_no_python_exec.spec.md
+  - spec_runner/quality_metrics.py
+- id: RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.rust_adapter.transitive_path
+  norm: MUST
+  requirement: rust_adapter_shell_boundary_avoids_transitive_python_delegation_tokens
+  description: 'Rust adapter shell boundary must not include direct delegation tokens that route through python shell adapter entrypoints.
+
+    '
+  rationale: Keeps rust lane ownership explicit and auditable.
+  risk_if_violated: Rust path can mask python dependency through transitive delegation.
+  references:
+  - docs/spec/governance/cases/runtime_rust_adapter_transitive_no_python.spec.md
+  - scripts/rust/runner_adapter.sh
+- id: RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.default_gate.adapter
+  norm: MUST
+  requirement: default_gate_scripts_set_rust_adapter_as_default_runner_bin
+  description: 'Default gate scripts must set SPEC_RUNNER_BIN to scripts/rust/runner_adapter.sh when not explicitly overridden.
+
+    '
+  rationale: Makes rust lane the default operational boundary.
+  risk_if_violated: Default path remains python-biased and transition stalls.
+  references:
+  - scripts/ci_gate.sh
+  - scripts/core_gate.sh
+  - scripts/docs_doctor.sh
+- id: RUNTIME_PYTHON_USAGE_SCOPED_TO_PYTHON_RUNNER
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.python_usage.scope
+  norm: MUST
+  requirement: python_execution_must_be_scoped_to_explicit_python_runner_surfaces
+  description: 'Python execution tokens are permitted only on explicit python-runner surfaces and must not appear on default rust lane boundaries.
+
+    '
+  rationale: Keeps python dependency explicit and bounded to implementation lane validation.
+  risk_if_violated: Python coupling leaks into default orchestration boundaries.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/runtime_python_dependency_metric.spec.md
+  - docs/spec/governance/cases/runtime_non_python_lane_no_python_exec.spec.md
 - id: DOCS_OPERABILITY_METRIC_REPORTED
   introduced_in: v1
   scope: governance

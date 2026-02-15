@@ -19,7 +19,8 @@ Notes:
 - Portability governance enforces non-regression on configured spec-lang
   self-containment baseline metrics.
 - Additional ratchet-only metrics track spec-lang adoption, runner
-  independence, docs operability, and contract assertions quality.
+  independence, python dependency evidence, docs operability, and contract
+  assertions quality.
 - Objective scorecard reporting now composes all metric families into a single
   objective-aligned health view with tripwire hits and course-correction
   recommendations.
@@ -48,6 +49,8 @@ Notes:
   CI runs `normalize-check` and local workflow uses `normalize-fix`.
 - Gate scripts now invoke CI summary orchestration through runner-interface
   subcommand `ci-gate-summary` (no direct gate-script Python summary call).
+- Gate scripts default to Rust adapter (`scripts/rust/runner_adapter.sh`);
+  Python runner lane remains explicit opt-in via `SPEC_RUNNER_BIN`.
 
 Canonical spec docs:
 

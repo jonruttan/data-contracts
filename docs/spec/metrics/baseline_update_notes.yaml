@@ -24,3 +24,7 @@ entries:
   sha256: 17c54316a2da69ced945d5ddca01f7b52fab8e81836f8039d3fc49054416c3d6
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'yes'
+- baseline: docs/spec/metrics/python_dependency_baseline.json
+  sha256: 8f017d0e8cf87e5e5fffce84e95e1377267cd438a3bc5dc351b7a0ffa1b96f18
+  rationale: Baseline introduced for python-dependency anti-gaming evidence metric.
+  measurement_model_change: 'yes'

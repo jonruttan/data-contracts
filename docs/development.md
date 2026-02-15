@@ -45,7 +45,7 @@ Full profile runs the complete CI-equivalent gate including parity and full test
 
 Runner interface override:
 
-- Gate scripts call `SPEC_RUNNER_BIN` (default: `scripts/runner_adapter.sh`).
+- Gate scripts call `SPEC_RUNNER_BIN` (default: `scripts/rust/runner_adapter.sh`).
 - To exercise a non-Python runner implementation while keeping gate orchestration
   unchanged:
 
@@ -64,6 +64,12 @@ Rust adapter lane (bootstrap):
 SPEC_RUNNER_BIN=./scripts/rust/runner_adapter.sh ./scripts/core_gate.sh
 ```
 
+Explicit Python runner lane:
+
+```sh
+SPEC_RUNNER_BIN=./scripts/runner_adapter.sh ./scripts/core_gate.sh
+```
+
 Optional local prebuild for Rust lane:
 
 ```sh
@@ -78,6 +84,8 @@ cargo build --manifest-path scripts/rust/spec_runner_cli/Cargo.toml
 ./scripts/runner_adapter.sh conformance-purpose-json
 ./scripts/runner_adapter.sh conformance-purpose-md
 ./scripts/runner_adapter.sh conformance-parity
+./scripts/runner_adapter.sh python-dependency-json
+./scripts/runner_adapter.sh python-dependency-md
 ./scripts/runner_adapter.sh test-full
 ```
 

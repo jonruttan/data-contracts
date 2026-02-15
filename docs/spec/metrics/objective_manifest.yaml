@@ -63,6 +63,16 @@ objectives:
     field: summary.direct_runtime_invocation_count
     mode: one_minus
     scale: 20.0
+  - id: non_python_lane_python_exec_count
+    source: python_dependency
+    field: summary.non_python_lane_python_exec_count
+    mode: one_minus
+    scale: 10.0
+  - id: transitive_adapter_python_exec_count
+    source: python_dependency
+    field: summary.transitive_adapter_python_exec_count
+    mode: one_minus
+    scale: 10.0
   tripwires:
   - check_id: runtime.config_literals
     reason: governed literal duplication increases fragmentation

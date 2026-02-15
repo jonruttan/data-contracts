@@ -62,6 +62,8 @@ fn main() {
     let code = match subcommand.as_str() {
         "governance"
         | "style-check"
+        | "normalize-check"
+        | "normalize-fix"
         | "lint"
         | "typecheck"
         | "compilecheck"
@@ -73,6 +75,8 @@ fn main() {
         | "spec-lang-adoption-md"
         | "runner-independence-json"
         | "runner-independence-md"
+        | "python-dependency-json"
+        | "python-dependency-md"
         | "docs-operability-json"
         | "docs-operability-md"
         | "contract-assertions-json"

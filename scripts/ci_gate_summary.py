@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import json
 import subprocess
 import time
@@ -29,6 +30,8 @@ def _default_steps(runner_bin: str) -> list[tuple[str, list[str]]]:
         ("spec_lang_adoption_md", [runner_bin, "spec-lang-adoption-md"]),
         ("runner_independence_json", [runner_bin, "runner-independence-json"]),
         ("runner_independence_md", [runner_bin, "runner-independence-md"]),
+        ("python_dependency_json", [runner_bin, "python-dependency-json"]),
+        ("python_dependency_md", [runner_bin, "python-dependency-md"]),
         ("docs_operability_json", [runner_bin, "docs-operability-json"]),
         ("docs_operability_md", [runner_bin, "docs-operability-md"]),
         ("contract_assertions_json", [runner_bin, "contract-assertions-json"]),
@@ -115,6 +118,11 @@ def main(argv: list[str] | None = None) -> int:
         default="docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md",
         help="Governance spec case containing orchestration policy_evaluate policy.",
     )
+    ap.add_argument(
+        "--trace-out",
+        default=os.environ.get("SPEC_RUNNER_TRACE_OUT", ""),
+        help="Optional output path for command execution trace JSON.",
+    )
     ns = ap.parse_args(argv)
 
     out_path = Path(str(ns.out))
@@ -141,8 +149,20 @@ def main(argv: list[str] | None = None) -> int:
         "finished_at": finished,
         "total_duration_ms": total_duration_ms,
         "steps": steps,
+        "runner_bin": str(ns.runner_bin),
     }
     out_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    trace_out = str(ns.trace_out or "").strip()
+    if trace_out:
+        trace_path = Path(trace_out)
+        trace_path.parent.mkdir(parents=True, exist_ok=True)
+        trace_payload = {
+            "version": 1,
+            "runner_bin": str(ns.runner_bin),
+            "steps": steps,
+        }
+        trace_path.write_text(json.dumps(trace_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print(f"[gate] trace: {trace_path}")
     print(f"[gate] summary: {out_path}")
     return exit_code
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import fnmatch
 import json
 import re
 from pathlib import Path
@@ -361,12 +362,188 @@ def default_runner_independence_config() -> dict[str, Any]:
             "php scripts/php/spec_runner.php",
         ],
         "direct_runtime_token_segments": ["gate_scripts", "ci_workflows"],
-        "gate_required_tokens": ["SPEC_RUNNER_BIN", "scripts/runner_adapter.sh"],
+        "gate_required_tokens": ["SPEC_RUNNER_BIN", "scripts/rust/runner_adapter.sh"],
         "rust_ci_required_tokens": [
             "core-gate-rust-adapter:",
             "SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh",
             "run: ./scripts/core_gate.sh",
         ],
+    }
+
+
+def _matches_any_pattern(path: str, patterns: list[str]) -> bool:
+    normalized = path.replace("\\", "/")
+    for pattern in patterns:
+        pat = str(pattern).replace("\\", "/")
+        if fnmatch.fnmatch(normalized, pat):
+            return True
+    return False
+
+
+def default_python_dependency_config() -> dict[str, Any]:
+    return {
+        "segment_files": {
+            "default_gate": ["scripts/ci_gate.sh", "scripts/core_gate.sh", "scripts/docs_doctor.sh"],
+            "rust_adapter": ["scripts/rust/runner_adapter.sh", "scripts/rust/spec_runner_cli/src/main.rs"],
+            "ci_workflows": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
+            "python_surfaces": ["scripts/runner_adapter.sh", "scripts/python/*.py"],
+        },
+        "non_python_segments": ["default_gate", "rust_adapter"],
+        "python_allowed_globs": ["scripts/runner_adapter.sh", "scripts/python/*.py", ".github/workflows/*.yml", ".github/workflows/*.yaml"],
+        "python_tokens": [
+            "python -m ",
+            "python3 ",
+            "/usr/bin/env python",
+            "PYTHON_BIN",
+            "resolve_python_bin",
+            "scripts/run_governance_specs.py",
+            "scripts/evaluate_style.py",
+            "scripts/spec_portability_report.py",
+            "scripts/ci_gate_summary.py",
+            "python -m pytest",
+        ],
+        "rust_transitive_forbidden_tokens": [
+            "scripts/runner_adapter.sh",
+            "scripts/run_governance_specs.py",
+            "scripts/ci_gate_summary.py",
+            "python -m ",
+            "python3 ",
+        ],
+        "default_gate_required_tokens": [
+            'SPEC_RUNNER_BIN="${ROOT_DIR}/scripts/rust/runner_adapter.sh"',
+        ],
+        "runtime_trace_path": ".artifacts/gate-exec-trace.json",
+    }
+
+
+def python_dependency_report_jsonable(repo_root: Path, config: dict[str, Any] | None = None) -> dict[str, Any]:
+    root = repo_root.resolve()
+    cfg = default_python_dependency_config()
+    if isinstance(config, dict):
+        cfg.update(config)
+
+    segment_files_obj = cfg.get("segment_files")
+    segment_files: dict[str, Any] = segment_files_obj if isinstance(segment_files_obj, dict) else {}
+    python_tokens = _as_list_of_strings(cfg.get("python_tokens"))
+    rust_transitive_tokens = _as_list_of_strings(cfg.get("rust_transitive_forbidden_tokens"))
+    non_python_segments = set(_as_list_of_strings(cfg.get("non_python_segments")))
+    allowed_globs = _as_list_of_strings(cfg.get("python_allowed_globs"))
+    default_gate_required_tokens = _as_list_of_strings(cfg.get("default_gate_required_tokens"))
+    runtime_trace_path = str(cfg.get("runtime_trace_path", ".artifacts/gate-exec-trace.json")).strip()
+
+    rows: list[dict[str, Any]] = []
+    static_hits: list[dict[str, Any]] = []
+    errors: list[str] = []
+    default_gate_files = {"scripts/ci_gate.sh", "scripts/core_gate.sh", "scripts/docs_doctor.sh"}
+    default_gate_total = 0
+    default_gate_clean = 0
+    non_python_hit_count = 0
+    transitive_hit_count = 0
+    scope_violation_count = 0
+
+    for segment, patterns in segment_files.items():
+        seg = str(segment).strip()
+        if not seg:
+            continue
+        if not isinstance(patterns, list):
+            errors.append(f"segment_files.{seg} must be a list")
+            continue
+        files: set[Path] = set()
+        for pat in patterns:
+            if not isinstance(pat, str) or not pat.strip():
+                continue
+            for path in root.glob(pat.strip()):
+                if path.is_file():
+                    files.add(path)
+        for path in sorted(files):
+            rel = str(path.resolve().relative_to(root)).replace("\\", "/")
+            text = path.read_text(encoding="utf-8")
+            token_hits = [tok for tok in python_tokens if tok and tok in text]
+            transitive_hits = [tok for tok in rust_transitive_tokens if tok and tok in text] if seg == "rust_adapter" else []
+            in_non_python = seg in non_python_segments
+            is_allowed_surface = _matches_any_pattern(rel, allowed_globs)
+            if rel in default_gate_files:
+                default_gate_total += 1
+                has_required_defaults = all(tok in text for tok in default_gate_required_tokens)
+                if has_required_defaults and not token_hits:
+                    default_gate_clean += 1
+
+            if in_non_python and token_hits:
+                non_python_hit_count += len(token_hits)
+                for tok in token_hits:
+                    static_hits.append({"kind": "non_python_exec_token", "file": rel, "token": tok, "segment": seg})
+            if transitive_hits:
+                transitive_hit_count += len(transitive_hits)
+                for tok in transitive_hits:
+                    static_hits.append(
+                        {"kind": "rust_transitive_token", "file": rel, "token": tok, "segment": seg}
+                    )
+            if token_hits and not is_allowed_surface:
+                scope_violation_count += len(token_hits)
+
+            rows.append(
+                {
+                    "file": rel,
+                    "segment": seg,
+                    "python_token_count": float(len(token_hits)),
+                    "transitive_token_count": float(len(transitive_hits)),
+                    "allowed_python_surface": 1.0 if is_allowed_surface else 0.0,
+                }
+            )
+
+    runtime_trace: list[dict[str, Any]] = []
+    runtime_non_python_hits = 0
+    trace_file = root / runtime_trace_path
+    if trace_file.exists():
+        try:
+            payload = json.loads(trace_file.read_text(encoding="utf-8"))
+            steps = payload.get("steps") if isinstance(payload, dict) else None
+            runner_bin = str(payload.get("runner_bin", "")).strip() if isinstance(payload, dict) else ""
+            lane = "rust" if "scripts/rust/runner_adapter.sh" in runner_bin else "python"
+            if isinstance(steps, list):
+                for row in steps:
+                    if not isinstance(row, dict):
+                        continue
+                    command = row.get("command")
+                    if not isinstance(command, list):
+                        continue
+                    command_text = " ".join(str(x) for x in command)
+                    cmd_hits = [tok for tok in python_tokens if tok and tok in command_text]
+                    if lane == "rust" and cmd_hits:
+                        runtime_non_python_hits += len(cmd_hits)
+                    runtime_trace.append(
+                        {
+                            "name": str(row.get("name", "")),
+                            "lane": lane,
+                            "command": command,
+                            "python_tokens": cmd_hits,
+                        }
+                    )
+        except json.JSONDecodeError as exc:
+            errors.append(
+                f"{runtime_trace_path}:1: invalid JSON runtime trace: {exc.msg} at line {exc.lineno} column {exc.colno}"
+            )
+
+    rows.sort(key=lambda r: (str(r["segment"]), str(r["file"])))
+    total_files = len(rows)
+    default_lane_ratio = _safe_ratio(float(default_gate_clean), float(max(1, default_gate_total)), default=0.0)
+
+    return {
+        "version": 1,
+        "summary": {
+            "total_files": total_files,
+            "non_python_lane_python_exec_count": int(non_python_hit_count + runtime_non_python_hits),
+            "transitive_adapter_python_exec_count": int(transitive_hit_count),
+            "default_lane_python_free_ratio": default_lane_ratio,
+            "python_usage_scope_violation_count": int(scope_violation_count),
+        },
+        "files": rows,
+        "evidence": {
+            "static_hits": static_hits,
+            "runtime_trace": runtime_trace,
+        },
+        "config": cfg,
+        "errors": errors,
     }
 
 
@@ -930,6 +1107,7 @@ def objective_scorecard_report_jsonable(repo_root: Path, config: dict[str, Any] 
     portability = spec_portability_report_jsonable(root, config=None)
     spec_lang = spec_lang_adoption_report_jsonable(root, config=None)
     runner_indep = runner_independence_report_jsonable(root, config=None)
+    python_dependency = python_dependency_report_jsonable(root, config=None)
     docs_operability = docs_operability_report_jsonable(root, config=None)
     contract_assertions = contract_assertions_report_jsonable(root, config=None)
 
@@ -938,6 +1116,7 @@ def objective_scorecard_report_jsonable(repo_root: Path, config: dict[str, Any] 
         "spec_portability": portability,
         "spec_lang_adoption": spec_lang,
         "runner_independence": runner_indep,
+        "python_dependency": python_dependency,
         "docs_operability": docs_operability,
         "contract_assertions": contract_assertions,
         "derived": {
@@ -950,6 +1129,7 @@ def objective_scorecard_report_jsonable(repo_root: Path, config: dict[str, Any] 
         ("spec_portability", portability),
         ("spec_lang_adoption", spec_lang),
         ("runner_independence", runner_indep),
+        ("python_dependency", python_dependency),
         ("docs_operability", docs_operability),
         ("contract_assertions", contract_assertions),
     ):

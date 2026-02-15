@@ -3504,3 +3504,123 @@ def test_script_enforces_normalization_docs_token_sync(tmp_path):
     _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "list S-expression\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+def test_script_enforces_runtime_python_dependency_metric(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_python_dependency_metric.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-PYDEP-001
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-PYDEP-001
+type: governance.check
+check: runtime.python_dependency_metric
+harness:
+  root: {tmp_path}
+  python_dependency:
+    segment_files:
+      default_gate:
+        - scripts/ci_gate.sh
+      rust_adapter:
+        - scripts/rust/runner_adapter.sh
+      ci_workflows: []
+      python_surfaces: []
+    non_python_segments:
+      - default_gate
+      - rust_adapter
+    python_allowed_globs: []
+    python_tokens:
+      - python3
+    rust_transitive_forbidden_tokens:
+      - scripts/runner_adapter.sh
+    default_gate_required_tokens:
+      - SPEC_RUNNER_BIN
+    policy_evaluate:
+      - has_key:
+          - subject: []
+          - summary
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.python_dependency_metric"]
+```
+""",
+    )
+    _write_text(tmp_path / "scripts/ci_gate.sh", "SPEC_RUNNER_BIN\n")
+    _write_text(tmp_path / "scripts/rust/runner_adapter.sh", "#!/usr/bin/env bash\n")
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+def test_script_enforces_runtime_python_dependency_non_regression(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    baseline = tmp_path / "docs/spec/metrics/python_dependency_baseline.json"
+    _write_text(
+        baseline,
+        """{
+  "summary": {
+    "non_python_lane_python_exec_count": 0,
+    "transitive_adapter_python_exec_count": 0,
+    "python_usage_scope_violation_count": 0,
+    "default_lane_python_free_ratio": 1.0
+  },
+  "segments": {}
+}
+""",
+    )
+    _write_text(
+        cases_dir / "runtime_python_dependency_non_regression.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-PYDEP-002
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-PYDEP-002
+type: governance.check
+check: runtime.python_dependency_non_regression
+harness:
+  root: {tmp_path}
+  python_dependency_non_regression:
+    baseline_path: docs/spec/metrics/python_dependency_baseline.json
+    summary_fields:
+      non_python_lane_python_exec_count: non_increase
+      transitive_adapter_python_exec_count: non_increase
+      python_usage_scope_violation_count: non_increase
+      default_lane_python_free_ratio: non_decrease
+    segment_fields: {{}}
+    epsilon: 1.0e-12
+    python_dependency:
+      segment_files:
+        default_gate:
+          - scripts/ci_gate.sh
+        rust_adapter:
+          - scripts/rust/runner_adapter.sh
+        ci_workflows: []
+        python_surfaces: []
+      non_python_segments:
+        - default_gate
+        - rust_adapter
+      python_allowed_globs: []
+      python_tokens:
+        - python3
+      rust_transitive_forbidden_tokens:
+        - scripts/runner_adapter.sh
+      default_gate_required_tokens:
+        - SPEC_RUNNER_BIN
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.python_dependency_non_regression"]
+```
+""",
+    )
+    _write_text(tmp_path / "scripts/ci_gate.sh", "SPEC_RUNNER_BIN\n")
+    _write_text(tmp_path / "scripts/rust/runner_adapter.sh", "#!/usr/bin/env bash\n")
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0

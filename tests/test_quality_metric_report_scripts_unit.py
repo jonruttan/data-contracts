@@ -42,6 +42,19 @@ def test_runner_independence_report_script_writes_json(monkeypatch, tmp_path: Pa
     assert "overall_runner_independence_ratio" in json.loads(out.read_text(encoding="utf-8"))["summary"]
 
 
+def test_python_dependency_report_script_writes_json(monkeypatch, tmp_path: Path) -> None:
+    mod = _load("scripts/python_dependency_report.py", "pydep_report")
+    monkeypatch.setattr(
+        mod,
+        "python_dependency_report_jsonable",
+        lambda *_a, **_k: _fake_payload("default_lane_python_free_ratio"),
+    )
+    out = tmp_path / "pydep.json"
+    code = mod.main(["--out", str(out)])
+    assert code == 0
+    assert "default_lane_python_free_ratio" in json.loads(out.read_text(encoding="utf-8"))["summary"]
+
+
 def test_docs_operability_report_script_writes_json(monkeypatch, tmp_path: Path) -> None:
     mod = _load("scripts/docs_operability_report.py", "do_report")
     monkeypatch.setattr(mod, "docs_operability_report_jsonable", lambda *_a, **_k: _fake_payload("overall_docs_operability_ratio"))
