@@ -11,6 +11,15 @@ implementation-independent.
 - Implementation-specific suites (for example `docs/spec/impl/php/cases/`) are
   for runner-local coverage and MUST NOT replace portable conformance coverage.
 
+## Conformance Assertion Authoring
+
+- Conformance fixtures SHOULD be evaluate-first for decision semantics.
+- Sugar operators (`contain`, `regex`, `json_type`, `exists`) remain valid
+  schema syntax but should be used only when a case explicitly documents
+  readability or intent reasons.
+- Governance enforces ratchet-style non-regression on conformance evaluate
+  coverage before threshold hard-fail cutover.
+
 ## Expected Outcome Shape
 
 - Portable expectations MUST be expressed in `expect.portable`.

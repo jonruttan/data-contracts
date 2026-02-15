@@ -172,8 +172,8 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-EXPR-008
-title: sugar and evaluate forms are semantically equivalent
-purpose: Verifies authoring sugar assertions and explicit evaluate expressions produce equivalent pass behavior for the same target subject.
+title: evaluate contains supports explicit subject form
+purpose: Verifies evaluate contains succeeds with explicit subject arguments for the same target subject.
 type: text.file
 requires:
   capabilities:
@@ -185,8 +185,8 @@ expect:
 assert:
 - target: text
   must:
-  - contain:
-    - 'version: 1'
+  - evaluate:
+    - {contains: [{subject: []}, 'version: 1']}
   - evaluate:
     - {contains: [{subject: []}, 'version: 1']}
 ```

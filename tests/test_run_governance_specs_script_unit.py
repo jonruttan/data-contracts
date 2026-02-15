@@ -1228,7 +1228,7 @@ harness:
   spec_lang_preferred:
     roots:
       - docs/spec/conformance/cases
-    allow_evaluate_files: []
+    allow_sugar_files: []
     policy_evaluate:
       - eq:
         - count:
@@ -1241,7 +1241,7 @@ harness:
                   - get:
                     - var:
                       - row
-                    - evaluate_ops
+                    - non_evaluate_ops
                 - 0
             - subject: []
         - 0
@@ -1265,7 +1265,10 @@ path: fixtures/a.txt
 assert:
   - target: text
     must:
-      - contain: ["a"]
+      - evaluate:
+          - contains:
+            - subject: []
+            - a
 ```
 """,
     )
@@ -1285,10 +1288,7 @@ path: fixtures/a.txt
 assert:
   - target: text
     must:
-      - evaluate:
-          - contains:
-            - subject: []
-            - a
+      - contain: ["a"]
 ```
 """,
     )
@@ -2811,7 +2811,7 @@ harness:
   root: .
   spec_lang_preferred:
     roots: [docs/spec/conformance/cases]
-    allow_evaluate_files: []
+    allow_sugar_files: []
     policy_evaluate:
       - [\"eq\", 1, 1]
 assert:
@@ -2839,7 +2839,7 @@ harness:
   root: .
   spec_lang_preferred:
     roots: [docs/spec/conformance/cases]
-    allow_evaluate_files: []
+    allow_sugar_files: []
     policy_expr:
       - [\"eq\", 1, 1]
 assert:
@@ -3370,6 +3370,76 @@ assert:
     _write_text(
         tmp_path / "docs/spec/metrics/sla.json",
         '{"summary":{"overall_logic_self_contained_ratio":1.1},"segments":{}}\n',
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_conformance_evaluate_first_ratio_non_regression(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "conformance_evaluate_ratio_non_regression.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONF-SPECLANG-003
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-SPECLANG-003
+type: governance.check
+check: conformance.evaluate_first_ratio_non_regression
+harness:
+  root: {tmp_path}
+  conformance_evaluate_first_non_regression:
+    baseline_path: docs/spec/metrics/sla.json
+    segment_fields:
+      conformance:
+        mean_logic_self_contained_ratio: non_decrease
+    spec_lang_adoption:
+      roots: [docs/spec/conformance/cases]
+      segment_rules:
+      - prefix: docs/spec/conformance/cases
+        segment: conformance
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: conformance.evaluate_first_ratio_non_regression"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/a.spec.md",
+        """# A
+
+## C1
+
+```yaml spec-test
+id: C1
+type: text.file
+assert:
+  - target: text
+    must:
+      - evaluate:
+          - contains:
+            - subject: []
+            - x
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/metrics/sla.json",
+        '{"summary":{"overall_logic_self_contained_ratio":0.5},"segments":{"conformance":{"mean_logic_self_contained_ratio":0.5}}}\n',
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+    _write_text(
+        tmp_path / "docs/spec/metrics/sla.json",
+        '{"summary":{"overall_logic_self_contained_ratio":1.1},"segments":{"conformance":{"mean_logic_self_contained_ratio":1.1}}}\n',
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1

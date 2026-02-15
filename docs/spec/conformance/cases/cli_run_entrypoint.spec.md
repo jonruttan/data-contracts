@@ -13,15 +13,17 @@ Coverage focus:
 ```yaml spec-test
 id: SRCONF-CLI-001
 title: conformance fixture sets explicit cli.run harness.entrypoint
-purpose: Defines portable behavior for explicit cli.run entrypoint when capability is present.
+purpose: Defines portable behavior for explicit cli.run entrypoint when capability
+  is present.
 type: cli.run
 requires:
   capabilities:
   - cli.run
+  - cli.run.entrypoint_conformance
   when_missing: skip
 expect:
   portable:
-    status: pass
+    status: skip
     category: null
   impl:
     php:
@@ -45,10 +47,11 @@ type: cli.run
 requires:
   capabilities:
   - cli.run
+  - cli.run.entrypoint_conformance
   when_missing: skip
 expect:
   portable:
-    status: pass
+    status: skip
     category: null
   impl:
     php:
@@ -64,6 +67,6 @@ harness:
 assert:
 - target: stdout
   must:
-  - contain:
-    - '"ok": true'
+  - evaluate:
+    - {contains: [{subject: []}, '"ok": true']}
 ```

@@ -647,6 +647,49 @@ def _scan_spec_lang_adoption_non_regression(root: Path, *, harness: dict | None 
     )
 
 
+def _scan_conformance_evaluate_first_ratio_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("conformance_evaluate_first_non_regression")
+    if not isinstance(cfg, dict):
+        return [
+            "conformance.evaluate_first_ratio_non_regression requires harness.conformance_evaluate_first_non_regression mapping in governance spec"
+        ]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.conformance_evaluate_first_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("spec_lang_adoption")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.conformance_evaluate_first_non_regression.spec_lang_adoption must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.conformance_evaluate_first_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.conformance_evaluate_first_non_regression.epsilon must be >= 0"]
+
+    current = spec_lang_adoption_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current spec-lang adoption report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get(
+            "summary_fields",
+            {"overall_logic_self_contained_ratio": "non_decrease"},
+        ),
+        segment_fields=cfg.get(
+            "segment_fields",
+            {"conformance": {"mean_logic_self_contained_ratio": "non_decrease"}},
+        ),
+        epsilon=epsilon,
+    )
+
+
 def _scan_policy_library_usage_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
     cfg = h.get("policy_library_usage_non_regression")
@@ -2136,17 +2179,17 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     if not isinstance(cfg, dict):
         return ["conformance.spec_lang_preferred requires harness.spec_lang_preferred mapping in governance spec"]
     roots = cfg.get("roots")
-    allow_evaluate_files = cfg.get("allow_evaluate_files", [])
+    allow_sugar_files = cfg.get("allow_sugar_files", [])
     if (
         not isinstance(roots, list)
         or not roots
         or any(not isinstance(x, str) or not x.strip() for x in roots)
     ):
         return ["harness.spec_lang_preferred.roots must be a non-empty list of non-empty strings"]
-    if not isinstance(allow_evaluate_files, list) or any(
-        not isinstance(x, str) or not x.strip() for x in allow_evaluate_files
+    if not isinstance(allow_sugar_files, list) or any(
+        not isinstance(x, str) or not x.strip() for x in allow_sugar_files
     ):
-        return ["harness.spec_lang_preferred.allow_evaluate_files must be a list of non-empty strings"]
+        return ["harness.spec_lang_preferred.allow_sugar_files must be a list of non-empty strings"]
     try:
         policy_evaluate = normalize_policy_evaluate(
             cfg.get("policy_evaluate"), field="harness.spec_lang_preferred.policy_evaluate"
@@ -2154,7 +2197,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     except ValueError as exc:
         return [str(exc)]
 
-    allow = {str(x).strip() for x in allow_evaluate_files}
+    allow = {str(x).strip() for x in allow_sugar_files}
 
     all_rows: list[dict[str, object]] = []
     for rel_root in roots:
@@ -2167,10 +2210,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 rel = str(spec.doc_path.resolve().relative_to(root))
             except ValueError:
                 rel = str(spec.doc_path)
-            if rel in allow:
-                continue
-
-            evaluate_ops: set[str] = set()
+            non_evaluate_ops: set[str] = set()
 
             def _collect_ops(node: object, *, inherited_target: str | None = None) -> None:
                 if node is None:
@@ -2193,8 +2233,8 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 for _target, op, _value, _is_true in iter_leaf_assertions(
                     node, target_override=inherited_target
                 ):
-                    if op == "evaluate":
-                        evaluate_ops.add(op)
+                    if op != "evaluate":
+                        non_evaluate_ops.add(op)
 
             _collect_ops(spec.test.get("assert", []) or [])
             case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
@@ -2202,20 +2242,22 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 {
                     "id": case_id,
                     "file": rel,
-                    "evaluate_ops": sorted(evaluate_ops),
+                    "non_evaluate_ops": sorted(non_evaluate_ops),
                 }
             )
 
     for row in all_rows:
-        ops = row.get("evaluate_ops")
+        ops = row.get("non_evaluate_ops")
         if not isinstance(ops, list) or not ops:
             continue
         case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
         rel = str(row.get("file", "<unknown>"))
+        if rel in allow:
+            continue
         found = ", ".join(str(x) for x in ops)
         violations.append(
-            f"{rel}: case {case_id} uses evaluate ops ({found}); "
-            "prefer sugar assertions unless evaluate is required, or add explicit allow_evaluate_files entry"
+            f"{rel}: case {case_id} uses sugar ops ({found}); "
+            "prefer evaluate-first assertions for conformance, or add explicit allow_sugar_files entry"
         )
     return _policy_outcome(
         subject=all_rows,
@@ -3437,6 +3479,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.extension_requires_capabilities": _scan_conformance_extension_requires_capabilities,
     "conformance.type_contract_field_sync": _scan_conformance_type_contract_field_sync,
     "conformance.spec_lang_preferred": _scan_conformance_spec_lang_preferred,
+    "conformance.evaluate_first_ratio_non_regression": _scan_conformance_evaluate_first_ratio_non_regression,
     "docs.reference_surface_complete": _scan_docs_reference_surface_complete,
     "docs.reference_index_sync": _scan_docs_reference_index_sync,
     "docs.meta_schema_valid": _scan_docs_meta_schema_valid,

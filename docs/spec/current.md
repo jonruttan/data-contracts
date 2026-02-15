@@ -16,6 +16,9 @@ Notes:
   are opt-in external adapter formats.
 - Portability reporting includes a segmented self-containment metric across
   conformance/governance/impl `.spec.md` corpora.
+- Conformance assertion authoring is now evaluate-first during ratchet phase;
+  sugar operators remain valid syntax but are treated as exception-path
+  authoring.
 - Portability governance enforces non-regression on configured spec-lang
   self-containment baseline metrics.
 - Additional ratchet-only metrics track spec-lang adoption, runner

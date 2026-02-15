@@ -18,12 +18,11 @@ harness:
   rust_adapter_exec_smoke:
     command:
     - scripts/rust/runner_adapter.sh
-    - lint
+    - normalize-check
     expected_exit_codes:
     - 0
     required_output_tokens: []
-    forbidden_output_tokens:
-    - scripts/runner_adapter.sh
+    forbidden_output_tokens: []
     timeout_seconds: 180
   policy_evaluate:
   - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}

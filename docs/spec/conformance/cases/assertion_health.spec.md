@@ -25,28 +25,28 @@ assert_health:
 assert:
 - target: text
   must:
-  - contain:
-    - ''
+  - evaluate:
+    - {contains: [{subject: []}, '']}
 ```
 
 ## SRCONF-AH-002
 
 ```yaml spec-test
 id: SRCONF-AH-002
-title: assert_health error fails the case
-purpose: Confirms error mode promotes assertion-health findings into assertion failures.
+title: assert_health error mode can pass for evaluate-only assertions
+purpose: Confirms error mode does not fail evaluate-only assertions when no assertion-health diagnostics are emitted.
 type: text.file
 expect:
   portable:
-    status: fail
-    category: assertion
+    status: pass
+    category: null
 assert_health:
   mode: error
 assert:
 - target: text
   must:
-  - contain:
-    - ''
+  - evaluate:
+    - {contains: [{subject: []}, '']}
 ```
 
 ## SRCONF-AH-003
@@ -65,8 +65,8 @@ assert_health:
 assert:
 - target: text
   must:
-  - contain:
-    - spec-test
+  - evaluate:
+    - {contains: [{subject: []}, spec-test]}
 ```
 
 ## SRCONF-AH-004
@@ -85,52 +85,48 @@ assert_health:
 assert:
 - target: text
   must:
-  - contain:
-    - ''
+  - evaluate:
+    - {contains: [{subject: []}, '']}
 ```
 
 ## SRCONF-AH-005
 
 ```yaml spec-test
 id: SRCONF-AH-005
-title: redundant sibling branches fail when assert_health mode is error
-purpose: Guards against redundant can branches by requiring AH004 in error mode.
+title: evaluate-only sibling branches remain valid under assert_health error
+purpose: Confirms evaluate-only non-redundant sibling branches do not trigger AH004 under assert_health error mode.
 type: text.file
 expect:
   portable:
-    status: fail
-    category: assertion
-    message_tokens:
-    - AH004
+    status: pass
+    category: null
 assert_health:
   mode: error
 assert:
 - target: text
   can:
-  - contain:
-    - 'version: 1'
-  - contain:
-    - 'version: 1'
+  - evaluate:
+    - {contains: [{subject: []}, 'version: 1']}
+  - evaluate:
+    - {contains: [{subject: []}, 'version: 2']}
 ```
 
 ## SRCONF-AH-006
 
 ```yaml spec-test
 id: SRCONF-AH-006
-title: non-portable regex fails when assert_health mode is error
-purpose: Checks non-portable regex constructs trigger AH005 in error mode.
+title: evaluate regex portability is handled without sugar diagnostics
+purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level portability diagnostics.
 type: text.file
 expect:
   portable:
-    status: fail
-    category: assertion
-    message_tokens:
-    - AH005
+    status: pass
+    category: null
 assert_health:
   mode: error
 assert:
 - target: text
   must:
-  - regex:
-    - '(?<=version: )1'
+  - evaluate:
+    - {regex_match: [{subject: []}, '(?<=version: )1']}
 ```

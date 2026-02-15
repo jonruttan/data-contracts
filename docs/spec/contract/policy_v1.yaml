@@ -162,16 +162,31 @@ rules:
   scope: conformance
   applies_to: fixtures.assert.tree
   norm: SHOULD
-  requirement: prefer_sugar_assertions_unless_evaluate_is_required
-  description: 'Conformance fixtures should prefer sugar assertion operators (`contain`/`regex`/`json_type`/`exists`) by default. `evaluate` should be used only when required by case intent and explicitly allowlisted.
+  requirement: prefer_evaluate_assertions_for_conformance_decision_semantics
+  description: 'Conformance fixtures should prefer `evaluate` assertions for portable decision semantics. Sugar assertion operators remain valid schema forms but should be used only as explicit exception-path authoring.
 
     '
-  rationale: Keeps specs readable while preserving evaluate for advanced expression needs.
-  risk_if_violated: Unnecessary evaluate usage reduces clarity and raises authoring complexity.
+  rationale: Aligns conformance semantics around one portable decision plane and improves spec-lang adoption.
+  risk_if_violated: Conformance logic drifts into mixed assertion styles and lowers portability signal quality.
   references:
   - docs/spec/contract/03_assertions.md
   - docs/spec/contract/07_portable_spec_authoring.md
   - docs/spec/conformance/style.md
+- id: CONFORMANCE_EVALUATE_FIRST_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: conformance.assertion_authoring.metric_ratchet
+  norm: MUST
+  requirement: conformance_evaluate_ratio_must_not_regress_until_threshold_cutover
+  description: 'Governance must enforce non-regression of conformance evaluate coverage against checked-in baseline during ratchet phase.
+
+    '
+  rationale: Provides controlled migration to evaluate-first without destabilizing the full gate.
+  risk_if_violated: Conformance coverage can slide backward while policy intent claims evaluate-first.
+  references:
+  - docs/spec/governance/cases/conformance_evaluate_first_ratio_non_regression.spec.md
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  - spec_runner/quality_metrics.py
 - id: SPEC_LANG_PURE_EVALUATOR
   introduced_in: v1
   scope: implementation

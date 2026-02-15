@@ -180,7 +180,7 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/conformance_spec_lang_preferred.spec.md
-  notes: Governance enforces sugar-first authoring with explicit allowlist for fixtures that require evaluate.
+  notes: Governance enforces evaluate-first conformance authoring with explicit allowlist for fixtures that intentionally retain sugar.
 - rule_id: SPEC_LANG_PURE_EVALUATOR
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PURE_EVALUATOR
   contract_refs:
@@ -575,6 +575,23 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Governance enforces non-regression on configured spec-lang adoption metrics.
+- rule_id: CONFORMANCE_EVALUATE_FIRST_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_EVALUATE_FIRST_REQUIRED
+  contract_refs:
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/conformance/style.md
+  - docs/spec/governance/cases/conformance_evaluate_first_ratio_non_regression.spec.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - scripts/run_governance_specs.py
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  notes: Conformance evaluate-first adoption is ratcheted through baseline-backed non-regression checks.
 - rule_id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   contract_refs:

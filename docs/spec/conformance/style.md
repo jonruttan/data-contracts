@@ -12,8 +12,9 @@ Style rules:
 - each case must include a non-empty `purpose` field describing the intent
 - `purpose` should add context beyond `title` (not a copy)
 - `purpose` should be at least 8 words and avoid placeholders (`todo`, `tbd`, `fixme`, `xxx`)
-- prefer sugar assertion operators (`contain`, `regex`, `json_type`, `exists`)
-  for new assertion authoring; use `evaluate` only when required by case intent
+- prefer `evaluate` assertions for conformance decision semantics
+- sugar assertion operators (`contain`, `regex`, `json_type`, `exists`) remain
+  valid schema forms but are exception-path authoring in conformance cases
 
 Purpose lint policy:
 
@@ -22,7 +23,7 @@ Purpose lint policy:
 
 ## `evaluate` Expression Layout
 
-Conformance cases using `evaluate` SHOULD keep spec-lang expressions in
+Conformance cases using `evaluate` MUST keep spec-lang expressions in
 operator-keyed mapping AST form for readability and deterministic review diffs.
 Prefer condensed inline args for short expressions (for example
 `eq: [{add: [1, 2]}, 3]`) while preserving mapping-AST semantics.

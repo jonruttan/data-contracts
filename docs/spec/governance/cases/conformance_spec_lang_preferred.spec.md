@@ -4,8 +4,8 @@
 
 ```yaml spec-test
 id: SRGOV-CONF-SPECLANG-001
-title: conformance fixtures prefer sugar unless evaluate is required
-purpose: Enforces sugar-first conformance authoring and requires explicit allowlisting for fixtures that intentionally use evaluate expressions.
+title: conformance fixtures prefer evaluate-first assertion authoring
+purpose: Enforces evaluate-first conformance authoring and requires explicit allowlisting for fixtures that intentionally retain sugar assertions.
 type: governance.check
 check: conformance.spec_lang_preferred
 harness:
@@ -18,10 +18,7 @@ harness:
   spec_lang_preferred:
     roots:
     - docs/spec/conformance/cases
-    allow_evaluate_files:
-    - docs/spec/conformance/cases/assertion_health.spec.md
-    - docs/spec/conformance/cases/php_text_file_subset.spec.md
-    - docs/spec/conformance/cases/spec_lang.spec.md
+    allow_sugar_files: []
     policy_evaluate:
     - eq:
       - count:
@@ -30,7 +27,7 @@ harness:
             - {row: []}
             - gt:
               - count:
-                - {get: [{var: [row]}, evaluate_ops]}
+                - {get: [{var: [row]}, non_evaluate_ops]}
               - 0
           - {subject: []}
       - 0

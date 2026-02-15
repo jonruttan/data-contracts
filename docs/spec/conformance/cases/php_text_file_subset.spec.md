@@ -14,8 +14,8 @@ expect:
 assert:
 - target: text
   must:
-  - contain:
-    - 'version: 1'
+  - evaluate:
+    - {contains: [{subject: []}, 'version: 1']}
 ```
 
 ## SRCONF-PHP-TEXT-002
@@ -32,8 +32,8 @@ expect:
 assert:
 - target: text
   must:
-  - regex:
-    - \A\Z
+  - evaluate:
+    - {regex_match: [{subject: []}, \A\Z]}
 ```
 
 ## SRCONF-PHP-TEXT-003
@@ -51,8 +51,8 @@ assert:
 - target: text
   must:
   - must:
-    - contain:
-      - 'version: 1'
+    - evaluate:
+      - {contains: [{subject: []}, 'version: 1']}
 ```
 
 ## SRCONF-PHP-TEXT-004
@@ -69,10 +69,10 @@ expect:
 assert:
 - target: text
   can:
-  - regex:
-    - (?!)
-  - contain:
-    - 'version: 1'
+  - evaluate:
+    - {regex_match: [{subject: []}, '(?!)']}
+  - evaluate:
+    - {contains: [{subject: []}, 'version: 1']}
 ```
 
 ## SRCONF-PHP-TEXT-005
@@ -89,10 +89,10 @@ expect:
 assert:
 - target: text
   can:
-  - regex:
-    - \A\Z
-  - regex:
-    - (?!)
+  - evaluate:
+    - {regex_match: [{subject: []}, \A\Z]}
+  - evaluate:
+    - {regex_match: [{subject: []}, '(?!)']}
 ```
 
 ## SRCONF-PHP-TEXT-006
@@ -109,10 +109,10 @@ expect:
 assert:
 - target: text
   cannot:
-  - regex:
-    - \A\Z
-  - regex:
-    - (?!)
+  - evaluate:
+    - {regex_match: [{subject: []}, \A\Z]}
+  - evaluate:
+    - {regex_match: [{subject: []}, '(?!)']}
 ```
 
 ## SRCONF-PHP-TEXT-007
@@ -129,10 +129,10 @@ expect:
 assert:
 - target: text
   cannot:
-  - contain:
-    - 'version: 1'
-  - regex:
-    - (?!)
+  - evaluate:
+    - {contains: [{subject: []}, 'version: 1']}
+  - evaluate:
+    - {regex_match: [{subject: []}, '(?!)']}
 ```
 
 ## SRCONF-PHP-TEXT-008
@@ -150,126 +150,116 @@ assert:
 - target: text
   must:
   - can:
-    - regex:
-      - \A\Z
-    - contain:
-      - 'version: 1'
+    - evaluate:
+      - {regex_match: [{subject: []}, \A\Z]}
+    - evaluate:
+      - {contains: [{subject: []}, 'version: 1']}
   - cannot:
-    - regex:
-      - \A\Z
+    - evaluate:
+      - {regex_match: [{subject: []}, \A\Z]}
 ```
 
 ## SRCONF-PHP-TEXT-009
 
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-009
-title: non-portable regex fails under assert_health error mode
-purpose: Ensures AH005 is emitted for non-portable regex in error mode.
+title: evaluate regex remains pass under assert_health error mode
+purpose: Confirms evaluate regex assertions bypass sugar diagnostics and can pass under error mode.
 type: text.file
 expect:
   portable:
-    status: fail
-    category: assertion
-    message_tokens:
-    - AH005
+    status: pass
+    category: null
 assert_health:
   mode: error
 assert:
 - target: text
   must:
-  - regex:
-    - '(?<=version: )1'
+  - evaluate:
+    - {regex_match: [{subject: []}, '(?<=version: )1']}
 ```
 
 ## SRCONF-PHP-TEXT-010
 
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-010
-title: AH001 empty contain fails under assert_health error mode
-purpose: Ensures AH001 is emitted for contain with empty string in error mode.
+title: evaluate empty contains remains pass under assert_health error mode
+purpose: Confirms evaluate contains with empty string does not trigger sugar diagnostic failures in error mode.
 type: text.file
 expect:
   portable:
-    status: fail
-    category: assertion
-    message_tokens:
-    - AH001
+    status: pass
+    category: null
 assert_health:
   mode: error
 assert:
 - target: text
   must:
-  - contain:
-    - ''
+  - evaluate:
+    - {contains: [{subject: []}, '']}
 ```
 
 ## SRCONF-PHP-TEXT-011
 
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-011
-title: AH002 always-true regex fails under assert_health error mode
-purpose: Ensures AH002 is emitted for always-true regex in error mode.
+title: evaluate always-true regex remains pass under assert_health error mode
+purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level AH002 failures.
 type: text.file
 expect:
   portable:
-    status: fail
-    category: assertion
-    message_tokens:
-    - AH002
+    status: pass
+    category: null
 assert_health:
   mode: error
 assert:
 - target: text
   must:
-  - regex:
-    - .*
+  - evaluate:
+    - {regex_match: [{subject: []}, .*]}
 ```
 
 ## SRCONF-PHP-TEXT-012
 
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-012
-title: AH003 duplicate contain values fail under assert_health error mode
-purpose: Ensures AH003 is emitted for duplicate contain list values in error mode.
+title: evaluate duplicate contains remain pass under assert_health error mode
+purpose: Confirms evaluate duplicate contains expressions do not trigger sugar-level AH003 diagnostics.
 type: text.file
 expect:
   portable:
-    status: fail
-    category: assertion
-    message_tokens:
-    - AH003
+    status: pass
+    category: null
 assert_health:
   mode: error
 assert:
 - target: text
   must:
-  - contain:
-    - 'version: 1'
-    - 'version: 1'
+  - evaluate:
+    - {contains: [{subject: []}, 'version: 1']}
+    - {contains: [{subject: []}, 'version: 1']}
 ```
 
 ## SRCONF-PHP-TEXT-013
 
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-013
-title: AH004 redundant branch fails under assert_health error mode
-purpose: Ensures AH004 is emitted for redundant sibling branches in error mode.
+title: evaluate sibling branches remain pass under assert_health error mode
+purpose: Confirms evaluate-only non-redundant sibling branches in can groups remain valid in error mode.
 type: text.file
 expect:
   portable:
-    status: fail
-    category: assertion
-    message_tokens:
-    - AH004
+    status: pass
+    category: null
 assert_health:
   mode: error
 assert:
 - target: text
   can:
-  - contain:
-    - 'version: 1'
-  - contain:
-    - 'version: 1'
+  - evaluate:
+    - {contains: [{subject: []}, 'version: 1']}
+  - evaluate:
+    - {contains: [{subject: []}, 'version: 2']}
 ```
 
 ## SRCONF-PHP-TEXT-014
@@ -288,6 +278,6 @@ assert_health:
 assert:
 - target: text
   must:
-  - contain:
-    - ''
+  - evaluate:
+    - {contains: [{subject: []}, '']}
 ```

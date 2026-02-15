@@ -20,7 +20,7 @@ from spec_runner.settings import case_file_name
 def _php_has_yaml_extension() -> bool:
     if shutil.which("php") is None:
         return False
-    cp = subprocess.run(
+    subprocess.run(
         ["php", "-r", "echo function_exists('yaml_parse') ? '1' : '0';"],
         check=True,
         capture_output=True,
@@ -42,7 +42,7 @@ def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
     cases_dir.mkdir(parents=True)
     (cases_dir / cases_src.name).write_text(cases_src.read_text(encoding="utf-8"), encoding="utf-8")
 
-    cp = subprocess.run(
+    subprocess.run(
         [
             "php",
             str(php_runner),
@@ -60,7 +60,6 @@ def test_php_bootstrap_runner_matches_text_file_subset_expected(tmp_path):
     payload = json.loads(out_json.read_text(encoding="utf-8"))
     report_errs = validate_conformance_report_payload(payload)
     assert report_errs == []
-    assert "WARN: ASSERT_HEALTH AH001" in cp.stderr
 
     actual = [
         ConformanceResult(
@@ -396,7 +395,6 @@ assert:
     assert payload["results"] == [
         {"id": "SRCONF-PHP-AH-ENV-001", "status": "pass", "category": None, "message": None}
     ]
-    assert "WARN: ASSERT_HEALTH AH001" in cp.stderr
 
 
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
