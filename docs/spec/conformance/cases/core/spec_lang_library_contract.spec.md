@@ -8,6 +8,9 @@ title: policy library uses flat definitions scopes
 purpose: Ensures policy library authoring uses definitions.public/definitions.private symbol maps without nested functions blocks.
 type: text.file
 path: /docs/spec/libraries/policy/policy_core.spec.md
+expect:
+  portable:
+    status: pass
 assert:
 - target: text
   must:
@@ -27,6 +30,9 @@ title: path library uses flat definitions scopes
 purpose: Ensures path library authoring uses definitions.public/definitions.private symbol maps without nested functions blocks.
 type: text.file
 path: /docs/spec/libraries/path/path_core.spec.md
+expect:
+  portable:
+    status: pass
 assert:
 - target: text
   must:
@@ -46,6 +52,9 @@ title: library index exports only public symbols
 purpose: Ensures generated library index contains public export symbols and does not expose private-only symbols.
 type: text.file
 path: /docs/spec/libraries/policy/index.md
+expect:
+  portable:
+    status: pass
 assert:
 - target: text
   must:

@@ -19,6 +19,11 @@ fn:
 
 No string parser and no implementation-defined extension hooks are part of v1.
 
+Stdlib completeness source of truth:
+
+- `/docs/spec/schema/spec_lang_stdlib_profile_v1.yaml`
+- `/docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`
+
 Purity requirement:
 
 - Evaluation MUST remain pure and deterministic.

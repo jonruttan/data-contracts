@@ -1,0 +1,1121 @@
+version: 1
+name: spec_lang_stdlib_profile_v1
+categories:
+  core_control:
+  - subject
+  - var
+  - if
+  - let
+  - fn
+  - call
+  boolean_predicate:
+  - and
+  - or
+  - not
+  - xor
+  - any
+  - all
+  - none
+  - is_empty
+  equality_comparison:
+  - eq
+  - neq
+  - equals
+  - lt
+  - lte
+  - gt
+  - gte
+  - compare
+  - between
+  numeric:
+  - add
+  - sub
+  - mul
+  - div
+  - mod
+  - pow
+  - abs
+  - negate
+  - inc
+  - dec
+  - clamp
+  - round
+  - floor
+  - ceil
+  - min
+  - max
+  - sum
+  type_predicates:
+  - json_type
+  - is_null
+  - is_bool
+  - is_boolean
+  - is_number
+  - is_integer
+  - is_string
+  - is_list
+  - is_array
+  - is_dict
+  - is_object
+  text_regex:
+  - contains
+  - starts_with
+  - ends_with
+  - trim
+  - lower
+  - upper
+  - split
+  - join
+  - replace
+  - pad_left
+  - pad_right
+  - regex_match
+  - matches
+  - matches_all
+  sequence_collection:
+  - len
+  - count
+  - first
+  - rest
+  - last
+  - nth
+  - take
+  - drop
+  - slice
+  - append
+  - prepend
+  - concat
+  - reverse
+  - flatten
+  - range
+  - repeat
+  - map
+  - filter
+  - reject
+  - find
+  - reduce
+  - partition
+  - group_by
+  - uniq_by
+  - distinct
+  - sort
+  - sort_by
+  - zip
+  - zip_with
+  - pluck
+  - includes
+  - in
+  - contains_all
+  - contains_any
+  object_map:
+  - has_key
+  - get
+  - get_in
+  - get_or
+  - has_path
+  - keys
+  - values
+  - entries
+  - assoc
+  - dissoc
+  - merge
+  - merge_deep
+  - pick
+  - omit
+  - prop_eq
+  - where
+  - keys_exact
+  - keys_include
+  - keys_exclude
+  set_algebra:
+  - union
+  - intersection
+  - difference
+  - symmetric_difference
+  - is_subset
+  - is_superset
+  - set_equals
+  json_utilities:
+  - json_parse
+  - json_stringify
+  null_default:
+  - coalesce
+  - default_to
+  functional_combinators:
+  - identity
+  - always
+  - compose
+  - pipe
+  schema_shape:
+  - schema_match
+  - schema_errors
+symbols:
+  subject:
+    category: core_control
+    arity: 0
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  var:
+    category: core_control
+    arity: null
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  if:
+    category: core_control
+    arity: null
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  let:
+    category: core_control
+    arity: null
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  fn:
+    category: core_control
+    arity: null
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  call:
+    category: core_control
+    arity: null
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  and:
+    category: boolean_predicate
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  or:
+    category: boolean_predicate
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  not:
+    category: boolean_predicate
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  xor:
+    category: boolean_predicate
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  any:
+    category: boolean_predicate
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  all:
+    category: boolean_predicate
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  none:
+    category: boolean_predicate
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_empty:
+    category: boolean_predicate
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  eq:
+    category: equality_comparison
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  neq:
+    category: equality_comparison
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  equals:
+    category: equality_comparison
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  lt:
+    category: equality_comparison
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  lte:
+    category: equality_comparison
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  gt:
+    category: equality_comparison
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  gte:
+    category: equality_comparison
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  compare:
+    category: equality_comparison
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  between:
+    category: equality_comparison
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  add:
+    category: numeric
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  sub:
+    category: numeric
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  mul:
+    category: numeric
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  div:
+    category: numeric
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  mod:
+    category: numeric
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  pow:
+    category: numeric
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  abs:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  negate:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  inc:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  dec:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  clamp:
+    category: numeric
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  round:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  floor:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ceil:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  min:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  max:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  sum:
+    category: numeric
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  json_type:
+    category: type_predicates
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_null:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_bool:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_boolean:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_number:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_integer:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_string:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_list:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_array:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_dict:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_object:
+    category: type_predicates
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  contains:
+    category: text_regex
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  starts_with:
+    category: text_regex
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ends_with:
+    category: text_regex
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  trim:
+    category: text_regex
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  lower:
+    category: text_regex
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  upper:
+    category: text_regex
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  split:
+    category: text_regex
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  join:
+    category: text_regex
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  replace:
+    category: text_regex
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  pad_left:
+    category: text_regex
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  pad_right:
+    category: text_regex
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  regex_match:
+    category: text_regex
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  matches:
+    category: text_regex
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  matches_all:
+    category: text_regex
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  len:
+    category: sequence_collection
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  count:
+    category: sequence_collection
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  first:
+    category: sequence_collection
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  rest:
+    category: sequence_collection
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  last:
+    category: sequence_collection
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  nth:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  take:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  drop:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  slice:
+    category: sequence_collection
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  append:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  prepend:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  concat:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  reverse:
+    category: sequence_collection
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  flatten:
+    category: sequence_collection
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  range:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  repeat:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  map:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  filter:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  reject:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  find:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  reduce:
+    category: sequence_collection
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  partition:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  group_by:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  uniq_by:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  distinct:
+    category: sequence_collection
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  sort:
+    category: sequence_collection
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  sort_by:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  zip:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  zip_with:
+    category: sequence_collection
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  pluck:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  includes:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  in:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  contains_all:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  contains_any:
+    category: sequence_collection
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  has_key:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  get:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  get_in:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  get_or:
+    category: object_map
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  has_path:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  keys:
+    category: object_map
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  values:
+    category: object_map
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  entries:
+    category: object_map
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  assoc:
+    category: object_map
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  dissoc:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  merge:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  merge_deep:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  pick:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  omit:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  prop_eq:
+    category: object_map
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  where:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  keys_exact:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  keys_include:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  keys_exclude:
+    category: object_map
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  union:
+    category: set_algebra
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  intersection:
+    category: set_algebra
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  difference:
+    category: set_algebra
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  symmetric_difference:
+    category: set_algebra
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_subset:
+    category: set_algebra
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  is_superset:
+    category: set_algebra
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  set_equals:
+    category: set_algebra
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  json_parse:
+    category: json_utilities
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  json_stringify:
+    category: json_utilities
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  coalesce:
+    category: null_default
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  default_to:
+    category: null_default
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  identity:
+    category: functional_combinators
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  always:
+    category: functional_combinators
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  compose:
+    category: functional_combinators
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  pipe:
+    category: functional_combinators
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  schema_match:
+    category: schema_shape
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  schema_errors:
+    category: schema_shape
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+schema_shape_keys:
+- type
+- required
+- properties
+- allow_extra
+- items
+- min_items
+- max_items
+- min_length
+- max_length
+- pattern
+- const
+- enum
+- all_of
+- any_of
+- not
+behavior_defaults:
+  pure: true
+  deterministic: true
+  parity_required: true
+  error_classes:
+  - schema
+  - assertion
+  - runtime

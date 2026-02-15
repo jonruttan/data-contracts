@@ -10,3 +10,6 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/conformance/cases/core/failure_context.spec.md`
 - `/docs/spec/conformance/cases/core/php_text_file_subset.spec.md`
 - `/docs/spec/conformance/cases/core/spec_lang.spec.md`
+- `/docs/spec/conformance/cases/core/spec_lang_library_contract.spec.md`
+- `/docs/spec/conformance/cases/core/spec_lang_schema.spec.md`
+- `/docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md`

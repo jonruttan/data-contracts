@@ -25,6 +25,7 @@ from spec_runner.purpose_lint import (
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import SETTINGS, governed_config_literals
 from spec_runner.spec_lang import SpecLangLimits, _builtin_arity_table, eval_predicate
+from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
@@ -1573,6 +1574,64 @@ def _scan_assert_spec_lang_builtin_surface_sync(root: Path, *, harness: dict | N
     for op in php_missing:
         violations.append(f"scripts/php/spec_runner.php:1: missing builtin documented in contract: {op}")
 
+    return violations
+
+
+def _scan_spec_lang_stdlib_profile_complete(root: Path) -> list[str]:
+    payload = spec_lang_stdlib_report_jsonable(root)
+    violations: list[str] = []
+    errors = payload.get("errors") or []
+    for err in errors:
+        s = str(err).strip()
+        if s:
+            violations.append(s)
+    for item in payload.get("missing_in_python") or []:
+        violations.append(f"spec_lang stdlib profile missing in python: {item}")
+    for item in payload.get("missing_in_php") or []:
+        violations.append(f"spec_lang stdlib profile missing in php: {item}")
+    for item in payload.get("arity_mismatch") or []:
+        violations.append(f"spec_lang stdlib profile arity mismatch: {item}")
+    return violations
+
+
+def _scan_spec_lang_stdlib_py_php_parity(root: Path) -> list[str]:
+    payload = spec_lang_stdlib_report_jsonable(root)
+    violations: list[str] = []
+    for item in payload.get("missing_in_python") or []:
+        violations.append(f"python missing stdlib symbol: {item}")
+    for item in payload.get("missing_in_php") or []:
+        violations.append(f"php missing stdlib symbol: {item}")
+    return violations
+
+
+def _scan_spec_lang_stdlib_docs_sync(root: Path) -> list[str]:
+    payload = spec_lang_stdlib_report_jsonable(root)
+    violations: list[str] = []
+    for item in payload.get("docs_sync_missing") or []:
+        violations.append(str(item))
+    return violations
+
+
+def _scan_spec_lang_stdlib_conformance_coverage(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("stdlib_conformance")
+    if not isinstance(cfg, dict):
+        return [
+            "spec_lang.stdlib_conformance_coverage requires harness.stdlib_conformance mapping in governance spec"
+        ]
+    required_paths = cfg.get("required_paths")
+    if (
+        not isinstance(required_paths, list)
+        or not required_paths
+        or any(not isinstance(x, str) or not x.strip() for x in required_paths)
+    ):
+        return ["harness.stdlib_conformance.required_paths must be a non-empty list of paths"]
+    violations: list[str] = []
+    for raw in required_paths:
+        rel = str(raw).strip()
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}: missing required conformance file")
     return violations
 
 
@@ -4453,6 +4512,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "assert.type_contract_subject_semantics_sync": _scan_assert_type_contract_subject_semantics_sync,
     "assert.compiler_schema_matrix_sync": _scan_assert_compiler_schema_matrix_sync,
     "assert.spec_lang_builtin_surface_sync": _scan_assert_spec_lang_builtin_surface_sync,
+    "spec_lang.stdlib_profile_complete": _scan_spec_lang_stdlib_profile_complete,
+    "spec_lang.stdlib_py_php_parity": _scan_spec_lang_stdlib_py_php_parity,
+    "spec_lang.stdlib_docs_sync": _scan_spec_lang_stdlib_docs_sync,
+    "spec_lang.stdlib_conformance_coverage": _scan_spec_lang_stdlib_conformance_coverage,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
     "docs.current_spec_policy_key_names": _scan_current_spec_policy_key_names,
     "governance.policy_evaluate_required": _scan_governance_policy_evaluate_required,

@@ -1944,3 +1944,82 @@ links:
   - spec_runner/spec_lang_libraries.py
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
   notes: spec_lang.library shape enforcement requires definitions.public/definitions.private scopes.
+- rule_id: SPEC_LANG_STDLIB_PROFILE_DEFINED
+  policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_STDLIB_PROFILE_DEFINED
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  schema_refs:
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang_stdlib_profile.py
+  - scripts/spec_lang_stdlib_report.py
+  - docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md
+  notes: Defines canonical stdlib profile source of truth for implementation and docs parity checks.
+- rule_id: SPEC_LANG_STDLIB_PROFILE_COMPLETE
+  policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_STDLIB_PROFILE_COMPLETE
+  contract_refs:
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  schema_refs:
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  conformance_case_ids:
+  - SRCONF-STDLIB-001
+  - SRCONF-STDLIB-002
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang_stdlib_profile.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md
+  notes: Governance fails when any profile symbol is missing in Python or PHP implementations.
+- rule_id: SPEC_LANG_STDLIB_PY_PHP_PARITY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_STDLIB_PY_PHP_PARITY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  schema_refs:
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_conformance_parity_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang_stdlib_profile.py
+  - scripts/php/spec_runner.php
+  - spec_runner/spec_lang.py
+  - docs/spec/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md
+  notes: Python and PHP symbol surfaces must remain parity-clean against profile symbols.
+- rule_id: SPEC_LANG_STDLIB_DOCS_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_STDLIB_DOCS_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang_stdlib_profile.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md
+  notes: Core docs must reference the canonical stdlib profile contract artifacts.
+- rule_id: SPEC_LANG_STDLIB_CONFORMANCE_COVERAGE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_STDLIB_CONFORMANCE_COVERAGE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/06_conformance.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-STDLIB-003
+  - SRCONF-STDLIB-004
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md
+  notes: Required stdlib conformance fixture files must exist and remain in canonical paths.

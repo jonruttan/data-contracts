@@ -155,6 +155,10 @@ def _deep_equals(left: Any, right: Any) -> bool:
     return left == right
 
 
+def _is_integer_number(v: Any) -> bool:
+    return isinstance(v, int) and not isinstance(v, bool)
+
+
 def _includes_deep(seq: list[Any], value: Any) -> bool:
     return any(_deep_equals(item, value) for item in seq)
 
@@ -179,14 +183,204 @@ def _require_dict_arg(op: str, value: Any) -> dict[str, Any]:
     return value
 
 
+def _deep_merge_dicts(left: dict[str, Any], right: dict[str, Any]) -> dict[str, Any]:
+    out = dict(left)
+    for k, rv in right.items():
+        lv = out.get(k)
+        if isinstance(lv, dict) and isinstance(rv, dict):
+            out[k] = _deep_merge_dicts(lv, rv)
+        else:
+            out[k] = rv
+    return out
+
+
+def _get_in_path(obj: Any, path: list[Any]) -> tuple[bool, Any]:
+    cur = obj
+    for seg in path:
+        if isinstance(cur, dict):
+            key = str(seg)
+            if key not in cur:
+                return False, None
+            cur = cur[key]
+            continue
+        if isinstance(cur, list):
+            if not isinstance(seg, int):
+                return False, None
+            if seg < 0 or seg >= len(cur):
+                return False, None
+            cur = cur[seg]
+            continue
+        return False, None
+    return True, cur
+
+
+def _schema_type_ok(value: Any, expected: str) -> bool:
+    token = _normalize_json_type_token(expected)
+    if token == "integer":
+        return _is_integer_number(value)
+    return _json_type_name(value) == token
+
+
+def _schema_validate(value: Any, schema: Any, path: str, out: list[str]) -> None:
+    if not isinstance(schema, dict):
+        out.append(f"{path}: schema node must be mapping")
+        return
+    allowed = {
+        "type",
+        "required",
+        "properties",
+        "allow_extra",
+        "items",
+        "min_items",
+        "max_items",
+        "min_length",
+        "max_length",
+        "pattern",
+        "const",
+        "enum",
+        "all_of",
+        "any_of",
+        "not",
+    }
+    for key in schema:
+        if str(key) not in allowed:
+            out.append(f"{path}: unknown schema key {key!r}")
+
+    if "type" in schema:
+        typ = schema["type"]
+        if not isinstance(typ, str) or not typ.strip():
+            out.append(f"{path}.type: must be non-empty string")
+        elif not _schema_type_ok(value, typ):
+            out.append(f"{path}: type mismatch expected {typ}")
+
+    if "const" in schema and not _deep_equals(value, schema["const"]):
+        out.append(f"{path}: const mismatch")
+
+    if "enum" in schema:
+        enum_values = schema["enum"]
+        if not isinstance(enum_values, list) or not enum_values:
+            out.append(f"{path}.enum: must be non-empty list")
+        elif not any(_deep_equals(value, item) for item in enum_values):
+            out.append(f"{path}: enum mismatch")
+
+    if "pattern" in schema:
+        pat = schema["pattern"]
+        if not isinstance(pat, str) or not pat:
+            out.append(f"{path}.pattern: must be non-empty string")
+        elif not isinstance(value, str):
+            out.append(f"{path}: pattern requires string value")
+        elif re.search(pat, value) is None:
+            out.append(f"{path}: pattern mismatch")
+
+    if "min_length" in schema:
+        ml = schema["min_length"]
+        if not isinstance(ml, int) or ml < 0:
+            out.append(f"{path}.min_length: must be non-negative int")
+        elif not isinstance(value, str):
+            out.append(f"{path}: min_length requires string value")
+        elif len(value) < ml:
+            out.append(f"{path}: min_length violation")
+    if "max_length" in schema:
+        ml = schema["max_length"]
+        if not isinstance(ml, int) or ml < 0:
+            out.append(f"{path}.max_length: must be non-negative int")
+        elif not isinstance(value, str):
+            out.append(f"{path}: max_length requires string value")
+        elif len(value) > ml:
+            out.append(f"{path}: max_length violation")
+
+    if "required" in schema:
+        required = schema["required"]
+        if not isinstance(required, list) or any(not isinstance(x, str) or not x.strip() for x in required):
+            out.append(f"{path}.required: must be list of non-empty strings")
+        elif not isinstance(value, dict):
+            out.append(f"{path}: required requires object value")
+        else:
+            for key in required:
+                if key not in value:
+                    out.append(f"{path}.{key}: missing required key")
+
+    if "properties" in schema:
+        props = schema["properties"]
+        if not isinstance(props, dict):
+            out.append(f"{path}.properties: must be mapping")
+        elif not isinstance(value, dict):
+            out.append(f"{path}: properties requires object value")
+        else:
+            for key, child in props.items():
+                skey = str(key)
+                if skey in value:
+                    _schema_validate(value[skey], child, f"{path}.{skey}", out)
+            allow_extra = schema.get("allow_extra", True)
+            if not isinstance(allow_extra, bool):
+                out.append(f"{path}.allow_extra: must be boolean")
+            elif not allow_extra:
+                allowed_keys = {str(k) for k in props.keys()}
+                for key in value.keys():
+                    if str(key) not in allowed_keys:
+                        out.append(f"{path}.{key}: extra key not allowed")
+
+    if "items" in schema:
+        child_schema = schema["items"]
+        if not isinstance(value, list):
+            out.append(f"{path}: items requires array value")
+        else:
+            for idx, item in enumerate(value):
+                _schema_validate(item, child_schema, f"{path}[{idx}]", out)
+
+    if "min_items" in schema:
+        mi = schema["min_items"]
+        if not isinstance(mi, int) or mi < 0:
+            out.append(f"{path}.min_items: must be non-negative int")
+        elif not isinstance(value, list):
+            out.append(f"{path}: min_items requires array value")
+        elif len(value) < mi:
+            out.append(f"{path}: min_items violation")
+    if "max_items" in schema:
+        mi = schema["max_items"]
+        if not isinstance(mi, int) or mi < 0:
+            out.append(f"{path}.max_items: must be non-negative int")
+        elif not isinstance(value, list):
+            out.append(f"{path}: max_items requires array value")
+        elif len(value) > mi:
+            out.append(f"{path}: max_items violation")
+
+    if "all_of" in schema:
+        all_of = schema["all_of"]
+        if not isinstance(all_of, list) or not all_of:
+            out.append(f"{path}.all_of: must be non-empty list")
+        else:
+            for idx, child in enumerate(all_of):
+                _schema_validate(value, child, f"{path}.all_of[{idx}]", out)
+    if "any_of" in schema:
+        any_of = schema["any_of"]
+        if not isinstance(any_of, list) or not any_of:
+            out.append(f"{path}.any_of: must be non-empty list")
+        else:
+            matched = False
+            for child in any_of:
+                tmp: list[str] = []
+                _schema_validate(value, child, path, tmp)
+                if not tmp:
+                    matched = True
+                    break
+            if not matched:
+                out.append(f"{path}: any_of mismatch")
+    if "not" in schema:
+        tmp = []
+        _schema_validate(value, schema["not"], path, tmp)
+        if not tmp:
+            out.append(f"{path}: not mismatch")
+
+
 def _require_numeric_arg(op: str, value: Any) -> int | float:
-    if not isinstance(value, (int, float)):
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"spec_lang {op} expects numeric args")
     return value
 
 
 def _require_int_arg(op: str, value: Any) -> int:
-    if not isinstance(value, int):
+    if not _is_integer_number(value):
         raise ValueError(f"spec_lang {op} expects integer args")
     return value
 
@@ -235,6 +429,7 @@ def _builtin_arity_table() -> dict[str, int]:
         "is_bool": 1,
         "is_boolean": 1,
         "is_number": 1,
+        "is_integer": 1,
         "is_string": 1,
         "is_list": 1,
         "is_array": 1,
@@ -242,10 +437,15 @@ def _builtin_arity_table() -> dict[str, int]:
         "is_object": 1,
         "has_key": 2,
         "get": 2,
+        "get_in": 2,
+        "get_or": 3,
+        "has_path": 2,
         "len": 1,
         "count": 1,
         "first": 1,
         "rest": 1,
+        "last": 1,
+        "nth": 2,
         "trim": 1,
         "lower": 1,
         "upper": 1,
@@ -276,17 +476,25 @@ def _builtin_arity_table() -> dict[str, int]:
         "none": 1,
         "is_empty": 1,
         "distinct": 1,
+        "sort": 1,
         "coalesce": 2,
+        "default_to": 2,
+        "contains_all": 2,
+        "contains_any": 2,
         "pluck": 2,
         "sort_by": 2,
         "keys": 1,
         "values": 1,
         "entries": 1,
         "merge": 2,
+        "merge_deep": 2,
         "assoc": 3,
         "dissoc": 2,
         "pick": 2,
         "omit": 2,
+        "keys_exact": 2,
+        "keys_include": 2,
+        "keys_exclude": 2,
         "prop_eq": 3,
         "where": 2,
         "compose": 3,
@@ -308,6 +516,9 @@ def _builtin_arity_table() -> dict[str, int]:
         "is_superset": 2,
         "set_equals": 2,
         "json_parse": 1,
+        "json_stringify": 1,
+        "schema_match": 2,
+        "schema_errors": 2,
         "and": 2,
         "or": 2,
         "not": 1,
@@ -494,6 +705,7 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         "is_bool",
         "is_boolean",
         "is_number",
+        "is_integer",
         "is_string",
         "is_list",
         "is_array",
@@ -507,6 +719,7 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
             "is_bool": kind == "bool",
             "is_boolean": kind == "bool",
             "is_number": kind == "number",
+            "is_integer": _is_integer_number(args[0]),
             "is_string": kind == "string",
             "is_list": kind == "list",
             "is_array": kind == "list",
@@ -530,6 +743,21 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
                 return None
             return obj[key]
         raise ValueError("spec_lang get expects dict or list")
+    if op == "get_in":
+        _require_arity(op, args, 2)
+        path = _require_list_arg(op, args[1])
+        ok, value = _get_in_path(args[0], path)
+        return value if ok else None
+    if op == "get_or":
+        _require_arity(op, args, 3)
+        path = _require_list_arg(op, args[1])
+        ok, value = _get_in_path(args[0], path)
+        return value if ok else args[2]
+    if op == "has_path":
+        _require_arity(op, args, 2)
+        path = _require_list_arg(op, args[1])
+        ok, _ = _get_in_path(args[0], path)
+        return ok
     if op in {"len", "count"}:
         _require_arity(op, args, 1)
         v = args[0]
@@ -544,6 +772,17 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         _require_arity(op, args, 1)
         seq = _require_list_arg(op, args[0])
         return seq[1:] if len(seq) > 1 else []
+    if op == "last":
+        _require_arity(op, args, 1)
+        seq = _require_list_arg(op, args[0])
+        return seq[-1] if seq else None
+    if op == "nth":
+        _require_arity(op, args, 2)
+        seq = _require_list_arg(op, args[0])
+        idx = _require_int_arg(op, args[1])
+        if idx < 0 or idx >= len(seq):
+            return None
+        return seq[idx]
     if op == "any":
         _require_arity(op, args, 1)
         seq = _require_list_arg(op, args[0])
@@ -566,6 +805,17 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         _require_arity(op, args, 1)
         seq = _require_list_arg(op, args[0])
         return _distinct_deep(seq)
+    if op == "sort":
+        _require_arity(op, args, 1)
+        seq = _require_list_arg(op, args[0])
+        if not seq:
+            return []
+        first_type = type(seq[0])
+        if first_type not in {str, int, float, bool}:
+            raise ValueError("spec_lang sort expects scalar list values")
+        if any(type(x) is not first_type for x in seq):
+            raise ValueError("spec_lang sort expects homogeneous list element types")
+        return sorted(seq)
     if op == "coalesce":
         _require_arity(op, args, 2)
         for got in args:
@@ -646,6 +896,11 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         left_obj = _require_dict_arg(op, args[0])
         right_obj = _require_dict_arg(op, args[1])
         return {**left_obj, **right_obj}
+    if op == "merge_deep":
+        _require_arity(op, args, 2)
+        left_obj = _require_dict_arg(op, args[0])
+        right_obj = _require_dict_arg(op, args[1])
+        return _deep_merge_dicts(left_obj, right_obj)
     if op == "assoc":
         _require_arity(op, args, 3)
         key = str(args[0])
@@ -673,6 +928,24 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         obj = _require_dict_arg(op, args[1])
         blocked = {str(k) for k in keys}
         return {k: v for k, v in obj.items() if k not in blocked}
+    if op == "keys_exact":
+        _require_arity(op, args, 2)
+        obj = _require_dict_arg(op, args[0])
+        keys = _require_list_arg(op, args[1])
+        expected = {str(k) for k in keys}
+        return set(obj.keys()) == expected
+    if op == "keys_include":
+        _require_arity(op, args, 2)
+        obj = _require_dict_arg(op, args[0])
+        keys = _require_list_arg(op, args[1])
+        required = {str(k) for k in keys}
+        return required.issubset(set(obj.keys()))
+    if op == "keys_exclude":
+        _require_arity(op, args, 2)
+        obj = _require_dict_arg(op, args[0])
+        keys = _require_list_arg(op, args[1])
+        blocked = {str(k) for k in keys}
+        return blocked.isdisjoint(set(obj.keys()))
     if op == "prop_eq":
         _require_arity(op, args, 3)
         key = str(args[0])
@@ -818,6 +1091,16 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         if len(left_set) != len(right_set):
             return False
         return all(_includes_deep(right_set, item) for item in left_set)
+    if op == "contains_all":
+        _require_arity(op, args, 2)
+        container = _require_list_arg(op, args[0])
+        required_items = _require_list_arg(op, args[1])
+        return all(_includes_deep(container, item) for item in required_items)
+    if op == "contains_any":
+        _require_arity(op, args, 2)
+        container = _require_list_arg(op, args[0])
+        candidate = _require_list_arg(op, args[1])
+        return any(_includes_deep(container, item) for item in candidate)
     if op == "is_subset":
         _require_arity(op, args, 2)
         left_set = _distinct_deep(_require_list_arg(op, args[0]))
@@ -834,6 +1117,19 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         if not isinstance(raw, str):
             raise ValueError("spec_lang json_parse expects string input")
         return json.loads(raw)
+    if op == "json_stringify":
+        _require_arity(op, args, 1)
+        return json.dumps(args[0], ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    if op == "schema_match":
+        _require_arity(op, args, 2)
+        errs: list[str] = []
+        _schema_validate(args[0], args[1], "$", errs)
+        return not errs
+    if op == "schema_errors":
+        _require_arity(op, args, 2)
+        errs = []
+        _schema_validate(args[0], args[1], "$", errs)
+        return errs
     if op == "and":
         _require_arity(op, args, 2)
         return _truthy(args[0]) and _truthy(args[1])
@@ -906,6 +1202,15 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
                 continue
             return got
         return None
+    if op == "default_to":
+        _require_arity(op, args, 2)
+        default_value = _eval_non_tail(args[0], env, st)
+        got = _eval_non_tail(args[1], env, st)
+        if got is None:
+            return default_value
+        if isinstance(got, str) and got == "":
+            return default_value
+        return got
 
     if op in {"map", "filter", "reject", "find", "partition", "group_by", "uniq_by", "reduce"}:
         _require_arity(op, args, 2 if op != "reduce" else 3)

@@ -26,6 +26,11 @@ sections_required:
 
 This chapter is the practical reference for the `evaluate` assertion leaf.
 
+Normative profile references:
+
+- `/docs/spec/schema/spec_lang_stdlib_profile_v1.yaml`
+- `/docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`
+
 Authoring note:
 
 - Conformance authoring is sugar-first by default.

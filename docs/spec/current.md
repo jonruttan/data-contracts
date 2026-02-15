@@ -12,6 +12,9 @@ Notes:
   internal predicates before runtime evaluation.
 - Spec-lang remains pure; adapter layers perform side effects and feed
   normalized subjects into evaluation.
+- Spec-lang stdlib completeness and parity are contract-defined by
+  `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml` and
+  `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`.
 - Canonical authoring remains `.spec.md`; `.spec.yaml/.spec.yml/.spec.json`
   are opt-in external adapter formats.
 - Portability reporting includes a segmented self-containment metric across

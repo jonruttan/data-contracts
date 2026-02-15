@@ -84,6 +84,12 @@ case "${subcommand}" in
   objective-scorecard-md)
     exec "${PYTHON_BIN}" scripts/objective_scorecard_report.py --format md --out .artifacts/objective-scorecard-summary.md "$@"
     ;;
+  spec-lang-stdlib-json)
+    exec "${PYTHON_BIN}" scripts/spec_lang_stdlib_report.py --out .artifacts/spec-lang-stdlib.json "$@"
+    ;;
+  spec-lang-stdlib-md)
+    exec "${PYTHON_BIN}" scripts/spec_lang_stdlib_report.py --format md --out .artifacts/spec-lang-stdlib-summary.md "$@"
+    ;;
   ci-gate-summary)
     exec "${PYTHON_BIN}" scripts/ci_gate_summary.py "$@"
     ;;

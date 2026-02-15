@@ -332,6 +332,32 @@ fn main() {
             ),
             &root,
         ),
+        "spec-lang-stdlib-json" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "spec_lang_stdlib_report.py"),
+                    "--out".to_string(),
+                    ".artifacts/spec-lang-stdlib.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "spec-lang-stdlib-md" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "spec_lang_stdlib_report.py"),
+                    "--format".to_string(),
+                    "md".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/spec-lang-stdlib-summary.md".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
         "ci-gate-summary" => run_cmd(&py, &with_forwarded(vec![script(&root, "ci_gate_summary.py")], &forwarded), &root),
         "docs-build" => run_cmd(&py, &with_forwarded(vec![script(&root, "docs_build_reference.py")], &forwarded), &root),
         "docs-build-check" => run_cmd(

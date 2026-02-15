@@ -1835,3 +1835,74 @@ rules:
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
   - docs/spec/contract/14_spec_lang_libraries.md
   - scripts/run_governance_specs.py
+- id: SPEC_LANG_STDLIB_PROFILE_DEFINED
+  introduced_in: v1
+  scope: contract
+  applies_to: spec_lang.stdlib.profile
+  norm: MUST
+  requirement: stdlib_profile_file_exists_and_is_source_of_truth
+  description: 'The spec-lang stdlib profile must be defined in a canonical schema file and referenced by contract docs.
+
+    '
+  rationale: Provides one fixed source of truth for stdlib completeness.
+  risk_if_violated: Runtime surfaces drift without a single normative contract.
+  references:
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- id: SPEC_LANG_STDLIB_PROFILE_COMPLETE
+  introduced_in: v1
+  scope: governance
+  applies_to: spec_lang.stdlib.implementations
+  norm: MUST
+  requirement: all_profile_symbols_present_in_python_and_php
+  description: 'All symbols declared in the stdlib profile must be present in Python and PHP implementations.
+
+    '
+  rationale: Keeps runtime capability surface fixed and portable.
+  risk_if_violated: Conformance and policy behavior diverge by implementation.
+  references:
+  - docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md
+  - scripts/run_governance_specs.py
+- id: SPEC_LANG_STDLIB_PY_PHP_PARITY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: spec_lang.stdlib.parity
+  norm: MUST
+  requirement: py_php_symbol_surface_must_match_profile
+  description: 'Python and PHP stdlib symbol surfaces must remain parity-clean against profile requirements.
+
+    '
+  rationale: Enforces implementation-neutral stdlib behavior contract.
+  risk_if_violated: Cross-runtime policy/assertion behavior drifts.
+  references:
+  - docs/spec/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md
+  - scripts/run_governance_specs.py
+- id: SPEC_LANG_STDLIB_DOCS_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: spec_lang.stdlib.docs
+  norm: MUST
+  requirement: schema_contract_book_reference_profile_contract
+  description: 'Schema/contract/book references must stay synchronized to the stdlib profile contract.
+
+    '
+  rationale: Prevents documentation from drifting away from runtime truth.
+  risk_if_violated: Authors follow stale stdlib docs and produce invalid specs.
+  references:
+  - docs/spec/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md
+  - scripts/run_governance_specs.py
+- id: SPEC_LANG_STDLIB_CONFORMANCE_COVERAGE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: spec_lang.stdlib.conformance
+  norm: MUST
+  requirement: required_stdlib_conformance_fixtures_present
+  description: 'Canonical stdlib conformance fixture files must exist and remain discoverable.
+
+    '
+  rationale: Ensures stdlib contract remains executable as specs.
+  risk_if_violated: Profile claims coverage but runnable fixtures are missing.
+  references:
+  - docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md
+  - docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+  - docs/spec/conformance/cases/core/spec_lang_schema.spec.md

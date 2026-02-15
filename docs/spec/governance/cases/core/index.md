@@ -14,6 +14,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/conformance_case_index_sync.spec.md`
 - `/docs/spec/governance/cases/core/conformance_evaluate_first_ratio_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/conformance_extension_requires_capabilities.spec.md`
+- `/docs/spec/governance/cases/core/conformance_library_contract_cases_present.spec.md`
 - `/docs/spec/governance/cases/core/conformance_library_policy_usage_required.spec.md`
 - `/docs/spec/governance/cases/core/conformance_no_ambient_assumptions.spec.md`
 - `/docs/spec/governance/cases/core/conformance_no_runner_logic_outside_harness.spec.md`
@@ -106,6 +107,10 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/spec_domain_index_sync.spec.md`
 - `/docs/spec/governance/cases/core/spec_lang_adoption_metric.spec.md`
 - `/docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md`
 - `/docs/spec/governance/cases/core/spec_layout_domain_trees.spec.md`
 - `/docs/spec/governance/cases/core/spec_portability_metric.spec.md`
 - `/docs/spec/governance/cases/core/spec_portability_non_regression.spec.md`

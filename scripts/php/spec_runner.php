@@ -738,6 +738,253 @@ function specLangDeepEquals(mixed $left, mixed $right): bool {
     return $left === $right;
 }
 
+function specLangIsIntegerNumber(mixed $value): bool {
+    if (is_bool($value) || (!is_int($value) && !is_float($value))) {
+        return false;
+    }
+    if (is_int($value)) {
+        return true;
+    }
+    return floor($value) === $value;
+}
+
+function specLangIncludesDeep(array $seq, mixed $needle): bool {
+    foreach ($seq as $item) {
+        if (specLangDeepEquals($item, $needle)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function specLangDistinctDeep(array $seq): array {
+    $out = [];
+    foreach ($seq as $item) {
+        if (!specLangIncludesDeep($out, $item)) {
+            $out[] = $item;
+        }
+    }
+    return $out;
+}
+
+function specLangDeepMergeDicts(array $left, array $right): array {
+    $out = $left;
+    foreach ($right as $k => $v) {
+        if (
+            array_key_exists($k, $out)
+            && is_array($out[$k]) && !isListArray($out[$k])
+            && is_array($v) && !isListArray($v)
+        ) {
+            $out[$k] = specLangDeepMergeDicts($out[$k], $v);
+            continue;
+        }
+        $out[$k] = $v;
+    }
+    return $out;
+}
+
+function specLangGetInPath(mixed $obj, array $path): array {
+    $cur = $obj;
+    foreach ($path as $part) {
+        if (is_array($cur) && isListArray($cur)) {
+            if (!is_int($part) || $part < 0 || $part >= count($cur)) {
+                return [false, null];
+            }
+            $cur = $cur[$part];
+            continue;
+        }
+        if (is_array($cur) && !isListArray($cur)) {
+            $key = (string)$part;
+            if (!array_key_exists($key, $cur)) {
+                return [false, null];
+            }
+            $cur = $cur[$key];
+            continue;
+        }
+        return [false, null];
+    }
+    return [true, $cur];
+}
+
+function specLangSchemaTypeOk(mixed $value, string $expected): bool {
+    $kind = specLangNormalizeJsonTypeToken($expected);
+    return match ($kind) {
+        'null' => $value === null,
+        'bool' => is_bool($value),
+        'number' => (is_int($value) || is_float($value)) && !is_bool($value),
+        'integer' => specLangIsIntegerNumber($value),
+        'string' => is_string($value),
+        'list' => is_array($value) && isListArray($value),
+        'dict' => is_array($value) && !isListArray($value),
+        default => false,
+    };
+}
+
+function specLangSchemaValidate(mixed $value, mixed $schema, string $path, array &$out): void {
+    if (!is_array($schema) || isListArray($schema)) {
+        $out[] = "{$path}: schema must be dict";
+        return;
+    }
+    $allowed = [
+        'type', 'required', 'properties', 'allow_extra', 'items', 'min_items', 'max_items',
+        'min_length', 'max_length', 'pattern', 'const', 'enum', 'all_of', 'any_of', 'not',
+    ];
+    foreach ($schema as $k => $_v) {
+        if (!in_array((string)$k, $allowed, true)) {
+            $out[] = "{$path}: unknown schema key: {$k}";
+        }
+    }
+    if (array_key_exists('type', $schema)) {
+        $expected = (string)$schema['type'];
+        if (!specLangSchemaTypeOk($value, $expected)) {
+            $out[] = "{$path}: type mismatch expected {$expected}";
+            return;
+        }
+    }
+    if (array_key_exists('const', $schema) && !specLangDeepEquals($value, $schema['const'])) {
+        $out[] = "{$path}: const mismatch";
+    }
+    if (array_key_exists('enum', $schema)) {
+        $enum = $schema['enum'];
+        if (!is_array($enum) || !isListArray($enum)) {
+            $out[] = "{$path}: enum must be list";
+        } else {
+            $ok = false;
+            foreach ($enum as $item) {
+                if (specLangDeepEquals($value, $item)) {
+                    $ok = true;
+                    break;
+                }
+            }
+            if (!$ok) {
+                $out[] = "{$path}: enum mismatch";
+            }
+        }
+    }
+    if (is_string($value)) {
+        if (array_key_exists('min_length', $schema)) {
+            $minLen = $schema['min_length'];
+            if (!is_int($minLen)) {
+                $out[] = "{$path}: min_length must be int";
+            } elseif (strlen($value) < $minLen) {
+                $out[] = "{$path}: min_length";
+            }
+        }
+        if (array_key_exists('max_length', $schema)) {
+            $maxLen = $schema['max_length'];
+            if (!is_int($maxLen)) {
+                $out[] = "{$path}: max_length must be int";
+            } elseif (strlen($value) > $maxLen) {
+                $out[] = "{$path}: max_length";
+            }
+        }
+        if (array_key_exists('pattern', $schema)) {
+            $pattern = (string)$schema['pattern'];
+            $ok = @preg_match('/' . str_replace('/', '\\/', $pattern) . '/u', $value);
+            if ($ok === false) {
+                $out[] = "{$path}: invalid pattern";
+            } elseif ($ok !== 1) {
+                $out[] = "{$path}: pattern mismatch";
+            }
+        }
+    }
+    if (is_array($value) && isListArray($value)) {
+        if (array_key_exists('min_items', $schema)) {
+            $minItems = $schema['min_items'];
+            if (!is_int($minItems)) {
+                $out[] = "{$path}: min_items must be int";
+            } elseif (count($value) < $minItems) {
+                $out[] = "{$path}: min_items";
+            }
+        }
+        if (array_key_exists('max_items', $schema)) {
+            $maxItems = $schema['max_items'];
+            if (!is_int($maxItems)) {
+                $out[] = "{$path}: max_items must be int";
+            } elseif (count($value) > $maxItems) {
+                $out[] = "{$path}: max_items";
+            }
+        }
+        if (array_key_exists('items', $schema)) {
+            $itemSchema = $schema['items'];
+            foreach ($value as $idx => $item) {
+                specLangSchemaValidate($item, $itemSchema, "{$path}[{$idx}]", $out);
+            }
+        }
+    }
+    if (is_array($value) && !isListArray($value)) {
+        $required = $schema['required'] ?? [];
+        if (is_array($required) && isListArray($required)) {
+            foreach ($required as $rk) {
+                $key = (string)$rk;
+                if (!array_key_exists($key, $value)) {
+                    $out[] = "{$path}: missing required key {$key}";
+                }
+            }
+        } elseif (array_key_exists('required', $schema)) {
+            $out[] = "{$path}: required must be list";
+        }
+        $props = $schema['properties'] ?? [];
+        if (is_array($props) && !isListArray($props)) {
+            foreach ($props as $k => $subSchema) {
+                $key = (string)$k;
+                if (array_key_exists($key, $value)) {
+                    specLangSchemaValidate($value[$key], $subSchema, "{$path}.{$key}", $out);
+                }
+            }
+            $allowExtra = $schema['allow_extra'] ?? true;
+            if (!is_bool($allowExtra)) {
+                $out[] = "{$path}: allow_extra must be bool";
+            } elseif (!$allowExtra) {
+                foreach ($value as $k => $_v) {
+                    $key = (string)$k;
+                    if (!array_key_exists($key, $props)) {
+                        $out[] = "{$path}: unexpected key {$key}";
+                    }
+                }
+            }
+        } elseif (array_key_exists('properties', $schema)) {
+            $out[] = "{$path}: properties must be dict";
+        }
+    }
+    if (array_key_exists('all_of', $schema)) {
+        $allOf = $schema['all_of'];
+        if (!is_array($allOf) || !isListArray($allOf)) {
+            $out[] = "{$path}: all_of must be list";
+        } else {
+            foreach ($allOf as $child) {
+                specLangSchemaValidate($value, $child, $path, $out);
+            }
+        }
+    }
+    if (array_key_exists('any_of', $schema)) {
+        $anyOf = $schema['any_of'];
+        if (!is_array($anyOf) || !isListArray($anyOf)) {
+            $out[] = "{$path}: any_of must be list";
+        } else {
+            $matched = false;
+            foreach ($anyOf as $child) {
+                $tmp = [];
+                specLangSchemaValidate($value, $child, $path, $tmp);
+                if ($tmp === []) {
+                    $matched = true;
+                    break;
+                }
+            }
+            if (!$matched) {
+                $out[] = "{$path}: any_of mismatch";
+            }
+        }
+    }
+    if (array_key_exists('not', $schema)) {
+        $tmp = [];
+        specLangSchemaValidate($value, $schema['not'], $path, $tmp);
+        if ($tmp === []) {
+            $out[] = "{$path}: not mismatch";
+        }
+    }
+}
+
 function specLangRequireListArg(string $op, mixed $value): array {
     if (!is_array($value) || !isListArray($value)) {
         throw new SchemaError("spec_lang {$op} expects list");
@@ -753,17 +1000,17 @@ function specLangRequireDictArg(string $op, mixed $value): array {
 }
 
 function specLangRequireNumericArg(string $op, mixed $value): int|float {
-    if (!is_int($value) && !is_float($value)) {
+    if (is_bool($value) || (!is_int($value) && !is_float($value))) {
         throw new SchemaError("spec_lang {$op} expects numeric args");
     }
     return $value;
 }
 
 function specLangRequireIntArg(string $op, mixed $value): int {
-    if (!is_int($value)) {
+    if (!specLangIsIntegerNumber($value)) {
         throw new SchemaError("spec_lang {$op} expects integer args");
     }
-    return $value;
+    return (int)$value;
 }
 
 function specLangRoundHalfAwayFromZero(int|float $v): int {
@@ -860,6 +1107,7 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         || $op === 'is_bool'
         || $op === 'is_boolean'
         || $op === 'is_number'
+        || $op === 'is_integer'
         || $op === 'is_string'
         || $op === 'is_list'
         || $op === 'is_array'
@@ -880,6 +1128,10 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         if ($op === 'is_number') {
             return $jsonType === 'number';
         }
+        if ($op === 'is_integer') {
+            $value = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+            return specLangIsIntegerNumber($value);
+        }
         if ($op === 'is_string') {
             return $jsonType === 'string';
         }
@@ -894,7 +1146,7 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         return $jsonType === 'dict';
     }
-    if ($op === 'regex_match') {
+    if ($op === 'regex_match' || $op === 'matches') {
         specLangRequireArity($op, $args, 2);
         $subjectText = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
         $pattern = (string)specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
@@ -983,6 +1235,28 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         throw new SchemaError('spec_lang get expects dict or list');
     }
+    if ($op === 'get_in') {
+        specLangRequireArity($op, $args, 2);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        [$ok, $value] = specLangGetInPath($obj, $path);
+        return $ok ? $value : null;
+    }
+    if ($op === 'get_or') {
+        specLangRequireArity($op, $args, 3);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        $defaultValue = specLangEvalNonTail($args[2], $env, $subject, $limits, $state);
+        [$ok, $value] = specLangGetInPath($obj, $path);
+        return $ok ? $value : $defaultValue;
+    }
+    if ($op === 'has_path') {
+        specLangRequireArity($op, $args, 2);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        [$ok, $_value] = specLangGetInPath($obj, $path);
+        return $ok;
+    }
     if ($op === 'len' || $op === 'count') {
         specLangRequireArity($op, $args, 1);
         $value = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -993,6 +1267,30 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             return count($value);
         }
         throw new SchemaError('spec_lang len expects string/list/dict');
+    }
+    if ($op === 'first') {
+        specLangRequireArity($op, $args, 1);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        return count($seq) > 0 ? $seq[0] : null;
+    }
+    if ($op === 'rest') {
+        specLangRequireArity($op, $args, 1);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        return count($seq) > 1 ? array_slice($seq, 1) : [];
+    }
+    if ($op === 'last') {
+        specLangRequireArity($op, $args, 1);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        return count($seq) > 0 ? $seq[count($seq) - 1] : null;
+    }
+    if ($op === 'nth') {
+        specLangRequireArity($op, $args, 2);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $idx = specLangRequireIntArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        if ($idx < 0 || $idx >= count($seq)) {
+            return null;
+        }
+        return $seq[$idx];
     }
     if ($op === 'trim' || $op === 'lower' || $op === 'upper') {
         specLangRequireArity($op, $args, 1);
@@ -1005,6 +1303,25 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         return strtoupper($value);
     }
+    if ($op === 'split') {
+        if (count($args) === 1) {
+            $value = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+            $parts = preg_split('/\s+/', trim($value));
+            return $parts === false ? [] : array_values(array_filter($parts, static fn($x) => $x !== ''));
+        }
+        if (count($args) === 2) {
+            $value = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+            $sep = (string)specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+            return explode($sep, $value);
+        }
+        throw new SchemaError('spec_lang arity error for split');
+    }
+    if ($op === 'join') {
+        specLangRequireArity($op, $args, 2);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $sep = (string)specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        return implode($sep, array_map(static fn($x) => (string)$x, $seq));
+    }
     if ($op === 'json_parse') {
         specLangRequireArity($op, $args, 1);
         $raw = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -1015,6 +1332,17 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             return json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
             throw new SchemaError('spec_lang json_parse invalid JSON');
+        }
+    }
+    if ($op === 'json_stringify') {
+        specLangRequireArity($op, $args, 1);
+        try {
+            return json_encode(
+                specLangEvalNonTail($args[0], $env, $subject, $limits, $state),
+                JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            );
+        } catch (JsonException $e) {
+            throw new SchemaError('spec_lang json_stringify invalid value');
         }
     }
     if ($op === 'add' || $op === 'sub' || $op === 'mul' || $op === 'div' || $op === 'pow') {
@@ -1083,6 +1411,30 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         return $value >= $low && $value <= $high;
     }
+    if ($op === 'sum') {
+        specLangRequireArity($op, $args, 1);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $total = 0.0;
+        $sawFloat = false;
+        foreach ($seq as $item) {
+            if (!is_int($item) && !is_float($item)) {
+                throw new SchemaError('spec_lang sum expects numeric list values');
+            }
+            if (is_float($item)) {
+                $sawFloat = true;
+            }
+            $total += (float)$item;
+        }
+        return $sawFloat ? $total : (int)$total;
+    }
+    if ($op === 'min' || $op === 'max') {
+        specLangRequireArity($op, $args, 1);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        if ($seq === []) {
+            throw new SchemaError("spec_lang {$op} expects non-empty list");
+        }
+        return $op === 'min' ? min($seq) : max($seq);
+    }
     if ($op === 'compare') {
         specLangRequireArity($op, $args, 2);
         $left = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -1105,6 +1457,88 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         return $out;
     }
+    if ($op === 'any' || $op === 'all' || $op === 'none') {
+        specLangRequireArity($op, $args, 1);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $truthy = static fn($v) => (bool)$v;
+        if ($op === 'any') {
+            foreach ($seq as $item) {
+                if ($truthy($item)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if ($op === 'all') {
+            foreach ($seq as $item) {
+                if (!$truthy($item)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        foreach ($seq as $item) {
+            if ($truthy($item)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    if ($op === 'is_empty') {
+        specLangRequireArity($op, $args, 1);
+        $value = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (is_string($value)) {
+            return $value === '';
+        }
+        if (is_array($value)) {
+            return count($value) === 0;
+        }
+        throw new SchemaError('spec_lang is_empty expects list/dict/string');
+    }
+    if ($op === 'distinct') {
+        specLangRequireArity($op, $args, 1);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        return specLangDistinctDeep($seq);
+    }
+    if ($op === 'sort') {
+        specLangRequireArity($op, $args, 1);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        if ($seq === []) {
+            return [];
+        }
+        $firstType = gettype($seq[0]);
+        if (!in_array($firstType, ['string', 'integer', 'double', 'boolean'], true)) {
+            throw new SchemaError('spec_lang sort expects scalar list values');
+        }
+        foreach ($seq as $item) {
+            if (gettype($item) !== $firstType) {
+                throw new SchemaError('spec_lang sort expects homogeneous list element types');
+            }
+        }
+        $out = $seq;
+        sort($out);
+        return array_values($out);
+    }
+    if ($op === 'coalesce') {
+        specLangRequireMinArity($op, $args, 1);
+        foreach ($args as $arg) {
+            $value = specLangEvalNonTail($arg, $env, $subject, $limits, $state);
+            if ($value === null || (is_string($value) && $value === '')) {
+                continue;
+            }
+            return $value;
+        }
+        return null;
+    }
+    if ($op === 'default_to') {
+        specLangRequireArity($op, $args, 2);
+        $defaultValue = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $value = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if ($value === null || (is_string($value) && $value === '')) {
+            return $defaultValue;
+        }
+        return $value;
+    }
     if ($op === 'repeat') {
         specLangRequireArity($op, $args, 2);
         $value = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -1113,6 +1547,15 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             throw new SchemaError('spec_lang repeat expects non-negative count');
         }
         return array_fill(0, $count, $value);
+    }
+    if ($op === 'take' || $op === 'drop') {
+        specLangRequireArity($op, $args, 2);
+        $n = specLangRequireIntArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        if ($op === 'take') {
+            return array_slice($seq, 0, max($n, 0));
+        }
+        return array_slice($seq, max($n, 0));
     }
     if ($op === 'slice') {
         specLangRequireArity($op, $args, 3);
@@ -1125,6 +1568,22 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         specLangRequireArity($op, $args, 1);
         return array_values(array_reverse(specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state))));
     }
+    if ($op === 'flatten') {
+        specLangRequireArity($op, $args, 1);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $out = [];
+        $flatten = static function(array $xs, array &$acc) use (&$flatten): void {
+            foreach ($xs as $item) {
+                if (is_array($item) && isListArray($item)) {
+                    $flatten($item, $acc);
+                } else {
+                    $acc[] = $item;
+                }
+            }
+        };
+        $flatten($seq, $out);
+        return $out;
+    }
     if ($op === 'zip') {
         specLangRequireArity($op, $args, 2);
         $left = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
@@ -1136,12 +1595,134 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         return $out;
     }
+    if ($op === 'concat') {
+        specLangRequireArity($op, $args, 2);
+        $left = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $right = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        return array_values(array_merge($left, $right));
+    }
+    if ($op === 'append') {
+        specLangRequireArity($op, $args, 2);
+        $value = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        $seq[] = $value;
+        return array_values($seq);
+    }
+    if ($op === 'prepend') {
+        specLangRequireArity($op, $args, 2);
+        $value = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        array_unshift($seq, $value);
+        return array_values($seq);
+    }
+    if ($op === 'union' || $op === 'intersection' || $op === 'difference' || $op === 'symmetric_difference') {
+        specLangRequireArity($op, $args, 2);
+        $left = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $right = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        if ($op === 'union') {
+            return specLangDistinctDeep(array_values(array_merge($left, $right)));
+        }
+        if ($op === 'intersection') {
+            $out = [];
+            foreach ($left as $item) {
+                if (specLangIncludesDeep($right, $item) && !specLangIncludesDeep($out, $item)) {
+                    $out[] = $item;
+                }
+            }
+            return $out;
+        }
+        if ($op === 'difference') {
+            $out = [];
+            foreach ($left as $item) {
+                if (!specLangIncludesDeep($right, $item) && !specLangIncludesDeep($out, $item)) {
+                    $out[] = $item;
+                }
+            }
+            return $out;
+        }
+        $out = [];
+        foreach ($left as $item) {
+            if (!specLangIncludesDeep($right, $item) && !specLangIncludesDeep($out, $item)) {
+                $out[] = $item;
+            }
+        }
+        foreach ($right as $item) {
+            if (!specLangIncludesDeep($left, $item) && !specLangIncludesDeep($out, $item)) {
+                $out[] = $item;
+            }
+        }
+        return $out;
+    }
+    if ($op === 'set_equals' || $op === 'is_subset' || $op === 'is_superset') {
+        specLangRequireArity($op, $args, 2);
+        $left = specLangDistinctDeep(specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state)));
+        $right = specLangDistinctDeep(specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state)));
+        if ($op === 'set_equals') {
+            if (count($left) !== count($right)) {
+                return false;
+            }
+            foreach ($left as $item) {
+                if (!specLangIncludesDeep($right, $item)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        if ($op === 'is_subset') {
+            foreach ($left as $item) {
+                if (!specLangIncludesDeep($right, $item)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        foreach ($right as $item) {
+            if (!specLangIncludesDeep($left, $item)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    if ($op === 'contains_all' || $op === 'contains_any') {
+        specLangRequireArity($op, $args, 2);
+        $container = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $needles = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        if ($op === 'contains_all') {
+            foreach ($needles as $item) {
+                if (!specLangIncludesDeep($container, $item)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        foreach ($needles as $item) {
+            if (specLangIncludesDeep($container, $item)) {
+                return true;
+            }
+        }
+        return false;
+    }
     if ($op === 'replace') {
         specLangRequireArity($op, $args, 3);
         $text = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
         $old = (string)specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
         $new = (string)specLangEvalNonTail($args[2], $env, $subject, $limits, $state);
         return str_replace($old, $new, $text);
+    }
+    if ($op === 'matches_all') {
+        specLangRequireArity($op, $args, 2);
+        $hay = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $patterns = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        foreach ($patterns as $pattern) {
+            $ok = @preg_match('/' . str_replace('/', '\\/', (string)$pattern) . '/u', $hay);
+            if ($ok === false) {
+                throw new SchemaError("invalid regex pattern: {$pattern}");
+            }
+            if ($ok !== 1) {
+                return false;
+            }
+        }
+        return true;
     }
     if ($op === 'pad_left' || $op === 'pad_right') {
         specLangRequireArity($op, $args, 3);
@@ -1187,11 +1768,31 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         return $out;
     }
+    if ($op === 'pluck') {
+        specLangRequireArity($op, $args, 2);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $key = (string)specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        $out = [];
+        foreach ($seq as $item) {
+            if (is_array($item) && !isListArray($item)) {
+                $out[] = $item[$key] ?? null;
+            } else {
+                $out[] = null;
+            }
+        }
+        return $out;
+    }
     if ($op === 'merge') {
         specLangRequireArity($op, $args, 2);
         $left = specLangRequireDictArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
         $right = specLangRequireDictArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
         return array_merge($left, $right);
+    }
+    if ($op === 'merge_deep') {
+        specLangRequireArity($op, $args, 2);
+        $left = specLangRequireDictArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $right = specLangRequireDictArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        return specLangDeepMergeDicts($left, $right);
     }
     if ($op === 'assoc') {
         specLangRequireArity($op, $args, 3);
@@ -1225,6 +1826,27 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         return $out;
     }
+    if ($op === 'keys_exact' || $op === 'keys_include' || $op === 'keys_exclude') {
+        specLangRequireArity($op, $args, 2);
+        $obj = specLangRequireDictArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $keys = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        $objSet = [];
+        foreach (array_keys($obj) as $k) {
+            $objSet[(string)$k] = true;
+        }
+        $otherSet = [];
+        foreach ($keys as $k) {
+            $otherSet[(string)$k] = true;
+        }
+        if ($op === 'keys_exact') {
+            return count(array_diff_key($objSet, $otherSet)) === 0
+                && count(array_diff_key($otherSet, $objSet)) === 0;
+        }
+        if ($op === 'keys_include') {
+            return count(array_diff_key($otherSet, $objSet)) === 0;
+        }
+        return count(array_intersect_key($objSet, $otherSet)) === 0;
+    }
     if ($op === 'prop_eq') {
         specLangRequireArity($op, $args, 3);
         $key = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -1232,6 +1854,132 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         $obj = specLangRequireDictArg($op, specLangEvalNonTail($args[2], $env, $subject, $limits, $state));
         $actual = $obj[$key] ?? null;
         return specLangDeepEquals($actual, $expected);
+    }
+    if ($op === 'map' || $op === 'filter' || $op === 'reject' || $op === 'find' || $op === 'partition' || $op === 'group_by' || $op === 'uniq_by') {
+        specLangRequireArity($op, $args, 2);
+        $fn = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!specLangIsClosure($fn)) {
+            throw new SchemaError("spec_lang {$op} expects fn closure");
+        }
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        $params = $fn['params'];
+        if (count($params) !== 1) {
+            throw new SchemaError("spec_lang {$op} closure must accept one argument");
+        }
+        $applyOne = static function(mixed $item) use ($fn, $subject, $limits, &$state, $params): mixed {
+            $vars = [(string)$params[0] => $item];
+            return specLangEvalTail($fn['body'], new SpecLangEnv($vars, $fn['env']), $subject, $limits, $state);
+        };
+        if ($op === 'map') {
+            $out = [];
+            foreach ($seq as $item) {
+                $out[] = $applyOne($item);
+            }
+            return $out;
+        }
+        if ($op === 'filter') {
+            $out = [];
+            foreach ($seq as $item) {
+                if ((bool)$applyOne($item)) {
+                    $out[] = $item;
+                }
+            }
+            return $out;
+        }
+        if ($op === 'reject') {
+            $out = [];
+            foreach ($seq as $item) {
+                if (!((bool)$applyOne($item))) {
+                    $out[] = $item;
+                }
+            }
+            return $out;
+        }
+        if ($op === 'find') {
+            foreach ($seq as $item) {
+                if ((bool)$applyOne($item)) {
+                    return $item;
+                }
+            }
+            return null;
+        }
+        if ($op === 'partition') {
+            $yes = [];
+            $no = [];
+            foreach ($seq as $item) {
+                if ((bool)$applyOne($item)) {
+                    $yes[] = $item;
+                } else {
+                    $no[] = $item;
+                }
+            }
+            return [$yes, $no];
+        }
+        if ($op === 'group_by') {
+            $grouped = [];
+            foreach ($seq as $item) {
+                $key = (string)$applyOne($item);
+                if (!array_key_exists($key, $grouped)) {
+                    $grouped[$key] = [];
+                }
+                $grouped[$key][] = $item;
+            }
+            return $grouped;
+        }
+        $out = [];
+        $seen = [];
+        foreach ($seq as $item) {
+            $marker = $applyOne($item);
+            if (!specLangIncludesDeep($seen, $marker)) {
+                $seen[] = $marker;
+                $out[] = $item;
+            }
+        }
+        return $out;
+    }
+    if ($op === 'reduce') {
+        specLangRequireArity($op, $args, 3);
+        $fn = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!specLangIsClosure($fn)) {
+            throw new SchemaError('spec_lang reduce expects fn closure');
+        }
+        $params = $fn['params'];
+        if (count($params) !== 2) {
+            throw new SchemaError('spec_lang reduce closure must accept two arguments');
+        }
+        $acc = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[2], $env, $subject, $limits, $state));
+        foreach ($seq as $item) {
+            $vars = [(string)$params[0] => $acc, (string)$params[1] => $item];
+            $acc = specLangEvalTail($fn['body'], new SpecLangEnv($vars, $fn['env']), $subject, $limits, $state);
+        }
+        return $acc;
+    }
+    if ($op === 'sort_by') {
+        specLangRequireArity($op, $args, 2);
+        $seq = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $key = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        $out = array_values($seq);
+        usort($out, function($a, $b) use ($key, $subject, $limits, &$state): int {
+            if (is_string($key)) {
+                $ka = is_array($a) && !isListArray($a) ? (string)($a[$key] ?? '') : (string)$a;
+                $kb = is_array($b) && !isListArray($b) ? (string)($b[$key] ?? '') : (string)$b;
+                return $ka <=> $kb;
+            }
+            if (!specLangIsClosure($key)) {
+                throw new SchemaError('spec_lang sort_by expects string key or fn closure');
+            }
+            $params = $key['params'];
+            if (count($params) !== 1) {
+                throw new SchemaError('spec_lang sort_by closure must accept one argument');
+            }
+            $varA = [(string)$params[0] => $a];
+            $varB = [(string)$params[0] => $b];
+            $ka = specLangEvalTail($key['body'], new SpecLangEnv($varA, $key['env']), $subject, $limits, $state);
+            $kb = specLangEvalTail($key['body'], new SpecLangEnv($varB, $key['env']), $subject, $limits, $state);
+            return ($ka <=> $kb);
+        });
+        return $out;
     }
     if ($op === 'where') {
         specLangRequireArity($op, $args, 2);
@@ -1296,6 +2044,14 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             $out[] = specLangEvalTail($fn['body'], new SpecLangEnv($vars, $fn['env']), $subject, $limits, $state);
         }
         return $out;
+    }
+    if ($op === 'schema_match' || $op === 'schema_errors') {
+        specLangRequireArity($op, $args, 2);
+        $value = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $schema = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        $errs = [];
+        specLangSchemaValidate($value, $schema, '$', $errs);
+        return $op === 'schema_match' ? ($errs === []) : $errs;
     }
     throw new SchemaError("unsupported spec_lang symbol: {$op}");
 }
