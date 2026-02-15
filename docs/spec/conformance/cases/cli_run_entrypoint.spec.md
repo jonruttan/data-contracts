@@ -41,24 +41,20 @@ title: explicit entrypoint is used even if env fallback var is set
 purpose: Prevents env fallback from overriding an explicitly declared harness entrypoint.
 type: cli.run
 requires:
-  capabilities: ["cli.run"]
+  capabilities: [cli.run]
   when_missing: skip
 expect:
-  portable:
-    status: pass
-    category: null
+  portable: {status: pass, category: null}
   impl:
-    php:
-      status: skip
-      category: null
-argv: ["--json"]
+    php: {status: skip, category: null}
+argv: [--json]
 exit_code: 0
 harness:
   entrypoint: spec_runner.conformance_fixtures:main
-  env:
-    SPEC_RUNNER_ENTRYPOINT: does.not.exist:main
+  env: {SPEC_RUNNER_ENTRYPOINT: 'does.not.exist:main'}
 assert:
   - target: stdout
     must:
-      - contain: ['"ok": true']
+      - evaluate:
+          - ["contains", ["subject"], "\"ok\": true"]
 ```
