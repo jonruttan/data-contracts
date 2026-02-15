@@ -24,6 +24,8 @@ Purpose lint policy:
 
 Conformance cases using `evaluate` SHOULD keep spec-lang expressions in
 operator-keyed mapping AST form for readability and deterministic review diffs.
+Prefer condensed inline args for short expressions (for example
+`eq: [{add: [1, 2]}, 3]`) while preserving mapping-AST semantics.
 
 Use tooling to enforce/normalize:
 

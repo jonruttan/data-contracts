@@ -18,8 +18,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
-      - 'version: 1'
+    - {contains: ['version: 1']}
 ```
 
 ## SRCONF-EXPR-002
@@ -41,11 +40,8 @@ assert:
   must:
   - evaluate:
     - and:
-      - contains:
-        - version
-      - starts_with:
-        - subject: []
-        - '#'
+      - {contains: [version]}
+      - {starts_with: [{subject: []}, '#']}
 ```
 
 ## SRCONF-EXPR-003
@@ -69,36 +65,9 @@ assert:
   must:
   - evaluate:
     - let:
-      - lit:
-        - - loop
-          - fn:
-            - lit:
-              - n
-              - acc
-            - if:
-              - eq:
-                - var:
-                  - n
-                - 0
-              - var:
-                - acc
-              - call:
-                - var:
-                  - loop
-                - sub:
-                  - var:
-                    - n
-                  - 1
-                - add:
-                  - var:
-                    - acc
-                  - 1
+      - {lit: [[loop, {fn: [{lit: [n, acc]}, {if: [{eq: [{var: [n]}, 0]}, {var: [acc]}, {call: [{var: [loop]}, {sub: [{var: [n]}, 1]}, {add: [{var: [acc]}, 1]}]}]}]}]]}
       - eq:
-        - call:
-          - var:
-            - loop
-          - 1500
-          - 0
+        - {call: [{var: [loop]}, 1500, 0]}
         - 1500
 ```
 
@@ -122,9 +91,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - starts_with:
-      - subject: []
-      - NOPE_PREFIX
+    - {starts_with: [{subject: []}, NOPE_PREFIX]}
 ```
 
 ## SRCONF-EXPR-005
@@ -170,8 +137,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - unknown_symbol:
-      - 1
+    - {unknown_symbol: [1]}
 ```
 
 ## SRCONF-EXPR-007
@@ -198,28 +164,8 @@ assert:
   must:
   - evaluate:
     - let:
-      - lit:
-        - - loop
-          - fn:
-            - lit:
-              - n
-            - if:
-              - eq:
-                - var:
-                  - n
-                - 0
-              - true
-              - call:
-                - var:
-                  - loop
-                - sub:
-                  - var:
-                    - n
-                  - 1
-      - call:
-        - var:
-          - loop
-        - 1000
+      - {lit: [[loop, {fn: [{lit: [n]}, {if: [{eq: [{var: [n]}, 0]}, true, {call: [{var: [loop]}, {sub: [{var: [n]}, 1]}]}]}]}]]}
+      - {call: [{var: [loop]}, 1000]}
 ```
 
 ## SRCONF-EXPR-008
@@ -242,9 +188,7 @@ assert:
   - contain:
     - 'version: 1'
   - evaluate:
-    - contains:
-      - subject: []
-      - 'version: 1'
+    - {contains: [{subject: []}, 'version: 1']}
 ```
 
 ## SRCONF-EXPR-009
@@ -271,13 +215,8 @@ assert:
   must:
   - evaluate:
     - eq:
-      - intersection:
-        - json_parse:
-          - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
-        - json_parse:
-          - '[{"k":2},{"k":4},{"k":1}]'
-      - json_parse:
-        - '[{"k":1},{"k":2}]'
+      - {intersection: [{json_parse: ['[{"k":1},{"k":2},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":2},{"k":4},{"k":1}]']}]}
+      - {json_parse: ['[{"k":1},{"k":2}]']}
 ```
 
 ## SRCONF-EXPR-010
@@ -304,13 +243,8 @@ assert:
   must:
   - evaluate:
     - eq:
-      - union:
-        - json_parse:
-          - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
-        - json_parse:
-          - '[{"k":2},{"k":4},{"k":1}]'
-      - json_parse:
-        - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
+      - {union: [{json_parse: ['[{"k":1},{"k":2},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":2},{"k":4},{"k":1}]']}]}
+      - {json_parse: ['[{"k":1},{"k":2},{"k":3},{"k":4}]']}
 ```
 
 ## SRCONF-EXPR-011
@@ -338,21 +272,11 @@ assert:
   - evaluate:
     - and:
       - eq:
-        - difference:
-          - json_parse:
-            - '[{"k":1},{"k":2},{"k":3}]'
-          - json_parse:
-            - '[{"k":2},{"k":4}]'
-        - json_parse:
-          - '[{"k":1},{"k":3}]'
+        - {difference: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":2},{"k":4}]']}]}
+        - {json_parse: ['[{"k":1},{"k":3}]']}
       - eq:
-        - symmetric_difference:
-          - json_parse:
-            - '[{"k":1},{"k":2},{"k":3}]'
-          - json_parse:
-            - '[{"k":2},{"k":4}]'
-        - json_parse:
-          - '[{"k":1},{"k":3},{"k":4}]'
+        - {symmetric_difference: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":2},{"k":4}]']}]}
+        - {json_parse: ['[{"k":1},{"k":3},{"k":4}]']}
 ```
 
 ## SRCONF-EXPR-012
@@ -379,26 +303,10 @@ assert:
   must:
   - evaluate:
     - and:
-      - set_equals:
-        - json_parse:
-          - '[{"k":1},{"k":2},{"k":3}]'
-        - json_parse:
-          - '[{"k":3},{"k":1},{"k":2}]'
-      - is_subset:
-        - json_parse:
-          - '[{"k":1},{"k":2}]'
-        - json_parse:
-          - '[{"k":1},{"k":2},{"k":3}]'
-      - is_superset:
-        - json_parse:
-          - '[{"k":1},{"k":2},{"k":3}]'
-        - json_parse:
-          - '[{"k":1},{"k":3}]'
-      - includes:
-        - json_parse:
-          - '[{"k":1},{"k":2},{"k":3}]'
-        - json_parse:
-          - '{"k":2}'
+      - {set_equals: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":3},{"k":1},{"k":2}]']}]}
+      - {is_subset: [{json_parse: ['[{"k":1},{"k":2}]']}, {json_parse: ['[{"k":1},{"k":2},{"k":3}]']}]}
+      - {is_superset: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":1},{"k":3}]']}]}
+      - {includes: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['{"k":2}']}]}
 ```
 
 ## SRCONF-EXPR-013
@@ -427,24 +335,14 @@ assert:
     - and:
       - eq:
         - map:
-          - call:
-            - var:
-              - add
-            - 10
-          - json_parse:
-            - '[1,2,3]'
-        - json_parse:
-          - '[11,12,13]'
+          - {call: [{var: [add]}, 10]}
+          - {json_parse: ['[1,2,3]']}
+        - {json_parse: ['[11,12,13]']}
       - eq:
         - filter:
-          - call:
-            - var:
-              - lt
-            - 3
-          - json_parse:
-            - '[1,2,3,4,5]'
-        - json_parse:
-          - '[4,5]'
+          - {call: [{var: [lt]}, 3]}
+          - {json_parse: ['[1,2,3,4,5]']}
+        - {json_parse: ['[4,5]']}
 ```
 
 ## SRCONF-EXPR-014
@@ -472,69 +370,40 @@ assert:
   - evaluate:
     - and:
       - eq:
-        - reduce:
-          - var:
-            - add
-          - 0
-          - json_parse:
-            - '[1,2,3,4]'
+        - {reduce: [{var: [add]}, 0, {json_parse: ['[1,2,3,4]']}]}
         - 10
       - eq:
         - reject:
-          - call:
-            - var:
-              - lt
-            - 2
-          - json_parse:
-            - '[1,2,3,4]'
-        - json_parse:
-          - '[1,2]'
+          - {call: [{var: [lt]}, 2]}
+          - {json_parse: ['[1,2,3,4]']}
+        - {json_parse: ['[1,2]']}
       - eq:
         - find:
-          - call:
-            - var:
-              - lt
-            - 3
-          - json_parse:
-            - '[1,2,3,4]'
+          - {call: [{var: [lt]}, 3]}
+          - {json_parse: ['[1,2,3,4]']}
         - 4
       - eq:
         - partition:
-          - call:
-            - var:
-              - lt
-            - 2
-          - json_parse:
-            - '[1,2,3,4]'
-        - json_parse:
-          - '[[3,4],[1,2]]'
+          - {call: [{var: [lt]}, 2]}
+          - {json_parse: ['[1,2,3,4]']}
+        - {json_parse: ['[[3,4],[1,2]]']}
       - eq:
         - group_by:
           - fn:
-            - x: []
+            - {x: []}
             - if:
-              - gt:
-                - var:
-                  - x
-                - 2
+              - {gt: [{var: [x]}, 2]}
               - hi
               - lo
-          - json_parse:
-            - '[1,2,3,4]'
-        - json_parse:
-          - '{"lo":[1,2],"hi":[3,4]}'
+          - {json_parse: ['[1,2,3,4]']}
+        - {json_parse: ['{"lo":[1,2],"hi":[3,4]}']}
       - eq:
         - uniq_by:
           - fn:
-            - x: []
-            - get:
-              - var:
-                - x
-              - k
-          - json_parse:
-            - '[{"k":1},{"k":1},{"k":2}]'
-        - json_parse:
-          - '[{"k":1},{"k":2}]'
+            - {x: []}
+            - {get: [{var: [x]}, k]}
+          - {json_parse: ['[{"k":1},{"k":1},{"k":2}]']}
+        - {json_parse: ['[{"k":1},{"k":2}]']}
 ```
 
 ## SRCONF-EXPR-015
@@ -562,47 +431,23 @@ assert:
   - evaluate:
     - and:
       - eq:
-        - flatten:
-          - json_parse:
-            - '[1,[2,[3],[]],4]'
-        - json_parse:
-          - '[1,2,3,4]'
+        - {flatten: [{json_parse: ['[1,[2,[3],[]],4]']}]}
+        - {json_parse: ['[1,2,3,4]']}
       - eq:
-        - concat:
-          - json_parse:
-            - '[1,2]'
-          - json_parse:
-            - '[3]'
-        - json_parse:
-          - '[1,2,3]'
+        - {concat: [{json_parse: ['[1,2]']}, {json_parse: ['[3]']}]}
+        - {json_parse: ['[1,2,3]']}
       - eq:
-        - append:
-          - 3
-          - json_parse:
-            - '[1,2]'
-        - json_parse:
-          - '[1,2,3]'
+        - {append: [3, {json_parse: ['[1,2]']}]}
+        - {json_parse: ['[1,2,3]']}
       - eq:
-        - prepend:
-          - 0
-          - json_parse:
-            - '[1,2]'
-        - json_parse:
-          - '[0,1,2]'
+        - {prepend: [0, {json_parse: ['[1,2]']}]}
+        - {json_parse: ['[0,1,2]']}
       - eq:
-        - take:
-          - 2
-          - json_parse:
-            - '[1,2,3]'
-        - json_parse:
-          - '[1,2]'
+        - {take: [2, {json_parse: ['[1,2,3]']}]}
+        - {json_parse: ['[1,2]']}
       - eq:
-        - drop:
-          - 2
-          - json_parse:
-            - '[1,2,3]'
-        - json_parse:
-          - '[3]'
+        - {drop: [2, {json_parse: ['[1,2,3]']}]}
+        - {json_parse: ['[3]']}
 ```
 
 ## SRCONF-EXPR-016
@@ -630,10 +475,7 @@ assert:
   - evaluate:
     - eq:
       - call:
-        - call:
-          - var:
-            - add
-          - 2
+        - {call: [{var: [add]}, 2]}
         - 3
       - 5
 ```
@@ -664,10 +506,7 @@ assert:
   must:
   - evaluate:
     - call:
-      - call:
-        - var:
-          - add
-        - 1
+      - {call: [{var: [add]}, 1]}
       - 2
       - 3
 ```
@@ -697,8 +536,155 @@ assert:
 - target: text
   must:
   - evaluate:
-    - intersection:
-      - not-a-list
-      - json_parse:
-        - '[]'
+    - {intersection: [not-a-list, {json_parse: ['[]']}]}
+```
+
+## SRCONF-EXPR-019
+
+```yaml spec-test
+id: SRCONF-EXPR-019
+title: evaluate ramda v2 arithmetic and list utilities behave deterministically
+purpose: Verifies expanded numeric and list utility forms remain pure, strict-typed, and deterministic.
+type: text.file
+requires:
+  capabilities:
+  - evaluate.spec_lang.ramda.v2
+  when_missing: skip
+expect:
+  portable:
+    status: skip
+    category: null
+  impl:
+    python:
+      status: pass
+      category: null
+assert:
+- target: text
+  must:
+  - evaluate:
+    - and:
+      - {eq: [{mul: [3, 4]}, 12]}
+      - {eq: [{div: [9, 2]}, 4.5]}
+      - {eq: [{mod: [9, 4]}, 1]}
+      - {eq: [{pow: [2, 5]}, 32]}
+      - {eq: [{clamp: [1, 5, 9]}, 5]}
+      - {eq: [{round: [2.5]}, 3]}
+      - eq:
+        - {slice: [1, 3, {json_parse: ['[0,1,2,3]']}]}
+        - {json_parse: ['[1,2]']}
+      - eq:
+        - {reverse: [{json_parse: ['[1,2,3]']}]}
+        - {json_parse: ['[3,2,1]']}
+      - eq:
+        - {zip: [{json_parse: ['[1,2,3]']}, {json_parse: ['[4,5]']}]}
+        - {json_parse: ['[[1,4],[2,5]]']}
+      - eq:
+        - {zip_with: [{var: [add]}, {json_parse: ['[1,2,3]']}, {json_parse: ['[4,5,6]']}]}
+        - {json_parse: ['[5,7,9]']}
+      - {eq: [{range: [2, 5]}, {json_parse: ['[2,3,4]']}]}
+      - {eq: [{repeat: [x, 3]}, {json_parse: ['["x","x","x"]']}]}
+      - {is_null: [null]}
+      - {is_bool: [true]}
+      - {is_number: [3.14]}
+      - {is_string: [x]}
+      - {is_list: [{json_parse: ['[1,2]']}]}
+      - {is_dict: [{json_parse: ['{"a":1}']}]}
+```
+
+## SRCONF-EXPR-020
+
+```yaml spec-test
+id: SRCONF-EXPR-020
+title: evaluate ramda v2 object utilities
+purpose: Verifies expanded object helpers keep deterministic dictionary semantics.
+type: text.file
+requires:
+  capabilities:
+  - evaluate.spec_lang.ramda.v2
+  when_missing: skip
+expect:
+  portable:
+    status: skip
+    category: null
+  impl:
+    python:
+      status: pass
+      category: null
+assert:
+- target: text
+  must:
+  - evaluate:
+    - and:
+      - eq:
+        - {keys: [{json_parse: ['{"a":1,"b":2}']}]}
+        - {json_parse: ['["a","b"]']}
+      - eq:
+        - {values: [{json_parse: ['{"a":1,"b":2}']}]}
+        - {json_parse: ['[1,2]']}
+      - eq:
+        - {entries: [{json_parse: ['{"a":1}']}]}
+        - {json_parse: ['[["a",1]]']}
+      - eq:
+        - {merge: [{json_parse: ['{"a":1}']}, {json_parse: ['{"b":2}']}]}
+        - {json_parse: ['{"a":1,"b":2}']}
+      - eq:
+        - {assoc: [b, 2, {json_parse: ['{"a":1}']}]}
+        - {json_parse: ['{"a":1,"b":2}']}
+      - eq:
+        - {dissoc: [a, {json_parse: ['{"a":1,"b":2}']}]}
+        - {json_parse: ['{"b":2}']}
+      - eq:
+        - {pick: [{json_parse: ['["a"]']}, {json_parse: ['{"a":1,"b":2}']}]}
+        - {json_parse: ['{"a":1}']}
+      - eq:
+        - {omit: [{json_parse: ['["a"]']}, {json_parse: ['{"a":1,"b":2}']}]}
+        - {json_parse: ['{"b":2}']}
+      - {prop_eq: [a, 1, {json_parse: ['{"a":1}']}]}
+      - {where: [{json_parse: ['{"a":1}']}, {json_parse: ['{"a":1,"b":2}']}]}
+```
+
+## SRCONF-EXPR-021
+
+```yaml spec-test
+id: SRCONF-EXPR-021
+title: evaluate ramda v2 combinators and string helpers
+purpose: Verifies compose/pipe, constant-function behavior, and string transforms are deterministic.
+type: text.file
+requires:
+  capabilities:
+  - evaluate.spec_lang.ramda.v2
+  when_missing: skip
+expect:
+  portable:
+    status: skip
+    category: null
+  impl:
+    python:
+      status: pass
+      category: null
+assert:
+- target: text
+  must:
+  - evaluate:
+    - and:
+      - eq:
+        - compose:
+          - {call: [{var: [add]}, 1]}
+          - {call: [{var: [mul]}, 2]}
+          - 3
+        - 7
+      - eq:
+        - pipe:
+          - {call: [{var: [mul]}, 2]}
+          - {call: [{var: [add]}, 1]}
+          - 3
+        - 7
+      - eq:
+        - call:
+          - {call: [{var: [always]}, k]}
+          - 999
+        - k
+      - {eq: [{replace: [a-b-c, '-', ':']}, 'a:b:c']}
+      - {eq: [{pad_left: ['7', 3, '0']}, '007']}
+      - {eq: [{pad_right: ['7', 3, '0']}, '700']}
 ```

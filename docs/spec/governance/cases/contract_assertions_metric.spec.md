@@ -18,40 +18,26 @@ harness:
     - docs/spec/contract/03b_spec_lang_v1.md
     policy_evaluate:
     - and:
+      - {has_key: [{subject: []}, summary]}
+      - {has_key: [{subject: []}, segments]}
       - has_key:
-        - subject: []
-        - summary
-      - has_key:
-        - subject: []
-        - segments
-      - has_key:
-        - get:
-          - subject: []
-          - summary
+        - {get: [{subject: []}, summary]}
         - overall_contract_assertions_ratio
   policy_evaluate:
   - is_empty:
-    - get:
-      - subject: []
-      - violations
+    - {get: [{subject: []}, violations]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
-      - subject: []
-      - 0
+    - {eq: [{subject: []}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - get:
-        - subject: []
-        - passed
+      - {get: [{subject: []}, passed]}
       - true
     - eq:
-      - get:
-        - subject: []
-        - check_id
+      - {get: [{subject: []}, check_id]}
       - spec.contract_assertions_metric
 ```

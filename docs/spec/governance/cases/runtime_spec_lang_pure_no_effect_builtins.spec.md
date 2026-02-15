@@ -19,27 +19,19 @@ harness:
     - path_exists
   policy_evaluate:
   - is_empty:
-    - get:
-      - subject: []
-      - violations
+    - {get: [{subject: []}, violations]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
-      - subject: []
-      - 0
+    - {eq: [{subject: []}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - get:
-        - subject: []
-        - passed
+      - {get: [{subject: []}, passed]}
       - true
     - eq:
-      - get:
-        - subject: []
-        - check_id
+      - {get: [{subject: []}, check_id]}
       - runtime.spec_lang_pure_no_effect_builtins
 ```

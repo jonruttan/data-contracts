@@ -41,6 +41,14 @@ Notes:
   (`reduce`, `reject`, `find`, `partition`, `group_by`, `uniq_by`, `flatten`,
   `concat`, `append`, `prepend`, `take`, `drop`), and automatic builtin
   currying by arity.
+- Spec-lang full-suite now adds strict numeric math (`mul`, `div`, `mod`,
+  `pow`, `abs`, `negate`, `inc`, `dec`, `clamp`, `round`, `floor`, `ceil`),
+  additional list/object utilities (`slice`, `reverse`, `zip`, `zip_with`,
+  `range`, `repeat`, `keys`, `values`, `entries`, `merge`, `assoc`, `dissoc`,
+  `pick`, `omit`), and compositional helpers (`prop_eq`, `where`, `compose`,
+  `pipe`, `identity`, `always`, `replace`, `pad_left`, `pad_right`) with
+  explicit JSON-type predicates (`is_null`, `is_bool`, `is_number`,
+  `is_string`, `is_list`, `is_dict`).
 - Docs quality v2 adds schema-backed `doc-meta`, manifest-driven reference
   generation, and governance checks for docs token ownership/dependencies and
   generated artifact freshness.

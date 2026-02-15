@@ -13,27 +13,19 @@ harness:
   python_dependency: {}
   policy_evaluate:
   - is_empty:
-    - get:
-      - subject: []
-      - violations
+    - {get: [{subject: []}, violations]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
-      - subject: []
-      - 0
+    - {eq: [{subject: []}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - get:
-        - subject: []
-        - passed
+      - {get: [{subject: []}, passed]}
       - true
     - eq:
-      - get:
-        - subject: []
-        - check_id
+      - {get: [{subject: []}, check_id]}
       - runtime.non_python_lane_no_python_exec
 ```

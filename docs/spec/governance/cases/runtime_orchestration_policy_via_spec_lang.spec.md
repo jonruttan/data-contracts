@@ -27,38 +27,27 @@ harness:
       - count:
         - filter:
           - fn:
-            - step: []
+            - {step: []}
             - neq:
-              - get:
-                - var:
-                  - step
-                - status
+              - {get: [{var: [step]}, status]}
               - pass
-          - subject: []
+          - {subject: []}
       - 0
   policy_evaluate:
   - is_empty:
-    - get:
-      - subject: []
-      - violations
+    - {get: [{subject: []}, violations]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
-      - subject: []
-      - 0
+    - {eq: [{subject: []}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - get:
-        - subject: []
-        - passed
+      - {get: [{subject: []}, passed]}
       - true
     - eq:
-      - get:
-        - subject: []
-        - check_id
+      - {get: [{subject: []}, check_id]}
       - runtime.orchestration_policy_via_spec_lang
 ```

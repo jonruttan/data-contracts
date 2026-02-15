@@ -42,46 +42,28 @@ harness:
     enforce: false
     policy_evaluate:
     - and:
+      - {json_type: [{subject: []}, dict]}
+      - {has_key: [{subject: []}, summary]}
+      - {has_key: [{subject: []}, segments]}
+      - {has_key: [{subject: []}, worst_cases]}
       - json_type:
-        - subject: []
-        - dict
-      - has_key:
-        - subject: []
-        - summary
-      - has_key:
-        - subject: []
-        - segments
-      - has_key:
-        - subject: []
-        - worst_cases
-      - json_type:
-        - get:
-          - subject: []
-          - summary
+        - {get: [{subject: []}, summary]}
         - dict
   policy_evaluate:
   - is_empty:
-    - get:
-      - subject: []
-      - violations
+    - {get: [{subject: []}, violations]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
-      - subject: []
-      - 0
+    - {eq: [{subject: []}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - get:
-        - subject: []
-        - passed
+      - {get: [{subject: []}, passed]}
       - true
     - eq:
-      - get:
-        - subject: []
-        - check_id
+      - {get: [{subject: []}, check_id]}
       - spec.portability_metric
 ```

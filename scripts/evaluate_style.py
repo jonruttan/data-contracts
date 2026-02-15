@@ -15,6 +15,32 @@ from spec_runner.spec_lang_yaml_ast import (
     sexpr_to_yaml_ast,
 )
 
+_COMPACT_MAX_ITEMS = 4
+
+
+class _FlowSeq(list):
+    pass
+
+
+class _FlowMap(dict):
+    pass
+
+
+class _CompactDumper(yaml.SafeDumper):
+    pass
+
+
+def _flow_seq_representer(dumper: yaml.Dumper, data: _FlowSeq) -> yaml.nodes.SequenceNode:
+    return dumper.represent_sequence("tag:yaml.org,2002:seq", list(data), flow_style=True)
+
+
+def _flow_map_representer(dumper: yaml.Dumper, data: _FlowMap) -> yaml.nodes.MappingNode:
+    return dumper.represent_mapping("tag:yaml.org,2002:map", dict(data), flow_style=True)
+
+
+_CompactDumper.add_representer(_FlowSeq, _flow_seq_representer)
+_CompactDumper.add_representer(_FlowMap, _flow_map_representer)
+
 
 def _is_yaml_opening_fence(line: str) -> tuple[str, int] | None:
     stripped = line.lstrip(" \t")
@@ -57,6 +83,64 @@ def _convert_expr_list_value(raw: Any) -> list[Any]:
     return [sexpr_to_yaml_ast(raw)]
 
 
+def _is_scalar(node: Any) -> bool:
+    return isinstance(node, (str, int, float, bool)) or node is None
+
+
+def _is_compact_atom(node: Any, *, depth: int = 0) -> bool:
+    if _is_scalar(node):
+        return True
+    if depth > 2:
+        return False
+    if isinstance(node, (list, _FlowSeq)):
+        if len(node) > _COMPACT_MAX_ITEMS:
+            return False
+        return all(_is_compact_atom(x, depth=depth + 1) for x in node)
+    if isinstance(node, (dict, _FlowMap)):
+        if len(node) != 1:
+            return False
+        key = next(iter(node.keys()))
+        if not isinstance(key, str):
+            return False
+        value = next(iter(node.values()))
+        return _is_compact_atom(value, depth=depth + 1)
+    return False
+
+
+def _wrap_flow_literal(node: Any) -> Any:
+    if isinstance(node, list):
+        items = [_wrap_flow_literal(x) for x in node]
+        if len(items) <= _COMPACT_MAX_ITEMS and all(_is_compact_atom(x, depth=1) for x in items):
+            return _FlowSeq(items)
+        return items
+    if isinstance(node, dict):
+        wrapped = {str(k): _wrap_flow_literal(v) for k, v in node.items()}
+        if len(wrapped) <= _COMPACT_MAX_ITEMS and all(_is_compact_atom(v, depth=1) for v in wrapped.values()):
+            return _FlowMap(wrapped)
+        return wrapped
+    return node
+
+
+def _condense_expr_node(node: Any) -> Any:
+    if _is_scalar(node):
+        return node
+    if isinstance(node, list):
+        return [_condense_expr_node(x) for x in node]
+    if isinstance(node, dict):
+        if "lit" in node and len(node) == 1:
+            return _FlowMap({"lit": _wrap_flow_literal(node["lit"])})
+        if len(node) == 1:
+            op = str(next(iter(node.keys())))
+            raw_args = node[op]
+            if isinstance(raw_args, list):
+                args = [_condense_expr_node(x) for x in raw_args]
+                if len(args) <= _COMPACT_MAX_ITEMS and all(_is_compact_atom(x, depth=1) for x in args):
+                    return _FlowMap({op: _FlowSeq(args)})
+                return {op: args}
+        return {str(k): _condense_expr_node(v) for k, v in node.items()}
+    return node
+
+
 def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
     changed = False
     if isinstance(node, list):
@@ -75,7 +159,7 @@ def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
                 out_items: list[Any] = []
                 for idx, expr in enumerate(converted):
                     item, ch = _walk_convert(expr, path=f"{path}.{key}[{idx}]")
-                    out_items.append(item)
+                    out_items.append(_condense_expr_node(item))
                     changed = changed or ch
                 out[key] = out_items
                 changed = changed or (converted != v)
@@ -104,16 +188,29 @@ def _validate_expr_fields(node: Any, *, path: str = "") -> None:
 
 
 def _yaml_dump(payload: Any) -> str:
-    return yaml.dump(payload, sort_keys=False, allow_unicode=False, width=1000)
+    return yaml.dump(payload, sort_keys=False, allow_unicode=False, width=1000, Dumper=_CompactDumper)
+
+
+def _contains_expr_fields(node: Any) -> bool:
+    if isinstance(node, list):
+        return any(_contains_expr_fields(x) for x in node)
+    if isinstance(node, dict):
+        for k, v in node.items():
+            key = str(k)
+            if key in {"evaluate", "policy_evaluate"}:
+                return True
+            if _contains_expr_fields(v):
+                return True
+    return False
 
 
 def _format_yaml_block(block: str) -> str:
     payload = yaml.safe_load(block)
     if payload is None:
         return block.strip() + "\n"
-    converted, _ = _walk_convert(payload)
-    if converted == payload:
+    if not _contains_expr_fields(payload):
         return block
+    converted, _ = _walk_convert(payload)
     return _yaml_dump(converted)
 
 

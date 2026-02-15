@@ -47,20 +47,34 @@ def _convert_expr_list_value(raw: Any) -> list[Any]:
     return [sexpr_to_yaml_ast(raw)]
 
 
-def _walk_convert(node: Any) -> Any:
+def _walk_convert(node: Any) -> tuple[Any, bool]:
+    changed = False
     if isinstance(node, list):
-        return [_walk_convert(x) for x in node]
+        out: list[Any] = []
+        for x in node:
+            got, ch = _walk_convert(x)
+            out.append(got)
+            changed = changed or ch
+        return out, changed
     if isinstance(node, dict):
         out: dict[str, Any] = {}
         for k, v in node.items():
             key = str(k)
             if key in {"evaluate", "policy_evaluate"}:
                 converted = _convert_expr_list_value(v)
-                out[key] = [_walk_convert(x) for x in converted]
+                items: list[Any] = []
+                for x in converted:
+                    got, ch = _walk_convert(x)
+                    items.append(got)
+                    changed = changed or ch
+                out[key] = items
+                changed = changed or (converted != v)
             else:
-                out[key] = _walk_convert(v)
-        return out
-    return node
+                got, ch = _walk_convert(v)
+                out[key] = got
+                changed = changed or ch
+        return out, changed
+    return node, False
 
 
 def _yaml_dump(payload: Any) -> str:
@@ -95,8 +109,8 @@ def convert_markdown(text: str) -> str:
             out.append(lines[i])
             i += 1
             continue
-        converted = _walk_convert(payload)
-        out.append(_yaml_dump(converted))
+        converted, changed = _walk_convert(payload)
+        out.append(_yaml_dump(converted) if changed else block)
         out.append(lines[i])
         i += 1
     return "".join(out)
@@ -104,8 +118,8 @@ def convert_markdown(text: str) -> str:
 
 def convert_yaml_text(text: str) -> str:
     payload = yaml.safe_load(text)
-    converted = _walk_convert(payload)
-    return _yaml_dump(converted)
+    converted, changed = _walk_convert(payload)
+    return _yaml_dump(converted) if changed else text
 
 
 def _iter_files(paths: list[Path], *, pattern: str) -> list[Path]:

@@ -156,6 +156,12 @@ def test_spec_lang_governance_collection_builtins() -> None:
     assert eval_expr(["pluck", ["subject"], "name"], subject=rows) == ["c", "a", "b"]
     assert eval_expr(["pluck", ["sort_by", ["subject"], "name"], "name"], subject=rows) == ["a", "b", "c"]
     assert eval_predicate(["matches_all", "abc-123", ["subject"]], subject=["^[a-z]+", "123$"]) is True
+    assert eval_predicate(["is_null", None], subject=None) is True
+    assert eval_predicate(["is_bool", True], subject=None) is True
+    assert eval_predicate(["is_number", 3.14], subject=None) is True
+    assert eval_predicate(["is_string", "x"], subject=None) is True
+    assert eval_predicate(["is_list", ["json_parse", "[1,2]"]], subject=None) is True
+    assert eval_predicate(["is_dict", ["json_parse", '{"a":1}']], subject=None) is True
 
 
 def test_spec_lang_set_algebra_and_deep_equals() -> None:
@@ -219,3 +225,62 @@ def test_spec_lang_currying_and_collection_transforms() -> None:
     assert eval_expr(["prepend", 0, ["json_parse", "[1,2]"]], subject=None) == [0, 1, 2]
     assert eval_expr(["take", 2, ["json_parse", "[1,2,3]"]], subject=None) == [1, 2]
     assert eval_expr(["drop", 2, ["json_parse", "[1,2,3]"]], subject=None) == [3]
+
+
+def test_spec_lang_full_suite_builtins_are_pure_and_deterministic() -> None:
+    assert eval_expr(["mul", 3, 4], subject=None) == 12
+    assert eval_expr(["div", 9, 2], subject=None) == 4.5
+    assert eval_expr(["mod", 9, 4], subject=None) == 1
+    assert eval_expr(["pow", 2, 5], subject=None) == 32
+    assert eval_expr(["abs", -7], subject=None) == 7
+    assert eval_expr(["negate", 3], subject=None) == -3
+    assert eval_expr(["inc", 3], subject=None) == 4
+    assert eval_expr(["dec", 3], subject=None) == 2
+    assert eval_expr(["clamp", 1, 5, 9], subject=None) == 5
+    assert eval_expr(["round", 2.5], subject=None) == 3
+    assert eval_expr(["floor", 2.9], subject=None) == 2
+    assert eval_expr(["ceil", 2.1], subject=None) == 3
+    assert eval_expr(["compare", 1, 2], subject=None) == -1
+    assert eval_predicate(["between", 1, 3, 2], subject=None) is True
+    assert eval_predicate(["xor", True, False], subject=None) is True
+    assert eval_expr(["slice", 1, 3, ["json_parse", "[0,1,2,3]"]], subject=None) == [1, 2]
+    assert eval_expr(["reverse", ["json_parse", "[1,2,3]"]], subject=None) == [3, 2, 1]
+    assert eval_expr(["zip", ["json_parse", "[1,2,3]"], ["json_parse", "[4,5]"]], subject=None) == [
+        [1, 4],
+        [2, 5],
+    ]
+    assert eval_expr(
+        ["zip_with", ["var", "add"], ["json_parse", "[1,2,3]"], ["json_parse", "[4,5,6]"]],
+        subject=None,
+    ) == [5, 7, 9]
+    assert eval_expr(["range", 2, 5], subject=None) == [2, 3, 4]
+    assert eval_expr(["repeat", "x", 3], subject=None) == ["x", "x", "x"]
+    assert eval_expr(["keys", ["json_parse", '{"a":1,"b":2}']], subject=None) == ["a", "b"]
+    assert eval_expr(["values", ["json_parse", '{"a":1,"b":2}']], subject=None) == [1, 2]
+    assert eval_expr(["entries", ["json_parse", '{"a":1}']], subject=None) == [["a", 1]]
+    assert eval_expr(["merge", ["json_parse", '{"a":1}'], ["json_parse", '{"b":2}']], subject=None) == {
+        "a": 1,
+        "b": 2,
+    }
+    assert eval_expr(["assoc", "b", 2, ["json_parse", '{"a":1}']], subject=None) == {"a": 1, "b": 2}
+    assert eval_expr(["dissoc", "a", ["json_parse", '{"a":1,"b":2}']], subject=None) == {"b": 2}
+    assert eval_expr(["pick", ["json_parse", '["a"]'], ["json_parse", '{"a":1,"b":2}']], subject=None) == {"a": 1}
+    assert eval_expr(["omit", ["json_parse", '["a"]'], ["json_parse", '{"a":1,"b":2}']], subject=None) == {"b": 2}
+    assert eval_predicate(["prop_eq", "a", 1, ["json_parse", '{"a":1}']], subject=None) is True
+    assert (
+        eval_expr(
+            ["where", ["json_parse", '{"a":1}'], ["json_parse", '{"a":1,"b":2}']],
+            subject=None,
+        )
+        is True
+    )
+    assert eval_expr(["compose", ["call", ["var", "add"], 1], ["call", ["var", "mul"], 2], 3], subject=None) == 7
+    assert eval_expr(["pipe", ["call", ["var", "mul"], 2], ["call", ["var", "add"], 1], 3], subject=None) == 7
+    assert eval_expr(["identity", "x"], subject=None) == "x"
+    assert eval_expr(["call", ["call", ["var", "always"], "k"], 999], subject=None) == "k"
+    assert eval_expr(["replace", "a-b-c", "-", ":"], subject=None) == "a:b:c"
+    assert eval_expr(["pad_left", "7", 3, "0"], subject=None) == "007"
+    assert eval_expr(["pad_right", "7", 3, "0"], subject=None) == "700"
+
+    with pytest.raises(ValueError, match="spec_lang mod expects integer args"):
+        eval_expr(["mod", 1.5, 2], subject=None)

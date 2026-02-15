@@ -39,6 +39,19 @@ def test_evaluate_style_check_and_write(tmp_path):
     assert "\n" in updated
 
 
+def test_evaluate_style_condenses_short_mapping_ast_args(tmp_path):
+    mod = _load_script_module()
+    case = tmp_path / "compact.spec.md"
+    case.write_text(
+        """# Compact\n\n```yaml spec-test\nid: EVAL-FMT-002\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - eq:\n              - add:\n                  - 1\n                  - 2\n              - 3\n```\n""",
+        encoding="utf-8",
+    )
+    code = mod.main(["--write", str(case)])
+    assert code == 0
+    updated = case.read_text(encoding="utf-8")
+    assert "eq: [{add: [1, 2]}, 3]" in updated
+
+
 def test_evaluate_style_ignores_non_spec_fences(tmp_path):
     mod = _load_script_module()
     doc = tmp_path / "note.spec.md"

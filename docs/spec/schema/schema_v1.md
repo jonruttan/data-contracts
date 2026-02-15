@@ -252,6 +252,15 @@ Operator constraints:
   `difference`, `symmetric_difference`, `is_subset`, `is_superset`,
   `set_equals`) and collection transforms (`map`, `filter`, `reduce`, etc.)
   with automatic builtin currying semantics
+- spec-lang ramda-style utility surface includes strict numeric math
+  (`mul`, `div`, `mod`, `pow`, `abs`, `negate`, `inc`, `dec`, `clamp`,
+  `round`, `floor`, `ceil`), comparison/logical helpers (`compare`, `between`,
+  `xor`), list utilities (`slice`, `reverse`, `zip`, `zip_with`, `range`,
+  `repeat`), object helpers (`keys`, `values`, `entries`, `merge`, `assoc`,
+  `dissoc`, `pick`, `omit`), and compositional predicates/combinators
+  (`prop_eq`, `where`, `compose`, `pipe`, `identity`, `always`, `replace`,
+  `pad_left`, `pad_right`) plus explicit JSON-type predicates (`is_null`,
+  `is_bool`, `is_number`, `is_string`, `is_list`, `is_dict`)
 - spec-lang shared library loading rules are defined in
   `docs/spec/contract/14_spec_lang_libraries.md`
 - runners compile external leaf operators into internal spec-lang predicates;

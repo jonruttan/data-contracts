@@ -45,6 +45,12 @@ Value/text:
 JSON/value:
 
 - `json_type`
+- `is_null`
+- `is_bool`
+- `is_number`
+- `is_string`
+- `is_list`
+- `is_dict`
 - `has_key`
 - `get`
 
@@ -74,6 +80,12 @@ Utility:
 - `prepend`
 - `take`
 - `drop`
+- `slice`
+- `reverse`
+- `zip`
+- `zip_with`
+- `range`
+- `repeat`
 - `any`
 - `all`
 - `none`
@@ -82,6 +94,14 @@ Utility:
 - `max`
 - `sort_by`
 - `pluck`
+- `keys`
+- `values`
+- `entries`
+- `merge`
+- `assoc`
+- `dissoc`
+- `pick`
+- `omit`
 - `distinct`
 - `is_empty`
 - `coalesce`
@@ -89,6 +109,30 @@ Utility:
 - `var`
 - `add`
 - `sub`
+- `mul`
+- `div`
+- `mod`
+- `pow`
+- `abs`
+- `negate`
+- `inc`
+- `dec`
+- `clamp`
+- `round`
+- `floor`
+- `ceil`
+- `compare`
+- `between`
+- `xor`
+- `prop_eq`
+- `where`
+- `compose`
+- `pipe`
+- `identity`
+- `always`
+- `replace`
+- `pad_left`
+- `pad_right`
 - `json_parse`
 - `regex_match`
 - `matches`
@@ -228,7 +272,10 @@ standardize `evaluate` expression formatting to:
 - explicit list args for every operator (including zero-arg forms like
   `subject: []`)
 - `lit` wrapper for collection literal nodes
-- nested mapping AST layout (not list S-expression authoring)
+- condensed inline args for short forms (for example
+  `eq: [{add: [1, 2]}, 3]`) where readability improves
+- nested mapping AST layout for larger expressions (not list S-expression
+  authoring)
 
 Tooling:
 
