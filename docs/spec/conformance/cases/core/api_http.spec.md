@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRCONF-API-001
 title: api.http reads relative fixture and exposes body assertions
-purpose: Verifies api.http can resolve a local relative request url and assert deterministic status and json body shape.
+purpose: Verifies api.http can resolve a local relative request url and assert deterministic
+  status and json body shape.
 type: api.http
 requires:
   capabilities:
@@ -21,15 +22,21 @@ assert:
 - target: status
   must:
   - evaluate:
-    - {contains: [{var: subject}, '200']}
+    - contains:
+      - {var: subject}
+      - '200'
 - target: body_text
   must:
   - evaluate:
-    - {contains: [{var: subject}, '"ok":true']}
+    - contains:
+      - {var: subject}
+      - '"ok":true'
 - target: body_json
   must:
   - evaluate:
-    - {json_type: [{var: subject}, dict]}
+    - json_type:
+      - {var: subject}
+      - dict
 ```
 
 ## SRCONF-API-002
@@ -37,7 +44,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-API-002
 title: api.http requires request.url
-purpose: Verifies api.http reports a schema violation when request url is missing from portable fixture input.
+purpose: Verifies api.http reports a schema violation when request url is missing from portable
+  fixture input.
 type: api.http
 requires:
   capabilities:
@@ -54,7 +62,9 @@ assert:
 - target: status
   must:
   - evaluate:
-    - {contains: [{var: subject}, '200']}
+    - contains:
+      - {var: subject}
+      - '200'
 ```
 
 ## SRCONF-API-003
@@ -62,7 +72,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-API-003
 title: api.http skip path honors requires.when_missing
-purpose: Verifies extension type capability gating can skip deterministic fixtures when an additional required capability is absent.
+purpose: Verifies extension type capability gating can skip deterministic fixtures when an
+  additional required capability is absent.
 type: api.http
 requires:
   capabilities:
@@ -80,5 +91,7 @@ assert:
 - target: status
   must:
   - evaluate:
-    - {contains: [{var: subject}, '200']}
+    - contains:
+      - {var: subject}
+      - '200'
 ```

@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-POLICY-LIB-002
 title: governance policy expressions require shared library wiring
-purpose: Ensures governance decision policies use shared spec-lang libraries and call exported library symbols.
+purpose: Ensures governance decision policies use shared spec-lang libraries and call exported
+  library symbols.
 type: governance.check
 check: governance.policy_library_usage_required
 harness:
@@ -21,19 +22,27 @@ harness:
     ignore_checks:
     - governance.policy_library_usage_required
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - governance.policy_library_usage_required
 ```

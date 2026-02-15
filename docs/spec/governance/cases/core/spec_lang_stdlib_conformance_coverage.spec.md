@@ -15,7 +15,9 @@ harness:
     - /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
     - /docs/spec/conformance/cases/core/spec_lang_schema.spec.md
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
   spec_lang:
     library_paths:
     - /docs/spec/libraries/policy/policy_core.spec.md
@@ -25,5 +27,7 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 ```

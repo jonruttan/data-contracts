@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-ASSERT-001
 title: runtime assertion paths compile and evaluate through spec-lang
-purpose: Enforces that runner assertion semantics route through spec-lang expression evaluation and avoid direct ad-hoc contain or regex execution paths.
+purpose: Enforces that runner assertion semantics route through spec-lang expression evaluation
+  and avoid direct ad-hoc contain or regex execution paths.
 type: governance.check
 check: runtime.assertions_via_spec_lang
 harness:
@@ -60,19 +61,27 @@ harness:
       forbidden_tokens:
       - contain assertion failed
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.assertions_via_spec_lang
 ```

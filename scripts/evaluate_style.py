@@ -16,9 +16,6 @@ from spec_runner.spec_lang_yaml_ast import (
     sexpr_to_yaml_ast,
 )
 
-_COMPACT_MAX_ITEMS = 4
-
-
 class _FlowSeq(list):
     pass
 
@@ -88,55 +85,28 @@ def _is_scalar(node: Any) -> bool:
     return isinstance(node, (str, int, float, bool)) or node is None
 
 
-def _is_compact_atom(node: Any, *, depth: int = 0) -> bool:
-    if _is_scalar(node):
-        return True
-    if depth > 2:
-        return False
-    if isinstance(node, (list, _FlowSeq)):
-        if len(node) > _COMPACT_MAX_ITEMS:
-            return False
-        return all(_is_compact_atom(x, depth=depth + 1) for x in node)
-    if isinstance(node, (dict, _FlowMap)):
-        if len(node) != 1:
-            return False
-        key = next(iter(node.keys()))
-        if not isinstance(key, str):
-            return False
-        value = next(iter(node.values()))
-        return _is_compact_atom(value, depth=depth + 1)
-    return False
-
-
-def _wrap_flow_literal(node: Any) -> Any:
-    if isinstance(node, list):
-        items = [_wrap_flow_literal(x) for x in node]
-        if len(items) <= _COMPACT_MAX_ITEMS and all(_is_compact_atom(x, depth=1) for x in items):
-            return _FlowSeq(items)
-        return items
-    if isinstance(node, dict):
-        wrapped = {str(k): _wrap_flow_literal(v) for k, v in node.items()}
-        if len(wrapped) <= _COMPACT_MAX_ITEMS and all(_is_compact_atom(v, depth=1) for v in wrapped.values()):
-            return _FlowMap(wrapped)
-        return wrapped
-    return node
-
-
-def _condense_expr_node(node: Any) -> Any:
+def _normalize_expr_node(node: Any) -> Any:
     if _is_scalar(node):
         return node
     if isinstance(node, list):
-        return [_condense_expr_node(x) for x in node]
+        return [_normalize_expr_node(x) for x in node]
     if isinstance(node, dict):
         if "lit" in node and len(node) == 1:
-            return _FlowMap({"lit": _wrap_flow_literal(node["lit"])})
+            lit_value = node["lit"]
+            if _is_scalar(lit_value):
+                return _FlowMap({"lit": lit_value})
+            if isinstance(lit_value, list):
+                return {"lit": [_normalize_expr_node(x) for x in lit_value]}
+            if isinstance(lit_value, dict):
+                return {"lit": {str(k): _normalize_expr_node(v) for k, v in lit_value.items()}}
+            return {"lit": lit_value}
         if len(node) == 1:
             op = str(next(iter(node.keys())))
             raw_args = node[op]
             if op == "var":
                 if isinstance(raw_args, str):
                     return _FlowMap({"var": raw_args})
-                return {"var": _condense_expr_node(raw_args)}
+                return {"var": _normalize_expr_node(raw_args)}
             if op == "fn" and isinstance(raw_args, list) and len(raw_args) == 2:
                 params = raw_args[0]
                 if isinstance(params, dict) and "lit" in params and isinstance(params["lit"], list):
@@ -145,14 +115,12 @@ def _condense_expr_node(node: Any) -> Any:
                     isinstance(params, list)
                     and all(isinstance(x, str) and str(x).strip() for x in params)
                 ):
-                    body = _condense_expr_node(raw_args[1])
+                    body = _normalize_expr_node(raw_args[1])
                     return {"fn": [_FlowSeq([str(x).strip() for x in params]), body]}
             if isinstance(raw_args, list):
-                args = [_condense_expr_node(x) for x in raw_args]
-                if len(args) <= _COMPACT_MAX_ITEMS and all(_is_compact_atom(x, depth=1) for x in args):
-                    return _FlowMap({op: _FlowSeq(args)})
+                args = [_normalize_expr_node(x) for x in raw_args]
                 return {op: args}
-        return {str(k): _condense_expr_node(v) for k, v in node.items()}
+        return {str(k): _normalize_expr_node(v) for k, v in node.items()}
     return node
 
 
@@ -174,7 +142,7 @@ def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
                 out_items: list[Any] = []
                 for idx, expr in enumerate(converted):
                     item, ch = _walk_convert(expr, path=f"{path}.{key}[{idx}]")
-                    out_items.append(_condense_expr_node(item))
+                    out_items.append(_normalize_expr_node(item))
                     changed = changed or ch
                 out[key] = out_items
                 changed = changed or (converted != v)
@@ -195,7 +163,7 @@ def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
                         )
                         expr_node = sexpr_to_yaml_ast(sym_expr) if is_sexpr_node(sym_expr) else sym_expr
                         sym_item, ch = _walk_convert(expr_node, path=sym_path)
-                        scope_out[sym_key] = _condense_expr_node(sym_item)
+                        scope_out[sym_key] = _normalize_expr_node(sym_item)
                         changed = changed or ch or (expr_node != sym_expr)
                     definitions[scope_key] = scope_out
                 out[key] = definitions
@@ -235,7 +203,7 @@ def _validate_expr_fields(node: Any, *, path: str = "") -> None:
 
 
 def _yaml_dump(payload: Any) -> str:
-    return yaml.dump(payload, sort_keys=False, allow_unicode=False, width=1000, Dumper=_CompactDumper)
+    return yaml.dump(payload, sort_keys=False, allow_unicode=False, width=88, Dumper=_CompactDumper)
 
 
 def _contains_expr_fields(node: Any) -> bool:

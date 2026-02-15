@@ -26,7 +26,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, '']}
+    - contains:
+      - {var: subject}
+      - ''
 ```
 
 ## SRCONF-AH-002
@@ -34,7 +36,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-002
 title: assert_health error mode can pass for evaluate-only assertions
-purpose: Confirms error mode does not fail evaluate-only assertions when no assertion-health diagnostics are emitted.
+purpose: Confirms error mode does not fail evaluate-only assertions when no assertion-health
+  diagnostics are emitted.
 type: text.file
 expect:
   portable:
@@ -46,7 +49,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, '']}
+    - contains:
+      - {var: subject}
+      - ''
 ```
 
 ## SRCONF-AH-003
@@ -66,7 +71,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, spec-test]}
+    - contains:
+      - {var: subject}
+      - spec-test
 ```
 
 ## SRCONF-AH-004
@@ -86,7 +93,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, '']}
+    - contains:
+      - {var: subject}
+      - ''
 ```
 
 ## SRCONF-AH-005
@@ -94,7 +103,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-005
 title: evaluate-only sibling branches remain valid under assert_health error
-purpose: Confirms evaluate-only non-redundant sibling branches do not trigger AH004 under assert_health error mode.
+purpose: Confirms evaluate-only non-redundant sibling branches do not trigger AH004 under
+  assert_health error mode.
 type: text.file
 expect:
   portable:
@@ -106,9 +116,13 @@ assert:
 - target: text
   can:
   - evaluate:
-    - {contains: [{var: subject}, 'version: 1']}
+    - contains:
+      - {var: subject}
+      - 'version: 1'
   - evaluate:
-    - {contains: [{var: subject}, 'version: 2']}
+    - contains:
+      - {var: subject}
+      - 'version: 2'
 ```
 
 ## SRCONF-AH-006
@@ -116,7 +130,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-006
 title: evaluate regex portability is handled without sugar diagnostics
-purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level portability diagnostics.
+purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level portability
+  diagnostics.
 type: text.file
 expect:
   portable:
@@ -128,5 +143,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{var: subject}, '(?<=version: )1']}
+    - regex_match:
+      - {var: subject}
+      - '(?<=version: )1'
 ```

@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-CONFIG-002
 title: python-invoking adapter scripts use shared python-bin resolver helper
-purpose: Prevents drift by enforcing a single shared python interpreter resolver in scripts that invoke Python directly.
+purpose: Prevents drift by enforcing a single shared python interpreter resolver in scripts
+  that invoke Python directly.
 type: governance.check
 check: runtime.python_bin_resolver_sync
 harness:
@@ -26,19 +27,27 @@ harness:
     - ROOT_DIR}/.venv/bin/python
     - ROOT_DIR}/../../.venv/bin/python
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.python_bin_resolver_sync
 ```

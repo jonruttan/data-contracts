@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-SCHEMA-REG-004
 title: schema contract avoids prose-only rules
-purpose: Ensures schema contract docs explicitly tie behavior to registry source-of-truth wording.
+purpose: Ensures schema contract docs explicitly tie behavior to registry source-of-truth
+  wording.
 type: governance.check
 check: schema.no_prose_only_rules
 harness:
@@ -16,15 +17,21 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - schema.no_prose_only_rules
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
 ```

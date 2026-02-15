@@ -15,10 +15,26 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {eq: [{add: [2, 3]}, 5]}
-    - {eq: [{sub: [9, 4]}, 5]}
-    - {eq: [{add: [1, 1]}, 2]}
-    - {eq: [{sub: [3, 3]}, 0]}
+    - eq:
+      - add:
+        - 2
+        - 3
+      - 5
+    - eq:
+      - sub:
+        - 9
+        - 4
+      - 5
+    - eq:
+      - add:
+        - 1
+        - 1
+      - 2
+    - eq:
+      - sub:
+        - 3
+        - 3
+      - 0
 ```
 
 ## SRCONF-STDLIB-002
@@ -37,14 +53,23 @@ assert:
   must:
   - evaluate:
     - eq:
-      - {json_type: [{json_parse: ['{"a":1,"b":2}']}, dict]}
+      - json_type:
+        - json_parse:
+          - '{"a":1,"b":2}'
+        - dict
       - true
     - eq:
-      - {has_key: [{json_parse: ['{"a":{"b":1}}']}, a]}
+      - has_key:
+        - json_parse:
+          - '{"a":{"b":1}}'
+        - a
       - true
     - eq:
       - json_type:
-        - {get: [{json_parse: ['{"a":{"b":1}}']}, a]}
+        - get:
+          - json_parse:
+            - '{"a":{"b":1}}'
+          - a
         - dict
       - true
 ```

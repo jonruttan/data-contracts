@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-DOCS-REF-004
 title: reference examples parse or are explicitly opted out
-purpose: Ensures reference examples are trustworthy by requiring parseable or statically valid fenced examples unless explicitly opted out.
+purpose: Ensures reference examples are trustworthy by requiring parseable or statically valid
+  fenced examples unless explicitly opted out.
 type: governance.check
 check: docs.examples_runnable
 harness:
@@ -23,19 +24,27 @@ harness:
     - docs/book/04_spec_lang_reference.md
     - docs/development.md
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - docs.examples_runnable
 ```

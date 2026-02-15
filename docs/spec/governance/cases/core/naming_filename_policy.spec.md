@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-DOCS-NAME-001
 title: docs filenames follow lowercase separator policy
-purpose: Enforces deterministic docs filename shape using underscores for words and hyphens for section separators.
+purpose: Enforces deterministic docs filename shape using underscores for words and hyphens
+  for section separators.
 type: governance.check
 check: naming.filename_policy
 harness:
@@ -27,19 +28,27 @@ harness:
     - README.md
     allowed_name_regex: ^[a-z0-9]+(?:_[a-z0-9]+)*(?:-[a-z0-9]+(?:_[a-z0-9]+)*)*(?:\.spec)?\.(?:md|yaml|yml|json)$
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - naming.filename_policy
 ```

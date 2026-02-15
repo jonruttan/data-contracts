@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-NORM-005
 title: library function expressions use mapping-ast authoring
-purpose: Enforces spec-lang library function definitions use canonical mapping-ast expression syntax only.
+purpose: Enforces spec-lang library function definitions use canonical mapping-ast expression
+  syntax only.
 type: governance.check
 check: normalization.library_mapping_ast_only
 harness:
@@ -16,19 +17,27 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - normalization.library_mapping_ast_only
 ```

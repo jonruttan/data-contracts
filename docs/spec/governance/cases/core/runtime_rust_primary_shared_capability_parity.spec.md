@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUST-PRIMARY-004
 title: rust-primary gate path includes shared-capability parity step
-purpose: Ensures gate orchestration keeps conformance parity as part of Rust-primary-compatible gate flow.
+purpose: Ensures gate orchestration keeps conformance parity as part of Rust-primary-compatible
+  gate flow.
 type: governance.check
 check: runtime.runner_interface_gate_sync
 harness:
@@ -25,19 +26,27 @@ harness:
     - conformance-parity
     forbidden_tokens: []
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.runner_interface_gate_sync
 ```

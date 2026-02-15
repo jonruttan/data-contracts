@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-SPEC-MD-001
 title: executable spec surfaces are markdown only
-purpose: Ensures all canonical executable case trees are authored as .spec.md and do not use runnable yaml/json case files.
+purpose: Ensures all canonical executable case trees are authored as .spec.md and do not use
+  runnable yaml/json case files.
 type: governance.check
 check: spec.executable_surface_markdown_only
 harness:
@@ -16,15 +17,21 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - spec.executable_surface_markdown_only
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
 ```

@@ -33,6 +33,12 @@ expression:
   - policy_evaluate
 spec_style:
   conformance_max_block_lines: 120
+  expression_layout:
+    style: block_first
+    forbid_flow_for_non_trivial: true
+    allow_trivial_flow_atoms:
+    - var
+    - lit_scalar
 docs_token_sync:
   rules:
   - id: NORMALIZATION_SCHEMA_MAPPING_AST_WORDING
@@ -82,5 +88,5 @@ replacements:
   - id: NORMALIZATION_REWRITE_CONFORMANCE_STYLE_LAYOUT
     file: docs/spec/conformance/style.md
     edits:
-    - old: "wrapped\nflow-sequence form"
-      new: "operator-keyed mapping AST form"
+    - old: "Prefer condensed inline args for short expressions (for example\n`eq: [{add: [1, 2]}, 3]`) while preserving mapping-AST semantics."
+      new: "Use block-first multiline expression formatting for operator trees.\nFlow style is reserved for trivial atoms only (for example `{var: subject}`\nand short scalar `lit` nodes). Nested operator arguments MUST remain multiline."

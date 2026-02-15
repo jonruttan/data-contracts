@@ -39,7 +39,7 @@ def test_evaluate_style_check_and_write(tmp_path):
     assert "\n" in updated
 
 
-def test_evaluate_style_condenses_short_mapping_ast_args(tmp_path):
+def test_evaluate_style_formats_nested_mapping_ast_args_block_first(tmp_path):
     mod = _load_script_module()
     case = tmp_path / "compact.spec.md"
     case.write_text(
@@ -49,7 +49,11 @@ def test_evaluate_style_condenses_short_mapping_ast_args(tmp_path):
     code = mod.main(["--write", str(case)])
     assert code == 0
     updated = case.read_text(encoding="utf-8")
-    assert "eq: [{add: [1, 2]}, 3]" in updated
+    assert "eq:\n" in updated
+    assert "  - add:\n" in updated
+    assert "    - 1\n" in updated
+    assert "    - 2\n" in updated
+    assert "  - 3\n" in updated
 
 
 def test_evaluate_style_canonicalizes_ref_node_layout(tmp_path):
@@ -63,7 +67,25 @@ def test_evaluate_style_canonicalizes_ref_node_layout(tmp_path):
     code = mod.main(["--write", str(case)])
     assert code == 0
     updated = case.read_text(encoding="utf-8")
-    assert "contains: [{var: subject}, ok]" in updated
+    assert "contains:\n" in updated
+    assert "- {var: subject}\n" in updated
+    assert "- ok\n" in updated
+
+
+def test_evaluate_style_write_is_idempotent(tmp_path):
+    mod = _load_script_module()
+    case = tmp_path / "idempotent.spec.md"
+    case.write_text(
+        """# Idempotent\n\n```yaml spec-test\nid: EVAL-FMT-004\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - eq:\n              - add:\n                  - 1\n                  - 2\n              - 3\n```\n""",
+        encoding="utf-8",
+    )
+    code = mod.main(["--write", str(case)])
+    assert code == 0
+    first = case.read_text(encoding="utf-8")
+    code = mod.main(["--write", str(case)])
+    assert code == 0
+    second = case.read_text(encoding="utf-8")
+    assert first == second
 
 
 def test_evaluate_style_ignores_non_spec_fences(tmp_path):

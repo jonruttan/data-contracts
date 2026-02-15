@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-DOCS-QUAL-009
 title: release contract forbids manual sequential checklist choreography
-purpose: Ensures release guidance uses executable gate entrypoints and codifies that manual do-X-then-inspect-Y sequences are an anti-pattern.
+purpose: Ensures release guidance uses executable gate entrypoints and codifies that manual
+  do-X-then-inspect-Y sequences are an anti-pattern.
 type: governance.check
 check: docs.release_contract_automation_policy
 harness:
@@ -27,19 +28,27 @@ harness:
     - (?m)^##\s+[0-9]+\)
     - (?m)^\s*[0-9]+\.\s+(Run|Then|Check|Inspect)\b
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - docs.release_contract_automation_policy
 ```

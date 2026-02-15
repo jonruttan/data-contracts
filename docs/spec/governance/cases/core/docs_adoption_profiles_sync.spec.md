@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-DOCS-REF-009
 title: core and full adoption profile docs stay synchronized
-purpose: Keeps contributor-facing docs aligned on core-check and full-check adoption profile wording.
+purpose: Keeps contributor-facing docs aligned on core-check and full-check adoption profile
+  wording.
 type: governance.check
 check: docs.adoption_profiles_sync
 harness:
@@ -25,19 +26,27 @@ harness:
     - make core-check
     - make check
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - docs.adoption_profiles_sync
 ```

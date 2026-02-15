@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-POLICY-REQ-002
 title: governance checks require structured assertion targets
-purpose: Ensures governance cases validate deterministic structured result targets instead of relying on PASS text markers as primary contract truth.
+purpose: Ensures governance cases validate deterministic structured result targets instead
+  of relying on PASS text markers as primary contract truth.
 type: governance.check
 check: governance.structured_assertions_required
 harness:
@@ -21,19 +22,27 @@ harness:
     ignore_checks:
     - governance.structured_assertions_required
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - governance.structured_assertions_required
 ```

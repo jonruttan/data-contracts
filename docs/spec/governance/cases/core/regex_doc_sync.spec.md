@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-DOC-REGEX-001
 title: regex profile and operator tokens are synchronized across core docs
-purpose: Ensures regex portability linkage and core assertion operator tokens remain aligned in contract/schema/policy docs.
+purpose: Ensures regex portability linkage and core assertion operator tokens remain aligned
+  in contract/schema/policy docs.
 type: governance.check
 check: docs.regex_doc_sync
 harness:
@@ -16,19 +17,27 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - docs.regex_doc_sync
 ```

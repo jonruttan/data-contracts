@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-SPEC-PORT-002
 title: spec-lang self-containment metric is non-regressing
-purpose: Enforces a monotonic ratchet so configured spec-lang self-containment metrics cannot decrease from baseline.
+purpose: Enforces a monotonic ratchet so configured spec-lang self-containment metrics cannot
+  decrease from baseline.
 type: governance.check
 check: spec.portability_non_regression
 harness:
@@ -58,19 +59,27 @@ harness:
         top_n: 10
       enforce: false
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - spec.portability_non_regression
 ```

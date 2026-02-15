@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUST-PRIMARY-006
 title: rust-primary adapter executes success-path smoke command deterministically
-purpose: Ensures the Rust adapter can execute a supported success-path command with deterministic success output and exit-code behavior.
+purpose: Ensures the Rust adapter can execute a supported success-path command with deterministic
+  success output and exit-code behavior.
 type: governance.check
 check: runtime.rust_adapter_exec_smoke
 harness:
@@ -28,19 +29,27 @@ harness:
     - rust runner adapter subcommand not yet implemented
     timeout_seconds: 180
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.rust_adapter_exec_smoke
 ```

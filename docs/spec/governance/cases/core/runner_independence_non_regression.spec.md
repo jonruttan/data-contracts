@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-INDEP-002
 title: runner independence metric is non-regressing
-purpose: Enforces monotonic non-regression for runner independence metrics against checked-in baseline.
+purpose: Enforces monotonic non-regression for runner independence metrics against checked-in
+  baseline.
 type: governance.check
 check: runtime.runner_independence_non_regression
 harness:
@@ -40,19 +41,27 @@ harness:
       - gate_scripts
       - ci_workflows
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.runner_independence_non_regression
 ```

@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-ENTRY-002
 title: public runner defaults to rust mode
-purpose: Ensures the canonical public adapter defaults to rust and dispatches both supported impl modes.
+purpose: Ensures the canonical public adapter defaults to rust and dispatches both supported
+  impl modes.
 type: governance.check
 check: runtime.public_runner_default_rust
 harness:
@@ -25,19 +26,27 @@ harness:
     forbidden_tokens:
     - SPEC_RUNNER_IMPL:-python
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.public_runner_default_rust
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
 ```

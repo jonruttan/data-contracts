@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-CONTRACT-ASSERT-002
 title: contract assertions metric is non-regressing
-purpose: Enforces monotonic non-regression for contract assertions metrics against checked-in baseline.
+purpose: Enforces monotonic non-regression for contract assertions metrics against checked-in
+  baseline.
 type: governance.check
 check: spec.contract_assertions_non_regression
 harness:
@@ -30,19 +31,27 @@ harness:
       - docs/book/03_assertions.md
       - docs/spec/contract/03b_spec_lang_v1.md
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - spec.contract_assertions_non_regression
 ```

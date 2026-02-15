@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-DOCS-REF-002
 title: reference index stays synced with chapter files
-purpose: Ensures the machine-checked reference index entries stay aligned with the actual chapter set and order.
+purpose: Ensures the machine-checked reference index entries stay aligned with the actual
+  chapter set and order.
 type: governance.check
 check: docs.reference_index_sync
 harness:
@@ -23,19 +24,27 @@ harness:
     - docs/book/reference_index.md
     - docs/book/reference_coverage.md
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - docs.reference_index_sync
 ```

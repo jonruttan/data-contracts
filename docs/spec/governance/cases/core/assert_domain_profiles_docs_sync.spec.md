@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-ASSERT-PROFILE-003
 title: domain profile docs synchronize with profile schema ids
-purpose: Ensures python/php/http/markdown/makefile profile docs and subject profile schema stay synchronized.
+purpose: Ensures python/php/http/markdown/makefile profile docs and subject profile schema
+  stay synchronized.
 type: governance.check
 check: assert.domain_profiles_docs_sync
 harness:
@@ -16,10 +17,14 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 ```

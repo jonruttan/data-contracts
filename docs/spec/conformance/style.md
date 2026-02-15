@@ -25,8 +25,9 @@ Purpose lint policy:
 
 Conformance cases using `evaluate` MUST keep spec-lang expressions in
 operator-keyed mapping AST form for readability and deterministic review diffs.
-Prefer condensed inline args for short expressions (for example
-`eq: [{add: [1, 2]}, 3]`) while preserving mapping-AST semantics.
+Use block-first multiline expression formatting for operator trees.
+Flow style is reserved for trivial atoms only (for example `{var: subject}`
+and short scalar `lit` nodes). Nested operator arguments MUST remain multiline.
 
 Use tooling to enforce/normalize:
 

@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-CONF-LIB-CONTRACT-001
 title: conformance library contract coverage cases are present
-purpose: Ensures conformance includes executable evaluate-based coverage for flat spec_lang.library definitions contract behavior.
+purpose: Ensures conformance includes executable evaluate-based coverage for flat spec_lang.library
+  definitions contract behavior.
 type: governance.check
 check: conformance.library_contract_cases_present
 harness:
@@ -22,12 +23,16 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - conformance.library_contract_cases_present
 ```

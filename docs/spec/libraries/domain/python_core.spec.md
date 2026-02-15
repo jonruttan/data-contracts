@@ -13,7 +13,9 @@ definitions:
       - [subject]
       - eq:
         - get:
-          - {get: [{var: subject}, meta]}
+          - get:
+            - {var: subject}
+            - meta
           - native_kind
         - python.tuple
 ```

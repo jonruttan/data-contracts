@@ -16,11 +16,17 @@ assert:
   must:
   - evaluate:
     - eq:
-      - {json_type: [{json_parse: ['{"id":1,"tags":["alpha","beta"]}']}, dict]}
+      - json_type:
+        - json_parse:
+          - '{"id":1,"tags":["alpha","beta"]}'
+        - dict
       - true
     - eq:
       - json_type:
-        - {get: [{json_parse: ['{"id":1,"tags":["alpha","beta"]}']}, tags]}
+        - get:
+          - json_parse:
+            - '{"id":1,"tags":["alpha","beta"]}'
+          - tags
         - list
       - true
 ```
@@ -30,7 +36,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-STDLIB-004
 title: parsed payload predicates support deterministic error-shape checks
-purpose: Ensures JSON payload predicate composition remains deterministic for invalid-value checks.
+purpose: Ensures JSON payload predicate composition remains deterministic for invalid-value
+  checks.
 type: text.file
 path: /docs/spec/conformance/cases/core/spec_lang_schema.spec.md
 expect:
@@ -43,11 +50,17 @@ assert:
     - and:
       - eq:
         - json_type:
-          - {get: [{json_parse: ['{"id":"x"}']}, id]}
+          - get:
+            - json_parse:
+              - '{"id":"x"}'
+            - id
           - string
         - true
       - not:
         - eq:
-          - {get: [{json_parse: ['{"id":"x"}']}, id]}
+          - get:
+            - json_parse:
+              - '{"id":"x"}'
+            - id
           - 1
 ```

@@ -12,6 +12,8 @@ definitions:
       fn:
       - [subject, target]
       - contains:
-        - {get: [{var: subject}, value]}
+        - get:
+          - {var: subject}
+          - value
         - {var: target}
 ```

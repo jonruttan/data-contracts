@@ -15,7 +15,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, 'version: 1']}
+    - contains:
+      - {var: subject}
+      - 'version: 1'
 ```
 
 ## SRCONF-PHP-TEXT-002
@@ -33,7 +35,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{var: subject}, \A\Z]}
+    - regex_match:
+      - {var: subject}
+      - \A\Z
 ```
 
 ## SRCONF-PHP-TEXT-003
@@ -52,7 +56,9 @@ assert:
   must:
   - must:
     - evaluate:
-      - {contains: [{var: subject}, 'version: 1']}
+      - contains:
+        - {var: subject}
+        - 'version: 1'
 ```
 
 ## SRCONF-PHP-TEXT-004
@@ -70,9 +76,13 @@ assert:
 - target: text
   can:
   - evaluate:
-    - {regex_match: [{var: subject}, '(?!)']}
+    - regex_match:
+      - {var: subject}
+      - (?!)
   - evaluate:
-    - {contains: [{var: subject}, 'version: 1']}
+    - contains:
+      - {var: subject}
+      - 'version: 1'
 ```
 
 ## SRCONF-PHP-TEXT-005
@@ -90,9 +100,13 @@ assert:
 - target: text
   can:
   - evaluate:
-    - {regex_match: [{var: subject}, \A\Z]}
+    - regex_match:
+      - {var: subject}
+      - \A\Z
   - evaluate:
-    - {regex_match: [{var: subject}, '(?!)']}
+    - regex_match:
+      - {var: subject}
+      - (?!)
 ```
 
 ## SRCONF-PHP-TEXT-006
@@ -110,9 +124,13 @@ assert:
 - target: text
   cannot:
   - evaluate:
-    - {regex_match: [{var: subject}, \A\Z]}
+    - regex_match:
+      - {var: subject}
+      - \A\Z
   - evaluate:
-    - {regex_match: [{var: subject}, '(?!)']}
+    - regex_match:
+      - {var: subject}
+      - (?!)
 ```
 
 ## SRCONF-PHP-TEXT-007
@@ -130,9 +148,13 @@ assert:
 - target: text
   cannot:
   - evaluate:
-    - {contains: [{var: subject}, 'version: 1']}
+    - contains:
+      - {var: subject}
+      - 'version: 1'
   - evaluate:
-    - {regex_match: [{var: subject}, '(?!)']}
+    - regex_match:
+      - {var: subject}
+      - (?!)
 ```
 
 ## SRCONF-PHP-TEXT-008
@@ -151,12 +173,18 @@ assert:
   must:
   - can:
     - evaluate:
-      - {regex_match: [{var: subject}, \A\Z]}
+      - regex_match:
+        - {var: subject}
+        - \A\Z
     - evaluate:
-      - {contains: [{var: subject}, 'version: 1']}
+      - contains:
+        - {var: subject}
+        - 'version: 1'
   - cannot:
     - evaluate:
-      - {regex_match: [{var: subject}, \A\Z]}
+      - regex_match:
+        - {var: subject}
+        - \A\Z
 ```
 
 ## SRCONF-PHP-TEXT-009
@@ -164,7 +192,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-009
 title: evaluate regex remains pass under assert_health error mode
-purpose: Confirms evaluate regex assertions bypass sugar diagnostics and can pass under error mode.
+purpose: Confirms evaluate regex assertions bypass sugar diagnostics and can pass under error
+  mode.
 type: text.file
 expect:
   portable:
@@ -176,7 +205,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{var: subject}, '(?<=version: )1']}
+    - regex_match:
+      - {var: subject}
+      - '(?<=version: )1'
 ```
 
 ## SRCONF-PHP-TEXT-010
@@ -184,7 +215,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-010
 title: evaluate empty contains remains pass under assert_health error mode
-purpose: Confirms evaluate contains with empty string does not trigger sugar diagnostic failures in error mode.
+purpose: Confirms evaluate contains with empty string does not trigger sugar diagnostic failures
+  in error mode.
 type: text.file
 expect:
   portable:
@@ -196,7 +228,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, '']}
+    - contains:
+      - {var: subject}
+      - ''
 ```
 
 ## SRCONF-PHP-TEXT-011
@@ -204,7 +238,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-011
 title: evaluate always-true regex remains pass under assert_health error mode
-purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level AH002 failures.
+purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level AH002
+  failures.
 type: text.file
 expect:
   portable:
@@ -216,7 +251,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{var: subject}, .*]}
+    - regex_match:
+      - {var: subject}
+      - .*
 ```
 
 ## SRCONF-PHP-TEXT-012
@@ -224,7 +261,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-012
 title: evaluate duplicate contains remain pass under assert_health error mode
-purpose: Confirms evaluate duplicate contains expressions do not trigger sugar-level AH003 diagnostics.
+purpose: Confirms evaluate duplicate contains expressions do not trigger sugar-level AH003
+  diagnostics.
 type: text.file
 expect:
   portable:
@@ -236,8 +274,12 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, 'version: 1']}
-    - {contains: [{var: subject}, 'version: 1']}
+    - contains:
+      - {var: subject}
+      - 'version: 1'
+    - contains:
+      - {var: subject}
+      - 'version: 1'
 ```
 
 ## SRCONF-PHP-TEXT-013
@@ -245,7 +287,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-013
 title: evaluate sibling branches remain pass under assert_health error mode
-purpose: Confirms evaluate-only non-redundant sibling branches in can groups remain valid in error mode.
+purpose: Confirms evaluate-only non-redundant sibling branches in can groups remain valid
+  in error mode.
 type: text.file
 expect:
   portable:
@@ -257,9 +300,13 @@ assert:
 - target: text
   can:
   - evaluate:
-    - {contains: [{var: subject}, 'version: 1']}
+    - contains:
+      - {var: subject}
+      - 'version: 1'
   - evaluate:
-    - {contains: [{var: subject}, 'version: 2']}
+    - contains:
+      - {var: subject}
+      - 'version: 2'
 ```
 
 ## SRCONF-PHP-TEXT-014
@@ -279,5 +326,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, '']}
+    - contains:
+      - {var: subject}
+      - ''
 ```

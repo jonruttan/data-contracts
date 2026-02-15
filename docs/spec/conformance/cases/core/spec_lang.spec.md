@@ -24,7 +24,10 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {call: [{var: conf.pass_when_text_contains}, {var: subject}, 'version: 1']}
+    - call:
+      - {var: conf.pass_when_text_contains}
+      - {var: subject}
+      - 'version: 1'
 ```
 
 ## SRCONF-EXPR-002
@@ -52,8 +55,13 @@ assert:
   must:
   - evaluate:
     - and:
-      - {call: [{var: conf.pass_when_text_contains}, {var: subject}, version]}
-      - {starts_with: [{var: subject}, '#']}
+      - call:
+        - {var: conf.pass_when_text_contains}
+        - {var: subject}
+        - version
+      - starts_with:
+        - {var: subject}
+        - '#'
 ```
 
 ## SRCONF-EXPR-003
@@ -61,7 +69,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-003
 title: evaluate tail recursion is stack safe
-purpose: Verifies unsupported mixed literal-expression recursive forms fail deterministically under mapping AST hard-cut rules.
+purpose: Verifies unsupported mixed literal-expression recursive forms fail deterministically
+  under mapping AST hard-cut rules.
 type: text.file
 requires:
   capabilities:
@@ -77,9 +86,28 @@ assert:
   must:
   - evaluate:
     - let:
-      - {lit: [[loop, {fn: [{lit: [n, acc]}, {if: [{eq: [{var: n}, 0]}, {var: acc}, {call: [{var: loop}, {sub: [{var: n}, 1]}, {add: [{var: acc}, 1]}]}]}]}]]}
+      - lit:
+        - - loop
+          - fn:
+            - [n, acc]
+            - if:
+              - eq:
+                - {var: n}
+                - 0
+              - {var: acc}
+              - call:
+                - {var: loop}
+                - sub:
+                  - {var: n}
+                  - 1
+                - add:
+                  - {var: acc}
+                  - 1
       - eq:
-        - {call: [{var: loop}, 1500, 0]}
+        - call:
+          - {var: loop}
+          - 1500
+          - 0
         - 1500
 ```
 
@@ -103,7 +131,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {starts_with: [{var: subject}, NOPE_PREFIX]}
+    - starts_with:
+      - {var: subject}
+      - NOPE_PREFIX
 ```
 
 ## SRCONF-EXPR-005
@@ -149,7 +179,8 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {unknown_symbol: [1]}
+    - unknown_symbol:
+      - 1
 ```
 
 ## SRCONF-EXPR-007
@@ -157,7 +188,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-007
 title: evaluate recursive literal-expression shape fails schema
-purpose: Verifies unsupported recursive literal-expression authoring shape fails deterministically as schema.
+purpose: Verifies unsupported recursive literal-expression authoring shape fails deterministically
+  as schema.
 type: text.file
 requires:
   capabilities:
@@ -176,8 +208,23 @@ assert:
   must:
   - evaluate:
     - let:
-      - {lit: [[loop, {fn: [{lit: [n]}, {if: [{eq: [{var: n}, 0]}, true, {call: [{var: loop}, {sub: [{var: n}, 1]}]}]}]}]]}
-      - {call: [{var: loop}, 1000]}
+      - lit:
+        - - loop
+          - fn:
+            - [n]
+            - if:
+              - eq:
+                - {var: n}
+                - 0
+              - true
+              - call:
+                - {var: loop}
+                - sub:
+                  - {var: n}
+                  - 1
+      - call:
+        - {var: loop}
+        - 1000
 ```
 
 ## SRCONF-EXPR-008
@@ -185,7 +232,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-008
 title: evaluate contains supports explicit subject form
-purpose: Verifies evaluate contains succeeds with explicit subject arguments for the same target subject.
+purpose: Verifies evaluate contains succeeds with explicit subject arguments for the same
+  target subject.
 type: text.file
 requires:
   capabilities:
@@ -204,9 +252,15 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {call: [{var: conf.pass_when_text_contains}, {var: subject}, 'version: 1']}
+    - call:
+      - {var: conf.pass_when_text_contains}
+      - {var: subject}
+      - 'version: 1'
   - evaluate:
-    - {call: [{var: conf.pass_when_text_contains}, {var: subject}, 'version: 1']}
+    - call:
+      - {var: conf.pass_when_text_contains}
+      - {var: subject}
+      - 'version: 1'
 ```
 
 ## SRCONF-EXPR-009
@@ -214,7 +268,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-009
 title: evaluate set intersection supports deep structural equality
-purpose: Verifies intersection deduplicates and compares nested values structurally with stable left-first output.
+purpose: Verifies intersection deduplicates and compares nested values structurally with stable
+  left-first output.
 type: text.file
 requires:
   capabilities:
@@ -233,8 +288,13 @@ assert:
   must:
   - evaluate:
     - eq:
-      - {intersection: [{json_parse: ['[{"k":1},{"k":2},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":2},{"k":4},{"k":1}]']}]}
-      - {json_parse: ['[{"k":1},{"k":2}]']}
+      - intersection:
+        - json_parse:
+          - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
+        - json_parse:
+          - '[{"k":2},{"k":4},{"k":1}]'
+      - json_parse:
+        - '[{"k":1},{"k":2}]'
 ```
 
 ## SRCONF-EXPR-010
@@ -261,8 +321,13 @@ assert:
   must:
   - evaluate:
     - eq:
-      - {union: [{json_parse: ['[{"k":1},{"k":2},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":2},{"k":4},{"k":1}]']}]}
-      - {json_parse: ['[{"k":1},{"k":2},{"k":3},{"k":4}]']}
+      - union:
+        - json_parse:
+          - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
+        - json_parse:
+          - '[{"k":2},{"k":4},{"k":1}]'
+      - json_parse:
+        - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
 ```
 
 ## SRCONF-EXPR-011
@@ -290,11 +355,21 @@ assert:
   - evaluate:
     - and:
       - eq:
-        - {difference: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":2},{"k":4}]']}]}
-        - {json_parse: ['[{"k":1},{"k":3}]']}
+        - difference:
+          - json_parse:
+            - '[{"k":1},{"k":2},{"k":3}]'
+          - json_parse:
+            - '[{"k":2},{"k":4}]'
+        - json_parse:
+          - '[{"k":1},{"k":3}]'
       - eq:
-        - {symmetric_difference: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":2},{"k":4}]']}]}
-        - {json_parse: ['[{"k":1},{"k":3},{"k":4}]']}
+        - symmetric_difference:
+          - json_parse:
+            - '[{"k":1},{"k":2},{"k":3}]'
+          - json_parse:
+            - '[{"k":2},{"k":4}]'
+        - json_parse:
+          - '[{"k":1},{"k":3},{"k":4}]'
 ```
 
 ## SRCONF-EXPR-012
@@ -321,10 +396,26 @@ assert:
   must:
   - evaluate:
     - and:
-      - {set_equals: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":3},{"k":1},{"k":2}]']}]}
-      - {is_subset: [{json_parse: ['[{"k":1},{"k":2}]']}, {json_parse: ['[{"k":1},{"k":2},{"k":3}]']}]}
-      - {is_superset: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['[{"k":1},{"k":3}]']}]}
-      - {includes: [{json_parse: ['[{"k":1},{"k":2},{"k":3}]']}, {json_parse: ['{"k":2}']}]}
+      - set_equals:
+        - json_parse:
+          - '[{"k":1},{"k":2},{"k":3}]'
+        - json_parse:
+          - '[{"k":3},{"k":1},{"k":2}]'
+      - is_subset:
+        - json_parse:
+          - '[{"k":1},{"k":2}]'
+        - json_parse:
+          - '[{"k":1},{"k":2},{"k":3}]'
+      - is_superset:
+        - json_parse:
+          - '[{"k":1},{"k":2},{"k":3}]'
+        - json_parse:
+          - '[{"k":1},{"k":3}]'
+      - includes:
+        - json_parse:
+          - '[{"k":1},{"k":2},{"k":3}]'
+        - json_parse:
+          - '{"k":2}'
 ```
 
 ## SRCONF-EXPR-013
@@ -353,14 +444,22 @@ assert:
     - and:
       - eq:
         - map:
-          - {call: [{var: add}, 10]}
-          - {json_parse: ['[1,2,3]']}
-        - {json_parse: ['[11,12,13]']}
+          - call:
+            - {var: add}
+            - 10
+          - json_parse:
+            - '[1,2,3]'
+        - json_parse:
+          - '[11,12,13]'
       - eq:
         - filter:
-          - {call: [{var: lt}, 3]}
-          - {json_parse: ['[1,2,3,4,5]']}
-        - {json_parse: ['[4,5]']}
+          - call:
+            - {var: lt}
+            - 3
+          - json_parse:
+            - '[1,2,3,4,5]'
+        - json_parse:
+          - '[4,5]'
 ```
 
 ## SRCONF-EXPR-014
@@ -368,7 +467,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-014
 title: evaluate reduce and collection helpers are deterministic
-purpose: Verifies reduce, reject, find, partition, group_by, and uniq_by behavior with curried predicates.
+purpose: Verifies reduce, reject, find, partition, group_by, and uniq_by behavior with curried
+  predicates.
 type: text.file
 requires:
   capabilities:
@@ -388,40 +488,63 @@ assert:
   - evaluate:
     - and:
       - eq:
-        - {reduce: [{var: add}, 0, {json_parse: ['[1,2,3,4]']}]}
+        - reduce:
+          - {var: add}
+          - 0
+          - json_parse:
+            - '[1,2,3,4]'
         - 10
       - eq:
         - reject:
-          - {call: [{var: lt}, 2]}
-          - {json_parse: ['[1,2,3,4]']}
-        - {json_parse: ['[1,2]']}
+          - call:
+            - {var: lt}
+            - 2
+          - json_parse:
+            - '[1,2,3,4]'
+        - json_parse:
+          - '[1,2]'
       - eq:
         - find:
-          - {call: [{var: lt}, 3]}
-          - {json_parse: ['[1,2,3,4]']}
+          - call:
+            - {var: lt}
+            - 3
+          - json_parse:
+            - '[1,2,3,4]'
         - 4
       - eq:
         - partition:
-          - {call: [{var: lt}, 2]}
-          - {json_parse: ['[1,2,3,4]']}
-        - {json_parse: ['[[3,4],[1,2]]']}
+          - call:
+            - {var: lt}
+            - 2
+          - json_parse:
+            - '[1,2,3,4]'
+        - json_parse:
+          - '[[3,4],[1,2]]'
       - eq:
         - group_by:
           - fn:
             - [x]
             - if:
-              - {gt: [{var: x}, 2]}
+              - gt:
+                - {var: x}
+                - 2
               - hi
               - lo
-          - {json_parse: ['[1,2,3,4]']}
-        - {json_parse: ['{"lo":[1,2],"hi":[3,4]}']}
+          - json_parse:
+            - '[1,2,3,4]'
+        - json_parse:
+          - '{"lo":[1,2],"hi":[3,4]}'
       - eq:
         - uniq_by:
           - fn:
             - [x]
-            - {get: [{var: x}, k]}
-          - {json_parse: ['[{"k":1},{"k":1},{"k":2}]']}
-        - {json_parse: ['[{"k":1},{"k":2}]']}
+            - get:
+              - {var: x}
+              - k
+          - json_parse:
+            - '[{"k":1},{"k":1},{"k":2}]'
+        - json_parse:
+          - '[{"k":1},{"k":2}]'
 ```
 
 ## SRCONF-EXPR-015
@@ -449,23 +572,47 @@ assert:
   - evaluate:
     - and:
       - eq:
-        - {flatten: [{json_parse: ['[1,[2,[3],[]],4]']}]}
-        - {json_parse: ['[1,2,3,4]']}
+        - flatten:
+          - json_parse:
+            - '[1,[2,[3],[]],4]'
+        - json_parse:
+          - '[1,2,3,4]'
       - eq:
-        - {concat: [{json_parse: ['[1,2]']}, {json_parse: ['[3]']}]}
-        - {json_parse: ['[1,2,3]']}
+        - concat:
+          - json_parse:
+            - '[1,2]'
+          - json_parse:
+            - '[3]'
+        - json_parse:
+          - '[1,2,3]'
       - eq:
-        - {append: [3, {json_parse: ['[1,2]']}]}
-        - {json_parse: ['[1,2,3]']}
+        - append:
+          - 3
+          - json_parse:
+            - '[1,2]'
+        - json_parse:
+          - '[1,2,3]'
       - eq:
-        - {prepend: [0, {json_parse: ['[1,2]']}]}
-        - {json_parse: ['[0,1,2]']}
+        - prepend:
+          - 0
+          - json_parse:
+            - '[1,2]'
+        - json_parse:
+          - '[0,1,2]'
       - eq:
-        - {take: [2, {json_parse: ['[1,2,3]']}]}
-        - {json_parse: ['[1,2]']}
+        - take:
+          - 2
+          - json_parse:
+            - '[1,2,3]'
+        - json_parse:
+          - '[1,2]'
       - eq:
-        - {drop: [2, {json_parse: ['[1,2,3]']}]}
-        - {json_parse: ['[3]']}
+        - drop:
+          - 2
+          - json_parse:
+            - '[1,2,3]'
+        - json_parse:
+          - '[3]'
 ```
 
 ## SRCONF-EXPR-016
@@ -473,7 +620,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-016
 title: evaluate currying chain with nested call succeeds
-purpose: Verifies repeated partial application resolves deterministically to a final non-callable value.
+purpose: Verifies repeated partial application resolves deterministically to a final non-callable
+  value.
 type: text.file
 requires:
   capabilities:
@@ -493,7 +641,9 @@ assert:
   - evaluate:
     - eq:
       - call:
-        - {call: [{var: add}, 2]}
+        - call:
+          - {var: add}
+          - 2
         - 3
       - 5
 ```
@@ -503,7 +653,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-017
 title: evaluate over-application of non-callable result is schema failure
-purpose: Verifies deterministic schema failure when extra call arguments remain after returning non-callable value.
+purpose: Verifies deterministic schema failure when extra call arguments remain after returning
+  non-callable value.
 type: text.file
 requires:
   capabilities:
@@ -524,7 +675,9 @@ assert:
   must:
   - evaluate:
     - call:
-      - {call: [{var: add}, 1]}
+      - call:
+        - {var: add}
+        - 1
       - 2
       - 3
 ```
@@ -554,7 +707,10 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {intersection: [not-a-list, {json_parse: ['[]']}]}
+    - intersection:
+      - not-a-list
+      - json_parse:
+        - '[]'
 ```
 
 ## SRCONF-EXPR-019
@@ -581,32 +737,93 @@ assert:
   must:
   - evaluate:
     - and:
-      - {eq: [{mul: [3, 4]}, 12]}
-      - {eq: [{div: [9, 2]}, 4.5]}
-      - {eq: [{mod: [9, 4]}, 1]}
-      - {eq: [{pow: [2, 5]}, 32]}
-      - {eq: [{clamp: [1, 5, 9]}, 5]}
-      - {eq: [{round: [2.5]}, 3]}
       - eq:
-        - {slice: [1, 3, {json_parse: ['[0,1,2,3]']}]}
-        - {json_parse: ['[1,2]']}
+        - mul:
+          - 3
+          - 4
+        - 12
       - eq:
-        - {reverse: [{json_parse: ['[1,2,3]']}]}
-        - {json_parse: ['[3,2,1]']}
+        - div:
+          - 9
+          - 2
+        - 4.5
       - eq:
-        - {zip: [{json_parse: ['[1,2,3]']}, {json_parse: ['[4,5]']}]}
-        - {json_parse: ['[[1,4],[2,5]]']}
+        - mod:
+          - 9
+          - 4
+        - 1
       - eq:
-        - {zip_with: [{var: add}, {json_parse: ['[1,2,3]']}, {json_parse: ['[4,5,6]']}]}
-        - {json_parse: ['[5,7,9]']}
-      - {eq: [{range: [2, 5]}, {json_parse: ['[2,3,4]']}]}
-      - {eq: [{repeat: [x, 3]}, {json_parse: ['["x","x","x"]']}]}
-      - {is_null: [null]}
-      - {is_bool: [true]}
-      - {is_number: [3.14]}
-      - {is_string: [x]}
-      - {is_list: [{json_parse: ['[1,2]']}]}
-      - {is_dict: [{json_parse: ['{"a":1}']}]}
+        - pow:
+          - 2
+          - 5
+        - 32
+      - eq:
+        - clamp:
+          - 1
+          - 5
+          - 9
+        - 5
+      - eq:
+        - round:
+          - 2.5
+        - 3
+      - eq:
+        - slice:
+          - 1
+          - 3
+          - json_parse:
+            - '[0,1,2,3]'
+        - json_parse:
+          - '[1,2]'
+      - eq:
+        - reverse:
+          - json_parse:
+            - '[1,2,3]'
+        - json_parse:
+          - '[3,2,1]'
+      - eq:
+        - zip:
+          - json_parse:
+            - '[1,2,3]'
+          - json_parse:
+            - '[4,5]'
+        - json_parse:
+          - '[[1,4],[2,5]]'
+      - eq:
+        - zip_with:
+          - {var: add}
+          - json_parse:
+            - '[1,2,3]'
+          - json_parse:
+            - '[4,5,6]'
+        - json_parse:
+          - '[5,7,9]'
+      - eq:
+        - range:
+          - 2
+          - 5
+        - json_parse:
+          - '[2,3,4]'
+      - eq:
+        - repeat:
+          - x
+          - 3
+        - json_parse:
+          - '["x","x","x"]'
+      - is_null:
+        - null
+      - is_bool:
+        - true
+      - is_number:
+        - 3.14
+      - is_string:
+        - x
+      - is_list:
+        - json_parse:
+          - '[1,2]'
+      - is_dict:
+        - json_parse:
+          - '{"a":1}'
 ```
 
 ## SRCONF-EXPR-020
@@ -634,31 +851,72 @@ assert:
   - evaluate:
     - and:
       - eq:
-        - {keys: [{json_parse: ['{"a":1,"b":2}']}]}
-        - {json_parse: ['["a","b"]']}
+        - keys:
+          - json_parse:
+            - '{"a":1,"b":2}'
+        - json_parse:
+          - '["a","b"]'
       - eq:
-        - {values: [{json_parse: ['{"a":1,"b":2}']}]}
-        - {json_parse: ['[1,2]']}
+        - values:
+          - json_parse:
+            - '{"a":1,"b":2}'
+        - json_parse:
+          - '[1,2]'
       - eq:
-        - {entries: [{json_parse: ['{"a":1}']}]}
-        - {json_parse: ['[["a",1]]']}
+        - entries:
+          - json_parse:
+            - '{"a":1}'
+        - json_parse:
+          - '[["a",1]]'
       - eq:
-        - {merge: [{json_parse: ['{"a":1}']}, {json_parse: ['{"b":2}']}]}
-        - {json_parse: ['{"a":1,"b":2}']}
+        - merge:
+          - json_parse:
+            - '{"a":1}'
+          - json_parse:
+            - '{"b":2}'
+        - json_parse:
+          - '{"a":1,"b":2}'
       - eq:
-        - {assoc: [b, 2, {json_parse: ['{"a":1}']}]}
-        - {json_parse: ['{"a":1,"b":2}']}
+        - assoc:
+          - b
+          - 2
+          - json_parse:
+            - '{"a":1}'
+        - json_parse:
+          - '{"a":1,"b":2}'
       - eq:
-        - {dissoc: [a, {json_parse: ['{"a":1,"b":2}']}]}
-        - {json_parse: ['{"b":2}']}
+        - dissoc:
+          - a
+          - json_parse:
+            - '{"a":1,"b":2}'
+        - json_parse:
+          - '{"b":2}'
       - eq:
-        - {pick: [{json_parse: ['["a"]']}, {json_parse: ['{"a":1,"b":2}']}]}
-        - {json_parse: ['{"a":1}']}
+        - pick:
+          - json_parse:
+            - '["a"]'
+          - json_parse:
+            - '{"a":1,"b":2}'
+        - json_parse:
+          - '{"a":1}'
       - eq:
-        - {omit: [{json_parse: ['["a"]']}, {json_parse: ['{"a":1,"b":2}']}]}
-        - {json_parse: ['{"b":2}']}
-      - {prop_eq: [a, 1, {json_parse: ['{"a":1}']}]}
-      - {where: [{json_parse: ['{"a":1}']}, {json_parse: ['{"a":1,"b":2}']}]}
+        - omit:
+          - json_parse:
+            - '["a"]'
+          - json_parse:
+            - '{"a":1,"b":2}'
+        - json_parse:
+          - '{"b":2}'
+      - prop_eq:
+        - a
+        - 1
+        - json_parse:
+          - '{"a":1}'
+      - where:
+        - json_parse:
+          - '{"a":1}'
+        - json_parse:
+          - '{"a":1,"b":2}'
 ```
 
 ## SRCONF-EXPR-021
@@ -687,24 +945,49 @@ assert:
     - and:
       - eq:
         - compose:
-          - {call: [{var: add}, 1]}
-          - {call: [{var: mul}, 2]}
+          - call:
+            - {var: add}
+            - 1
+          - call:
+            - {var: mul}
+            - 2
           - 3
         - 7
       - eq:
         - pipe:
-          - {call: [{var: mul}, 2]}
-          - {call: [{var: add}, 1]}
+          - call:
+            - {var: mul}
+            - 2
+          - call:
+            - {var: add}
+            - 1
           - 3
         - 7
       - eq:
         - call:
-          - {call: [{var: always}, k]}
+          - call:
+            - {var: always}
+            - k
           - 999
         - k
-      - {eq: [{replace: [a-b-c, '-', ':']}, 'a:b:c']}
-      - {eq: [{pad_left: ['7', 3, '0']}, '007']}
-      - {eq: [{pad_right: ['7', 3, '0']}, '700']}
+      - eq:
+        - replace:
+          - a-b-c
+          - '-'
+          - ':'
+        - a:b:c
+      - eq:
+        - pad_left:
+          - '7'
+          - 3
+          - '0'
+        - '007'
+      - eq:
+        - pad_right:
+          - '7'
+          - 3
+          - '0'
+        - '700'
 ```
 
 ## SRCONF-EXPR-022
@@ -712,7 +995,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-022
 title: evaluate ramda v2 unary numeric and compare helpers
-purpose: Verifies unary numeric helpers and comparison helpers produce deterministic values for policy expressions.
+purpose: Verifies unary numeric helpers and comparison helpers produce deterministic values
+  for policy expressions.
 type: text.file
 requires:
   capabilities:
@@ -731,18 +1015,56 @@ assert:
   must:
   - evaluate:
     - and:
-      - {eq: [{abs: [-7]}, 7]}
-      - {eq: [{negate: [3]}, -3]}
-      - {eq: [{inc: [3]}, 4]}
-      - {eq: [{dec: [3]}, 2]}
-      - {eq: [{floor: [3.9]}, 3]}
-      - {eq: [{ceil: [3.1]}, 4]}
-      - {eq: [{compare: [3, 5]}, -1]}
-      - {eq: [{compare: [5, 5]}, 0]}
-      - {eq: [{compare: [7, 5]}, 1]}
-      - {between: [1, 3, 2]}
-      - {xor: [true, false]}
-      - {not: [{xor: [true, true]}]}
+      - eq:
+        - abs:
+          - -7
+        - 7
+      - eq:
+        - negate:
+          - 3
+        - -3
+      - eq:
+        - inc:
+          - 3
+        - 4
+      - eq:
+        - dec:
+          - 3
+        - 2
+      - eq:
+        - floor:
+          - 3.9
+        - 3
+      - eq:
+        - ceil:
+          - 3.1
+        - 4
+      - eq:
+        - compare:
+          - 3
+          - 5
+        - -1
+      - eq:
+        - compare:
+          - 5
+          - 5
+        - 0
+      - eq:
+        - compare:
+          - 7
+          - 5
+        - 1
+      - between:
+        - 1
+        - 3
+        - 2
+      - xor:
+        - true
+        - false
+      - not:
+        - xor:
+          - true
+          - true
 ```
 
 ## SRCONF-EXPR-023
@@ -750,7 +1072,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-023
 title: evaluate ramda v2 utility and predicate helpers
-purpose: Verifies utility and predicate helpers used by governance logic are deterministic and pure.
+purpose: Verifies utility and predicate helpers used by governance logic are deterministic
+  and pure.
 type: text.file
 requires:
   capabilities:
@@ -770,62 +1093,149 @@ assert:
   - evaluate:
     - and:
       - eq:
-        - {count: [{json_parse: ['[1,2,3]']}]}
+        - count:
+          - json_parse:
+            - '[1,2,3]'
         - 3
       - eq:
-        - {first: [{json_parse: ['[9,8,7]']}]}
+        - first:
+          - json_parse:
+            - '[9,8,7]'
         - 9
       - eq:
-        - {rest: [{json_parse: ['[9,8,7]']}]}
-        - {json_parse: ['[8,7]']}
-      - {eq: [{trim: ['  x  ']}, x]}
-      - {eq: [{lower: [AbC]}, abc]}
-      - {eq: [{upper: [AbC]}, ABC]}
-      - {eq: [{split: ['a,b,c', ',']}, {json_parse: ['["a","b","c"]']}]}
+        - rest:
+          - json_parse:
+            - '[9,8,7]'
+        - json_parse:
+          - '[8,7]'
       - eq:
-        - {join: [{json_parse: ['["a","b","c"]']}, '-']}
+        - trim:
+          - '  x  '
+        - x
+      - eq:
+        - lower:
+          - AbC
+        - abc
+      - eq:
+        - upper:
+          - AbC
+        - ABC
+      - eq:
+        - split:
+          - a,b,c
+          - ','
+        - json_parse:
+          - '["a","b","c"]'
+      - eq:
+        - join:
+          - json_parse:
+            - '["a","b","c"]'
+          - '-'
         - a-b-c
-      - {eq: [{coalesce: [null, x]}, x]}
       - eq:
-        - {distinct: [{json_parse: ['[1,1,2,2,3]']}]}
-        - {json_parse: ['[1,2,3]']}
+        - coalesce:
+          - null
+          - x
+        - x
       - eq:
-        - {sort_by: [{json_parse: ['[3,1,2]']}, {var: identity}]}
-        - {json_parse: ['[1,2,3]']}
+        - distinct:
+          - json_parse:
+            - '[1,1,2,2,3]'
+        - json_parse:
+          - '[1,2,3]'
       - eq:
-        - {pluck: [{json_parse: ['[{"k":1},{"k":2}]']}, k]}
-        - {json_parse: ['[1,2]']}
-      - {all: [{json_parse: ['[true,true,true]']}]}
-      - {any: [{json_parse: ['[false,true,false]']}]}
-      - {none: [{json_parse: ['[false,false]']}]}
-      - {is_empty: [{json_parse: ['[]']}]}
-      - {matches: [a42, 'a[0-9]+']}
-      - {matches_all: [a42, {json_parse: ['["^a","[0-9]+$"]']}]}
-      - {regex_match: [a42, 'a[0-9]+']}
+        - sort_by:
+          - json_parse:
+            - '[3,1,2]'
+          - {var: identity}
+        - json_parse:
+          - '[1,2,3]'
       - eq:
-        - {json_type: [{json_parse: ['[1,2]']}, list]}
+        - pluck:
+          - json_parse:
+            - '[{"k":1},{"k":2}]'
+          - k
+        - json_parse:
+          - '[1,2]'
+      - all:
+        - json_parse:
+          - '[true,true,true]'
+      - any:
+        - json_parse:
+          - '[false,true,false]'
+      - none:
+        - json_parse:
+          - '[false,false]'
+      - is_empty:
+        - json_parse:
+          - '[]'
+      - matches:
+        - a42
+        - a[0-9]+
+      - matches_all:
+        - a42
+        - json_parse:
+          - '["^a","[0-9]+$"]'
+      - regex_match:
+        - a42
+        - a[0-9]+
+      - eq:
+        - json_type:
+          - json_parse:
+            - '[1,2]'
+          - list
         - true
       - eq:
-        - {json_type: [{json_parse: ['{"x":1}']}, object]}
+        - json_type:
+          - json_parse:
+            - '{"x":1}'
+          - object
         - true
       - eq:
-        - {json_type: [{json_parse: ['[1,2]']}, array]}
+        - json_type:
+          - json_parse:
+            - '[1,2]'
+          - array
         - true
-      - {eq: [{json_type: [true, boolean]}, true]}
-      - {has_key: [{json_parse: ['{"x":1}']}, x]}
-      - {in: [x, {json_parse: ['{"x":1}']}]}
-      - {eq: [{len: [abcd]}, 4]}
-      - {is_boolean: [true]}
-      - {is_array: [{json_parse: ['[1,2]']}]}
-      - {is_object: [{json_parse: ['{"x":1}']}]}
       - eq:
-        - {sum: [{json_parse: ['[1,2,3]']}]}
+        - json_type:
+          - true
+          - boolean
+        - true
+      - has_key:
+        - json_parse:
+          - '{"x":1}'
+        - x
+      - in:
+        - x
+        - json_parse:
+          - '{"x":1}'
+      - eq:
+        - len:
+          - abcd
+        - 4
+      - is_boolean:
+        - true
+      - is_array:
+        - json_parse:
+          - '[1,2]'
+      - is_object:
+        - json_parse:
+          - '{"x":1}'
+      - eq:
+        - sum:
+          - json_parse:
+            - '[1,2,3]'
         - 6
       - eq:
-        - {min: [{json_parse: ['[4,2,8]']}]}
+        - min:
+          - json_parse:
+            - '[4,2,8]'
         - 2
       - eq:
-        - {max: [{json_parse: ['[4,2,8]']}]}
+        - max:
+          - json_parse:
+            - '[4,2,8]'
         - 8
 ```
 
@@ -834,7 +1244,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-EXPR-024
 title: evaluate ramda v2 schema failures are deterministic
-purpose: Verifies representative arity and type failures stay in schema category for the expanded builtin surface.
+purpose: Verifies representative arity and type failures stay in schema category for the expanded
+  builtin surface.
 type: text.file
 requires:
   capabilities:
@@ -854,5 +1265,6 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {compare: [1]}
+    - compare:
+      - 1
 ```

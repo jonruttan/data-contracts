@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-CONF-PORT-002
 title: conformance cases avoid non-deterministic ambient tokens
-purpose: Ensures portable conformance fixtures avoid direct time/random expressions that break cross-run determinism.
+purpose: Ensures portable conformance fixtures avoid direct time/random expressions that break
+  cross-run determinism.
 type: governance.check
 check: conformance.portable_determinism_guard
 harness:
@@ -48,26 +49,38 @@ harness:
                       - map:
                         - fn:
                           - [p]
-                          - {matches: [{var: s}, {var: p}]}
+                          - matches:
+                            - {var: s}
+                            - {var: p}
                         - {var: patterns}
-                  - {get: [{var: row}, strings]}
+                  - get:
+                    - {var: row}
+                    - strings
               - 0
           - {var: subject}
       - 0
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - conformance.portable_determinism_guard
 ```

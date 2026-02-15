@@ -11,7 +11,9 @@ check: spec_lang.stdlib_docs_sync
 harness:
   root: .
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
   spec_lang:
     library_paths:
     - /docs/spec/libraries/policy/policy_core.spec.md
@@ -21,5 +23,7 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 ```

@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-ENTRY-003
 title: python lane is explicit opt-in
-purpose: Ensures contributor docs require explicit impl selection when using the python runner lane.
+purpose: Ensures contributor docs require explicit impl selection when using the python runner
+  lane.
 type: governance.check
 check: runtime.python_lane_explicit_opt_in
 harness:
@@ -26,19 +27,27 @@ harness:
     - SPEC_RUNNER_IMPL="python"
     - SPEC_RUNNER_IMPL=python ./scripts/ci_gate.sh
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.python_lane_explicit_opt_in
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
 ```

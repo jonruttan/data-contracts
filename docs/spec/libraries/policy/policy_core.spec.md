@@ -14,23 +14,31 @@ definitions:
       fn:
       - [subject]
       - is_empty:
-        - {get: [{var: subject}, violations]}
+        - get:
+          - {var: subject}
+          - violations
   private:
     policy.fail_when_has_violations:
       fn:
       - [subject]
       - not:
-        - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+        - call:
+          - {var: policy.pass_when_no_violations}
+          - {var: subject}
     policy.check_id_is:
       fn:
       - [subject, expected]
       - eq:
-        - {get: [{var: subject}, check_id]}
+        - get:
+          - {var: subject}
+          - check_id
         - {var: expected}
     policy.violation_count_is:
       fn:
       - [subject, expected]
       - eq:
-        - {get: [{var: subject}, violation_count]}
+        - get:
+          - {var: subject}
+          - violation_count
         - {var: expected}
 ```

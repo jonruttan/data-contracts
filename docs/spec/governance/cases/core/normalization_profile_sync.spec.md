@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-NORM-001
 title: normalization profile defines required source-of-truth fields
-purpose: Ensures normalization profile exists and includes all required top-level keys and path scopes.
+purpose: Ensures normalization profile exists and includes all required top-level keys and
+  path scopes.
 type: governance.check
 check: normalization.profile_sync
 harness:
@@ -16,19 +17,27 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - normalization.profile_sync
 ```

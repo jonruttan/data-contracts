@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-LIB-DOMAIN-001
 title: library paths obey domain ownership
-purpose: Ensures conformance cases use conformance libraries and governance cases use policy/path libraries.
+purpose: Ensures conformance cases use conformance libraries and governance cases use policy/path
+  libraries.
 type: governance.check
 check: library.domain_ownership
 harness:
@@ -16,12 +17,16 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - library.domain_ownership
 ```

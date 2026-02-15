@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-SPEC-PORT-001
 title: spec self-containment metric computes with configured segmented policy
-purpose: Ensures portability metric configuration is schema-valid and report generation succeeds for all canonical spec roots.
+purpose: Ensures portability metric configuration is schema-valid and report generation succeeds
+  for all canonical spec roots.
 type: governance.check
 check: spec.portability_metric
 harness:
@@ -47,27 +48,45 @@ harness:
     enforce: false
     policy_evaluate:
     - and:
-      - {json_type: [{var: subject}, dict]}
-      - {has_key: [{var: subject}, summary]}
-      - {has_key: [{var: subject}, segments]}
-      - {has_key: [{var: subject}, worst_cases]}
       - json_type:
-        - {get: [{var: subject}, summary]}
+        - {var: subject}
+        - dict
+      - has_key:
+        - {var: subject}
+        - summary
+      - has_key:
+        - {var: subject}
+        - segments
+      - has_key:
+        - {var: subject}
+        - worst_cases
+      - json_type:
+        - get:
+          - {var: subject}
+          - summary
         - dict
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - spec.portability_metric
 ```

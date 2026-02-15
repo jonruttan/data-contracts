@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-REF-SYMBOLS-003
 title: library exports are referenced
-purpose: Ensures exported library symbols are referenced by case policies/expressions or harness exports.
+purpose: Ensures exported library symbols are referenced by case policies/expressions or harness
+  exports.
 type: governance.check
 check: reference.library_exports_used
 harness:
@@ -16,12 +17,16 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - reference.library_exports_used
 ```

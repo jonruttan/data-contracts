@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-ASSERT-SYNC-001
 title: compiler behavior stays aligned with universal assertion contract
-purpose: Ensures compiler operator handling, schema wording, and assertion contract wording stay synchronized for universal evaluate core semantics.
+purpose: Ensures compiler operator handling, schema wording, and assertion contract wording
+  stay synchronized for universal evaluate core semantics.
 type: governance.check
 check: assert.compiler_schema_matrix_sync
 harness:
@@ -16,19 +17,27 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - assert.compiler_schema_matrix_sync
 ```

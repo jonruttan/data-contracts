@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-DOCS-OPER-002
 title: docs operability metric is non-regressing
-purpose: Enforces monotonic non-regression for docs operability metrics against checked-in baseline.
+purpose: Enforces monotonic non-regression for docs operability metrics against checked-in
+  baseline.
 type: governance.check
 check: docs.operability_non_regression
 harness:
@@ -28,19 +29,27 @@ harness:
     docs_operability:
       reference_manifest: /docs/book/reference_manifest.yaml
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - docs.operability_non_regression
 ```

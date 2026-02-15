@@ -13,7 +13,9 @@ definitions:
       - [subject, allowed]
       - in:
         - get:
-          - {get: [{var: subject}, value]}
+          - get:
+            - {var: subject}
+            - value
           - status
         - {var: allowed}
 ```

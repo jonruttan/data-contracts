@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-ASSERT-PROFILE-004
 title: domain conformance checks are library-backed
-purpose: Ensures domain conformance checks use harness.spec_lang domain libraries rather than ad hoc inline-only policy.
+purpose: Ensures domain conformance checks use harness.spec_lang domain libraries rather than
+  ad hoc inline-only policy.
 type: governance.check
 check: assert.domain_library_usage_required
 harness:
@@ -16,10 +17,14 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 ```

@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRCONF-LIB-CONTRACT-001
 title: policy library uses flat definitions scopes
-purpose: Ensures policy library authoring uses definitions.public/definitions.private symbol maps without nested functions blocks.
+purpose: Ensures policy library authoring uses definitions.public/definitions.private symbol
+  maps without nested functions blocks.
 type: text.file
 path: /docs/spec/libraries/policy/policy_core.spec.md
 expect:
@@ -15,11 +16,19 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, 'definitions:']}
-    - {contains: [{var: subject}, 'public:']}
-    - {contains: [{var: subject}, 'private:']}
+    - contains:
+      - {var: subject}
+      - 'definitions:'
+    - contains:
+      - {var: subject}
+      - 'public:'
+    - contains:
+      - {var: subject}
+      - 'private:'
     - not:
-      - {contains: [{var: subject}, 'functions:']}
+      - contains:
+        - {var: subject}
+        - 'functions:'
 ```
 
 ## SRCONF-LIB-CONTRACT-002
@@ -27,7 +36,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-LIB-CONTRACT-002
 title: path library uses flat definitions scopes
-purpose: Ensures path library authoring uses definitions.public/definitions.private symbol maps without nested functions blocks.
+purpose: Ensures path library authoring uses definitions.public/definitions.private symbol
+  maps without nested functions blocks.
 type: text.file
 path: /docs/spec/libraries/path/path_core.spec.md
 expect:
@@ -37,11 +47,19 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, 'definitions:']}
-    - {contains: [{var: subject}, 'public:']}
-    - {contains: [{var: subject}, 'private:']}
+    - contains:
+      - {var: subject}
+      - 'definitions:'
+    - contains:
+      - {var: subject}
+      - 'public:'
+    - contains:
+      - {var: subject}
+      - 'private:'
     - not:
-      - {contains: [{var: subject}, 'functions:']}
+      - contains:
+        - {var: subject}
+        - 'functions:'
 ```
 
 ## SRCONF-LIB-CONTRACT-003
@@ -49,7 +67,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-LIB-CONTRACT-003
 title: library index exports only public symbols
-purpose: Ensures generated library index contains public export symbols and does not expose private-only symbols.
+purpose: Ensures generated library index contains public export symbols and does not expose
+  private-only symbols.
 type: text.file
 path: /docs/spec/libraries/policy/index.md
 expect:
@@ -59,7 +78,11 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, policy.pass_when_no_violations]}
+    - contains:
+      - {var: subject}
+      - policy.pass_when_no_violations
     - not:
-      - {contains: [{var: subject}, policy.fail_when_has_violations]}
+      - contains:
+        - {var: subject}
+        - policy.fail_when_has_violations
 ```

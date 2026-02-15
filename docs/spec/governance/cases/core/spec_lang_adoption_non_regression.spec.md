@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-SPEC-LANG-002
 title: spec-lang adoption metric is non-regressing
-purpose: Enforces monotonic non-regression for spec-lang adoption metrics against checked-in baseline.
+purpose: Enforces monotonic non-regression for spec-lang adoption metrics against checked-in
+  baseline.
 type: governance.check
 check: spec.spec_lang_adoption_non_regression
 harness:
@@ -45,19 +46,27 @@ harness:
         segment: impl
       recursive: true
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - spec.spec_lang_adoption_non_regression
 ```

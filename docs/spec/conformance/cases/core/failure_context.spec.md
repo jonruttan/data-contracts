@@ -8,7 +8,8 @@ debugging and parity checks remain deterministic.
 ```yaml spec-test
 id: SRCONF-ERR-001
 title: failing assertion includes context tokens in message
-purpose: Guarantees failure messages carry deterministic context tokens for debugging and parity.
+purpose: Guarantees failure messages carry deterministic context tokens for debugging and
+  parity.
 type: text.file
 expect:
   portable:
@@ -23,5 +24,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{var: subject}, \A\Z]}
+    - regex_match:
+      - {var: subject}
+      - \A\Z
 ```

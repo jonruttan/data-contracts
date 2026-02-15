@@ -4828,6 +4828,17 @@ def _scan_normalization_spec_style_sync(root: Path, *, harness: dict | None = No
         violations.append(
             f"docs/spec/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing block-size token {expected_token}"
         )
+    required_style_tokens = (
+        "block-first multiline expression formatting",
+        "flow style is reserved for trivial atoms only",
+        "nested operator arguments must remain multiline",
+    )
+    lower = raw.lower()
+    for tok in required_style_tokens:
+        if tok not in lower:
+            violations.append(
+                f"docs/spec/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing readability token {tok!r}"
+            )
     if "flow-sequence" in raw:
         line = raw[: raw.find("flow-sequence")].count("\n") + 1
         violations.append(

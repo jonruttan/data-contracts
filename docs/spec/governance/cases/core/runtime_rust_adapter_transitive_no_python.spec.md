@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-PYDEP-004
 title: rust adapter boundary avoids transitive python delegation tokens
-purpose: Ensures rust adapter boundary files do not delegate to python adapter entrypoints or direct python execution tokens.
+purpose: Ensures rust adapter boundary files do not delegate to python adapter entrypoints
+  or direct python execution tokens.
 type: governance.check
 check: runtime.rust_adapter_transitive_no_python
 harness:
@@ -23,19 +24,27 @@ harness:
     - scripts/runner_adapter.sh
     - scripts/run_governance_specs.py
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.rust_adapter_transitive_no_python
 ```

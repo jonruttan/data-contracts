@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-POLICY-LIB-001
 title: governance library-backed policy usage is non-regressing
-purpose: Enforces monotonic non-regression for governance policy expressions that use shared spec-lang libraries.
+purpose: Enforces monotonic non-regression for governance policy expressions that use shared
+  spec-lang libraries.
 type: governance.check
 check: governance.policy_library_usage_non_regression
 harness:
@@ -37,19 +38,27 @@ harness:
         segment: impl
       recursive: true
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - governance.policy_library_usage_non_regression
 ```

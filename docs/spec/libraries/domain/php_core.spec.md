@@ -13,7 +13,9 @@ definitions:
       - [subject]
       - eq:
         - get:
-          - {get: [{var: subject}, meta]}
+          - get:
+            - {var: subject}
+            - meta
           - php_array_kind
         - assoc
 ```

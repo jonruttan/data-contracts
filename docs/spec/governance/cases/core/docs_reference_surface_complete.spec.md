@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-DOCS-REF-001
 title: docs reference surface files exist
-purpose: Enforces that the canonical docs reference surface remains complete and cannot silently lose required files.
+purpose: Enforces that the canonical docs reference surface remains complete and cannot silently
+  lose required files.
 type: governance.check
 check: docs.reference_surface_complete
 harness:
@@ -26,19 +27,27 @@ harness:
     required_globs:
     - docs/spec/contract/*.md
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - docs.reference_surface_complete
 ```

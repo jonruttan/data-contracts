@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-LIB-SURFACE-001
 title: library public/private surface model is enforced
-purpose: Ensures spec_lang.library cases use definitions.public/definitions.private scopes and do not use legacy export shape.
+purpose: Ensures spec_lang.library cases use definitions.public/definitions.private scopes
+  and do not use legacy export shape.
 type: governance.check
 check: library.public_surface_model
 harness:
@@ -16,12 +17,16 @@ harness:
     exports:
     - policy.pass_when_no_violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - library.public_surface_model
 ```

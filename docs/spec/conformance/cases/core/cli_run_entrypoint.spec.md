@@ -65,5 +65,7 @@ assert:
 - target: stdout
   must:
   - evaluate:
-    - {contains: [{var: subject}, '"ok": true']}
+    - contains:
+      - {var: subject}
+      - '"ok": true'
 ```

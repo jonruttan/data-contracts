@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-CONF-API-001
 title: api.http portable conformance cases use canonical shape
-purpose: Ensures api.http portable fixtures keep setup under harness and use only canonical behavior assertion targets.
+purpose: Ensures api.http portable fixtures keep setup under harness and use only canonical
+  behavior assertion targets.
 type: governance.check
 check: conformance.api_http_portable_shape
 harness:
@@ -36,19 +37,27 @@ harness:
     - method
     - url
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - conformance.api_http_portable_shape
 ```

@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRCONF-SCHEMA-CASE-001
 title: valid core shape compiles and runs
-purpose: Ensures standard top-level keys accepted by registry validation continue to execute successfully.
+purpose: Ensures standard top-level keys accepted by registry validation continue to execute
+  successfully.
 type: text.file
 expect:
   portable:
@@ -15,7 +16,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, Spec-Test Schema (v1)]}
+    - contains:
+      - {var: subject}
+      - Spec-Test Schema (v1)
 ```
 
 ## SRCONF-SCHEMA-CASE-002
@@ -33,5 +36,6 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {unknown_symbol_for_schema_case: [{var: subject}]}
+    - unknown_symbol_for_schema_case:
+      - {var: subject}
 ```

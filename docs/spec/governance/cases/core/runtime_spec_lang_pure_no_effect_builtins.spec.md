@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-SPECLANG-PURE-001
 title: spec-lang evaluators avoid side-effectful builtins
-purpose: Enforces pure evaluation semantics by forbidding side-effectful probes in spec-lang implementations.
+purpose: Enforces pure evaluation semantics by forbidding side-effectful probes in spec-lang
+  implementations.
 type: governance.check
 check: runtime.spec_lang_pure_no_effect_builtins
 harness:
@@ -23,19 +24,27 @@ harness:
     forbidden_tokens:
     - path_exists
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.spec_lang_pure_no_effect_builtins
 ```

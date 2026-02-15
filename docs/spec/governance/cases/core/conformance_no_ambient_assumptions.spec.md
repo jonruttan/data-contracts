@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-CONF-PORT-003
 title: conformance cases avoid ambient env/time/random assumptions
-purpose: Ensures portable conformance fixtures do not embed ambient environment, clock, or random-source assumptions.
+purpose: Ensures portable conformance fixtures do not embed ambient environment, clock, or
+  random-source assumptions.
 type: governance.check
 check: conformance.no_ambient_assumptions
 harness:
@@ -41,21 +42,31 @@ harness:
     - \bSystem\.getenv\s*\(
     policy_evaluate:
     - is_empty:
-      - {get: [{var: subject}, violations]}
+      - get:
+        - {var: subject}
+        - violations
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - conformance.no_ambient_assumptions
 ```

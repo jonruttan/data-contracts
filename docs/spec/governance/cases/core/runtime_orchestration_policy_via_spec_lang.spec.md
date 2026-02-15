@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-ORCH-001
 title: gate orchestration verdict is policy-driven via spec-lang
-purpose: Ensures CI gate summary determines final verdict using a spec-lang policy expression from governance config.
+purpose: Ensures CI gate summary determines final verdict using a spec-lang policy expression
+  from governance config.
 type: governance.check
 check: runtime.orchestration_policy_via_spec_lang
 harness:
@@ -34,24 +35,34 @@ harness:
           - fn:
             - [step]
             - neq:
-              - {get: [{var: step}, status]}
+              - get:
+                - {var: step}
+                - status
               - pass
           - {var: subject}
       - 0
   policy_evaluate:
-  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{var: subject}, 0]}
+    - eq:
+      - {var: subject}
+      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{var: subject}, passed]}
+      - get:
+        - {var: subject}
+        - passed
       - true
     - eq:
-      - {get: [{var: subject}, check_id]}
+      - get:
+        - {var: subject}
+        - check_id
       - runtime.orchestration_policy_via_spec_lang
 ```

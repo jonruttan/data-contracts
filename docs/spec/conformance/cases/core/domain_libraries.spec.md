@@ -23,10 +23,19 @@ assert:
   - evaluate:
     - call:
       - {var: http.status_in}
-      - {lit: {value: {status: 200}, meta: {}}}
-      - {lit: [200, 201]}
-    - {contains: [{var: subject}, http.status_in]}
-    - {contains: [{var: subject}, 'type: spec_lang.library']}
+      - lit:
+          value:
+            status: 200
+          meta: {}
+      - lit:
+        - 200
+        - 201
+    - contains:
+      - {var: subject}
+      - http.status_in
+    - contains:
+      - {var: subject}
+      - 'type: spec_lang.library'
 ```
 
 ## SRCONF-DOMAIN-LIB-002
@@ -58,24 +67,47 @@ assert:
   - evaluate:
     - call:
       - {var: make.has_target}
-      - {lit: {value: "ci-gate:\n\t@echo ok\n", meta: {}}}
+      - lit:
+          value: "ci-gate:\n\t@echo ok\n"
+          meta: {}
       - ci-gate
     - call:
       - {var: md.has_heading}
-      - {lit: {value: '# Contract
+      - lit:
+          value: '# Contract
 
 
-            Text', meta: {}}}
+            Text'
+          meta: {}
       - Contract
     - call:
       - {var: py.is_tuple_projection}
-      - {lit: {value: [1, 2], meta: {native_kind: python.tuple}}}
+      - lit:
+          value:
+          - 1
+          - 2
+          meta:
+            native_kind: python.tuple
     - call:
       - {var: php.is_assoc_projection}
-      - {lit: {value: {k: v}, meta: {php_array_kind: assoc}}}
-    - {contains: [{var: subject}, /docs/spec/libraries/domain/http_core.spec.md]}
-    - {contains: [{var: subject}, /docs/spec/libraries/domain/make_core.spec.md]}
-    - {contains: [{var: subject}, /docs/spec/libraries/domain/markdown_core.spec.md]}
-    - {contains: [{var: subject}, /docs/spec/libraries/domain/php_core.spec.md]}
-    - {contains: [{var: subject}, /docs/spec/libraries/domain/python_core.spec.md]}
+      - lit:
+          value:
+            k: v
+          meta:
+            php_array_kind: assoc
+    - contains:
+      - {var: subject}
+      - /docs/spec/libraries/domain/http_core.spec.md
+    - contains:
+      - {var: subject}
+      - /docs/spec/libraries/domain/make_core.spec.md
+    - contains:
+      - {var: subject}
+      - /docs/spec/libraries/domain/markdown_core.spec.md
+    - contains:
+      - {var: subject}
+      - /docs/spec/libraries/domain/php_core.spec.md
+    - contains:
+      - {var: subject}
+      - /docs/spec/libraries/domain/python_core.spec.md
 ```
