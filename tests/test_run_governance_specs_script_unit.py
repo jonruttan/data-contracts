@@ -2334,3 +2334,67 @@ assert:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_current_spec_policy_key_names(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "policy_key_names.spec.md",
+        _case_for_check("SRGOV-TEST-DOCS-KEYS-001", "docs.current_spec_policy_key_names", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/governance/cases/good.spec.md",
+        """# Good
+
+## SRGOV-GOOD-001
+
+```yaml spec-test
+id: SRGOV-GOOD-001
+type: governance.check
+check: conformance.spec_lang_preferred
+harness:
+  root: .
+  spec_lang_preferred:
+    roots: [docs/spec/conformance/cases]
+    allow_non_evaluate_files: []
+    policy_evaluate:
+      - [\"eq\", 1, 1]
+assert:
+  - target: text
+    must:
+      - contain: [\"ok\"]
+```
+""",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/governance/cases/bad.spec.md",
+        """# Bad
+
+## SRGOV-BAD-001
+
+```yaml spec-test
+id: SRGOV-BAD-001
+type: governance.check
+check: conformance.spec_lang_preferred
+harness:
+  root: .
+  spec_lang_preferred:
+    roots: [docs/spec/conformance/cases]
+    allow_non_evaluate_files: []
+    policy_expr:
+      - [\"eq\", 1, 1]
+assert:
+  - target: text
+    must:
+      - contain: [\"ok\"]
+```
+""",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

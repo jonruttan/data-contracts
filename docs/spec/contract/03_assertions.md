@@ -46,6 +46,12 @@ Internal execution model:
 - compile mapping/invariants are documented in
   `docs/spec/contract/09_internal_representation.md`
 
+## Naming Contract
+
+- `evaluate` is the assertion leaf operator used under `assert`.
+- `policy_evaluate` is for governance/orchestration policy expressions in
+  harness config.
+
 ## Spec-Lang-Primary Runtime Contract
 
 - `contain` / `regex` / `exists` / `json_type` remain valid leaf operators in

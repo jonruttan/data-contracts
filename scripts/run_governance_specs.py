@@ -14,6 +14,7 @@ from typing import Callable
 import yaml
 from spec_runner.assertions import eval_assert_tree, iter_leaf_assertions
 from spec_runner.dispatcher import SpecRunContext, iter_cases, run_case
+from spec_runner.doc_parser import iter_spec_doc_tests
 from spec_runner.purpose_lint import (
     load_purpose_lint_policy,
     purpose_quality_warnings,
@@ -630,6 +631,43 @@ def _scan_current_spec_only_contract(root: Path) -> list[str]:
                         f"{rel}:{i}: forbidden pre-current-spec reference matched /{pat.pattern}/"
                     )
                     break
+    return violations
+
+
+def _iter_mapping_key_paths(value: object, *, path: str = ""):
+    if isinstance(value, dict):
+        for k, v in value.items():
+            key = str(k)
+            next_path = f"{path}.{key}" if path else key
+            yield next_path, key
+            yield from _iter_mapping_key_paths(v, path=next_path)
+    elif isinstance(value, list):
+        for idx, item in enumerate(value):
+            next_path = f"{path}[{idx}]" if path else f"[{idx}]"
+            yield from _iter_mapping_key_paths(item, path=next_path)
+
+
+def _scan_current_spec_policy_key_names(root: Path) -> list[str]:
+    violations: list[str] = []
+    specs_root = root / "docs/spec"
+    if not specs_root.exists():
+        return violations
+    for p in sorted(specs_root.rglob("*.spec.md")):
+        try:
+            tests = list(iter_spec_doc_tests(p.parent, file_pattern=p.name))
+        except Exception as exc:  # noqa: BLE001
+            rel = p.relative_to(root)
+            violations.append(f"{rel}:1: unable to parse spec-test blocks: {exc}")
+            continue
+        for spec in tests:
+            case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
+            for key_path, key in _iter_mapping_key_paths(spec.test):
+                if key.endswith("_expr"):
+                    rel = p.relative_to(root)
+                    violations.append(
+                        f"{rel}: case {case_id} uses unsupported policy-expression key at {key_path}; "
+                        "use 'policy_evaluate'"
+                    )
     return violations
 
 
@@ -1868,6 +1906,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
+    "docs.current_spec_policy_key_names": _scan_current_spec_policy_key_names,
     "conformance.type_contract_docs": _scan_conformance_type_contract_docs,
     "conformance.api_http_portable_shape": _scan_conformance_api_http_portable_shape,
     "conformance.no_runner_logic_outside_harness": _scan_conformance_no_runner_logic_outside_harness,

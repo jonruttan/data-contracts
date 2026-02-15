@@ -752,6 +752,22 @@ rules:
       - docs/spec/contract/10_docs_quality.md
       - docs/spec/governance/cases/docs_release_contract_automation_policy.spec.md
 
+  - id: CURRENT_SPEC_POLICY_KEY_NAMES
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.case_key_names
+    norm: MUST
+    requirement: policy_expression_key_uses_policy_evaluate_only
+    description: >
+      Current `.spec.md` cases use `policy_evaluate` as the policy expression
+      key name.
+    rationale: Reduces naming confusion between assertion `evaluate` and policy expression fields.
+    risk_if_violated: Mixed key names create ambiguity and drift in policy execution wiring.
+    references:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/15_governance_subject_model.md
+      - docs/spec/governance/cases/docs_current_spec_policy_key_names.spec.md
+
   - id: RUNTIME_RUNNER_INTERFACE_GATE_SYNC
     introduced_in: v1
     scope: governance

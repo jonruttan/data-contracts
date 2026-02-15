@@ -926,3 +926,18 @@ links:
       - scripts/ci_gate_summary.py
       - docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
     notes: "CI gate summary loads a spec-lang decision expression from governance policy case."
+
+  - rule_id: CURRENT_SPEC_POLICY_KEY_NAMES
+    policy_ref: docs/spec/contract/policy_v1.yaml#CURRENT_SPEC_POLICY_KEY_NAMES
+    contract_refs:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/15_governance_subject_model.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_current_spec_policy_key_names.spec.md
+    notes: "Governance checks align current spec cases to the policy_evaluate key."

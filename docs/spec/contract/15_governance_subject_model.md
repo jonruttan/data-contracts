@@ -29,9 +29,14 @@ Subject payload examples:
 When migrating a governance check:
 
 - keep extraction in adapter code
-- move pass/fail decision into spec-lang `evaluate`
+- move pass/fail decision into spec-lang `policy_evaluate`
 - preserve error category and stable message expectations
 - keep behavior parity with previous scanner logic
+
+Naming rule:
+
+- Assertion trees use `evaluate`.
+- Governance/orchestration policy fields use `policy_evaluate`.
 
 ## Initial Migration Scope
 
