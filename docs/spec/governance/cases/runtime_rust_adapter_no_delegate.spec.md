@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   rust_adapter:
-    path: scripts/rust/runner_adapter.sh
+    path: /scripts/rust/runner_adapter.sh
     required_tokens:
     - spec_runner_cli
     - cargo run --quiet

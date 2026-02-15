@@ -19,10 +19,13 @@ Governance policy reuse:
 
 Library paths:
 
-- MAY be relative to the current spec document or absolute
+- use virtual-root path semantics (`/` = contract root)
+- root-relative values normalize to canonical `/...`
 - MUST resolve within contract root
 - MUST point to existing files
 - MAY reference `.spec.md`, `.spec.yaml`, or `.spec.yml` library files
+- external references (`external://provider/id`) are deny-by-default and
+  require explicit capability + harness policy allowlist
 
 ## Library Document Shape
 

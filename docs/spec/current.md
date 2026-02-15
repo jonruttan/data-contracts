@@ -69,6 +69,9 @@ Notes:
   subcommand `ci-gate-summary` (no direct gate-script Python summary call).
 - Gate scripts default to Rust adapter (`scripts/rust/runner_adapter.sh`);
   Python runner lane remains explicit opt-in via `SPEC_RUNNER_BIN`.
+- Contract path model now uses virtual-root semantics (`/` = contract root)
+  with canonical `/...` normalization and explicit deny-by-default
+  `external://provider/id` references.
 
 Canonical spec docs:
 

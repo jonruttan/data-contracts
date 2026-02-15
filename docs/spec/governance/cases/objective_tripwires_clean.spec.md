@@ -12,12 +12,12 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   objective_tripwires:
-    manifest_path: docs/spec/metrics/objective_manifest.yaml
-    cases_path: docs/spec/governance/cases
+    manifest_path: /docs/spec/metrics/objective_manifest.yaml
+    cases_path: /docs/spec/governance/cases
     case_file_pattern: '*.spec.md'
   policy_evaluate:
   - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}

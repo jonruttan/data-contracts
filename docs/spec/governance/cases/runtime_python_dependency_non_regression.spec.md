@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   python_dependency_non_regression:
-    baseline_path: docs/spec/metrics/python_dependency_baseline.json
+    baseline_path: /docs/spec/metrics/python_dependency_baseline.json
     summary_fields:
       non_python_lane_python_exec_count: non_increase
       transitive_adapter_python_exec_count: non_increase

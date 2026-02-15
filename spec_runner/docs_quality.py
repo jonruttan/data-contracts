@@ -7,6 +7,7 @@ import shlex
 from typing import Any
 
 import yaml
+from spec_runner.virtual_paths import VirtualPathError, resolve_contract_path
 
 
 @dataclass(frozen=True)
@@ -176,7 +177,10 @@ def validate_doc_meta(rel: str, meta: dict[str, Any], *, line: int) -> list[Docs
 
 def load_reference_manifest(repo_root: Path, rel_path: str) -> tuple[dict[str, Any], list[DocsIssue]]:
     issues: list[DocsIssue] = []
-    path = repo_root / rel_path
+    try:
+        path = resolve_contract_path(repo_root, rel_path, field="reference_manifest")
+    except VirtualPathError:
+        path = repo_root / rel_path.lstrip("/")
     if not path.exists():
         return {}, [DocsIssue(rel_path, 1, "missing reference manifest")]
     raw = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -291,7 +295,10 @@ def load_docs_meta_for_paths(
     meta_lines: dict[str, int] = {}
     issues: list[DocsIssue] = []
     for rel in rel_paths:
-        path = repo_root / rel
+        try:
+            path = resolve_contract_path(repo_root, rel, field="docs path")
+        except VirtualPathError:
+            path = repo_root / rel.lstrip("/")
         if not path.exists():
             issues.append(DocsIssue(rel, 1, "missing required docs file"))
             continue
@@ -350,7 +357,11 @@ def check_token_dependency_resolved(metas: dict[str, dict[str, Any]]) -> list[Do
 def check_instructions_complete(repo_root: Path, metas: dict[str, dict[str, Any]]) -> list[DocsIssue]:
     issues: list[DocsIssue] = []
     for rel, meta in metas.items():
-        text = (repo_root / rel).read_text(encoding="utf-8")
+        try:
+            path = resolve_contract_path(repo_root, rel, field="docs path")
+        except VirtualPathError:
+            path = repo_root / rel.lstrip("/")
+        text = path.read_text(encoding="utf-8")
         sections = meta.get("sections_required", []) or []
         want = [str(x).strip() for x in sections if str(x).strip()]
         if not want:
@@ -365,7 +376,10 @@ def check_instructions_complete(repo_root: Path, metas: dict[str, dict[str, Any]
 def check_command_examples_verified(repo_root: Path, rel_paths: list[str]) -> list[DocsIssue]:
     issues: list[DocsIssue] = []
     for rel in rel_paths:
-        path = repo_root / rel
+        try:
+            path = resolve_contract_path(repo_root, rel, field="docs path")
+        except VirtualPathError:
+            path = repo_root / rel.lstrip("/")
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8")

@@ -35,8 +35,9 @@ Define portable API endpoint behavior checks without coupling specs to one runti
 - Transport/setup details MUST live under `harness`.
 - Portable behavior assertions MUST use canonical `assert` groups/operators.
 - `request.method` SHOULD be uppercase HTTP token form (for example `GET`, `POST`).
-- `request.url` MAY be a URL or a spec-relative path; relative paths MUST remain
-  inside contract root.
+- `request.url` MAY be a URL or a contract path (`/` = contract root);
+  root-relative values normalize to canonical `/...` and MUST remain inside
+  contract root.
 - target semantics:
   - `status`: HTTP status string
   - `headers`: deterministic header text view

@@ -12,18 +12,18 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   conformance_evaluate_first_non_regression:
-    baseline_path: docs/spec/metrics/spec_lang_adoption_baseline.json
+    baseline_path: /docs/spec/metrics/spec_lang_adoption_baseline.json
     segment_fields:
       conformance:
         mean_logic_self_contained_ratio: non_decrease
     epsilon: 1.0e-12
     spec_lang_adoption:
       roots:
-      - docs/spec/conformance/cases
+      - /docs/spec/conformance/cases
       segment_rules:
       - prefix: docs/spec/conformance/cases
         segment: conformance

@@ -1,28 +1,28 @@
 version: 1
 title: Spec Runner Reference Manual
 chapters:
-- path: docs/book/00_first_10_minutes.md
+- path: /docs/book/00_first_10_minutes.md
   summary: first-run setup and safety model.
   contract_refs:
   - docs/spec/contract/10_docs_quality.md
-- path: docs/book/01_quickstart.md
+- path: /docs/book/01_quickstart.md
   summary: minimal runnable path.
   contract_refs:
   - docs/spec/contract/10_docs_quality.md
-- path: docs/book/02_core_model.md
+- path: /docs/book/02_core_model.md
   summary: case model and discovery contract.
   contract_refs:
   - docs/spec/contract/02_case_shape.md
   - docs/spec/contract/01_discovery.md
-- path: docs/book/03_assertions.md
+- path: /docs/book/03_assertions.md
   summary: assertion tree and operators.
   contract_refs:
   - docs/spec/contract/03_assertions.md
-- path: docs/book/04_spec_lang_reference.md
+- path: /docs/book/04_spec_lang_reference.md
   summary: evaluate language reference including currying, set algebra, and collection transforms.
   contract_refs:
   - docs/spec/contract/03b_spec_lang_v1.md
-- path: docs/book/appendix_cheatsheet.md
+- path: /docs/book/appendix_cheatsheet.md
   summary: compact authoring cheatsheet.
   contract_refs:
   - docs/spec/schema/schema_v1.md

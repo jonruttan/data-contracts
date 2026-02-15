@@ -696,7 +696,7 @@ check: conformance.library_policy_usage_required
 harness:
   root: {tmp_path}
   conformance_policy_library_requirements:
-    cases_path: cases
+    cases_path: /cases
     case_file_pattern: "*.spec.md"
     ignore_checks:
       - conformance.library_policy_usage_required
@@ -736,7 +736,7 @@ harness:
   root: .
   spec_lang:
     library_paths:
-      - libs/policy_core.spec.md
+      - /cases/libs/policy_core.spec.md
     exports:
       - policy.pass_when_no_violations
   policy_evaluate:
@@ -772,7 +772,7 @@ harness:
   root: .
   spec_lang:
     library_paths:
-      - libs/policy_core.spec.md
+      - /cases/libs/policy_core.spec.md
     exports:
       - policy.pass_when_no_violations
   policy_evaluate:

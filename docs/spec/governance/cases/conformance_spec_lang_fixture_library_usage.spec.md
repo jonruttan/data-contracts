@@ -12,12 +12,12 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   spec_lang_fixture_library_usage:
-    path: docs/spec/conformance/cases/spec_lang.spec.md
-    required_library_path: ../../libraries/conformance/assertion_core.spec.md
+    path: /docs/spec/conformance/cases/spec_lang.spec.md
+    required_library_path: /docs/spec/libraries/conformance/assertion_core.spec.md
     required_call_prefix: conf.
     min_call_count: 4
     required_case_ids:

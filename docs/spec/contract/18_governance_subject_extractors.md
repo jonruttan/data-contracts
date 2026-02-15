@@ -34,6 +34,10 @@ Governance check implementations SHOULD return a structured payload with:
 - Governance checks MUST wire shared policy libraries via
   `harness.spec_lang.library_paths`.
 - Governance `policy_evaluate` MUST call exported library symbols.
+- Path-bearing governance harness fields use virtual-root canonical `/...`
+  semantics (`/` = contract root).
+- External refs (`external://provider/id`) are deny-by-default and require
+  explicit capability + provider allow policy.
 - On policy failure, diagnostics MUST include `case_id`, `check_id`, and
   `policy_path`.
 - Check-specific branch text like `"<check> policy_evaluate returned false"`

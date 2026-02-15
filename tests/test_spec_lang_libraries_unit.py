@@ -46,7 +46,7 @@ functions:
 
     symbols = load_spec_lang_symbols_for_case(
         doc_path=case_doc,
-        harness={"spec_lang": {"library_paths": ["../libs/common.spec.md"]}},
+        harness={"spec_lang": {"library_paths": ["/libs/common.spec.md"]}},
         limits=SpecLangLimits(timeout_ms=0),
     )
     expr = [
@@ -65,7 +65,7 @@ def test_library_import_cycle_is_rejected(tmp_path: Path) -> None:
         """```yaml spec-test
 id: LIB-A
 type: spec_lang.library
-imports: ["b.spec.md"]
+imports: ["/libs/b.spec.md"]
 functions:
   a:
     fn:
@@ -79,7 +79,7 @@ functions:
         """```yaml spec-test
 id: LIB-B
 type: spec_lang.library
-imports: ["a.spec.md"]
+imports: ["/libs/a.spec.md"]
 functions:
   b:
     fn:
@@ -92,7 +92,7 @@ functions:
     with pytest.raises(ValueError, match="cycle"):
         load_spec_lang_symbols_for_case(
             doc_path=case_doc,
-            harness={"spec_lang": {"library_paths": ["../libs/a.spec.md"]}},
+            harness={"spec_lang": {"library_paths": ["/libs/a.spec.md"]}},
             limits=SpecLangLimits(timeout_ms=0),
         )
 
@@ -130,7 +130,7 @@ functions:
     with pytest.raises(ValueError, match="duplicate exported library symbol"):
         load_spec_lang_symbols_for_case(
             doc_path=case_doc,
-            harness={"spec_lang": {"library_paths": ["../libs/a.spec.md", "../libs/b.spec.md"]}},
+            harness={"spec_lang": {"library_paths": ["/libs/a.spec.md", "/libs/b.spec.md"]}},
             limits=SpecLangLimits(timeout_ms=0),
         )
 
@@ -158,7 +158,7 @@ functions:
 
     symbols = load_spec_lang_symbols_for_case(
         doc_path=case_doc,
-        harness={"spec_lang": {"library_paths": ["../libs/a.spec.md"], "exports": ["keep"]}},
+        harness={"spec_lang": {"library_paths": ["/libs/a.spec.md"], "exports": ["keep"]}},
         limits=SpecLangLimits(timeout_ms=0),
     )
     assert "keep" in symbols
@@ -181,6 +181,6 @@ functions:
     with pytest.raises(ValueError, match="list expressions are not allowed"):
         load_spec_lang_symbols_for_case(
             doc_path=case_doc,
-            harness={"spec_lang": {"library_paths": ["../libs/bad.spec.md"]}},
+            harness={"spec_lang": {"library_paths": ["/libs/bad.spec.md"]}},
             limits=SpecLangLimits(timeout_ms=0),
         )

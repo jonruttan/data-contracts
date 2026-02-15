@@ -22,6 +22,7 @@ from spec_runner.docs_quality import (
 )
 from spec_runner.settings import SETTINGS
 from spec_runner.spec_portability import spec_portability_report_jsonable
+from spec_runner.virtual_paths import VirtualPathError, resolve_contract_path
 
 
 def _as_list_of_strings(value: object) -> list[str]:
@@ -37,9 +38,9 @@ def _as_list_of_strings(value: object) -> list[str]:
 
 
 def _match_segment(rel_path: str, segment_rules: list[dict[str, str]]) -> str:
-    normalized = rel_path.replace("\\", "/")
+    normalized = rel_path.replace("\\", "/").lstrip("/")
     for rule in segment_rules:
-        prefix = str(rule["prefix"]).replace("\\", "/").rstrip("/")
+        prefix = str(rule["prefix"]).replace("\\", "/").lstrip("/").rstrip("/")
         if normalized == prefix or normalized.startswith(prefix + "/"):
             return str(rule["segment"])
     return "other"
@@ -156,7 +157,10 @@ def compare_metric_non_regression(
 
 
 def _load_baseline_json(repo_root: Path, baseline_path: str) -> tuple[dict[str, Any] | None, list[str]]:
-    path = repo_root / baseline_path
+    try:
+        path = resolve_contract_path(repo_root, baseline_path, field="baseline_path")
+    except VirtualPathError as exc:
+        return None, [str(exc)]
     if not path.exists():
         return None, [f"{baseline_path}:1: missing baseline metrics file"]
     try:
@@ -254,7 +258,11 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
     errs: list[str] = []
 
     for rel_root in roots:
-        base = root / rel_root
+        try:
+            base = resolve_contract_path(root, rel_root, field="roots[]")
+        except VirtualPathError:
+            errs.append(f"{rel_root}: invalid spec root path")
+            continue
         if not base.exists() or not base.is_dir():
             errs.append(f"{rel_root}: missing spec root directory")
             continue
@@ -515,7 +523,10 @@ def python_dependency_report_jsonable(repo_root: Path, config: dict[str, Any] | 
 
     runtime_trace: list[dict[str, Any]] = []
     runtime_non_python_hits = 0
-    trace_file = root / runtime_trace_path
+    try:
+        trace_file = resolve_contract_path(root, runtime_trace_path, field="runtime_trace_path")
+    except VirtualPathError:
+        trace_file = root / runtime_trace_path.lstrip("/")
     if trace_file.exists():
         try:
             payload = json.loads(trace_file.read_text(encoding="utf-8"))
@@ -718,7 +729,11 @@ def docs_operability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
 
     for rel in rel_paths:
         if rel in metas:
-            metas[rel]["__text__"] = (root / rel).read_text(encoding="utf-8")
+            try:
+                doc_path = resolve_contract_path(root, rel, field="reference_manifest path")
+            except VirtualPathError:
+                continue
+            metas[rel]["__text__"] = doc_path.read_text(encoding="utf-8")
 
     token_owner_issues = check_token_ownership_unique(metas)
     token_dep_issues = check_token_dependency_resolved(metas)
@@ -861,7 +876,11 @@ def contract_assertions_report_jsonable(repo_root: Path, config: dict[str, Any] 
     token_presence_map: dict[str, set[str]] = {}
 
     for rel in paths:
-        p = root / rel
+        try:
+            p = resolve_contract_path(root, rel, field="contract_assertions.paths[]")
+        except VirtualPathError:
+            errors.append(f"{rel}:1: invalid contract assertion doc path")
+            continue
         if not p.exists():
             errors.append(f"{rel}:1: missing contract assertion doc")
             continue
@@ -1047,7 +1066,10 @@ def validate_metric_baseline_notes(
     notes_path: str,
     baseline_paths: list[str],
 ) -> list[str]:
-    note_file = repo_root / notes_path
+    try:
+        note_file = resolve_contract_path(repo_root, notes_path, field="baseline_notes.path")
+    except VirtualPathError as exc:
+        return [str(exc)]
     payload, errs = _load_yaml_mapping(note_file)
     if errs:
         return errs
@@ -1062,14 +1084,19 @@ def validate_metric_baseline_notes(
         rel = str(entry.get("baseline", "")).strip()
         if rel:
             by_path[rel] = entry
+            by_path[rel.lstrip("/")] = entry
 
     violations: list[str] = []
     for rel in baseline_paths:
-        path = repo_root / rel
+        try:
+            path = resolve_contract_path(repo_root, rel, field="baseline_paths[]")
+        except VirtualPathError as exc:
+            violations.append(str(exc))
+            continue
         if not path.exists():
             violations.append(f"{rel}:1: baseline file missing")
             continue
-        entry = by_path.get(rel)
+        entry = by_path.get(rel) or by_path.get(rel.lstrip("/"))
         if entry is None:
             violations.append(f"{notes_path}:1: missing baseline update note entry for {rel}")
             continue
@@ -1121,7 +1148,15 @@ def objective_scorecard_report_jsonable(repo_root: Path, config: dict[str, Any] 
         yellow_min = 0.50
 
     manifest_path = str(cfg.get("manifest_path", "")).strip() or "docs/spec/metrics/objective_manifest.yaml"
-    manifest, manifest_errs = _load_yaml_mapping(root / manifest_path)
+    try:
+        manifest_file = resolve_contract_path(root, manifest_path, field="objective_manifest.path")
+    except VirtualPathError as exc:
+        manifest_file = root / manifest_path.lstrip("/")
+        manifest_errs = [str(exc)]
+    else:
+        manifest_errs = []
+    manifest, yaml_errs = _load_yaml_mapping(manifest_file)
+    manifest_errs.extend(yaml_errs)
     objectives = manifest.get("objectives")
     if not isinstance(objectives, list):
         objectives = []

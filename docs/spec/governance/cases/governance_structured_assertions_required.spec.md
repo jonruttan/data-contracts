@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   structured_assertions:
-    cases_path: docs/spec/governance/cases
+    cases_path: /docs/spec/governance/cases
     case_file_pattern: '*.spec.md'
     ignore_checks:
     - governance.structured_assertions_required

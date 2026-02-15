@@ -85,13 +85,14 @@ Normative contract details:
 - If `path` is omitted, the runner asserts against the spec document that
   contains the `yaml spec-test` block.
 - If `path` is provided, it MUST be a relative path and is resolved relative to
-  the spec document path.
+  contract root (virtual `/`) and normalized to canonical `/...`.
 - Resolved `path` MUST remain within the implementation's configured contract
   root/workspace boundary (path traversal outside that boundary is invalid).
 
 Fields:
 
-- `path` (string, optional): relative path to the file to read
+- `path` (string, optional): virtual-root path (`/docs/...`) or root-relative
+  path string normalized to `/...`
 
 Assertion targets for `text.file`:
 
@@ -153,11 +154,19 @@ For `type: cli.run`, supported `harness` keys include:
 - `timeout_ms` (int, >=0, `0` disables timeout)
 - `library_paths` (list[string], optional): ordered spec-lang library files
 - `exports` (list[string], optional): symbol allowlist exposed to this case
+- `external_refs` (mapping, optional): external reference policy
+  - `mode` (string): `deny` (default) or `allow`
+  - `providers` (list[string]): allowlisted provider names
+  - `rules` (mapping, optional): provider-specific rule payloads for adapters
 
 `harness.spec_lang.library_paths` format scope:
 
 - library include paths MAY target `.spec.md`, `.spec.yaml`, or `.spec.yml`
   files
+- library include paths use virtual-root semantics (`/` means contract root);
+  root-relative values normalize to canonical `/...`
+- external references use `external://provider/id` and are deny-by-default
+  unless capability and harness policy explicitly allow provider access
 - `type: spec_lang.library` `functions.<symbol>` values MUST use mapping-AST
   expression encoding (list s-expr authoring is invalid)
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
@@ -256,6 +265,8 @@ Operator constraints:
   `docs/spec/contract/14_spec_lang_libraries.md`
 - runtime pass/fail decisions MUST execute through compiled spec-lang
   expressions
+- path fields in scoped harness/type config use virtual-root canonical `/...`
+  form; `..` contract-root escapes are invalid
 - regex portability guidance for spec-lang expressions is defined in
   `docs/spec/contract/03a_regex_portability_v1.md`
 

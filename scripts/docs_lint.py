@@ -15,6 +15,7 @@ from spec_runner.docs_quality import (
     load_reference_manifest,
     manifest_chapter_paths,
 )
+from spec_runner.virtual_paths import VirtualPathError, resolve_contract_path
 
 
 def _render_issues(issues: list[DocsIssue]) -> None:
@@ -41,7 +42,12 @@ def main(argv: list[str] | None = None) -> int:
 
     for rel in docs:
         if rel in metas:
-            metas[rel]["__text__"] = (root / rel).read_text(encoding="utf-8")
+            try:
+                doc_path = resolve_contract_path(root, str(rel), field="reference_manifest.chapters.path")
+            except VirtualPathError as exc:
+                issues.append(DocsIssue(rule_id="DOCS_REFERENCE_MANIFEST_SYNC", path=str(rel), message=str(exc)))
+                continue
+            metas[rel]["__text__"] = doc_path.read_text(encoding="utf-8")
 
     issues.extend(check_token_ownership_unique(metas))
     issues.extend(check_token_dependency_resolved(metas))

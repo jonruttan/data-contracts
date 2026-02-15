@@ -17,7 +17,7 @@ expect:
 harness:
   spec_lang:
     library_paths:
-    - ../../libraries/conformance/assertion_core.spec.md
+    - /docs/spec/libraries/conformance/assertion_core.spec.md
     exports:
     - conf.pass_when_text_contains
 assert:
@@ -44,7 +44,7 @@ expect:
 harness:
   spec_lang:
     library_paths:
-    - ../../libraries/conformance/assertion_core.spec.md
+    - /docs/spec/libraries/conformance/assertion_core.spec.md
     exports:
     - conf.pass_when_text_contains
 assert:
@@ -197,7 +197,7 @@ expect:
 harness:
   spec_lang:
     library_paths:
-    - ../../libraries/conformance/assertion_core.spec.md
+    - /docs/spec/libraries/conformance/assertion_core.spec.md
     exports:
     - conf.pass_when_text_contains
 assert:

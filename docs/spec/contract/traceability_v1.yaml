@@ -1713,3 +1713,86 @@ links:
   - Makefile
   - docs/spec/governance/cases/normalization_spec_style_sync.spec.md
   notes: Explicit normalize-fix path is available for local authoring.
+- rule_id: NORMALIZATION_VIRTUAL_ROOT_PATHS_ONLY
+  policy_ref: docs/spec/contract/policy_v1.yaml#NORMALIZATION_VIRTUAL_ROOT_PATHS_ONLY
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/contract/14_spec_lang_libraries.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_virtual_paths_unit.py
+  implementation_refs:
+  - spec_runner/virtual_paths.py
+  - scripts/convert_virtual_root_paths.py
+  - docs/spec/governance/cases/normalization_virtual_root_paths_only.spec.md
+  notes: Scoped path fields normalize to canonical virtual-root `/...` form.
+- rule_id: REFERENCE_CONTRACT_PATHS_EXIST
+  policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_CONTRACT_PATHS_EXIST
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/reference_contract_paths_exist.spec.md
+  notes: Governance validates referenced in-root paths exist before runtime.
+- rule_id: REFERENCE_SYMBOLS_EXIST
+  policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_SYMBOLS_EXIST
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_spec_lang_libraries_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang_libraries.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/reference_symbols_exist.spec.md
+  notes: Library exports/symbol references are validated early.
+- rule_id: REFERENCE_CHECK_IDS_EXIST
+  policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_CHECK_IDS_EXIST
+  contract_refs:
+  - docs/spec/contract/15_governance_subject_model.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/reference_check_ids_exist.spec.md
+  notes: Governance case check ids must map to registered scanner ids.
+- rule_id: REFERENCE_EXTERNAL_REFS_POLICY
+  policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_EXTERNAL_REFS_POLICY
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_virtual_paths_unit.py
+  implementation_refs:
+  - spec_runner/external_refs.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/reference_external_refs_policy.spec.md
+  notes: External refs are deny-by-default and capability/policy gated.
+- rule_id: REFERENCE_TOKEN_ANCHORS_EXIST
+  policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_TOKEN_ANCHORS_EXIST
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/reference_token_anchors_exist.spec.md
+  notes: Token anchor references are checked for file existence and token presence.

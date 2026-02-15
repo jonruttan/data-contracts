@@ -12,13 +12,13 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   spec_lang_preferred:
     roots:
-    - docs/spec/conformance/cases
-    - docs/spec/governance/cases
+    - /docs/spec/conformance/cases
+    - /docs/spec/governance/cases
     policy_evaluate:
     - eq:
       - count:

@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   portability_non_regression:
-    baseline_path: docs/spec/metrics/spec_portability_baseline.json
+    baseline_path: /docs/spec/metrics/spec_portability_baseline.json
     summary_fields:
     - overall_logic_self_contained_ratio
     segment_fields:
@@ -29,9 +29,9 @@ harness:
     epsilon: 1.0e-12
     portability_metric:
       roots:
-      - docs/spec/conformance/cases
-      - docs/spec/governance/cases
-      - docs/spec/impl
+      - /docs/spec/conformance/cases
+      - /docs/spec/governance/cases
+      - /docs/spec/impl
       core_types:
       - text.file
       - cli.run

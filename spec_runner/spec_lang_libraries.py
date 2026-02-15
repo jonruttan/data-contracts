@@ -5,8 +5,10 @@ from pathlib import Path
 from typing import Any
 
 from spec_runner.codecs import load_external_cases
+from spec_runner.external_refs import resolve_external_ref
 from spec_runner.spec_lang import SpecLangLimits, compile_symbol_bindings
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
+from spec_runner.virtual_paths import VirtualPathError, contract_root_for, parse_external_ref, resolve_contract_path
 
 
 @dataclass(frozen=True)
@@ -17,27 +19,25 @@ class _LibraryDoc:
     exports: tuple[str, ...]
 
 
-def _contract_root_for(doc_path: Path) -> Path:
-    p = doc_path.resolve()
-    for cur in (p.parent, *p.parent.parents):
-        if (cur / ".git").exists():
-            return cur
-    # In isolated test/temp environments without .git, use the parent of the
-    # case-doc directory as a pragmatic contract root boundary.
-    return p.parent.parent if p.parent.parent != p.parent else p.parent
-
-
-def _resolve_library_path(base_doc: Path, rel_path: str) -> Path:
-    raw = Path(str(rel_path).strip())
-    if raw.is_absolute():
-        p = raw.resolve()
+def _resolve_library_path(
+    base_doc: Path,
+    rel_path: str,
+    *,
+    harness: dict[str, Any] | None,
+    requires: dict[str, Any] | None,
+) -> Path:
+    raw = str(rel_path).strip()
+    if parse_external_ref(raw) is not None:
+        try:
+            p = resolve_external_ref(raw, harness=harness, requires=requires)
+        except VirtualPathError as exc:
+            raise ValueError(str(exc)) from exc
     else:
-        p = (base_doc.parent / raw).resolve()
-    root = _contract_root_for(base_doc)
-    try:
-        p.relative_to(root)
-    except ValueError as exc:
-        raise ValueError(f"library path escapes contract root: {rel_path}") from exc
+        root = contract_root_for(base_doc)
+        try:
+            p = resolve_contract_path(root, raw, field="harness.spec_lang.library_paths")
+        except VirtualPathError as exc:
+            raise ValueError(str(exc)) from exc
     if not p.exists() or not p.is_file():
         raise ValueError(f"library path does not exist: {rel_path}")
     return p
@@ -102,7 +102,9 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
     )
 
 
-def _resolve_library_graph(entry_docs: list[Path]) -> list[_LibraryDoc]:
+def _resolve_library_graph(
+    entry_docs: list[Path], *, harness: dict[str, Any] | None, requires: dict[str, Any] | None
+) -> list[_LibraryDoc]:
     docs: dict[Path, _LibraryDoc] = {}
     visiting: set[Path] = set()
     visited: set[Path] = set()
@@ -119,7 +121,7 @@ def _resolve_library_graph(entry_docs: list[Path]) -> list[_LibraryDoc]:
             doc = _load_library_doc(path)
             docs[path] = doc
         for rel in doc.imports:
-            dep = _resolve_library_path(path, rel)
+            dep = _resolve_library_path(path, rel, harness=harness, requires=requires)
             _dfs(dep)
         visiting.remove(path)
         visited.add(path)
@@ -141,9 +143,12 @@ def load_spec_lang_symbols_for_case(
     lib_paths = _as_non_empty_str_list(cfg.get("library_paths"), field="harness.spec_lang.library_paths")
     if not lib_paths:
         return {}
+    requires = dict((harness or {}).get("requires") or {})
 
-    entry_docs = [_resolve_library_path(doc_path, rel) for rel in lib_paths]
-    graph = _resolve_library_graph(entry_docs)
+    entry_docs = [
+        _resolve_library_path(doc_path, rel, harness=harness, requires=requires) for rel in lib_paths
+    ]
+    graph = _resolve_library_graph(entry_docs, harness=harness, requires=requires)
 
     merged_bindings: dict[str, Any] = {}
     export_allow: set[str] = set()

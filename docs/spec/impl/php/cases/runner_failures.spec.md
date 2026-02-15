@@ -4,16 +4,16 @@
 
 ```yaml spec-test
 id: SRPHP-RUN-F001
-title: text.file absolute path is rejected
-purpose: Verifies text.file rejects absolute path values as schema violations.
+title: text.file virtual absolute path missing file fails runtime
+purpose: Verifies virtual-root absolute paths resolve under contract root and fail at runtime when the file is missing.
 type: text.file
 path: /tmp/not-allowed.txt
 expect:
   portable:
     status: fail
-    category: schema
+    category: runtime
     message_tokens:
-    - text.file path must be relative
+    - cannot read fixture file
 assert:
 - target: text
   must:
@@ -157,7 +157,7 @@ id: SRPHP-RUN-F008
 title: leaf target key is rejected
 purpose: Verifies leaf assertions including target key are rejected as schema violations.
 type: text.file
-path: fixtures/sample.txt
+path: /fixtures/sample.txt
 expect:
   portable:
     status: fail

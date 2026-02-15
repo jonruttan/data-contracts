@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   docs_operability:
-    reference_manifest: docs/book/reference_manifest.yaml
+    reference_manifest: /docs/book/reference_manifest.yaml
     policy_evaluate:
     - and:
       - {has_key: [{var: subject}, summary]}

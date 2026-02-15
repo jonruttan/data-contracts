@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   rust_no_python_exec:
-    path: scripts/rust/spec_runner_cli/src/main.rs
+    path: /scripts/rust/spec_runner_cli/src/main.rs
     forbidden_tokens:
     - python3
     - PYTHON_BIN

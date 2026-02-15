@@ -405,6 +405,30 @@ function pathWithinRoot(string $targetPath, string $rootPath): bool {
     return str_starts_with($target . '/', $root . '/');
 }
 
+function resolveContractPath(string $anchorPath, string $rawPath, string $field): string {
+    $raw = trim($rawPath);
+    if ($raw === '') {
+        throw new SchemaError("{$field} must be non-empty");
+    }
+    if (str_starts_with($raw, 'external://')) {
+        throw new SchemaError("{$field}: external refs are denied by default");
+    }
+    if (preg_match('/^[A-Za-z]:[\/\\\\]/', $raw) === 1) {
+        throw new SchemaError("{$field} must not be OS-absolute");
+    }
+    $root = contractRootFor($anchorPath);
+    if (str_starts_with($raw, '/')) {
+        $joined = $root . '/' . ltrim($raw, '/');
+    } else {
+        $joined = $root . '/' . $raw;
+    }
+    $candidate = normalizePath($joined);
+    if (!pathWithinRoot($candidate, $root)) {
+        throw new SchemaError("{$field} escapes contract root");
+    }
+    return $candidate;
+}
+
 function resolveTextFilePath(string $fixturePath, array $case): string {
     $docAbs = (string)realpath($fixturePath);
     if ($docAbs === '') {
@@ -413,11 +437,17 @@ function resolveTextFilePath(string $fixturePath, array $case): string {
     if (!array_key_exists('path', $case)) {
         return $docAbs;
     }
-    $rel = (string)$case['path'];
-    if (isAbsolutePath($rel)) {
-        throw new SchemaError('text.file path must be relative');
+    $raw = trim((string)$case['path']);
+    if ($raw === '') {
+        throw new SchemaError('text.file path must be non-empty');
     }
-    $candidate = normalizePath(dirname($docAbs) . '/' . $rel);
+    if (str_starts_with($raw, '/')) {
+        return resolveContractPath($docAbs, $raw, 'text.file path');
+    }
+    if (preg_match('/^[A-Za-z]:[\/\\\\]/', $raw) === 1) {
+        throw new SchemaError('text.file path must not be OS-absolute');
+    }
+    $candidate = normalizePath(dirname($docAbs) . '/' . $raw);
     $root = contractRootFor($docAbs);
     if (!pathWithinRoot($candidate, $root)) {
         throw new SchemaError('text.file path escapes contract root');
@@ -974,10 +1004,19 @@ function specLangEvalTail(mixed $expr, SpecLangEnv $env, mixed $subject, array $
     }
 }
 
-function specLangEvalPredicate(mixed $expr, mixed $subject, array $limits): bool {
+function specLangEvalPredicate(mixed $expr, mixed $subject, array $limits, array $symbols = []): bool {
     specLangValidateExprShape($expr, $limits);
     $state = ['steps' => 0, 'started' => microtime(true), 'limits' => $limits];
-    $value = specLangEvalTail($expr, new SpecLangEnv(['subject' => $subject], null), $subject, $limits, $state);
+    $root = [];
+    foreach ($symbols as $rawName => $value) {
+        $name = trim((string)$rawName);
+        if ($name === '') {
+            throw new SchemaError('spec_lang symbol name must be non-empty');
+        }
+        $root[$name] = $value;
+    }
+    $root['subject'] = $subject;
+    $value = specLangEvalTail($expr, new SpecLangEnv($root, null), $subject, $limits, $state);
     return (bool)$value;
 }
 
@@ -1044,6 +1083,24 @@ function compileYamlExprToSexpr(mixed $node, string $fieldPath): mixed {
         }
         return ['var', trim($rawArgs)];
     }
+    if ($op === 'fn') {
+        if (!is_array($rawArgs) || !isListArray($rawArgs) || count($rawArgs) !== 2) {
+            throw new SchemaError("{$fieldPath}.fn: fn args must be [params, body]");
+        }
+        $rawParams = $rawArgs[0];
+        if (!is_array($rawParams) || !isListArray($rawParams)) {
+            throw new SchemaError("{$fieldPath}.fn[0]: params must be a list of variable names");
+        }
+        $params = [];
+        foreach ($rawParams as $idx => $param) {
+            if (!is_string($param) || trim($param) === '') {
+                throw new SchemaError("{$fieldPath}.fn[0][{$idx}]: param name must be a non-empty string");
+            }
+            $params[] = trim($param);
+        }
+        $body = compileYamlExprToSexpr($rawArgs[1], "{$fieldPath}.fn[1]");
+        return ['fn', $params, $body];
+    }
     if (!is_array($rawArgs) || !isListArray($rawArgs)) {
         throw new SchemaError("{$fieldPath}.{$op}: operator args must be a list");
     }
@@ -1052,6 +1109,196 @@ function compileYamlExprToSexpr(mixed $node, string $fieldPath): mixed {
         $args[] = compileYamlExprToSexpr($arg, "{$fieldPath}.{$op}[{$idx}]");
     }
     return array_merge([$op], $args);
+}
+
+function asNonEmptyStringList(mixed $value, string $field): array {
+    if ($value === null) {
+        return [];
+    }
+    if (!is_array($value) || !isListArray($value)) {
+        throw new SchemaError("{$field} must be a list of non-empty strings");
+    }
+    $out = [];
+    foreach ($value as $idx => $item) {
+        if (!is_string($item) || trim($item) === '') {
+            throw new SchemaError("{$field}[{$idx}] must be a non-empty string");
+        }
+        $out[] = trim($item);
+    }
+    return $out;
+}
+
+function resolveLibraryPath(string $baseDocPath, string $relPath): string {
+    $raw = trim($relPath);
+    if ($raw === '') {
+        throw new SchemaError('harness.spec_lang.library_paths item must be non-empty');
+    }
+    if (str_starts_with($raw, 'external://')) {
+        throw new SchemaError('harness.spec_lang.library_paths external refs are denied by default');
+    }
+    return resolveContractPath($baseDocPath, $raw, 'harness.spec_lang.library_paths');
+}
+
+function loadSpecLangLibraryDoc(string $path): array {
+    $imports = [];
+    $bindings = [];
+    $exports = [];
+    foreach (parseCases($path) as $case) {
+        $type = trim((string)($case['type'] ?? ''));
+        if ($type !== 'spec_lang.library') {
+            continue;
+        }
+        foreach (asNonEmptyStringList($case['imports'] ?? null, 'imports') as $imp) {
+            $imports[] = $imp;
+        }
+        $functions = $case['functions'] ?? null;
+        if (!is_array($functions) || isListArray($functions) || count($functions) === 0) {
+            throw new SchemaError('spec_lang.library requires non-empty functions mapping');
+        }
+        foreach ($functions as $rawName => $expr) {
+            $name = trim((string)$rawName);
+            if ($name === '') {
+                throw new SchemaError('spec_lang.library function name must be non-empty');
+            }
+            if (array_key_exists($name, $bindings)) {
+                throw new SchemaError("duplicate library function in file {$path}: {$name}");
+            }
+            $bindings[$name] = compileYamlExprToSexpr($expr, "{$path} functions.{$name}");
+        }
+        foreach (asNonEmptyStringList($case['exports'] ?? null, 'exports') as $exp) {
+            $exports[] = $exp;
+        }
+    }
+    if (count($bindings) === 0) {
+        throw new SchemaError("library file has no spec_lang.library functions: {$path}");
+    }
+    return [
+        'imports' => array_values(array_unique($imports)),
+        'bindings' => $bindings,
+        'exports' => array_values(array_unique($exports)),
+    ];
+}
+
+function resolveSpecLangLibraryGraph(array $entryDocs): array {
+    $docs = [];
+    $visiting = [];
+    $visited = [];
+    $ordered = [];
+    $dfs = function(string $path) use (&$dfs, &$docs, &$visiting, &$visited, &$ordered): void {
+        if (($visited[$path] ?? false) === true) {
+            return;
+        }
+        if (($visiting[$path] ?? false) === true) {
+            throw new SchemaError("library import cycle detected at: {$path}");
+        }
+        $visiting[$path] = true;
+        if (!array_key_exists($path, $docs)) {
+            $docs[$path] = loadSpecLangLibraryDoc($path);
+        }
+        foreach ($docs[$path]['imports'] as $rel) {
+            $dep = resolveLibraryPath($path, (string)$rel);
+            $dfs($dep);
+        }
+        unset($visiting[$path]);
+        $visited[$path] = true;
+        $ordered[] = $path;
+    };
+    foreach ($entryDocs as $entry) {
+        $dfs((string)$entry);
+    }
+    $out = [];
+    foreach ($ordered as $path) {
+        $out[] = $docs[$path];
+    }
+    return $out;
+}
+
+function compileSpecLangSymbolBindings(array $bindings, array $limits): array {
+    $slots = [];
+    foreach ($bindings as $rawName => $_expr) {
+        $name = trim((string)$rawName);
+        if ($name === '') {
+            throw new SchemaError('spec_lang symbol binding name must be non-empty');
+        }
+        if (array_key_exists($name, $slots)) {
+            throw new SchemaError("duplicate symbol binding: {$name}");
+        }
+        $slots[$name] = specLangUnsetSentinel();
+    }
+    $env = new SpecLangEnv($slots, null);
+    $state = ['steps' => 0, 'started' => microtime(true), 'limits' => $limits];
+    foreach ($bindings as $rawName => $rawExpr) {
+        $name = trim((string)$rawName);
+        specLangValidateExprShape($rawExpr, $limits);
+        $env->vars[$name] = specLangEvalNonTail($rawExpr, $env, null, $limits, $state);
+    }
+    return $env->vars;
+}
+
+function loadSpecLangSymbolsForCase(string $fixturePath, array $case, array $limits): array {
+    $harness = $case['harness'] ?? null;
+    if (!is_array($harness) || isListArray($harness)) {
+        return [];
+    }
+    if (!array_key_exists('spec_lang', $harness) || $harness['spec_lang'] === null) {
+        return [];
+    }
+    $cfg = $harness['spec_lang'];
+    if (!is_array($cfg) || isListArray($cfg)) {
+        throw new SchemaError('harness.spec_lang must be a mapping');
+    }
+    $libPaths = asNonEmptyStringList($cfg['library_paths'] ?? null, 'harness.spec_lang.library_paths');
+    if (count($libPaths) === 0) {
+        return [];
+    }
+    $entryDocs = [];
+    foreach ($libPaths as $rel) {
+        $resolved = resolveLibraryPath($fixturePath, $rel);
+        if (!is_file($resolved)) {
+            throw new SchemaError("library path does not exist: {$rel}");
+        }
+        $entryDocs[] = $resolved;
+    }
+    $graph = resolveSpecLangLibraryGraph($entryDocs);
+    $mergedBindings = [];
+    $exportAllow = [];
+    foreach ($graph as $doc) {
+        foreach ($doc['bindings'] as $name => $expr) {
+            if (array_key_exists($name, $mergedBindings)) {
+                throw new SchemaError("duplicate exported library symbol across imports: {$name}");
+            }
+            $mergedBindings[$name] = $expr;
+        }
+        foreach ($doc['exports'] as $name) {
+            $exportAllow[(string)$name] = true;
+        }
+    }
+    $consumerExports = asNonEmptyStringList($cfg['exports'] ?? null, 'harness.spec_lang.exports');
+    if (count($consumerExports) > 0) {
+        $exportAllow = [];
+        foreach ($consumerExports as $name) {
+            $exportAllow[$name] = true;
+        }
+    }
+    if (count($exportAllow) > 0) {
+        $filtered = [];
+        $unknown = [];
+        foreach ($exportAllow as $name => $_true) {
+            if (!array_key_exists($name, $mergedBindings)) {
+                $unknown[] = $name;
+                continue;
+            }
+            $filtered[$name] = $mergedBindings[$name];
+        }
+        if (count($unknown) > 0) {
+            sort($unknown, SORT_STRING);
+            throw new SchemaError(
+                'harness.spec_lang.exports contains unknown symbols: ' . implode(', ', $unknown)
+            );
+        }
+        $mergedBindings = $filtered;
+    }
+    return compileSpecLangSymbolBindings($mergedBindings, $limits);
 }
 
 function compileLeafExpr(string $op, mixed $value, string $target): array {
@@ -1094,9 +1341,10 @@ function assertLeafPredicate(
     string $op,
     mixed $expr,
     mixed $subject,
-    array $specLangLimits
+    array $specLangLimits,
+    array $specLangSymbols = []
 ): void {
-    if (!specLangEvalPredicate($expr, $subject, $specLangLimits)) {
+    if (!specLangEvalPredicate($expr, $subject, $specLangLimits, $specLangSymbols)) {
         if ($op === 'json_type') {
             $want = '';
             if (is_array($expr) && count($expr) >= 3) {
@@ -1119,7 +1367,8 @@ function evalTextLeaf(
     string $target,
     string $caseId,
     string $path,
-    array $specLangLimits
+    array $specLangLimits,
+    array $specLangSymbols
 ): void {
     foreach ($leaf as $op => $raw) {
         if ($op === 'target') {
@@ -1131,7 +1380,7 @@ function evalTextLeaf(
         foreach ($raw as $value) {
             $expr = compileLeafExpr($op, $value, $target);
             $subjectForOp = $op === 'exists' ? trim((string)$subject) !== '' : $subject;
-            assertLeafPredicate($caseId, $path, $target, $op, $expr, $subjectForOp, $specLangLimits);
+            assertLeafPredicate($caseId, $path, $target, $op, $expr, $subjectForOp, $specLangLimits, $specLangSymbols);
         }
     }
 }
@@ -1142,11 +1391,12 @@ function evalTextAssertNode(
     ?string $inheritedTarget,
     string $caseId,
     string $path,
-    array $specLangLimits
+    array $specLangLimits,
+    array $specLangSymbols
 ): void {
     if (is_array($node) && isListArray($node)) {
         foreach ($node as $i => $child) {
-            evalTextAssertNode($child, $subject, $inheritedTarget, $caseId, "{$path}[{$i}]", $specLangLimits);
+            evalTextAssertNode($child, $subject, $inheritedTarget, $caseId, "{$path}[{$i}]", $specLangLimits, $specLangSymbols);
         }
         return;
     }
@@ -1186,7 +1436,7 @@ function evalTextAssertNode(
 
         if ($group === 'must') {
             foreach ($children as $i => $child) {
-                evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.must[{$i}]", $specLangLimits);
+                evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.must[{$i}]", $specLangLimits, $specLangSymbols);
             }
             return;
         }
@@ -1194,7 +1444,7 @@ function evalTextAssertNode(
             $anyPassed = false;
             foreach ($children as $i => $child) {
                 try {
-                    evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.can[{$i}]", $specLangLimits);
+                    evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.can[{$i}]", $specLangLimits, $specLangSymbols);
                     $anyPassed = true;
                     break;
                 } catch (AssertionFailure $e) {
@@ -1210,7 +1460,7 @@ function evalTextAssertNode(
             $passed = 0;
             foreach ($children as $i => $child) {
                 try {
-                    evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.cannot[{$i}]", $specLangLimits);
+                    evalTextAssertNode($child, $subject, $target, $caseId, "{$path}.cannot[{$i}]", $specLangLimits, $specLangSymbols);
                     $passed += 1;
                 } catch (AssertionFailure $e) {
                     // Expected failing branch for cannot.
@@ -1232,10 +1482,10 @@ function evalTextAssertNode(
     if ($target !== 'text') {
         throw new SchemaError('unknown assert target for text.file');
     }
-    evalTextLeaf($node, $subject, $target, $caseId, $path, $specLangLimits);
+    evalTextLeaf($node, $subject, $target, $caseId, $path, $specLangLimits, $specLangSymbols);
 }
 
-function evaluateTextFileCase(array $case, string $subject): array {
+function evaluateTextFileCase(string $fixturePath, array $case, string $subject): array {
     try {
         $resolvedMode = resolveAssertHealthMode($case);
     } catch (SchemaError $e) {
@@ -1258,7 +1508,8 @@ function evaluateTextFileCase(array $case, string $subject): array {
     try {
         $assertSpec = $case['assert'] ?? [];
         $specLangLimits = specLangLimitsFromCase($case);
-        evalTextAssertNode($assertSpec, $subject, null, (string)$case['id'], 'assert', $specLangLimits);
+        $specLangSymbols = loadSpecLangSymbolsForCase($fixturePath, $case, $specLangLimits);
+        evalTextAssertNode($assertSpec, $subject, null, (string)$case['id'], 'assert', $specLangLimits, $specLangSymbols);
     } catch (SchemaError $e) {
         return ['status' => 'fail', 'category' => 'schema', 'message' => $e->getMessage()];
     } catch (AssertionFailure $e) {
@@ -1278,12 +1529,16 @@ function resolveApiHttpUrl(string $fixturePath, string $url): array {
     if ($parts !== false && is_array($parts) && array_key_exists('scheme', $parts)) {
         return ['source_type' => 'url', 'url' => $trim];
     }
-    if (isAbsolutePath($trim)) {
-        throw new SchemaError('api.http request.url relative path must not be absolute');
-    }
     $docAbs = (string)realpath($fixturePath);
     if ($docAbs === '') {
         throw new RuntimeException("cannot resolve fixture path: {$fixturePath}");
+    }
+    if (str_starts_with($trim, '/')) {
+        $candidate = resolveContractPath($docAbs, $trim, 'api.http request.url');
+        return ['source_type' => 'file', 'path' => $candidate];
+    }
+    if (preg_match('/^[A-Za-z]:[\/\\\\]/', $trim) === 1) {
+        throw new SchemaError('api.http request.url relative path must not be OS-absolute');
     }
     $candidate = normalizePath(dirname($docAbs) . '/' . $trim);
     $root = contractRootFor($docAbs);
@@ -1299,7 +1554,8 @@ function evalApiHttpLeaf(
     string $target,
     string $caseId,
     string $path,
-    array $specLangLimits
+    array $specLangLimits,
+    array $specLangSymbols
 ): void {
     foreach ($leaf as $op => $raw) {
         if ($op === 'target') {
@@ -1315,7 +1571,7 @@ function evalApiHttpLeaf(
             foreach ($raw as $value) {
                 $expr = compileLeafExpr($op, $value, $target);
                 $subjectForOp = $op === 'exists' ? trim((string)$subject) !== '' : $subject;
-                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subjectForOp, $specLangLimits);
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subjectForOp, $specLangLimits, $specLangSymbols);
             }
             continue;
         }
@@ -1339,7 +1595,7 @@ function evalApiHttpLeaf(
                 } else {
                     $subject = $jsonText;
                 }
-                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits);
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols);
             }
             continue;
         }
@@ -1353,11 +1609,12 @@ function evalApiHttpAssertNode(
     ?string $inheritedTarget,
     string $caseId,
     string $path,
-    array $specLangLimits
+    array $specLangLimits,
+    array $specLangSymbols
 ): void {
     if (is_array($node) && isListArray($node)) {
         foreach ($node as $i => $child) {
-            evalApiHttpAssertNode($child, $resp, $inheritedTarget, $caseId, "{$path}[{$i}]", $specLangLimits);
+            evalApiHttpAssertNode($child, $resp, $inheritedTarget, $caseId, "{$path}[{$i}]", $specLangLimits, $specLangSymbols);
         }
         return;
     }
@@ -1389,7 +1646,7 @@ function evalApiHttpAssertNode(
         }
         if ($group === 'must') {
             foreach ($children as $i => $child) {
-                evalApiHttpAssertNode($child, $resp, $target, $caseId, "{$path}.must[{$i}]", $specLangLimits);
+                evalApiHttpAssertNode($child, $resp, $target, $caseId, "{$path}.must[{$i}]", $specLangLimits, $specLangSymbols);
             }
             return;
         }
@@ -1397,7 +1654,7 @@ function evalApiHttpAssertNode(
             $anyPassed = false;
             foreach ($children as $i => $child) {
                 try {
-                    evalApiHttpAssertNode($child, $resp, $target, $caseId, "{$path}.can[{$i}]", $specLangLimits);
+                    evalApiHttpAssertNode($child, $resp, $target, $caseId, "{$path}.can[{$i}]", $specLangLimits, $specLangSymbols);
                     $anyPassed = true;
                     break;
                 } catch (AssertionFailure $e) {
@@ -1413,7 +1670,7 @@ function evalApiHttpAssertNode(
             $passed = 0;
             foreach ($children as $i => $child) {
                 try {
-                    evalApiHttpAssertNode($child, $resp, $target, $caseId, "{$path}.cannot[{$i}]", $specLangLimits);
+                    evalApiHttpAssertNode($child, $resp, $target, $caseId, "{$path}.cannot[{$i}]", $specLangLimits, $specLangSymbols);
                     $passed += 1;
                 } catch (AssertionFailure $e) {
                     // Expected failing branch for cannot.
@@ -1431,7 +1688,7 @@ function evalApiHttpAssertNode(
     if ($target === null || $target === '') {
         throw new SchemaError('assertion leaf requires inherited target from a parent group');
     }
-    evalApiHttpLeaf($node, $resp, $target, $caseId, $path, $specLangLimits);
+    evalApiHttpLeaf($node, $resp, $target, $caseId, $path, $specLangLimits, $specLangSymbols);
 }
 
 function evaluateApiHttpCase(string $fixturePath, array $case): array {
@@ -1531,6 +1788,7 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
 
     $assertSpec = $case['assert'] ?? [];
     $specLangLimits = specLangLimitsFromCase($case);
+    $specLangSymbols = loadSpecLangSymbolsForCase($fixturePath, $case, $specLangLimits);
     evalApiHttpAssertNode(
         $assertSpec,
         [
@@ -1541,7 +1799,8 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
         null,
         (string)$case['id'],
         'assert',
-        $specLangLimits
+        $specLangLimits,
+        $specLangSymbols
     );
     return ['status' => 'pass', 'category' => null, 'message' => null];
 }
@@ -1644,7 +1903,7 @@ function evaluateCase(string $fixturePath, mixed $case): array {
                 'message' => "cannot read fixture file: {$subjectPath}",
             ];
         }
-        $res = evaluateTextFileCase($case, $subject);
+        $res = evaluateTextFileCase($fixturePath, $case, $subject);
     } elseif ($type === 'api.http') {
         try {
             $res = evaluateApiHttpCase($fixturePath, $case);

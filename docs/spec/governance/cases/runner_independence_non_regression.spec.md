@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   runner_independence_non_regression:
-    baseline_path: docs/spec/metrics/runner_independence_baseline.json
+    baseline_path: /docs/spec/metrics/runner_independence_baseline.json
     summary_fields:
       overall_runner_independence_ratio: non_decrease
       direct_runtime_invocation_count: non_increase

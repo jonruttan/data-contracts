@@ -12,27 +12,16 @@ from spec_runner.assertions import (
 from spec_runner.compiler import compile_external_case
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang import limits_from_harness
-
-
-def _contract_root_for(doc_path: Path) -> Path:
-    p = doc_path.resolve()
-    for cur in (p.parent, *p.parent.parents):
-        if (cur / ".git").exists():
-            return cur
-    return p.parent
+from spec_runner.virtual_paths import contract_root_for, resolve_contract_path
 
 
 def _resolve_relative_subject_path(doc_path: Path, rel: str) -> Path:
-    rel_p = Path(str(rel))
-    if rel_p.is_absolute():
-        raise ValueError("api.http request.url relative path must not be absolute")
-    p = (doc_path.parent / rel_p).resolve()
-    root = _contract_root_for(doc_path)
     try:
-        p.relative_to(root)
+        return resolve_contract_path(
+            contract_root_for(doc_path), str(rel), field="api.http request.url path"
+        )
     except ValueError as e:
-        raise ValueError("api.http request.url relative path escapes contract root") from e
-    return p
+        raise ValueError(str(e)) from e
 
 
 def _fetch_response(case, *, method: str, url: str, headers: dict[str, str], body_bytes: bytes | None, timeout_seconds: float) -> dict[str, Any]:

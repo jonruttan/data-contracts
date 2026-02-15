@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   extractor_policy:
-    path: scripts/run_governance_specs.py
+    path: /scripts/run_governance_specs.py
     forbidden_tokens:
     - spec.portability_metric policy_evaluate returned false
     - spec.spec_lang_adoption_metric policy_evaluate returned false

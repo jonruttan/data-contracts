@@ -12,17 +12,17 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   orchestration_policy:
     files:
-    - path: scripts/ci_gate_summary.py
+    - path: /scripts/ci_gate_summary.py
       required_tokens:
       - _load_gate_policy_expr(
       - eval_predicate(
       - policy_verdict
-    - path: docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
+    - path: /docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
       required_tokens:
       - gate_policy
       - policy_evaluate

@@ -12,12 +12,12 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   assert_engine:
     files:
-    - path: scripts/php/conformance_runner.php
+    - path: /scripts/php/conformance_runner.php
       required_tokens:
       - compileLeafExpr(
       - assertLeafPredicate(
@@ -25,7 +25,7 @@ harness:
       forbidden_tokens:
       - strpos($subject, $v)
       - preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject)
-    - path: scripts/php/spec_runner.php
+    - path: /scripts/php/spec_runner.php
       required_tokens:
       - compileLeafExpr(
       - assertLeafPredicate(
@@ -33,28 +33,28 @@ harness:
       forbidden_tokens:
       - strpos($subject, $v)
       - preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject)
-    - path: scripts/run_governance_specs.py
+    - path: /scripts/run_governance_specs.py
       required_tokens:
       - eval_predicate(
       forbidden_tokens:
       - assert_text_op(
-    - path: spec_runner/assertions.py
+    - path: /spec_runner/assertions.py
       required_tokens:
       - evaluate_internal_assert_tree(
       - eval_predicate(
       forbidden_tokens:
       - def assert_text_op(
-    - path: spec_runner/harnesses/text_file.py
+    - path: /spec_runner/harnesses/text_file.py
       required_tokens:
       - evaluate_internal_assert_tree(
       forbidden_tokens:
       - contain assertion failed
-    - path: spec_runner/harnesses/cli_run.py
+    - path: /spec_runner/harnesses/cli_run.py
       required_tokens:
       - evaluate_internal_assert_tree(
       forbidden_tokens:
       - contain assertion failed
-    - path: spec_runner/harnesses/api_http.py
+    - path: /spec_runner/harnesses/api_http.py
       required_tokens:
       - evaluate_internal_assert_tree(
       forbidden_tokens:

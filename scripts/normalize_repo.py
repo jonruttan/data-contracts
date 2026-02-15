@@ -177,10 +177,17 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     mode_flag = "--check" if ns.check else "--write"
+    vpath_cmd = [sys.executable, "scripts/convert_virtual_root_paths.py", mode_flag, *scope_paths]
     conv_cmd = [sys.executable, "scripts/convert_spec_lang_yaml_ast.py", mode_flag, *scope_paths]
     style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
 
     issues: list[str] = []
+    vpath_code, vpath_out = _run(vpath_cmd)
+    if vpath_code != 0:
+        for line in vpath_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec:1: NORMALIZATION_VIRTUAL_ROOT_PATHS: {line}")
     conv_code, conv_out = _run(conv_cmd)
     if conv_code != 0:
         for line in conv_out.splitlines():

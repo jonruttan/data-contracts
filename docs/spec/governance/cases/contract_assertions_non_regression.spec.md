@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   contract_assertions_non_regression:
-    baseline_path: docs/spec/metrics/contract_assertions_baseline.json
+    baseline_path: /docs/spec/metrics/contract_assertions_baseline.json
     summary_fields:
       overall_contract_assertions_ratio: non_decrease
       overall_required_token_coverage_ratio: non_decrease

@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   reference_index:
-    path: docs/book/reference_index.md
+    path: /docs/book/reference_index.md
     include_glob: docs/book/*.md
     exclude_files:
     - docs/book/README.md

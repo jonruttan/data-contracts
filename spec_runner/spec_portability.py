@@ -6,6 +6,7 @@ from typing import Any
 from spec_runner.codecs import load_external_cases
 from spec_runner.dispatcher import iter_cases
 from spec_runner.settings import SETTINGS
+from spec_runner.virtual_paths import VirtualPathError, resolve_contract_path
 
 
 def _as_list_of_strings(value: object) -> list[str]:
@@ -286,7 +287,11 @@ def spec_portability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
     recursive = bool(cfg["recursive"])
 
     for rel_root in cfg["roots"]:
-        base = root / rel_root
+        try:
+            base = resolve_contract_path(root, rel_root, field="spec_portability.roots[]")
+        except VirtualPathError:
+            scan_errors.append(f"{rel_root}: invalid spec root path")
+            continue
         if not base.exists() or not base.is_dir():
             scan_errors.append(f"{rel_root}: missing spec root directory")
             continue

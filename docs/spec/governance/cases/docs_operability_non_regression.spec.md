@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   docs_operability_non_regression:
-    baseline_path: docs/spec/metrics/docs_operability_baseline.json
+    baseline_path: /docs/spec/metrics/docs_operability_baseline.json
     summary_fields:
       overall_docs_operability_ratio: non_decrease
     segment_fields:
@@ -26,7 +26,7 @@ harness:
         mean_token_sync_compliance_ratio: non_decrease
     epsilon: 1.0e-12
     docs_operability:
-      reference_manifest: docs/book/reference_manifest.yaml
+      reference_manifest: /docs/book/reference_manifest.yaml
   policy_evaluate:
   - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:

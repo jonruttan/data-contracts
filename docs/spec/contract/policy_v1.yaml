@@ -1606,3 +1606,88 @@ rules:
   - scripts/runner_adapter.sh
   - scripts/normalize_repo.py
   - docs/spec/governance/cases/normalization_spec_style_sync.spec.md
+- id: NORMALIZATION_VIRTUAL_ROOT_PATHS_ONLY
+  introduced_in: v1
+  scope: governance
+  applies_to: path_authoring.virtual_root
+  norm: MUST
+  requirement: scoped_spec_paths_must_use_virtual_root_canonical_form
+  description: 'Path-bearing spec fields must use virtual-root canonical `/...` form.
+
+    '
+  rationale: Removes brittle doc-relative `../` chains and normalizes path semantics.
+  risk_if_violated: Path resolution drifts by file location and breaks portability.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/04_harness.md
+  - docs/spec/governance/cases/normalization_virtual_root_paths_only.spec.md
+- id: REFERENCE_CONTRACT_PATHS_EXIST
+  introduced_in: v1
+  scope: governance
+  applies_to: referenced_contract_paths
+  norm: MUST
+  requirement: referenced_contract_paths_must_exist
+  description: 'Path references in scoped spec fields must resolve within contract root and exist.
+
+    '
+  rationale: Fails missing references at governance time instead of runtime.
+  risk_if_violated: Specs become brittle and fail late.
+  references:
+  - docs/spec/governance/cases/reference_contract_paths_exist.spec.md
+  - scripts/run_governance_specs.py
+- id: REFERENCE_SYMBOLS_EXIST
+  introduced_in: v1
+  scope: governance
+  applies_to: harness.spec_lang.symbol_references
+  norm: MUST
+  requirement: referenced_library_symbols_must_resolve
+  description: 'Referenced library symbols/exports must resolve deterministically.
+
+    '
+  rationale: Prevents broken policy wiring from reaching runtime.
+  risk_if_violated: Governance checks fail unpredictably due missing symbols.
+  references:
+  - docs/spec/governance/cases/reference_symbols_exist.spec.md
+  - spec_runner/spec_lang_libraries.py
+- id: REFERENCE_CHECK_IDS_EXIST
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.check_ids
+  norm: MUST
+  requirement: governance_cases_must_reference_registered_check_ids
+  description: 'Governance cases must reference registered check identifiers.
+
+    '
+  rationale: Catches typos/drift in check ids immediately.
+  risk_if_violated: Cases silently stop enforcing intended rules.
+  references:
+  - docs/spec/governance/cases/reference_check_ids_exist.spec.md
+  - scripts/run_governance_specs.py
+- id: REFERENCE_EXTERNAL_REFS_POLICY
+  introduced_in: v1
+  scope: governance
+  applies_to: external_references.policy
+  norm: MUST
+  requirement: external_refs_require_capability_and_provider_allow_policy
+  description: 'External references must use `external://provider/id` and are deny-by-default unless explicitly allowed.
+
+    '
+  rationale: Keeps repo-local specs encapsulated while allowing controlled external integration.
+  risk_if_violated: Hidden external dependencies reduce portability and determinism.
+  references:
+  - docs/spec/governance/cases/reference_external_refs_policy.spec.md
+  - docs/spec/schema/schema_v1.md
+- id: REFERENCE_TOKEN_ANCHORS_EXIST
+  introduced_in: v1
+  scope: governance
+  applies_to: token_anchor_references
+  norm: MUST
+  requirement: configured_token_anchors_must_exist
+  description: 'Configured token anchors must point to existing files and present tokens.
+
+    '
+  rationale: Ensures scanner/token references remain valid through refactors.
+  risk_if_violated: Governance checks become stale and misleading.
+  references:
+  - docs/spec/governance/cases/reference_token_anchors_exist.spec.md
+  - scripts/run_governance_specs.py

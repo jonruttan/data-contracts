@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   objective_scorecard:
-    manifest_path: docs/spec/metrics/objective_manifest.yaml
+    manifest_path: /docs/spec/metrics/objective_manifest.yaml
     policy_evaluate:
     - and:
       - {has_key: [{var: subject}, summary]}

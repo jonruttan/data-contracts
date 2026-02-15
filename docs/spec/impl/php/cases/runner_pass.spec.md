@@ -25,7 +25,7 @@ id: SRPHP-RUN-002
 title: text.file supports relative path
 purpose: Verifies text.file can read a relative path under the same repository root.
 type: text.file
-path: fixtures/sample.txt
+path: /fixtures/sample.txt
 expect:
   portable:
     status: pass
@@ -44,7 +44,7 @@ id: SRPHP-RUN-003
 title: text.file can group succeeds with one passing branch
 purpose: Ensures can group semantics pass when at least one branch evaluates true.
 type: text.file
-path: fixtures/sample.txt
+path: /fixtures/sample.txt
 expect:
   portable:
     status: pass

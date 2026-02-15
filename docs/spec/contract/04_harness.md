@@ -52,8 +52,13 @@ For `text.file`:
 
 - `cli.run` `harness.setup_files[*].path` MUST be relative and MUST resolve
   within the runner temp directory.
-- `text.file` `path` MUST be relative and MUST resolve within the
-  implementation's contract root/workspace boundary.
+- spec-authored contract paths use virtual-root semantics:
+  `/` means contract root (not OS root).
+- root-relative values normalize to canonical `/...`.
+- `text.file` `path` MUST resolve within contract root; `..` escapes are
+  invalid.
+- external references are `external://provider/id` and are deny-by-default
+  unless explicitly enabled by capability + harness external ref policy.
 
 ## Trust Model
 

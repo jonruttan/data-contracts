@@ -16,7 +16,7 @@ expect:
     category: null
 request:
   method: GET
-  url: fixtures/api_http_ok.json
+  url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
 - target: status
   must:
@@ -75,7 +75,7 @@ expect:
     category: null
 request:
   method: GET
-  url: fixtures/api_http_ok.json
+  url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
 - target: status
   must:

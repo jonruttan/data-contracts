@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Assert text content from the containing spec document or an explicit relative path.
+Assert text content from the containing spec document or an explicit contract-root path.
 
 ## Required Fields
 
@@ -16,7 +16,7 @@ Assert text content from the containing spec document or an explicit relative pa
 
 ## Optional Fields
 
-- `path` (string, relative, in-root after resolution)
+- `path` (string, virtual-root `/...` or root-relative normalized to `/...`)
 - common optional fields from schema v1 (`title`, `assert_health`, `expect`, `requires`, `harness`)
 
 ## Targets
@@ -30,7 +30,7 @@ Subject semantics:
 ## Type Rules
 
 - when `path` is omitted, target subject is the containing spec document
-- when `path` is present, it MUST be relative
+- when `path` is present, it resolves against contract root virtual `/`
 - resolved `path` MUST remain inside configured contract root
 
 ## Failure Category Guidance

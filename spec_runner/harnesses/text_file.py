@@ -11,8 +11,9 @@ from spec_runner.assertion_health import (
     resolve_assert_health_mode,
 )
 from spec_runner.compiler import compile_external_case
-from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang import limits_from_harness
+from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
+from spec_runner.virtual_paths import contract_root_for, resolve_contract_path
 
 
 def _runtime_env(ctx) -> dict[str, str]:
@@ -20,16 +21,6 @@ def _runtime_env(ctx) -> dict[str, str]:
     if raw_env is None:
         return dict(os.environ)
     return {str(k): str(v) for k, v in raw_env.items()}
-
-
-def _contract_root_for(doc_path):
-    # Use repository/workspace root when detectable; otherwise fallback to the
-    # spec document directory for safe defaults in isolated tests.
-    p = doc_path.resolve()
-    for cur in (p.parent, *p.parent.parents):
-        if (cur / ".git").exists():
-            return cur
-    return p.parent
 
 
 def run(case, *, ctx) -> None:
@@ -42,17 +33,12 @@ def run(case, *, ctx) -> None:
     p = case.doc_path
     rel = t.get("path")
     if rel is not None:
-        from pathlib import Path
-
-        rel_p = Path(str(rel))
-        if rel_p.is_absolute():
-            raise ValueError("text.file path must be relative")
-        p = (case.doc_path.parent / rel_p).resolve()
-        root = _contract_root_for(case.doc_path)
         try:
-            p.relative_to(root)
+            p = resolve_contract_path(
+                contract_root_for(case.doc_path), str(rel), field="text.file path"
+            )
         except ValueError as e:
-            raise ValueError("text.file path escapes contract root") from e
+            raise ValueError(str(e)) from e
     text = p.read_text(encoding="utf-8")
     assert_spec = t.get("assert", []) or []
     spec_lang_limits = limits_from_harness(case.harness)

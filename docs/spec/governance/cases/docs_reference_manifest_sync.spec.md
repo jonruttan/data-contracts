@@ -12,12 +12,12 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   docs_quality:
     manifest: docs/book/reference_manifest.yaml
-    index_out: docs/book/reference_index.md
+    index_out: /docs/book/reference_index.md
   policy_evaluate:
   - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:

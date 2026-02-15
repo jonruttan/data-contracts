@@ -12,13 +12,13 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   runner_interface:
     required_paths:
-    - scripts/runner_adapter.sh
-    - scripts/rust/runner_adapter.sh
+    - /scripts/runner_adapter.sh
+    - /scripts/rust/runner_adapter.sh
     files:
     - scripts/ci_gate_summary.py
     required_tokens:

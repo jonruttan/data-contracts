@@ -41,7 +41,7 @@ def test_text_file_cannot_group(tmp_path, monkeypatch, capsys):
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
-def test_text_file_can_read_relative_path(tmp_path, monkeypatch, capsys):
+def test_text_file_can_read_contract_root_path(tmp_path, monkeypatch, capsys):
     doc = tmp_path / "spec.md"
     doc.write_text("spec doc\n", encoding="utf-8")
     target = tmp_path / "other.txt"
@@ -52,7 +52,7 @@ def test_text_file_can_read_relative_path(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "path": "other.txt",
+            "path": "/other.txt",
             "assert": [{"target": "text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "hello other"]}]}]}],
         },
     )
@@ -71,14 +71,14 @@ def test_text_file_rejects_absolute_path(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "path": str(doc.resolve()),
+            "path": "C:\\temp\\spec.md",
             "assert": [{"target": "text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "spec doc"]}]}]}],
         },
     )
 
     from spec_runner.harnesses.text_file import run
 
-    with pytest.raises(ValueError, match="must be relative"):
+    with pytest.raises(ValueError, match="must not use OS-absolute drive paths"):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
@@ -130,7 +130,7 @@ def test_text_file_rejects_path_escape_without_repo_root(tmp_path, monkeypatch, 
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
-def test_text_file_allows_parent_reference_with_repo_root(tmp_path, monkeypatch, capsys):
+def test_text_file_rejects_parent_reference_with_repo_root(tmp_path, monkeypatch, capsys):
     root = tmp_path / "repo"
     (root / ".git").mkdir(parents=True)
     doc_dir = root / "docs" / "spec"
@@ -152,7 +152,8 @@ def test_text_file_allows_parent_reference_with_repo_root(tmp_path, monkeypatch,
 
     from spec_runner.harnesses.text_file import run
 
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
+    with pytest.raises(ValueError, match="escapes contract root"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_text_file_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsys):

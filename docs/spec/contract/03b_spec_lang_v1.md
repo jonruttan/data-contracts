@@ -260,7 +260,7 @@ Library configuration (optional):
 harness:
   spec_lang:
     library_paths:
-    - docs/spec/libraries/common.spec.md
+    - /docs/spec/libraries/common.spec.md
     exports:
     - is_portable_case
 ```

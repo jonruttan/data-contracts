@@ -14,6 +14,7 @@ from spec_runner.docs_quality import (
     render_reference_coverage,
     render_reference_index,
 )
+from spec_runner.virtual_paths import VirtualPathError, resolve_contract_path
 
 
 def _render_issues(issues: list[DocsIssue]) -> None:
@@ -45,16 +46,29 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     for rel in docs:
         if rel in metas:
-            metas[rel]["__text__"] = (root / rel).read_text(encoding="utf-8")
+            try:
+                p = resolve_contract_path(root, rel, field="reference_manifest chapter path")
+            except VirtualPathError:
+                p = root / rel.lstrip("/")
+            metas[rel]["__text__"] = p.read_text(encoding="utf-8")
 
     index_text = render_reference_index(manifest)
     coverage_text = render_reference_coverage(root, metas)
     graph = build_docs_graph(root, metas)
     graph_text = json.dumps(graph, indent=2, sort_keys=True) + "\n"
 
-    index_path = root / str(ns.index_out)
-    coverage_path = root / str(ns.coverage_out)
-    graph_path = root / str(ns.graph_out)
+    try:
+        index_path = resolve_contract_path(root, str(ns.index_out), field="index_out")
+    except VirtualPathError:
+        index_path = root / str(ns.index_out).lstrip("/")
+    try:
+        coverage_path = resolve_contract_path(root, str(ns.coverage_out), field="coverage_out")
+    except VirtualPathError:
+        coverage_path = root / str(ns.coverage_out).lstrip("/")
+    try:
+        graph_path = resolve_contract_path(root, str(ns.graph_out), field="graph_out")
+    except VirtualPathError:
+        graph_path = root / str(ns.graph_out).lstrip("/")
 
     if ns.check:
         bad = False

@@ -12,14 +12,14 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   portability_metric:
     roots:
-    - docs/spec/conformance/cases
-    - docs/spec/governance/cases
-    - docs/spec/impl
+    - /docs/spec/conformance/cases
+    - /docs/spec/governance/cases
+    - /docs/spec/impl
     core_types:
     - text.file
     - cli.run

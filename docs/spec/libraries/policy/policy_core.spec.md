@@ -7,7 +7,7 @@ id: LIB-POLICY-001
 title: policy-core reusable governance predicates
 type: spec_lang.library
 imports:
-- ../path/path_core.spec.md
+- /docs/spec/libraries/path/path_core.spec.md
 functions:
   policy.pass_when_no_violations:
     fn:

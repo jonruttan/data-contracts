@@ -12,11 +12,11 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   runner_interface_subcommands:
-    path: scripts/rust/runner_adapter.sh
+    path: /scripts/rust/runner_adapter.sh
     required_subcommands:
     - governance
     - style-check

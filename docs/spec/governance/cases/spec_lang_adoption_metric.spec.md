@@ -12,14 +12,14 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   spec_lang_adoption:
     roots:
-    - docs/spec/conformance/cases
-    - docs/spec/governance/cases
-    - docs/spec/impl
+    - /docs/spec/conformance/cases
+    - /docs/spec/governance/cases
+    - /docs/spec/impl
     segment_rules:
     - prefix: docs/spec/conformance/cases
       segment: conformance

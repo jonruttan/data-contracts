@@ -1,6 +1,20 @@
 version: 1
 title: Spec Runner Normalization Profile
 paths:
+  virtual_root_scoped_fields:
+  - path
+  - library_paths
+  - cases_path
+  - baseline_path
+  - manifest_path
+  - index_out
+  - coverage_out
+  - graph_out
+  - required_paths
+  - adapter_path
+  - cli_main_path
+  - required_library_path
+  external_ref_scheme: external://provider/id
   specs:
   - docs/spec
   contracts:

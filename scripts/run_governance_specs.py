@@ -14,6 +14,7 @@ from typing import Callable
 
 import yaml
 from spec_runner.assertions import eval_assert_tree, iter_leaf_assertions
+from spec_runner.codecs import load_external_cases
 from spec_runner.dispatcher import SpecRunContext, iter_cases, run_case
 from spec_runner.doc_parser import iter_spec_doc_tests
 from spec_runner.purpose_lint import (
@@ -52,6 +53,7 @@ from spec_runner.quality_metrics import validate_metric_baseline_notes
 from spec_runner.quality_metrics import _load_baseline_json
 from spec_runner.governance_engine import GovernancePolicyResult, normalize_policy_evaluate, run_governance_policy
 from spec_runner.spec_portability import spec_portability_report_jsonable
+from spec_runner.virtual_paths import VirtualPathError, normalize_contract_path, parse_external_ref, resolve_contract_path
 
 
 _SECURITY_WARNING_DOCS = (
@@ -129,6 +131,66 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
     "capture",
 }
 _NORMALIZATION_PROFILE_PATH = "docs/spec/schema/normalization_profile_v1.yaml"
+_PATH_LIKE_KEYS = {
+    "path",
+    "library_paths",
+    "cases_path",
+    "baseline_path",
+    "manifest_path",
+    "index_out",
+    "coverage_out",
+    "graph_out",
+    "required_paths",
+    "adapter_path",
+    "cli_main_path",
+    "required_library_path",
+    "reference_manifest",
+    "roots",
+}
+
+
+def _resolve_contract_config_path(root: Path, raw: str, *, field: str) -> Path:
+    return resolve_contract_path(root, str(raw), field=field)
+
+
+def _join_contract_path(root: Path, raw: object) -> Path:
+    return root / str(raw).lstrip("/")
+
+
+def _iter_path_fields(node: object, *, key_path: str = ""):
+    if isinstance(node, dict):
+        for k, v in node.items():
+            key = str(k)
+            current = f"{key_path}.{key}" if key_path else key
+            if key in {"request", "setup_files"}:
+                yield from _iter_path_fields(v, key_path=current)
+                continue
+            if key in _PATH_LIKE_KEYS:
+                if isinstance(v, str):
+                    yield current, v
+                elif isinstance(v, list):
+                    for idx, item in enumerate(v):
+                        if isinstance(item, str):
+                            yield f"{current}[{idx}]", item
+                elif isinstance(v, dict):
+                    for kk, vv in v.items():
+                        if isinstance(vv, str):
+                            yield f"{current}.{kk}", vv
+            yield from _iter_path_fields(v, key_path=current)
+    elif isinstance(node, list):
+        for idx, item in enumerate(node):
+            current = f"{key_path}[{idx}]" if key_path else f"[{idx}]"
+            yield from _iter_path_fields(item, key_path=current)
+
+
+def _iter_all_spec_cases(base: Path):
+    if not base.exists():
+        return
+    for file_path in sorted(base.rglob(SETTINGS.case.default_file_pattern)):
+        if not file_path.is_file():
+            continue
+        for doc_path, case in load_external_cases(file_path, formats={"md"}):
+            yield doc_path, case
 
 
 def _scan_contract_governance_check(root: Path) -> list[str]:
@@ -152,7 +214,7 @@ def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
 def _scan_security_warning_docs(root: Path) -> list[str]:
     violations: list[str] = []
     for rel in _SECURITY_WARNING_DOCS:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}: missing required doc")
             continue
@@ -178,7 +240,7 @@ def _scan_runtime_config_literals(root: Path) -> list[str]:
     violations: list[str] = []
     governed = governed_config_literals()
     for rel_root in _PYTHON_RUNTIME_ROOTS:
-        runtime_root = root / rel_root
+        runtime_root = _join_contract_path(root, rel_root)
         if not runtime_root.exists():
             continue
         for p in sorted(runtime_root.rglob("*.py")):
@@ -197,7 +259,7 @@ def _scan_runtime_config_literals(root: Path) -> list[str]:
 def _scan_runtime_settings_import_policy(root: Path) -> list[str]:
     violations: list[str] = []
     for rel_root in _PYTHON_RUNTIME_ROOTS:
-        runtime_root = root / rel_root
+        runtime_root = _join_contract_path(root, rel_root)
         if not runtime_root.exists():
             continue
         for p in sorted(runtime_root.rglob("*.py")):
@@ -233,7 +295,7 @@ def _scan_runtime_assertions_via_spec_lang(root: Path, *, harness: dict | None =
         if not rel:
             violations.append("harness.assert_engine.files[].path must be non-empty")
             continue
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing runtime assertion file")
             continue
@@ -274,7 +336,7 @@ def _scan_spec_lang_pure_no_effect_builtins(root: Path, *, harness: dict | None 
 
     violations: list[str] = []
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing spec-lang implementation file")
             continue
@@ -332,7 +394,7 @@ def _scan_runtime_orchestration_policy_via_spec_lang(root: Path, *, harness: dic
         else:
             violations.append("harness.orchestration_policy.files entries must be strings or mappings")
             continue
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing orchestration file")
             continue
@@ -398,7 +460,7 @@ def _scan_conformance_purpose_quality_gate(root: Path, *, harness: dict | None =
     if not isinstance(cfg, dict):
         return ["conformance.purpose_quality_gate requires harness.purpose_quality mapping in governance spec"]
     cases_rel = str(cfg.get("cases", "docs/spec/conformance/cases")).strip() or "docs/spec/conformance/cases"
-    cases_dir = root / cases_rel
+    cases_dir = _join_contract_path(root, cases_rel)
     if not cases_dir.exists():
         return [f"{cases_rel}:1: conformance cases path does not exist"]
     max_total_warnings = int(cfg.get("max_total_warnings", 0))
@@ -539,7 +601,7 @@ def _scan_spec_portability_non_regression(root: Path, *, harness: dict | None = 
     if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
         return [f"current portability report has errors: {str(e)}" for e in current_errs if str(e).strip()]
 
-    baseline_file = root / baseline_path
+    baseline_file = _join_contract_path(root, baseline_path)
     if not baseline_file.exists():
         return [f"{baseline_path}:1: missing baseline portability metrics file"]
     try:
@@ -1076,7 +1138,7 @@ def _scan_objective_tripwires_clean(root: Path, *, harness: dict | None = None) 
     cases_path = str(cfg.get("cases_path", "")).strip() or "docs/spec/governance/cases"
     case_file_pattern = str(cfg.get("case_file_pattern", "")).strip() or SETTINGS.case.default_file_pattern
 
-    manifest_file = root / manifest_path
+    manifest_file = _join_contract_path(root, manifest_path)
     if not manifest_file.exists():
         return [f"{manifest_path}:1: missing objective manifest"]
     try:
@@ -1107,7 +1169,7 @@ def _scan_objective_tripwires_clean(root: Path, *, harness: dict | None = None) 
     if not check_ids:
         return [f"{manifest_path}:1: no tripwire check_id entries found"]
 
-    cases_dir = root / cases_path
+    cases_dir = _join_contract_path(root, cases_path)
     if not cases_dir.exists() or not cases_dir.is_dir():
         return [f"{cases_path}:1: cases path does not exist"]
 
@@ -1332,7 +1394,7 @@ def _scan_assert_universal_core_sync(root: Path) -> list[str]:
         ),
     }
     for rel in _ASSERT_UNIVERSAL_DOC_FILES:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing assertion universal-core doc")
             continue
@@ -1406,7 +1468,7 @@ def _scan_assert_type_contract_subject_semantics_sync(root: Path) -> list[str]:
         "docs/spec/contract/types/cli_run.md": ("only supports `exists`",),
     }
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing type/harness contract doc")
             continue
@@ -1508,7 +1570,7 @@ def _scan_current_spec_only_contract(root: Path) -> list[str]:
     violations: list[str] = []
     patterns = [re.compile(p, re.IGNORECASE) for p in _CURRENT_SPEC_FORBIDDEN_PATTERNS]
     for rel in (*_CURRENT_SPEC_ONLY_DOCS, *_CURRENT_SPEC_ONLY_CODE_FILES):
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             continue
         for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
@@ -1570,7 +1632,7 @@ def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | Non
         return ["harness.policy_requirements.ignore_checks must be a list of strings"]
     ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
 
-    cases_dir = root / cases_rel
+    cases_dir = _join_contract_path(root, cases_rel)
     if not cases_dir.exists():
         return [f"{cases_rel}:1: governance cases path does not exist"]
 
@@ -1608,7 +1670,7 @@ def _scan_governance_policy_library_usage_required(root: Path, *, harness: dict 
         return ["harness.policy_library_requirements.ignore_checks must be a list of strings"]
     ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
 
-    cases_dir = root / cases_rel
+    cases_dir = _join_contract_path(root, cases_rel)
     if not cases_dir.exists():
         return [f"{cases_rel}:1: governance cases path does not exist"]
 
@@ -1683,7 +1745,7 @@ def _scan_conformance_library_policy_usage_required(root: Path, *, harness: dict
         return ["harness.conformance_policy_library_requirements.ignore_checks must be a list of strings"]
     ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
 
-    cases_dir = root / cases_rel
+    cases_dir = _join_contract_path(root, cases_rel)
     if not cases_dir.exists():
         return [f"{cases_rel}:1: governance cases path does not exist"]
 
@@ -1750,7 +1812,7 @@ def _scan_governance_extractor_only_no_verdict_branching(root: Path, *, harness:
     if not isinstance(cfg, dict):
         return ["governance.extractor_only_no_verdict_branching requires harness.extractor_policy mapping in governance spec"]
     rel = str(cfg.get("path", "scripts/run_governance_specs.py")).strip() or "scripts/run_governance_specs.py"
-    p = root / rel
+    p = _join_contract_path(root, rel)
     if not p.exists():
         return [f"{rel}:1: missing governance runner script"]
     forbidden_tokens = cfg.get("forbidden_tokens", [])
@@ -1780,7 +1842,7 @@ def _scan_governance_structured_assertions_required(root: Path, *, harness: dict
         return ["harness.structured_assertions.ignore_checks must be a list of strings"]
     ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
 
-    cases_dir = root / cases_rel
+    cases_dir = _join_contract_path(root, cases_rel)
     if not cases_dir.exists():
         return [f"{cases_rel}:1: governance cases path does not exist"]
 
@@ -1833,7 +1895,7 @@ def _scan_runtime_rust_adapter_no_python_exec(root: Path, *, harness: dict | Non
     if not isinstance(cfg, dict):
         return ["runtime.rust_adapter_no_python_exec requires harness.rust_no_python_exec mapping in governance spec"]
     rel = str(cfg.get("path", "scripts/rust/spec_runner_cli/src/main.rs")).strip() or "scripts/rust/spec_runner_cli/src/main.rs"
-    p = root / rel
+    p = _join_contract_path(root, rel)
     if not p.exists():
         return [f"{rel}:1: missing rust runner interface implementation"]
     forbidden_tokens = cfg.get("forbidden_tokens", [])
@@ -1899,7 +1961,7 @@ def _scan_runtime_rust_adapter_transitive_no_python(root: Path, *, harness: dict
         ]
     violations: list[str] = []
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing rust adapter file for transitive no-python check")
             continue
@@ -1930,7 +1992,7 @@ def _scan_conformance_type_contract_docs(root: Path) -> list[str]:
 
     for case_type in sorted(seen_types):
         rel = _type_contract_doc_rel_for(case_type)
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"missing type contract doc for '{case_type}': {rel}")
             continue
@@ -2236,7 +2298,7 @@ def _scan_conformance_extension_requires_capabilities(root: Path) -> list[str]:
 
 def _load_type_contract_top_level_fields(root: Path, case_type: str) -> set[str]:
     rel = _type_contract_doc_rel_for(case_type)
-    p = root / rel
+    p = _join_contract_path(root, rel)
     if not p.exists():
         return set()
     fields: set[str] = set()
@@ -2309,7 +2371,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
 
     all_rows: list[dict[str, object]] = []
     for rel_root in roots:
-        base = root / rel_root
+        base = _join_contract_path(root, rel_root)
         if not base.exists():
             violations.append(f"{rel_root}:1: missing conformance root for spec-lang preference scan")
             continue
@@ -2391,7 +2453,7 @@ def _scan_conformance_spec_lang_fixture_library_usage(root: Path, *, harness: di
         return ["harness.spec_lang_fixture_library_usage.required_case_ids must be a list of non-empty strings"]
     required_case_ids = {str(x).strip() for x in required_case_ids_raw if str(x).strip()}
 
-    fixture = root / rel
+    fixture = _join_contract_path(root, rel)
     if not fixture.exists():
         return [f"{rel}:1: missing conformance fixture file"]
 
@@ -2472,7 +2534,7 @@ def _scan_docs_reference_surface_complete(root: Path, *, harness: dict | None = 
         return ["harness.docs_reference_surface.required_globs must be a list of non-empty strings"]
 
     for rel in required_files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing required reference file")
 
@@ -2506,17 +2568,23 @@ def _scan_docs_reference_index_sync(root: Path, *, harness: dict | None = None) 
         return ["harness.reference_index.exclude_files must be a list of strings"]
     exclude = {x.strip() for x in exclude_files if x.strip()}
 
-    index_path = root / index_rel
+    index_path = _join_contract_path(root, index_rel)
     if not index_path.exists():
         return [f"{index_rel}:1: missing reference index file"]
 
-    expected = [
-        str(p.relative_to(root))
-        for p in sorted(root.glob(include_glob))
-        if str(p.relative_to(root)) not in exclude
-    ]
+    include_norm = include_glob.lstrip("/")
+    expected = []
+    for p in sorted(root.glob(include_norm)):
+        relp = str(p.relative_to(root)).replace("\\", "/")
+        if relp in exclude or ("/" + relp) in exclude:
+            continue
+        expected.append(relp)
     raw = index_path.read_text(encoding="utf-8")
-    listed = [p for p in _extract_backtick_paths(raw) if p.startswith("docs/book/") and p.endswith(".md")]
+    listed = [
+        p.lstrip("/")
+        for p in _extract_backtick_paths(raw)
+        if p.lstrip("/").startswith("docs/book/") and p.lstrip("/").endswith(".md")
+    ]
     seen: set[str] = set()
     deduped_listed: list[str] = []
     for rel in listed:
@@ -2555,7 +2623,7 @@ def _load_docs_quality_context(root: Path, harness: dict | None = None) -> tuple
     meta_msgs = [x.render() for x in meta_issues]
     for rel in docs:
         if rel in metas:
-            metas[rel]["__text__"] = (root / rel).read_text(encoding="utf-8")
+            metas[rel]["__text__"] = (_join_contract_path(root, rel)).read_text(encoding="utf-8")
     return manifest, docs, metas, meta_msgs
 
 
@@ -2575,7 +2643,7 @@ def _scan_docs_reference_manifest_sync(root: Path, *, harness: dict | None = Non
     if msgs:
         return msgs
     index_rel = str(cfg.get("index_out", "docs/book/reference_index.md")).strip()
-    index_path = root / index_rel
+    index_path = _join_contract_path(root, index_rel)
     expected = render_reference_index(manifest)
     if not index_path.exists():
         return [f"{index_rel}:1: missing generated reference index"]
@@ -2631,9 +2699,9 @@ def _scan_docs_generated_files_clean(root: Path, *, harness: dict | None = None)
     index_rel = str(cfg.get("index_out", "docs/book/reference_index.md")).strip()
     coverage_rel = str(cfg.get("coverage_out", "docs/book/reference_coverage.md")).strip()
     graph_rel = str(cfg.get("graph_out", "docs/book/docs_graph.json")).strip()
-    index_path = root / index_rel
-    coverage_path = root / coverage_rel
-    graph_path = root / graph_rel
+    index_path = _join_contract_path(root, index_rel)
+    coverage_path = _join_contract_path(root, coverage_rel)
+    graph_path = _join_contract_path(root, graph_rel)
 
     out: list[str] = []
     expected_index = render_reference_index(manifest)
@@ -2683,7 +2751,7 @@ def _scan_docs_required_sections(root: Path, *, harness: dict | None = None) -> 
         if not isinstance(tokens, list) or not tokens or any(not isinstance(x, str) or not x.strip() for x in tokens):
             violations.append(f"harness.required_sections[{rel!r}] must be a non-empty list of non-empty strings")
             continue
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing required section-checked file")
             continue
@@ -2753,7 +2821,7 @@ def _scan_docs_examples_runnable(root: Path, *, harness: dict | None = None) -> 
         return ["harness.docs_examples.files must be a non-empty list of non-empty strings"]
 
     for rel in docs:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}: missing docs file for example scan")
             continue
@@ -2823,7 +2891,7 @@ def _scan_docs_cli_flags_documented(root: Path, *, harness: dict | None = None) 
 
     python_flags: dict[str, set[str]] = {}
     for rel in python_scripts:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing python script for CLI docs scan")
             continue
@@ -2831,7 +2899,7 @@ def _scan_docs_cli_flags_documented(root: Path, *, harness: dict | None = None) 
 
     php_flags: dict[str, set[str]] = {}
     for rel in php_scripts:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing php script for CLI docs scan")
             continue
@@ -2839,7 +2907,7 @@ def _scan_docs_cli_flags_documented(root: Path, *, harness: dict | None = None) 
 
     doc_cache: dict[str, str] = {}
     for rel in [*python_docs, *php_docs]:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing documentation file for CLI docs scan")
             continue
@@ -2884,7 +2952,7 @@ def _scan_docs_contract_schema_book_sync(root: Path, *, harness: dict | None = N
 
     loaded: dict[str, str] = {}
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing doc_sync file")
             continue
@@ -2921,7 +2989,7 @@ def _scan_docs_make_commands_sync(root: Path, *, harness: dict | None = None) ->
     ):
         return ["harness.make_commands.required_tokens must be a non-empty list of non-empty strings"]
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing docs file for make command sync check")
             continue
@@ -2953,7 +3021,7 @@ def _scan_docs_adoption_profiles_sync(root: Path, *, harness: dict | None = None
     ):
         return ["harness.adoption_profiles.required_tokens must be a non-empty list of non-empty strings"]
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing docs file for adoption profile sync check")
             continue
@@ -2996,7 +3064,7 @@ def _scan_docs_release_contract_automation_policy(root: Path, *, harness: dict |
             return [f"harness.release_contract.forbidden_patterns invalid regex {pat!r}: {exc}"]
 
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing release contract doc")
             continue
@@ -3036,7 +3104,7 @@ def _scan_runtime_scope_sync(root: Path, *, harness: dict | None = None) -> list
     if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
         return ["harness.runtime_scope.forbidden_tokens must be a list of non-empty strings"]
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing runtime-scope doc")
             continue
@@ -3075,12 +3143,12 @@ def _scan_runtime_python_bin_resolver_sync(root: Path, *, harness: dict | None =
     if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
         return ["harness.python_bin_resolver.required_tokens must be a list of non-empty strings"]
 
-    helper_path = root / helper
+    helper_path = _join_contract_path(root, helper)
     if not helper_path.exists():
         violations.append(f"{helper}:1: missing shared python-bin resolver helper")
 
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing script for python-bin resolver sync check")
             continue
@@ -3120,12 +3188,12 @@ def _scan_runtime_runner_interface_gate_sync(root: Path, *, harness: dict | None
         return ["harness.runner_interface.required_paths must be a list of non-empty strings"]
 
     for rel in required_paths:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing required runner interface path")
 
     for rel in files:
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: missing gate file for runner interface sync check")
             continue
@@ -3160,7 +3228,7 @@ def _scan_runtime_runner_interface_subcommands(root: Path, *, harness: dict | No
             "harness.runner_interface_subcommands.required_subcommands must be a non-empty list of non-empty strings"
         ]
 
-    p = root / path
+    p = _join_contract_path(root, path)
     if not p.exists():
         return [f"{path}:1: missing runner adapter script"]
     text = p.read_text(encoding="utf-8")
@@ -3189,7 +3257,7 @@ def _scan_runtime_runner_interface_ci_lane(root: Path, *, harness: dict | None =
         or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
     ):
         return ["harness.runner_interface_ci_lane.required_tokens must be a non-empty list of non-empty strings"]
-    p = root / workflow
+    p = _join_contract_path(root, workflow)
     if not p.exists():
         return [f"{workflow}:1: missing workflow file for runner interface CI lane check"]
     text = p.read_text(encoding="utf-8")
@@ -3214,7 +3282,7 @@ def _scan_runtime_rust_adapter_no_delegate(root: Path, *, harness: dict | None =
         return ["harness.rust_adapter.required_tokens must be a list of non-empty strings"]
     if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
         return ["harness.rust_adapter.forbidden_tokens must be a list of non-empty strings"]
-    p = root / path
+    p = _join_contract_path(root, path)
     if not p.exists():
         return [f"{path}:1: missing rust adapter script"]
     text = p.read_text(encoding="utf-8")
@@ -3320,8 +3388,8 @@ def _scan_runtime_rust_adapter_subcommand_parity(root: Path, *, harness: dict | 
     if not cli_main_path:
         return ["harness.rust_subcommand_parity.cli_main_path must be a non-empty string"]
 
-    adapter_file = root / adapter_path
-    cli_main_file = root / cli_main_path
+    adapter_file = _join_contract_path(root, adapter_path)
+    cli_main_file = _join_contract_path(root, cli_main_path)
     if not adapter_file.exists():
         return [f"{adapter_path}:1: missing rust adapter script for subcommand parity check"]
     if not cli_main_file.exists():
@@ -3393,7 +3461,7 @@ def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> 
         return [f"harness.filename_policy.allowed_name_regex invalid: {exc}"]
 
     for rel_root in paths:
-        base = root / rel_root
+        base = _join_contract_path(root, rel_root)
         if not base.exists():
             violations.append(f"{rel_root}:1: missing path for filename policy scan")
             continue
@@ -3414,6 +3482,199 @@ def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> 
                     f"{rel}: filename {name!r} must match {allowed_name_regex} "
                     "(lowercase words with '_' for spaces and '-' for section separators)"
                 )
+    return violations
+
+
+def _scan_normalization_virtual_root_paths_only(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    scope = [
+        root / "docs/spec/conformance/cases",
+        root / "docs/spec/governance/cases",
+        root / "docs/spec/libraries",
+    ]
+    for base in scope:
+        if not base.exists():
+            continue
+        for doc_path, case in _iter_all_spec_cases(base):
+            rel = doc_path.relative_to(root)
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            for field, raw in _iter_path_fields(case):
+                s = str(raw).strip()
+                if not s or s.startswith("external://"):
+                    continue
+                try:
+                    normalized = normalize_contract_path(s, field=f"{case_id}.{field}")
+                except VirtualPathError:
+                    violations.append(f"{rel}: case {case_id} has invalid virtual path at {field}: {s}")
+                    continue
+                if s != normalized:
+                    violations.append(
+                        f"{rel}: case {case_id} non-canonical path at {field}: {s!r} -> {normalized!r}"
+                    )
+    return violations
+
+
+def _scan_reference_contract_paths_exist(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    scope = [
+        root / "docs/spec/conformance/cases",
+        root / "docs/spec/governance/cases",
+        root / "docs/spec/libraries",
+    ]
+    must_exist_keys = {
+        "path",
+        "library_paths",
+        "cases_path",
+        "baseline_path",
+        "manifest_path",
+        "required_paths",
+        "adapter_path",
+        "cli_main_path",
+        "required_library_path",
+        "reference_manifest",
+    }
+    for base in scope:
+        if not base.exists():
+            continue
+        for doc_path, case in _iter_all_spec_cases(base):
+            rel = doc_path.relative_to(root)
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            for field, raw in _iter_path_fields(case):
+                if field.split(".")[-1].split("[", 1)[0] not in must_exist_keys:
+                    continue
+                s = str(raw).strip()
+                if not s or s.startswith("external://"):
+                    continue
+                try:
+                    p = _resolve_contract_config_path(root, s, field=field)
+                except VirtualPathError:
+                    violations.append(f"{rel}: case {case_id} has invalid path at {field}: {s}")
+                    continue
+                if not p.exists():
+                    violations.append(f"{rel}: case {case_id} references missing path at {field}: {s}")
+    return violations
+
+
+def _scan_reference_check_ids_exist(root: Path, *, harness: dict | None = None) -> list[str]:
+    cases_dir = root / "docs/spec/governance/cases"
+    if not cases_dir.exists():
+        return []
+    violations: list[str] = []
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
+        check_id = str(spec.test.get("check", "")).strip()
+        if not check_id:
+            violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing check id")
+            continue
+        if check_id not in _CHECKS:
+            violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} unknown check id: {check_id}")
+    return violations
+
+
+def _scan_reference_symbols_exist(root: Path, *, harness: dict | None = None) -> list[str]:
+    cases_dir = root / "docs/spec/governance/cases"
+    if not cases_dir.exists():
+        return []
+    violations: list[str] = []
+    limits = SpecLangLimits()
+    for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
+        harness_map = spec.test.get("harness")
+        if not isinstance(harness_map, dict):
+            continue
+        spec_lang_cfg = harness_map.get("spec_lang")
+        if not isinstance(spec_lang_cfg, dict):
+            continue
+        if not spec_lang_cfg.get("library_paths"):
+            continue
+        try:
+            load_spec_lang_symbols_for_case(
+                doc_path=spec.doc_path,
+                harness=harness_map,
+                limits=limits,
+            )
+        except Exception as exc:  # noqa: BLE001
+            case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} library symbol/path reference error ({exc})"
+            )
+    return violations
+
+
+def _scan_reference_external_refs_policy(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    scope = [
+        root / "docs/spec/conformance/cases",
+        root / "docs/spec/governance/cases",
+        root / "docs/spec/libraries",
+    ]
+    for base in scope:
+        if not base.exists():
+            continue
+        for doc_path, case in _iter_all_spec_cases(base):
+            rel = doc_path.relative_to(root)
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            requires = dict(case.get("requires") or {})
+            caps = set(str(x).strip() for x in (requires.get("capabilities") or []) if str(x).strip())
+            h = dict(case.get("harness") or {})
+            ext_cfg = dict(h.get("external_refs") or {})
+            mode = str(ext_cfg.get("mode", "deny")).strip().lower() or "deny"
+            providers = set(
+                str(x).strip() for x in (ext_cfg.get("providers") or []) if str(x).strip()
+            )
+            for field, raw in _iter_path_fields(case):
+                ext = parse_external_ref(str(raw).strip())
+                if ext is None:
+                    continue
+                if "external.ref.v1" not in caps:
+                    violations.append(
+                        f"{rel}: case {case_id} external ref at {field} requires capabilities including external.ref.v1"
+                    )
+                if mode != "allow":
+                    violations.append(
+                        f"{rel}: case {case_id} external ref at {field} requires harness.external_refs.mode=allow"
+                    )
+                if ext.provider not in providers:
+                    violations.append(
+                        f"{rel}: case {case_id} external provider {ext.provider} not allowlisted at {field}"
+                    )
+    return violations
+
+
+def _scan_reference_token_anchors_exist(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("token_anchors")
+    if cfg is None:
+        return []
+    if not isinstance(cfg, dict):
+        return ["reference.token_anchors_exist requires harness.token_anchors mapping in governance spec"]
+    files = cfg.get("files")
+    if not isinstance(files, list):
+        return ["harness.token_anchors.files must be a list"]
+    violations: list[str] = []
+    for idx, entry in enumerate(files):
+        if not isinstance(entry, dict):
+            violations.append(f"harness.token_anchors.files[{idx}] must be a mapping")
+            continue
+        rel = str(entry.get("path", "")).strip()
+        tokens = entry.get("tokens")
+        if not rel:
+            violations.append(f"harness.token_anchors.files[{idx}].path must be non-empty")
+            continue
+        if not isinstance(tokens, list) or any(not isinstance(t, str) or not t.strip() for t in tokens):
+            violations.append(f"harness.token_anchors.files[{idx}].tokens must be a list of non-empty strings")
+            continue
+        try:
+            p = _resolve_contract_config_path(root, rel, field=f"token_anchors.files[{idx}].path")
+        except VirtualPathError as exc:
+            violations.append(str(exc))
+            continue
+        if not p.exists():
+            violations.append(f"{rel}:1: token anchor file does not exist")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in text:
+                violations.append(f"{rel}:1: missing token anchor {token!r}")
     return violations
 
 
@@ -3527,7 +3788,7 @@ def _scan_normalization_docs_token_sync(root: Path, *, harness: dict | None = No
         rel = str(rule.get("file", "")).strip()
         if not rel:
             continue
-        p = root / rel
+        p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}:1: {rid}: missing file")
             continue
@@ -3686,6 +3947,12 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.release_contract_automation_policy": _scan_docs_release_contract_automation_policy,
     "runtime.scope_sync": _scan_runtime_scope_sync,
     "naming.filename_policy": _scan_naming_filename_policy,
+    "normalization.virtual_root_paths_only": _scan_normalization_virtual_root_paths_only,
+    "reference.contract_paths_exist": _scan_reference_contract_paths_exist,
+    "reference.symbols_exist": _scan_reference_symbols_exist,
+    "reference.check_ids_exist": _scan_reference_check_ids_exist,
+    "reference.external_refs_policy": _scan_reference_external_refs_policy,
+    "reference.token_anchors_exist": _scan_reference_token_anchors_exist,
     "normalization.profile_sync": _scan_normalization_profile_sync,
     "normalization.mapping_ast_only": _scan_normalization_mapping_ast_only,
     "normalization.library_mapping_ast_only": _scan_normalization_library_mapping_ast_only,

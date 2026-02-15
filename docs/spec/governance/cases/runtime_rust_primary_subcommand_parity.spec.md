@@ -12,12 +12,12 @@ harness:
   root: .
   spec_lang:
     library_paths:
-    - ../../libraries/policy/policy_core.spec.md
+    - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
   rust_subcommand_parity:
-    adapter_path: scripts/rust/runner_adapter.sh
-    cli_main_path: scripts/rust/spec_runner_cli/src/main.rs
+    adapter_path: /scripts/rust/runner_adapter.sh
+    cli_main_path: /scripts/rust/spec_runner_cli/src/main.rs
   policy_evaluate:
   - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:

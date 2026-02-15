@@ -18,7 +18,7 @@ def test_api_http_relative_fixture_passes(tmp_path, monkeypatch, capsys):
             "type": "api.http",
             "request": {
                 "method": "GET",
-                "url": "fixtures/ok.json",
+                "url": "/fixtures/ok.json",
             },
             "assert": [
                 {"target": "status", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "200"]}]}]},
@@ -98,7 +98,7 @@ def test_api_http_body_json_expr_operator(tmp_path, monkeypatch, capsys):
             "type": "api.http",
             "request": {
                 "method": "GET",
-                "url": "fixtures/ok.json",
+                "url": "/fixtures/ok.json",
             },
             "assert": [
                 {
