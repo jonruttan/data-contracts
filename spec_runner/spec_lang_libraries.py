@@ -6,6 +6,7 @@ from typing import Any
 
 from spec_runner.codecs import load_external_cases
 from spec_runner.spec_lang import SpecLangLimits, compile_symbol_bindings
+from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 
 
 @dataclass(frozen=True)
@@ -79,7 +80,13 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
                 raise ValueError("spec_lang.library function name must be non-empty")
             if name in bindings:
                 raise ValueError(f"duplicate library function in file {path}: {name}")
-            bindings[name] = expr
+            try:
+                bindings[name] = compile_yaml_expr_to_sexpr(
+                    expr,
+                    field_path=f"{path.as_posix()} functions.{name}",
+                )
+            except SpecLangYamlAstError as exc:
+                raise ValueError(str(exc)) from exc
 
         case_exports = _as_non_empty_str_list(case.get("exports"), field="exports")
         exports.extend(case_exports)

@@ -10,6 +10,11 @@ type: governance.check
 check: docs.reference_index_sync
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   reference_index:
     path: docs/book/reference_index.md
     include_glob: docs/book/*.md
@@ -18,8 +23,7 @@ harness:
     - docs/book/reference_index.md
     - docs/book/reference_coverage.md
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

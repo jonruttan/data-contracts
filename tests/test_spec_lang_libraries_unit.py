@@ -28,8 +28,18 @@ def test_load_spec_lang_symbols_from_library_paths(tmp_path: Path) -> None:
 id: LIB-1
 type: spec_lang.library
 functions:
-  is_warn: ["fn", ["text"], ["contains", ["var", "text"], "WARN"]]
-  is_error: ["fn", ["text"], ["contains", ["var", "text"], "ERROR"]]
+  is_warn:
+    fn:
+    - {text: []}
+    - contains:
+      - {var: [text]}
+      - WARN
+  is_error:
+    fn:
+    - {text: []}
+    - contains:
+      - {var: [text]}
+      - ERROR
 ```
 """,
     )
@@ -57,7 +67,10 @@ id: LIB-A
 type: spec_lang.library
 imports: ["b.spec.md"]
 functions:
-  a: ["fn", ["x"], ["var", "x"]]
+  a:
+    fn:
+    - {x: []}
+    - {var: [x]}
 ```
 """,
     )
@@ -68,7 +81,10 @@ id: LIB-B
 type: spec_lang.library
 imports: ["a.spec.md"]
 functions:
-  b: ["fn", ["x"], ["var", "x"]]
+  b:
+    fn:
+    - {x: []}
+    - {var: [x]}
 ```
 """,
     )
@@ -90,7 +106,10 @@ def test_duplicate_library_symbol_is_rejected(tmp_path: Path) -> None:
 id: LIB-A
 type: spec_lang.library
 functions:
-  same: ["fn", ["x"], ["var", "x"]]
+  same:
+    fn:
+    - {x: []}
+    - {var: [x]}
 ```
 """,
     )
@@ -100,7 +119,10 @@ functions:
 id: LIB-B
 type: spec_lang.library
 functions:
-  same: ["fn", ["x"], ["var", "x"]]
+  same:
+    fn:
+    - {x: []}
+    - {var: [x]}
 ```
 """,
     )
@@ -122,8 +144,14 @@ def test_harness_exports_filters_symbols(tmp_path: Path) -> None:
 id: LIB-A
 type: spec_lang.library
 functions:
-  keep: ["fn", ["x"], ["var", "x"]]
-  drop: ["fn", ["x"], ["var", "x"]]
+  keep:
+    fn:
+    - {x: []}
+    - {var: [x]}
+  drop:
+    fn:
+    - {x: []}
+    - {var: [x]}
 ```
 """,
     )
@@ -135,3 +163,24 @@ functions:
     )
     assert "keep" in symbols
     assert "drop" not in symbols
+
+
+def test_library_function_rejects_list_s_expr_authoring(tmp_path: Path) -> None:
+    case_doc = tmp_path / "cases" / "sample.spec.md"
+    _write(case_doc, "# Case\n")
+    _write(
+        tmp_path / "libs" / "bad.spec.md",
+        """```yaml spec-test
+id: LIB-BAD
+type: spec_lang.library
+functions:
+  bad: ["fn", ["x"], ["var", "x"]]
+```
+""",
+    )
+    with pytest.raises(ValueError, match="list expressions are not allowed"):
+        load_spec_lang_symbols_for_case(
+            doc_path=case_doc,
+            harness={"spec_lang": {"library_paths": ["../libs/bad.spec.md"]}},
+            limits=SpecLangLimits(timeout_ms=0),
+        )

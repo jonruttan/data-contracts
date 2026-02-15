@@ -575,6 +575,22 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Governance enforces non-regression on configured spec-lang adoption metrics.
+- rule_id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
+  policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
+  contract_refs:
+  - docs/spec/contract/18_governance_subject_extractors.md
+  - docs/spec/governance/cases/governance_policy_library_usage_non_regression.spec.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - scripts/run_governance_specs.py
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  notes: Governance ratchets shared library usage for policy expressions and fails regressions.
 - rule_id: RUNNER_INDEPENDENCE_METRIC_REPORTED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNNER_INDEPENDENCE_METRIC_REPORTED
   contract_refs:

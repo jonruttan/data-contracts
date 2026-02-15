@@ -10,6 +10,11 @@ type: governance.check
 check: runtime.rust_adapter_transitive_no_python
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   rust_transitive_no_python:
     files:
     - scripts/rust/runner_adapter.sh
@@ -17,8 +22,7 @@ harness:
     - scripts/runner_adapter.sh
     - scripts/run_governance_specs.py
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

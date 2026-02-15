@@ -284,6 +284,15 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             logic_ratio = 1.0 if total_leaf == 0 else _safe_ratio(eval_leaf, total_leaf, default=1.0)
             native_hint = False
             has_policy_evaluate = _contains_key_recursive(case.get("harness"), "policy_evaluate")
+            harness = case.get("harness")
+            has_library_paths = False
+            if isinstance(harness, dict):
+                spec_lang_cfg = harness.get("spec_lang")
+                if isinstance(spec_lang_cfg, dict):
+                    lib_paths = spec_lang_cfg.get("library_paths")
+                    has_library_paths = isinstance(lib_paths, list) and any(
+                        isinstance(x, str) and x.strip() for x in lib_paths
+                    )
             if case_type == "governance.check":
                 native_hint = not has_policy_evaluate
             rows.append(
@@ -295,6 +304,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                     "logic_self_contained_ratio": logic_ratio,
                     "native_logic_escape_hint": 1.0 if native_hint else 0.0,
                     "has_policy_evaluate": 1.0 if has_policy_evaluate else 0.0,
+                    "library_backed_policy": 1.0 if (case_type == "governance.check" and has_library_paths) else 0.0,
                 }
             )
 
@@ -319,13 +329,24 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
     segments: dict[str, Any] = {}
     for seg in seen:
         seg_rows = [r for r in rows if str(r["segment"]) == seg]
-        summary = _summarize_segment(seg_rows, ["logic_self_contained_ratio", "native_logic_escape_hint"])
+        summary = _summarize_segment(
+            seg_rows,
+            ["logic_self_contained_ratio", "native_logic_escape_hint", "library_backed_policy"],
+        )
         summary["native_logic_escape_case_ratio"] = summary.pop("mean_native_logic_escape_hint")
+        summary["library_backed_policy_ratio"] = summary.pop("mean_library_backed_policy")
         segments[seg] = summary
 
     total = len(rows)
     overall_logic = _safe_ratio(sum(float(r["logic_self_contained_ratio"]) for r in rows), float(total), default=0.0)
     native_ratio = _safe_ratio(sum(float(r["native_logic_escape_hint"]) for r in rows), float(total), default=0.0)
+    gov_rows = [r for r in rows if str(r.get("type", "")).strip() == "governance.check"]
+    gov_total = len(gov_rows)
+    gov_library_ratio = _safe_ratio(
+        sum(float(r.get("library_backed_policy", 0.0)) for r in gov_rows),
+        float(gov_total),
+        default=0.0,
+    )
 
     return {
         "version": 1,
@@ -333,6 +354,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             "total_cases": total,
             "overall_logic_self_contained_ratio": overall_logic,
             "native_logic_escape_case_ratio": native_ratio,
+            "governance_library_backed_policy_ratio": gov_library_ratio,
             "unit_opt_out_count": unit_opt_out_count,
             "python_decision_branch_count": _count_python_decision_branches(root),
         },

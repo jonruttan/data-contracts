@@ -10,6 +10,11 @@ type: governance.check
 check: runtime.python_bin_resolver_sync
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   python_bin_resolver:
     helper: scripts/lib/python_bin.sh
     files:
@@ -21,8 +26,7 @@ harness:
     - ROOT_DIR}/.venv/bin/python
     - ROOT_DIR}/../../.venv/bin/python
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

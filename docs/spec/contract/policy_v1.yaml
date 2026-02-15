@@ -535,6 +535,21 @@ rules:
   - docs/spec/governance/cases/spec_lang_adoption_non_regression.spec.md
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   - spec_runner/quality_metrics.py
+- id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.policy_libraries.metric_non_regression
+  norm: MUST
+  requirement: governance_library_backed_policy_ratio_must_not_regress_from_baseline
+  description: 'Governance must enforce non-regression for shared spec-lang library usage in governance policy expressions.
+
+    '
+  rationale: Keeps migration pressure on reusable spec-lang policy libraries instead of bespoke inline logic.
+  risk_if_violated: Governance checks can drift back to duplicated case-local policy expressions.
+  references:
+  - docs/spec/governance/cases/governance_policy_library_usage_non_regression.spec.md
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  - spec_runner/quality_metrics.py
 - id: RUNNER_INDEPENDENCE_METRIC_REPORTED
   introduced_in: v1
   scope: governance

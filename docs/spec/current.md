@@ -26,6 +26,11 @@ Notes:
   recommendations.
 - Spec-lang now supports reusable library symbols via
   `harness.spec_lang.library_paths` and optional `exports` allowlists.
+- Library function authoring is mapping-AST only (`type: spec_lang.library`
+  `functions.<symbol>` values use canonical expression nodes, not list
+  s-expr authoring).
+- Canonical reusable libraries now include `path_core`, `policy_core`, and
+  `policy_metrics` under `docs/spec/libraries/`.
 - Governance decision checks are now policy-engine first:
   check extractors emit deterministic subject payloads and
   `policy_evaluate` drives final verdicts.

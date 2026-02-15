@@ -158,6 +158,8 @@ For `type: cli.run`, supported `harness` keys include:
 
 - library include paths MAY target `.spec.md`, `.spec.yaml`, or `.spec.yml`
   files
+- `type: spec_lang.library` `functions.<symbol>` values MUST use mapping-AST
+  expression encoding (list s-expr authoring is invalid)
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
 

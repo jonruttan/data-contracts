@@ -24,6 +24,8 @@ from spec_runner.purpose_lint import (
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import SETTINGS, governed_config_literals
 from spec_runner.spec_lang import SpecLangLimits, _builtin_arity_table, eval_predicate
+from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
+from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 from spec_runner.contract_governance import check_contract_governance
@@ -641,6 +643,49 @@ def _scan_spec_lang_adoption_non_regression(root: Path, *, harness: dict | None 
         baseline=baseline,
         summary_fields=cfg.get("summary_fields"),
         segment_fields=cfg.get("segment_fields", {}),
+        epsilon=epsilon,
+    )
+
+
+def _scan_policy_library_usage_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("policy_library_usage_non_regression")
+    if not isinstance(cfg, dict):
+        return [
+            "governance.policy_library_usage_non_regression requires harness.policy_library_usage_non_regression mapping in governance spec"
+        ]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.policy_library_usage_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("spec_lang_adoption")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.policy_library_usage_non_regression.spec_lang_adoption must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.policy_library_usage_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.policy_library_usage_non_regression.epsilon must be >= 0"]
+
+    current = spec_lang_adoption_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current spec-lang adoption report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get(
+            "summary_fields",
+            {"governance_library_backed_policy_ratio": "non_decrease"},
+        ),
+        segment_fields=cfg.get(
+            "segment_fields",
+            {"governance": {"library_backed_policy_ratio": "non_decrease"}},
+        ),
         epsilon=epsilon,
     )
 
@@ -3146,6 +3191,44 @@ def _scan_normalization_mapping_ast_only(root: Path, *, harness: dict | None = N
     return violations or ["normalization.mapping_ast_only: normalize check failed"]
 
 
+def _scan_normalization_library_mapping_ast_only(root: Path, *, harness: dict | None = None) -> list[str]:
+    libs_root = root / "docs/spec/libraries"
+    if not libs_root.exists():
+        return []
+    violations: list[str] = []
+    for p in sorted(libs_root.rglob(SETTINGS.case.default_file_pattern)):
+        if not p.is_file():
+            continue
+        rel = p.relative_to(root)
+        try:
+            specs = list(iter_spec_doc_tests(p.parent, file_pattern=p.name))
+        except Exception as exc:  # noqa: BLE001
+            violations.append(f"{rel}:1: unable to parse library spec file: {exc}")
+            continue
+        for spec in specs:
+            case = spec.test
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            if str(case.get("type", "")).strip() != "spec_lang.library":
+                continue
+            functions = case.get("functions")
+            if not isinstance(functions, dict) or not functions:
+                violations.append(f"{rel}: case {case_id} must provide non-empty functions mapping")
+                continue
+            for raw_name, expr in functions.items():
+                name = str(raw_name).strip()
+                if not name:
+                    violations.append(f"{rel}: case {case_id} has empty function symbol name")
+                    continue
+                try:
+                    compile_yaml_expr_to_sexpr(
+                        expr,
+                        field_path=f"{rel.as_posix()} case {case_id} functions.{name}",
+                    )
+                except SpecLangYamlAstError as exc:
+                    violations.append(str(exc))
+    return violations
+
+
 def _scan_normalization_docs_token_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     profile, errs = _load_normalization_profile(root)
     if errs:
@@ -3266,6 +3349,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "spec.portability_non_regression": _scan_spec_portability_non_regression,
     "spec.spec_lang_adoption_metric": _scan_spec_lang_adoption_metric,
     "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,
+    "governance.policy_library_usage_non_regression": _scan_policy_library_usage_non_regression,
     "runtime.runner_independence_metric": _scan_runner_independence_metric,
     "runtime.runner_independence_non_regression": _scan_runner_independence_non_regression,
     "runtime.python_dependency_metric": _scan_python_dependency_metric,
@@ -3321,6 +3405,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "naming.filename_policy": _scan_naming_filename_policy,
     "normalization.profile_sync": _scan_normalization_profile_sync,
     "normalization.mapping_ast_only": _scan_normalization_mapping_ast_only,
+    "normalization.library_mapping_ast_only": _scan_normalization_library_mapping_ast_only,
     "normalization.docs_token_sync": _scan_normalization_docs_token_sync,
     "normalization.spec_style_sync": _scan_normalization_spec_style_sync,
 }
@@ -3378,6 +3463,16 @@ def run_governance_check(case, *, ctx) -> None:
         raise ValueError(
             f"governance.check {check_id} case {case_id} requires harness.policy_evaluate"
         )
+
+    # Governance policies can import reusable spec-lang function libraries
+    # via harness.spec_lang.library_paths/exports.
+    lib_symbols = load_spec_lang_symbols_for_case(
+        doc_path=case.doc_path,
+        harness=h,
+        limits=SpecLangLimits(),
+    )
+    if lib_symbols:
+        symbols = {**lib_symbols, **symbols}
 
     policy_result: GovernancePolicyResult = run_governance_policy(
         check_id=check_id,

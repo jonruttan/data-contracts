@@ -3267,7 +3267,9 @@ assert:
   - target: text
     must:
       - evaluate:
-          - [\"contains\", [\"subject\"], \"x\"]
+          - contains:
+            - subject: []
+            - x
 ```
 """,
     )
@@ -3280,6 +3282,84 @@ assert:
     _write_text(
         tmp_path / "docs/spec/metrics/sla.json",
         '{"summary":{"overall_logic_self_contained_ratio":1.1},"segments":{}}\n',
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_policy_library_usage_non_regression(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "policy_library_usage_non_regression.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-POLLIB-001
+
+```yaml spec-test
+id: SRGOV-TEST-POLLIB-001
+type: governance.check
+check: governance.policy_library_usage_non_regression
+harness:
+  root: {tmp_path}
+  policy_library_usage_non_regression:
+    baseline_path: docs/spec/metrics/sla.json
+    summary_fields:
+      governance_library_backed_policy_ratio: non_decrease
+    segment_fields:
+      governance:
+        library_backed_policy_ratio: non_decrease
+    spec_lang_adoption:
+      roots: ["docs/spec/governance/cases"]
+      segment_rules:
+      - prefix: docs/spec/governance/cases
+        segment: governance
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: governance.policy_library_usage_non_regression"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/governance/cases/a.spec.md",
+        """# Governance
+
+## C1
+
+```yaml spec-test
+id: C1
+type: governance.check
+check: docs.reference_surface_complete
+harness:
+  root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
+  docs_reference_surface:
+    required_files: []
+  policy_evaluate:
+  - call:
+    - {var: [policy.pass_when_no_violations]}
+    - {subject: []}
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.reference_surface_complete"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/metrics/sla.json",
+        '{"summary":{"governance_library_backed_policy_ratio":0.5},"segments":{"governance":{"library_backed_policy_ratio":0.5}}}\n',
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+    _write_text(
+        tmp_path / "docs/spec/metrics/sla.json",
+        '{"summary":{"governance_library_backed_policy_ratio":1.1},"segments":{"governance":{"library_backed_policy_ratio":1.1}}}\n',
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
@@ -3559,6 +3639,52 @@ def test_script_enforces_normalization_docs_token_sync(tmp_path):
     _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "list S-expression\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_normalization_library_mapping_ast_only(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "norm_library_mapping_ast.spec.md",
+        _case_for_check("SRGOV-TEST-NORM-003", "normalization.library_mapping_ast_only", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/libraries/path/path_core.spec.md",
+        """# Path Core
+
+## LIB-PATH
+
+```yaml spec-test
+id: LIB-PATH
+type: spec_lang.library
+functions:
+  ok:
+    fn:
+    - {x: []}
+    - {var: [x]}
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/libraries/path/path_core.spec.md",
+        """# Path Core
+
+## LIB-PATH
+
+```yaml spec-test
+id: LIB-PATH
+type: spec_lang.library
+functions:
+  bad: ["fn", ["x"], ["var", "x"]]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
 
 def test_script_enforces_runtime_python_dependency_metric(tmp_path):
     mod = _load_script_module()

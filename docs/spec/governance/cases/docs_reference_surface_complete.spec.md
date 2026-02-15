@@ -10,6 +10,11 @@ type: governance.check
 check: docs.reference_surface_complete
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   docs_reference_surface:
     required_files:
     - docs/book/reference_index.md
@@ -21,8 +26,7 @@ harness:
     required_globs:
     - docs/spec/contract/*.md
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

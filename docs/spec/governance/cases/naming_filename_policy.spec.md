@@ -10,6 +10,11 @@ type: governance.check
 check: naming.filename_policy
 harness:
   root: .
+  spec_lang:
+    library_paths:
+    - ../../libraries/policy/policy_core.spec.md
+    exports:
+    - policy.pass_when_no_violations
   filename_policy:
     paths:
     - docs
@@ -22,8 +27,7 @@ harness:
     - README.md
     allowed_name_regex: ^[a-z0-9]+(?:_[a-z0-9]+)*(?:-[a-z0-9]+(?:_[a-z0-9]+)*)*(?:\.spec)?\.(?:md|yaml|yml|json)$
   policy_evaluate:
-  - is_empty:
-    - {get: [{subject: []}, violations]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
 assert:
 - target: violation_count
   must:

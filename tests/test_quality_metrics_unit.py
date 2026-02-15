@@ -79,6 +79,7 @@ assert:
     )
     assert payload["errors"] == []
     assert payload["summary"]["total_cases"] == 1
+    assert "governance_library_backed_policy_ratio" in payload["summary"]
     assert "conformance" in payload["segments"]
 
 

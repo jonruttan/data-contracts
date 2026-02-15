@@ -1,26 +1,21 @@
 # Governance Cases
 
-## SRGOV-SPEC-LANG-002
+## SRGOV-POLICY-LIB-001
 
 ```yaml spec-test
-id: SRGOV-SPEC-LANG-002
-title: spec-lang adoption metric is non-regressing
-purpose: Enforces monotonic non-regression for spec-lang adoption metrics against checked-in baseline.
+id: SRGOV-POLICY-LIB-001
+title: governance library-backed policy usage is non-regressing
+purpose: Enforces monotonic non-regression for governance policy expressions that use shared spec-lang libraries.
 type: governance.check
-check: spec.spec_lang_adoption_non_regression
+check: governance.policy_library_usage_non_regression
 harness:
   root: .
-  spec_lang_adoption_non_regression:
+  policy_library_usage_non_regression:
     baseline_path: docs/spec/metrics/spec_lang_adoption_baseline.json
     summary_fields:
-      overall_logic_self_contained_ratio: non_decrease
-      native_logic_escape_case_ratio: non_increase
       governance_library_backed_policy_ratio: non_decrease
     segment_fields:
-      conformance:
-        mean_logic_self_contained_ratio: non_decrease
       governance:
-        mean_logic_self_contained_ratio: non_decrease
         library_backed_policy_ratio: non_decrease
     epsilon: 1.0e-12
     spec_lang_adoption:
@@ -52,5 +47,5 @@ assert:
       - true
     - eq:
       - {get: [{subject: []}, check_id]}
-      - spec.spec_lang_adoption_non_regression
+      - governance.policy_library_usage_non_regression
 ```

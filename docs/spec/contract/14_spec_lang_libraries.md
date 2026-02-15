@@ -29,6 +29,13 @@ Required fields for each library case:
 - `type: spec_lang.library`
 - `functions` (mapping: symbol -> spec-lang expression)
 
+`functions.<symbol>` expression encoding:
+
+- MUST use operator-keyed mapping-AST expression nodes (same canonical encoding
+  as `evaluate`/`policy_evaluate`)
+- MUST NOT use list s-expr authoring form
+- scalar literals are allowed
+
 Optional fields:
 
 - `imports` (list[string]): additional library files loaded before this one
