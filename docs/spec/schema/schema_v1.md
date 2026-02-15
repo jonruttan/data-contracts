@@ -163,13 +163,12 @@ For `type: cli.run`, supported `harness` keys include:
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
 
-Implementation note (non-portable convenience):
+Implementation note:
 
-- Runners MAY offer an environment fallback (for example
-  `SPEC_RUNNER_ENTRYPOINT`) when `harness.entrypoint` is omitted.
+- `harness.entrypoint` is required for `cli.run` execution.
 - Conformance fixtures SHOULD always set `harness.entrypoint` explicitly.
 - Runners MAY provide a safe mode (for example `SPEC_RUNNER_SAFE_MODE=1`) that
-  disables hook execution and env fallback for `cli.run`.
+  disables hook execution for `cli.run`.
 - Runners MAY provide environment allowlisting for subprocess execution (for
   example `SPEC_RUNNER_ENV_ALLOWLIST=K1,K2`).
 
@@ -249,8 +248,6 @@ Operator constraints:
 - `evaluate` values MUST be lists of operator-keyed mapping AST expressions
 - each `evaluate` list item MUST be an expression node using operator-keyed mappings
 - subject reference node: `{ref: subject}` compiles to zero-arg `subject`
-- `{subject: []}` remains valid for compatibility; formatter canonicalizes to
-  `{ref: subject}`
 - bare scalar `subject` is a literal string (not a reference)
 - spec-lang semantics and budget model are defined in
   `docs/spec/contract/03b_spec_lang_v1.md`

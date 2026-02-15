@@ -281,7 +281,6 @@ standardize `evaluate` expression formatting to:
 - explicit list args for operators in mapping form
 - canonical subject reference form is explicit:
   `{ref: subject}` compiles to zero-arg `subject` operation
-- legacy zero-arg mapping form `{subject: []}` remains valid
 - `lit` wrapper for collection literal nodes
 - bare scalar `subject` is a literal string (not a special form)
 - condensed inline args for short forms (for example

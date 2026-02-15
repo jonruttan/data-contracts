@@ -5,7 +5,6 @@ These fixtures pin down entrypoint resolution behavior for `type: cli.run`.
 Coverage focus:
 
 - explicit `harness.entrypoint` behavior
-- precedence over env fallback values
 - capability-gated skip behavior for runtimes without `cli.run`
 
 ## SRCONF-CLI-001
@@ -41,8 +40,8 @@ assert: []
 
 ```yaml spec-test
 id: SRCONF-CLI-002
-title: explicit entrypoint is used even if env fallback var is set
-purpose: Prevents env fallback from overriding an explicitly declared harness entrypoint.
+title: explicit entrypoint drives cli.run behavior deterministically
+purpose: Pins deterministic behavior for explicit harness entrypoint execution.
 type: cli.run
 requires:
   capabilities:
@@ -62,8 +61,6 @@ argv:
 exit_code: 0
 harness:
   entrypoint: spec_runner.conformance_fixtures:main
-  env:
-    SPEC_RUNNER_ENTRYPOINT: does.not.exist:main
 assert:
 - target: stdout
   must:

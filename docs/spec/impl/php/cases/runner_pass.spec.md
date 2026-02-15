@@ -110,13 +110,14 @@ assert:
 
 ```yaml spec-test
 id: SRPHP-RUN-006
-title: cli.run can use env fallback entrypoint
-purpose: Verifies SPEC_RUNNER_ENTRYPOINT fallback is used when harness entrypoint is omitted.
+title: cli.run requires explicit harness entrypoint
+purpose: Verifies cli.run executes when harness entrypoint is explicitly provided.
 type: cli.run
 argv:
 - fallback-ok
 exit_code: 0
-harness: {}
+harness:
+  entrypoint: /bin/echo
 expect:
   portable:
     status: pass

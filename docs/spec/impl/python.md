@@ -38,14 +38,11 @@ Public flags:
 ## Opt-In Behavior
 
 - external formats (`yaml`, `json`) require explicit `--case-formats`.
-- `cli.run` may use `SPEC_RUNNER_ENTRYPOINT` fallback if `harness.entrypoint`
-  is omitted.
-- `SPEC_RUNNER_SAFE_MODE=1` disables hook entrypoints and env fallback.
+- `SPEC_RUNNER_SAFE_MODE=1` disables hook entrypoints.
 
 ## Failure Mode Notes
 
 - CLI usage/argument errors return exit code `2` (for example empty
   `--case-file-pattern`, empty `--case-formats`, missing paths).
 - runtime execution or unexpected runner failures return exit code `1`.
-- portable fixtures should still set `harness.entrypoint` explicitly to avoid
-  environment coupling.
+- `harness.entrypoint` is required for `cli.run`.

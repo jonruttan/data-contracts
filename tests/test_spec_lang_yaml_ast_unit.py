@@ -12,7 +12,7 @@ from spec_runner.spec_lang_yaml_ast import (
 
 
 def test_compile_operator_mapping_happy_path() -> None:
-    expr = {"contains": [{"subject": []}, "ok"]}
+    expr = {"contains": [{"ref": "subject"}, "ok"]}
     assert compile_yaml_expr_to_sexpr(expr, field_path="x") == ["contains", ["subject"], "ok"]
 
 
@@ -21,9 +21,10 @@ def test_compile_ref_subject_happy_path() -> None:
     assert compile_yaml_expr_to_sexpr(expr, field_path="x") == ["contains", ["subject"], "ok"]
 
 
-def test_compile_subject_legacy_form_still_supported() -> None:
+def test_reject_legacy_subject_mapping_form() -> None:
     expr = {"contains": [{"subject": []}, "ok"]}
-    assert compile_yaml_expr_to_sexpr(expr, field_path="x") == ["contains", ["subject"], "ok"]
+    with pytest.raises(SpecLangYamlAstError, match="legacy subject mapping is not supported"):
+        compile_yaml_expr_to_sexpr(expr, field_path="x")
 
 
 def test_compile_bare_subject_is_literal_string() -> None:
@@ -52,7 +53,7 @@ def test_rejects_raw_literal_list_without_lit() -> None:
 
 def test_rejects_non_list_operator_args() -> None:
     with pytest.raises(SpecLangYamlAstError, match="operator args must be a list"):
-        compile_yaml_expr_to_sexpr({"subject": None}, field_path="x")
+        compile_yaml_expr_to_sexpr({"contains": None}, field_path="x")
 
 
 def test_ref_rejects_invalid_shapes() -> None:

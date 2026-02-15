@@ -58,7 +58,7 @@ expect:
     status: fail
     category: runtime
     message_tokens:
-    - requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT
+    - requires explicit harness.entrypoint
 assert:
 - target: stdout
   must:

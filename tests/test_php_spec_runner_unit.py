@@ -53,8 +53,6 @@ def test_php_spec_runner_matches_pass_fixture_suite(tmp_path):
             encoding="utf-8",
         )
 
-    env = os.environ.copy()
-    env["SPEC_RUNNER_ENTRYPOINT"] = "/bin/echo"
     cp = subprocess.run(
         [
             "php",
@@ -66,7 +64,6 @@ def test_php_spec_runner_matches_pass_fixture_suite(tmp_path):
         ],
         check=True,
         cwd=repo_root,
-        env=env,
         capture_output=True,
         text=True,
     )

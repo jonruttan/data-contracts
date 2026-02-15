@@ -11,7 +11,6 @@ class CaseSettings:
 @dataclass(frozen=True)
 class EnvSettings:
     assert_health: str
-    entrypoint: str
     safe_mode: str
     env_allowlist: str
 
@@ -67,7 +66,6 @@ SETTINGS = RunnerSettings(
     case=CaseSettings(default_file_pattern="*.spec.md"),
     env=EnvSettings(
         assert_health="SPEC_RUNNER_ASSERT_HEALTH",
-        entrypoint="SPEC_RUNNER_ENTRYPOINT",
         safe_mode="SPEC_RUNNER_SAFE_MODE",
         env_allowlist="SPEC_RUNNER_ENV_ALLOWLIST",
     ),
@@ -112,7 +110,6 @@ SETTINGS = RunnerSettings(
 # Backward-compatible aliases for existing call sites/tests.
 DEFAULT_CASE_FILE_PATTERN = SETTINGS.case.default_file_pattern
 ENV_ASSERT_HEALTH = SETTINGS.env.assert_health
-ENV_ENTRYPOINT = SETTINGS.env.entrypoint
 ENV_SAFE_MODE = SETTINGS.env.safe_mode
 ENV_ENV_ALLOWLIST = SETTINGS.env.env_allowlist
 DEFAULT_ASSERT_HEALTH_MODE = SETTINGS.assertion_health.default_mode
@@ -122,7 +119,6 @@ def governed_config_literals() -> dict[str, str]:
     return {
         SETTINGS.case.default_file_pattern: "SETTINGS.case.default_file_pattern",
         SETTINGS.env.assert_health: "SETTINGS.env.assert_health",
-        SETTINGS.env.entrypoint: "SETTINGS.env.entrypoint",
         SETTINGS.env.safe_mode: "SETTINGS.env.safe_mode",
         SETTINGS.env.env_allowlist: "SETTINGS.env.env_allowlist",
     }

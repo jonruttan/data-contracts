@@ -27,7 +27,7 @@ def _write_text(path: Path, text: str) -> None:
             "\n  policy_evaluate:\n"
             "  - is_empty:\n"
             "    - get:\n"
-            "      - subject: []\n"
+            "      - ref: subject\n"
             "      - violations\n"
             "assert:\n",
             text,
@@ -121,19 +121,19 @@ assert:
     must:
       - evaluate:
         - eq:
-          - subject: []
+          - ref: subject
           - 0
   - target: summary_json
     must:
       - evaluate:
         - eq:
           - get:
-            - subject: []
+            - ref: subject
             - check_id
           - pending.no_resolved_markers
         - eq:
           - get:
-            - subject: []
+            - ref: subject
             - passed
           - true
 ```
@@ -230,7 +230,6 @@ def test_script_enforces_runtime_config_literal_policy(tmp_path):
         tmp_path / "spec_runner/settings.py",
         """DEFAULT_CASE_FILE_PATTERN = "*.spec.md"
 ENV_ASSERT_HEALTH = "SPEC_RUNNER_ASSERT_HEALTH"
-ENV_ENTRYPOINT = "SPEC_RUNNER_ENTRYPOINT"
 ENV_SAFE_MODE = "SPEC_RUNNER_SAFE_MODE"
 ENV_ENV_ALLOWLIST = "SPEC_RUNNER_ENV_ALLOWLIST"
 
@@ -238,7 +237,6 @@ def governed_config_literals():
     return {
         DEFAULT_CASE_FILE_PATTERN: "SETTINGS.case.default_file_pattern",
         ENV_ASSERT_HEALTH: "SETTINGS.env.assert_health",
-        ENV_ENTRYPOINT: "SETTINGS.env.entrypoint",
         ENV_SAFE_MODE: "SETTINGS.env.safe_mode",
         ENV_ENV_ALLOWLIST: "SETTINGS.env.env_allowlist",
     }
@@ -452,14 +450,14 @@ harness:
   policy_evaluate:
   - is_empty:
     - get:
-      - subject: []
+      - ref: subject
       - violations
 assert:
   - target: violation_count
     must:
       - evaluate:
         - eq:
-          - subject: []
+          - ref: subject
           - 0
 ```
 """,
@@ -516,7 +514,7 @@ harness:
   policy_evaluate:
   - is_empty:
     - get:
-      - subject: []
+      - ref: subject
       - violations
 assert:
   - target: text
@@ -894,7 +892,7 @@ harness:
                         - row
                       - strings
                 - 0
-            - subject: []
+            - ref: subject
         - 0
 assert:
   - target: text
@@ -1018,7 +1016,7 @@ harness:
                         - row
                       - strings
                 - 0
-            - subject: []
+            - ref: subject
         - 0
 assert:
   - target: text
@@ -1243,7 +1241,7 @@ harness:
                       - row
                     - non_evaluate_ops
                 - 0
-            - subject: []
+            - ref: subject
         - 0
 assert:
   - target: text
@@ -1267,7 +1265,7 @@ assert:
     must:
       - evaluate:
           - contains:
-            - subject: []
+            - ref: subject
             - a
 ```
 """,
@@ -3279,7 +3277,7 @@ harness:
         segment: conformance
     policy_evaluate:
       - has_key:
-        - subject: []
+        - ref: subject
         - summary
 assert:
   - target: text
@@ -3302,7 +3300,7 @@ assert:
     must:
       - evaluate:
           - contains:
-            - subject: []
+            - ref: subject
             - x
 ```
 """,
@@ -3356,7 +3354,7 @@ assert:
     must:
       - evaluate:
           - contains:
-            - subject: []
+            - ref: subject
             - x
 ```
 """,
@@ -3403,7 +3401,7 @@ harness:
   policy_evaluate:
   - is_empty:
     - get:
-      - subject: []
+      - ref: subject
       - violations
 assert:
   - target: text
@@ -3426,7 +3424,7 @@ assert:
     must:
       - evaluate:
           - contains:
-            - subject: []
+            - ref: subject
             - x
 ```
 """,
@@ -3501,7 +3499,7 @@ harness:
   policy_evaluate:
   - call:
     - {var: [policy.pass_when_no_violations]}
-    - {subject: []}
+    - {ref: subject}
 assert:
   - target: text
     must:
@@ -3879,7 +3877,7 @@ harness:
       - SPEC_RUNNER_BIN
     policy_evaluate:
       - has_key:
-          - subject: []
+          - ref: subject
           - summary
 assert:
   - target: text

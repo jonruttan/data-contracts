@@ -11,14 +11,14 @@ imports:
 functions:
   policy.pass_when_no_violations:
     fn:
-    - {subject: []}
+    - {ref: subject}
     - is_empty:
       - get:
         - {var: [subject]}
         - violations
   policy.fail_when_has_violations:
     fn:
-    - {subject: []}
+    - {ref: subject}
     - not:
       - call:
         - {var: [policy.pass_when_no_violations]}

@@ -75,7 +75,7 @@ def test_compile_exists_uses_target_derived_subject_key() -> None:
 
 def test_compile_evaluate_is_universal_across_targets() -> None:
     tree = compile_assert_tree(
-        [{"target": "status", "must": [{"evaluate": [{"contains": [{"subject": []}, "200"]}]}]}],
+        [{"target": "status", "must": [{"evaluate": [{"contains": [{"ref": "subject"}, "200"]}]}]}],
         type_name="api.http",
     )
     assert isinstance(tree, GroupNode)

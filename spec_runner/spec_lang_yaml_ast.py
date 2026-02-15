@@ -51,6 +51,10 @@ def _compile_node(node: Any, *, field_path: str) -> Any:
     op = str(keys[0]).strip()
     if not op:
         raise SpecLangYamlAstError(f"{field_path}: operator key must be non-empty")
+    if op == "subject":
+        raise SpecLangYamlAstError(
+            f"{field_path}.subject: legacy subject mapping is not supported; use ref: subject"
+        )
     if op == "ref":
         symbol = node[keys[0]]
         if not isinstance(symbol, str) or not symbol.strip():

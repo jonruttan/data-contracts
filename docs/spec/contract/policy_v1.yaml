@@ -5,21 +5,21 @@ rules:
   introduced_in: v1
   scope: case
   applies_to: cli.run.harness.entrypoint
-  norm: SHOULD
-  requirement: prefer_present
-  description: For cli.run, harness.entrypoint should be set in each case.
-  rationale: Keeps invocation explicit and reduces environment coupling.
-  risk_if_violated: Cases can become environment-dependent outside conformance.
+  norm: MUST
+  requirement: explicit_required
+  description: For cli.run, harness.entrypoint must be set in each case.
+  rationale: Keeps invocation explicit and deterministic.
+  risk_if_violated: Cases become under-specified and runtime-dependent.
   references:
   - docs/spec/contract/04_harness.md
   - docs/spec/schema/schema_v1.md
-- id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
+- id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS
   introduced_in: v1
   scope: implementation
   applies_to: cli.run.safe_mode
   norm: SHOULD
-  requirement: disable_hooks_and_env_fallback_when_safe_mode_enabled
-  description: 'Implementations should provide a safe mode that disables hook entrypoints and entrypoint env fallback for `cli.run`.
+  requirement: disable_hooks_when_safe_mode_enabled
+  description: 'Implementations should provide a safe mode that disables hook entrypoints for `cli.run`.
 
     '
   rationale: Reduces code-execution risk for hardened or semi-trusted workflows.
@@ -43,22 +43,6 @@ rules:
   - docs/spec/contract/04_harness.md
   - docs/spec/schema/schema_v1.md
   - docs/spec/impl/php.md
-- id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
-  introduced_in: v1
-  scope: implementation
-  applies_to: cli.run.entrypoint_resolution
-  norm: SHOULD
-  requirement: support_env_fallback_when_process_env_and_dynamic_entrypoint_loading_are_available
-  description: 'Implementations should support environment fallback for local/CI ergonomics when they can read process environment variables and resolve dynamic module:attribute entrypoints at runtime.
-
-    '
-  rationale: Improves ergonomics in local and containerized workflows.
-  risk_if_violated: Higher setup friction in some environments.
-  examples:
-  - SPEC_RUNNER_ENTRYPOINT
-  references:
-  - docs/spec/contract/04_harness.md
-  - docs/spec/impl/python.md
 - id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
   introduced_in: v1
   scope: conformance
@@ -76,8 +60,8 @@ rules:
   scope: conformance
   applies_to: fixtures.cli.run
   norm: MUST_NOT
-  requirement: rely_on_env_fallback
-  description: Portable conformance fixtures must not depend on env fallback.
+  requirement: rely_on_ambient_entrypoint_values
+  description: Portable conformance fixtures must not depend on ambient entrypoint values.
   rationale: Prevents ambient-environment coupling in parity tests.
   risk_if_violated: Flaky or non-reproducible cross-language conformance.
   references:

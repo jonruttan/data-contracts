@@ -1835,9 +1835,9 @@ function evaluateCliRunCase(array $case): array {
         }
     }
 
-    $entrypoint = trim((string)($h['entrypoint'] ?? getenv('SPEC_RUNNER_ENTRYPOINT') ?: ''));
+    $entrypoint = trim((string)($h['entrypoint'] ?? ''));
     if ($entrypoint === '') {
-        throw new RuntimeException('cli.run requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT');
+        throw new RuntimeException('cli.run requires explicit harness.entrypoint');
     }
     $command = parseEntrypointCommand($entrypoint);
 

@@ -517,7 +517,7 @@ def test_cli_type_setup_files_rejects_path_escape(tmp_path, monkeypatch, capsys)
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
-def test_cli_type_requires_entrypoint_or_env_fallback(tmp_path, monkeypatch, capsys):
+def test_cli_type_requires_explicit_entrypoint(tmp_path, monkeypatch, capsys):
     case = SpecDocTest(
         doc_path=Path("docs/spec/cli.md"),
         test={
@@ -531,7 +531,7 @@ def test_cli_type_requires_entrypoint_or_env_fallback(tmp_path, monkeypatch, cap
 
     from spec_runner.harnesses.cli_run import run
 
-    with pytest.raises(RuntimeError, match="requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT"):
+    with pytest.raises(RuntimeError, match="requires explicit harness.entrypoint"):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
@@ -689,107 +689,11 @@ def test_cli_type_rejects_missing_entrypoint_attribute(tmp_path, monkeypatch, ca
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
-def test_cli_type_can_use_entrypoint_from_context_env(tmp_path, monkeypatch, capsys):
-    def fake_main(_argv):
-        print("ok")
-        return 0
-
-    ep = _install_sut(monkeypatch, fake_main)
-    case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
-        test={
-            "id": "SR-CLI-UNIT-030",
-            "type": "cli.run",
-            "argv": ["x"],
-            "exit_code": 0,
-            "harness": {},
-            "assert": [{"target": "stdout", "must": [{"contain": ["ok"]}]}],
-        },
-    )
-
-    from spec_runner.harnesses.cli_run import run
-
-    run(
-        case,
-        ctx=SpecRunContext(
-            tmp_path=tmp_path,
-            patcher=monkeypatch,
-            capture=capsys,
-            env={"SPEC_RUNNER_ENTRYPOINT": ep},
-        ),
-    )
-
-
-def test_cli_type_can_use_entrypoint_from_harness_env(tmp_path, monkeypatch, capsys):
-    def fake_main(_argv):
-        print("ok")
-        return 0
-
-    ep = _install_sut(monkeypatch, fake_main)
-    case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
-        test={
-            "id": "SR-CLI-UNIT-031",
-            "type": "cli.run",
-            "argv": ["x"],
-            "exit_code": 0,
-            "harness": {"env": {"SPEC_RUNNER_ENTRYPOINT": ep}},
-            "assert": [{"target": "stdout", "must": [{"contain": ["ok"]}]}],
-        },
-    )
-
-    from spec_runner.harnesses.cli_run import run
-
-    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
-
-
-def test_cli_type_context_env_entrypoint_overrides_harness_env(tmp_path, monkeypatch, capsys):
-    def fake_main_ctx(_argv):
-        print("ctx")
-        return 0
-
-    def fake_main_harness(_argv):
-        print("harness")
-        return 0
-
-    ep_ctx = _install_sut(monkeypatch, fake_main_ctx)
-    mod_name = "spec_runner_test_sut_harness"
-    m = types.ModuleType(mod_name)
-    m.main = fake_main_harness  # type: ignore[attr-defined]
-    monkeypatch.setitem(sys.modules, mod_name, m)
-    ep_harness = f"{mod_name}:main"
-
-    case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
-        test={
-            "id": "SR-CLI-UNIT-032",
-            "type": "cli.run",
-            "argv": ["x"],
-            "exit_code": 0,
-            "harness": {"env": {"SPEC_RUNNER_ENTRYPOINT": ep_harness}},
-            "assert": [{"target": "stdout", "must": [{"contain": ["ctx"]}]}],
-        },
-    )
-
-    from spec_runner.harnesses.cli_run import run
-
-    run(
-        case,
-        ctx=SpecRunContext(
-            tmp_path=tmp_path,
-            patcher=monkeypatch,
-            capture=capsys,
-            env={"SPEC_RUNNER_ENTRYPOINT": ep_ctx},
-        ),
-    )
-
-
 def test_cli_type_safe_mode_requires_explicit_entrypoint(tmp_path, monkeypatch, capsys):
     def fake_main(_argv):
         print("ok")
         return 0
 
-    ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
         doc_path=Path("docs/spec/cli.md"),
         test={
@@ -803,14 +707,14 @@ def test_cli_type_safe_mode_requires_explicit_entrypoint(tmp_path, monkeypatch, 
 
     from spec_runner.harnesses.cli_run import run
 
-    with pytest.raises(RuntimeError, match="safe mode requires explicit harness.entrypoint"):
+    with pytest.raises(RuntimeError, match="requires explicit harness.entrypoint"):
         run(
             case,
             ctx=SpecRunContext(
                 tmp_path=tmp_path,
                 patcher=monkeypatch,
                 capture=capsys,
-                env={"SPEC_RUNNER_ENTRYPOINT": ep, "SPEC_RUNNER_SAFE_MODE": "1"},
+                env={"SPEC_RUNNER_SAFE_MODE": "1"},
             ),
         )
 

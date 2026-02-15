@@ -33,16 +33,6 @@ def _runtime_env(ctx) -> dict[str, str]:
     return {str(k): str(v) for k, v in raw_env.items()}
 
 
-def _entrypoint_from_env(ctx, *, runtime_env: dict[str, str], harness_env: dict[str, object]) -> str:
-    raw_env = getattr(ctx, "env", None)
-    entrypoint_var = SETTINGS.env.entrypoint
-    if raw_env is not None and entrypoint_var in raw_env:
-        return str(raw_env[entrypoint_var])
-    if entrypoint_var in harness_env:
-        return str(harness_env[entrypoint_var])
-    return str(runtime_env.get(entrypoint_var, ""))
-
-
 def _is_safe_mode_enabled(runtime_env: dict[str, str]) -> bool:
     raw = str(runtime_env.get(SETTINGS.env.safe_mode, "")).strip().lower()
     return raw in {"1", "true", "yes", "on"}
@@ -250,21 +240,9 @@ def run(case, *, ctx) -> None:
                 hook_before_fn = _load_entrypoint(str(hook_before_ep))
                 hook_before_fn(case=hook_case, ctx=ctx, harness=h, **{str(k): v for k, v in hook_kwargs.items()})
 
-            if safe_mode:
-                entrypoint = str(h.get("entrypoint") or "").strip()
-            else:
-                entrypoint = str(
-                    h.get("entrypoint")
-                    or _entrypoint_from_env(ctx, runtime_env=runtime_env, harness_env=harness_env)
-                    or ""
-                ).strip()
+            entrypoint = str(h.get("entrypoint") or "").strip()
             if not entrypoint:
-                if safe_mode:
-                    raise RuntimeError("cli.run safe mode requires explicit harness.entrypoint")
-                raise RuntimeError(
-                    "cli.run requires harness.entrypoint or "
-                    f"{SETTINGS.env.entrypoint}"
-                )
+                raise RuntimeError("cli.run requires explicit harness.entrypoint")
             cli_main = _load_entrypoint(entrypoint)
 
             try:

@@ -40,8 +40,7 @@ Alternate runner (`scripts/php/spec_runner.php`) flags:
 
 - external formats (`yaml`, `json`) require explicit `--case-formats`.
 - process env allowlisting can be enabled with `SPEC_RUNNER_ENV_ALLOWLIST`.
-- `SPEC_RUNNER_ENTRYPOINT` fallback may be used when `harness.entrypoint` is
-  omitted.
+- `harness.entrypoint` is required for `cli.run`.
 
 ## Failure Mode Notes
 
@@ -122,7 +121,7 @@ Bootstrap parity subset fixture:
 - Keeps assertion behavior parity with Python by compiling external operators to
   spec-lang and evaluating one predicate path.
 - Supports `cli.run` harness keys:
-  - `entrypoint` (or `SPEC_RUNNER_ENTRYPOINT` fallback)
+  - `entrypoint`
   - `env` (set/unset command environment variables)
 - Supports process env allowlisting for `cli.run` via:
   - `SPEC_RUNNER_ENV_ALLOWLIST=K1,K2,...`
