@@ -87,6 +87,9 @@ Case fixtures that portable runner implementations execute.
 - `SRCONF-PHP-TEXT-014`
 - `SRCONF-PROFILE-001`
 - `SRCONF-PROFILE-002`
+- `SRCONF-SCHEMA-CASE-001`
+- `SRCONF-SCHEMA-CASE-002`
+- `SRCONF-SCHEMA-REG-001`
 
 - `SRCONF-STDLIB-001`
 - `SRCONF-STDLIB-002`

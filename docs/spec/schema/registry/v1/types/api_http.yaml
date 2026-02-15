@@ -1,0 +1,12 @@
+version: 1
+id: schema.registry.v1.type.api_http
+type: type
+case_type: api.http
+required_top_level:
+  - request
+allowed_top_level_extra: []
+fields:
+  request:
+    type: mapping
+    required: true
+    since: v1

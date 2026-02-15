@@ -11,6 +11,7 @@ maintenance decisions stay predictable.
 - Enforce stable case shape and assertion DSL from:
   - `docs/spec/schema/schema_v1.md`
   - `docs/spec/contract/`
+  - `docs/spec/schema/registry/v1/*.yaml` (machine source of truth)
 - Maintain deterministic conformance and parity checks across:
   - Python runner
   - PHP runner

@@ -107,6 +107,45 @@ fn main() {
             &with_forwarded(vec![script(&root, "normalize_repo.py"), "--write".to_string()], &forwarded),
             &root,
         ),
+        "schema-registry-check" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "schema_registry_report.py"),
+                    "--format".to_string(),
+                    "json".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/schema_registry_report.json".to_string(),
+                    "--check".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "schema-registry-build" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "schema_registry_report.py"),
+                    "--format".to_string(),
+                    "json".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/schema_registry_report.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "schema-docs-check" => run_cmd(
+            &py,
+            &with_forwarded(vec![script(&root, "generate_schema_docs.py"), "--check".to_string()], &forwarded),
+            &root,
+        ),
+        "schema-docs-build" => run_cmd(
+            &py,
+            &with_forwarded(vec![script(&root, "generate_schema_docs.py")], &forwarded),
+            &root,
+        ),
         "lint" => run_cmd(&ruff, &with_forwarded(vec!["check".to_string(), ".".to_string()], &forwarded), &root),
         "typecheck" => run_cmd(&mypy, &with_forwarded(vec!["spec_runner".to_string()], &forwarded), &root),
         "compilecheck" => run_cmd(

@@ -87,6 +87,19 @@ assert:
 """
 
 
+def test_schema_registry_check_ids_are_registered() -> None:
+    mod = _load_script_module()
+    required = {
+        "schema.registry_valid",
+        "schema.registry_docs_sync",
+        "schema.registry_compiled_sync",
+        "schema.no_prose_only_rules",
+        "schema.type_profiles_complete",
+    }
+    for check_id in required:
+        assert check_id in mod._CHECKS
+
+
 def test_script_returns_zero_when_governance_case_passes(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

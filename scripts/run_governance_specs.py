@@ -28,6 +28,7 @@ from spec_runner.spec_lang import SpecLangLimits, _builtin_arity_table, eval_pre
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
+from spec_runner.schema_registry import compile_registry
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 from spec_runner.contract_governance import check_contract_governance
@@ -181,6 +182,10 @@ _SUBJECT_PROFILE_DOMAIN_LIBS = (
     "docs/spec/libraries/domain/markdown_core.spec.md",
     "docs/spec/libraries/domain/make_core.spec.md",
 )
+_SCHEMA_REGISTRY_ROOT = "docs/spec/schema/registry/v1"
+_SCHEMA_REGISTRY_SCHEMA = "docs/spec/schema/registry_schema_v1.yaml"
+_SCHEMA_REGISTRY_CONTRACT_DOC = "docs/spec/contract/21_schema_registry_contract.md"
+_SCHEMA_REGISTRY_COMPILED_ARTIFACT = ".artifacts/schema_registry_compiled.json"
 
 
 def _resolve_contract_config_path(root: Path, raw: str, *, field: str) -> Path:
@@ -1782,6 +1787,92 @@ def _scan_assert_adapter_projection_contract_sync(root: Path, *, harness: dict |
         for tok in tokens:
             if tok not in raw:
                 violations.append(f"{rel}:1: missing adapter projection token {tok}")
+    return violations
+
+
+def _scan_schema_registry_valid(root: Path) -> list[str]:
+    violations: list[str] = []
+    schema = _join_contract_path(root, _SCHEMA_REGISTRY_SCHEMA)
+    registry_root = _join_contract_path(root, _SCHEMA_REGISTRY_ROOT)
+    contract_doc = _join_contract_path(root, _SCHEMA_REGISTRY_CONTRACT_DOC)
+    if not schema.exists():
+        violations.append(f"{_SCHEMA_REGISTRY_SCHEMA}:1: missing registry schema")
+    if not registry_root.exists():
+        violations.append(f"{_SCHEMA_REGISTRY_ROOT}:1: missing registry root")
+    if not contract_doc.exists():
+        violations.append(f"{_SCHEMA_REGISTRY_CONTRACT_DOC}:1: missing registry contract doc")
+    compiled, errs = compile_registry(root)
+    for err in errs:
+        violations.append(err)
+    if compiled is None:
+        return violations
+    return violations
+
+
+def _scan_schema_registry_compiled_sync(root: Path) -> list[str]:
+    compiled, errs = compile_registry(root)
+    if compiled is None:
+        return errs
+    artifact = _join_contract_path(root, _SCHEMA_REGISTRY_COMPILED_ARTIFACT)
+    if not artifact.exists():
+        return [f"{_SCHEMA_REGISTRY_COMPILED_ARTIFACT}:1: missing compiled registry artifact"]
+    try:
+        existing = json.loads(artifact.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        return [f"{_SCHEMA_REGISTRY_COMPILED_ARTIFACT}:1: invalid JSON: {exc}"]
+    if existing != compiled:
+        return [f"{_SCHEMA_REGISTRY_COMPILED_ARTIFACT}:1: stale compiled registry artifact"]
+    return []
+
+
+def _scan_schema_registry_docs_sync(root: Path) -> list[str]:
+    schema_doc = _join_contract_path(root, "docs/spec/schema/schema_v1.md")
+    if not schema_doc.exists():
+        return ["docs/spec/schema/schema_v1.md:1: missing schema doc"]
+    raw = schema_doc.read_text(encoding="utf-8")
+    required_tokens = (
+        "BEGIN GENERATED: SCHEMA_REGISTRY_V1",
+        "END GENERATED: SCHEMA_REGISTRY_V1",
+        "Generated Registry Snapshot",
+    )
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in raw:
+            violations.append(f"docs/spec/schema/schema_v1.md:1: missing token {tok}")
+    if _SCHEMA_REGISTRY_ROOT not in raw:
+        violations.append(f"docs/spec/schema/schema_v1.md:1: missing registry root token {_SCHEMA_REGISTRY_ROOT}")
+    return violations
+
+
+def _scan_schema_no_prose_only_rules(root: Path) -> list[str]:
+    violations: list[str] = []
+    contract_doc = _join_contract_path(root, _SCHEMA_REGISTRY_CONTRACT_DOC)
+    schema_doc = _join_contract_path(root, "docs/spec/schema/schema_v1.md")
+    for rel, p in (
+        (_SCHEMA_REGISTRY_CONTRACT_DOC, contract_doc),
+        ("docs/spec/schema/schema_v1.md", schema_doc),
+    ):
+        if not p.exists():
+            violations.append(f"{rel}:1: missing required doc")
+            continue
+        lower = p.read_text(encoding="utf-8").lower()
+        if "source of truth" not in lower:
+            violations.append(f"{rel}:1: missing source-of-truth wording")
+        if "registry" not in lower:
+            violations.append(f"{rel}:1: missing registry wording")
+    return violations
+
+
+def _scan_schema_type_profiles_complete(root: Path) -> list[str]:
+    compiled, errs = compile_registry(root)
+    if compiled is None:
+        return errs
+    type_profiles = compiled.get("type_profiles") or {}
+    required = {"cli.run", "text.file", "governance.check", "spec_lang.library"}
+    violations: list[str] = []
+    for ctype in sorted(required):
+        if ctype not in type_profiles:
+            violations.append(f"{_SCHEMA_REGISTRY_ROOT}:1: missing required type profile for {ctype}")
     return violations
 
 
@@ -4940,6 +5031,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "spec.no_executable_yaml_json_in_case_trees": _scan_spec_no_executable_yaml_json_in_case_trees,
     "spec.library_cases_markdown_only": _scan_spec_library_cases_markdown_only,
     "spec.generated_data_artifacts_not_embedded_in_spec_blocks": _scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks,
+    "schema.registry_valid": _scan_schema_registry_valid,
+    "schema.registry_docs_sync": _scan_schema_registry_docs_sync,
+    "schema.registry_compiled_sync": _scan_schema_registry_compiled_sync,
+    "schema.no_prose_only_rules": _scan_schema_no_prose_only_rules,
+    "schema.type_profiles_complete": _scan_schema_type_profiles_complete,
     "library.domain_ownership": _scan_library_domain_ownership,
     "library.domain_index_sync": _scan_library_domain_index_sync,
     "library.public_surface_model": _scan_library_public_surface_model,

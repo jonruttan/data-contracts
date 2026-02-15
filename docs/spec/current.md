@@ -21,6 +21,11 @@ Notes:
 - Canonical executable authoring is `.spec.md` only across conformance,
   governance, impl, and spec-lang library surfaces; machine data artifacts
   remain YAML/JSON non-executable files.
+- Case-shape contract is now registry-backed under
+  `docs/spec/schema/registry/v1/*.yaml`; runtime validation uses compiled
+  registry constraints and hard-fails unknown top-level keys.
+- `docs/spec/schema/schema_v1.md` includes generated schema-registry snapshot
+  content and is checked for synchronization in governance/CI.
 - Portability reporting includes a segmented self-containment metric across
   conformance/governance/impl `.spec.md` corpora.
 - Conformance and governance assertion authoring is evaluate-only for

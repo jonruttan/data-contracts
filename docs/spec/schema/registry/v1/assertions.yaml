@@ -1,0 +1,9 @@
+version: 1
+id: schema.registry.v1.assertions
+type: assertions
+fields:
+  assert:
+    type: list
+    required: false
+    since: v1
+    description: Assertion tree root; evaluate-only leaves on core executable surfaces.

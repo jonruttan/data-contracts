@@ -1,0 +1,17 @@
+version: 1
+id: schema.registry.v1.type.spec_lang_library
+type: type
+case_type: spec_lang.library
+required_top_level:
+  - definitions
+allowed_top_level_extra:
+  - imports
+fields:
+  definitions:
+    type: mapping
+    required: true
+    since: v1
+  imports:
+    type: list
+    required: false
+    since: v1

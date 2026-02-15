@@ -39,6 +39,30 @@ case "${subcommand}" in
     fi
     exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
+  schema-registry-check)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  schema-registry-build)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  schema-docs-check)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  schema-docs-build)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
   lint)
     if [[ -x "${RUST_CLI_BIN}" ]]; then
       exec "${RUST_CLI_BIN}" "${subcommand}" "$@"

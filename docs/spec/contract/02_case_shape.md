@@ -8,6 +8,12 @@
 - `harness` (optional mapping)
 - `assert_health` (optional mapping)
 
+## Source Of Truth
+
+- Machine schema rules are defined in
+  `docs/spec/schema/registry/v1/*.yaml`.
+- Unknown top-level keys are schema errors (hard fail).
+
 ## Harness Namespace Rule
 
 Runner-only setup keys MUST live under `harness`.

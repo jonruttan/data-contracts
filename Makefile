@@ -1,4 +1,4 @@
-.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check normalize-check normalize-fix ci-smoke core-check check ci-gate test
+.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke core-check check ci-gate test
 .DEFAULT_GOAL := help
 
 help: ## Display this help section
@@ -31,11 +31,27 @@ normalize-check: ## Verify normalization across specs/contracts/tests
 normalize-fix: ## Apply normalization rewrites across specs/contracts/tests
 	@./scripts/runner_adapter.sh normalize-fix
 
+schema-registry-check: ## Verify schema registry artifacts and docs are up-to-date
+	@./scripts/runner_adapter.sh schema-registry-check
+	@./scripts/runner_adapter.sh schema-docs-check
+
+schema-registry-build: ## Build schema registry artifacts and generated schema docs
+	@./scripts/runner_adapter.sh schema-registry-build
+	@./scripts/runner_adapter.sh schema-docs-build
+
+schema-docs-check: ## Verify generated schema docs snapshot is up-to-date
+	@./scripts/runner_adapter.sh schema-docs-check
+
+schema-docs-build: ## Regenerate schema docs snapshot from registry
+	@./scripts/runner_adapter.sh schema-docs-build
+
 ci-smoke: ## Fast CI preflight (governance + docs + style)
 	@./scripts/runner_adapter.sh governance
 	@./scripts/runner_adapter.sh docs-build-check
 	@./scripts/runner_adapter.sh docs-lint
 	@./scripts/runner_adapter.sh normalize-check
+	@./scripts/runner_adapter.sh schema-registry-check
+	@./scripts/runner_adapter.sh schema-docs-check
 	@./scripts/runner_adapter.sh style-check
 
 check: ## Alias for ci-gate

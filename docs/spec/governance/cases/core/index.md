@@ -127,4 +127,9 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/spec_layout_domain_trees.spec.md`
 - `/docs/spec/governance/cases/core/spec_portability_metric.spec.md`
 - `/docs/spec/governance/cases/core/spec_portability_non_regression.spec.md`
+- `/docs/spec/governance/cases/core/schema_no_prose_only_rules.spec.md`
+- `/docs/spec/governance/cases/core/schema_registry_compiled_sync.spec.md`
+- `/docs/spec/governance/cases/core/schema_registry_docs_sync.spec.md`
+- `/docs/spec/governance/cases/core/schema_registry_valid.spec.md`
+- `/docs/spec/governance/cases/core/schema_type_profiles_complete.spec.md`
 - `/docs/spec/governance/cases/core/v1_scope_doc.spec.md`

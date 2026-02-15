@@ -15,11 +15,18 @@ Related docs/reference schemas:
 - `docs/spec/schema/objective_metrics_schema_v1.md`
 - `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml`
 - `docs/spec/schema/subject_profiles_v1.yaml`
+- `docs/spec/schema/registry_schema_v1.yaml`
+- `docs/spec/schema/registry/v1/*.yaml`
 - `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`
 - `docs/spec/contract/20_subject_profiles_v1.md`
+- `docs/spec/contract/21_schema_registry_contract.md`
 ```
 
 ## Common Fields
+
+- Machine source of truth for case-shape constraints lives in
+  `docs/spec/schema/registry/v1/*.yaml`; this document includes a generated
+  registry snapshot section.
 
 - `id` (string, required): stable identifier like `CK-CLI-001`
 - `type` (string, required): dispatch key (e.g. `cli.run`)

@@ -1,0 +1,40 @@
+version: 1
+id: schema.registry.v1.core
+type: core
+fields:
+  id:
+    type: string
+    required: true
+    since: v1
+  type:
+    type: string
+    required: true
+    since: v1
+  title:
+    type: string
+    required: false
+    since: v1
+  purpose:
+    type: string
+    required: false
+    since: v1
+  harness:
+    type: mapping
+    required: false
+    since: v1
+  assert:
+    type: list
+    required: false
+    since: v1
+  expect:
+    type: mapping
+    required: false
+    since: v1
+  requires:
+    type: mapping
+    required: false
+    since: v1
+  assert_health:
+    type: mapping
+    required: false
+    since: v1

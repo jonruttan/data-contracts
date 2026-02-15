@@ -5,6 +5,8 @@
 - Input is a directory path.
 - Runner scans files matching configurable case-file pattern in that
   directory (non-recursive).
+- Case-shape schema constraints are sourced from
+  `docs/spec/schema/registry/v1/*.yaml` and applied before dispatch.
 - Canonical executable case trees are markdown-only and MUST use `.spec.md`:
   - `docs/spec/conformance/cases`
   - `docs/spec/governance/cases`

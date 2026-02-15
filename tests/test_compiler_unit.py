@@ -67,3 +67,14 @@ def test_compile_only_evaluate_supported_matrix() -> None:
             [{"target": "stdout", "must": [{"json_type": ["array"]}]}],
             type_name="cli.run",
         )
+
+
+def test_compile_external_case_rejects_unknown_top_level_key() -> None:
+    raw = {
+        "id": "C-unknown",
+        "type": "text.file",
+        "assert": [],
+        "bogus_extra": True,
+    }
+    with pytest.raises(ValueError, match="unknown top-level key: bogus_extra"):
+        compile_external_case(raw, doc_path=Path("/tmp/case.spec.md"))

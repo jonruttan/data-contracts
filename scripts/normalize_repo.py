@@ -228,6 +228,8 @@ def main(argv: list[str] | None = None) -> int:
     vpath_cmd = [sys.executable, "scripts/convert_virtual_root_paths.py", mode_flag, *scope_paths]
     conv_cmd = [sys.executable, "scripts/convert_spec_lang_yaml_ast.py", mode_flag, *scope_paths]
     style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
+    schema_registry_cmd = [sys.executable, "scripts/schema_registry_report.py", "--format", "json", "--out", ".artifacts/schema_registry_report.json", "--check"]
+    schema_docs_cmd = [sys.executable, "scripts/generate_schema_docs.py", "--check"]
 
     issues: list[str] = []
     domain_code, domain_out = _run(domain_layout_cmd)
@@ -254,6 +256,18 @@ def main(argv: list[str] | None = None) -> int:
             line = line.strip()
             if line:
                 issues.append(f"docs/spec:1: NORMALIZATION_SPEC_STYLE: {line}")
+    schema_registry_code, schema_registry_out = _run(schema_registry_cmd)
+    if schema_registry_code != 0:
+        for line in schema_registry_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec/schema:1: NORMALIZATION_SCHEMA_REGISTRY_SYNC: {line}")
+    schema_docs_code, schema_docs_out = _run(schema_docs_cmd)
+    if schema_docs_code != 0:
+        for line in schema_docs_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec/schema:1: NORMALIZATION_SCHEMA_DOCS_SYNC: {line}")
 
     if ns.write:
         repl_issues, changed = _apply_replacements(profile)

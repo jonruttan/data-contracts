@@ -27,6 +27,18 @@ case "${subcommand}" in
   normalize-fix)
     exec "${PYTHON_BIN}" scripts/normalize_repo.py --write "$@"
     ;;
+  schema-registry-check)
+    exec "${PYTHON_BIN}" scripts/schema_registry_report.py --format json --out .artifacts/schema_registry_report.json --check "$@"
+    ;;
+  schema-registry-build)
+    exec "${PYTHON_BIN}" scripts/schema_registry_report.py --format json --out .artifacts/schema_registry_report.json "$@"
+    ;;
+  schema-docs-check)
+    exec "${PYTHON_BIN}" scripts/generate_schema_docs.py --check "$@"
+    ;;
+  schema-docs-build)
+    exec "${PYTHON_BIN}" scripts/generate_schema_docs.py "$@"
+    ;;
   lint)
     exec "${PYTHON_BIN}" -m ruff check . "$@"
     ;;

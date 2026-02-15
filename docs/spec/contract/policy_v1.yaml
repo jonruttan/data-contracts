@@ -2103,3 +2103,92 @@ rules:
   - docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
   - docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md
   - scripts/run_governance_specs.py
+- id: SCHEMA_REGISTRY_SOURCE_OF_TRUTH_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: schema.registry.source_of_truth
+  norm: MUST
+  requirement: schema_registry_yaml_is_authoritative_source
+  description: 'Schema constraints for executable case surfaces must be defined in registry YAML profiles as the primary machine source of truth.
+
+    '
+  rationale: Removes ad-hoc prose-only schema drift and enables deterministic validation.
+  risk_if_violated: Runtime behavior diverges from docs and governance.
+  references:
+  - docs/spec/contract/21_schema_registry_contract.md
+  - docs/spec/schema/registry/v1/core.yaml
+  - docs/spec/governance/cases/core/schema_registry_valid.spec.md
+- id: SCHEMA_REGISTRY_VALIDATION_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: case.validation.pre_dispatch
+  norm: MUST
+  requirement: validate_cases_against_compiled_schema_registry
+  description: 'Case validation must execute against compiled registry constraints before harness dispatch.
+
+    '
+  rationale: Ensures unknown/invalid case-shape inputs fail early and deterministically.
+  risk_if_violated: Invalid cases can reach runtime harnesses and fail inconsistently.
+  references:
+  - spec_runner/schema_validator.py
+  - spec_runner/compiler.py
+  - docs/spec/governance/cases/core/schema_registry_valid.spec.md
+- id: SCHEMA_DOCS_GENERATED_FROM_REGISTRY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.schema_v1
+  norm: MUST
+  requirement: schema_doc_contains_generated_registry_snapshot_and_sync
+  description: 'schema_v1 documentation must include generated registry snapshot content and remain synchronized with registry sources.
+
+    '
+  rationale: Keeps human-readable docs aligned with machine validation rules.
+  risk_if_violated: Docs drift from executable schema behavior.
+  references:
+  - scripts/generate_schema_docs.py
+  - docs/spec/governance/cases/core/schema_registry_docs_sync.spec.md
+- id: SCHEMA_UNKNOWN_KEYS_HARD_FAIL
+  introduced_in: v1
+  scope: runtime
+  applies_to: case.top_level_keys
+  norm: MUST
+  requirement: reject_unknown_case_top_level_keys_as_schema
+  description: 'Unknown top-level keys in executable cases must hard-fail as schema violations.
+
+    '
+  rationale: Prevents silent informal extensions and ambiguous behavior.
+  risk_if_violated: Case behavior becomes non-portable and difficult to audit.
+  references:
+  - spec_runner/schema_validator.py
+  - docs/spec/conformance/cases/core/schema_case_validation.spec.md
+- id: SCHEMA_TYPE_PROFILE_COVERAGE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: schema.registry.type_profiles
+  norm: MUST
+  requirement: required_core_type_profiles_must_exist
+  description: 'Registry must define type profiles for core runtime case types used by canonical executable surfaces.
+
+    '
+  rationale: Ensures type-specific constraints are explicit and testable.
+  risk_if_violated: Type behavior reverts to ad-hoc runtime branching.
+  references:
+  - docs/spec/schema/registry/v1/types/cli_run.yaml
+  - docs/spec/schema/registry/v1/types/text_file.yaml
+  - docs/spec/schema/registry/v1/types/governance_check.yaml
+  - docs/spec/schema/registry/v1/types/spec_lang_library.yaml
+  - docs/spec/governance/cases/core/schema_type_profiles_complete.spec.md
+- id: SCHEMA_PROSE_ONLY_RULES_FORBIDDEN
+  introduced_in: v1
+  scope: governance
+  applies_to: schema.contract.wording
+  norm: MUST
+  requirement: schema_contract_must_reference_registry_source_of_truth
+  description: 'Schema contract docs must not define executable behavior exclusively as prose without registry-backed machine constraints.
+
+    '
+  rationale: Keeps contract enforcement mechanical rather than interpretive.
+  risk_if_violated: Validation behavior becomes subjective and drifts over time.
+  references:
+  - docs/spec/contract/21_schema_registry_contract.md
+  - docs/spec/governance/cases/core/schema_no_prose_only_rules.spec.md

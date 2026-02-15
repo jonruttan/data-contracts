@@ -2235,3 +2235,89 @@ links:
   - docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
   - docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md
   notes: Forbids runnable yaml/json spec case files in canonical executable trees.
+- rule_id: SCHEMA_REGISTRY_SOURCE_OF_TRUTH_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_REGISTRY_SOURCE_OF_TRUTH_REQUIRED
+  contract_refs:
+  - docs/spec/contract/21_schema_registry_contract.md
+  schema_refs:
+  - docs/spec/schema/registry/v1/core.yaml
+  - docs/spec/schema/registry_schema_v1.yaml
+  conformance_case_ids:
+  - SRCONF-SCHEMA-REG-001
+  unit_test_refs:
+  - tests/test_schema_registry_unit.py
+  implementation_refs:
+  - spec_runner/schema_registry.py
+  - scripts/schema_registry_report.py
+  notes: Registry YAML profiles are the source of truth for executable case-shape constraints.
+- rule_id: SCHEMA_REGISTRY_VALIDATION_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_REGISTRY_VALIDATION_REQUIRED
+  contract_refs:
+  - docs/spec/contract/21_schema_registry_contract.md
+  schema_refs:
+  - docs/spec/schema/registry/v1/core.yaml
+  conformance_case_ids:
+  - SRCONF-SCHEMA-CASE-001
+  - SRCONF-SCHEMA-CASE-002
+  unit_test_refs:
+  - tests/test_schema_validator_unit.py
+  implementation_refs:
+  - spec_runner/schema_validator.py
+  - spec_runner/compiler.py
+  notes: Registry-driven case validation executes before harness dispatch.
+- rule_id: SCHEMA_DOCS_GENERATED_FROM_REGISTRY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_DOCS_GENERATED_FROM_REGISTRY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/21_schema_registry_contract.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-SCHEMA-REG-001
+  unit_test_refs:
+  - tests/test_schema_registry_scripts_unit.py
+  implementation_refs:
+  - scripts/generate_schema_docs.py
+  notes: Generated schema snapshot markers in schema_v1 must stay synchronized with registry data.
+- rule_id: SCHEMA_UNKNOWN_KEYS_HARD_FAIL
+  policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_UNKNOWN_KEYS_HARD_FAIL
+  contract_refs:
+  - docs/spec/contract/21_schema_registry_contract.md
+  schema_refs:
+  - docs/spec/schema/registry/v1/core.yaml
+  conformance_case_ids:
+  - SRCONF-SCHEMA-CASE-002
+  unit_test_refs:
+  - tests/test_schema_validator_unit.py
+  implementation_refs:
+  - spec_runner/schema_validator.py
+  notes: Unknown top-level case keys are hard-failed as schema violations.
+- rule_id: SCHEMA_TYPE_PROFILE_COVERAGE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_TYPE_PROFILE_COVERAGE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/21_schema_registry_contract.md
+  schema_refs:
+  - docs/spec/schema/registry/v1/types/cli_run.yaml
+  - docs/spec/schema/registry/v1/types/text_file.yaml
+  - docs/spec/schema/registry/v1/types/governance_check.yaml
+  - docs/spec/schema/registry/v1/types/spec_lang_library.yaml
+  conformance_case_ids:
+  - SRCONF-SCHEMA-REG-001
+  unit_test_refs:
+  - tests/test_schema_registry_unit.py
+  implementation_refs:
+  - spec_runner/schema_registry.py
+  - scripts/run_governance_specs.py
+  notes: Governance enforces required type-profile coverage for core executable surfaces.
+- rule_id: SCHEMA_PROSE_ONLY_RULES_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_PROSE_ONLY_RULES_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/21_schema_registry_contract.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-SCHEMA-REG-001
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: Schema contract wording must reference registry-backed machine constraints.

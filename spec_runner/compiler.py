@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Literal, cast
 
 from spec_runner.internal_model import GroupNode, InternalAssertNode, InternalSpecCase, PredicateLeaf
+from spec_runner.schema_validator import validate_case_shape
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 
 
@@ -131,6 +132,10 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
         raise ValueError("spec case must include non-empty id")
     if not type_name:
         raise ValueError("spec case must include non-empty type")
+
+    diagnostics = validate_case_shape(raw_case, type_name, doc_path.as_posix())
+    if diagnostics:
+        raise ValueError("; ".join(d.render() for d in diagnostics))
 
     harness = raw_case.get("harness")
     if harness is None:

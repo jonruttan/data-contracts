@@ -20,6 +20,12 @@ harness:
     required_subcommands:
     - governance
     - style-check
+    - normalize-check
+    - normalize-fix
+    - schema-registry-check
+    - schema-registry-build
+    - schema-docs-check
+    - schema-docs-build
     - lint
     - typecheck
     - compilecheck
