@@ -40,26 +40,8 @@ harness:
     - \$_ENV\b
     - \bSystem\.getenv\s*\(
     policy_evaluate:
-    - eq:
-      - count:
-        - filter:
-          - fn:
-            - [row]
-            - gt:
-              - count:
-                - filter:
-                  - fn:
-                    - [s]
-                    - any:
-                      - map:
-                        - fn:
-                          - [p]
-                          - {matches: [{var: s}, {var: p}]}
-                        - {var: patterns}
-                  - {get: [{var: row}, strings]}
-              - 0
-          - {var: subject}
-      - 0
+    - is_empty:
+      - {get: [{var: subject}, violations]}
   policy_evaluate:
   - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:

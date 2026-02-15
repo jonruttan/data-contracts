@@ -2269,7 +2269,7 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
                 f"{case_id}: ambient-assumption token matched configured pattern in case content"
             )
     return _policy_outcome(
-        subject=rows,
+        subject={"rows": rows, "violations": violations},
         policy_evaluate=policy_evaluate,
         policy_path="harness.ambient_assumptions.policy_evaluate",
         symbols={"patterns": pattern_values},
@@ -2521,6 +2521,55 @@ def _scan_conformance_spec_lang_fixture_library_usage(root: Path, *, harness: di
         violations.append(
             f"{rel}: helper call count {total_calls} is below min_call_count {min_call_count} for prefix {required_call_prefix!r}"
         )
+    return violations
+
+
+def _scan_conformance_library_contract_cases_present(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    h = harness or {}
+    cfg = h.get("conformance_library_contract_cases_present")
+    if not isinstance(cfg, dict):
+        return [
+            "conformance.library_contract_cases_present requires harness.conformance_library_contract_cases_present mapping in governance spec"
+        ]
+    rel = str(cfg.get("path", "")).strip()
+    if not rel:
+        return [
+            "harness.conformance_library_contract_cases_present.path must be a non-empty string"
+        ]
+    required_case_ids_raw = cfg.get("required_case_ids")
+    if (
+        not isinstance(required_case_ids_raw, list)
+        or not required_case_ids_raw
+        or any(not isinstance(x, str) or not x.strip() for x in required_case_ids_raw)
+    ):
+        return [
+            "harness.conformance_library_contract_cases_present.required_case_ids must be a non-empty list of non-empty strings"
+        ]
+    required_case_ids = {str(x).strip() for x in required_case_ids_raw}
+
+    fixture = _join_contract_path(root, rel)
+    if not fixture.exists():
+        return [f"{rel}:1: missing conformance fixture file"]
+
+    found_case_ids: set[str] = set()
+    evaluate_case_ids: set[str] = set()
+    for spec in iter_spec_doc_tests(fixture.parent, file_pattern=fixture.name):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        found_case_ids.add(case_id)
+        raw_assert = case.get("assert")
+        if isinstance(raw_assert, list) and any(True for _ in _iter_evaluate_expr_nodes(raw_assert)):
+            evaluate_case_ids.add(case_id)
+
+    violations: list[str] = []
+    for case_id in sorted(required_case_ids):
+        if case_id not in found_case_ids:
+            violations.append(f"{rel}: missing required conformance case id {case_id}")
+            continue
+        if case_id not in evaluate_case_ids:
+            violations.append(f"{rel}: required case {case_id} must include evaluate assertions")
     return violations
 
 
@@ -4421,6 +4470,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.type_contract_field_sync": _scan_conformance_type_contract_field_sync,
     "conformance.spec_lang_preferred": _scan_conformance_spec_lang_preferred,
     "conformance.spec_lang_fixture_library_usage": _scan_conformance_spec_lang_fixture_library_usage,
+    "conformance.library_contract_cases_present": _scan_conformance_library_contract_cases_present,
     "conformance.evaluate_first_ratio_non_regression": _scan_conformance_evaluate_first_ratio_non_regression,
     "docs.reference_surface_complete": _scan_docs_reference_surface_complete,
     "docs.reference_index_sync": _scan_docs_reference_index_sync,

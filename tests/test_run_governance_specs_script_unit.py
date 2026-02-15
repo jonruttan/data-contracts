@@ -1237,30 +1237,10 @@ harness:
       - "\\\\bos\\\\.getenv\\\\s*\\\\("
       - "\\\\bdatetime\\\\.now\\\\s*\\\\("
     policy_evaluate:
-      - eq:
-        - count:
-          - filter:
-            - fn:
-              - [row]
-              - gt:
-                - count:
-                  - filter:
-                    - fn:
-                      - [s]
-                      - any:
-                        - map:
-                          - fn:
-                            - [p]
-                            - matches:
-                              - var: s
-                              - var: p
-                          - var: patterns
-                    - get:
-                      - var: row
-                      - strings
-                - 0
-            - var: subject
-        - 0
+      - is_empty:
+        - get:
+          - var: subject
+          - violations
 assert:
   - target: summary_json
     must:
