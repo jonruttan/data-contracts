@@ -63,6 +63,27 @@ def test_ref_and_var_list_reject_unsupported_forms() -> None:
         compile_yaml_expr_to_sexpr({"var": ["subject"]}, field_path="x")
 
 
+def test_compile_fn_uses_plain_param_list_shape() -> None:
+    expr = {
+        "fn": [
+            ["row"],
+            {"gt": [{"count": [{"get": [{"var": "row"}, "non_evaluate_ops"]}]}, 0]},
+        ]
+    }
+    assert compile_yaml_expr_to_sexpr(expr, field_path="x") == [
+        "fn",
+        ["row"],
+        ["gt", ["count", ["get", ["var", "row"], "non_evaluate_ops"]], 0],
+    ]
+
+
+def test_reject_legacy_fn_param_node_shapes() -> None:
+    with pytest.raises(SpecLangYamlAstError, match="params must be a list"):
+        compile_yaml_expr_to_sexpr({"fn": [{"lit": ["row"]}, {"var": "row"}]}, field_path="x")
+    with pytest.raises(SpecLangYamlAstError, match="must be a non-empty string"):
+        compile_yaml_expr_to_sexpr({"fn": [[None], {"var": "row"}]}, field_path="x")
+
+
 def test_rejects_empty_expression_list() -> None:
     with pytest.raises(SpecLangYamlAstError, match="must be a non-empty list"):
         compile_yaml_expr_list([], field_path="x")

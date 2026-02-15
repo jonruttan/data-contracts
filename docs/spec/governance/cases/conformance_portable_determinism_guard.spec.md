@@ -38,16 +38,16 @@ harness:
       - count:
         - filter:
           - fn:
-            - {row: []}
+            - [row]
             - gt:
               - count:
                 - filter:
                   - fn:
-                    - {s: []}
+                    - [s]
                     - any:
                       - map:
                         - fn:
-                          - {p: []}
+                          - [p]
                           - {matches: [{var: s}, {var: p}]}
                         - {var: patterns}
                   - {get: [{var: row}, strings]}

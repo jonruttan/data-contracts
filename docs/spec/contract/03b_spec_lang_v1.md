@@ -11,8 +11,8 @@ evaluation.
 
 ```yaml
 fn:
-- arg1
-- arg2
+- [arg1, arg2]
+- {eq: [{var: arg1}, {var: arg2}]}
 ```
 
 No string parser and no implementation-defined extension hooks are part of v1.

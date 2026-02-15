@@ -30,13 +30,13 @@ type: spec_lang.library
 functions:
   is_warn:
     fn:
-    - {text: []}
+    - [text]
     - contains:
       - {var: text}
       - WARN
   is_error:
     fn:
-    - {text: []}
+    - [text]
     - contains:
       - {var: text}
       - ERROR
@@ -69,7 +69,7 @@ imports: ["b.spec.md"]
 functions:
   a:
     fn:
-    - {x: []}
+    - [x]
     - {var: x}
 ```
 """,
@@ -83,7 +83,7 @@ imports: ["a.spec.md"]
 functions:
   b:
     fn:
-    - {x: []}
+    - [x]
     - {var: x}
 ```
 """,
@@ -108,7 +108,7 @@ type: spec_lang.library
 functions:
   same:
     fn:
-    - {x: []}
+    - [x]
     - {var: x}
 ```
 """,
@@ -121,7 +121,7 @@ type: spec_lang.library
 functions:
   same:
     fn:
-    - {x: []}
+    - [x]
     - {var: x}
 ```
 """,
@@ -146,11 +146,11 @@ type: spec_lang.library
 functions:
   keep:
     fn:
-    - {x: []}
+    - [x]
     - {var: x}
   drop:
     fn:
-    - {x: []}
+    - [x]
     - {var: x}
 ```
 """,

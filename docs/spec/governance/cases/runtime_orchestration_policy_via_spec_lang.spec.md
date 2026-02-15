@@ -32,7 +32,7 @@ harness:
       - count:
         - filter:
           - fn:
-            - {step: []}
+            - [step]
             - neq:
               - {get: [{var: step}, status]}
               - pass

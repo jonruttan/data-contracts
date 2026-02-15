@@ -10,6 +10,7 @@ import yaml
 from spec_runner.settings import SETTINGS
 from spec_runner.spec_lang_yaml_ast import (
     SpecLangYamlAstError,
+    compile_yaml_expr_to_sexpr,
     compile_yaml_expr_list,
     is_sexpr_node,
     sexpr_to_yaml_ast,
@@ -141,6 +142,21 @@ def _condense_expr_node(node: Any) -> Any:
                 if isinstance(raw_args, str):
                     return _FlowMap({"var": raw_args})
                 return {"var": _condense_expr_node(raw_args)}
+            if op == "fn" and isinstance(raw_args, list) and len(raw_args) == 2:
+                params = raw_args[0]
+                if isinstance(params, dict) and "lit" in params and isinstance(params["lit"], list):
+                    params = params["lit"]
+                elif isinstance(params, dict) and len(params) == 1:
+                    k = str(next(iter(params.keys())))
+                    v = params[k]
+                    if isinstance(v, list) and not v and k.strip():
+                        params = [k.strip()]
+                if (
+                    isinstance(params, list)
+                    and all(isinstance(x, str) and str(x).strip() for x in params)
+                ):
+                    body = _condense_expr_node(raw_args[1])
+                    return {"fn": [_FlowSeq([str(x).strip() for x in params]), body]}
             if isinstance(raw_args, list):
                 if op == "subject" and not raw_args:
                     return _FlowMap({"var": "subject"})
@@ -174,6 +190,15 @@ def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
                     changed = changed or ch
                 out[key] = out_items
                 changed = changed or (converted != v)
+            elif key == "functions" and isinstance(v, dict):
+                functions: dict[str, Any] = {}
+                for fn_name, fn_expr in v.items():
+                    fn_path = f"{path}.{key}.{fn_name}" if path else f"{key}.{fn_name}"
+                    expr_node = sexpr_to_yaml_ast(fn_expr) if is_sexpr_node(fn_expr) else fn_expr
+                    fn_item, ch = _walk_convert(expr_node, path=fn_path)
+                    functions[str(fn_name)] = _condense_expr_node(fn_item)
+                    changed = changed or ch or (expr_node != fn_expr)
+                out[key] = functions
             else:
                 got, ch = _walk_convert(v, path=f"{path}.{key}")
                 out[key] = got
@@ -195,6 +220,11 @@ def _validate_expr_fields(node: Any, *, path: str = "") -> None:
                 if not isinstance(v, list) or not v:
                     raise SpecLangYamlAstError(f"{current}: expression list must be a non-empty list")
                 compile_yaml_expr_list(v, field_path=current)
+            if key == "functions":
+                if not isinstance(v, dict):
+                    raise SpecLangYamlAstError(f"{current}: functions must be a mapping")
+                for fn_name, fn_expr in v.items():
+                    compile_yaml_expr_to_sexpr(fn_expr, field_path=f"{current}.{fn_name}")
             _validate_expr_fields(v, path=current)
 
 
@@ -208,7 +238,7 @@ def _contains_expr_fields(node: Any) -> bool:
     if isinstance(node, dict):
         for k, v in node.items():
             key = str(k)
-            if key in {"evaluate", "policy_evaluate"}:
+            if key in {"evaluate", "policy_evaluate", "functions"}:
                 return True
             if _contains_expr_fields(v):
                 return True

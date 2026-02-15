@@ -24,7 +24,7 @@ harness:
       - count:
         - filter:
           - fn:
-            - {row: []}
+            - [row]
             - gt:
               - count:
                 - {get: [{var: row}, non_evaluate_ops]}

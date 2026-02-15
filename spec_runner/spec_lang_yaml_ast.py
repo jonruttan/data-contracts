@@ -71,6 +71,25 @@ def _compile_node(node: Any, *, field_path: str) -> Any:
             )
         return ["var", symbol.strip()]
     raw_args = node[keys[0]]
+    if op == "fn":
+        if not isinstance(raw_args, list) or len(raw_args) != 2:
+            raise SpecLangYamlAstError(
+                f"{field_path}.fn: fn args must be [params, body]"
+            )
+        raw_params = raw_args[0]
+        if not isinstance(raw_params, list):
+            raise SpecLangYamlAstError(
+                f"{field_path}.fn[0]: params must be a list of variable names"
+            )
+        params: list[str] = []
+        for idx, value in enumerate(raw_params):
+            if not isinstance(value, str) or not value.strip():
+                raise SpecLangYamlAstError(
+                    f"{field_path}.fn[0][{idx}]: param name must be a non-empty string"
+                )
+            params.append(value.strip())
+        body = _compile_node(raw_args[1], field_path=f"{field_path}.fn[1]")
+        return ["fn", params, body]
     if not isinstance(raw_args, list):
         raise SpecLangYamlAstError(
             f"{field_path}.{op}: operator args must be a list"
@@ -125,6 +144,16 @@ def sexpr_to_yaml_ast(node: Any) -> Any:
                 return {"var": "subject"}
             if op == "var" and len(node) == 2 and isinstance(node[1], str) and node[1].strip():
                 return {"var": node[1].strip()}
+            if op == "fn" and len(node) == 3 and isinstance(node[1], list):
+                params: list[str] = []
+                for idx, value in enumerate(node[1]):
+                    if not isinstance(value, str) or not value.strip():
+                        raise SpecLangYamlAstError(
+                            f"sexpr.fn[1][{idx}]: param name must be a non-empty string"
+                        )
+                    params.append(value.strip())
+                body = sexpr_to_yaml_ast(node[2])
+                return {"fn": [params, body]}
             args = [sexpr_to_yaml_ast(arg) for arg in node[1:]]
             return {op: args}
         return {"lit": [_literalize(v) for v in node]}

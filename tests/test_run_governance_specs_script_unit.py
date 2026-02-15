@@ -867,19 +867,16 @@ harness:
         - count:
           - filter:
             - fn:
-              - lit:
-                - row
+              - [row]
               - gt:
                 - count:
                   - filter:
                     - fn:
-                      - lit:
-                        - s
+                      - [s]
                       - any:
                         - map:
                           - fn:
-                            - lit:
-                              - p
+                            - [p]
                             - matches:
                               - var: s
                               - var: p
@@ -987,19 +984,16 @@ harness:
         - count:
           - filter:
             - fn:
-              - lit:
-                - row
+              - [row]
               - gt:
                 - count:
                   - filter:
                     - fn:
-                      - lit:
-                        - s
+                      - [s]
                       - any:
                         - map:
                           - fn:
-                            - lit:
-                              - p
+                            - [p]
                             - matches:
                               - var: s
                               - var: p
@@ -1224,8 +1218,7 @@ harness:
         - count:
           - filter:
             - fn:
-              - lit:
-                - row
+              - [row]
               - gt:
                 - count:
                   - get:
@@ -3807,7 +3800,7 @@ type: spec_lang.library
 functions:
   ok:
     fn:
-    - {x: []}
+    - [x]
     - {var: x}
 ```
 """,

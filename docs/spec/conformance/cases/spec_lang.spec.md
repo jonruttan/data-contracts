@@ -390,7 +390,7 @@ assert:
       - eq:
         - group_by:
           - fn:
-            - {x: []}
+            - [x]
             - if:
               - {gt: [{var: x}, 2]}
               - hi
@@ -400,7 +400,7 @@ assert:
       - eq:
         - uniq_by:
           - fn:
-            - {x: []}
+            - [x]
             - {get: [{var: x}, k]}
           - {json_parse: ['[{"k":1},{"k":1},{"k":2}]']}
         - {json_parse: ['[{"k":1},{"k":2}]']}

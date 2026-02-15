@@ -9,34 +9,24 @@ type: spec_lang.library
 functions:
   conf.pass_when_text_contains:
     fn:
-    - {lit: [subject, token]}
-    - contains:
-      - {var: subject}
-      - {var: token}
+    - [subject, token]
+    - {contains: [{var: subject}, {var: token}]}
   conf.pass_when_text_regex:
     fn:
-    - {lit: [subject, pattern]}
-    - regex_match:
-      - {var: subject}
-      - {var: pattern}
+    - [subject, pattern]
+    - {regex_match: [{var: subject}, {var: pattern}]}
   conf.eq:
     fn:
-    - {lit: [subject, value]}
-    - eq:
-      - {var: subject}
-      - {var: value}
+    - [subject, value]
+    - {eq: [{var: subject}, {var: value}]}
   conf.has_error_category:
     fn:
-    - {lit: [subject, category]}
-    - contains:
-      - {var: subject}
-      - {var: category}
+    - [subject, category]
+    - {contains: [{var: subject}, {var: category}]}
   conf.json_type_is:
     fn:
-    - {lit: [subject, type_name]}
-    - json_type:
-      - {var: subject}
-      - {var: type_name}
+    - [subject, type_name]
+    - {json_type: [{var: subject}, {var: type_name}]}
 exports:
 - conf.pass_when_text_contains
 - conf.pass_when_text_regex
