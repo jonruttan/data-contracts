@@ -32,9 +32,9 @@ Current checks:
   match implementation warning codes.
 - `conformance.case_doc_style_guard`: enforces conformance doc style and
   purpose-lint rules (one case/block, heading placement, sorted ids, quality checks).
-- `conformance.spec_lang_preferred`: enforces spec-lang-first conformance
-  authoring and requires explicit temporary allowlisting for non-`evaluate`
-  assertion files.
+- `conformance.spec_lang_preferred`: enforces sugar-first conformance
+  authoring and requires explicit allowlisting for files that intentionally
+  use `evaluate`.
 - `spec.portability_metric`: computes segmented spec self-containment and
   implementation-reliance scores from configured `.spec.md` roots.
 - `conformance.no_ambient_assumptions`: rejects ambient environment/time/random
