@@ -265,6 +265,78 @@ links:
       - scripts/php/conformance_runner.php
     notes: "Conformance maps evaluate failures to schema/assertion/runtime categories."
 
+  - rule_id: SPEC_LANG_CURRY_ALL_BUILTINS
+    policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_CURRY_ALL_BUILTINS
+    contract_refs:
+      - docs/spec/contract/03b_spec_lang_v1.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids:
+      - SRCONF-EXPR-013
+      - SRCONF-EXPR-014
+      - SRCONF-EXPR-016
+      - SRCONF-EXPR-017
+    unit_test_refs:
+      - tests/test_spec_lang_unit.py
+    implementation_refs:
+      - spec_runner/spec_lang.py
+      - scripts/php/spec_runner.php
+      - scripts/php/conformance_runner.php
+    notes: "Builtins support deterministic currying and over-application diagnostics."
+
+  - rule_id: SPEC_LANG_SET_ALGEBRA_PARITY
+    policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_SET_ALGEBRA_PARITY
+    contract_refs:
+      - docs/spec/contract/03b_spec_lang_v1.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids:
+      - SRCONF-EXPR-009
+      - SRCONF-EXPR-010
+      - SRCONF-EXPR-011
+      - SRCONF-EXPR-018
+    unit_test_refs:
+      - tests/test_spec_lang_unit.py
+      - tests/test_conformance_parity_unit.py
+    implementation_refs:
+      - spec_runner/spec_lang.py
+      - scripts/php/spec_runner.php
+      - scripts/php/conformance_runner.php
+    notes: "Set algebra semantics are parity-tested and deterministic."
+
+  - rule_id: SPEC_LANG_DEEP_EQUALITY_DETERMINISTIC
+    policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_DEEP_EQUALITY_DETERMINISTIC
+    contract_refs:
+      - docs/spec/contract/03b_spec_lang_v1.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids:
+      - SRCONF-EXPR-009
+      - SRCONF-EXPR-012
+    unit_test_refs:
+      - tests/test_spec_lang_unit.py
+    implementation_refs:
+      - spec_runner/spec_lang.py
+      - scripts/php/spec_runner.php
+    notes: "Deep structural equality drives set/membership deterministically."
+
+  - rule_id: SPEC_LANG_COLLECTION_FORMS_CONTRACTED
+    policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_COLLECTION_FORMS_CONTRACTED
+    contract_refs:
+      - docs/spec/contract/03b_spec_lang_v1.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids:
+      - SRCONF-EXPR-013
+      - SRCONF-EXPR-014
+      - SRCONF-EXPR-015
+    unit_test_refs:
+      - tests/test_spec_lang_unit.py
+    implementation_refs:
+      - spec_runner/spec_lang.py
+      - scripts/php/spec_runner.php
+    notes: "Collection transforms remain contracted and conformance-covered."
+
   - rule_id: SPEC_LANG_LIBRARY_REUSE_MODEL
     policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_LIBRARY_REUSE_MODEL
     contract_refs:

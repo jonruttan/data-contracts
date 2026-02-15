@@ -114,6 +114,18 @@ Utility:
 - `join`
 - `map`
 - `filter`
+- `reject`
+- `find`
+- `reduce`
+- `partition`
+- `group_by`
+- `uniq_by`
+- `flatten`
+- `concat`
+- `append`
+- `prepend`
+- `take`
+- `drop`
 - `any`
 - `all`
 - `none`
@@ -125,6 +137,15 @@ Utility:
 - `gt`
 - `gte`
 - `matches`
+- `equals`
+- `includes`
+- `union`
+- `intersection`
+- `difference`
+- `symmetric_difference`
+- `is_subset`
+- `is_superset`
+- `set_equals`
 
 Control/recursion:
 
@@ -169,6 +190,22 @@ Tail recursion (stack-safe by contract):
                            ["sub", ["var", "n"], 1],
                            ["add", ["var", "acc"], 1]]]]]],
        ["eq", ["call", ["var", "loop"], 1000, 0], 1000]]
+```
+
+Set algebra + deep equality:
+
+```yaml
+- evaluate:
+    - ["intersection",
+       ["json_parse", '[{"k":1},{"k":2},{"k":2}]'],
+       ["json_parse", '[{"k":2},{"k":3}]']]
+```
+
+Currying with collection forms:
+
+```yaml
+- evaluate:
+    - ["map", ["call", ["var", "add"], 10], ["json_parse", "[1,2,3]"]]
 ```
 
 ## 5) Budgets (`harness.spec_lang`)

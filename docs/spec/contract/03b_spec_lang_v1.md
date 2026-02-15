@@ -58,6 +58,18 @@ Utility:
 - `join`
 - `map`
 - `filter`
+- `reject`
+- `find`
+- `reduce`
+- `partition`
+- `group_by`
+- `uniq_by`
+- `flatten`
+- `concat`
+- `append`
+- `prepend`
+- `take`
+- `drop`
 - `any`
 - `all`
 - `none`
@@ -80,6 +92,15 @@ Utility:
 - `lte`
 - `gt`
 - `gte`
+- `equals`
+- `includes`
+- `union`
+- `intersection`
+- `difference`
+- `symmetric_difference`
+- `is_subset`
+- `is_superset`
+- `set_equals`
 
 Recursion/control:
 
@@ -87,6 +108,31 @@ Recursion/control:
 - `fn`
 - `call`
 - `if`
+
+## Equality + Set Algebra Semantics
+
+- `equals` uses deep structural equality:
+  - scalars compare by strict type+value
+  - lists compare by length + ordered pairwise equality
+  - maps compare by key-set equality + per-key value equality
+- set operators (`union`, `intersection`, `difference`,
+  `symmetric_difference`) require list inputs.
+- set outputs are deterministic and preserve stable left-first encounter order.
+- `includes` performs list membership using deep equality.
+- `set_equals` compares de-duplicated deep-equality sets (order-insensitive).
+- `is_subset` / `is_superset` apply the same de-duplicated deep-equality model.
+
+## Currying Contract
+
+- Builtins MUST support automatic currying by declared arity.
+- Supplying fewer args than arity MUST return a callable builtin function value.
+- Supplying exactly arity args MUST evaluate the builtin.
+- Supplying extra args MUST:
+  - evaluate first arity args
+  - apply remaining args only if the intermediate result is callable
+  - otherwise fail as `schema` with deterministic over-application diagnostics
+- Function values MUST be usable via `call` and as inputs to collection forms
+  (for example `map`, `filter`, `reduce`).
 
 ## Tail Position and TCO
 

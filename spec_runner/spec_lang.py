@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import time
-import re
 import json
+import re
+import time
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
@@ -21,6 +21,13 @@ class _Closure:
     params: tuple[str, ...]
     body: Any
     env: "_Env"
+
+
+@dataclass(frozen=True)
+class _BuiltinFn:
+    symbol: str
+    arity: int
+    bound_args: tuple[Any, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -123,117 +130,197 @@ def _truthy(v: Any) -> bool:
     return bool(v)
 
 
+def _deep_equals(left: Any, right: Any) -> bool:
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, list):
+        if len(left) != len(right):
+            return False
+        return all(_deep_equals(a, b) for a, b in zip(left, right))
+    if isinstance(left, dict):
+        if set(left.keys()) != set(right.keys()):
+            return False
+        return all(_deep_equals(left[k], right[k]) for k in left)
+    return left == right
+
+
+def _includes_deep(seq: list[Any], value: Any) -> bool:
+    return any(_deep_equals(item, value) for item in seq)
+
+
+def _distinct_deep(seq: list[Any]) -> list[Any]:
+    out: list[Any] = []
+    for item in seq:
+        if not _includes_deep(out, item):
+            out.append(item)
+    return out
+
+
+def _require_list_arg(op: str, value: Any) -> list[Any]:
+    if not isinstance(value, list):
+        raise ValueError(f"spec_lang {op} expects list")
+    return value
+
+
+def _builtin_arity_table() -> dict[str, int]:
+    # Fixed arity table used by builtin currying.
+    return {
+        "subject": 0,
+        "contains": 2,
+        "starts_with": 2,
+        "ends_with": 2,
+        "regex_match": 2,
+        "matches": 2,
+        "eq": 2,
+        "neq": 2,
+        "equals": 2,
+        "in": 2,
+        "includes": 2,
+        "lt": 2,
+        "lte": 2,
+        "gt": 2,
+        "gte": 2,
+        "add": 2,
+        "sub": 2,
+        "json_type": 2,
+        "has_key": 2,
+        "get": 2,
+        "len": 1,
+        "count": 1,
+        "first": 1,
+        "rest": 1,
+        "trim": 1,
+        "lower": 1,
+        "upper": 1,
+        "split": 2,
+        "join": 2,
+        "map": 2,
+        "filter": 2,
+        "reject": 2,
+        "find": 2,
+        "reduce": 3,
+        "partition": 2,
+        "group_by": 2,
+        "uniq_by": 2,
+        "flatten": 1,
+        "concat": 2,
+        "append": 2,
+        "prepend": 2,
+        "take": 2,
+        "drop": 2,
+        "any": 1,
+        "all": 1,
+        "none": 1,
+        "is_empty": 1,
+        "distinct": 1,
+        "coalesce": 2,
+        "pluck": 2,
+        "sort_by": 2,
+        "sum": 1,
+        "min": 1,
+        "max": 1,
+        "matches_all": 2,
+        "union": 2,
+        "intersection": 2,
+        "difference": 2,
+        "symmetric_difference": 2,
+        "is_subset": 2,
+        "is_superset": 2,
+        "set_equals": 2,
+        "json_parse": 1,
+        "and": 2,
+        "or": 2,
+        "not": 1,
+    }
+
+
+_BUILTIN_ARITY = _builtin_arity_table()
+
+
 def _eval_non_tail(expr: Any, env: _Env, st: _EvalState) -> Any:
     return _eval_tail(expr, env, st)
+
+
+def _is_callable_like(v: Any) -> bool:
+    return isinstance(v, (_Closure, _BuiltinFn))
+
+
+def _as_builtin_fn(v: Any) -> _BuiltinFn | None:
+    if isinstance(v, _BuiltinFn):
+        return v
+    if isinstance(v, str) and v in _BUILTIN_ARITY:
+        return _BuiltinFn(symbol=v, arity=_BUILTIN_ARITY[v])
+    return None
+
+
+def _apply_builtin_curried(fn_val: _BuiltinFn, call_args: list[Any], st: _EvalState) -> Any:
+    all_args = [*fn_val.bound_args, *call_args]
+    if len(all_args) < fn_val.arity:
+        return _BuiltinFn(fn_val.symbol, fn_val.arity, tuple(all_args))
+    consumed = all_args[: fn_val.arity]
+    remainder = all_args[fn_val.arity :]
+    result = _eval_builtin_eager(fn_val.symbol, consumed, st)
+    if not remainder:
+        return result
+    if not _is_callable_like(result):
+        raise ValueError(
+            f"spec_lang over-application error for {fn_val.symbol}: result is not callable"
+        )
+    return _eval_callable_like(result, remainder, st)
 
 
 def _eval_callable_like(fn_val: Any, call_args: list[Any], st: _EvalState) -> Any:
     if isinstance(fn_val, _Closure):
         if len(call_args) != len(fn_val.params):
             raise ValueError("spec_lang call argument count mismatch")
-        next_env = _Env(
-            vars={k: v for k, v in zip(fn_val.params, call_args)},
-            parent=fn_val.env,
-        )
+        next_env = _Env(vars={k: v for k, v in zip(fn_val.params, call_args)}, parent=fn_val.env)
         return _eval_tail(fn_val.body, next_env, st)
-    raise ValueError("spec_lang callable expects fn closure")
+    builtin_fn = _as_builtin_fn(fn_val)
+    if builtin_fn is not None:
+        return _apply_builtin_curried(builtin_fn, call_args, st)
+    raise ValueError("spec_lang callable expects fn closure or builtin function")
 
 
-def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
+def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
     if op == "subject":
         _require_arity(op, args, 0)
         return st.subject
-    if op == "var":
-        _require_arity(op, args, 1)
-        name = args[0]
-        if not isinstance(name, str) or not name.strip():
-            raise ValueError("spec_lang var requires non-empty string name")
-        return env.lookup(name)
-    if op == "and":
-        _require_min_arity(op, args, 1)
-        for a in args:
-            if not _truthy(_eval_non_tail(a, env, st)):
-                return False
-        return True
-    if op == "or":
-        _require_min_arity(op, args, 1)
-        for a in args:
-            if _truthy(_eval_non_tail(a, env, st)):
-                return True
-        return False
-    if op == "not":
-        _require_arity(op, args, 1)
-        return not _truthy(_eval_non_tail(args[0], env, st))
     if op == "contains":
-        if len(args) == 1:
-            hay = st.subject
-            needle = _eval_non_tail(args[0], env, st)
-        elif len(args) == 2:
-            hay = _eval_non_tail(args[0], env, st)
-            needle = _eval_non_tail(args[1], env, st)
-        else:
-            raise ValueError("spec_lang arity error for contains")
-        return str(needle) in str(hay)
+        _require_arity(op, args, 2)
+        return str(args[1]) in str(args[0])
     if op == "starts_with":
-        if len(args) == 1:
-            hay = st.subject
-            prefix = _eval_non_tail(args[0], env, st)
-        elif len(args) == 2:
-            hay = _eval_non_tail(args[0], env, st)
-            prefix = _eval_non_tail(args[1], env, st)
-        else:
-            raise ValueError("spec_lang arity error for starts_with")
-        return str(hay).startswith(str(prefix))
+        _require_arity(op, args, 2)
+        return str(args[0]).startswith(str(args[1]))
     if op == "ends_with":
-        if len(args) == 1:
-            hay = st.subject
-            suffix = _eval_non_tail(args[0], env, st)
-        elif len(args) == 2:
-            hay = _eval_non_tail(args[0], env, st)
-            suffix = _eval_non_tail(args[1], env, st)
-        else:
-            raise ValueError("spec_lang arity error for ends_with")
-        return str(hay).endswith(str(suffix))
-    if op == "regex_match":
         _require_arity(op, args, 2)
-        hay = _eval_non_tail(args[0], env, st)
-        pattern = _eval_non_tail(args[1], env, st)
-        return re.search(str(pattern), str(hay)) is not None
-    if op == "matches":
+        return str(args[0]).endswith(str(args[1]))
+    if op in {"regex_match", "matches"}:
         _require_arity(op, args, 2)
-        hay = _eval_non_tail(args[0], env, st)
-        pattern = _eval_non_tail(args[1], env, st)
-        return re.search(str(pattern), str(hay)) is not None
+        return re.search(str(args[1]), str(args[0])) is not None
     if op == "eq":
         _require_arity(op, args, 2)
-        return _eval_non_tail(args[0], env, st) == _eval_non_tail(args[1], env, st)
+        return args[0] == args[1]
     if op == "neq":
         _require_arity(op, args, 2)
-        return _eval_non_tail(args[0], env, st) != _eval_non_tail(args[1], env, st)
+        return args[0] != args[1]
+    if op == "equals":
+        _require_arity(op, args, 2)
+        return _deep_equals(args[0], args[1])
     if op == "lt":
         _require_arity(op, args, 2)
-        left = _eval_non_tail(args[0], env, st)
-        right = _eval_non_tail(args[1], env, st)
-        return left < right
+        return args[0] < args[1]
     if op == "lte":
         _require_arity(op, args, 2)
-        left = _eval_non_tail(args[0], env, st)
-        right = _eval_non_tail(args[1], env, st)
-        return left <= right
+        return args[0] <= args[1]
     if op == "gt":
         _require_arity(op, args, 2)
-        left = _eval_non_tail(args[0], env, st)
-        right = _eval_non_tail(args[1], env, st)
-        return left > right
+        return args[0] > args[1]
     if op == "gte":
         _require_arity(op, args, 2)
-        left = _eval_non_tail(args[0], env, st)
-        right = _eval_non_tail(args[1], env, st)
-        return left >= right
+        return args[0] >= args[1]
     if op == "in":
         _require_arity(op, args, 2)
-        member = _eval_non_tail(args[0], env, st)
-        container = _eval_non_tail(args[1], env, st)
+        member, container = args
         if _is_list_like(container):
             return member in container
         if _is_dict_like(container):
@@ -241,47 +328,31 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
         if isinstance(container, str):
             return str(member) in container
         raise ValueError("spec_lang in expects list/dict/string container")
+    if op == "includes":
+        _require_arity(op, args, 2)
+        seq = _require_list_arg(op, args[0])
+        return _includes_deep(seq, args[1])
     if op == "add":
         _require_arity(op, args, 2)
-        left = _eval_non_tail(args[0], env, st)
-        right = _eval_non_tail(args[1], env, st)
-        if not isinstance(left, (int, float)) or not isinstance(right, (int, float)):
+        if not isinstance(args[0], (int, float)) or not isinstance(args[1], (int, float)):
             raise ValueError("spec_lang add expects numeric args")
-        return left + right
+        return args[0] + args[1]
     if op == "sub":
         _require_arity(op, args, 2)
-        left = _eval_non_tail(args[0], env, st)
-        right = _eval_non_tail(args[1], env, st)
-        if not isinstance(left, (int, float)) or not isinstance(right, (int, float)):
+        if not isinstance(args[0], (int, float)) or not isinstance(args[1], (int, float)):
             raise ValueError("spec_lang sub expects numeric args")
-        return left - right
+        return args[0] - args[1]
     if op == "json_type":
-        if len(args) == 1:
-            value = st.subject
-            want = _eval_non_tail(args[0], env, st)
-        elif len(args) == 2:
-            value = _eval_non_tail(args[0], env, st)
-            want = _eval_non_tail(args[1], env, st)
-        else:
-            raise ValueError("spec_lang arity error for json_type")
-        want_s = str(want).strip().lower()
-        return _json_type_name(value) == want_s
+        _require_arity(op, args, 2)
+        return _json_type_name(args[0]) == str(args[1]).strip().lower()
     if op == "has_key":
-        if len(args) == 1:
-            obj = st.subject
-            key = _eval_non_tail(args[0], env, st)
-        elif len(args) == 2:
-            obj = _eval_non_tail(args[0], env, st)
-            key = _eval_non_tail(args[1], env, st)
-        else:
-            raise ValueError("spec_lang arity error for has_key")
-        if not _is_dict_like(obj):
+        _require_arity(op, args, 2)
+        if not _is_dict_like(args[0]):
             return False
-        return str(key) in obj
+        return str(args[1]) in args[0]
     if op == "get":
         _require_arity(op, args, 2)
-        obj = _eval_non_tail(args[0], env, st)
-        key = _eval_non_tail(args[1], env, st)
+        obj, key = args
         if _is_dict_like(obj):
             return obj.get(str(key))
         if _is_list_like(obj):
@@ -291,64 +362,268 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
                 return None
             return obj[key]
         raise ValueError("spec_lang get expects dict or list")
-    if op == "len":
+    if op in {"len", "count"}:
         _require_arity(op, args, 1)
-        v = _eval_non_tail(args[0], env, st)
+        v = args[0]
         if isinstance(v, (str, list, dict)):
             return len(v)
-        raise ValueError("spec_lang len expects string/list/dict")
-    if op == "count":
-        _require_arity(op, args, 1)
-        v = _eval_non_tail(args[0], env, st)
-        if isinstance(v, (str, list, dict)):
-            return len(v)
-        raise ValueError("spec_lang count expects string/list/dict")
+        raise ValueError(f"spec_lang {op} expects string/list/dict")
     if op == "first":
         _require_arity(op, args, 1)
-        v = _eval_non_tail(args[0], env, st)
-        if not isinstance(v, list):
-            raise ValueError("spec_lang first expects list")
-        return None if not v else v[0]
+        seq = _require_list_arg(op, args[0])
+        return seq[0] if seq else None
     if op == "rest":
         _require_arity(op, args, 1)
-        v = _eval_non_tail(args[0], env, st)
-        if not isinstance(v, list):
-            raise ValueError("spec_lang rest expects list")
-        return [] if len(v) <= 1 else v[1:]
-    if op == "all":
-        _require_arity(op, args, 1)
-        seq = _eval_non_tail(args[0], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang all expects list")
-        return all(_truthy(item) for item in seq)
+        seq = _require_list_arg(op, args[0])
+        return seq[1:] if len(seq) > 1 else []
     if op == "any":
         _require_arity(op, args, 1)
-        seq = _eval_non_tail(args[0], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang any expects list")
-        return any(_truthy(item) for item in seq)
+        seq = _require_list_arg(op, args[0])
+        return any(_truthy(x) for x in seq)
+    if op == "all":
+        _require_arity(op, args, 1)
+        seq = _require_list_arg(op, args[0])
+        return all(_truthy(x) for x in seq)
     if op == "none":
         _require_arity(op, args, 1)
-        seq = _eval_non_tail(args[0], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang none expects list")
-        return not any(_truthy(item) for item in seq)
+        seq = _require_list_arg(op, args[0])
+        return not any(_truthy(x) for x in seq)
     if op == "is_empty":
         _require_arity(op, args, 1)
-        seq = _eval_non_tail(args[0], env, st)
+        seq = args[0]
         if isinstance(seq, (list, dict, str)):
             return len(seq) == 0
         raise ValueError("spec_lang is_empty expects list/dict/string")
     if op == "distinct":
         _require_arity(op, args, 1)
-        seq = _eval_non_tail(args[0], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang distinct expects list")
-        out: list[Any] = []
+        seq = _require_list_arg(op, args[0])
+        return _distinct_deep(seq)
+    if op == "coalesce":
+        _require_arity(op, args, 2)
+        for got in args:
+            if got is None:
+                continue
+            if isinstance(got, str) and got == "":
+                continue
+            return got
+        return None
+    if op == "trim":
+        _require_arity(op, args, 1)
+        return str(args[0]).strip()
+    if op == "lower":
+        _require_arity(op, args, 1)
+        return str(args[0]).lower()
+    if op == "upper":
+        _require_arity(op, args, 1)
+        return str(args[0]).upper()
+    if op == "split":
+        _require_arity(op, args, 2)
+        return str(args[0]).split(str(args[1]))
+    if op == "join":
+        _require_arity(op, args, 2)
+        seq = _require_list_arg(op, args[0])
+        return str(args[1]).join(str(x) for x in seq)
+    if op == "sum":
+        _require_arity(op, args, 1)
+        seq = _require_list_arg(op, args[0])
+        total: float = 0.0
+        saw_float = False
         for item in seq:
-            if item not in out:
+            if not isinstance(item, (int, float)):
+                raise ValueError("spec_lang sum expects numeric list values")
+            if isinstance(item, float):
+                saw_float = True
+            total += float(item)
+        return total if saw_float else int(total)
+    if op == "min":
+        _require_arity(op, args, 1)
+        seq = _require_list_arg(op, args[0])
+        if not seq:
+            raise ValueError("spec_lang min expects non-empty list")
+        return min(seq)
+    if op == "max":
+        _require_arity(op, args, 1)
+        seq = _require_list_arg(op, args[0])
+        if not seq:
+            raise ValueError("spec_lang max expects non-empty list")
+        return max(seq)
+    if op == "matches_all":
+        _require_arity(op, args, 2)
+        hay = str(args[0])
+        patterns = _require_list_arg(op, args[1])
+        return all(re.search(str(p), hay) is not None for p in patterns)
+    if op == "pluck":
+        _require_arity(op, args, 2)
+        seq = _require_list_arg(op, args[0])
+        key = str(args[1])
+        plucked: list[Any] = []
+        for item in seq:
+            if isinstance(item, dict):
+                plucked.append(item.get(key))
+            else:
+                plucked.append(None)
+        return plucked
+    if op == "concat":
+        _require_arity(op, args, 2)
+        left = _require_list_arg(op, args[0])
+        right = _require_list_arg(op, args[1])
+        return [*left, *right]
+    if op == "append":
+        _require_arity(op, args, 2)
+        seq = _require_list_arg(op, args[1])
+        return [*seq, args[0]]
+    if op == "prepend":
+        _require_arity(op, args, 2)
+        seq = _require_list_arg(op, args[1])
+        return [args[0], *seq]
+    if op == "take":
+        _require_arity(op, args, 2)
+        n = args[0]
+        seq = _require_list_arg(op, args[1])
+        if not isinstance(n, int):
+            raise ValueError("spec_lang take expects integer count")
+        return seq[: max(n, 0)]
+    if op == "drop":
+        _require_arity(op, args, 2)
+        n = args[0]
+        seq = _require_list_arg(op, args[1])
+        if not isinstance(n, int):
+            raise ValueError("spec_lang drop expects integer count")
+        return seq[max(n, 0) :]
+    if op == "flatten":
+        _require_arity(op, args, 1)
+        seq = _require_list_arg(op, args[0])
+
+        def _flatten(xs: list[Any], out: list[Any]) -> None:
+            for item in xs:
+                if isinstance(item, list):
+                    _flatten(item, out)
+                else:
+                    out.append(item)
+
+        flat: list[Any] = []
+        _flatten(seq, flat)
+        return flat
+    if op == "union":
+        _require_arity(op, args, 2)
+        left = _require_list_arg(op, args[0])
+        right = _require_list_arg(op, args[1])
+        return _distinct_deep([*left, *right])
+    if op == "intersection":
+        _require_arity(op, args, 2)
+        left = _require_list_arg(op, args[0])
+        right = _require_list_arg(op, args[1])
+        out: list[Any] = []
+        for item in left:
+            if _includes_deep(right, item) and not _includes_deep(out, item):
                 out.append(item)
         return out
+    if op == "difference":
+        _require_arity(op, args, 2)
+        left = _require_list_arg(op, args[0])
+        right = _require_list_arg(op, args[1])
+        out_diff: list[Any] = []
+        for item in left:
+            if not _includes_deep(right, item) and not _includes_deep(out_diff, item):
+                out_diff.append(item)
+        return out_diff
+    if op == "symmetric_difference":
+        _require_arity(op, args, 2)
+        left = _require_list_arg(op, args[0])
+        right = _require_list_arg(op, args[1])
+        out_sym: list[Any] = []
+        for item in left:
+            if not _includes_deep(right, item) and not _includes_deep(out_sym, item):
+                out_sym.append(item)
+        for item in right:
+            if not _includes_deep(left, item) and not _includes_deep(out_sym, item):
+                out_sym.append(item)
+        return out_sym
+    if op == "set_equals":
+        _require_arity(op, args, 2)
+        left = _distinct_deep(_require_list_arg(op, args[0]))
+        right = _distinct_deep(_require_list_arg(op, args[1]))
+        if len(left) != len(right):
+            return False
+        return all(_includes_deep(right, item) for item in left)
+    if op == "is_subset":
+        _require_arity(op, args, 2)
+        left = _distinct_deep(_require_list_arg(op, args[0]))
+        right = _distinct_deep(_require_list_arg(op, args[1]))
+        return all(_includes_deep(right, item) for item in left)
+    if op == "is_superset":
+        _require_arity(op, args, 2)
+        left = _distinct_deep(_require_list_arg(op, args[0]))
+        right = _distinct_deep(_require_list_arg(op, args[1]))
+        return all(_includes_deep(left, item) for item in right)
+    if op == "json_parse":
+        _require_arity(op, args, 1)
+        raw = args[0]
+        if not isinstance(raw, str):
+            raise ValueError("spec_lang json_parse expects string input")
+        return json.loads(raw)
+    if op == "and":
+        _require_arity(op, args, 2)
+        return _truthy(args[0]) and _truthy(args[1])
+    if op == "or":
+        _require_arity(op, args, 2)
+        return _truthy(args[0]) or _truthy(args[1])
+    if op == "not":
+        _require_arity(op, args, 1)
+        return not _truthy(args[0])
+    raise ValueError(f"unsupported spec_lang symbol: {op}")
+
+
+def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
+    if op == "var":
+        _require_arity(op, args, 1)
+        name = args[0]
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("spec_lang var requires non-empty string name")
+        key = name.strip()
+        try:
+            return env.lookup(key)
+        except ValueError:
+            if key in _BUILTIN_ARITY:
+                return _BuiltinFn(key, _BUILTIN_ARITY[key])
+            raise
+
+    if op == "and":
+        _require_min_arity(op, args, 1)
+        for a in args:
+            if not _truthy(_eval_non_tail(a, env, st)):
+                return False
+        return True
+
+    if op == "or":
+        _require_min_arity(op, args, 1)
+        for a in args:
+            if _truthy(_eval_non_tail(a, env, st)):
+                return True
+        return False
+
+    if op == "not":
+        _require_arity(op, args, 1)
+        return not _truthy(_eval_non_tail(args[0], env, st))
+
+    if op in {"contains", "starts_with", "ends_with", "json_type", "has_key"}:
+        if len(args) == 1:
+            eval_args = [st.subject, _eval_non_tail(args[0], env, st)]
+        elif len(args) == 2:
+            eval_args = [_eval_non_tail(args[0], env, st), _eval_non_tail(args[1], env, st)]
+        else:
+            raise ValueError(f"spec_lang arity error for {op}")
+        return _eval_builtin_eager(op, eval_args, st)
+
+    if op == "split":
+        if len(args) == 1:
+            text = _eval_non_tail(args[0], env, st)
+            return str(text).split()
+        if len(args) == 2:
+            eval_args = [_eval_non_tail(args[0], env, st), _eval_non_tail(args[1], env, st)]
+            return _eval_builtin_eager(op, eval_args, st)
+        raise ValueError("spec_lang arity error for split")
+
     if op == "coalesce":
         _require_min_arity(op, args, 1)
         for a in args:
@@ -359,122 +634,71 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
                 continue
             return got
         return None
-    if op == "pluck":
-        _require_arity(op, args, 2)
-        seq = _eval_non_tail(args[0], env, st)
-        key = _eval_non_tail(args[1], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang pluck expects list")
-        plucked: list[Any] = []
-        for item in seq:
-            if not isinstance(item, dict):
-                plucked.append(None)
-                continue
-            plucked.append(item.get(str(key)))
-        return plucked
+
+    if op in {"map", "filter", "reject", "find", "partition", "group_by", "uniq_by", "reduce"}:
+        _require_arity(op, args, 2 if op != "reduce" else 3)
+        if op == "reduce":
+            fn_val = _eval_non_tail(args[0], env, st)
+            acc = _eval_non_tail(args[1], env, st)
+            seq = _eval_non_tail(args[2], env, st)
+            seq = _require_list_arg(op, seq)
+            for item in seq:
+                acc = _eval_callable_like(fn_val, [acc, item], st)
+            return acc
+
+        fn_val = _eval_non_tail(args[0], env, st)
+        seq = _eval_non_tail(args[1], env, st)
+        seq = _require_list_arg(op, seq)
+
+        if op == "map":
+            return [_eval_callable_like(fn_val, [item], st) for item in seq]
+        if op == "filter":
+            return [item for item in seq if _truthy(_eval_callable_like(fn_val, [item], st))]
+        if op == "reject":
+            return [item for item in seq if not _truthy(_eval_callable_like(fn_val, [item], st))]
+        if op == "find":
+            for item in seq:
+                if _truthy(_eval_callable_like(fn_val, [item], st)):
+                    return item
+            return None
+        if op == "partition":
+            yes: list[Any] = []
+            no: list[Any] = []
+            for item in seq:
+                if _truthy(_eval_callable_like(fn_val, [item], st)):
+                    yes.append(item)
+                else:
+                    no.append(item)
+            return [yes, no]
+        if op == "group_by":
+            grouped: dict[str, list[Any]] = {}
+            for item in seq:
+                key = str(_eval_callable_like(fn_val, [item], st))
+                grouped.setdefault(key, []).append(item)
+            return grouped
+        if op == "uniq_by":
+            out: list[Any] = []
+            seen: list[Any] = []
+            for item in seq:
+                marker = _eval_callable_like(fn_val, [item], st)
+                if not _includes_deep(seen, marker):
+                    seen.append(marker)
+                    out.append(item)
+            return out
+        if op == "sort_by":
+            return sorted(seq, key=lambda item: _eval_callable_like(fn_val, [item], st))
+
     if op == "sort_by":
         _require_arity(op, args, 2)
         seq = _eval_non_tail(args[0], env, st)
         key = _eval_non_tail(args[1], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang sort_by expects list")
+        seq = _require_list_arg(op, seq)
         if isinstance(key, str):
             return sorted(seq, key=lambda item: str(item.get(key)) if isinstance(item, dict) else str(item))
-        fn_val = key
-        return sorted(seq, key=lambda item: _eval_callable_like(fn_val, [item], st))
-    if op == "sum":
-        _require_arity(op, args, 1)
-        seq = _eval_non_tail(args[0], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang sum expects list")
-        total: float = 0.0
-        saw_float = False
-        for item in seq:
-            if not isinstance(item, (int, float)):
-                raise ValueError("spec_lang sum expects numeric list values")
-            if isinstance(item, float):
-                saw_float = True
-            total += float(item)
-        if saw_float:
-            return total
-        return int(total)
-    if op == "min":
-        _require_arity(op, args, 1)
-        seq = _eval_non_tail(args[0], env, st)
-        if not isinstance(seq, list) or not seq:
-            raise ValueError("spec_lang min expects non-empty list")
-        return min(seq)
-    if op == "max":
-        _require_arity(op, args, 1)
-        seq = _eval_non_tail(args[0], env, st)
-        if not isinstance(seq, list) or not seq:
-            raise ValueError("spec_lang max expects non-empty list")
-        return max(seq)
-    if op == "matches_all":
-        _require_arity(op, args, 2)
-        text = _eval_non_tail(args[0], env, st)
-        patterns = _eval_non_tail(args[1], env, st)
-        if not isinstance(patterns, list):
-            raise ValueError("spec_lang matches_all expects list of regex patterns")
-        hay = str(text)
-        for p in patterns:
-            if re.search(str(p), hay) is None:
-                return False
-        return True
-    if op == "split":
-        if len(args) == 1:
-            text = _eval_non_tail(args[0], env, st)
-            return str(text).split()
-        if len(args) == 2:
-            text = _eval_non_tail(args[0], env, st)
-            sep = _eval_non_tail(args[1], env, st)
-            return str(text).split(str(sep))
-        raise ValueError("spec_lang arity error for split")
-    if op == "join":
-        _require_arity(op, args, 2)
-        seq = _eval_non_tail(args[0], env, st)
-        sep = _eval_non_tail(args[1], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang join expects list")
-        return str(sep).join(str(x) for x in seq)
-    if op == "map":
-        _require_arity(op, args, 2)
-        fn_val = _eval_non_tail(args[0], env, st)
-        seq = _eval_non_tail(args[1], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang map expects list")
-        map_out: list[Any] = []
-        for item in seq:
-            map_out.append(_eval_callable_like(fn_val, [item], st))
-        return map_out
-    if op == "filter":
-        _require_arity(op, args, 2)
-        fn_val = _eval_non_tail(args[0], env, st)
-        seq = _eval_non_tail(args[1], env, st)
-        if not isinstance(seq, list):
-            raise ValueError("spec_lang filter expects list")
-        filter_out: list[Any] = []
-        for item in seq:
-            keep = _eval_callable_like(fn_val, [item], st)
-            if _truthy(keep):
-                filter_out.append(item)
-        return filter_out
-    if op == "trim":
-        _require_arity(op, args, 1)
-        return str(_eval_non_tail(args[0], env, st)).strip()
-    if op == "lower":
-        _require_arity(op, args, 1)
-        return str(_eval_non_tail(args[0], env, st)).lower()
-    if op == "upper":
-        _require_arity(op, args, 1)
-        return str(_eval_non_tail(args[0], env, st)).upper()
-    if op == "json_parse":
-        _require_arity(op, args, 1)
-        raw = _eval_non_tail(args[0], env, st)
-        if not isinstance(raw, str):
-            raise ValueError("spec_lang json_parse expects string input")
-        return json.loads(raw)
-    raise ValueError(f"unsupported spec_lang symbol: {op}")
+        return sorted(seq, key=lambda item: _eval_callable_like(key, [item], st))
+
+    eval_args = [_eval_non_tail(a, env, st) for a in args]
+    return _eval_builtin_eager(op, eval_args, st)
 
 
 def _eval_tail(expr: Any, env: _Env, st: _EvalState) -> Any:
@@ -548,16 +772,16 @@ def _eval_tail(expr: Any, env: _Env, st: _EvalState) -> Any:
             _require_min_arity(op, args, 1)
             fn_val = _eval_non_tail(args[0], current_env, st)
             eval_args = [_eval_non_tail(a, current_env, st) for a in args[1:]]
-            if not isinstance(fn_val, _Closure):
-                raise ValueError("spec_lang call expects fn closure")
-            if len(eval_args) != len(fn_val.params):
-                raise ValueError("spec_lang call argument count mismatch")
-            current_env = _Env(
-                vars={k: v for k, v in zip(fn_val.params, eval_args)},
-                parent=fn_val.env,
-            )
-            current_expr = fn_val.body
-            continue
+            if isinstance(fn_val, _Closure):
+                if len(eval_args) != len(fn_val.params):
+                    raise ValueError("spec_lang call argument count mismatch")
+                current_env = _Env(
+                    vars={k: v for k, v in zip(fn_val.params, eval_args)},
+                    parent=fn_val.env,
+                )
+                current_expr = fn_val.body
+                continue
+            return _eval_callable_like(fn_val, eval_args, st)
 
         return _eval_builtin(op, args, current_env, st)
 
@@ -571,7 +795,7 @@ def compile_symbol_bindings(
     st = _EvalState(subject=None, limits=cfg, started=time.perf_counter())
     slots: dict[str, Any] = {}
     env = _Env(vars=slots, parent=None)
-    for raw_name, raw_expr in bindings.items():
+    for raw_name in bindings:
         name = str(raw_name).strip()
         if not name:
             raise ValueError("spec_lang symbol binding name must be non-empty")

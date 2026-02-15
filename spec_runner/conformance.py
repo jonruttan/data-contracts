@@ -37,6 +37,7 @@ _DEFAULT_CAPABILITIES: dict[str, set[str]] = {
         "assert.op.regex",
         "assert.op.evaluate",
         "evaluate.spec_lang.v1",
+        "evaluate.spec_lang.ramda.v1",
         "assert.group.must",
         "assert.group.can",
         "assert.group.cannot",

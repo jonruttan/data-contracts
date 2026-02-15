@@ -97,6 +97,8 @@ Authoring policy:
 - Use sugar operators by default (`contain`, `regex`, `json_type`, `exists`).
 - Use `evaluate` only when case intent requires expression composition or
   value/collection logic that sugar cannot express clearly.
+- `evaluate` includes deep-equality set algebra and collection transforms,
+  with automatic builtin currying by arity for function-style composition.
 
 `evaluate` uses spec-lang v1 YAML list S-expressions:
 

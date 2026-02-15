@@ -156,3 +156,66 @@ def test_spec_lang_governance_collection_builtins() -> None:
     assert eval_expr(["pluck", ["subject"], "name"], subject=rows) == ["c", "a", "b"]
     assert eval_expr(["pluck", ["sort_by", ["subject"], "name"], "name"], subject=rows) == ["a", "b", "c"]
     assert eval_predicate(["matches_all", "abc-123", ["subject"]], subject=["^[a-z]+", "123$"]) is True
+
+
+def test_spec_lang_set_algebra_and_deep_equals() -> None:
+    left = ["json_parse", '[{"k":1},{"k":2},{"k":2},{"k":3}]']
+    right = ["json_parse", '[{"k":2},{"k":4},{"k":1}]']
+    assert eval_expr(["intersection", left, right], subject=None) == [{"k": 1}, {"k": 2}]
+    assert eval_expr(["union", left, right], subject=None) == [{"k": 1}, {"k": 2}, {"k": 3}, {"k": 4}]
+    assert eval_expr(["difference", left, right], subject=None) == [{"k": 3}]
+    assert eval_expr(["symmetric_difference", left, right], subject=None) == [{"k": 3}, {"k": 4}]
+    assert (
+        eval_predicate(
+            ["set_equals", left, ["json_parse", '[{"k":3},{"k":2},{"k":1}]']],
+            subject=None,
+        )
+        is True
+    )
+    assert eval_predicate(["is_subset", ["json_parse", '[{"k":1},{"k":2}]'], left], subject=None) is True
+    assert eval_predicate(["is_superset", left, ["json_parse", '[{"k":1},{"k":3}]']], subject=None) is True
+    assert eval_predicate(["includes", left, ["json_parse", '{"k":2}']], subject=None) is True
+    assert (
+        eval_predicate(
+            ["equals", ["json_parse", '{"a":[1,{"b":2}]}'], ["json_parse", '{"a":[1,{"b":2}]}']],
+            subject=None,
+        )
+        is True
+    )
+
+
+def test_spec_lang_currying_and_collection_transforms() -> None:
+    assert eval_expr(["call", ["var", "add"], 2], subject=None) != 0
+    assert eval_expr(["call", ["call", ["var", "add"], 2], 3], subject=None) == 5
+    assert eval_expr(
+        ["map", ["call", ["var", "add"], 10], ["json_parse", "[1,2,3]"]],
+        subject=None,
+    ) == [11, 12, 13]
+    assert eval_expr(
+        ["filter", ["call", ["var", "lt"], 3], ["json_parse", "[1,2,3,4,5]"]],
+        subject=None,
+    ) == [4, 5]
+    assert eval_expr(
+        ["reduce", ["var", "add"], 0, ["json_parse", "[1,2,3,4]"]],
+        subject=None,
+    ) == 10
+    assert eval_expr(["reject", ["call", ["var", "lt"], 2], ["json_parse", "[1,2,3,4]"]], subject=None) == [1, 2]
+    assert eval_expr(["find", ["call", ["var", "lt"], 3], ["json_parse", "[1,2,3,4]"]], subject=None) == 4
+    assert (
+        eval_expr(["partition", ["call", ["var", "lt"], 2], ["json_parse", "[1,2,3,4]"]], subject=None)
+        == [[3, 4], [1, 2]]
+    )
+    assert eval_expr(
+        ["group_by", ["fn", ["x"], ["if", ["gt", ["var", "x"], 2], "hi", "lo"]], ["json_parse", "[1,2,3,4]"]],
+        subject=None,
+    ) == {"lo": [1, 2], "hi": [3, 4]}
+    assert eval_expr(
+        ["uniq_by", ["fn", ["x"], ["get", ["var", "x"], "k"]], ["json_parse", '[{"k":1},{"k":1},{"k":2}]']],
+        subject=None,
+    ) == [{"k": 1}, {"k": 2}]
+    assert eval_expr(["flatten", ["json_parse", "[1,[2,[3],[]],4]"]], subject=None) == [1, 2, 3, 4]
+    assert eval_expr(["concat", ["json_parse", "[1,2]"], ["json_parse", "[3]"]], subject=None) == [1, 2, 3]
+    assert eval_expr(["append", 3, ["json_parse", "[1,2]"]], subject=None) == [1, 2, 3]
+    assert eval_expr(["prepend", 0, ["json_parse", "[1,2]"]], subject=None) == [0, 1, 2]
+    assert eval_expr(["take", 2, ["json_parse", "[1,2,3]"]], subject=None) == [1, 2]
+    assert eval_expr(["drop", 2, ["json_parse", "[1,2,3]"]], subject=None) == [3]

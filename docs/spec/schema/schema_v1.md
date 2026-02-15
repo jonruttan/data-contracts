@@ -233,6 +233,10 @@ Operator constraints:
 - `evaluate` values MUST be list-encoded spec-lang expressions
 - spec-lang semantics and budget model are defined in
   `docs/spec/contract/03b_spec_lang_v1.md`
+- spec-lang v1 includes deep-equality set algebra (`union`, `intersection`,
+  `difference`, `symmetric_difference`, `is_subset`, `is_superset`,
+  `set_equals`) and collection transforms (`map`, `filter`, `reduce`, etc.)
+  with automatic builtin currying semantics
 - spec-lang shared library loading rules are defined in
   `docs/spec/contract/14_spec_lang_libraries.md`
 - runners compile external leaf operators into internal spec-lang predicates;

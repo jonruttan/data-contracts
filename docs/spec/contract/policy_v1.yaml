@@ -247,6 +247,67 @@ rules:
       - docs/spec/contract/05_errors.md
       - docs/spec/schema/schema_v1.md
 
+  - id: SPEC_LANG_CURRY_ALL_BUILTINS
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.evaluate.currying
+    norm: MUST
+    requirement: auto_curry_all_spec_lang_builtins_by_declared_arity
+    description: >
+      Spec-lang builtins must support deterministic partial application by
+      declared arity, including over-application diagnostics.
+    rationale: Enables reusable function-style composition in portable expressions.
+    risk_if_violated: Higher-order collection expressions drift across implementations.
+    references:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/conformance/cases/spec_lang.spec.md
+
+  - id: SPEC_LANG_SET_ALGEBRA_PARITY
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.evaluate.set_algebra
+    norm: MUST
+    requirement: match_set_algebra_semantics_across_runtimes
+    description: >
+      Spec-lang set algebra operators must produce deterministic, parity-stable
+      results across implementations.
+    rationale: Prevents cross-runtime drift for collection-heavy executable specs.
+    risk_if_violated: Same case may pass/fail differently by runtime.
+    references:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/conformance/cases/spec_lang.spec.md
+
+  - id: SPEC_LANG_DEEP_EQUALITY_DETERMINISTIC
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.evaluate.deep_equality
+    norm: MUST
+    requirement: deep_structural_equality_is_deterministic
+    description: >
+      Deep equality used by spec-lang set and membership operators must be
+      deterministic and structurally consistent across implementations.
+    rationale: Stable deep equality is required for portable set/membership behavior.
+    risk_if_violated: Collection outcomes and assertions can become non-portable.
+    references:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/conformance/cases/spec_lang.spec.md
+
+  - id: SPEC_LANG_COLLECTION_FORMS_CONTRACTED
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.evaluate.collection_forms
+    norm: MUST
+    requirement: collection_transform_forms_are_documented_and_tested
+    description: >
+      Collection transform forms (map/filter/reduce and related set/list
+      helpers) must remain explicitly contracted and conformance-covered.
+    rationale: Keeps spec-lang as a portable decision DSL instead of host-language escape.
+    risk_if_violated: Authors fall back to implementation-specific logic.
+    references:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/schema/schema_v1.md
+      - docs/spec/conformance/cases/spec_lang.spec.md
+
   - id: SPEC_LANG_LIBRARY_REUSE_MODEL
     introduced_in: v1
     scope: implementation

@@ -31,6 +31,12 @@ Notes:
 - Spec-lang utility surface now includes collection helpers for governance
   policy authoring (`sum`, `min`, `max`, `sort_by`, `pluck`, `distinct`,
   `is_empty`, `coalesce`, `matches_all`).
+- Spec-lang now includes Ramda-style deep equality, set algebra
+  (`union`, `intersection`, `difference`, `symmetric_difference`,
+  `is_subset`, `is_superset`, `set_equals`), expanded collection transforms
+  (`reduce`, `reject`, `find`, `partition`, `group_by`, `uniq_by`, `flatten`,
+  `concat`, `append`, `prepend`, `take`, `drop`), and automatic builtin
+  currying by arity.
 - Docs quality v2 adds schema-backed `doc-meta`, manifest-driven reference
   generation, and governance checks for docs token ownership/dependencies and
   generated artifact freshness.
