@@ -23,5 +23,5 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{subject: []}, \A\Z]}
+    - {regex_match: [{ref: subject}, \A\Z]}
 ```

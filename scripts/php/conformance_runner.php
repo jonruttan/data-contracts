@@ -1032,6 +1032,16 @@ function compileYamlExprToSexpr(mixed $node, string $fieldPath): mixed {
         throw new SchemaError("{$fieldPath}: operator key must be non-empty");
     }
     $rawArgs = $node[$keys[0]];
+    if ($op === 'ref') {
+        $symbol = $rawArgs;
+        if (!is_string($symbol) || trim($symbol) === '') {
+            throw new SchemaError("{$fieldPath}.ref: ref symbol must be a non-empty string");
+        }
+        if (trim($symbol) !== 'subject') {
+            throw new SchemaError("{$fieldPath}.ref: unsupported ref symbol '{$symbol}' (supported: subject)");
+        }
+        return ['subject'];
+    }
     if (!is_array($rawArgs) || !isListArray($rawArgs)) {
         throw new SchemaError("{$fieldPath}.{$op}: operator args must be a list");
     }

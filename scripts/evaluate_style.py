@@ -132,7 +132,13 @@ def _condense_expr_node(node: Any) -> Any:
         if len(node) == 1:
             op = str(next(iter(node.keys())))
             raw_args = node[op]
+            if op == "ref":
+                if isinstance(raw_args, list) and len(raw_args) == 1 and isinstance(raw_args[0], str):
+                    return _FlowMap({"ref": raw_args[0]})
+                return _FlowMap({"ref": _condense_expr_node(raw_args)})
             if isinstance(raw_args, list):
+                if op == "subject" and not raw_args:
+                    return _FlowMap({"ref": "subject"})
                 args = [_condense_expr_node(x) for x in raw_args]
                 if len(args) <= _COMPACT_MAX_ITEMS and all(_is_compact_atom(x, depth=1) for x in args):
                     return _FlowMap({op: _FlowSeq(args)})

@@ -28,14 +28,14 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{subject: []}, 0]}
+    - {eq: [{ref: subject}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{subject: []}, passed]}
+      - {get: [{ref: subject}, passed]}
       - true
     - eq:
-      - {get: [{subject: []}, check_id]}
+      - {get: [{ref: subject}, check_id]}
       - runtime.rust_adapter_no_python_exec
 ```

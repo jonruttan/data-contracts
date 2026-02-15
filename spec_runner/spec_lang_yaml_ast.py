@@ -51,6 +51,17 @@ def _compile_node(node: Any, *, field_path: str) -> Any:
     op = str(keys[0]).strip()
     if not op:
         raise SpecLangYamlAstError(f"{field_path}: operator key must be non-empty")
+    if op == "ref":
+        symbol = node[keys[0]]
+        if not isinstance(symbol, str) or not symbol.strip():
+            raise SpecLangYamlAstError(
+                f"{field_path}.ref: ref symbol must be a non-empty string"
+            )
+        if symbol.strip() != "subject":
+            raise SpecLangYamlAstError(
+                f"{field_path}.ref: unsupported ref symbol {symbol!r} (supported: subject)"
+            )
+        return ["subject"]
     raw_args = node[keys[0]]
     if not isinstance(raw_args, list):
         raise SpecLangYamlAstError(
@@ -102,6 +113,8 @@ def sexpr_to_yaml_ast(node: Any) -> Any:
     if isinstance(node, list):
         if is_sexpr_node(node):
             op = str(node[0])
+            if op == "subject" and len(node) == 1:
+                return {"ref": "subject"}
             args = [sexpr_to_yaml_ast(arg) for arg in node[1:]]
             return {op: args}
         return {"lit": [_literalize(v) for v in node]}

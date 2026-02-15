@@ -28,19 +28,19 @@ harness:
     - docs/development.md
     - docs/spec/impl/php.md
   policy_evaluate:
-  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {ref: subject}]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{subject: []}, 0]}
+    - {eq: [{ref: subject}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{subject: []}, passed]}
+      - {get: [{ref: subject}, passed]}
       - true
     - eq:
-      - {get: [{subject: []}, check_id]}
+      - {get: [{ref: subject}, check_id]}
       - docs.cli_flags_documented
 ```

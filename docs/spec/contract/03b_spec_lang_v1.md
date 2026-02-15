@@ -278,9 +278,12 @@ For readability and deterministic diffs, implementations in this repo
 standardize `evaluate` expression formatting to:
 
 - one operator-keyed mapping expression per `evaluate` list entry
-- explicit list args for every operator (including zero-arg forms like
-  `subject: []`)
+- explicit list args for operators in mapping form
+- canonical subject reference form is explicit:
+  `{ref: subject}` compiles to zero-arg `subject` operation
+- legacy zero-arg mapping form `{subject: []}` remains valid
 - `lit` wrapper for collection literal nodes
+- bare scalar `subject` is a literal string (not a special form)
 - condensed inline args for short forms (for example
   `eq: [{add: [1, 2]}, 3]`) where readability improves
 - nested mapping AST layout for larger expressions (not list S-expression

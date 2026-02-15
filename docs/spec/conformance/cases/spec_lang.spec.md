@@ -41,7 +41,7 @@ assert:
   - evaluate:
     - and:
       - {contains: [version]}
-      - {starts_with: [{subject: []}, '#']}
+      - {starts_with: [{ref: subject}, '#']}
 ```
 
 ## SRCONF-EXPR-003
@@ -91,7 +91,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {starts_with: [{subject: []}, NOPE_PREFIX]}
+    - {starts_with: [{ref: subject}, NOPE_PREFIX]}
 ```
 
 ## SRCONF-EXPR-005
@@ -186,9 +186,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{subject: []}, 'version: 1']}
+    - {contains: [{ref: subject}, 'version: 1']}
   - evaluate:
-    - {contains: [{subject: []}, 'version: 1']}
+    - {contains: [{ref: subject}, 'version: 1']}
 ```
 
 ## SRCONF-EXPR-009

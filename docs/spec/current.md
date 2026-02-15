@@ -29,6 +29,9 @@ Notes:
   recommendations.
 - Spec-lang now supports reusable library symbols via
   `harness.spec_lang.library_paths` and optional `exports` allowlists.
+- Spec-lang mapping-AST authoring now uses explicit subject reference node
+  `{ref: subject}`; legacy `{subject: []}` remains accepted and formatter
+  canonicalizes to `ref`.
 - Library function authoring is mapping-AST only (`type: spec_lang.library`
   `functions.<symbol>` values use canonical expression nodes, not list
   s-expr authoring).

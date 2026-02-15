@@ -23,19 +23,19 @@ harness:
     forbidden_tokens:
     - path_exists
   policy_evaluate:
-  - {call: [{var: [policy.pass_when_no_violations]}, {subject: []}]}
+  - {call: [{var: [policy.pass_when_no_violations]}, {ref: subject}]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{subject: []}, 0]}
+    - {eq: [{ref: subject}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{subject: []}, passed]}
+      - {get: [{ref: subject}, passed]}
       - true
     - eq:
-      - {get: [{subject: []}, check_id]}
+      - {get: [{ref: subject}, check_id]}
       - runtime.spec_lang_pure_no_effect_builtins
 ```

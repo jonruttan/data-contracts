@@ -20,7 +20,7 @@ from spec_runner.settings import case_file_name
 def _php_has_yaml_extension() -> bool:
     if shutil.which("php") is None:
         return False
-    subprocess.run(
+    cp = subprocess.run(
         ["php", "-r", "echo function_exists('yaml_parse') ? '1' : '0';"],
         check=True,
         capture_output=True,
@@ -375,7 +375,7 @@ assert:
     )
     proc_env = os.environ.copy()
     proc_env["SPEC_RUNNER_ASSERT_HEALTH"] = "warn"
-    cp = subprocess.run(
+    subprocess.run(
         [
             "php",
             str(php_runner),

@@ -52,6 +52,20 @@ def test_evaluate_style_condenses_short_mapping_ast_args(tmp_path):
     assert "eq: [{add: [1, 2]}, 3]" in updated
 
 
+def test_evaluate_style_canonicalizes_subject_zero_arg_mapping_to_ref(tmp_path):
+    mod = _load_script_module()
+    case = tmp_path / "subject.spec.md"
+    case.write_text(
+        """# Subject\n\n```yaml spec-test\nid: EVAL-FMT-003\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - contains:\n              - subject: []\n              - ok\n```\n""",
+        encoding="utf-8",
+    )
+
+    code = mod.main(["--write", str(case)])
+    assert code == 0
+    updated = case.read_text(encoding="utf-8")
+    assert "contains: [{ref: subject}, ok]" in updated
+
+
 def test_evaluate_style_ignores_non_spec_fences(tmp_path):
     mod = _load_script_module()
     doc = tmp_path / "note.spec.md"
