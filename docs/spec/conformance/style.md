@@ -12,9 +12,9 @@ Style rules:
 - each case must include a non-empty `purpose` field describing the intent
 - `purpose` should add context beyond `title` (not a copy)
 - `purpose` should be at least 8 words and avoid placeholders (`todo`, `tbd`, `fixme`, `xxx`)
-- prefer `evaluate` assertions for conformance decision semantics
-- sugar assertion operators (`contain`, `regex`, `json_type`, `exists`) remain
-  valid schema forms but are exception-path authoring in conformance cases
+- use `evaluate` assertions only for conformance decision semantics
+- sugar assertion operators (`contain`, `regex`, `json_type`, `exists`) are
+  not allowed in conformance/governance case assertion trees
 
 Purpose lint policy:
 

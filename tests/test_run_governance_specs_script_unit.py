@@ -1212,7 +1212,6 @@ harness:
   spec_lang_preferred:
     roots:
       - docs/spec/conformance/cases
-    allow_sugar_files: []
     policy_evaluate:
       - eq:
         - count:
@@ -2793,7 +2792,6 @@ harness:
   root: .
   spec_lang_preferred:
     roots: [docs/spec/conformance/cases]
-    allow_sugar_files: []
     policy_evaluate:
       - [\"eq\", 1, 1]
 assert:
@@ -2821,7 +2819,6 @@ harness:
   root: .
   spec_lang_preferred:
     roots: [docs/spec/conformance/cases]
-    allow_sugar_files: []
     policy_expr:
       - [\"eq\", 1, 1]
 assert:

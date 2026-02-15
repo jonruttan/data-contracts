@@ -13,12 +13,11 @@ implementation-independent.
 
 ## Conformance Assertion Authoring
 
-- Conformance fixtures SHOULD be evaluate-first for decision semantics.
-- Sugar operators (`contain`, `regex`, `json_type`, `exists`) remain valid
-  schema syntax but should be used only when a case explicitly documents
-  readability or intent reasons.
-- Governance enforces ratchet-style non-regression on conformance evaluate
-  coverage before threshold hard-fail cutover.
+- Conformance fixtures MUST use evaluate-only assertion trees for decision semantics.
+- Governance executable cases MUST use evaluate-only assertion trees for
+  decision semantics.
+- Sugar operators (`contain`, `regex`, `json_type`, `exists`) remain schema
+  syntax for non-governance/non-conformance surfaces only.
 
 ## Expected Outcome Shape
 

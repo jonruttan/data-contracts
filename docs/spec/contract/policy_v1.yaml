@@ -144,14 +144,14 @@ rules:
 - id: SPEC_LANG_PREFERRED_AUTHORING
   introduced_in: v1
   scope: conformance
-  applies_to: fixtures.assert.tree
-  norm: SHOULD
-  requirement: prefer_evaluate_assertions_for_conformance_decision_semantics
-  description: 'Conformance fixtures should prefer `evaluate` assertions for portable decision semantics. Sugar assertion operators remain valid schema forms but should be used only as explicit exception-path authoring.
+  applies_to: conformance_governance.assert.tree
+  norm: MUST
+  requirement: evaluate_only_assertions_for_conformance_governance_surfaces
+  description: 'Conformance and governance fixtures must use `evaluate` assertions for decision semantics. Sugar assertion operators are not allowed in these assertion trees.
 
     '
-  rationale: Aligns conformance semantics around one portable decision plane and improves spec-lang adoption.
-  risk_if_violated: Conformance logic drifts into mixed assertion styles and lowers portability signal quality.
+  rationale: Aligns decision semantics around one portable expression plane and removes ambiguous mixed assertion styles in core surfaces.
+  risk_if_violated: Core executable spec surfaces drift into mixed semantics and reduce portability/clarity.
   references:
   - docs/spec/contract/03_assertions.md
   - docs/spec/contract/07_portable_spec_authoring.md

@@ -4,8 +4,8 @@
 
 ```yaml spec-test
 id: SRGOV-CONF-SPECLANG-001
-title: conformance fixtures prefer evaluate-first assertion authoring
-purpose: Enforces evaluate-first conformance authoring and requires explicit allowlisting for fixtures that intentionally retain sugar assertions.
+title: conformance and governance fixtures require evaluate-only assertions
+purpose: Enforces evaluate-only assertion authoring in conformance and governance case surfaces.
 type: governance.check
 check: conformance.spec_lang_preferred
 harness:
@@ -18,7 +18,7 @@ harness:
   spec_lang_preferred:
     roots:
     - docs/spec/conformance/cases
-    allow_sugar_files: []
+    - docs/spec/governance/cases
     policy_evaluate:
     - eq:
       - count:

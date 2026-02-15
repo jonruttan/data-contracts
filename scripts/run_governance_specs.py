@@ -2179,25 +2179,20 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     if not isinstance(cfg, dict):
         return ["conformance.spec_lang_preferred requires harness.spec_lang_preferred mapping in governance spec"]
     roots = cfg.get("roots")
-    allow_sugar_files = cfg.get("allow_sugar_files", [])
     if (
         not isinstance(roots, list)
         or not roots
         or any(not isinstance(x, str) or not x.strip() for x in roots)
     ):
         return ["harness.spec_lang_preferred.roots must be a non-empty list of non-empty strings"]
-    if not isinstance(allow_sugar_files, list) or any(
-        not isinstance(x, str) or not x.strip() for x in allow_sugar_files
-    ):
-        return ["harness.spec_lang_preferred.allow_sugar_files must be a list of non-empty strings"]
+    if "allow_sugar_files" in cfg:
+        return ["harness.spec_lang_preferred.allow_sugar_files is not supported; assertions are evaluate-only in this surface"]
     try:
         policy_evaluate = normalize_policy_evaluate(
             cfg.get("policy_evaluate"), field="harness.spec_lang_preferred.policy_evaluate"
         )
     except ValueError as exc:
         return [str(exc)]
-
-    allow = {str(x).strip() for x in allow_sugar_files}
 
     all_rows: list[dict[str, object]] = []
     for rel_root in roots:
@@ -2252,12 +2247,10 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
             continue
         case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
         rel = str(row.get("file", "<unknown>"))
-        if rel in allow:
-            continue
         found = ", ".join(str(x) for x in ops)
         violations.append(
-            f"{rel}: case {case_id} uses sugar ops ({found}); "
-            "prefer evaluate-first assertions for conformance, or add explicit allow_sugar_files entry"
+            f"{rel}: case {case_id} uses unsupported sugar ops ({found}); "
+            "use evaluate-only assertions for conformance/governance surfaces"
         )
     return _policy_outcome(
         subject=all_rows,
