@@ -129,6 +129,8 @@ def _iter_files(paths: list[Path], *, pattern: str) -> list[Path]:
 
 
 def _convert_file(path: Path) -> tuple[bool, str]:
+    if path.as_posix().endswith("docs/spec/schema/normalization_profile_v1.yaml"):
+        return False, path.read_text(encoding="utf-8")
     original = path.read_text(encoding="utf-8")
     lower = path.name.lower()
     if lower.endswith(".md"):

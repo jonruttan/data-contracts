@@ -8,7 +8,7 @@ Style rules:
 - one case per fenced `spec-test` block
 - each block must be immediately preceded by `## <case-id>`
 - case ids must be sorted ascending within each file
-- each fenced block should stay small (50 lines max) for readability
+- each fenced block should stay small (120 lines max) for readability
 - each case must include a non-empty `purpose` field describing the intent
 - `purpose` should add context beyond `title` (not a copy)
 - `purpose` should be at least 8 words and avoid placeholders (`todo`, `tbd`, `fixme`, `xxx`)
@@ -22,8 +22,8 @@ Purpose lint policy:
 
 ## `evaluate` Expression Layout
 
-Conformance cases using `evaluate` SHOULD keep spec-lang expressions in wrapped
-flow-sequence form for readability and deterministic review diffs.
+Conformance cases using `evaluate` SHOULD keep spec-lang expressions in
+operator-keyed mapping AST form for readability and deterministic review diffs.
 
 Use tooling to enforce/normalize:
 

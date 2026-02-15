@@ -166,7 +166,7 @@ links:
   - spec_runner/spec_lang.py
   - scripts/php/spec_runner.php
   - scripts/php/conformance_runner.php
-  notes: Evaluate leaves accept list-encoded S-expressions and reject malformed forms.
+  notes: Evaluate leaves accept mapping-AST expression nodes and reject malformed/legacy forms.
 - rule_id: SPEC_LANG_PREFERRED_AUTHORING
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PREFERRED_AUTHORING
   contract_refs:
@@ -1435,3 +1435,84 @@ links:
   - scripts/rust/runner_adapter.sh
   - scripts/run_governance_specs.py
   notes: Rust runner interface source must avoid direct Python execution token coupling.
+- rule_id: NORMALIZATION_PROFILE_DEFINED
+  policy_ref: docs/spec/contract/policy_v1.yaml#NORMALIZATION_PROFILE_DEFINED
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/03b_spec_lang_v1.md
+  schema_refs:
+  - docs/spec/schema/normalization_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/normalization_profile_sync.spec.md
+  notes: Normalization profile structure is governance-enforced.
+- rule_id: NORMALIZATION_CHECK_GATE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#NORMALIZATION_CHECK_GATE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/normalization_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_ci_gate_summary_script_unit.py
+  - tests/test_normalize_repo_script_unit.py
+  implementation_refs:
+  - scripts/normalize_repo.py
+  - scripts/runner_adapter.sh
+  - scripts/ci_gate_summary.py
+  - Makefile
+  notes: Normalize check is included in smoke/full gate command paths.
+- rule_id: NORMALIZATION_MAPPING_AST_ONLY
+  policy_ref: docs/spec/contract/policy_v1.yaml#NORMALIZATION_MAPPING_AST_ONLY
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/03b_spec_lang_v1.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/schema/normalization_profile_v1.yaml
+  conformance_case_ids:
+  - SRCONF-EXPR-005
+  unit_test_refs:
+  - tests/test_spec_lang_yaml_ast_unit.py
+  - tests/test_normalize_repo_script_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang_yaml_ast.py
+  - scripts/normalize_repo.py
+  - scripts/convert_spec_lang_yaml_ast.py
+  - docs/spec/governance/cases/normalization_mapping_ast_only.spec.md
+  notes: Mapping-AST-only syntax is enforced through compiler and normalization checks.
+- rule_id: NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC
+  policy_ref: docs/spec/contract/policy_v1.yaml#NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/03b_spec_lang_v1.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/schema/normalization_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_normalize_repo_script_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/normalize_repo.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/normalization_docs_token_sync.spec.md
+  notes: Required/forbidden token rules keep schema/contract/book wording aligned.
+- rule_id: NORMALIZATION_FIX_COMMAND_AVAILABLE
+  policy_ref: docs/spec/contract/policy_v1.yaml#NORMALIZATION_FIX_COMMAND_AVAILABLE
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/normalization_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_normalize_repo_script_unit.py
+  implementation_refs:
+  - scripts/normalize_repo.py
+  - scripts/runner_adapter.sh
+  - Makefile
+  - docs/spec/governance/cases/normalization_spec_style_sync.spec.md
+  notes: Explicit normalize-fix path is available for local authoring.

@@ -22,6 +22,7 @@ def _default_steps(runner_bin: str) -> list[tuple[str, list[str]]]:
         ("governance", [runner_bin, "governance"]),
         ("docs_build_check", [runner_bin, "docs-build-check"]),
         ("docs_lint", [runner_bin, "docs-lint"]),
+        ("normalize_check", [runner_bin, "normalize-check"]),
         ("spec_portability_json", [runner_bin, "spec-portability-json"]),
         ("spec_portability_md", [runner_bin, "spec-portability-md"]),
         ("spec_lang_adoption_json", [runner_bin, "spec-lang-adoption-json"]),

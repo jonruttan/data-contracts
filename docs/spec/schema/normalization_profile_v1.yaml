@@ -1,0 +1,72 @@
+version: 1
+title: Spec Runner Normalization Profile
+paths:
+  specs:
+  - docs/spec
+  contracts:
+  - docs/spec/contract
+  - docs/spec/schema
+  - docs/spec/current.md
+  - docs/book
+  tests:
+  - tests
+expression:
+  mapping_ast_only: true
+  lit_required_for_collections: true
+  zero_arg_requires_list: true
+  expression_fields:
+  - evaluate
+  - policy_evaluate
+spec_style:
+  conformance_max_block_lines: 120
+docs_token_sync:
+  rules:
+  - id: NORMALIZATION_SCHEMA_MAPPING_AST_WORDING
+    file: docs/spec/schema/schema_v1.md
+    must_contain:
+    - "mapping AST"
+    - "operator-keyed mappings"
+    must_not_contain:
+    - "list-encoded spec-lang expressions"
+  - id: NORMALIZATION_CONTRACT_ASSERTIONS_MAPPING_AST_WORDING
+    file: docs/spec/contract/03_assertions.md
+    must_contain:
+    - "operator-keyed mapping AST"
+    must_not_contain:
+    - "YAML list S-expressions"
+  - id: NORMALIZATION_CONTRACT_SPECLANG_MAPPING_AST_WORDING
+    file: docs/spec/contract/03b_spec_lang_v1.md
+    must_contain:
+    - "operator-keyed mapping AST"
+    - "list-token form"
+    must_not_contain:
+    - "Expression encoding is YAML list S-expression form"
+  - id: NORMALIZATION_BOOK_ASSERTIONS_MAPPING_AST_WORDING
+    file: docs/book/03_assertions.md
+    must_contain:
+    - "operator-keyed mapping AST"
+    must_not_contain:
+    - "YAML list S-expressions"
+  - id: NORMALIZATION_BOOK_REFERENCE_MAPPING_AST_WORDING
+    file: docs/book/04_spec_lang_reference.md
+    must_contain:
+    - "operator-keyed mapping AST"
+    must_not_contain:
+    - "YAML list s-expressions"
+replacements:
+  rules:
+  - id: NORMALIZATION_REWRITE_SCHEMA_EVALUATE_SHAPE
+    file: docs/spec/schema/schema_v1.md
+    edits:
+    - old: "evaluate` values MUST be list-encoded spec-lang expressions"
+      new: "evaluate` values MUST be lists of operator-keyed mapping AST expressions"
+  - id: NORMALIZATION_REWRITE_CONFORMANCE_STYLE_BLOCK_SIZE
+    file: docs/spec/conformance/style.md
+    edits:
+    - old: "each fenced block should stay small (50 lines max) for readability"
+      new: "each fenced block should stay small (120 lines max) for readability"
+  - id: NORMALIZATION_REWRITE_CONFORMANCE_STYLE_LAYOUT
+    file: docs/spec/conformance/style.md
+    edits:
+    - old: "wrapped\nflow-sequence form"
+      new: "operator-keyed mapping AST form"

@@ -31,8 +31,7 @@ Canonical operators:
 
 Operator values MUST be lists.
 
-`evaluate` values are spec-lang v1 expressions encoded as YAML list
-S-expressions.
+`evaluate` values are spec-lang v1 expressions encoded as operator-keyed mapping AST nodes within a YAML list.
 Normative contract:
 
 - `docs/spec/contract/03b_spec_lang_v1.md`

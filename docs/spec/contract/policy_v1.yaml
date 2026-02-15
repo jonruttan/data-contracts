@@ -147,8 +147,8 @@ rules:
   scope: case
   applies_to: assert.tree.evaluate
   norm: MUST
-  requirement: evaluate_values_use_yaml_list_s_expressions
-  description: '`evaluate` assertion values must use YAML list S-expression encoding.
+  requirement: evaluate_values_use_mapping_ast_expression_nodes
+  description: '`evaluate` assertion values must use operator-keyed mapping AST expression-node encoding.
 
     '
   rationale: Keeps parsing deterministic and implementation-independent.
@@ -1340,3 +1340,78 @@ rules:
   - docs/spec/contract/12_runner_interface.md
   - docs/spec/contract/16_rust_primary_transition.md
   - docs/spec/governance/cases/runtime_rust_adapter_no_python_exec.spec.md
+- id: NORMALIZATION_PROFILE_DEFINED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.schema.normalization_profile
+  norm: MUST
+  requirement: normalization_profile_must_exist_and_define_required_sections
+  description: 'Normalization profile must define path scopes, expression syntax constraints, style limits, and token sync rules as data.
+
+    '
+  rationale: Keeps normalization policy data-driven instead of hardcoded across scripts.
+  risk_if_violated: Drift in normalization behavior becomes difficult to detect and audit.
+  references:
+  - docs/spec/schema/normalization_profile_v1.yaml
+  - docs/spec/governance/cases/normalization_profile_sync.spec.md
+- id: NORMALIZATION_CHECK_GATE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: scripts.runner_adapter
+  norm: MUST
+  requirement: normalize_check_must_run_in_ci_gate_paths
+  description: 'Repository gates must run normalize-check in smoke/full workflows; check mode must not mutate tracked files.
+
+    '
+  rationale: Prevents style/schema drift from bypassing CI.
+  risk_if_violated: Specs, contracts, and tests can diverge despite passing unrelated checks.
+  references:
+  - scripts/normalize_repo.py
+  - scripts/runner_adapter.sh
+  - scripts/ci_gate_summary.py
+- id: NORMALIZATION_MAPPING_AST_ONLY
+  introduced_in: v1
+  scope: schema
+  applies_to: evaluate_and_policy_evaluate_yaml_authoring
+  norm: MUST
+  requirement: expression_authoring_must_use_mapping_ast_only
+  description: 'YAML-authored expression fields (`evaluate`, `policy_evaluate`) must use operator-keyed mapping AST form only.
+
+    '
+  rationale: Enforces a readable canonical syntax and consistent parse behavior across runtimes.
+  risk_if_violated: Mixed syntax increases portability risk and review complexity.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/governance/cases/normalization_mapping_ast_only.spec.md
+- id: NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.contract_schema_book_wording
+  norm: MUST
+  requirement: mapping_ast_wording_and_tokens_must_stay_synchronized
+  description: 'Schema, contract, and book references must use current mapping-AST terminology and must not reintroduce list-S-expression wording.
+
+    '
+  rationale: Keeps human documentation aligned with executable enforcement.
+  risk_if_violated: Authors follow stale docs and produce invalid specs.
+  references:
+  - docs/spec/schema/normalization_profile_v1.yaml
+  - docs/spec/governance/cases/normalization_docs_token_sync.spec.md
+- id: NORMALIZATION_FIX_COMMAND_AVAILABLE
+  introduced_in: v1
+  scope: tooling
+  applies_to: local_authoring_workflow
+  norm: MUST
+  requirement: normalize_fix_command_must_be_available_for_local_rewrites
+  description: 'Tooling must provide explicit normalize-check and normalize-fix commands; CI runs check only and developers apply fix locally.
+
+    '
+  rationale: Reduces friction while preserving deterministic CI behavior.
+  risk_if_violated: Teams rely on manual ad-hoc rewrites and drift accumulates.
+  references:
+  - Makefile
+  - scripts/runner_adapter.sh
+  - scripts/normalize_repo.py
+  - docs/spec/governance/cases/normalization_spec_style_sync.spec.md

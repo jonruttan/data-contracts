@@ -5,10 +5,12 @@
 `spec-lang` is a pure, deterministic expression DSL used only through the
 assertion leaf operator `evaluate`.
 
-Expression encoding is YAML list S-expression form:
+YAML authoring encoding is operator-keyed mapping AST form.
+Implementations compile this mapping AST to internal list-token form before
+evaluation.
 
 ```yaml
-- fn
+fn:
 - arg1
 - arg2
 ```
@@ -216,13 +218,14 @@ Library contract details:
 
 ## Canonical Authoring Format
 
-For readability and deterministic diffs, implementations in this repo standardize
-`evaluate` expression formatting to:
+For readability and deterministic diffs, implementations in this repo
+standardize `evaluate` expression formatting to:
 
-- one expression item per `evaluate` list entry
-- flow-sequence S-expressions (`["symbol", ...]`)
-- quoted string atoms in expressions (single-quote style in this repo tooling)
-- wrapped lines with closing brackets preserved in flow style
+- one operator-keyed mapping expression per `evaluate` list entry
+- explicit list args for every operator (including zero-arg forms like
+  `subject: []`)
+- `lit` wrapper for collection literal nodes
+- nested mapping AST layout (not list S-expression authoring)
 
 Tooling:
 

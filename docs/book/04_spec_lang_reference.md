@@ -37,7 +37,7 @@ Provide a complete, deterministic reference for spec-lang `evaluate`.
 
 ## Inputs
 
-- assertion leaf expressions encoded as YAML list s-expressions
+- assertion leaf expressions encoded as operator-keyed mapping AST nodes
 
 ## Outputs
 
@@ -52,7 +52,7 @@ Provide a complete, deterministic reference for spec-lang `evaluate`.
 ## 1) What `evaluate` Is
 
 `evaluate` runs a spec-lang expression against the assertion target subject.
-The expression must be YAML list S-expression form.
+The expression must be operator-keyed mapping AST form.
 
 Example:
 
@@ -73,17 +73,16 @@ boolean for assertion pass/fail.
 Valid form:
 
 ```yaml
-- symbol
-- arg1
-- arg2
-- '...'
+contains:
+- hello
 ```
 
 Invalid forms:
 
-- mapping root (`{...}`)
-- empty list (`[]`)
-- non-string head (`[123, ...]`)
+- list-root expressions (`["contains", ...]`)
+- raw list/map literal nodes without `lit`
+- multi-key expression mappings
+- non-list operator argument values
 
 ## 3) Core Forms
 

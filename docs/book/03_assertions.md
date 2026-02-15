@@ -107,7 +107,7 @@ Authoring policy:
 - `evaluate` includes deep-equality set algebra and collection transforms,
   with automatic builtin currying by arity for function-style composition.
 
-`evaluate` uses spec-lang v1 YAML list S-expressions:
+`evaluate` uses spec-lang v1 operator-keyed mapping AST nodes:
 
 ```yaml
 assert:

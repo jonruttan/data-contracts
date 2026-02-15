@@ -230,7 +230,8 @@ Supported operators:
 Operator constraints:
 
 - all operator values MUST be lists
-- `evaluate` values MUST be list-encoded spec-lang expressions
+- `evaluate` values MUST be lists of operator-keyed mapping AST expressions
+- each `evaluate` list item MUST be an expression node using operator-keyed mappings
 - spec-lang semantics and budget model are defined in
   `docs/spec/contract/03b_spec_lang_v1.md`
 - spec-lang v1 includes deep-equality set algebra (`union`, `intersection`,

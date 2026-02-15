@@ -128,6 +128,7 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
     "patcher",
     "capture",
 }
+_NORMALIZATION_PROFILE_PATH = "docs/spec/schema/normalization_profile_v1.yaml"
 
 
 def _scan_contract_governance_check(root: Path) -> list[str]:
@@ -2858,6 +2859,134 @@ def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> 
     return violations
 
 
+def _load_normalization_profile(root: Path) -> tuple[dict[str, object] | None, list[str]]:
+    p = root / _NORMALIZATION_PROFILE_PATH
+    if not p.exists():
+        return None, [f"{_NORMALIZATION_PROFILE_PATH}:1: missing normalization profile"]
+    try:
+        payload = yaml.safe_load(p.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        return None, [f"{_NORMALIZATION_PROFILE_PATH}:1: invalid yaml ({exc})"]
+    if not isinstance(payload, dict):
+        return None, [f"{_NORMALIZATION_PROFILE_PATH}:1: profile must be a mapping"]
+    return payload, []
+
+
+def _scan_normalization_profile_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    profile, errs = _load_normalization_profile(root)
+    if errs:
+        return errs
+    assert profile is not None
+    violations: list[str] = []
+    required_top = ("version", "paths", "expression", "spec_style", "docs_token_sync")
+    for key in required_top:
+        if key not in profile:
+            violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: missing required key: {key}")
+    paths = profile.get("paths")
+    if not isinstance(paths, dict):
+        violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: paths must be a mapping")
+    else:
+        for key in ("specs", "contracts", "tests"):
+            vals = paths.get(key)
+            if not isinstance(vals, list) or not vals or any(not isinstance(x, str) or not x.strip() for x in vals):
+                violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: paths.{key} must be a non-empty list of strings")
+    expr = profile.get("expression")
+    if not isinstance(expr, dict):
+        violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: expression must be a mapping")
+    else:
+        fields = expr.get("expression_fields")
+        if not isinstance(fields, list) or "evaluate" not in fields or "policy_evaluate" not in fields:
+            violations.append(
+                f"{_NORMALIZATION_PROFILE_PATH}:1: expression.expression_fields must include evaluate and policy_evaluate"
+            )
+    return violations
+
+
+def _scan_normalization_mapping_ast_only(root: Path, *, harness: dict | None = None) -> list[str]:
+    cmd = [sys.executable, "scripts/normalize_repo.py", "--check", "--scope", "all"]
+    proc = subprocess.run(cmd, cwd=root, capture_output=True, text=True, check=False)
+    if proc.returncode == 0:
+        return []
+    out = (proc.stdout or "").splitlines() + (proc.stderr or "").splitlines()
+    violations = [line.strip() for line in out if line.strip()]
+    return violations or ["normalization.mapping_ast_only: normalize check failed"]
+
+
+def _scan_normalization_docs_token_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    profile, errs = _load_normalization_profile(root)
+    if errs:
+        return errs
+    assert profile is not None
+    token_sync = profile.get("docs_token_sync")
+    if not isinstance(token_sync, dict):
+        return [f"{_NORMALIZATION_PROFILE_PATH}:1: docs_token_sync must be a mapping"]
+    rules = token_sync.get("rules")
+    if not isinstance(rules, list):
+        return [f"{_NORMALIZATION_PROFILE_PATH}:1: docs_token_sync.rules must be a list"]
+    violations: list[str] = []
+    for rule in rules:
+        if not isinstance(rule, dict):
+            continue
+        rid = str(rule.get("id", "NORMALIZATION_DOC_TOKEN_SYNC")).strip() or "NORMALIZATION_DOC_TOKEN_SYNC"
+        rel = str(rule.get("file", "")).strip()
+        if not rel:
+            continue
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: {rid}: missing file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        must = rule.get("must_contain", [])
+        must_not = rule.get("must_not_contain", [])
+        if isinstance(must, list):
+            for tok in must:
+                if isinstance(tok, str) and tok and tok not in text:
+                    violations.append(f"{rel}:1: {rid}: missing token: {tok}")
+        if isinstance(must_not, list):
+            for tok in must_not:
+                if isinstance(tok, str) and tok and tok in text:
+                    line = text[: text.find(tok)].count("\n") + 1
+                    violations.append(f"{rel}:{line}: {rid}: forbidden token present: {tok}")
+    return violations
+
+
+def _scan_normalization_spec_style_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    profile, errs = _load_normalization_profile(root)
+    if errs:
+        return errs
+    assert profile is not None
+    style = profile.get("spec_style")
+    if not isinstance(style, dict):
+        return [f"{_NORMALIZATION_PROFILE_PATH}:1: spec_style must be a mapping"]
+    max_lines = style.get("conformance_max_block_lines")
+    if not isinstance(max_lines, int) or max_lines < 1:
+        return [f"{_NORMALIZATION_PROFILE_PATH}:1: spec_style.conformance_max_block_lines must be a positive int"]
+
+    violations: list[str] = []
+    if _CONFORMANCE_MAX_BLOCK_LINES != max_lines:
+        violations.append(
+            "scripts/run_governance_specs.py:1: NORMALIZATION_SPEC_STYLE_SYNC: "
+            f"_CONFORMANCE_MAX_BLOCK_LINES={_CONFORMANCE_MAX_BLOCK_LINES} must match profile value {max_lines}"
+        )
+
+    style_doc = root / "docs/spec/conformance/style.md"
+    if not style_doc.exists():
+        violations.append("docs/spec/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing style doc")
+        return violations
+    raw = style_doc.read_text(encoding="utf-8")
+    expected_token = f"({max_lines} lines max)"
+    if expected_token not in raw:
+        violations.append(
+            f"docs/spec/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing block-size token {expected_token}"
+        )
+    if "flow-sequence" in raw:
+        line = raw[: raw.find("flow-sequence")].count("\n") + 1
+        violations.append(
+            f"docs/spec/conformance/style.md:{line}: NORMALIZATION_SPEC_STYLE_SYNC: forbidden legacy token flow-sequence"
+        )
+    return violations
+
+
 GovernanceCheckOutcome = list[str] | dict[str, object]
 GovernanceCheck = Callable[..., GovernanceCheckOutcome]
 
@@ -2950,6 +3079,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.release_contract_automation_policy": _scan_docs_release_contract_automation_policy,
     "runtime.scope_sync": _scan_runtime_scope_sync,
     "naming.filename_policy": _scan_naming_filename_policy,
+    "normalization.profile_sync": _scan_normalization_profile_sync,
+    "normalization.mapping_ast_only": _scan_normalization_mapping_ast_only,
+    "normalization.docs_token_sync": _scan_normalization_docs_token_sync,
+    "normalization.spec_style_sync": _scan_normalization_spec_style_sync,
 }
 
 

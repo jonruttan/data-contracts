@@ -3340,3 +3340,38 @@ objectives:
     )
     assert out
     assert any("no governance case found" in v for v in out)
+
+
+def test_script_enforces_normalization_profile_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "norm_profile.spec.md",
+        _case_for_check("SRGOV-TEST-NORM-001", "normalization.profile_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/schema/normalization_profile_v1.yaml",
+        "version: 1\npaths:\n  specs: [docs/spec]\n  contracts: [docs/spec/contract]\n  tests: [tests]\nexpression:\n  expression_fields: [evaluate, policy_evaluate]\nspec_style:\n  conformance_max_block_lines: 120\ndocs_token_sync:\n  rules: []\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+def test_script_enforces_normalization_docs_token_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "norm_tokens.spec.md",
+        _case_for_check("SRGOV-TEST-NORM-002", "normalization.docs_token_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/schema/normalization_profile_v1.yaml",
+        "version: 1\npaths:\n  specs: [docs/spec]\n  contracts: [docs/spec/contract]\n  tests: [tests]\nexpression:\n  expression_fields: [evaluate, policy_evaluate]\nspec_style:\n  conformance_max_block_lines: 120\ndocs_token_sync:\n  rules:\n    - id: TOK\n      file: docs/spec/schema/schema_v1.md\n      must_contain: ['mapping AST']\n      must_not_contain: ['list S-expression']\n",
+    )
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "mapping AST\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "list S-expression\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

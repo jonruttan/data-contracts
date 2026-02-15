@@ -6,7 +6,7 @@ Date: 2026-02-12
 Notes:
 
 - The canonical assertion DSL is `must` / `can` / `cannot` with `contain`,
-  `regex`, and `evaluate` (spec-lang v1 list S-expressions).
+  `regex`, and `evaluate` (spec-lang v1 operator-keyed mapping AST).
 - `target` is defined on group nodes; leaf assertions are op-only.
 - Execution is internal-IR based: external cases compile to spec-lang-backed
   internal predicates before runtime evaluation.
@@ -40,6 +40,9 @@ Notes:
 - Docs quality v2 adds schema-backed `doc-meta`, manifest-driven reference
   generation, and governance checks for docs token ownership/dependencies and
   generated artifact freshness.
+- Normalization tooling is unified under `scripts/normalize_repo.py` with
+  profile-driven rules from `docs/spec/schema/normalization_profile_v1.yaml`;
+  CI runs `normalize-check` and local workflow uses `normalize-fix`.
 
 Canonical spec docs:
 

@@ -21,6 +21,12 @@ case "${subcommand}" in
   style-check)
     exec "${PYTHON_BIN}" scripts/evaluate_style.py --check docs/spec "$@"
     ;;
+  normalize-check)
+    exec "${PYTHON_BIN}" scripts/normalize_repo.py --check "$@"
+    ;;
+  normalize-fix)
+    exec "${PYTHON_BIN}" scripts/normalize_repo.py --write "$@"
+    ;;
   lint)
     exec "${PYTHON_BIN}" -m ruff check . "$@"
     ;;
