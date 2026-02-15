@@ -2373,6 +2373,85 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     )
 
 
+def _scan_conformance_spec_lang_fixture_library_usage(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("spec_lang_fixture_library_usage")
+    if not isinstance(cfg, dict):
+        return ["conformance.spec_lang_fixture_library_usage requires harness.spec_lang_fixture_library_usage mapping in governance spec"]
+    rel = str(cfg.get("path", "docs/spec/conformance/cases/spec_lang.spec.md")).strip() or "docs/spec/conformance/cases/spec_lang.spec.md"
+    required_library_path = str(cfg.get("required_library_path", "")).strip()
+    if not required_library_path:
+        return ["harness.spec_lang_fixture_library_usage.required_library_path must be a non-empty string"]
+    required_call_prefix = str(cfg.get("required_call_prefix", "conf.")).strip() or "conf."
+    min_call_count = cfg.get("min_call_count", 1)
+    if not isinstance(min_call_count, int) or min_call_count < 1:
+        return ["harness.spec_lang_fixture_library_usage.min_call_count must be a positive int"]
+    required_case_ids_raw = cfg.get("required_case_ids", [])
+    if not isinstance(required_case_ids_raw, list) or any(not isinstance(x, str) or not x.strip() for x in required_case_ids_raw):
+        return ["harness.spec_lang_fixture_library_usage.required_case_ids must be a list of non-empty strings"]
+    required_case_ids = {str(x).strip() for x in required_case_ids_raw if str(x).strip()}
+
+    fixture = root / rel
+    if not fixture.exists():
+        return [f"{rel}:1: missing conformance fixture file"]
+
+    def _count_helper_calls(node: object) -> int:
+        if isinstance(node, list):
+            return sum(_count_helper_calls(x) for x in node)
+        if not isinstance(node, dict):
+            return 0
+        count = 0
+        call_node = node.get("call")
+        if isinstance(call_node, list) and call_node:
+            fn_node = call_node[0]
+            if (
+                isinstance(fn_node, dict)
+                and len(fn_node) == 1
+                and "var" in fn_node
+                and isinstance(fn_node.get("var"), str)
+                and str(fn_node.get("var", "")).startswith(required_call_prefix)
+            ):
+                count += 1
+        for v in node.values():
+            count += _count_helper_calls(v)
+        return count
+
+    total_calls = 0
+    seen_required: set[str] = set()
+    violations: list[str] = []
+    for spec in iter_spec_doc_tests(fixture.parent, file_pattern=fixture.name):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        if str(case.get("type", "")).strip() != "text.file":
+            continue
+        harness_map = case.get("harness")
+        lib_ok = False
+        if isinstance(harness_map, dict):
+            spec_lang_cfg = harness_map.get("spec_lang")
+            if isinstance(spec_lang_cfg, dict):
+                lib_paths = spec_lang_cfg.get("library_paths")
+                lib_ok = isinstance(lib_paths, list) and any(
+                    isinstance(x, str) and str(x).strip() == required_library_path for x in lib_paths
+                )
+        calls = _count_helper_calls(case.get("assert"))
+        total_calls += calls
+        if case_id in required_case_ids:
+            seen_required.add(case_id)
+            if not lib_ok:
+                violations.append(f"{rel}: case {case_id} missing harness.spec_lang.library_paths entry {required_library_path}")
+            if calls < 1:
+                violations.append(f"{rel}: case {case_id} missing helper call with prefix {required_call_prefix!r}")
+
+    missing_ids = sorted(required_case_ids - seen_required)
+    for case_id in missing_ids:
+        violations.append(f"{rel}: required_case_ids entry not found: {case_id}")
+    if total_calls < min_call_count:
+        violations.append(
+            f"{rel}: helper call count {total_calls} is below min_call_count {min_call_count} for prefix {required_call_prefix!r}"
+        )
+    return violations
+
+
 def _scan_docs_reference_surface_complete(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -3586,6 +3665,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.extension_requires_capabilities": _scan_conformance_extension_requires_capabilities,
     "conformance.type_contract_field_sync": _scan_conformance_type_contract_field_sync,
     "conformance.spec_lang_preferred": _scan_conformance_spec_lang_preferred,
+    "conformance.spec_lang_fixture_library_usage": _scan_conformance_spec_lang_fixture_library_usage,
     "conformance.evaluate_first_ratio_non_regression": _scan_conformance_evaluate_first_ratio_non_regression,
     "docs.reference_surface_complete": _scan_docs_reference_surface_complete,
     "docs.reference_index_sync": _scan_docs_reference_index_sync,

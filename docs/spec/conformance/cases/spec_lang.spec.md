@@ -14,11 +14,17 @@ expect:
   portable:
     status: pass
     category: null
+harness:
+  spec_lang:
+    library_paths:
+    - ../../libraries/conformance/assertion_core.spec.md
+    exports:
+    - conf.pass_when_text_contains
 assert:
 - target: text
   must:
   - evaluate:
-    - {contains: ['version: 1']}
+    - {call: [{var: conf.pass_when_text_contains}, {var: subject}, 'version: 1']}
 ```
 
 ## SRCONF-EXPR-002
@@ -35,12 +41,18 @@ expect:
   portable:
     status: pass
     category: null
+harness:
+  spec_lang:
+    library_paths:
+    - ../../libraries/conformance/assertion_core.spec.md
+    exports:
+    - conf.pass_when_text_contains
 assert:
 - target: text
   must:
   - evaluate:
     - and:
-      - {contains: [version]}
+      - {call: [{var: conf.pass_when_text_contains}, {var: subject}, version]}
       - {starts_with: [{var: subject}, '#']}
 ```
 
@@ -182,13 +194,19 @@ expect:
   portable:
     status: pass
     category: null
+harness:
+  spec_lang:
+    library_paths:
+    - ../../libraries/conformance/assertion_core.spec.md
+    exports:
+    - conf.pass_when_text_contains
 assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{var: subject}, 'version: 1']}
+    - {call: [{var: conf.pass_when_text_contains}, {var: subject}, 'version: 1']}
   - evaluate:
-    - {contains: [{var: subject}, 'version: 1']}
+    - {call: [{var: conf.pass_when_text_contains}, {var: subject}, 'version: 1']}
 ```
 
 ## SRCONF-EXPR-009

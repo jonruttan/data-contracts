@@ -171,6 +171,21 @@ rules:
   - docs/spec/governance/cases/conformance_evaluate_first_ratio_non_regression.spec.md
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   - spec_runner/quality_metrics.py
+- id: CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: conformance.spec_lang_fixtures.reusable_helpers
+  norm: MUST
+  requirement: spec_lang_conformance_fixtures_must_use_shared_helper_library_calls
+  description: 'Spec-lang conformance fixtures must use shared conformance helper library calls for repeated expression patterns.
+
+    '
+  rationale: Reduces expression duplication in large conformance fixtures and keeps intent readable.
+  risk_if_violated: Expression-heavy fixtures drift into repeated inline trees that are harder to maintain.
+  references:
+  - docs/spec/governance/cases/conformance_spec_lang_fixture_library_usage.spec.md
+  - docs/spec/libraries/conformance/assertion_core.spec.md
+  - scripts/run_governance_specs.py
 - id: CONFORMANCE_LIBRARY_POLICY_USAGE_REQUIRED
   introduced_in: v1
   scope: governance

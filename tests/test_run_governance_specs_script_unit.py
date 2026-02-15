@@ -1565,6 +1565,139 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_conformance_spec_lang_fixture_library_usage(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "conformance_fixture_lib_usage.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONF-LIB-FIXTURE-001
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-LIB-FIXTURE-001
+type: governance.check
+check: conformance.spec_lang_fixture_library_usage
+harness:
+  root: {tmp_path}
+  spec_lang_fixture_library_usage:
+    path: docs/spec/conformance/cases/spec_lang.spec.md
+    required_library_path: ../../libraries/conformance/assertion_core.spec.md
+    required_call_prefix: conf.
+    min_call_count: 2
+    required_case_ids:
+      - SRCONF-EXPR-001
+      - SRCONF-EXPR-002
+  policy_evaluate:
+    - is_empty:
+      - get:
+        - var: subject
+        - violations
+assert:
+  - target: summary_json
+    must:
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/spec_lang.spec.md",
+        """# Spec Lang
+
+## SRCONF-EXPR-001
+
+```yaml spec-test
+id: SRCONF-EXPR-001
+type: text.file
+assert:
+  - target: text
+    must:
+      - evaluate:
+        - contains:
+          - version
+```
+
+## SRCONF-EXPR-002
+
+```yaml spec-test
+id: SRCONF-EXPR-002
+type: text.file
+harness:
+  spec_lang:
+    library_paths:
+      - ../../libraries/conformance/assertion_core.spec.md
+    exports:
+      - conf.pass_when_text_contains
+assert:
+  - target: text
+    must:
+      - evaluate:
+        - call:
+          - var: conf.pass_when_text_contains
+          - var: subject
+          - version
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/spec_lang.spec.md",
+        """# Spec Lang
+
+## SRCONF-EXPR-001
+
+```yaml spec-test
+id: SRCONF-EXPR-001
+type: text.file
+harness:
+  spec_lang:
+    library_paths:
+      - ../../libraries/conformance/assertion_core.spec.md
+    exports:
+      - conf.pass_when_text_contains
+assert:
+  - target: text
+    must:
+      - evaluate:
+        - call:
+          - var: conf.pass_when_text_contains
+          - var: subject
+          - version
+```
+
+## SRCONF-EXPR-002
+
+```yaml spec-test
+id: SRCONF-EXPR-002
+type: text.file
+harness:
+  spec_lang:
+    library_paths:
+      - ../../libraries/conformance/assertion_core.spec.md
+    exports:
+      - conf.pass_when_text_contains
+assert:
+  - target: text
+    must:
+      - evaluate:
+        - call:
+          - var: conf.pass_when_text_contains
+          - var: subject
+          - version
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
 def test_script_enforces_conformance_purpose_warning_code_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

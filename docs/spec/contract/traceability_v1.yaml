@@ -581,6 +581,23 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Conformance evaluate-only coverage is pinned by baseline-backed non-regression checks.
+- rule_id: CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/governance/cases/conformance_spec_lang_fixture_library_usage.spec.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-EXPR-001
+  - SRCONF-EXPR-002
+  - SRCONF-EXPR-008
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/libraries/conformance/assertion_core.spec.md
+  notes: Governance enforces helper-library reuse in spec_lang conformance fixtures.
 - rule_id: CONFORMANCE_LIBRARY_POLICY_USAGE_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_LIBRARY_POLICY_USAGE_REQUIRED
   contract_refs:
