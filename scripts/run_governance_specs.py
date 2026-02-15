@@ -2118,6 +2118,62 @@ def _scan_runtime_rust_adapter_exec_smoke(root: Path, *, harness: dict | None = 
     return violations
 
 
+def _scan_runtime_rust_adapter_subcommand_parity(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("rust_subcommand_parity")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.rust_adapter_subcommand_parity requires harness.rust_subcommand_parity mapping in governance spec"
+        ]
+
+    adapter_path = str(cfg.get("adapter_path", "")).strip()
+    cli_main_path = str(cfg.get("cli_main_path", "")).strip()
+    if not adapter_path:
+        return ["harness.rust_subcommand_parity.adapter_path must be a non-empty string"]
+    if not cli_main_path:
+        return ["harness.rust_subcommand_parity.cli_main_path must be a non-empty string"]
+
+    adapter_file = root / adapter_path
+    cli_main_file = root / cli_main_path
+    if not adapter_file.exists():
+        return [f"{adapter_path}:1: missing rust adapter script for subcommand parity check"]
+    if not cli_main_file.exists():
+        return [f"{cli_main_path}:1: missing rust cli main source for subcommand parity check"]
+
+    adapter_text = adapter_file.read_text(encoding="utf-8")
+    cli_text = cli_main_file.read_text(encoding="utf-8")
+
+    adapter_subcommands = {
+        m.group(1)
+        for m in re.finditer(r"^\s*([a-z0-9_-]+)\)\s*$", adapter_text, flags=re.MULTILINE)
+        if m.group(1) != "*"
+    }
+    cli_subcommands: set[str] = set()
+    for arm in re.finditer(
+        r'((?:"[a-z0-9_-]+"\s*(?:\|\s*)?)+)\s*=>',
+        cli_text,
+        flags=re.MULTILINE,
+    ):
+        for lit in re.finditer(r'"([a-z0-9_-]+)"', arm.group(1)):
+            cli_subcommands.add(lit.group(1))
+
+    if not adapter_subcommands:
+        return [f"{adapter_path}:1: no adapter subcommand labels found"]
+    if not cli_subcommands:
+        return [f"{cli_main_path}:1: no rust cli subcommand match arms found"]
+
+    violations: list[str] = []
+    for cmd in sorted(adapter_subcommands - cli_subcommands):
+        violations.append(
+            f"{cli_main_path}:1: missing rust cli subcommand handler for adapter-exposed command {cmd}"
+        )
+    for cmd in sorted(cli_subcommands - adapter_subcommands):
+        violations.append(
+            f"{adapter_path}:1: missing adapter subcommand label for rust cli-exposed command {cmd}"
+        )
+    return violations
+
+
 def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -2189,6 +2245,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,
     "runtime.rust_adapter_no_delegate": _scan_runtime_rust_adapter_no_delegate,
     "runtime.rust_adapter_exec_smoke": _scan_runtime_rust_adapter_exec_smoke,
+    "runtime.rust_adapter_subcommand_parity": _scan_runtime_rust_adapter_subcommand_parity,
     "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
     "runtime.spec_lang_pure_no_effect_builtins": _scan_spec_lang_pure_no_effect_builtins,
     "runtime.orchestration_policy_via_spec_lang": _scan_runtime_orchestration_policy_via_spec_lang,

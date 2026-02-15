@@ -1138,6 +1138,22 @@ links:
       - docs/spec/governance/cases/runtime_rust_primary_adapter_exec_smoke.spec.md
     notes: "Rust-primary governance includes an executable smoke check for adapter command behavior."
 
+  - rule_id: RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
+    contract_refs:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/contract/12_runner_interface.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/rust/runner_adapter.sh
+      - scripts/rust/spec_runner_cli/src/main.rs
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/runtime_rust_primary_subcommand_parity.spec.md
+    notes: "Governance enforces parity between shell adapter and Rust CLI subcommand surfaces."
+
   - rule_id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
     policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_DOCS_ADOPTION_SYNC
     contract_refs:

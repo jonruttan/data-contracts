@@ -907,6 +907,21 @@ rules:
       - docs/spec/contract/16_rust_primary_transition.md
       - docs/spec/governance/cases/runtime_rust_primary_adapter_exec_smoke.spec.md
 
+  - id: RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.rust_primary.interface_parity
+    norm: MUST
+    requirement: rust_adapter_shell_and_rust_cli_subcommand_sets_must_match
+    description: >
+      Rust-primary governance must enforce parity between subcommands exposed by
+      scripts/rust/runner_adapter.sh and scripts/rust/spec_runner_cli/src/main.rs.
+    rationale: Prevents runner-interface drift between adapter surface and Rust CLI implementation.
+    risk_if_violated: Commands may appear supported in one layer but fail in the other at runtime.
+    references:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/governance/cases/runtime_rust_primary_subcommand_parity.spec.md
+
   - id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
     introduced_in: v1
     scope: docs

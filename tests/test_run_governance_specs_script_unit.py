@@ -2577,6 +2577,50 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_runtime_rust_adapter_subcommand_parity(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_rust_adapter_subcommand_parity.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-CONFIG-008
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-CONFIG-008
+type: governance.check
+check: runtime.rust_adapter_subcommand_parity
+harness:
+  root: {tmp_path}
+  rust_subcommand_parity:
+    adapter_path: scripts/rust/runner_adapter.sh
+    cli_main_path: scripts/rust/spec_runner_cli/src/main.rs
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.rust_adapter_subcommand_parity"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "scripts/rust/runner_adapter.sh",
+        "#!/usr/bin/env bash\ncase \"${subcommand}\" in\n  governance)\n    ;;\n  style-check)\n    ;;\n  *)\n    exit 2\n    ;;\nesac\n",
+    )
+    _write_text(
+        tmp_path / "scripts/rust/spec_runner_cli/src/main.rs",
+        "fn main() {\n  let code = match subcommand.as_str() {\n    \"governance\" => 0,\n    \"style-check\" => 0,\n    _ => 2,\n  };\n}\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "scripts/rust/spec_runner_cli/src/main.rs",
+        "fn main() {\n  let code = match subcommand.as_str() {\n    \"governance\" => 0,\n    _ => 2,\n  };\n}\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_assert_universal_core_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

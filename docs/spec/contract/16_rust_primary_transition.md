@@ -31,6 +31,10 @@ path while preserving schema/contract behavior guarantees.
 - Governance MUST include an executable Rust-adapter smoke check that validates
   deterministic command behavior (exit code and output tokens).
 
+6. Adapter/CLI subcommand parity
+- Governance MUST enforce parity between subcommands exposed by the shell
+  adapter and those handled by the Rust CLI implementation.
+
 ## Adoption and Scope
 
 - Contributor docs SHOULD describe Rust-primary operation as the default
