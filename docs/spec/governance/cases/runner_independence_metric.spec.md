@@ -13,20 +13,29 @@ harness:
   runner_independence:
     segment_files:
       gate_scripts:
-        - scripts/*.sh
+      - scripts/*.sh
       ci_workflows:
-        - .github/workflows/*.yml
+      - .github/workflows/*.yml
       adapter_interfaces:
-        - scripts/runner_adapter.sh
-        - scripts/rust/runner_adapter.sh
-        - scripts/rust/spec_runner_cli/src/main.rs
+      - scripts/runner_adapter.sh
+      - scripts/rust/runner_adapter.sh
+      - scripts/rust/spec_runner_cli/src/main.rs
     policy_evaluate:
-      - and
-      - ["has_key", ["subject"], "summary"]
-      - ["has_key", ["subject"], "segments"]
-      - ["has_key", ["get", ["subject"], "summary"], "overall_runner_independence_ratio"]
+    - and:
+      - has_key:
+        - subject: []
+        - summary
+      - has_key:
+        - subject: []
+        - segments
+      - has_key:
+        - get:
+          - subject: []
+          - summary
+        - overall_runner_independence_ratio
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.runner_independence_metric"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.runner_independence_metric'
 ```

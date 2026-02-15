@@ -1,7 +1,11 @@
 version: 1
 default:
   min_words: 8
-  placeholders: [todo, tbd, fixme, xxx]
+  placeholders:
+  - todo
+  - tbd
+  - fixme
+  - xxx
   forbid_title_copy: true
   severity_by_code:
     PUR001: warn

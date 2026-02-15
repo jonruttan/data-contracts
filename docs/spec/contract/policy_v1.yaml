@@ -1,1443 +1,1342 @@
 version: 1
 title: Spec Runner Portable Contract Policy
 rules:
-  - id: CLI_RUN_ENTRYPOINT_REQUIRED
-    introduced_in: v1
-    scope: case
-    applies_to: cli.run.harness.entrypoint
-    norm: SHOULD
-    requirement: prefer_present
-    description: For cli.run, harness.entrypoint should be set in each case.
-    rationale: Keeps invocation explicit and reduces environment coupling.
-    risk_if_violated: Cases can become environment-dependent outside conformance.
-    references:
-      - docs/spec/contract/04_harness.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
-    introduced_in: v1
-    scope: implementation
-    applies_to: cli.run.safe_mode
-    norm: SHOULD
-    requirement: disable_hooks_and_env_fallback_when_safe_mode_enabled
-    description: >
-      Implementations should provide a safe mode that disables hook entrypoints
-      and entrypoint env fallback for `cli.run`.
-    rationale: Reduces code-execution risk for hardened or semi-trusted workflows.
-    risk_if_violated: Untrusted or mixed-trust specs have higher exploitability.
-    references:
-      - docs/spec/contract/04_harness.md
-      - docs/spec/schema/schema_v1.md
-      - docs/spec/impl/python.md
-
-  - id: CLI_RUN_ENV_ALLOWLIST_CONTROL
-    introduced_in: v1
-    scope: implementation
-    applies_to: cli.run.process_environment
-    norm: SHOULD
-    requirement: support_allowlist_for_inherited_environment
-    description: >
-      Implementations should provide a control to limit inherited process
-      environment variables passed to cli.run executions.
-    rationale: Limits accidental secret exposure from ambient CI/dev shells.
-    risk_if_violated: Commands under test can read unrelated sensitive env.
-    references:
-      - docs/spec/contract/04_harness.md
-      - docs/spec/schema/schema_v1.md
-      - docs/spec/impl/php.md
-
-  - id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
-    introduced_in: v1
-    scope: implementation
-    applies_to: cli.run.entrypoint_resolution
-    norm: SHOULD
-    requirement: support_env_fallback_when_process_env_and_dynamic_entrypoint_loading_are_available
-    description: >
-      Implementations should support environment fallback for local/CI
-      ergonomics when they can read process environment variables and resolve
-      dynamic module:attribute entrypoints at runtime.
-    rationale: Improves ergonomics in local and containerized workflows.
-    risk_if_violated: Higher setup friction in some environments.
-    examples:
-      - SPEC_RUNNER_ENTRYPOINT
-    references:
-      - docs/spec/contract/04_harness.md
-      - docs/spec/impl/python.md
-
-  - id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
-    introduced_in: v1
-    scope: conformance
-    applies_to: fixtures.cli.run
-    norm: MUST
-    requirement: explicit_harness_entrypoint
-    description: Portable conformance fixtures must set harness.entrypoint.
-    rationale: Keeps parity checks independent of implementation conveniences.
-    risk_if_violated: Conformance results can diverge across runtimes.
-    references:
-      - docs/spec/contract/04_harness.md
-      - docs/spec/contract/06_conformance.md
-
-  - id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
-    introduced_in: v1
-    scope: conformance
-    applies_to: fixtures.cli.run
-    norm: MUST_NOT
-    requirement: rely_on_env_fallback
-    description: Portable conformance fixtures must not depend on env fallback.
-    rationale: Prevents ambient-environment coupling in parity tests.
-    risk_if_violated: Flaky or non-reproducible cross-language conformance.
-    references:
-      - docs/spec/contract/04_harness.md
-      - docs/spec/contract/06_conformance.md
-
-  - id: ASSERT_HEALTH_MODE_VALID_VALUES
-    introduced_in: v1
-    scope: case
-    applies_to: assert_health.mode
-    norm: MUST
-    requirement: accept_only_ignore_warn_error
-    description: >
-      When assert_health.mode is provided, only ignore, warn, or error are
-      valid values.
-    rationale: Keeps diagnostics policy deterministic and portable.
-    risk_if_violated: Implementations diverge on policy interpretation.
-    references:
-      - docs/spec/contract/02_case_shape.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: ASSERT_HEALTH_GLOBAL_AND_PER_CASE_POLICY
-    introduced_in: v1
-    scope: implementation
-    applies_to: assertion_health.policy_resolution
-    norm: SHOULD
-    requirement: support_global_default_and_per_case_override
-    description: >
-      Implementations should support both a global default policy and a
-      per-case override for assertion-health diagnostics.
-    rationale: Enables gradual rollout and targeted strictness.
-    risk_if_violated: Hard to adopt diagnostics without broad breakage.
-    references:
-      - docs/spec/contract/00_design_goals.md
-      - docs/spec/contract/02_case_shape.md
-
-  - id: ASSERT_HEALTH_REDUNDANT_BRANCH_DIAGNOSTIC
-    introduced_in: v1
-    scope: case
-    applies_to: assert.tree.group_children
-    norm: SHOULD
-    requirement: detect_redundant_sibling_branches
-    description: >
-      Implementations should diagnose redundant sibling assertion branches
-      within a group (`must`, `can`, `cannot`) and surface them via
-      assertion-health policy modes.
-    rationale: Redundant branches hide intent and create maintenance noise.
-    risk_if_violated: Specs can pass while carrying misleading duplicate logic.
-    references:
-      - docs/spec/contract/00_design_goals.md
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/contract/03a_regex_portability_v1.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
-    introduced_in: v1
-    scope: case
-    applies_to: assert.tree.regex
-    norm: SHOULD
-    requirement: detect_non_portable_regex_constructs
-    description: >
-      Implementations should diagnose regex patterns that use non-portable
-      constructs and surface them via assertion-health policy modes.
-    rationale: Preserves cross-language determinism and reduces portability drift.
-    risk_if_violated: Specs may pass in one runtime and fail in another.
-    references:
-      - docs/spec/contract/00_design_goals.md
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: SPEC_LANG_EVALUATE_LIST_SHAPE
-    introduced_in: v1
-    scope: case
-    applies_to: assert.tree.evaluate
-    norm: MUST
-    requirement: evaluate_values_use_yaml_list_s_expressions
-    description: >
-      `evaluate` assertion values must use YAML list S-expression encoding.
-    rationale: Keeps parsing deterministic and implementation-independent.
-    risk_if_violated: Runtimes may interpret expressions inconsistently.
-    references:
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: SPEC_LANG_PREFERRED_AUTHORING
-    introduced_in: v1
-    scope: conformance
-    applies_to: fixtures.assert.tree
-    norm: SHOULD
-    requirement: prefer_sugar_assertions_unless_evaluate_is_required
-    description: >
-      Conformance fixtures should prefer sugar assertion operators
-      (`contain`/`regex`/`json_type`/`exists`) by default. `evaluate` should be
-      used only when required by case intent and explicitly allowlisted.
-    rationale: Keeps specs readable while preserving evaluate for advanced expression needs.
-    risk_if_violated: Unnecessary evaluate usage reduces clarity and raises authoring complexity.
-    references:
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/contract/07_portable_spec_authoring.md
-      - docs/spec/conformance/style.md
-
-  - id: SPEC_LANG_PURE_EVALUATOR
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.evaluator
-    norm: MUST
-    requirement: evaluator_is_pure_and_deterministic
-    description: >
-      The spec-lang evaluator must be pure and deterministic with no ambient
-      side effects.
-    rationale: Preserves cross-runtime parity and reproducibility.
-    risk_if_violated: Expression outcomes can drift by environment/runtime.
-    references:
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/contract/06_conformance.md
-
-  - id: SPEC_LANG_PROPER_TCO_REQUIRED
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.recursion
-    norm: MUST
-    requirement: proper_tail_call_optimization_for_tail_position_calls
-    description: >
-      Implementations must provide proper tail-call optimization for
-      tail-position `call` expressions.
-    rationale: Avoids host-stack-dependent failures in portable recursive specs.
-    risk_if_violated: Tail-recursive cases can fail by recursion depth.
-    references:
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/conformance/cases/spec_lang.spec.md
-
-  - id: SPEC_LANG_EVAL_BUDGETS_REQUIRED
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.budgets
-    norm: MUST
-    requirement: enforce_steps_nodes_literal_and_optional_timeout_budgets
-    description: >
-      Evaluators must enforce steps, nodes, literal-size, and optional timeout
-      budgets for expression execution.
-    rationale: Provides deterministic failure bounds for recursive expressions.
-    risk_if_violated: Unbounded expression execution can hang or exhaust resources.
-    references:
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: SPEC_LANG_ERROR_CLASSIFICATION
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.errors
-    norm: MUST
-    requirement: classify_schema_assertion_runtime_errors_consistently
-    description: >
-      Spec-lang expression failures must map to schema/assertion/runtime
-      categories consistently across implementations.
-    rationale: Keeps conformance outcome contracts portable and debuggable.
-    risk_if_violated: Same failing case reports different categories by runtime.
-    references:
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/contract/05_errors.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: SPEC_LANG_CURRY_ALL_BUILTINS
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.currying
-    norm: MUST
-    requirement: auto_curry_all_spec_lang_builtins_by_declared_arity
-    description: >
-      Spec-lang builtins must support deterministic partial application by
-      declared arity, including over-application diagnostics.
-    rationale: Enables reusable function-style composition in portable expressions.
-    risk_if_violated: Higher-order collection expressions drift across implementations.
-    references:
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/conformance/cases/spec_lang.spec.md
-
-  - id: SPEC_LANG_SET_ALGEBRA_PARITY
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.set_algebra
-    norm: MUST
-    requirement: match_set_algebra_semantics_across_runtimes
-    description: >
-      Spec-lang set algebra operators must produce deterministic, parity-stable
-      results across implementations.
-    rationale: Prevents cross-runtime drift for collection-heavy executable specs.
-    risk_if_violated: Same case may pass/fail differently by runtime.
-    references:
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/conformance/cases/spec_lang.spec.md
-
-  - id: SPEC_LANG_DEEP_EQUALITY_DETERMINISTIC
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.deep_equality
-    norm: MUST
-    requirement: deep_structural_equality_is_deterministic
-    description: >
-      Deep equality used by spec-lang set and membership operators must be
-      deterministic and structurally consistent across implementations.
-    rationale: Stable deep equality is required for portable set/membership behavior.
-    risk_if_violated: Collection outcomes and assertions can become non-portable.
-    references:
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/conformance/cases/spec_lang.spec.md
-
-  - id: SPEC_LANG_COLLECTION_FORMS_CONTRACTED
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.collection_forms
-    norm: MUST
-    requirement: collection_transform_forms_are_documented_and_tested
-    description: >
-      Collection transform forms (map/filter/reduce and related set/list
-      helpers) must remain explicitly contracted and conformance-covered.
-    rationale: Keeps spec-lang as a portable decision DSL instead of host-language escape.
-    risk_if_violated: Authors fall back to implementation-specific logic.
-    references:
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/schema/schema_v1.md
-      - docs/spec/conformance/cases/spec_lang.spec.md
-
-  - id: SPEC_LANG_LIBRARY_REUSE_MODEL
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.library_symbols
-    norm: SHOULD
-    requirement: support_ordered_library_symbol_loading_with_deterministic_resolution
-    description: >
-      Implementations should support reusable spec-lang libraries through
-      ordered symbol loading with deterministic duplicate/cycle failure modes.
-    rationale: Reduces repeated expression logic and shifts reusable behavior into portable specs.
-    risk_if_violated: Authoring remains copy/paste heavy and falls back to host-language helpers.
-    references:
-      - docs/spec/contract/14_spec_lang_libraries.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS
-    introduced_in: v1
-    scope: governance
-    applies_to: governance.check.subject_decision_split
-    norm: SHOULD
-    requirement: keep_repo_extraction_in_adapter_and_decision_logic_in_spec_lang
-    description: >
-      Governance checks should separate deterministic repository-data extraction
-      from spec-lang decision expressions to reduce Python-only decision logic.
-    rationale: Enables progressive migration toward implementation-independent executable governance specs.
-    risk_if_violated: Governance logic remains scanner-bound and harder to port across runtimes.
-    references:
-      - docs/spec/contract/15_governance_subject_model.md
-      - scripts/run_governance_specs.py
-
-  - id: DOC_NORMATIVE_PAGE_TRACEABILITY
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.contract.normative_pages
-    norm: MUST
-    requirement: every_normative_contract_page_has_traceability_coverage
-    description: >
-      Every normative contract page must be covered by at least one
-      traceability contract_ref entry.
-    rationale: Prevents contract pages from drifting stale without governance signal.
-    risk_if_violated: Normative docs can silently diverge from enforced behavior.
-    references:
-      - docs/spec/contract/README.md
-      - docs/spec/contract/traceability_v1.yaml
-
-  - id: DOC_REGEX_PROFILE_LINKAGE
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.regex_portability_profile
-    norm: MUST
-    requirement: regex_portability_profile_linked_in_assertions_schema_and_policy
-    description: >
-      The regex portability profile doc must be explicitly referenced by the
-      assertion contract, schema, and policy.
-    rationale: Keeps portability constraints visible at all normative layers.
-    risk_if_violated: Portability guidance can be orphaned and ignored by implementers.
-    references:
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/contract/03a_regex_portability_v1.md
-      - docs/spec/schema/schema_v1.md
-      - docs/spec/contract/policy_v1.yaml
-
-  - id: DOC_ASSERTION_OPERATOR_DOC_SYNC
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.assertion_operators
-    norm: MUST
-    requirement: core_assertion_operator_tokens_synced_between_contract_and_schema
-    description: >
-      Core assertion operator names must remain synchronized between assertion
-      contract docs and schema docs.
-    rationale: Prevents stale naming drift between reader-oriented and schema docs.
-    risk_if_violated: Users and implementers follow conflicting operator names.
-    references:
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: CONFORMANCE_EXPECT_OVERLAY_RESOLUTION
-    introduced_in: v1
-    scope: conformance
-    applies_to: fixtures.expect
-    norm: MUST
-    requirement: resolve_expectations_portable_then_impl_overlay
-    description: >
-      When conformance cases define inline expect metadata, implementations must
-      resolve expected outcomes by starting from expect.portable and then
-      overlaying expect.impl.<implementation> keys.
-    rationale: Keeps portable intent primary while allowing explicit runtime deltas.
-    risk_if_violated: Implementations drift on expectation resolution semantics.
-    references:
-      - docs/spec/contract/06_conformance.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: CONFORMANCE_CASE_STYLE_GUARD
-    introduced_in: v1
-    scope: governance
-    applies_to: fixtures.conformance.cases_style
-    norm: MUST
-    requirement: enforce_conformance_case_authoring_style
-    description: >
-      Conformance case docs must follow readability/style constraints enforced
-      by governance checks (one case per block, heading alignment, sorted ids,
-      bounded block size).
-    rationale: Keeps conformance specs readable and reviewable as the corpus grows.
-    risk_if_violated: Fixture docs become noisy and brittle to maintain.
-    references:
-      - docs/spec/conformance/style.md
-      - docs/spec/contract/06_conformance.md
-
-  - id: CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
-    introduced_in: v1
-    scope: conformance
-    applies_to: fixtures.requires.capabilities
-    norm: MUST
-    requirement: honor_requires_capabilities_and_when_missing_policy
-    description: >
-      Implementations must evaluate requires.capabilities and apply
-      when_missing policy (`skip` or `fail`) deterministically.
-    rationale: Keeps feature-gated conformance behavior portable and explicit.
-    risk_if_violated: Capability-dependent cases drift across implementations.
-    references:
-      - docs/spec/contract/06_conformance.md
-      - docs/spec/schema/schema_v1.md
-      - docs/spec/conformance/report_format.md
-
-  - id: PORTABLE_SPEC_CANONICAL_SINGLE_SET
-    introduced_in: v1
-    scope: conformance
-    applies_to: fixtures.portable.canonical_set
-    norm: MUST
-    requirement: use_docs_spec_conformance_cases_as_portable_behavior_source
-    description: >
-      Portable, implementation-independent behavior coverage must live in the
-      canonical conformance case set under docs/spec/conformance/cases.
-    rationale: Keeps one executable source of truth across implementations.
-    risk_if_violated: Spec behavior drifts across duplicated fixture sets.
-    references:
-      - docs/spec/contract/06_conformance.md
-      - docs/spec/contract/07_portable_spec_authoring.md
-      - docs/spec/conformance/README.md
-
-  - id: PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
-    introduced_in: v1
-    scope: conformance
-    applies_to: fixtures.expect_shape
-    norm: MUST
-    requirement: portable_baseline_with_runtime_overlays_only
-    description: >
-      Portable expectations must be defined in expect.portable; runtime deltas
-      must be represented only via expect.impl.<runtime> overlays.
-    rationale: Preserves a single portable baseline while allowing explicit deltas.
-    risk_if_violated: Runtime-specific forks become implicit and hard to audit.
-    references:
-      - docs/spec/contract/06_conformance.md
-      - docs/spec/contract/07_portable_spec_authoring.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION
-    introduced_in: v1
-    scope: conformance
-    applies_to: fixtures.portable.determinism
-    norm: SHOULD
-    requirement: avoid_ambient_time_random_network_and_undeclared_env
-    description: >
-      Portable conformance cases should be deterministic by construction and
-      avoid ambient dependencies (time, randomness, network, undeclared env).
-    rationale: Determinism is required for stable cross-runtime parity.
-    risk_if_violated: Flaky parity and implementation-specific false negatives.
-    references:
-      - docs/spec/contract/06_conformance.md
-      - docs/spec/contract/07_portable_spec_authoring.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: CONFORMANCE_NO_AMBIENT_ASSUMPTIONS_GUARD
-    introduced_in: v1
-    scope: governance
-    applies_to: fixtures.portable.ambient_assumptions
-    norm: MUST
-    requirement: reject_ambient_env_time_random_tokens_in_portable_case_content
-    description: >
-      Governance must reject portable conformance case content that includes
-      ambient environment/time/random assumption tokens.
-    rationale: Converts determinism guidance into an executable portability guardrail.
-    risk_if_violated: Portable fixtures become host-dependent and parity drifts.
-    references:
-      - docs/spec/contract/06_conformance.md
-      - docs/spec/contract/07_portable_spec_authoring.md
-      - docs/spec/governance/cases/conformance_no_ambient_assumptions.spec.md
-
-  - id: CONFORMANCE_PURPOSE_QUALITY_GATE
-    introduced_in: v1
-    scope: governance
-    applies_to: fixtures.conformance.purpose_quality
-    norm: MUST
-    requirement: conformance_purpose_policy_and_cases_remain_within_warning_budget
-    description: >
-      Conformance purpose lint policy integrity and purpose text quality must
-      satisfy governance warning budgets.
-    rationale: Keeps fixture intent clear and avoids silent quality debt.
-    risk_if_violated: Conformance cases lose clarity and increase review burden.
-    references:
-      - docs/spec/conformance/purpose_lint_v1.yaml
-      - docs/spec/contract/06_conformance.md
-
-  - id: SPEC_PORTABILITY_METRIC_REPORTED
-    introduced_in: v1
-    scope: governance
-    applies_to: specs.portability.metric_report
-    norm: MUST
-    requirement: portability_metric_report_generation_and_shape_valid
-    description: >
-      Governance must compute and emit the spec self-containment metric report
-      over configured `.spec.md` roots with segmented and overall summaries.
-    rationale: Provides a measurable portability signal and makes coupling debt visible.
-    risk_if_violated: Portability regressions accumulate without objective feedback.
-    references:
-      - docs/spec/contract/07_portable_spec_authoring.md
-      - docs/spec/governance/cases/spec_portability_metric.spec.md
-      - scripts/spec_portability_report.py
-      - spec_runner/spec_portability.py
-
-  - id: SPEC_PORTABILITY_NON_REGRESSION_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: specs.portability.metric_non_regression
-    norm: MUST
-    requirement: spec_lang_self_containment_metrics_must_not_decrease_from_baseline
-    description: >
-      Governance must enforce non-regression for configured spec-lang
-      self-containment metrics against a checked-in baseline.
-    rationale: Ratchets portable/spec-lang-centered coverage in one direction over time.
-    risk_if_violated: Portability quality can silently regress while aggregate reporting still exists.
-    references:
-      - docs/spec/governance/cases/spec_portability_non_regression.spec.md
-      - docs/spec/metrics/spec_portability_baseline.json
-      - spec_runner/spec_portability.py
-
-  - id: SPEC_LANG_ADOPTION_METRIC_REPORTED
-    introduced_in: v1
-    scope: governance
-    applies_to: specs.spec_lang_adoption.metric_report
-    norm: MUST
-    requirement: spec_lang_adoption_metric_report_generation_and_shape_valid
-    description: >
-      Governance must produce a valid spec-lang adoption metric report with
-      segmented and overall logic-self-containment signals.
-    rationale: Provides directional signal for migration from host-language logic into spec-lang.
-    risk_if_violated: Teams cannot measure migration progress toward spec-lang-first behavior.
-    references:
-      - docs/spec/governance/cases/spec_lang_adoption_metric.spec.md
-      - spec_runner/quality_metrics.py
-
-  - id: SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: specs.spec_lang_adoption.metric_non_regression
-    norm: MUST
-    requirement: spec_lang_adoption_metrics_must_not_regress_from_baseline
-    description: >
-      Governance must enforce non-regression for configured spec-lang adoption
-      metrics using checked-in baseline values.
-    rationale: Creates a monotonic ratchet toward higher spec-lang logic coverage.
-    risk_if_violated: Adoption can drift backward without visibility or merge protection.
-    references:
-      - docs/spec/governance/cases/spec_lang_adoption_non_regression.spec.md
-      - docs/spec/metrics/spec_lang_adoption_baseline.json
-      - spec_runner/quality_metrics.py
-
-  - id: RUNNER_INDEPENDENCE_METRIC_REPORTED
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.runner_independence.metric_report
-    norm: MUST
-    requirement: runner_independence_metric_report_generation_and_shape_valid
-    description: >
-      Governance must produce a valid runner-independence metric report for
-      gate scripts, CI workflows, and adapter interfaces.
-    rationale: Quantifies reduction of direct runtime coupling in orchestration paths.
-    risk_if_violated: Runtime lock-in can increase unnoticed.
-    references:
-      - docs/spec/governance/cases/runner_independence_metric.spec.md
-      - spec_runner/quality_metrics.py
-
-  - id: RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.runner_independence.metric_non_regression
-    norm: MUST
-    requirement: runner_independence_metrics_must_not_regress_from_baseline
-    description: >
-      Governance must enforce non-regression for configured runner-independence
-      metrics using checked-in baseline values.
-    rationale: Maintains one-way pressure away from direct interpreter/runtime coupling.
-    risk_if_violated: Gate and CI scripts can silently revert to runtime-specific hardcoding.
-    references:
-      - docs/spec/governance/cases/runner_independence_non_regression.spec.md
-      - docs/spec/metrics/runner_independence_baseline.json
-      - spec_runner/quality_metrics.py
-
-  - id: DOCS_OPERABILITY_METRIC_REPORTED
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.operability.metric_report
-    norm: MUST
-    requirement: docs_operability_metric_report_generation_and_shape_valid
-    description: >
-      Governance must produce a valid docs operability report with segmented and
-      overall operability ratios.
-    rationale: Measures whether docs remain executable, complete, and actionable.
-    risk_if_violated: Documentation quality decays without objective enforcement.
-    references:
-      - docs/spec/governance/cases/docs_operability_metric.spec.md
-      - spec_runner/quality_metrics.py
-
-  - id: DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.operability.metric_non_regression
-    norm: MUST
-    requirement: docs_operability_metrics_must_not_regress_from_baseline
-    description: >
-      Governance must enforce non-regression for configured docs-operability
-      metrics using checked-in baseline values.
-    rationale: Keeps documentation operability moving forward under automation.
-    risk_if_violated: Repeated support burden and ambiguous docs behavior return.
-    references:
-      - docs/spec/governance/cases/docs_operability_non_regression.spec.md
-      - docs/spec/metrics/docs_operability_baseline.json
-      - spec_runner/quality_metrics.py
-
-  - id: CONTRACT_ASSERTIONS_METRIC_REPORTED
-    introduced_in: v1
-    scope: governance
-    applies_to: specs.contract_assertions.metric_report
-    norm: MUST
-    requirement: contract_assertions_metric_report_generation_and_shape_valid
-    description: >
-      Governance must produce a valid contract-assertions metric report for
-      assertions contract/schema/book alignment.
-    rationale: Tracks assertion contract quality and shared vocabulary cohesion.
-    risk_if_violated: Assertion contract drift can accumulate across docs and policy layers.
-    references:
-      - docs/spec/governance/cases/contract_assertions_metric.spec.md
-      - spec_runner/quality_metrics.py
-
-  - id: CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: specs.contract_assertions.metric_non_regression
-    norm: MUST
-    requirement: contract_assertions_metrics_must_not_regress_from_baseline
-    description: >
-      Governance must enforce non-regression for configured contract-assertions
-      metrics using checked-in baseline values.
-    rationale: Prevents drift in assertion-contract quality between releases.
-    risk_if_violated: Contract quality may degrade while core tests remain green.
-    references:
-      - docs/spec/governance/cases/contract_assertions_non_regression.spec.md
-      - docs/spec/metrics/contract_assertions_baseline.json
-      - spec_runner/quality_metrics.py
-
-  - id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
-    introduced_in: v1
-    scope: governance
-    applies_to: specs.portability.metric_thresholds
-    norm: SHOULD
-    requirement: portability_metric_thresholds_enforced_when_enabled
-    description: >
-      Governance should support threshold-based portability gating
-      (`min_overall_ratio`, `min_segment_ratios`) when explicit enforcement is
-      enabled in configuration.
-    rationale: Enables gradual transition from report-only to hard quality gates.
-    risk_if_violated: Teams cannot ratchet portability quality over time.
-    references:
-      - docs/spec/contract/07_portable_spec_authoring.md
-      - docs/spec/governance/cases/spec_portability_metric.spec.md
-      - spec_runner/spec_portability.py
-
-  - id: DOCS_REF_SURFACE_COMPLETE
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.surface
-    norm: MUST
-    requirement: required_reference_surface_files_exist
-    description: >
-      The canonical docs reference surface files must exist and remain present
-      as an enforced product surface.
-    rationale: Prevents accidental deletion/drift of required reference material.
-    risk_if_violated: Missing reference pages break onboarding and contract lookup.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/book/reference_index.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: DOCS_REFERENCE_INDEX_SYNC
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.index
-    norm: MUST
-    requirement: reference_index_matches_actual_book_chapter_set_and_order
-    description: >
-      The machine-checked reference index must stay synchronized with the actual
-      reference-manual chapter files and ordering.
-    rationale: Keeps the reference manual deterministic and reviewable.
-    risk_if_violated: Index/doc drift causes broken navigation and stale guidance.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/book/reference_index.md
-
-  - id: DOCS_REQUIRED_SECTIONS_PRESENT
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.sections
-    norm: MUST
-    requirement: required_section_tokens_present_in_reference_chapters
-    description: >
-      Required reference chapters must include required section tokens defined by
-      governance policy.
-    rationale: Maintains a consistent reference-manual structure.
-    risk_if_violated: Critical usage/failure guidance disappears over time.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/book/02_core_model.md
-      - docs/book/03_assertions.md
-      - docs/book/04_spec_lang_reference.md
-
-  - id: DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.examples
-    norm: MUST
-    requirement: examples_parse_or_have_explicit_opt_out_marker_with_reason
-    description: >
-      Documentation examples must be parseable/runnable by default, or include
-      an explicit and justified opt-out marker.
-    rationale: Ensures examples are trustworthy for real users.
-    risk_if_violated: Copy/paste examples fail and increase support load.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/book/README.md
-
-  - id: DOCS_CLI_FLAGS_DOCUMENTED
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.cli.flags
-    norm: MUST
-    requirement: public_runner_flags_documented_in_dev_and_impl_docs
-    description: >
-      Public runner CLI flags must be documented in required development and
-      implementation docs.
-    rationale: Keeps automation-facing interfaces discoverable and stable.
-    risk_if_violated: Users guess flags and misuse runner commands.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/development.md
-      - docs/spec/impl/python.md
-      - docs/spec/impl/php.md
-
-  - id: DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.contract.schema.book.tokens
-    norm: MUST
-    requirement: core_assertion_tokens_synchronized_across_book_contract_schema
-    description: >
-      Core assertion token vocabulary must stay synchronized across reference
-      book docs, contract docs, and schema docs.
-    rationale: Prevents readers from seeing conflicting terminology.
-    risk_if_violated: Authoring and implementation drift leads to false failures.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/book/03_assertions.md
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/schema/schema_v1.md
-
-  - id: DOCS_META_SCHEMA_VALID
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.doc_meta
-    norm: MUST
-    requirement: canonical_reference_docs_include_valid_doc_meta
-    description: >
-      Canonical reference docs must include machine-checkable doc metadata that
-      validates against docs metadata schema requirements.
-    rationale: Makes reference docs testable as structured product surfaces.
-    risk_if_violated: Docs quality checks become heuristic and brittle.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/spec/schema/docs_schema_v1.md
-      - docs/book/reference_manifest.yaml
-
-  - id: DOCS_REFERENCE_MANIFEST_SYNC
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.manifest
-    norm: MUST
-    requirement: generated_reference_index_matches_manifest_source_of_truth
-    description: >
-      Generated reference index output must remain synchronized with the
-      canonical reference manifest chapter order and summaries.
-    rationale: Keeps the docs reference manual deterministic and reviewable.
-    risk_if_violated: Users see stale or misleading navigation/coverage docs.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/spec/schema/reference_manifest_v1.md
-      - docs/book/reference_manifest.yaml
-
-  - id: DOCS_TOKEN_OWNERSHIP_UNIQUE
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.tokens
-    norm: MUST
-    requirement: canonical_token_ownership_is_unique
-    description: >
-      Canonical documentation tokens must have exactly one owner doc in the
-      reference surface metadata.
-    rationale: Prevents conflicting definitions across reference chapters.
-    risk_if_violated: Contract vocabulary drifts and authors get mixed guidance.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/spec/schema/docs_schema_v1.md
-
-  - id: DOCS_TOKEN_DEPENDENCY_RESOLVED
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.token_dependencies
-    norm: MUST
-    requirement: required_tokens_resolve_to_owner_docs_and_owner_text
-    description: >
-      Each docs metadata requires_tokens entry must map to an owner doc token
-      and be present in owner doc content.
-    rationale: Maintains integrity of cross-doc vocabulary references.
-    risk_if_violated: Broken links between docs concepts degrade maintainability.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/spec/schema/docs_schema_v1.md
-
-  - id: DOCS_INSTRUCTIONS_REQUIRED_SECTIONS
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.instructions
-    norm: MUST
-    requirement: instruction_docs_include_required_operational_sections
-    description: >
-      Instruction/reference docs must include required operational sections
-      declared in doc metadata.
-    rationale: Ensures docs remain operationally useful beyond examples.
-    risk_if_violated: Repeated support questions and weak onboarding quality.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/spec/schema/docs_schema_v1.md
-
-  - id: DOCS_COMMAND_EXAMPLES_VERIFIED
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.examples_v2
-    norm: MUST
-    requirement: docs_examples_validate_or_explicitly_opt_out_with_reason
-    description: >
-      Shell/python/spec-test examples in canonical reference chapters must pass
-      static validation unless explicitly opted out with a reason marker.
-    rationale: Keeps copy/paste docs trustworthy for users.
-    risk_if_violated: Documentation examples fail at runtime and waste time.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/spec/schema/docs_schema_v1.md
-
-  - id: DOCS_EXAMPLE_IDS_UNIQUE
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.example_ids
-    norm: MUST
-    requirement: docs_metadata_example_ids_unique_across_reference_surface
-    description: >
-      Example IDs declared in docs metadata must be unique across canonical
-      reference chapters.
-    rationale: Keeps docs example references stable and unambiguous.
-    risk_if_violated: Ambiguous references break traceability and review flow.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/spec/schema/docs_schema_v1.md
-
-  - id: DOCS_GENERATED_ARTIFACTS_FRESH
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.reference.generated_artifacts
-    norm: MUST
-    requirement: generated_docs_artifacts_match_manifest_and_doc_meta
-    description: >
-      Generated reference index, coverage, and graph artifacts should remain in
-      sync with manifest and docs metadata as part of CI checks.
-    rationale: Provides deterministic docs telemetry and drift detection.
-    risk_if_violated: Artifact-driven quality signals become stale.
-    references:
-      - docs/spec/contract/10_docs_quality.md
-      - docs/book/reference_manifest.yaml
-      - scripts/docs_build_reference.py
-
-  - id: DOCS_MAKE_COMMANDS_SYNC
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.command.entrypoints
-    norm: MUST
-    requirement: key_docs_reference_canonical_make_command_entrypoints
-    description: >
-      Key contributor docs must reference canonical make command entrypoints
-      used for docs verification and full gate execution.
-    rationale: Reduces command drift and onboarding ambiguity.
-    risk_if_violated: Contributors run stale commands and miss required checks.
-    references:
-      - README.md
-      - docs/development.md
-
-  - id: DOCS_ADOPTION_PROFILES_SYNC
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.adoption.profiles
-    norm: MUST
-    requirement: key_docs_define_and_sync_core_and_full_profiles
-    description: >
-      Key contributor docs must define core and full adoption profiles and
-      keep their command entrypoints synchronized.
-    rationale: Keeps onboarding clear for lightweight and full-gate workflows.
-    risk_if_violated: Teams run inconsistent command lanes and miss expected checks.
-    references:
-      - docs/spec/contract/11_adoption_profiles.md
-      - README.md
-      - docs/development.md
-
-  - id: DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.release.contract
-    norm: MUST
-    requirement: release_guidance_uses_executable_gate_entrypoints_not_manual_choreography
-    description: >
-      Release guidance must define executable gate entrypoints and must not
-      prescribe sequential manual do-X-then-inspect-Y checklist choreography.
-    rationale: Keeps release quality deterministic and automation-first.
-    risk_if_violated: Human-orchestrated release flow drifts and becomes unreliable.
-    references:
-      - docs/release_checklist.md
-      - docs/spec/contract/10_docs_quality.md
-      - docs/spec/governance/cases/docs_release_contract_automation_policy.spec.md
-
-  - id: CURRENT_SPEC_POLICY_KEY_NAMES
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.case_key_names
-    norm: MUST
-    requirement: policy_expression_key_uses_policy_evaluate_only
-    description: >
-      Current `.spec.md` cases use `policy_evaluate` as the policy expression
-      key name.
-    rationale: Reduces naming confusion between assertion `evaluate` and policy expression fields.
-    risk_if_violated: Mixed key names create ambiguity and drift in policy execution wiring.
-    references:
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/contract/15_governance_subject_model.md
-      - docs/spec/governance/cases/docs_current_spec_policy_key_names.spec.md
-
-  - id: RUNTIME_RUNNER_INTERFACE_GATE_SYNC
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.gate_orchestration
-    norm: SHOULD
-    requirement: gate_scripts_call_runner_interface_boundary
-    description: >
-      Gate shell scripts should call a runner interface command boundary
-      (`SPEC_RUNNER_BIN`) instead of hardcoding Python script entrypoints.
-    rationale: Keeps orchestration portable across compliant runner implementations.
-    risk_if_violated: Removing Python requires rewriting gate orchestration logic.
-    references:
-      - docs/spec/contract/12_runner_interface.md
-      - scripts/runner_adapter.sh
-      - scripts/ci_gate.sh
-      - scripts/core_gate.sh
-      - scripts/docs_doctor.sh
-
-  - id: RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.runner_interface.subcommands
-    norm: MUST
-    requirement: declared_runner_adapters_list_required_subcommand_case_labels
-    description: >
-      Declared runner adapter scripts must include case labels for all required
-      runner-interface subcommands.
-    rationale: Prevents partial adapter drift that breaks interface compatibility.
-    risk_if_violated: Gate commands fail when switching adapters by SPEC_RUNNER_BIN.
-    references:
-      - docs/spec/contract/12_runner_interface.md
-      - docs/spec/governance/cases/runtime_runner_interface_subcommands.spec.md
-
-  - id: RUNTIME_RUNNER_INTERFACE_CI_LANE_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.runner_interface.ci_lane
-    norm: MUST
-    requirement: ci_includes_non_default_adapter_lane_via_spec_runner_bin
-    description: >
-      CI must include a lane that runs core gate with SPEC_RUNNER_BIN set to a
-      non-default adapter path.
-    rationale: Ensures adapter switching is continuously exercised in automation.
-    risk_if_violated: Alternate adapter support can silently regress.
-    references:
-      - docs/spec/contract/12_runner_interface.md
-      - docs/spec/governance/cases/runtime_runner_interface_ci_lane.spec.md
-
-  - id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.runner_interface.rust_adapter
-    norm: MUST
-    requirement: rust_adapter_invokes_rust_cli_without_delegating_to_shell_python_adapter
-    description: >
-      The Rust adapter script must invoke the Rust runner-interface CLI
-      directly and must not delegate to scripts/runner_adapter.sh.
-    rationale: Ensures the Rust lane validates real adapter behavior instead of shell delegation.
-    risk_if_violated: Rust lane gives false confidence and misses Rust adapter regressions.
-    references:
-      - docs/spec/contract/12_runner_interface.md
-      - docs/spec/governance/cases/runtime_rust_adapter_no_delegate.spec.md
-
-  - id: RUST_PRIMARY_GATE_PATH_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.rust_primary.ci_lane
-    norm: MUST
-    requirement: rust_primary_ci_lane_executes_core_gate_via_runner_interface
-    description: >
-      CI must include a Rust-primary lane that executes core gate with
-      SPEC_RUNNER_BIN pointing to the Rust adapter path.
-    rationale: Makes Rust-primary operation continuously verifiable in automation.
-    risk_if_violated: Rust-primary path can silently regress.
-    references:
-      - docs/spec/contract/16_rust_primary_transition.md
-      - docs/spec/governance/cases/runtime_rust_primary_gate_path.spec.md
-
-  - id: RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.rust_primary.gate_dependency
-    norm: MUST
-    requirement: gate_scripts_avoid_direct_python_runner_entrypoints_under_rust_primary
-    description: >
-      Gate scripts must remain runner-interface driven and must not hardcode
-      Python runner command entrypoints.
-    rationale: Preserves implementation-neutral orchestration for Rust-primary usage.
-    risk_if_violated: Switching primary runtime requires invasive script rewrites.
-    references:
-      - docs/spec/contract/16_rust_primary_transition.md
-      - docs/spec/governance/cases/runtime_rust_primary_no_python_dependency.spec.md
-
-  - id: RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.rust_primary.interface_stability
-    norm: MUST
-    requirement: rust_primary_adapter_preserves_required_runner_interface_subcommands
-    description: >
-      Rust-primary adapter path must preserve required runner-interface
-      subcommand behavior.
-    rationale: Prevents compatibility drift for gate orchestration commands.
-    risk_if_violated: Core commands fail when Rust path is selected.
-    references:
-      - docs/spec/contract/16_rust_primary_transition.md
-      - docs/spec/governance/cases/runtime_rust_primary_interface_stability.spec.md
-
-  - id: RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.rust_primary.parity
-    norm: MUST
-    requirement: rust_primary_gate_flow_includes_shared_capability_parity_step
-    description: >
-      Rust-primary-compatible gate flow must include shared-capability
-      conformance parity execution.
-    rationale: Keeps cross-runtime behavior equivalence enforced during transition.
-    risk_if_violated: Runtime behavior drift can ship undetected.
-    references:
-      - docs/spec/contract/16_rust_primary_transition.md
-      - docs/spec/governance/cases/runtime_rust_primary_shared_capability_parity.spec.md
-
-  - id: RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.rust_primary.adapter_exec
-    norm: MUST
-    requirement: rust_primary_adapter_executes_deterministic_smoke_command
-    description: >
-      Rust-primary governance must include an execution smoke check that runs
-      the adapter command and validates deterministic output and exit-code
-      behavior.
-    rationale: Ensures the Rust adapter path is executable, not just statically configured.
-    risk_if_violated: Rust adapter can regress at runtime while token/path checks still pass.
-    references:
-      - docs/spec/contract/16_rust_primary_transition.md
-      - docs/spec/governance/cases/runtime_rust_primary_adapter_exec_smoke.spec.md
-
-  - id: RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.rust_primary.interface_parity
-    norm: MUST
-    requirement: rust_adapter_shell_and_rust_cli_subcommand_sets_must_match
-    description: >
-      Rust-primary governance must enforce parity between subcommands exposed by
-      scripts/rust/runner_adapter.sh and scripts/rust/spec_runner_cli/src/main.rs.
-    rationale: Prevents runner-interface drift between adapter surface and Rust CLI implementation.
-    risk_if_violated: Commands may appear supported in one layer but fail in the other at runtime.
-    references:
-      - docs/spec/contract/16_rust_primary_transition.md
-      - docs/spec/governance/cases/runtime_rust_primary_subcommand_parity.spec.md
-
-  - id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
-    introduced_in: v1
-    scope: docs
-    applies_to: docs.rust_primary.adoption
-    norm: SHOULD
-    requirement: docs_present_rust_primary_workflow_alongside_compatibility_paths
-    description: >
-      Contributor docs should present Rust-primary workflow consistently with
-      core/full adoption profile guidance and optional compatibility lanes.
-    rationale: Reduces onboarding ambiguity during runtime-primary transition.
-    risk_if_violated: Teams adopt inconsistent local/CI invocation paths.
-    references:
-      - docs/spec/contract/16_rust_primary_transition.md
-      - docs/spec/governance/cases/docs_adoption_profiles_sync.spec.md
-
-  - id: RUNTIME_SCOPE_BOUNDED_FOR_V1
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.support.matrix
-    norm: SHOULD
-    requirement: v1_runtime_scope_explicitly_bounded_to_declared_targets
-    description: >
-      Runtime support scope should remain explicitly bounded in v1 contract
-      docs to avoid uncontrolled cross-runtime expansion.
-    rationale: Keeps maintenance scope predictable and prevents parity matrix sprawl.
-    risk_if_violated: Runtime support expectations expand without ownership or gate coverage.
-    references:
-      - docs/spec/contract/08_v1_scope.md
-      - docs/spec/contract/13_runtime_scope.md
-      - docs/spec/governance/cases/runtime_scope_sync.spec.md
-
-  - id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
-    introduced_in: v1
-    scope: implementation
-    applies_to: runtime.assertion_execution
-    norm: MUST
-    requirement: compile_leaf_ops_to_spec_lang_predicates_before_execution
-    description: >
-      Runtime assertion paths must compile external leaf ops to spec-lang
-      predicates and evaluate through the spec-lang engine, rather than direct
-      ad-hoc operator execution branches.
-    rationale: Preserves one semantic execution model across implementations.
-    risk_if_violated: Cross-runner drift and hidden behavior inconsistencies.
-    references:
-      - docs/spec/contract/09_internal_representation.md
-      - docs/spec/contract/03b_spec_lang_v1.md
-
-  - id: SPEC_LANG_PURE_NO_EFFECT_BUILTINS
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.evaluate.builtins
-    norm: MUST
-    requirement: forbid_effectful_builtins_in_core_evaluator
-    description: >
-      Spec-lang builtin surface must not include side-effectful probes such as
-      filesystem/network/process/env access. Adapter layers must provide any
-      derived side-effect data as normalized subjects.
-    rationale: Keeps the decision engine deterministic and runtime-independent.
-    risk_if_violated: Evaluator behavior drifts by environment and runtime side effects.
-    references:
-      - docs/spec/contract/03b_spec_lang_v1.md
-      - docs/spec/contract/09_internal_representation.md
-
-  - id: RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY
-    introduced_in: v1
-    scope: implementation
-    applies_to: runtime.assertion_decisions
-    norm: MUST
-    requirement: assertion_pass_fail_decisions_execute_via_compiled_spec_lang
-    description: >
-      Runtime assertion pass/fail decisions must execute only through compiled
-      spec-lang predicates; external assertion operators are authoring sugar.
-    rationale: Enforces one semantic decision plane across runner implementations.
-    risk_if_violated: Hidden per-runtime assertion branch drift.
-    references:
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/contract/09_internal_representation.md
-
-  - id: ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY
-    introduced_in: v1
-    scope: contract
-    applies_to: assert.tree.operator_model
-    norm: MUST
-    requirement: evaluate_is_universal_assertion_core_operator
-    description: >
-      Assertion contracts and schema must define `evaluate` as the universal
-      assertion core operator across all targets/types.
-    rationale: Centralizes semantics in one portable decision language.
-    risk_if_violated: Per-type/operator drift reintroduces semantic fragmentation.
-    references:
-      - docs/spec/schema/schema_v1.md
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/contract/09_internal_representation.md
-
-  - id: ASSERT_SUGAR_OPERATORS_COMPILE_ONLY
-    introduced_in: v1
-    scope: implementation
-    applies_to: assert.tree.operator_sugar
-    norm: MUST
-    requirement: non_evaluate_assert_ops_compile_to_spec_lang_only
-    description: >
-      Non-`evaluate` assertion operators are authoring sugar only and must not
-      carry independent runtime semantics.
-    rationale: Keeps one execution semantics path while preserving author ergonomics.
-    risk_if_violated: Hidden semantic divergence between sugar and evaluate forms.
-    references:
-      - docs/spec/schema/schema_v1.md
-      - docs/spec/contract/03_assertions.md
-      - spec_runner/compiler.py
-      - spec_runner/assertions.py
-
-  - id: ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN
-    introduced_in: v1
-    scope: contract
-    applies_to: assert.tree.target_applicability
-    norm: MUST
-    requirement: target_type_applicability_defined_by_subject_shape_availability
-    description: >
-      Target/type compatibility must be expressed as subject
-      availability/shape responsibilities in harness/type contracts rather than
-      per-type operator allowlists.
-    rationale: Separates adapter subject contracts from assertion language semantics.
-    risk_if_violated: Contracts become inconsistent with runtime behavior and hard to port.
-    references:
-      - docs/spec/contract/04_harness.md
-      - docs/spec/contract/types/text_file.md
-      - docs/spec/contract/types/cli_run.md
-      - docs/spec/contract/types/api_http.md
-
-  - id: ASSERT_COMPILER_SCHEMA_MATRIX_SYNC
-    introduced_in: v1
-    scope: governance
-    applies_to: assert.tree.compiler_contract_sync
-    norm: MUST
-    requirement: compiler_operator_handling_matches_schema_contract_universal_model
-    description: >
-      Governance must fail if compiler behavior, schema language, and assertion
-      contracts drift on universal evaluate core and sugar compile mappings.
-    rationale: Makes schema/contract the enforcement source of truth.
-    risk_if_violated: Runtime can silently diverge from documented behavior model.
-    references:
-      - docs/spec/schema/schema_v1.md
-      - docs/spec/contract/03_assertions.md
-      - docs/spec/contract/09_internal_representation.md
-      - spec_runner/compiler.py
-
-  - id: GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
-    introduced_in: v1
-    scope: governance
-    applies_to: governance.check_decisions
-    norm: MUST
-    requirement: governance_decision_predicates_defined_as_spec_lang_data
-    description: >
-      Governance checks must keep data extraction in scanner substrate and
-      express pass/fail predicates as spec-lang expressions in governance spec
-      harness config.
-    rationale: Moves policy decisions into executable spec data and reduces Python-specific decision logic.
-    risk_if_violated: Governance policy drifts into ad-hoc host-language code.
-    references:
-      - docs/spec/contract/15_governance_subject_model.md
-      - scripts/run_governance_specs.py
-
-  - id: ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY
-    introduced_in: v1
-    scope: governance
-    applies_to: runtime.gate_orchestration_policy
-    norm: MUST
-    requirement: ci_gate_verdict_is_evaluated_via_spec_lang_policy_expression
-    description: >
-      CI gate orchestration scripts may execute effectful commands, but final
-      pass/fail policy must be evaluated from spec-lang policy data.
-    rationale: Keeps release policy implementation-independent and auditable.
-    risk_if_violated: Gate behavior hardcodes runtime-specific logic in scripts.
-    references:
-      - scripts/ci_gate_summary.py
-      - docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
-
-  - id: CONTRACT_MUST_RULE_COVERAGE_COMPLETE
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.contract.coverage
-    norm: MUST
-    requirement: all_must_rules_have_traceability_evidence
-    description: >
-      All active MUST contract rules must remain covered by traceability
-      evidence (unit tests and/or conformance fixtures).
-    rationale: Prevents normative MUST requirements from becoming unenforced.
-    risk_if_violated: Contract claims can drift from executable guarantees.
-    references:
-      - docs/spec/contract/policy_v1.yaml
-      - docs/spec/contract/traceability_v1.yaml
-
-  - id: OBJECTIVE_METRIC_MANIFEST_VALID
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.metrics.objective_manifest
-    norm: MUST
-    requirement: objective_manifest_schema_and_objective_set_must_be_valid
-    description: >
-      Objective scorecard manifest and schema bindings must remain valid and
-      include all required objective IDs.
-    rationale: Prevents silent objective drift and ad-hoc metric selection.
-    risk_if_violated: Measurement can optimize local counters while missing project intent.
-    references:
-      - docs/spec/contract/17_objective_metrics.md
-      - docs/spec/schema/objective_metrics_schema_v1.md
-      - docs/spec/metrics/objective_manifest.yaml
-      - docs/spec/governance/cases/objective_scorecard_metric.spec.md
-
-  - id: OBJECTIVE_SCORECARD_REPORTED
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.metrics.objective_scorecard
-    norm: MUST
-    requirement: objective_scorecard_report_must_be_generated_and_valid
-    description: >
-      Governance must generate a deterministic objective scorecard report with
-      objective scores, tripwire hits, and correction recommendations.
-    rationale: Provides one top-level project-health view tied to stated objectives.
-    risk_if_violated: Metric families remain fragmented and hard to steer.
-    references:
-      - docs/spec/contract/17_objective_metrics.md
-      - scripts/objective_scorecard_report.py
-      - docs/spec/governance/cases/objective_scorecard_metric.spec.md
-
-  - id: OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.metrics.objective_scorecard
-    norm: MUST
-    requirement: objective_scorecard_summary_metrics_must_not_regress
-    description: >
-      Objective scorecard summary metrics must be ratcheted by checked-in
-      baseline and fail on configured regressions.
-    rationale: Preserves directional progress toward project objectives.
-    risk_if_violated: Temporary regressions can become the new normal without explicit approval.
-    references:
-      - docs/spec/metrics/objective_scorecard_baseline.json
-      - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
-
-  - id: OBJECTIVE_TRIPWIRES_ENFORCED
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.metrics.objective_tripwires
-    norm: MUST
-    requirement: manifest_tripwire_checks_must_exist_and_pass
-    description: >
-      Objective manifest tripwire check IDs must map to governance cases and
-      all tripwire checks must pass.
-    rationale: Converts anti-gaming boundaries into executable guardrails.
-    risk_if_violated: Score improvements can hide critical contract/security/runtime failures.
-    references:
-      - docs/spec/metrics/objective_manifest.yaml
-      - docs/spec/governance/cases/objective_tripwires_clean.spec.md
-
-  - id: OBJECTIVE_COURSE_CORRECTION_POLICY_DEFINED
-    introduced_in: v1
-    scope: governance
-    applies_to: docs.spec.metrics.objective_baseline_updates
-    norm: MUST
-    requirement: baseline_update_metadata_notes_must_be_present_and_fresh
-    description: >
-      Baseline update notes must include rationale and hash-pinned entries for
-      required baseline files; stale/missing entries fail governance.
-    rationale: Forces explicit correction narrative and prevents silent baseline manipulation.
-    risk_if_violated: Teams can \"move the goalposts\" without reviewable justification.
-    references:
-      - docs/spec/metrics/baseline_update_notes.yaml
-      - docs/spec/contract/17_objective_metrics.md
-      - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
-
-  - id: GOVERNANCE_POLICY_EVALUATE_REQUIRED
-    introduced_in: v1
-    scope: governance
-    applies_to: governance.check.harness.policy_evaluate
-    norm: MUST
-    requirement: governance_decision_contracts_must_declare_policy_evaluate
-    description: >
-      Governance decision checks must declare policy_evaluate expressions in
-      harness config so final verdicts are evaluated through spec-lang.
-    rationale: Keeps decision logic implementation-independent and portable.
-    risk_if_violated: Check pass/fail behavior drifts into host-language branching.
-    references:
-      - docs/spec/contract/15_governance_subject_model.md
-      - docs/spec/contract/18_governance_subject_extractors.md
-      - docs/spec/governance/cases/governance_policy_evaluate_required.spec.md
-
-  - id: GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
-    introduced_in: v1
-    scope: governance
-    applies_to: scripts.run_governance_specs
-    norm: MUST
-    requirement: check_extractors_must_not_embed_per_check_policy_verdict_branches
-    description: >
-      Governance check extractors must emit deterministic subject payloads and
-      violation candidates only; final policy verdicts are centralized.
-    rationale: Reduces duplicated decision semantics and improves parity portability.
-    risk_if_violated: Check-specific logic diverges and becomes hard to port.
-    references:
-      - docs/spec/contract/15_governance_subject_model.md
-      - docs/spec/contract/18_governance_subject_extractors.md
-      - docs/spec/governance/cases/governance_extractor_only_no_verdict_branching.spec.md
-
-  - id: RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
-    introduced_in: v1
-    scope: runtime
-    applies_to: scripts.rust.spec_runner_cli
-    norm: MUST
-    requirement: rust_runner_interface_must_not_hardcode_python_exec_paths_or_tokens
-    description: >
-      Rust runner interface implementation must avoid direct Python execution
-      token coupling in its command dispatch layer.
-    rationale: Supports Rust-primary operation and reduces interpreter lock-in.
-    risk_if_violated: Rust lane silently remains Python-dependent.
-    references:
-      - docs/spec/contract/12_runner_interface.md
-      - docs/spec/contract/16_rust_primary_transition.md
-      - docs/spec/governance/cases/runtime_rust_adapter_no_python_exec.spec.md
+- id: CLI_RUN_ENTRYPOINT_REQUIRED
+  introduced_in: v1
+  scope: case
+  applies_to: cli.run.harness.entrypoint
+  norm: SHOULD
+  requirement: prefer_present
+  description: For cli.run, harness.entrypoint should be set in each case.
+  rationale: Keeps invocation explicit and reduces environment coupling.
+  risk_if_violated: Cases can become environment-dependent outside conformance.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+- id: CLI_RUN_SAFE_MODE_RESTRICTS_HOOKS_AND_FALLBACK
+  introduced_in: v1
+  scope: implementation
+  applies_to: cli.run.safe_mode
+  norm: SHOULD
+  requirement: disable_hooks_and_env_fallback_when_safe_mode_enabled
+  description: 'Implementations should provide a safe mode that disables hook entrypoints and entrypoint env fallback for `cli.run`.
+
+    '
+  rationale: Reduces code-execution risk for hardened or semi-trusted workflows.
+  risk_if_violated: Untrusted or mixed-trust specs have higher exploitability.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/impl/python.md
+- id: CLI_RUN_ENV_ALLOWLIST_CONTROL
+  introduced_in: v1
+  scope: implementation
+  applies_to: cli.run.process_environment
+  norm: SHOULD
+  requirement: support_allowlist_for_inherited_environment
+  description: 'Implementations should provide a control to limit inherited process environment variables passed to cli.run executions.
+
+    '
+  rationale: Limits accidental secret exposure from ambient CI/dev shells.
+  risk_if_violated: Commands under test can read unrelated sensitive env.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/impl/php.md
+- id: CLI_RUN_ENTRYPOINT_ENV_FALLBACK
+  introduced_in: v1
+  scope: implementation
+  applies_to: cli.run.entrypoint_resolution
+  norm: SHOULD
+  requirement: support_env_fallback_when_process_env_and_dynamic_entrypoint_loading_are_available
+  description: 'Implementations should support environment fallback for local/CI ergonomics when they can read process environment variables and resolve dynamic module:attribute entrypoints at runtime.
+
+    '
+  rationale: Improves ergonomics in local and containerized workflows.
+  risk_if_violated: Higher setup friction in some environments.
+  examples:
+  - SPEC_RUNNER_ENTRYPOINT
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/impl/python.md
+- id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
+  introduced_in: v1
+  scope: conformance
+  applies_to: fixtures.cli.run
+  norm: MUST
+  requirement: explicit_harness_entrypoint
+  description: Portable conformance fixtures must set harness.entrypoint.
+  rationale: Keeps parity checks independent of implementation conveniences.
+  risk_if_violated: Conformance results can diverge across runtimes.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/contract/06_conformance.md
+- id: CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY
+  introduced_in: v1
+  scope: conformance
+  applies_to: fixtures.cli.run
+  norm: MUST_NOT
+  requirement: rely_on_env_fallback
+  description: Portable conformance fixtures must not depend on env fallback.
+  rationale: Prevents ambient-environment coupling in parity tests.
+  risk_if_violated: Flaky or non-reproducible cross-language conformance.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/contract/06_conformance.md
+- id: ASSERT_HEALTH_MODE_VALID_VALUES
+  introduced_in: v1
+  scope: case
+  applies_to: assert_health.mode
+  norm: MUST
+  requirement: accept_only_ignore_warn_error
+  description: 'When assert_health.mode is provided, only ignore, warn, or error are valid values.
+
+    '
+  rationale: Keeps diagnostics policy deterministic and portable.
+  risk_if_violated: Implementations diverge on policy interpretation.
+  references:
+  - docs/spec/contract/02_case_shape.md
+  - docs/spec/schema/schema_v1.md
+- id: ASSERT_HEALTH_GLOBAL_AND_PER_CASE_POLICY
+  introduced_in: v1
+  scope: implementation
+  applies_to: assertion_health.policy_resolution
+  norm: SHOULD
+  requirement: support_global_default_and_per_case_override
+  description: 'Implementations should support both a global default policy and a per-case override for assertion-health diagnostics.
+
+    '
+  rationale: Enables gradual rollout and targeted strictness.
+  risk_if_violated: Hard to adopt diagnostics without broad breakage.
+  references:
+  - docs/spec/contract/00_design_goals.md
+  - docs/spec/contract/02_case_shape.md
+- id: ASSERT_HEALTH_REDUNDANT_BRANCH_DIAGNOSTIC
+  introduced_in: v1
+  scope: case
+  applies_to: assert.tree.group_children
+  norm: SHOULD
+  requirement: detect_redundant_sibling_branches
+  description: 'Implementations should diagnose redundant sibling assertion branches within a group (`must`, `can`, `cannot`) and surface them via assertion-health policy modes.
+
+    '
+  rationale: Redundant branches hide intent and create maintenance noise.
+  risk_if_violated: Specs can pass while carrying misleading duplicate logic.
+  references:
+  - docs/spec/contract/00_design_goals.md
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/03a_regex_portability_v1.md
+  - docs/spec/schema/schema_v1.md
+- id: ASSERT_HEALTH_NON_PORTABLE_REGEX_DIAGNOSTIC
+  introduced_in: v1
+  scope: case
+  applies_to: assert.tree.regex
+  norm: SHOULD
+  requirement: detect_non_portable_regex_constructs
+  description: 'Implementations should diagnose regex patterns that use non-portable constructs and surface them via assertion-health policy modes.
+
+    '
+  rationale: Preserves cross-language determinism and reduces portability drift.
+  risk_if_violated: Specs may pass in one runtime and fail in another.
+  references:
+  - docs/spec/contract/00_design_goals.md
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/schema/schema_v1.md
+- id: SPEC_LANG_EVALUATE_LIST_SHAPE
+  introduced_in: v1
+  scope: case
+  applies_to: assert.tree.evaluate
+  norm: MUST
+  requirement: evaluate_values_use_yaml_list_s_expressions
+  description: '`evaluate` assertion values must use YAML list S-expression encoding.
+
+    '
+  rationale: Keeps parsing deterministic and implementation-independent.
+  risk_if_violated: Runtimes may interpret expressions inconsistently.
+  references:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/schema/schema_v1.md
+- id: SPEC_LANG_PREFERRED_AUTHORING
+  introduced_in: v1
+  scope: conformance
+  applies_to: fixtures.assert.tree
+  norm: SHOULD
+  requirement: prefer_sugar_assertions_unless_evaluate_is_required
+  description: 'Conformance fixtures should prefer sugar assertion operators (`contain`/`regex`/`json_type`/`exists`) by default. `evaluate` should be used only when required by case intent and explicitly allowlisted.
+
+    '
+  rationale: Keeps specs readable while preserving evaluate for advanced expression needs.
+  risk_if_violated: Unnecessary evaluate usage reduces clarity and raises authoring complexity.
+  references:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/conformance/style.md
+- id: SPEC_LANG_PURE_EVALUATOR
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.evaluator
+  norm: MUST
+  requirement: evaluator_is_pure_and_deterministic
+  description: 'The spec-lang evaluator must be pure and deterministic with no ambient side effects.
+
+    '
+  rationale: Preserves cross-runtime parity and reproducibility.
+  risk_if_violated: Expression outcomes can drift by environment/runtime.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/06_conformance.md
+- id: SPEC_LANG_PROPER_TCO_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.recursion
+  norm: MUST
+  requirement: proper_tail_call_optimization_for_tail_position_calls
+  description: 'Implementations must provide proper tail-call optimization for tail-position `call` expressions.
+
+    '
+  rationale: Avoids host-stack-dependent failures in portable recursive specs.
+  risk_if_violated: Tail-recursive cases can fail by recursion depth.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/conformance/cases/spec_lang.spec.md
+- id: SPEC_LANG_EVAL_BUDGETS_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.budgets
+  norm: MUST
+  requirement: enforce_steps_nodes_literal_and_optional_timeout_budgets
+  description: 'Evaluators must enforce steps, nodes, literal-size, and optional timeout budgets for expression execution.
+
+    '
+  rationale: Provides deterministic failure bounds for recursive expressions.
+  risk_if_violated: Unbounded expression execution can hang or exhaust resources.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/schema/schema_v1.md
+- id: SPEC_LANG_ERROR_CLASSIFICATION
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.errors
+  norm: MUST
+  requirement: classify_schema_assertion_runtime_errors_consistently
+  description: 'Spec-lang expression failures must map to schema/assertion/runtime categories consistently across implementations.
+
+    '
+  rationale: Keeps conformance outcome contracts portable and debuggable.
+  risk_if_violated: Same failing case reports different categories by runtime.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/05_errors.md
+  - docs/spec/schema/schema_v1.md
+- id: SPEC_LANG_CURRY_ALL_BUILTINS
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.currying
+  norm: MUST
+  requirement: auto_curry_all_spec_lang_builtins_by_declared_arity
+  description: 'Spec-lang builtins must support deterministic partial application by declared arity, including over-application diagnostics.
+
+    '
+  rationale: Enables reusable function-style composition in portable expressions.
+  risk_if_violated: Higher-order collection expressions drift across implementations.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/conformance/cases/spec_lang.spec.md
+- id: SPEC_LANG_SET_ALGEBRA_PARITY
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.set_algebra
+  norm: MUST
+  requirement: match_set_algebra_semantics_across_runtimes
+  description: 'Spec-lang set algebra operators must produce deterministic, parity-stable results across implementations.
+
+    '
+  rationale: Prevents cross-runtime drift for collection-heavy executable specs.
+  risk_if_violated: Same case may pass/fail differently by runtime.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/conformance/cases/spec_lang.spec.md
+- id: SPEC_LANG_DEEP_EQUALITY_DETERMINISTIC
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.deep_equality
+  norm: MUST
+  requirement: deep_structural_equality_is_deterministic
+  description: 'Deep equality used by spec-lang set and membership operators must be deterministic and structurally consistent across implementations.
+
+    '
+  rationale: Stable deep equality is required for portable set/membership behavior.
+  risk_if_violated: Collection outcomes and assertions can become non-portable.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/conformance/cases/spec_lang.spec.md
+- id: SPEC_LANG_COLLECTION_FORMS_CONTRACTED
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.collection_forms
+  norm: MUST
+  requirement: collection_transform_forms_are_documented_and_tested
+  description: 'Collection transform forms (map/filter/reduce and related set/list helpers) must remain explicitly contracted and conformance-covered.
+
+    '
+  rationale: Keeps spec-lang as a portable decision DSL instead of host-language escape.
+  risk_if_violated: Authors fall back to implementation-specific logic.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/conformance/cases/spec_lang.spec.md
+- id: SPEC_LANG_LIBRARY_REUSE_MODEL
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.library_symbols
+  norm: SHOULD
+  requirement: support_ordered_library_symbol_loading_with_deterministic_resolution
+  description: 'Implementations should support reusable spec-lang libraries through ordered symbol loading with deterministic duplicate/cycle failure modes.
+
+    '
+  rationale: Reduces repeated expression logic and shifts reusable behavior into portable specs.
+  risk_if_violated: Authoring remains copy/paste heavy and falls back to host-language helpers.
+  references:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/schema/schema_v1.md
+- id: GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.check.subject_decision_split
+  norm: SHOULD
+  requirement: keep_repo_extraction_in_adapter_and_decision_logic_in_spec_lang
+  description: 'Governance checks should separate deterministic repository-data extraction from spec-lang decision expressions to reduce Python-only decision logic.
+
+    '
+  rationale: Enables progressive migration toward implementation-independent executable governance specs.
+  risk_if_violated: Governance logic remains scanner-bound and harder to port across runtimes.
+  references:
+  - docs/spec/contract/15_governance_subject_model.md
+  - scripts/run_governance_specs.py
+- id: DOC_NORMATIVE_PAGE_TRACEABILITY
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.contract.normative_pages
+  norm: MUST
+  requirement: every_normative_contract_page_has_traceability_coverage
+  description: 'Every normative contract page must be covered by at least one traceability contract_ref entry.
+
+    '
+  rationale: Prevents contract pages from drifting stale without governance signal.
+  risk_if_violated: Normative docs can silently diverge from enforced behavior.
+  references:
+  - docs/spec/contract/README.md
+  - docs/spec/contract/traceability_v1.yaml
+- id: DOC_REGEX_PROFILE_LINKAGE
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.regex_portability_profile
+  norm: MUST
+  requirement: regex_portability_profile_linked_in_assertions_schema_and_policy
+  description: 'The regex portability profile doc must be explicitly referenced by the assertion contract, schema, and policy.
+
+    '
+  rationale: Keeps portability constraints visible at all normative layers.
+  risk_if_violated: Portability guidance can be orphaned and ignored by implementers.
+  references:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/03a_regex_portability_v1.md
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/policy_v1.yaml
+- id: DOC_ASSERTION_OPERATOR_DOC_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.assertion_operators
+  norm: MUST
+  requirement: core_assertion_operator_tokens_synced_between_contract_and_schema
+  description: 'Core assertion operator names must remain synchronized between assertion contract docs and schema docs.
+
+    '
+  rationale: Prevents stale naming drift between reader-oriented and schema docs.
+  risk_if_violated: Users and implementers follow conflicting operator names.
+  references:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/schema/schema_v1.md
+- id: CONFORMANCE_EXPECT_OVERLAY_RESOLUTION
+  introduced_in: v1
+  scope: conformance
+  applies_to: fixtures.expect
+  norm: MUST
+  requirement: resolve_expectations_portable_then_impl_overlay
+  description: 'When conformance cases define inline expect metadata, implementations must resolve expected outcomes by starting from expect.portable and then overlaying expect.impl.<implementation> keys.
+
+    '
+  rationale: Keeps portable intent primary while allowing explicit runtime deltas.
+  risk_if_violated: Implementations drift on expectation resolution semantics.
+  references:
+  - docs/spec/contract/06_conformance.md
+  - docs/spec/schema/schema_v1.md
+- id: CONFORMANCE_CASE_STYLE_GUARD
+  introduced_in: v1
+  scope: governance
+  applies_to: fixtures.conformance.cases_style
+  norm: MUST
+  requirement: enforce_conformance_case_authoring_style
+  description: 'Conformance case docs must follow readability/style constraints enforced by governance checks (one case per block, heading alignment, sorted ids, bounded block size).
+
+    '
+  rationale: Keeps conformance specs readable and reviewable as the corpus grows.
+  risk_if_violated: Fixture docs become noisy and brittle to maintain.
+  references:
+  - docs/spec/conformance/style.md
+  - docs/spec/contract/06_conformance.md
+- id: CONFORMANCE_REQUIRES_CAPABILITIES_POLICY
+  introduced_in: v1
+  scope: conformance
+  applies_to: fixtures.requires.capabilities
+  norm: MUST
+  requirement: honor_requires_capabilities_and_when_missing_policy
+  description: 'Implementations must evaluate requires.capabilities and apply when_missing policy (`skip` or `fail`) deterministically.
+
+    '
+  rationale: Keeps feature-gated conformance behavior portable and explicit.
+  risk_if_violated: Capability-dependent cases drift across implementations.
+  references:
+  - docs/spec/contract/06_conformance.md
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/conformance/report_format.md
+- id: PORTABLE_SPEC_CANONICAL_SINGLE_SET
+  introduced_in: v1
+  scope: conformance
+  applies_to: fixtures.portable.canonical_set
+  norm: MUST
+  requirement: use_docs_spec_conformance_cases_as_portable_behavior_source
+  description: 'Portable, implementation-independent behavior coverage must live in the canonical conformance case set under docs/spec/conformance/cases.
+
+    '
+  rationale: Keeps one executable source of truth across implementations.
+  risk_if_violated: Spec behavior drifts across duplicated fixture sets.
+  references:
+  - docs/spec/contract/06_conformance.md
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/conformance/README.md
+- id: PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
+  introduced_in: v1
+  scope: conformance
+  applies_to: fixtures.expect_shape
+  norm: MUST
+  requirement: portable_baseline_with_runtime_overlays_only
+  description: 'Portable expectations must be defined in expect.portable; runtime deltas must be represented only via expect.impl.<runtime> overlays.
+
+    '
+  rationale: Preserves a single portable baseline while allowing explicit deltas.
+  risk_if_violated: Runtime-specific forks become implicit and hard to audit.
+  references:
+  - docs/spec/contract/06_conformance.md
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/schema/schema_v1.md
+- id: PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION
+  introduced_in: v1
+  scope: conformance
+  applies_to: fixtures.portable.determinism
+  norm: SHOULD
+  requirement: avoid_ambient_time_random_network_and_undeclared_env
+  description: 'Portable conformance cases should be deterministic by construction and avoid ambient dependencies (time, randomness, network, undeclared env).
+
+    '
+  rationale: Determinism is required for stable cross-runtime parity.
+  risk_if_violated: Flaky parity and implementation-specific false negatives.
+  references:
+  - docs/spec/contract/06_conformance.md
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/schema/schema_v1.md
+- id: CONFORMANCE_NO_AMBIENT_ASSUMPTIONS_GUARD
+  introduced_in: v1
+  scope: governance
+  applies_to: fixtures.portable.ambient_assumptions
+  norm: MUST
+  requirement: reject_ambient_env_time_random_tokens_in_portable_case_content
+  description: 'Governance must reject portable conformance case content that includes ambient environment/time/random assumption tokens.
+
+    '
+  rationale: Converts determinism guidance into an executable portability guardrail.
+  risk_if_violated: Portable fixtures become host-dependent and parity drifts.
+  references:
+  - docs/spec/contract/06_conformance.md
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/governance/cases/conformance_no_ambient_assumptions.spec.md
+- id: CONFORMANCE_PURPOSE_QUALITY_GATE
+  introduced_in: v1
+  scope: governance
+  applies_to: fixtures.conformance.purpose_quality
+  norm: MUST
+  requirement: conformance_purpose_policy_and_cases_remain_within_warning_budget
+  description: 'Conformance purpose lint policy integrity and purpose text quality must satisfy governance warning budgets.
+
+    '
+  rationale: Keeps fixture intent clear and avoids silent quality debt.
+  risk_if_violated: Conformance cases lose clarity and increase review burden.
+  references:
+  - docs/spec/conformance/purpose_lint_v1.yaml
+  - docs/spec/contract/06_conformance.md
+- id: SPEC_PORTABILITY_METRIC_REPORTED
+  introduced_in: v1
+  scope: governance
+  applies_to: specs.portability.metric_report
+  norm: MUST
+  requirement: portability_metric_report_generation_and_shape_valid
+  description: 'Governance must compute and emit the spec self-containment metric report over configured `.spec.md` roots with segmented and overall summaries.
+
+    '
+  rationale: Provides a measurable portability signal and makes coupling debt visible.
+  risk_if_violated: Portability regressions accumulate without objective feedback.
+  references:
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/governance/cases/spec_portability_metric.spec.md
+  - scripts/spec_portability_report.py
+  - spec_runner/spec_portability.py
+- id: SPEC_PORTABILITY_NON_REGRESSION_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: specs.portability.metric_non_regression
+  norm: MUST
+  requirement: spec_lang_self_containment_metrics_must_not_decrease_from_baseline
+  description: 'Governance must enforce non-regression for configured spec-lang self-containment metrics against a checked-in baseline.
+
+    '
+  rationale: Ratchets portable/spec-lang-centered coverage in one direction over time.
+  risk_if_violated: Portability quality can silently regress while aggregate reporting still exists.
+  references:
+  - docs/spec/governance/cases/spec_portability_non_regression.spec.md
+  - docs/spec/metrics/spec_portability_baseline.json
+  - spec_runner/spec_portability.py
+- id: SPEC_LANG_ADOPTION_METRIC_REPORTED
+  introduced_in: v1
+  scope: governance
+  applies_to: specs.spec_lang_adoption.metric_report
+  norm: MUST
+  requirement: spec_lang_adoption_metric_report_generation_and_shape_valid
+  description: 'Governance must produce a valid spec-lang adoption metric report with segmented and overall logic-self-containment signals.
+
+    '
+  rationale: Provides directional signal for migration from host-language logic into spec-lang.
+  risk_if_violated: Teams cannot measure migration progress toward spec-lang-first behavior.
+  references:
+  - docs/spec/governance/cases/spec_lang_adoption_metric.spec.md
+  - spec_runner/quality_metrics.py
+- id: SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: specs.spec_lang_adoption.metric_non_regression
+  norm: MUST
+  requirement: spec_lang_adoption_metrics_must_not_regress_from_baseline
+  description: 'Governance must enforce non-regression for configured spec-lang adoption metrics using checked-in baseline values.
+
+    '
+  rationale: Creates a monotonic ratchet toward higher spec-lang logic coverage.
+  risk_if_violated: Adoption can drift backward without visibility or merge protection.
+  references:
+  - docs/spec/governance/cases/spec_lang_adoption_non_regression.spec.md
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  - spec_runner/quality_metrics.py
+- id: RUNNER_INDEPENDENCE_METRIC_REPORTED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.runner_independence.metric_report
+  norm: MUST
+  requirement: runner_independence_metric_report_generation_and_shape_valid
+  description: 'Governance must produce a valid runner-independence metric report for gate scripts, CI workflows, and adapter interfaces.
+
+    '
+  rationale: Quantifies reduction of direct runtime coupling in orchestration paths.
+  risk_if_violated: Runtime lock-in can increase unnoticed.
+  references:
+  - docs/spec/governance/cases/runner_independence_metric.spec.md
+  - spec_runner/quality_metrics.py
+- id: RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.runner_independence.metric_non_regression
+  norm: MUST
+  requirement: runner_independence_metrics_must_not_regress_from_baseline
+  description: 'Governance must enforce non-regression for configured runner-independence metrics using checked-in baseline values.
+
+    '
+  rationale: Maintains one-way pressure away from direct interpreter/runtime coupling.
+  risk_if_violated: Gate and CI scripts can silently revert to runtime-specific hardcoding.
+  references:
+  - docs/spec/governance/cases/runner_independence_non_regression.spec.md
+  - docs/spec/metrics/runner_independence_baseline.json
+  - spec_runner/quality_metrics.py
+- id: DOCS_OPERABILITY_METRIC_REPORTED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.operability.metric_report
+  norm: MUST
+  requirement: docs_operability_metric_report_generation_and_shape_valid
+  description: 'Governance must produce a valid docs operability report with segmented and overall operability ratios.
+
+    '
+  rationale: Measures whether docs remain executable, complete, and actionable.
+  risk_if_violated: Documentation quality decays without objective enforcement.
+  references:
+  - docs/spec/governance/cases/docs_operability_metric.spec.md
+  - spec_runner/quality_metrics.py
+- id: DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.operability.metric_non_regression
+  norm: MUST
+  requirement: docs_operability_metrics_must_not_regress_from_baseline
+  description: 'Governance must enforce non-regression for configured docs-operability metrics using checked-in baseline values.
+
+    '
+  rationale: Keeps documentation operability moving forward under automation.
+  risk_if_violated: Repeated support burden and ambiguous docs behavior return.
+  references:
+  - docs/spec/governance/cases/docs_operability_non_regression.spec.md
+  - docs/spec/metrics/docs_operability_baseline.json
+  - spec_runner/quality_metrics.py
+- id: CONTRACT_ASSERTIONS_METRIC_REPORTED
+  introduced_in: v1
+  scope: governance
+  applies_to: specs.contract_assertions.metric_report
+  norm: MUST
+  requirement: contract_assertions_metric_report_generation_and_shape_valid
+  description: 'Governance must produce a valid contract-assertions metric report for assertions contract/schema/book alignment.
+
+    '
+  rationale: Tracks assertion contract quality and shared vocabulary cohesion.
+  risk_if_violated: Assertion contract drift can accumulate across docs and policy layers.
+  references:
+  - docs/spec/governance/cases/contract_assertions_metric.spec.md
+  - spec_runner/quality_metrics.py
+- id: CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: specs.contract_assertions.metric_non_regression
+  norm: MUST
+  requirement: contract_assertions_metrics_must_not_regress_from_baseline
+  description: 'Governance must enforce non-regression for configured contract-assertions metrics using checked-in baseline values.
+
+    '
+  rationale: Prevents drift in assertion-contract quality between releases.
+  risk_if_violated: Contract quality may degrade while core tests remain green.
+  references:
+  - docs/spec/governance/cases/contract_assertions_non_regression.spec.md
+  - docs/spec/metrics/contract_assertions_baseline.json
+  - spec_runner/quality_metrics.py
+- id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
+  introduced_in: v1
+  scope: governance
+  applies_to: specs.portability.metric_thresholds
+  norm: SHOULD
+  requirement: portability_metric_thresholds_enforced_when_enabled
+  description: 'Governance should support threshold-based portability gating (`min_overall_ratio`, `min_segment_ratios`) when explicit enforcement is enabled in configuration.
+
+    '
+  rationale: Enables gradual transition from report-only to hard quality gates.
+  risk_if_violated: Teams cannot ratchet portability quality over time.
+  references:
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/governance/cases/spec_portability_metric.spec.md
+  - spec_runner/spec_portability.py
+- id: DOCS_REF_SURFACE_COMPLETE
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.surface
+  norm: MUST
+  requirement: required_reference_surface_files_exist
+  description: 'The canonical docs reference surface files must exist and remain present as an enforced product surface.
+
+    '
+  rationale: Prevents accidental deletion/drift of required reference material.
+  risk_if_violated: Missing reference pages break onboarding and contract lookup.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/book/reference_index.md
+  - docs/spec/schema/schema_v1.md
+- id: DOCS_REFERENCE_INDEX_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.index
+  norm: MUST
+  requirement: reference_index_matches_actual_book_chapter_set_and_order
+  description: 'The machine-checked reference index must stay synchronized with the actual reference-manual chapter files and ordering.
+
+    '
+  rationale: Keeps the reference manual deterministic and reviewable.
+  risk_if_violated: Index/doc drift causes broken navigation and stale guidance.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/book/reference_index.md
+- id: DOCS_REQUIRED_SECTIONS_PRESENT
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.sections
+  norm: MUST
+  requirement: required_section_tokens_present_in_reference_chapters
+  description: 'Required reference chapters must include required section tokens defined by governance policy.
+
+    '
+  rationale: Maintains a consistent reference-manual structure.
+  risk_if_violated: Critical usage/failure guidance disappears over time.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/book/02_core_model.md
+  - docs/book/03_assertions.md
+  - docs/book/04_spec_lang_reference.md
+- id: DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.examples
+  norm: MUST
+  requirement: examples_parse_or_have_explicit_opt_out_marker_with_reason
+  description: 'Documentation examples must be parseable/runnable by default, or include an explicit and justified opt-out marker.
+
+    '
+  rationale: Ensures examples are trustworthy for real users.
+  risk_if_violated: Copy/paste examples fail and increase support load.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/book/README.md
+- id: DOCS_CLI_FLAGS_DOCUMENTED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.cli.flags
+  norm: MUST
+  requirement: public_runner_flags_documented_in_dev_and_impl_docs
+  description: 'Public runner CLI flags must be documented in required development and implementation docs.
+
+    '
+  rationale: Keeps automation-facing interfaces discoverable and stable.
+  risk_if_violated: Users guess flags and misuse runner commands.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/development.md
+  - docs/spec/impl/python.md
+  - docs/spec/impl/php.md
+- id: DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.contract.schema.book.tokens
+  norm: MUST
+  requirement: core_assertion_tokens_synchronized_across_book_contract_schema
+  description: 'Core assertion token vocabulary must stay synchronized across reference book docs, contract docs, and schema docs.
+
+    '
+  rationale: Prevents readers from seeing conflicting terminology.
+  risk_if_violated: Authoring and implementation drift leads to false failures.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/book/03_assertions.md
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/schema/schema_v1.md
+- id: DOCS_META_SCHEMA_VALID
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.doc_meta
+  norm: MUST
+  requirement: canonical_reference_docs_include_valid_doc_meta
+  description: 'Canonical reference docs must include machine-checkable doc metadata that validates against docs metadata schema requirements.
+
+    '
+  rationale: Makes reference docs testable as structured product surfaces.
+  risk_if_violated: Docs quality checks become heuristic and brittle.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/schema/docs_schema_v1.md
+  - docs/book/reference_manifest.yaml
+- id: DOCS_REFERENCE_MANIFEST_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.manifest
+  norm: MUST
+  requirement: generated_reference_index_matches_manifest_source_of_truth
+  description: 'Generated reference index output must remain synchronized with the canonical reference manifest chapter order and summaries.
+
+    '
+  rationale: Keeps the docs reference manual deterministic and reviewable.
+  risk_if_violated: Users see stale or misleading navigation/coverage docs.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/schema/reference_manifest_v1.md
+  - docs/book/reference_manifest.yaml
+- id: DOCS_TOKEN_OWNERSHIP_UNIQUE
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.tokens
+  norm: MUST
+  requirement: canonical_token_ownership_is_unique
+  description: 'Canonical documentation tokens must have exactly one owner doc in the reference surface metadata.
+
+    '
+  rationale: Prevents conflicting definitions across reference chapters.
+  risk_if_violated: Contract vocabulary drifts and authors get mixed guidance.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/schema/docs_schema_v1.md
+- id: DOCS_TOKEN_DEPENDENCY_RESOLVED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.token_dependencies
+  norm: MUST
+  requirement: required_tokens_resolve_to_owner_docs_and_owner_text
+  description: 'Each docs metadata requires_tokens entry must map to an owner doc token and be present in owner doc content.
+
+    '
+  rationale: Maintains integrity of cross-doc vocabulary references.
+  risk_if_violated: Broken links between docs concepts degrade maintainability.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/schema/docs_schema_v1.md
+- id: DOCS_INSTRUCTIONS_REQUIRED_SECTIONS
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.instructions
+  norm: MUST
+  requirement: instruction_docs_include_required_operational_sections
+  description: 'Instruction/reference docs must include required operational sections declared in doc metadata.
+
+    '
+  rationale: Ensures docs remain operationally useful beyond examples.
+  risk_if_violated: Repeated support questions and weak onboarding quality.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/schema/docs_schema_v1.md
+- id: DOCS_COMMAND_EXAMPLES_VERIFIED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.examples_v2
+  norm: MUST
+  requirement: docs_examples_validate_or_explicitly_opt_out_with_reason
+  description: 'Shell/python/spec-test examples in canonical reference chapters must pass static validation unless explicitly opted out with a reason marker.
+
+    '
+  rationale: Keeps copy/paste docs trustworthy for users.
+  risk_if_violated: Documentation examples fail at runtime and waste time.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/schema/docs_schema_v1.md
+- id: DOCS_EXAMPLE_IDS_UNIQUE
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.example_ids
+  norm: MUST
+  requirement: docs_metadata_example_ids_unique_across_reference_surface
+  description: 'Example IDs declared in docs metadata must be unique across canonical reference chapters.
+
+    '
+  rationale: Keeps docs example references stable and unambiguous.
+  risk_if_violated: Ambiguous references break traceability and review flow.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/schema/docs_schema_v1.md
+- id: DOCS_GENERATED_ARTIFACTS_FRESH
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.reference.generated_artifacts
+  norm: MUST
+  requirement: generated_docs_artifacts_match_manifest_and_doc_meta
+  description: 'Generated reference index, coverage, and graph artifacts should remain in sync with manifest and docs metadata as part of CI checks.
+
+    '
+  rationale: Provides deterministic docs telemetry and drift detection.
+  risk_if_violated: Artifact-driven quality signals become stale.
+  references:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/book/reference_manifest.yaml
+  - scripts/docs_build_reference.py
+- id: DOCS_MAKE_COMMANDS_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.command.entrypoints
+  norm: MUST
+  requirement: key_docs_reference_canonical_make_command_entrypoints
+  description: 'Key contributor docs must reference canonical make command entrypoints used for docs verification and full gate execution.
+
+    '
+  rationale: Reduces command drift and onboarding ambiguity.
+  risk_if_violated: Contributors run stale commands and miss required checks.
+  references:
+  - README.md
+  - docs/development.md
+- id: DOCS_ADOPTION_PROFILES_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.adoption.profiles
+  norm: MUST
+  requirement: key_docs_define_and_sync_core_and_full_profiles
+  description: 'Key contributor docs must define core and full adoption profiles and keep their command entrypoints synchronized.
+
+    '
+  rationale: Keeps onboarding clear for lightweight and full-gate workflows.
+  risk_if_violated: Teams run inconsistent command lanes and miss expected checks.
+  references:
+  - docs/spec/contract/11_adoption_profiles.md
+  - README.md
+  - docs/development.md
+- id: DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.release.contract
+  norm: MUST
+  requirement: release_guidance_uses_executable_gate_entrypoints_not_manual_choreography
+  description: 'Release guidance must define executable gate entrypoints and must not prescribe sequential manual do-X-then-inspect-Y checklist choreography.
+
+    '
+  rationale: Keeps release quality deterministic and automation-first.
+  risk_if_violated: Human-orchestrated release flow drifts and becomes unreliable.
+  references:
+  - docs/release_checklist.md
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/governance/cases/docs_release_contract_automation_policy.spec.md
+- id: CURRENT_SPEC_POLICY_KEY_NAMES
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.case_key_names
+  norm: MUST
+  requirement: policy_expression_key_uses_policy_evaluate_only
+  description: 'Current `.spec.md` cases use `policy_evaluate` as the policy expression key name.
+
+    '
+  rationale: Reduces naming confusion between assertion `evaluate` and policy expression fields.
+  risk_if_violated: Mixed key names create ambiguity and drift in policy execution wiring.
+  references:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/15_governance_subject_model.md
+  - docs/spec/governance/cases/docs_current_spec_policy_key_names.spec.md
+- id: RUNTIME_RUNNER_INTERFACE_GATE_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.gate_orchestration
+  norm: SHOULD
+  requirement: gate_scripts_call_runner_interface_boundary
+  description: 'Gate shell scripts should call a runner interface command boundary (`SPEC_RUNNER_BIN`) instead of hardcoding Python script entrypoints.
+
+    '
+  rationale: Keeps orchestration portable across compliant runner implementations.
+  risk_if_violated: Removing Python requires rewriting gate orchestration logic.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - scripts/runner_adapter.sh
+  - scripts/ci_gate.sh
+  - scripts/core_gate.sh
+  - scripts/docs_doctor.sh
+- id: RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.runner_interface.subcommands
+  norm: MUST
+  requirement: declared_runner_adapters_list_required_subcommand_case_labels
+  description: 'Declared runner adapter scripts must include case labels for all required runner-interface subcommands.
+
+    '
+  rationale: Prevents partial adapter drift that breaks interface compatibility.
+  risk_if_violated: Gate commands fail when switching adapters by SPEC_RUNNER_BIN.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/runtime_runner_interface_subcommands.spec.md
+- id: RUNTIME_RUNNER_INTERFACE_CI_LANE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.runner_interface.ci_lane
+  norm: MUST
+  requirement: ci_includes_non_default_adapter_lane_via_spec_runner_bin
+  description: 'CI must include a lane that runs core gate with SPEC_RUNNER_BIN set to a non-default adapter path.
+
+    '
+  rationale: Ensures adapter switching is continuously exercised in automation.
+  risk_if_violated: Alternate adapter support can silently regress.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/runtime_runner_interface_ci_lane.spec.md
+- id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.runner_interface.rust_adapter
+  norm: MUST
+  requirement: rust_adapter_invokes_rust_cli_without_delegating_to_shell_python_adapter
+  description: 'The Rust adapter script must invoke the Rust runner-interface CLI directly and must not delegate to scripts/runner_adapter.sh.
+
+    '
+  rationale: Ensures the Rust lane validates real adapter behavior instead of shell delegation.
+  risk_if_violated: Rust lane gives false confidence and misses Rust adapter regressions.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/governance/cases/runtime_rust_adapter_no_delegate.spec.md
+- id: RUST_PRIMARY_GATE_PATH_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.rust_primary.ci_lane
+  norm: MUST
+  requirement: rust_primary_ci_lane_executes_core_gate_via_runner_interface
+  description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN pointing to the Rust adapter path.
+
+    '
+  rationale: Makes Rust-primary operation continuously verifiable in automation.
+  risk_if_violated: Rust-primary path can silently regress.
+  references:
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/runtime_rust_primary_gate_path.spec.md
+- id: RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.rust_primary.gate_dependency
+  norm: MUST
+  requirement: gate_scripts_avoid_direct_python_runner_entrypoints_under_rust_primary
+  description: 'Gate scripts must remain runner-interface driven and must not hardcode Python runner command entrypoints.
+
+    '
+  rationale: Preserves implementation-neutral orchestration for Rust-primary usage.
+  risk_if_violated: Switching primary runtime requires invasive script rewrites.
+  references:
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/runtime_rust_primary_no_python_dependency.spec.md
+- id: RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.rust_primary.interface_stability
+  norm: MUST
+  requirement: rust_primary_adapter_preserves_required_runner_interface_subcommands
+  description: 'Rust-primary adapter path must preserve required runner-interface subcommand behavior.
+
+    '
+  rationale: Prevents compatibility drift for gate orchestration commands.
+  risk_if_violated: Core commands fail when Rust path is selected.
+  references:
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/runtime_rust_primary_interface_stability.spec.md
+- id: RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.rust_primary.parity
+  norm: MUST
+  requirement: rust_primary_gate_flow_includes_shared_capability_parity_step
+  description: 'Rust-primary-compatible gate flow must include shared-capability conformance parity execution.
+
+    '
+  rationale: Keeps cross-runtime behavior equivalence enforced during transition.
+  risk_if_violated: Runtime behavior drift can ship undetected.
+  references:
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/runtime_rust_primary_shared_capability_parity.spec.md
+- id: RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.rust_primary.adapter_exec
+  norm: MUST
+  requirement: rust_primary_adapter_executes_deterministic_smoke_command
+  description: 'Rust-primary governance must include an execution smoke check that runs the adapter command and validates deterministic output and exit-code behavior.
+
+    '
+  rationale: Ensures the Rust adapter path is executable, not just statically configured.
+  risk_if_violated: Rust adapter can regress at runtime while token/path checks still pass.
+  references:
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/runtime_rust_primary_adapter_exec_smoke.spec.md
+- id: RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.rust_primary.interface_parity
+  norm: MUST
+  requirement: rust_adapter_shell_and_rust_cli_subcommand_sets_must_match
+  description: 'Rust-primary governance must enforce parity between subcommands exposed by scripts/rust/runner_adapter.sh and scripts/rust/spec_runner_cli/src/main.rs.
+
+    '
+  rationale: Prevents runner-interface drift between adapter surface and Rust CLI implementation.
+  risk_if_violated: Commands may appear supported in one layer but fail in the other at runtime.
+  references:
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/runtime_rust_primary_subcommand_parity.spec.md
+- id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
+  introduced_in: v1
+  scope: docs
+  applies_to: docs.rust_primary.adoption
+  norm: SHOULD
+  requirement: docs_present_rust_primary_workflow_alongside_compatibility_paths
+  description: 'Contributor docs should present Rust-primary workflow consistently with core/full adoption profile guidance and optional compatibility lanes.
+
+    '
+  rationale: Reduces onboarding ambiguity during runtime-primary transition.
+  risk_if_violated: Teams adopt inconsistent local/CI invocation paths.
+  references:
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/docs_adoption_profiles_sync.spec.md
+- id: RUNTIME_SCOPE_BOUNDED_FOR_V1
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.support.matrix
+  norm: SHOULD
+  requirement: v1_runtime_scope_explicitly_bounded_to_declared_targets
+  description: 'Runtime support scope should remain explicitly bounded in v1 contract docs to avoid uncontrolled cross-runtime expansion.
+
+    '
+  rationale: Keeps maintenance scope predictable and prevents parity matrix sprawl.
+  risk_if_violated: Runtime support expectations expand without ownership or gate coverage.
+  references:
+  - docs/spec/contract/08_v1_scope.md
+  - docs/spec/contract/13_runtime_scope.md
+  - docs/spec/governance/cases/runtime_scope_sync.spec.md
+- id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
+  introduced_in: v1
+  scope: implementation
+  applies_to: runtime.assertion_execution
+  norm: MUST
+  requirement: compile_leaf_ops_to_spec_lang_predicates_before_execution
+  description: 'Runtime assertion paths must compile external leaf ops to spec-lang predicates and evaluate through the spec-lang engine, rather than direct ad-hoc operator execution branches.
+
+    '
+  rationale: Preserves one semantic execution model across implementations.
+  risk_if_violated: Cross-runner drift and hidden behavior inconsistencies.
+  references:
+  - docs/spec/contract/09_internal_representation.md
+  - docs/spec/contract/03b_spec_lang_v1.md
+- id: SPEC_LANG_PURE_NO_EFFECT_BUILTINS
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.evaluate.builtins
+  norm: MUST
+  requirement: forbid_effectful_builtins_in_core_evaluator
+  description: 'Spec-lang builtin surface must not include side-effectful probes such as filesystem/network/process/env access. Adapter layers must provide any derived side-effect data as normalized subjects.
+
+    '
+  rationale: Keeps the decision engine deterministic and runtime-independent.
+  risk_if_violated: Evaluator behavior drifts by environment and runtime side effects.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/09_internal_representation.md
+- id: RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY
+  introduced_in: v1
+  scope: implementation
+  applies_to: runtime.assertion_decisions
+  norm: MUST
+  requirement: assertion_pass_fail_decisions_execute_via_compiled_spec_lang
+  description: 'Runtime assertion pass/fail decisions must execute only through compiled spec-lang predicates; external assertion operators are authoring sugar.
+
+    '
+  rationale: Enforces one semantic decision plane across runner implementations.
+  risk_if_violated: Hidden per-runtime assertion branch drift.
+  references:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/09_internal_representation.md
+- id: ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY
+  introduced_in: v1
+  scope: contract
+  applies_to: assert.tree.operator_model
+  norm: MUST
+  requirement: evaluate_is_universal_assertion_core_operator
+  description: 'Assertion contracts and schema must define `evaluate` as the universal assertion core operator across all targets/types.
+
+    '
+  rationale: Centralizes semantics in one portable decision language.
+  risk_if_violated: Per-type/operator drift reintroduces semantic fragmentation.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/09_internal_representation.md
+- id: ASSERT_SUGAR_OPERATORS_COMPILE_ONLY
+  introduced_in: v1
+  scope: implementation
+  applies_to: assert.tree.operator_sugar
+  norm: MUST
+  requirement: non_evaluate_assert_ops_compile_to_spec_lang_only
+  description: 'Non-`evaluate` assertion operators are authoring sugar only and must not carry independent runtime semantics.
+
+    '
+  rationale: Keeps one execution semantics path while preserving author ergonomics.
+  risk_if_violated: Hidden semantic divergence between sugar and evaluate forms.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/03_assertions.md
+  - spec_runner/compiler.py
+  - spec_runner/assertions.py
+- id: ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN
+  introduced_in: v1
+  scope: contract
+  applies_to: assert.tree.target_applicability
+  norm: MUST
+  requirement: target_type_applicability_defined_by_subject_shape_availability
+  description: 'Target/type compatibility must be expressed as subject availability/shape responsibilities in harness/type contracts rather than per-type operator allowlists.
+
+    '
+  rationale: Separates adapter subject contracts from assertion language semantics.
+  risk_if_violated: Contracts become inconsistent with runtime behavior and hard to port.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/contract/types/text_file.md
+  - docs/spec/contract/types/cli_run.md
+  - docs/spec/contract/types/api_http.md
+- id: ASSERT_COMPILER_SCHEMA_MATRIX_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: assert.tree.compiler_contract_sync
+  norm: MUST
+  requirement: compiler_operator_handling_matches_schema_contract_universal_model
+  description: 'Governance must fail if compiler behavior, schema language, and assertion contracts drift on universal evaluate core and sugar compile mappings.
+
+    '
+  rationale: Makes schema/contract the enforcement source of truth.
+  risk_if_violated: Runtime can silently diverge from documented behavior model.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/09_internal_representation.md
+  - spec_runner/compiler.py
+- id: GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.check_decisions
+  norm: MUST
+  requirement: governance_decision_predicates_defined_as_spec_lang_data
+  description: 'Governance checks must keep data extraction in scanner substrate and express pass/fail predicates as spec-lang expressions in governance spec harness config.
+
+    '
+  rationale: Moves policy decisions into executable spec data and reduces Python-specific decision logic.
+  risk_if_violated: Governance policy drifts into ad-hoc host-language code.
+  references:
+  - docs/spec/contract/15_governance_subject_model.md
+  - scripts/run_governance_specs.py
+- id: ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.gate_orchestration_policy
+  norm: MUST
+  requirement: ci_gate_verdict_is_evaluated_via_spec_lang_policy_expression
+  description: 'CI gate orchestration scripts may execute effectful commands, but final pass/fail policy must be evaluated from spec-lang policy data.
+
+    '
+  rationale: Keeps release policy implementation-independent and auditable.
+  risk_if_violated: Gate behavior hardcodes runtime-specific logic in scripts.
+  references:
+  - scripts/ci_gate_summary.py
+  - docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
+- id: CONTRACT_MUST_RULE_COVERAGE_COMPLETE
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.contract.coverage
+  norm: MUST
+  requirement: all_must_rules_have_traceability_evidence
+  description: 'All active MUST contract rules must remain covered by traceability evidence (unit tests and/or conformance fixtures).
+
+    '
+  rationale: Prevents normative MUST requirements from becoming unenforced.
+  risk_if_violated: Contract claims can drift from executable guarantees.
+  references:
+  - docs/spec/contract/policy_v1.yaml
+  - docs/spec/contract/traceability_v1.yaml
+- id: OBJECTIVE_METRIC_MANIFEST_VALID
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.metrics.objective_manifest
+  norm: MUST
+  requirement: objective_manifest_schema_and_objective_set_must_be_valid
+  description: 'Objective scorecard manifest and schema bindings must remain valid and include all required objective IDs.
+
+    '
+  rationale: Prevents silent objective drift and ad-hoc metric selection.
+  risk_if_violated: Measurement can optimize local counters while missing project intent.
+  references:
+  - docs/spec/contract/17_objective_metrics.md
+  - docs/spec/schema/objective_metrics_schema_v1.md
+  - docs/spec/metrics/objective_manifest.yaml
+  - docs/spec/governance/cases/objective_scorecard_metric.spec.md
+- id: OBJECTIVE_SCORECARD_REPORTED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.metrics.objective_scorecard
+  norm: MUST
+  requirement: objective_scorecard_report_must_be_generated_and_valid
+  description: 'Governance must generate a deterministic objective scorecard report with objective scores, tripwire hits, and correction recommendations.
+
+    '
+  rationale: Provides one top-level project-health view tied to stated objectives.
+  risk_if_violated: Metric families remain fragmented and hard to steer.
+  references:
+  - docs/spec/contract/17_objective_metrics.md
+  - scripts/objective_scorecard_report.py
+  - docs/spec/governance/cases/objective_scorecard_metric.spec.md
+- id: OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.metrics.objective_scorecard
+  norm: MUST
+  requirement: objective_scorecard_summary_metrics_must_not_regress
+  description: 'Objective scorecard summary metrics must be ratcheted by checked-in baseline and fail on configured regressions.
+
+    '
+  rationale: Preserves directional progress toward project objectives.
+  risk_if_violated: Temporary regressions can become the new normal without explicit approval.
+  references:
+  - docs/spec/metrics/objective_scorecard_baseline.json
+  - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
+- id: OBJECTIVE_TRIPWIRES_ENFORCED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.metrics.objective_tripwires
+  norm: MUST
+  requirement: manifest_tripwire_checks_must_exist_and_pass
+  description: 'Objective manifest tripwire check IDs must map to governance cases and all tripwire checks must pass.
+
+    '
+  rationale: Converts anti-gaming boundaries into executable guardrails.
+  risk_if_violated: Score improvements can hide critical contract/security/runtime failures.
+  references:
+  - docs/spec/metrics/objective_manifest.yaml
+  - docs/spec/governance/cases/objective_tripwires_clean.spec.md
+- id: OBJECTIVE_COURSE_CORRECTION_POLICY_DEFINED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.metrics.objective_baseline_updates
+  norm: MUST
+  requirement: baseline_update_metadata_notes_must_be_present_and_fresh
+  description: 'Baseline update notes must include rationale and hash-pinned entries for required baseline files; stale/missing entries fail governance.
+
+    '
+  rationale: Forces explicit correction narrative and prevents silent baseline manipulation.
+  risk_if_violated: Teams can \"move the goalposts\" without reviewable justification.
+  references:
+  - docs/spec/metrics/baseline_update_notes.yaml
+  - docs/spec/contract/17_objective_metrics.md
+  - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
+- id: GOVERNANCE_POLICY_EVALUATE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.check.harness.policy_evaluate
+  norm: MUST
+  requirement: governance_decision_contracts_must_declare_policy_evaluate
+  description: 'Governance decision checks must declare policy_evaluate expressions in harness config so final verdicts are evaluated through spec-lang.
+
+    '
+  rationale: Keeps decision logic implementation-independent and portable.
+  risk_if_violated: Check pass/fail behavior drifts into host-language branching.
+  references:
+  - docs/spec/contract/15_governance_subject_model.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  - docs/spec/governance/cases/governance_policy_evaluate_required.spec.md
+- id: GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
+  introduced_in: v1
+  scope: governance
+  applies_to: scripts.run_governance_specs
+  norm: MUST
+  requirement: check_extractors_must_not_embed_per_check_policy_verdict_branches
+  description: 'Governance check extractors must emit deterministic subject payloads and violation candidates only; final policy verdicts are centralized.
+
+    '
+  rationale: Reduces duplicated decision semantics and improves parity portability.
+  risk_if_violated: Check-specific logic diverges and becomes hard to port.
+  references:
+  - docs/spec/contract/15_governance_subject_model.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  - docs/spec/governance/cases/governance_extractor_only_no_verdict_branching.spec.md
+- id: RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
+  introduced_in: v1
+  scope: runtime
+  applies_to: scripts.rust.spec_runner_cli
+  norm: MUST
+  requirement: rust_runner_interface_must_not_hardcode_python_exec_paths_or_tokens
+  description: 'Rust runner interface implementation must avoid direct Python execution token coupling in its command dispatch layer.
+
+    '
+  rationale: Supports Rust-primary operation and reduces interpreter lock-in.
+  risk_if_violated: Rust lane silently remains Python-dependent.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/contract/16_rust_primary_transition.md
+  - docs/spec/governance/cases/runtime_rust_adapter_no_python_exec.spec.md

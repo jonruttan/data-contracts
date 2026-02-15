@@ -13,17 +13,21 @@ harness:
   python_bin_resolver:
     helper: scripts/lib/python_bin.sh
     files:
-      - scripts/ci_gate.sh
+    - scripts/ci_gate.sh
     required_tokens:
-      - source "${ROOT_DIR}/scripts/lib/python_bin.sh"
-      - resolve_python_bin "${ROOT_DIR}"
+    - source "${ROOT_DIR}/scripts/lib/python_bin.sh"
+    - resolve_python_bin "${ROOT_DIR}"
     forbidden_tokens:
-      - ROOT_DIR}/.venv/bin/python
-      - ROOT_DIR}/../../.venv/bin/python
+    - ROOT_DIR}/.venv/bin/python
+    - ROOT_DIR}/../../.venv/bin/python
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.python_bin_resolver_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.python_bin_resolver_sync'
 ```

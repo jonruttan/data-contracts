@@ -51,14 +51,14 @@ def test_iter_leaf_assertions_happy_path():
             {
                 "contain": ["ok"],
                 "regex": ["x.*"],
-                "evaluate": [["contains", "ok"]],
+                "evaluate": [{"contains": ["ok"]}],
             },
             target_override="stderr",
         )
     ) == [
         ("stderr", "contain", "ok", True),
         ("stderr", "regex", "x.*", True),
-        ("stderr", "evaluate", ["contains", "ok"], True),
+        ("stderr", "evaluate", {"contains": ["ok"]}, True),
     ]
 
 

@@ -14,7 +14,7 @@ Root shape:
 version: 1
 thresholds:
   green_min: 0.75
-  yellow_min: 0.50
+  yellow_min: 0.5
 objectives: []
 correction_policy:
   delta_drop_threshold: 0.05
@@ -78,8 +78,8 @@ Shape:
 ```yaml
 version: 1
 entries:
-  - baseline: docs/spec/metrics/objective_scorecard_baseline.json
-    sha256: <64 hex chars>
-    rationale: <non-empty>
-    measurement_model_change: "no"
+- baseline: docs/spec/metrics/objective_scorecard_baseline.json
+  sha256: <64 hex chars>
+  rationale: <non-empty>
+  measurement_model_change: 'no'
 ```

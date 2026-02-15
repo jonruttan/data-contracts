@@ -23,9 +23,10 @@ expect:
 assert_health:
   mode: warn
 assert:
-  - target: text
-    must:
-      - contain: [""]
+- target: text
+  must:
+  - contain:
+    - ''
 ```
 
 ## SRCONF-AH-002
@@ -42,9 +43,10 @@ expect:
 assert_health:
   mode: error
 assert:
-  - target: text
-    must:
-      - contain: [""]
+- target: text
+  must:
+  - contain:
+    - ''
 ```
 
 ## SRCONF-AH-003
@@ -61,9 +63,10 @@ expect:
 assert_health:
   mode: nope
 assert:
-  - target: text
-    must:
-      - contain: ["spec-test"]
+- target: text
+  must:
+  - contain:
+    - spec-test
 ```
 
 ## SRCONF-AH-004
@@ -80,9 +83,10 @@ expect:
 assert_health:
   mode: ignore
 assert:
-  - target: text
-    must:
-      - contain: [""]
+- target: text
+  must:
+  - contain:
+    - ''
 ```
 
 ## SRCONF-AH-005
@@ -97,14 +101,16 @@ expect:
     status: fail
     category: assertion
     message_tokens:
-      - AH004
+    - AH004
 assert_health:
   mode: error
 assert:
-  - target: text
-    can:
-      - contain: ["version: 1"]
-      - contain: ["version: 1"]
+- target: text
+  can:
+  - contain:
+    - 'version: 1'
+  - contain:
+    - 'version: 1'
 ```
 
 ## SRCONF-AH-006
@@ -119,11 +125,12 @@ expect:
     status: fail
     category: assertion
     message_tokens:
-      - AH005
+    - AH005
 assert_health:
   mode: error
 assert:
-  - target: text
-    must:
-      - regex: ["(?<=version: )1"]
+- target: text
+  must:
+  - regex:
+    - '(?<=version: )1'
 ```

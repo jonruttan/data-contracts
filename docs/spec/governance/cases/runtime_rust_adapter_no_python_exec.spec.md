@@ -13,14 +13,17 @@ harness:
   rust_no_python_exec:
     path: scripts/rust/spec_runner_cli/src/main.rs
     forbidden_tokens:
-      - "python3"
-      - "PYTHON_BIN"
-      - "resolve_python_bin"
-      - "scripts/run_governance_specs.py"
+    - python3
+    - PYTHON_BIN
+    - resolve_python_bin
+    - scripts/run_governance_specs.py
   policy_evaluate:
-    - ["eq", true, true]
+  - eq:
+    - true
+    - true
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.rust_adapter_no_python_exec"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.rust_adapter_no_python_exec'
 ```

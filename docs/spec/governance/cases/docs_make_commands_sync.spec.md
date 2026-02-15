@@ -12,16 +12,20 @@ harness:
   root: .
   make_commands:
     files:
-      - README.md
-      - docs/development.md
+    - README.md
+    - docs/development.md
     required_tokens:
-      - make verify-docs
-      - make core-check
-      - make check
+    - make verify-docs
+    - make core-check
+    - make check
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.make_commands_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.make_commands_sync'
 ```

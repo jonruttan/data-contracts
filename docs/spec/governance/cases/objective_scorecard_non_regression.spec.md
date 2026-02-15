@@ -16,22 +16,26 @@ harness:
       overall_min_score: non_decrease
       overall_mean_score: non_decrease
       tripwire_hit_count: non_increase
-    epsilon: 0.000000000001
+    epsilon: 1.0e-12
     objective_scorecard:
       manifest_path: docs/spec/metrics/objective_manifest.yaml
     baseline_notes:
       path: docs/spec/metrics/baseline_update_notes.yaml
       baseline_paths:
-        - docs/spec/metrics/spec_portability_baseline.json
-        - docs/spec/metrics/spec_lang_adoption_baseline.json
-        - docs/spec/metrics/runner_independence_baseline.json
-        - docs/spec/metrics/docs_operability_baseline.json
-        - docs/spec/metrics/contract_assertions_baseline.json
-        - docs/spec/metrics/objective_scorecard_baseline.json
+      - docs/spec/metrics/spec_portability_baseline.json
+      - docs/spec/metrics/spec_lang_adoption_baseline.json
+      - docs/spec/metrics/runner_independence_baseline.json
+      - docs/spec/metrics/docs_operability_baseline.json
+      - docs/spec/metrics/contract_assertions_baseline.json
+      - docs/spec/metrics/objective_scorecard_baseline.json
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: objective.scorecard_non_regression"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: objective.scorecard_non_regression'
 ```

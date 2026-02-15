@@ -5,19 +5,23 @@ doc_id: DOC-REF-003
 title: Chapter 2 Core Model
 status: active
 audience: maintainer
-owns_tokens: ["core_case_model", "harness_namespace_rule", "discovery_model"]
-requires_tokens: ["must"]
+owns_tokens:
+- core_case_model
+- harness_namespace_rule
+- discovery_model
+requires_tokens:
+- must
 commands:
-  - run: "python scripts/run_governance_specs.py"
-    purpose: Validate core contract and governance assumptions.
+- run: python scripts/run_governance_specs.py
+  purpose: Validate core contract and governance assumptions.
 examples:
-  - id: EX-COREMODEL-001
-    runnable: true
+- id: EX-COREMODEL-001
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 The `yaml spec-test` syntax is a case model with strict structure.
@@ -124,7 +128,8 @@ Use `requires` to express feature prerequisites:
 
 ```yaml
 requires:
-  capabilities: ["cli.run"]
+  capabilities:
+  - cli.run
   when_missing: skip
 ```
 

@@ -12,31 +12,35 @@ harness:
   root: .
   required_sections:
     docs/book/02_core_model.md:
-      - "## Required Keys"
-      - "## Discovery Model"
-      - "## Type Model"
-      - "## `harness` Namespace Rule"
-      - "## Checklist"
+    - '## Required Keys'
+    - '## Discovery Model'
+    - '## Type Model'
+    - '## `harness` Namespace Rule'
+    - '## Checklist'
     docs/book/03_assertions.md:
-      - "## Tree Shape"
-      - "## Group Semantics"
-      - "## Targets"
-      - "## Operators"
-      - "## Checklist"
+    - '## Tree Shape'
+    - '## Group Semantics'
+    - '## Targets'
+    - '## Operators'
+    - '## Checklist'
     docs/book/04_spec_lang_reference.md:
-      - "## 1) What `evaluate` Is"
-      - "## 3) Core Forms"
-      - "## 5) Budgets (`harness.spec_lang`)"
-      - "## 6) Error Categories"
-      - "## 9) Lint + Format"
+    - '## 1) What `evaluate` Is'
+    - '## 3) Core Forms'
+    - '## 5) Budgets (`harness.spec_lang`)'
+    - '## 6) Error Categories'
+    - '## 9) Lint + Format'
     docs/book/reference_index.md:
-      - "# Reference Index"
-      - "Canonical order for reference-manual chapters."
-      - "how to use"
+    - '# Reference Index'
+    - Canonical order for reference-manual chapters.
+    - how to use
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.required_sections"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.required_sections'
 ```

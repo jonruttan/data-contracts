@@ -5,19 +5,24 @@ doc_id: DOC-REF-004
 title: Chapter 3 Assertions
 status: active
 audience: author
-owns_tokens: ["must", "can", "cannot", "evaluate"]
-requires_tokens: ["spec-lang"]
+owns_tokens:
+- must
+- can
+- cannot
+- evaluate
+requires_tokens:
+- spec-lang
 commands:
-  - run: "python scripts/evaluate_style.py --check docs/spec"
-    purpose: Validate canonical evaluate formatting.
+- run: python scripts/evaluate_style.py --check docs/spec
+  purpose: Validate canonical evaluate formatting.
 examples:
-  - id: EX-ASSERTIONS-001
-    runnable: true
+- id: EX-ASSERTIONS-001
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 Assertions are an expression tree with explicit group semantics.
@@ -62,18 +67,20 @@ Valid:
 
 ```yaml
 assert:
-  - target: stdout
-    must:
-      - contain: ["ok"]
+- target: stdout
+  must:
+  - contain:
+    - ok
 ```
 
 Invalid:
 
 ```yaml
 assert:
-  - must:
-      - target: stdout
-        contain: ["ok"]
+- must:
+  - target: stdout
+    contain:
+    - ok
 ```
 
 Why invalid:
@@ -104,12 +111,15 @@ Authoring policy:
 
 ```yaml
 assert:
-  - target: text
-    must:
-      - evaluate:
-          - ["and",
-             ["contains", "version"],
-             ["starts_with", ["subject"], "#"]]
+- target: text
+  must:
+  - evaluate:
+    - and:
+      - contains:
+        - version
+      - starts_with:
+        - subject: []
+        - '#'
 ```
 
 Reference:
@@ -121,34 +131,56 @@ Tail-recursive example:
 
 ```yaml
 assert:
-  - target: text
-    must:
-      - evaluate:
-          - ["let",
-             [["loop",
-                  ["fn",
-                      ["n", "acc"],
-                      ["if",
-                           ["eq", ["var", "n"], 0],
-                           ["var", "acc"],
-                           ["call",
-                                 ["var", "loop"],
-                                 ["sub", ["var", "n"], 1],
-                                 ["add", ["var", "acc"], 1]]]]]],
-             ["eq", ["call", ["var", "loop"], 100, 0], 100]]
+- target: text
+  must:
+  - evaluate:
+    - let:
+      - lit:
+        - - loop
+          - - fn
+            - - n
+              - acc
+            - - if
+              - - eq
+                - - var
+                  - n
+                - 0
+              - - var
+                - acc
+              - - call
+                - - var
+                  - loop
+                - - sub
+                  - - var
+                    - n
+                  - 1
+                - - add
+                  - - var
+                    - acc
+                  - 1
+      - eq:
+        - call:
+          - var:
+            - loop
+          - 100
+          - 0
+        - 100
 ```
 
 ## Example: Mixed Assertions
 
 ```yaml
 assert:
-  - target: stderr
-    cannot:
-      - contain: ["ERROR:"]
-  - target: stdout
-    can:
-      - json_type: ["list"]
-      - contain: ["[]"]
+- target: stderr
+  cannot:
+  - contain:
+    - 'ERROR:'
+- target: stdout
+  can:
+  - json_type:
+    - list
+  - contain:
+    - '[]'
 ```
 
 ## `stdout_path` / `stdout_path_text`

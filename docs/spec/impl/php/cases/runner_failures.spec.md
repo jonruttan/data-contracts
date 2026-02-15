@@ -12,11 +12,13 @@ expect:
   portable:
     status: fail
     category: schema
-    message_tokens: ["text.file path must be relative"]
+    message_tokens:
+    - text.file path must be relative
 assert:
-  - target: text
-    must:
-      - contain: ["x"]
+- target: text
+  must:
+  - contain:
+    - x
 ```
 
 ## SRPHP-RUN-F002
@@ -31,11 +33,13 @@ expect:
   portable:
     status: fail
     category: schema
-    message_tokens: ["text.file path escapes contract root"]
+    message_tokens:
+    - text.file path escapes contract root
 assert:
-  - target: text
-    must:
-      - contain: ["outside"]
+- target: text
+  must:
+  - contain:
+    - outside
 ```
 
 ## SRPHP-RUN-F003
@@ -45,18 +49,21 @@ id: SRPHP-RUN-F003
 title: cli.run without entrypoint fails
 purpose: Verifies cli.run reports runtime failure when no entrypoint source is available.
 type: cli.run
-argv: ["x"]
+argv:
+- x
 exit_code: 0
 harness: {}
 expect:
   portable:
     status: fail
     category: runtime
-    message_tokens: ["requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT"]
+    message_tokens:
+    - requires harness.entrypoint or SPEC_RUNNER_ENTRYPOINT
 assert:
-  - target: stdout
-    must:
-      - contain: ["x"]
+- target: stdout
+  must:
+  - contain:
+    - x
 ```
 
 ## SRPHP-RUN-F004
@@ -66,7 +73,8 @@ id: SRPHP-RUN-F004
 title: cli.run rejects unsupported json_type values
 purpose: Verifies cli.run treats unsupported json_type values as schema violations.
 type: cli.run
-argv: ["{}"]
+argv:
+- '{}'
 exit_code: 0
 harness:
   entrypoint: /bin/echo
@@ -74,11 +82,13 @@ expect:
   portable:
     status: fail
     category: schema
-    message_tokens: ["unsupported json_type"]
+    message_tokens:
+    - unsupported json_type
 assert:
-  - target: stdout
-    must:
-      - json_type: ["nope"]
+- target: stdout
+  must:
+  - json_type:
+    - nope
 ```
 
 ## SRPHP-RUN-F005
@@ -88,7 +98,8 @@ id: SRPHP-RUN-F005
 title: cli.run exit_code mismatch is assertion failure
 purpose: Verifies cli.run reports assertion failure when observed exit code differs from expected.
 type: cli.run
-argv: ["exit 2"]
+argv:
+- exit 2
 exit_code: 0
 harness:
   entrypoint: /bin/sh -c
@@ -96,7 +107,8 @@ expect:
   portable:
     status: fail
     category: assertion
-    message_tokens: ["exit_code expected=0 actual=2"]
+    message_tokens:
+    - exit_code expected=0 actual=2
 assert: []
 ```
 
@@ -111,7 +123,8 @@ expect:
   portable:
     status: fail
     category: runtime
-    message_tokens: ["unknown spec-test type"]
+    message_tokens:
+    - unknown spec-test type
 assert: []
 ```
 
@@ -122,7 +135,8 @@ id: SRPHP-RUN-F007
 title: cli.run rejects unsupported harness keys
 purpose: Verifies cli.run validates supported harness keys and rejects unknown ones.
 type: cli.run
-argv: ["x"]
+argv:
+- x
 exit_code: 0
 harness:
   entrypoint: /bin/echo
@@ -131,7 +145,8 @@ expect:
   portable:
     status: fail
     category: schema
-    message_tokens: ["unsupported harness key(s)"]
+    message_tokens:
+    - unsupported harness key(s)
 assert: []
 ```
 
@@ -147,10 +162,12 @@ expect:
   portable:
     status: fail
     category: schema
-    message_tokens: ["leaf assertion must not include key: target"]
+    message_tokens:
+    - 'leaf assertion must not include key: target'
 assert:
+- target: text
+  must:
   - target: text
-    must:
-      - target: text
-        contain: ["fixture-content"]
+    contain:
+    - fixture-content
 ```

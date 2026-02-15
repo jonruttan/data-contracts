@@ -262,9 +262,10 @@ Canonical negation uses `cannot`:
 
 ```yaml
 assert:
-  - target: stderr
-    cannot:
-      - contain: ["ERROR:"]
+- target: stderr
+  cannot:
+  - contain:
+    - 'ERROR:'
 ```
 
 Author in canonical form:
@@ -277,14 +278,18 @@ Example with target inheritance:
 
 ```yaml
 assert:
-  - target: stderr
-    must:
-      - contain: ["WARN:"]
-  - target: stderr
-    cannot:
-      - contain: ["ERROR:"]
-  - target: stdout
-    can:
-      - json_type: ["list"]
-      - contain: ["[]"]
+- target: stderr
+  must:
+  - contain:
+    - 'WARN:'
+- target: stderr
+  cannot:
+  - contain:
+    - 'ERROR:'
+- target: stdout
+  can:
+  - json_type:
+    - list
+  - contain:
+    - '[]'
 ```

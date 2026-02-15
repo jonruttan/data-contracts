@@ -14,13 +14,17 @@ harness:
     path: docs/book/reference_index.md
     include_glob: docs/book/*.md
     exclude_files:
-      - docs/book/README.md
-      - docs/book/reference_index.md
-      - docs/book/reference_coverage.md
+    - docs/book/README.md
+    - docs/book/reference_index.md
+    - docs/book/reference_coverage.md
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.reference_index_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.reference_index_sync'
 ```

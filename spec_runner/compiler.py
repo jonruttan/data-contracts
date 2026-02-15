@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Literal, cast
 
 from spec_runner.internal_model import GroupNode, InternalAssertNode, InternalSpecCase, PredicateLeaf
+from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 
 
 def _require_group_key(node: dict[str, Any]) -> str | None:
@@ -43,9 +44,10 @@ def _compile_leaf_op(*, op: str, value: Any, target: str, type_name: str, assert
         subject_key = f"{target}.exists"
         expr = ["eq", ["subject"], True]
     elif op == "evaluate":
-        if not isinstance(value, list):
-            raise ValueError("evaluate value must be list-based s-expr")
-        expr = value
+        try:
+            expr = compile_yaml_expr_to_sexpr(value, field_path=f"{assert_path}.evaluate")
+        except SpecLangYamlAstError as exc:
+            raise ValueError(str(exc)) from exc
         subject_key = target
     else:
         raise ValueError(f"unsupported op: {op}")

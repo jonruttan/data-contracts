@@ -16,9 +16,13 @@ harness:
     fail_on_policy_errors: true
     fail_on_severity: warn
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: conformance.purpose_quality_gate"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: conformance.purpose_quality_gate'
 ```

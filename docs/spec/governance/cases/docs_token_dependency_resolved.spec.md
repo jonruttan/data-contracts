@@ -13,9 +13,13 @@ harness:
   docs_quality:
     manifest: docs/book/reference_manifest.yaml
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.token_dependency_resolved"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.token_dependency_resolved'
 ```

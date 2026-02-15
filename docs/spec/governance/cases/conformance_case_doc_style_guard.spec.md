@@ -11,9 +11,13 @@ check: conformance.case_doc_style_guard
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: conformance.case_doc_style_guard"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: conformance.case_doc_style_guard'
 ```

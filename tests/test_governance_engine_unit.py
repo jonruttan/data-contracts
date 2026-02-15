@@ -5,12 +5,12 @@ from spec_runner.governance_engine import normalize_policy_evaluate, run_governa
 
 
 def test_normalize_policy_evaluate_accepts_direct_expr() -> None:
-    expr = ["eq", 1, 1]
-    assert normalize_policy_evaluate(expr, field="x") == expr
+    expr = [{"eq": [1, 1]}]
+    assert normalize_policy_evaluate(expr, field="x") == ["eq", 1, 1]
 
 
 def test_normalize_policy_evaluate_accepts_single_wrapped_expr() -> None:
-    expr = [["eq", 1, 1]]
+    expr = [{"eq": [1, 1]}]
     assert normalize_policy_evaluate(expr, field="x") == ["eq", 1, 1]
 
 
@@ -23,10 +23,11 @@ def test_normalize_policy_evaluate_rejects_invalid_shape() -> None:
 
 
 def test_run_governance_policy_true() -> None:
+    policy = normalize_policy_evaluate([{"eq": [1, 1]}], field="harness.policy_evaluate")
     got = run_governance_policy(
         check_id="demo.check",
         case_id="CASE-1",
-        policy_evaluate=["eq", 1, 1],
+        policy_evaluate=policy,
         subject={},
     )
     assert got.passed is True
@@ -34,10 +35,11 @@ def test_run_governance_policy_true() -> None:
 
 
 def test_run_governance_policy_false() -> None:
+    policy = normalize_policy_evaluate([{"eq": [1, 2]}], field="harness.policy_evaluate")
     got = run_governance_policy(
         check_id="demo.check",
         case_id="CASE-2",
-        policy_evaluate=["eq", 1, 2],
+        policy_evaluate=policy,
         subject={},
     )
     assert got.passed is False
@@ -46,10 +48,11 @@ def test_run_governance_policy_false() -> None:
 
 
 def test_run_governance_policy_runtime_error() -> None:
+    policy = normalize_policy_evaluate([{"unknown_symbol": [1]}], field="harness.policy_evaluate")
     got = run_governance_policy(
         check_id="demo.check",
         case_id="CASE-3",
-        policy_evaluate=["unknown_symbol", 1],
+        policy_evaluate=policy,
         subject={},
     )
     assert got.passed is False

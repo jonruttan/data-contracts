@@ -19,13 +19,17 @@ harness:
         mean_runnable_example_coverage_ratio: non_decrease
       contract:
         mean_token_sync_compliance_ratio: non_decrease
-    epsilon: 0.000000000001
+    epsilon: 1.0e-12
     docs_operability:
       reference_manifest: docs/book/reference_manifest.yaml
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.operability_non_regression"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.operability_non_regression'
 ```

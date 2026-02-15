@@ -11,9 +11,13 @@ check: docs.security_warning_contract
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.security_warning_contract"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.security_warning_contract'
 ```

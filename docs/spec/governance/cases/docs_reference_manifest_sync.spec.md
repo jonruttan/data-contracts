@@ -14,9 +14,13 @@ harness:
     manifest: docs/book/reference_manifest.yaml
     index_out: docs/book/reference_index.md
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.reference_manifest_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.reference_manifest_sync'
 ```

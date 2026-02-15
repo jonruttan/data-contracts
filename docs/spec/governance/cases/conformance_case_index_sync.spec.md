@@ -11,9 +11,13 @@ check: conformance.case_index_sync
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: conformance.case_index_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: conformance.case_index_sync'
 ```

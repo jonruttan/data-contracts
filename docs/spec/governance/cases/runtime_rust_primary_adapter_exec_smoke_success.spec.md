@@ -12,19 +12,24 @@ harness:
   root: .
   rust_adapter_exec_smoke:
     command:
-      - scripts/rust/runner_adapter.sh
-      - style-check
-    expected_exit_codes: [0]
+    - scripts/rust/runner_adapter.sh
+    - style-check
+    expected_exit_codes:
+    - 0
     required_output_tokens:
-      - "OK: evaluate style formatting is canonical"
+    - 'OK: evaluate style formatting is canonical'
     forbidden_output_tokens:
-      - "unsupported runner adapter subcommand"
-      - "rust runner adapter subcommand not yet implemented"
+    - unsupported runner adapter subcommand
+    - rust runner adapter subcommand not yet implemented
     timeout_seconds: 180
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.rust_adapter_exec_smoke"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.rust_adapter_exec_smoke'
 ```

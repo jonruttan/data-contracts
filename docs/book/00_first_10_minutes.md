@@ -5,21 +5,24 @@ doc_id: DOC-REF-001
 title: First 10 Minutes (Deterministic Walkthrough)
 status: active
 audience: author
-owns_tokens: ["first_run_walkthrough", "trusted_inputs_required"]
-requires_tokens: ["quickstart_minimal_case"]
+owns_tokens:
+- first_run_walkthrough
+- trusted_inputs_required
+requires_tokens:
+- quickstart_minimal_case
 commands:
-  - run: "python -m pip install -e '.[dev]'"
-    purpose: Install editable package with dev dependencies.
-  - run: "./scripts/ci_gate.sh"
-    purpose: Execute canonical local gate.
+- run: python -m pip install -e '.[dev]'
+  purpose: Install editable package with dev dependencies.
+- run: ./scripts/ci_gate.sh
+  purpose: Execute canonical local gate.
 examples:
-  - id: EX-FIRST10-001
-    runnable: true
+- id: EX-FIRST10-001
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 This walkthrough gives a deterministic first success with `spec_runner` from a
@@ -76,9 +79,10 @@ cat > .artifacts/first10/hello.spec.md <<'MD'
 id: FIRST10-001
 type: text.file
 assert:
-  - target: text
-    must:
-      - contain: ["FIRST10-001"]
+- target: text
+  must:
+  - contain:
+    - FIRST10-001
 ```
 MD
 ```

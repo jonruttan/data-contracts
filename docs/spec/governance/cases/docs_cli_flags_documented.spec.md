@@ -12,20 +12,24 @@ harness:
   root: .
   cli_docs:
     python_scripts:
-      - scripts/python/conformance_runner.py
+    - scripts/python/conformance_runner.py
     php_scripts:
-      - scripts/php/conformance_runner.php
-      - scripts/php/spec_runner.php
+    - scripts/php/conformance_runner.php
+    - scripts/php/spec_runner.php
     python_docs:
-      - docs/development.md
-      - docs/spec/impl/python.md
+    - docs/development.md
+    - docs/spec/impl/python.md
     php_docs:
-      - docs/development.md
-      - docs/spec/impl/php.md
+    - docs/development.md
+    - docs/spec/impl/php.md
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.cli_flags_documented"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.cli_flags_documented'
 ```

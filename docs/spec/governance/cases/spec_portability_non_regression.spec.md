@@ -13,30 +13,37 @@ harness:
   portability_non_regression:
     baseline_path: docs/spec/metrics/spec_portability_baseline.json
     summary_fields:
-      - overall_logic_self_contained_ratio
+    - overall_logic_self_contained_ratio
     segment_fields:
       conformance:
-        - mean_logic_self_contained_ratio
+      - mean_logic_self_contained_ratio
       governance:
-        - mean_logic_self_contained_ratio
+      - mean_logic_self_contained_ratio
       impl:
-        - mean_logic_self_contained_ratio
-    epsilon: 0.000000000001
+      - mean_logic_self_contained_ratio
+    epsilon: 1.0e-12
     portability_metric:
       roots:
-        - docs/spec/conformance/cases
-        - docs/spec/governance/cases
-        - docs/spec/impl
-      core_types: ["text.file", "cli.run"]
+      - docs/spec/conformance/cases
+      - docs/spec/governance/cases
+      - docs/spec/impl
+      core_types:
+      - text.file
+      - cli.run
       segment_rules:
-        - prefix: docs/spec/conformance/cases
-          segment: conformance
-        - prefix: docs/spec/governance/cases
-          segment: governance
-        - prefix: docs/spec/impl
-          segment: impl
-      runtime_capability_tokens: ["api.http", "governance.check"]
-      runtime_capability_prefixes: ["runtime.", "php.", "python."]
+      - prefix: docs/spec/conformance/cases
+        segment: conformance
+      - prefix: docs/spec/governance/cases
+        segment: governance
+      - prefix: docs/spec/impl
+        segment: impl
+      runtime_capability_tokens:
+      - api.http
+      - governance.check
+      runtime_capability_prefixes:
+      - runtime.
+      - php.
+      - python.
       weights:
         non_evaluate_leaf_share: 0.45
         expect_impl_overlay: 0.25
@@ -46,9 +53,13 @@ harness:
         top_n: 10
       enforce: false
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: spec.portability_non_regression"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: spec.portability_non_regression'
 ```

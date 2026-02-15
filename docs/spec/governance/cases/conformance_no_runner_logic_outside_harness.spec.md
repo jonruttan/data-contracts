@@ -11,9 +11,13 @@ check: conformance.no_runner_logic_outside_harness
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: conformance.no_runner_logic_outside_harness"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: conformance.no_runner_logic_outside_harness'
 ```

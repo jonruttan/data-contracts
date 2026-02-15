@@ -13,13 +13,24 @@ harness:
   objective_scorecard:
     manifest_path: docs/spec/metrics/objective_manifest.yaml
     policy_evaluate:
-      - and
-      - ["has_key", ["subject"], "summary"]
-      - ["has_key", ["subject"], "objectives"]
-      - ["has_key", ["subject"], "tripwire_hits"]
-      - ["has_key", ["get", ["subject"], "summary"], "overall_min_score"]
+    - and:
+      - has_key:
+        - subject: []
+        - summary
+      - has_key:
+        - subject: []
+        - objectives
+      - has_key:
+        - subject: []
+        - tripwire_hits
+      - has_key:
+        - get:
+          - subject: []
+          - summary
+        - overall_min_score
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: objective.scorecard_metric"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: objective.scorecard_metric'
 ```

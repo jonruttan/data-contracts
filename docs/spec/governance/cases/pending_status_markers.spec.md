@@ -11,9 +11,13 @@ check: pending.no_resolved_markers
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: pending.no_resolved_markers"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: pending.no_resolved_markers'
 ```

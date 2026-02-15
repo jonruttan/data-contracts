@@ -11,9 +11,13 @@ check: assert.type_contract_subject_semantics_sync
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: assert.type_contract_subject_semantics_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: assert.type_contract_subject_semantics_sync'
 ```

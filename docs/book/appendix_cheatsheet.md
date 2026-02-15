@@ -5,19 +5,22 @@ doc_id: DOC-REF-006
 title: Appendix Cheatsheet
 status: active
 audience: author
-owns_tokens: ["cheatsheet", "minimal_examples"]
-requires_tokens: ["first_run_walkthrough"]
+owns_tokens:
+- cheatsheet
+- minimal_examples
+requires_tokens:
+- first_run_walkthrough
 commands:
-  - run: "python scripts/evaluate_style.py --check docs/spec"
-    purpose: Verify canonical evaluate style.
+- run: python scripts/evaluate_style.py --check docs/spec
+  purpose: Verify canonical evaluate style.
 examples:
-  - id: EX-CHEATSHEET-001
-    runnable: true
+- id: EX-CHEATSHEET-001
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 ## Purpose
@@ -44,9 +47,10 @@ Provide a compact, copyable set of minimal valid case patterns.
 id: CHEAT-001
 type: text.file
 assert:
-  - target: text
-    must:
-      - contain: ["hello"]
+- target: text
+  must:
+  - contain:
+    - hello
 ```
 
 ## Minimal `cli.run`
@@ -54,14 +58,16 @@ assert:
 ```yaml
 id: CHEAT-002
 type: cli.run
-argv: ["hello"]
+argv:
+- hello
 exit_code: 0
 harness:
   entrypoint: /bin/echo
 assert:
-  - target: stdout
-    must:
-      - contain: ["hello"]
+- target: stdout
+  must:
+  - contain:
+    - hello
 ```
 
 ## Minimal `evaluate`
@@ -70,10 +76,11 @@ assert:
 id: CHEAT-003
 type: text.file
 assert:
-  - target: text
-    must:
-      - evaluate:
-          - ["contains", "CHEAT-003"]
+- target: text
+  must:
+  - evaluate:
+    - contains:
+      - CHEAT-003
 ```
 
 ## Group Semantics

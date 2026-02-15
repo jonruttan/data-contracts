@@ -12,14 +12,16 @@ harness:
   root: .
   policy_requirements:
     cases_path: docs/spec/governance/cases
-    case_file_pattern: "*.spec.md"
-    # Global mode: enforce policy_evaluate for all governance checks.
+    case_file_pattern: '*.spec.md'
     ignore_checks:
-      - governance.policy_evaluate_required
+    - governance.policy_evaluate_required
   policy_evaluate:
-    - ["eq", true, true]
+  - eq:
+    - true
+    - true
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: governance.policy_evaluate_required"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: governance.policy_evaluate_required'
 ```

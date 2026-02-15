@@ -2,40 +2,18 @@
 from __future__ import annotations
 
 import argparse
-import json
-import re
 from pathlib import Path
 from typing import Any
 
 import yaml
 
 from spec_runner.settings import SETTINGS
-
-class _StyleDumper(yaml.SafeDumper):
-    def increase_indent(self, flow: bool = False, indentless: bool = False):  # type: ignore[override]
-        return super().increase_indent(flow, False)
-
-
-class _ExprPlaceholder(str):
-    """Marker scalar for post-dump evaluate expression injection."""
-
-
-class _BlockSeq(list):
-    """Marker sequence forced to block style."""
-
-
-def _repr_placeholder(dumper: yaml.SafeDumper, data: _ExprPlaceholder):
-    return dumper.represent_scalar("tag:yaml.org,2002:str", str(data), style='"')
-
-
-_StyleDumper.add_representer(_ExprPlaceholder, _repr_placeholder)
-
-
-def _repr_block_seq(dumper: yaml.SafeDumper, data: _BlockSeq):
-    return dumper.represent_sequence("tag:yaml.org,2002:seq", data, flow_style=False)
-
-
-_StyleDumper.add_representer(_BlockSeq, _repr_block_seq)
+from spec_runner.spec_lang_yaml_ast import (
+    SpecLangYamlAstError,
+    compile_yaml_expr_list,
+    is_sexpr_node,
+    sexpr_to_yaml_ast,
+)
 
 
 def _is_yaml_opening_fence(line: str) -> tuple[str, int] | None:
@@ -53,6 +31,8 @@ def _is_yaml_opening_fence(line: str) -> tuple[str, int] | None:
     info = stripped[i:].strip().lower().split()
     if "yaml" not in info and "yml" not in info:
         return None
+    if "spec-test" not in info:
+        return None
     return ch, i
 
 
@@ -66,133 +46,75 @@ def _is_closing_fence(line: str, *, ch: str, min_len: int) -> bool:
     return i >= min_len and i == len(stripped)
 
 
-def _format_expr_atom(node: Any) -> str:
-    if isinstance(node, str):
-        return json.dumps(node)
-    if isinstance(node, bool):
-        return "true" if node else "false"
-    if node is None:
-        return "null"
-    if isinstance(node, (int, float)):
-        return str(node)
-    raise TypeError(f"unsupported expression atom type: {type(node).__name__}")
+def _convert_expr_list_value(raw: Any) -> list[Any]:
+    if is_sexpr_node(raw):
+        return [sexpr_to_yaml_ast(raw)]
+    if isinstance(raw, list):
+        out: list[Any] = []
+        for item in raw:
+            out.append(sexpr_to_yaml_ast(item) if is_sexpr_node(item) else item)
+        return out
+    return [sexpr_to_yaml_ast(raw)]
 
 
-def _format_expr_single_line(node: Any) -> str:
+def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
+    changed = False
     if isinstance(node, list):
-        return "[" + ", ".join(_format_expr_single_line(x) for x in node) + "]"
-    return _format_expr_atom(node)
-
-
-def _format_expr(node: Any, *, indent: int, width: int) -> str:
-    one_line = _format_expr_single_line(node)
-    if "\n" not in one_line and indent + len(one_line) <= width:
-        return one_line
-    if not isinstance(node, list):
-        return one_line
-    if not node:
-        return "[]"
-
-    first = _format_expr(node[0], indent=indent + 1, width=width)
-    first_lines = first.splitlines()
-    if len(first_lines) == 1:
-        lines: list[str] = [f"[{first_lines[0]}"]
-    else:
-        lines = [f"[{first_lines[0]}"]
-        for extra in first_lines[1:]:
-            lines.append((" " * (indent + 1)) + extra)
-    if len(node) > 1:
-        lines[-1] = lines[-1] + ","
-
-    for i, item in enumerate(node[1:]):
-        item_is_last = i == len(node[1:]) - 1
-        rendered = _format_expr(item, indent=indent + 1, width=width)
-        rendered_lines = rendered.splitlines()
-        if rendered_lines:
-            rendered_lines[0] = (" " * (indent + 1)) + rendered_lines[0]
-            for j in range(1, len(rendered_lines)):
-                rendered_lines[j] = (" " * (indent + 1)) + rendered_lines[j]
-            if not item_is_last:
-                rendered_lines[-1] = rendered_lines[-1] + ","
-            lines.extend(rendered_lines)
-    lines[-1] = lines[-1] + "]"
-    return "\n".join(lines)
-
-
-def _normalize_evaluate_nodes(node: Any, expr_map: dict[str, str]) -> Any:
+        out: list[Any] = []
+        for idx, x in enumerate(node):
+            got, ch = _walk_convert(x, path=f"{path}[{idx}]")
+            out.append(got)
+            changed = changed or ch
+        return out, changed
     if isinstance(node, dict):
         out: dict[str, Any] = {}
         for k, v in node.items():
-            if k == "evaluate" and isinstance(v, list):
-                formatted: _BlockSeq = _BlockSeq()
-                for idx, item in enumerate(v):
-                    if isinstance(item, list):
-                        placeholder = f"__EVALUATE_EXPR_{len(expr_map)}_{idx}__"
-                        expr_map[placeholder] = _format_expr(item, indent=0, width=60)
-                        formatted.append(_ExprPlaceholder(placeholder))
-                    else:
-                        formatted.append(_normalize_evaluate_nodes(item, expr_map))
-                out[k] = formatted
+            key = str(k)
+            if key in {"evaluate", "policy_evaluate"}:
+                converted = _convert_expr_list_value(v)
+                out_items: list[Any] = []
+                for idx, expr in enumerate(converted):
+                    item, ch = _walk_convert(expr, path=f"{path}.{key}[{idx}]")
+                    out_items.append(item)
+                    changed = changed or ch
+                out[key] = out_items
+                changed = changed or (converted != v)
             else:
-                out[k] = _normalize_evaluate_nodes(v, expr_map)
-        return out
+                got, ch = _walk_convert(v, path=f"{path}.{key}")
+                out[key] = got
+                changed = changed or ch
+        return out, changed
+    return node, False
+
+
+def _validate_expr_fields(node: Any, *, path: str = "") -> None:
     if isinstance(node, list):
-        return [_normalize_evaluate_nodes(x, expr_map) for x in node]
-    return node
-
-
-def _contains_evaluate(node: Any) -> bool:
+        for idx, x in enumerate(node):
+            _validate_expr_fields(x, path=f"{path}[{idx}]")
+        return
     if isinstance(node, dict):
-        if "evaluate" in node:
-            return True
-        return any(_contains_evaluate(v) for v in node.values())
-    if isinstance(node, list):
-        return any(_contains_evaluate(x) for x in node)
-    return False
+        for k, v in node.items():
+            key = str(k)
+            current = f"{path}.{key}" if path else key
+            if key in {"evaluate", "policy_evaluate"}:
+                if not isinstance(v, list) or not v:
+                    raise SpecLangYamlAstError(f"{current}: expression list must be a non-empty list")
+                compile_yaml_expr_list(v, field_path=current)
+            _validate_expr_fields(v, path=current)
+
+
+def _yaml_dump(payload: Any) -> str:
+    return yaml.dump(payload, sort_keys=False, allow_unicode=False, width=1000)
 
 
 def _format_yaml_block(block: str) -> str:
     payload = yaml.safe_load(block)
     if payload is None:
         return block.strip() + "\n"
-    if not _contains_evaluate(payload):
+    converted, _ = _walk_convert(payload)
+    if converted == payload:
         return block
-    expr_map: dict[str, str] = {}
-    normalized = _normalize_evaluate_nodes(payload, expr_map)
-    rendered = yaml.dump(
-        normalized,
-        Dumper=_StyleDumper,
-        sort_keys=False,
-        allow_unicode=False,
-        width=1000,
-        default_flow_style=None,
-    )
-    if not expr_map:
-        return rendered
-
-    lines = rendered.splitlines(keepends=False)
-    out_lines: list[str] = []
-    placeholder_re = re.compile(r'^(?P<indent>\s*-\s+)"(?P<ph>__EVALUATE_EXPR_[^"]+__)"\s*$')
-    for line in lines:
-        m = placeholder_re.match(line)
-        if not m:
-            out_lines.append(line)
-            continue
-        indent = m.group("indent")
-        ph = m.group("ph")
-        expr = expr_map.get(ph)
-        if expr is None:
-            out_lines.append(line)
-            continue
-        expr_lines = expr.splitlines()
-        if not expr_lines:
-            out_lines.append(line)
-            continue
-        out_lines.append(f"{indent}{expr_lines[0]}")
-        continuation_indent = " " * len(indent)
-        for rest in expr_lines[1:]:
-            out_lines.append(f"{continuation_indent}{rest}")
-    return "\n".join(out_lines) + "\n"
+    return _yaml_dump(converted)
 
 
 def format_spec_markdown(text: str) -> str:

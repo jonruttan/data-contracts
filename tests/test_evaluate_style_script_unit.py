@@ -35,8 +35,7 @@ def test_evaluate_style_check_and_write(tmp_path):
 
     updated = case.read_text(encoding="utf-8")
     assert "evaluate:" in updated
-    assert '["let",' in updated
-    assert '["fn"' in updated
+    assert "let:" in updated
     assert "\n" in updated
 
 

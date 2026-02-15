@@ -8,7 +8,9 @@ assertion leaf operator `evaluate`.
 Expression encoding is YAML list S-expression form:
 
 ```yaml
-["fn", arg1, arg2]
+- fn
+- arg1
+- arg2
 ```
 
 No string parser and no implementation-defined extension hooks are part of v1.
@@ -203,8 +205,9 @@ Library configuration (optional):
 harness:
   spec_lang:
     library_paths:
-      - docs/spec/libraries/common.spec.md
-    exports: ["is_portable_case"]
+    - docs/spec/libraries/common.spec.md
+    exports:
+    - is_portable_case
 ```
 
 Library contract details:

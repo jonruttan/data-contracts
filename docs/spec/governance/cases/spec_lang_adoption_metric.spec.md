@@ -12,24 +12,33 @@ harness:
   root: .
   spec_lang_adoption:
     roots:
-      - docs/spec/conformance/cases
-      - docs/spec/governance/cases
-      - docs/spec/impl
+    - docs/spec/conformance/cases
+    - docs/spec/governance/cases
+    - docs/spec/impl
     segment_rules:
-      - prefix: docs/spec/conformance/cases
-        segment: conformance
-      - prefix: docs/spec/governance/cases
-        segment: governance
-      - prefix: docs/spec/impl
-        segment: impl
+    - prefix: docs/spec/conformance/cases
+      segment: conformance
+    - prefix: docs/spec/governance/cases
+      segment: governance
+    - prefix: docs/spec/impl
+      segment: impl
     recursive: true
     policy_evaluate:
-      - and
-      - ["has_key", ["subject"], "summary"]
-      - ["has_key", ["subject"], "segments"]
-      - ["has_key", ["get", ["subject"], "summary"], "overall_logic_self_contained_ratio"]
+    - and:
+      - has_key:
+        - subject: []
+        - summary
+      - has_key:
+        - subject: []
+        - segments
+      - has_key:
+        - get:
+          - subject: []
+          - summary
+        - overall_logic_self_contained_ratio
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: spec.spec_lang_adoption_metric"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: spec.spec_lang_adoption_metric'
 ```

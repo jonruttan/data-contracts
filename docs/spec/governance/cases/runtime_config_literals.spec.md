@@ -11,9 +11,13 @@ check: runtime.config_literals
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.config_literals"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.config_literals'
 ```

@@ -13,10 +13,10 @@ Shape:
 version: 1
 title: Spec Runner Reference Manual
 chapters:
-  - path: docs/book/00_first_10_minutes.md
-    summary: first-run setup and safety model.
-    contract_refs:
-      - docs/spec/contract/10_docs_quality.md
+- path: docs/book/00_first_10_minutes.md
+  summary: first-run setup and safety model.
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
 ```
 
 Required fields:

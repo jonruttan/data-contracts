@@ -13,11 +13,15 @@ harness:
   objective_tripwires:
     manifest_path: docs/spec/metrics/objective_manifest.yaml
     cases_path: docs/spec/governance/cases
-    case_file_pattern: "*.spec.md"
+    case_file_pattern: '*.spec.md'
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: objective.tripwires_clean"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: objective.tripwires_clean'
 ```

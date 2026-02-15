@@ -12,17 +12,21 @@ harness:
   root: .
   runner_interface:
     required_paths:
-      - scripts/runner_adapter.sh
-      - scripts/rust/runner_adapter.sh
+    - scripts/runner_adapter.sh
+    - scripts/rust/runner_adapter.sh
     files:
-      - scripts/ci_gate_summary.py
+    - scripts/ci_gate_summary.py
     required_tokens:
-      - conformance-parity
+    - conformance-parity
     forbidden_tokens: []
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.runner_interface_gate_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.runner_interface_gate_sync'
 ```

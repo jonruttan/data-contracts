@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 from spec_runner.spec_lang import SpecLangLimits, eval_predicate
+from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_list
 
 
 @dataclass(frozen=True)
@@ -13,15 +14,15 @@ class GovernancePolicyResult:
 
 
 def normalize_policy_evaluate(raw: object, *, field: str) -> list[object]:
-    if not isinstance(raw, list) or not raw:
-        raise ValueError(f"{field} must be a list-based spec-lang expression")
-    if isinstance(raw[0], str):
-        return raw
-    if len(raw) == 1 and isinstance(raw[0], list):
-        inner = raw[0]
-        if inner and isinstance(inner[0], str):
-            return inner
-    raise ValueError(f"{field} must be a list-based spec-lang expression")
+    if not isinstance(raw, list):
+        raise ValueError(f"{field} must be a non-empty list of mapping-ast expressions")
+    try:
+        compiled = compile_yaml_expr_list(raw, field_path=field)
+    except SpecLangYamlAstError as exc:
+        raise ValueError(str(exc)) from exc
+    if len(compiled) == 1:
+        return compiled[0]
+    return ["and", *compiled]
 
 
 def run_governance_policy(

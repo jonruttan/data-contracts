@@ -12,15 +12,19 @@ harness:
   root: .
   spec_lang_purity:
     files:
-      - spec_runner/spec_lang.py
-      - scripts/php/spec_runner.php
-      - scripts/php/conformance_runner.php
+    - spec_runner/spec_lang.py
+    - scripts/php/spec_runner.php
+    - scripts/php/conformance_runner.php
     forbidden_tokens:
-      - "path_exists"
+    - path_exists
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.spec_lang_pure_no_effect_builtins"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.spec_lang_pure_no_effect_builtins'
 ```

@@ -5,19 +5,22 @@ doc_id: DOC-REF-002
 title: Chapter 1 Quickstart
 status: active
 audience: author
-owns_tokens: ["quickstart_minimal_case", "quickstart_gate"]
-requires_tokens: ["core_case_model"]
+owns_tokens:
+- quickstart_minimal_case
+- quickstart_gate
+requires_tokens:
+- core_case_model
 commands:
-  - run: "./scripts/ci_gate.sh"
-    purpose: Run full local quality gate.
+- run: ./scripts/ci_gate.sh
+  purpose: Run full local quality gate.
 examples:
-  - id: EX-QUICKSTART-001
-    runnable: true
+- id: EX-QUICKSTART-001
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 This chapter gets you from zero to a passing executable spec in minutes.
@@ -49,9 +52,10 @@ Create a Markdown file with a fenced `yaml spec-test` block:
 id: BK-QS-001
 type: text.file
 assert:
-  - target: text
-    must:
-      - contain: ["BK-QS-001"]
+- target: text
+  must:
+  - contain:
+    - BK-QS-001
 ```
 
 Why this passes:
@@ -74,14 +78,16 @@ This runs governance checks, conformance reports, parity checks, and tests.
 ```yaml
 id: BK-QS-002
 type: cli.run
-argv: ["hello"]
+argv:
+- hello
 exit_code: 0
 harness:
   entrypoint: /bin/echo
 assert:
-  - target: stdout
-    must:
-      - contain: ["hello"]
+- target: stdout
+  must:
+  - contain:
+    - hello
 ```
 
 ## 4) Add A First `evaluate` Assertion
@@ -90,12 +96,15 @@ assert:
 id: BK-QS-002B
 type: text.file
 assert:
-  - target: text
-    must:
-      - evaluate:
-          - ["and",
-             ["contains", "BK-QS-002B"],
-             ["starts_with", ["subject"], "id:"]]
+- target: text
+  must:
+  - evaluate:
+    - and:
+      - contains:
+        - BK-QS-002B
+      - starts_with:
+        - subject: []
+        - 'id:'
 ```
 
 Use `evaluate` when simple text checks are not enough and you need portable

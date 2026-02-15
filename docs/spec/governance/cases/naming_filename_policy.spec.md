@@ -12,19 +12,23 @@ harness:
   root: .
   filename_policy:
     paths:
-      - docs
+    - docs
     include_extensions:
-      - .md
-      - .yaml
-      - .yml
-      - .json
+    - .md
+    - .yaml
+    - .yml
+    - .json
     allow_exact:
-      - README.md
-    allowed_name_regex: "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    - README.md
+    allowed_name_regex: ^[a-z0-9]+(?:[._-][a-z0-9]+)*$
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: naming.filename_policy"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: naming.filename_policy'
 ```

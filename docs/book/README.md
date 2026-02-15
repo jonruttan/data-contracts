@@ -65,19 +65,21 @@ doc_id: DOC-REF-###
 title: Chapter title
 status: active
 audience: author
-owns_tokens: ["token_defined_here"]
-requires_tokens: ["token_defined_elsewhere"]
+owns_tokens:
+- token_defined_here
+requires_tokens:
+- token_defined_elsewhere
 commands:
-  - run: "./scripts/ci_gate.sh"
-    purpose: One-line reason this command is in the doc.
+- run: ./scripts/ci_gate.sh
+  purpose: One-line reason this command is in the doc.
 examples:
-  - id: EX-CHAPTER-001
-    runnable: true
+- id: EX-CHAPTER-001
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 ### Field Rules
@@ -100,19 +102,21 @@ doc_id: DOC-REF-007
 title: Example Chapter
 status: active
 audience: reviewer
-owns_tokens: ["example_token_owner"]
-requires_tokens: ["quickstart_minimal_case"]
+owns_tokens:
+- example_token_owner
+requires_tokens:
+- quickstart_minimal_case
 commands:
-  - run: "make docs-check"
-    purpose: Validate generated docs artifacts and metadata lint checks.
+- run: make docs-check
+  purpose: Validate generated docs artifacts and metadata lint checks.
 examples:
-  - id: EX-EXAMPLE-001
-    runnable: true
+- id: EX-EXAMPLE-001
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 ### Invalid Examples
@@ -124,16 +128,18 @@ doc_id: DOC-REF-008
 title: Bad Example
 status: active
 audience: author
-owns_tokens: ["bad_owner"]
-requires_tokens: ["quickstart_minimal_case"]
+owns_tokens:
+- bad_owner
+requires_tokens:
+- quickstart_minimal_case
 commands:
-  - run: "make docs-check"
-    purpose: Check docs.
+- run: make docs-check
+  purpose: Check docs.
 examples:
-  - id: EX-BAD-001
-    runnable: false
+- id: EX-BAD-001
+  runnable: false
 sections_required:
-  - "## Purpose"
+- '## Purpose'
 ```
 
 Duplicate token ownership across chapters (fails ownership uniqueness):
@@ -143,19 +149,21 @@ doc_id: DOC-REF-009
 title: Also Defines Existing Token
 status: active
 audience: maintainer
-owns_tokens: ["quickstart_minimal_case"]
-requires_tokens: ["core_case_model"]
+owns_tokens:
+- quickstart_minimal_case
+requires_tokens:
+- core_case_model
 commands:
-  - run: "./scripts/docs_doctor.sh"
-    purpose: Run fast docs checks.
+- run: ./scripts/docs_doctor.sh
+  purpose: Run fast docs checks.
 examples:
-  - id: EX-BAD-002
-    runnable: true
+- id: EX-BAD-002
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 ### Authoring Workflow

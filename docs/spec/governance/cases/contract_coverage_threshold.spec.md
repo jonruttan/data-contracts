@@ -12,11 +12,15 @@ harness:
   root: .
   contract_coverage:
     require_all_must_covered: true
-    min_coverage_ratio: 0.50
+    min_coverage_ratio: 0.5
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: contract.coverage_threshold"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: contract.coverage_threshold'
 ```

@@ -14,9 +14,14 @@ expect:
   portable:
     status: fail
     category: assertion
-    message_tokens: [case_id=SRCONF-ERR-001, 'assert_path=assert[0].must[0]', target=text, op=regex]
+    message_tokens:
+    - case_id=SRCONF-ERR-001
+    - assert_path=assert[0].must[0]
+    - target=text
+    - op=regex
 assert:
-  - target: text
-    must:
-      - regex: ["\\A\\Z"]
+- target: text
+  must:
+  - regex:
+    - \A\Z
 ```

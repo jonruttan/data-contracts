@@ -16,9 +16,13 @@ harness:
     coverage_out: docs/book/reference_coverage.md
     graph_out: docs/book/docs_graph.json
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.generated_files_clean"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.generated_files_clean'
 ```

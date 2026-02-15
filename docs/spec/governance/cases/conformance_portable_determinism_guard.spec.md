@@ -11,36 +11,55 @@ check: conformance.portable_determinism_guard
 harness:
   root: .
   determinism:
-    exclude_case_keys: ["id", "title", "purpose", "expect", "requires", "assert_health"]
+    exclude_case_keys:
+    - id
+    - title
+    - purpose
+    - expect
+    - requires
+    - assert_health
     patterns:
-      - "\\bdatetime\\.now\\s*\\("
-      - "\\bdatetime\\.utcnow\\s*\\("
-      - "\\btime\\.time\\s*\\("
-      - "\\bdate\\.today\\s*\\("
-      - "\\bDate\\.now\\s*\\("
-      - "\\bnew\\s+Date\\s*\\("
-      - "\\brandom\\."
-      - "\\brand(?:int|range)?\\s*\\("
-      - "\\bMath\\.random\\s*\\("
+    - \bdatetime\.now\s*\(
+    - \bdatetime\.utcnow\s*\(
+    - \btime\.time\s*\(
+    - \bdate\.today\s*\(
+    - \bDate\.now\s*\(
+    - \bnew\s+Date\s*\(
+    - \brandom\.
+    - \brand(?:int|range)?\s*\(
+    - \bMath\.random\s*\(
     policy_evaluate:
-      - ["eq",
-         ["count",
-          ["filter",
-           ["fn", ["row"],
-            ["gt",
-             ["count",
-              ["filter",
-               ["fn", ["s"],
-                ["any",
-                 ["map",
-                  ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
-                  ["var", "patterns"]]]],
-               ["get", ["var", "row"], "strings"]]],
-             0]],
-           ["subject"]]],
-         0]
+    - eq:
+      - count:
+        - filter:
+          - fn:
+            - row: []
+            - gt:
+              - count:
+                - filter:
+                  - fn:
+                    - s: []
+                    - any:
+                      - map:
+                        - fn:
+                          - p: []
+                          - matches:
+                            - var:
+                              - s
+                            - var:
+                              - p
+                        - var:
+                          - patterns
+                  - get:
+                    - var:
+                      - row
+                    - strings
+              - 0
+          - subject: []
+      - 0
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: conformance.portable_determinism_guard"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: conformance.portable_determinism_guard'
 ```

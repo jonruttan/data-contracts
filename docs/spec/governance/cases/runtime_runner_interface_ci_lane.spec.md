@@ -13,13 +13,17 @@ harness:
   runner_interface_ci_lane:
     workflow: .github/workflows/ci.yml
     required_tokens:
-      - "core-gate-rust-adapter:"
-      - "SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh"
-      - "run: ./scripts/core_gate.sh"
+    - 'core-gate-rust-adapter:'
+    - 'SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh'
+    - 'run: ./scripts/core_gate.sh'
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.runner_interface_ci_lane"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.runner_interface_ci_lane'
 ```

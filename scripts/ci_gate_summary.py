@@ -9,6 +9,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from spec_runner.doc_parser import iter_spec_doc_tests
+from spec_runner.governance_engine import normalize_policy_evaluate
 from spec_runner.spec_lang import SpecLangLimits, eval_predicate
 
 
@@ -85,10 +86,10 @@ def _load_gate_policy_expr(policy_case: Path) -> list[object]:
             continue
         expr = orch.get("policy_evaluate")
         if isinstance(expr, list) and expr:
-            if isinstance(expr[0], str):
-                return expr
-            if len(expr) == 1 and isinstance(expr[0], list) and expr[0] and isinstance(expr[0][0], str):
-                return expr[0]
+            return normalize_policy_evaluate(
+                expr,
+                field="harness.orchestration_policy.policy_evaluate",
+            )
     raise ValueError(
         f"missing harness.orchestration_policy.policy_evaluate in {policy_case}"
     )

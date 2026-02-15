@@ -11,9 +11,13 @@ check: docs.current_spec_policy_key_names
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.current_spec_policy_key_names"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.current_spec_policy_key_names'
 ```

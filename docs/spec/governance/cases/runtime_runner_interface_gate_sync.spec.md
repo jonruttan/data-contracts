@@ -12,24 +12,28 @@ harness:
   root: .
   runner_interface:
     required_paths:
-      - scripts/runner_adapter.sh
-      - scripts/rust/runner_adapter.sh
+    - scripts/runner_adapter.sh
+    - scripts/rust/runner_adapter.sh
     files:
-      - scripts/ci_gate.sh
-      - scripts/docs_doctor.sh
-      - scripts/core_gate.sh
+    - scripts/ci_gate.sh
+    - scripts/docs_doctor.sh
+    - scripts/core_gate.sh
     required_tokens:
-      - SPEC_RUNNER_BIN
-      - scripts/runner_adapter.sh
+    - SPEC_RUNNER_BIN
+    - scripts/runner_adapter.sh
     forbidden_tokens:
-      - scripts/run_governance_specs.py
-      - scripts/evaluate_style.py --check docs/spec
-      - scripts/conformance_purpose_report.py
-      - scripts/compare_conformance_parity.py
+    - scripts/run_governance_specs.py
+    - scripts/evaluate_style.py --check docs/spec
+    - scripts/conformance_purpose_report.py
+    - scripts/compare_conformance_parity.py
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.runner_interface_gate_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.runner_interface_gate_sync'
 ```

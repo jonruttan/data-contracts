@@ -12,20 +12,29 @@ harness:
   root: .
   spec_lang_preferred:
     roots:
-      - docs/spec/conformance/cases
+    - docs/spec/conformance/cases
     allow_evaluate_files:
-      - docs/spec/conformance/cases/assertion_health.spec.md
-      - docs/spec/conformance/cases/php_text_file_subset.spec.md
-      - docs/spec/conformance/cases/spec_lang.spec.md
+    - docs/spec/conformance/cases/assertion_health.spec.md
+    - docs/spec/conformance/cases/php_text_file_subset.spec.md
+    - docs/spec/conformance/cases/spec_lang.spec.md
     policy_evaluate:
-      - ["eq",
-         ["count",
-          ["filter",
-           ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "evaluate_ops"]], 0]],
-           ["subject"]]],
-         0]
+    - eq:
+      - count:
+        - filter:
+          - fn:
+            - row: []
+            - gt:
+              - count:
+                - get:
+                  - var:
+                    - row
+                  - evaluate_ops
+              - 0
+          - subject: []
+      - 0
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: conformance.spec_lang_preferred"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: conformance.spec_lang_preferred'
 ```

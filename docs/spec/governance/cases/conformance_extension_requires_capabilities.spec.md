@@ -11,9 +11,13 @@ check: conformance.extension_requires_capabilities
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: conformance.extension_requires_capabilities"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: conformance.extension_requires_capabilities'
 ```

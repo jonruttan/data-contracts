@@ -648,22 +648,37 @@ harness:
       - "\\\\brand(?:int|range)?\\\\s*\\\\("
       - "\\\\bMath\\\\.random\\\\s*\\\\("
     policy_evaluate:
-      - ["eq",
-         ["count",
-          ["filter",
-           ["fn", ["row"],
-            ["gt",
-             ["count",
-              ["filter",
-               ["fn", ["s"],
-                ["any",
-                 ["map",
-                  ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
-                  ["var", "patterns"]]]],
-               ["get", ["var", "row"], "strings"]]],
-             0]],
-           ["subject"]]],
-         0]
+      - eq:
+        - count:
+          - filter:
+            - fn:
+              - lit:
+                - row
+              - gt:
+                - count:
+                  - filter:
+                    - fn:
+                      - lit:
+                        - s
+                      - any:
+                        - map:
+                          - fn:
+                            - lit:
+                              - p
+                            - matches:
+                              - var:
+                                - s
+                              - var:
+                                - p
+                          - var:
+                            - patterns
+                    - get:
+                      - var:
+                        - row
+                      - strings
+                - 0
+            - subject: []
+        - 0
 assert:
   - target: text
     must:
@@ -757,22 +772,37 @@ harness:
       - "\\\\bos\\\\.getenv\\\\s*\\\\("
       - "\\\\bdatetime\\\\.now\\\\s*\\\\("
     policy_evaluate:
-      - ["eq",
-         ["count",
-          ["filter",
-           ["fn", ["row"],
-            ["gt",
-             ["count",
-              ["filter",
-               ["fn", ["s"],
-                ["any",
-                 ["map",
-                  ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
-                  ["var", "patterns"]]]],
-               ["get", ["var", "row"], "strings"]]],
-             0]],
-           ["subject"]]],
-         0]
+      - eq:
+        - count:
+          - filter:
+            - fn:
+              - lit:
+                - row
+              - gt:
+                - count:
+                  - filter:
+                    - fn:
+                      - lit:
+                        - s
+                      - any:
+                        - map:
+                          - fn:
+                            - lit:
+                              - p
+                            - matches:
+                              - var:
+                                - s
+                              - var:
+                                - p
+                          - var:
+                            - patterns
+                    - get:
+                      - var:
+                        - row
+                      - strings
+                - 0
+            - subject: []
+        - 0
 assert:
   - target: text
     must:
@@ -983,12 +1013,21 @@ harness:
       - docs/spec/conformance/cases
     allow_evaluate_files: []
     policy_evaluate:
-      - ["eq",
-         ["count",
-          ["filter",
-           ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "evaluate_ops"]], 0]],
-           ["subject"]]],
-         0]
+      - eq:
+        - count:
+          - filter:
+            - fn:
+              - lit:
+                - row
+              - gt:
+                - count:
+                  - get:
+                    - var:
+                      - row
+                    - evaluate_ops
+                - 0
+            - subject: []
+        - 0
 assert:
   - target: text
     must:
@@ -1030,7 +1069,9 @@ assert:
   - target: text
     must:
       - evaluate:
-          - ["contains", ["subject"], "a"]
+          - contains:
+            - subject: []
+            - a
 ```
 """,
     )
@@ -2965,7 +3006,9 @@ harness:
       - prefix: docs/spec/conformance/cases
         segment: conformance
     policy_evaluate:
-      - [\"has_key\", [\"subject\"], \"summary\"]
+      - has_key:
+        - subject: []
+        - summary
 assert:
   - target: text
     must:
@@ -2986,7 +3029,9 @@ assert:
   - target: text
     must:
       - evaluate:
-          - [\"contains\", [\"subject\"], \"x\"]
+          - contains:
+            - subject: []
+            - x
 ```
 """,
     )

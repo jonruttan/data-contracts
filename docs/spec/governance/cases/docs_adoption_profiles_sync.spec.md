@@ -12,17 +12,21 @@ harness:
   root: .
   adoption_profiles:
     files:
-      - README.md
-      - docs/development.md
+    - README.md
+    - docs/development.md
     required_tokens:
-      - "Core profile"
-      - "Full profile"
-      - "make core-check"
-      - "make check"
+    - Core profile
+    - Full profile
+    - make core-check
+    - make check
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.adoption_profiles_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.adoption_profiles_sync'
 ```

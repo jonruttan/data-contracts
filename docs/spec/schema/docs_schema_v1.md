@@ -15,19 +15,21 @@ doc_id: DOC-REF-001
 title: Chapter title
 status: active
 audience: author
-owns_tokens: ["token_a"]
-requires_tokens: ["token_b"]
+owns_tokens:
+- token_a
+requires_tokens:
+- token_b
 commands:
-  - run: "./scripts/ci_gate.sh"
-    purpose: Execute local gate.
+- run: ./scripts/ci_gate.sh
+  purpose: Execute local gate.
 examples:
-  - id: EX-REF-001
-    runnable: true
+- id: EX-REF-001
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 Required keys:

@@ -11,9 +11,13 @@ check: runtime.settings_import_policy
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.settings_import_policy"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.settings_import_policy'
 ```

@@ -12,19 +12,26 @@ harness:
   root: .
   portability_metric:
     roots:
-      - docs/spec/conformance/cases
-      - docs/spec/governance/cases
-      - docs/spec/impl
-    core_types: ["text.file", "cli.run"]
+    - docs/spec/conformance/cases
+    - docs/spec/governance/cases
+    - docs/spec/impl
+    core_types:
+    - text.file
+    - cli.run
     segment_rules:
-      - prefix: docs/spec/conformance/cases
-        segment: conformance
-      - prefix: docs/spec/governance/cases
-        segment: governance
-      - prefix: docs/spec/impl
-        segment: impl
-    runtime_capability_tokens: ["api.http", "governance.check"]
-    runtime_capability_prefixes: ["runtime.", "php.", "python."]
+    - prefix: docs/spec/conformance/cases
+      segment: conformance
+    - prefix: docs/spec/governance/cases
+      segment: governance
+    - prefix: docs/spec/impl
+      segment: impl
+    runtime_capability_tokens:
+    - api.http
+    - governance.check
+    runtime_capability_prefixes:
+    - runtime.
+    - php.
+    - python.
     weights:
       non_evaluate_leaf_share: 0.45
       expect_impl_overlay: 0.25
@@ -34,14 +41,27 @@ harness:
       top_n: 10
     enforce: false
     policy_evaluate:
-      - and
-      - ["json_type", ["subject"], "dict"]
-      - ["has_key", ["subject"], "summary"]
-      - ["has_key", ["subject"], "segments"]
-      - ["has_key", ["subject"], "worst_cases"]
-      - ["json_type", ["get", ["subject"], "summary"], "dict"]
+    - and:
+      - json_type:
+        - subject: []
+        - dict
+      - has_key:
+        - subject: []
+        - summary
+      - has_key:
+        - subject: []
+        - segments
+      - has_key:
+        - subject: []
+        - worst_cases
+      - json_type:
+        - get:
+          - subject: []
+          - summary
+        - dict
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: spec.portability_metric"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: spec.portability_metric'
 ```

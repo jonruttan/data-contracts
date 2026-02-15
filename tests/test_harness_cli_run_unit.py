@@ -866,7 +866,18 @@ def test_cli_type_expr_operator(tmp_path, monkeypatch, capsys):
             "assert": [
                 {
                     "target": "stdout",
-                    "must": [{"evaluate": [["and", ["contains", "hello"], ["contains", "world"]]]}],
+                    "must": [
+                        {
+                            "evaluate": [
+                                {
+                                    "and": [
+                                        {"contains": ["hello"]},
+                                        {"contains": ["world"]},
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
                 }
             ],
         },
@@ -883,9 +894,9 @@ def test_cli_type_expr_runtime_budget_failure(tmp_path, monkeypatch, capsys):
         return 0
 
     ep = _install_sut(monkeypatch, fake_main)
-    deep = ["contains", "x"]
+    deep: object = {"contains": ["x"]}
     for _ in range(150):
-        deep = ["not", ["not", deep]]
+        deep = {"not": [{"not": [deep]}]}
 
     case = SpecDocTest(
         doc_path=Path("docs/spec/cli.md"),

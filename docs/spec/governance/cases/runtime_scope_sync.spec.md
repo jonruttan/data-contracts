@@ -12,22 +12,26 @@ harness:
   root: .
   runtime_scope:
     files:
-      - docs/spec/contract/08_v1_scope.md
-      - docs/spec/contract/13_runtime_scope.md
-      - docs/spec/contract/12_runner_interface.md
+    - docs/spec/contract/08_v1_scope.md
+    - docs/spec/contract/13_runtime_scope.md
+    - docs/spec/contract/12_runner_interface.md
     required_tokens:
-      - Python runner
-      - PHP runner
-      - required support targets
-      - contract/governance expansion
+    - Python runner
+    - PHP runner
+    - required support targets
+    - contract/governance expansion
     forbidden_tokens:
-      - Node.js runner
-      - Ruby runner
-      - Java runner
+    - Node.js runner
+    - Ruby runner
+    - Java runner
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.scope_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.scope_sync'
 ```

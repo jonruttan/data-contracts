@@ -11,42 +11,61 @@ check: conformance.no_ambient_assumptions
 harness:
   root: .
   ambient_assumptions:
-    exclude_case_keys: ["id", "title", "purpose", "expect", "requires", "assert_health"]
+    exclude_case_keys:
+    - id
+    - title
+    - purpose
+    - expect
+    - requires
+    - assert_health
     patterns:
-      - "\\bdatetime\\.now\\s*\\("
-      - "\\bdatetime\\.utcnow\\s*\\("
-      - "\\btime\\.time\\s*\\("
-      - "\\bdate\\.today\\s*\\("
-      - "\\bDate\\.now\\s*\\("
-      - "\\bnew\\s+Date\\s*\\("
-      - "\\brandom\\."
-      - "\\brand(?:int|range)?\\s*\\("
-      - "\\bMath\\.random\\s*\\("
-      - "\\bos\\.environ\\b"
-      - "\\bos\\.getenv\\s*\\("
-      - "\\bgetenv\\s*\\("
-      - "\\bprocess\\.env\\b"
-      - "\\$_ENV\\b"
-      - "\\bSystem\\.getenv\\s*\\("
+    - \bdatetime\.now\s*\(
+    - \bdatetime\.utcnow\s*\(
+    - \btime\.time\s*\(
+    - \bdate\.today\s*\(
+    - \bDate\.now\s*\(
+    - \bnew\s+Date\s*\(
+    - \brandom\.
+    - \brand(?:int|range)?\s*\(
+    - \bMath\.random\s*\(
+    - \bos\.environ\b
+    - \bos\.getenv\s*\(
+    - \bgetenv\s*\(
+    - \bprocess\.env\b
+    - \$_ENV\b
+    - \bSystem\.getenv\s*\(
     policy_evaluate:
-      - ["eq",
-         ["count",
-          ["filter",
-           ["fn", ["row"],
-            ["gt",
-             ["count",
-              ["filter",
-               ["fn", ["s"],
-                ["any",
-                 ["map",
-                  ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
-                  ["var", "patterns"]]]],
-               ["get", ["var", "row"], "strings"]]],
-             0]],
-           ["subject"]]],
-         0]
+    - eq:
+      - count:
+        - filter:
+          - fn:
+            - row: []
+            - gt:
+              - count:
+                - filter:
+                  - fn:
+                    - s: []
+                    - any:
+                      - map:
+                        - fn:
+                          - p: []
+                          - matches:
+                            - var:
+                              - s
+                            - var:
+                              - p
+                        - var:
+                          - patterns
+                  - get:
+                    - var:
+                      - row
+                    - strings
+              - 0
+          - subject: []
+      - 0
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: conformance.no_ambient_assumptions"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: conformance.no_ambient_assumptions'
 ```

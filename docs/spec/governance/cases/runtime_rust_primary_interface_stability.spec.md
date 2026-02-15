@@ -13,26 +13,30 @@ harness:
   runner_interface_subcommands:
     path: scripts/rust/runner_adapter.sh
     required_subcommands:
-      - governance
-      - style-check
-      - lint
-      - typecheck
-      - compilecheck
-      - conformance-purpose-json
-      - conformance-purpose-md
-      - spec-portability-json
-      - spec-portability-md
-      - docs-build
-      - docs-build-check
-      - docs-lint
-      - docs-graph
-      - conformance-parity
-      - test-core
-      - test-full
+    - governance
+    - style-check
+    - lint
+    - typecheck
+    - compilecheck
+    - conformance-purpose-json
+    - conformance-purpose-md
+    - spec-portability-json
+    - spec-portability-md
+    - docs-build
+    - docs-build-check
+    - docs-lint
+    - docs-graph
+    - conformance-parity
+    - test-core
+    - test-full
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.runner_interface_subcommands"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.runner_interface_subcommands'
 ```

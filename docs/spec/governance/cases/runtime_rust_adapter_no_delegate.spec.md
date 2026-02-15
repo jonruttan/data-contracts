@@ -13,14 +13,18 @@ harness:
   rust_adapter:
     path: scripts/rust/runner_adapter.sh
     required_tokens:
-      - "spec_runner_cli"
-      - "cargo run --quiet"
+    - spec_runner_cli
+    - cargo run --quiet
     forbidden_tokens:
-      - "scripts/runner_adapter.sh"
+    - scripts/runner_adapter.sh
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: runtime.rust_adapter_no_delegate"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: runtime.rust_adapter_no_delegate'
 ```

@@ -11,9 +11,13 @@ check: assert.compiler_schema_matrix_sync
 harness:
   root: .
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: assert.compiler_schema_matrix_sync"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: assert.compiler_schema_matrix_sync'
 ```

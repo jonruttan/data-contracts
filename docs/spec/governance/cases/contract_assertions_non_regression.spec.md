@@ -17,17 +17,21 @@ harness:
       overall_required_token_coverage_ratio: non_decrease
       contract_must_coverage_ratio: non_decrease
       token_sync_ratio: non_decrease
-    epsilon: 0.000000000001
+    epsilon: 1.0e-12
     contract_assertions:
       paths:
-        - docs/spec/contract/03_assertions.md
-        - docs/spec/schema/schema_v1.md
-        - docs/book/03_assertions.md
-        - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/schema/schema_v1.md
+      - docs/book/03_assertions.md
+      - docs/spec/contract/03b_spec_lang_v1.md
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: spec.contract_assertions_non_regression"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: spec.contract_assertions_non_regression'
 ```

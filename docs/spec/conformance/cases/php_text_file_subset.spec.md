@@ -12,9 +12,10 @@ expect:
     status: pass
     category: null
 assert:
-  - target: text
-    must:
-      - contain: ["version: 1"]
+- target: text
+  must:
+  - contain:
+    - 'version: 1'
 ```
 
 ## SRCONF-PHP-TEXT-002
@@ -29,9 +30,10 @@ expect:
     status: fail
     category: assertion
 assert:
-  - target: text
-    must:
-      - regex: ["\\A\\Z"]
+- target: text
+  must:
+  - regex:
+    - \A\Z
 ```
 
 ## SRCONF-PHP-TEXT-003
@@ -46,10 +48,11 @@ expect:
     status: pass
     category: null
 assert:
-  - target: text
-    must:
-      - must:
-          - contain: ["version: 1"]
+- target: text
+  must:
+  - must:
+    - contain:
+      - 'version: 1'
 ```
 
 ## SRCONF-PHP-TEXT-004
@@ -64,10 +67,12 @@ expect:
     status: pass
     category: null
 assert:
-  - target: text
-    can:
-      - regex: ["(?!)"]
-      - contain: ["version: 1"]
+- target: text
+  can:
+  - regex:
+    - (?!)
+  - contain:
+    - 'version: 1'
 ```
 
 ## SRCONF-PHP-TEXT-005
@@ -82,10 +87,12 @@ expect:
     status: fail
     category: assertion
 assert:
-  - target: text
-    can:
-      - regex: ["\\A\\Z"]
-      - regex: ["(?!)"]
+- target: text
+  can:
+  - regex:
+    - \A\Z
+  - regex:
+    - (?!)
 ```
 
 ## SRCONF-PHP-TEXT-006
@@ -100,10 +107,12 @@ expect:
     status: pass
     category: null
 assert:
-  - target: text
-    cannot:
-      - regex: ["\\A\\Z"]
-      - regex: ["(?!)"]
+- target: text
+  cannot:
+  - regex:
+    - \A\Z
+  - regex:
+    - (?!)
 ```
 
 ## SRCONF-PHP-TEXT-007
@@ -118,10 +127,12 @@ expect:
     status: fail
     category: assertion
 assert:
-  - target: text
-    cannot:
-      - contain: ["version: 1"]
-      - regex: ["(?!)"]
+- target: text
+  cannot:
+  - contain:
+    - 'version: 1'
+  - regex:
+    - (?!)
 ```
 
 ## SRCONF-PHP-TEXT-008
@@ -136,13 +147,16 @@ expect:
     status: pass
     category: null
 assert:
-  - target: text
-    must:
-      - can:
-          - regex: ["\\A\\Z"]
-          - contain: ["version: 1"]
-      - cannot:
-          - regex: ["\\A\\Z"]
+- target: text
+  must:
+  - can:
+    - regex:
+      - \A\Z
+    - contain:
+      - 'version: 1'
+  - cannot:
+    - regex:
+      - \A\Z
 ```
 
 ## SRCONF-PHP-TEXT-009
@@ -157,13 +171,14 @@ expect:
     status: fail
     category: assertion
     message_tokens:
-      - AH005
+    - AH005
 assert_health:
   mode: error
 assert:
-  - target: text
-    must:
-      - regex: ["(?<=version: )1"]
+- target: text
+  must:
+  - regex:
+    - '(?<=version: )1'
 ```
 
 ## SRCONF-PHP-TEXT-010
@@ -178,13 +193,14 @@ expect:
     status: fail
     category: assertion
     message_tokens:
-      - AH001
+    - AH001
 assert_health:
   mode: error
 assert:
-  - target: text
-    must:
-      - contain: [""]
+- target: text
+  must:
+  - contain:
+    - ''
 ```
 
 ## SRCONF-PHP-TEXT-011
@@ -199,13 +215,14 @@ expect:
     status: fail
     category: assertion
     message_tokens:
-      - AH002
+    - AH002
 assert_health:
   mode: error
 assert:
-  - target: text
-    must:
-      - regex: [".*"]
+- target: text
+  must:
+  - regex:
+    - .*
 ```
 
 ## SRCONF-PHP-TEXT-012
@@ -220,13 +237,15 @@ expect:
     status: fail
     category: assertion
     message_tokens:
-      - AH003
+    - AH003
 assert_health:
   mode: error
 assert:
-  - target: text
-    must:
-      - contain: ["version: 1", "version: 1"]
+- target: text
+  must:
+  - contain:
+    - 'version: 1'
+    - 'version: 1'
 ```
 
 ## SRCONF-PHP-TEXT-013
@@ -241,14 +260,16 @@ expect:
     status: fail
     category: assertion
     message_tokens:
-      - AH004
+    - AH004
 assert_health:
   mode: error
 assert:
-  - target: text
-    can:
-      - contain: ["version: 1"]
-      - contain: ["version: 1"]
+- target: text
+  can:
+  - contain:
+    - 'version: 1'
+  - contain:
+    - 'version: 1'
 ```
 
 ## SRCONF-PHP-TEXT-014
@@ -265,7 +286,8 @@ expect:
 assert_health:
   mode: warn
 assert:
-  - target: text
-    must:
-      - contain: [""]
+- target: text
+  must:
+  - contain:
+    - ''
 ```

@@ -106,7 +106,12 @@ def test_api_http_body_json_expr_operator(tmp_path, monkeypatch, capsys):
                     "must": [
                         {
                             "evaluate": [
-                                ["and", ["has_key", "ok"], ["eq", ["get", ["subject"], "ok"], True]]
+                                {
+                                    "and": [
+                                        {"has_key": ["ok"]},
+                                        {"eq": [{"get": [{"subject": []}, "ok"]}, True]},
+                                    ]
+                                }
                             ]
                         }
                     ],

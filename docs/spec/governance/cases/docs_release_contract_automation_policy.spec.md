@@ -12,19 +12,23 @@ harness:
   root: .
   release_contract:
     files:
-      - docs/release_checklist.md
+    - docs/release_checklist.md
     required_tokens:
-      - Release readiness is defined by executable gates, not manual checklists.
-      - make ci-smoke
-      - ./scripts/ci_gate.sh
-      - convert it into an executable
+    - Release readiness is defined by executable gates, not manual checklists.
+    - make ci-smoke
+    - ./scripts/ci_gate.sh
+    - convert it into an executable
     forbidden_patterns:
-      - "(?m)^##\\s+[0-9]+\\)"
-      - "(?m)^\\s*[0-9]+\\.\\s+(Run|Then|Check|Inspect)\\b"
+    - (?m)^##\s+[0-9]+\)
+    - (?m)^\s*[0-9]+\.\s+(Run|Then|Check|Inspect)\b
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.release_contract_automation_policy"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.release_contract_automation_policy'
 ```

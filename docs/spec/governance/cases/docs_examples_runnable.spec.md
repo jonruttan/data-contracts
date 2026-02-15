@@ -12,15 +12,19 @@ harness:
   root: .
   docs_examples:
     files:
-      - docs/book/01_quickstart.md
-      - docs/book/02_core_model.md
-      - docs/book/03_assertions.md
-      - docs/book/04_spec_lang_reference.md
-      - docs/development.md
+    - docs/book/01_quickstart.md
+    - docs/book/02_core_model.md
+    - docs/book/03_assertions.md
+    - docs/book/04_spec_lang_reference.md
+    - docs/development.md
   policy_evaluate:
-    - ["is_empty", ["get", ["subject"], "violations"]]
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
-  - target: text
-    must:
-      - contain: ["PASS: docs.examples_runnable"]
+- target: text
+  must:
+  - contain:
+    - 'PASS: docs.examples_runnable'
 ```

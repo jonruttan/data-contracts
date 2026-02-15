@@ -5,19 +5,23 @@ doc_id: DOC-REF-005
 title: Chapter 4 Spec-Lang Reference
 status: active
 audience: reviewer
-owns_tokens: ["spec-lang", "tail-call-optimization", "spec_lang_forms"]
-requires_tokens: ["minimal_examples"]
+owns_tokens:
+- spec-lang
+- tail-call-optimization
+- spec_lang_forms
+requires_tokens:
+- minimal_examples
 commands:
-  - run: "python scripts/evaluate_style.py --check docs/spec"
-    purpose: Enforce canonical evaluate formatting in specs.
+- run: python scripts/evaluate_style.py --check docs/spec
+  purpose: Enforce canonical evaluate formatting in specs.
 examples:
-  - id: EX-SPECLANG-001
-    runnable: true
+- id: EX-SPECLANG-001
+  runnable: true
 sections_required:
-  - "## Purpose"
-  - "## Inputs"
-  - "## Outputs"
-  - "## Failure Modes"
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
 ```
 
 This chapter is the practical reference for the `evaluate` assertion leaf.
@@ -54,10 +58,11 @@ Example:
 
 ```yaml
 assert:
-  - target: text
-    must:
-      - evaluate:
-          - ["contains", "hello"]
+- target: text
+  must:
+  - evaluate:
+    - contains:
+      - hello
 ```
 
 Each `evaluate` item is one expression. The expression result is coerced to
@@ -68,7 +73,10 @@ boolean for assertion pass/fail.
 Valid form:
 
 ```yaml
-['symbol', arg1, arg2, ...]
+- symbol
+- arg1
+- arg2
+- '...'
 ```
 
 Invalid forms:
@@ -160,52 +168,88 @@ Text + boolean composition:
 
 ```yaml
 - evaluate:
-    - ["and",
-       ["contains", "WARN"],
-       ["not", ["contains", "ERROR"]]]
+  - and:
+    - contains:
+      - WARN
+    - not:
+      - contains:
+        - ERROR
 ```
 
 JSON field check (for `target: body_json`):
 
 ```yaml
 - evaluate:
-    - ["and",
-       ["has_key", "items"],
-       ["eq", ["json_type", ["get", ["subject"], "items"]], true]]
+  - and:
+    - has_key:
+      - items
+    - eq:
+      - json_type:
+        - get:
+          - subject: []
+          - items
+      - true
 ```
 
 Tail recursion (stack-safe by contract):
 
 ```yaml
 - evaluate:
-    - ["let",
-       [["loop",
-            ["fn",
-                ["n", "acc"],
-                ["if",
-                     ["eq", ["var", "n"], 0],
-                     ["var", "acc"],
-                     ["call",
-                           ["var", "loop"],
-                           ["sub", ["var", "n"], 1],
-                           ["add", ["var", "acc"], 1]]]]]],
-       ["eq", ["call", ["var", "loop"], 1000, 0], 1000]]
+  - let:
+    - lit:
+      - - loop
+        - - fn
+          - - n
+            - acc
+          - - if
+            - - eq
+              - - var
+                - n
+              - 0
+            - - var
+              - acc
+            - - call
+              - - var
+                - loop
+              - - sub
+                - - var
+                  - n
+                - 1
+              - - add
+                - - var
+                  - acc
+                - 1
+    - eq:
+      - call:
+        - var:
+          - loop
+        - 1000
+        - 0
+      - 1000
 ```
 
 Set algebra + deep equality:
 
 ```yaml
 - evaluate:
-    - ["intersection",
-       ["json_parse", '[{"k":1},{"k":2},{"k":2}]'],
-       ["json_parse", '[{"k":2},{"k":3}]']]
+  - intersection:
+    - json_parse:
+      - '[{"k":1},{"k":2},{"k":2}]'
+    - json_parse:
+      - '[{"k":2},{"k":3}]'
 ```
 
 Currying with collection forms:
 
 ```yaml
 - evaluate:
-    - ["map", ["call", ["var", "add"], 10], ["json_parse", "[1,2,3]"]]
+  - map:
+    - call:
+      - var:
+        - add
+      - 10
+    - json_parse:
+      - '[1,2,3]'
 ```
 
 ## 5) Budgets (`harness.spec_lang`)

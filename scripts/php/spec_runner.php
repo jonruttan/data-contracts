@@ -962,12 +962,74 @@ function specLangEvalPredicate(mixed $expr, mixed $subject, array $limits): bool
     return (bool)$value;
 }
 
+function compileYamlExprLiteral(mixed $value, string $fieldPath): mixed {
+    if (is_array($value)) {
+        if (isListArray($value)) {
+            $out = [];
+            foreach ($value as $idx => $item) {
+                $out[] = compileYamlExprLiteral($item, "{$fieldPath}[{$idx}]");
+            }
+            return $out;
+        }
+        $out = [];
+        foreach ($value as $k => $v) {
+            $out[(string)$k] = compileYamlExprLiteral($v, "{$fieldPath}." . (string)$k);
+        }
+        return $out;
+    }
+    if (is_string($value) || is_int($value) || is_float($value) || is_bool($value) || $value === null) {
+        return $value;
+    }
+    throw new SchemaError("{$fieldPath}: unsupported literal value type");
+}
+
+function compileYamlExprToSexpr(mixed $node, string $fieldPath): mixed {
+    if (is_string($node) || is_int($node) || is_float($node) || is_bool($node) || $node === null) {
+        return $node;
+    }
+    if (is_array($node) && isListArray($node)) {
+        throw new SchemaError(
+            "{$fieldPath}: list expressions are not allowed; use operator-keyed mapping AST and wrap literal lists with lit"
+        );
+    }
+    if (!is_array($node)) {
+        throw new SchemaError("{$fieldPath}: expression node must be scalar or mapping");
+    }
+    $keys = array_keys($node);
+    if (count($keys) === 0) {
+        throw new SchemaError("{$fieldPath}: expression mapping must not be empty");
+    }
+    if (array_key_exists('lit', $node)) {
+        if (count($keys) !== 1) {
+            throw new SchemaError("{$fieldPath}: lit wrapper must be the only key in a mapping");
+        }
+        return compileYamlExprLiteral($node['lit'], "{$fieldPath}.lit");
+    }
+    if (count($keys) !== 1) {
+        throw new SchemaError("{$fieldPath}: expression mapping must have exactly one operator key");
+    }
+    $op = trim((string)$keys[0]);
+    if ($op === '') {
+        throw new SchemaError("{$fieldPath}: operator key must be non-empty");
+    }
+    $rawArgs = $node[$keys[0]];
+    if (!is_array($rawArgs) || !isListArray($rawArgs)) {
+        throw new SchemaError("{$fieldPath}.{$op}: operator args must be a list");
+    }
+    $args = [];
+    foreach ($rawArgs as $idx => $arg) {
+        $args[] = compileYamlExprToSexpr($arg, "{$fieldPath}.{$op}[{$idx}]");
+    }
+    return array_merge([$op], $args);
+}
+
 function compileLeafExpr(string $op, mixed $value, string $target): array {
     if ($op === 'evaluate') {
-        if (!is_array($value) || !isListArray($value)) {
-            throw new SchemaError('evaluate value must be list-based s-expr');
+        $compiled = compileYamlExprToSexpr($value, "evaluate");
+        if (!is_array($compiled) || !isListArray($compiled)) {
+            throw new SchemaError('evaluate expression must compile to a list-based s-expr');
         }
-        return $value;
+        return $compiled;
     }
     if ($op === 'contain') {
         return ['contains', ['subject'], (string)$value];
