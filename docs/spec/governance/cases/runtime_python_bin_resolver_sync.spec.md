@@ -4,8 +4,8 @@
 
 ```yaml spec-test
 id: SRGOV-RUNTIME-CONFIG-002
-title: gate scripts use shared python-bin resolver helper
-purpose: Prevents drift by enforcing a single shared python interpreter resolver in shell gate scripts.
+title: python-invoking adapter scripts use shared python-bin resolver helper
+purpose: Prevents drift by enforcing a single shared python interpreter resolver in scripts that invoke Python directly.
 type: governance.check
 check: runtime.python_bin_resolver_sync
 harness:
@@ -13,7 +13,7 @@ harness:
   python_bin_resolver:
     helper: scripts/lib/python_bin.sh
     files:
-    - scripts/ci_gate.sh
+    - scripts/runner_adapter.sh
     required_tokens:
     - source "${ROOT_DIR}/scripts/lib/python_bin.sh"
     - resolve_python_bin "${ROOT_DIR}"

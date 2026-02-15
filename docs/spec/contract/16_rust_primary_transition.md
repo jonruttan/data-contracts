@@ -17,7 +17,7 @@ path while preserving schema/contract behavior guarantees.
 
 2. No Python-hardcoded gate dependency
 - Gate scripts MUST use runner-interface boundaries instead of direct Python
-  script entrypoints.
+  script entrypoints, including `ci-gate-summary` orchestration.
 
 3. Runner-interface stability under Rust primary
 - Required runner-interface subcommands and exit-code contracts MUST remain

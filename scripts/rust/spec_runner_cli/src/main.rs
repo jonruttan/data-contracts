@@ -79,6 +79,7 @@ fn main() {
         | "contract-assertions-md"
         | "objective-scorecard-json"
         | "objective-scorecard-md"
+        | "ci-gate-summary"
         | "docs-build"
         | "docs-build-check"
         | "docs-lint"

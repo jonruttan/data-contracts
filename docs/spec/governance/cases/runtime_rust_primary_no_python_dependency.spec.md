@@ -23,6 +23,7 @@ harness:
     - scripts/runner_adapter.sh
     forbidden_tokens:
     - scripts/run_governance_specs.py
+    - scripts/ci_gate_summary.py
     - scripts/evaluate_style.py --check docs/spec
     - scripts/conformance_purpose_report.py
     - scripts/compare_conformance_parity.py

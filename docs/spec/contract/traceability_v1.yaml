@@ -975,7 +975,9 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/runtime_runner_interface_gate_sync.spec.md
+  - scripts/ci_gate.sh
   - scripts/runner_adapter.sh
+  - scripts/ci_gate_summary.py
   notes: Governance enforces runner-interface boundary usage in gate shell scripts.
 - rule_id: RUNTIME_SCOPE_BOUNDED_FOR_V1
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_SCOPE_BOUNDED_FOR_V1

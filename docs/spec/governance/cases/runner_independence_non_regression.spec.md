@@ -22,13 +22,18 @@ harness:
     runner_independence:
       segment_files:
         gate_scripts:
-        - scripts/*.sh
+        - scripts/ci_gate.sh
+        - scripts/core_gate.sh
+        - scripts/docs_doctor.sh
         ci_workflows:
         - .github/workflows/*.yml
         adapter_interfaces:
         - scripts/runner_adapter.sh
         - scripts/rust/runner_adapter.sh
         - scripts/rust/spec_runner_cli/src/main.rs
+      direct_runtime_token_segments:
+      - gate_scripts
+      - ci_workflows
   policy_evaluate:
   - is_empty:
     - get:

@@ -73,12 +73,12 @@ cargo build --manifest-path scripts/rust/spec_runner_cli/Cargo.toml
 ## Run Core Gate Checks
 
 ```sh
-python scripts/run_governance_specs.py
-python scripts/evaluate_style.py --check docs/spec
-python scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
-python scripts/conformance_purpose_report.py --format md --out .artifacts/conformance-purpose-summary.md
-python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases --php-runner scripts/php/conformance_runner.php --out .artifacts/conformance-parity.json
-python -m pytest
+./scripts/runner_adapter.sh governance
+./scripts/runner_adapter.sh style-check
+./scripts/runner_adapter.sh conformance-purpose-json
+./scripts/runner_adapter.sh conformance-purpose-md
+./scripts/runner_adapter.sh conformance-parity
+./scripts/runner_adapter.sh test-full
 ```
 
 Canonical pre-merge check:

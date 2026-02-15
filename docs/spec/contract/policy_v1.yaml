@@ -906,9 +906,9 @@ rules:
   introduced_in: v1
   scope: governance
   applies_to: runtime.gate_orchestration
-  norm: SHOULD
+  norm: MUST
   requirement: gate_scripts_call_runner_interface_boundary
-  description: 'Gate shell scripts should call a runner interface command boundary (`SPEC_RUNNER_BIN`) instead of hardcoding Python script entrypoints.
+  description: 'Gate shell scripts must call a runner interface command boundary (`SPEC_RUNNER_BIN`) instead of hardcoding Python script entrypoints.
 
     '
   rationale: Keeps orchestration portable across compliant runner implementations.

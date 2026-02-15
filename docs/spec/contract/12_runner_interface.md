@@ -4,7 +4,7 @@ Defines the language-neutral command boundary used by local gate scripts.
 
 ## Required Interface
 
-Gate orchestration SHOULD invoke a runner command boundary via `SPEC_RUNNER_BIN`
+Gate orchestration MUST invoke a runner command boundary via `SPEC_RUNNER_BIN`
 instead of calling implementation-specific Python script paths directly.
 
 Required subcommands:
@@ -16,6 +16,7 @@ Required subcommands:
 - `compilecheck`
 - `conformance-purpose-json`
 - `conformance-purpose-md`
+- `ci-gate-summary`
 - `conformance-parity`
 - `test-core`
 - `test-full`
@@ -51,5 +52,5 @@ Runtime scope note:
 ## Compatibility Expectation
 
 - Runner interface subcommand names are contributor-facing operational contract.
-- Gate scripts (`ci_gate.sh`, `core_gate.sh`, `docs_doctor.sh`) SHOULD remain
+- Gate scripts (`ci_gate.sh`, `core_gate.sh`, `docs_doctor.sh`) MUST remain
   implementation-neutral and call the runner interface boundary.

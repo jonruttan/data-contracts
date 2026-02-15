@@ -345,7 +345,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
 def default_runner_independence_config() -> dict[str, Any]:
     return {
         "segment_files": {
-            "gate_scripts": ["scripts/*.sh"],
+            "gate_scripts": ["scripts/ci_gate.sh", "scripts/core_gate.sh", "scripts/docs_doctor.sh"],
             "ci_workflows": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
             "adapter_interfaces": [
                 "scripts/runner_adapter.sh",
@@ -360,6 +360,7 @@ def default_runner_independence_config() -> dict[str, Any]:
             "python -m pytest",
             "php scripts/php/spec_runner.php",
         ],
+        "direct_runtime_token_segments": ["gate_scripts", "ci_workflows"],
         "gate_required_tokens": ["SPEC_RUNNER_BIN", "scripts/runner_adapter.sh"],
         "rust_ci_required_tokens": [
             "core-gate-rust-adapter:",
@@ -378,6 +379,7 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
     segment_files_obj = cfg.get("segment_files")
     segment_files: dict[str, Any] = segment_files_obj if isinstance(segment_files_obj, dict) else {}
     direct_tokens = _as_list_of_strings(cfg.get("direct_runtime_tokens"))
+    token_segments = set(_as_list_of_strings(cfg.get("direct_runtime_token_segments")))
     gate_required = _as_list_of_strings(cfg.get("gate_required_tokens"))
     rust_required = _as_list_of_strings(cfg.get("rust_ci_required_tokens"))
 
@@ -408,7 +410,9 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
         for path in sorted(files):
             rel = str(path.resolve().relative_to(root)).replace("\\", "/")
             text = path.read_text(encoding="utf-8")
-            direct_hits = sum(text.count(tok) for tok in direct_tokens)
+            direct_hits = 0
+            if not token_segments or seg in token_segments:
+                direct_hits = sum(text.count(tok) for tok in direct_tokens)
 
             if seg == "gate_scripts":
                 iface_ratio = _safe_ratio(

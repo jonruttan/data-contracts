@@ -46,6 +46,8 @@ Notes:
 - Normalization tooling is unified under `scripts/normalize_repo.py` with
   profile-driven rules from `docs/spec/schema/normalization_profile_v1.yaml`;
   CI runs `normalize-check` and local workflow uses `normalize-fix`.
+- Gate scripts now invoke CI summary orchestration through runner-interface
+  subcommand `ci-gate-summary` (no direct gate-script Python summary call).
 
 Canonical spec docs:
 

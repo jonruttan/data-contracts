@@ -129,6 +129,12 @@ case "${subcommand}" in
     fi
     exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
+  ci-gate-summary)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
   docs-build)
     if [[ -x "${RUST_CLI_BIN}" ]]; then
       exec "${RUST_CLI_BIN}" "${subcommand}" "$@"

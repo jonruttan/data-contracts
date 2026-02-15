@@ -22,6 +22,7 @@ harness:
     - conformance-purpose-md
     - spec-portability-json
     - spec-portability-md
+    - ci-gate-summary
     - docs-build
     - docs-build-check
     - docs-lint
