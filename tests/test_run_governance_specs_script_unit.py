@@ -658,6 +658,143 @@ assert:
     assert code == 1
 
 
+def test_script_enforces_conformance_library_policy_usage_required(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "libs" / "policy_core.spec.md",
+        """# Libraries
+
+## LIB-POLICY-CORE-TEST-001
+
+```yaml spec-test
+id: LIB-POLICY-CORE-TEST-001
+type: spec_lang.library
+functions:
+  policy.pass_when_no_violations:
+    fn:
+    - [subject]
+    - is_empty:
+      - get:
+        - var: subject
+        - violations
+exports:
+- policy.pass_when_no_violations
+```
+""",
+    )
+    _write_text(
+        cases_dir / "conformance_policy_library_required.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CONF-LIB-001
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-LIB-001
+type: governance.check
+check: conformance.library_policy_usage_required
+harness:
+  root: {tmp_path}
+  conformance_policy_library_requirements:
+    cases_path: cases
+    case_file_pattern: "*.spec.md"
+    ignore_checks:
+      - conformance.library_policy_usage_required
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - var: subject
+      - violations
+assert:
+  - target: summary_json
+    must:
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.library_policy_usage_required
+```
+""",
+    )
+    _write_text(
+        cases_dir / "bad_conformance_check.spec.md",
+        """# Governance
+
+## SRGOV-TEST-CONF-LIB-002
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-LIB-002
+type: governance.check
+check: conformance.case_index_sync
+harness:
+  root: .
+  spec_lang:
+    library_paths:
+      - libs/policy_core.spec.md
+    exports:
+      - policy.pass_when_no_violations
+  policy_evaluate:
+  - eq:
+    - true
+    - true
+assert:
+  - target: summary_json
+    must:
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+    _write_text(
+        cases_dir / "bad_conformance_check.spec.md",
+        """# Governance
+
+## SRGOV-TEST-CONF-LIB-002
+
+```yaml spec-test
+id: SRGOV-TEST-CONF-LIB-002
+type: governance.check
+check: conformance.case_index_sync
+harness:
+  root: .
+  spec_lang:
+    library_paths:
+      - libs/policy_core.spec.md
+    exports:
+      - policy.pass_when_no_violations
+  policy_evaluate:
+  - call:
+    - var: policy.pass_when_no_violations
+    - var: subject
+assert:
+  - target: summary_json
+    must:
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
 def test_script_enforces_runtime_scope_sync(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

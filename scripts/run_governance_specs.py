@@ -1669,6 +1669,81 @@ def _scan_governance_policy_library_usage_required(root: Path, *, harness: dict 
     return violations
 
 
+def _scan_conformance_library_policy_usage_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("conformance_policy_library_requirements")
+    if not isinstance(cfg, dict):
+        return [
+            "conformance.library_policy_usage_required requires harness.conformance_policy_library_requirements mapping in governance spec"
+        ]
+    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
+    case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
+    ignore_checks_raw = cfg.get("ignore_checks", [])
+    if not isinstance(ignore_checks_raw, list) or any(not isinstance(x, str) for x in ignore_checks_raw):
+        return ["harness.conformance_policy_library_requirements.ignore_checks must be a list of strings"]
+    ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
+
+    cases_dir = root / cases_rel
+    if not cases_dir.exists():
+        return [f"{cases_rel}:1: governance cases path does not exist"]
+
+    def _policy_uses_library_call(expr: object) -> bool:
+        if isinstance(expr, dict):
+            if "call" in expr:
+                raw = expr.get("call")
+                if isinstance(raw, list) and raw:
+                    fn_node = raw[0]
+                    if (
+                        isinstance(fn_node, dict)
+                        and len(fn_node) == 1
+                        and "var" in fn_node
+                        and isinstance(fn_node.get("var"), str)
+                        and str(fn_node.get("var", "")).strip()
+                    ):
+                        return True
+            return any(_policy_uses_library_call(v) for v in expr.values())
+        if isinstance(expr, list):
+            return any(_policy_uses_library_call(v) for v in expr)
+        return False
+
+    violations: list[str] = []
+    for spec in iter_cases(cases_dir, file_pattern=case_pattern):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() != "governance.check":
+            continue
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        check_id = str(case.get("check", "")).strip()
+        if not check_id.startswith("conformance.") or check_id in ignore_checks:
+            continue
+        harness_map = case.get("harness")
+        if not isinstance(harness_map, dict):
+            violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
+            continue
+        spec_lang_cfg = harness_map.get("spec_lang")
+        has_library_paths = False
+        if isinstance(spec_lang_cfg, dict):
+            lib_paths = spec_lang_cfg.get("library_paths")
+            has_library_paths = isinstance(lib_paths, list) and any(
+                isinstance(x, str) and x.strip() for x in lib_paths
+            )
+        if not has_library_paths:
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.spec_lang.library_paths"
+            )
+            continue
+        policy = harness_map.get("policy_evaluate")
+        if not isinstance(policy, list) or not policy:
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.policy_evaluate"
+            )
+            continue
+        if not _policy_uses_library_call(policy):
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} policy_evaluate must call library symbol via call -> var"
+            )
+    return violations
+
+
 def _scan_governance_extractor_only_no_verdict_branching(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
     cfg = h.get("extractor_policy")
@@ -3499,6 +3574,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.current_spec_policy_key_names": _scan_current_spec_policy_key_names,
     "governance.policy_evaluate_required": _scan_governance_policy_evaluate_required,
     "governance.policy_library_usage_required": _scan_governance_policy_library_usage_required,
+    "conformance.library_policy_usage_required": _scan_conformance_library_policy_usage_required,
     "governance.extractor_only_no_verdict_branching": _scan_governance_extractor_only_no_verdict_branching,
     "governance.structured_assertions_required": _scan_governance_structured_assertions_required,
     "runtime.rust_adapter_no_python_exec": _scan_runtime_rust_adapter_no_python_exec,

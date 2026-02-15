@@ -171,6 +171,22 @@ rules:
   - docs/spec/governance/cases/conformance_evaluate_first_ratio_non_regression.spec.md
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   - spec_runner/quality_metrics.py
+- id: CONFORMANCE_LIBRARY_POLICY_USAGE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: conformance.governance.policy_authoring
+  norm: MUST
+  requirement: conformance_governance_checks_must_use_library_backed_policy_calls
+  description: 'Conformance-prefixed governance checks must declare shared spec-lang library wiring and call exported library symbols from policy_evaluate.
+
+    '
+  rationale: Keeps conformance governance policy logic reusable and implementation-independent.
+  risk_if_violated: Conformance policy logic drifts into duplicated inline expressions.
+  references:
+  - docs/spec/governance/cases/conformance_library_policy_usage_required.spec.md
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  - scripts/run_governance_specs.py
 - id: SPEC_LANG_PURE_EVALUATOR
   introduced_in: v1
   scope: implementation
