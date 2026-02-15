@@ -63,6 +63,25 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
     bindings: dict[str, Any] = {}
     exports: list[str] = []
 
+    def _compile_function_map(raw_map: object, *, field_path: str) -> dict[str, Any]:
+        if raw_map is None:
+            return {}
+        if not isinstance(raw_map, dict):
+            raise TypeError(f"spec_lang.library {field_path} must be a mapping when provided")
+        out: dict[str, Any] = {}
+        for raw_name, expr in raw_map.items():
+            name = str(raw_name).strip()
+            if not name:
+                raise ValueError(f"spec_lang.library {field_path} function name must be non-empty")
+            try:
+                out[name] = compile_yaml_expr_to_sexpr(
+                    expr,
+                    field_path=f"{path.as_posix()} {field_path}.{name}",
+                )
+            except SpecLangYamlAstError as exc:
+                raise ValueError(str(exc)) from exc
+        return out
+
     for _, case in loaded:
         case_type = str(case.get("type", "")).strip()
         if case_type != "spec_lang.library":
@@ -71,25 +90,21 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
         case_imports = _as_non_empty_str_list(case.get("imports"), field="imports")
         imports.extend(case_imports)
 
-        raw_bindings = case.get("functions")
-        if not isinstance(raw_bindings, dict) or not raw_bindings:
-            raise TypeError("spec_lang.library requires non-empty functions mapping")
-        for raw_name, expr in raw_bindings.items():
-            name = str(raw_name).strip()
-            if not name:
-                raise ValueError("spec_lang.library function name must be non-empty")
+        raw_functions = case.get("functions")
+        if not isinstance(raw_functions, dict):
+            raise TypeError("spec_lang.library requires functions mapping with public/private scopes")
+        public_bindings = _compile_function_map(raw_functions.get("public"), field_path="functions.public")
+        private_bindings = _compile_function_map(raw_functions.get("private"), field_path="functions.private")
+        if not public_bindings and not private_bindings:
+            raise TypeError("spec_lang.library requires non-empty functions.public or functions.private mapping")
+        overlap = sorted(set(public_bindings).intersection(private_bindings))
+        if overlap:
+            raise ValueError("spec_lang.library duplicate symbol across functions.public/functions.private: " + ", ".join(overlap))
+        for name, expr in {**public_bindings, **private_bindings}.items():
             if name in bindings:
                 raise ValueError(f"duplicate library function in file {path}: {name}")
-            try:
-                bindings[name] = compile_yaml_expr_to_sexpr(
-                    expr,
-                    field_path=f"{path.as_posix()} functions.{name}",
-                )
-            except SpecLangYamlAstError as exc:
-                raise ValueError(str(exc)) from exc
-
-        case_exports = _as_non_empty_str_list(case.get("exports"), field="exports")
-        exports.extend(case_exports)
+            bindings[name] = expr
+        exports.extend(sorted(public_bindings.keys()))
 
     if not bindings:
         raise ValueError(f"library file has no spec_lang.library functions: {path}")

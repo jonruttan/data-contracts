@@ -3703,10 +3703,13 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
         for _doc_path, case in loaded:
             if str(case.get("type", "")).strip() != "spec_lang.library":
                 continue
-            raw_exports = case.get("exports")
-            if not isinstance(raw_exports, list):
+            raw_functions = case.get("functions")
+            if not isinstance(raw_functions, dict):
                 continue
-            for raw in raw_exports:
+            raw_public = raw_functions.get("public")
+            if not isinstance(raw_public, dict):
+                continue
+            for raw in raw_public.keys():
                 sym = str(raw).strip()
                 if not sym:
                     continue
@@ -3751,14 +3754,122 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
             if str(case.get("type", "")).strip() == "spec_lang.library":
                 raw_functions = case.get("functions")
                 if isinstance(raw_functions, dict):
-                    for expr in raw_functions.values():
-                        referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
+                    for scope in ("public", "private"):
+                        scoped = raw_functions.get(scope)
+                        if isinstance(scoped, dict):
+                            for expr in scoped.values():
+                                referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
 
     for sym, src in sorted(exported.items(), key=lambda item: item[0]):
         if sym not in referenced:
             violations.append(
                 f"{src.relative_to(root)}: exported symbol '{sym}' is not referenced by any case policy/expression or harness.spec_lang.exports"
             )
+    return violations
+
+
+def _scan_library_public_surface_model(root: Path, *, harness: dict | None = None) -> list[str]:
+    libs_root = root / "docs/spec/libraries"
+    if not libs_root.exists():
+        return []
+    violations: list[str] = []
+    for lib_file in sorted(libs_root.rglob("*.spec.md")):
+        if not lib_file.is_file():
+            continue
+        try:
+            loaded = load_external_cases(lib_file, formats={"md"})
+        except Exception as exc:  # noqa: BLE001
+            violations.append(f"{lib_file.relative_to(root)}: unable to parse library file ({exc})")
+            continue
+        for _doc_path, case in loaded:
+            if str(case.get("type", "")).strip() != "spec_lang.library":
+                continue
+            raw_functions = case.get("functions")
+            if not isinstance(raw_functions, dict):
+                violations.append(
+                    f"{lib_file.relative_to(root)}: spec_lang.library requires functions mapping"
+                )
+                continue
+            raw_public = raw_functions.get("public")
+            raw_private = raw_functions.get("private")
+            if not isinstance(raw_public, dict) and not isinstance(raw_private, dict):
+                violations.append(
+                    f"{lib_file.relative_to(root)}: spec_lang.library requires functions.public or functions.private mapping"
+                )
+                continue
+            if isinstance(raw_public, dict) and isinstance(raw_private, dict):
+                overlap = sorted(set(str(k).strip() for k in raw_public).intersection(str(k).strip() for k in raw_private))
+                overlap = [s for s in overlap if s]
+                if overlap:
+                    violations.append(
+                        f"{lib_file.relative_to(root)}: duplicate symbol across functions.public/functions.private: "
+                        + ", ".join(overlap)
+                    )
+    return violations
+
+
+def _scan_reference_private_symbols_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    libs_root = root / "docs/spec/libraries"
+    private_symbols: set[str] = set()
+    if libs_root.exists():
+        for lib_file in sorted(libs_root.rglob("*.spec.md")):
+            if not lib_file.is_file():
+                continue
+            try:
+                loaded = load_external_cases(lib_file, formats={"md"})
+            except Exception:
+                continue
+            for _doc_path, case in loaded:
+                if str(case.get("type", "")).strip() != "spec_lang.library":
+                    continue
+                raw_functions = case.get("functions")
+                if not isinstance(raw_functions, dict):
+                    continue
+                raw_private = raw_functions.get("private")
+                if not isinstance(raw_private, dict):
+                    continue
+                for sym in raw_private.keys():
+                    s = str(sym).strip()
+                    if s:
+                        private_symbols.add(s)
+    if not private_symbols:
+        return []
+
+    violations: list[str] = []
+    scan_roots = [
+        root / "docs/spec/conformance/cases",
+        root / "docs/spec/governance/cases",
+        root / "docs/spec/impl",
+    ]
+    for base in scan_roots:
+        if not base.exists():
+            continue
+        for doc_path, case in _iter_all_spec_cases(base):
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            rel = doc_path.relative_to(root)
+            refs: set[str] = set()
+            h = case.get("harness")
+            if isinstance(h, dict):
+                policy = h.get("policy_evaluate")
+                if isinstance(policy, list):
+                    refs.update(sym for sym in _collect_var_symbols(policy) if "." in sym)
+                spec_lang = h.get("spec_lang")
+                if isinstance(spec_lang, dict):
+                    raw_exports = spec_lang.get("exports")
+                    if isinstance(raw_exports, list):
+                        for raw in raw_exports:
+                            sym = str(raw).strip()
+                            if sym and "." in sym:
+                                refs.add(sym)
+            raw_assert = case.get("assert")
+            if isinstance(raw_assert, list):
+                for expr in _iter_evaluate_expr_nodes(raw_assert):
+                    refs.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
+            bad = sorted(sym for sym in refs if sym in private_symbols)
+            if bad:
+                violations.append(
+                    f"{rel}: case {case_id} references private library symbols: " + ", ".join(bad)
+                )
     return violations
 
 
@@ -4008,10 +4119,13 @@ def _scan_library_domain_index_sync(root: Path, *, harness: dict | None = None) 
             for _doc_path, case in loaded:
                 if str(case.get("type", "")).strip() != "spec_lang.library":
                     continue
-                raw_exports = case.get("exports")
-                if not isinstance(raw_exports, list):
+                raw_functions = case.get("functions")
+                if not isinstance(raw_functions, dict):
                     continue
-                for item in raw_exports:
+                raw_public = raw_functions.get("public")
+                if not isinstance(raw_public, dict):
+                    continue
+                for item in raw_public.keys():
                     sym = str(item).strip()
                     if sym:
                         exports.append(sym)
@@ -4108,18 +4222,33 @@ def _scan_normalization_library_mapping_ast_only(root: Path, *, harness: dict | 
             if not isinstance(functions, dict) or not functions:
                 violations.append(f"{rel}: case {case_id} must provide non-empty functions mapping")
                 continue
-            for raw_name, expr in functions.items():
-                name = str(raw_name).strip()
-                if not name:
-                    violations.append(f"{rel}: case {case_id} has empty function symbol name")
-                    continue
-                try:
-                    compile_yaml_expr_to_sexpr(
-                        expr,
-                        field_path=f"{rel.as_posix()} case {case_id} functions.{name}",
-                    )
-                except SpecLangYamlAstError as exc:
-                    violations.append(str(exc))
+            scopes = []
+            raw_public = functions.get("public")
+            raw_private = functions.get("private")
+            if isinstance(raw_public, dict):
+                scopes.append(("public", raw_public))
+            if isinstance(raw_private, dict):
+                scopes.append(("private", raw_private))
+            if not scopes:
+                violations.append(
+                    f"{rel}: case {case_id} must provide functions.public or functions.private mapping"
+                )
+                continue
+            for scope_name, scoped_map in scopes:
+                for raw_name, expr in scoped_map.items():
+                    name = str(raw_name).strip()
+                    if not name:
+                        violations.append(
+                            f"{rel}: case {case_id} has empty function symbol name in functions.{scope_name}"
+                        )
+                        continue
+                    try:
+                        compile_yaml_expr_to_sexpr(
+                            expr,
+                            field_path=f"{rel.as_posix()} case {case_id} functions.{scope_name}.{name}",
+                        )
+                    except SpecLangYamlAstError as exc:
+                        violations.append(str(exc))
     return violations
 
 
@@ -4306,6 +4435,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "reference.symbols_exist": _scan_reference_symbols_exist,
     "reference.policy_symbols_resolve": _scan_reference_policy_symbols_resolve,
     "reference.library_exports_used": _scan_reference_library_exports_used,
+    "reference.private_symbols_forbidden": _scan_reference_private_symbols_forbidden,
     "reference.check_ids_exist": _scan_reference_check_ids_exist,
     "reference.external_refs_policy": _scan_reference_external_refs_policy,
     "reference.token_anchors_exist": _scan_reference_token_anchors_exist,
@@ -4313,6 +4443,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "spec.domain_index_sync": _scan_spec_domain_index_sync,
     "library.domain_ownership": _scan_library_domain_ownership,
     "library.domain_index_sync": _scan_library_domain_index_sync,
+    "library.public_surface_model": _scan_library_public_surface_model,
     "normalization.profile_sync": _scan_normalization_profile_sync,
     "normalization.mapping_ast_only": _scan_normalization_mapping_ast_only,
     "normalization.library_mapping_ast_only": _scan_normalization_library_mapping_ast_only,

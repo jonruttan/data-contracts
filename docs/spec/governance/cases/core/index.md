@@ -56,6 +56,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/governance_structured_assertions_required.spec.md`
 - `/docs/spec/governance/cases/core/library_domain_index_sync.spec.md`
 - `/docs/spec/governance/cases/core/library_domain_ownership.spec.md`
+- `/docs/spec/governance/cases/core/library_public_surface_model.spec.md`
 - `/docs/spec/governance/cases/core/naming_filename_policy.spec.md`
 - `/docs/spec/governance/cases/core/normalization_docs_token_sync.spec.md`
 - `/docs/spec/governance/cases/core/normalization_library_mapping_ast_only.spec.md`
@@ -72,6 +73,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/reference_external_refs_policy.spec.md`
 - `/docs/spec/governance/cases/core/reference_library_exports_used.spec.md`
 - `/docs/spec/governance/cases/core/reference_policy_symbols_resolve.spec.md`
+- `/docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/reference_symbols_exist.spec.md`
 - `/docs/spec/governance/cases/core/reference_token_anchors_exist.spec.md`
 - `/docs/spec/governance/cases/core/regex_doc_sync.spec.md`

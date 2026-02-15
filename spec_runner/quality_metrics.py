@@ -255,6 +255,34 @@ def _count_python_decision_branches(repo_root: Path) -> int:
     return sum(raw.count(tok) for tok in patterns)
 
 
+def _library_public_surface_ratio(repo_root: Path) -> tuple[float, int, int]:
+    libs_root = repo_root / "docs/spec/libraries"
+    if not libs_root.exists():
+        return 1.0, 0, 0
+    public_count = 0
+    total_count = 0
+    for lib_file in sorted(libs_root.rglob("*.spec.md")):
+        if not lib_file.is_file():
+            continue
+        for _doc_path, case in load_external_cases(lib_file, formats={"md"}):
+            if str(case.get("type", "")).strip() != "spec_lang.library":
+                continue
+            functions = case.get("functions")
+            if not isinstance(functions, dict):
+                continue
+            scoped_public = functions.get("public")
+            scoped_private = functions.get("private")
+            public_keys = [str(k).strip() for k in scoped_public.keys()] if isinstance(scoped_public, dict) else []
+            private_keys = [str(k).strip() for k in scoped_private.keys()] if isinstance(scoped_private, dict) else []
+            public_keys = [k for k in public_keys if k]
+            private_keys = [k for k in private_keys if k]
+            public_count += len(public_keys)
+            total_count += len(public_keys) + len(private_keys)
+    if total_count == 0:
+        return 1.0, 0, 0
+    return float(public_count) / float(total_count), public_count, total_count
+
+
 def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] | None = None) -> dict[str, Any]:
     root = repo_root.resolve()
     cfg = default_spec_lang_adoption_config()
@@ -407,6 +435,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
         float(gov_total),
         default=1.0,
     )
+    library_public_ratio, library_public_count, library_total_count = _library_public_surface_ratio(root)
 
     for seg, summary in segments.items():
         seg_gov_rows = [
@@ -431,6 +460,9 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             "native_logic_escape_case_ratio": native_ratio,
             "governance_library_backed_policy_ratio": gov_library_ratio,
             "governance_symbol_resolution_ratio": gov_symbol_resolution_ratio,
+            "library_public_surface_ratio": library_public_ratio,
+            "library_public_symbol_count": library_public_count,
+            "library_total_symbol_count": library_total_count,
             "unit_opt_out_count": unit_opt_out_count,
             "python_decision_branch_count": _count_python_decision_branches(root),
         },

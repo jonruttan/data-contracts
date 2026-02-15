@@ -580,6 +580,21 @@ rules:
   - docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   - spec_runner/quality_metrics.py
+- id: LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION
+  introduced_in: v1
+  scope: governance
+  applies_to: specs.spec_lang_adoption.metric_non_regression
+  norm: MUST
+  requirement: library_public_surface_ratio_must_not_regress_from_baseline
+  description: 'Library public surface ratio must remain non-regressing so exported library APIs stay intentionally minimal.
+
+    '
+  rationale: Keeps shared library API surface controlled as private helper coverage grows.
+  risk_if_violated: Library APIs bloat and become harder to maintain across runners.
+  references:
+  - docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  - spec_runner/quality_metrics.py
 - id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   introduced_in: v1
   scope: governance
@@ -1683,14 +1698,28 @@ rules:
   scope: governance
   applies_to: docs/spec/libraries/* exports
   norm: MUST
-  requirement: exported_library_symbols_must_be_referenced
-  description: 'Exported library symbols must be referenced by at least one case policy/expression or harness.spec_lang.exports declaration.
+  requirement: public_library_symbols_must_be_referenced
+  description: 'Library functions.public symbols must be referenced by at least one case policy/expression or harness.spec_lang.exports declaration.
 
     '
   rationale: Keeps library surfaces minimal and avoids dead exported symbols.
   risk_if_violated: Unused exported symbols create drift and unclear API surfaces.
   references:
   - docs/spec/governance/cases/core/reference_library_exports_used.spec.md
+  - scripts/run_governance_specs.py
+- id: REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
+  introduced_in: v1
+  scope: governance
+  applies_to: cross_case_library_symbol_references
+  norm: MUST
+  requirement: functions_private_symbols_must_not_be_referenced_by_cases
+  description: 'Symbols declared under functions.private must not be referenced from conformance/governance/impl case policies or assertions.
+
+    '
+  rationale: Preserves private helper encapsulation inside library documents.
+  risk_if_violated: Private implementation details leak into case contracts.
+  references:
+  - docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md
   - scripts/run_governance_specs.py
 - id: REFERENCE_CHECK_IDS_EXIST
   introduced_in: v1
@@ -1790,4 +1819,19 @@ rules:
   references:
   - docs/spec/governance/cases/core/library_domain_index_sync.spec.md
   - scripts/migrate_spec_layout_domain_trees.py
+  - scripts/run_governance_specs.py
+- id: LIBRARY_PUBLIC_SURFACE_MODEL
+  introduced_in: v1
+  scope: governance
+  applies_to: type_spec_lang_library_shape
+  norm: MUST
+  requirement: libraries_use_functions_public_private_scope_model
+  description: 'spec_lang.library cases must define functions in functions.public/functions.private scopes and avoid legacy function/export shapes.
+
+    '
+  rationale: Provides explicit API visibility boundaries and deterministic export derivation.
+  risk_if_violated: Library API visibility drifts and symbol contracts become ambiguous.
+  references:
+  - docs/spec/governance/cases/core/library_public_surface_model.spec.md
+  - docs/spec/contract/14_spec_lang_libraries.md
   - scripts/run_governance_specs.py

@@ -671,15 +671,14 @@ def test_script_enforces_conformance_library_policy_usage_required(tmp_path):
 id: LIB-POLICY-CORE-TEST-001
 type: spec_lang.library
 functions:
-  policy.pass_when_no_violations:
-    fn:
-    - [subject]
-    - is_empty:
-      - get:
-        - var: subject
-        - violations
-exports:
-- policy.pass_when_no_violations
+  public:
+    policy.pass_when_no_violations:
+      fn:
+      - [subject]
+      - is_empty:
+        - get:
+          - var: subject
+          - violations
 ```
 """,
     )
@@ -4305,15 +4304,14 @@ assert:
 id: L1
 type: spec_lang.library
 functions:
-  policy.pass_when_no_violations:
-    fn:
-    - [subject]
-    - is_empty:
-      - get:
-        - var: subject
-        - violations
-exports:
-- policy.pass_when_no_violations
+  public:
+    policy.pass_when_no_violations:
+      fn:
+      - [subject]
+      - is_empty:
+        - get:
+          - var: subject
+          - violations
 ```
 """,
     )
@@ -4654,10 +4652,11 @@ def test_script_enforces_normalization_library_mapping_ast_only(tmp_path):
 id: LIB-PATH
 type: spec_lang.library
 functions:
-  ok:
-    fn:
-    - [x]
-    - {var: x}
+  public:
+    ok:
+      fn:
+      - [x]
+      - {var: x}
 ```
 """,
     )
@@ -4674,7 +4673,8 @@ functions:
 id: LIB-PATH
 type: spec_lang.library
 functions:
-  bad: ["fn", ["x"], ["var", "x"]]
+  public:
+    bad: ["fn", ["x"], ["var", "x"]]
 ```
 """,
     )

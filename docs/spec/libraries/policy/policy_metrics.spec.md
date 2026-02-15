@@ -7,20 +7,21 @@ id: LIB-POLICY-002
 title: policy-metrics reusable non-regression predicates
 type: spec_lang.library
 functions:
-  policy.metric_non_decrease:
-    fn:
-    - [subject, field, baseline_field, epsilon]
-    - gte:
-      - add:
-        - {get: [{var: subject}, {var: field}]}
-        - {var: epsilon}
-      - {get: [{var: subject}, {var: baseline_field}]}
-  policy.metric_non_increase:
-    fn:
-    - [subject, field, baseline_field, epsilon]
-    - lte:
-      - sub:
-        - {get: [{var: subject}, {var: field}]}
-        - {var: epsilon}
-      - {get: [{var: subject}, {var: baseline_field}]}
+  private:
+    policy.metric_non_decrease:
+      fn:
+      - [subject, field, baseline_field, epsilon]
+      - gte:
+        - add:
+          - {get: [{var: subject}, {var: field}]}
+          - {var: epsilon}
+        - {get: [{var: subject}, {var: baseline_field}]}
+    policy.metric_non_increase:
+      fn:
+      - [subject, field, baseline_field, epsilon]
+      - lte:
+        - sub:
+          - {get: [{var: subject}, {var: field}]}
+          - {var: epsilon}
+        - {get: [{var: subject}, {var: baseline_field}]}
 ```

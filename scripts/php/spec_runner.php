@@ -1549,6 +1549,23 @@ function loadSpecLangLibraryDoc(string $path): array {
     $imports = [];
     $bindings = [];
     $exports = [];
+    $compileScope = function(mixed $scope, string $fieldPrefix) use ($path): array {
+        if ($scope === null) {
+            return [];
+        }
+        if (!is_array($scope) || isListArray($scope)) {
+            throw new SchemaError("spec_lang.library {$fieldPrefix} must be a mapping when provided");
+        }
+        $out = [];
+        foreach ($scope as $rawName => $expr) {
+            $name = trim((string)$rawName);
+            if ($name === '') {
+                throw new SchemaError("spec_lang.library {$fieldPrefix} function name must be non-empty");
+            }
+            $out[$name] = compileYamlExprToSexpr($expr, "{$path} {$fieldPrefix}.{$name}");
+        }
+        return $out;
+    };
     foreach (parseCases($path) as $case) {
         $type = trim((string)($case['type'] ?? ''));
         if ($type !== 'spec_lang.library') {
@@ -1558,21 +1575,26 @@ function loadSpecLangLibraryDoc(string $path): array {
             $imports[] = $imp;
         }
         $functions = $case['functions'] ?? null;
-        if (!is_array($functions) || isListArray($functions) || count($functions) === 0) {
-            throw new SchemaError('spec_lang.library requires non-empty functions mapping');
+        if (!is_array($functions) || isListArray($functions)) {
+            throw new SchemaError('spec_lang.library requires functions mapping with public/private scopes');
         }
-        foreach ($functions as $rawName => $expr) {
-            $name = trim((string)$rawName);
-            if ($name === '') {
-                throw new SchemaError('spec_lang.library function name must be non-empty');
-            }
+        $public = $compileScope($functions['public'] ?? null, 'functions.public');
+        $private = $compileScope($functions['private'] ?? null, 'functions.private');
+        if (count($public) === 0 && count($private) === 0) {
+            throw new SchemaError('spec_lang.library requires non-empty functions.public or functions.private mapping');
+        }
+        foreach (array_keys($public) as $name) {
             if (array_key_exists($name, $bindings)) {
                 throw new SchemaError("duplicate library function in file {$path}: {$name}");
             }
-            $bindings[$name] = compileYamlExprToSexpr($expr, "{$path} functions.{$name}");
+            $bindings[$name] = $public[$name];
+            $exports[] = $name;
         }
-        foreach (asNonEmptyStringList($case['exports'] ?? null, 'exports') as $exp) {
-            $exports[] = $exp;
+        foreach (array_keys($private) as $name) {
+            if (array_key_exists($name, $bindings)) {
+                throw new SchemaError("duplicate library function in file {$path}: {$name}");
+            }
+            $bindings[$name] = $private[$name];
         }
     }
     if (count($bindings) === 0) {

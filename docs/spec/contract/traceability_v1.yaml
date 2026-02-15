@@ -581,6 +581,22 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Spec-lang adoption ratchet enforces governance policy symbol resolution ratio non-regression.
+- rule_id: LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION
+  policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - scripts/run_governance_specs.py
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  notes: Spec-lang adoption ratchet enforces library public surface ratio non-regression.
 - rule_id: CONFORMANCE_EVALUATE_FIRST_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_EVALUATE_FIRST_REQUIRED
   contract_refs:
@@ -1799,7 +1815,21 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/reference_library_exports_used.spec.md
-  notes: Exported library symbols must be referenced by policies/expressions or harness exports.
+  notes: Library functions.public symbols must be referenced by policies/expressions or harness exports.
+- rule_id: REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md
+  notes: functions.private symbols are forbidden from external case policy/assertion references.
 - rule_id: REFERENCE_CHECK_IDS_EXIST
   policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_CHECK_IDS_EXIST
   contract_refs:
@@ -1899,3 +1929,18 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/library_domain_index_sync.spec.md
   notes: Library domain indexes are checked for complete file and exported symbol inventory coverage.
+- rule_id: LIBRARY_PUBLIC_SURFACE_MODEL
+  policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_MODEL
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_spec_lang_libraries_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - spec_runner/spec_lang_libraries.py
+  - docs/spec/governance/cases/core/library_public_surface_model.spec.md
+  notes: spec_lang.library shape enforcement requires functions.public/functions.private scopes.

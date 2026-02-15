@@ -28,18 +28,19 @@ def test_load_spec_lang_symbols_from_library_paths(tmp_path: Path) -> None:
 id: LIB-1
 type: spec_lang.library
 functions:
-  is_warn:
-    fn:
-    - [text]
-    - contains:
-      - {var: text}
-      - WARN
-  is_error:
-    fn:
-    - [text]
-    - contains:
-      - {var: text}
-      - ERROR
+  public:
+    is_warn:
+      fn:
+      - [text]
+      - contains:
+        - {var: text}
+        - WARN
+    is_error:
+      fn:
+      - [text]
+      - contains:
+        - {var: text}
+        - ERROR
 ```
 """,
     )
@@ -67,10 +68,11 @@ id: LIB-A
 type: spec_lang.library
 imports: ["/libs/b.spec.md"]
 functions:
-  a:
-    fn:
-    - [x]
-    - {var: x}
+  public:
+    a:
+      fn:
+      - [x]
+      - {var: x}
 ```
 """,
     )
@@ -81,10 +83,11 @@ id: LIB-B
 type: spec_lang.library
 imports: ["/libs/a.spec.md"]
 functions:
-  b:
-    fn:
-    - [x]
-    - {var: x}
+  public:
+    b:
+      fn:
+      - [x]
+      - {var: x}
 ```
 """,
     )
@@ -106,10 +109,11 @@ def test_duplicate_library_symbol_is_rejected(tmp_path: Path) -> None:
 id: LIB-A
 type: spec_lang.library
 functions:
-  same:
-    fn:
-    - [x]
-    - {var: x}
+  public:
+    same:
+      fn:
+      - [x]
+      - {var: x}
 ```
 """,
     )
@@ -119,10 +123,11 @@ functions:
 id: LIB-B
 type: spec_lang.library
 functions:
-  same:
-    fn:
-    - [x]
-    - {var: x}
+  public:
+    same:
+      fn:
+      - [x]
+      - {var: x}
 ```
 """,
     )
@@ -144,14 +149,16 @@ def test_harness_exports_filters_symbols(tmp_path: Path) -> None:
 id: LIB-A
 type: spec_lang.library
 functions:
-  keep:
-    fn:
-    - [x]
-    - {var: x}
-  drop:
-    fn:
-    - [x]
-    - {var: x}
+  public:
+    keep:
+      fn:
+      - [x]
+      - {var: x}
+  private:
+    drop:
+      fn:
+      - [x]
+      - {var: x}
 ```
 """,
     )
@@ -174,7 +181,8 @@ def test_library_function_rejects_list_s_expr_authoring(tmp_path: Path) -> None:
 id: LIB-BAD
 type: spec_lang.library
 functions:
-  bad: ["fn", ["x"], ["var", "x"]]
+  public:
+    bad: ["fn", ["x"], ["var", "x"]]
 ```
 """,
     )

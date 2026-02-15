@@ -1123,6 +1123,17 @@
       "type": "governance.check"
     },
     {
+      "file": "docs/spec/governance/cases/core/library_public_surface_model.spec.md",
+      "governance_symbol_resolution": 1.0,
+      "has_policy_evaluate": 1.0,
+      "id": "SRGOV-LIB-SURFACE-001",
+      "library_backed_policy": 1.0,
+      "logic_self_contained_ratio": 1.0,
+      "native_logic_escape_hint": 0.0,
+      "segment": "governance",
+      "type": "governance.check"
+    },
+    {
       "file": "docs/spec/governance/cases/core/naming_filename_policy.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_policy_evaluate": 1.0,
@@ -1292,6 +1303,17 @@
       "governance_symbol_resolution": 1.0,
       "has_policy_evaluate": 1.0,
       "id": "SRGOV-REF-SYMBOLS-002",
+      "library_backed_policy": 1.0,
+      "logic_self_contained_ratio": 1.0,
+      "native_logic_escape_hint": 0.0,
+      "segment": "governance",
+      "type": "governance.check"
+    },
+    {
+      "file": "docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md",
+      "governance_symbol_resolution": 1.0,
+      "has_policy_evaluate": 1.0,
+      "id": "SRGOV-REF-SYMBOLS-004",
       "library_backed_policy": 1.0,
       "logic_self_contained_ratio": 1.0,
       "native_logic_escape_hint": 0.0,
@@ -2008,7 +2030,7 @@
       "native_logic_escape_case_ratio": 0.0
     },
     "governance": {
-      "case_count": 104,
+      "case_count": 106,
       "governance_symbol_resolution_ratio": 1.0,
       "library_backed_policy_ratio": 1.0,
       "mean_logic_self_contained_ratio": 1.0,
@@ -2032,10 +2054,13 @@
   "summary": {
     "governance_library_backed_policy_ratio": 1.0,
     "governance_symbol_resolution_ratio": 1.0,
+    "library_public_surface_ratio": 0.3,
+    "library_public_symbol_count": 6,
+    "library_total_symbol_count": 20,
     "native_logic_escape_case_ratio": 0.0,
-    "overall_logic_self_contained_ratio": 0.8793296089385475,
+    "overall_logic_self_contained_ratio": 0.8806629834254144,
     "python_decision_branch_count": 0,
-    "total_cases": 179,
+    "total_cases": 181,
     "unit_opt_out_count": 23
   },
   "version": 1
