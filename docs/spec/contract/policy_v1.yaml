@@ -831,6 +831,81 @@ rules:
       - docs/spec/contract/12_runner_interface.md
       - docs/spec/governance/cases/runtime_rust_adapter_no_delegate.spec.md
 
+  - id: RUST_PRIMARY_GATE_PATH_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.rust_primary.ci_lane
+    norm: MUST
+    requirement: rust_primary_ci_lane_executes_core_gate_via_runner_interface
+    description: >
+      CI must include a Rust-primary lane that executes core gate with
+      SPEC_RUNNER_BIN pointing to the Rust adapter path.
+    rationale: Makes Rust-primary operation continuously verifiable in automation.
+    risk_if_violated: Rust-primary path can silently regress.
+    references:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/governance/cases/runtime_rust_primary_gate_path.spec.md
+
+  - id: RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.rust_primary.gate_dependency
+    norm: MUST
+    requirement: gate_scripts_avoid_direct_python_runner_entrypoints_under_rust_primary
+    description: >
+      Gate scripts must remain runner-interface driven and must not hardcode
+      Python runner command entrypoints.
+    rationale: Preserves implementation-neutral orchestration for Rust-primary usage.
+    risk_if_violated: Switching primary runtime requires invasive script rewrites.
+    references:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/governance/cases/runtime_rust_primary_no_python_dependency.spec.md
+
+  - id: RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.rust_primary.interface_stability
+    norm: MUST
+    requirement: rust_primary_adapter_preserves_required_runner_interface_subcommands
+    description: >
+      Rust-primary adapter path must preserve required runner-interface
+      subcommand behavior.
+    rationale: Prevents compatibility drift for gate orchestration commands.
+    risk_if_violated: Core commands fail when Rust path is selected.
+    references:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/governance/cases/runtime_rust_primary_interface_stability.spec.md
+
+  - id: RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.rust_primary.parity
+    norm: MUST
+    requirement: rust_primary_gate_flow_includes_shared_capability_parity_step
+    description: >
+      Rust-primary-compatible gate flow must include shared-capability
+      conformance parity execution.
+    rationale: Keeps cross-runtime behavior equivalence enforced during transition.
+    risk_if_violated: Runtime behavior drift can ship undetected.
+    references:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/governance/cases/runtime_rust_primary_shared_capability_parity.spec.md
+
+  - id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
+    introduced_in: v1
+    scope: docs
+    applies_to: docs.rust_primary.adoption
+    norm: SHOULD
+    requirement: docs_present_rust_primary_workflow_alongside_compatibility_paths
+    description: >
+      Contributor docs should present Rust-primary workflow consistently with
+      core/full adoption profile guidance and optional compatibility lanes.
+    rationale: Reduces onboarding ambiguity during runtime-primary transition.
+    risk_if_violated: Teams adopt inconsistent local/CI invocation paths.
+    references:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/governance/cases/docs_adoption_profiles_sync.spec.md
+
   - id: RUNTIME_SCOPE_BOUNDED_FOR_V1
     introduced_in: v1
     scope: governance

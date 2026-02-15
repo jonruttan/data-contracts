@@ -1058,3 +1058,83 @@ links:
       - scripts/run_governance_specs.py
       - docs/spec/governance/cases/runtime_rust_adapter_no_delegate.spec.md
     notes: "Governance prevents regression back to shell adapter delegation in the Rust lane."
+
+  - rule_id: RUST_PRIMARY_GATE_PATH_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_GATE_PATH_REQUIRED
+    contract_refs:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/contract/12_runner_interface.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - .github/workflows/ci.yml
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/runtime_rust_primary_gate_path.spec.md
+    notes: "Rust-primary CI lane requirement is enforced through runner-interface CI lane checks."
+
+  - rule_id: RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
+    contract_refs:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/contract/12_runner_interface.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/ci_gate.sh
+      - scripts/core_gate.sh
+      - scripts/docs_doctor.sh
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/runtime_rust_primary_no_python_dependency.spec.md
+    notes: "Gate orchestration remains runner-interface based without direct Python command coupling."
+
+  - rule_id: RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
+    contract_refs:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/contract/12_runner_interface.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/rust/runner_adapter.sh
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/runtime_rust_primary_interface_stability.spec.md
+    notes: "Rust adapter preserves required runner-interface command surface."
+
+  - rule_id: RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
+    contract_refs:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/contract/06_conformance.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_conformance_parity_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/core_gate.sh
+      - scripts/compare_conformance_parity.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/runtime_rust_primary_shared_capability_parity.spec.md
+    notes: "Rust-primary-compatible gate flow retains shared-capability parity step."
+
+  - rule_id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_DOCS_ADOPTION_SYNC
+    contract_refs:
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/contract/11_adoption_profiles.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - README.md
+      - docs/development.md
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/docs_adoption_profiles_sync.spec.md
+    notes: "Adoption profile docs remain synchronized during Rust-primary transition."
