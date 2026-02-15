@@ -39,8 +39,10 @@ def _compile_leaf_op(*, op: str, value: Any, target: str, type_name: str, assert
 
     if op == "contain":
         expr = ["contains", ["subject"], value]
+        subject_key = target
     elif op == "regex":
         expr = ["regex_match", ["subject"], value]
+        subject_key = target
     elif op == "json_type":
         want = str(value).strip().lower()
         if want not in {"dict", "list"}:
@@ -49,20 +51,24 @@ def _compile_leaf_op(*, op: str, value: Any, target: str, type_name: str, assert
         if target in {"stdout", "stderr", "stdout_path_text", "body_text"}:
             subject_expr = ["json_parse", ["subject"]]
         expr = ["json_type", subject_expr, want]
+        subject_key = target
     elif op == "exists":
         if target != "stdout_path":
             raise ValueError(f"unsupported op for target '{target}': exists")
         if value not in (None, True):
             raise ValueError("stdout_path.exists only supports value: true (or null)")
-        expr = ["path_exists", ["subject"]]
+        # Keep spec-lang pure: adapter computes existence signal.
+        subject_key = "stdout_path.exists"
+        expr = ["eq", ["subject"], True]
     elif op == "evaluate":
         if not isinstance(value, list):
             raise ValueError("evaluate value must be list-based s-expr")
         expr = value
+        subject_key = target
     else:
         raise ValueError(f"unsupported op: {op}")
 
-    return PredicateLeaf(target=target, op=op, expr=expr, assert_path=assert_path)
+    return PredicateLeaf(target=target, subject_key=subject_key, op=op, expr=expr, assert_path=assert_path)
 
 
 def compile_assert_tree(

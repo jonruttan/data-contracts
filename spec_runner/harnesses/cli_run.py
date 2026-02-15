@@ -299,25 +299,35 @@ def run(case, *, ctx) -> None:
                     **{str(k): v for k, v in hook_kwargs.items()},
                 )
 
-    def _subject_for_target(target: str):
-        if target == "stdout":
+    def _subject_for_key(subject_key: str):
+        if subject_key == "stdout":
             return captured.out
-        if target == "stderr":
+        if subject_key == "stderr":
             return captured.err
-        if target == "stdout_path":
+        if subject_key == "stdout_path":
             line = first_nonempty_line(captured.out)
             if not line:
                 raise AssertionError("expected stdout to contain a path")
             return line
-        if target == "stdout_path_text":
+        if subject_key == "stdout_path_text":
             p = assert_stdout_path_exists(captured.out)
             return p.read_text(encoding="utf-8")
-        raise ValueError(f"unknown assert target: {target}")
+        if subject_key == "stdout_path.exists":
+            line = first_nonempty_line(captured.out)
+            if not line:
+                return False
+            try:
+                from pathlib import Path
+
+                return Path(line).exists()
+            except (OSError, ValueError):
+                return False
+        raise ValueError(f"unknown assert target: {subject_key}")
 
     evaluate_internal_assert_tree(
         case.assert_tree,
         case_id=case_id,
-        subject_for_target=_subject_for_target,
+        subject_for_key=_subject_for_key,
         limits=spec_lang_limits,
         symbols=spec_lang_symbols,
     )

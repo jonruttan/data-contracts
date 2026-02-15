@@ -19,6 +19,13 @@ harness:
       - docs/spec/conformance/cases/cli_run_entrypoint.spec.md
       - docs/spec/conformance/cases/failure_context.spec.md
       - docs/spec/conformance/cases/php_text_file_subset.spec.md
+    decision_expr:
+      - ["eq",
+         ["count",
+          ["filter",
+           ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "non_eval_ops"]], 0]],
+           ["subject"]]],
+         0]
 assert:
   - target: text
     must:

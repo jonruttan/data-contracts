@@ -28,6 +28,23 @@ harness:
       - "\\bprocess\\.env\\b"
       - "\\$_ENV\\b"
       - "\\bSystem\\.getenv\\s*\\("
+    decision_expr:
+      - ["eq",
+         ["count",
+          ["filter",
+           ["fn", ["row"],
+            ["gt",
+             ["count",
+              ["filter",
+               ["fn", ["s"],
+                ["any",
+                 ["map",
+                  ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
+                  ["var", "patterns"]]]],
+               ["get", ["var", "row"], "strings"]]],
+             0]],
+           ["subject"]]],
+         0]
 assert:
   - target: text
     must:

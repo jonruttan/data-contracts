@@ -863,3 +863,66 @@ links:
       - spec_runner/contract_governance.py
       - scripts/run_governance_specs.py
     notes: "Governance enforces complete coverage for active MUST contract rules."
+
+  - rule_id: SPEC_LANG_PURE_NO_EFFECT_BUILTINS
+    policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PURE_NO_EFFECT_BUILTINS
+    contract_refs:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/contract/09_internal_representation.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_spec_lang_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/spec_lang.py
+      - scripts/php/spec_runner.php
+      - scripts/php/conformance_runner.php
+      - docs/spec/governance/cases/runtime_spec_lang_pure_no_effect_builtins.spec.md
+    notes: "Spec-lang core forbids side-effect builtins; adapters provide normalized effect results."
+
+  - rule_id: RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY
+    contract_refs:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/09_internal_representation.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_compiler_unit.py
+      - tests/test_harness_cli_run_unit.py
+    implementation_refs:
+      - spec_runner/compiler.py
+      - spec_runner/assertions.py
+      - spec_runner/harnesses/cli_run.py
+    notes: "Runtime assertions compile external operators to spec-lang and evaluate through one engine."
+
+  - rule_id: GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
+    policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
+    contract_refs:
+      - docs/spec/contract/15_governance_subject_model.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/conformance_spec_lang_preferred.spec.md
+    notes: "Governance decision expressions are configured as spec-lang data in harness config."
+
+  - rule_id: ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY
+    policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY
+    contract_refs:
+      - docs/spec/contract/12_runner_interface.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_ci_gate_summary_script_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/ci_gate_summary.py
+      - docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
+    notes: "CI gate summary loads a spec-lang decision expression from governance policy case."

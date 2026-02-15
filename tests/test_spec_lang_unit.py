@@ -102,11 +102,9 @@ def test_spec_lang_regex_match_builtin() -> None:
     assert eval_predicate(["regex_match", ["subject"], "^bye"], subject="hello world") is False
 
 
-def test_spec_lang_path_exists_builtin(tmp_path) -> None:
-    p = tmp_path / "x.txt"
-    p.write_text("ok", encoding="utf-8")
-    assert eval_predicate(["path_exists", str(p)], subject=None) is True
-    assert eval_predicate(["path_exists", str(tmp_path / "missing.txt")], subject=None) is False
+def test_spec_lang_path_exists_builtin_is_not_supported() -> None:
+    with pytest.raises(ValueError, match="unsupported spec_lang symbol: path_exists"):
+        eval_predicate(["path_exists", "x"], subject=None)
 
 
 def test_spec_lang_collection_and_compare_builtins() -> None:

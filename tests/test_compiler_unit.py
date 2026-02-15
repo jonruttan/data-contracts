@@ -48,10 +48,15 @@ def test_compile_leaf_ops_to_spec_lang_exprs() -> None:
     by_op = {leaf.op: leaf for leaf in leaves}
 
     assert by_op["contain"].expr == ["contains", ["subject"], "ok"]
+    assert by_op["contain"].subject_key == "stdout"
     assert by_op["regex"].expr == ["regex_match", ["subject"], "^o"]
+    assert by_op["regex"].subject_key == "stdout"
     assert by_op["json_type"].expr == ["json_type", ["json_parse", ["subject"]], "list"]
-    assert by_op["exists"].expr == ["path_exists", ["subject"]]
+    assert by_op["json_type"].subject_key == "stdout"
+    assert by_op["exists"].expr == ["eq", ["subject"], True]
+    assert by_op["exists"].subject_key == "stdout_path.exists"
     assert by_op["evaluate"].expr == ["contains", "ok"]
+    assert by_op["evaluate"].subject_key == "stdout"
 
 
 def test_compile_exists_enforces_stdout_path_target() -> None:

@@ -212,7 +212,7 @@ def evaluate_internal_assert_tree(
     assert_tree: InternalAssertNode,
     *,
     case_id: str,
-    subject_for_target: Callable[[str], Any],
+    subject_for_key: Callable[[str], Any],
     limits: SpecLangLimits,
     symbols: Mapping[str, Any] | None = None,
 ) -> None:
@@ -226,7 +226,7 @@ def evaluate_internal_assert_tree(
     def _eval_node(node: InternalAssertNode) -> None:
         if isinstance(node, PredicateLeaf):
             try:
-                subject = subject_for_target(node.target)
+                subject = subject_for_key(node.subject_key)
                 ok = eval_predicate(node.expr, subject=subject, limits=limits, symbols=symbols)
                 assert ok, "evaluate assertion failed"
             except BaseException as e:  # noqa: BLE001

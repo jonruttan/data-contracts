@@ -10,6 +10,8 @@ Notes:
 - `target` is defined on group nodes; leaf assertions are op-only.
 - Execution is internal-IR based: external cases compile to spec-lang-backed
   internal predicates before runtime evaluation.
+- Spec-lang remains pure; adapter layers perform side effects and feed
+  normalized subjects into evaluation.
 - Canonical authoring remains `.spec.md`; `.spec.yaml/.spec.yml/.spec.json`
   are opt-in external adapter formats.
 - Portability reporting includes a segmented self-containment metric across

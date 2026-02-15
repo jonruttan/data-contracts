@@ -8,6 +8,7 @@ from typing import Any, Literal
 @dataclass(frozen=True)
 class PredicateLeaf:
     target: str
+    subject_key: str
     op: str
     expr: Any
     assert_path: str

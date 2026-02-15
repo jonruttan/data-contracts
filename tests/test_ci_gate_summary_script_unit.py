@@ -26,6 +26,8 @@ def test_script_writes_pass_summary(monkeypatch, tmp_path):
             ("b", ["echo", "b"]),
         ],
     )
+    monkeypatch.setattr(mod, "_load_gate_policy_expr", lambda _path: ["eq", 1, 1])
+    monkeypatch.setattr(mod, "_evaluate_gate_policy", lambda **_kw: True)
     monkeypatch.setattr(mod, "_run_command", lambda _cmd: 0)
 
     code = mod.main(["--out", str(out), "--runner-bin", "./scripts/runner_adapter.sh"])
@@ -50,6 +52,8 @@ def test_script_stops_at_first_failure_and_writes_summary(monkeypatch, tmp_path)
             ("c", ["echo", "c"]),
         ],
     )
+    monkeypatch.setattr(mod, "_load_gate_policy_expr", lambda _path: ["eq", 1, 1])
+    monkeypatch.setattr(mod, "_evaluate_gate_policy", lambda **_kw: False)
     codes = iter((0, 3, 0))
     monkeypatch.setattr(mod, "_run_command", lambda _cmd: next(codes))
 
@@ -57,6 +61,6 @@ def test_script_stops_at_first_failure_and_writes_summary(monkeypatch, tmp_path)
     assert code == 3
     payload = json.loads(out.read_text(encoding="utf-8"))
     assert payload["status"] == "fail"
-    assert [x["name"] for x in payload["steps"]] == ["a", "b"]
+    assert [x["name"] for x in payload["steps"]] == ["a", "b", "c"]
     assert payload["steps"][1]["status"] == "fail"
     assert payload["steps"][1]["exit_code"] == 3

@@ -28,6 +28,7 @@ Internal assertion node forms:
   - `assert_path`: stable path for diagnostics
 - predicate leaf:
   - `target`
+  - `subject_key` (adapter-provided subject lookup key)
   - `op` (original external op token for diagnostics)
   - `expr` (spec-lang expression)
   - `assert_path`
@@ -39,7 +40,8 @@ Internal assertion node forms:
 - `json_type` -> normalized to `["json_type", <subject_expr>, <kind>]`
   - where `<subject_expr>` is either `["subject"]` (already-JSON targets) or
     `["json_parse", ["subject"]]` (text targets)
-- `exists` on `stdout_path` -> `["path_exists", ["subject"]]`
+- `exists` on `stdout_path` -> `subject_key: "stdout_path.exists"` with
+  expression `["eq", ["subject"], true]`
 - `evaluate` -> pass-through spec-lang expression
 
 List-valued leaf ops compile to conjunction semantics (same as current v1
@@ -76,3 +78,5 @@ MUST:
   `evaluate`) MUST be compiled to spec-lang expression form before execution.
 - runners MUST NOT introduce direct ad-hoc leaf-op execution branches that
   bypass the spec-lang evaluator.
+- spec-lang evaluator MUST remain pure; side-effectful probes are adapter
+  responsibilities that produce normalized subject values.

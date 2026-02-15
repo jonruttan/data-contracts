@@ -842,14 +842,6 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             throw new SchemaError('spec_lang json_parse invalid JSON');
         }
     }
-    if ($op === 'path_exists') {
-        specLangRequireArity($op, $args, 1);
-        $path = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
-        if ($path === '') {
-            return false;
-        }
-        return file_exists($path);
-    }
     if ($op === 'add' || $op === 'sub') {
         specLangRequireArity($op, $args, 2);
         $left = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);

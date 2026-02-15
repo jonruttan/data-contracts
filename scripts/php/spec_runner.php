@@ -837,14 +837,6 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             throw new SchemaError('spec_lang json_parse invalid JSON');
         }
     }
-    if ($op === 'path_exists') {
-        specLangRequireArity($op, $args, 1);
-        $path = (string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
-        if ($path === '') {
-            return false;
-        }
-        return file_exists($path);
-    }
     if ($op === 'add' || $op === 'sub') {
         specLangRequireArity($op, $args, 2);
         $left = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -1000,7 +992,7 @@ function compileLeafExpr(string $op, mixed $value, string $target): array {
         if ($value !== true && $value !== null) {
             throw new SchemaError('stdout_path.exists only supports value: true (or null)');
         }
-        return ['path_exists', ['subject']];
+        return ['eq', ['subject'], true];
     }
     throw new SchemaError("unsupported op: {$op}");
 }
@@ -1189,18 +1181,13 @@ function evalCliLeaf(
                 throw new SchemaError("unsupported op for stdout_path: {$op}");
             }
             $line = firstNonEmptyLine((string)$captured['stdout']);
-            if ($line === null) {
-                throw new AssertionFailure(
-                    "[case_id={$caseId} assert_path={$path} target={$target} op=exists] expected stdout to contain a path"
-                );
+            $exists = false;
+            if ($line !== null && $line !== '') {
+                $exists = file_exists($line);
             }
             foreach ($raw as $value) {
                 $expr = compileLeafExpr($op, $value, $target);
-                if (!specLangEvalPredicate($expr, $line, $specLangLimits)) {
-                    throw new AssertionFailure(
-                        "[case_id={$caseId} assert_path={$path} target={$target} op=exists] path does not exist"
-                    );
-                }
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $exists, $specLangLimits);
             }
             continue;
         }

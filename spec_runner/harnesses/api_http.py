@@ -111,21 +111,21 @@ def run(case, *, ctx) -> None:
     body_text_value = str(response["body_text"])
     body_json_value = json.loads(body_text_value)
 
-    def _subject_for_target(target: str):
-        if target == "status":
+    def _subject_for_key(subject_key: str):
+        if subject_key == "status":
             return status_text
-        if target == "headers":
+        if subject_key == "headers":
             return headers_text
-        if target == "body_text":
+        if subject_key == "body_text":
             return body_text_value
-        if target == "body_json":
+        if subject_key == "body_json":
             return body_json_value
-        raise ValueError(f"unknown assert target for api.http: {target}")
+        raise ValueError(f"unknown assert target for api.http: {subject_key}")
 
     evaluate_internal_assert_tree(
         case.assert_tree,
         case_id=case_id,
-        subject_for_target=_subject_for_target,
+        subject_for_key=_subject_for_key,
         limits=spec_lang_limits,
         symbols=spec_lang_symbols,
     )

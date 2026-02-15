@@ -13,6 +13,14 @@ Expression encoding is YAML list S-expression form:
 
 No string parser and no implementation-defined extension hooks are part of v1.
 
+Purity requirement:
+
+- Evaluation MUST remain pure and deterministic.
+- Evaluation MUST NOT perform filesystem, network, process, clock, random, or
+  environment side effects.
+- Implementations MUST perform side effects in adapters/harnesses and pass
+  normalized subjects into spec-lang.
+
 ## Core Forms
 
 Boolean:
@@ -57,7 +65,6 @@ Utility:
 - `add`
 - `sub`
 - `json_parse`
-- `path_exists`
 - `regex_match`
 - `matches`
 - `lt`

@@ -114,6 +114,18 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
 }
 
 
+def _normalize_decision_expr(raw: object, *, field: str) -> list[object]:
+    if not isinstance(raw, list) or not raw:
+        raise ValueError(f"{field} must be a list-based spec-lang expression")
+    if isinstance(raw[0], str):
+        return raw
+    if len(raw) == 1 and isinstance(raw[0], list):
+        inner = raw[0]
+        if inner and isinstance(inner[0], str):
+            return inner
+    raise ValueError(f"{field} must be a list-based spec-lang expression")
+
+
 def _scan_contract_governance_check(root: Path) -> list[str]:
     return list(check_contract_governance(root))
 
@@ -235,6 +247,97 @@ def _scan_runtime_assertions_via_spec_lang(root: Path, *, harness: dict | None =
         for tok in forbidden:
             if tok in raw:
                 violations.append(f"{rel}:1: forbidden direct assertion token present: {tok}")
+    return violations
+
+
+def _scan_spec_lang_pure_no_effect_builtins(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("spec_lang_purity")
+    if not isinstance(cfg, dict):
+        return ["runtime.spec_lang_pure_no_effect_builtins requires harness.spec_lang_purity mapping in governance spec"]
+
+    files = cfg.get("files")
+    forbidden_tokens = cfg.get("forbidden_tokens")
+    if not isinstance(files, list) or not files or any(not isinstance(x, str) or not x.strip() for x in files):
+        return ["harness.spec_lang_purity.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(forbidden_tokens, list)
+        or not forbidden_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+    ):
+        return ["harness.spec_lang_purity.forbidden_tokens must be a non-empty list of non-empty strings"]
+
+    violations: list[str] = []
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing spec-lang implementation file")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for tok in forbidden_tokens:
+            if tok in raw:
+                violations.append(f"{rel}:1: forbidden side-effect token in spec-lang core: {tok}")
+    return violations
+
+
+def _scan_runtime_orchestration_policy_via_spec_lang(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("orchestration_policy")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.orchestration_policy_via_spec_lang requires harness.orchestration_policy mapping in governance spec"
+        ]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not isinstance(files, list) or not files:
+        return ["harness.orchestration_policy.files must be a non-empty list"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.orchestration_policy.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.orchestration_policy.forbidden_tokens must be a list of non-empty strings"]
+
+    violations: list[str] = []
+    for entry in files:
+        file_required = required_tokens
+        file_forbidden = forbidden_tokens
+        if isinstance(entry, str) and entry.strip():
+            rel = entry.strip()
+        elif isinstance(entry, dict):
+            rel = str(entry.get("path", "")).strip()
+            if not rel:
+                violations.append("harness.orchestration_policy.files[].path must be non-empty")
+                continue
+            raw_required = entry.get("required_tokens")
+            if raw_required is not None:
+                if not isinstance(raw_required, list) or any(
+                    not isinstance(x, str) or not x.strip() for x in raw_required
+                ):
+                    violations.append(f"{rel}:1: files[].required_tokens must be list of non-empty strings")
+                    continue
+                file_required = raw_required
+            raw_forbidden = entry.get("forbidden_tokens")
+            if raw_forbidden is not None:
+                if not isinstance(raw_forbidden, list) or any(
+                    not isinstance(x, str) or not x.strip() for x in raw_forbidden
+                ):
+                    violations.append(f"{rel}:1: files[].forbidden_tokens must be list of non-empty strings")
+                    continue
+                file_forbidden = raw_forbidden
+        else:
+            violations.append("harness.orchestration_policy.files entries must be strings or mappings")
+            continue
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing orchestration file")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for tok in file_required:
+            if tok not in raw:
+                violations.append(f"{rel}:1: missing required orchestration spec-lang token: {tok}")
+        for tok in file_forbidden:
+            if tok in raw:
+                violations.append(f"{rel}:1: forbidden hardcoded orchestration verdict token present: {tok}")
     return violations
 
 
@@ -695,6 +798,12 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
     determinism = h.get("determinism")
     if not isinstance(determinism, dict):
         return ["conformance.portable_determinism_guard requires harness.determinism mapping in governance spec"]
+    try:
+        decision_expr = _normalize_decision_expr(
+            determinism.get("decision_expr"), field="harness.determinism.decision_expr"
+        )
+    except ValueError as exc:
+        return [str(exc)]
     raw_patterns = determinism.get("patterns")
     if not isinstance(raw_patterns, list) or not raw_patterns:
         return ["conformance.portable_determinism_guard requires non-empty harness.determinism.patterns list"]
@@ -735,45 +844,6 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
         )
 
     pattern_values = [p.pattern for p in compiled_patterns]
-    # Evaluate decision logic via spec-lang over extracted row subjects.
-    decision_expr = [
-        "eq",
-        [
-            "count",
-            [
-                "filter",
-                [
-                    "fn",
-                    ["row"],
-                    [
-                        "gt",
-                        [
-                            "count",
-                            [
-                                "filter",
-                                [
-                                    "fn",
-                                    ["s"],
-                                    [
-                                        "any",
-                                        [
-                                            "map",
-                                            ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
-                                            ["var", "patterns"],
-                                        ],
-                                    ],
-                                ],
-                                ["get", ["var", "row"], "strings"],
-                            ],
-                        ],
-                        0,
-                    ],
-                ],
-                ["subject"],
-            ],
-        ],
-        0,
-    ]
     ok = eval_predicate(
         decision_expr,
         subject=rows,
@@ -799,6 +869,12 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
     ambient = h.get("ambient_assumptions")
     if not isinstance(ambient, dict):
         return ["conformance.no_ambient_assumptions requires harness.ambient_assumptions mapping in governance spec"]
+    try:
+        decision_expr = _normalize_decision_expr(
+            ambient.get("decision_expr"), field="harness.ambient_assumptions.decision_expr"
+        )
+    except ValueError as exc:
+        return [str(exc)]
     raw_patterns = ambient.get("patterns")
     if not isinstance(raw_patterns, list) or not raw_patterns:
         return ["conformance.no_ambient_assumptions requires non-empty harness.ambient_assumptions.patterns list"]
@@ -835,44 +911,6 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
         )
 
     pattern_values = [p.pattern for p in compiled_patterns]
-    decision_expr = [
-        "eq",
-        [
-            "count",
-            [
-                "filter",
-                [
-                    "fn",
-                    ["row"],
-                    [
-                        "gt",
-                        [
-                            "count",
-                            [
-                                "filter",
-                                [
-                                    "fn",
-                                    ["s"],
-                                    [
-                                        "any",
-                                        [
-                                            "map",
-                                            ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
-                                            ["var", "patterns"],
-                                        ],
-                                    ],
-                                ],
-                                ["get", ["var", "row"], "strings"],
-                            ],
-                        ],
-                        0,
-                    ],
-                ],
-                ["subject"],
-            ],
-        ],
-        0,
-    ]
     ok = eval_predicate(
         decision_expr,
         subject=rows,
@@ -990,6 +1028,12 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
         not isinstance(x, str) or not x.strip() for x in allow_non_evaluate_files
     ):
         return ["harness.spec_lang_preferred.allow_non_evaluate_files must be a list of non-empty strings"]
+    try:
+        decision_expr = _normalize_decision_expr(
+            cfg.get("decision_expr"), field="harness.spec_lang_preferred.decision_expr"
+        )
+    except ValueError as exc:
+        return [str(exc)]
 
     allow = {str(x).strip() for x in allow_non_evaluate_files}
 
@@ -1043,18 +1087,6 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 }
             )
 
-        decision_expr = [
-            "eq",
-            [
-                "count",
-                [
-                    "filter",
-                    ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "non_eval_ops"]], 0]],
-                    ["subject"],
-                ],
-            ],
-            0,
-        ]
         ok = eval_predicate(decision_expr, subject=rows, limits=SpecLangLimits())
         if not ok:
             for row in rows:
@@ -1826,6 +1858,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.python_bin_resolver_sync": _scan_runtime_python_bin_resolver_sync,
     "runtime.runner_interface_gate_sync": _scan_runtime_runner_interface_gate_sync,
     "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
+    "runtime.spec_lang_pure_no_effect_builtins": _scan_spec_lang_pure_no_effect_builtins,
+    "runtime.orchestration_policy_via_spec_lang": _scan_runtime_orchestration_policy_via_spec_lang,
     "conformance.case_index_sync": _scan_conformance_case_index_sync,
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
     "conformance.purpose_quality_gate": _scan_conformance_purpose_quality_gate,

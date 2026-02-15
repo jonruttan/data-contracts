@@ -802,6 +802,68 @@ rules:
       - docs/spec/contract/09_internal_representation.md
       - docs/spec/contract/03b_spec_lang_v1.md
 
+  - id: SPEC_LANG_PURE_NO_EFFECT_BUILTINS
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.evaluate.builtins
+    norm: MUST
+    requirement: forbid_effectful_builtins_in_core_evaluator
+    description: >
+      Spec-lang builtin surface must not include side-effectful probes such as
+      filesystem/network/process/env access. Adapter layers must provide any
+      derived side-effect data as normalized subjects.
+    rationale: Keeps the decision engine deterministic and runtime-independent.
+    risk_if_violated: Evaluator behavior drifts by environment and runtime side effects.
+    references:
+      - docs/spec/contract/03b_spec_lang_v1.md
+      - docs/spec/contract/09_internal_representation.md
+
+  - id: RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY
+    introduced_in: v1
+    scope: implementation
+    applies_to: runtime.assertion_decisions
+    norm: MUST
+    requirement: assertion_pass_fail_decisions_execute_via_compiled_spec_lang
+    description: >
+      Runtime assertion pass/fail decisions must execute only through compiled
+      spec-lang predicates; external assertion operators are authoring sugar.
+    rationale: Enforces one semantic decision plane across runner implementations.
+    risk_if_violated: Hidden per-runtime assertion branch drift.
+    references:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/09_internal_representation.md
+
+  - id: GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
+    introduced_in: v1
+    scope: governance
+    applies_to: governance.check_decisions
+    norm: MUST
+    requirement: governance_decision_predicates_defined_as_spec_lang_data
+    description: >
+      Governance checks must keep data extraction in scanner substrate and
+      express pass/fail predicates as spec-lang expressions in governance spec
+      harness config.
+    rationale: Moves policy decisions into executable spec data and reduces Python-specific decision logic.
+    risk_if_violated: Governance policy drifts into ad-hoc host-language code.
+    references:
+      - docs/spec/contract/15_governance_subject_model.md
+      - scripts/run_governance_specs.py
+
+  - id: ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.gate_orchestration_policy
+    norm: MUST
+    requirement: ci_gate_verdict_is_evaluated_via_spec_lang_policy_expression
+    description: >
+      CI gate orchestration scripts may execute effectful commands, but final
+      pass/fail policy must be evaluated from spec-lang policy data.
+    rationale: Keeps release policy implementation-independent and auditable.
+    risk_if_violated: Gate behavior hardcodes runtime-specific logic in scripts.
+    references:
+      - scripts/ci_gate_summary.py
+      - docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
+
   - id: CONTRACT_MUST_RULE_COVERAGE_COMPLETE
     introduced_in: v1
     scope: governance

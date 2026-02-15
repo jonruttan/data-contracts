@@ -205,6 +205,8 @@ Operator constraints:
 - runners compile external leaf operators into internal spec-lang predicates;
   compile invariants are defined in
   `docs/spec/contract/09_internal_representation.md`
+- external leaf operators are authoring sugar; runtime pass/fail decisions MUST
+  execute through compiled spec-lang expressions
 - `regex` SHOULD use a portable subset; implementations SHOULD diagnose
   non-portable constructs via assertion-health policy
 - the portable profile is defined in

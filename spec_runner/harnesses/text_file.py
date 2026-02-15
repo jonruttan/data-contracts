@@ -69,15 +69,15 @@ def run(case, *, ctx) -> None:
         for d in diags:
             print(format_assertion_health_warning(d), file=sys.stderr)
 
-    def _subject_for_target(target: str) -> str:
-        if target != "text":
-            raise ValueError(f"unknown assert target for text.file: {target}")
+    def _subject_for_key(subject_key: str) -> str:
+        if subject_key != "text":
+            raise ValueError(f"unknown assert target for text.file: {subject_key}")
         return text
 
     evaluate_internal_assert_tree(
         case.assert_tree,
         case_id=case_id,
-        subject_for_target=_subject_for_target,
+        subject_for_key=_subject_for_key,
         limits=spec_lang_limits,
         symbols=spec_lang_symbols,
     )

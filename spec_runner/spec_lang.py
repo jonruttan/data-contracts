@@ -5,7 +5,6 @@ import re
 import json
 from collections.abc import Mapping
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any
 
 
@@ -387,13 +386,6 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
         if not isinstance(raw, str):
             raise ValueError("spec_lang json_parse expects string input")
         return json.loads(raw)
-    if op == "path_exists":
-        _require_arity(op, args, 1)
-        p = Path(str(_eval_non_tail(args[0], env, st)))
-        try:
-            return p.exists()
-        except (OSError, ValueError):
-            return False
     raise ValueError(f"unsupported spec_lang symbol: {op}")
 
 

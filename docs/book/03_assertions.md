@@ -148,6 +148,7 @@ assert:
 For `cli.run`:
 
 - `stdout_path` uses first non-empty line of stdout as a path.
+- Adapter code resolves existence; spec-lang receives a normalized boolean.
 - `stdout_path.exists` only supports `true` (or `null`) values.
 - `stdout_path_text` reads that file content and applies text assertions.
 

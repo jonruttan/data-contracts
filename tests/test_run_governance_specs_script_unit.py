@@ -597,6 +597,23 @@ harness:
       - "\\\\brandom\\\\."
       - "\\\\brand(?:int|range)?\\\\s*\\\\("
       - "\\\\bMath\\\\.random\\\\s*\\\\("
+    decision_expr:
+      - ["eq",
+         ["count",
+          ["filter",
+           ["fn", ["row"],
+            ["gt",
+             ["count",
+              ["filter",
+               ["fn", ["s"],
+                ["any",
+                 ["map",
+                  ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
+                  ["var", "patterns"]]]],
+               ["get", ["var", "row"], "strings"]]],
+             0]],
+           ["subject"]]],
+         0]
 assert:
   - target: text
     must:
@@ -689,6 +706,23 @@ harness:
     patterns:
       - "\\\\bos\\\\.getenv\\\\s*\\\\("
       - "\\\\bdatetime\\\\.now\\\\s*\\\\("
+    decision_expr:
+      - ["eq",
+         ["count",
+          ["filter",
+           ["fn", ["row"],
+            ["gt",
+             ["count",
+              ["filter",
+               ["fn", ["s"],
+                ["any",
+                 ["map",
+                  ["fn", ["p"], ["matches", ["var", "s"], ["var", "p"]]],
+                  ["var", "patterns"]]]],
+               ["get", ["var", "row"], "strings"]]],
+             0]],
+           ["subject"]]],
+         0]
 assert:
   - target: text
     must:
@@ -898,6 +932,13 @@ harness:
     roots:
       - docs/spec/conformance/cases
     allow_non_evaluate_files: []
+    decision_expr:
+      - ["eq",
+         ["count",
+          ["filter",
+           ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "non_eval_ops"]], 0]],
+           ["subject"]]],
+         0]
 assert:
   - target: text
     must:
@@ -2200,6 +2241,96 @@ convert it into an executable check
 Release readiness is defined by executable gates, not manual checklists.
 1. Run ci gate
 """,
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runtime_spec_lang_pure_no_effect_builtins(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_spec_lang_pure.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-PURE-001
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-PURE-001
+type: governance.check
+check: runtime.spec_lang_pure_no_effect_builtins
+harness:
+  root: {tmp_path}
+  spec_lang_purity:
+    files:
+      - spec_runner/spec_lang.py
+    forbidden_tokens:
+      - \"path_exists\"
+assert:
+  - target: text
+    must:
+      - contain: [\"PASS: runtime.spec_lang_pure_no_effect_builtins\"]
+```
+""",
+    )
+    _write_text(tmp_path / "spec_runner/spec_lang.py", "def eval():\n    return True\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "spec_runner/spec_lang.py", "def eval():\n    return 'path_exists'\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runtime_orchestration_policy_via_spec_lang(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_orchestration.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-ORCH-001
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-ORCH-001
+type: governance.check
+check: runtime.orchestration_policy_via_spec_lang
+harness:
+  root: {tmp_path}
+  orchestration_policy:
+    files:
+      - path: scripts/ci_gate_summary.py
+        required_tokens:
+          - \"_load_gate_policy_expr(\"
+          - \"eval_predicate(\"
+          - \"gate_policy\"
+          - \"decision_expr\"
+      - path: docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
+        required_tokens:
+          - \"gate_policy\"
+          - \"decision_expr\"
+    forbidden_tokens: []
+assert:
+  - target: text
+    must:
+      - contain: [\"PASS: runtime.orchestration_policy_via_spec_lang\"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "scripts/ci_gate_summary.py",
+        "def x():\n    _load_gate_policy_expr()\n    eval_predicate(['eq', 1, 1], subject=[])\n    gate_policy='ok'\n    decision_expr=['eq',1,1]\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md",
+        "gate_policy\ndecision_expr\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "scripts/ci_gate_summary.py",
+        "payload = {'status': 'pass' if exit_code == 0 else 'fail'}\n",
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
