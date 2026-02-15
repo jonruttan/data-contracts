@@ -1178,17 +1178,17 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     if not isinstance(cfg, dict):
         return ["conformance.spec_lang_preferred requires harness.spec_lang_preferred mapping in governance spec"]
     roots = cfg.get("roots")
-    allow_non_evaluate_files = cfg.get("allow_non_evaluate_files", [])
+    allow_evaluate_files = cfg.get("allow_evaluate_files", [])
     if (
         not isinstance(roots, list)
         or not roots
         or any(not isinstance(x, str) or not x.strip() for x in roots)
     ):
         return ["harness.spec_lang_preferred.roots must be a non-empty list of non-empty strings"]
-    if not isinstance(allow_non_evaluate_files, list) or any(
-        not isinstance(x, str) or not x.strip() for x in allow_non_evaluate_files
+    if not isinstance(allow_evaluate_files, list) or any(
+        not isinstance(x, str) or not x.strip() for x in allow_evaluate_files
     ):
-        return ["harness.spec_lang_preferred.allow_non_evaluate_files must be a list of non-empty strings"]
+        return ["harness.spec_lang_preferred.allow_evaluate_files must be a list of non-empty strings"]
     try:
         policy_evaluate = _normalize_policy_evaluate(
             cfg.get("policy_evaluate"), field="harness.spec_lang_preferred.policy_evaluate"
@@ -1196,7 +1196,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     except ValueError as exc:
         return [str(exc)]
 
-    allow = {str(x).strip() for x in allow_non_evaluate_files}
+    allow = {str(x).strip() for x in allow_evaluate_files}
 
     for rel_root in roots:
         base = root / rel_root
@@ -1212,7 +1212,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
             if rel in allow:
                 continue
 
-            non_eval_ops: set[str] = set()
+            evaluate_ops: set[str] = set()
 
             def _collect_ops(node: object, *, inherited_target: str | None = None) -> None:
                 if node is None:
@@ -1235,8 +1235,8 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 for _target, op, _value, _is_true in iter_leaf_assertions(
                     node, target_override=inherited_target
                 ):
-                    if op != "evaluate":
-                        non_eval_ops.add(op)
+                    if op == "evaluate":
+                        evaluate_ops.add(op)
 
             _collect_ops(spec.test.get("assert", []) or [])
             case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
@@ -1244,22 +1244,22 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 {
                     "id": case_id,
                     "file": rel,
-                    "non_eval_ops": sorted(non_eval_ops),
+                    "evaluate_ops": sorted(evaluate_ops),
                 }
             )
 
         ok = eval_predicate(policy_evaluate, subject=rows, limits=SpecLangLimits())
         if not ok:
             for row in rows:
-                ops = row.get("non_eval_ops")
+                ops = row.get("evaluate_ops")
                 if not isinstance(ops, list) or not ops:
                     continue
                 case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
                 rel = str(row.get("file", "<unknown>"))
                 found = ", ".join(str(x) for x in ops)
                 violations.append(
-                    f"{rel}: case {case_id} uses non-evaluate ops ({found}); "
-                    "prefer evaluate/spec-lang assertions or add explicit temporary allowlist entry"
+                    f"{rel}: case {case_id} uses evaluate ops ({found}); "
+                    "prefer sugar assertions unless evaluate is required, or add explicit allow_evaluate_files entry"
                 )
     return violations
 

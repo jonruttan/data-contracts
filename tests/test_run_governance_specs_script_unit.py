@@ -931,12 +931,12 @@ harness:
   spec_lang_preferred:
     roots:
       - docs/spec/conformance/cases
-    allow_non_evaluate_files: []
+    allow_evaluate_files: []
     policy_evaluate:
       - ["eq",
          ["count",
           ["filter",
-           ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "non_eval_ops"]], 0]],
+           ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "evaluate_ops"]], 0]],
            ["subject"]]],
          0]
 assert:
@@ -959,8 +959,7 @@ path: fixtures/a.txt
 assert:
   - target: text
     must:
-      - evaluate:
-          - ["contains", ["subject"], "a"]
+      - contain: ["a"]
 ```
 """,
     )
@@ -980,7 +979,8 @@ path: fixtures/a.txt
 assert:
   - target: text
     must:
-      - contain: ["a"]
+      - evaluate:
+          - ["contains", ["subject"], "a"]
 ```
 """,
     )
@@ -2357,7 +2357,7 @@ harness:
   root: .
   spec_lang_preferred:
     roots: [docs/spec/conformance/cases]
-    allow_non_evaluate_files: []
+    allow_evaluate_files: []
     policy_evaluate:
       - [\"eq\", 1, 1]
 assert:
@@ -2385,7 +2385,7 @@ harness:
   root: .
   spec_lang_preferred:
     roots: [docs/spec/conformance/cases]
-    allow_non_evaluate_files: []
+    allow_evaluate_files: []
     policy_expr:
       - [\"eq\", 1, 1]
 assert:

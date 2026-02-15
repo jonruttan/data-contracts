@@ -55,6 +55,5 @@ harness:
 assert:
   - target: stdout
     must:
-      - evaluate:
-          - ["contains", ["subject"], "\"ok\": true"]
+      - contain: ['"ok": true']
 ```

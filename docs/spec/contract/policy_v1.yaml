@@ -174,13 +174,13 @@ rules:
     scope: conformance
     applies_to: fixtures.assert.tree
     norm: SHOULD
-    requirement: prefer_evaluate_spec_lang_for_new_assertions
+    requirement: prefer_sugar_assertions_unless_evaluate_is_required
     description: >
-      Conformance fixtures should prefer `evaluate` (spec-lang) assertions as
-      the primary authoring form. Non-`evaluate` leaf operators may remain only
-      where explicitly allowlisted during migration.
-    rationale: Keeps spec intent implementation-independent and reduces operator drift.
-    risk_if_violated: Assertion semantics split across ad-hoc leaf operators and diverge across runtimes.
+      Conformance fixtures should prefer sugar assertion operators
+      (`contain`/`regex`/`json_type`/`exists`) by default. `evaluate` should be
+      used only when required by case intent and explicitly allowlisted.
+    rationale: Keeps specs readable while preserving evaluate for advanced expression needs.
+    risk_if_violated: Unnecessary evaluate usage reduces clarity and raises authoring complexity.
     references:
       - docs/spec/contract/03_assertions.md
       - docs/spec/contract/07_portable_spec_authoring.md

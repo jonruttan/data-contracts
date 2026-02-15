@@ -191,7 +191,7 @@ links:
     implementation_refs:
       - scripts/run_governance_specs.py
       - docs/spec/governance/cases/conformance_spec_lang_preferred.spec.md
-    notes: "Governance enforces spec-lang-first authoring with explicit migration allowlist for non-evaluate fixtures."
+    notes: "Governance enforces sugar-first authoring with explicit allowlist for fixtures that require evaluate."
 
   - rule_id: SPEC_LANG_PURE_EVALUATOR
     policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PURE_EVALUATOR

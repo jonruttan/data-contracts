@@ -4,8 +4,8 @@
 
 ```yaml spec-test
 id: SRGOV-CONF-SPECLANG-001
-title: conformance fixtures prefer evaluate spec-lang assertions
-purpose: Enforces spec-lang-first conformance authoring so new fixtures default to evaluate expressions.
+title: conformance fixtures prefer sugar unless evaluate is required
+purpose: Enforces sugar-first conformance authoring and requires explicit allowlisting for fixtures that intentionally use evaluate expressions.
 type: governance.check
 check: conformance.spec_lang_preferred
 harness:
@@ -13,7 +13,7 @@ harness:
   spec_lang_preferred:
     roots:
       - docs/spec/conformance/cases
-    allow_non_evaluate_files:
+    allow_evaluate_files:
       - docs/spec/conformance/cases/assertion_health.spec.md
       - docs/spec/conformance/cases/php_text_file_subset.spec.md
       - docs/spec/conformance/cases/spec_lang.spec.md
@@ -21,7 +21,7 @@ harness:
       - ["eq",
          ["count",
           ["filter",
-           ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "non_eval_ops"]], 0]],
+           ["fn", ["row"], ["gt", ["count", ["get", ["var", "row"], "evaluate_ops"]], 0]],
            ["subject"]]],
          0]
 assert:

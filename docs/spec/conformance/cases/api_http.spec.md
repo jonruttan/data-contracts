@@ -15,16 +15,13 @@ request: {method: GET, url: fixtures/api_http_ok.json}
 assert:
   - target: status
     must:
-      - evaluate:
-          - ["contains", ["subject"], "200"]
+      - contain: ["200"]
   - target: body_text
     must:
-      - evaluate:
-          - ["contains", ["subject"], "\"ok\":true"]
+      - contain: ['"ok":true']
   - target: body_json
     must:
-      - evaluate:
-          - ["json_type", ["subject"], "dict"]
+      - json_type: ["dict"]
 ```
 
 ## SRCONF-API-002
@@ -45,8 +42,7 @@ request: {method: GET}
 assert:
   - target: status
     must:
-      - evaluate:
-          - ["contains", ["subject"], "200"]
+      - contain: ["200"]
 ```
 
 ## SRCONF-API-003
@@ -65,6 +61,5 @@ request: {method: GET, url: fixtures/api_http_ok.json}
 assert:
   - target: status
     must:
-      - evaluate:
-          - ["contains", ["subject"], "200"]
+      - contain: ["200"]
 ```
