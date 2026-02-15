@@ -468,6 +468,22 @@ rules:
       - scripts/spec_portability_report.py
       - spec_runner/spec_portability.py
 
+  - id: SPEC_PORTABILITY_NON_REGRESSION_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: specs.portability.metric_non_regression
+    norm: MUST
+    requirement: spec_lang_self_containment_metrics_must_not_decrease_from_baseline
+    description: >
+      Governance must enforce non-regression for configured spec-lang
+      self-containment metrics against a checked-in baseline.
+    rationale: Ratchets portable/spec-lang-centered coverage in one direction over time.
+    risk_if_violated: Portability quality can silently regress while aggregate reporting still exists.
+    references:
+      - docs/spec/governance/cases/spec_portability_non_regression.spec.md
+      - docs/spec/metrics/spec_portability_baseline.json
+      - spec_runner/spec_portability.py
+
   - id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
     introduced_in: v1
     scope: governance

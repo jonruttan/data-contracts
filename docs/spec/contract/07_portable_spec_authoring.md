@@ -64,6 +64,7 @@ how self-contained each spec case is versus how implementation-coupled it is.
 - Score interpretation:
   - `self_contained_ratio`: `0.0` to `1.0`, higher is better
   - `implementation_reliance_ratio`: `1.0 - self_contained_ratio`
-- Phase-v1 policy is report-first:
+- Phase-v1 policy:
   - metric generation and shape are enforced
-  - threshold gating is intentionally deferred until baseline stabilization
+  - configured self-containment baseline values are non-regressing (MUST)
+  - absolute threshold gating remains deferred until baseline stabilization

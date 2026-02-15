@@ -16,6 +16,8 @@ Notes:
   are opt-in external adapter formats.
 - Portability reporting includes a segmented self-containment metric across
   conformance/governance/impl `.spec.md` corpora.
+- Portability governance enforces non-regression on configured spec-lang
+  self-containment baseline metrics.
 - Spec-lang now supports reusable library symbols via
   `harness.spec_lang.library_paths` and optional `exports` allowlists.
 - Docs quality v2 adds schema-backed `doc-meta`, manifest-driven reference

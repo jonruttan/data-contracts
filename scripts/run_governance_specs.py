@@ -464,11 +464,124 @@ def _scan_spec_portability_metric(root: Path, *, harness: dict | None = None) ->
     cfg = h.get("portability_metric")
     if not isinstance(cfg, dict):
         return ["spec.portability_metric requires harness.portability_metric mapping in governance spec"]
+    policy_evaluate = None
+    if "policy_evaluate" in cfg:
+        try:
+            policy_evaluate = _normalize_policy_evaluate(
+                cfg.get("policy_evaluate"), field="harness.portability_metric.policy_evaluate"
+            )
+        except ValueError as exc:
+            return [str(exc)]
     payload = spec_portability_report_jsonable(root, config=cfg)
     errs = payload.get("errors") or []
     if not isinstance(errs, list):
         return ["spec.portability_metric report contains invalid errors shape"]
-    return [str(e) for e in errs if str(e).strip()]
+    violations = [str(e) for e in errs if str(e).strip()]
+    if violations:
+        return violations
+    if policy_evaluate is not None:
+        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
+        if not ok:
+            return ["spec.portability_metric policy_evaluate returned false for portability report payload"]
+    return []
+
+
+def _lookup_number_field(payload: object, dotted: str) -> float | None:
+    cur = payload
+    for part in dotted.split("."):
+        key = part.strip()
+        if not key:
+            return None
+        if not isinstance(cur, dict) or key not in cur:
+            return None
+        cur = cur[key]
+    if isinstance(cur, (int, float)):
+        return float(cur)
+    return None
+
+
+def _scan_spec_portability_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("portability_non_regression")
+    if not isinstance(cfg, dict):
+        return ["spec.portability_non_regression requires harness.portability_non_regression mapping in governance spec"]
+
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.portability_non_regression.baseline_path must be a non-empty string"]
+    summary_fields = cfg.get("summary_fields")
+    if (
+        not isinstance(summary_fields, list)
+        or not summary_fields
+        or any(not isinstance(x, str) or not x.strip() for x in summary_fields)
+    ):
+        return ["harness.portability_non_regression.summary_fields must be a non-empty list of non-empty strings"]
+    segment_fields = cfg.get("segment_fields", {})
+    if not isinstance(segment_fields, dict):
+        return ["harness.portability_non_regression.segment_fields must be a mapping"]
+    for seg, fields in segment_fields.items():
+        if not isinstance(seg, str) or not seg.strip():
+            return ["harness.portability_non_regression.segment_fields keys must be non-empty strings"]
+        if not isinstance(fields, list) or not fields or any(not isinstance(x, str) or not x.strip() for x in fields):
+            return [
+                f"harness.portability_non_regression.segment_fields.{seg} must be a non-empty list of non-empty strings"
+            ]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.portability_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.portability_non_regression.epsilon must be >= 0"]
+
+    report_config = cfg.get("portability_metric")
+    if report_config is not None and not isinstance(report_config, dict):
+        return ["harness.portability_non_regression.portability_metric must be a mapping when provided"]
+    current = spec_portability_report_jsonable(root, config=report_config)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current portability report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+
+    baseline_file = root / baseline_path
+    if not baseline_file.exists():
+        return [f"{baseline_path}:1: missing baseline portability metrics file"]
+    try:
+        baseline = json.loads(baseline_file.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [f"{baseline_path}:1: invalid JSON baseline: {exc.msg} at line {exc.lineno} column {exc.colno}"]
+    if not isinstance(baseline, dict):
+        return [f"{baseline_path}:1: baseline payload must be a JSON object"]
+
+    violations: list[str] = []
+    for field in summary_fields:
+        cur_val = _lookup_number_field(current, f"summary.{field}")
+        base_val = _lookup_number_field(baseline, f"summary.{field}")
+        if cur_val is None:
+            violations.append(f"summary.{field}: missing numeric current metric")
+            continue
+        if base_val is None:
+            violations.append(f"{baseline_path}: summary.{field}: missing numeric baseline metric")
+            continue
+        if cur_val + epsilon < base_val:
+            violations.append(
+                f"summary.{field}: regressed from baseline {base_val:.12g} to {cur_val:.12g}"
+            )
+
+    for segment, fields in segment_fields.items():
+        for field in fields:
+            cur_val = _lookup_number_field(current, f"segments.{segment}.{field}")
+            base_val = _lookup_number_field(baseline, f"segments.{segment}.{field}")
+            if cur_val is None:
+                violations.append(f"segments.{segment}.{field}: missing numeric current metric")
+                continue
+            if base_val is None:
+                violations.append(f"{baseline_path}: segments.{segment}.{field}: missing numeric baseline metric")
+                continue
+            if cur_val + epsilon < base_val:
+                violations.append(
+                    f"segments.{segment}.{field}: regressed from baseline {base_val:.12g} to {cur_val:.12g}"
+                )
+    return violations
 
 
 def _is_spec_opening_fence(line: str) -> tuple[str, int] | None:
@@ -2254,6 +2367,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.purpose_quality_gate": _scan_conformance_purpose_quality_gate,
     "contract.coverage_threshold": _scan_contract_coverage_threshold,
     "spec.portability_metric": _scan_spec_portability_metric,
+    "spec.portability_non_regression": _scan_spec_portability_non_regression,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
     "assert.universal_core_sync": _scan_assert_universal_core_sync,

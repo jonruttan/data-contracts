@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "summary": {
+    "overall_logic_self_contained_ratio": 0.09834710743801653
+  },
+  "segments": {
+    "conformance": {
+      "mean_logic_self_contained_ratio": 0.25
+    },
+    "governance": {
+      "mean_logic_self_contained_ratio": 0.0
+    },
+    "impl": {
+      "mean_logic_self_contained_ratio": 0.136
+    }
+  }
+}

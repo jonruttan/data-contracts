@@ -33,6 +33,13 @@ harness:
     report:
       top_n: 10
     enforce: false
+    policy_evaluate:
+      - and
+      - ["json_type", ["subject"], "dict"]
+      - ["has_key", ["subject"], "summary"]
+      - ["has_key", ["subject"], "segments"]
+      - ["has_key", ["subject"], "worst_cases"]
+      - ["json_type", ["get", ["subject"], "summary"], "dict"]
 assert:
   - target: text
     must:
