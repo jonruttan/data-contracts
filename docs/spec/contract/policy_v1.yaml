@@ -1699,7 +1699,7 @@ rules:
   applies_to: docs/spec/libraries/* exports
   norm: MUST
   requirement: public_library_symbols_must_be_referenced
-  description: 'Library functions.public symbols must be referenced by at least one case policy/expression or harness.spec_lang.exports declaration.
+  description: 'Library definitions.public symbols must be referenced by at least one case policy/expression or harness.spec_lang.exports declaration.
 
     '
   rationale: Keeps library surfaces minimal and avoids dead exported symbols.
@@ -1712,8 +1712,8 @@ rules:
   scope: governance
   applies_to: cross_case_library_symbol_references
   norm: MUST
-  requirement: functions_private_symbols_must_not_be_referenced_by_cases
-  description: 'Symbols declared under functions.private must not be referenced from conformance/governance/impl case policies or assertions.
+  requirement: definitions_private_symbols_must_not_be_referenced_by_cases
+  description: 'Symbols declared under definitions.private must not be referenced from conformance/governance/impl case policies or assertions.
 
     '
   rationale: Preserves private helper encapsulation inside library documents.
@@ -1825,8 +1825,8 @@ rules:
   scope: governance
   applies_to: type_spec_lang_library_shape
   norm: MUST
-  requirement: libraries_use_functions_public_private_scope_model
-  description: 'spec_lang.library cases must define functions in functions.public/functions.private scopes and avoid legacy function/export shapes.
+  requirement: libraries_use_definitions_public_private_scope_model
+  description: 'spec_lang.library cases must define symbols under definitions.public/definitions.private scopes and avoid legacy shapes.
 
     '
   rationale: Provides explicit API visibility boundaries and deterministic export derivation.

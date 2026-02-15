@@ -1549,7 +1549,7 @@ function loadSpecLangLibraryDoc(string $path): array {
     $imports = [];
     $bindings = [];
     $exports = [];
-    $compileScope = function(mixed $scope, string $fieldPrefix) use ($path): array {
+    $compileDefinitionScope = function(mixed $scope, string $fieldPrefix) use ($path): array {
         if ($scope === null) {
             return [];
         }
@@ -1560,7 +1560,10 @@ function loadSpecLangLibraryDoc(string $path): array {
         foreach ($scope as $rawName => $expr) {
             $name = trim((string)$rawName);
             if ($name === '') {
-                throw new SchemaError("spec_lang.library {$fieldPrefix} function name must be non-empty");
+                throw new SchemaError("spec_lang.library {$fieldPrefix} symbol name must be non-empty");
+            }
+            if (array_key_exists($name, $out)) {
+                throw new SchemaError("spec_lang.library duplicate symbol inside scope {$fieldPrefix}: {$name}");
             }
             $out[$name] = compileYamlExprToSexpr($expr, "{$path} {$fieldPrefix}.{$name}");
         }
@@ -1574,31 +1577,31 @@ function loadSpecLangLibraryDoc(string $path): array {
         foreach (asNonEmptyStringList($case['imports'] ?? null, 'imports') as $imp) {
             $imports[] = $imp;
         }
-        $functions = $case['functions'] ?? null;
-        if (!is_array($functions) || isListArray($functions)) {
-            throw new SchemaError('spec_lang.library requires functions mapping with public/private scopes');
+        $definitions = $case['definitions'] ?? null;
+        if (!is_array($definitions) || isListArray($definitions)) {
+            throw new SchemaError('spec_lang.library requires definitions mapping with public/private scopes');
         }
-        $public = $compileScope($functions['public'] ?? null, 'functions.public');
-        $private = $compileScope($functions['private'] ?? null, 'functions.private');
+        $public = $compileDefinitionScope($definitions['public'] ?? null, 'definitions.public');
+        $private = $compileDefinitionScope($definitions['private'] ?? null, 'definitions.private');
         if (count($public) === 0 && count($private) === 0) {
-            throw new SchemaError('spec_lang.library requires non-empty functions.public or functions.private mapping');
+            throw new SchemaError('spec_lang.library requires non-empty definitions.public or definitions.private mapping');
         }
         foreach (array_keys($public) as $name) {
             if (array_key_exists($name, $bindings)) {
-                throw new SchemaError("duplicate library function in file {$path}: {$name}");
+                throw new SchemaError("duplicate library symbol in file {$path}: {$name}");
             }
             $bindings[$name] = $public[$name];
             $exports[] = $name;
         }
         foreach (array_keys($private) as $name) {
             if (array_key_exists($name, $bindings)) {
-                throw new SchemaError("duplicate library function in file {$path}: {$name}");
+                throw new SchemaError("duplicate library symbol in file {$path}: {$name}");
             }
             $bindings[$name] = $private[$name];
         }
     }
     if (count($bindings) === 0) {
-        throw new SchemaError("library file has no spec_lang.library functions: {$path}");
+        throw new SchemaError("library file has no spec_lang.library definitions: {$path}");
     }
     return [
         'path' => $path,

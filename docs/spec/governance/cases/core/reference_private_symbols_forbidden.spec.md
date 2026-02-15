@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRGOV-REF-SYMBOLS-004
 title: private library symbols are not referenced externally
-purpose: Ensures conformance/governance/impl cases do not reference functions.private symbols from library docs.
+purpose: Ensures conformance/governance/impl cases do not reference definitions.private symbols from library docs.
 type: governance.check
 check: reference.private_symbols_forbidden
 harness:

@@ -178,15 +178,27 @@ def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
                     changed = changed or ch
                 out[key] = out_items
                 changed = changed or (converted != v)
-            elif key == "functions" and isinstance(v, dict):
-                functions: dict[str, Any] = {}
-                for fn_name, fn_expr in v.items():
-                    fn_path = f"{path}.{key}.{fn_name}" if path else f"{key}.{fn_name}"
-                    expr_node = sexpr_to_yaml_ast(fn_expr) if is_sexpr_node(fn_expr) else fn_expr
-                    fn_item, ch = _walk_convert(expr_node, path=fn_path)
-                    functions[str(fn_name)] = _condense_expr_node(fn_item)
-                    changed = changed or ch or (expr_node != fn_expr)
-                out[key] = functions
+            elif key == "definitions" and isinstance(v, dict):
+                definitions: dict[str, Any] = {}
+                for scope_name, scope_map in v.items():
+                    scope_key = str(scope_name)
+                    if not isinstance(scope_map, dict):
+                        definitions[scope_key] = scope_map
+                        continue
+                    scope_out: dict[str, Any] = {}
+                    for sym_name, sym_expr in scope_map.items():
+                        sym_key = str(sym_name)
+                        sym_path = (
+                            f"{path}.{key}.{scope_key}.{sym_key}"
+                            if path
+                            else f"{key}.{scope_key}.{sym_key}"
+                        )
+                        expr_node = sexpr_to_yaml_ast(sym_expr) if is_sexpr_node(sym_expr) else sym_expr
+                        sym_item, ch = _walk_convert(expr_node, path=sym_path)
+                        scope_out[sym_key] = _condense_expr_node(sym_item)
+                        changed = changed or ch or (expr_node != sym_expr)
+                    definitions[scope_key] = scope_out
+                out[key] = definitions
             else:
                 got, ch = _walk_convert(v, path=f"{path}.{key}")
                 out[key] = got
@@ -208,11 +220,17 @@ def _validate_expr_fields(node: Any, *, path: str = "") -> None:
                 if not isinstance(v, list) or not v:
                     raise SpecLangYamlAstError(f"{current}: expression list must be a non-empty list")
                 compile_yaml_expr_list(v, field_path=current)
-            if key == "functions":
+            if key == "definitions":
                 if not isinstance(v, dict):
-                    raise SpecLangYamlAstError(f"{current}: functions must be a mapping")
-                for fn_name, fn_expr in v.items():
-                    compile_yaml_expr_to_sexpr(fn_expr, field_path=f"{current}.{fn_name}")
+                    raise SpecLangYamlAstError(f"{current}: definitions must be a mapping")
+                for scope_name, scope_map in v.items():
+                    if not isinstance(scope_map, dict):
+                        raise SpecLangYamlAstError(f"{current}.{scope_name}: scope must be a mapping")
+                    for sym_name, sym_expr in scope_map.items():
+                        compile_yaml_expr_to_sexpr(
+                            sym_expr,
+                            field_path=f"{current}.{scope_name}.{sym_name}",
+                        )
             _validate_expr_fields(v, path=current)
 
 
@@ -226,7 +244,7 @@ def _contains_expr_fields(node: Any) -> bool:
     if isinstance(node, dict):
         for k, v in node.items():
             key = str(k)
-            if key in {"evaluate", "policy_evaluate", "functions"}:
+            if key in {"evaluate", "policy_evaluate", "definitions"}:
                 return True
             if _contains_expr_fields(v):
                 return True

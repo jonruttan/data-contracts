@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRGOV-LIB-SURFACE-001
 title: library public/private surface model is enforced
-purpose: Ensures spec_lang.library cases use functions.public/functions.private scopes and do not use legacy export shape.
+purpose: Ensures spec_lang.library cases use definitions.public/definitions.private scopes and do not use legacy export shape.
 type: governance.check
 check: library.public_surface_model
 harness:

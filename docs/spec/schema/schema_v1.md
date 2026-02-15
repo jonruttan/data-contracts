@@ -168,8 +168,8 @@ For `type: cli.run`, supported `harness` keys include:
 - external references use `external://provider/id` and are deny-by-default
   unless capability and harness policy explicitly allow provider access
 - `type: spec_lang.library` function values MUST use mapping-AST expression
-  encoding under `functions.public.<symbol>` and/or
-  `functions.private.<symbol>` (list s-expr authoring is invalid)
+  encoding under `definitions.public.<symbol>` and/or
+  `definitions.private.<symbol>` (list s-expr authoring is invalid)
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
 

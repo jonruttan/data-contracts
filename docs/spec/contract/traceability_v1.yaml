@@ -1815,7 +1815,7 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/reference_library_exports_used.spec.md
-  notes: Library functions.public symbols must be referenced by policies/expressions or harness exports.
+  notes: Library definitions.public symbols must be referenced by policies/expressions or harness exports.
 - rule_id: REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
   contract_refs:
@@ -1829,7 +1829,7 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md
-  notes: functions.private symbols are forbidden from external case policy/assertion references.
+  notes: definitions.private symbols are forbidden from external case policy/assertion references.
 - rule_id: REFERENCE_CHECK_IDS_EXIST
   policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_CHECK_IDS_EXIST
   contract_refs:
@@ -1943,4 +1943,4 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/spec_lang_libraries.py
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
-  notes: spec_lang.library shape enforcement requires functions.public/functions.private scopes.
+  notes: spec_lang.library shape enforcement requires definitions.public/definitions.private scopes.

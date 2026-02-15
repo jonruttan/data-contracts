@@ -27,7 +27,7 @@ def test_load_spec_lang_symbols_from_library_paths(tmp_path: Path) -> None:
 ```yaml spec-test
 id: LIB-1
 type: spec_lang.library
-functions:
+definitions:
   public:
     is_warn:
       fn:
@@ -67,7 +67,7 @@ def test_library_import_cycle_is_rejected(tmp_path: Path) -> None:
 id: LIB-A
 type: spec_lang.library
 imports: ["/libs/b.spec.md"]
-functions:
+definitions:
   public:
     a:
       fn:
@@ -82,7 +82,7 @@ functions:
 id: LIB-B
 type: spec_lang.library
 imports: ["/libs/a.spec.md"]
-functions:
+definitions:
   public:
     b:
       fn:
@@ -108,7 +108,7 @@ def test_duplicate_library_symbol_is_rejected(tmp_path: Path) -> None:
         """```yaml spec-test
 id: LIB-A
 type: spec_lang.library
-functions:
+definitions:
   public:
     same:
       fn:
@@ -122,7 +122,7 @@ functions:
         """```yaml spec-test
 id: LIB-B
 type: spec_lang.library
-functions:
+definitions:
   public:
     same:
       fn:
@@ -148,7 +148,7 @@ def test_harness_exports_filters_symbols(tmp_path: Path) -> None:
         """```yaml spec-test
 id: LIB-A
 type: spec_lang.library
-functions:
+definitions:
   public:
     keep:
       fn:
@@ -180,7 +180,7 @@ def test_library_function_rejects_list_s_expr_authoring(tmp_path: Path) -> None:
         """```yaml spec-test
 id: LIB-BAD
 type: spec_lang.library
-functions:
+definitions:
   public:
     bad: ["fn", ["x"], ["var", "x"]]
 ```

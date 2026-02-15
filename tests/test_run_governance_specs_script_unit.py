@@ -670,7 +670,7 @@ def test_script_enforces_conformance_library_policy_usage_required(tmp_path):
 ```yaml spec-test
 id: LIB-POLICY-CORE-TEST-001
 type: spec_lang.library
-functions:
+definitions:
   public:
     policy.pass_when_no_violations:
       fn:
@@ -4303,7 +4303,7 @@ assert:
 ```yaml spec-test
 id: L1
 type: spec_lang.library
-functions:
+definitions:
   public:
     policy.pass_when_no_violations:
       fn:
@@ -4651,7 +4651,7 @@ def test_script_enforces_normalization_library_mapping_ast_only(tmp_path):
 ```yaml spec-test
 id: LIB-PATH
 type: spec_lang.library
-functions:
+definitions:
   public:
     ok:
       fn:
@@ -4672,7 +4672,7 @@ functions:
 ```yaml spec-test
 id: LIB-PATH
 type: spec_lang.library
-functions:
+definitions:
   public:
     bad: ["fn", ["x"], ["var", "x"]]
 ```

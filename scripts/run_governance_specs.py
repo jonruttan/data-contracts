@@ -3703,10 +3703,10 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
         for _doc_path, case in loaded:
             if str(case.get("type", "")).strip() != "spec_lang.library":
                 continue
-            raw_functions = case.get("functions")
-            if not isinstance(raw_functions, dict):
+            raw_definitions = case.get("definitions")
+            if not isinstance(raw_definitions, dict):
                 continue
-            raw_public = raw_functions.get("public")
+            raw_public = raw_definitions.get("public")
             if not isinstance(raw_public, dict):
                 continue
             for raw in raw_public.keys():
@@ -3752,13 +3752,15 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
                 for expr in _iter_evaluate_expr_nodes(raw_assert):
                     referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
             if str(case.get("type", "")).strip() == "spec_lang.library":
-                raw_functions = case.get("functions")
-                if isinstance(raw_functions, dict):
+                raw_definitions = case.get("definitions")
+                if isinstance(raw_definitions, dict):
                     for scope in ("public", "private"):
-                        scoped = raw_functions.get(scope)
+                        scoped = raw_definitions.get(scope)
                         if isinstance(scoped, dict):
                             for expr in scoped.values():
-                                referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
+                                referenced.update(
+                                    sym for sym in _collect_var_symbols(expr) if "." in sym
+                                )
 
     for sym, src in sorted(exported.items(), key=lambda item: item[0]):
         if sym not in referenced:
@@ -3784,25 +3786,31 @@ def _scan_library_public_surface_model(root: Path, *, harness: dict | None = Non
         for _doc_path, case in loaded:
             if str(case.get("type", "")).strip() != "spec_lang.library":
                 continue
-            raw_functions = case.get("functions")
-            if not isinstance(raw_functions, dict):
+            raw_definitions = case.get("definitions")
+            if not isinstance(raw_definitions, dict):
                 violations.append(
-                    f"{lib_file.relative_to(root)}: spec_lang.library requires functions mapping"
+                    f"{lib_file.relative_to(root)}: spec_lang.library requires definitions mapping"
                 )
                 continue
-            raw_public = raw_functions.get("public")
-            raw_private = raw_functions.get("private")
+            raw_public = raw_definitions.get("public")
+            raw_private = raw_definitions.get("private")
             if not isinstance(raw_public, dict) and not isinstance(raw_private, dict):
                 violations.append(
-                    f"{lib_file.relative_to(root)}: spec_lang.library requires functions.public or functions.private mapping"
+                    f"{lib_file.relative_to(root)}: spec_lang.library requires definitions.public or definitions.private mapping"
                 )
                 continue
-            if isinstance(raw_public, dict) and isinstance(raw_private, dict):
-                overlap = sorted(set(str(k).strip() for k in raw_public).intersection(str(k).strip() for k in raw_private))
+            public_symbols: set[str] = set()
+            private_symbols: set[str] = set()
+            if isinstance(raw_public, dict):
+                public_symbols.update(str(k).strip() for k in raw_public)
+            if isinstance(raw_private, dict):
+                private_symbols.update(str(k).strip() for k in raw_private)
+            if public_symbols and private_symbols:
+                overlap = sorted(public_symbols.intersection(private_symbols))
                 overlap = [s for s in overlap if s]
                 if overlap:
                     violations.append(
-                        f"{lib_file.relative_to(root)}: duplicate symbol across functions.public/functions.private: "
+                        f"{lib_file.relative_to(root)}: duplicate symbol across definitions.public/definitions.private: "
                         + ", ".join(overlap)
                     )
     return violations
@@ -3822,10 +3830,10 @@ def _scan_reference_private_symbols_forbidden(root: Path, *, harness: dict | Non
             for _doc_path, case in loaded:
                 if str(case.get("type", "")).strip() != "spec_lang.library":
                     continue
-                raw_functions = case.get("functions")
-                if not isinstance(raw_functions, dict):
+                raw_definitions = case.get("definitions")
+                if not isinstance(raw_definitions, dict):
                     continue
-                raw_private = raw_functions.get("private")
+                raw_private = raw_definitions.get("private")
                 if not isinstance(raw_private, dict):
                     continue
                 for sym in raw_private.keys():
@@ -4119,10 +4127,10 @@ def _scan_library_domain_index_sync(root: Path, *, harness: dict | None = None) 
             for _doc_path, case in loaded:
                 if str(case.get("type", "")).strip() != "spec_lang.library":
                     continue
-                raw_functions = case.get("functions")
-                if not isinstance(raw_functions, dict):
+                raw_definitions = case.get("definitions")
+                if not isinstance(raw_definitions, dict):
                     continue
-                raw_public = raw_functions.get("public")
+                raw_public = raw_definitions.get("public")
                 if not isinstance(raw_public, dict):
                     continue
                 for item in raw_public.keys():
@@ -4218,20 +4226,20 @@ def _scan_normalization_library_mapping_ast_only(root: Path, *, harness: dict | 
             case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
             if str(case.get("type", "")).strip() != "spec_lang.library":
                 continue
-            functions = case.get("functions")
-            if not isinstance(functions, dict) or not functions:
-                violations.append(f"{rel}: case {case_id} must provide non-empty functions mapping")
+            definitions = case.get("definitions")
+            if not isinstance(definitions, dict) or not definitions:
+                violations.append(f"{rel}: case {case_id} must provide non-empty definitions mapping")
                 continue
             scopes = []
-            raw_public = functions.get("public")
-            raw_private = functions.get("private")
+            raw_public = definitions.get("public")
+            raw_private = definitions.get("private")
             if isinstance(raw_public, dict):
                 scopes.append(("public", raw_public))
             if isinstance(raw_private, dict):
                 scopes.append(("private", raw_private))
             if not scopes:
                 violations.append(
-                    f"{rel}: case {case_id} must provide functions.public or functions.private mapping"
+                    f"{rel}: case {case_id} must provide definitions.public or definitions.private mapping"
                 )
                 continue
             for scope_name, scoped_map in scopes:
@@ -4239,13 +4247,16 @@ def _scan_normalization_library_mapping_ast_only(root: Path, *, harness: dict | 
                     name = str(raw_name).strip()
                     if not name:
                         violations.append(
-                            f"{rel}: case {case_id} has empty function symbol name in functions.{scope_name}"
+                            f"{rel}: case {case_id} has empty symbol name in definitions.{scope_name}"
                         )
                         continue
                     try:
                         compile_yaml_expr_to_sexpr(
                             expr,
-                            field_path=f"{rel.as_posix()} case {case_id} functions.{scope_name}.{name}",
+                            field_path=(
+                                f"{rel.as_posix()} case {case_id} "
+                                f"definitions.{scope_name}.{name}"
+                            ),
                         )
                     except SpecLangYamlAstError as exc:
                         violations.append(str(exc))

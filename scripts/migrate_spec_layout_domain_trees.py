@@ -46,13 +46,13 @@ def _library_exports_for_file(spec_path: Path) -> list[str]:
     for _doc_path, case in load_external_cases(spec_path, formats={"md"}):
         if str(case.get("type", "")).strip() != "spec_lang.library":
             continue
-        raw_functions = case.get("functions")
-        if not isinstance(raw_functions, dict):
+        raw_definitions = case.get("definitions")
+        if not isinstance(raw_definitions, dict):
             continue
-        raw_public = raw_functions.get("public")
-        if not isinstance(raw_public, dict):
+        raw_public_scope = raw_definitions.get("public")
+        if not isinstance(raw_public_scope, dict):
             continue
-        for item in raw_public.keys():
+        for item in raw_public_scope.keys():
             sym = str(item).strip()
             if sym:
                 exports.append(sym)

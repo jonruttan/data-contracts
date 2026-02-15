@@ -6,7 +6,7 @@
 id: LIB-PATH-001
 title: path-core reusable pure path logic helpers
 type: spec_lang.library
-functions:
+definitions:
   public:
     path.normalize_slashes:
       fn:

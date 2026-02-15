@@ -63,16 +63,21 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
     bindings: dict[str, Any] = {}
     exports: list[str] = []
 
-    def _compile_function_map(raw_map: object, *, field_path: str) -> dict[str, Any]:
-        if raw_map is None:
+    def _compile_definition_scope(raw_scope: object, *, field_path: str) -> dict[str, Any]:
+        if raw_scope is None:
             return {}
-        if not isinstance(raw_map, dict):
+        if not isinstance(raw_scope, dict):
             raise TypeError(f"spec_lang.library {field_path} must be a mapping when provided")
         out: dict[str, Any] = {}
-        for raw_name, expr in raw_map.items():
+        for raw_name, expr in raw_scope.items():
             name = str(raw_name).strip()
             if not name:
-                raise ValueError(f"spec_lang.library {field_path} function name must be non-empty")
+                raise ValueError(f"spec_lang.library {field_path} symbol name must be non-empty")
+            if name in out:
+                raise ValueError(
+                    "spec_lang.library duplicate symbol inside scope "
+                    f"{field_path}: {name}"
+                )
             try:
                 out[name] = compile_yaml_expr_to_sexpr(
                     expr,
@@ -90,24 +95,33 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
         case_imports = _as_non_empty_str_list(case.get("imports"), field="imports")
         imports.extend(case_imports)
 
-        raw_functions = case.get("functions")
-        if not isinstance(raw_functions, dict):
-            raise TypeError("spec_lang.library requires functions mapping with public/private scopes")
-        public_bindings = _compile_function_map(raw_functions.get("public"), field_path="functions.public")
-        private_bindings = _compile_function_map(raw_functions.get("private"), field_path="functions.private")
+        raw_definitions = case.get("definitions")
+        if not isinstance(raw_definitions, dict):
+            raise TypeError("spec_lang.library requires definitions mapping with public/private scopes")
+        public_bindings = _compile_definition_scope(
+            raw_definitions.get("public"), field_path="definitions.public"
+        )
+        private_bindings = _compile_definition_scope(
+            raw_definitions.get("private"), field_path="definitions.private"
+        )
         if not public_bindings and not private_bindings:
-            raise TypeError("spec_lang.library requires non-empty functions.public or functions.private mapping")
+            raise TypeError(
+                "spec_lang.library requires non-empty definitions.public or definitions.private mapping"
+            )
         overlap = sorted(set(public_bindings).intersection(private_bindings))
         if overlap:
-            raise ValueError("spec_lang.library duplicate symbol across functions.public/functions.private: " + ", ".join(overlap))
+            raise ValueError(
+                "spec_lang.library duplicate symbol across definitions.public/definitions.private: "
+                + ", ".join(overlap)
+            )
         for name, expr in {**public_bindings, **private_bindings}.items():
             if name in bindings:
-                raise ValueError(f"duplicate library function in file {path}: {name}")
+                raise ValueError(f"duplicate library symbol in file {path}: {name}")
             bindings[name] = expr
         exports.extend(sorted(public_bindings.keys()))
 
     if not bindings:
-        raise ValueError(f"library file has no spec_lang.library functions: {path}")
+        raise ValueError(f"library file has no spec_lang.library definitions: {path}")
 
     return _LibraryDoc(
         path=path,
