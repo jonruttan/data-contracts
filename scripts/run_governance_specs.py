@@ -3001,6 +3001,17 @@ def run_governance_check(case, *, ctx) -> None:
         violations = [str(v) for v in raw_outcome if str(v).strip()]
         subject = {"violations": violations}
 
+    if isinstance(subject, dict) and "violations" not in subject:
+        subject = {**subject, "violations": list(violations)}
+
+    # Phase-2 migration default: docs/runtime checks run policy verdict through
+    # spec-lang even before all governance cases declare explicit harness policy.
+    if policy_evaluate is None and (
+        check_id.startswith("docs.") or check_id.startswith("runtime.")
+    ):
+        policy_evaluate = ["is_empty", ["get", ["subject"], "violations"]]
+        policy_path = "harness.policy_evaluate (defaulted)"
+
     if policy_evaluate is not None:
         policy_result: GovernancePolicyResult = run_governance_policy(
             check_id=check_id,
