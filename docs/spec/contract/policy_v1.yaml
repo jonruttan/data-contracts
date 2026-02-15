@@ -484,6 +484,130 @@ rules:
       - docs/spec/metrics/spec_portability_baseline.json
       - spec_runner/spec_portability.py
 
+  - id: SPEC_LANG_ADOPTION_METRIC_REPORTED
+    introduced_in: v1
+    scope: governance
+    applies_to: specs.spec_lang_adoption.metric_report
+    norm: MUST
+    requirement: spec_lang_adoption_metric_report_generation_and_shape_valid
+    description: >
+      Governance must produce a valid spec-lang adoption metric report with
+      segmented and overall logic-self-containment signals.
+    rationale: Provides directional signal for migration from host-language logic into spec-lang.
+    risk_if_violated: Teams cannot measure migration progress toward spec-lang-first behavior.
+    references:
+      - docs/spec/governance/cases/spec_lang_adoption_metric.spec.md
+      - spec_runner/quality_metrics.py
+
+  - id: SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: specs.spec_lang_adoption.metric_non_regression
+    norm: MUST
+    requirement: spec_lang_adoption_metrics_must_not_regress_from_baseline
+    description: >
+      Governance must enforce non-regression for configured spec-lang adoption
+      metrics using checked-in baseline values.
+    rationale: Creates a monotonic ratchet toward higher spec-lang logic coverage.
+    risk_if_violated: Adoption can drift backward without visibility or merge protection.
+    references:
+      - docs/spec/governance/cases/spec_lang_adoption_non_regression.spec.md
+      - docs/spec/metrics/spec_lang_adoption_baseline.json
+      - spec_runner/quality_metrics.py
+
+  - id: RUNNER_INDEPENDENCE_METRIC_REPORTED
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.runner_independence.metric_report
+    norm: MUST
+    requirement: runner_independence_metric_report_generation_and_shape_valid
+    description: >
+      Governance must produce a valid runner-independence metric report for
+      gate scripts, CI workflows, and adapter interfaces.
+    rationale: Quantifies reduction of direct runtime coupling in orchestration paths.
+    risk_if_violated: Runtime lock-in can increase unnoticed.
+    references:
+      - docs/spec/governance/cases/runner_independence_metric.spec.md
+      - spec_runner/quality_metrics.py
+
+  - id: RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.runner_independence.metric_non_regression
+    norm: MUST
+    requirement: runner_independence_metrics_must_not_regress_from_baseline
+    description: >
+      Governance must enforce non-regression for configured runner-independence
+      metrics using checked-in baseline values.
+    rationale: Maintains one-way pressure away from direct interpreter/runtime coupling.
+    risk_if_violated: Gate and CI scripts can silently revert to runtime-specific hardcoding.
+    references:
+      - docs/spec/governance/cases/runner_independence_non_regression.spec.md
+      - docs/spec/metrics/runner_independence_baseline.json
+      - spec_runner/quality_metrics.py
+
+  - id: DOCS_OPERABILITY_METRIC_REPORTED
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.operability.metric_report
+    norm: MUST
+    requirement: docs_operability_metric_report_generation_and_shape_valid
+    description: >
+      Governance must produce a valid docs operability report with segmented and
+      overall operability ratios.
+    rationale: Measures whether docs remain executable, complete, and actionable.
+    risk_if_violated: Documentation quality decays without objective enforcement.
+    references:
+      - docs/spec/governance/cases/docs_operability_metric.spec.md
+      - spec_runner/quality_metrics.py
+
+  - id: DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.operability.metric_non_regression
+    norm: MUST
+    requirement: docs_operability_metrics_must_not_regress_from_baseline
+    description: >
+      Governance must enforce non-regression for configured docs-operability
+      metrics using checked-in baseline values.
+    rationale: Keeps documentation operability moving forward under automation.
+    risk_if_violated: Repeated support burden and ambiguous docs behavior return.
+    references:
+      - docs/spec/governance/cases/docs_operability_non_regression.spec.md
+      - docs/spec/metrics/docs_operability_baseline.json
+      - spec_runner/quality_metrics.py
+
+  - id: CONTRACT_ASSERTIONS_METRIC_REPORTED
+    introduced_in: v1
+    scope: governance
+    applies_to: specs.contract_assertions.metric_report
+    norm: MUST
+    requirement: contract_assertions_metric_report_generation_and_shape_valid
+    description: >
+      Governance must produce a valid contract-assertions metric report for
+      assertions contract/schema/book alignment.
+    rationale: Tracks assertion contract quality and shared vocabulary cohesion.
+    risk_if_violated: Assertion contract drift can accumulate across docs and policy layers.
+    references:
+      - docs/spec/governance/cases/contract_assertions_metric.spec.md
+      - spec_runner/quality_metrics.py
+
+  - id: CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: specs.contract_assertions.metric_non_regression
+    norm: MUST
+    requirement: contract_assertions_metrics_must_not_regress_from_baseline
+    description: >
+      Governance must enforce non-regression for configured contract-assertions
+      metrics using checked-in baseline values.
+    rationale: Prevents drift in assertion-contract quality between releases.
+    risk_if_violated: Contract quality may degrade while core tests remain green.
+    references:
+      - docs/spec/governance/cases/contract_assertions_non_regression.spec.md
+      - docs/spec/metrics/contract_assertions_baseline.json
+      - spec_runner/quality_metrics.py
+
   - id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
     introduced_in: v1
     scope: governance

@@ -39,6 +39,12 @@ from spec_runner.docs_quality import load_reference_manifest
 from spec_runner.docs_quality import manifest_chapter_paths
 from spec_runner.docs_quality import render_reference_coverage
 from spec_runner.docs_quality import render_reference_index
+from spec_runner.quality_metrics import compare_metric_non_regression
+from spec_runner.quality_metrics import contract_assertions_report_jsonable
+from spec_runner.quality_metrics import docs_operability_report_jsonable
+from spec_runner.quality_metrics import runner_independence_report_jsonable
+from spec_runner.quality_metrics import spec_lang_adoption_report_jsonable
+from spec_runner.quality_metrics import _load_baseline_json
 from spec_runner.spec_portability import spec_portability_report_jsonable
 
 
@@ -582,6 +588,260 @@ def _scan_spec_portability_non_regression(root: Path, *, harness: dict | None = 
                     f"segments.{segment}.{field}: regressed from baseline {base_val:.12g} to {cur_val:.12g}"
                 )
     return violations
+
+
+def _scan_spec_lang_adoption_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("spec_lang_adoption")
+    if not isinstance(cfg, dict):
+        return ["spec.spec_lang_adoption_metric requires harness.spec_lang_adoption mapping in governance spec"]
+    policy_evaluate = None
+    if "policy_evaluate" in cfg:
+        try:
+            policy_evaluate = _normalize_policy_evaluate(
+                cfg.get("policy_evaluate"), field="harness.spec_lang_adoption.policy_evaluate"
+            )
+        except ValueError as exc:
+            return [str(exc)]
+    payload = spec_lang_adoption_report_jsonable(root, config=cfg)
+    errs = payload.get("errors") or []
+    if not isinstance(errs, list):
+        return ["spec.spec_lang_adoption_metric report contains invalid errors shape"]
+    violations = [str(e) for e in errs if str(e).strip()]
+    if violations:
+        return violations
+    if policy_evaluate is not None:
+        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
+        if not ok:
+            return ["spec.spec_lang_adoption_metric policy_evaluate returned false"]
+    return []
+
+
+def _scan_spec_lang_adoption_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("spec_lang_adoption_non_regression")
+    if not isinstance(cfg, dict):
+        return [
+            "spec.spec_lang_adoption_non_regression requires harness.spec_lang_adoption_non_regression mapping in governance spec"
+        ]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.spec_lang_adoption_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("spec_lang_adoption")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.spec_lang_adoption_non_regression.spec_lang_adoption must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.spec_lang_adoption_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.spec_lang_adoption_non_regression.epsilon must be >= 0"]
+
+    current = spec_lang_adoption_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current spec-lang adoption report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get("summary_fields"),
+        segment_fields=cfg.get("segment_fields", {}),
+        epsilon=epsilon,
+    )
+
+
+def _scan_runner_independence_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("runner_independence")
+    if not isinstance(cfg, dict):
+        return ["runtime.runner_independence_metric requires harness.runner_independence mapping in governance spec"]
+    policy_evaluate = None
+    if "policy_evaluate" in cfg:
+        try:
+            policy_evaluate = _normalize_policy_evaluate(
+                cfg.get("policy_evaluate"), field="harness.runner_independence.policy_evaluate"
+            )
+        except ValueError as exc:
+            return [str(exc)]
+    payload = runner_independence_report_jsonable(root, config=cfg)
+    errs = payload.get("errors") or []
+    if not isinstance(errs, list):
+        return ["runtime.runner_independence_metric report contains invalid errors shape"]
+    violations = [str(e) for e in errs if str(e).strip()]
+    if violations:
+        return violations
+    if policy_evaluate is not None:
+        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
+        if not ok:
+            return ["runtime.runner_independence_metric policy_evaluate returned false"]
+    return []
+
+
+def _scan_runner_independence_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("runner_independence_non_regression")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.runner_independence_non_regression requires harness.runner_independence_non_regression mapping in governance spec"
+        ]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.runner_independence_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("runner_independence")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.runner_independence_non_regression.runner_independence must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.runner_independence_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.runner_independence_non_regression.epsilon must be >= 0"]
+
+    current = runner_independence_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current runner independence report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get("summary_fields"),
+        segment_fields=cfg.get("segment_fields", {}),
+        epsilon=epsilon,
+    )
+
+
+def _scan_docs_operability_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("docs_operability")
+    if not isinstance(cfg, dict):
+        return ["docs.operability_metric requires harness.docs_operability mapping in governance spec"]
+    policy_evaluate = None
+    if "policy_evaluate" in cfg:
+        try:
+            policy_evaluate = _normalize_policy_evaluate(
+                cfg.get("policy_evaluate"), field="harness.docs_operability.policy_evaluate"
+            )
+        except ValueError as exc:
+            return [str(exc)]
+    payload = docs_operability_report_jsonable(root, config=cfg)
+    errs = payload.get("errors") or []
+    if not isinstance(errs, list):
+        return ["docs.operability_metric report contains invalid errors shape"]
+    violations = [str(e) for e in errs if str(e).strip()]
+    if violations:
+        return violations
+    if policy_evaluate is not None:
+        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
+        if not ok:
+            return ["docs.operability_metric policy_evaluate returned false"]
+    return []
+
+
+def _scan_docs_operability_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("docs_operability_non_regression")
+    if not isinstance(cfg, dict):
+        return ["docs.operability_non_regression requires harness.docs_operability_non_regression mapping in governance spec"]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.docs_operability_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("docs_operability")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.docs_operability_non_regression.docs_operability must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.docs_operability_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.docs_operability_non_regression.epsilon must be >= 0"]
+
+    current = docs_operability_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current docs operability report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get("summary_fields"),
+        segment_fields=cfg.get("segment_fields", {}),
+        epsilon=epsilon,
+    )
+
+
+def _scan_contract_assertions_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("contract_assertions")
+    if not isinstance(cfg, dict):
+        return ["spec.contract_assertions_metric requires harness.contract_assertions mapping in governance spec"]
+    policy_evaluate = None
+    if "policy_evaluate" in cfg:
+        try:
+            policy_evaluate = _normalize_policy_evaluate(
+                cfg.get("policy_evaluate"), field="harness.contract_assertions.policy_evaluate"
+            )
+        except ValueError as exc:
+            return [str(exc)]
+    payload = contract_assertions_report_jsonable(root, config=cfg)
+    errs = payload.get("errors") or []
+    if not isinstance(errs, list):
+        return ["spec.contract_assertions_metric report contains invalid errors shape"]
+    violations = [str(e) for e in errs if str(e).strip()]
+    if violations:
+        return violations
+    if policy_evaluate is not None:
+        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
+        if not ok:
+            return ["spec.contract_assertions_metric policy_evaluate returned false"]
+    return []
+
+
+def _scan_contract_assertions_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("contract_assertions_non_regression")
+    if not isinstance(cfg, dict):
+        return [
+            "spec.contract_assertions_non_regression requires harness.contract_assertions_non_regression mapping in governance spec"
+        ]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.contract_assertions_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("contract_assertions")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.contract_assertions_non_regression.contract_assertions must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.contract_assertions_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.contract_assertions_non_regression.epsilon must be >= 0"]
+
+    current = contract_assertions_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current contract assertions report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get("summary_fields"),
+        segment_fields=cfg.get("segment_fields", {}),
+        epsilon=epsilon,
+    )
 
 
 def _is_spec_opening_fence(line: str) -> tuple[str, int] | None:
@@ -2368,6 +2628,14 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "contract.coverage_threshold": _scan_contract_coverage_threshold,
     "spec.portability_metric": _scan_spec_portability_metric,
     "spec.portability_non_regression": _scan_spec_portability_non_regression,
+    "spec.spec_lang_adoption_metric": _scan_spec_lang_adoption_metric,
+    "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,
+    "runtime.runner_independence_metric": _scan_runner_independence_metric,
+    "runtime.runner_independence_non_regression": _scan_runner_independence_non_regression,
+    "docs.operability_metric": _scan_docs_operability_metric,
+    "docs.operability_non_regression": _scan_docs_operability_non_regression,
+    "spec.contract_assertions_metric": _scan_contract_assertions_metric,
+    "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
     "assert.universal_core_sync": _scan_assert_universal_core_sync,

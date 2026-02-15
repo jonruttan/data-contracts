@@ -2892,3 +2892,272 @@ def test_script_enforces_assert_compiler_schema_matrix_sync(tmp_path):
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_spec_lang_adoption_metric(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "spec_lang_adoption_metric.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-SLA-001
+
+```yaml spec-test
+id: SRGOV-TEST-SLA-001
+type: governance.check
+check: spec.spec_lang_adoption_metric
+harness:
+  root: {tmp_path}
+  spec_lang_adoption:
+    roots: ["docs/spec/conformance/cases"]
+    segment_rules:
+      - prefix: docs/spec/conformance/cases
+        segment: conformance
+    policy_evaluate:
+      - [\"has_key\", [\"subject\"], \"summary\"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: spec.spec_lang_adoption_metric"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/a.spec.md",
+        """# A
+
+## C1
+
+```yaml spec-test
+id: C1
+type: text.file
+assert:
+  - target: text
+    must:
+      - evaluate:
+          - [\"contains\", [\"subject\"], \"x\"]
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+def test_script_enforces_spec_lang_adoption_non_regression(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "spec_lang_adoption_non_regression.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-SLA-002
+
+```yaml spec-test
+id: SRGOV-TEST-SLA-002
+type: governance.check
+check: spec.spec_lang_adoption_non_regression
+harness:
+  root: {tmp_path}
+  spec_lang_adoption_non_regression:
+    baseline_path: docs/spec/metrics/sla.json
+    summary_fields:
+      overall_logic_self_contained_ratio: non_decrease
+    spec_lang_adoption:
+      roots: ["docs/spec/conformance/cases"]
+      segment_rules:
+        - prefix: docs/spec/conformance/cases
+          segment: conformance
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: spec.spec_lang_adoption_non_regression"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/a.spec.md",
+        """# A
+
+## C1
+
+```yaml spec-test
+id: C1
+type: text.file
+assert:
+  - target: text
+    must:
+      - evaluate:
+          - [\"contains\", [\"subject\"], \"x\"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/metrics/sla.json",
+        '{"summary":{"overall_logic_self_contained_ratio":0.5},"segments":{}}\n',
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+    _write_text(
+        tmp_path / "docs/spec/metrics/sla.json",
+        '{"summary":{"overall_logic_self_contained_ratio":1.1},"segments":{}}\n',
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runner_independence_metric(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runner_independence_metric.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RI-001
+
+```yaml spec-test
+id: SRGOV-TEST-RI-001
+type: governance.check
+check: runtime.runner_independence_metric
+harness:
+  root: {tmp_path}
+  runner_independence:
+    segment_files:
+      gate_scripts: ["scripts/*.sh"]
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.runner_independence_metric"]
+```
+""",
+    )
+    _write_text(tmp_path / "scripts/a.sh", "SPEC_RUNNER_BIN=./scripts/runner_adapter.sh\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+def test_script_enforces_docs_operability_metric(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_operability_metric.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-DO-001
+
+```yaml spec-test
+id: SRGOV-TEST-DO-001
+type: governance.check
+check: docs.operability_metric
+harness:
+  root: {tmp_path}
+  docs_operability:
+    reference_manifest: docs/book/reference_manifest.yaml
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: docs.operability_metric"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/book/reference_manifest.yaml",
+        """version: 1
+chapters:
+  - path: docs/book/a.md
+    summary: A
+""",
+    )
+    _write_text(
+        tmp_path / "docs/book/a.md",
+        """# A
+
+```yaml doc-meta
+doc_id: DOC-REF-001
+title: A
+status: active
+audience: author
+owns_tokens: [\"tok.a\"]
+requires_tokens: [\"tok.a\"]
+commands:
+  - run: \"./scripts/ci_gate.sh\"
+    purpose: gate
+examples:
+  - id: EX-A-001
+    runnable: true
+sections_required: [\"Purpose\", \"Inputs\", \"Outputs\", \"Failure Modes\"]
+```
+
+## Purpose
+## Inputs
+## Outputs
+## Failure Modes
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+def test_script_enforces_contract_assertions_metric(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "contract_assertions_metric.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-CA-001
+
+```yaml spec-test
+id: SRGOV-TEST-CA-001
+type: governance.check
+check: spec.contract_assertions_metric
+harness:
+  root: {tmp_path}
+  contract_assertions:
+    paths:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/schema/schema_v1.md
+      - docs/book/03_assertions.md
+      - docs/spec/contract/03b_spec_lang_v1.md
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: spec.contract_assertions_metric"]
+```
+""",
+    )
+    _write_text(tmp_path / "docs/spec/contract/03_assertions.md", "must can cannot contain regex evaluate\n")
+    _write_text(tmp_path / "docs/spec/schema/schema_v1.md", "must can cannot contain regex evaluate\n")
+    _write_text(tmp_path / "docs/book/03_assertions.md", "must can cannot contain regex evaluate\n")
+    _write_text(tmp_path / "docs/spec/contract/03b_spec_lang_v1.md", "must can cannot contain regex evaluate\n")
+    _write_text(
+        tmp_path / "docs/spec/contract/policy_v1.yaml",
+        """version: 1
+title: t
+rules:
+  - id: X
+    scope: s
+    norm: MUST
+    applies_to: a
+    requirement: r
+    description: d
+    rationale: q
+    risk_if_violated: z
+    references: [docs/spec/contract/03_assertions.md]
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/traceability_v1.yaml",
+        """version: 1
+links:
+  - rule_id: X
+    policy_ref: docs/spec/contract/policy_v1.yaml#X
+    contract_refs: [docs/spec/contract/03_assertions.md]
+    schema_refs: [docs/spec/schema/schema_v1.md]
+    conformance_case_ids: []
+    unit_test_refs: []
+    implementation_refs: []
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0

@@ -68,3 +68,13 @@ how self-contained each spec case is versus how implementation-coupled it is.
   - metric generation and shape are enforced
   - configured self-containment baseline values are non-regressing (MUST)
   - absolute threshold gating remains deferred until baseline stabilization
+
+## Additional Ratchet Metrics
+
+Governance also tracks complementary ratchet-only metrics that must not regress
+from checked-in baselines:
+
+- spec-lang adoption (`spec.spec_lang_adoption_*`)
+- runner independence (`runtime.runner_independence_*`)
+- docs operability (`docs.operability_*`)
+- contract assertions quality (`spec.contract_assertions_*`)

@@ -505,6 +505,144 @@ links:
       - docs/spec/metrics/spec_portability_baseline.json
     notes: "Governance enforces monotonic non-regression for configured spec-lang self-containment metrics."
 
+  - rule_id: SPEC_LANG_ADOPTION_METRIC_REPORTED
+    policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_ADOPTION_METRIC_REPORTED
+    contract_refs:
+      - docs/spec/contract/07_portable_spec_authoring.md
+      - docs/spec/governance/cases/spec_lang_adoption_metric.spec.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_quality_metrics_unit.py
+      - tests/test_quality_metric_report_scripts_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/quality_metrics.py
+      - scripts/spec_lang_adoption_report.py
+      - scripts/run_governance_specs.py
+    notes: "Spec-lang adoption metric report and governance wiring are covered by unit/script tests."
+
+  - rule_id: SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
+    contract_refs:
+      - docs/spec/contract/07_portable_spec_authoring.md
+      - docs/spec/governance/cases/spec_lang_adoption_non_regression.spec.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_quality_metrics_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/quality_metrics.py
+      - scripts/run_governance_specs.py
+      - docs/spec/metrics/spec_lang_adoption_baseline.json
+    notes: "Governance enforces non-regression on configured spec-lang adoption metrics."
+
+  - rule_id: RUNNER_INDEPENDENCE_METRIC_REPORTED
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUNNER_INDEPENDENCE_METRIC_REPORTED
+    contract_refs:
+      - docs/spec/contract/12_runner_interface.md
+      - docs/spec/governance/cases/runner_independence_metric.spec.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_quality_metrics_unit.py
+      - tests/test_quality_metric_report_scripts_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/quality_metrics.py
+      - scripts/runner_independence_report.py
+      - scripts/run_governance_specs.py
+    notes: "Runner-independence metric report generation and governance wiring are covered by tests."
+
+  - rule_id: RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
+    contract_refs:
+      - docs/spec/contract/12_runner_interface.md
+      - docs/spec/governance/cases/runner_independence_non_regression.spec.md
+    schema_refs: []
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_quality_metrics_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/quality_metrics.py
+      - scripts/run_governance_specs.py
+      - docs/spec/metrics/runner_independence_baseline.json
+    notes: "Governance enforces non-regression on configured runner-independence metrics."
+
+  - rule_id: DOCS_OPERABILITY_METRIC_REPORTED
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_OPERABILITY_METRIC_REPORTED
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/governance/cases/docs_operability_metric.spec.md
+    schema_refs:
+      - docs/spec/schema/docs_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_quality_metrics_unit.py
+      - tests/test_quality_metric_report_scripts_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/quality_metrics.py
+      - scripts/docs_operability_report.py
+      - scripts/run_governance_specs.py
+    notes: "Docs-operability metric report generation and governance wiring are covered by tests."
+
+  - rule_id: DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
+    contract_refs:
+      - docs/spec/contract/10_docs_quality.md
+      - docs/spec/governance/cases/docs_operability_non_regression.spec.md
+    schema_refs:
+      - docs/spec/schema/docs_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_quality_metrics_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/quality_metrics.py
+      - scripts/run_governance_specs.py
+      - docs/spec/metrics/docs_operability_baseline.json
+    notes: "Governance enforces non-regression on configured docs-operability metrics."
+
+  - rule_id: CONTRACT_ASSERTIONS_METRIC_REPORTED
+    policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_METRIC_REPORTED
+    contract_refs:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/governance/cases/contract_assertions_metric.spec.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_quality_metrics_unit.py
+      - tests/test_quality_metric_report_scripts_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/quality_metrics.py
+      - scripts/contract_assertions_report.py
+      - scripts/run_governance_specs.py
+    notes: "Contract-assertions metric report generation and governance wiring are covered by tests."
+
+  - rule_id: CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
+    contract_refs:
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/governance/cases/contract_assertions_non_regression.spec.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_quality_metrics_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/quality_metrics.py
+      - scripts/run_governance_specs.py
+      - docs/spec/metrics/contract_assertions_baseline.json
+    notes: "Governance enforces non-regression on configured contract-assertions metrics."
+
   - rule_id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
     policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_PORTABILITY_THRESHOLD_ENFORCED
     contract_refs:

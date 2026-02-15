@@ -1,0 +1,138 @@
+{
+  "config": {
+    "reference_manifest": "docs/book/reference_manifest.yaml",
+    "segment_rules": [
+      {
+        "prefix": "docs/book",
+        "segment": "book"
+      },
+      {
+        "prefix": "docs/spec/contract",
+        "segment": "contract"
+      },
+      {
+        "prefix": "docs/spec/schema",
+        "segment": "schema"
+      },
+      {
+        "prefix": "docs/spec/impl",
+        "segment": "impl_docs"
+      }
+    ]
+  },
+  "docs": [
+    {
+      "command_doc_validation_ratio": 1.0,
+      "docs_operability_ratio": 1.0,
+      "opt_out_density_ratio": 0.0,
+      "path": "docs/book/00_first_10_minutes.md",
+      "required_sections_compliance_ratio": 1.0,
+      "runnable_example_coverage_ratio": 1.0,
+      "segment": "book",
+      "token_sync_compliance_ratio": 1.0
+    },
+    {
+      "command_doc_validation_ratio": 1.0,
+      "docs_operability_ratio": 1.0,
+      "opt_out_density_ratio": 0.0,
+      "path": "docs/book/01_quickstart.md",
+      "required_sections_compliance_ratio": 1.0,
+      "runnable_example_coverage_ratio": 1.0,
+      "segment": "book",
+      "token_sync_compliance_ratio": 1.0
+    },
+    {
+      "command_doc_validation_ratio": 1.0,
+      "docs_operability_ratio": 1.0,
+      "opt_out_density_ratio": 0.0,
+      "path": "docs/book/02_core_model.md",
+      "required_sections_compliance_ratio": 1.0,
+      "runnable_example_coverage_ratio": 1.0,
+      "segment": "book",
+      "token_sync_compliance_ratio": 1.0
+    },
+    {
+      "command_doc_validation_ratio": 1.0,
+      "docs_operability_ratio": 1.0,
+      "opt_out_density_ratio": 0.0,
+      "path": "docs/book/03_assertions.md",
+      "required_sections_compliance_ratio": 1.0,
+      "runnable_example_coverage_ratio": 1.0,
+      "segment": "book",
+      "token_sync_compliance_ratio": 1.0
+    },
+    {
+      "command_doc_validation_ratio": 1.0,
+      "docs_operability_ratio": 1.0,
+      "opt_out_density_ratio": 0.0,
+      "path": "docs/book/04_spec_lang_reference.md",
+      "required_sections_compliance_ratio": 1.0,
+      "runnable_example_coverage_ratio": 1.0,
+      "segment": "book",
+      "token_sync_compliance_ratio": 1.0
+    },
+    {
+      "command_doc_validation_ratio": 1.0,
+      "docs_operability_ratio": 1.0,
+      "opt_out_density_ratio": 0.0,
+      "path": "docs/book/appendix_cheatsheet.md",
+      "required_sections_compliance_ratio": 1.0,
+      "runnable_example_coverage_ratio": 1.0,
+      "segment": "book",
+      "token_sync_compliance_ratio": 1.0
+    }
+  ],
+  "errors": [],
+  "segments": {
+    "book": {
+      "case_count": 6,
+      "mean_command_doc_validation_ratio": 1.0,
+      "mean_docs_operability_ratio": 1.0,
+      "mean_opt_out_density_ratio": 0.0,
+      "mean_required_sections_compliance_ratio": 1.0,
+      "mean_runnable_example_coverage_ratio": 1.0,
+      "mean_token_sync_compliance_ratio": 1.0
+    },
+    "contract": {
+      "case_count": 0,
+      "mean_command_doc_validation_ratio": 0.0,
+      "mean_docs_operability_ratio": 0.0,
+      "mean_opt_out_density_ratio": 0.0,
+      "mean_required_sections_compliance_ratio": 0.0,
+      "mean_runnable_example_coverage_ratio": 0.0,
+      "mean_token_sync_compliance_ratio": 0.0
+    },
+    "impl_docs": {
+      "case_count": 0,
+      "mean_command_doc_validation_ratio": 0.0,
+      "mean_docs_operability_ratio": 0.0,
+      "mean_opt_out_density_ratio": 0.0,
+      "mean_required_sections_compliance_ratio": 0.0,
+      "mean_runnable_example_coverage_ratio": 0.0,
+      "mean_token_sync_compliance_ratio": 0.0
+    },
+    "other": {
+      "case_count": 0,
+      "mean_command_doc_validation_ratio": 0.0,
+      "mean_docs_operability_ratio": 0.0,
+      "mean_opt_out_density_ratio": 0.0,
+      "mean_required_sections_compliance_ratio": 0.0,
+      "mean_runnable_example_coverage_ratio": 0.0,
+      "mean_token_sync_compliance_ratio": 0.0
+    },
+    "schema": {
+      "case_count": 0,
+      "mean_command_doc_validation_ratio": 0.0,
+      "mean_docs_operability_ratio": 0.0,
+      "mean_opt_out_density_ratio": 0.0,
+      "mean_required_sections_compliance_ratio": 0.0,
+      "mean_runnable_example_coverage_ratio": 0.0,
+      "mean_token_sync_compliance_ratio": 0.0
+    }
+  },
+  "summary": {
+    "overall_docs_operability_ratio": 1.0,
+    "total_docs": 6
+  },
+  "version": 1
+}

@@ -42,6 +42,30 @@ case "${subcommand}" in
   spec-portability-md)
     exec "${PYTHON_BIN}" scripts/spec_portability_report.py --format md --out .artifacts/spec-portability-summary.md "$@"
     ;;
+  spec-lang-adoption-json)
+    exec "${PYTHON_BIN}" scripts/spec_lang_adoption_report.py --out .artifacts/spec-lang-adoption.json "$@"
+    ;;
+  spec-lang-adoption-md)
+    exec "${PYTHON_BIN}" scripts/spec_lang_adoption_report.py --format md --out .artifacts/spec-lang-adoption-summary.md "$@"
+    ;;
+  runner-independence-json)
+    exec "${PYTHON_BIN}" scripts/runner_independence_report.py --out .artifacts/runner-independence.json "$@"
+    ;;
+  runner-independence-md)
+    exec "${PYTHON_BIN}" scripts/runner_independence_report.py --format md --out .artifacts/runner-independence-summary.md "$@"
+    ;;
+  docs-operability-json)
+    exec "${PYTHON_BIN}" scripts/docs_operability_report.py --out .artifacts/docs-operability.json "$@"
+    ;;
+  docs-operability-md)
+    exec "${PYTHON_BIN}" scripts/docs_operability_report.py --format md --out .artifacts/docs-operability-summary.md "$@"
+    ;;
+  contract-assertions-json)
+    exec "${PYTHON_BIN}" scripts/contract_assertions_report.py --out .artifacts/contract-assertions.json "$@"
+    ;;
+  contract-assertions-md)
+    exec "${PYTHON_BIN}" scripts/contract_assertions_report.py --format md --out .artifacts/contract-assertions-summary.md "$@"
+    ;;
   docs-build)
     exec "${PYTHON_BIN}" scripts/docs_build_reference.py "$@"
     ;;
