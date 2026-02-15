@@ -59,12 +59,26 @@ def test_compile_leaf_ops_to_spec_lang_exprs() -> None:
     assert by_op["evaluate"].subject_key == "stdout"
 
 
-def test_compile_exists_enforces_stdout_path_target() -> None:
-    with pytest.raises(ValueError, match="unsupported op for cli.run.stdout: exists"):
-        compile_assert_tree(
-            [{"target": "stdout", "must": [{"exists": [True]}]}],
-            type_name="cli.run",
-        )
+def test_compile_exists_uses_target_derived_subject_key() -> None:
+    tree = compile_assert_tree(
+        [{"target": "stdout", "must": [{"exists": [True]}]}],
+        type_name="cli.run",
+    )
+    assert isinstance(tree, GroupNode)
+    leaf_group = tree.children[0]
+    assert isinstance(leaf_group, GroupNode)
+    leaf = leaf_group.children[0]
+    assert isinstance(leaf, PredicateLeaf)
+    assert leaf.subject_key == "stdout.exists"
+    assert leaf.expr == ["eq", ["subject"], True]
+
+
+def test_compile_evaluate_is_universal_across_targets() -> None:
+    tree = compile_assert_tree(
+        [{"target": "status", "must": [{"evaluate": [["contains", ["subject"], "200"]]}]}],
+        type_name="api.http",
+    )
+    assert isinstance(tree, GroupNode)
 
 
 def test_compile_json_type_enforces_supported_values() -> None:

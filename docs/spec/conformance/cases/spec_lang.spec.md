@@ -160,3 +160,22 @@ assert:
                            ["call", ["var", "loop"], ["sub", ["var", "n"], 1]]]]]],
              ["call", ["var", "loop"], 1000]]
 ```
+
+## SRCONF-EXPR-008
+
+```yaml spec-test
+id: SRCONF-EXPR-008
+title: sugar and evaluate forms are semantically equivalent
+purpose: Verifies authoring sugar assertions and explicit evaluate expressions produce equivalent pass behavior for the same target subject.
+type: text.file
+requires:
+  capabilities: [evaluate.spec_lang.v1]
+expect:
+  portable: {status: pass, category: null}
+assert:
+  - target: text
+    must:
+      - contain: ['version: 1']
+      - evaluate:
+          - ["contains", ["subject"], "version: 1"]
+```

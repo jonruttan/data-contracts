@@ -23,6 +23,10 @@ Assert text content from the containing spec document or an explicit relative pa
 
 - `text`
 
+Subject semantics:
+
+- `text`: UTF-8 text from containing spec document or resolved relative path.
+
 ## Type Rules
 
 - when `path` is omitted, target subject is the containing spec document

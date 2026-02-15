@@ -152,7 +152,7 @@ Assertion targets for `cli.run`:
 
 - `stdout`: text output from command stdout
 - `stderr`: text output from command stderr
-- `stdout_path`: path printed on first non-empty stdout line (supports `exists` only)
+- `stdout_path`: path printed on first non-empty stdout line
 - `stdout_path_text`: UTF-8 text from file at `stdout_path`
 
 ## Types
@@ -173,6 +173,31 @@ Published extension type contracts:
 
 - `api.http` (see `docs/spec/contract/types/api_http.md`)
 
+## Assertion Capability Model (Universal Core)
+
+Universal core operator:
+
+- `evaluate` applies to every target/type.
+
+Authoring sugar operators:
+
+- `contain`
+- `regex`
+- `json_type`
+- `exists`
+
+Normative meaning:
+
+- sugar operators have no independent runtime semantics
+- sugar operators MUST compile to equivalent spec-lang `evaluate` expressions
+- runtime pass/fail decisions MUST execute through compiled spec-lang
+  predicates
+- target/type compatibility is subject-driven:
+  - the adapter must provide the referenced target subject (or derived subject
+    key)
+  - compile/runtime errors are based on subject availability/shape, not
+    per-type operator allowlists
+
 ## Assertion Leaf Shape
 
 Assertion leaves are mappings with:
@@ -190,9 +215,8 @@ Leaf constraints:
 
 Supported operators:
 
-- text operators: `contain`, `regex`
-- expression operator: `evaluate` (spec-lang v1)
-- additional per-harness operators such as `json_type` and `exists`
+- universal core: `evaluate` (spec-lang v1)
+- compile-only authoring sugar: `contain`, `regex`, `json_type`, `exists`
 
 Operator constraints:
 
@@ -212,8 +236,9 @@ Operator constraints:
 - the portable profile is defined in
   `docs/spec/contract/03a_regex_portability_v1.md`
 - `json_type` supports `dict` and `list`
-- `exists` is currently supported only for `target: stdout_path`
-- `stdout_path.exists` only accepts `true` (or `null`) values
+- `exists` maps to a boolean subject key and currently requires a provided
+  existence subject (for example `stdout_path.exists`) with `true` (or `null`)
+  value semantics
 
 Group constraints:
 

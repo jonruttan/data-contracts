@@ -182,7 +182,7 @@ def test_cli_type_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
-def test_cli_type_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
+def test_cli_type_stdout_path_supports_text_sugar_ops(tmp_path, monkeypatch, capsys):
     note = tmp_path / "n.md"
     note.write_text("hello", encoding="utf-8")
 
@@ -199,14 +199,13 @@ def test_cli_type_stdout_path_unsupported_op(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout_path", "must": [{"contain": ["x"]}]}],
+            "assert": [{"target": "stdout_path", "must": [{"contain": [".md"]}]}],
         },
     )
 
     from spec_runner.harnesses.cli_run import run
 
-    with pytest.raises(ValueError, match="unsupported op for stdout_path"):
-        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
 def test_cli_type_unsupported_op_raises(tmp_path, monkeypatch, capsys):

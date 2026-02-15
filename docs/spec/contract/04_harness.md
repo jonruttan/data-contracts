@@ -36,6 +36,15 @@ For `text.file`:
 
 - `text`
 
+## Subject-Driven Assertion Contract
+
+- Harnesses/adapters own target subject extraction and normalization.
+- Assertion applicability is determined by subject availability/shape.
+- External operators (`contain`, `regex`, `json_type`, `exists`) are authoring
+  sugar that compile to `evaluate`-equivalent predicates.
+- Runtime pass/fail decisions MUST execute compiled predicates through the
+  spec-lang evaluator.
+
 ## Spec-Lang Reuse
 
 - `harness.spec_lang.library_paths` MAY provide ordered library docs/files

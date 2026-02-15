@@ -2525,3 +2525,130 @@ assert:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_assert_universal_core_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "assert_universal_core.spec.md",
+        _case_for_check("SRGOV-TEST-ASSERT-001", "assert.universal_core_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/schema/schema_v1.md",
+        "universal core\nevaluate\nauthoring sugar\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/03_assertions.md",
+        "universal core\nevaluate\nauthoring sugar\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/09_internal_representation.md",
+        "universal core\nevaluate\nauthoring sugar\n",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/spec/contract/09_internal_representation.md", "evaluate only\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_assert_sugar_compile_only_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "assert_sugar_compile.spec.md",
+        _case_for_check("SRGOV-TEST-ASSERT-002", "assert.sugar_compile_only_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "spec_runner/compiler.py",
+        'supported = {"contain", "regex", "json_type", "exists", "evaluate"}\n'
+        'elif op == "contain"\n'
+        'elif op == "regex"\n'
+        'elif op == "json_type"\n'
+        'elif op == "exists"\n'
+        'elif op == "evaluate"\n',
+    )
+    _write_text(tmp_path / "spec_runner/assertions.py", "def x():\n    eval_predicate(['eq', 1, 1], subject='x')\n")
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "spec_runner/compiler.py",
+        'if type_name == "cli.run":\n    allowed = {"contain"}\n',
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_assert_type_contract_subject_semantics_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "assert_type_subject_semantics.spec.md",
+        _case_for_check(
+            "SRGOV-TEST-ASSERT-003",
+            "assert.type_contract_subject_semantics_sync",
+            tmp_path,
+        ),
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/04_harness.md",
+        "subject availability shape\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/types/text_file.md",
+        "subject semantics\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/types/cli_run.md",
+        "target semantics\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/types/api_http.md",
+        "target semantics\n",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/contract/types/cli_run.md",
+        "target semantics\nstdout_path only supports `exists`\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_assert_compiler_schema_matrix_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "assert_compiler_schema_matrix.spec.md",
+        _case_for_check("SRGOV-TEST-ASSERT-004", "assert.compiler_schema_matrix_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/schema/schema_v1.md",
+        "Assertion Capability Model (Universal Core)\nuniversal core operator\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/03_assertions.md",
+        "evaluate is the only universal assertion operator contract\n",
+    )
+    _write_text(
+        tmp_path / "spec_runner/compiler.py",
+        'supported = {"contain", "regex", "json_type", "exists", "evaluate"}\n',
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "spec_runner/compiler.py",
+        'if type_name == "cli.run":\n    supported = {"contain", "evaluate"}\n',
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

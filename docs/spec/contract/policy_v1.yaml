@@ -894,6 +894,74 @@ rules:
       - docs/spec/contract/03_assertions.md
       - docs/spec/contract/09_internal_representation.md
 
+  - id: ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY
+    introduced_in: v1
+    scope: contract
+    applies_to: assert.tree.operator_model
+    norm: MUST
+    requirement: evaluate_is_universal_assertion_core_operator
+    description: >
+      Assertion contracts and schema must define `evaluate` as the universal
+      assertion core operator across all targets/types.
+    rationale: Centralizes semantics in one portable decision language.
+    risk_if_violated: Per-type/operator drift reintroduces semantic fragmentation.
+    references:
+      - docs/spec/schema/schema_v1.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/09_internal_representation.md
+
+  - id: ASSERT_SUGAR_OPERATORS_COMPILE_ONLY
+    introduced_in: v1
+    scope: implementation
+    applies_to: assert.tree.operator_sugar
+    norm: MUST
+    requirement: non_evaluate_assert_ops_compile_to_spec_lang_only
+    description: >
+      Non-`evaluate` assertion operators are authoring sugar only and must not
+      carry independent runtime semantics.
+    rationale: Keeps one execution semantics path while preserving author ergonomics.
+    risk_if_violated: Hidden semantic divergence between sugar and evaluate forms.
+    references:
+      - docs/spec/schema/schema_v1.md
+      - docs/spec/contract/03_assertions.md
+      - spec_runner/compiler.py
+      - spec_runner/assertions.py
+
+  - id: ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN
+    introduced_in: v1
+    scope: contract
+    applies_to: assert.tree.target_applicability
+    norm: MUST
+    requirement: target_type_applicability_defined_by_subject_shape_availability
+    description: >
+      Target/type compatibility must be expressed as subject
+      availability/shape responsibilities in harness/type contracts rather than
+      per-type operator allowlists.
+    rationale: Separates adapter subject contracts from assertion language semantics.
+    risk_if_violated: Contracts become inconsistent with runtime behavior and hard to port.
+    references:
+      - docs/spec/contract/04_harness.md
+      - docs/spec/contract/types/text_file.md
+      - docs/spec/contract/types/cli_run.md
+      - docs/spec/contract/types/api_http.md
+
+  - id: ASSERT_COMPILER_SCHEMA_MATRIX_SYNC
+    introduced_in: v1
+    scope: governance
+    applies_to: assert.tree.compiler_contract_sync
+    norm: MUST
+    requirement: compiler_operator_handling_matches_schema_contract_universal_model
+    description: >
+      Governance must fail if compiler behavior, schema language, and assertion
+      contracts drift on universal evaluate core and sugar compile mappings.
+    rationale: Makes schema/contract the enforcement source of truth.
+    risk_if_violated: Runtime can silently diverge from documented behavior model.
+    references:
+      - docs/spec/schema/schema_v1.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/09_internal_representation.md
+      - spec_runner/compiler.py
+
   - id: GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
     introduced_in: v1
     scope: governance

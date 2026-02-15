@@ -26,15 +26,13 @@
 
 Canonical operators:
 
-- `contain`
-- `regex`
-- `json_type`
-- `exists`
-- `evaluate`
+- universal core: `evaluate`
+- compile-only sugar: `contain`, `regex`, `json_type`, `exists`
 
 Operator values MUST be lists.
 
-`evaluate` values are spec-lang v1 expressions encoded as YAML list S-expressions.
+`evaluate` values are spec-lang v1 expressions encoded as YAML list
+S-expressions.
 Normative contract:
 
 - `docs/spec/contract/03b_spec_lang_v1.md`
@@ -54,11 +52,14 @@ Internal execution model:
 
 ## Spec-Lang-Primary Runtime Contract
 
+- `evaluate` is the only universal assertion operator contract.
 - `contain` / `regex` / `exists` / `json_type` remain valid leaf operators in
-  schema v1.
-- These operators are external authoring sugar only.
+  schema v1 as external authoring sugar only.
+- Sugar operators MUST compile to spec-lang-equivalent predicate expressions.
 - Runtime decision semantics MUST execute as compiled spec-lang expressions.
 - Implementations MUST NOT bypass the compiled spec-lang assertion engine.
+- Target/type applicability is defined by subject availability and subject
+  shape, not by per-type operator allowlists.
 
 ## Portable Regex Subset
 

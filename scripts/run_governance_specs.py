@@ -63,6 +63,11 @@ _CONFORMANCE_CASE_ID_PATTERN = r"\bSRCONF-[A-Z0-9-]+\b"
 _CONFORMANCE_MAX_BLOCK_LINES = 50
 _REGEX_PROFILE_DOC = "docs/spec/contract/03a_regex_portability_v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
+_ASSERT_UNIVERSAL_DOC_FILES = (
+    "docs/spec/schema/schema_v1.md",
+    "docs/spec/contract/03_assertions.md",
+    "docs/spec/contract/09_internal_representation.md",
+)
 _CURRENT_SPEC_ONLY_DOCS = (
     "README.md",
     "docs/book/02_core_model.md",
@@ -614,6 +619,124 @@ def _scan_regex_doc_sync(root: Path) -> list[str]:
             violations.append(f"docs/spec/contract/03_assertions.md: missing operator token {tok}")
         if tok not in schema_text:
             violations.append(f"docs/spec/schema/schema_v1.md: missing operator token {tok}")
+    return violations
+
+
+def _scan_assert_universal_core_sync(root: Path) -> list[str]:
+    violations: list[str] = []
+    required_tokens = (
+        "universal core",
+        "evaluate",
+        "authoring sugar",
+    )
+    for rel in _ASSERT_UNIVERSAL_DOC_FILES:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing assertion universal-core doc")
+            continue
+        lower = p.read_text(encoding="utf-8").lower()
+        for tok in required_tokens:
+            if tok not in lower:
+                violations.append(f"{rel}:1: missing universal-core token {tok!r}")
+    return violations
+
+
+def _scan_assert_sugar_compile_only_sync(root: Path) -> list[str]:
+    violations: list[str] = []
+    compiler_path = root / "spec_runner/compiler.py"
+    assertions_path = root / "spec_runner/assertions.py"
+    if not compiler_path.exists():
+        violations.append("spec_runner/compiler.py:1: missing compiler implementation")
+        return violations
+    if not assertions_path.exists():
+        violations.append("spec_runner/assertions.py:1: missing assertions implementation")
+        return violations
+
+    compiler_raw = compiler_path.read_text(encoding="utf-8")
+    assertions_raw = assertions_path.read_text(encoding="utf-8")
+
+    compiler_required = (
+        'supported = {"contain", "regex", "json_type", "exists", "evaluate"}',
+        'op == "evaluate"',
+        'op == "contain"',
+        'op == "regex"',
+        'op == "json_type"',
+        'op == "exists"',
+    )
+    for tok in compiler_required:
+        if tok not in compiler_raw:
+            violations.append(
+                f"spec_runner/compiler.py:1: missing compile-only sugar mapping token {tok}"
+            )
+
+    compiler_forbidden = (
+        "if type_name == ",
+        "allowed = {",
+    )
+    for tok in compiler_forbidden:
+        if tok in compiler_raw:
+            violations.append(
+                f"spec_runner/compiler.py:1: forbidden per-type operator allowlist token {tok}"
+            )
+
+    if "eval_predicate(" not in assertions_raw:
+        violations.append(
+            "spec_runner/assertions.py:1: missing spec-lang predicate evaluation call"
+        )
+    return violations
+
+
+def _scan_assert_type_contract_subject_semantics_sync(root: Path) -> list[str]:
+    violations: list[str] = []
+    files = (
+        "docs/spec/contract/04_harness.md",
+        "docs/spec/contract/types/text_file.md",
+        "docs/spec/contract/types/cli_run.md",
+        "docs/spec/contract/types/api_http.md",
+    )
+    required_tokens = {
+        "docs/spec/contract/04_harness.md": ("subject", "availability", "shape"),
+        "docs/spec/contract/types/text_file.md": ("subject semantics",),
+        "docs/spec/contract/types/cli_run.md": ("target semantics",),
+        "docs/spec/contract/types/api_http.md": ("target semantics",),
+    }
+    forbidden_tokens = {
+        "docs/spec/contract/types/cli_run.md": ("only supports `exists`",),
+    }
+    for rel in files:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing type/harness contract doc")
+            continue
+        lower = p.read_text(encoding="utf-8").lower()
+        for tok in required_tokens.get(rel, ()):
+            if tok not in lower:
+                violations.append(f"{rel}:1: missing required subject-semantics token {tok!r}")
+        for tok in forbidden_tokens.get(rel, ()):
+            if tok in lower:
+                violations.append(f"{rel}:1: forbidden per-operator allowlist token {tok!r}")
+    return violations
+
+
+def _scan_assert_compiler_schema_matrix_sync(root: Path) -> list[str]:
+    violations: list[str] = []
+    compiler = root / "spec_runner/compiler.py"
+    schema = root / "docs/spec/schema/schema_v1.md"
+    assertions_doc = root / "docs/spec/contract/03_assertions.md"
+    if not compiler.exists() or not schema.exists() or not assertions_doc.exists():
+        return ["assert.compiler_schema_matrix_sync requires compiler + schema + assertion contract docs"]
+    compiler_raw = compiler.read_text(encoding="utf-8")
+    schema_lower = schema.read_text(encoding="utf-8").lower()
+    assertions_lower = assertions_doc.read_text(encoding="utf-8").lower()
+
+    if "universal core operator" not in schema_lower:
+        violations.append("docs/spec/schema/schema_v1.md:1: missing universal core operator section")
+    if "only universal assertion operator contract" not in assertions_lower:
+        violations.append("docs/spec/contract/03_assertions.md:1: missing universal evaluate-only contract text")
+    if 'supported = {"contain", "regex", "json_type", "exists", "evaluate"}' not in compiler_raw:
+        violations.append("spec_runner/compiler.py:1: compiler operator matrix does not match universal-core contract")
+    if "if type_name == " in compiler_raw:
+        violations.append("spec_runner/compiler.py:1: forbidden per-type operator matrix branching present")
     return violations
 
 
@@ -1996,6 +2119,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "spec.portability_metric": _scan_spec_portability_metric,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
+    "assert.universal_core_sync": _scan_assert_universal_core_sync,
+    "assert.sugar_compile_only_sync": _scan_assert_sugar_compile_only_sync,
+    "assert.type_contract_subject_semantics_sync": _scan_assert_type_contract_subject_semantics_sync,
+    "assert.compiler_schema_matrix_sync": _scan_assert_compiler_schema_matrix_sync,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
     "docs.current_spec_policy_key_names": _scan_current_spec_policy_key_names,
     "conformance.type_contract_docs": _scan_conformance_type_contract_docs,

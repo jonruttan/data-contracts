@@ -19,6 +19,7 @@ harness:
       - docs/spec/conformance/cases/cli_run_entrypoint.spec.md
       - docs/spec/conformance/cases/failure_context.spec.md
       - docs/spec/conformance/cases/php_text_file_subset.spec.md
+      - docs/spec/conformance/cases/spec_lang.spec.md
     policy_evaluate:
       - ["eq",
          ["count",

@@ -17,24 +17,8 @@ def _require_group_key(node: dict[str, Any]) -> str | None:
 
 
 def _compile_leaf_op(*, op: str, value: Any, target: str, type_name: str, assert_path: str) -> PredicateLeaf:
-    if type_name == "text.file":
-        allowed = {"contain", "regex", "evaluate"}
-    elif type_name == "cli.run":
-        if target == "stdout_path":
-            allowed = {"exists"}
-        else:
-            allowed = {"contain", "regex", "json_type", "evaluate"}
-    elif type_name == "api.http":
-        if target in {"body_text", "body_json"}:
-            allowed = {"contain", "regex", "json_type", "evaluate"}
-        else:
-            allowed = {"contain", "regex", "evaluate"}
-    else:
-        allowed = {"contain", "regex", "json_type", "exists", "evaluate"}
-
-    if op not in allowed:
-        if type_name == "cli.run" and target == "stdout_path":
-            raise ValueError(f"unsupported op for stdout_path: {op}")
+    supported = {"contain", "regex", "json_type", "exists", "evaluate"}
+    if op not in supported:
         raise ValueError(f"unsupported op for {type_name}.{target}: {op}")
 
     if op == "contain":
@@ -48,17 +32,15 @@ def _compile_leaf_op(*, op: str, value: Any, target: str, type_name: str, assert
         if want not in {"dict", "list"}:
             raise ValueError(f"unsupported json_type: {value}")
         subject_expr: Any = ["subject"]
-        if target in {"stdout", "stderr", "stdout_path_text", "body_text"}:
+        if target not in {"body_json"}:
             subject_expr = ["json_parse", ["subject"]]
         expr = ["json_type", subject_expr, want]
         subject_key = target
     elif op == "exists":
-        if target != "stdout_path":
-            raise ValueError(f"unsupported op for target '{target}': exists")
         if value not in (None, True):
-            raise ValueError("stdout_path.exists only supports value: true (or null)")
-        # Keep spec-lang pure: adapter computes existence signal.
-        subject_key = "stdout_path.exists"
+            raise ValueError("exists only supports value: true (or null)")
+        # Keep spec-lang pure: adapter computes existence signal using target-derived key.
+        subject_key = f"{target}.exists"
         expr = ["eq", ["subject"], True]
     elif op == "evaluate":
         if not isinstance(value, list):

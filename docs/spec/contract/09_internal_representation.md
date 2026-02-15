@@ -35,14 +35,15 @@ Internal assertion node forms:
 
 ## External -> Internal Compile Rules
 
+- universal core: `evaluate` (pass-through spec-lang expression)
+- authoring sugar operators: `contain`, `regex`, `json_type`, `exists`
 - `contain` -> `["contains", ["subject"], <value>]`
 - `regex` -> `["regex_match", ["subject"], <pattern>]`
 - `json_type` -> normalized to `["json_type", <subject_expr>, <kind>]`
   - where `<subject_expr>` is either `["subject"]` (already-JSON targets) or
     `["json_parse", ["subject"]]` (text targets)
-- `exists` on `stdout_path` -> `subject_key: "stdout_path.exists"` with
-  expression `["eq", ["subject"], true]`
-- `evaluate` -> pass-through spec-lang expression
+- `exists` -> `subject_key: "<target>.exists"` style boolean subject mapping
+  where provided by adapter, with expression `["eq", ["subject"], true]`
 
 List-valued leaf ops compile to conjunction semantics (same as current v1
 external behavior).
@@ -80,3 +81,5 @@ MUST:
   bypass the spec-lang evaluator.
 - spec-lang evaluator MUST remain pure; side-effectful probes are adapter
   responsibilities that produce normalized subject values.
+- operator applicability MUST be governed by subject availability/shape
+  contracts, not hidden per-type runtime allowlists.

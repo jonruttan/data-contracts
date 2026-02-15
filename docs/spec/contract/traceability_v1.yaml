@@ -899,6 +899,81 @@ links:
       - spec_runner/harnesses/cli_run.py
     notes: "Runtime assertions compile external operators to spec-lang and evaluate through one engine."
 
+  - rule_id: ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY
+    policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY
+    contract_refs:
+      - docs/spec/schema/schema_v1.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/09_internal_representation.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids:
+      - SRCONF-EXPR-008
+    unit_test_refs:
+      - tests/test_compiler_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/compiler.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/assert_universal_core_sync.spec.md
+    notes: "Universal assertion core is evaluate; sugar operators compile into evaluate-equivalent expressions."
+
+  - rule_id: ASSERT_SUGAR_OPERATORS_COMPILE_ONLY
+    policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_SUGAR_OPERATORS_COMPILE_ONLY
+    contract_refs:
+      - docs/spec/schema/schema_v1.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/09_internal_representation.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids:
+      - SRCONF-EXPR-008
+    unit_test_refs:
+      - tests/test_compiler_unit.py
+      - tests/test_assertions_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/compiler.py
+      - spec_runner/assertions.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/assert_sugar_compile_only_sync.spec.md
+    notes: "Sugar ops remain authoring convenience only; runtime uses compiled predicates."
+
+  - rule_id: ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN
+    policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN
+    contract_refs:
+      - docs/spec/contract/04_harness.md
+      - docs/spec/contract/types/text_file.md
+      - docs/spec/contract/types/cli_run.md
+      - docs/spec/contract/types/api_http.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/assert_type_contract_subject_semantics_sync.spec.md
+    notes: "Type contracts define subject semantics and availability responsibilities."
+
+  - rule_id: ASSERT_COMPILER_SCHEMA_MATRIX_SYNC
+    policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_COMPILER_SCHEMA_MATRIX_SYNC
+    contract_refs:
+      - docs/spec/schema/schema_v1.md
+      - docs/spec/contract/03_assertions.md
+      - docs/spec/contract/09_internal_representation.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_compiler_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - spec_runner/compiler.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/assert_compiler_schema_matrix_sync.spec.md
+    notes: "Governance enforces compiler/schema/contract alignment for universal evaluate model."
+
   - rule_id: GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
     policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
     contract_refs:

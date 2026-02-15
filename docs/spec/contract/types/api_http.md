@@ -37,6 +37,11 @@ Define portable API endpoint behavior checks without coupling specs to one runti
 - `request.method` SHOULD be uppercase HTTP token form (for example `GET`, `POST`).
 - `request.url` MAY be a URL or a spec-relative path; relative paths MUST remain
   inside contract root.
+- target semantics:
+  - `status`: HTTP status string
+  - `headers`: deterministic header text view
+  - `body_text`: response body text
+  - `body_json`: parsed JSON value from body text
 
 ## Conformance Notes
 

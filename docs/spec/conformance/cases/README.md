@@ -46,6 +46,7 @@ Case fixtures that portable runner implementations execute.
 - `SRCONF-EXPR-005`
 - `SRCONF-EXPR-006`
 - `SRCONF-EXPR-007`
+- `SRCONF-EXPR-008`
 - `SRCONF-PHP-TEXT-001`
 - `SRCONF-PHP-TEXT-002`
 - `SRCONF-PHP-TEXT-003`

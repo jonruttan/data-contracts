@@ -31,8 +31,12 @@ Run a command entrypoint and assert against process outputs.
 ## Type Rules
 
 - runner setup keys MUST live under `harness`
-- `stdout_path` target only supports `exists`
 - `stdout_path_text` resolves from first non-empty stdout line path
+- target semantics:
+  - `stdout`/`stderr`: text subjects
+  - `stdout_path`: first non-empty stdout line as path text subject
+  - `stdout_path.exists`: adapter-provided boolean derived subject for
+    existence checks
 
 ## Failure Category Guidance
 
