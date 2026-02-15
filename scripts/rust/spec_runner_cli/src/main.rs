@@ -33,9 +33,31 @@ fn run_cmd(program: &str, args: &[String], root: &Path) -> i32 {
 }
 
 fn with_forwarded(base: Vec<String>, forwarded: &[String]) -> Vec<String> {
-    base.into_iter()
-        .chain(forwarded.iter().cloned())
-        .collect::<Vec<_>>()
+    base.into_iter().chain(forwarded.iter().cloned()).collect::<Vec<_>>()
+}
+
+fn tool_path(root: &Path, name: &str) -> String {
+    let local = root.join(".venv").join("bin").join(name);
+    if local.exists() {
+        return local.to_string_lossy().to_string();
+    }
+    name.to_string()
+}
+
+fn python_path(root: &Path) -> String {
+    let local = root.join(".venv").join("bin").join("python");
+    if local.exists() {
+        return local.to_string_lossy().to_string();
+    }
+    let parent = root.join("..").join("..").join(".venv").join("bin").join("python");
+    if parent.exists() {
+        return parent.to_string_lossy().to_string();
+    }
+    "python".to_string()
+}
+
+fn script(root: &Path, file: &str) -> String {
+    root.join("scripts").join(file).to_string_lossy().to_string()
 }
 
 fn main() {
@@ -56,45 +78,300 @@ fn main() {
         }
     };
 
-    let shell_adapter = root.join("scripts/runner_adapter.sh");
-    let shell_adapter_str = shell_adapter.to_string_lossy().to_string();
+    let py = python_path(&root);
+    let ruff = tool_path(&root, "ruff");
+    let mypy = tool_path(&root, "mypy");
+    let pytest = tool_path(&root, "pytest");
 
     let code = match subcommand.as_str() {
-        "governance"
-        | "style-check"
-        | "normalize-check"
-        | "normalize-fix"
-        | "lint"
-        | "typecheck"
-        | "compilecheck"
-        | "conformance-purpose-json"
-        | "conformance-purpose-md"
-        | "spec-portability-json"
-        | "spec-portability-md"
-        | "spec-lang-adoption-json"
-        | "spec-lang-adoption-md"
-        | "runner-independence-json"
-        | "runner-independence-md"
-        | "python-dependency-json"
-        | "python-dependency-md"
-        | "docs-operability-json"
-        | "docs-operability-md"
-        | "contract-assertions-json"
-        | "contract-assertions-md"
-        | "objective-scorecard-json"
-        | "objective-scorecard-md"
-        | "ci-gate-summary"
-        | "docs-build"
-        | "docs-build-check"
-        | "docs-lint"
-        | "docs-graph"
-        | "conformance-parity"
-        | "test-core"
-        | "test-full" => run_cmd(
-            &shell_adapter_str,
-            &with_forwarded(vec![subcommand.clone()], &forwarded),
+        "governance" => run_cmd(&py, &with_forwarded(vec![script(&root, "run_governance_specs.py")], &forwarded), &root),
+        "style-check" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "evaluate_style.py"),
+                    "--check".to_string(),
+                    "docs/spec".to_string(),
+                ],
+                &forwarded,
+            ),
             &root,
         ),
+        "normalize-check" => run_cmd(
+            &py,
+            &with_forwarded(vec![script(&root, "normalize_repo.py"), "--check".to_string()], &forwarded),
+            &root,
+        ),
+        "normalize-fix" => run_cmd(
+            &py,
+            &with_forwarded(vec![script(&root, "normalize_repo.py"), "--write".to_string()], &forwarded),
+            &root,
+        ),
+        "lint" => run_cmd(&ruff, &with_forwarded(vec!["check".to_string(), ".".to_string()], &forwarded), &root),
+        "typecheck" => run_cmd(&mypy, &with_forwarded(vec!["spec_runner".to_string()], &forwarded), &root),
+        "compilecheck" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    "-m".to_string(),
+                    "compileall".to_string(),
+                    "-q".to_string(),
+                    "spec_runner".to_string(),
+                    "scripts".to_string(),
+                    "tests".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "conformance-purpose-json" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "conformance_purpose_report.py"),
+                    "--out".to_string(),
+                    ".artifacts/conformance-purpose.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "conformance-purpose-md" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "conformance_purpose_report.py"),
+                    "--format".to_string(),
+                    "md".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/conformance-purpose-summary.md".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "spec-portability-json" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "spec_portability_report.py"),
+                    "--out".to_string(),
+                    ".artifacts/spec-portability.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "spec-portability-md" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "spec_portability_report.py"),
+                    "--format".to_string(),
+                    "md".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/spec-portability-summary.md".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "spec-lang-adoption-json" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "spec_lang_adoption_report.py"),
+                    "--out".to_string(),
+                    ".artifacts/spec-lang-adoption.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "spec-lang-adoption-md" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "spec_lang_adoption_report.py"),
+                    "--format".to_string(),
+                    "md".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/spec-lang-adoption-summary.md".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "runner-independence-json" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "runner_independence_report.py"),
+                    "--out".to_string(),
+                    ".artifacts/runner-independence.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "runner-independence-md" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "runner_independence_report.py"),
+                    "--format".to_string(),
+                    "md".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/runner-independence-summary.md".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "python-dependency-json" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "python_dependency_report.py"),
+                    "--out".to_string(),
+                    ".artifacts/python-dependency.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "python-dependency-md" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "python_dependency_report.py"),
+                    "--format".to_string(),
+                    "md".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/python-dependency-summary.md".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "docs-operability-json" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "docs_operability_report.py"),
+                    "--out".to_string(),
+                    ".artifacts/docs-operability.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "docs-operability-md" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "docs_operability_report.py"),
+                    "--format".to_string(),
+                    "md".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/docs-operability-summary.md".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "contract-assertions-json" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "contract_assertions_report.py"),
+                    "--out".to_string(),
+                    ".artifacts/contract-assertions.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "contract-assertions-md" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "contract_assertions_report.py"),
+                    "--format".to_string(),
+                    "md".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/contract-assertions-summary.md".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "objective-scorecard-json" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "objective_scorecard_report.py"),
+                    "--out".to_string(),
+                    ".artifacts/objective-scorecard.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "objective-scorecard-md" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "objective_scorecard_report.py"),
+                    "--format".to_string(),
+                    "md".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/objective-scorecard-summary.md".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "ci-gate-summary" => run_cmd(&py, &with_forwarded(vec![script(&root, "ci_gate_summary.py")], &forwarded), &root),
+        "docs-build" => run_cmd(&py, &with_forwarded(vec![script(&root, "docs_build_reference.py")], &forwarded), &root),
+        "docs-build-check" => run_cmd(
+            &py,
+            &with_forwarded(vec![script(&root, "docs_build_reference.py"), "--check".to_string()], &forwarded),
+            &root,
+        ),
+        "docs-lint" => run_cmd(&py, &with_forwarded(vec![script(&root, "docs_lint.py")], &forwarded), &root),
+        "docs-graph" => run_cmd(&py, &with_forwarded(vec![script(&root, "docs_graph_export.py")], &forwarded), &root),
+        "conformance-parity" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "compare_conformance_parity.py"),
+                    "--cases".to_string(),
+                    "docs/spec/conformance/cases".to_string(),
+                    "--php-runner".to_string(),
+                    "scripts/php/conformance_runner.php".to_string(),
+                    "--out".to_string(),
+                    ".artifacts/conformance-parity.json".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "test-core" => run_cmd(
+            &pytest,
+            &with_forwarded(
+                vec![
+                    "-q".to_string(),
+                    "tests/test_doc_parser_unit.py".to_string(),
+                    "tests/test_dispatcher_unit.py".to_string(),
+                    "tests/test_assertions_unit.py".to_string(),
+                    "tests/test_conformance_runner_unit.py".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
+        "test-full" => run_cmd(&pytest, &with_forwarded(vec![], &forwarded), &root),
         _ => {
             eprintln!("ERROR: unsupported runner adapter subcommand: {subcommand}");
             2
