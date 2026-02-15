@@ -127,6 +127,16 @@ def _json_type_name(v: Any) -> str:
     return "unknown"
 
 
+def _normalize_json_type_token(value: Any) -> str:
+    token = str(value).strip().lower()
+    aliases = {
+        "boolean": "bool",
+        "array": "list",
+        "object": "dict",
+    }
+    return aliases.get(token, token)
+
+
 def _truthy(v: Any) -> bool:
     return bool(v)
 
@@ -223,10 +233,13 @@ def _builtin_arity_table() -> dict[str, int]:
         "json_type": 2,
         "is_null": 1,
         "is_bool": 1,
+        "is_boolean": 1,
         "is_number": 1,
         "is_string": 1,
         "is_list": 1,
+        "is_array": 1,
         "is_dict": 1,
+        "is_object": 1,
         "has_key": 2,
         "get": 2,
         "len": 1,
@@ -475,17 +488,30 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         return _truthy(args[0]) != _truthy(args[1])
     if op == "json_type":
         _require_arity(op, args, 2)
-        return _json_type_name(args[0]) == str(args[1]).strip().lower()
-    if op in {"is_null", "is_bool", "is_number", "is_string", "is_list", "is_dict"}:
+        return _json_type_name(args[0]) == _normalize_json_type_token(args[1])
+    if op in {
+        "is_null",
+        "is_bool",
+        "is_boolean",
+        "is_number",
+        "is_string",
+        "is_list",
+        "is_array",
+        "is_dict",
+        "is_object",
+    }:
         _require_arity(op, args, 1)
         kind = _json_type_name(args[0])
         return {
             "is_null": kind == "null",
             "is_bool": kind == "bool",
+            "is_boolean": kind == "bool",
             "is_number": kind == "number",
             "is_string": kind == "string",
             "is_list": kind == "list",
+            "is_array": kind == "list",
             "is_dict": kind == "dict",
+            "is_object": kind == "dict",
         }[op]
     if op == "has_key":
         _require_arity(op, args, 2)

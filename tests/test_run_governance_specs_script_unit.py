@@ -3114,6 +3114,61 @@ def test_script_enforces_assert_compiler_schema_matrix_sync(tmp_path):
     assert code == 1
 
 
+def test_script_enforces_assert_spec_lang_builtin_surface_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "assert_spec_lang_builtin_surface_sync.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-ASSERT-005
+
+```yaml spec-test
+id: SRGOV-TEST-ASSERT-005
+type: governance.check
+check: assert.spec_lang_builtin_surface_sync
+harness:
+  root: {tmp_path}
+  spec_lang_builtin_sync:
+    required_ops:
+    - eq
+    - contains
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: assert.spec_lang_builtin_surface_sync"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/03b_spec_lang_v1.md",
+        "# Spec-Lang v1 Contract\n\n## Core Forms\n\n- `eq`\n- `contains`\n\n## Equality + Set Algebra Semantics\n",
+    )
+    _write_text(
+        tmp_path / "spec_runner/spec_lang.py",
+        "def _builtin_arity_table():\n    return {'eq': 2, 'contains': 2}\n",
+    )
+    _write_text(
+        tmp_path / "scripts/php/spec_runner.php",
+        """<?php
+if ($op === 'eq') { return true; }
+if ($op === 'contains') { return true; }
+""",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "scripts/php/spec_runner.php",
+        """<?php
+if ($op === 'eq') { return true; }
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
 def test_script_enforces_spec_lang_adoption_metric(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

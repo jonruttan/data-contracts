@@ -30,7 +30,13 @@ def _compile_leaf_op(*, op: str, value: Any, target: str, type_name: str, assert
         subject_key = target
     elif op == "json_type":
         want = str(value).strip().lower()
-        if want not in {"dict", "list"}:
+        aliases = {
+            "object": "dict",
+            "array": "list",
+            "boolean": "bool",
+        }
+        want = aliases.get(want, want)
+        if want not in {"null", "bool", "number", "string", "list", "dict"}:
             raise ValueError(f"unsupported json_type: {value}")
         subject_expr: Any = ["subject"]
         if target not in {"body_json"}:

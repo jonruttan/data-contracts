@@ -678,6 +678,20 @@ function specLangJsonTypeName(mixed $value): string {
     return 'unknown';
 }
 
+function specLangNormalizeJsonTypeToken(mixed $value): string {
+    $token = strtolower(trim((string)$value));
+    if ($token === 'boolean') {
+        return 'bool';
+    }
+    if ($token === 'array') {
+        return 'list';
+    }
+    if ($token === 'object') {
+        return 'dict';
+    }
+    return $token;
+}
+
 function specLangIsClosure(mixed $value): bool {
     return is_array($value) && ($value['__type'] ?? null) === 'closure' && ($value['env'] ?? null) instanceof SpecLangEnv;
 }
@@ -753,7 +767,7 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             return str_ends_with((string)$left, (string)$right);
         }
         if ($op === 'json_type') {
-            return specLangJsonTypeName($left) === strtolower(trim((string)$right));
+            return specLangJsonTypeName($left) === specLangNormalizeJsonTypeToken($right);
         }
         if (!is_array($left) || isListArray($left)) {
             return false;
@@ -1043,8 +1057,8 @@ function compileLeafExpr(string $op, mixed $value, string $target): array {
         return ['regex_match', ['subject'], (string)$value];
     }
     if ($op === 'json_type') {
-        $want = strtolower(trim((string)$value));
-        if ($want !== 'list' && $want !== 'dict') {
+        $want = specLangNormalizeJsonTypeToken($value);
+        if (!in_array($want, ['null', 'bool', 'number', 'string', 'list', 'dict'], true)) {
             throw new SchemaError("unsupported json_type: {$value}");
         }
         if ($target === 'body_json') {

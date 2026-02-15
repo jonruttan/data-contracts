@@ -158,10 +158,16 @@ def test_spec_lang_governance_collection_builtins() -> None:
     assert eval_predicate(["matches_all", "abc-123", ["subject"]], subject=["^[a-z]+", "123$"]) is True
     assert eval_predicate(["is_null", None], subject=None) is True
     assert eval_predicate(["is_bool", True], subject=None) is True
+    assert eval_predicate(["is_boolean", True], subject=None) is True
     assert eval_predicate(["is_number", 3.14], subject=None) is True
     assert eval_predicate(["is_string", "x"], subject=None) is True
     assert eval_predicate(["is_list", ["json_parse", "[1,2]"]], subject=None) is True
+    assert eval_predicate(["is_array", ["json_parse", "[1,2]"]], subject=None) is True
     assert eval_predicate(["is_dict", ["json_parse", '{"a":1}']], subject=None) is True
+    assert eval_predicate(["is_object", ["json_parse", '{"a":1}']], subject=None) is True
+    assert eval_predicate(["json_type", ["json_parse", "[1,2]"], "array"], subject=None) is True
+    assert eval_predicate(["json_type", ["json_parse", '{"a":1}'], "object"], subject=None) is True
+    assert eval_predicate(["json_type", True, "boolean"], subject=None) is True
 
 
 def test_spec_lang_set_algebra_and_deep_equals() -> None:

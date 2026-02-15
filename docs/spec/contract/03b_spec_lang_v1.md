@@ -47,12 +47,19 @@ JSON/value:
 - `json_type`
 - `is_null`
 - `is_bool`
+- `is_boolean`
 - `is_number`
 - `is_string`
 - `is_list`
+- `is_array`
 - `is_dict`
+- `is_object`
 - `has_key`
 - `get`
+
+`json_type` accepts canonical JSON names (`null`, `boolean`, `number`,
+`string`, `array`, `object`) and normalized internal names (`bool`, `list`,
+`dict`).
 
 Utility:
 

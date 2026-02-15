@@ -87,3 +87,20 @@ def test_compile_json_type_enforces_supported_values() -> None:
             [{"target": "stdout", "must": [{"json_type": ["nope"]}]}],
             type_name="cli.run",
         )
+
+
+def test_compile_json_type_accepts_canonical_json_names() -> None:
+    tree = compile_assert_tree(
+        [
+            {
+                "target": "stdout",
+                "must": [
+                    {"json_type": ["array"]},
+                    {"json_type": ["object"]},
+                    {"json_type": ["boolean"]},
+                ],
+            }
+        ],
+        type_name="cli.run",
+    )
+    assert isinstance(tree, GroupNode)

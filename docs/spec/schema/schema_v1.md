@@ -260,7 +260,8 @@ Operator constraints:
   `dissoc`, `pick`, `omit`), and compositional predicates/combinators
   (`prop_eq`, `where`, `compose`, `pipe`, `identity`, `always`, `replace`,
   `pad_left`, `pad_right`) plus explicit JSON-type predicates (`is_null`,
-  `is_bool`, `is_number`, `is_string`, `is_list`, `is_dict`)
+  `is_bool`/`is_boolean`, `is_number`, `is_string`,
+  `is_list`/`is_array`, `is_dict`/`is_object`)
 - spec-lang shared library loading rules are defined in
   `docs/spec/contract/14_spec_lang_libraries.md`
 - runners compile external leaf operators into internal spec-lang predicates;
@@ -272,7 +273,8 @@ Operator constraints:
   non-portable constructs via assertion-health policy
 - the portable profile is defined in
   `docs/spec/contract/03a_regex_portability_v1.md`
-- `json_type` supports `dict` and `list`
+- `json_type` supports canonical JSON names (`null`, `boolean`, `number`,
+  `string`, `array`, `object`) and normalized aliases (`bool`, `list`, `dict`)
 - `exists` maps to a boolean subject key and currently requires a provided
   existence subject (for example `stdout_path.exists`) with `true` (or `null`)
   value semantics

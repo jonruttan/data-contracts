@@ -688,3 +688,153 @@ assert:
       - {eq: [{pad_left: ['7', 3, '0']}, '007']}
       - {eq: [{pad_right: ['7', 3, '0']}, '700']}
 ```
+
+## SRCONF-EXPR-022
+
+```yaml spec-test
+id: SRCONF-EXPR-022
+title: evaluate ramda v2 unary numeric and compare helpers
+purpose: Verifies unary numeric helpers and comparison helpers produce deterministic values for policy expressions.
+type: text.file
+requires:
+  capabilities:
+  - evaluate.spec_lang.ramda.v2
+  when_missing: skip
+expect:
+  portable:
+    status: skip
+    category: null
+  impl:
+    python:
+      status: pass
+      category: null
+assert:
+- target: text
+  must:
+  - evaluate:
+    - and:
+      - {eq: [{abs: [-7]}, 7]}
+      - {eq: [{negate: [3]}, -3]}
+      - {eq: [{inc: [3]}, 4]}
+      - {eq: [{dec: [3]}, 2]}
+      - {eq: [{floor: [3.9]}, 3]}
+      - {eq: [{ceil: [3.1]}, 4]}
+      - {eq: [{compare: [3, 5]}, -1]}
+      - {eq: [{compare: [5, 5]}, 0]}
+      - {eq: [{compare: [7, 5]}, 1]}
+      - {between: [1, 3, 2]}
+      - {xor: [true, false]}
+      - {not: [{xor: [true, true]}]}
+```
+
+## SRCONF-EXPR-023
+
+```yaml spec-test
+id: SRCONF-EXPR-023
+title: evaluate ramda v2 utility and predicate helpers
+purpose: Verifies utility and predicate helpers used by governance logic are deterministic and pure.
+type: text.file
+requires:
+  capabilities:
+  - evaluate.spec_lang.ramda.v2
+  when_missing: skip
+expect:
+  portable:
+    status: skip
+    category: null
+  impl:
+    python:
+      status: pass
+      category: null
+assert:
+- target: text
+  must:
+  - evaluate:
+    - and:
+      - eq:
+        - {count: [{json_parse: ['[1,2,3]']}]}
+        - 3
+      - eq:
+        - {first: [{json_parse: ['[9,8,7]']}]}
+        - 9
+      - eq:
+        - {rest: [{json_parse: ['[9,8,7]']}]}
+        - {json_parse: ['[8,7]']}
+      - {eq: [{trim: ['  x  ']}, x]}
+      - {eq: [{lower: [AbC]}, abc]}
+      - {eq: [{upper: [AbC]}, ABC]}
+      - {eq: [{split: ['a,b,c', ',']}, {json_parse: ['["a","b","c"]']}]}
+      - eq:
+        - {join: [{json_parse: ['["a","b","c"]']}, '-']}
+        - a-b-c
+      - {eq: [{coalesce: [null, x]}, x]}
+      - eq:
+        - {distinct: [{json_parse: ['[1,1,2,2,3]']}]}
+        - {json_parse: ['[1,2,3]']}
+      - eq:
+        - {sort_by: [{json_parse: ['[3,1,2]']}, {var: [identity]}]}
+        - {json_parse: ['[1,2,3]']}
+      - eq:
+        - {pluck: [{json_parse: ['[{"k":1},{"k":2}]']}, k]}
+        - {json_parse: ['[1,2]']}
+      - {all: [{json_parse: ['[true,true,true]']}]}
+      - {any: [{json_parse: ['[false,true,false]']}]}
+      - {none: [{json_parse: ['[false,false]']}]}
+      - {is_empty: [{json_parse: ['[]']}]}
+      - {matches: [a42, 'a[0-9]+']}
+      - {matches_all: [a42, {json_parse: ['["^a","[0-9]+$"]']}]}
+      - {regex_match: [a42, 'a[0-9]+']}
+      - eq:
+        - {json_type: [{json_parse: ['[1,2]']}, list]}
+        - true
+      - eq:
+        - {json_type: [{json_parse: ['{"x":1}']}, object]}
+        - true
+      - eq:
+        - {json_type: [{json_parse: ['[1,2]']}, array]}
+        - true
+      - {eq: [{json_type: [true, boolean]}, true]}
+      - {has_key: [{json_parse: ['{"x":1}']}, x]}
+      - {in: [x, {json_parse: ['{"x":1}']}]}
+      - {eq: [{len: [abcd]}, 4]}
+      - {is_boolean: [true]}
+      - {is_array: [{json_parse: ['[1,2]']}]}
+      - {is_object: [{json_parse: ['{"x":1}']}]}
+      - eq:
+        - {sum: [{json_parse: ['[1,2,3]']}]}
+        - 6
+      - eq:
+        - {min: [{json_parse: ['[4,2,8]']}]}
+        - 2
+      - eq:
+        - {max: [{json_parse: ['[4,2,8]']}]}
+        - 8
+```
+
+## SRCONF-EXPR-024
+
+```yaml spec-test
+id: SRCONF-EXPR-024
+title: evaluate ramda v2 schema failures are deterministic
+purpose: Verifies representative arity and type failures stay in schema category for the expanded builtin surface.
+type: text.file
+requires:
+  capabilities:
+  - evaluate.spec_lang.ramda.v2
+  when_missing: skip
+expect:
+  portable:
+    status: skip
+    category: null
+  impl:
+    python:
+      status: fail
+      category: schema
+      message_tokens:
+      - arity error
+assert:
+- target: text
+  must:
+  - evaluate:
+    - {compare: [1]}
+```
