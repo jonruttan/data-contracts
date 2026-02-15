@@ -2083,3 +2083,95 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md
   notes: Public docs avoid directing users to internal rust adapter paths.
+- rule_id: ASSERT_SUBJECT_PROFILE_JSON_CORE_ONLY
+  policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_SUBJECT_PROFILE_JSON_CORE_ONLY
+  contract_refs:
+  - docs/spec/contract/20_subject_profiles_v1.md
+  - docs/spec/contract/03b_spec_lang_v1.md
+  schema_refs:
+  - docs/spec/schema/subject_profiles_v1.yaml
+  conformance_case_ids:
+  - SRCONF-PROFILE-001
+  - SRCONF-PROFILE-002
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md
+  notes: Enforces JSON-core subject model in profile schema and evaluator subject validation.
+- rule_id: ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/20_subject_profiles_v1.md
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/schema/subject_profiles_v1.yaml
+  conformance_case_ids:
+  - SRCONF-PROFILE-002
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/harnesses/text_file.py
+  - spec_runner/harnesses/cli_run.py
+  - spec_runner/harnesses/api_http.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/assert_adapter_projection_contract_sync.spec.md
+  notes: Requires context_json projection targets and profile metadata in core harness adapters.
+- rule_id: ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED
+  policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/contract/07_portable_spec_authoring.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-DOMAIN-LIB-001
+  - SRCONF-DOMAIN-LIB-002
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  implementation_refs:
+  - docs/spec/libraries/domain/http_core.spec.md
+  - docs/spec/libraries/domain/make_core.spec.md
+  - docs/spec/libraries/domain/markdown_core.spec.md
+  - docs/spec/libraries/domain/php_core.spec.md
+  - docs/spec/libraries/domain/python_core.spec.md
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/assert_domain_library_usage_required.spec.md
+  notes: Domain assertion scenarios must be library-backed rather than ad hoc inline-only expression patterns.
+- rule_id: ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/20_subject_profiles_v1.md
+  schema_refs:
+  - docs/spec/schema/subject_profiles_v1.yaml
+  conformance_case_ids:
+  - SRCONF-PROFILE-001
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - docs/spec/contract/types/python_profile.md
+  - docs/spec/contract/types/php_profile.md
+  - docs/spec/contract/types/http_profile.md
+  - docs/spec/contract/types/markdown_profile.md
+  - docs/spec/contract/types/makefile_profile.md
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/assert_domain_profiles_docs_sync.spec.md
+  notes: Keeps profile docs and schema declarations synchronized.
+- rule_id: ASSERT_NO_NON_JSON_EVALUATOR_TYPES
+  policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_NO_NON_JSON_EVALUATOR_TYPES
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/20_subject_profiles_v1.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-PROFILE-002
+  unit_test_refs:
+  - tests/test_spec_lang_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md
+  notes: Evaluator rejects non-JSON subject values; adapters project native values to JSON.

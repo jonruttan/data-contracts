@@ -56,6 +56,7 @@ For `type: governance.check`, assertion targets include:
 - `summary_json`: structured summary surface (available to `evaluate` as a
   mapping with `passed`, `check_id`, `case_id`, `violation_count`)
 - `violation_count`: numeric violation count
+- `context_json`: optional JSON subject profile envelope
 
 ## Core Surface Rule
 
@@ -72,6 +73,8 @@ For `type: governance.check`, assertion targets include:
 - Implementations MUST NOT bypass the compiled spec-lang assertion engine.
 - Target/type applicability is defined by subject availability and subject
   shape, not by per-type operator allowlists.
+- Subject values consumed by spec-lang MUST be JSON-core values. Native runtime
+  structures are projected by adapters into JSON profile envelopes.
 - Regex portability guidance for spec-lang expressions is defined in
   `docs/spec/contract/03a_regex_portability_v1.md`.
 

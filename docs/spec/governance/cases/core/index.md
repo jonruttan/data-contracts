@@ -5,10 +5,15 @@ Canonical domain index for executable specs in this subtree.
 ## Files
 
 - `/docs/spec/governance/cases/core/assert_compiler_schema_matrix_sync.spec.md`
+- `/docs/spec/governance/cases/core/assert_domain_library_usage_required.spec.md`
+- `/docs/spec/governance/cases/core/assert_domain_profiles_docs_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_spec_lang_builtin_surface_sync.spec.md`
+- `/docs/spec/governance/cases/core/assert_subject_profiles_declared.spec.md`
+- `/docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md`
 - `/docs/spec/governance/cases/core/assert_sugar_compile_only_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_type_contract_subject_semantics_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_universal_core_sync.spec.md`
+- `/docs/spec/governance/cases/core/assert_adapter_projection_contract_sync.spec.md`
 - `/docs/spec/governance/cases/core/conformance_api_http_portable_shape.spec.md`
 - `/docs/spec/governance/cases/core/conformance_case_doc_style_guard.spec.md`
 - `/docs/spec/governance/cases/core/conformance_case_index_sync.spec.md`

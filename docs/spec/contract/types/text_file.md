@@ -22,10 +22,12 @@ Assert text content from the containing spec document or an explicit contract-ro
 ## Targets
 
 - `text`
+- `context_json`
 
 Subject semantics:
 
 - `text`: UTF-8 text from containing spec document or resolved relative path.
+- `context_json`: JSON subject profile envelope for `text.file/v1`.
 
 ## Type Rules
 

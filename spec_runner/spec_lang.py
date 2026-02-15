@@ -68,6 +68,18 @@ class _EvalState:
 _UNSET = object()
 
 
+def _is_json_value(value: Any) -> bool:
+    if value is None:
+        return True
+    if isinstance(value, (str, bool, int, float)):
+        return True
+    if isinstance(value, list):
+        return all(_is_json_value(item) for item in value)
+    if isinstance(value, dict):
+        return all(isinstance(k, str) and _is_json_value(v) for k, v in value.items())
+    return False
+
+
 def _literal_size(v: Any) -> int:
     if isinstance(v, str):
         return len(v.encode("utf-8"))
@@ -1322,12 +1334,19 @@ def _eval_tail(expr: Any, env: _Env, st: _EvalState) -> Any:
         st.tick()
         if isinstance(current_expr, (str, int, float, bool)) or current_expr is None:
             return current_expr
+        if isinstance(current_expr, dict):
+            out: dict[str, Any] = {}
+            for k, v in current_expr.items():
+                out[str(k)] = _eval_non_tail(v, current_env, st)
+            return out
         if not isinstance(current_expr, list):
             raise ValueError("spec_lang expression must be list-based s-expr or scalar literal")
         if len(current_expr) == 0:
             raise ValueError("spec_lang expression list must not be empty")
         head = current_expr[0]
-        if not isinstance(head, str) or not head:
+        if not isinstance(head, str):
+            return [_eval_non_tail(item, current_env, st) for item in current_expr]
+        if not head:
             raise ValueError("spec_lang expression head must be non-empty string symbol")
         op = head
         args = list(current_expr[1:])
@@ -1337,6 +1356,9 @@ def _eval_tail(expr: Any, env: _Env, st: _EvalState) -> Any:
             cond = _eval_non_tail(args[0], current_env, st)
             current_expr = args[1] if _truthy(cond) else args[2]
             continue
+        if op == "lit":
+            _require_arity(op, args, 1)
+            return args[0]
 
         if op == "let":
             _require_arity(op, args, 2)
@@ -1432,6 +1454,8 @@ def eval_expr(
 ) -> Any:
     cfg = limits or SpecLangLimits()
     validate_expr_shape(expr, limits=cfg)
+    if not _is_json_value(subject):
+        raise ValueError("spec_lang subject must be a JSON value")
     st = _EvalState(subject=subject, limits=cfg, started=time.perf_counter())
     root_symbols: dict[str, Any] = {}
     if symbols:

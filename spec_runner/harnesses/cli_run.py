@@ -277,6 +277,25 @@ def run(case, *, ctx) -> None:
                     **{str(k): v for k, v in hook_kwargs.items()},
                 )
 
+    context_profile = {
+        "profile_id": "cli.run/v1",
+        "profile_version": 1,
+        "value": {
+            "exit_code": int(code),
+            "stdout": captured.out,
+            "stderr": captured.err,
+        },
+        "meta": {
+            "target": "cli.run",
+            "case_id": case_id,
+            "argv": argv,
+        },
+        "context": {
+            "entrypoint": entrypoint,
+            "safe_mode": safe_mode,
+        },
+    }
+
     def _subject_for_key(subject_key: str):
         if subject_key == "stdout":
             return captured.out
@@ -300,6 +319,8 @@ def run(case, *, ctx) -> None:
                 return Path(line).exists()
             except (OSError, ValueError):
                 return False
+        if subject_key == "context_json":
+            return context_profile
         raise ValueError(f"unknown assert target: {subject_key}")
 
     evaluate_internal_assert_tree(

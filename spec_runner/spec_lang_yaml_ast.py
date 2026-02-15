@@ -35,13 +35,13 @@ def _compile_node(node: Any, *, field_path: str) -> Any:
             out: dict[str, Any] = {}
             for k, v in lit_value.items():
                 out[str(k)] = _compile_literal_value(v, field_path=f"{field_path}.lit.{k}")
-            return out
+            return ["lit", out]
         if isinstance(lit_value, list):
-            return [
+            return ["lit", [
                 _compile_literal_value(v, field_path=f"{field_path}.lit[{idx}]")
                 for idx, v in enumerate(lit_value)
-            ]
-        return lit_value
+            ]]
+        return ["lit", lit_value]
 
     if len(keys) != 1:
         raise SpecLangYamlAstError(
@@ -132,6 +132,8 @@ def sexpr_to_yaml_ast(node: Any) -> Any:
                 return {"var": "subject"}
             if op == "var" and len(node) == 2 and isinstance(node[1], str) and node[1].strip():
                 return {"var": node[1].strip()}
+            if op == "lit" and len(node) == 2:
+                return {"lit": _literalize(node[1])}
             if op == "fn" and len(node) == 3 and isinstance(node[1], list):
                 params: list[str] = []
                 for idx, value in enumerate(node[1]):

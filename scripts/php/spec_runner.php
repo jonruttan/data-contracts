@@ -2064,6 +2064,13 @@ function specLangEvalTail(mixed $expr, SpecLangEnv $env, mixed $subject, array $
         if (is_string($currentExpr) || is_int($currentExpr) || is_float($currentExpr) || is_bool($currentExpr) || $currentExpr === null) {
             return $currentExpr;
         }
+        if (is_array($currentExpr) && !isListArray($currentExpr)) {
+            $out = [];
+            foreach ($currentExpr as $k => $v) {
+                $out[(string)$k] = specLangEvalNonTail($v, $currentEnv, $subject, $limits, $state);
+            }
+            return $out;
+        }
         if (!is_array($currentExpr) || !isListArray($currentExpr)) {
             throw new SchemaError('spec_lang expression must be list-based s-expr or scalar literal');
         }
@@ -2071,7 +2078,14 @@ function specLangEvalTail(mixed $expr, SpecLangEnv $env, mixed $subject, array $
             throw new SchemaError('spec_lang expression list must not be empty');
         }
         $head = $currentExpr[0];
-        if (!is_string($head) || trim($head) === '') {
+        if (!is_string($head)) {
+            $out = [];
+            foreach ($currentExpr as $item) {
+                $out[] = specLangEvalNonTail($item, $currentEnv, $subject, $limits, $state);
+            }
+            return $out;
+        }
+        if (trim($head) === '') {
             throw new SchemaError('spec_lang expression head must be non-empty string symbol');
         }
         $op = $head;
@@ -2082,6 +2096,10 @@ function specLangEvalTail(mixed $expr, SpecLangEnv $env, mixed $subject, array $
             $cond = specLangEvalNonTail($args[0], $currentEnv, $subject, $limits, $state);
             $currentExpr = ((bool)$cond) ? $args[1] : $args[2];
             continue;
+        }
+        if ($op === 'lit') {
+            specLangRequireArity($op, $args, 1);
+            return $args[0];
         }
         if ($op === 'let') {
             specLangRequireArity($op, $args, 2);
@@ -2219,7 +2237,7 @@ function compileYamlExprToSexpr(mixed $node, string $fieldPath): mixed {
         if (count($keys) !== 1) {
             throw new SchemaError("{$fieldPath}: lit wrapper must be the only key in a mapping");
         }
-        return compileYamlExprLiteral($node['lit'], "{$fieldPath}.lit");
+        return ['lit', compileYamlExprLiteral($node['lit'], "{$fieldPath}.lit")];
     }
     if (count($keys) !== 1) {
         throw new SchemaError("{$fieldPath}: expression mapping must have exactly one operator key");

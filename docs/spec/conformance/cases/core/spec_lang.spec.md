@@ -71,7 +71,7 @@ expect:
     status: fail
     category: schema
     message_tokens:
-    - list-based s-expr or scalar literal
+    - spec_lang let binding must be [name, expr]
 assert:
 - target: text
   must:
@@ -167,7 +167,7 @@ expect:
     status: fail
     category: schema
     message_tokens:
-    - list-based s-expr or scalar literal
+    - spec_lang let binding must be [name, expr]
 harness:
   spec_lang:
     max_steps: 20

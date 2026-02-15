@@ -39,7 +39,21 @@ def run(case, *, ctx) -> None:
             )
         except ValueError as e:
             raise ValueError(str(e)) from e
+    doc_path = case.doc_path.resolve()
+    root = contract_root_for(doc_path)
     text = p.read_text(encoding="utf-8")
+    text_subject_profile = {
+        "profile_id": "text.file/v1",
+        "profile_version": 1,
+        "value": text,
+        "meta": {
+            "target": "text",
+            "path": "/" + p.resolve().relative_to(root).as_posix().lstrip("/"),
+        },
+        "context": {
+            "source_doc": "/" + doc_path.relative_to(root).as_posix().lstrip("/"),
+        },
+    }
     assert_spec = t.get("assert", []) or []
     spec_lang_limits = limits_from_harness(case.harness)
     spec_lang_symbols = load_spec_lang_symbols_for_case(
@@ -55,8 +69,10 @@ def run(case, *, ctx) -> None:
         for d in diags:
             print(format_assertion_health_warning(d), file=sys.stderr)
 
-    def _subject_for_key(subject_key: str) -> str:
+    def _subject_for_key(subject_key: str):
         if subject_key != "text":
+            if subject_key == "context_json":
+                return text_subject_profile
             raise ValueError(f"unknown assert target for text.file: {subject_key}")
         return text
 

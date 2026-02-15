@@ -27,6 +27,7 @@ Run a command entrypoint and assert against process outputs.
 - `stderr`
 - `stdout_path`
 - `stdout_path_text`
+- `context_json`
 
 ## Type Rules
 
@@ -37,6 +38,7 @@ Run a command entrypoint and assert against process outputs.
   - `stdout_path`: first non-empty stdout line as path text subject
   - `stdout_path.exists`: adapter-provided boolean derived subject for
     existence checks
+  - `context_json`: JSON subject profile envelope for `cli.run/v1`
 
 ## Failure Category Guidance
 

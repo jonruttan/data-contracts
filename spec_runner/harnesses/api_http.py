@@ -99,6 +99,24 @@ def run(case, *, ctx) -> None:
     headers_text = "\n".join(f"{k}: {v}" for k, v in sorted(response["headers"].items()))
     body_text_value = str(response["body_text"])
     body_json_value = json.loads(body_text_value)
+    context_profile = {
+        "profile_id": "api.http/v1",
+        "profile_version": 1,
+        "value": {
+            "status": int(response["status"]),
+            "headers": response["headers"],
+            "body_text": body_text_value,
+            "body_json": body_json_value,
+        },
+        "meta": {
+            "target": "api.http",
+            "method": method,
+            "url": url,
+        },
+        "context": {
+            "timeout_seconds": timeout_seconds,
+        },
+    }
 
     def _subject_for_key(subject_key: str):
         if subject_key == "status":
@@ -109,6 +127,8 @@ def run(case, *, ctx) -> None:
             return body_text_value
         if subject_key == "body_json":
             return body_json_value
+        if subject_key == "context_json":
+            return context_profile
         raise ValueError(f"unknown assert target for api.http: {subject_key}")
 
     evaluate_internal_assert_tree(

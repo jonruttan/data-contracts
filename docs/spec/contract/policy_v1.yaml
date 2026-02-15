@@ -1962,3 +1962,87 @@ rules:
   - docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md
   - docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
   - docs/spec/conformance/cases/core/spec_lang_schema.spec.md
+- id: ASSERT_SUBJECT_PROFILE_JSON_CORE_ONLY
+  introduced_in: v1
+  scope: governance
+  applies_to: assert.subject_profiles.json_core
+  norm: MUST
+  requirement: evaluator_subjects_and_profiles_use_json_core_values_only
+  description: 'Subject profile contracts and evaluator subject handling must enforce JSON-core values only.
+
+    '
+  rationale: Keeps assertion semantics portable and implementation-independent.
+  risk_if_violated: Runtime-native value kinds leak into evaluator semantics and break parity.
+  references:
+  - docs/spec/contract/20_subject_profiles_v1.md
+  - docs/spec/schema/subject_profiles_v1.yaml
+  - spec_runner/spec_lang.py
+  - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md
+- id: ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: harness.subject_projection.context_profiles
+  norm: MUST
+  requirement: adapters_expose_context_profile_targets_per_contract
+  description: 'Core harness adapters must expose context_json profile targets with profile metadata fields.
+
+    '
+  rationale: Makes adapter projection contracts explicit and testable.
+  risk_if_violated: Domain-specific assertions become brittle and runtime-coupled.
+  references:
+  - docs/spec/contract/20_subject_profiles_v1.md
+  - docs/spec/contract/04_harness.md
+  - spec_runner/harnesses/text_file.py
+  - spec_runner/harnesses/cli_run.py
+  - spec_runner/harnesses/api_http.py
+  - docs/spec/governance/cases/core/assert_adapter_projection_contract_sync.spec.md
+- id: ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED
+  introduced_in: v1
+  scope: governance
+  applies_to: conformance.domain_assertions.library_usage
+  norm: MUST
+  requirement: domain_assertion_cases_use_shared_domain_libraries
+  description: 'Domain-focused conformance assertions must use shared spec-lang domain library helpers via harness.spec_lang.library_paths.
+
+    '
+  rationale: Reduces duplicated inline logic and keeps domain behavior reusable.
+  risk_if_violated: Domain assertions drift and become hard to maintain consistently.
+  references:
+  - docs/spec/libraries/domain/index.md
+  - docs/spec/conformance/cases/core/domain_libraries.spec.md
+  - docs/spec/governance/cases/core/assert_domain_library_usage_required.spec.md
+- id: ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.contract.adapter_projection_sync
+  norm: MUST
+  requirement: profile_docs_schema_and_adapter_projections_stay_synchronized
+  description: 'Subject profile contract docs, schema definitions, and adapter projection implementation tokens must stay synchronized.
+
+    '
+  rationale: Prevents documentation drift from runtime behavior.
+  risk_if_violated: Assertions may appear portable in docs but fail at runtime.
+  references:
+  - docs/spec/contract/20_subject_profiles_v1.md
+  - docs/spec/schema/subject_profiles_v1.yaml
+  - docs/spec/contract/types/python_profile.md
+  - docs/spec/contract/types/php_profile.md
+  - docs/spec/contract/types/http_profile.md
+  - docs/spec/contract/types/markdown_profile.md
+  - docs/spec/contract/types/makefile_profile.md
+  - docs/spec/governance/cases/core/assert_domain_profiles_docs_sync.spec.md
+- id: ASSERT_NO_NON_JSON_EVALUATOR_TYPES
+  introduced_in: v1
+  scope: governance
+  applies_to: assert.evaluator.value_model
+  norm: MUST
+  requirement: evaluator_rejects_non_json_subject_values
+  description: 'Spec-lang evaluator must reject non-JSON subject value kinds and require adapter projection to JSON.
+
+    '
+  rationale: Maintains a stable cross-implementation value model.
+  risk_if_violated: Behavior differs by host language object model.
+  references:
+  - spec_runner/spec_lang.py
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md

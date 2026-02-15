@@ -36,8 +36,8 @@ def test_reverse_conversion_emits_var_subject() -> None:
 
 
 def test_compile_lit_wrapped_list_and_map() -> None:
-    assert compile_yaml_expr_to_sexpr({"lit": [1, 2, 3]}, field_path="x") == [1, 2, 3]
-    assert compile_yaml_expr_to_sexpr({"lit": {"k": 1}}, field_path="x") == {"k": 1}
+    assert compile_yaml_expr_to_sexpr({"lit": [1, 2, 3]}, field_path="x") == ["lit", [1, 2, 3]]
+    assert compile_yaml_expr_to_sexpr({"lit": {"k": 1}}, field_path="x") == ["lit", {"k": 1}]
 
 
 def test_rejects_multi_key_mapping() -> None:

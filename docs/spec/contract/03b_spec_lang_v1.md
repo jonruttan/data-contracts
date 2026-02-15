@@ -31,6 +31,8 @@ Purity requirement:
   environment side effects.
 - Implementations MUST perform side effects in adapters/harnesses and pass
   normalized subjects into spec-lang.
+- Subjects consumed by the evaluator MUST be JSON-core values only; native
+  runtime values must be projected into JSON profile envelopes.
 
 ## Core Forms
 

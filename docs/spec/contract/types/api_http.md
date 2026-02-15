@@ -29,6 +29,7 @@ Define portable API endpoint behavior checks without coupling specs to one runti
 - `headers`
 - `body_text`
 - `body_json`
+- `context_json`
 
 ## Type Rules
 
@@ -43,6 +44,7 @@ Define portable API endpoint behavior checks without coupling specs to one runti
   - `headers`: deterministic header text view
   - `body_text`: response body text
   - `body_json`: parsed JSON value from body text
+  - `context_json`: JSON subject profile envelope for `api.http/v1`
 
 ## Conformance Notes
 

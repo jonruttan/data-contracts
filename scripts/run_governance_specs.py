@@ -153,6 +153,22 @@ _DOMAIN_TREE_ROOTS = (
     "docs/spec/governance/cases",
     "docs/spec/libraries",
 )
+_SUBJECT_PROFILE_CONTRACT_DOC = "docs/spec/contract/20_subject_profiles_v1.md"
+_SUBJECT_PROFILE_SCHEMA_DOC = "docs/spec/schema/subject_profiles_v1.yaml"
+_SUBJECT_PROFILE_TYPE_DOCS = (
+    "docs/spec/contract/types/python_profile.md",
+    "docs/spec/contract/types/php_profile.md",
+    "docs/spec/contract/types/http_profile.md",
+    "docs/spec/contract/types/markdown_profile.md",
+    "docs/spec/contract/types/makefile_profile.md",
+)
+_SUBJECT_PROFILE_DOMAIN_LIBS = (
+    "docs/spec/libraries/domain/python_core.spec.md",
+    "docs/spec/libraries/domain/php_core.spec.md",
+    "docs/spec/libraries/domain/http_core.spec.md",
+    "docs/spec/libraries/domain/markdown_core.spec.md",
+    "docs/spec/libraries/domain/make_core.spec.md",
+)
 
 
 def _resolve_contract_config_path(root: Path, raw: str, *, field: str) -> Path:
@@ -1632,6 +1648,128 @@ def _scan_spec_lang_stdlib_conformance_coverage(root: Path, *, harness: dict | N
         p = _join_contract_path(root, rel)
         if not p.exists():
             violations.append(f"{rel}: missing required conformance file")
+    return violations
+
+
+def _scan_assert_subject_profiles_declared(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    required_paths = (
+        _SUBJECT_PROFILE_CONTRACT_DOC,
+        _SUBJECT_PROFILE_SCHEMA_DOC,
+        *_SUBJECT_PROFILE_TYPE_DOCS,
+        "docs/spec/libraries/domain/index.md",
+        *_SUBJECT_PROFILE_DOMAIN_LIBS,
+    )
+    for rel in required_paths:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing required subject-profile artifact")
+    return violations
+
+
+def _scan_assert_subject_profiles_json_only(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    schema = _join_contract_path(root, _SUBJECT_PROFILE_SCHEMA_DOC)
+    evaluator = _join_contract_path(root, "spec_runner/spec_lang.py")
+    if not schema.exists():
+        return [f"{_SUBJECT_PROFILE_SCHEMA_DOC}:1: missing subject profile schema"]
+    if not evaluator.exists():
+        return ["spec_runner/spec_lang.py:1: missing evaluator implementation"]
+    schema_raw = schema.read_text(encoding="utf-8")
+    eval_raw = evaluator.read_text(encoding="utf-8")
+    required_schema_tokens = ("json_core_only: true", "non_json_native_values_must_be_projected: true")
+    for tok in required_schema_tokens:
+        if tok not in schema_raw:
+            violations.append(f"{_SUBJECT_PROFILE_SCHEMA_DOC}:1: missing required JSON-core token {tok}")
+    required_eval_tokens = (
+        "def _is_json_value(",
+        "spec_lang subject must be a JSON value",
+    )
+    for tok in required_eval_tokens:
+        if tok not in eval_raw:
+            violations.append(f"spec_runner/spec_lang.py:1: missing JSON-core evaluator token {tok}")
+    return violations
+
+
+def _scan_assert_domain_profiles_docs_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    schema = _join_contract_path(root, _SUBJECT_PROFILE_SCHEMA_DOC)
+    if not schema.exists():
+        return [f"{_SUBJECT_PROFILE_SCHEMA_DOC}:1: missing subject profile schema"]
+    schema_raw = schema.read_text(encoding="utf-8")
+    required_profile_ids = {
+        "python_profile.md": "python.generic/v1",
+        "php_profile.md": "php.generic/v1",
+        "http_profile.md": "api.http/v1",
+        "markdown_profile.md": "markdown.generic/v1",
+        "makefile_profile.md": "makefile.generic/v1",
+    }
+    for rel in _SUBJECT_PROFILE_TYPE_DOCS:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing profile contract doc")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        profile_id = required_profile_ids.get(Path(rel).name)
+        if profile_id and profile_id not in raw:
+            violations.append(f"{rel}:1: missing profile id token {profile_id}")
+        if profile_id and profile_id not in schema_raw:
+            violations.append(f"{_SUBJECT_PROFILE_SCHEMA_DOC}:1: missing profile id {profile_id}")
+    return violations
+
+
+def _scan_assert_domain_library_usage_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    cases_dir = root / "docs/spec/conformance/cases/core"
+    if not cases_dir.exists():
+        return ["docs/spec/conformance/cases/core:1: missing conformance core cases directory"]
+    target_file = cases_dir / "domain_libraries.spec.md"
+    if not target_file.exists():
+        return [f"{target_file.relative_to(root)}:1: missing domain library conformance coverage case"]
+    found = False
+    for _doc_path, case in load_external_cases(target_file, formats={"md"}):
+        if str(case.get("id", "")).strip().startswith("SRCONF-DOMAIN-LIB-"):
+            found = True
+            harness_map = case.get("harness")
+            if not isinstance(harness_map, dict):
+                violations.append(
+                    f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing harness mapping"
+                )
+                continue
+            spec_lang_cfg = harness_map.get("spec_lang")
+            if not isinstance(spec_lang_cfg, dict):
+                violations.append(
+                    f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing harness.spec_lang mapping"
+                )
+                continue
+            lib_paths = spec_lang_cfg.get("library_paths")
+            if not isinstance(lib_paths, list) or not any(
+                isinstance(x, str) and "/docs/spec/libraries/domain/" in str(x) for x in lib_paths
+            ):
+                violations.append(
+                    f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing domain library path in harness.spec_lang.library_paths"
+                )
+    if not found:
+        violations.append(f"{target_file.relative_to(root)}:1: expected SRCONF-DOMAIN-LIB-* cases")
+    return violations
+
+
+def _scan_assert_adapter_projection_contract_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    required = {
+        "spec_runner/harnesses/text_file.py": ("context_json", "profile_id", "profile_version"),
+        "spec_runner/harnesses/cli_run.py": ("context_json", "profile_id", "profile_version"),
+        "spec_runner/harnesses/api_http.py": ("context_json", "profile_id", "profile_version"),
+    }
+    for rel, tokens in required.items():
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing adapter for projection sync check")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for tok in tokens:
+            if tok not in raw:
+                violations.append(f"{rel}:1: missing adapter projection token {tok}")
     return violations
 
 
@@ -4307,11 +4445,14 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
                     )
                 except VirtualPathError:
                     continue
-                if not normalized.startswith("/docs/spec/libraries/conformance/"):
+                if not (
+                    normalized.startswith("/docs/spec/libraries/conformance/")
+                    or normalized.startswith("/docs/spec/libraries/domain/")
+                ):
                     rel = doc_path.relative_to(root)
                     violations.append(
                         f"{rel}: case {case_id} library_paths[{idx}] must be under "
-                        "/docs/spec/libraries/conformance/"
+                        "/docs/spec/libraries/conformance/ or /docs/spec/libraries/domain/"
                     )
 
     # Governance cases: policy/path libraries only.
@@ -4662,6 +4803,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "assert.type_contract_subject_semantics_sync": _scan_assert_type_contract_subject_semantics_sync,
     "assert.compiler_schema_matrix_sync": _scan_assert_compiler_schema_matrix_sync,
     "assert.spec_lang_builtin_surface_sync": _scan_assert_spec_lang_builtin_surface_sync,
+    "assert.subject_profiles_declared": _scan_assert_subject_profiles_declared,
+    "assert.subject_profiles_json_only": _scan_assert_subject_profiles_json_only,
+    "assert.domain_profiles_docs_sync": _scan_assert_domain_profiles_docs_sync,
+    "assert.domain_library_usage_required": _scan_assert_domain_library_usage_required,
+    "assert.adapter_projection_contract_sync": _scan_assert_adapter_projection_contract_sync,
     "spec_lang.stdlib_profile_complete": _scan_spec_lang_stdlib_profile_complete,
     "spec_lang.stdlib_py_php_parity": _scan_spec_lang_stdlib_py_php_parity,
     "spec_lang.stdlib_docs_sync": _scan_spec_lang_stdlib_docs_sync,

@@ -12,6 +12,9 @@ Notes:
   internal predicates before runtime evaluation.
 - Spec-lang remains pure; adapter layers perform side effects and feed
   normalized subjects into evaluation.
+- Subject projection now follows JSON-core profile envelopes
+  (`profile_id`, `profile_version`, `value`, `meta`, optional `context`);
+  evaluator subjects are JSON-only.
 - Spec-lang stdlib completeness and parity are contract-defined by
   `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml` and
   `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`.
@@ -39,7 +42,8 @@ Notes:
   `definitions.private.<symbol>` values use canonical expression
   nodes, not list s-expr authoring).
 - Canonical reusable libraries now include `path_core`, `policy_core`, and
-  `policy_metrics` under `docs/spec/libraries/`.
+  `policy_metrics` under `docs/spec/libraries/`, with domain helper libraries
+  under `docs/spec/libraries/domain/`.
 - Governance decision checks are now policy-engine first:
   check extractors emit deterministic subject payloads and
   `policy_evaluate` drives final verdicts.

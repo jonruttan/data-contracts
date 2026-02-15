@@ -20,8 +20,10 @@ Case fixtures that portable runner implementations execute.
 
 - `assertion-health.spec.md`: assertion-health diagnostics and mode behavior
 - `api-http.spec.md`: portable `api.http` extension behavior and capability gating
+- `domain_libraries.spec.md`: domain library contract coverage for non-core projection helpers
 - `spec_lang.spec.md`: `evaluate` operator behavior, schema/runtime failures, TCO, and ramda-style utility conformance
 - `spec_lang_library_contract.spec.md`: flat `spec_lang.library` definitions contract coverage
+- `subject_profiles.spec.md`: JSON-core subject profile envelope contract coverage
 - `cli-run-entrypoint.spec.md`: entrypoint precedence and capability gating
 - `failure-context.spec.md`: deterministic failure context tokens
 - `php-text-file-subset.spec.md`: portable `text.file` subset used for PHP parity
@@ -39,6 +41,8 @@ Case fixtures that portable runner implementations execute.
 - `SRCONF-API-003`
 - `SRCONF-CLI-001`
 - `SRCONF-CLI-002`
+- `SRCONF-DOMAIN-LIB-001`
+- `SRCONF-DOMAIN-LIB-002`
 - `SRCONF-ERR-001`
 - `SRCONF-EXPR-001`
 - `SRCONF-EXPR-002`
@@ -81,6 +85,8 @@ Case fixtures that portable runner implementations execute.
 - `SRCONF-PHP-TEXT-012`
 - `SRCONF-PHP-TEXT-013`
 - `SRCONF-PHP-TEXT-014`
+- `SRCONF-PROFILE-001`
+- `SRCONF-PROFILE-002`
 
 - `SRCONF-STDLIB-001`
 - `SRCONF-STDLIB-002`

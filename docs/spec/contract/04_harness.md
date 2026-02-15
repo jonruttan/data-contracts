@@ -27,19 +27,35 @@ For `cli.run`:
 - `stderr`
 - `stdout_path`
 - `stdout_path_text`
+- `context_json` (JSON subject profile envelope)
 
 For `text.file`:
 
 - `text`
+- `context_json` (JSON subject profile envelope)
+
+For `api.http`:
+
+- `status`
+- `headers`
+- `body_text`
+- `body_json`
+- `context_json` (JSON subject profile envelope)
 
 ## Subject-Driven Assertion Contract
 
 - Harnesses/adapters own target subject extraction and normalization.
 - Assertion applicability is determined by subject availability/shape.
+- Projected subjects consumed by spec-lang MUST be JSON values; native/runtime
+  structures MUST be represented by JSON profile envelopes.
 - External operators (`contain`, `regex`, `json_type`, `exists`) are authoring
   sugar that compile to `evaluate`-equivalent predicates.
 - Runtime pass/fail decisions MUST execute compiled predicates through the
   spec-lang evaluator.
+
+Subject profile envelope contract:
+
+- `docs/spec/contract/20_subject_profiles_v1.md`
 
 ## Spec-Lang Reuse
 

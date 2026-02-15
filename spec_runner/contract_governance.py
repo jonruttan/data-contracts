@@ -30,6 +30,7 @@ _NORMATIVE_CONTRACT_DOCS = [
     "docs/spec/contract/15_governance_subject_model.md",
     "docs/spec/contract/16_rust_primary_transition.md",
     "docs/spec/contract/17_objective_metrics.md",
+    "docs/spec/contract/20_subject_profiles_v1.md",
 ]
 
 

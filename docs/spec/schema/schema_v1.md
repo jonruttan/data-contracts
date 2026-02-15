@@ -14,7 +14,9 @@ Related docs/reference schemas:
 - `docs/spec/schema/reference_manifest_v1.md`
 - `docs/spec/schema/objective_metrics_schema_v1.md`
 - `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml`
+- `docs/spec/schema/subject_profiles_v1.yaml`
 - `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`
+- `docs/spec/contract/20_subject_profiles_v1.md`
 ```
 
 ## Common Fields
@@ -99,6 +101,7 @@ Fields:
 Assertion targets for `text.file`:
 
 - `text`
+- `context_json`: JSON subject profile envelope
 
 ## `harness` Namespace
 
@@ -119,6 +122,7 @@ Assertion targets for `governance.check`:
 - `summary_json`: structured summary target; `evaluate` receives summary mapping
   with `passed`, `check_id`, `case_id`, `violation_count`
 - `violation_count`: integer violation count target
+- `context_json`: optional JSON subject profile envelope
 
 Security model:
 
@@ -190,6 +194,7 @@ Assertion targets for `cli.run`:
 - `stderr`: text output from command stderr
 - `stdout_path`: path printed on first non-empty stdout line
 - `stdout_path_text`: UTF-8 text from file at `stdout_path`
+- `context_json`: JSON subject profile envelope
 
 ## Types
 
@@ -214,6 +219,8 @@ Published extension type contracts:
 Universal core operator:
 
 - `evaluate` applies to every target/type.
+- evaluator subjects MUST be JSON values only (`null`, boolean, number, string,
+  list, object with string keys).
 
 ## Assertion Leaf Shape
 
