@@ -1253,3 +1253,82 @@ rules:
     references:
       - docs/spec/contract/policy_v1.yaml
       - docs/spec/contract/traceability_v1.yaml
+
+  - id: OBJECTIVE_METRIC_MANIFEST_VALID
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.metrics.objective_manifest
+    norm: MUST
+    requirement: objective_manifest_schema_and_objective_set_must_be_valid
+    description: >
+      Objective scorecard manifest and schema bindings must remain valid and
+      include all required objective IDs.
+    rationale: Prevents silent objective drift and ad-hoc metric selection.
+    risk_if_violated: Measurement can optimize local counters while missing project intent.
+    references:
+      - docs/spec/contract/17_objective_metrics.md
+      - docs/spec/schema/objective_metrics_schema_v1.md
+      - docs/spec/metrics/objective_manifest.yaml
+      - docs/spec/governance/cases/objective_scorecard_metric.spec.md
+
+  - id: OBJECTIVE_SCORECARD_REPORTED
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.metrics.objective_scorecard
+    norm: MUST
+    requirement: objective_scorecard_report_must_be_generated_and_valid
+    description: >
+      Governance must generate a deterministic objective scorecard report with
+      objective scores, tripwire hits, and correction recommendations.
+    rationale: Provides one top-level project-health view tied to stated objectives.
+    risk_if_violated: Metric families remain fragmented and hard to steer.
+    references:
+      - docs/spec/contract/17_objective_metrics.md
+      - scripts/objective_scorecard_report.py
+      - docs/spec/governance/cases/objective_scorecard_metric.spec.md
+
+  - id: OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.metrics.objective_scorecard
+    norm: MUST
+    requirement: objective_scorecard_summary_metrics_must_not_regress
+    description: >
+      Objective scorecard summary metrics must be ratcheted by checked-in
+      baseline and fail on configured regressions.
+    rationale: Preserves directional progress toward project objectives.
+    risk_if_violated: Temporary regressions can become the new normal without explicit approval.
+    references:
+      - docs/spec/metrics/objective_scorecard_baseline.json
+      - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
+
+  - id: OBJECTIVE_TRIPWIRES_ENFORCED
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.metrics.objective_tripwires
+    norm: MUST
+    requirement: manifest_tripwire_checks_must_exist_and_pass
+    description: >
+      Objective manifest tripwire check IDs must map to governance cases and
+      all tripwire checks must pass.
+    rationale: Converts anti-gaming boundaries into executable guardrails.
+    risk_if_violated: Score improvements can hide critical contract/security/runtime failures.
+    references:
+      - docs/spec/metrics/objective_manifest.yaml
+      - docs/spec/governance/cases/objective_tripwires_clean.spec.md
+
+  - id: OBJECTIVE_COURSE_CORRECTION_POLICY_DEFINED
+    introduced_in: v1
+    scope: governance
+    applies_to: docs.spec.metrics.objective_baseline_updates
+    norm: MUST
+    requirement: baseline_update_metadata_notes_must_be_present_and_fresh
+    description: >
+      Baseline update notes must include rationale and hash-pinned entries for
+      required baseline files; stale/missing entries fail governance.
+    rationale: Forces explicit correction narrative and prevents silent baseline manipulation.
+    risk_if_violated: Teams can \"move the goalposts\" without reviewable justification.
+    references:
+      - docs/spec/metrics/baseline_update_notes.yaml
+      - docs/spec/contract/17_objective_metrics.md
+      - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md

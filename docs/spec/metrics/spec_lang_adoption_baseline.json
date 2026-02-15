@@ -609,6 +609,30 @@
       "type": "governance.check"
     },
     {
+      "file": "docs/spec/governance/cases/objective_scorecard_metric.spec.md",
+      "id": "SRGOV-OBJECTIVE-001",
+      "logic_self_contained_ratio": 0.0,
+      "native_logic_escape_hint": 0.0,
+      "segment": "governance",
+      "type": "governance.check"
+    },
+    {
+      "file": "docs/spec/governance/cases/objective_scorecard_non_regression.spec.md",
+      "id": "SRGOV-OBJECTIVE-002",
+      "logic_self_contained_ratio": 0.0,
+      "native_logic_escape_hint": 1.0,
+      "segment": "governance",
+      "type": "governance.check"
+    },
+    {
+      "file": "docs/spec/governance/cases/objective_tripwires_clean.spec.md",
+      "id": "SRGOV-OBJECTIVE-003",
+      "logic_self_contained_ratio": 0.0,
+      "native_logic_escape_hint": 1.0,
+      "segment": "governance",
+      "type": "governance.check"
+    },
+    {
       "file": "docs/spec/governance/cases/pending_status_markers.spec.md",
       "id": "SRGOV-PENDING-001",
       "logic_self_contained_ratio": 0.0,
@@ -1069,9 +1093,9 @@
       "native_logic_escape_case_ratio": 0.0
     },
     "governance": {
-      "case_count": 70,
+      "case_count": 73,
       "mean_logic_self_contained_ratio": 0.0,
-      "native_logic_escape_case_ratio": 0.8714285714285714
+      "native_logic_escape_case_ratio": 0.863013698630137
     },
     "impl": {
       "case_count": 25,
@@ -1085,9 +1109,9 @@
     }
   },
   "summary": {
-    "native_logic_escape_case_ratio": 0.4728682170542636,
-    "overall_logic_self_contained_ratio": 0.09224806201550388,
-    "total_cases": 129,
+    "native_logic_escape_case_ratio": 0.4772727272727273,
+    "overall_logic_self_contained_ratio": 0.09015151515151515,
+    "total_cases": 132,
     "unit_opt_out_count": 21
   },
   "version": 1

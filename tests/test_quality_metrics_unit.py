@@ -1,7 +1,6 @@
 # SPEC-OPT-OUT: Metric engine behavior and baseline-comparison logic for quality report helpers.
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from spec_runner.quality_metrics import compare_metric_non_regression

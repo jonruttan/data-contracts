@@ -12,6 +12,7 @@ Related docs/reference schemas:
 
 - `docs/spec/schema/docs_schema_v1.md`
 - `docs/spec/schema/reference_manifest_v1.md`
+- `docs/spec/schema/objective_metrics_schema_v1.md`
 ```
 
 ## Common Fields

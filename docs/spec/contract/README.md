@@ -27,7 +27,10 @@ Read in order:
 15. `docs/spec/contract/11_adoption_profiles.md`
 16. `docs/spec/contract/12_runner_interface.md`
 17. `docs/spec/contract/13_runtime_scope.md`
-18. `docs/spec/contract/16_rust_primary_transition.md`
+18. `docs/spec/contract/14_spec_lang_libraries.md`
+19. `docs/spec/contract/15_governance_subject_model.md`
+20. `docs/spec/contract/16_rust_primary_transition.md`
+21. `docs/spec/contract/17_objective_metrics.md`
 
 Type contracts:
 

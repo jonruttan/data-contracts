@@ -26,6 +26,10 @@ _NORMATIVE_CONTRACT_DOCS = [
     "docs/spec/contract/11_adoption_profiles.md",
     "docs/spec/contract/12_runner_interface.md",
     "docs/spec/contract/13_runtime_scope.md",
+    "docs/spec/contract/14_spec_lang_libraries.md",
+    "docs/spec/contract/15_governance_subject_model.md",
+    "docs/spec/contract/16_rust_primary_transition.md",
+    "docs/spec/contract/17_objective_metrics.md",
 ]
 
 

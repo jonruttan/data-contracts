@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from pathlib import Path
 from typing import Any
 
+import yaml
 from spec_runner.codecs import load_external_cases
 from spec_runner.contract_governance import contract_coverage_jsonable
 from spec_runner.dispatcher import iter_cases
@@ -18,6 +20,7 @@ from spec_runner.docs_quality import (
     manifest_chapter_paths,
 )
 from spec_runner.settings import SETTINGS
+from spec_runner.spec_portability import spec_portability_report_jsonable
 
 
 def _as_list_of_strings(value: object) -> list[str]:
@@ -218,7 +221,8 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
         cfg.update(config)
 
     roots = _as_list_of_strings(cfg.get("roots"))
-    raw_rules = cfg.get("segment_rules") if isinstance(cfg.get("segment_rules"), list) else []
+    raw_rules_obj = cfg.get("segment_rules")
+    raw_rules = raw_rules_obj if isinstance(raw_rules_obj, list) else []
     rules: list[dict[str, str]] = []
     for item in raw_rules:
         if isinstance(item, dict):
@@ -351,7 +355,8 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
     if isinstance(config, dict):
         cfg.update(config)
 
-    segment_files = cfg.get("segment_files") if isinstance(cfg.get("segment_files"), dict) else {}
+    segment_files_obj = cfg.get("segment_files")
+    segment_files: dict[str, Any] = segment_files_obj if isinstance(segment_files_obj, dict) else {}
     direct_tokens = _as_list_of_strings(cfg.get("direct_runtime_tokens"))
     gate_required = _as_list_of_strings(cfg.get("gate_required_tokens"))
     rust_required = _as_list_of_strings(cfg.get("rust_ci_required_tokens"))
@@ -489,7 +494,8 @@ def docs_operability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
         "examples": {i.path for i in example_issues},
     }
 
-    rules = cfg.get("segment_rules") if isinstance(cfg.get("segment_rules"), list) else []
+    rules_obj = cfg.get("segment_rules")
+    rules = rules_obj if isinstance(rules_obj, list) else []
     segment_rules: list[dict[str, str]] = []
     for item in rules:
         if isinstance(item, dict):
@@ -603,7 +609,8 @@ def contract_assertions_report_jsonable(repo_root: Path, config: dict[str, Any] 
 
     paths = _as_list_of_strings(cfg.get("paths"))
     required_tokens = _as_list_of_strings(cfg.get("required_tokens"))
-    raw_rules = cfg.get("segment_rules") if isinstance(cfg.get("segment_rules"), list) else []
+    raw_rules_obj = cfg.get("segment_rules")
+    raw_rules = raw_rules_obj if isinstance(raw_rules_obj, list) else []
     rules: list[dict[str, str]] = []
     for item in raw_rules:
         if isinstance(item, dict):
@@ -690,4 +697,374 @@ def contract_assertions_report_jsonable(repo_root: Path, config: dict[str, Any] 
         "docs": rows,
         "config": cfg,
         "errors": errors,
+    }
+
+
+def _clamp01(value: float) -> float:
+    if value < 0.0:
+        return 0.0
+    if value > 1.0:
+        return 1.0
+    return value
+
+
+def _lookup_metric_number(payload: object, dotted: str) -> float | None:
+    cur = payload
+    for part in dotted.split("."):
+        key = part.strip()
+        if not key:
+            return None
+        if not isinstance(cur, dict) or key not in cur:
+            return None
+        cur = cur[key]
+    if isinstance(cur, (int, float)):
+        return float(cur)
+    return None
+
+
+def _load_yaml_mapping(path: Path) -> tuple[dict[str, Any], list[str]]:
+    if not path.exists():
+        return {}, [f"{path}:1: missing YAML file"]
+    try:
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        return {}, [f"{path}:1: invalid YAML: {exc}"]
+    if payload is None:
+        return {}, []
+    if not isinstance(payload, dict):
+        return {}, [f"{path}:1: YAML payload must be a mapping"]
+    return payload, []
+
+
+def _render_metric_value(value: float | None) -> str:
+    if value is None:
+        return "missing"
+    return f"{value:.6f}"
+
+
+def _metric_score_from_config(value: float | None, cfg: dict[str, Any]) -> float:
+    if value is None:
+        return 0.0
+    mode = str(cfg.get("mode", "direct")).strip().lower()
+    scale_raw = cfg.get("scale", 1.0)
+    try:
+        scale = float(scale_raw)
+    except (TypeError, ValueError):
+        scale = 1.0
+    if scale <= 0:
+        scale = 1.0
+    normalized = value / scale
+    if mode == "one_minus":
+        return _clamp01(1.0 - normalized)
+    return _clamp01(normalized)
+
+
+def _collect_portability_counter_shares(payload: dict[str, Any]) -> dict[str, float]:
+    cases = payload.get("cases")
+    if not isinstance(cases, list) or not cases:
+        return {
+            "runtime_specific_capability_penalty_share": 0.0,
+            "expect_impl_overlay_penalty_share": 0.0,
+        }
+    runtime_hits = 0
+    impl_hits = 0
+    total = 0
+    for row in cases:
+        if not isinstance(row, dict):
+            continue
+        penalties = row.get("penalties")
+        if not isinstance(penalties, dict):
+            continue
+        total += 1
+        if float(penalties.get("runtime_specific_capability", 0.0)) > 0.0:
+            runtime_hits += 1
+        if float(penalties.get("expect_impl_overlay", 0.0)) > 0.0:
+            impl_hits += 1
+    den = float(max(1, total))
+    return {
+        "runtime_specific_capability_penalty_share": float(runtime_hits) / den,
+        "expect_impl_overlay_penalty_share": float(impl_hits) / den,
+    }
+
+
+def _governance_policy_evaluate_coverage(payload: dict[str, Any]) -> float:
+    rows = payload.get("cases")
+    if not isinstance(rows, list):
+        return 0.0
+    gov_rows = [r for r in rows if isinstance(r, dict) and str(r.get("type", "")).strip() == "governance.check"]
+    if not gov_rows:
+        return 1.0
+    with_policy = sum(1 for r in gov_rows if float(r.get("native_logic_escape_hint", 0.0)) <= 0.0)
+    return float(with_policy) / float(len(gov_rows))
+
+
+def _sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    h.update(path.read_bytes())
+    return h.hexdigest()
+
+
+def validate_metric_baseline_notes(
+    repo_root: Path,
+    *,
+    notes_path: str,
+    baseline_paths: list[str],
+) -> list[str]:
+    note_file = repo_root / notes_path
+    payload, errs = _load_yaml_mapping(note_file)
+    if errs:
+        return errs
+    entries = payload.get("entries")
+    if not isinstance(entries, list) or not entries:
+        return [f"{notes_path}:1: entries must be a non-empty list"]
+
+    by_path: dict[str, dict[str, Any]] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        rel = str(entry.get("baseline", "")).strip()
+        if rel:
+            by_path[rel] = entry
+
+    violations: list[str] = []
+    for rel in baseline_paths:
+        path = repo_root / rel
+        if not path.exists():
+            violations.append(f"{rel}:1: baseline file missing")
+            continue
+        entry = by_path.get(rel)
+        if entry is None:
+            violations.append(f"{notes_path}:1: missing baseline update note entry for {rel}")
+            continue
+        note_hash = str(entry.get("sha256", "")).strip().lower()
+        if not re.fullmatch(r"[0-9a-f]{64}", note_hash):
+            violations.append(f"{notes_path}:1: entry for {rel} must include sha256 hex digest")
+            continue
+        actual_hash = _sha256_file(path)
+        if note_hash != actual_hash:
+            violations.append(
+                f"{notes_path}:1: sha256 mismatch for {rel} (note={note_hash} actual={actual_hash})"
+            )
+        rationale = str(entry.get("rationale", "")).strip()
+        measurement_change = str(entry.get("measurement_model_change", "")).strip().lower()
+        if not rationale:
+            violations.append(f"{notes_path}:1: entry for {rel} missing non-empty rationale")
+        if measurement_change not in {"yes", "no"}:
+            violations.append(
+                f"{notes_path}:1: entry for {rel} measurement_model_change must be 'yes' or 'no'"
+            )
+    return violations
+
+
+def default_objective_scorecard_config() -> dict[str, Any]:
+    return {
+        "manifest_path": "docs/spec/metrics/objective_manifest.yaml",
+        "thresholds": {
+            "green_min": 0.75,
+            "yellow_min": 0.50,
+        },
+        "tripwire_status": {},
+    }
+
+
+def objective_scorecard_report_jsonable(repo_root: Path, config: dict[str, Any] | None = None) -> dict[str, Any]:
+    root = repo_root.resolve()
+    cfg = default_objective_scorecard_config()
+    if isinstance(config, dict):
+        cfg.update(config)
+    thresholds_obj = cfg.get("thresholds")
+    thresholds: dict[str, Any] = thresholds_obj if isinstance(thresholds_obj, dict) else {}
+    try:
+        green_min = float(thresholds.get("green_min", 0.75))
+    except (TypeError, ValueError):
+        green_min = 0.75
+    try:
+        yellow_min = float(thresholds.get("yellow_min", 0.50))
+    except (TypeError, ValueError):
+        yellow_min = 0.50
+
+    manifest_path = str(cfg.get("manifest_path", "")).strip() or "docs/spec/metrics/objective_manifest.yaml"
+    manifest, manifest_errs = _load_yaml_mapping(root / manifest_path)
+    objectives = manifest.get("objectives")
+    if not isinstance(objectives, list):
+        objectives = []
+
+    portability = spec_portability_report_jsonable(root, config=None)
+    spec_lang = spec_lang_adoption_report_jsonable(root, config=None)
+    runner_indep = runner_independence_report_jsonable(root, config=None)
+    docs_operability = docs_operability_report_jsonable(root, config=None)
+    contract_assertions = contract_assertions_report_jsonable(root, config=None)
+
+    portability_counters = _collect_portability_counter_shares(portability)
+    sources: dict[str, Any] = {
+        "spec_portability": portability,
+        "spec_lang_adoption": spec_lang,
+        "runner_independence": runner_indep,
+        "docs_operability": docs_operability,
+        "contract_assertions": contract_assertions,
+        "derived": {
+            **portability_counters,
+            "governance_policy_evaluate_coverage_ratio": _governance_policy_evaluate_coverage(spec_lang),
+        },
+    }
+    report_errors: list[str] = [*manifest_errs]
+    for label, payload in (
+        ("spec_portability", portability),
+        ("spec_lang_adoption", spec_lang),
+        ("runner_independence", runner_indep),
+        ("docs_operability", docs_operability),
+        ("contract_assertions", contract_assertions),
+    ):
+        errs = payload.get("errors") if isinstance(payload, dict) else []
+        if isinstance(errs, list):
+            for err in errs:
+                s = str(err).strip()
+                if s:
+                    report_errors.append(f"{label}: {s}")
+    tripwire_status_obj = cfg.get("tripwire_status")
+    tripwire_status: dict[str, Any] = tripwire_status_obj if isinstance(tripwire_status_obj, dict) else {}
+
+    objective_rows: list[dict[str, Any]] = []
+    all_tripwire_hits: list[dict[str, str]] = []
+    recommendations: list[str] = []
+    for raw_obj in objectives:
+        if not isinstance(raw_obj, dict):
+            continue
+        objective_id = str(raw_obj.get("id", "")).strip() or "<unknown>"
+        name = str(raw_obj.get("name", "")).strip() or objective_id
+
+        primary_obj = raw_obj.get("primary")
+        primary_cfg: dict[str, Any] = primary_obj if isinstance(primary_obj, dict) else {}
+        primary_source = str(primary_cfg.get("source", "")).strip()
+        primary_field = str(primary_cfg.get("field", "")).strip()
+        primary_value = _lookup_metric_number(sources.get(primary_source), primary_field) if primary_source else None
+        primary_score = _metric_score_from_config(primary_value, primary_cfg)
+
+        counters_obj = raw_obj.get("counters")
+        counter_cfgs = counters_obj if isinstance(counters_obj, list) else []
+        counter_rows: list[dict[str, Any]] = []
+        counter_scores: list[float] = []
+        for raw_counter in counter_cfgs:
+            if not isinstance(raw_counter, dict):
+                continue
+            cid = str(raw_counter.get("id", "")).strip() or "counter"
+            source = str(raw_counter.get("source", "")).strip()
+            field = str(raw_counter.get("field", "")).strip()
+            value = _lookup_metric_number(sources.get(source), field) if source else None
+            score = _metric_score_from_config(value, raw_counter)
+            counter_rows.append(
+                {
+                    "id": cid,
+                    "source": source,
+                    "field": field,
+                    "value": value,
+                    "value_rendered": _render_metric_value(value),
+                    "score": score,
+                }
+            )
+            counter_scores.append(score)
+
+        tripwires_obj = raw_obj.get("tripwires")
+        objective_tripwires = tripwires_obj if isinstance(tripwires_obj, list) else []
+        tripwire_hits: list[dict[str, str]] = []
+        for raw_tw in objective_tripwires:
+            if not isinstance(raw_tw, dict):
+                continue
+            check_id = str(raw_tw.get("check_id", "")).strip()
+            if not check_id:
+                continue
+            status = tripwire_status.get(check_id, "unknown")
+            if isinstance(status, bool):
+                is_fail = not status
+            else:
+                status_str = str(status).strip().lower()
+                is_fail = status_str in {"fail", "failing", "error", "false", "0"}
+            if is_fail:
+                tripwire_hits.append(
+                    {
+                        "check_id": check_id,
+                        "reason": str(raw_tw.get("reason", "")).strip() or "tripwire failed",
+                    }
+                )
+
+        primary_weight = float(raw_obj.get("primary_weight", 0.6))
+        counter_weight = float(raw_obj.get("counter_weight", 0.4))
+        counter_avg = sum(counter_scores) / len(counter_scores) if counter_scores else primary_score
+        denom = primary_weight + counter_weight
+        if denom <= 0:
+            objective_score = primary_score
+        else:
+            objective_score = _clamp01((primary_weight * primary_score + counter_weight * counter_avg) / denom)
+
+        status = "green"
+        if tripwire_hits:
+            status = "red"
+        elif objective_score < yellow_min:
+            status = "red"
+        elif objective_score < green_min:
+            status = "yellow"
+        if status in {"red", "yellow"}:
+            corr_obj = raw_obj.get("course_correction")
+            corr: dict[str, Any] = corr_obj if isinstance(corr_obj, dict) else {}
+            line = str(corr.get("action", "")).strip()
+            if line:
+                recommendations.append(f"{objective_id}: {line}")
+
+        row = {
+            "id": objective_id,
+            "name": name,
+            "score": objective_score,
+            "status": status,
+            "primary": {
+                "source": primary_source,
+                "field": primary_field,
+                "value": primary_value,
+                "value_rendered": _render_metric_value(primary_value),
+                "score": primary_score,
+            },
+            "counters": counter_rows,
+            "tripwire_hits": tripwire_hits,
+        }
+        objective_rows.append(row)
+        for hit in tripwire_hits:
+            all_tripwire_hits.append(
+                {
+                    "objective_id": objective_id,
+                    "check_id": hit["check_id"],
+                    "reason": hit["reason"],
+                }
+            )
+
+    objective_rows.sort(key=lambda r: str(r.get("id", "")))
+    scores = [float(r.get("score", 0.0)) for r in objective_rows]
+    overall_min = min(scores) if scores else 0.0
+    overall_mean = (sum(scores) / len(scores)) if scores else 0.0
+    status_counts = {
+        "green": sum(1 for r in objective_rows if r.get("status") == "green"),
+        "yellow": sum(1 for r in objective_rows if r.get("status") == "yellow"),
+        "red": sum(1 for r in objective_rows if r.get("status") == "red"),
+    }
+    overall_status = "green"
+    if status_counts["red"] > 0:
+        overall_status = "red"
+    elif status_counts["yellow"] > 0:
+        overall_status = "yellow"
+
+    uniq_recos = sorted({r for r in recommendations if r})
+    return {
+        "version": 1,
+        "summary": {
+            "objective_count": len(objective_rows),
+            "overall_min_score": overall_min,
+            "overall_mean_score": overall_mean,
+            "overall_status": overall_status,
+            "tripwire_hit_count": len(all_tripwire_hits),
+            "status_counts": status_counts,
+        },
+        "objectives": objective_rows,
+        "tripwire_hits": all_tripwire_hits,
+        "course_correction_recommendations": uniq_recos,
+        "manifest_path": manifest_path,
+        "config": cfg,
+        "errors": report_errors,
     }

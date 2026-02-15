@@ -66,6 +66,12 @@ case "${subcommand}" in
   contract-assertions-md)
     exec "${PYTHON_BIN}" scripts/contract_assertions_report.py --format md --out .artifacts/contract-assertions-summary.md "$@"
     ;;
+  objective-scorecard-json)
+    exec "${PYTHON_BIN}" scripts/objective_scorecard_report.py --out .artifacts/objective-scorecard.json "$@"
+    ;;
+  objective-scorecard-md)
+    exec "${PYTHON_BIN}" scripts/objective_scorecard_report.py --format md --out .artifacts/objective-scorecard-summary.md "$@"
+    ;;
   docs-build)
     exec "${PYTHON_BIN}" scripts/docs_build_reference.py "$@"
     ;;

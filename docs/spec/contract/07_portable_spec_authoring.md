@@ -78,3 +78,7 @@ from checked-in baselines:
 - runner independence (`runtime.runner_independence_*`)
 - docs operability (`docs.operability_*`)
 - contract assertions quality (`spec.contract_assertions_*`)
+
+Top-level objective steering is reported through objective scorecard metrics:
+
+- objective scorecard (`objective.scorecard_*`, `objective.tripwires_clean`)

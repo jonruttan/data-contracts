@@ -1324,3 +1324,87 @@ links:
       - scripts/run_governance_specs.py
       - docs/spec/governance/cases/docs_adoption_profiles_sync.spec.md
     notes: "Adoption profile docs remain synchronized during Rust-primary transition."
+
+  - rule_id: OBJECTIVE_METRIC_MANIFEST_VALID
+    policy_ref: docs/spec/contract/policy_v1.yaml#OBJECTIVE_METRIC_MANIFEST_VALID
+    contract_refs:
+      - docs/spec/contract/17_objective_metrics.md
+    schema_refs:
+      - docs/spec/schema/objective_metrics_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_objective_scorecard_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - docs/spec/metrics/objective_manifest.yaml
+      - spec_runner/quality_metrics.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/objective_scorecard_metric.spec.md
+    notes: "Objective manifest remains schema-valid and includes required objective IDs."
+
+  - rule_id: OBJECTIVE_SCORECARD_REPORTED
+    policy_ref: docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_REPORTED
+    contract_refs:
+      - docs/spec/contract/17_objective_metrics.md
+    schema_refs:
+      - docs/spec/schema/objective_metrics_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_objective_scorecard_unit.py
+      - tests/test_objective_scorecard_report_script_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/objective_scorecard_report.py
+      - spec_runner/quality_metrics.py
+      - scripts/runner_adapter.sh
+      - scripts/ci_gate_summary.py
+      - docs/spec/governance/cases/objective_scorecard_metric.spec.md
+    notes: "Objective scorecard is generated as JSON/Markdown artifact."
+
+  - rule_id: OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED
+    contract_refs:
+      - docs/spec/contract/17_objective_metrics.md
+    schema_refs:
+      - docs/spec/schema/objective_metrics_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_objective_scorecard_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - docs/spec/metrics/objective_scorecard_baseline.json
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
+    notes: "Objective scorecard summary values are ratchet-gated by baseline."
+
+  - rule_id: OBJECTIVE_TRIPWIRES_ENFORCED
+    policy_ref: docs/spec/contract/policy_v1.yaml#OBJECTIVE_TRIPWIRES_ENFORCED
+    contract_refs:
+      - docs/spec/contract/17_objective_metrics.md
+    schema_refs:
+      - docs/spec/schema/objective_metrics_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - docs/spec/metrics/objective_manifest.yaml
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/objective_tripwires_clean.spec.md
+    notes: "Tripwire check IDs in objective manifest must map to passing governance checks."
+
+  - rule_id: OBJECTIVE_COURSE_CORRECTION_POLICY_DEFINED
+    policy_ref: docs/spec/contract/policy_v1.yaml#OBJECTIVE_COURSE_CORRECTION_POLICY_DEFINED
+    contract_refs:
+      - docs/spec/contract/17_objective_metrics.md
+    schema_refs:
+      - docs/spec/schema/objective_metrics_schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_objective_scorecard_unit.py
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - docs/spec/metrics/baseline_update_notes.yaml
+      - spec_runner/quality_metrics.py
+      - scripts/run_governance_specs.py
+      - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
+    notes: "Baseline update metadata notes are hash-pinned and required by governance."

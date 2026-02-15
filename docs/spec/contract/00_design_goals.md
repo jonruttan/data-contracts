@@ -50,3 +50,19 @@ Project-level philosophy and process bar:
 - Failures SHOULD include case id and assertion path context.
 - Machine-readable reporting SHOULD be stable across implementations.
 - Contract-breaking changes MUST be versioned and documented.
+
+## Minimal Reusable Parts
+
+- The project SHOULD be composed of a minimal set of reusable boundaries:
+  - schema/contract
+  - spec-lang decision core
+  - adapter side-effect surfaces
+- New behavior SHOULD prefer reusing existing contract/type/config surfaces over
+  adding one-off runtime-specific paths.
+
+## Meta Self-Application
+
+- The project SHOULD enforce its own contract/governance policy through
+  executable specs and governance checks.
+- Governance decision logic SHOULD be data-driven (spec-lang policies) rather
+  than ad-hoc host-language branches.

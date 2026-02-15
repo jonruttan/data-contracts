@@ -20,6 +20,9 @@ Notes:
   self-containment baseline metrics.
 - Additional ratchet-only metrics track spec-lang adoption, runner
   independence, docs operability, and contract assertions quality.
+- Objective scorecard reporting now composes all metric families into a single
+  objective-aligned health view with tripwire hits and course-correction
+  recommendations.
 - Spec-lang now supports reusable library symbols via
   `harness.spec_lang.library_paths` and optional `exports` allowlists.
 - Docs quality v2 adds schema-backed `doc-meta`, manifest-driven reference

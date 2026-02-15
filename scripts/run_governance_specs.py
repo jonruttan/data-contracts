@@ -42,8 +42,10 @@ from spec_runner.docs_quality import render_reference_index
 from spec_runner.quality_metrics import compare_metric_non_regression
 from spec_runner.quality_metrics import contract_assertions_report_jsonable
 from spec_runner.quality_metrics import docs_operability_report_jsonable
+from spec_runner.quality_metrics import objective_scorecard_report_jsonable
 from spec_runner.quality_metrics import runner_independence_report_jsonable
 from spec_runner.quality_metrics import spec_lang_adoption_report_jsonable
+from spec_runner.quality_metrics import validate_metric_baseline_notes
 from spec_runner.quality_metrics import _load_baseline_json
 from spec_runner.spec_portability import spec_portability_report_jsonable
 
@@ -842,6 +844,176 @@ def _scan_contract_assertions_non_regression(root: Path, *, harness: dict | None
         segment_fields=cfg.get("segment_fields", {}),
         epsilon=epsilon,
     )
+
+
+def _scan_objective_scorecard_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("objective_scorecard")
+    if not isinstance(cfg, dict):
+        return ["objective.scorecard_metric requires harness.objective_scorecard mapping in governance spec"]
+    policy_evaluate = None
+    if "policy_evaluate" in cfg:
+        try:
+            policy_evaluate = _normalize_policy_evaluate(
+                cfg.get("policy_evaluate"), field="harness.objective_scorecard.policy_evaluate"
+            )
+        except ValueError as exc:
+            return [str(exc)]
+    payload = objective_scorecard_report_jsonable(root, config=cfg)
+    errs = payload.get("errors") or []
+    if not isinstance(errs, list):
+        return ["objective.scorecard_metric report contains invalid errors shape"]
+    violations = [str(e) for e in errs if str(e).strip()]
+    if violations:
+        return violations
+    if policy_evaluate is not None:
+        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
+        if not ok:
+            return ["objective.scorecard_metric policy_evaluate returned false"]
+    return []
+
+
+def _scan_objective_scorecard_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("objective_scorecard_non_regression")
+    if not isinstance(cfg, dict):
+        return [
+            "objective.scorecard_non_regression requires harness.objective_scorecard_non_regression mapping in governance spec"
+        ]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.objective_scorecard_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("objective_scorecard")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.objective_scorecard_non_regression.objective_scorecard must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.objective_scorecard_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.objective_scorecard_non_regression.epsilon must be >= 0"]
+
+    current = objective_scorecard_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current objective scorecard report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+
+    note_cfg = cfg.get("baseline_notes")
+    if isinstance(note_cfg, dict):
+        notes_path = str(note_cfg.get("path", "")).strip()
+        baseline_paths = note_cfg.get("baseline_paths")
+        if not notes_path:
+            return ["harness.objective_scorecard_non_regression.baseline_notes.path must be non-empty"]
+        if (
+            not isinstance(baseline_paths, list)
+            or not baseline_paths
+            or any(not isinstance(x, str) or not x.strip() for x in baseline_paths)
+        ):
+            return [
+                "harness.objective_scorecard_non_regression.baseline_notes.baseline_paths must be a non-empty list"
+            ]
+        note_violations = validate_metric_baseline_notes(
+            root,
+            notes_path=notes_path,
+            baseline_paths=[str(x).strip() for x in baseline_paths],
+        )
+        if note_violations:
+            return note_violations
+
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get("summary_fields"),
+        segment_fields=cfg.get("segment_fields", {}),
+        epsilon=epsilon,
+    )
+
+
+def _scan_objective_tripwires_clean(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("objective_tripwires")
+    if not isinstance(cfg, dict):
+        return ["objective.tripwires_clean requires harness.objective_tripwires mapping in governance spec"]
+    manifest_path = str(cfg.get("manifest_path", "")).strip() or "docs/spec/metrics/objective_manifest.yaml"
+    cases_path = str(cfg.get("cases_path", "")).strip() or "docs/spec/governance/cases"
+    case_file_pattern = str(cfg.get("case_file_pattern", "")).strip() or SETTINGS.case.default_file_pattern
+
+    manifest_file = root / manifest_path
+    if not manifest_file.exists():
+        return [f"{manifest_path}:1: missing objective manifest"]
+    try:
+        manifest = yaml.safe_load(manifest_file.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        return [f"{manifest_path}:1: invalid YAML: {exc}"]
+    if not isinstance(manifest, dict):
+        return [f"{manifest_path}:1: manifest must be a mapping"]
+
+    objectives = manifest.get("objectives")
+    if not isinstance(objectives, list):
+        return [f"{manifest_path}:1: objectives must be a list"]
+
+    check_ids: set[str] = set()
+    for row in objectives:
+        if not isinstance(row, dict):
+            continue
+        tripwires = row.get("tripwires")
+        if not isinstance(tripwires, list):
+            continue
+        for tw in tripwires:
+            if not isinstance(tw, dict):
+                continue
+            cid = str(tw.get("check_id", "")).strip()
+            if cid:
+                check_ids.add(cid)
+
+    if not check_ids:
+        return [f"{manifest_path}:1: no tripwire check_id entries found"]
+
+    cases_dir = root / cases_path
+    if not cases_dir.exists() or not cases_dir.is_dir():
+        return [f"{cases_path}:1: cases path does not exist"]
+
+    check_to_cases: dict[str, list[dict]] = {}
+    for spec in iter_cases(cases_dir, file_pattern=case_file_pattern):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        case_check = str(case.get("check", "")).strip()
+        if case_check:
+            check_to_cases.setdefault(case_check, []).append(case)
+
+    violations: list[str] = []
+    for cid in sorted(check_ids):
+        if cid in {
+            "objective.tripwires_clean",
+            "objective.scorecard_metric",
+            "objective.scorecard_non_regression",
+        }:
+            continue
+        fn = _CHECKS.get(cid)
+        if fn is None:
+            violations.append(f"{manifest_path}:1: tripwire references unknown check id {cid}")
+            continue
+        cases = check_to_cases.get(cid, [])
+        if not cases:
+            violations.append(f"{cases_path}:1: no governance case found for tripwire check {cid}")
+            continue
+        matched = False
+        for case in cases:
+            harness_case = case.get("harness") if isinstance(case.get("harness"), dict) else {}
+            local_harness = dict(harness_case)
+            local_harness["root"] = str(root)
+            params = inspect.signature(fn).parameters
+            case_violations = fn(root, harness=local_harness) if "harness" in params else fn(root)
+            if not case_violations:
+                matched = True
+                break
+        if not matched:
+            violations.append(f"tripwire check {cid} is failing in all matching governance cases")
+    return violations
 
 
 def _is_spec_opening_fence(line: str) -> tuple[str, int] | None:
@@ -2636,6 +2808,9 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.operability_non_regression": _scan_docs_operability_non_regression,
     "spec.contract_assertions_metric": _scan_contract_assertions_metric,
     "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
+    "objective.scorecard_metric": _scan_objective_scorecard_metric,
+    "objective.scorecard_non_regression": _scan_objective_scorecard_non_regression,
+    "objective.tripwires_clean": _scan_objective_tripwires_clean,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
     "docs.regex_doc_sync": _scan_regex_doc_sync,
     "assert.universal_core_sync": _scan_assert_universal_core_sync,

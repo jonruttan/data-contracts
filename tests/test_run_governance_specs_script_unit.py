@@ -3161,3 +3161,86 @@ links:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
+
+
+def test_scan_objective_scorecard_metric_passes(monkeypatch, tmp_path):
+    mod = _load_script_module()
+    monkeypatch.setattr(
+        mod,
+        "objective_scorecard_report_jsonable",
+        lambda *_a, **_k: {
+            "summary": {"overall_min_score": 0.7},
+            "objectives": [],
+            "tripwire_hits": [],
+            "errors": [],
+        },
+    )
+    out = mod._scan_objective_scorecard_metric(
+        tmp_path,
+        harness={"objective_scorecard": {"manifest_path": "docs/spec/metrics/objective_manifest.yaml"}},
+    )
+    assert out == []
+
+
+def test_scan_objective_scorecard_non_regression_enforces_baseline_notes(monkeypatch, tmp_path):
+    mod = _load_script_module()
+    monkeypatch.setattr(
+        mod,
+        "objective_scorecard_report_jsonable",
+        lambda *_a, **_k: {
+            "summary": {"overall_min_score": 0.7, "overall_mean_score": 0.7, "tripwire_hit_count": 0},
+            "objectives": [],
+            "tripwire_hits": [],
+            "errors": [],
+        },
+    )
+    _write_text(
+        tmp_path / "docs/spec/metrics/objective_scorecard_baseline.json",
+        '{\"summary\": {\"overall_min_score\": 0.7, \"overall_mean_score\": 0.7, \"tripwire_hit_count\": 0}}\\n',
+    )
+    _write_text(
+        tmp_path / "docs/spec/metrics/spec_portability_baseline.json",
+        '{\"summary\": {\"overall_logic_self_contained_ratio\": 0.1}}\\n',
+    )
+    _write_text(
+        tmp_path / "docs/spec/metrics/baseline_update_notes.yaml",
+        "version: 1\nentries: []\n",
+    )
+    out = mod._scan_objective_scorecard_non_regression(
+        tmp_path,
+        harness={
+            "objective_scorecard_non_regression": {
+                "baseline_path": "docs/spec/metrics/objective_scorecard_baseline.json",
+                "summary_fields": {"overall_min_score": "non_decrease"},
+                "segment_fields": {},
+                "epsilon": 1e-12,
+                "baseline_notes": {
+                    "path": "docs/spec/metrics/baseline_update_notes.yaml",
+                    "baseline_paths": ["docs/spec/metrics/spec_portability_baseline.json"],
+                },
+            }
+        },
+    )
+    assert out
+
+
+def test_scan_objective_tripwires_clean_detects_missing_case(tmp_path):
+    mod = _load_script_module()
+    _write_text(
+        tmp_path / "docs/spec/metrics/objective_manifest.yaml",
+        """version: 1
+objectives:
+  - id: OBJ-1
+    name: Obj
+    primary: {source: spec_portability, field: summary.overall_self_contained_ratio}
+    tripwires:
+      - check_id: docs.security_warning_contract
+""",
+    )
+    (tmp_path / "docs/spec/governance/cases").mkdir(parents=True, exist_ok=True)
+    out = mod._scan_objective_tripwires_clean(
+        tmp_path,
+        harness={"objective_tripwires": {"manifest_path": "docs/spec/metrics/objective_manifest.yaml"}},
+    )
+    assert out
+    assert any("no governance case found" in v for v in out)

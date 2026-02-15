@@ -31,6 +31,8 @@ def _default_steps(runner_bin: str) -> list[tuple[str, list[str]]]:
         ("docs_operability_md", [runner_bin, "docs-operability-md"]),
         ("contract_assertions_json", [runner_bin, "contract-assertions-json"]),
         ("contract_assertions_md", [runner_bin, "contract-assertions-md"]),
+        ("objective_scorecard_json", [runner_bin, "objective-scorecard-json"]),
+        ("objective_scorecard_md", [runner_bin, "objective-scorecard-md"]),
         ("evaluate_style", [runner_bin, "style-check"]),
         ("ruff", [runner_bin, "lint"]),
         ("mypy", [runner_bin, "typecheck"]),
