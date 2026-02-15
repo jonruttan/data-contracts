@@ -9,7 +9,7 @@ from spec_runner.compiler import compile_assert_tree, compile_external_case
 from spec_runner.internal_model import GroupNode, PredicateLeaf
 
 
-def test_compile_leaf_ops_to_spec_lang_exprs() -> None:
+def test_compile_evaluate_leaf_to_spec_lang_expr() -> None:
     raw = {
         "id": "C-1",
         "type": "cli.run",
@@ -18,16 +18,9 @@ def test_compile_leaf_ops_to_spec_lang_exprs() -> None:
                 "target": "stdout",
                 "must": [
                     {
-                        "contain": ["ok"],
-                        "regex": ["^o"],
-                        "json_type": ["list"],
-                        "evaluate": [{"contains": ["ok"]}],
+                        "evaluate": [{"contains": [{"var": "subject"}, "ok"]}],
                     }
                 ],
-            },
-            {
-                "target": "stdout_path",
-                "must": [{"exists": [True]}],
             },
         ],
     }
@@ -45,32 +38,19 @@ def test_compile_leaf_ops_to_spec_lang_exprs() -> None:
             _walk(c)
 
     _walk(case.assert_tree)
-    by_op = {leaf.op: leaf for leaf in leaves}
-
-    assert by_op["contain"].expr == ["contains", ["subject"], "ok"]
-    assert by_op["contain"].subject_key == "stdout"
-    assert by_op["regex"].expr == ["regex_match", ["subject"], "^o"]
-    assert by_op["regex"].subject_key == "stdout"
-    assert by_op["json_type"].expr == ["json_type", ["json_parse", ["subject"]], "list"]
-    assert by_op["json_type"].subject_key == "stdout"
-    assert by_op["exists"].expr == ["eq", ["subject"], True]
-    assert by_op["exists"].subject_key == "stdout_path.exists"
-    assert by_op["evaluate"].expr == ["contains", "ok"]
-    assert by_op["evaluate"].subject_key == "stdout"
+    assert len(leaves) == 1
+    leaf = leaves[0]
+    assert leaf.op == "evaluate"
+    assert leaf.expr == ["contains", ["var", "subject"], "ok"]
+    assert leaf.subject_key == "stdout"
 
 
-def test_compile_exists_uses_target_derived_subject_key() -> None:
-    tree = compile_assert_tree(
-        [{"target": "stdout", "must": [{"exists": [True]}]}],
-        type_name="cli.run",
-    )
-    assert isinstance(tree, GroupNode)
-    leaf_group = tree.children[0]
-    assert isinstance(leaf_group, GroupNode)
-    leaf = leaf_group.children[0]
-    assert isinstance(leaf, PredicateLeaf)
-    assert leaf.subject_key == "stdout.exists"
-    assert leaf.expr == ["eq", ["subject"], True]
+def test_compile_non_evaluate_ops_are_rejected() -> None:
+    with pytest.raises(ValueError, match="unsupported op for cli.run.stdout: contain"):
+        compile_assert_tree(
+            [{"target": "stdout", "must": [{"contain": ["x"]}]}],
+            type_name="cli.run",
+        )
 
 
 def test_compile_evaluate_is_universal_across_targets() -> None:
@@ -81,26 +61,9 @@ def test_compile_evaluate_is_universal_across_targets() -> None:
     assert isinstance(tree, GroupNode)
 
 
-def test_compile_json_type_enforces_supported_values() -> None:
-    with pytest.raises(ValueError, match="unsupported json_type"):
+def test_compile_only_evaluate_supported_matrix() -> None:
+    with pytest.raises(ValueError, match="unsupported op for cli.run.stdout: json_type"):
         compile_assert_tree(
-            [{"target": "stdout", "must": [{"json_type": ["nope"]}]}],
+            [{"target": "stdout", "must": [{"json_type": ["array"]}]}],
             type_name="cli.run",
         )
-
-
-def test_compile_json_type_accepts_canonical_json_names() -> None:
-    tree = compile_assert_tree(
-        [
-            {
-                "target": "stdout",
-                "must": [
-                    {"json_type": ["array"]},
-                    {"json_type": ["object"]},
-                    {"json_type": ["boolean"]},
-                ],
-            }
-        ],
-        type_name="cli.run",
-    )
-    assert isinstance(tree, GroupNode)

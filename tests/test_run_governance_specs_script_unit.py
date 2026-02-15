@@ -50,7 +50,10 @@ harness:
 assert:
   - target: text
     must:
-      - contain: ["PASS: pending.no_resolved_markers"]
+      - evaluate:
+        - contains:
+          - var: subject
+          - "PASS:"
 ```
 """
 
@@ -67,9 +70,19 @@ check: {check}
 harness:
   root: {root}
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: {check}"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - {check}
 ```
 """
 
@@ -300,9 +313,19 @@ harness:
     forbidden_tokens:
       - ROOT_DIR}}/.venv/bin/python
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.python_bin_resolver_sync"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.python_bin_resolver_sync
 ```
 """,
     )
@@ -352,9 +375,19 @@ harness:
     forbidden_tokens:
       - scripts/run_governance_specs.py
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.runner_interface_gate_sync"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.runner_interface_gate_sync
 ```
 """,
     )
@@ -396,9 +429,19 @@ harness:
     ignore_checks:
       - governance.policy_evaluate_required
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: governance.policy_evaluate_required"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - governance.policy_evaluate_required
 ```
 """,
     )
@@ -419,7 +462,10 @@ harness:
 assert:
   - target: text
     must:
-      - contain: ["PASS: pending.no_resolved_markers"]
+      - evaluate:
+        - contains:
+          - var: subject
+          - "PASS:"
 ```
 """,
     )
@@ -481,7 +527,10 @@ harness:
 assert:
   - target: text
     must:
-      - contain: ["PASS: pending.no_resolved_markers"]
+      - evaluate:
+        - contains:
+          - var: subject
+          - "PASS:"
 ```
 """,
     )
@@ -517,9 +566,19 @@ harness:
       - var: subject
       - violations
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: governance.policy_library_usage_required"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - governance.policy_library_usage_required
 ```
 """,
     )
@@ -540,9 +599,19 @@ harness:
     - true
     - true
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: pending.no_resolved_markers"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - pending.no_resolved_markers
 ```
 """,
     )
@@ -567,9 +636,19 @@ harness:
     - true
     - true
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: pending.no_resolved_markers"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - pending.no_resolved_markers
 ```
 """,
     )
@@ -604,9 +683,19 @@ harness:
     forbidden_tokens:
       - Node.js runner
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.scope_sync"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.scope_sync
 ```
 """,
     )
@@ -719,9 +808,19 @@ harness:
     allowed_assert_targets: ["status", "headers", "body_text", "body_json"]
     required_request_fields: ["method", "url"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: conformance.api_http_portable_shape"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.api_http_portable_shape
 ```
 """,
     )
@@ -888,9 +987,19 @@ harness:
             - var: subject
         - 0
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: conformance.portable_determinism_guard"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.portable_determinism_guard
 ```
 """,
     )
@@ -949,9 +1058,19 @@ check: conformance.portable_determinism_guard
 harness:
   root: {tmp_path}
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: conformance.portable_determinism_guard"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.portable_determinism_guard
 ```
 """,
     )
@@ -1005,9 +1124,19 @@ harness:
             - var: subject
         - 0
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: conformance.no_ambient_assumptions"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.no_ambient_assumptions
 ```
 """,
     )
@@ -1066,9 +1195,19 @@ check: conformance.no_ambient_assumptions
 harness:
   root: {tmp_path}
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: conformance.no_ambient_assumptions"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.no_ambient_assumptions
 ```
 """,
     )
@@ -1227,9 +1366,19 @@ harness:
             - var: subject
         - 0
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: conformance.spec_lang_preferred"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.spec_lang_preferred
 ```
 """,
     )
@@ -1359,11 +1508,11 @@ def test_script_enforces_regex_doc_sync(tmp_path):
     )
     _write_text(
         tmp_path / "docs/spec/contract/03_assertions.md",
-        "contain regex docs/spec/contract/03a_regex_portability_v1.md\n",
+        "evaluate docs/spec/contract/03a_regex_portability_v1.md\n",
     )
     _write_text(
         tmp_path / "docs/spec/schema/schema_v1.md",
-        "contain regex docs/spec/contract/03a_regex_portability_v1.md\n",
+        "evaluate docs/spec/contract/03a_regex_portability_v1.md\n",
     )
     _write_text(
         tmp_path / "docs/spec/contract/policy_v1.yaml",
@@ -1372,7 +1521,7 @@ def test_script_enforces_regex_doc_sync(tmp_path):
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
 
-    _write_text(tmp_path / "docs/spec/contract/03_assertions.md", "contain regex\n")
+    _write_text(tmp_path / "docs/spec/contract/03_assertions.md", "evaluate\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
 
@@ -1399,9 +1548,19 @@ harness:
     required_globs:
       - docs/spec/contract/*.md
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.reference_surface_complete"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.reference_surface_complete
 ```
 """,
     )
@@ -1436,9 +1595,19 @@ harness:
     include_glob: docs/book/*.md
     exclude_files: ["docs/book/reference_index.md"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.reference_index_sync"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.reference_index_sync
 ```
 """,
     )
@@ -1474,9 +1643,19 @@ harness:
   docs_examples:
     files: ["docs/book/03_assertions.md"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.examples_runnable"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.examples_runnable
 ```
 """,
     )
@@ -1550,9 +1729,19 @@ harness:
   required_sections:
     docs/book/02_core_model.md: ["## Required Keys", "## Discovery Model"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.required_sections"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.required_sections
 ```
 """,
     )
@@ -1586,9 +1775,19 @@ harness:
     python_docs: ["docs/development.md", "docs/spec/impl/python.md"]
     php_docs: ["docs/development.md", "docs/spec/impl/php.md"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.cli_flags_documented"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.cli_flags_documented
 ```
 """,
     )
@@ -1633,9 +1832,19 @@ harness:
       - docs/spec/schema/schema_v1.md
     tokens: ["must", "can", "cannot", "contain", "regex", "evaluate"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.contract_schema_book_sync"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.contract_schema_book_sync
 ```
 """,
     )
@@ -1668,9 +1877,19 @@ harness:
   docs_examples:
     files: ["docs/book/03_assertions.md"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.examples_runnable"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.examples_runnable
 ```
 """,
     )
@@ -1707,9 +1926,19 @@ harness:
   docs_examples:
     files: ["docs/book/01_quickstart.md"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.examples_runnable"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.examples_runnable
 ```
 """,
     )
@@ -1746,9 +1975,19 @@ harness:
     include_glob: docs/book/*.md
     exclude_files: ["docs/book/reference_index.md"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.reference_index_sync"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.reference_index_sync
 ```
 """,
     )
@@ -1796,9 +2035,19 @@ harness:
         required_tokens: ["evaluate_internal_assert_tree("]
         forbidden_tokens: ["contain assertion failed"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.assertions_via_spec_lang"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.assertions_via_spec_lang
 ```
 """,
     )
@@ -1845,9 +2094,19 @@ check: contract.governance_check
 harness:
   root: {tmp_path}
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: contract.governance_check"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - contract.governance_check
 ```
 """,
     )
@@ -1876,9 +2135,19 @@ harness:
     fail_on_policy_errors: true
     fail_on_severity: warn
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: conformance.purpose_quality_gate"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.purpose_quality_gate
 ```
 """,
     )
@@ -1946,9 +2215,19 @@ harness:
     fail_on_policy_errors: true
     fail_on_severity: warn
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: conformance.purpose_quality_gate"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.purpose_quality_gate
 ```
 """,
     )
@@ -1993,9 +2272,19 @@ harness:
     require_all_must_covered: true
     min_coverage_ratio: 0.50
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: contract.coverage_threshold"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - contract.coverage_threshold
 ```
 """,
     )
@@ -2080,9 +2369,19 @@ harness:
       - make core-check
       - make check
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.make_commands_sync"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.make_commands_sync
 ```
 """,
     )
@@ -2121,9 +2420,19 @@ harness:
       - make core-check
       - make check
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.adoption_profiles_sync"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.adoption_profiles_sync
 ```
 """,
     )
@@ -2167,9 +2476,19 @@ harness:
       - README.md
     allowed_name_regex: "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: naming.filename_policy"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - naming.filename_policy
 ```
 """,
     )
@@ -2214,9 +2533,19 @@ harness:
     report:
       top_n: 5
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: spec.portability_metric"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - spec.portability_metric
 ```
 """,
     )
@@ -2274,9 +2603,19 @@ harness:
     report:
       top_n: 0
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: spec.portability_metric"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - spec.portability_metric
 ```
 """,
     )
@@ -2331,9 +2670,19 @@ harness:
     policy_evaluate:
       - ["eq", 1, 2]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: spec.portability_metric"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - spec.portability_metric
 ```
 """,
     )
@@ -2396,9 +2745,19 @@ harness:
         - ["has_key", ["subject"], "summary"]
         - ["has_key", ["subject"], "segments"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: spec.portability_non_regression"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - spec.portability_non_regression
 ```
 """,
     )
@@ -2511,9 +2870,19 @@ harness:
   docs_quality:
     manifest: docs/book/reference_manifest.yaml
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.meta_schema_valid"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.meta_schema_valid
 ```
 """,
     )
@@ -2547,9 +2916,19 @@ harness:
     coverage_out: docs/book/reference_coverage.md
     graph_out: docs/book/docs_graph.json
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.generated_files_clean"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.generated_files_clean
 ```
 """,
     )
@@ -2650,9 +3029,19 @@ harness:
       - "(?m)^##\\\\s+[0-9]+\\\\)"
       - "(?m)^\\\\s*[0-9]+\\\\.\\\\s+(Run|Then|Check|Inspect)\\\\b"
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.release_contract_automation_policy"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.release_contract_automation_policy
 ```
 """,
     )
@@ -2702,9 +3091,19 @@ harness:
     forbidden_tokens:
       - \"path_exists\"
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: [\"PASS: runtime.spec_lang_pure_no_effect_builtins\"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.spec_lang_pure_no_effect_builtins
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
 ```
 """,
     )
@@ -2746,9 +3145,19 @@ harness:
           - \"policy_evaluate\"
     forbidden_tokens: []
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: [\"PASS: runtime.orchestration_policy_via_spec_lang\"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.orchestration_policy_via_spec_lang
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
 ```
 """,
     )
@@ -2795,9 +3204,14 @@ harness:
     policy_evaluate:
       - [\"eq\", 1, 1]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: [\"ok\"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
 ```
 """,
     )
@@ -2822,9 +3236,14 @@ harness:
     policy_expr:
       - [\"eq\", 1, 1]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: [\"ok\"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
 ```
 """,
     )
@@ -2854,9 +3273,19 @@ harness:
       - governance
       - style-check
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: [\"PASS: runtime.runner_interface_subcommands\"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.runner_interface_subcommands
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
 ```
 """,
     )
@@ -2898,9 +3327,19 @@ harness:
       - "SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh"
       - "run: ./scripts/core_gate.sh"
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.runner_interface_ci_lane"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.runner_interface_ci_lane
 ```
 """,
     )
@@ -2939,9 +3378,19 @@ harness:
     forbidden_tokens:
       - "scripts/runner_adapter.sh"
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.rust_adapter_no_delegate"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.rust_adapter_no_delegate
 ```
 """,
     )
@@ -2986,9 +3435,19 @@ harness:
       - "scripts/runner_adapter.sh"
     timeout_seconds: 5
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.rust_adapter_exec_smoke"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.rust_adapter_exec_smoke
 ```
 """,
     )
@@ -3029,9 +3488,19 @@ harness:
     adapter_path: scripts/rust/runner_adapter.sh
     cli_main_path: scripts/rust/spec_runner_cli/src/main.rs
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.rust_adapter_subcommand_parity"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.rust_adapter_subcommand_parity
 ```
 """,
     )
@@ -3063,21 +3532,21 @@ def test_script_enforces_assert_universal_core_sync(tmp_path):
     )
     _write_text(
         tmp_path / "docs/spec/schema/schema_v1.md",
-        "universal core\nevaluate\nauthoring sugar\n"
+        "universal core\nevaluate\n"
         "docs/spec/conformance/cases/*.spec.md\n"
         "docs/spec/governance/cases/*.spec.md\n"
         "must use\n",
     )
     _write_text(
         tmp_path / "docs/spec/contract/03_assertions.md",
-        "universal core\nevaluate\ncompile-only sugar\n"
+        "universal core\nevaluate\n"
         "docs/spec/conformance/cases/*.spec.md\n"
         "docs/spec/governance/cases/*.spec.md\n"
         "must use\n",
     )
     _write_text(
         tmp_path / "docs/spec/contract/09_internal_representation.md",
-        "universal core\nevaluate\nauthoring sugar\n"
+        "universal core\nevaluate\n"
         "evaluate-only\nconformance\ngovernance\n",
     )
 
@@ -3098,11 +3567,7 @@ def test_script_enforces_assert_sugar_compile_only_sync(tmp_path):
     )
     _write_text(
         tmp_path / "spec_runner/compiler.py",
-        'supported = {"contain", "regex", "json_type", "exists", "evaluate"}\n'
-        'elif op == "contain"\n'
-        'elif op == "regex"\n'
-        'elif op == "json_type"\n'
-        'elif op == "exists"\n'
+        'supported = {"evaluate"}\n'
         'elif op == "evaluate"\n',
     )
     _write_text(tmp_path / "spec_runner/assertions.py", "def x():\n    eval_predicate(['eq', 1, 1], subject='x')\n")
@@ -3174,7 +3639,7 @@ def test_script_enforces_assert_compiler_schema_matrix_sync(tmp_path):
     )
     _write_text(
         tmp_path / "spec_runner/compiler.py",
-        'supported = {"contain", "regex", "json_type", "exists", "evaluate"}\n',
+        'supported = {"evaluate"}\n',
     )
 
     code = mod.main(["--cases", str(cases_dir)])
@@ -3208,9 +3673,19 @@ harness:
     - eq
     - contains
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: assert.spec_lang_builtin_surface_sync"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - assert.spec_lang_builtin_surface_sync
 ```
 """,
     )
@@ -3268,9 +3743,19 @@ harness:
         - var: subject
         - summary
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: spec.spec_lang_adoption_metric"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - spec.spec_lang_adoption_metric
 ```
 """,
     )
@@ -3322,9 +3807,19 @@ harness:
         - prefix: docs/spec/conformance/cases
           segment: conformance
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: spec.spec_lang_adoption_non_regression"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - spec.spec_lang_adoption_non_regression
 ```
 """,
     )
@@ -3392,9 +3887,19 @@ harness:
       - var: subject
       - violations
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: conformance.evaluate_first_ratio_non_regression"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - conformance.evaluate_first_ratio_non_regression
 ```
 """,
     )
@@ -3459,9 +3964,19 @@ harness:
       - prefix: docs/spec/governance/cases
         segment: governance
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: governance.policy_library_usage_non_regression"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - governance.policy_library_usage_non_regression
 ```
 """,
     )
@@ -3489,9 +4004,19 @@ harness:
     - {var: policy.pass_when_no_violations}
     - {var: subject}
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.reference_surface_complete"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.reference_surface_complete
 ```
 """,
     )
@@ -3528,9 +4053,19 @@ harness:
     segment_files:
       gate_scripts: ["scripts/*.sh"]
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.runner_independence_metric"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.runner_independence_metric
 ```
 """,
     )
@@ -3557,9 +4092,19 @@ harness:
   docs_operability:
     reference_manifest: docs/book/reference_manifest.yaml
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: docs.operability_metric"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - docs.operability_metric
 ```
 """,
     )
@@ -3623,9 +4168,19 @@ harness:
       - docs/book/03_assertions.md
       - docs/spec/contract/03b_spec_lang_v1.md
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: spec.contract_assertions_metric"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - spec.contract_assertions_metric
 ```
 """,
     )
@@ -3868,9 +4423,19 @@ harness:
           - var: subject
           - summary
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.python_dependency_metric"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.python_dependency_metric
 ```
 """,
     )
@@ -3938,9 +4503,19 @@ harness:
       default_gate_required_tokens:
         - SPEC_RUNNER_BIN
 assert:
-  - target: text
+  - target: summary_json
     must:
-      - contain: ["PASS: runtime.python_dependency_non_regression"]
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - passed
+          - true
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - runtime.python_dependency_non_regression
 ```
 """,
     )

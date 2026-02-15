@@ -18,38 +18,11 @@ def _require_group_key(node: dict[str, Any]) -> str | None:
 
 
 def _compile_leaf_op(*, op: str, value: Any, target: str, type_name: str, assert_path: str) -> PredicateLeaf:
-    supported = {"contain", "regex", "json_type", "exists", "evaluate"}
+    supported = {"evaluate"}
     if op not in supported:
         raise ValueError(f"unsupported op for {type_name}.{target}: {op}")
 
-    if op == "contain":
-        expr = ["contains", ["subject"], value]
-        subject_key = target
-    elif op == "regex":
-        expr = ["regex_match", ["subject"], value]
-        subject_key = target
-    elif op == "json_type":
-        want = str(value).strip().lower()
-        aliases = {
-            "object": "dict",
-            "array": "list",
-            "boolean": "bool",
-        }
-        want = aliases.get(want, want)
-        if want not in {"null", "bool", "number", "string", "list", "dict"}:
-            raise ValueError(f"unsupported json_type: {value}")
-        subject_expr: Any = ["subject"]
-        if target not in {"body_json"}:
-            subject_expr = ["json_parse", ["subject"]]
-        expr = ["json_type", subject_expr, want]
-        subject_key = target
-    elif op == "exists":
-        if value not in (None, True):
-            raise ValueError("exists only supports value: true (or null)")
-        # Keep spec-lang pure: adapter computes existence signal using target-derived key.
-        subject_key = f"{target}.exists"
-        expr = ["eq", ["subject"], True]
-    elif op == "evaluate":
+    if op == "evaluate":
         try:
             expr = compile_yaml_expr_to_sexpr(value, field_path=f"{assert_path}.evaluate")
         except SpecLangYamlAstError as exc:
@@ -143,7 +116,7 @@ def compile_assert_tree(
             )
 
     if not leaves:
-        raise ValueError("assertion missing an op key (e.g. contain:, regex:, ...)")
+        raise ValueError("assertion missing an op key (use evaluate:)")
     if len(leaves) == 1:
         return leaves[0]
     return GroupNode(op="must", target=target, children=leaves, assert_path=assert_path)

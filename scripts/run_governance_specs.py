@@ -75,7 +75,7 @@ _PYTHON_RUNTIME_ROOTS = ("spec_runner", "scripts/python")
 _CONFORMANCE_CASE_ID_PATTERN = r"\bSRCONF-[A-Z0-9-]+\b"
 _CONFORMANCE_MAX_BLOCK_LINES = 120
 _REGEX_PROFILE_DOC = "docs/spec/contract/03a_regex_portability_v1.md"
-_ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("contain", "regex")
+_ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("evaluate",)
 _ASSERT_UNIVERSAL_DOC_FILES = (
     "docs/spec/schema/schema_v1.md",
     "docs/spec/contract/03_assertions.md",
@@ -1315,16 +1315,13 @@ def _scan_assert_universal_core_sync(root: Path) -> list[str]:
         "docs/spec/schema/schema_v1.md": (
             "universal core",
             "evaluate",
-            "authoring sugar",
             "conformance/cases/*.spec.md",
             "governance/cases/*.spec.md",
-            "evaluate",
             "must use",
         ),
         "docs/spec/contract/03_assertions.md": (
             "universal core",
             "evaluate",
-            "compile-only sugar",
             "conformance/cases/*.spec.md",
             "governance/cases/*.spec.md",
             "must use",
@@ -1332,7 +1329,6 @@ def _scan_assert_universal_core_sync(root: Path) -> list[str]:
         "docs/spec/contract/09_internal_representation.md": (
             "universal core",
             "evaluate",
-            "authoring sugar",
             "evaluate-only",
             "conformance",
             "governance",
@@ -1365,12 +1361,8 @@ def _scan_assert_sugar_compile_only_sync(root: Path) -> list[str]:
     assertions_raw = assertions_path.read_text(encoding="utf-8")
 
     compiler_required = (
-        'supported = {"contain", "regex", "json_type", "exists", "evaluate"}',
+        'supported = {"evaluate"}',
         'op == "evaluate"',
-        'op == "contain"',
-        'op == "regex"',
-        'op == "json_type"',
-        'op == "exists"',
     )
     for tok in compiler_required:
         if tok not in compiler_raw:
@@ -1381,6 +1373,10 @@ def _scan_assert_sugar_compile_only_sync(root: Path) -> list[str]:
     compiler_forbidden = (
         "if type_name == ",
         "allowed = {",
+        'op == "contain"',
+        'op == "regex"',
+        'op == "json_type"',
+        'op == "exists"',
     )
     for tok in compiler_forbidden:
         if tok in compiler_raw:
@@ -1442,7 +1438,7 @@ def _scan_assert_compiler_schema_matrix_sync(root: Path) -> list[str]:
         violations.append("docs/spec/schema/schema_v1.md:1: missing universal core operator section")
     if "only universal assertion operator contract" not in assertions_lower:
         violations.append("docs/spec/contract/03_assertions.md:1: missing universal evaluate-only contract text")
-    if 'supported = {"contain", "regex", "json_type", "exists", "evaluate"}' not in compiler_raw:
+    if 'supported = {"evaluate"}' not in compiler_raw:
         violations.append("spec_runner/compiler.py:1: compiler operator matrix does not match universal-core contract")
     if "if type_name == " in compiler_raw:
         violations.append("spec_runner/compiler.py:1: forbidden per-type operator matrix branching present")
@@ -3607,7 +3603,6 @@ def run_governance_check(case, *, ctx) -> None:
         "case_id": case_id,
         "violation_count": len(violations),
     }
-    summary_json = json.dumps(summary, sort_keys=True)
     text = (
         f"PASS: {check_id}"
         if not violations
@@ -3622,27 +3617,20 @@ def run_governance_check(case, *, ctx) -> None:
             if target == "text":
                 subject_value = text
             elif target == "summary_json":
-                subject_value = summary if op == "evaluate" else summary_json
+                subject_value = summary
             elif target == "violation_count":
-                subject_value = len(violations) if op == "evaluate" else str(len(violations))
+                subject_value = len(violations)
             else:
                 raise ValueError(f"unknown assert target for governance.check: {target}")
-            if op == "contain":
-                expr = ["contains", ["subject"], str(value)]
-            elif op == "regex":
-                expr = ["regex_match", ["subject"], str(value)]
-            elif op == "json_type":
-                expr = ["json_type", ["subject"], str(value)]
-            elif op == "evaluate":
-                if isinstance(value, list):
-                    raw_expr_list = value
-                elif isinstance(value, dict):
-                    raw_expr_list = [value]
-                else:
-                    raise TypeError("evaluate assertion op value must be a list or mapping AST expression")
-                expr = normalize_policy_evaluate(raw_expr_list, field=f"{assert_path}.{target}.evaluate")
+            if op != "evaluate":
+                raise ValueError(f"unsupported governance assertion op: {op}")
+            if isinstance(value, list):
+                raw_expr_list = value
+            elif isinstance(value, dict):
+                raw_expr_list = [value]
             else:
-                raise ValueError(f"unsupported text op: {op}")
+                raise TypeError("evaluate assertion op value must be a list or mapping AST expression")
+            expr = normalize_policy_evaluate(raw_expr_list, field=f"{assert_path}.{target}.evaluate")
             ok = eval_predicate(expr, subject=subject_value, limits=spec_lang_limits)
             if bool(ok) is not bool(is_true):
                 raise AssertionError(f"{op} assertion failed")

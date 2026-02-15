@@ -834,7 +834,7 @@ def default_contract_assertions_config() -> dict[str, Any]:
             {"prefix": "docs/spec/schema", "segment": "schema"},
             {"prefix": "docs/book", "segment": "book"},
         ],
-        "required_tokens": ["must", "can", "cannot", "contain", "regex", "evaluate"],
+        "required_tokens": ["must", "can", "cannot", "evaluate"],
     }
 
 

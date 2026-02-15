@@ -4,6 +4,8 @@
 
 `spec-lang` is a pure, deterministic expression DSL used only through the
 assertion leaf operator `evaluate`.
+Assertion group semantics (`must`, `can`, `cannot`) are defined by the
+assertion contract and host this expression language.
 
 YAML authoring encoding is operator-keyed mapping AST form.
 Implementations compile this mapping AST to internal list-token form before

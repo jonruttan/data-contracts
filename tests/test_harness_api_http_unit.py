@@ -21,8 +21,8 @@ def test_api_http_relative_fixture_passes(tmp_path, monkeypatch, capsys):
                 "url": "fixtures/ok.json",
             },
             "assert": [
-                {"target": "status", "must": [{"contain": ["200"]}]},
-                {"target": "body_json", "must": [{"json_type": ["dict"]}]},
+                {"target": "status", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "200"]}]}]},
+                {"target": "body_json", "must": [{"evaluate": [{"json_type": [{"var": "subject"}, "dict"]}]}]},
             ],
         },
     )

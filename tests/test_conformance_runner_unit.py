@@ -60,7 +60,10 @@ assert_health:
 assert:
   - target: text
     must:
-      - contain: [""]
+      - evaluate:
+          - contains:
+            - var: subject
+            - ""
 ```
 """,
         encoding="utf-8",
@@ -110,7 +113,10 @@ expect:
 assert:
   - target: text
     must:
-      - contain: ["version: 1"]
+      - evaluate:
+          - contains:
+            - var: subject
+            - "version: 1"
 ```
 """,
         encoding="utf-8",
@@ -161,7 +167,10 @@ expect:
 assert:
   - target: text
     must:
-      - contain: ["version: 1"]
+      - evaluate:
+          - contains:
+            - var: subject
+            - "version: 1"
 ```
 """,
         encoding="utf-8",
@@ -194,7 +203,10 @@ expect:
 assert:
   - target: text
     must:
-      - contain: ["version: 1"]
+      - evaluate:
+          - contains:
+            - var: subject
+            - "version: 1"
 ```
 """,
         encoding="utf-8",
@@ -227,7 +239,10 @@ expect:
 assert:
   - target: text
     must:
-      - contain: ["version: 1"]
+      - evaluate:
+          - contains:
+            - var: subject
+            - "version: 1"
 ```
 """,
         encoding="utf-8",

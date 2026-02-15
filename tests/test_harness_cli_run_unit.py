@@ -49,7 +49,7 @@ def test_cli_type_accepts_string_argv_and_systemexit(tmp_path, monkeypatch, caps
             "argv": "plugins",
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"json_type": ["list"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "list"]}]}]}],
         },
     )
 
@@ -72,13 +72,13 @@ def test_cli_type_unsupported_stdout_json_type_raises(tmp_path, monkeypatch, cap
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"json_type": ["nope"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "nope"]}]}]}],
         },
     )
 
     from spec_runner.harnesses.cli_run import run
 
-    with pytest.raises(ValueError, match="unsupported json_type"):
+    with pytest.raises(AssertionError, match="evaluate assertion failed"):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
@@ -96,7 +96,7 @@ def test_cli_type_stdout_json_dict(tmp_path, monkeypatch, capsys):
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"json_type": ["dict"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "dict"]}]}]}],
         },
     )
 
@@ -121,8 +121,14 @@ def test_cli_type_contain_regex_and_cannot(tmp_path, monkeypatch, capsys):
             "exit_code": 0,
             "harness": {"entrypoint": ep},
             "assert": [
-                {"target": "stdout", "must": [{"contain": ["hello"], "regex": ["world\\s*$"]}]},
-                {"target": "stderr", "cannot": [{"contain": ["ERROR:"]}]},
+                {
+                    "target": "stdout",
+                    "must": [
+                        {"evaluate": [{"contains": [{"var": "subject"}, "hello"]}]},
+                        {"evaluate": [{"regex_match": [{"var": "subject"}, "world\\s*$"]}]},
+                    ],
+                },
+                {"target": "stderr", "cannot": [{"evaluate": [{"contains": [{"var": "subject"}, "ERROR:"]}]}]},
             ],
         },
     )
@@ -149,7 +155,7 @@ def test_cli_type_stdout_path_text(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout_path_text", "must": [{"contain": ["hello"]}]}],
+            "assert": [{"target": "stdout_path_text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "hello"]}]}]}],
         },
     )
 
@@ -172,7 +178,7 @@ def test_cli_type_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "nope", "must": [{"contain": ["x"]}]}],
+            "assert": [{"target": "nope", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "x"]}]}]}],
         },
     )
 
@@ -199,7 +205,7 @@ def test_cli_type_stdout_path_supports_text_sugar_ops(tmp_path, monkeypatch, cap
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout_path", "must": [{"contain": [".md"]}]}],
+            "assert": [{"target": "stdout_path", "must": [{"evaluate": [{"contains": [{"var": "subject"}, ".md"]}]}]}],
         },
     )
 
@@ -252,7 +258,7 @@ def test_cli_type_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
                 "setup_files": [{"path": "cfg.txt", "text": "hello"}],
                 "env": {"X_CFG": "cfg.txt"},
             },
-            "assert": [{"target": "stdout", "must": [{"contain": ["hello"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "hello"]}]}]}],
         },
     )
 
@@ -278,7 +284,7 @@ def test_cli_type_can_stub_modules(tmp_path, monkeypatch, capsys):
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stub_modules": ["openai"]},
-            "assert": [{"target": "stdout", "must": [{"contain": ["ok"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "ok"]}]}]}],
         },
     )
 
@@ -302,7 +308,7 @@ def test_cli_type_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stdin_isatty": False, "stdin_text": "hello"},
-            "assert": [{"target": "stdout", "must": [{"contain": ["stdin=hello"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "stdin=hello"]}]}]}],
         },
     )
 
@@ -327,8 +333,8 @@ def test_cli_type_can_group_or_semantics(tmp_path, monkeypatch, capsys):
             "exit_code": 0,
             "harness": {"entrypoint": ep},
             "assert": [
-                {"can": [{"target": "stderr", "must": [{"contain": ["INFO:"]}]}, {"target": "stderr", "must": [{"contain": ["WARN:"]}]}]},
-                {"target": "stderr", "cannot": [{"contain": ["ERROR:"]}]},
+                {"can": [{"target": "stderr", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "INFO:"]}]}]}, {"target": "stderr", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "WARN:"]}]}]}]},
+                {"target": "stderr", "cannot": [{"evaluate": [{"contains": [{"var": "subject"}, "ERROR:"]}]}]},
             ],
         },
     )
@@ -352,7 +358,7 @@ def test_cli_type_cannot_json_type(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "cannot": [{"json_type": ["list"]}]}],
+            "assert": [{"target": "stdout", "cannot": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "list"]}]}]}],
         },
     )
 
@@ -387,7 +393,7 @@ def test_cli_type_hook_runs_after_command(tmp_path, monkeypatch, capsys):
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "hook_after": hook_ep, "hook_kwargs": {"extra": "v"}},
-            "assert": [{"target": "stdout", "must": [{"json_type": ["dict"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "dict"]}]}]}],
         },
     )
 
@@ -424,7 +430,7 @@ def test_cli_type_hook_before_runs_before_command(tmp_path, monkeypatch, capsys)
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "hook_before": hook_ep, "hook_kwargs": {"extra": "v2"}},
-            "assert": [{"target": "stdout", "must": [{"contain": ["yes"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "yes"]}]}]}],
         },
     )
 
@@ -456,7 +462,7 @@ def test_cli_type_stub_modules_do_not_leak_between_cases(tmp_path, monkeypatch, 
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stub_modules": [mod_name]},
-            "assert": [{"target": "stdout", "must": [{"contain": ["imported"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "imported"]}]}]}],
         },
     )
     run(case_with_stub, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
@@ -469,7 +475,7 @@ def test_cli_type_stub_modules_do_not_leak_between_cases(tmp_path, monkeypatch, 
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"contain": ["missing"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "missing"]}]}]}],
         },
     )
     run(case_without_stub, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
@@ -547,8 +553,14 @@ def test_cli_type_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsys
             "harness": {"entrypoint": ep},
             "assert_health": {"mode": "warn"},
             "assert": [
-                {"target": "stdout", "must": [{"contain": [""]}]},
-                {"target": "stderr", "must": [{"contain": ["WARN: ASSERT_HEALTH AH001"]}]},
+                {
+                    "target": "stdout",
+                    "can": [
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                    ],
+                },
+                {"target": "stderr", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "WARN: ASSERT_HEALTH AH004"]}]}]},
             ],
         },
     )
@@ -569,7 +581,15 @@ def test_cli_type_assert_health_error_fails(tmp_path, monkeypatch, capsys):
             "exit_code": 0,
             "harness": {"entrypoint": ep},
             "assert_health": {"mode": "error"},
-            "assert": [{"target": "stdout", "must": [{"contain": [""]}]}],
+            "assert": [
+                {
+                    "target": "stdout",
+                    "can": [
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                    ],
+                }
+            ],
         },
     )
 
@@ -589,7 +609,7 @@ def test_cli_type_failure_includes_case_and_assert_context(tmp_path, monkeypatch
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"contain": ["missing-value"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "missing-value"]}]}]}],
         },
     )
 
@@ -601,7 +621,7 @@ def test_cli_type_failure_includes_case_and_assert_context(tmp_path, monkeypatch
     assert "case_id=SR-CLI-UNIT-025" in msg
     assert "assert_path=assert[0].must[0]" in msg
     assert "target=stdout" in msg
-    assert "op=contain" in msg
+    assert "op=evaluate" in msg
 
 
 def test_cli_type_assert_health_warns_on_redundant_branches(tmp_path, monkeypatch, capsys):
@@ -619,11 +639,11 @@ def test_cli_type_assert_health_warns_on_redundant_branches(tmp_path, monkeypatc
                 {
                     "target": "stdout",
                     "can": [
-                        {"contain": [""]},
-                        {"contain": [""]},
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
                     ],
                 },
-                {"target": "stderr", "must": [{"contain": ["WARN: ASSERT_HEALTH AH004"]}]},
+                {"target": "stderr", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "WARN: ASSERT_HEALTH AH004"]}]}]},
             ],
         },
     )

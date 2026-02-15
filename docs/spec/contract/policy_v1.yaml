@@ -1225,7 +1225,7 @@ rules:
   applies_to: runtime.assertion_decisions
   norm: MUST
   requirement: assertion_pass_fail_decisions_execute_via_compiled_spec_lang
-  description: 'Runtime assertion pass/fail decisions must execute only through compiled spec-lang predicates; external assertion operators are authoring sugar.
+  description: 'Runtime assertion pass/fail decisions must execute only through compiled spec-lang predicates.
 
     '
   rationale: Enforces one semantic decision plane across runner implementations.
@@ -1251,14 +1251,14 @@ rules:
 - id: ASSERT_SUGAR_OPERATORS_COMPILE_ONLY
   introduced_in: v1
   scope: implementation
-  applies_to: assert.tree.operator_sugar
+  applies_to: assert.tree.operator_surface
   norm: MUST
-  requirement: non_evaluate_assert_ops_compile_to_spec_lang_only
-  description: 'Non-`evaluate` assertion operators are authoring sugar only and must not carry independent runtime semantics.
+  requirement: non_evaluate_assert_ops_not_supported
+  description: 'Non-`evaluate` assertion operators are not supported in executable assertion trees.
 
     '
-  rationale: Keeps one execution semantics path while preserving author ergonomics.
-  risk_if_violated: Hidden semantic divergence between sugar and evaluate forms.
+  rationale: Keeps one executable assertion language with no alternate leaf-op branches.
+  risk_if_violated: Mixed operator surfaces reintroduce ambiguity and runtime branching.
   references:
   - docs/spec/schema/schema_v1.md
   - docs/spec/contract/03_assertions.md

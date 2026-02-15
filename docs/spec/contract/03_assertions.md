@@ -27,7 +27,6 @@
 Canonical operators:
 
 - universal core: `evaluate`
-- compile-only sugar: `contain`, `regex`, `json_type`, `exists`
 
 Operator values MUST be lists.
 
@@ -69,29 +68,12 @@ For `type: governance.check`, assertion targets include:
 ## Spec-Lang-Primary Runtime Contract
 
 - `evaluate` is the only universal assertion operator contract.
-- `contain` / `regex` / `exists` / `json_type` remain valid leaf operators in
-  schema v1 as external authoring sugar only.
-- Sugar operators MUST compile to spec-lang-equivalent predicate expressions.
 - Runtime decision semantics MUST execute as compiled spec-lang expressions.
 - Implementations MUST NOT bypass the compiled spec-lang assertion engine.
 - Target/type applicability is defined by subject availability and subject
   shape, not by per-type operator allowlists.
-
-## Portable Regex Subset
-
-`regex` patterns SHOULD stay within a portable subset across implementations.
-Runners SHOULD emit assertion-health diagnostics for patterns that use
-non-portable constructs, including:
-
-- lookbehind (`(?<=...)`, `(?<!...)`)
-- named capture groups / named backreferences
-- inline flags (`(?i)`, `(?m:...)`, etc.)
-- conditional groups
-- atomic groups / possessive quantifiers
-
-Canonical profile:
-
-- `docs/spec/contract/03a_regex_portability_v1.md`
+- Regex portability guidance for spec-lang expressions is defined in
+  `docs/spec/contract/03a_regex_portability_v1.md`.
 
 ## Assertion Health Note
 

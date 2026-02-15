@@ -203,25 +203,6 @@ Universal core operator:
 
 - `evaluate` applies to every target/type.
 
-Authoring sugar operators:
-
-- `contain`
-- `regex`
-- `json_type`
-- `exists`
-
-Normative meaning:
-
-- sugar operators have no independent runtime semantics
-- sugar operators MUST compile to equivalent spec-lang `evaluate` expressions
-- runtime pass/fail decisions MUST execute through compiled spec-lang
-  predicates
-- target/type compatibility is subject-driven:
-  - the adapter must provide the referenced target subject (or derived subject
-    key)
-  - compile/runtime errors are based on subject availability/shape, not
-    per-type operator allowlists
-
 ## Assertion Leaf Shape
 
 Assertion leaves are mappings with:
@@ -240,7 +221,6 @@ Leaf constraints:
 Supported operators:
 
 - universal core: `evaluate` (spec-lang v1)
-- compile-only authoring sugar: `contain`, `regex`, `json_type`, `exists`
 
 Core executable-surface rule:
 
@@ -248,8 +228,6 @@ Core executable-surface rule:
   `evaluate` leaves only.
 - `docs/spec/governance/cases/*.spec.md` assertion trees MUST use
   `evaluate` leaves only.
-- Sugar operators remain available for non-core surfaces and compile to
-  equivalent spec-lang expressions.
 
 Operator constraints:
 
@@ -276,20 +254,10 @@ Operator constraints:
   `is_list`/`is_array`, `is_dict`/`is_object`)
 - spec-lang shared library loading rules are defined in
   `docs/spec/contract/14_spec_lang_libraries.md`
-- runners compile external leaf operators into internal spec-lang predicates;
-  compile invariants are defined in
-  `docs/spec/contract/09_internal_representation.md`
-- external leaf operators are authoring sugar; runtime pass/fail decisions MUST
-  execute through compiled spec-lang expressions
-- `regex` SHOULD use a portable subset; implementations SHOULD diagnose
-  non-portable constructs via assertion-health policy
-- the portable profile is defined in
+- runtime pass/fail decisions MUST execute through compiled spec-lang
+  expressions
+- regex portability guidance for spec-lang expressions is defined in
   `docs/spec/contract/03a_regex_portability_v1.md`
-- `json_type` supports canonical JSON names (`null`, `boolean`, `number`,
-  `string`, `array`, `object`) and normalized aliases (`bool`, `list`, `dict`)
-- `exists` maps to a boolean subject key and currently requires a provided
-  existence subject (for example `stdout_path.exists`) with `true` (or `null`)
-  value semantics
 
 Group constraints:
 
@@ -302,8 +270,8 @@ Canonical negation uses `cannot`:
 assert:
 - target: stderr
   cannot:
-  - contain:
-    - 'ERROR:'
+  - evaluate:
+    - {contains: [{var: subject}, 'ERROR:']}
 ```
 
 Author in canonical form:
@@ -318,16 +286,16 @@ Example with target inheritance:
 assert:
 - target: stderr
   must:
-  - contain:
-    - 'WARN:'
+  - evaluate:
+    - {contains: [{var: subject}, 'WARN:']}
 - target: stderr
   cannot:
-  - contain:
-    - 'ERROR:'
+  - evaluate:
+    - {contains: [{var: subject}, 'ERROR:']}
 - target: stdout
   can:
-  - json_type:
-    - list
-  - contain:
-    - '[]'
+  - evaluate:
+    - {json_type: [{json_parse: [{var: subject}]}, list]}
+  - evaluate:
+    - {contains: [{var: subject}, '[]']}
 ```

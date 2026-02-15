@@ -14,7 +14,7 @@ def test_text_file_contains(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "assert": [{"target": "text", "must": [{"contain": ["hello"]}]}],
+            "assert": [{"target": "text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "hello"]}]}]}],
         },
     )
 
@@ -32,7 +32,7 @@ def test_text_file_cannot_group(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "assert": [{"target": "text", "cannot": [{"contain": ["ERROR:"]}]}],
+            "assert": [{"target": "text", "cannot": [{"evaluate": [{"contains": [{"var": "subject"}, "ERROR:"]}]}]}],
         },
     )
 
@@ -53,7 +53,7 @@ def test_text_file_can_read_relative_path(tmp_path, monkeypatch, capsys):
             "id": "X",
             "type": "text.file",
             "path": "other.txt",
-            "assert": [{"target": "text", "must": [{"contain": ["hello other"]}]}],
+            "assert": [{"target": "text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "hello other"]}]}]}],
         },
     )
 
@@ -72,7 +72,7 @@ def test_text_file_rejects_absolute_path(tmp_path, monkeypatch, capsys):
             "id": "X",
             "type": "text.file",
             "path": str(doc.resolve()),
-            "assert": [{"target": "text", "must": [{"contain": ["spec doc"]}]}],
+            "assert": [{"target": "text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "spec doc"]}]}]}],
         },
     )
 
@@ -91,7 +91,7 @@ def test_text_file_unknown_target(tmp_path, monkeypatch, capsys):
         test={
             "id": "X",
             "type": "text.file",
-            "assert": [{"target": "stdout", "must": [{"contain": ["hello"]}]}],
+            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "hello"]}]}]}],
         },
     )
 
@@ -120,7 +120,7 @@ def test_text_file_rejects_path_escape_without_repo_root(tmp_path, monkeypatch, 
             "id": "X",
             "type": "text.file",
             "path": "../outside.txt",
-            "assert": [{"target": "text", "must": [{"contain": ["outside"]}]}],
+            "assert": [{"target": "text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "outside"]}]}]}],
         },
     )
 
@@ -146,7 +146,7 @@ def test_text_file_allows_parent_reference_with_repo_root(tmp_path, monkeypatch,
             "id": "X",
             "type": "text.file",
             "path": "../other.txt",
-            "assert": [{"target": "text", "must": [{"contain": ["hello other"]}]}],
+            "assert": [{"target": "text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "hello other"]}]}]}],
         },
     )
 
@@ -164,7 +164,15 @@ def test_text_file_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsy
             "id": "X",
             "type": "text.file",
             "assert_health": {"mode": "warn"},
-            "assert": [{"target": "text", "must": [{"contain": [""]}]}],
+            "assert": [
+                {
+                    "target": "text",
+                    "can": [
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                    ],
+                }
+            ],
         },
     )
 
@@ -172,7 +180,7 @@ def test_text_file_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsy
 
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
     captured = capsys.readouterr()
-    assert "WARN: ASSERT_HEALTH AH001" in captured.err
+    assert "WARN: ASSERT_HEALTH AH004" in captured.err
 
 
 def test_text_file_assert_health_error_fails(tmp_path, monkeypatch, capsys):
@@ -184,7 +192,15 @@ def test_text_file_assert_health_error_fails(tmp_path, monkeypatch, capsys):
             "id": "X",
             "type": "text.file",
             "assert_health": {"mode": "error"},
-            "assert": [{"target": "text", "must": [{"contain": [""]}]}],
+            "assert": [
+                {
+                    "target": "text",
+                    "can": [
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                    ],
+                }
+            ],
         },
     )
 
@@ -202,7 +218,7 @@ def test_text_file_failure_includes_case_and_assert_context(tmp_path, monkeypatc
         test={
             "id": "SR-TEXT-UNIT-001",
             "type": "text.file",
-            "assert": [{"target": "text", "must": [{"contain": ["missing-value"]}]}],
+            "assert": [{"target": "text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "missing-value"]}]}]}],
         },
     )
 
@@ -214,7 +230,7 @@ def test_text_file_failure_includes_case_and_assert_context(tmp_path, monkeypatc
     assert "case_id=SR-TEXT-UNIT-001" in msg
     assert "assert_path=assert[0].must[0]" in msg
     assert "target=text" in msg
-    assert "op=contain" in msg
+    assert "op=evaluate" in msg
 
 
 def test_text_file_uses_assert_health_mode_from_context_env(tmp_path, monkeypatch, capsys):
@@ -225,7 +241,15 @@ def test_text_file_uses_assert_health_mode_from_context_env(tmp_path, monkeypatc
         test={
             "id": "SR-TEXT-UNIT-002",
             "type": "text.file",
-            "assert": [{"target": "text", "must": [{"contain": [""]}]}],
+            "assert": [
+                {
+                    "target": "text",
+                    "can": [
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                    ],
+                }
+            ],
         },
     )
 
@@ -241,7 +265,7 @@ def test_text_file_uses_assert_health_mode_from_context_env(tmp_path, monkeypatc
         ),
     )
     captured = capsys.readouterr()
-    assert "WARN: ASSERT_HEALTH AH001" in captured.err
+    assert "WARN: ASSERT_HEALTH AH004" in captured.err
 
 
 def test_text_file_expr_operator(tmp_path, monkeypatch, capsys):

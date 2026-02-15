@@ -24,11 +24,7 @@ harness:
     - must
     - can
     - cannot
-    - contain
-    - regex
     - evaluate
-    - json_type
-    - exists
   policy_evaluate:
   - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:

@@ -59,8 +59,8 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
     Canonical leaf shape:
 
     - target: stderr
-      contain: ["WARN:"]
-      regex: ["traceback"]
+      evaluate:
+        - contains: [{var: subject}, "WARN:"]
 
     Rules:
     - leaf assertions MUST NOT define `target`; target is inherited from a
@@ -77,13 +77,7 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
         raise ValueError("assertion leaf requires inherited target from a parent group")
     if any(k in leaf for k in ("must", "can", "cannot")):
         raise ValueError("leaf assertion must not include group keys")
-    known_ops = {
-        "exists",
-        "contain",
-        "regex",
-        "json_type",
-        "evaluate",
-    }
+    known_ops = {"evaluate"}
 
     any_found = False
     for op, raw in leaf.items():
@@ -97,7 +91,7 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
         for v in raw:
             yield target, canonical, v, is_true
     if not any_found:
-        raise ValueError("assertion missing an op key (e.g. contain:, regex:, ...)")
+        raise ValueError("assertion missing an op key (use evaluate:)")
 
 
 def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
