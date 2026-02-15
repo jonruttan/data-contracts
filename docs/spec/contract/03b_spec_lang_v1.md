@@ -215,6 +215,9 @@ harness:
 Library contract details:
 
 - `docs/spec/contract/14_spec_lang_libraries.md`
+- `library_paths` supports `.spec.md`, `.spec.yaml`, and `.spec.yml` includes
+  while executable case discovery remains Markdown-default unless explicitly
+  opted in by runner interface flags
 
 ## Canonical Authoring Format
 

@@ -95,7 +95,7 @@ assert:
 - runner-only keys must be under `harness:`
 - operator values are lists
 - leaf nodes do not carry `target`
-- `evaluate` expression roots are YAML lists (`["symbol", ...]`)
+- `evaluate` expression roots are operator-keyed mapping AST nodes
 
 ## Common Error -> Fix
 

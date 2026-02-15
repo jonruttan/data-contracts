@@ -25,6 +25,11 @@ harness:
           - subject: []
           - summary
         - overall_docs_operability_ratio
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
 - target: text
   must:

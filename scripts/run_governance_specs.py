@@ -1329,16 +1329,6 @@ def _scan_current_spec_policy_key_names(root: Path) -> list[str]:
     return violations
 
 
-def _mapping_contains_key_recursive(node: object, key: str) -> bool:
-    if isinstance(node, dict):
-        if key in node:
-            return True
-        return any(_mapping_contains_key_recursive(v, key) for v in node.values())
-    if isinstance(node, list):
-        return any(_mapping_contains_key_recursive(v, key) for v in node)
-    return False
-
-
 def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
     cfg = h.get("policy_requirements")
@@ -1368,7 +1358,7 @@ def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | Non
         if not isinstance(harness_map, dict):
             violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
             continue
-        if not _mapping_contains_key_recursive(harness_map, "policy_evaluate"):
+        if "policy_evaluate" not in harness_map:
             violations.append(
                 f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} missing required policy_evaluate"
             )
@@ -3133,22 +3123,26 @@ def run_governance_check(case, *, ctx) -> None:
         if raw_case_policy is not None:
             policy_evaluate = normalize_policy_evaluate(raw_case_policy, field="harness.policy_evaluate")
             policy_path = "harness.policy_evaluate"
-
-    if policy_evaluate is not None:
-        policy_result: GovernancePolicyResult = run_governance_policy(
-            check_id=check_id,
-            case_id=str(t.get("id", "<unknown>")).strip() or "<unknown>",
-            policy_evaluate=policy_evaluate,
-            subject=subject,
-            symbols=symbols,
-            policy_path=policy_path,
+    if policy_evaluate is None:
+        case_id = str(t.get("id", "<unknown>")).strip() or "<unknown>"
+        raise ValueError(
+            f"governance.check {check_id} case {case_id} requires harness.policy_evaluate"
         )
-        if policy_result.passed:
-            violations = []
-        elif violations:
-            violations = policy_result.diagnostics + violations
-        else:
-            violations = policy_result.diagnostics
+
+    policy_result: GovernancePolicyResult = run_governance_policy(
+        check_id=check_id,
+        case_id=str(t.get("id", "<unknown>")).strip() or "<unknown>",
+        policy_evaluate=policy_evaluate,
+        subject=subject,
+        symbols=symbols,
+        policy_path=policy_path,
+    )
+    if policy_result.passed:
+        violations = []
+    elif violations:
+        violations = policy_result.diagnostics + violations
+    else:
+        violations = policy_result.diagnostics
 
     text = (
         f"PASS: {check_id}"

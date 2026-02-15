@@ -1300,8 +1300,8 @@ rules:
   scope: governance
   applies_to: governance.check.harness.policy_evaluate
   norm: MUST
-  requirement: governance_decision_contracts_must_declare_policy_evaluate
-  description: 'Governance decision checks must declare policy_evaluate expressions in harness config so final verdicts are evaluated through spec-lang.
+  requirement: governance_decision_contracts_must_declare_top_level_policy_evaluate
+  description: 'Governance decision checks must declare top-level harness.policy_evaluate expressions so final verdicts are evaluated through spec-lang.
 
     '
   rationale: Keeps decision logic implementation-independent and portable.
@@ -1310,6 +1310,34 @@ rules:
   - docs/spec/contract/15_governance_subject_model.md
   - docs/spec/contract/18_governance_subject_extractors.md
   - docs/spec/governance/cases/governance_policy_evaluate_required.spec.md
+- id: SPEC_LANG_LIBRARY_INCLUDE_FORMAT_SCOPE
+  introduced_in: v1
+  scope: schema
+  applies_to: harness.spec_lang.library_paths
+  norm: MUST
+  requirement: library_includes_support_md_yaml_while_default_discovery_stays_md
+  description: 'Spec-lang library includes must support `.spec.md`, `.spec.yaml`, and `.spec.yml`; executable case discovery remains Markdown-default unless explicitly opted in.
+
+    '
+  rationale: Keeps reusable libraries format-flexible without weakening canonical executable spec discovery defaults.
+  risk_if_violated: Include behavior drifts across runners and portability contracts become ambiguous.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/14_spec_lang_libraries.md
+- id: NAMING_FILENAME_STRICT_SEPARATORS
+  introduced_in: v1
+  scope: governance
+  applies_to: docs_and_spec_filenames
+  norm: MUST
+  requirement: filename_stems_use_lowercase_with_underscore_words_and_hyphen_sections
+  description: 'Governed filenames must be lowercase; use `_` within section words and `-` between major sections, with no extra punctuation in stem.
+
+    '
+  rationale: Prevents naming drift and keeps file discovery/portability rules deterministic.
+  risk_if_violated: File naming inconsistency creates brittle tooling behavior and avoidable review churn.
+  references:
+  - AGENTS.md
+  - docs/spec/governance/cases/naming_filename_policy.spec.md
 - id: GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
   introduced_in: v1
   scope: governance

@@ -28,6 +28,11 @@ harness:
           - subject: []
           - summary
         - overall_min_score
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
 - target: text
   must:

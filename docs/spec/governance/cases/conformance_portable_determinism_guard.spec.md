@@ -57,6 +57,11 @@ harness:
               - 0
           - subject: []
       - 0
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
 - target: text
   must:

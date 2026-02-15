@@ -14,7 +14,7 @@ Governance check implementations SHOULD return a structured payload with:
 - `subject`: primary policy input (rows/report/object)
 - `violations`: candidate violation messages (data-only)
 - `symbols` (optional): symbol table values for policy evaluation
-- `policy_evaluate`: list-based spec-lang expression
+- `policy_evaluate`: operator-keyed mapping-AST spec-lang expression list
 - `policy_path`: source location token for diagnostics
 
 ## Determinism Requirements

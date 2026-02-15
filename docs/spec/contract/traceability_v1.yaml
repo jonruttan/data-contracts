@@ -1406,6 +1406,33 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/governance_engine.py
   notes: Governance decision checks require policy_evaluate and central policy evaluation.
+- rule_id: SPEC_LANG_LIBRARY_INCLUDE_FORMAT_SCOPE
+  policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_LIBRARY_INCLUDE_FORMAT_SCOPE
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/contract/03b_spec_lang_v1.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_spec_lang_libraries_unit.py
+  - tests/test_codecs_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang_libraries.py
+  - spec_runner/codecs.py
+  notes: Library include formats allow md/yaml while executable case discovery stays markdown-default unless explicitly enabled.
+- rule_id: NAMING_FILENAME_STRICT_SEPARATORS
+  policy_ref: docs/spec/contract/policy_v1.yaml#NAMING_FILENAME_STRICT_SEPARATORS
+  contract_refs:
+  - AGENTS.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/naming_filename_policy.spec.md
+  notes: Filename stems are governance-checked for lowercase + underscore word separators + hyphen section separators.
 - rule_id: GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
   policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
   contract_refs:

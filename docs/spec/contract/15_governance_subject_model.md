@@ -41,7 +41,8 @@ Naming rule:
 
 Hard requirement:
 
-- Governance decision checks MUST declare and evaluate `policy_evaluate`.
+- Governance decision checks MUST declare and evaluate top-level
+  `harness.policy_evaluate`.
 - Extractor outputs and central policy evaluation contract are defined in:
   `docs/spec/contract/18_governance_subject_extractors.md`.
 

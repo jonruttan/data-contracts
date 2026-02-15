@@ -33,6 +33,11 @@ harness:
           - subject: []
           - summary
         - overall_runner_independence_ratio
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
 - target: text
   must:

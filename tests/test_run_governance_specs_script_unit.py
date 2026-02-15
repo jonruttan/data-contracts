@@ -1,6 +1,7 @@
 # SPEC-OPT-OUT: Exercises script wiring and governance harness behavior not yet representable as stable .spec.md coverage.
 import importlib.util
 from pathlib import Path
+import re
 
 
 def _load_script_module():
@@ -15,6 +16,23 @@ def _load_script_module():
 
 def _write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    if (
+        path.name.endswith(".spec.md")
+        and "type: governance.check" in text
+        and "\n  policy_evaluate:" not in text
+        and "NO_AUTO_POLICY" not in text
+    ):
+        text = re.sub(
+            r"\nassert:\n",
+            "\n  policy_evaluate:\n"
+            "  - is_empty:\n"
+            "    - get:\n"
+            "      - subject: []\n"
+            "      - violations\n"
+            "assert:\n",
+            text,
+            count=1,
+        )
     path.write_text(text, encoding="utf-8")
 
 
@@ -342,6 +360,8 @@ assert:
     _write_text(
         cases_dir / "missing_policy.spec.md",
         """# Governance
+
+<!-- NO_AUTO_POLICY -->
 
 ## SRGOV-TEST-POLICY-REQ-002
 

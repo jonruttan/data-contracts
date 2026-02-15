@@ -105,7 +105,7 @@ concerns and keep the spec format portable.
 Governance policy contract:
 
 - For `type: governance.check` cases, decision contracts MUST include
-  `policy_evaluate` under harness check config.
+  `harness.policy_evaluate`.
 - Final pass/fail decisions are evaluated via spec-lang policy expressions.
 - Extractors may emit candidate violations and subject payloads, but MUST NOT
   be the source of final decision truth.
@@ -146,6 +146,13 @@ For `type: cli.run`, supported `harness` keys include:
 - `timeout_ms` (int, >=0, `0` disables timeout)
 - `library_paths` (list[string], optional): ordered spec-lang library files
 - `exports` (list[string], optional): symbol allowlist exposed to this case
+
+`harness.spec_lang.library_paths` format scope:
+
+- library include paths MAY target `.spec.md`, `.spec.yaml`, or `.spec.yml`
+  files
+- default executable case discovery remains Markdown-only (`*.spec.md`) unless
+  explicit format opt-in is provided by the runner interface
 
 Implementation note (non-portable convenience):
 

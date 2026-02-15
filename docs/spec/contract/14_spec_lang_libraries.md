@@ -17,6 +17,7 @@ Library paths:
 - MAY be relative to the current spec document or absolute
 - MUST resolve within contract root
 - MUST point to existing files
+- MAY reference `.spec.md`, `.spec.yaml`, or `.spec.yml` library files
 
 ## Library Document Shape
 

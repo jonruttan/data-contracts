@@ -36,6 +36,11 @@ harness:
           - subject: []
           - summary
         - overall_logic_self_contained_ratio
+  policy_evaluate:
+  - is_empty:
+    - get:
+      - subject: []
+      - violations
 assert:
 - target: text
   must:
