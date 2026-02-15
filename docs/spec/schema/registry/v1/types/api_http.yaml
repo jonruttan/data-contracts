@@ -7,6 +7,6 @@ required_top_level:
 allowed_top_level_extra: []
 fields:
   request:
-    type: mapping
+    type: any
     required: true
     since: v1

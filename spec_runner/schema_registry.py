@@ -153,10 +153,21 @@ def compile_registry(repo_root: Path) -> tuple[dict[str, Any] | None, list[str]]
     for profile_type in merge_order:
         for p in sorted(by_type.get(profile_type, []), key=lambda x: str(x["id"])):
             for name, meta in sorted(dict(p.get("fields") or {}).items()):
-                if name in core_fields and core_fields[name] != meta:
-                    out_errs.append(
-                        f"{p['path']}:1: field collision for {name}: profile metadata differs from existing definition"
-                    )
+                if name in core_fields:
+                    existing = core_fields[name]
+                    if (
+                        str(existing.get("type")) != str(meta.get("type"))
+                        or bool(existing.get("required")) != bool(meta.get("required"))
+                    ):
+                        out_errs.append(
+                            f"{p['path']}:1: field collision for {name}: profile metadata differs from existing definition"
+                        )
+                        continue
+                    merged = dict(existing)
+                    for k, v in dict(meta).items():
+                        if k not in merged and v is not None:
+                            merged[k] = v
+                    core_fields[name] = merged
                     continue
                 core_fields[name] = dict(meta)
 

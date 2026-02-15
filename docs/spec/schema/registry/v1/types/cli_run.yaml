@@ -2,16 +2,14 @@ version: 1
 id: schema.registry.v1.type.cli_run
 type: type
 case_type: cli.run
-required_top_level:
-  - argv
-  - exit_code
+required_top_level: []
 allowed_top_level_extra: []
 fields:
   argv:
-    type: list
-    required: true
+    type: any
+    required: false
     since: v1
   exit_code:
     type: int
-    required: true
+    required: false
     since: v1

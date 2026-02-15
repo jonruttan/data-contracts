@@ -15,19 +15,16 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
-      - var: subject
-      - Spec-Test Schema (v1)
+    - {contains: [{var: subject}, Spec-Test Schema (v1)]}
 ```
 
 ## SRCONF-SCHEMA-CASE-002
 
 ```yaml spec-test
 id: SRCONF-SCHEMA-CASE-002
-title: unknown top-level key is rejected as schema
-purpose: Ensures registry-driven validation hard-fails unknown top-level case keys.
+title: unknown evaluate symbol is rejected as schema
+purpose: Ensures unknown spec-lang symbols fail as schema in both runtimes.
 type: text.file
-bogus_extra: true
 expect:
   portable:
     status: fail
@@ -36,7 +33,5 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
-      - var: subject
-      - Spec-Test Schema (v1)
+    - {unknown_symbol_for_schema_case: [{var: subject}]}
 ```

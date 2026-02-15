@@ -330,3 +330,40 @@ assert:
   - evaluate:
     - {contains: [{var: subject}, '[]']}
 ```
+
+<!-- BEGIN GENERATED: SCHEMA_REGISTRY_V1 -->
+
+## Generated Registry Snapshot
+
+This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
+
+- profile_count: 9
+- top_level_fields: 10
+- type_profiles: 5
+
+### Top-Level Keys
+
+| key | type | required | since |
+|---|---|---|---|
+| `assert` | `list` | `false` | `v1` |
+| `assert_health` | `mapping` | `false` | `v1` |
+| `expect` | `mapping` | `false` | `v1` |
+| `harness` | `mapping` | `false` | `v1` |
+| `id` | `string` | `true` | `v1` |
+| `path` | `string` | `false` | `v1` |
+| `purpose` | `string` | `false` | `v1` |
+| `requires` | `mapping` | `false` | `v1` |
+| `title` | `string` | `false` | `v1` |
+| `type` | `string` | `true` | `v1` |
+
+### Type Profiles
+
+| type | required keys | extra keys |
+|---|---|---|
+| `api.http` | `request` | - |
+| `cli.run` | - | - |
+| `governance.check` | `check` | - |
+| `spec_lang.library` | `definitions` | `imports` |
+| `text.file` | - | - |
+
+<!-- END GENERATED: SCHEMA_REGISTRY_V1 -->

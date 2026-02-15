@@ -2,8 +2,7 @@
 
 ## Purpose
 
-The schema registry under `docs/spec/schema/registry/v1/` is the machine source
-of truth for executable case-shape constraints.
+The schema registry under `docs/spec/schema/registry/v1/` is the machine source of truth for executable case-shape constraints.
 
 ## Normative Rules
 
