@@ -92,6 +92,12 @@ Canonical operators:
 
 All operator values are lists.
 
+Authoring policy:
+
+- Use sugar operators by default (`contain`, `regex`, `json_type`, `exists`).
+- Use `evaluate` only when case intent requires expression composition or
+  value/collection logic that sugar cannot express clearly.
+
 `evaluate` uses spec-lang v1 YAML list S-expressions:
 
 ```yaml
@@ -190,4 +196,5 @@ Symptom: `assert group must include exactly one key`
 - Every leaf has an inherited target.
 - Every operator value is a list.
 - Group nodes use exactly one of `must/can/cannot`.
+- Sugar is the default authoring form unless `evaluate` is required.
 - Portable regex subset is used when cross-runtime parity matters.

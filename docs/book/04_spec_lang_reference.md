@@ -22,6 +22,11 @@ sections_required:
 
 This chapter is the practical reference for the `evaluate` assertion leaf.
 
+Authoring note:
+
+- Conformance authoring is sugar-first by default.
+- This chapter applies when `evaluate` is required by case intent.
+
 ## Purpose
 
 Provide a complete, deterministic reference for spec-lang `evaluate`.
@@ -200,7 +205,7 @@ Typical diagnostics include:
 
 ## 7) When To Use `contain` vs `evaluate`
 
-Use `contain` / `regex` when simple string checks are enough.
+Use `contain` / `regex` when simple string checks are enough (default).
 Use `evaluate` when you need:
 
 - composable boolean logic

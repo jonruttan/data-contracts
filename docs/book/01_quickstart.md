@@ -34,7 +34,7 @@ Provide the shortest path from no case to passing case execution.
 ## Outputs
 
 - runnable `text.file` and `cli.run` examples
-- first `evaluate` assertion example
+- first sugar and `evaluate` assertion examples
 
 ## Failure Modes
 
@@ -100,6 +100,11 @@ assert:
 
 Use `evaluate` when simple text checks are not enough and you need portable
 boolean/value logic in the spec itself.
+
+Authoring default:
+
+- prefer sugar operators (`contain`, `regex`, `json_type`, `exists`) unless
+  `evaluate` is required for case intent.
 
 ## 5) Common Authoring Mistakes
 
