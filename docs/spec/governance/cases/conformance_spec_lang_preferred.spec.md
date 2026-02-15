@@ -14,10 +14,8 @@ harness:
     roots:
       - docs/spec/conformance/cases
     allow_non_evaluate_files:
-      - docs/spec/conformance/cases/api_http.spec.md
       - docs/spec/conformance/cases/assertion_health.spec.md
       - docs/spec/conformance/cases/cli_run_entrypoint.spec.md
-      - docs/spec/conformance/cases/failure_context.spec.md
       - docs/spec/conformance/cases/php_text_file_subset.spec.md
       - docs/spec/conformance/cases/spec_lang.spec.md
     policy_evaluate:
