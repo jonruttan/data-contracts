@@ -54,6 +54,12 @@ SPEC_RUNNER_BIN=/path/to/compatible-runner ./scripts/core_gate.sh
 SPEC_RUNNER_BIN=/path/to/compatible-runner ./scripts/ci_gate.sh
 ```
 
+Rust adapter lane (bootstrap):
+
+```sh
+SPEC_RUNNER_BIN=./scripts/rust/runner_adapter.sh ./scripts/core_gate.sh
+```
+
 ## Run Core Gate Checks
 
 ```sh

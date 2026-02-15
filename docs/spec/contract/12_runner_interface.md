@@ -20,6 +20,11 @@ Required subcommands:
 - `test-core`
 - `test-full`
 
+CI expectation:
+
+- CI MUST exercise at least one non-default adapter lane via `SPEC_RUNNER_BIN`
+  (currently `scripts/rust/runner_adapter.sh`) using core gate commands.
+
 ## Default Adapter
 
 Repository default adapter:

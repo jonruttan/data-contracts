@@ -1860,6 +1860,34 @@ def _scan_runtime_runner_interface_subcommands(root: Path, *, harness: dict | No
     return violations
 
 
+def _scan_runtime_runner_interface_ci_lane(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("runner_interface_ci_lane")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.runner_interface_ci_lane requires harness.runner_interface_ci_lane mapping in governance spec"
+        ]
+    workflow = str(cfg.get("workflow", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not workflow:
+        return ["harness.runner_interface_ci_lane.workflow must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.runner_interface_ci_lane.required_tokens must be a non-empty list of non-empty strings"]
+    p = root / workflow
+    if not p.exists():
+        return [f"{workflow}:1: missing workflow file for runner interface CI lane check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{workflow}:1: missing required CI lane token {tok}")
+    return violations
+
+
 def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -1928,6 +1956,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.python_bin_resolver_sync": _scan_runtime_python_bin_resolver_sync,
     "runtime.runner_interface_gate_sync": _scan_runtime_runner_interface_gate_sync,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
+    "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,
     "runtime.assertions_via_spec_lang": _scan_runtime_assertions_via_spec_lang,
     "runtime.spec_lang_pure_no_effect_builtins": _scan_spec_lang_pure_no_effect_builtins,
     "runtime.orchestration_policy_via_spec_lang": _scan_runtime_orchestration_policy_via_spec_lang,

@@ -2441,3 +2441,43 @@ assert:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_script_enforces_runtime_runner_interface_ci_lane(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_runner_ci_lane.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-RUNTIME-CONFIG-005
+
+```yaml spec-test
+id: SRGOV-TEST-RUNTIME-CONFIG-005
+type: governance.check
+check: runtime.runner_interface_ci_lane
+harness:
+  root: {tmp_path}
+  runner_interface_ci_lane:
+    workflow: .github/workflows/ci.yml
+    required_tokens:
+      - "core-gate-rust-adapter:"
+      - "SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh"
+      - "run: ./scripts/core_gate.sh"
+assert:
+  - target: text
+    must:
+      - contain: ["PASS: runtime.runner_interface_ci_lane"]
+```
+""",
+    )
+    _write_text(
+        tmp_path / ".github/workflows/ci.yml",
+        "core-gate-rust-adapter:\n  env:\n    SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh\n  run: ./scripts/core_gate.sh\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / ".github/workflows/ci.yml", "name: CI\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

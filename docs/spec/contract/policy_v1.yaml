@@ -801,6 +801,21 @@ rules:
       - docs/spec/contract/12_runner_interface.md
       - docs/spec/governance/cases/runtime_runner_interface_subcommands.spec.md
 
+  - id: RUNTIME_RUNNER_INTERFACE_CI_LANE_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: runtime.runner_interface.ci_lane
+    norm: MUST
+    requirement: ci_includes_non_default_adapter_lane_via_spec_runner_bin
+    description: >
+      CI must include a lane that runs core gate with SPEC_RUNNER_BIN set to a
+      non-default adapter path.
+    rationale: Ensures adapter switching is continuously exercised in automation.
+    risk_if_violated: Alternate adapter support can silently regress.
+    references:
+      - docs/spec/contract/12_runner_interface.md
+      - docs/spec/governance/cases/runtime_runner_interface_ci_lane.spec.md
+
   - id: RUNTIME_SCOPE_BOUNDED_FOR_V1
     introduced_in: v1
     scope: governance
