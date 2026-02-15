@@ -20,9 +20,9 @@ harness:
       - path: docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
         required_tokens:
           - "gate_policy"
-          - "decision_expr"
+          - "policy_evaluate"
     forbidden_tokens: []
-    decision_expr:
+    policy_evaluate:
       - ["eq",
          ["count",
           ["filter",

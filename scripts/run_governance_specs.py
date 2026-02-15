@@ -114,7 +114,7 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
 }
 
 
-def _normalize_decision_expr(raw: object, *, field: str) -> list[object]:
+def _normalize_policy_evaluate(raw: object, *, field: str) -> list[object]:
     if not isinstance(raw, list) or not raw:
         raise ValueError(f"{field} must be a list-based spec-lang expression")
     if isinstance(raw[0], str):
@@ -799,8 +799,8 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
     if not isinstance(determinism, dict):
         return ["conformance.portable_determinism_guard requires harness.determinism mapping in governance spec"]
     try:
-        decision_expr = _normalize_decision_expr(
-            determinism.get("decision_expr"), field="harness.determinism.decision_expr"
+        policy_evaluate = _normalize_policy_evaluate(
+            determinism.get("policy_evaluate"), field="harness.determinism.policy_evaluate"
         )
     except ValueError as exc:
         return [str(exc)]
@@ -845,7 +845,7 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
 
     pattern_values = [p.pattern for p in compiled_patterns]
     ok = eval_predicate(
-        decision_expr,
+        policy_evaluate,
         subject=rows,
         limits=SpecLangLimits(),
         symbols={"patterns": pattern_values},
@@ -870,8 +870,8 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
     if not isinstance(ambient, dict):
         return ["conformance.no_ambient_assumptions requires harness.ambient_assumptions mapping in governance spec"]
     try:
-        decision_expr = _normalize_decision_expr(
-            ambient.get("decision_expr"), field="harness.ambient_assumptions.decision_expr"
+        policy_evaluate = _normalize_policy_evaluate(
+            ambient.get("policy_evaluate"), field="harness.ambient_assumptions.policy_evaluate"
         )
     except ValueError as exc:
         return [str(exc)]
@@ -912,7 +912,7 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
 
     pattern_values = [p.pattern for p in compiled_patterns]
     ok = eval_predicate(
-        decision_expr,
+        policy_evaluate,
         subject=rows,
         limits=SpecLangLimits(),
         symbols={"patterns": pattern_values},
@@ -1029,8 +1029,8 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     ):
         return ["harness.spec_lang_preferred.allow_non_evaluate_files must be a list of non-empty strings"]
     try:
-        decision_expr = _normalize_decision_expr(
-            cfg.get("decision_expr"), field="harness.spec_lang_preferred.decision_expr"
+        policy_evaluate = _normalize_policy_evaluate(
+            cfg.get("policy_evaluate"), field="harness.spec_lang_preferred.policy_evaluate"
         )
     except ValueError as exc:
         return [str(exc)]
@@ -1087,7 +1087,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 }
             )
 
-        ok = eval_predicate(decision_expr, subject=rows, limits=SpecLangLimits())
+        ok = eval_predicate(policy_evaluate, subject=rows, limits=SpecLangLimits())
         if not ok:
             for row in rows:
                 ops = row.get("non_eval_ops")

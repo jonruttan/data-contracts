@@ -22,7 +22,7 @@ harness:
       - "\\brandom\\."
       - "\\brand(?:int|range)?\\s*\\("
       - "\\bMath\\.random\\s*\\("
-    decision_expr:
+    policy_evaluate:
       - ["eq",
          ["count",
           ["filter",

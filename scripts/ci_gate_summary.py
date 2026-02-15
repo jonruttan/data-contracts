@@ -73,19 +73,19 @@ def _load_gate_policy_expr(policy_case: Path) -> list[object]:
         orch = harness.get("orchestration_policy")
         if not isinstance(orch, dict):
             continue
-        expr = orch.get("decision_expr")
+        expr = orch.get("policy_evaluate")
         if isinstance(expr, list) and expr:
             if isinstance(expr[0], str):
                 return expr
             if len(expr) == 1 and isinstance(expr[0], list) and expr[0] and isinstance(expr[0][0], str):
                 return expr[0]
     raise ValueError(
-        f"missing harness.orchestration_policy.decision_expr in {policy_case}"
+        f"missing harness.orchestration_policy.policy_evaluate in {policy_case}"
     )
 
 
-def _evaluate_gate_policy(*, rows: list[dict[str, object]], decision_expr: list[object]) -> bool:
-    return eval_predicate(decision_expr, subject=rows, limits=SpecLangLimits())
+def _evaluate_gate_policy(*, rows: list[dict[str, object]], policy_evaluate: list[object]) -> bool:
+    return eval_predicate(policy_evaluate, subject=rows, limits=SpecLangLimits())
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -101,19 +101,19 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--policy-case",
         default="docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md",
-        help="Governance spec case containing orchestration decision_expr policy.",
+        help="Governance spec case containing orchestration policy_evaluate policy.",
     )
     ns = ap.parse_args(argv)
 
     out_path = Path(str(ns.out))
     out_path.parent.mkdir(parents=True, exist_ok=True)
     policy_case = Path(str(ns.policy_case))
-    decision_expr = _load_gate_policy_expr(policy_case)
+    policy_evaluate = _load_gate_policy_expr(policy_case)
 
     started = _now_iso_utc()
     t0 = time.perf_counter()
     steps = _run_steps(_default_steps(str(ns.runner_bin)))
-    verdict = _evaluate_gate_policy(rows=steps, decision_expr=decision_expr)
+    verdict = _evaluate_gate_policy(rows=steps, policy_evaluate=policy_evaluate)
     first_failure = next((int(step["exit_code"]) for step in steps if int(step["exit_code"]) != 0), 1)
     exit_code = 0 if verdict else first_failure
     total_duration_ms = int((time.perf_counter() - t0) * 1000)
@@ -124,7 +124,7 @@ def main(argv: list[str] | None = None) -> int:
         "status": "pass" if verdict else "fail",
         "policy_verdict": "pass" if verdict else "fail",
         "policy_case": str(policy_case),
-        "policy_expr": decision_expr,
+        "policy_expr": policy_evaluate,
         "started_at": started,
         "finished_at": finished,
         "total_duration_ms": total_duration_ms,

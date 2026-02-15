@@ -597,7 +597,7 @@ harness:
       - "\\\\brandom\\\\."
       - "\\\\brand(?:int|range)?\\\\s*\\\\("
       - "\\\\bMath\\\\.random\\\\s*\\\\("
-    decision_expr:
+    policy_evaluate:
       - ["eq",
          ["count",
           ["filter",
@@ -706,7 +706,7 @@ harness:
     patterns:
       - "\\\\bos\\\\.getenv\\\\s*\\\\("
       - "\\\\bdatetime\\\\.now\\\\s*\\\\("
-    decision_expr:
+    policy_evaluate:
       - ["eq",
          ["count",
           ["filter",
@@ -932,7 +932,7 @@ harness:
     roots:
       - docs/spec/conformance/cases
     allow_non_evaluate_files: []
-    decision_expr:
+    policy_evaluate:
       - ["eq",
          ["count",
           ["filter",
@@ -2304,11 +2304,11 @@ harness:
           - \"_load_gate_policy_expr(\"
           - \"eval_predicate(\"
           - \"gate_policy\"
-          - \"decision_expr\"
+          - \"policy_evaluate\"
       - path: docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
         required_tokens:
           - \"gate_policy\"
-          - \"decision_expr\"
+          - \"policy_evaluate\"
     forbidden_tokens: []
 assert:
   - target: text
@@ -2319,11 +2319,11 @@ assert:
     )
     _write_text(
         tmp_path / "scripts/ci_gate_summary.py",
-        "def x():\n    _load_gate_policy_expr()\n    eval_predicate(['eq', 1, 1], subject=[])\n    gate_policy='ok'\n    decision_expr=['eq',1,1]\n",
+        "def x():\n    _load_gate_policy_expr()\n    eval_predicate(['eq', 1, 1], subject=[])\n    gate_policy='ok'\n    policy_evaluate=['eq',1,1]\n",
     )
     _write_text(
         tmp_path / "docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md",
-        "gate_policy\ndecision_expr\n",
+        "gate_policy\npolicy_evaluate\n",
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0

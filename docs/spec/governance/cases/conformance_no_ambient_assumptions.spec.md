@@ -28,7 +28,7 @@ harness:
       - "\\bprocess\\.env\\b"
       - "\\$_ENV\\b"
       - "\\bSystem\\.getenv\\s*\\("
-    decision_expr:
+    policy_evaluate:
       - ["eq",
          ["count",
           ["filter",
