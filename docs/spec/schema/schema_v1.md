@@ -102,6 +102,14 @@ Assertion targets for `text.file`:
 Runner-only inputs MUST live under `harness:` to preserve separation of
 concerns and keep the spec format portable.
 
+Governance policy contract:
+
+- For `type: governance.check` cases, decision contracts MUST include
+  `policy_evaluate` under harness check config.
+- Final pass/fail decisions are evaluated via spec-lang policy expressions.
+- Extractors may emit candidate violations and subject payloads, but MUST NOT
+  be the source of final decision truth.
+
 Security model:
 
 - Spec tests are trusted inputs. `cli.run` and hook entrypoints can execute

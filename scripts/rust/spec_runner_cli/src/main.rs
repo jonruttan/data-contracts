@@ -15,31 +15,6 @@ fn find_repo_root() -> Result<PathBuf, String> {
     }
 }
 
-fn is_executable(path: &Path) -> bool {
-    path.exists() && path.is_file()
-}
-
-fn resolve_python_bin(root: &Path) -> String {
-    if let Ok(v) = env::var("PYTHON_BIN") {
-        let s = v.trim();
-        if !s.is_empty() {
-            return s.to_string();
-        }
-    }
-
-    let local = root.join(".venv/bin/python");
-    if is_executable(&local) {
-        return local.to_string_lossy().to_string();
-    }
-
-    let parent_local = root.join("../../.venv/bin/python");
-    if is_executable(&parent_local) {
-        return parent_local.to_string_lossy().to_string();
-    }
-
-    "python3".to_string()
-}
-
 fn run_cmd(program: &str, args: &[String], root: &Path) -> i32 {
     let mut cmd = Command::new(program);
     cmd.args(args)
@@ -55,13 +30,6 @@ fn run_cmd(program: &str, args: &[String], root: &Path) -> i32 {
             1
         }
     }
-}
-
-fn rust_unimplemented(subcommand: &str) -> i32 {
-    eprintln!(
-        "ERROR: rust runner adapter subcommand not yet implemented in spec_runner_cli: {subcommand}"
-    );
-    2
 }
 
 fn with_forwarded(base: Vec<String>, forwarded: &[String]) -> Vec<String> {
@@ -88,55 +56,40 @@ fn main() {
         }
     };
 
-    let python_bin = resolve_python_bin(&root);
+    let shell_adapter = root.join("scripts/runner_adapter.sh");
+    let shell_adapter_str = shell_adapter.to_string_lossy().to_string();
 
     let code = match subcommand.as_str() {
-        "governance" => run_cmd(
-            &python_bin,
-            &with_forwarded(vec!["scripts/run_governance_specs.py".to_string()], &forwarded),
-            &root,
-        ),
-        "style-check" => run_cmd(
-            &python_bin,
-            &with_forwarded(
-                vec![
-                    "scripts/evaluate_style.py".to_string(),
-                    "--check".to_string(),
-                    "docs/spec".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "test-core" => run_cmd(
-            &python_bin,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "pytest".to_string(),
-                    "-q".to_string(),
-                    "tests/test_doc_parser_unit.py".to_string(),
-                    "tests/test_dispatcher_unit.py".to_string(),
-                    "tests/test_assertions_unit.py".to_string(),
-                    "tests/test_conformance_runner_unit.py".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "lint"
+        "governance"
+        | "style-check"
+        | "lint"
         | "typecheck"
         | "compilecheck"
         | "conformance-purpose-json"
         | "conformance-purpose-md"
         | "spec-portability-json"
         | "spec-portability-md"
+        | "spec-lang-adoption-json"
+        | "spec-lang-adoption-md"
+        | "runner-independence-json"
+        | "runner-independence-md"
+        | "docs-operability-json"
+        | "docs-operability-md"
+        | "contract-assertions-json"
+        | "contract-assertions-md"
+        | "objective-scorecard-json"
+        | "objective-scorecard-md"
         | "docs-build"
         | "docs-build-check"
         | "docs-lint"
         | "docs-graph"
         | "conformance-parity"
-        | "test-full" => rust_unimplemented(&subcommand),
+        | "test-core"
+        | "test-full" => run_cmd(
+            &shell_adapter_str,
+            &with_forwarded(vec![subcommand.clone()], &forwarded),
+            &root,
+        ),
         _ => {
             eprintln!("ERROR: unsupported runner adapter subcommand: {subcommand}");
             2

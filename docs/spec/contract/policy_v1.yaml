@@ -1332,3 +1332,51 @@ rules:
       - docs/spec/metrics/baseline_update_notes.yaml
       - docs/spec/contract/17_objective_metrics.md
       - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
+
+  - id: GOVERNANCE_POLICY_EVALUATE_REQUIRED
+    introduced_in: v1
+    scope: governance
+    applies_to: governance.check.harness.policy_evaluate
+    norm: MUST
+    requirement: governance_decision_contracts_must_declare_policy_evaluate
+    description: >
+      Governance decision checks must declare policy_evaluate expressions in
+      harness config so final verdicts are evaluated through spec-lang.
+    rationale: Keeps decision logic implementation-independent and portable.
+    risk_if_violated: Check pass/fail behavior drifts into host-language branching.
+    references:
+      - docs/spec/contract/15_governance_subject_model.md
+      - docs/spec/contract/18_governance_subject_extractors.md
+      - docs/spec/governance/cases/governance_policy_evaluate_required.spec.md
+
+  - id: GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
+    introduced_in: v1
+    scope: governance
+    applies_to: scripts.run_governance_specs
+    norm: MUST
+    requirement: check_extractors_must_not_embed_per_check_policy_verdict_branches
+    description: >
+      Governance check extractors must emit deterministic subject payloads and
+      violation candidates only; final policy verdicts are centralized.
+    rationale: Reduces duplicated decision semantics and improves parity portability.
+    risk_if_violated: Check-specific logic diverges and becomes hard to port.
+    references:
+      - docs/spec/contract/15_governance_subject_model.md
+      - docs/spec/contract/18_governance_subject_extractors.md
+      - docs/spec/governance/cases/governance_extractor_only_no_verdict_branching.spec.md
+
+  - id: RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
+    introduced_in: v1
+    scope: runtime
+    applies_to: scripts.rust.spec_runner_cli
+    norm: MUST
+    requirement: rust_runner_interface_must_not_hardcode_python_exec_paths_or_tokens
+    description: >
+      Rust runner interface implementation must avoid direct Python execution
+      token coupling in its command dispatch layer.
+    rationale: Supports Rust-primary operation and reduces interpreter lock-in.
+    risk_if_violated: Rust lane silently remains Python-dependent.
+    references:
+      - docs/spec/contract/12_runner_interface.md
+      - docs/spec/contract/16_rust_primary_transition.md
+      - docs/spec/governance/cases/runtime_rust_adapter_no_python_exec.spec.md

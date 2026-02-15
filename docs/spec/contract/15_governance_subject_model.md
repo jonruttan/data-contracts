@@ -9,7 +9,7 @@ Enable governance checks to run decision logic in spec-lang by separating:
 
 ## Model
 
-Governance checks SHOULD expose typed, deterministic subject payloads to
+Governance checks MUST expose typed, deterministic subject payloads to
 spec-lang expressions instead of embedding decision logic in Python scanners.
 
 Subject payload examples:
@@ -32,11 +32,18 @@ When migrating a governance check:
 - move pass/fail decision into spec-lang `policy_evaluate`
 - preserve error category and stable message expectations
 - keep behavior parity with previous scanner logic
+- avoid per-check policy verdict branching text in extractor functions
 
 Naming rule:
 
 - Assertion trees use `evaluate`.
 - Governance/orchestration policy fields use `policy_evaluate`.
+
+Hard requirement:
+
+- Governance decision checks MUST declare and evaluate `policy_evaluate`.
+- Extractor outputs and central policy evaluation contract are defined in:
+  `docs/spec/contract/18_governance_subject_extractors.md`.
 
 ## Initial Migration Scope
 

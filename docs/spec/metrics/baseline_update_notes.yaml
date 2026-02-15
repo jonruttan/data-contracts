@@ -1,11 +1,11 @@
 version: 1
 entries:
 - baseline: docs/spec/metrics/spec_portability_baseline.json
-  sha256: 3f2583901b8ba6ce5d01071d763779f25d67e36c82287f2cd3bc4874c836f906
+  sha256: 8c83e2fd316fe2b3fd56a70d7973b4c7f72cd9f94d8cbe75f295c37ba04af9dd
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/spec_lang_adoption_baseline.json
-  sha256: e17601d7952b7e0aace60315fe25cd710600ed79dca1a3a5beff18724dd80a76
+  sha256: 8347c1908eb2e6a932cd43e9c6ba91de7f4117e640c3cd8793fbc0bb4a7b1c85
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/runner_independence_baseline.json

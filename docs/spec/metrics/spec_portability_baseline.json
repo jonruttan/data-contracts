@@ -1987,6 +1987,60 @@
     {
       "execution_coupling_ratio": 0.15000000000000002,
       "execution_portability_ratio": 0.85,
+      "file": "docs/spec/governance/cases/governance_extractor_only_no_verdict_branching.spec.md",
+      "id": "SRGOV-POLICY-REQ-002",
+      "implementation_reliance_ratio": 0.6,
+      "leaf_counts": {
+        "evaluate": 0,
+        "non_evaluate": 1,
+        "total": 1
+      },
+      "logic_reliance_ratio": 1.0,
+      "logic_self_contained_ratio": 0.0,
+      "penalties": {
+        "expect_impl_overlay": 0.0,
+        "non_core_type": 0.15,
+        "non_evaluate_leaf_share": 0.45,
+        "runtime_specific_capability": 0.0
+      },
+      "reasons": [
+        "non-evaluate leaf share 1/1",
+        "non-core type governance.check"
+      ],
+      "segment": "governance",
+      "self_contained_ratio": 0.4,
+      "type": "governance.check"
+    },
+    {
+      "execution_coupling_ratio": 0.15000000000000002,
+      "execution_portability_ratio": 0.85,
+      "file": "docs/spec/governance/cases/governance_policy_evaluate_required.spec.md",
+      "id": "SRGOV-POLICY-REQ-001",
+      "implementation_reliance_ratio": 0.6,
+      "leaf_counts": {
+        "evaluate": 0,
+        "non_evaluate": 1,
+        "total": 1
+      },
+      "logic_reliance_ratio": 1.0,
+      "logic_self_contained_ratio": 0.0,
+      "penalties": {
+        "expect_impl_overlay": 0.0,
+        "non_core_type": 0.15,
+        "non_evaluate_leaf_share": 0.45,
+        "runtime_specific_capability": 0.0
+      },
+      "reasons": [
+        "non-evaluate leaf share 1/1",
+        "non-core type governance.check"
+      ],
+      "segment": "governance",
+      "self_contained_ratio": 0.4,
+      "type": "governance.check"
+    },
+    {
+      "execution_coupling_ratio": 0.15000000000000002,
+      "execution_portability_ratio": 0.85,
       "file": "docs/spec/governance/cases/naming_filename_policy.spec.md",
       "id": "SRGOV-DOCS-NAME-001",
       "implementation_reliance_ratio": 0.6,
@@ -2394,6 +2448,33 @@
       "execution_portability_ratio": 0.85,
       "file": "docs/spec/governance/cases/runtime_rust_adapter_no_delegate.spec.md",
       "id": "SRGOV-RUNTIME-CONFIG-006",
+      "implementation_reliance_ratio": 0.6,
+      "leaf_counts": {
+        "evaluate": 0,
+        "non_evaluate": 1,
+        "total": 1
+      },
+      "logic_reliance_ratio": 1.0,
+      "logic_self_contained_ratio": 0.0,
+      "penalties": {
+        "expect_impl_overlay": 0.0,
+        "non_core_type": 0.15,
+        "non_evaluate_leaf_share": 0.45,
+        "runtime_specific_capability": 0.0
+      },
+      "reasons": [
+        "non-evaluate leaf share 1/1",
+        "non-core type governance.check"
+      ],
+      "segment": "governance",
+      "self_contained_ratio": 0.4,
+      "type": "governance.check"
+    },
+    {
+      "execution_coupling_ratio": 0.15000000000000002,
+      "execution_portability_ratio": 0.85,
+      "file": "docs/spec/governance/cases/runtime_rust_adapter_no_python_exec.spec.md",
+      "id": "SRGOV-RUST-PRIMARY-007",
       "implementation_reliance_ratio": 0.6,
       "leaf_counts": {
         "evaluate": 0,
@@ -3560,7 +3641,7 @@
       }
     },
     "governance": {
-      "case_count": 73,
+      "case_count": 76,
       "mean_execution_coupling_ratio": 0.15000000000000002,
       "mean_execution_portability_ratio": 0.85,
       "mean_implementation_reliance_ratio": 0.6,
@@ -3569,8 +3650,8 @@
       "mean_self_contained_ratio": 0.4,
       "penalty_counts": {
         "expect_impl_overlay": 0,
-        "non_core_type": 73,
-        "non_evaluate_leaf": 73,
+        "non_core_type": 76,
+        "non_evaluate_leaf": 76,
         "runtime_specific_capability": 0
       }
     },
@@ -3606,13 +3687,13 @@
     }
   },
   "summary": {
-    "overall_execution_coupling_ratio": 0.09469696969696971,
-    "overall_execution_portability_ratio": 0.9053030303030303,
-    "overall_implementation_reliance_ratio": 0.5041287878787879,
-    "overall_logic_reliance_ratio": 0.9098484848484848,
-    "overall_logic_self_contained_ratio": 0.09015151515151515,
-    "overall_self_contained_ratio": 0.4958712121212121,
-    "total_cases": 132
+    "overall_execution_coupling_ratio": 0.09592592592592593,
+    "overall_execution_portability_ratio": 0.904074074074074,
+    "overall_implementation_reliance_ratio": 0.5062592592592593,
+    "overall_logic_reliance_ratio": 0.9118518518518518,
+    "overall_logic_self_contained_ratio": 0.08814814814814816,
+    "overall_self_contained_ratio": 0.49374074074074076,
+    "total_cases": 135
   },
   "version": 1,
   "worst_cases": [

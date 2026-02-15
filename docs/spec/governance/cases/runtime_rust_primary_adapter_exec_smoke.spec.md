@@ -14,9 +14,8 @@ harness:
     command:
       - scripts/rust/runner_adapter.sh
       - lint
-    expected_exit_codes: [2]
-    required_output_tokens:
-      - "rust runner adapter subcommand not yet implemented"
+    expected_exit_codes: [0]
+    required_output_tokens: []
     forbidden_output_tokens:
       - "scripts/runner_adapter.sh"
     timeout_seconds: 180

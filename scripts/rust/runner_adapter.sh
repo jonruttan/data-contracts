@@ -69,6 +69,66 @@ case "${subcommand}" in
     fi
     exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
+  spec-lang-adoption-json)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  spec-lang-adoption-md)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  runner-independence-json)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  runner-independence-md)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  docs-operability-json)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  docs-operability-md)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  contract-assertions-json)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  contract-assertions-md)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  objective-scorecard-json)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  objective-scorecard-md)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
   docs-build)
     if [[ -x "${RUST_CLI_BIN}" ]]; then
       exec "${RUST_CLI_BIN}" "${subcommand}" "$@"

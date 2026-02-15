@@ -143,3 +143,16 @@ def test_spec_lang_symbol_bindings() -> None:
         ["not", ["call", ["var", "is_error"], ["subject"]]],
     ]
     assert eval_predicate(expr, subject="WARN: hello", symbols=symbols) is True
+
+
+def test_spec_lang_governance_collection_builtins() -> None:
+    rows = [{"name": "c", "value": 3}, {"name": "a", "value": 1}, {"name": "b", "value": 2}]
+    assert eval_expr(["sum", ["subject"]], subject=[1, 2, 3]) == 6
+    assert eval_expr(["min", ["subject"]], subject=[3, 1, 2]) == 1
+    assert eval_expr(["max", ["subject"]], subject=[3, 1, 2]) == 3
+    assert eval_expr(["distinct", ["split", "a,a,b,a", ","]], subject=None) == ["a", "b"]
+    assert eval_predicate(["is_empty", ["subject"]], subject=[]) is True
+    assert eval_expr(["coalesce", None, "", "x"], subject=None) == "x"
+    assert eval_expr(["pluck", ["subject"], "name"], subject=rows) == ["c", "a", "b"]
+    assert eval_expr(["pluck", ["sort_by", ["subject"], "name"], "name"], subject=rows) == ["a", "b", "c"]
+    assert eval_predicate(["matches_all", "abc-123", ["subject"]], subject=["^[a-z]+", "123$"]) is True

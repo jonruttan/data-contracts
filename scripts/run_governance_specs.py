@@ -47,6 +47,7 @@ from spec_runner.quality_metrics import runner_independence_report_jsonable
 from spec_runner.quality_metrics import spec_lang_adoption_report_jsonable
 from spec_runner.quality_metrics import validate_metric_baseline_notes
 from spec_runner.quality_metrics import _load_baseline_json
+from spec_runner.governance_engine import GovernancePolicyResult, normalize_policy_evaluate, run_governance_policy
 from spec_runner.spec_portability import spec_portability_report_jsonable
 
 
@@ -127,18 +128,6 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
     "patcher",
     "capture",
 }
-
-
-def _normalize_policy_evaluate(raw: object, *, field: str) -> list[object]:
-    if not isinstance(raw, list) or not raw:
-        raise ValueError(f"{field} must be a list-based spec-lang expression")
-    if isinstance(raw[0], str):
-        return raw
-    if len(raw) == 1 and isinstance(raw[0], list):
-        inner = raw[0]
-        if inner and isinstance(inner[0], str):
-            return inner
-    raise ValueError(f"{field} must be a list-based spec-lang expression")
 
 
 def _scan_contract_governance_check(root: Path) -> list[str]:
@@ -475,7 +464,7 @@ def _scan_spec_portability_metric(root: Path, *, harness: dict | None = None) ->
     policy_evaluate = None
     if "policy_evaluate" in cfg:
         try:
-            policy_evaluate = _normalize_policy_evaluate(
+            policy_evaluate = normalize_policy_evaluate(
                 cfg.get("policy_evaluate"), field="harness.portability_metric.policy_evaluate"
             )
         except ValueError as exc:
@@ -485,13 +474,12 @@ def _scan_spec_portability_metric(root: Path, *, harness: dict | None = None) ->
     if not isinstance(errs, list):
         return ["spec.portability_metric report contains invalid errors shape"]
     violations = [str(e) for e in errs if str(e).strip()]
-    if violations:
-        return violations
-    if policy_evaluate is not None:
-        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
-        if not ok:
-            return ["spec.portability_metric policy_evaluate returned false for portability report payload"]
-    return []
+    return _policy_outcome(
+        subject=payload,
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.portability_metric.policy_evaluate",
+        violations=violations,
+    )
 
 
 def _lookup_number_field(payload: object, dotted: str) -> float | None:
@@ -600,7 +588,7 @@ def _scan_spec_lang_adoption_metric(root: Path, *, harness: dict | None = None) 
     policy_evaluate = None
     if "policy_evaluate" in cfg:
         try:
-            policy_evaluate = _normalize_policy_evaluate(
+            policy_evaluate = normalize_policy_evaluate(
                 cfg.get("policy_evaluate"), field="harness.spec_lang_adoption.policy_evaluate"
             )
         except ValueError as exc:
@@ -610,13 +598,12 @@ def _scan_spec_lang_adoption_metric(root: Path, *, harness: dict | None = None) 
     if not isinstance(errs, list):
         return ["spec.spec_lang_adoption_metric report contains invalid errors shape"]
     violations = [str(e) for e in errs if str(e).strip()]
-    if violations:
-        return violations
-    if policy_evaluate is not None:
-        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
-        if not ok:
-            return ["spec.spec_lang_adoption_metric policy_evaluate returned false"]
-    return []
+    return _policy_outcome(
+        subject=payload,
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.spec_lang_adoption.policy_evaluate",
+        violations=violations,
+    )
 
 
 def _scan_spec_lang_adoption_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -664,7 +651,7 @@ def _scan_runner_independence_metric(root: Path, *, harness: dict | None = None)
     policy_evaluate = None
     if "policy_evaluate" in cfg:
         try:
-            policy_evaluate = _normalize_policy_evaluate(
+            policy_evaluate = normalize_policy_evaluate(
                 cfg.get("policy_evaluate"), field="harness.runner_independence.policy_evaluate"
             )
         except ValueError as exc:
@@ -674,13 +661,12 @@ def _scan_runner_independence_metric(root: Path, *, harness: dict | None = None)
     if not isinstance(errs, list):
         return ["runtime.runner_independence_metric report contains invalid errors shape"]
     violations = [str(e) for e in errs if str(e).strip()]
-    if violations:
-        return violations
-    if policy_evaluate is not None:
-        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
-        if not ok:
-            return ["runtime.runner_independence_metric policy_evaluate returned false"]
-    return []
+    return _policy_outcome(
+        subject=payload,
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.runner_independence.policy_evaluate",
+        violations=violations,
+    )
 
 
 def _scan_runner_independence_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -728,7 +714,7 @@ def _scan_docs_operability_metric(root: Path, *, harness: dict | None = None) ->
     policy_evaluate = None
     if "policy_evaluate" in cfg:
         try:
-            policy_evaluate = _normalize_policy_evaluate(
+            policy_evaluate = normalize_policy_evaluate(
                 cfg.get("policy_evaluate"), field="harness.docs_operability.policy_evaluate"
             )
         except ValueError as exc:
@@ -738,13 +724,12 @@ def _scan_docs_operability_metric(root: Path, *, harness: dict | None = None) ->
     if not isinstance(errs, list):
         return ["docs.operability_metric report contains invalid errors shape"]
     violations = [str(e) for e in errs if str(e).strip()]
-    if violations:
-        return violations
-    if policy_evaluate is not None:
-        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
-        if not ok:
-            return ["docs.operability_metric policy_evaluate returned false"]
-    return []
+    return _policy_outcome(
+        subject=payload,
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.docs_operability.policy_evaluate",
+        violations=violations,
+    )
 
 
 def _scan_docs_operability_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -790,7 +775,7 @@ def _scan_contract_assertions_metric(root: Path, *, harness: dict | None = None)
     policy_evaluate = None
     if "policy_evaluate" in cfg:
         try:
-            policy_evaluate = _normalize_policy_evaluate(
+            policy_evaluate = normalize_policy_evaluate(
                 cfg.get("policy_evaluate"), field="harness.contract_assertions.policy_evaluate"
             )
         except ValueError as exc:
@@ -800,13 +785,12 @@ def _scan_contract_assertions_metric(root: Path, *, harness: dict | None = None)
     if not isinstance(errs, list):
         return ["spec.contract_assertions_metric report contains invalid errors shape"]
     violations = [str(e) for e in errs if str(e).strip()]
-    if violations:
-        return violations
-    if policy_evaluate is not None:
-        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
-        if not ok:
-            return ["spec.contract_assertions_metric policy_evaluate returned false"]
-    return []
+    return _policy_outcome(
+        subject=payload,
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.contract_assertions.policy_evaluate",
+        violations=violations,
+    )
 
 
 def _scan_contract_assertions_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -854,7 +838,7 @@ def _scan_objective_scorecard_metric(root: Path, *, harness: dict | None = None)
     policy_evaluate = None
     if "policy_evaluate" in cfg:
         try:
-            policy_evaluate = _normalize_policy_evaluate(
+            policy_evaluate = normalize_policy_evaluate(
                 cfg.get("policy_evaluate"), field="harness.objective_scorecard.policy_evaluate"
             )
         except ValueError as exc:
@@ -864,13 +848,12 @@ def _scan_objective_scorecard_metric(root: Path, *, harness: dict | None = None)
     if not isinstance(errs, list):
         return ["objective.scorecard_metric report contains invalid errors shape"]
     violations = [str(e) for e in errs if str(e).strip()]
-    if violations:
-        return violations
-    if policy_evaluate is not None:
-        ok = eval_predicate(policy_evaluate, subject=payload, limits=SpecLangLimits())
-        if not ok:
-            return ["objective.scorecard_metric policy_evaluate returned false"]
-    return []
+    return _policy_outcome(
+        subject=payload,
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.objective_scorecard.policy_evaluate",
+        violations=violations,
+    )
 
 
 def _scan_objective_scorecard_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -1007,7 +990,12 @@ def _scan_objective_tripwires_clean(root: Path, *, harness: dict | None = None) 
             local_harness = dict(harness_case)
             local_harness["root"] = str(root)
             params = inspect.signature(fn).parameters
-            case_violations = fn(root, harness=local_harness) if "harness" in params else fn(root)
+            outcome = fn(root, harness=local_harness) if "harness" in params else fn(root)
+            if isinstance(outcome, dict):
+                out_violations = outcome.get("violations")
+                case_violations = [str(v) for v in out_violations if str(v).strip()] if isinstance(out_violations, list) else []
+            else:
+                case_violations = [str(v) for v in outcome if str(v).strip()]
             if not case_violations:
                 matched = True
                 break
@@ -1340,6 +1328,108 @@ def _scan_current_spec_policy_key_names(root: Path) -> list[str]:
     return violations
 
 
+def _mapping_contains_key_recursive(node: object, key: str) -> bool:
+    if isinstance(node, dict):
+        if key in node:
+            return True
+        return any(_mapping_contains_key_recursive(v, key) for v in node.values())
+    if isinstance(node, list):
+        return any(_mapping_contains_key_recursive(v, key) for v in node)
+    return False
+
+
+def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("policy_requirements")
+    if not isinstance(cfg, dict):
+        return ["governance.policy_evaluate_required requires harness.policy_requirements mapping in governance spec"]
+    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
+    case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
+    ignore_checks_raw = cfg.get("ignore_checks", [])
+    required_checks_raw = cfg.get("required_checks")
+    if not isinstance(ignore_checks_raw, list) or any(not isinstance(x, str) for x in ignore_checks_raw):
+        return ["harness.policy_requirements.ignore_checks must be a list of strings"]
+    ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
+    required_checks: set[str] | None = None
+    if required_checks_raw is not None:
+        if not isinstance(required_checks_raw, list) or any(not isinstance(x, str) for x in required_checks_raw):
+            return ["harness.policy_requirements.required_checks must be a list of strings when provided"]
+        required_checks = {x.strip() for x in required_checks_raw if x.strip()}
+
+    cases_dir = root / cases_rel
+    if not cases_dir.exists():
+        return [f"{cases_rel}:1: governance cases path does not exist"]
+
+    violations: list[str] = []
+    for spec in iter_cases(cases_dir, file_pattern=case_pattern):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() != "governance.check":
+            continue
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        check_id = str(case.get("check", "")).strip()
+        if check_id in ignore_checks:
+            continue
+        if required_checks is not None and check_id not in required_checks:
+            continue
+        harness_map = case.get("harness")
+        if not isinstance(harness_map, dict):
+            violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
+            continue
+        if not _mapping_contains_key_recursive(harness_map, "policy_evaluate"):
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} missing required policy_evaluate"
+            )
+    return violations
+
+
+def _scan_governance_extractor_only_no_verdict_branching(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("extractor_policy")
+    if not isinstance(cfg, dict):
+        return ["governance.extractor_only_no_verdict_branching requires harness.extractor_policy mapping in governance spec"]
+    rel = str(cfg.get("path", "scripts/run_governance_specs.py")).strip() or "scripts/run_governance_specs.py"
+    p = root / rel
+    if not p.exists():
+        return [f"{rel}:1: missing governance runner script"]
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if (
+        not isinstance(forbidden_tokens, list)
+        or not forbidden_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+    ):
+        return ["harness.extractor_policy.forbidden_tokens must be a non-empty list of non-empty strings"]
+    raw = p.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for tok in forbidden_tokens:
+        if tok in raw:
+            violations.append(f"{rel}:1: forbidden check-level verdict token present: {tok}")
+    return violations
+
+
+def _scan_runtime_rust_adapter_no_python_exec(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("rust_no_python_exec")
+    if not isinstance(cfg, dict):
+        return ["runtime.rust_adapter_no_python_exec requires harness.rust_no_python_exec mapping in governance spec"]
+    rel = str(cfg.get("path", "scripts/rust/spec_runner_cli/src/main.rs")).strip() or "scripts/rust/spec_runner_cli/src/main.rs"
+    p = root / rel
+    if not p.exists():
+        return [f"{rel}:1: missing rust runner interface implementation"]
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if (
+        not isinstance(forbidden_tokens, list)
+        or not forbidden_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+    ):
+        return ["harness.rust_no_python_exec.forbidden_tokens must be a non-empty list of non-empty strings"]
+    raw = p.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for tok in forbidden_tokens:
+        if tok in raw:
+            violations.append(f"{rel}:1: forbidden python-coupling token present: {tok}")
+    return violations
+
+
 def _type_contract_doc_rel_for(case_type: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "_", case_type.lower()).strip("_")
     return f"{_TYPE_CONTRACTS_DIR}/{slug}.md"
@@ -1506,7 +1596,7 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
     if not isinstance(determinism, dict):
         return ["conformance.portable_determinism_guard requires harness.determinism mapping in governance spec"]
     try:
-        policy_evaluate = _normalize_policy_evaluate(
+        policy_evaluate = normalize_policy_evaluate(
             determinism.get("policy_evaluate"), field="harness.determinism.policy_evaluate"
         )
     except ValueError as exc:
@@ -1551,23 +1641,22 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
         )
 
     pattern_values = [p.pattern for p in compiled_patterns]
-    ok = eval_predicate(
-        policy_evaluate,
+    for row in rows:
+        case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
+        strings = row.get("strings")
+        if not isinstance(strings, list):
+            continue
+        if any(_any_pattern_matches(str(s), compiled_patterns) for s in strings):
+            violations.append(
+                f"{case_id}: non-deterministic token matched configured pattern in case content"
+            )
+    return _policy_outcome(
         subject=rows,
-        limits=SpecLangLimits(),
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.determinism.policy_evaluate",
         symbols={"patterns": pattern_values},
+        violations=violations,
     )
-    if not ok:
-        for row in rows:
-            case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
-            strings = row.get("strings")
-            if not isinstance(strings, list):
-                continue
-            if any(_any_pattern_matches(str(s), compiled_patterns) for s in strings):
-                violations.append(
-                    f"{case_id}: non-deterministic token matched configured pattern in case content"
-                )
-    return violations
 
 
 def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -1577,7 +1666,7 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
     if not isinstance(ambient, dict):
         return ["conformance.no_ambient_assumptions requires harness.ambient_assumptions mapping in governance spec"]
     try:
-        policy_evaluate = _normalize_policy_evaluate(
+        policy_evaluate = normalize_policy_evaluate(
             ambient.get("policy_evaluate"), field="harness.ambient_assumptions.policy_evaluate"
         )
     except ValueError as exc:
@@ -1618,23 +1707,22 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
         )
 
     pattern_values = [p.pattern for p in compiled_patterns]
-    ok = eval_predicate(
-        policy_evaluate,
+    for row in rows:
+        case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
+        strings = row.get("strings")
+        if not isinstance(strings, list):
+            continue
+        if any(_any_pattern_matches(str(s), compiled_patterns) for s in strings):
+            violations.append(
+                f"{case_id}: ambient-assumption token matched configured pattern in case content"
+            )
+    return _policy_outcome(
         subject=rows,
-        limits=SpecLangLimits(),
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.ambient_assumptions.policy_evaluate",
         symbols={"patterns": pattern_values},
+        violations=violations,
     )
-    if not ok:
-        for row in rows:
-            case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
-            strings = row.get("strings")
-            if not isinstance(strings, list):
-                continue
-            if any(_any_pattern_matches(str(s), compiled_patterns) for s in strings):
-                violations.append(
-                    f"{case_id}: ambient-assumption token matched configured pattern in case content"
-                )
-    return violations
 
 
 def _scan_conformance_extension_requires_capabilities(root: Path) -> list[str]:
@@ -1736,7 +1824,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     ):
         return ["harness.spec_lang_preferred.allow_evaluate_files must be a list of non-empty strings"]
     try:
-        policy_evaluate = _normalize_policy_evaluate(
+        policy_evaluate = normalize_policy_evaluate(
             cfg.get("policy_evaluate"), field="harness.spec_lang_preferred.policy_evaluate"
         )
     except ValueError as exc:
@@ -1744,12 +1832,12 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
 
     allow = {str(x).strip() for x in allow_evaluate_files}
 
+    all_rows: list[dict[str, object]] = []
     for rel_root in roots:
         base = root / rel_root
         if not base.exists():
             violations.append(f"{rel_root}:1: missing conformance root for spec-lang preference scan")
             continue
-        rows: list[dict[str, object]] = []
         for spec in iter_cases(base, file_pattern=SETTINGS.case.default_file_pattern):
             try:
                 rel = str(spec.doc_path.resolve().relative_to(root))
@@ -1786,7 +1874,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
 
             _collect_ops(spec.test.get("assert", []) or [])
             case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
-            rows.append(
+            all_rows.append(
                 {
                     "id": case_id,
                     "file": rel,
@@ -1794,20 +1882,23 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 }
             )
 
-        ok = eval_predicate(policy_evaluate, subject=rows, limits=SpecLangLimits())
-        if not ok:
-            for row in rows:
-                ops = row.get("evaluate_ops")
-                if not isinstance(ops, list) or not ops:
-                    continue
-                case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
-                rel = str(row.get("file", "<unknown>"))
-                found = ", ".join(str(x) for x in ops)
-                violations.append(
-                    f"{rel}: case {case_id} uses evaluate ops ({found}); "
-                    "prefer sugar assertions unless evaluate is required, or add explicit allow_evaluate_files entry"
-                )
-    return violations
+    for row in all_rows:
+        ops = row.get("evaluate_ops")
+        if not isinstance(ops, list) or not ops:
+            continue
+        case_id = str(row.get("id", "<unknown>")).strip() or "<unknown>"
+        rel = str(row.get("file", "<unknown>"))
+        found = ", ".join(str(x) for x in ops)
+        violations.append(
+            f"{rel}: case {case_id} uses evaluate ops ({found}); "
+            "prefer sugar assertions unless evaluate is required, or add explicit allow_evaluate_files entry"
+        )
+    return _policy_outcome(
+        subject=all_rows,
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.spec_lang_preferred.policy_evaluate",
+        violations=violations,
+    )
 
 
 def _scan_docs_reference_surface_complete(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -2775,7 +2866,25 @@ def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> 
     return violations
 
 
-GovernanceCheck = Callable[..., list[str]]
+GovernanceCheckOutcome = list[str] | dict[str, object]
+GovernanceCheck = Callable[..., GovernanceCheckOutcome]
+
+
+def _policy_outcome(
+    *,
+    subject: object,
+    policy_evaluate: list[object] | None = None,
+    policy_path: str = "harness.policy_evaluate",
+    symbols: dict[str, object] | None = None,
+    violations: list[str] | None = None,
+) -> dict[str, object]:
+    return {
+        "subject": subject,
+        "policy_evaluate": policy_evaluate,
+        "policy_path": policy_path,
+        "symbols": symbols or {},
+        "violations": list(violations or []),
+    }
 
 _CHECKS: dict[str, GovernanceCheck] = {
     "contract.governance_check": _scan_contract_governance_check,
@@ -2819,6 +2928,9 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "assert.compiler_schema_matrix_sync": _scan_assert_compiler_schema_matrix_sync,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
     "docs.current_spec_policy_key_names": _scan_current_spec_policy_key_names,
+    "governance.policy_evaluate_required": _scan_governance_policy_evaluate_required,
+    "governance.extractor_only_no_verdict_branching": _scan_governance_extractor_only_no_verdict_branching,
+    "runtime.rust_adapter_no_python_exec": _scan_runtime_rust_adapter_no_python_exec,
     "conformance.type_contract_docs": _scan_conformance_type_contract_docs,
     "conformance.api_http_portable_shape": _scan_conformance_api_http_portable_shape,
     "conformance.no_runner_logic_outside_harness": _scan_conformance_no_runner_logic_outside_harness,
@@ -2865,9 +2977,45 @@ def run_governance_check(case, *, ctx) -> None:
     root = Path(str(h.get("root", "."))).resolve()
     fn_params = inspect.signature(fn).parameters
     if "harness" in fn_params:
-        violations = fn(root, harness=h)
+        raw_outcome = fn(root, harness=h)
     else:
-        violations = fn(root)
+        raw_outcome = fn(root)
+
+    subject: object = {}
+    symbols: dict[str, object] = {}
+    policy_evaluate: list[object] | None = None
+    policy_path = "harness.policy_evaluate"
+    if isinstance(raw_outcome, dict):
+        subject = raw_outcome.get("subject")
+        symbols_raw = raw_outcome.get("symbols")
+        symbols = symbols_raw if isinstance(symbols_raw, dict) else {}
+        policy_raw = raw_outcome.get("policy_evaluate")
+        policy_evaluate = policy_raw if isinstance(policy_raw, list) else None
+        policy_path = str(raw_outcome.get("policy_path", policy_path))
+        violations_raw = raw_outcome.get("violations")
+        if isinstance(violations_raw, list):
+            violations = [str(v) for v in violations_raw if str(v).strip()]
+        else:
+            violations = []
+    else:
+        violations = [str(v) for v in raw_outcome if str(v).strip()]
+        subject = {"violations": violations}
+
+    if policy_evaluate is not None:
+        policy_result: GovernancePolicyResult = run_governance_policy(
+            check_id=check_id,
+            case_id=str(t.get("id", "<unknown>")).strip() or "<unknown>",
+            policy_evaluate=policy_evaluate,
+            subject=subject,
+            symbols=symbols,
+            policy_path=policy_path,
+        )
+        if policy_result.passed:
+            violations = []
+        elif violations:
+            violations = policy_result.diagnostics + violations
+        else:
+            violations = policy_result.diagnostics
 
     text = (
         f"PASS: {check_id}"

@@ -3179,7 +3179,8 @@ def test_scan_objective_scorecard_metric_passes(monkeypatch, tmp_path):
         tmp_path,
         harness={"objective_scorecard": {"manifest_path": "docs/spec/metrics/objective_manifest.yaml"}},
     )
-    assert out == []
+    assert isinstance(out, dict)
+    assert out.get("violations") == []
 
 
 def test_scan_objective_scorecard_non_regression_enforces_baseline_notes(monkeypatch, tmp_path):

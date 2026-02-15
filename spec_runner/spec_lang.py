@@ -333,6 +333,94 @@ def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
         if not isinstance(seq, list):
             raise ValueError("spec_lang none expects list")
         return not any(_truthy(item) for item in seq)
+    if op == "is_empty":
+        _require_arity(op, args, 1)
+        seq = _eval_non_tail(args[0], env, st)
+        if isinstance(seq, (list, dict, str)):
+            return len(seq) == 0
+        raise ValueError("spec_lang is_empty expects list/dict/string")
+    if op == "distinct":
+        _require_arity(op, args, 1)
+        seq = _eval_non_tail(args[0], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang distinct expects list")
+        out: list[Any] = []
+        for item in seq:
+            if item not in out:
+                out.append(item)
+        return out
+    if op == "coalesce":
+        _require_min_arity(op, args, 1)
+        for a in args:
+            got = _eval_non_tail(a, env, st)
+            if got is None:
+                continue
+            if isinstance(got, str) and got == "":
+                continue
+            return got
+        return None
+    if op == "pluck":
+        _require_arity(op, args, 2)
+        seq = _eval_non_tail(args[0], env, st)
+        key = _eval_non_tail(args[1], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang pluck expects list")
+        plucked: list[Any] = []
+        for item in seq:
+            if not isinstance(item, dict):
+                plucked.append(None)
+                continue
+            plucked.append(item.get(str(key)))
+        return plucked
+    if op == "sort_by":
+        _require_arity(op, args, 2)
+        seq = _eval_non_tail(args[0], env, st)
+        key = _eval_non_tail(args[1], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang sort_by expects list")
+        if isinstance(key, str):
+            return sorted(seq, key=lambda item: str(item.get(key)) if isinstance(item, dict) else str(item))
+        fn_val = key
+        return sorted(seq, key=lambda item: _eval_callable_like(fn_val, [item], st))
+    if op == "sum":
+        _require_arity(op, args, 1)
+        seq = _eval_non_tail(args[0], env, st)
+        if not isinstance(seq, list):
+            raise ValueError("spec_lang sum expects list")
+        total: float = 0.0
+        saw_float = False
+        for item in seq:
+            if not isinstance(item, (int, float)):
+                raise ValueError("spec_lang sum expects numeric list values")
+            if isinstance(item, float):
+                saw_float = True
+            total += float(item)
+        if saw_float:
+            return total
+        return int(total)
+    if op == "min":
+        _require_arity(op, args, 1)
+        seq = _eval_non_tail(args[0], env, st)
+        if not isinstance(seq, list) or not seq:
+            raise ValueError("spec_lang min expects non-empty list")
+        return min(seq)
+    if op == "max":
+        _require_arity(op, args, 1)
+        seq = _eval_non_tail(args[0], env, st)
+        if not isinstance(seq, list) or not seq:
+            raise ValueError("spec_lang max expects non-empty list")
+        return max(seq)
+    if op == "matches_all":
+        _require_arity(op, args, 2)
+        text = _eval_non_tail(args[0], env, st)
+        patterns = _eval_non_tail(args[1], env, st)
+        if not isinstance(patterns, list):
+            raise ValueError("spec_lang matches_all expects list of regex patterns")
+        hay = str(text)
+        for p in patterns:
+            if re.search(str(p), hay) is None:
+                return False
+        return True
     if op == "split":
         if len(args) == 1:
             text = _eval_non_tail(args[0], env, st)

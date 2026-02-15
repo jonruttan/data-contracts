@@ -214,6 +214,23 @@ def _contains_key_recursive(payload: object, key: str) -> bool:
     return False
 
 
+def _count_python_decision_branches(repo_root: Path) -> int:
+    """
+    Counts explicit check-level policy verdict branches in governance script.
+    This tracks migration progress toward centralized policy evaluation.
+    """
+    p = repo_root / "scripts/run_governance_specs.py"
+    if not p.exists():
+        return 0
+    raw = p.read_text(encoding="utf-8")
+    patterns = (
+        "policy_evaluate returned false",
+        "ok = eval_predicate(policy_evaluate",
+        "if not ok:",
+    )
+    return sum(raw.count(tok) for tok in patterns)
+
+
 def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] | None = None) -> dict[str, Any]:
     root = repo_root.resolve()
     cfg = default_spec_lang_adoption_config()
@@ -265,8 +282,9 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             eval_leaf = sum(1 for op in ops if op == "evaluate")
             logic_ratio = 1.0 if total_leaf == 0 else _safe_ratio(eval_leaf, total_leaf, default=1.0)
             native_hint = False
+            has_policy_evaluate = _contains_key_recursive(case.get("harness"), "policy_evaluate")
             if case_type == "governance.check":
-                native_hint = not _contains_key_recursive(case.get("harness"), "policy_evaluate")
+                native_hint = not has_policy_evaluate
             rows.append(
                 {
                     "id": case_id,
@@ -275,6 +293,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                     "segment": segment,
                     "logic_self_contained_ratio": logic_ratio,
                     "native_logic_escape_hint": 1.0 if native_hint else 0.0,
+                    "has_policy_evaluate": 1.0 if has_policy_evaluate else 0.0,
                 }
             )
 
@@ -314,6 +333,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             "overall_logic_self_contained_ratio": overall_logic,
             "native_logic_escape_case_ratio": native_ratio,
             "unit_opt_out_count": unit_opt_out_count,
+            "python_decision_branch_count": _count_python_decision_branches(root),
         },
         "segments": segments,
         "cases": rows,
@@ -364,6 +384,13 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
     rows: list[dict[str, Any]] = []
     errors: list[str] = []
 
+    rust_native_files = {
+        "scripts/rust/spec_runner_cli/src/main.rs",
+        "scripts/rust/runner_adapter.sh",
+    }
+    rust_native_hits = 0
+    rust_native_total = 0
+
     for segment, patterns in segment_files.items():
         seg = str(segment).strip()
         if not seg:
@@ -413,6 +440,10 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
                     "runner_independence_ratio": score,
                 }
             )
+            if rel in rust_native_files:
+                rust_native_total += 1
+                if "python" not in text and "scripts/run_governance_specs.py" not in text:
+                    rust_native_hits += 1
 
     rows.sort(key=lambda r: (str(r["segment"]), str(r["file"])))
     segments: dict[str, Any] = {}
@@ -448,6 +479,9 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
             "total_files": total,
             "overall_runner_independence_ratio": overall_ratio,
             "direct_runtime_invocation_count": direct_total,
+            "rust_subcommand_native_coverage_ratio": _safe_ratio(
+                float(rust_native_hits), float(max(1, rust_native_total)), default=0.0
+            ),
         },
         "segments": segments,
         "files": rows,
@@ -794,7 +828,7 @@ def _governance_policy_evaluate_coverage(payload: dict[str, Any]) -> float:
     gov_rows = [r for r in rows if isinstance(r, dict) and str(r.get("type", "")).strip() == "governance.check"]
     if not gov_rows:
         return 1.0
-    with_policy = sum(1 for r in gov_rows if float(r.get("native_logic_escape_hint", 0.0)) <= 0.0)
+    with_policy = sum(1 for r in gov_rows if float(r.get("has_policy_evaluate", 0.0)) > 0.0)
     return float(with_policy) / float(len(gov_rows))
 
 

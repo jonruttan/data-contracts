@@ -1408,3 +1408,49 @@ links:
       - scripts/run_governance_specs.py
       - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
     notes: "Baseline update metadata notes are hash-pinned and required by governance."
+
+  - rule_id: GOVERNANCE_POLICY_EVALUATE_REQUIRED
+    policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_POLICY_EVALUATE_REQUIRED
+    contract_refs:
+      - docs/spec/contract/15_governance_subject_model.md
+      - docs/spec/contract/18_governance_subject_extractors.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/governance_engine.py
+    notes: "Governance decision checks require policy_evaluate and central policy evaluation."
+
+  - rule_id: GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
+    policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
+    contract_refs:
+      - docs/spec/contract/15_governance_subject_model.md
+      - docs/spec/contract/18_governance_subject_extractors.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_run_governance_specs_script_unit.py
+    implementation_refs:
+      - scripts/run_governance_specs.py
+      - spec_runner/governance_engine.py
+    notes: "Per-check policy verdict branching is replaced by extractor output + central policy engine."
+
+  - rule_id: RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
+    policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
+    contract_refs:
+      - docs/spec/contract/12_runner_interface.md
+      - docs/spec/contract/16_rust_primary_transition.md
+    schema_refs:
+      - docs/spec/schema/schema_v1.md
+    conformance_case_ids: []
+    unit_test_refs:
+      - tests/test_rust_runner_interface_unit.py
+    implementation_refs:
+      - scripts/rust/spec_runner_cli/src/main.rs
+      - scripts/rust/runner_adapter.sh
+      - scripts/run_governance_specs.py
+    notes: "Rust runner interface source must avoid direct Python execution token coupling."

@@ -25,6 +25,12 @@ Notes:
   recommendations.
 - Spec-lang now supports reusable library symbols via
   `harness.spec_lang.library_paths` and optional `exports` allowlists.
+- Governance decision checks are now policy-engine first:
+  check extractors emit deterministic subject payloads and
+  `policy_evaluate` drives final verdicts.
+- Spec-lang utility surface now includes collection helpers for governance
+  policy authoring (`sum`, `min`, `max`, `sort_by`, `pluck`, `distinct`,
+  `is_empty`, `coalesce`, `matches_all`).
 - Docs quality v2 adds schema-backed `doc-meta`, manifest-driven reference
   generation, and governance checks for docs token ownership/dependencies and
   generated artifact freshness.

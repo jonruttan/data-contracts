@@ -61,6 +61,15 @@ Utility:
 - `any`
 - `all`
 - `none`
+- `sum`
+- `min`
+- `max`
+- `sort_by`
+- `pluck`
+- `distinct`
+- `is_empty`
+- `coalesce`
+- `matches_all`
 - `var`
 - `add`
 - `sub`
