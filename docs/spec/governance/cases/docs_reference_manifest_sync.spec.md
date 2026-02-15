@@ -19,19 +19,19 @@ harness:
     manifest: docs/book/reference_manifest.yaml
     index_out: docs/book/reference_index.md
   policy_evaluate:
-  - {call: [{var: [policy.pass_when_no_violations]}, {ref: subject}]}
+  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{ref: subject}, 0]}
+    - {eq: [{var: subject}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{ref: subject}, passed]}
+      - {get: [{var: subject}, passed]}
       - true
     - eq:
-      - {get: [{ref: subject}, check_id]}
+      - {get: [{var: subject}, check_id]}
       - docs.reference_manifest_sync
 ```

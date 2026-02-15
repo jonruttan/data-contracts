@@ -27,19 +27,19 @@ harness:
     - README.md
     allowed_name_regex: ^[a-z0-9]+(?:_[a-z0-9]+)*(?:-[a-z0-9]+(?:_[a-z0-9]+)*)*(?:\.spec)?\.(?:md|yaml|yml|json)$
   policy_evaluate:
-  - {call: [{var: [policy.pass_when_no_violations]}, {ref: subject}]}
+  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{ref: subject}, 0]}
+    - {eq: [{var: subject}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{ref: subject}, passed]}
+      - {get: [{var: subject}, passed]}
       - true
     - eq:
-      - {get: [{ref: subject}, check_id]}
+      - {get: [{var: subject}, check_id]}
       - naming.filename_policy
 ```

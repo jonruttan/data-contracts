@@ -13,24 +13,24 @@ functions:
     - gte:
       - add:
         - get:
-          - {var: [subject]}
-          - {var: [field]}
-        - {var: [epsilon]}
+          - {var: subject}
+          - {var: field}
+        - {var: epsilon}
       - get:
-        - {var: [subject]}
-        - {var: [baseline_field]}
+        - {var: subject}
+        - {var: baseline_field}
   policy.metric_non_increase:
     fn:
     - {lit: [subject, field, baseline_field, epsilon]}
     - lte:
       - sub:
         - get:
-          - {var: [subject]}
-          - {var: [field]}
-        - {var: [epsilon]}
+          - {var: subject}
+          - {var: field}
+        - {var: epsilon}
       - get:
-        - {var: [subject]}
-        - {var: [baseline_field]}
+        - {var: subject}
+        - {var: baseline_field}
 exports:
 - policy.metric_non_decrease
 - policy.metric_non_increase

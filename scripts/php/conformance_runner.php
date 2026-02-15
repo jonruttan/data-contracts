@@ -977,7 +977,7 @@ function specLangEvalTail(mixed $expr, SpecLangEnv $env, mixed $subject, array $
 function specLangEvalPredicate(mixed $expr, mixed $subject, array $limits): bool {
     specLangValidateExprShape($expr, $limits);
     $state = ['steps' => 0, 'started' => microtime(true), 'limits' => $limits];
-    $value = specLangEvalTail($expr, new SpecLangEnv([], null), $subject, $limits, $state);
+    $value = specLangEvalTail($expr, new SpecLangEnv(['subject' => $subject], null), $subject, $limits, $state);
     return (bool)$value;
 }
 
@@ -1033,14 +1033,16 @@ function compileYamlExprToSexpr(mixed $node, string $fieldPath): mixed {
     }
     $rawArgs = $node[$keys[0]];
     if ($op === 'ref') {
-        $symbol = $rawArgs;
-        if (!is_string($symbol) || trim($symbol) === '') {
-            throw new SchemaError("{$fieldPath}.ref: ref symbol must be a non-empty string");
+        throw new SchemaError("{$fieldPath}.ref: ref mapping is not supported; use var: subject");
+    }
+    if ($op === 'var') {
+        if (is_array($rawArgs)) {
+            throw new SchemaError("{$fieldPath}.var: var list form is not supported; use var: <name>");
         }
-        if (trim($symbol) !== 'subject') {
-            throw new SchemaError("{$fieldPath}.ref: unsupported ref symbol '{$symbol}' (supported: subject)");
+        if (!is_string($rawArgs) || trim($rawArgs) === '') {
+            throw new SchemaError("{$fieldPath}.var: variable name must be a non-empty string");
         }
-        return ['subject'];
+        return ['var', trim($rawArgs)];
     }
     if (!is_array($rawArgs) || !isListArray($rawArgs)) {
         throw new SchemaError("{$fieldPath}.{$op}: operator args must be a list");

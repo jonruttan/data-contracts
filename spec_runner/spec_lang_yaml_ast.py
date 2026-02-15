@@ -53,19 +53,23 @@ def _compile_node(node: Any, *, field_path: str) -> Any:
         raise SpecLangYamlAstError(f"{field_path}: operator key must be non-empty")
     if op == "subject":
         raise SpecLangYamlAstError(
-            f"{field_path}.subject: legacy subject mapping is not supported; use ref: subject"
+            f"{field_path}.subject: subject mapping is not supported; use var: subject"
         )
     if op == "ref":
+        raise SpecLangYamlAstError(
+            f"{field_path}.ref: ref mapping is not supported; use var: subject"
+        )
+    if op == "var":
         symbol = node[keys[0]]
+        if isinstance(symbol, list):
+            raise SpecLangYamlAstError(
+                f"{field_path}.var: var list form is not supported; use var: <name>"
+            )
         if not isinstance(symbol, str) or not symbol.strip():
             raise SpecLangYamlAstError(
-                f"{field_path}.ref: ref symbol must be a non-empty string"
+                f"{field_path}.var: variable name must be a non-empty string"
             )
-        if symbol.strip() != "subject":
-            raise SpecLangYamlAstError(
-                f"{field_path}.ref: unsupported ref symbol {symbol!r} (supported: subject)"
-            )
-        return ["subject"]
+        return ["var", symbol.strip()]
     raw_args = node[keys[0]]
     if not isinstance(raw_args, list):
         raise SpecLangYamlAstError(
@@ -118,7 +122,9 @@ def sexpr_to_yaml_ast(node: Any) -> Any:
         if is_sexpr_node(node):
             op = str(node[0])
             if op == "subject" and len(node) == 1:
-                return {"ref": "subject"}
+                return {"var": "subject"}
+            if op == "var" and len(node) == 2 and isinstance(node[1], str) and node[1].strip():
+                return {"var": node[1].strip()}
             args = [sexpr_to_yaml_ast(arg) for arg in node[1:]]
             return {op: args}
         return {"lit": [_literalize(v) for v in node]}

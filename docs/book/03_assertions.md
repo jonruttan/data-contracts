@@ -118,7 +118,7 @@ assert:
       - contains:
         - version
       - starts_with:
-        - ref: subject
+        - var: subject
         - '#'
 ```
 

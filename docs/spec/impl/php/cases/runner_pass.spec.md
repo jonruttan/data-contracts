@@ -199,11 +199,11 @@ assert:
   - contain:
     - path_target.txt
   - evaluate:
-    - {contains: [{ref: subject}, path_target.txt]}
+    - {contains: [{var: subject}, path_target.txt]}
 - target: stdout_path_text
   must:
   - contain:
     - path target file content
   - evaluate:
-    - {contains: [{ref: subject}, path target file content]}
+    - {contains: [{var: subject}, path target file content]}
 ```

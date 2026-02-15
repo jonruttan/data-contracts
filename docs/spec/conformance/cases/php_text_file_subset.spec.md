@@ -15,7 +15,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 1']}
+    - {contains: [{var: subject}, 'version: 1']}
 ```
 
 ## SRCONF-PHP-TEXT-002
@@ -33,7 +33,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{ref: subject}, \A\Z]}
+    - {regex_match: [{var: subject}, \A\Z]}
 ```
 
 ## SRCONF-PHP-TEXT-003
@@ -52,7 +52,7 @@ assert:
   must:
   - must:
     - evaluate:
-      - {contains: [{ref: subject}, 'version: 1']}
+      - {contains: [{var: subject}, 'version: 1']}
 ```
 
 ## SRCONF-PHP-TEXT-004
@@ -70,9 +70,9 @@ assert:
 - target: text
   can:
   - evaluate:
-    - {regex_match: [{ref: subject}, '(?!)']}
+    - {regex_match: [{var: subject}, '(?!)']}
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 1']}
+    - {contains: [{var: subject}, 'version: 1']}
 ```
 
 ## SRCONF-PHP-TEXT-005
@@ -90,9 +90,9 @@ assert:
 - target: text
   can:
   - evaluate:
-    - {regex_match: [{ref: subject}, \A\Z]}
+    - {regex_match: [{var: subject}, \A\Z]}
   - evaluate:
-    - {regex_match: [{ref: subject}, '(?!)']}
+    - {regex_match: [{var: subject}, '(?!)']}
 ```
 
 ## SRCONF-PHP-TEXT-006
@@ -110,9 +110,9 @@ assert:
 - target: text
   cannot:
   - evaluate:
-    - {regex_match: [{ref: subject}, \A\Z]}
+    - {regex_match: [{var: subject}, \A\Z]}
   - evaluate:
-    - {regex_match: [{ref: subject}, '(?!)']}
+    - {regex_match: [{var: subject}, '(?!)']}
 ```
 
 ## SRCONF-PHP-TEXT-007
@@ -130,9 +130,9 @@ assert:
 - target: text
   cannot:
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 1']}
+    - {contains: [{var: subject}, 'version: 1']}
   - evaluate:
-    - {regex_match: [{ref: subject}, '(?!)']}
+    - {regex_match: [{var: subject}, '(?!)']}
 ```
 
 ## SRCONF-PHP-TEXT-008
@@ -151,12 +151,12 @@ assert:
   must:
   - can:
     - evaluate:
-      - {regex_match: [{ref: subject}, \A\Z]}
+      - {regex_match: [{var: subject}, \A\Z]}
     - evaluate:
-      - {contains: [{ref: subject}, 'version: 1']}
+      - {contains: [{var: subject}, 'version: 1']}
   - cannot:
     - evaluate:
-      - {regex_match: [{ref: subject}, \A\Z]}
+      - {regex_match: [{var: subject}, \A\Z]}
 ```
 
 ## SRCONF-PHP-TEXT-009
@@ -176,7 +176,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{ref: subject}, '(?<=version: )1']}
+    - {regex_match: [{var: subject}, '(?<=version: )1']}
 ```
 
 ## SRCONF-PHP-TEXT-010
@@ -196,7 +196,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, '']}
+    - {contains: [{var: subject}, '']}
 ```
 
 ## SRCONF-PHP-TEXT-011
@@ -216,7 +216,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{ref: subject}, .*]}
+    - {regex_match: [{var: subject}, .*]}
 ```
 
 ## SRCONF-PHP-TEXT-012
@@ -236,8 +236,8 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 1']}
-    - {contains: [{ref: subject}, 'version: 1']}
+    - {contains: [{var: subject}, 'version: 1']}
+    - {contains: [{var: subject}, 'version: 1']}
 ```
 
 ## SRCONF-PHP-TEXT-013
@@ -257,9 +257,9 @@ assert:
 - target: text
   can:
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 1']}
+    - {contains: [{var: subject}, 'version: 1']}
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 2']}
+    - {contains: [{var: subject}, 'version: 2']}
 ```
 
 ## SRCONF-PHP-TEXT-014
@@ -279,5 +279,5 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, '']}
+    - {contains: [{var: subject}, '']}
 ```

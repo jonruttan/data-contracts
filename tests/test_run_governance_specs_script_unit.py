@@ -27,7 +27,7 @@ def _write_text(path: Path, text: str) -> None:
             "\n  policy_evaluate:\n"
             "  - is_empty:\n"
             "    - get:\n"
-            "      - ref: subject\n"
+            "      - var: subject\n"
             "      - violations\n"
             "assert:\n",
             text,
@@ -121,19 +121,19 @@ assert:
     must:
       - evaluate:
         - eq:
-          - ref: subject
+          - var: subject
           - 0
   - target: summary_json
     must:
       - evaluate:
         - eq:
           - get:
-            - ref: subject
+            - var: subject
             - check_id
           - pending.no_resolved_markers
         - eq:
           - get:
-            - ref: subject
+            - var: subject
             - passed
           - true
 ```
@@ -450,14 +450,14 @@ harness:
   policy_evaluate:
   - is_empty:
     - get:
-      - ref: subject
+      - var: subject
       - violations
 assert:
   - target: violation_count
     must:
       - evaluate:
         - eq:
-          - ref: subject
+          - var: subject
           - 0
 ```
 """,
@@ -514,7 +514,7 @@ harness:
   policy_evaluate:
   - is_empty:
     - get:
-      - ref: subject
+      - var: subject
       - violations
 assert:
   - target: text
@@ -881,18 +881,14 @@ harness:
                             - lit:
                               - p
                             - matches:
-                              - var:
-                                - s
-                              - var:
-                                - p
-                          - var:
-                            - patterns
+                              - var: s
+                              - var: p
+                          - var: patterns
                     - get:
-                      - var:
-                        - row
+                      - var: row
                       - strings
                 - 0
-            - ref: subject
+            - var: subject
         - 0
 assert:
   - target: text
@@ -1005,18 +1001,14 @@ harness:
                             - lit:
                               - p
                             - matches:
-                              - var:
-                                - s
-                              - var:
-                                - p
-                          - var:
-                            - patterns
+                              - var: s
+                              - var: p
+                          - var: patterns
                     - get:
-                      - var:
-                        - row
+                      - var: row
                       - strings
                 - 0
-            - ref: subject
+            - var: subject
         - 0
 assert:
   - target: text
@@ -1237,11 +1229,10 @@ harness:
               - gt:
                 - count:
                   - get:
-                    - var:
-                      - row
+                    - var: row
                     - non_evaluate_ops
                 - 0
-            - ref: subject
+            - var: subject
         - 0
 assert:
   - target: text
@@ -1265,7 +1256,7 @@ assert:
     must:
       - evaluate:
           - contains:
-            - ref: subject
+            - var: subject
             - a
 ```
 """,
@@ -3277,7 +3268,7 @@ harness:
         segment: conformance
     policy_evaluate:
       - has_key:
-        - ref: subject
+        - var: subject
         - summary
 assert:
   - target: text
@@ -3300,7 +3291,7 @@ assert:
     must:
       - evaluate:
           - contains:
-            - ref: subject
+            - var: subject
             - x
 ```
 """,
@@ -3354,7 +3345,7 @@ assert:
     must:
       - evaluate:
           - contains:
-            - ref: subject
+            - var: subject
             - x
 ```
 """,
@@ -3401,7 +3392,7 @@ harness:
   policy_evaluate:
   - is_empty:
     - get:
-      - ref: subject
+      - var: subject
       - violations
 assert:
   - target: text
@@ -3424,7 +3415,7 @@ assert:
     must:
       - evaluate:
           - contains:
-            - ref: subject
+            - var: subject
             - x
 ```
 """,
@@ -3498,8 +3489,8 @@ harness:
     required_files: []
   policy_evaluate:
   - call:
-    - {var: [policy.pass_when_no_violations]}
-    - {ref: subject}
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
 assert:
   - target: text
     must:
@@ -3817,7 +3808,7 @@ functions:
   ok:
     fn:
     - {x: []}
-    - {var: [x]}
+    - {var: x}
 ```
 """,
     )
@@ -3877,7 +3868,7 @@ harness:
       - SPEC_RUNNER_BIN
     policy_evaluate:
       - has_key:
-          - ref: subject
+          - var: subject
           - summary
 assert:
   - target: text

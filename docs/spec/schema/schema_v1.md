@@ -247,7 +247,7 @@ Operator constraints:
 - all operator values MUST be lists
 - `evaluate` values MUST be lists of operator-keyed mapping AST expressions
 - each `evaluate` list item MUST be an expression node using operator-keyed mappings
-- subject reference node: `{ref: subject}` compiles to zero-arg `subject`
+- subject reference node: `{var: subject}` compiles to zero-arg `subject`
 - bare scalar `subject` is a literal string (not a reference)
 - spec-lang semantics and budget model are defined in
   `docs/spec/contract/03b_spec_lang_v1.md`

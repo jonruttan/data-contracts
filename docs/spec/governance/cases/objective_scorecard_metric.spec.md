@@ -19,26 +19,26 @@ harness:
     manifest_path: docs/spec/metrics/objective_manifest.yaml
     policy_evaluate:
     - and:
-      - {has_key: [{ref: subject}, summary]}
-      - {has_key: [{ref: subject}, objectives]}
-      - {has_key: [{ref: subject}, tripwire_hits]}
+      - {has_key: [{var: subject}, summary]}
+      - {has_key: [{var: subject}, objectives]}
+      - {has_key: [{var: subject}, tripwire_hits]}
       - has_key:
-        - {get: [{ref: subject}, summary]}
+        - {get: [{var: subject}, summary]}
         - overall_min_score
   policy_evaluate:
-  - {call: [{var: [policy.pass_when_no_violations]}, {ref: subject}]}
+  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{ref: subject}, 0]}
+    - {eq: [{var: subject}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{ref: subject}, passed]}
+      - {get: [{var: subject}, passed]}
       - true
     - eq:
-      - {get: [{ref: subject}, check_id]}
+      - {get: [{var: subject}, check_id]}
       - objective.scorecard_metric
 ```

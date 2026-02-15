@@ -103,7 +103,7 @@ assert:
       - contains:
         - BK-QS-002B
       - starts_with:
-        - ref: subject
+        - var: subject
         - 'id:'
 ```
 

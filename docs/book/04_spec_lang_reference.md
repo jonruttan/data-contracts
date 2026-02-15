@@ -185,7 +185,7 @@ JSON field check (for `target: body_json`):
     - eq:
       - json_type:
         - get:
-          - ref: subject
+          - var: subject
           - items
       - true
 ```

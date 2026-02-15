@@ -41,7 +41,7 @@ assert:
   - evaluate:
     - and:
       - {contains: [version]}
-      - {starts_with: [{ref: subject}, '#']}
+      - {starts_with: [{var: subject}, '#']}
 ```
 
 ## SRCONF-EXPR-003
@@ -65,9 +65,9 @@ assert:
   must:
   - evaluate:
     - let:
-      - {lit: [[loop, {fn: [{lit: [n, acc]}, {if: [{eq: [{var: [n]}, 0]}, {var: [acc]}, {call: [{var: [loop]}, {sub: [{var: [n]}, 1]}, {add: [{var: [acc]}, 1]}]}]}]}]]}
+      - {lit: [[loop, {fn: [{lit: [n, acc]}, {if: [{eq: [{var: n}, 0]}, {var: acc}, {call: [{var: loop}, {sub: [{var: n}, 1]}, {add: [{var: acc}, 1]}]}]}]}]]}
       - eq:
-        - {call: [{var: [loop]}, 1500, 0]}
+        - {call: [{var: loop}, 1500, 0]}
         - 1500
 ```
 
@@ -91,7 +91,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {starts_with: [{ref: subject}, NOPE_PREFIX]}
+    - {starts_with: [{var: subject}, NOPE_PREFIX]}
 ```
 
 ## SRCONF-EXPR-005
@@ -164,8 +164,8 @@ assert:
   must:
   - evaluate:
     - let:
-      - {lit: [[loop, {fn: [{lit: [n]}, {if: [{eq: [{var: [n]}, 0]}, true, {call: [{var: [loop]}, {sub: [{var: [n]}, 1]}]}]}]}]]}
-      - {call: [{var: [loop]}, 1000]}
+      - {lit: [[loop, {fn: [{lit: [n]}, {if: [{eq: [{var: n}, 0]}, true, {call: [{var: loop}, {sub: [{var: n}, 1]}]}]}]}]]}
+      - {call: [{var: loop}, 1000]}
 ```
 
 ## SRCONF-EXPR-008
@@ -186,9 +186,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 1']}
+    - {contains: [{var: subject}, 'version: 1']}
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 1']}
+    - {contains: [{var: subject}, 'version: 1']}
 ```
 
 ## SRCONF-EXPR-009
@@ -335,12 +335,12 @@ assert:
     - and:
       - eq:
         - map:
-          - {call: [{var: [add]}, 10]}
+          - {call: [{var: add}, 10]}
           - {json_parse: ['[1,2,3]']}
         - {json_parse: ['[11,12,13]']}
       - eq:
         - filter:
-          - {call: [{var: [lt]}, 3]}
+          - {call: [{var: lt}, 3]}
           - {json_parse: ['[1,2,3,4,5]']}
         - {json_parse: ['[4,5]']}
 ```
@@ -370,21 +370,21 @@ assert:
   - evaluate:
     - and:
       - eq:
-        - {reduce: [{var: [add]}, 0, {json_parse: ['[1,2,3,4]']}]}
+        - {reduce: [{var: add}, 0, {json_parse: ['[1,2,3,4]']}]}
         - 10
       - eq:
         - reject:
-          - {call: [{var: [lt]}, 2]}
+          - {call: [{var: lt}, 2]}
           - {json_parse: ['[1,2,3,4]']}
         - {json_parse: ['[1,2]']}
       - eq:
         - find:
-          - {call: [{var: [lt]}, 3]}
+          - {call: [{var: lt}, 3]}
           - {json_parse: ['[1,2,3,4]']}
         - 4
       - eq:
         - partition:
-          - {call: [{var: [lt]}, 2]}
+          - {call: [{var: lt}, 2]}
           - {json_parse: ['[1,2,3,4]']}
         - {json_parse: ['[[3,4],[1,2]]']}
       - eq:
@@ -392,7 +392,7 @@ assert:
           - fn:
             - {x: []}
             - if:
-              - {gt: [{var: [x]}, 2]}
+              - {gt: [{var: x}, 2]}
               - hi
               - lo
           - {json_parse: ['[1,2,3,4]']}
@@ -401,7 +401,7 @@ assert:
         - uniq_by:
           - fn:
             - {x: []}
-            - {get: [{var: [x]}, k]}
+            - {get: [{var: x}, k]}
           - {json_parse: ['[{"k":1},{"k":1},{"k":2}]']}
         - {json_parse: ['[{"k":1},{"k":2}]']}
 ```
@@ -475,7 +475,7 @@ assert:
   - evaluate:
     - eq:
       - call:
-        - {call: [{var: [add]}, 2]}
+        - {call: [{var: add}, 2]}
         - 3
       - 5
 ```
@@ -506,7 +506,7 @@ assert:
   must:
   - evaluate:
     - call:
-      - {call: [{var: [add]}, 1]}
+      - {call: [{var: add}, 1]}
       - 2
       - 3
 ```
@@ -579,7 +579,7 @@ assert:
         - {zip: [{json_parse: ['[1,2,3]']}, {json_parse: ['[4,5]']}]}
         - {json_parse: ['[[1,4],[2,5]]']}
       - eq:
-        - {zip_with: [{var: [add]}, {json_parse: ['[1,2,3]']}, {json_parse: ['[4,5,6]']}]}
+        - {zip_with: [{var: add}, {json_parse: ['[1,2,3]']}, {json_parse: ['[4,5,6]']}]}
         - {json_parse: ['[5,7,9]']}
       - {eq: [{range: [2, 5]}, {json_parse: ['[2,3,4]']}]}
       - {eq: [{repeat: [x, 3]}, {json_parse: ['["x","x","x"]']}]}
@@ -669,19 +669,19 @@ assert:
     - and:
       - eq:
         - compose:
-          - {call: [{var: [add]}, 1]}
-          - {call: [{var: [mul]}, 2]}
+          - {call: [{var: add}, 1]}
+          - {call: [{var: mul}, 2]}
           - 3
         - 7
       - eq:
         - pipe:
-          - {call: [{var: [mul]}, 2]}
-          - {call: [{var: [add]}, 1]}
+          - {call: [{var: mul}, 2]}
+          - {call: [{var: add}, 1]}
           - 3
         - 7
       - eq:
         - call:
-          - {call: [{var: [always]}, k]}
+          - {call: [{var: always}, k]}
           - 999
         - k
       - {eq: [{replace: [a-b-c, '-', ':']}, 'a:b:c']}
@@ -772,7 +772,7 @@ assert:
         - {distinct: [{json_parse: ['[1,1,2,2,3]']}]}
         - {json_parse: ['[1,2,3]']}
       - eq:
-        - {sort_by: [{json_parse: ['[3,1,2]']}, {var: [identity]}]}
+        - {sort_by: [{json_parse: ['[3,1,2]']}, {var: identity}]}
         - {json_parse: ['[1,2,3]']}
       - eq:
         - {pluck: [{json_parse: ['[{"k":1},{"k":2}]']}, k]}

@@ -11,34 +11,34 @@ imports:
 functions:
   policy.pass_when_no_violations:
     fn:
-    - {ref: subject}
+    - {lit: [subject]}
     - is_empty:
       - get:
-        - {var: [subject]}
+        - {var: subject}
         - violations
   policy.fail_when_has_violations:
     fn:
-    - {ref: subject}
+    - {lit: [subject]}
     - not:
       - call:
-        - {var: [policy.pass_when_no_violations]}
-        - {var: [subject]}
+        - {var: policy.pass_when_no_violations}
+        - {var: subject}
   policy.check_id_is:
     fn:
     - {lit: [subject, expected]}
     - eq:
       - get:
-        - {var: [subject]}
+        - {var: subject}
         - check_id
-      - {var: [expected]}
+      - {var: expected}
   policy.violation_count_is:
     fn:
     - {lit: [subject, expected]}
     - eq:
       - get:
-        - {var: [subject]}
+        - {var: subject}
         - violation_count
-      - {var: [expected]}
+      - {var: expected}
 exports:
 - policy.pass_when_no_violations
 - policy.fail_when_has_violations

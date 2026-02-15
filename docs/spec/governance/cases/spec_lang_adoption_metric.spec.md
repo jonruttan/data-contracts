@@ -30,25 +30,25 @@ harness:
     recursive: true
     policy_evaluate:
     - and:
-      - {has_key: [{ref: subject}, summary]}
-      - {has_key: [{ref: subject}, segments]}
+      - {has_key: [{var: subject}, summary]}
+      - {has_key: [{var: subject}, segments]}
       - has_key:
-        - {get: [{ref: subject}, summary]}
+        - {get: [{var: subject}, summary]}
         - overall_logic_self_contained_ratio
   policy_evaluate:
-  - {call: [{var: [policy.pass_when_no_violations]}, {ref: subject}]}
+  - {call: [{var: policy.pass_when_no_violations}, {var: subject}]}
 assert:
 - target: violation_count
   must:
   - evaluate:
-    - {eq: [{ref: subject}, 0]}
+    - {eq: [{var: subject}, 0]}
 - target: summary_json
   must:
   - evaluate:
     - eq:
-      - {get: [{ref: subject}, passed]}
+      - {get: [{var: subject}, passed]}
       - true
     - eq:
-      - {get: [{ref: subject}, check_id]}
+      - {get: [{var: subject}, check_id]}
       - spec.spec_lang_adoption_metric
 ```

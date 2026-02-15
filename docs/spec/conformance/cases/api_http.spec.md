@@ -21,15 +21,15 @@ assert:
 - target: status
   must:
   - evaluate:
-    - {contains: [{ref: subject}, '200']}
+    - {contains: [{var: subject}, '200']}
 - target: body_text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, '"ok":true']}
+    - {contains: [{var: subject}, '"ok":true']}
 - target: body_json
   must:
   - evaluate:
-    - {json_type: [{ref: subject}, dict]}
+    - {json_type: [{var: subject}, dict]}
 ```
 
 ## SRCONF-API-002
@@ -54,7 +54,7 @@ assert:
 - target: status
   must:
   - evaluate:
-    - {contains: [{ref: subject}, '200']}
+    - {contains: [{var: subject}, '200']}
 ```
 
 ## SRCONF-API-003
@@ -80,5 +80,5 @@ assert:
 - target: status
   must:
   - evaluate:
-    - {contains: [{ref: subject}, '200']}
+    - {contains: [{var: subject}, '200']}
 ```

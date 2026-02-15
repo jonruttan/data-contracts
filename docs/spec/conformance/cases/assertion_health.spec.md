@@ -26,7 +26,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, '']}
+    - {contains: [{var: subject}, '']}
 ```
 
 ## SRCONF-AH-002
@@ -46,7 +46,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, '']}
+    - {contains: [{var: subject}, '']}
 ```
 
 ## SRCONF-AH-003
@@ -66,7 +66,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, spec-test]}
+    - {contains: [{var: subject}, spec-test]}
 ```
 
 ## SRCONF-AH-004
@@ -86,7 +86,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {contains: [{ref: subject}, '']}
+    - {contains: [{var: subject}, '']}
 ```
 
 ## SRCONF-AH-005
@@ -106,9 +106,9 @@ assert:
 - target: text
   can:
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 1']}
+    - {contains: [{var: subject}, 'version: 1']}
   - evaluate:
-    - {contains: [{ref: subject}, 'version: 2']}
+    - {contains: [{var: subject}, 'version: 2']}
 ```
 
 ## SRCONF-AH-006
@@ -128,5 +128,5 @@ assert:
 - target: text
   must:
   - evaluate:
-    - {regex_match: [{ref: subject}, '(?<=version: )1']}
+    - {regex_match: [{var: subject}, '(?<=version: )1']}
 ```

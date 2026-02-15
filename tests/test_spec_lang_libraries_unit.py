@@ -32,13 +32,13 @@ functions:
     fn:
     - {text: []}
     - contains:
-      - {var: [text]}
+      - {var: text}
       - WARN
   is_error:
     fn:
     - {text: []}
     - contains:
-      - {var: [text]}
+      - {var: text}
       - ERROR
 ```
 """,
@@ -70,7 +70,7 @@ functions:
   a:
     fn:
     - {x: []}
-    - {var: [x]}
+    - {var: x}
 ```
 """,
     )
@@ -84,7 +84,7 @@ functions:
   b:
     fn:
     - {x: []}
-    - {var: [x]}
+    - {var: x}
 ```
 """,
     )
@@ -109,7 +109,7 @@ functions:
   same:
     fn:
     - {x: []}
-    - {var: [x]}
+    - {var: x}
 ```
 """,
     )
@@ -122,7 +122,7 @@ functions:
   same:
     fn:
     - {x: []}
-    - {var: [x]}
+    - {var: x}
 ```
 """,
     )
@@ -147,11 +147,11 @@ functions:
   keep:
     fn:
     - {x: []}
-    - {var: [x]}
+    - {var: x}
   drop:
     fn:
     - {x: []}
-    - {var: [x]}
+    - {var: x}
 ```
 """,
     )

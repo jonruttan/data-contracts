@@ -1135,6 +1135,8 @@ def eval_expr(
             if not name:
                 raise ValueError("spec_lang symbol name must be non-empty")
             root_symbols[name] = value
+    # Canonical authoring uses `{var: subject}` for the current subject.
+    root_symbols["subject"] = subject
     return _eval_tail(expr, _Env(vars=root_symbols, parent=None), st)
 
 
