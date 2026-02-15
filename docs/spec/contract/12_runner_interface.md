@@ -37,6 +37,12 @@ Adapters may call implementation-specific scripts/tools internally.
 Alternative implementations can replace the adapter by setting `SPEC_RUNNER_BIN`
 to a different compatible command.
 
+Adapter semantic contract:
+
+- adapters MUST preserve assertion semantics from schema/contract docs
+- universal `evaluate` core and sugar compile-only behavior are runner
+  semantics, not adapter-specific policy
+
 Runtime scope note:
 
 - required support targets in v1 remain Python runner and PHP runner

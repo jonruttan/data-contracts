@@ -31,6 +31,10 @@ Alternate runner (`scripts/php/spec_runner.php`) flags:
 - discovery default is Markdown-only (`md`) with case pattern `*.spec.md`.
 - conformance runner writes report JSON even when case-level failures exist.
 - alternate runner exits non-zero when any case fails.
+- assertion runtime follows universal `evaluate` core semantics:
+  - `contain` / `regex` / `json_type` / `exists` are compile-only sugar
+  - runtime pass/fail uses compiled spec-lang predicates
+  - target/type applicability is enforced by subject availability and shape
 
 ## Opt-In Behavior
 
@@ -115,6 +119,8 @@ Bootstrap parity subset fixture:
   - `cli.run`
 - Supports `text.file.path` with the same relative-path and contract-root
   escape checks used by the Python runner.
+- Keeps assertion behavior parity with Python by compiling external operators to
+  spec-lang and evaluating one predicate path.
 - Supports `cli.run` harness keys:
   - `entrypoint` (or `SPEC_RUNNER_ENTRYPOINT` fallback)
   - `env` (set/unset command environment variables)

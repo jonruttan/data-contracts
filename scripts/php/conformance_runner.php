@@ -990,6 +990,12 @@ function compileLeafExpr(string $op, mixed $value, string $target): array {
         }
         return ['json_type', ['json_parse', ['subject']], $want];
     }
+    if ($op === 'exists') {
+        if ($value !== true && $value !== null) {
+            throw new SchemaError('exists only supports value: true (or null)');
+        }
+        return ['eq', ['subject'], true];
+    }
     throw new SchemaError("unsupported op: {$op}");
 }
 
@@ -1031,15 +1037,13 @@ function evalTextLeaf(
         if ($op === 'target') {
             continue;
         }
-        if ($op !== 'contain' && $op !== 'regex' && $op !== 'evaluate') {
-            throw new SchemaError("unsupported op: {$op}");
-        }
         if (!is_array($raw) || !isListArray($raw)) {
             throw new SchemaError("assertion op '{$op}' must be a list");
         }
         foreach ($raw as $value) {
             $expr = compileLeafExpr($op, $value, $target);
-            assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits);
+            $subjectForOp = $op === 'exists' ? trim((string)$subject) !== '' : $subject;
+            assertLeafPredicate($caseId, $path, $target, $op, $expr, $subjectForOp, $specLangLimits);
         }
     }
 }
@@ -1220,19 +1224,14 @@ function evalApiHttpLeaf(
             $subject = $target === 'status'
                 ? (string)$resp['status']
                 : ($target === 'headers' ? (string)$resp['headers_text'] : (string)$resp['body_text']);
-            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type' && $op !== 'evaluate') {
-                throw new SchemaError("unsupported op: {$op}");
-            }
             foreach ($raw as $value) {
                 $expr = compileLeafExpr($op, $value, $target);
-                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits);
+                $subjectForOp = $op === 'exists' ? trim((string)$subject) !== '' : $subject;
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subjectForOp, $specLangLimits);
             }
             continue;
         }
         if ($target === 'body_json') {
-            if ($op !== 'contain' && $op !== 'regex' && $op !== 'json_type' && $op !== 'evaluate') {
-                throw new SchemaError("unsupported op: {$op}");
-            }
             $parsed = json_decode((string)$resp['body_text'], true);
             if ($parsed === null && trim((string)$resp['body_text']) !== 'null') {
                 throw new AssertionFailure(
@@ -1245,7 +1244,13 @@ function evalApiHttpLeaf(
             }
             foreach ($raw as $value) {
                 $expr = compileLeafExpr($op, $value, $target);
-                $subject = $op === 'evaluate' || $op === 'json_type' ? $parsed : $jsonText;
+                if ($op === 'exists') {
+                    $subject = true;
+                } elseif ($op === 'evaluate' || $op === 'json_type') {
+                    $subject = $parsed;
+                } else {
+                    $subject = $jsonText;
+                }
                 assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits);
             }
             continue;

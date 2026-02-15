@@ -29,6 +29,11 @@ Public flags:
 - discovery default is Markdown-only (`md`) with case pattern `*.spec.md`.
 - report is always written when invocation succeeds.
 - exit code is `0` only when all case statuses are `pass` or `skip`.
+- assertion runtime is universal `evaluate` core:
+  - external sugar (`contain`, `regex`, `json_type`, `exists`) compiles to
+    spec-lang expressions
+  - pass/fail decisions run through compiled spec-lang predicates
+  - target applicability is subject-driven by harness-provided subjects
 
 ## Opt-In Behavior
 
