@@ -62,7 +62,7 @@ Parser behavior:
 
 For implementation-independent conformance specs:
 
-- Canonical case set lives in `docs/spec/conformance/cases/*.spec.md`.
+- Canonical case set lives in `docs/spec/conformance/cases/**/*.spec.md`.
 - Portable expectations are defined in `expect.portable`.
 - Runtime deltas are expressed via `expect.impl.<runtime>`.
 - Portable cases SHOULD be deterministic and avoid ambient dependency on:
@@ -233,9 +233,9 @@ Supported operators:
 
 Core executable-surface rule:
 
-- `docs/spec/conformance/cases/*.spec.md` assertion trees MUST use
+- `docs/spec/conformance/cases/**/*.spec.md` assertion trees MUST use
   `evaluate` leaves only.
-- `docs/spec/governance/cases/*.spec.md` assertion trees MUST use
+- `docs/spec/governance/cases/**/*.spec.md` assertion trees MUST use
   `evaluate` leaves only.
 
 Operator constraints:

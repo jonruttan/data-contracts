@@ -168,7 +168,7 @@ rules:
   rationale: Keeps evaluate-only contract coverage pinned after hard-cut adoption.
   risk_if_violated: Conformance/governance surfaces can drift back to mixed assertion semantics.
   references:
-  - docs/spec/governance/cases/conformance_evaluate_first_ratio_non_regression.spec.md
+  - docs/spec/governance/cases/core/conformance_evaluate_first_ratio_non_regression.spec.md
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   - spec_runner/quality_metrics.py
 - id: CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
@@ -183,7 +183,7 @@ rules:
   rationale: Reduces expression duplication in large conformance fixtures and keeps intent readable.
   risk_if_violated: Expression-heavy fixtures drift into repeated inline trees that are harder to maintain.
   references:
-  - docs/spec/governance/cases/conformance_spec_lang_fixture_library_usage.spec.md
+  - docs/spec/governance/cases/core/conformance_spec_lang_fixture_library_usage.spec.md
   - docs/spec/libraries/conformance/assertion_core.spec.md
   - scripts/run_governance_specs.py
 - id: CONFORMANCE_LIBRARY_POLICY_USAGE_REQUIRED
@@ -198,7 +198,7 @@ rules:
   rationale: Keeps conformance governance policy logic reusable and implementation-independent.
   risk_if_violated: Conformance policy logic drifts into duplicated inline expressions.
   references:
-  - docs/spec/governance/cases/conformance_library_policy_usage_required.spec.md
+  - docs/spec/governance/cases/core/conformance_library_policy_usage_required.spec.md
   - docs/spec/contract/14_spec_lang_libraries.md
   - docs/spec/contract/18_governance_subject_extractors.md
   - scripts/run_governance_specs.py
@@ -229,7 +229,7 @@ rules:
   risk_if_violated: Tail-recursive cases can fail by recursion depth.
   references:
   - docs/spec/contract/03b_spec_lang_v1.md
-  - docs/spec/conformance/cases/spec_lang.spec.md
+  - docs/spec/conformance/cases/core/spec_lang.spec.md
 - id: SPEC_LANG_EVAL_BUDGETS_REQUIRED
   introduced_in: v1
   scope: implementation
@@ -272,7 +272,7 @@ rules:
   risk_if_violated: Higher-order collection expressions drift across implementations.
   references:
   - docs/spec/contract/03b_spec_lang_v1.md
-  - docs/spec/conformance/cases/spec_lang.spec.md
+  - docs/spec/conformance/cases/core/spec_lang.spec.md
 - id: SPEC_LANG_SET_ALGEBRA_PARITY
   introduced_in: v1
   scope: implementation
@@ -286,7 +286,7 @@ rules:
   risk_if_violated: Same case may pass/fail differently by runtime.
   references:
   - docs/spec/contract/03b_spec_lang_v1.md
-  - docs/spec/conformance/cases/spec_lang.spec.md
+  - docs/spec/conformance/cases/core/spec_lang.spec.md
 - id: SPEC_LANG_DEEP_EQUALITY_DETERMINISTIC
   introduced_in: v1
   scope: implementation
@@ -300,7 +300,7 @@ rules:
   risk_if_violated: Collection outcomes and assertions can become non-portable.
   references:
   - docs/spec/contract/03b_spec_lang_v1.md
-  - docs/spec/conformance/cases/spec_lang.spec.md
+  - docs/spec/conformance/cases/core/spec_lang.spec.md
 - id: SPEC_LANG_COLLECTION_FORMS_CONTRACTED
   introduced_in: v1
   scope: implementation
@@ -315,7 +315,7 @@ rules:
   references:
   - docs/spec/contract/03b_spec_lang_v1.md
   - docs/spec/schema/schema_v1.md
-  - docs/spec/conformance/cases/spec_lang.spec.md
+  - docs/spec/conformance/cases/core/spec_lang.spec.md
 - id: SPEC_LANG_LIBRARY_REUSE_MODEL
   introduced_in: v1
   scope: implementation
@@ -490,7 +490,7 @@ rules:
   references:
   - docs/spec/contract/06_conformance.md
   - docs/spec/contract/07_portable_spec_authoring.md
-  - docs/spec/governance/cases/conformance_no_ambient_assumptions.spec.md
+  - docs/spec/governance/cases/core/conformance_no_ambient_assumptions.spec.md
 - id: CONFORMANCE_PURPOSE_QUALITY_GATE
   introduced_in: v1
   scope: governance
@@ -518,7 +518,7 @@ rules:
   risk_if_violated: Portability regressions accumulate without objective feedback.
   references:
   - docs/spec/contract/07_portable_spec_authoring.md
-  - docs/spec/governance/cases/spec_portability_metric.spec.md
+  - docs/spec/governance/cases/core/spec_portability_metric.spec.md
   - scripts/spec_portability_report.py
   - spec_runner/spec_portability.py
 - id: SPEC_PORTABILITY_NON_REGRESSION_REQUIRED
@@ -533,7 +533,7 @@ rules:
   rationale: Ratchets portable/spec-lang-centered coverage in one direction over time.
   risk_if_violated: Portability quality can silently regress while aggregate reporting still exists.
   references:
-  - docs/spec/governance/cases/spec_portability_non_regression.spec.md
+  - docs/spec/governance/cases/core/spec_portability_non_regression.spec.md
   - docs/spec/metrics/spec_portability_baseline.json
   - spec_runner/spec_portability.py
 - id: SPEC_LANG_ADOPTION_METRIC_REPORTED
@@ -548,7 +548,7 @@ rules:
   rationale: Provides directional signal for migration from host-language logic into spec-lang.
   risk_if_violated: Teams cannot measure migration progress toward spec-lang-first behavior.
   references:
-  - docs/spec/governance/cases/spec_lang_adoption_metric.spec.md
+  - docs/spec/governance/cases/core/spec_lang_adoption_metric.spec.md
   - spec_runner/quality_metrics.py
 - id: SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
   introduced_in: v1
@@ -562,7 +562,7 @@ rules:
   rationale: Creates a monotonic ratchet toward higher spec-lang logic coverage.
   risk_if_violated: Adoption can drift backward without visibility or merge protection.
   references:
-  - docs/spec/governance/cases/spec_lang_adoption_non_regression.spec.md
+  - docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   - spec_runner/quality_metrics.py
 - id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
@@ -577,7 +577,7 @@ rules:
   rationale: Keeps migration pressure on reusable spec-lang policy libraries instead of bespoke inline logic.
   risk_if_violated: Governance checks can drift back to duplicated case-local policy expressions.
   references:
-  - docs/spec/governance/cases/governance_policy_library_usage_non_regression.spec.md
+  - docs/spec/governance/cases/core/governance_policy_library_usage_non_regression.spec.md
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   - spec_runner/quality_metrics.py
 - id: GOVERNANCE_POLICY_LIBRARY_USAGE_REQUIRED
@@ -592,7 +592,7 @@ rules:
   rationale: Promotes reusable policy logic and prevents ad hoc per-case policy drift.
   risk_if_violated: Governance policy surface becomes fragmented and difficult to maintain consistently.
   references:
-  - docs/spec/governance/cases/governance_policy_library_usage_required.spec.md
+  - docs/spec/governance/cases/core/governance_policy_library_usage_required.spec.md
   - docs/spec/contract/14_spec_lang_libraries.md
   - docs/spec/contract/18_governance_subject_extractors.md
   - scripts/run_governance_specs.py
@@ -608,7 +608,7 @@ rules:
   rationale: Quantifies reduction of direct runtime coupling in orchestration paths.
   risk_if_violated: Runtime lock-in can increase unnoticed.
   references:
-  - docs/spec/governance/cases/runner_independence_metric.spec.md
+  - docs/spec/governance/cases/core/runner_independence_metric.spec.md
   - spec_runner/quality_metrics.py
 - id: RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
   introduced_in: v1
@@ -622,7 +622,7 @@ rules:
   rationale: Maintains one-way pressure away from direct interpreter/runtime coupling.
   risk_if_violated: Gate and CI scripts can silently revert to runtime-specific hardcoding.
   references:
-  - docs/spec/governance/cases/runner_independence_non_regression.spec.md
+  - docs/spec/governance/cases/core/runner_independence_non_regression.spec.md
   - docs/spec/metrics/runner_independence_baseline.json
   - spec_runner/quality_metrics.py
 - id: RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
@@ -637,7 +637,7 @@ rules:
   rationale: Prevents metric gaming by requiring concrete evidence, not token counts alone.
   risk_if_violated: Python coupling can be hidden behind indirection.
   references:
-  - docs/spec/governance/cases/runtime_python_dependency_metric.spec.md
+  - docs/spec/governance/cases/core/runtime_python_dependency_metric.spec.md
   - spec_runner/quality_metrics.py
 - id: RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED
   introduced_in: v1
@@ -651,7 +651,7 @@ rules:
   rationale: Creates a ratchet toward lower python coupling in non-python lanes.
   risk_if_violated: Python dependency can increase silently across merges.
   references:
-  - docs/spec/governance/cases/runtime_python_dependency_non_regression.spec.md
+  - docs/spec/governance/cases/core/runtime_python_dependency_non_regression.spec.md
   - docs/spec/metrics/python_dependency_baseline.json
   - spec_runner/quality_metrics.py
 - id: RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
@@ -666,7 +666,7 @@ rules:
   rationale: Preserves a python-free default execution lane.
   risk_if_violated: Rust/default path remains coupled to Python runtime entrypoints.
   references:
-  - docs/spec/governance/cases/runtime_non_python_lane_no_python_exec.spec.md
+  - docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md
   - spec_runner/quality_metrics.py
 - id: RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
   introduced_in: v1
@@ -680,7 +680,7 @@ rules:
   rationale: Keeps rust lane ownership explicit and auditable.
   risk_if_violated: Rust path can mask python dependency through transitive delegation.
   references:
-  - docs/spec/governance/cases/runtime_rust_adapter_transitive_no_python.spec.md
+  - docs/spec/governance/cases/core/runtime_rust_adapter_transitive_no_python.spec.md
   - scripts/rust/runner_adapter.sh
 - id: RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
   introduced_in: v1
@@ -710,8 +710,8 @@ rules:
   risk_if_violated: Python coupling leaks into default orchestration boundaries.
   references:
   - docs/spec/contract/12_runner_interface.md
-  - docs/spec/governance/cases/runtime_python_dependency_metric.spec.md
-  - docs/spec/governance/cases/runtime_non_python_lane_no_python_exec.spec.md
+  - docs/spec/governance/cases/core/runtime_python_dependency_metric.spec.md
+  - docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md
 - id: DOCS_OPERABILITY_METRIC_REPORTED
   introduced_in: v1
   scope: governance
@@ -724,7 +724,7 @@ rules:
   rationale: Measures whether docs remain executable, complete, and actionable.
   risk_if_violated: Documentation quality decays without objective enforcement.
   references:
-  - docs/spec/governance/cases/docs_operability_metric.spec.md
+  - docs/spec/governance/cases/core/docs_operability_metric.spec.md
   - spec_runner/quality_metrics.py
 - id: DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
   introduced_in: v1
@@ -738,7 +738,7 @@ rules:
   rationale: Keeps documentation operability moving forward under automation.
   risk_if_violated: Repeated support burden and ambiguous docs behavior return.
   references:
-  - docs/spec/governance/cases/docs_operability_non_regression.spec.md
+  - docs/spec/governance/cases/core/docs_operability_non_regression.spec.md
   - docs/spec/metrics/docs_operability_baseline.json
   - spec_runner/quality_metrics.py
 - id: CONTRACT_ASSERTIONS_METRIC_REPORTED
@@ -753,7 +753,7 @@ rules:
   rationale: Tracks assertion contract quality and shared vocabulary cohesion.
   risk_if_violated: Assertion contract drift can accumulate across docs and policy layers.
   references:
-  - docs/spec/governance/cases/contract_assertions_metric.spec.md
+  - docs/spec/governance/cases/core/contract_assertions_metric.spec.md
   - spec_runner/quality_metrics.py
 - id: CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
   introduced_in: v1
@@ -767,7 +767,7 @@ rules:
   rationale: Prevents drift in assertion-contract quality between releases.
   risk_if_violated: Contract quality may degrade while core tests remain green.
   references:
-  - docs/spec/governance/cases/contract_assertions_non_regression.spec.md
+  - docs/spec/governance/cases/core/contract_assertions_non_regression.spec.md
   - docs/spec/metrics/contract_assertions_baseline.json
   - spec_runner/quality_metrics.py
 - id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
@@ -783,7 +783,7 @@ rules:
   risk_if_violated: Teams cannot ratchet portability quality over time.
   references:
   - docs/spec/contract/07_portable_spec_authoring.md
-  - docs/spec/governance/cases/spec_portability_metric.spec.md
+  - docs/spec/governance/cases/core/spec_portability_metric.spec.md
   - spec_runner/spec_portability.py
 - id: DOCS_REF_SURFACE_COMPLETE
   introduced_in: v1
@@ -1034,7 +1034,7 @@ rules:
   references:
   - docs/release_checklist.md
   - docs/spec/contract/10_docs_quality.md
-  - docs/spec/governance/cases/docs_release_contract_automation_policy.spec.md
+  - docs/spec/governance/cases/core/docs_release_contract_automation_policy.spec.md
 - id: CURRENT_SPEC_POLICY_KEY_NAMES
   introduced_in: v1
   scope: governance
@@ -1049,7 +1049,7 @@ rules:
   references:
   - docs/spec/contract/03_assertions.md
   - docs/spec/contract/15_governance_subject_model.md
-  - docs/spec/governance/cases/docs_current_spec_policy_key_names.spec.md
+  - docs/spec/governance/cases/core/docs_current_spec_policy_key_names.spec.md
 - id: RUNTIME_RUNNER_INTERFACE_GATE_SYNC
   introduced_in: v1
   scope: governance
@@ -1080,7 +1080,7 @@ rules:
   risk_if_violated: Gate commands fail when switching adapters by SPEC_RUNNER_BIN.
   references:
   - docs/spec/contract/12_runner_interface.md
-  - docs/spec/governance/cases/runtime_runner_interface_subcommands.spec.md
+  - docs/spec/governance/cases/core/runtime_runner_interface_subcommands.spec.md
 - id: RUNTIME_RUNNER_INTERFACE_CI_LANE_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1094,7 +1094,7 @@ rules:
   risk_if_violated: Alternate adapter support can silently regress.
   references:
   - docs/spec/contract/12_runner_interface.md
-  - docs/spec/governance/cases/runtime_runner_interface_ci_lane.spec.md
+  - docs/spec/governance/cases/core/runtime_runner_interface_ci_lane.spec.md
 - id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
   introduced_in: v1
   scope: governance
@@ -1108,7 +1108,7 @@ rules:
   risk_if_violated: Rust lane gives false confidence and misses Rust adapter regressions.
   references:
   - docs/spec/contract/12_runner_interface.md
-  - docs/spec/governance/cases/runtime_rust_adapter_no_delegate.spec.md
+  - docs/spec/governance/cases/core/runtime_rust_adapter_no_delegate.spec.md
 - id: RUST_PRIMARY_GATE_PATH_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1122,7 +1122,7 @@ rules:
   risk_if_violated: Rust-primary path can silently regress.
   references:
   - docs/spec/contract/16_rust_primary_transition.md
-  - docs/spec/governance/cases/runtime_rust_primary_gate_path.spec.md
+  - docs/spec/governance/cases/core/runtime_rust_primary_gate_path.spec.md
 - id: RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
   introduced_in: v1
   scope: governance
@@ -1136,7 +1136,7 @@ rules:
   risk_if_violated: Switching primary runtime requires invasive script rewrites.
   references:
   - docs/spec/contract/16_rust_primary_transition.md
-  - docs/spec/governance/cases/runtime_rust_primary_no_python_dependency.spec.md
+  - docs/spec/governance/cases/core/runtime_rust_primary_no_python_dependency.spec.md
 - id: RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1150,7 +1150,7 @@ rules:
   risk_if_violated: Core commands fail when Rust path is selected.
   references:
   - docs/spec/contract/16_rust_primary_transition.md
-  - docs/spec/governance/cases/runtime_rust_primary_interface_stability.spec.md
+  - docs/spec/governance/cases/core/runtime_rust_primary_interface_stability.spec.md
 - id: RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1164,7 +1164,7 @@ rules:
   risk_if_violated: Runtime behavior drift can ship undetected.
   references:
   - docs/spec/contract/16_rust_primary_transition.md
-  - docs/spec/governance/cases/runtime_rust_primary_shared_capability_parity.spec.md
+  - docs/spec/governance/cases/core/runtime_rust_primary_shared_capability_parity.spec.md
 - id: RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1178,7 +1178,7 @@ rules:
   risk_if_violated: Rust adapter can regress at runtime while token/path checks still pass.
   references:
   - docs/spec/contract/16_rust_primary_transition.md
-  - docs/spec/governance/cases/runtime_rust_primary_adapter_exec_smoke.spec.md
+  - docs/spec/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md
 - id: RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1192,7 +1192,7 @@ rules:
   risk_if_violated: Commands may appear supported in one layer but fail in the other at runtime.
   references:
   - docs/spec/contract/16_rust_primary_transition.md
-  - docs/spec/governance/cases/runtime_rust_primary_subcommand_parity.spec.md
+  - docs/spec/governance/cases/core/runtime_rust_primary_subcommand_parity.spec.md
 - id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
   introduced_in: v1
   scope: docs
@@ -1206,7 +1206,7 @@ rules:
   risk_if_violated: Teams adopt inconsistent local/CI invocation paths.
   references:
   - docs/spec/contract/16_rust_primary_transition.md
-  - docs/spec/governance/cases/docs_adoption_profiles_sync.spec.md
+  - docs/spec/governance/cases/core/docs_adoption_profiles_sync.spec.md
 - id: RUNTIME_SCOPE_BOUNDED_FOR_V1
   introduced_in: v1
   scope: governance
@@ -1221,7 +1221,7 @@ rules:
   references:
   - docs/spec/contract/08_v1_scope.md
   - docs/spec/contract/13_runtime_scope.md
-  - docs/spec/governance/cases/runtime_scope_sync.spec.md
+  - docs/spec/governance/cases/core/runtime_scope_sync.spec.md
 - id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
   introduced_in: v1
   scope: implementation
@@ -1354,7 +1354,7 @@ rules:
   risk_if_violated: Gate behavior hardcodes runtime-specific logic in scripts.
   references:
   - scripts/ci_gate_summary.py
-  - docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
+  - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
 - id: CONTRACT_MUST_RULE_COVERAGE_COMPLETE
   introduced_in: v1
   scope: governance
@@ -1384,7 +1384,7 @@ rules:
   - docs/spec/contract/17_objective_metrics.md
   - docs/spec/schema/objective_metrics_schema_v1.md
   - docs/spec/metrics/objective_manifest.yaml
-  - docs/spec/governance/cases/objective_scorecard_metric.spec.md
+  - docs/spec/governance/cases/core/objective_scorecard_metric.spec.md
 - id: OBJECTIVE_SCORECARD_REPORTED
   introduced_in: v1
   scope: governance
@@ -1399,7 +1399,7 @@ rules:
   references:
   - docs/spec/contract/17_objective_metrics.md
   - scripts/objective_scorecard_report.py
-  - docs/spec/governance/cases/objective_scorecard_metric.spec.md
+  - docs/spec/governance/cases/core/objective_scorecard_metric.spec.md
 - id: OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1413,7 +1413,7 @@ rules:
   risk_if_violated: Temporary regressions can become the new normal without explicit approval.
   references:
   - docs/spec/metrics/objective_scorecard_baseline.json
-  - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
+  - docs/spec/governance/cases/core/objective_scorecard_non_regression.spec.md
 - id: OBJECTIVE_TRIPWIRES_ENFORCED
   introduced_in: v1
   scope: governance
@@ -1427,7 +1427,7 @@ rules:
   risk_if_violated: Score improvements can hide critical contract/security/runtime failures.
   references:
   - docs/spec/metrics/objective_manifest.yaml
-  - docs/spec/governance/cases/objective_tripwires_clean.spec.md
+  - docs/spec/governance/cases/core/objective_tripwires_clean.spec.md
 - id: OBJECTIVE_COURSE_CORRECTION_POLICY_DEFINED
   introduced_in: v1
   scope: governance
@@ -1442,7 +1442,7 @@ rules:
   references:
   - docs/spec/metrics/baseline_update_notes.yaml
   - docs/spec/contract/17_objective_metrics.md
-  - docs/spec/governance/cases/objective_scorecard_non_regression.spec.md
+  - docs/spec/governance/cases/core/objective_scorecard_non_regression.spec.md
 - id: GOVERNANCE_POLICY_EVALUATE_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1457,7 +1457,7 @@ rules:
   references:
   - docs/spec/contract/15_governance_subject_model.md
   - docs/spec/contract/18_governance_subject_extractors.md
-  - docs/spec/governance/cases/governance_policy_evaluate_required.spec.md
+  - docs/spec/governance/cases/core/governance_policy_evaluate_required.spec.md
 - id: SPEC_LANG_LIBRARY_INCLUDE_FORMAT_SCOPE
   introduced_in: v1
   scope: schema
@@ -1485,7 +1485,7 @@ rules:
   risk_if_violated: File naming inconsistency creates brittle tooling behavior and avoidable review churn.
   references:
   - AGENTS.md
-  - docs/spec/governance/cases/naming_filename_policy.spec.md
+  - docs/spec/governance/cases/core/naming_filename_policy.spec.md
 - id: GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
   introduced_in: v1
   scope: governance
@@ -1500,7 +1500,7 @@ rules:
   references:
   - docs/spec/contract/15_governance_subject_model.md
   - docs/spec/contract/18_governance_subject_extractors.md
-  - docs/spec/governance/cases/governance_extractor_only_no_verdict_branching.spec.md
+  - docs/spec/governance/cases/core/governance_extractor_only_no_verdict_branching.spec.md
 - id: GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1515,7 +1515,7 @@ rules:
   references:
   - docs/spec/contract/15_governance_subject_model.md
   - docs/spec/contract/18_governance_subject_extractors.md
-  - docs/spec/governance/cases/governance_structured_assertions_required.spec.md
+  - docs/spec/governance/cases/core/governance_structured_assertions_required.spec.md
 - id: RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
   introduced_in: v1
   scope: runtime
@@ -1530,7 +1530,7 @@ rules:
   references:
   - docs/spec/contract/12_runner_interface.md
   - docs/spec/contract/16_rust_primary_transition.md
-  - docs/spec/governance/cases/runtime_rust_adapter_no_python_exec.spec.md
+  - docs/spec/governance/cases/core/runtime_rust_adapter_no_python_exec.spec.md
 - id: NORMALIZATION_PROFILE_DEFINED
   introduced_in: v1
   scope: governance
@@ -1544,7 +1544,7 @@ rules:
   risk_if_violated: Drift in normalization behavior becomes difficult to detect and audit.
   references:
   - docs/spec/schema/normalization_profile_v1.yaml
-  - docs/spec/governance/cases/normalization_profile_sync.spec.md
+  - docs/spec/governance/cases/core/normalization_profile_sync.spec.md
 - id: NORMALIZATION_CHECK_GATE_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1575,7 +1575,7 @@ rules:
   - docs/spec/schema/schema_v1.md
   - docs/spec/contract/03_assertions.md
   - docs/spec/contract/03b_spec_lang_v1.md
-  - docs/spec/governance/cases/normalization_mapping_ast_only.spec.md
+  - docs/spec/governance/cases/core/normalization_mapping_ast_only.spec.md
 - id: NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC
   introduced_in: v1
   scope: governance
@@ -1589,7 +1589,7 @@ rules:
   risk_if_violated: Authors follow stale docs and produce invalid specs.
   references:
   - docs/spec/schema/normalization_profile_v1.yaml
-  - docs/spec/governance/cases/normalization_docs_token_sync.spec.md
+  - docs/spec/governance/cases/core/normalization_docs_token_sync.spec.md
 - id: NORMALIZATION_FIX_COMMAND_AVAILABLE
   introduced_in: v1
   scope: tooling
@@ -1605,7 +1605,7 @@ rules:
   - Makefile
   - scripts/runner_adapter.sh
   - scripts/normalize_repo.py
-  - docs/spec/governance/cases/normalization_spec_style_sync.spec.md
+  - docs/spec/governance/cases/core/normalization_spec_style_sync.spec.md
 - id: NORMALIZATION_VIRTUAL_ROOT_PATHS_ONLY
   introduced_in: v1
   scope: governance
@@ -1620,7 +1620,7 @@ rules:
   references:
   - docs/spec/schema/schema_v1.md
   - docs/spec/contract/04_harness.md
-  - docs/spec/governance/cases/normalization_virtual_root_paths_only.spec.md
+  - docs/spec/governance/cases/core/normalization_virtual_root_paths_only.spec.md
 - id: REFERENCE_CONTRACT_PATHS_EXIST
   introduced_in: v1
   scope: governance
@@ -1633,7 +1633,7 @@ rules:
   rationale: Fails missing references at governance time instead of runtime.
   risk_if_violated: Specs become brittle and fail late.
   references:
-  - docs/spec/governance/cases/reference_contract_paths_exist.spec.md
+  - docs/spec/governance/cases/core/reference_contract_paths_exist.spec.md
   - scripts/run_governance_specs.py
 - id: REFERENCE_SYMBOLS_EXIST
   introduced_in: v1
@@ -1647,7 +1647,7 @@ rules:
   rationale: Prevents broken policy wiring from reaching runtime.
   risk_if_violated: Governance checks fail unpredictably due missing symbols.
   references:
-  - docs/spec/governance/cases/reference_symbols_exist.spec.md
+  - docs/spec/governance/cases/core/reference_symbols_exist.spec.md
   - spec_runner/spec_lang_libraries.py
 - id: REFERENCE_CHECK_IDS_EXIST
   introduced_in: v1
@@ -1661,7 +1661,7 @@ rules:
   rationale: Catches typos/drift in check ids immediately.
   risk_if_violated: Cases silently stop enforcing intended rules.
   references:
-  - docs/spec/governance/cases/reference_check_ids_exist.spec.md
+  - docs/spec/governance/cases/core/reference_check_ids_exist.spec.md
   - scripts/run_governance_specs.py
 - id: REFERENCE_EXTERNAL_REFS_POLICY
   introduced_in: v1
@@ -1675,7 +1675,7 @@ rules:
   rationale: Keeps repo-local specs encapsulated while allowing controlled external integration.
   risk_if_violated: Hidden external dependencies reduce portability and determinism.
   references:
-  - docs/spec/governance/cases/reference_external_refs_policy.spec.md
+  - docs/spec/governance/cases/core/reference_external_refs_policy.spec.md
   - docs/spec/schema/schema_v1.md
 - id: REFERENCE_TOKEN_ANCHORS_EXIST
   introduced_in: v1
@@ -1689,5 +1689,33 @@ rules:
   rationale: Ensures scanner/token references remain valid through refactors.
   risk_if_violated: Governance checks become stale and misleading.
   references:
-  - docs/spec/governance/cases/reference_token_anchors_exist.spec.md
+  - docs/spec/governance/cases/core/reference_token_anchors_exist.spec.md
+  - scripts/run_governance_specs.py
+- id: SPEC_LAYOUT_DOMAIN_TREES
+  introduced_in: v1
+  scope: governance
+  applies_to: docs/spec tree layout
+  norm: MUST
+  requirement: spec_cases_and_libraries_must_use_domain_tree_directories
+  description: 'Spec files must live under domain subdirectories (for example `.../cases/core/...`) with per-domain indexes.
+
+    '
+  rationale: Reduces brittle flat layouts and clarifies domain ownership.
+  risk_if_violated: Flat trees become hard to navigate and references drift.
+  references:
+  - docs/spec/governance/cases/core/spec_layout_domain_trees.spec.md
+  - scripts/run_governance_specs.py
+- id: SPEC_DOMAIN_INDEX_SYNC
+  introduced_in: v1
+  scope: governance
+  applies_to: domain index files
+  norm: MUST
+  requirement: domain_index_files_must_match_case_and_library_contents
+  description: 'Every domain index must include all in-domain spec files and no stale entries.
+
+    '
+  rationale: Provides deterministic, machine-checked navigation for domain trees.
+  risk_if_violated: Index drift hides missing or stale references.
+  references:
+  - docs/spec/governance/cases/core/spec_domain_index_sync.spec.md
   - scripts/run_governance_specs.py

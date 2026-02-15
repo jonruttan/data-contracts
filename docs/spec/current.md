@@ -72,6 +72,8 @@ Notes:
 - Contract path model now uses virtual-root semantics (`/` = contract root)
   with canonical `/...` normalization and explicit deny-by-default
   `external://provider/id` references.
+- Spec corpora now use domain-tree layout under `.../cases/<domain>/` and
+  `.../libraries/<domain>/` with machine-checked `index.md` sync.
 
 Canonical spec docs:
 

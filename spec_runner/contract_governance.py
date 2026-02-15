@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from spec_runner.doc_parser import iter_spec_doc_tests
+from spec_runner.codecs import load_external_cases
 from spec_runner.purpose_lint import load_purpose_lint_policy
 
 _NORMATIVE_CONTRACT_DOCS = [
@@ -39,8 +39,8 @@ def _read_yaml(path: Path) -> Any:
 
 def _collect_fixture_case_ids(path: Path) -> set[str]:
     ids: set[str] = set()
-    for spec in iter_spec_doc_tests(path):
-        rid = str(spec.test.get("id", "")).strip()
+    for _, case in load_external_cases(path, formats={"md"}):
+        rid = str(case.get("id", "")).strip()
         if rid:
             ids.add(rid)
     return ids

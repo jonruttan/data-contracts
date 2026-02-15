@@ -147,6 +147,11 @@ _PATH_LIKE_KEYS = {
     "reference_manifest",
     "roots",
 }
+_DOMAIN_TREE_ROOTS = (
+    "docs/spec/conformance/cases",
+    "docs/spec/governance/cases",
+    "docs/spec/libraries",
+)
 
 
 def _resolve_contract_config_path(root: Path, raw: str, *, field: str) -> Path:
@@ -1370,19 +1375,19 @@ def _scan_regex_doc_sync(root: Path) -> list[str]:
 
 def _scan_assert_universal_core_sync(root: Path) -> list[str]:
     violations: list[str] = []
-    required_tokens_by_file = {
+    required_tokens_by_file: dict[str, tuple[object, ...]] = {
         "docs/spec/schema/schema_v1.md": (
             "universal core",
             "evaluate",
-            "conformance/cases/*.spec.md",
-            "governance/cases/*.spec.md",
+            ("conformance/cases/*.spec.md", "conformance/cases/**/*.spec.md"),
+            ("governance/cases/*.spec.md", "governance/cases/**/*.spec.md"),
             "must use",
         ),
         "docs/spec/contract/03_assertions.md": (
             "universal core",
             "evaluate",
-            "conformance/cases/*.spec.md",
-            "governance/cases/*.spec.md",
+            ("conformance/cases/*.spec.md", "conformance/cases/**/*.spec.md"),
+            ("governance/cases/*.spec.md", "governance/cases/**/*.spec.md"),
             "must use",
         ),
         "docs/spec/contract/09_internal_representation.md": (
@@ -1400,7 +1405,12 @@ def _scan_assert_universal_core_sync(root: Path) -> list[str]:
             continue
         lower = p.read_text(encoding="utf-8").lower()
         for tok in required_tokens_by_file.get(rel, ()):
-            if tok not in lower:
+            if isinstance(tok, tuple):
+                if not any(str(opt) in lower for opt in tok):
+                    joined = " or ".join(repr(str(opt)) for opt in tok)
+                    violations.append(f"{rel}:1: missing universal-core token ({joined})")
+                continue
+            if str(tok) not in lower:
                 violations.append(f"{rel}:1: missing universal-core token {tok!r}")
     return violations
 
@@ -2440,7 +2450,7 @@ def _scan_conformance_spec_lang_fixture_library_usage(root: Path, *, harness: di
     cfg = h.get("spec_lang_fixture_library_usage")
     if not isinstance(cfg, dict):
         return ["conformance.spec_lang_fixture_library_usage requires harness.spec_lang_fixture_library_usage mapping in governance spec"]
-    rel = str(cfg.get("path", "docs/spec/conformance/cases/spec_lang.spec.md")).strip() or "docs/spec/conformance/cases/spec_lang.spec.md"
+    rel = str(cfg.get("path", "docs/spec/conformance/cases/core/spec_lang.spec.md")).strip() or "docs/spec/conformance/cases/core/spec_lang.spec.md"
     required_library_path = str(cfg.get("required_library_path", "")).strip()
     if not required_library_path:
         return ["harness.spec_lang_fixture_library_usage.required_library_path must be a non-empty string"]
@@ -3678,6 +3688,74 @@ def _scan_reference_token_anchors_exist(root: Path, *, harness: dict | None = No
     return violations
 
 
+def _scan_spec_layout_domain_trees(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    for rel_root in _DOMAIN_TREE_ROOTS:
+        base = _join_contract_path(root, rel_root)
+        if not base.exists():
+            violations.append(f"{rel_root}:1: missing required domain root")
+            continue
+        if not base.is_dir():
+            violations.append(f"{rel_root}:1: expected directory")
+            continue
+        direct_cases = sorted(p for p in base.glob("*.spec.md") if p.is_file())
+        for p in direct_cases:
+            violations.append(
+                f"{p.relative_to(root)}: spec files must live under domain subdirectories (for example {rel_root}/core/)"
+            )
+        domain_dirs = sorted(
+            p for p in base.iterdir() if p.is_dir() and not p.name.startswith(".")
+        )
+        if not domain_dirs:
+            violations.append(f"{rel_root}:1: expected at least one domain subdirectory")
+            continue
+        for domain_dir in domain_dirs:
+            has_specs = any(domain_dir.rglob("*.spec.md"))
+            if not has_specs:
+                continue
+            index_path = domain_dir / "index.md"
+            if not index_path.exists():
+                violations.append(
+                    f"{index_path.relative_to(root)}: missing required domain index.md"
+                )
+    return violations
+
+
+def _scan_spec_domain_index_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    for rel_root in _DOMAIN_TREE_ROOTS:
+        base = _join_contract_path(root, rel_root)
+        if not base.exists() or not base.is_dir():
+            continue
+        domain_dirs = sorted(
+            p for p in base.iterdir() if p.is_dir() and not p.name.startswith(".")
+        )
+        for domain_dir in domain_dirs:
+            spec_files = sorted(p for p in domain_dir.glob("*.spec.md") if p.is_file())
+            if not spec_files:
+                continue
+            index_path = domain_dir / "index.md"
+            if not index_path.exists():
+                continue
+            raw = index_path.read_text(encoding="utf-8")
+            for p in spec_files:
+                rel = "/" + p.relative_to(root).as_posix()
+                if rel not in raw:
+                    violations.append(
+                        f"{index_path.relative_to(root)}: missing indexed path: {rel}"
+                    )
+            # Ensure stale entries are not retained.
+            for m in re.finditer(r"`(/docs/spec/[^`]+\.spec\.md)`", raw):
+                rel = m.group(1)
+                target = _join_contract_path(root, rel)
+                if not target.exists():
+                    line = raw[: m.start()].count("\n") + 1
+                    violations.append(
+                        f"{index_path.relative_to(root)}:{line}: stale indexed path missing from tree: {rel}"
+                    )
+    return violations
+
+
 def _load_normalization_profile(root: Path) -> tuple[dict[str, object] | None, list[str]]:
     p = root / _NORMALIZATION_PROFILE_PATH
     if not p.exists():
@@ -3953,6 +4031,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "reference.check_ids_exist": _scan_reference_check_ids_exist,
     "reference.external_refs_policy": _scan_reference_external_refs_policy,
     "reference.token_anchors_exist": _scan_reference_token_anchors_exist,
+    "spec.layout_domain_trees": _scan_spec_layout_domain_trees,
+    "spec.domain_index_sync": _scan_spec_domain_index_sync,
     "normalization.profile_sync": _scan_normalization_profile_sync,
     "normalization.mapping_ast_only": _scan_normalization_mapping_ast_only,
     "normalization.library_mapping_ast_only": _scan_normalization_library_mapping_ast_only,
@@ -4113,6 +4193,8 @@ def main(argv: list[str] | None = None) -> int:
             capture=MiniCapsys(),
         )
         for case in iter_cases(cases_path, file_pattern=case_pattern):
+            if str(case.test.get("type", "")).strip() != "governance.check":
+                continue
             try:
                 run_case(case, ctx=ctx, type_runners={"governance.check": run_governance_check})
             except BaseException as e:  # noqa: BLE001

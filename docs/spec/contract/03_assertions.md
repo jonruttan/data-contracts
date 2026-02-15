@@ -59,9 +59,9 @@ For `type: governance.check`, assertion targets include:
 
 ## Core Surface Rule
 
-- Assertion trees in `docs/spec/conformance/cases/*.spec.md` MUST use
+- Assertion trees in `docs/spec/conformance/cases/**/*.spec.md` MUST use
   `evaluate` leaves only.
-- Assertion trees in `docs/spec/governance/cases/*.spec.md` MUST use
+- Assertion trees in `docs/spec/governance/cases/**/*.spec.md` MUST use
   `evaluate` leaves only.
 - Sugar operators remain compile-only schema forms for non-core surfaces.
 

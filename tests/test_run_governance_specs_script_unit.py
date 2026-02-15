@@ -1581,7 +1581,7 @@ check: conformance.spec_lang_fixture_library_usage
 harness:
   root: {tmp_path}
   spec_lang_fixture_library_usage:
-    path: docs/spec/conformance/cases/spec_lang.spec.md
+    path: docs/spec/conformance/cases/core/spec_lang.spec.md
     required_library_path: ../../libraries/conformance/assertion_core.spec.md
     required_call_prefix: conf.
     min_call_count: 2
@@ -1606,7 +1606,7 @@ assert:
 """,
     )
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/spec_lang.spec.md",
+        tmp_path / "docs/spec/conformance/cases/core/spec_lang.spec.md",
         """# Spec Lang
 
 ## SRCONF-EXPR-001
@@ -1648,7 +1648,7 @@ assert:
     assert code == 1
 
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/spec_lang.spec.md",
+        tmp_path / "docs/spec/conformance/cases/core/spec_lang.spec.md",
         """# Spec Lang
 
 ## SRCONF-EXPR-001
@@ -3411,7 +3411,7 @@ harness:
           - \"eval_predicate(\"
           - \"gate_policy\"
           - \"policy_evaluate\"
-      - path: docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
+      - path: docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
         required_tokens:
           - \"gate_policy\"
           - \"policy_evaluate\"
@@ -3438,7 +3438,7 @@ assert:
         "def x():\n    _load_gate_policy_expr()\n    eval_predicate(['eq', 1, 1], subject=[])\n    gate_policy='ok'\n    policy_evaluate=['eq',1,1]\n",
     )
     _write_text(
-        tmp_path / "docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md",
+        tmp_path / "docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md",
         "gate_policy\npolicy_evaluate\n",
     )
     code = mod.main(["--cases", str(cases_dir)])

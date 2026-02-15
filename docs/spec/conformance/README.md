@@ -12,10 +12,10 @@ runner behavior (currently Python and PHP bootstrap subset coverage).
 
 ## Case Set (Current)
 
-- `docs/spec/conformance/cases/cli_run_entrypoint.spec.md`
-- `docs/spec/conformance/cases/assertion_health.spec.md`
-- `docs/spec/conformance/cases/failure_context.spec.md`
-- `docs/spec/conformance/cases/php_text_file_subset.spec.md`
+- `docs/spec/conformance/cases/core/cli_run_entrypoint.spec.md`
+- `docs/spec/conformance/cases/core/assertion_health.spec.md`
+- `docs/spec/conformance/cases/core/failure_context.spec.md`
+- `docs/spec/conformance/cases/core/php_text_file_subset.spec.md`
 
 ## Execution Coverage
 

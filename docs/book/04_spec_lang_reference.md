@@ -298,7 +298,7 @@ Use `evaluate` when you need:
 - `docs/spec/contract/03_assertions.md`
 - `docs/spec/contract/03b_spec_lang_v1.md`
 - `docs/spec/contract/14_spec_lang_libraries.md`
-- `docs/spec/conformance/cases/spec_lang.spec.md`
+- `docs/spec/conformance/cases/core/spec_lang.spec.md`
 
 ## 9) Lint + Format
 

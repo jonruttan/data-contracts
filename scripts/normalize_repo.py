@@ -177,11 +177,18 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     mode_flag = "--check" if ns.check else "--write"
+    domain_layout_cmd = [sys.executable, "scripts/migrate_spec_layout_domain_trees.py", mode_flag]
     vpath_cmd = [sys.executable, "scripts/convert_virtual_root_paths.py", mode_flag, *scope_paths]
     conv_cmd = [sys.executable, "scripts/convert_spec_lang_yaml_ast.py", mode_flag, *scope_paths]
     style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
 
     issues: list[str] = []
+    domain_code, domain_out = _run(domain_layout_cmd)
+    if domain_code != 0:
+        for line in domain_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec:1: NORMALIZATION_DOMAIN_TREE_LAYOUT: {line}")
     vpath_code, vpath_out = _run(vpath_cmd)
     if vpath_code != 0:
         for line in vpath_out.splitlines():

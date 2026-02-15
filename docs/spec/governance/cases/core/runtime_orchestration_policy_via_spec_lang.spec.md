@@ -22,7 +22,7 @@ harness:
       - _load_gate_policy_expr(
       - eval_predicate(
       - policy_verdict
-    - path: /docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md
+    - path: /docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
       required_tokens:
       - gate_policy
       - policy_evaluate

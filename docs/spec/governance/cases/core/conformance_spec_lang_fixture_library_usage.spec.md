@@ -16,7 +16,7 @@ harness:
     exports:
     - policy.pass_when_no_violations
   spec_lang_fixture_library_usage:
-    path: /docs/spec/conformance/cases/spec_lang.spec.md
+    path: /docs/spec/conformance/cases/core/spec_lang.spec.md
     required_library_path: /docs/spec/libraries/conformance/assertion_core.spec.md
     required_call_prefix: conf.
     min_call_count: 4

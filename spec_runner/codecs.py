@@ -136,7 +136,7 @@ def discover_case_files(
 
     for fmt in sorted(fmts):
         for pattern in _patterns_for_format(fmt, md_pattern=md_pattern):
-            for p in sorted(root.glob(pattern)):
+            for p in sorted(root.rglob(pattern)):
                 if p.is_file() and codecs[fmt].can_load(p):
                     out.append((p, fmt))
     return out

@@ -144,20 +144,16 @@ function listCaseFiles(string $path, string $pattern, array $formats): array {
         throw new RuntimeException("cases path is a file but does not match enabled formats/pattern: {$path}");
     }
     $files = [];
-    $items = scandir($path);
-    if ($items === false) {
-        throw new RuntimeException("cannot read cases path: {$path}");
-    }
-    foreach ($items as $item) {
-        if ($item === '.' || $item === '..') {
+    $iter = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)
+    );
+    foreach ($iter as $item) {
+        if (!$item->isFile()) {
             continue;
         }
-        $itemPath = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $item;
-        if (!is_file($itemPath)) {
-            continue;
-        }
-        if (_pathMatchesFormat($item, $formats, $pattern)) {
-            $files[] = $itemPath;
+        $name = $item->getFilename();
+        if (_pathMatchesFormat($name, $formats, $pattern)) {
+            $files[] = $item->getPathname();
         }
     }
     sort($files, SORT_STRING);

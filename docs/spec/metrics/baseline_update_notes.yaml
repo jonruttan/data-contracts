@@ -1,11 +1,11 @@
 version: 1
 entries:
 - baseline: docs/spec/metrics/spec_portability_baseline.json
-  sha256: 8c83e2fd316fe2b3fd56a70d7973b4c7f72cd9f94d8cbe75f295c37ba04af9dd
+  sha256: 25beb986b0c1dfe923bdca65b8a074ca6f6d7630079406e869645bb643efd6d6
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/spec_lang_adoption_baseline.json
-  sha256: 902d016e51c7f49ffac1b8ea909b410b5e5ffe0c38dcb618a5a2ac95b7a0ce6b
+  sha256: 2986ce8cc3fe6ec788df018596b375c7f7cdcdb4c809a494350e96deaf3971f6
   rationale: Baseline refreshed after adding governance library-backed policy ratio metric surfaces.
   measurement_model_change: 'yes'
 - baseline: docs/spec/metrics/runner_independence_baseline.json

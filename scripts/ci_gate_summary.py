@@ -115,7 +115,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--runner-bin", required=True, help="Path to runner interface command")
     ap.add_argument(
         "--policy-case",
-        default="docs/spec/governance/cases/runtime_orchestration_policy_via_spec_lang.spec.md",
+        default="docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md",
         help="Governance spec case containing orchestration policy_evaluate policy.",
     )
     ap.add_argument(

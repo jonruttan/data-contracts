@@ -92,7 +92,7 @@ Example:
 
 ```sh
 php scripts/php/conformance_runner.php \
-  --cases docs/spec/conformance/cases/php_text_file_subset.spec.md \
+  --cases docs/spec/conformance/cases/core/php_text_file_subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
 
@@ -104,7 +104,7 @@ python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report
 
 Bootstrap parity subset fixture:
 
-- `docs/spec/conformance/cases/php_text_file_subset.spec.md`
+- `docs/spec/conformance/cases/core/php_text_file_subset.spec.md`
 
 ## Alternate Runner Behavior (`spec_runner.php`)
 

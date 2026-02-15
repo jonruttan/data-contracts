@@ -302,7 +302,7 @@ Generate a bootstrap PHP report:
 ```sh
 # Requires PHP yaml_parse extension.
 php scripts/php/conformance_runner.php \
-  --cases docs/spec/conformance/cases/php_text_file_subset.spec.md \
+  --cases docs/spec/conformance/cases/core/php_text_file_subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
 
@@ -335,7 +335,7 @@ Convert between external case formats without changing semantics:
 
 ```sh
 python scripts/convert_cases.py \
-  --in docs/spec/conformance/cases/spec_lang.spec.md \
+  --in docs/spec/conformance/cases/core/spec_lang.spec.md \
   --out .artifacts/spec_lang.spec.json \
   --out-format json
 ```
