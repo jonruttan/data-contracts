@@ -5477,3 +5477,80 @@ assert:
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
+
+
+def test_script_accepts_scalar_chain_ref_format(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "chain_ref_ok.spec.md",
+        _case_for_check("SRGOV-TEST-CHAIN-REF-001", "runtime.chain_reference_resolution", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/core/dep.spec.md",
+        """# Dep
+
+## DEP-1
+
+```yaml spec-test
+id: DEP-1
+type: text.file
+path: /README.md
+assert: []
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/core/host.spec.md",
+        """# Host
+
+## HOST-1
+
+```yaml spec-test
+id: HOST-1
+type: text.file
+path: /README.md
+harness:
+  chain:
+    steps:
+    - id: preload
+      ref: /docs/spec/conformance/cases/core/dep.spec.md#DEP-1
+assert: []
+```
+""",
+    )
+    _write_text(tmp_path / "README.md", "ok\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+def test_script_rejects_legacy_chain_ref_mapping(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "chain_ref_legacy.spec.md",
+        _case_for_check("SRGOV-TEST-CHAIN-REF-002", "runtime.chain_reference_resolution", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/core/host.spec.md",
+        """# Host
+
+## HOST-1
+
+```yaml spec-test
+id: HOST-1
+type: text.file
+path: /README.md
+harness:
+  chain:
+    steps:
+    - id: preload
+      ref:
+        case_id: DEP-1
+assert: []
+```
+""",
+    )
+    _write_text(tmp_path / "README.md", "ok\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1

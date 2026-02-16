@@ -3011,7 +3011,8 @@ links:
   implementation_refs:
   - spec_runner/components/chain_engine.py
   - spec_runner/dispatcher.py
-  notes: Chain references are schema-checked and resolved deterministically.
+  - scripts/convert_chain_ref_format.py
+  notes: Chain references use scalar ref format [path][#case_id], are schema-checked, and resolve deterministically.
 - rule_id: CHAIN_EXPORTS_EXPLICIT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_EXPLICIT_REQUIRED
   contract_refs:

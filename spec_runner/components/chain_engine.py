@@ -8,13 +8,15 @@ from typing import Any, Callable, Mapping
 from spec_runner.codecs import load_external_cases
 from spec_runner.compiler import compile_external_case
 from spec_runner.internal_model import InternalSpecCase
-from spec_runner.virtual_paths import contract_root_for, resolve_contract_path
+from spec_runner.virtual_paths import contract_root_for, parse_external_ref, resolve_contract_path
 
 _DOTTED_PATH_PART = re.compile(r"^[A-Za-z0-9_.-]+$")
+_CASE_ID_PART = re.compile(r"^[A-Za-z0-9._:-]+$")
 
 
 @dataclass(frozen=True)
 class ChainRef:
+    raw: str
     path: str | None
     case_id: str | None
 
@@ -32,6 +34,28 @@ class ChainStep:
     ref: ChainRef
     exports: dict[str, ChainExport]
     allow_continue: bool
+
+
+def parse_spec_ref(raw_ref: str) -> ChainRef:
+    raw = str(raw_ref).strip()
+    if not raw:
+        raise ValueError("harness.chain.steps[*].ref must be a non-empty string")
+    if "#" in raw:
+        path_part, case_part = raw.split("#", 1)
+        path = path_part.strip() or None
+        case_id = case_part.strip()
+        if not case_id:
+            raise ValueError("harness.chain.steps[*].ref fragment case_id must be non-empty when '#' is present")
+        if not _CASE_ID_PART.match(case_id):
+            raise ValueError(
+                "harness.chain.steps[*].ref fragment case_id must match [A-Za-z0-9._:-]+"
+            )
+        if path is not None and parse_external_ref(path) is not None:
+            raise ValueError("harness.chain.steps[*].ref path must not be external://")
+        return ChainRef(raw=raw, path=path, case_id=case_id)
+    if parse_external_ref(raw) is not None:
+        raise ValueError("harness.chain.steps[*].ref path must not be external://")
+    return ChainRef(raw=raw, path=raw, case_id=None)
 
 
 def _resolve_dotted_path(value: Any, dotted: str) -> tuple[bool, Any]:
@@ -81,17 +105,18 @@ def compile_chain_plan(case: InternalSpecCase) -> list[ChainStep]:
             raise ValueError(f"harness.chain.steps has duplicate id: {step_id}")
         seen_ids.add(step_id)
         raw_ref = raw.get("ref")
-        if not isinstance(raw_ref, dict):
-            raise TypeError(f"harness.chain.steps[{idx}].ref must be a mapping")
-        ref_path = str(raw_ref.get("path", "")).strip() or None
-        ref_case_id = str(raw_ref.get("case_id", "")).strip() or None
-        if not ref_path and not ref_case_id:
-            raise ValueError(f"harness.chain.steps[{idx}].ref requires path and/or case_id")
+        if isinstance(raw_ref, dict):
+            raise TypeError(
+                f"harness.chain.steps[{idx}].ref legacy mapping format is not supported; use string [path][#case_id]"
+            )
+        if not isinstance(raw_ref, str):
+            raise TypeError(f"harness.chain.steps[{idx}].ref must be a string")
+        parsed_ref = parse_spec_ref(raw_ref)
         raw_exports = raw.get("exports") or {}
         if not isinstance(raw_exports, dict):
             raise TypeError(f"harness.chain.steps[{idx}].exports must be a mapping when provided")
-        if raw_exports and not ref_case_id:
-            raise ValueError(f"harness.chain.steps[{idx}] exports require ref.case_id")
+        if raw_exports and not parsed_ref.case_id:
+            raise ValueError(f"harness.chain.steps[{idx}] exports require ref with #case_id fragment")
         exports: dict[str, ChainExport] = {}
         for export_name, export_raw in raw_exports.items():
             name = str(export_name).strip()
@@ -119,7 +144,7 @@ def compile_chain_plan(case: InternalSpecCase) -> list[ChainStep]:
         steps.append(
             ChainStep(
                 id=step_id,
-                ref=ChainRef(path=ref_path, case_id=ref_case_id),
+                ref=parsed_ref,
                 exports=exports,
                 allow_continue=raw_allow_continue,
             )
@@ -127,19 +152,35 @@ def compile_chain_plan(case: InternalSpecCase) -> list[ChainStep]:
     return steps
 
 
+def _resolve_ref_path(*, ref_path: str, current_case: InternalSpecCase) -> Path:
+    root = contract_root_for(current_case.doc_path)
+    if ref_path.startswith("/"):
+        return resolve_contract_path(root, ref_path, field="harness.chain.steps.ref")
+    doc_parent = current_case.doc_path.resolve().parent
+    resolved = (doc_parent / ref_path).resolve()
+    try:
+        resolved.relative_to(root)
+    except ValueError as exc:
+        raise ValueError("harness.chain.steps.ref escapes contract root") from exc
+    return resolved
+
+
 def resolve_chain_reference(step: ChainStep, *, current_case: InternalSpecCase) -> list[InternalSpecCase]:
     if step.ref.path:
-        root = contract_root_for(current_case.doc_path)
-        resolved = resolve_contract_path(root, step.ref.path, field="harness.chain.steps.ref.path")
+        resolved = _resolve_ref_path(ref_path=step.ref.path, current_case=current_case)
         if not resolved.exists() or not resolved.is_file():
-            raise ValueError(f"chain ref.path does not exist as file: {step.ref.path}")
+            raise ValueError(f"chain ref path does not exist as file: {step.ref.path}")
         docs = list(load_external_cases(resolved, formats={"md"}))
         if step.ref.case_id:
             filtered = [x for x in docs if str(x[1].get("id", "")).strip() == step.ref.case_id]
             if not filtered:
-                raise ValueError(f"chain step {step.id} could not resolve case_id {step.ref.case_id} in {step.ref.path}")
+                raise ValueError(
+                    f"chain step {step.id} could not resolve case_id {step.ref.case_id} in {step.ref.path}"
+                )
             if len(filtered) > 1:
-                raise ValueError(f"chain step {step.id} resolved duplicate case_id {step.ref.case_id} in {step.ref.path}")
+                raise ValueError(
+                    f"chain step {step.id} resolved duplicate case_id {step.ref.case_id} in {step.ref.path}"
+                )
             return [compile_external_case(filtered[0][1], doc_path=filtered[0][0])]
         return [compile_external_case(test, doc_path=doc_path) for doc_path, test in docs]
 

@@ -273,10 +273,12 @@ For `type: docs.generate`, supported `harness` keys include:
 - `steps` (list, required when `harness.chain` is present; non-empty)
   - each step:
     - `id` (string, required, unique)
-    - `ref` (mapping, required):
-      - `path` (virtual-root path, optional)
-      - `case_id` (string, optional)
-      - at least one of `path` or `case_id` is required
+    - `ref` (string, required): `[path][#case_id]`
+      - path may be virtual-absolute (`/...`) or relative
+      - `#case_id` fragment is optional
+      - `#case_id` with no preceding path is valid and resolves in current doc
+      - case id fragment must match `[A-Za-z0-9._:-]+` when present
+      - YAML authors should quote hash-only refs (for example `ref: "#CASE-1"`)
     - `exports` (mapping, optional):
       - export name -> mapping:
         - `from_target` (string, required)
@@ -286,9 +288,10 @@ For `type: docs.generate`, supported `harness` keys include:
 
 Chain reference resolution:
 
-- `case_id` only: resolve within current `.spec.md` document.
-- `path + case_id`: resolve one exact case in referenced document.
-- `path` only: execute all cases in referenced document in order.
+- `#case_id`: resolve one exact case within current `.spec.md` document.
+- `path#case_id`: resolve one exact case in referenced document.
+- `path`: execute all cases in referenced document in order.
+- relative paths resolve from current `.spec.md` document directory.
 
 Chain template interpolation:
 

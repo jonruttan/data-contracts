@@ -263,6 +263,7 @@ def main(argv: list[str] | None = None) -> int:
     vpath_cmd = [sys.executable, "scripts/convert_virtual_root_paths.py", mode_flag, *scope_paths]
     conv_cmd = [sys.executable, "scripts/convert_spec_lang_yaml_ast.py", mode_flag, *scope_paths]
     ops_cmd = [sys.executable, "scripts/convert_ops_symbol_names.py", mode_flag, *scope_paths]
+    chain_ref_cmd = [sys.executable, "scripts/convert_chain_ref_format.py", mode_flag, *scope_paths]
     std_cmd = [sys.executable, "scripts/convert_std_symbol_names.py", mode_flag, *scope_paths]
     style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
 
@@ -297,6 +298,12 @@ def main(argv: list[str] | None = None) -> int:
             line = line.strip()
             if line:
                 issues.append(f"docs/spec:1: NORMALIZATION_OPS_SYMBOLS: {line}")
+    chain_code, chain_out = _run(chain_ref_cmd)
+    if chain_code != 0:
+        for line in chain_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec:1: NORMALIZATION_CHAIN_REFS: {line}")
     std_code, std_out = _run(std_cmd)
     if std_code != 0:
         for line in std_out.splitlines():

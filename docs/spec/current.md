@@ -22,7 +22,8 @@ Notes:
   CORS preflight/actual projection via `cors_json`, and scenario round-trip
   execution (`requests` + `harness.api_http.scenario`) with `steps_json`.
 - Cross-spec chaining is available via `harness.chain.steps` with explicit
-  target-derived exports; `harness.spec_lang.includes` remains library-only.
+  target-derived exports and scalar refs (`[path][#case_id]`);
+  `harness.spec_lang.includes` remains library-only.
 - `api.http` request templating supports chain state lookups in `url`, header
   values, and `body_text` using `{{chain.<step_id>.<export_name>...}}`.
 - Spec-lang stdlib completeness and parity are contract-defined by

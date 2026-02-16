@@ -5,8 +5,7 @@
 ```yaml spec-test
 id: SRGOV-CHAIN-001
 title: chain references resolve deterministically
-purpose: Ensures harness.chain step references resolve by contract for local, path, and path+case_id
-  forms.
+purpose: Ensures harness.chain step references resolve by contract for
 type: governance.check
 check: runtime.chain_reference_resolution
 harness:

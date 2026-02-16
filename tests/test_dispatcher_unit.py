@@ -57,8 +57,7 @@ harness:
   chain:
     steps:
     - id: self
-      ref:
-        case_id: CASE-RECUR
+      ref: "#CASE-RECUR"
 assert: []
 ```
 """,
@@ -71,7 +70,7 @@ assert: []
             "id": "CASE-RECUR",
             "type": "text.file",
             "path": "/README.md",
-            "harness": {"chain": {"steps": [{"id": "self", "ref": {"case_id": "CASE-RECUR"}}]}},
+            "harness": {"chain": {"steps": [{"id": "self", "ref": "#CASE-RECUR"}]}},
             "assert": [],
         },
     )

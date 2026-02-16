@@ -205,6 +205,7 @@ _DOCS_GENERATOR_REPORT = ".artifacts/docs-generator-report.json"
 _DOCS_GENERATOR_SUMMARY = ".artifacts/docs-generator-summary.md"
 _DOCGEN_QUALITY_MIN_SCORE = 0.95
 _CHAIN_TEMPLATE_PATTERN = re.compile(r"\{\{\s*chain\.([A-Za-z0-9_.-]+)\s*\}\}")
+_CHAIN_REF_CASE_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]+$")
 _HARNESS_FILES = (
     "spec_runner/harnesses/text_file.py",
     "spec_runner/harnesses/cli_run.py",
@@ -3068,6 +3069,37 @@ def _iter_cases_with_chain(root: Path):
             yield doc_path, case, harness, chain
 
 
+def _parse_chain_ref_value(raw: object) -> tuple[str | None, str | None]:
+    if isinstance(raw, dict):
+        raise ValueError("legacy mapping format for step.ref is not supported; use string [path][#case_id]")
+    if not isinstance(raw, str):
+        raise ValueError("step.ref must be a string")
+    ref = str(raw).strip()
+    if not ref:
+        raise ValueError("step.ref must be a non-empty string")
+    if "#" in ref:
+        path_part, case_part = ref.split("#", 1)
+        path = path_part.strip() or None
+        case_id = case_part.strip()
+        if not case_id:
+            raise ValueError("step.ref fragment case_id must be non-empty when '#' is present")
+        if not _CHAIN_REF_CASE_ID_PATTERN.match(case_id):
+            raise ValueError("step.ref fragment case_id must match [A-Za-z0-9._:-]+")
+        return path, case_id
+    return ref, None
+
+
+def _resolve_chain_ref_doc(root: Path, doc_path: Path, ref_path: str) -> Path:
+    if ref_path.startswith("/"):
+        return resolve_contract_path(root, ref_path, field="harness.chain.steps.ref")
+    candidate = (doc_path.resolve().parent / ref_path).resolve()
+    try:
+        candidate.relative_to(root.resolve())
+    except ValueError as exc:
+        raise VirtualPathError("harness.chain.steps.ref escapes contract root") from exc
+    return candidate
+
+
 def _scan_runtime_chain_reference_resolution(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     violations: list[str] = []
@@ -3082,39 +3114,34 @@ def _scan_runtime_chain_reference_resolution(root: Path, *, harness: dict | None
                 violations.append(f"{doc_path.relative_to(root)}: case {case_id} step[{idx}] must be mapping")
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            ref = step.get("ref")
-            if not isinstance(ref, dict):
-                violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} ref must be mapping")
-                continue
-            ref_path = str(ref.get("path", "")).strip()
-            ref_case_id = str(ref.get("case_id", "")).strip()
-            if not ref_path and not ref_case_id:
-                violations.append(
-                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} ref requires path and/or case_id"
-                )
+            try:
+                ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
+            except ValueError as exc:
+                violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} {exc}")
                 continue
             if ref_path:
                 try:
-                    p = resolve_contract_path(root, ref_path, field="harness.chain.steps.ref.path")
+                    p = _resolve_chain_ref_doc(root, doc_path, ref_path)
                 except VirtualPathError as exc:
-                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} invalid ref.path ({exc})")
+                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} invalid ref ({exc})")
                     continue
                 if not p.exists() or not p.is_file():
-                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} missing ref.path {ref_path}")
+                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} missing ref path {ref_path}")
                     continue
                 found = list(load_external_cases(p, formats={"md"}))
                 if ref_case_id:
                     matched = [x for x in found if str(x[1].get("id", "")).strip() == ref_case_id]
                     if len(matched) != 1:
                         violations.append(
-                            f"{doc_path.relative_to(root)}: case {case_id} step {step_id} unresolved ref.case_id {ref_case_id} in {ref_path}"
+                            f"{doc_path.relative_to(root)}: case {case_id} step {step_id} unresolved case fragment {ref_case_id} in {ref_path}"
                         )
             else:
+                assert ref_case_id is not None
                 found = list(load_external_cases(doc_path, formats={"md"}))
                 matched = [x for x in found if str(x[1].get("id", "")).strip() == ref_case_id]
                 if len(matched) != 1:
                     violations.append(
-                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} unresolved local ref.case_id {ref_case_id}"
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} unresolved local case fragment {ref_case_id}"
                     )
     return violations
 
@@ -3141,15 +3168,14 @@ def _scan_runtime_chain_cycle_forbidden(root: Path, *, harness: dict | None = No
         for step in steps:
             if not isinstance(step, dict):
                 continue
-            ref = step.get("ref")
-            if not isinstance(ref, dict):
+            try:
+                ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
+            except ValueError:
                 continue
-            ref_path = str(ref.get("path", "")).strip()
-            ref_case_id = str(ref.get("case_id", "")).strip()
             targets: list[str] = []
             if ref_path:
                 try:
-                    p = resolve_contract_path(root, ref_path, field="harness.chain.steps.ref.path")
+                    p = _resolve_chain_ref_doc(root, doc_path, ref_path)
                 except Exception:
                     continue
                 found = list(load_external_cases(p, formats={"md"}))
@@ -3161,9 +3187,9 @@ def _scan_runtime_chain_cycle_forbidden(root: Path, *, harness: dict | None = No
                     ]
                 else:
                     targets = [
-                        f"{d.resolve().as_posix()}::{str(t.get('id', '')).strip()}"
-                        for d, t in found
-                        if str(t.get("id", "")).strip()
+                            f"{d.resolve().as_posix()}::{str(t.get('id', '')).strip()}"
+                            for d, t in found
+                            if str(t.get("id", "")).strip()
                     ]
             elif ref_case_id:
                 found = list(load_external_cases(doc_path, formats={"md"}))
@@ -3211,15 +3237,17 @@ def _scan_runtime_chain_exports_target_derived_only(root: Path, *, harness: dict
             if not isinstance(step, dict):
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            ref = step.get("ref")
-            ref_case_id = str(ref.get("case_id", "")).strip() if isinstance(ref, dict) else ""
+            try:
+                _ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
+            except ValueError:
+                ref_case_id = None
             exports = step.get("exports") or {}
             if not isinstance(exports, dict):
                 violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports must be mapping")
                 continue
             if exports and not ref_case_id:
                 violations.append(
-                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports require ref.case_id"
+                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports require ref with #case_id fragment"
                 )
             for export_name, export_raw in exports.items():
                 if not isinstance(export_raw, dict):

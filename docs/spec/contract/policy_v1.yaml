@@ -2746,7 +2746,7 @@ rules:
   applies_to: harness.chain.steps.ref
   norm: MUST
   requirement: chain_steps_must_use_explicit_reference_contract
-  description: 'Cross-spec chaining must use explicit harness.chain step references (`path` and/or `case_id`) with deterministic resolution behavior.
+  description: 'Cross-spec chaining must use scalar harness.chain step references in format `[path][#case_id]` with deterministic resolution behavior.
 
     '
   rationale: Keeps prerequisite execution and reference semantics unambiguous.

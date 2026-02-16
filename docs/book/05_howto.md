@@ -182,8 +182,7 @@ harness:
   chain:
     steps:
     - id: preload
-      ref:
-        case_id: API-GET-PREREQ
+      ref: "#API-GET-PREREQ"
       exports:
         item_id:
           from_target: body_json

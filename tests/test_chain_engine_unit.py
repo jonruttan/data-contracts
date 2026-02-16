@@ -16,7 +16,7 @@ def _write_spec(path: Path, case_id: str) -> None:
     )
 
 
-def test_compile_chain_plan_rejects_missing_ref_fields(tmp_path):
+def test_compile_chain_plan_rejects_empty_ref(tmp_path):
     (tmp_path / ".git").mkdir(parents=True)
     doc = tmp_path / "docs/spec/case.spec.md"
     doc.parent.mkdir(parents=True, exist_ok=True)
@@ -29,7 +29,7 @@ def test_compile_chain_plan_rejects_missing_ref_fields(tmp_path):
                 "steps": [
                     {
                         "id": "s1",
-                        "ref": {},
+                        "ref": "",
                     }
                 ]
             }
@@ -37,8 +37,66 @@ def test_compile_chain_plan_rejects_missing_ref_fields(tmp_path):
         "assert": [],
     }
     case = compile_external_case(raw, doc_path=doc)
-    with pytest.raises(ValueError, match="requires path and/or case_id"):
+    with pytest.raises(ValueError, match="must be a non-empty string"):
         compile_chain_plan(case)
+
+
+def test_compile_chain_plan_rejects_legacy_ref_mapping(tmp_path):
+    (tmp_path / ".git").mkdir(parents=True)
+    doc = tmp_path / "docs/spec/case.spec.md"
+    doc.parent.mkdir(parents=True, exist_ok=True)
+    raw = {
+        "id": "CASE-A",
+        "type": "text.file",
+        "path": "/README.md",
+        "harness": {
+            "chain": {
+                "steps": [
+                    {
+                        "id": "s1",
+                        "ref": {"case_id": "CASE-B"},
+                    }
+                ]
+            }
+        },
+        "assert": [],
+    }
+    case = compile_external_case(raw, doc_path=doc)
+    with pytest.raises(TypeError, match="legacy mapping format"):
+        compile_chain_plan(case)
+
+
+def test_compile_chain_plan_rejects_empty_fragment_and_invalid_case_id(tmp_path):
+    (tmp_path / ".git").mkdir(parents=True)
+    doc = tmp_path / "docs/spec/case.spec.md"
+    doc.parent.mkdir(parents=True, exist_ok=True)
+
+    base = {
+        "id": "CASE-A",
+        "type": "text.file",
+        "path": "/README.md",
+        "assert": [],
+    }
+
+    case_empty = compile_external_case(
+        {
+            **base,
+            "harness": {"chain": {"steps": [{"id": "s1", "ref": "/docs/spec/a.spec.md#"}]}},
+        },
+        doc_path=doc,
+    )
+    with pytest.raises(ValueError, match="must be non-empty"):
+        compile_chain_plan(case_empty)
+
+    case_invalid = compile_external_case(
+        {
+            **base,
+            "harness": {"chain": {"steps": [{"id": "s1", "ref": "/docs/spec/a.spec.md#BAD CASE"}]}},
+        },
+        doc_path=doc,
+    )
+    with pytest.raises(ValueError, match="must match"):
+        compile_chain_plan(case_invalid)
 
 
 def test_compile_chain_plan_rejects_non_bool_flags(tmp_path):
@@ -55,7 +113,7 @@ def test_compile_chain_plan_rejects_non_bool_flags(tmp_path):
                 "steps": [
                     {
                         "id": "s1",
-                        "ref": {"case_id": "CASE-B"},
+                        "ref": "#CASE-B",
                         "allow_continue": "no",
                     }
                 ],
@@ -87,10 +145,7 @@ def test_execute_chain_plan_resolves_path_case_and_exports(tmp_path, monkeypatch
                     "steps": [
                         {
                             "id": "preload",
-                            "ref": {
-                                "path": "/docs/spec/dep.spec.md",
-                                "case_id": "CASE-DEP-1",
-                            },
+                            "ref": "/docs/spec/dep.spec.md#CASE-DEP-1",
                             "exports": {
                                 "dep_id": {
                                     "from_target": "body_json",
@@ -118,14 +173,14 @@ def test_execute_chain_plan_resolves_path_case_and_exports(tmp_path, monkeypatch
     assert ctx.chain_trace[0]["status"] == "pass"
 
 
-def test_execute_chain_plan_local_case_id_resolution(tmp_path, monkeypatch, capsys):
+def test_execute_chain_plan_hash_only_local_case_id_resolution(tmp_path, monkeypatch, capsys):
     (tmp_path / ".git").mkdir(parents=True)
     (tmp_path / "README.md").write_text("ok\n", encoding="utf-8")
 
     doc = tmp_path / "docs/spec/mixed.spec.md"
     doc.parent.mkdir(parents=True, exist_ok=True)
     doc.write_text(
-        """# Mixed\n\n## CASE-ONE\n\n```yaml spec-test\nid: CASE-ONE\ntype: text.file\npath: /README.md\nassert: []\n```\n\n## CASE-TWO\n\n```yaml spec-test\nid: CASE-TWO\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    steps:\n    - id: local\n      ref:\n        case_id: CASE-ONE\nassert: []\n```\n""",
+        """# Mixed\n\n## CASE-ONE\n\n```yaml spec-test\nid: CASE-ONE\ntype: text.file\npath: /README.md\nassert: []\n```\n\n## CASE-TWO\n\n```yaml spec-test\nid: CASE-TWO\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    steps:\n    - id: local\n      ref: "#CASE-ONE"\nassert: []\n```\n""",
         encoding="utf-8",
     )
 
@@ -134,7 +189,7 @@ def test_execute_chain_plan_local_case_id_resolution(tmp_path, monkeypatch, caps
             "id": "CASE-TWO",
             "type": "text.file",
             "path": "/README.md",
-            "harness": {"chain": {"steps": [{"id": "local", "ref": {"case_id": "CASE-ONE"}}]}},
+            "harness": {"chain": {"steps": [{"id": "local", "ref": "#CASE-ONE"}]}},
             "assert": [],
         },
         doc_path=doc,
@@ -148,3 +203,38 @@ def test_execute_chain_plan_local_case_id_resolution(tmp_path, monkeypatch, caps
 
     execute_chain_plan(case_two, ctx=ctx, run_case_fn=_run_case)
     assert seen == ["CASE-ONE"]
+
+
+def test_parse_scalar_ref_supports_relative_and_path_only(tmp_path, monkeypatch, capsys):
+    (tmp_path / ".git").mkdir(parents=True)
+    (tmp_path / "README.md").write_text("ok\n", encoding="utf-8")
+    dep_doc = tmp_path / "docs/spec/fixtures/dep.spec.md"
+    _write_spec(dep_doc, "CASE-DEP-2")
+
+    host_doc = tmp_path / "docs/spec/host/case.spec.md"
+    host_doc.parent.mkdir(parents=True, exist_ok=True)
+    case = compile_external_case(
+        {
+            "id": "CASE-HOST-REL",
+            "type": "text.file",
+            "path": "/README.md",
+            "harness": {
+                "chain": {
+                    "steps": [
+                        {"id": "run_all", "ref": "../fixtures/dep.spec.md"},
+                        {"id": "single", "ref": "../fixtures/dep.spec.md#CASE-DEP-2"},
+                    ]
+                }
+            },
+            "assert": [],
+        },
+        doc_path=host_doc,
+    )
+    seen: list[str] = []
+    ctx = SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys)
+
+    def _run_case(ref_case):
+        seen.append(ref_case.id)
+
+    execute_chain_plan(case, ctx=ctx, run_case_fn=_run_case)
+    assert seen == ["CASE-DEP-2", "CASE-DEP-2"]

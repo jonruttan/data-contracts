@@ -81,7 +81,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `CHAIN_CYCLE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_CYCLE_FORBIDDEN` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_EXPLICIT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
-| `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_REFERENCE_CONTRACT_REQUIRED` | 1 | 1 | 0 | 2 | 2 |
+| `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_REFERENCE_CONTRACT_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
 | `CHAIN_SHARED_CONTEXT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_SHARED_CONTEXT_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT` | `docs/spec/contract/policy_v1.yaml#CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT` | 2 | 1 | 2 | 2 | 0 |
 | `CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY` | `docs/spec/contract/policy_v1.yaml#CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY` | 2 | 1 | 2 | 2 | 0 |

@@ -89,9 +89,7 @@ Cross-spec chaining profile:
   be non-empty.
 - each step requires:
   - `id` (unique string)
-  - `ref` mapping with at least one of:
-    - `path` (virtual-root path)
-    - `case_id` (string)
+  - `ref` string in format `[path][#case_id]`
 - `exports` is optional and declares target-derived exported state:
   - `from_target` (required)
   - `path` (optional dotted selector)
@@ -100,9 +98,11 @@ Cross-spec chaining profile:
 
 Reference resolution:
 
-- `case_id` only: resolve in current document.
-- `path + case_id`: resolve exact case in referenced document.
+- `#case_id` only: resolve exact case in current document.
+- `path#case_id`: resolve exact case in referenced document.
 - `path` only: execute all cases in referenced document in document order.
+- relative `path` values resolve from current spec document directory.
+- when using hash-only refs in YAML, quote them (for example `ref: "#CASE-1"`).
 
 Cycle and recursion safety:
 
