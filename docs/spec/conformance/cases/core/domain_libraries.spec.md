@@ -196,7 +196,30 @@ harness:
     - /docs/spec/libraries/domain/php_core.spec.md
     exports:
     - make.has_target
+    - domain.markdown.code_fence_language_exists
+    - domain.markdown.has_broken_links
+    - domain.markdown.has_heading
+    - domain.markdown.has_yaml_spec_test_fence
+    - domain.markdown.heading_level_exists
+    - domain.markdown.link_targets_all_resolve
+    - domain.markdown.required_sections_present
+    - domain.markdown.section_order_valid
+    - domain.markdown.token_dependencies_resolved
+    - domain.markdown.token_ownership_unique
+    - domain.markdown.token_present
+    - domain.markdown.tokens_all_present
+    - md.code_fence_language_exists
+    - md.has_broken_links
     - md.has_heading
+    - md.has_yaml_spec_test_fence
+    - md.heading_level_exists
+    - md.link_targets_all_resolve
+    - md.required_sections_present
+    - md.section_order_valid
+    - md.token_dependencies_resolved
+    - md.token_ownership_unique
+    - md.token_present
+    - md.tokens_all_present
     - py.is_tuple_projection
     - php.is_assoc_projection
 expect:
@@ -218,9 +241,192 @@ assert:
           value: '# Contract
 
 
-            Text'
+            ## Usage
+
+
+            ~~~yaml spec-test
+
+            id: SAMPLE
+
+            type: text.file
+
+            ~~~
+
+            '
           meta: {}
+          context:
+            headings:
+            - text: Contract
+              level: 1
+            - text: Usage
+              level: 2
+            heading_positions:
+              Contract: 1
+              Usage: 2
+            links:
+            - target: /docs/spec/current.md
+              resolved: true
+            tokens:
+              DOCS_ONE: true
+            token_owners:
+              DOCS_ONE:
+              - /docs/book/index.md
+            token_dependencies:
+            - token: DOCS_ONE
+              depends_on: DOCS_BASE
+              resolved: true
       - Contract
+    - call:
+      - {var: domain.markdown.has_heading}
+      - lit:
+          value: '# Contract
+
+
+            ## Usage
+
+            '
+          meta: {}
+      - Usage
+    - call:
+      - {var: md.heading_level_exists}
+      - lit:
+          value: '# Contract
+
+
+            ## Usage
+
+            '
+          meta: {}
+          context:
+            headings:
+            - text: Contract
+              level: 1
+            - text: Usage
+              level: 2
+      - 2
+    - call:
+      - {var: md.required_sections_present}
+      - lit:
+          value: '# Contract
+
+
+            ## Usage
+
+            '
+          meta: {}
+      - lit:
+        - Contract
+        - Usage
+    - call:
+      - {var: md.section_order_valid}
+      - lit:
+          value: '# Contract
+
+
+            ## Usage
+
+            '
+          meta: {}
+          context:
+            heading_positions:
+              Contract: 1
+              Usage: 2
+      - lit:
+        - Contract
+        - Usage
+    - call:
+      - {var: md.link_targets_all_resolve}
+      - lit:
+          value: '# doc
+
+            '
+          meta: {}
+          context:
+            links:
+            - target: /docs/spec/current.md
+              resolved: true
+    - call:
+      - {var: md.has_broken_links}
+      - lit:
+          value: '# doc
+
+            '
+          meta: {}
+          context:
+            links:
+            - target: /missing
+              resolved: false
+    - call:
+      - {var: md.has_yaml_spec_test_fence}
+      - lit:
+          value: '~~~yaml spec-test
+
+            id: A
+
+            ~~~
+
+            '
+          meta: {}
+    - call:
+      - {var: md.code_fence_language_exists}
+      - lit:
+          value: '~~~yaml spec-test
+
+            id: A
+
+            ~~~
+
+            '
+          meta: {}
+      - yaml
+    - call:
+      - {var: md.token_present}
+      - lit:
+          value: '# docs
+
+            '
+          meta: {}
+          context:
+            tokens:
+              DOCS_ONE: true
+      - DOCS_ONE
+    - call:
+      - {var: md.tokens_all_present}
+      - lit:
+          value: '# docs
+
+            '
+          meta: {}
+          context:
+            tokens:
+              DOCS_ONE: true
+              DOCS_TWO: true
+      - lit:
+        - DOCS_ONE
+        - DOCS_TWO
+    - call:
+      - {var: md.token_ownership_unique}
+      - lit:
+          value: '# docs
+
+            '
+          meta: {}
+          context:
+            token_owners:
+              DOCS_ONE:
+              - /docs/book/index.md
+    - call:
+      - {var: md.token_dependencies_resolved}
+      - lit:
+          value: '# docs
+
+            '
+          meta: {}
+          context:
+            token_dependencies:
+            - token: DOCS_ONE
+              depends_on: DOCS_BASE
+              resolved: true
     - call:
       - {var: py.is_tuple_projection}
       - lit:

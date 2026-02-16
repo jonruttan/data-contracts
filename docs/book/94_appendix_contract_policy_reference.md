@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 203
-- must_count: 189
+- rule_count: 204
+- must_count: 190
 - should_count: 12
 - must_not_count: 2
-- active_count: 203
+- active_count: 204
 - deprecated_count: 0
 - removed_count: 0
 
@@ -128,6 +128,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | `MUST` | `governance` | `docs.reference.instructions` | 2 | `active` |
 | `DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | `MUST` | `governance` | `docs.layout.roots` | 3 | `active` |
 | `DOCS_MAKE_COMMANDS_SYNC` | `MUST` | `governance` | `docs.command.entrypoints` | 2 | `active` |
+| `DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED` | `MUST` | `governance` | `docs.markdown.assertions` | 3 | `active` |
 | `DOCS_META_SCHEMA_VALID` | `MUST` | `governance` | `docs.reference.doc_meta` | 3 | `active` |
 | `DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.metrics_fields` | 3 | `active` |
 | `DOCS_NO_OS_ARTIFACT_FILES_TRACKED` | `MUST` | `governance` | `docs.layout.artifact_files` | 2 | `active` |

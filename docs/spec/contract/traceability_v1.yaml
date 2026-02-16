@@ -2927,6 +2927,19 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   notes: Governance enforces quality score threshold over generated catalog artifacts.
+- rule_id: DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED
+  contract_refs:
+  - docs/spec/contract/types/markdown_profile.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/libraries/domain/markdown_core.spec.md
+  notes: Markdown docs assertions should use structured helper predicates over plain contains checks.
 - rule_id: HARNESS_WORKFLOW_COMPONENTS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_WORKFLOW_COMPONENTS_REQUIRED
   contract_refs:

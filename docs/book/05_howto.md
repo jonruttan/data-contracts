@@ -59,6 +59,39 @@ Provide repeatable recipes for common contributor tasks.
 3. Export symbol through `definitions.public`.
 4. Import via `harness.spec_lang.includes` and call with `call`.
 
+## Add Markdown Structure Assertions
+
+1. Include markdown helpers:
+   - `/docs/spec/libraries/domain/markdown_core.spec.md`
+2. Prefer `target: context_json` for structural checks.
+3. Use `md.*` helpers for heading/link/token checks.
+
+Example:
+
+```yaml
+harness:
+  spec_lang:
+    includes:
+    - /docs/spec/libraries/domain/markdown_core.spec.md
+    exports:
+    - md.required_sections_present
+    - md.link_targets_all_resolve
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - call:
+      - {var: md.required_sections_present}
+      - {var: subject}
+      - lit:
+        - Purpose
+        - Inputs
+        - Outputs
+    - call:
+      - {var: md.link_targets_all_resolve}
+      - {var: subject}
+```
+
 ## Add A Governance Check
 
 1. Add scanner/check implementation and check id.

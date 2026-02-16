@@ -4698,6 +4698,99 @@ def _scan_docs_required_sections(root: Path, *, harness: dict | None = None) -> 
     return violations
 
 
+def _scan_docs_markdown_structured_assertions_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    cases_dir = root / "docs/spec/governance/cases/core"
+    if not cases_dir.exists():
+        return [f"{cases_dir.relative_to(root)}: missing governance cases directory"]
+
+    markdown_library_path = "/docs/spec/libraries/domain/markdown_core.spec.md"
+    violations: list[str] = []
+
+    def _expr_contains_plain_contains(expr: object) -> bool:
+        if isinstance(expr, dict):
+            for key, value in expr.items():
+                op = str(key).strip()
+                if op in {"std.string.contains", "contains"}:
+                    return True
+                if _expr_contains_plain_contains(value):
+                    return True
+            return False
+        if isinstance(expr, list):
+            return any(_expr_contains_plain_contains(item) for item in expr)
+        return False
+
+    def _expr_uses_markdown_helper(expr: object) -> bool:
+        if isinstance(expr, dict):
+            for key, value in expr.items():
+                op = str(key).strip()
+                if op.startswith("domain.markdown.") or op.startswith("md."):
+                    return True
+                if op == "var":
+                    sym = str(value).strip()
+                    if sym.startswith("domain.markdown.") or sym.startswith("md."):
+                        return True
+                if _expr_uses_markdown_helper(value):
+                    return True
+            return False
+        if isinstance(expr, list):
+            return any(_expr_uses_markdown_helper(item) for item in expr)
+        return False
+
+    for spec in iter_cases(cases_dir):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        if str(case.get("type", "")).strip() != "text.file":
+            continue
+        raw_path = str(case.get("path", "")).strip()
+        if not raw_path.endswith(".md"):
+            continue
+        harness_map = case.get("harness") if isinstance(case.get("harness"), dict) else {}
+        spec_lang_cfg = (
+            harness_map.get("spec_lang") if isinstance(harness_map.get("spec_lang"), dict) else {}
+        )
+        includes = spec_lang_cfg.get("includes") if isinstance(spec_lang_cfg.get("includes"), list) else []
+        has_markdown_include = any(
+            isinstance(item, str) and item.strip().endswith(markdown_library_path)
+            for item in includes
+        )
+
+        leaf_rows: list[tuple[str, str, object, bool]] = []
+
+        def _collect_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
+            del assert_path
+            for row in iter_leaf_assertions(leaf, target_override=inherited_target):
+                leaf_rows.append(row)
+
+        assert_tree = case.get("assert", []) or []
+        try:
+            eval_assert_tree(assert_tree, eval_leaf=_collect_leaf)
+        except Exception as exc:  # noqa: BLE001
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} has invalid assert tree ({exc})"
+            )
+            continue
+
+        for target, op, value, _ in leaf_rows:
+            if target != "text" or op != "evaluate":
+                continue
+            has_plain_contains = _expr_contains_plain_contains(value)
+            if not has_plain_contains:
+                continue
+            if _expr_uses_markdown_helper(value):
+                continue
+            if not has_markdown_include:
+                violations.append(
+                    f"{spec.doc_path.relative_to(root)}: case {case_id} text evaluate uses plain contains without markdown library include"
+                )
+            else:
+                violations.append(
+                    f"{spec.doc_path.relative_to(root)}: case {case_id} text evaluate uses plain contains where markdown helper should be used"
+                )
+            break
+    return violations
+
+
 def _has_docs_example_opt_out(lines: list[str], start: int, end: int) -> bool:
     lo = max(0, start - 3)
     hi = min(len(lines), end + 4)
@@ -6717,6 +6810,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.metrics_field_catalog_sync": _scan_docs_metrics_field_catalog_sync,
     "docs.spec_schema_field_catalog_sync": _scan_docs_spec_schema_field_catalog_sync,
     "docs.required_sections": _scan_docs_required_sections,
+    "docs.markdown_structured_assertions_required": _scan_docs_markdown_structured_assertions_required,
     "docs.examples_runnable": _scan_docs_examples_runnable,
     "docs.cli_flags_documented": _scan_docs_cli_flags_documented,
     "docs.contract_schema_book_sync": _scan_docs_contract_schema_book_sync,

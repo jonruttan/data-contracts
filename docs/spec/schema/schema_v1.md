@@ -119,6 +119,15 @@ Assertion targets for `text.file`:
 - `text`
 - `context_json`: JSON subject profile envelope
 
+Markdown library authoring guidance:
+
+- markdown helper predicates SHOULD target `context_json` when asserting
+  structured document properties (headings, links, token ownership/dependencies)
+- text-only assertions SHOULD be limited to literal text obligations
+- markdown domain helpers accept dual input:
+  - raw markdown string
+  - markdown profile envelope (`value` + optional `context`)
+
 ## `harness` Namespace
 
 Runner-only inputs MUST live under `harness:` to preserve separation of

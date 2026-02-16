@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 179
-- checks_with_cases: 173
+- check_count: 180
+- checks_with_cases: 174
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -110,6 +110,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `docs.instructions_complete` | 1 | true |
 | `docs.layout_canonical_trees` | 1 | true |
 | `docs.make_commands_sync` | 1 | true |
+| `docs.markdown_structured_assertions_required` | 1 | true |
 | `docs.meta_schema_valid` | 1 | true |
 | `docs.metrics_field_catalog_sync` | 1 | true |
 | `docs.no_os_artifact_files` | 1 | true |

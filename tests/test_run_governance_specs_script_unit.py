@@ -126,6 +126,7 @@ def test_docs_generator_check_ids_are_registered() -> None:
         "docs.filename_policy",
         "docs.history_reviews_namespace",
         "docs.no_os_artifact_files",
+        "docs.markdown_structured_assertions_required",
     }
     for check_id in required:
         assert check_id in mod._CHECKS
@@ -5554,3 +5555,98 @@ assert: []
     _write_text(tmp_path / "README.md", "ok\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
+
+
+def test_docs_markdown_structured_assertions_required_flags_plain_contains(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_md_structured.spec.md",
+        _case_for_check(
+            "SRGOV-TEST-DOCS-MD-001", "docs.markdown_structured_assertions_required", tmp_path
+        ),
+    )
+    _write_text(
+        tmp_path / "docs/spec/governance/cases/core/sample.spec.md",
+        """# Sample
+
+## SAMPLE-1
+
+```yaml spec-test
+id: SAMPLE-1
+type: text.file
+path: /docs/book/03_assertions.md
+assert:
+- target: text
+  must:
+  - evaluate:
+    - std.string.contains:
+      - {var: subject}
+      - "## Purpose"
+```
+""",
+    )
+    _write_text(tmp_path / "docs/book/03_assertions.md", "# Assertions\n\n## Purpose\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_docs_markdown_structured_assertions_required_allows_markdown_helpers(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_md_structured.spec.md",
+        _case_for_check(
+            "SRGOV-TEST-DOCS-MD-002", "docs.markdown_structured_assertions_required", tmp_path
+        ),
+    )
+    _write_text(
+        tmp_path / "docs/spec/libraries/domain/markdown_core.spec.md",
+        """# Markdown
+
+## LIB-DOMAIN-MD-001
+
+```yaml spec-test
+id: LIB-DOMAIN-MD-001
+type: spec_lang.library
+definitions:
+  public:
+    md.has_heading:
+      fn:
+      - [subject, heading]
+      - std.string.contains:
+        - {var: subject}
+        - {var: heading}
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/governance/cases/core/sample.spec.md",
+        """# Sample
+
+## SAMPLE-1
+
+```yaml spec-test
+id: SAMPLE-1
+type: text.file
+path: /docs/book/03_assertions.md
+harness:
+  spec_lang:
+    includes:
+    - /docs/spec/libraries/domain/markdown_core.spec.md
+    exports:
+    - md.has_heading
+assert:
+- target: text
+  must:
+  - evaluate:
+    - call:
+      - {var: md.has_heading}
+      - {var: subject}
+      - "Purpose"
+```
+""",
+    )
+    _write_text(tmp_path / "docs/book/03_assertions.md", "# Assertions\n\n## Purpose\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0

@@ -54,6 +54,7 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 | Check ID / Surface | Likely Cause | First Command |
 |---|---|---|
 | `docs.*_sync` | generated docs drift | `./scripts/runner_adapter.sh docs-generate` |
+| `docs.markdown_structured_assertions_required` | markdown checks use brittle plain contains assertions | migrate assertions to `md.*` / `domain.markdown.*` helpers |
 | `schema.registry_*` | registry/docs mismatch | `./scripts/runner_adapter.sh schema-registry-build` |
 | `normalization.*` | canonical formatting/path drift | `./scripts/runner_adapter.sh normalize-check` |
 | `runtime.*` | adapter/runner contract drift | `./scripts/runner_adapter.sh governance` |

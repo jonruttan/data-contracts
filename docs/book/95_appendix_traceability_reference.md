@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 203
+- link_count: 204
 - rules_with_conformance_cases: 44
-- rules_with_unit_tests: 203
-- rules_with_implementation_refs: 201
+- rules_with_unit_tests: 204
+- rules_with_implementation_refs: 202
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -125,6 +125,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | `docs/spec/contract/policy_v1.yaml#DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | 1 | 1 | 0 | 3 | 4 |
 | `DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `DOCS_MAKE_COMMANDS_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_MAKE_COMMANDS_SYNC` | 2 | 0 | 0 | 2 | 2 |
+| `DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_META_SCHEMA_VALID` | `docs/spec/contract/policy_v1.yaml#DOCS_META_SCHEMA_VALID` | 1 | 2 | 0 | 3 | 4 |
 | `DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_NO_OS_ARTIFACT_FILES_TRACKED` | `docs/spec/contract/policy_v1.yaml#DOCS_NO_OS_ARTIFACT_FILES_TRACKED` | 1 | 1 | 0 | 1 | 3 |

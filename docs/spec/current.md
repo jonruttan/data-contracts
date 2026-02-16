@@ -26,6 +26,9 @@ Notes:
   `harness.spec_lang.includes` remains library-only.
 - `api.http` request templating supports chain state lookups in `url`, header
   values, and `body_text` using `{{chain.<step_id>.<export_name>...}}`.
+- Markdown assertion helpers now use expanded domain library surface under
+  `domain.markdown.*` with ergonomic `md.*` aliases and dual-input semantics
+  (raw markdown text or markdown profile envelope with structured `context`).
 - Spec-lang stdlib completeness and parity are contract-defined by
   `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml` and
   `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`.

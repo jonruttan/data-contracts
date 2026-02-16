@@ -183,6 +183,46 @@ assert:
     - '[]'
 ```
 
+## Markdown Assertions Cookbook
+
+Prefer library-backed markdown predicates over raw token checks.
+
+```yaml
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - call:
+      - {var: md.required_sections_present}
+      - {var: subject}
+      - lit:
+        - Purpose
+        - Inputs
+        - Outputs
+    - call:
+      - {var: md.link_targets_all_resolve}
+      - {var: subject}
+    - call:
+      - {var: md.has_yaml_spec_test_fence}
+      - {var: subject}
+```
+
+Use `target: text` only for literal obligations where structure is not the
+goal:
+
+```yaml
+assert:
+- target: text
+  must:
+  - contain:
+    - "Spec-Version: 1"
+```
+
+Anti-pattern:
+
+- broad `std.string.contains` checks for headings/links/tokens when
+  `domain.markdown.*` / `md.*` helpers exist.
+
 ## `stdout_path` / `stdout_path_text`
 
 For `cli.run`:

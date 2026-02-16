@@ -2897,6 +2897,21 @@ rules:
   references:
   - docs/spec/governance/cases/core/docs_docgen_quality_score_threshold.spec.md
   - scripts/run_governance_specs.py
+- id: DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.markdown.assertions
+  norm: MUST
+  requirement: markdown_doc_assertions_use_domain_markdown_helpers
+  description: 'Markdown assertions for governed docs should use structured domain helpers (`domain.markdown.*`/`md.*`) instead of brittle plain text contains checks when helper coverage exists.
+
+    '
+  rationale: Structured markdown predicates reduce brittle token-only checks and keep docs assertions reusable.
+  risk_if_violated: Minor markdown edits can trigger avoidable false failures.
+  references:
+  - docs/spec/governance/cases/core/docs_markdown_structured_assertions_required.spec.md
+  - docs/spec/libraries/domain/markdown_core.spec.md
+  - scripts/run_governance_specs.py
 - id: HARNESS_WORKFLOW_COMPONENTS_REQUIRED
   introduced_in: v1
   scope: implementation

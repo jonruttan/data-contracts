@@ -192,3 +192,68 @@ definitions:
             harness={"spec_lang": {"includes": ["/libs/bad.spec.md"]}},
             limits=SpecLangLimits(timeout_ms=0),
         )
+
+
+def test_markdown_domain_library_exports_full_core_helpers() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    case_doc = repo_root / "docs/spec/conformance/cases/core/domain_libraries.spec.md"
+    symbols = load_spec_lang_symbols_for_case(
+        doc_path=case_doc,
+        harness={"spec_lang": {"includes": ["/docs/spec/libraries/domain/markdown_core.spec.md"]}},
+        limits=SpecLangLimits(timeout_ms=0),
+    )
+
+    profile = {
+        "value": "# Contract\n\n## Usage\n\n```yaml spec-test\nid: A\n```\n",
+        "meta": {},
+        "context": {
+            "headings": [
+                {"text": "Contract", "level": 1},
+                {"text": "Usage", "level": 2},
+            ],
+            "heading_positions": {"Contract": 1, "Usage": 2},
+            "links": [{"target": "/docs/spec/current.md", "resolved": True}],
+            "tokens": {"DOCS_ONE": True, "DOCS_TWO": True},
+            "token_owners": {"DOCS_ONE": ["/docs/book/index.md"]},
+            "token_dependencies": [{"token": "DOCS_ONE", "depends_on": "DOCS_BASE", "resolved": True}],
+        },
+    }
+    lit_profile = ["lit", profile]
+
+    assert eval_predicate(["call", ["var", "md.has_heading"], lit_profile, "Contract"], subject=None, symbols=symbols) is True
+    assert (
+        eval_predicate(["call", ["var", "domain.markdown.has_heading"], lit_profile, "Usage"], subject=None, symbols=symbols)
+        is True
+    )
+    assert eval_predicate(["call", ["var", "md.heading_level_exists"], lit_profile, 2], subject=None, symbols=symbols) is True
+    assert eval_predicate(
+        ["call", ["var", "md.required_sections_present"], lit_profile, ["lit", ["Contract", "Usage"]]],
+        subject=None,
+        symbols=symbols,
+    ) is True
+    assert eval_predicate(
+        ["call", ["var", "md.section_order_valid"], lit_profile, ["lit", ["Contract", "Usage"]]],
+        subject=None,
+        symbols=symbols,
+    ) is True
+    assert eval_predicate(["call", ["var", "md.link_targets_all_resolve"], lit_profile], subject=None, symbols=symbols) is True
+    assert eval_predicate(["call", ["var", "md.has_broken_links"], lit_profile], subject=None, symbols=symbols) is False
+    assert eval_predicate(["call", ["var", "md.has_yaml_spec_test_fence"], lit_profile], subject=None, symbols=symbols) is True
+    assert eval_predicate(
+        ["call", ["var", "md.code_fence_language_exists"], lit_profile, "yaml"], subject=None, symbols=symbols
+    ) is True
+    assert eval_predicate(["call", ["var", "md.token_present"], lit_profile, "DOCS_ONE"], subject=None, symbols=symbols) is True
+    assert eval_predicate(
+        ["call", ["var", "md.tokens_all_present"], lit_profile, ["lit", ["DOCS_ONE", "DOCS_TWO"]]],
+        subject=None,
+        symbols=symbols,
+    ) is True
+    assert eval_predicate(["call", ["var", "md.token_ownership_unique"], lit_profile], subject=None, symbols=symbols) is True
+    assert eval_predicate(
+        ["call", ["var", "md.token_dependencies_resolved"], lit_profile], subject=None, symbols=symbols
+    ) is True
+    assert eval_predicate(
+        ["call", ["var", "md.has_heading"], "# Contract\n\nText", "Contract"],
+        subject=None,
+        symbols=symbols,
+    ) is True
