@@ -57,7 +57,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
         if step_class in {"must", "can", "cannot"} and "checks" in node:
             checks = node.get("checks")
             if isinstance(checks, list):
-                seen: set[str] = set()
+                step_seen: set[str] = set()
                 for child in checks:
                     try:
                         import json
@@ -65,7 +65,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                         key = json.dumps(child, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
                     except (TypeError, ValueError):
                         key = repr(child)
-                    if key in seen:
+                    if key in step_seen:
                         out.append(
                             AssertionHealthDiagnostic(
                                 code="AH004",
@@ -74,7 +74,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                             )
                         )
                         break
-                    seen.add(key)
+                    step_seen.add(key)
             _walk(checks, path=f"{path}.checks", group_ctx=step_class)
             return
 
@@ -86,7 +86,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
         if group_key:
             children = node.get(group_key)
             if isinstance(children, list):
-                seen: set[str] = set()
+                group_seen: set[str] = set()
                 for child in children:
                     try:
                         import json
@@ -94,7 +94,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                         key = json.dumps(child, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
                     except (TypeError, ValueError):
                         key = repr(child)
-                    if key in seen:
+                    if key in group_seen:
                         out.append(
                             AssertionHealthDiagnostic(
                                 code="AH004",
@@ -103,7 +103,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                             )
                         )
                         break
-                    seen.add(key)
+                    group_seen.add(key)
             _walk(children, path=f"{path}.{group_key}", group_ctx=group_key)
             return
 

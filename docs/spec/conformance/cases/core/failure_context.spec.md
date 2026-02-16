@@ -17,7 +17,7 @@ expect:
     category: assertion
     message_tokens:
     - case_id=SRCONF-ERR-001
-    - assert_path=assert[0].checks[0]
+    - assert_path=assert[0]
     - target=text
     - op=evaluate
 assert:

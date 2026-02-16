@@ -218,7 +218,7 @@ def _expand_step_exports(raw_exports: object, *, step_idx: int) -> dict[str, dic
     raw_symbols = raw_exports.get("symbols")
     if not isinstance(raw_symbols, list) or not raw_symbols:
         raise TypeError(f"harness.chain.steps[{step_idx}].exports.symbols must be a non-empty list")
-    expanded: dict[str, dict[str, Any]] = {}
+    expanded_compact: dict[str, dict[str, Any]] = {}
     for j, raw_symbol in enumerate(raw_symbols):
         name = str(raw_symbol).strip()
         if not name:
@@ -227,12 +227,12 @@ def _expand_step_exports(raw_exports: object, *, step_idx: int) -> dict[str, dic
             )
         full_name = f"{prefix}.{name}" if prefix else name
         symbol_path = full_name.lstrip("/")
-        expanded[full_name] = {
+        expanded_compact[full_name] = {
             "from": from_source,
             "path": f"/{symbol_path}",
             "required": raw_required,
         }
-    return expanded
+    return expanded_compact
 
 
 def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[ChainImport], bool]:

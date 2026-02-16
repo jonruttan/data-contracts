@@ -1549,9 +1549,81 @@ function loadChainImportedSymbolsForCase(string $fixturePath, array $case, array
         if (!is_file($sourceDoc)) {
             throw new SchemaError("chain ref path does not exist as file: {$refRaw}");
         }
-        $exports = $step['exports'] ?? [];
-        if (!is_array($exports) || isListArray($exports)) {
+        $exportsRaw = $step['exports'] ?? [];
+        if (!is_array($exportsRaw)) {
             continue;
+        }
+        $exports = [];
+        if (isListArray($exportsRaw)) {
+            foreach ($exportsRaw as $entryIdx => $entryRaw) {
+                if (!is_array($entryRaw) || isListArray($entryRaw)) {
+                    throw new SchemaError("harness.chain.steps[{$idx}].exports[{$entryIdx}] must be a mapping");
+                }
+                if (array_key_exists('symbols', $entryRaw)) {
+                    $fromSource = trim((string)($entryRaw['from'] ?? ''));
+                    if ($fromSource === '') {
+                        throw new SchemaError("harness.chain.steps[{$idx}].exports[{$entryIdx}].from is required");
+                    }
+                    $required = !array_key_exists('required', $entryRaw) || (bool)$entryRaw['required'];
+                    if (array_key_exists('required', $entryRaw) && !is_bool($entryRaw['required'])) {
+                        throw new SchemaError(
+                            "harness.chain.steps[{$idx}].exports[{$entryIdx}].required must be a bool when provided"
+                        );
+                    }
+                    $prefixRaw = $entryRaw['prefix'] ?? '';
+                    if ($prefixRaw !== null && !is_string($prefixRaw)) {
+                        throw new SchemaError(
+                            "harness.chain.steps[{$idx}].exports[{$entryIdx}].prefix must be a string when provided"
+                        );
+                    }
+                    $prefix = trim((string)($prefixRaw ?? ''));
+                    $symbols = $entryRaw['symbols'];
+                    if (!is_array($symbols) || !isListArray($symbols) || count($symbols) === 0) {
+                        throw new SchemaError(
+                            "harness.chain.steps[{$idx}].exports[{$entryIdx}].symbols must be a non-empty list"
+                        );
+                    }
+                    foreach ($symbols as $symIdx => $rawSymbol) {
+                        $symbolName = trim((string)$rawSymbol);
+                        if ($symbolName === '') {
+                            throw new SchemaError(
+                                "harness.chain.steps[{$idx}].exports[{$entryIdx}].symbols[{$symIdx}] must be a non-empty string"
+                            );
+                        }
+                        $fullName = $prefix === '' ? $symbolName : "{$prefix}.{$symbolName}";
+                        if (array_key_exists($fullName, $exports)) {
+                            throw new SchemaError(
+                                "harness.chain.steps[{$idx}].exports duplicate export key: {$fullName}"
+                            );
+                        }
+                        $exports[$fullName] = [
+                            'from' => $fromSource,
+                            'path' => '/' . ltrim($fullName, '/'),
+                            'required' => $required,
+                        ];
+                    }
+                    continue;
+                }
+
+                $exportName = trim((string)($entryRaw['as'] ?? ''));
+                if ($exportName === '') {
+                    throw new SchemaError(
+                        "harness.chain.steps[{$idx}].exports[{$entryIdx}].as is required for non-symbol entries"
+                    );
+                }
+                if (array_key_exists($exportName, $exports)) {
+                    throw new SchemaError(
+                        "harness.chain.steps[{$idx}].exports duplicate export key: {$exportName}"
+                    );
+                }
+                $exports[$exportName] = [
+                    'from' => $entryRaw['from'] ?? null,
+                    'path' => $entryRaw['path'] ?? null,
+                    'required' => $entryRaw['required'] ?? true,
+                ];
+            }
+        } else {
+            $exports = $exportsRaw;
         }
         $hasLibraryExport = false;
         foreach ($exports as $expRaw) {

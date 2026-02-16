@@ -200,7 +200,7 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                 if not children:
                     raise ValueError("assert.can must not be empty")
                 # can: pass if at least one child passes; if all fail, raise a helpful message.
-                failures: list[BaseException] = []
+                group_failures: list[BaseException] = []
                 any_passed = False
                 for idx, child in enumerate(children):
                     try:
@@ -208,11 +208,13 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                         any_passed = True
                         break
                     except AssertionError as e:
-                        failures.append(e)
+                        group_failures.append(e)
                 if not any_passed:
                     msg = "all 'can' branches failed"
-                    if failures:
-                        details = "\n".join(f"- {str(e) or e.__class__.__name__}" for e in failures[:5])
+                    if group_failures:
+                        details = "\n".join(
+                            f"- {str(e) or e.__class__.__name__}" for e in group_failures[:5]
+                        )
                         msg = f"{msg}:\n{details}"
                     raise AssertionError(msg)
 
