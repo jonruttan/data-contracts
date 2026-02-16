@@ -122,3 +122,225 @@ def test_api_http_body_json_expr_operator(tmp_path, monkeypatch, capsys):
     from spec_runner.harnesses.api_http import run
 
     run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
+
+
+def test_api_http_oauth_missing_env_is_schema_error(tmp_path, monkeypatch, capsys):
+    fixture = tmp_path / "fixtures" / "ok.json"
+    fixture.parent.mkdir(parents=True)
+    fixture.write_text('{"ok": true}', encoding="utf-8")
+    token = tmp_path / "fixtures" / "token.json"
+    token.write_text('{"access_token":"stub","expires_in":3600}', encoding="utf-8")
+    doc = tmp_path / "case.spec.md"
+    doc.write_text("# case\n", encoding="utf-8")
+    case = SpecDocTest(
+        doc_path=doc,
+        test={
+            "id": "SR-API-UNIT-OAUTH-001",
+            "type": "api.http",
+            "harness": {
+                "api_http": {
+                    "auth": {
+                        "oauth": {
+                            "grant_type": "client_credentials",
+                            "token_url": "/fixtures/token.json",
+                            "client_id_env": "SPEC_RUNNER_MISSING_CLIENT_ID",
+                            "client_secret_env": "SPEC_RUNNER_MISSING_CLIENT_SECRET",
+                        }
+                    }
+                }
+            },
+            "request": {"method": "GET", "url": "/fixtures/ok.json"},
+            "assert": [],
+        },
+    )
+    from spec_runner.harnesses.api_http import run
+
+    with pytest.raises(ValueError, match="oauth env var is required"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
+
+
+def test_api_http_oauth_invalid_auth_style_is_schema_error(tmp_path, monkeypatch, capsys):
+    fixture = tmp_path / "fixtures" / "ok.json"
+    fixture.parent.mkdir(parents=True)
+    fixture.write_text('{"ok": true}', encoding="utf-8")
+    token = tmp_path / "fixtures" / "token.json"
+    token.write_text('{"access_token":"stub","expires_in":3600}', encoding="utf-8")
+    doc = tmp_path / "case.spec.md"
+    doc.write_text("# case\n", encoding="utf-8")
+    case = SpecDocTest(
+        doc_path=doc,
+        test={
+            "id": "SR-API-UNIT-OAUTH-002",
+            "type": "api.http",
+            "harness": {
+                "api_http": {
+                    "auth": {
+                        "oauth": {
+                            "grant_type": "client_credentials",
+                            "token_url": "/fixtures/token.json",
+                            "client_id_env": "PATH",
+                            "client_secret_env": "HOME",
+                            "auth_style": "token",
+                        }
+                    }
+                }
+            },
+            "request": {"method": "GET", "url": "/fixtures/ok.json"},
+            "assert": [],
+        },
+    )
+    from spec_runner.harnesses.api_http import run
+
+    with pytest.raises(ValueError, match="auth_style"):
+        run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
+
+
+def test_api_http_oauth_live_fetch_and_context_metadata(tmp_path, monkeypatch, capsys):
+    doc = tmp_path / "case.spec.md"
+    doc.write_text("# case\n", encoding="utf-8")
+    monkeypatch.setenv("TEST_OAUTH_CLIENT_ID", "cid")
+    monkeypatch.setenv("TEST_OAUTH_CLIENT_SECRET", "secret")
+
+    class _Resp:
+        def __init__(self, body: str, *, status: int = 200, headers: dict[str, str] | None = None):
+            self._body = body.encode("utf-8")
+            self.status = status
+            self.headers = headers or {}
+
+        def read(self):
+            return self._body
+
+        def getcode(self):
+            return self.status
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+    def _fake_urlopen(req, timeout=0):  # noqa: ARG001
+        url = req.full_url
+        if "issuer.example.invalid" in url:
+            return _Resp('{"access_token":"token-123","expires_in":3600}')
+        assert req.headers.get("Authorization") == "Bearer token-123"
+        return _Resp('{"ok": true}')
+
+    monkeypatch.setattr("urllib.request.urlopen", _fake_urlopen)
+
+    case = SpecDocTest(
+        doc_path=doc,
+        test={
+            "id": "SR-API-UNIT-OAUTH-003",
+            "type": "api.http",
+            "harness": {
+                "api_http": {
+                    "mode": "live",
+                    "auth": {
+                        "oauth": {
+                            "grant_type": "client_credentials",
+                            "token_url": "https://issuer.example.invalid/oauth/token",
+                            "client_id_env": "TEST_OAUTH_CLIENT_ID",
+                            "client_secret_env": "TEST_OAUTH_CLIENT_SECRET",
+                            "scope": "read:items",
+                        }
+                    },
+                }
+            },
+            "request": {"method": "GET", "url": "https://api.example.invalid/items"},
+            "assert": [
+                {
+                    "target": "context_json",
+                    "must": [
+                        {
+                            "evaluate": [
+                                {
+                                    "eq": [
+                                        {"get": [{"get": [{"var": "subject"}, "meta"]}, "auth_mode"]},
+                                        "oauth",
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                }
+            ],
+        },
+    )
+    from spec_runner.harnesses.api_http import run
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
+
+
+def test_api_http_oauth_token_cache_reuse_and_header_override(tmp_path, monkeypatch, capsys):
+    doc = tmp_path / "case.spec.md"
+    doc.write_text("# case\n", encoding="utf-8")
+    monkeypatch.setenv("TEST_OAUTH_CLIENT_ID", "cid")
+    monkeypatch.setenv("TEST_OAUTH_CLIENT_SECRET", "secret")
+    token_calls = {"count": 0}
+    api_calls = {"count": 0}
+
+    class _Resp:
+        def __init__(self, body: str, *, status: int = 200, headers: dict[str, str] | None = None):
+            self._body = body.encode("utf-8")
+            self.status = status
+            self.headers = headers or {}
+
+        def read(self):
+            return self._body
+
+        def getcode(self):
+            return self.status
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+    def _fake_urlopen(req, timeout=0):  # noqa: ARG001
+        url = req.full_url
+        if "issuer.example.invalid" in url:
+            token_calls["count"] += 1
+            return _Resp('{"access_token":"token-123","expires_in":3600}')
+        api_calls["count"] += 1
+        assert req.headers.get("Authorization") == "Bearer explicit-token"
+        return _Resp('{"ok": true}')
+
+    monkeypatch.setattr("urllib.request.urlopen", _fake_urlopen)
+
+    from spec_runner.harnesses import api_http as api_http_mod
+    from spec_runner.harnesses.api_http import run
+
+    api_http_mod._OAUTH_TOKEN_CACHE.clear()
+    case = SpecDocTest(
+        doc_path=doc,
+        test={
+            "id": "SR-API-UNIT-OAUTH-004",
+            "type": "api.http",
+            "harness": {
+                "api_http": {
+                    "mode": "live",
+                    "auth": {
+                        "oauth": {
+                            "grant_type": "client_credentials",
+                            "token_url": "https://issuer.example.invalid/oauth/token",
+                            "client_id_env": "TEST_OAUTH_CLIENT_ID",
+                            "client_secret_env": "TEST_OAUTH_CLIENT_SECRET",
+                        }
+                    },
+                }
+            },
+            "request": {
+                "method": "GET",
+                "url": "https://api.example.invalid/items",
+                "headers": {"Authorization": "Bearer explicit-token"},
+            },
+            "assert": [],
+        },
+    )
+
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
+    run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
+    assert token_calls["count"] == 1
+    assert api_calls["count"] == 2

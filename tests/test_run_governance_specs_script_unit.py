@@ -981,7 +981,7 @@ harness:
   root: {tmp_path}
   api_http:
     allowed_top_level_keys: ["id", "type", "title", "purpose", "request", "assert", "expect", "requires", "assert_health", "harness"]
-    allowed_assert_targets: ["status", "headers", "body_text", "body_json"]
+    allowed_assert_targets: ["status", "headers", "body_text", "body_json", "context_json"]
     required_request_fields: ["method", "url"]
 assert:
   - target: summary_json
@@ -1053,6 +1053,233 @@ def test_script_requires_api_http_shape_policy_in_governance_spec(tmp_path):
         cases_dir / "api_shape_missing_policy.spec.md",
         _case_for_check("SRGOV-TEST-CONF-API-001-MISS", "conformance.api_http_portable_shape", tmp_path),
     )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runtime_api_http_oauth_env_only(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_api_http_oauth_env_only.spec.md",
+        _case_for_check("SRGOV-TEST-RUNTIME-APIHTTP-001", "runtime.api_http_oauth_env_only", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        """# API
+
+## SRCONF-API-OAUTH-001
+
+```yaml spec-test
+id: SRCONF-API-OAUTH-001
+type: api.http
+harness:
+  api_http:
+    auth:
+      oauth:
+        grant_type: client_credentials
+        token_url: /fixtures/token.json
+        client_id_env: PATH
+        client_secret_env: HOME
+request:
+  method: GET
+  url: /fixtures/ok.json
+assert:
+  - target: status
+    must:
+      - evaluate:
+        - std.string.contains:
+          - var: subject
+          - "200"
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        """# API
+
+## SRCONF-API-OAUTH-001
+
+```yaml spec-test
+id: SRCONF-API-OAUTH-001
+type: api.http
+harness:
+  api_http:
+    auth:
+      oauth:
+        grant_type: client_credentials
+        token_url: /fixtures/token.json
+        client_id: inline
+        client_secret_env: HOME
+request:
+  method: GET
+  url: /fixtures/ok.json
+assert:
+  - target: status
+    must:
+      - evaluate:
+        - std.string.contains:
+          - var: subject
+          - "200"
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runtime_api_http_oauth_no_secret_literals(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_api_http_oauth_no_secret_literals.spec.md",
+        _case_for_check("SRGOV-TEST-RUNTIME-APIHTTP-002", "runtime.api_http_oauth_no_secret_literals", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        """# API
+
+## SRCONF-API-OAUTH-002
+
+```yaml spec-test
+id: SRCONF-API-OAUTH-002
+type: api.http
+request:
+  method: GET
+  url: /fixtures/ok.json
+assert:
+  - target: status
+    must:
+      - evaluate:
+        - std.string.contains:
+          - var: subject
+          - "200"
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        """# API
+
+## SRCONF-API-OAUTH-002
+
+```yaml spec-test
+id: SRCONF-API-OAUTH-002
+type: api.http
+request:
+  method: GET
+  url: /fixtures/ok.json
+  headers:
+    Authorization: Bearer secret-token
+assert:
+  - target: status
+    must:
+      - evaluate:
+        - std.string.contains:
+          - var: subject
+          - "200"
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runtime_api_http_live_mode_explicit(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_api_http_live_mode_explicit.spec.md",
+        _case_for_check("SRGOV-TEST-RUNTIME-APIHTTP-003", "runtime.api_http_live_mode_explicit", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        """# API
+
+## SRCONF-API-OAUTH-003
+
+```yaml spec-test
+id: SRCONF-API-OAUTH-003
+type: api.http
+request:
+  method: GET
+  url: /fixtures/ok.json
+assert:
+  - target: status
+    must:
+      - evaluate:
+        - std.string.contains:
+          - var: subject
+          - "200"
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        """# API
+
+## SRCONF-API-OAUTH-003
+
+```yaml spec-test
+id: SRCONF-API-OAUTH-003
+type: api.http
+harness:
+  api_http:
+    auth:
+      oauth:
+        grant_type: client_credentials
+        token_url: https://issuer.example.invalid/oauth/token
+        client_id_env: PATH
+        client_secret_env: HOME
+request:
+  method: GET
+  url: https://api.example.invalid/items
+assert:
+  - target: status
+    must:
+      - evaluate:
+        - std.string.contains:
+          - var: subject
+          - "200"
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runtime_api_http_oauth_docs_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_api_http_oauth_docs_sync.spec.md",
+        _case_for_check("SRGOV-TEST-RUNTIME-APIHTTP-004", "runtime.api_http_oauth_docs_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/schema/schema_v1.md",
+        "harness.api_http.auth.oauth\nclient_id_env\nclient_secret_env\ndeterministic\nlive\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/04_harness.md",
+        "harness.api_http.auth.oauth\nclient_id_env\nclient_secret_env\nAuthorization: Bearer\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/types/api_http.md",
+        "auth.oauth\nclient_credentials\nclient_id_env\nclient_secret_env\nmode\n",
+    )
+    _write_text(
+        tmp_path / "docs/spec/contract/types/http_profile.md",
+        "meta.auth_mode\nmeta.oauth_token_source\ncontext.oauth\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+    _write_text(tmp_path / "docs/spec/contract/types/http_profile.md", "meta.auth_mode\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
 
@@ -1138,30 +1365,10 @@ harness:
       - "\\\\brand(?:int|range)?\\\\s*\\\\("
       - "\\\\bMath\\\\.random\\\\s*\\\\("
     policy_evaluate:
-      - std.logic.eq:
-        - std.collection.count:
-          - std.collection.filter:
-            - fn:
-              - [row]
-              - std.logic.gt:
-                - std.collection.count:
-                  - std.collection.filter:
-                    - fn:
-                      - [s]
-                      - std.collection.any:
-                        - std.collection.map:
-                          - fn:
-                            - [p]
-                            - std.string.matches:
-                              - var: s
-                              - var: p
-                          - var: patterns
-                    - std.object.get:
-                      - var: row
-                      - strings
-                - 0
-            - var: subject
-        - 0
+      - std.collection.is_empty:
+        - std.object.get:
+          - var: subject
+          - violations
 assert:
   - target: summary_json
     must:

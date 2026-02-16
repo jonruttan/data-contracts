@@ -2627,6 +2627,11 @@ def _collect_assert_targets(node: object) -> list[str]:
     return targets
 
 
+def _is_live_network_url(raw: str) -> bool:
+    value = str(raw).strip().lower()
+    return value.startswith("http://") or value.startswith("https://")
+
+
 def _scan_conformance_api_http_portable_shape(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -2697,6 +2702,138 @@ def _scan_conformance_api_http_portable_shape(root: Path, *, harness: dict | Non
                     f"{case_id}: unsupported api.http assert target '{t}' "
                     f"(allowed: {', '.join(sorted(allowed_assert_targets))})"
                 )
+    return violations
+
+
+def _iter_api_http_cases(root: Path):
+    for rel_root in ("docs/spec/conformance/cases", "docs/spec/impl", "docs/spec/governance/cases"):
+        base = root / rel_root
+        if not base.exists():
+            continue
+        for spec in iter_cases(base, file_pattern=SETTINGS.case.default_file_pattern):
+            case = spec.test
+            if str(case.get("type", "")).strip() != "api.http":
+                continue
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            yield case_id, case
+
+
+def _oauth_block(case: dict[str, object]) -> dict[str, object] | None:
+    harness = case.get("harness")
+    if not isinstance(harness, dict):
+        return None
+    api_http = harness.get("api_http")
+    if not isinstance(api_http, dict):
+        return None
+    auth = api_http.get("auth")
+    if not isinstance(auth, dict):
+        return None
+    oauth = auth.get("oauth")
+    if not isinstance(oauth, dict):
+        return None
+    return oauth
+
+
+def _scan_runtime_api_http_oauth_env_only(root: Path) -> list[str]:
+    violations: list[str] = []
+    for case_id, case in _iter_api_http_cases(root):
+        oauth = _oauth_block(case)
+        if oauth is None:
+            continue
+        client_id_env = str(oauth.get("client_id_env", "")).strip()
+        client_secret_env = str(oauth.get("client_secret_env", "")).strip()
+        if not client_id_env:
+            violations.append(f"{case_id}: oauth client_id_env is required")
+        if not client_secret_env:
+            violations.append(f"{case_id}: oauth client_secret_env is required")
+        if "client_id" in oauth:
+            violations.append(f"{case_id}: oauth inline client_id is forbidden")
+        if "client_secret" in oauth:
+            violations.append(f"{case_id}: oauth inline client_secret is forbidden")
+    return violations
+
+
+def _scan_runtime_api_http_oauth_no_secret_literals(root: Path) -> list[str]:
+    violations: list[str] = []
+    forbidden_keys = {"client_id", "client_secret", "access_token", "refresh_token", "password"}
+    for case_id, case in _iter_api_http_cases(root):
+        oauth = _oauth_block(case)
+        if oauth is not None:
+            for key in sorted(forbidden_keys):
+                if key in oauth:
+                    violations.append(f"{case_id}: oauth secret literal field is forbidden: {key}")
+        request = case.get("request")
+        if isinstance(request, dict):
+            headers = request.get("headers")
+            if isinstance(headers, dict):
+                for raw_key, raw_value in headers.items():
+                    key = str(raw_key).strip().lower()
+                    value = str(raw_value).strip()
+                    if key == "authorization" and value.lower().startswith("bearer "):
+                        violations.append(f"{case_id}: inline bearer Authorization header is forbidden")
+    return violations
+
+
+def _scan_runtime_api_http_live_mode_explicit(root: Path) -> list[str]:
+    violations: list[str] = []
+    for case_id, case in _iter_api_http_cases(root):
+        harness = case.get("harness")
+        mode = "deterministic"
+        if isinstance(harness, dict):
+            api_http = harness.get("api_http")
+            if isinstance(api_http, dict):
+                mode = str(api_http.get("mode", "deterministic")).strip().lower() or "deterministic"
+        request = case.get("request")
+        request_url = ""
+        if isinstance(request, dict):
+            request_url = str(request.get("url", "")).strip()
+        oauth = _oauth_block(case)
+        token_url = "" if oauth is None else str(oauth.get("token_url", "")).strip()
+        if _is_live_network_url(request_url) and mode != "live":
+            violations.append(f"{case_id}: network request.url requires harness.api_http.mode=live")
+        if _is_live_network_url(token_url) and mode != "live":
+            violations.append(f"{case_id}: network oauth token_url requires harness.api_http.mode=live")
+    return violations
+
+
+def _scan_runtime_api_http_oauth_docs_sync(root: Path) -> list[str]:
+    required: dict[str, tuple[str, ...]] = {
+        "docs/spec/schema/schema_v1.md": (
+            "harness.api_http.auth.oauth",
+            "client_id_env",
+            "client_secret_env",
+            "deterministic",
+            "live",
+        ),
+        "docs/spec/contract/04_harness.md": (
+            "harness.api_http.auth.oauth",
+            "client_id_env",
+            "client_secret_env",
+            "Authorization: Bearer",
+        ),
+        "docs/spec/contract/types/api_http.md": (
+            "auth.oauth",
+            "client_credentials",
+            "client_id_env",
+            "client_secret_env",
+            "mode",
+        ),
+        "docs/spec/contract/types/http_profile.md": (
+            "meta.auth_mode",
+            "meta.oauth_token_source",
+            "context.oauth",
+        ),
+    }
+    violations: list[str] = []
+    for rel, tokens in required.items():
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}: missing required doc for api.http oauth contract")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in raw:
+                violations.append(f"{rel}: missing oauth sync token '{token}'")
     return violations
 
 
@@ -2799,7 +2936,7 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
                 f"{case_id}: non-deterministic token matched configured pattern in case content"
             )
     return _policy_outcome(
-        subject=rows,
+        subject={"rows": rows, "violations": list(violations)},
         policy_evaluate=policy_evaluate,
         policy_path="harness.determinism.policy_evaluate",
         symbols={"patterns": pattern_values},
@@ -5523,6 +5660,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.public_runner_default_rust": _scan_runtime_public_runner_default_rust,
     "runtime.python_lane_explicit_opt_in": _scan_runtime_python_lane_explicit_opt_in,
     "runtime.no_public_direct_rust_adapter_docs": _scan_runtime_no_public_direct_rust_adapter_docs,
+    "runtime.api_http_oauth_env_only": _scan_runtime_api_http_oauth_env_only,
+    "runtime.api_http_oauth_no_secret_literals": _scan_runtime_api_http_oauth_no_secret_literals,
+    "runtime.api_http_live_mode_explicit": _scan_runtime_api_http_live_mode_explicit,
+    "runtime.api_http_oauth_docs_sync": _scan_runtime_api_http_oauth_docs_sync,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,
     "runtime.rust_adapter_no_delegate": _scan_runtime_rust_adapter_no_delegate,

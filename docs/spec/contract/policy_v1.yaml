@@ -2579,3 +2579,75 @@ rules:
   - docs/book/04_spec_lang_guide.md
   - docs/book/07_spec_lang_reference.md
   - docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md
+- id: API_HTTP_OAUTH_HARNESS_PROFILE_SUPPORTED
+  introduced_in: v1
+  scope: implementation
+  applies_to: api.http.harness.auth.oauth
+  norm: MUST
+  requirement: support_harness_scoped_oauth_client_credentials_profile
+  description: 'api.http implementations must support harness-scoped OAuth client-credentials configuration under harness.api_http.auth.oauth.
+
+    '
+  rationale: Provides a portable contract surface for authenticated REST API specs.
+  risk_if_violated: Authenticated API behavior cannot be expressed portably.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/contract/types/api_http.md
+  - docs/spec/schema/schema_v1.md
+- id: API_HTTP_OAUTH_ENV_REF_ONLY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: api.http.harness.auth.oauth.credentials
+  norm: MUST
+  requirement: oauth_credentials_must_use_env_refs_only
+  description: 'OAuth client credentials for api.http must be referenced by env-var names only; inline credential values are forbidden.
+
+    '
+  rationale: Prevents secret material from being committed in executable specs.
+  risk_if_violated: Secret exposure in repo history and artifacts.
+  references:
+  - docs/spec/governance/cases/core/runtime_api_http_oauth_env_only.spec.md
+  - docs/spec/governance/cases/core/runtime_api_http_oauth_no_secret_literals.spec.md
+  - docs/spec/contract/types/api_http.md
+- id: API_HTTP_OAUTH_SECRET_REDACTION_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: api.http.context_and_diagnostics
+  norm: MUST
+  requirement: never_emit_raw_oauth_secret_or_token_values
+  description: 'api.http OAuth execution must redact token/secret values from context profiles, diagnostics, and summaries.
+
+    '
+  rationale: Keeps runtime artifacts safe for logs and CI surfaces.
+  risk_if_violated: Token/secret leakage through diagnostics/artifacts.
+  references:
+  - docs/spec/contract/types/http_profile.md
+  - spec_runner/harnesses/api_http.py
+- id: API_HTTP_DETERMINISTIC_DEFAULT_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: api.http.harness.mode
+  norm: MUST
+  requirement: api_http_mode_defaults_to_deterministic
+  description: 'api.http execution mode must default to deterministic behavior.
+
+    '
+  rationale: Preserves stable reproducibility for canonical conformance/governance runs.
+  risk_if_violated: Unexpected network coupling in baseline runs.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+- id: API_HTTP_LIVE_MODE_EXPLICIT_OPT_IN_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: api.http.network_execution
+  norm: MUST
+  requirement: network_token_and_request_fetches_require_explicit_live_mode
+  description: 'Network `http(s)` token/request fetches in api.http must require explicit harness.api_http.mode=live opt-in.
+
+    '
+  rationale: Prevents accidental ambient network dependency in portable fixtures.
+  risk_if_violated: Non-deterministic failures and hidden external coupling.
+  references:
+  - docs/spec/governance/cases/core/runtime_api_http_live_mode_explicit.spec.md
+  - docs/spec/contract/types/api_http.md

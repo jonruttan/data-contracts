@@ -42,6 +42,28 @@ For `api.http`:
 - `body_json`
 - `context_json` (JSON subject profile envelope)
 
+`api.http` auth/runtime profile:
+
+- `harness.api_http.mode` (optional): `deterministic` (default) or `live`
+  - `deterministic` forbids network `http(s)` fetches for request/token URLs
+  - `live` allows network `http(s)` fetches
+- `harness.api_http.auth.oauth` (optional mapping):
+  - `grant_type`: must be `client_credentials`
+  - `token_url` (required)
+  - `client_id_env` / `client_secret_env` (required): env var names only
+  - `scope` / `audience` (optional)
+  - `auth_style`: `basic` (default) or `body`
+  - `token_field`: default `access_token`
+  - `expires_field`: default `expires_in`
+  - `refresh_skew_seconds`: default `30`
+
+OAuth behavior:
+
+- credentials are resolved from env references only (no inline secret fields)
+- bearer token is injected as `Authorization: Bearer <token>` unless request
+  headers already define `Authorization`
+- `api.http` context metadata must not include raw secret/token values
+
 For `orchestration.run`:
 
 - `result_json`

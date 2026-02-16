@@ -35,30 +35,10 @@ harness:
     - \brand(?:int|range)?\s*\(
     - \bMath\.random\s*\(
     policy_evaluate:
-    - std.logic.eq:
-      - std.collection.count:
-        - std.collection.filter:
-          - fn:
-            - [row]
-            - std.logic.gt:
-              - std.collection.count:
-                - std.collection.filter:
-                  - fn:
-                    - [s]
-                    - std.collection.any:
-                      - std.collection.map:
-                        - fn:
-                          - [p]
-                          - std.string.matches:
-                            - {var: s}
-                            - {var: p}
-                        - {var: patterns}
-                  - std.object.get:
-                    - {var: row}
-                    - strings
-              - 0
-          - {var: subject}
-      - 0
+    - std.collection.is_empty:
+      - std.object.get:
+        - {var: subject}
+        - violations
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

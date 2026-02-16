@@ -18,30 +18,30 @@
         {
           "field": "runtime_specific_capability_penalty_share",
           "id": "runtime_specific_capability_penalty_share",
-          "score": 0.9876543209876543,
+          "score": 0.9721115537848606,
           "source": "derived",
-          "value": 0.012345679012345678,
-          "value_rendered": "0.012346"
+          "value": 0.027888446215139442,
+          "value_rendered": "0.027888"
         },
         {
           "field": "expect_impl_overlay_penalty_share",
           "id": "expect_impl_overlay_penalty_share",
-          "score": 0.9259259259259259,
+          "score": 0.9282868525896414,
           "source": "derived",
-          "value": 0.07407407407407407,
-          "value_rendered": "0.074074"
+          "value": 0.07171314741035857,
+          "value_rendered": "0.071713"
         }
       ],
       "id": "OBJ-DET-PORT",
       "name": "Determinism and Portability",
       "primary": {
         "field": "summary.overall_self_contained_ratio",
-        "score": 0.8679012345679012,
+        "score": 0.8649402390438247,
         "source": "spec_portability",
-        "value": 0.8679012345679012,
-        "value_rendered": "0.867901"
+        "value": 0.8649402390438247,
+        "value_rendered": "0.864940"
       },
-      "score": 0.9034567901234568,
+      "score": 0.8990438247011953,
       "status": "green",
       "tripwire_hits": []
     },
@@ -148,19 +148,19 @@
       "name": "Spec-Lang Decision Plane",
       "primary": {
         "field": "summary.overall_logic_self_contained_ratio",
-        "score": 0.9670781893004116,
+        "score": 0.9681274900398407,
         "source": "spec_lang_adoption",
-        "value": 0.9670781893004116,
-        "value_rendered": "0.967078"
+        "value": 0.9681274900398407,
+        "value_rendered": "0.968127"
       },
-      "score": 0.980246913580247,
+      "score": 0.9808764940239044,
       "status": "green",
       "tripwire_hits": []
     }
   ],
   "summary": {
     "objective_count": 5,
-    "overall_mean_score": 0.9217407407407407,
+    "overall_mean_score": 0.92098406374502,
     "overall_min_score": 0.7250000000000001,
     "overall_status": "yellow",
     "status_counts": {

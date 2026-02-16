@@ -907,6 +907,24 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         specLangRequireArity($op, $args, 2);
         return specLangEvalNonTail($args[0], $env, $subject, $limits, $state) !== specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
     }
+    if ($op === 'lt' || $op === 'lte' || $op === 'gt' || $op === 'gte') {
+        specLangRequireArity($op, $args, 2);
+        $left = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $right = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if ((!is_int($left) && !is_float($left)) || (!is_int($right) && !is_float($right))) {
+            throw new SchemaError("spec_lang {$op} expects numeric args");
+        }
+        if ($op === 'lt') {
+            return $left < $right;
+        }
+        if ($op === 'lte') {
+            return $left <= $right;
+        }
+        if ($op === 'gt') {
+            return $left > $right;
+        }
+        return $left >= $right;
+    }
     if ($op === 'in') {
         specLangRequireArity($op, $args, 2);
         $member = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -1768,6 +1786,166 @@ function resolveApiHttpUrl(string $fixturePath, string $url): array {
     return ['source_type' => 'file', 'path' => $candidate];
 }
 
+function resolveApiHttpMode(array $case): string {
+    $harness = $case['harness'] ?? null;
+    if (!is_array($harness)) {
+        return 'deterministic';
+    }
+    $apiHttp = $harness['api_http'] ?? null;
+    if (!is_array($apiHttp)) {
+        return 'deterministic';
+    }
+    $mode = trim((string)($apiHttp['mode'] ?? 'deterministic'));
+    if ($mode === '') {
+        $mode = 'deterministic';
+    }
+    if ($mode !== 'deterministic' && $mode !== 'live') {
+        throw new SchemaError("api.http mode must be one of: deterministic, live");
+    }
+    return $mode;
+}
+
+function parseApiHttpOAuthConfig(string $fixturePath, array $case, string $mode): ?array {
+    $harness = $case['harness'] ?? null;
+    if (!is_array($harness)) {
+        return null;
+    }
+    $apiHttp = $harness['api_http'] ?? null;
+    if (!is_array($apiHttp)) {
+        return null;
+    }
+    $auth = $apiHttp['auth'] ?? null;
+    if ($auth === null) {
+        return null;
+    }
+    if (!is_array($auth)) {
+        throw new SchemaError('api.http harness.auth must be a mapping');
+    }
+    $oauth = $auth['oauth'] ?? null;
+    if ($oauth === null) {
+        return null;
+    }
+    if (!is_array($oauth)) {
+        throw new SchemaError('api.http harness.auth.oauth must be a mapping');
+    }
+
+    $grantType = trim((string)($oauth['grant_type'] ?? ''));
+    if ($grantType !== 'client_credentials') {
+        throw new SchemaError('api.http oauth grant_type must be client_credentials');
+    }
+    $tokenUrl = trim((string)($oauth['token_url'] ?? ''));
+    if ($tokenUrl === '') {
+        throw new SchemaError('api.http oauth token_url is required');
+    }
+    $clientIdEnv = trim((string)($oauth['client_id_env'] ?? ''));
+    if ($clientIdEnv === '') {
+        throw new SchemaError('api.http oauth client_id_env is required');
+    }
+    $clientSecretEnv = trim((string)($oauth['client_secret_env'] ?? ''));
+    if ($clientSecretEnv === '') {
+        throw new SchemaError('api.http oauth client_secret_env is required');
+    }
+    $authStyle = trim((string)($oauth['auth_style'] ?? 'basic'));
+    if ($authStyle === '') {
+        $authStyle = 'basic';
+    }
+    if ($authStyle !== 'basic' && $authStyle !== 'body') {
+        throw new SchemaError('api.http oauth auth_style must be one of: basic, body');
+    }
+
+    $clientId = getenv($clientIdEnv);
+    if ($clientId === false || trim((string)$clientId) === '') {
+        throw new SchemaError("oauth env var is required: {$clientIdEnv}");
+    }
+    $clientSecret = getenv($clientSecretEnv);
+    if ($clientSecret === false || trim((string)$clientSecret) === '') {
+        throw new SchemaError("oauth env var is required: {$clientSecretEnv}");
+    }
+
+    $resolved = resolveApiHttpUrl($fixturePath, $tokenUrl);
+    if ($resolved['source_type'] === 'url' && $mode !== 'live') {
+        throw new SchemaError('api.http oauth token_url network usage requires harness.api_http.mode=live');
+    }
+
+    return [
+        'resolved' => $resolved,
+        'scope' => isset($oauth['scope']) ? (string)$oauth['scope'] : null,
+        'audience' => isset($oauth['audience']) ? (string)$oauth['audience'] : null,
+        'auth_style' => $authStyle,
+        'token_field' => trim((string)($oauth['token_field'] ?? 'access_token')) ?: 'access_token',
+        'client_id' => (string)$clientId,
+        'client_secret' => (string)$clientSecret,
+    ];
+}
+
+function fetchApiHttpOAuthToken(array $cfg): array {
+    $started = microtime(true);
+    $resolved = $cfg['resolved'];
+    $tokenField = (string)$cfg['token_field'];
+    if (($resolved['source_type'] ?? '') === 'file') {
+        $raw = @file_get_contents((string)$resolved['path']);
+        if ($raw === false) {
+            throw new RuntimeException('api.http oauth token fetch failed');
+        }
+        $payload = json_decode((string)$raw, true);
+        if (!is_array($payload) || !array_key_exists($tokenField, $payload)) {
+            throw new RuntimeException("api.http oauth token response missing field: {$tokenField}");
+        }
+        $token = trim((string)$payload[$tokenField]);
+        if ($token === '') {
+            throw new RuntimeException('api.http oauth token response access token is empty');
+        }
+        return [
+            'token' => $token,
+            'token_fetch_ms' => (int)round((microtime(true) - $started) * 1000),
+            'used_cached_token' => false,
+        ];
+    }
+
+    $body = ['grant_type' => 'client_credentials'];
+    if (isset($cfg['scope']) && $cfg['scope'] !== null && trim((string)$cfg['scope']) !== '') {
+        $body['scope'] = (string)$cfg['scope'];
+    }
+    if (isset($cfg['audience']) && $cfg['audience'] !== null && trim((string)$cfg['audience']) !== '') {
+        $body['audience'] = (string)$cfg['audience'];
+    }
+    if (($cfg['auth_style'] ?? 'basic') === 'body') {
+        $body['client_id'] = (string)$cfg['client_id'];
+        $body['client_secret'] = (string)$cfg['client_secret'];
+    }
+    $headers = ['Content-Type: application/x-www-form-urlencoded'];
+    if (($cfg['auth_style'] ?? 'basic') === 'basic') {
+        $headers[] = 'Authorization: Basic ' . base64_encode((string)$cfg['client_id'] . ':' . (string)$cfg['client_secret']);
+    }
+    $opts = [
+        'http' => [
+            'method' => 'POST',
+            'header' => implode("\r\n", $headers),
+            'content' => http_build_query($body),
+            'ignore_errors' => true,
+            'timeout' => 10,
+        ],
+    ];
+    $ctx = stream_context_create($opts);
+    $raw = @file_get_contents((string)$resolved['url'], false, $ctx);
+    if ($raw === false) {
+        throw new RuntimeException('api.http oauth token fetch failed');
+    }
+    $payload = json_decode((string)$raw, true);
+    if (!is_array($payload) || !array_key_exists($tokenField, $payload)) {
+        throw new RuntimeException("api.http oauth token response missing field: {$tokenField}");
+    }
+    $token = trim((string)$payload[$tokenField]);
+    if ($token === '') {
+        throw new RuntimeException('api.http oauth token response access token is empty');
+    }
+    return [
+        'token' => $token,
+        'token_fetch_ms' => (int)round((microtime(true) - $started) * 1000),
+        'used_cached_token' => false,
+    ];
+}
+
 function evalApiHttpLeaf(
     array $leaf,
     array $resp,
@@ -1814,6 +1992,25 @@ function evalApiHttpLeaf(
                 } elseif ($op === 'evaluate' || $op === 'json_type') {
                     $subject = $parsed;
                 } else {
+                    $subject = $jsonText;
+                }
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
+            }
+            continue;
+        }
+        if ($target === 'context_json') {
+            $context = $resp['context_json'] ?? null;
+            foreach ($raw as $value) {
+                $expr = compileLeafExpr($op, $value, $target);
+                if ($op === 'exists') {
+                    $subject = $context !== null;
+                } elseif ($op === 'evaluate' || $op === 'json_type') {
+                    $subject = $context;
+                } else {
+                    $jsonText = json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                    if ($jsonText === false) {
+                        throw new RuntimeException('failed to serialize context_json');
+                    }
                     $subject = $jsonText;
                 }
                 assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
@@ -1970,10 +2167,49 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
     if (!array_key_exists('url', $request) || trim((string)$request['url']) === '') {
         throw new SchemaError('api.http request.url is required');
     }
+    $mode = resolveApiHttpMode($case);
     $resolved = resolveApiHttpUrl($fixturePath, (string)$request['url']);
+    if ($resolved['source_type'] === 'url' && $mode !== 'live') {
+        throw new SchemaError('api.http request.url network usage requires harness.api_http.mode=live');
+    }
+    $oauthCfg = parseApiHttpOAuthConfig($fixturePath, $case, $mode);
     $headersText = '';
     $status = 200;
     $bodyText = '';
+    $oauthMeta = [
+        'auth_mode' => $oauthCfg === null ? 'none' : 'oauth',
+        'oauth_token_source' => $oauthCfg === null ? 'none' : 'env_ref',
+        'token_url_host' => null,
+        'scope_requested' => false,
+        'token_fetch_ms' => 0,
+        'used_cached_token' => false,
+    ];
+    $headerMap = [];
+    $hdrs = $request['headers'] ?? [];
+    if ($hdrs !== null && !is_array($hdrs)) {
+        throw new SchemaError('api.http request.headers must be a mapping');
+    }
+    if (is_array($hdrs)) {
+        foreach ($hdrs as $k => $v) {
+            $headerMap[(string)$k] = (string)$v;
+        }
+    }
+    if ($oauthCfg !== null) {
+        $tokenResp = fetchApiHttpOAuthToken($oauthCfg);
+        $parts = @parse_url(($oauthCfg['resolved']['source_type'] ?? '') === 'url'
+            ? (string)$oauthCfg['resolved']['url']
+            : (string)$oauthCfg['resolved']['path']);
+        $oauthMeta['token_url_host'] = is_array($parts) && isset($parts['host'])
+            ? (string)$parts['host']
+            : '';
+        $oauthMeta['scope_requested'] = $oauthCfg['scope'] ?? false;
+        $oauthMeta['token_fetch_ms'] = (int)$tokenResp['token_fetch_ms'];
+        $oauthMeta['used_cached_token'] = (bool)$tokenResp['used_cached_token'];
+        if (!array_key_exists('Authorization', $headerMap)) {
+            $headerMap['Authorization'] = 'Bearer ' . (string)$tokenResp['token'];
+        }
+    }
+
     if ($resolved['source_type'] === 'file') {
         $body = file_get_contents((string)$resolved['path']);
         if ($body === false) {
@@ -1982,14 +2218,8 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
         $bodyText = (string)$body;
     } else {
         $headers = [];
-        $hdrs = $request['headers'] ?? [];
-        if ($hdrs !== null && !is_array($hdrs)) {
-            throw new SchemaError('api.http request.headers must be a mapping');
-        }
-        if (is_array($hdrs)) {
-            foreach ($hdrs as $k => $v) {
-                $headers[] = (string)$k . ': ' . (string)$v;
-            }
+        foreach ($headerMap as $k => $v) {
+            $headers[] = (string)$k . ': ' . (string)$v;
         }
         $bodyData = null;
         if (array_key_exists('body_text', $request) && array_key_exists('body_json', $request)) {
@@ -2063,6 +2293,28 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
             'status' => $status,
             'headers_text' => $headersText,
             'body_text' => $bodyText,
+            'context_json' => [
+                'profile_id' => 'api.http/v1',
+                'profile_version' => 1,
+                'value' => [
+                    'status' => $status,
+                    'headers' => [],
+                    'body_text' => $bodyText,
+                    'body_json' => json_decode((string)$bodyText, true),
+                ],
+                'meta' => [
+                    'auth_mode' => $oauthMeta['auth_mode'],
+                    'oauth_token_source' => $oauthMeta['oauth_token_source'],
+                ],
+                'context' => [
+                    'oauth' => [
+                        'token_url_host' => $oauthMeta['token_url_host'],
+                        'scope_requested' => $oauthMeta['scope_requested'],
+                        'token_fetch_ms' => $oauthMeta['token_fetch_ms'],
+                        'used_cached_token' => $oauthMeta['used_cached_token'],
+                    ],
+                ],
+            ],
         ],
         null,
         (string)$case['id'],

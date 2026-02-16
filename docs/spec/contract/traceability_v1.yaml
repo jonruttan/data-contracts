@@ -2691,3 +2691,74 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md
   notes: Enforces guide chapter before strict spec-lang reference chapter.
+- rule_id: API_HTTP_OAUTH_HARNESS_PROFILE_SUPPORTED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_OAUTH_HARNESS_PROFILE_SUPPORTED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/contract/types/api_http.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-004
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  implementation_refs:
+  - spec_runner/harnesses/api_http.py
+  notes: api.http harness supports OAuth client-credentials profile.
+- rule_id: API_HTTP_OAUTH_ENV_REF_ONLY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_OAUTH_ENV_REF_ONLY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/types/api_http.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-005
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - spec_runner/harnesses/api_http.py
+  notes: Enforces env-ref-only OAuth credential fields.
+- rule_id: API_HTTP_OAUTH_SECRET_REDACTION_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_OAUTH_SECRET_REDACTION_REQUIRED
+  contract_refs:
+  - docs/spec/contract/types/http_profile.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-004
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  implementation_refs:
+  - spec_runner/harnesses/api_http.py
+  notes: Context profile and diagnostics avoid token/secret leakage.
+- rule_id: API_HTTP_DETERMINISTIC_DEFAULT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_DETERMINISTIC_DEFAULT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-001
+  - SRCONF-API-004
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  implementation_refs:
+  - spec_runner/harnesses/api_http.py
+  notes: Deterministic mode is the default api.http execution lane.
+- rule_id: API_HTTP_LIVE_MODE_EXPLICIT_OPT_IN_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_LIVE_MODE_EXPLICIT_OPT_IN_REQUIRED
+  contract_refs:
+  - docs/spec/contract/types/api_http.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-006
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - spec_runner/harnesses/api_http.py
+  notes: Network token/request flows require explicit live-mode opt-in.

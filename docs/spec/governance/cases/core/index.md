@@ -110,6 +110,10 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runner_independence_metric.spec.md`
 - `/docs/spec/governance/cases/core/runner_independence_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/runtime_assertions_via_spec_lang.spec.md`
+- `/docs/spec/governance/cases/core/runtime_api_http_live_mode_explicit.spec.md`
+- `/docs/spec/governance/cases/core/runtime_api_http_oauth_docs_sync.spec.md`
+- `/docs/spec/governance/cases/core/runtime_api_http_oauth_env_only.spec.md`
+- `/docs/spec/governance/cases/core/runtime_api_http_oauth_no_secret_literals.spec.md`
 - `/docs/spec/governance/cases/core/runtime_config_literals.spec.md`
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
 - `/docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md`

@@ -165,6 +165,28 @@ For `type: cli.run`, supported `harness` keys include:
 - `orchestration` (mapping): orchestration tool dispatch contract for
   `type: orchestration.run`
 
+For `type: api.http`, supported `harness` keys include:
+
+- `api_http.mode` (string): `deterministic` (default) or `live`
+- `harness.api_http.auth.oauth` (mapping):
+  - `grant_type`: `client_credentials`
+  - `token_url`: token endpoint URL or contract path
+  - `client_id_env`: env var name for OAuth client id
+  - `client_secret_env`: env var name for OAuth client secret
+  - `scope` (optional)
+  - `audience` (optional)
+  - `auth_style`: `basic` (default) or `body`
+  - `token_field`: token field in token response (default `access_token`)
+  - `expires_field`: expiry field in token response (default `expires_in`)
+  - `refresh_skew_seconds`: cache skew (default `30`)
+
+OAuth and execution rules:
+
+- credentials MUST be env references (`*_env`) only; inline secrets are invalid
+- network `http(s)` token/request URLs require `harness.api_http.mode: live`
+- deterministic mode forbids network token/request fetches
+- context profile metadata MUST redact secret/token values
+
 `setup_files[*].path` constraints:
 
 - MUST be relative

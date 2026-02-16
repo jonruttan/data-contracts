@@ -21,9 +21,9 @@ entries:
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/objective_scorecard_baseline.json
-  sha256: 7aba3c9109dc645555eaa32e1b5d6d903d159f051b19c81f869a6adf01806a64
-  rationale: Baseline refreshed after docs operability baseline shift from chapter and appendix reorganization.
-  measurement_model_change: 'yes'
+  sha256: 85302470ebe7d06f68c34f9ec81c69aba94a7ac4c05b24b5de4a9d46810bafc8
+  rationale: Baseline refreshed after OAuth api.http coverage and governance/docs sync additions changed objective aggregate.
+  measurement_model_change: 'no'
 - baseline: docs/spec/metrics/python_dependency_baseline.json
   sha256: 8f017d0e8cf87e5e5fffce84e95e1377267cd438a3bc5dc351b7a0ffa1b96f18
   rationale: Baseline introduced for python-dependency anti-gaming evidence metric.
