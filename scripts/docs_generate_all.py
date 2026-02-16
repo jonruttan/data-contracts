@@ -16,6 +16,11 @@ GENERATOR_COMMANDS: dict[str, list[str]] = {
     "generate_runner_api_catalog": ["scripts/generate_runner_api_catalog.py"],
     "generate_harness_type_catalog": ["scripts/generate_harness_type_catalog.py"],
     "generate_spec_lang_builtin_catalog": ["scripts/generate_spec_lang_builtin_catalog.py"],
+    "generate_policy_rule_catalog": ["scripts/generate_policy_rule_catalog.py"],
+    "generate_traceability_catalog": ["scripts/generate_traceability_catalog.py"],
+    "generate_governance_check_catalog": ["scripts/generate_governance_check_catalog.py"],
+    "generate_metrics_field_catalog": ["scripts/generate_metrics_field_catalog.py"],
+    "generate_spec_schema_field_catalog": ["scripts/generate_spec_schema_field_catalog.py"],
 }
 
 

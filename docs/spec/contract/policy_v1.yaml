@@ -2314,6 +2314,82 @@ rules:
   - docs/spec/governance/cases/core/docs_runner_api_catalog_sync.spec.md
   - docs/spec/governance/cases/core/docs_harness_type_catalog_sync.spec.md
   - docs/spec/governance/cases/core/docs_spec_lang_builtin_catalog_sync.spec.md
+- id: DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.catalog.policy_rules
+  norm: MUST
+  requirement: policy_rule_catalog_surface_must_be_generated_and_synced
+  description: 'Policy rule catalog JSON and markdown outputs must be generated from policy_v1 and remain synchronized.
+
+    '
+  rationale: Prevents drift between policy source rules and reference documentation.
+  risk_if_violated: Policy changes can land without corresponding reference updates.
+  references:
+  - scripts/generate_policy_rule_catalog.py
+  - docs/book/contract_policy_reference.md
+  - docs/spec/governance/cases/core/docs_policy_rule_catalog_sync.spec.md
+- id: DOCS_TRACEABILITY_CATALOG_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.catalog.traceability
+  norm: MUST
+  requirement: traceability_catalog_surface_must_be_generated_and_synced
+  description: 'Traceability catalog JSON and markdown outputs must be generated from traceability links and remain synchronized.
+
+    '
+  rationale: Ensures traceability references are auditable and current.
+  risk_if_violated: Rule-to-implementation mappings become stale and misleading.
+  references:
+  - scripts/generate_traceability_catalog.py
+  - docs/book/traceability_reference.md
+  - docs/spec/governance/cases/core/docs_traceability_catalog_sync.spec.md
+- id: DOCS_GOVERNANCE_CHECK_CATALOG_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.catalog.governance_checks
+  norm: MUST
+  requirement: governance_check_catalog_surface_must_be_generated_and_synced
+  description: 'Governance check catalog JSON and markdown outputs must be generated from runtime check registration and case mappings.
+
+    '
+  rationale: Keeps governance check inventory and case coverage visible and machine-verified.
+  risk_if_violated: Governance check IDs and documented coverage drift apart.
+  references:
+  - scripts/generate_governance_check_catalog.py
+  - docs/book/governance_checks_reference.md
+  - docs/spec/governance/cases/core/docs_governance_check_catalog_sync.spec.md
+- id: DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.catalog.metrics_fields
+  norm: MUST
+  requirement: metrics_field_catalog_surface_must_be_generated_and_synced
+  description: 'Metrics field catalog JSON and markdown outputs must be generated from baseline field surfaces and remain synchronized.
+
+    '
+  rationale: Keeps metrics field contracts transparent and reviewable.
+  risk_if_violated: Baseline schema changes become undocumented.
+  references:
+  - scripts/generate_metrics_field_catalog.py
+  - docs/book/metrics_reference.md
+  - docs/spec/governance/cases/core/docs_metrics_field_catalog_sync.spec.md
+- id: DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.catalog.spec_schema_fields
+  norm: MUST
+  requirement: spec_schema_field_catalog_surfaces_must_be_generated_and_synced
+  description: 'Spec schema field catalog outputs in schema and book docs must be generated from the schema registry and remain synchronized.
+
+    '
+  rationale: Keeps case-shape reference docs aligned to compiled registry constraints.
+  risk_if_violated: Schema docs drift from machine-enforced field contracts.
+  references:
+  - scripts/generate_spec_schema_field_catalog.py
+  - docs/spec/schema/schema_v1.md
+  - docs/book/spec_case_shape_reference.md
+  - docs/spec/governance/cases/core/docs_spec_schema_field_catalog_sync.spec.md
 - id: DOCS_GENERATOR_REPORT_REQUIRED
   introduced_in: v1
   scope: governance

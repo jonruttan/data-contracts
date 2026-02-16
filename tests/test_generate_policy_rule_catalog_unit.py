@@ -1,0 +1,37 @@
+# SPEC-OPT-OUT: Validates policy rule catalog generation script output shape and sync behavior.
+from __future__ import annotations
+
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+
+def test_generate_policy_rule_catalog_check_passes() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    cp = subprocess.run(
+        [sys.executable, "scripts/generate_policy_rule_catalog.py", "--check"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stdout + cp.stderr
+
+
+def test_generate_policy_rule_catalog_json_shape() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    path = repo_root / ".artifacts/policy-rule-catalog.json"
+    if not path.exists():
+        cp = subprocess.run(
+            [sys.executable, "scripts/generate_policy_rule_catalog.py"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert cp.returncode == 0, cp.stdout + cp.stderr
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    assert payload["version"] == 1
+    assert "summary" in payload
+    assert isinstance(payload.get("rules"), list)

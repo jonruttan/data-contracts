@@ -26,6 +26,11 @@ harness:
     - docs/book/runner_api_reference.md
     - docs/book/harness_type_reference.md
     - docs/book/spec_lang_builtin_catalog.md
+    - docs/book/contract_policy_reference.md
+    - docs/book/traceability_reference.md
+    - docs/book/governance_checks_reference.md
+    - docs/book/metrics_reference.md
+    - docs/book/spec_case_shape_reference.md
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

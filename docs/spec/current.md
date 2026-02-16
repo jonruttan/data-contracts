@@ -85,6 +85,10 @@ Notes:
 - Generated API catalogs now include runner interface commands, harness type
   profiles, and spec-lang builtin surface/parity with machine artifacts in
   `.artifacts/*-catalog.json` and generated book pages under `docs/book/`.
+- Documentation catalog generation additionally includes policy rule,
+  traceability, governance-check, metrics-field, and schema-field references
+  with generated pages under `docs/book/*_reference.md` and synchronized
+  machine artifacts in `.artifacts/`.
 - Normalization tooling is unified under `scripts/normalize_repo.py` with
   profile-driven rules from `docs/spec/schema/normalization_profile_v1.yaml`;
   CI runs `normalize-check` and local workflow uses `normalize-fix`.

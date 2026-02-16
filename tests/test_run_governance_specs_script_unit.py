@@ -109,6 +109,11 @@ def test_docs_generator_check_ids_are_registered() -> None:
         "docs.runner_api_catalog_sync",
         "docs.harness_type_catalog_sync",
         "docs.spec_lang_builtin_catalog_sync",
+        "docs.policy_rule_catalog_sync",
+        "docs.traceability_catalog_sync",
+        "docs.governance_check_catalog_sync",
+        "docs.metrics_field_catalog_sync",
+        "docs.spec_schema_field_catalog_sync",
     }
     for check_id in required:
         assert check_id in mod._CHECKS

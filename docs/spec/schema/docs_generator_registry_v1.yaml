@@ -100,3 +100,94 @@ surfaces:
   - builtins
   read_only_sections:
   - /docs/book/spec_lang_builtin_catalog.md
+- surface_id: policy_rule_catalog
+  source_type: registry_yaml
+  inputs:
+  - /docs/spec/contract/policy_v1.yaml
+  outputs:
+  - /.artifacts/policy-rule-catalog.json
+  - /docs/book/contract_policy_reference.md
+  generator: generate_policy_rule_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/10_docs_quality.md
+  - /docs/spec/contract/policy_v1.yaml
+  determinism_hash_fields:
+  - summary
+  - rules
+  read_only_sections:
+  - /docs/book/contract_policy_reference.md
+- surface_id: traceability_catalog
+  source_type: registry_yaml
+  inputs:
+  - /docs/spec/contract/traceability_v1.yaml
+  outputs:
+  - /.artifacts/traceability-catalog.json
+  - /docs/book/traceability_reference.md
+  generator: generate_traceability_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/10_docs_quality.md
+  - /docs/spec/contract/traceability_v1.yaml
+  determinism_hash_fields:
+  - summary
+  - links
+  read_only_sections:
+  - /docs/book/traceability_reference.md
+- surface_id: governance_check_catalog
+  source_type: code_scan
+  inputs:
+  - /scripts/run_governance_specs.py
+  - /docs/spec/governance/cases/core
+  outputs:
+  - /.artifacts/governance-check-catalog.json
+  - /docs/book/governance_checks_reference.md
+  generator: generate_governance_check_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/10_docs_quality.md
+  - /docs/spec/contract/15_governance_subject_model.md
+  determinism_hash_fields:
+  - summary
+  - checks
+  read_only_sections:
+  - /docs/book/governance_checks_reference.md
+- surface_id: metrics_field_catalog
+  source_type: code_scan
+  inputs:
+  - /spec_runner/quality_metrics.py
+  - /docs/spec/metrics
+  outputs:
+  - /.artifacts/metrics-field-catalog.json
+  - /docs/book/metrics_reference.md
+  generator: generate_metrics_field_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/17_objective_metrics.md
+  - /docs/spec/contract/10_docs_quality.md
+  determinism_hash_fields:
+  - summary
+  - baselines
+  read_only_sections:
+  - /docs/book/metrics_reference.md
+- surface_id: spec_schema_field_catalog
+  source_type: registry_yaml
+  inputs:
+  - /docs/spec/schema/registry/v1
+  - /docs/spec/schema/registry_schema_v1.yaml
+  outputs:
+  - /.artifacts/spec-schema-field-catalog.json
+  - /docs/spec/schema/schema_v1.md
+  - /docs/book/spec_case_shape_reference.md
+  generator: generate_spec_schema_field_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/21_schema_registry_contract.md
+  - /docs/spec/contract/10_docs_quality.md
+  determinism_hash_fields:
+  - summary
+  - top_level_fields
+  - type_profiles
+  read_only_sections:
+  - /docs/spec/schema/schema_v1.md
+  - /docs/book/spec_case_shape_reference.md

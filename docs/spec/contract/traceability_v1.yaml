@@ -2444,6 +2444,73 @@ links:
   - docs/spec/governance/cases/core/docs_harness_type_catalog_sync.spec.md
   - docs/spec/governance/cases/core/docs_spec_lang_builtin_catalog_sync.spec.md
   notes: Catalog generators define and verify machine-backed API documentation surfaces.
+- rule_id: DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_policy_rule_catalog_unit.py
+  implementation_refs:
+  - scripts/generate_policy_rule_catalog.py
+  - docs/spec/governance/cases/core/docs_policy_rule_catalog_sync.spec.md
+  notes: Policy rule catalog docs surface is generated from policy_v1 rule source.
+- rule_id: DOCS_TRACEABILITY_CATALOG_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_TRACEABILITY_CATALOG_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_traceability_catalog_unit.py
+  implementation_refs:
+  - scripts/generate_traceability_catalog.py
+  - docs/spec/governance/cases/core/docs_traceability_catalog_sync.spec.md
+  notes: Traceability catalog docs surface is generated from traceability link source.
+- rule_id: DOCS_GOVERNANCE_CHECK_CATALOG_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GOVERNANCE_CHECK_CATALOG_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_governance_check_catalog_unit.py
+  implementation_refs:
+  - scripts/generate_governance_check_catalog.py
+  - docs/spec/governance/cases/core/docs_governance_check_catalog_sync.spec.md
+  notes: Governance check inventory and case map are generated from runtime registration.
+- rule_id: DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_metrics_field_catalog_unit.py
+  implementation_refs:
+  - scripts/generate_metrics_field_catalog.py
+  - docs/spec/governance/cases/core/docs_metrics_field_catalog_sync.spec.md
+  notes: Metrics baseline field inventory is generated and synchronized.
+- rule_id: DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/contract/21_schema_registry_contract.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_spec_schema_field_catalog_unit.py
+  implementation_refs:
+  - scripts/generate_spec_schema_field_catalog.py
+  - docs/spec/governance/cases/core/docs_spec_schema_field_catalog_sync.spec.md
+  notes: Schema field catalog is generated from compiled registry into schema and book references.
 - rule_id: DOCS_GENERATOR_REPORT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_REPORT_REQUIRED
   contract_refs:

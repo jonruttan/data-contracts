@@ -3455,6 +3455,11 @@ def _scan_docs_generator_registry_valid(root: Path, *, harness: dict | None = No
         "runner_api_catalog",
         "harness_type_catalog",
         "spec_lang_builtin_catalog",
+        "policy_rule_catalog",
+        "traceability_catalog",
+        "governance_check_catalog",
+        "metrics_field_catalog",
+        "spec_schema_field_catalog",
     }
     seen = {
         str(x.get("surface_id", "")).strip()
@@ -3508,6 +3513,31 @@ def _scan_docs_harness_type_catalog_sync(root: Path, *, harness: dict | None = N
 def _scan_docs_spec_lang_builtin_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     return _run_python_script_check(root, ["scripts/generate_spec_lang_builtin_catalog.py", "--check"])
+
+
+def _scan_docs_policy_rule_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/generate_policy_rule_catalog.py", "--check"])
+
+
+def _scan_docs_traceability_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/generate_traceability_catalog.py", "--check"])
+
+
+def _scan_docs_governance_check_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/generate_governance_check_catalog.py", "--check"])
+
+
+def _scan_docs_metrics_field_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/generate_metrics_field_catalog.py", "--check"])
+
+
+def _scan_docs_spec_schema_field_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/generate_spec_schema_field_catalog.py", "--check"])
 
 
 def _scan_docs_required_sections(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -5296,6 +5326,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.runner_api_catalog_sync": _scan_docs_runner_api_catalog_sync,
     "docs.harness_type_catalog_sync": _scan_docs_harness_type_catalog_sync,
     "docs.spec_lang_builtin_catalog_sync": _scan_docs_spec_lang_builtin_catalog_sync,
+    "docs.policy_rule_catalog_sync": _scan_docs_policy_rule_catalog_sync,
+    "docs.traceability_catalog_sync": _scan_docs_traceability_catalog_sync,
+    "docs.governance_check_catalog_sync": _scan_docs_governance_check_catalog_sync,
+    "docs.metrics_field_catalog_sync": _scan_docs_metrics_field_catalog_sync,
+    "docs.spec_schema_field_catalog_sync": _scan_docs_spec_schema_field_catalog_sync,
     "docs.required_sections": _scan_docs_required_sections,
     "docs.examples_runnable": _scan_docs_examples_runnable,
     "docs.cli_flags_documented": _scan_docs_cli_flags_documented,

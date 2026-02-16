@@ -89,9 +89,19 @@ Reference generation and graph artifacts:
   - `docs/book/runner_api_reference.md`
   - `docs/book/harness_type_reference.md`
   - `docs/book/spec_lang_builtin_catalog.md`
+  - `docs/book/contract_policy_reference.md`
+  - `docs/book/traceability_reference.md`
+  - `docs/book/governance_checks_reference.md`
+  - `docs/book/metrics_reference.md`
+  - `docs/book/spec_case_shape_reference.md`
   - `.artifacts/runner-api-catalog.json`
   - `.artifacts/harness-type-catalog.json`
   - `.artifacts/spec-lang-builtin-catalog.json`
+  - `.artifacts/policy-rule-catalog.json`
+  - `.artifacts/traceability-catalog.json`
+  - `.artifacts/governance-check-catalog.json`
+  - `.artifacts/metrics-field-catalog.json`
+  - `.artifacts/spec-schema-field-catalog.json`
 - generated sections are read-only and delimited by
   `<!-- GENERATED:START ... -->` / `<!-- GENERATED:END ... -->` markers.
 - docs generator report artifacts are required:
