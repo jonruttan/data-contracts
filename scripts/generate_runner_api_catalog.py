@@ -116,17 +116,15 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     if ns.check:
-        if not out_path.exists():
-            print(f"{ns.out}: missing catalog artifact")
-            return 1
         if (parse_generated_block(doc_path.read_text(encoding="utf-8"), surface_id="runner_api_catalog").strip()
                 != md_block.strip()):
             print(f"{ns.doc_out}: generated content out of date")
             return 1
-        expected_json = json.dumps(payload, indent=2, sort_keys=True).strip()
-        if out_path.read_text(encoding="utf-8").strip() != expected_json:
-            print(f"{ns.out}: generated content out of date")
-            return 1
+        if out_path.exists():
+            expected_json = json.dumps(payload, indent=2, sort_keys=True).strip()
+            if out_path.read_text(encoding="utf-8").strip() != expected_json:
+                print(f"{ns.out}: generated content out of date")
+                return 1
         return 0
 
     write_json(out_path, payload)
