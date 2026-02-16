@@ -74,13 +74,9 @@ surfaces:
                     "target": "context_json",
                     "must": [
                         {
-                            "evaluate": [
-                                {
-                                    "std.logic.eq": [
-                                        True,
-                                        True,
-                                    ]
-                                }
+                            "std.logic.eq": [
+                                True,
+                                True,
                             ]
                         }
                     ],

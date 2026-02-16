@@ -42,23 +42,22 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - {var: subject}
-      - 0
+  - std.logic.eq:
+    - var: subject
+    - 0
   target: violation_count
 - id: assert_2
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - passed
       - true
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - check_id
       - conformance.spec_lang_fixture_library_usage
   target: summary_json

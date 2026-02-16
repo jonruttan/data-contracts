@@ -21,10 +21,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -49,10 +48,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -79,10 +77,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -107,10 +104,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -136,10 +132,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -165,10 +160,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -194,10 +188,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -223,10 +216,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -252,10 +244,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -281,10 +272,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -310,10 +300,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -338,10 +327,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -366,10 +354,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -395,10 +382,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -424,10 +410,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -453,10 +438,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -482,10 +466,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -511,10 +494,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -540,10 +522,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -569,10 +550,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -598,10 +578,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```
 
@@ -627,9 +606,8 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - true
-      - true
+  - std.logic.eq:
+    - true
+    - true
   target: context_json
 ```

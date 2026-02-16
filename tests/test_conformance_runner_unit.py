@@ -60,8 +60,7 @@ assert_health:
 assert:
   - target: text
     must:
-      - evaluate:
-          - contains:
+      - contains:
             - var: subject
             - ""
 ```
@@ -113,8 +112,7 @@ expect:
 assert:
   - target: text
     must:
-      - evaluate:
-          - contains:
+      - contains:
             - var: subject
             - "version: 1"
 ```
@@ -167,8 +165,7 @@ expect:
 assert:
   - target: text
     must:
-      - evaluate:
-          - contains:
+      - contains:
             - var: subject
             - "version: 1"
 ```
@@ -203,8 +200,7 @@ expect:
 assert:
   - target: text
     must:
-      - evaluate:
-          - contains:
+      - contains:
             - var: subject
             - "version: 1"
 ```
@@ -239,8 +235,7 @@ expect:
 assert:
   - target: text
     must:
-      - evaluate:
-          - contains:
+      - contains:
             - var: subject
             - "version: 1"
 ```

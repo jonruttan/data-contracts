@@ -32,9 +32,8 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - {var: subject}
-      - 0
+  - std.logic.eq:
+    - var: subject
+    - 0
   target: violation_count
 ```

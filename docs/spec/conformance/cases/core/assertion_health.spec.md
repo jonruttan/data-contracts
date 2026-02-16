@@ -14,7 +14,8 @@ Coverage focus:
 ```yaml spec-test
 id: SRCONF-AH-001
 title: assert_health warn emits diagnostics but case still passes
-purpose: Covers warn mode behavior where diagnostics are emitted but verdict remains pass.
+purpose: Covers warn mode behavior where diagnostics are emitted but verdict remains
+  pass.
 type: text.file
 expect:
   portable:
@@ -26,10 +27,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - ''
+  - std.string.contains:
+    - var: subject
+    - ''
   target: text
 ```
 
@@ -51,10 +51,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - ''
+  - std.string.contains:
+    - var: subject
+    - ''
   target: text
 ```
 
@@ -75,10 +74,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - spec-test
+  - std.string.contains:
+    - var: subject
+    - spec-test
   target: text
 ```
 
@@ -87,7 +85,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-004
 title: per-case ignore override can neutralize global strict mode
-purpose: Verifies local mode override can disable stricter global assertion-health settings.
+purpose: Verifies local mode override can disable stricter global assertion-health
+  settings.
 type: text.file
 expect:
   portable:
@@ -99,10 +98,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - ''
+  - std.string.contains:
+    - var: subject
+    - ''
   target: text
 ```
 
@@ -111,8 +109,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-005
 title: evaluate-only sibling branches remain valid under assert_health error
-purpose: Confirms evaluate-only non-redundant sibling branches do not trigger AH004 under
-  assert_health error mode.
+purpose: Confirms evaluate-only non-redundant sibling branches do not trigger AH004
+  under assert_health error mode.
 type: text.file
 expect:
   portable:
@@ -124,14 +122,12 @@ assert:
 - id: assert_1
   class: can
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - 'version: 1'
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - 'version: 2'
+  - std.string.contains:
+    - var: subject
+    - 'version: 1'
+  - std.string.contains:
+    - var: subject
+    - 'version: 2'
   target: text
 ```
 
@@ -140,8 +136,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-AH-006
 title: evaluate regex portability is handled without sugar diagnostics
-purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level portability
-  diagnostics.
+purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level
+  portability diagnostics.
 type: text.file
 expect:
   portable:
@@ -153,9 +149,8 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - '(?<=version: )1'
+  - std.string.regex_match:
+    - var: subject
+    - '(?<=version: )1'
   target: text
 ```

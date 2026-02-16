@@ -32,11 +32,10 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - std.object.get:
-        - {var: subject}
-        - check_id
-      - library.legacy_definitions_key_forbidden
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - check_id
+    - library.legacy_definitions_key_forbidden
   target: summary_json
 ```

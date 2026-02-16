@@ -15,11 +15,11 @@ def test_compile_evaluate_leaf_to_spec_lang_expr() -> None:
         "type": "cli.run",
         "assert": [
             {
+                "id": "assert_1",
+                "class": "must",
                 "target": "stdout",
-                "must": [
-                    {
-                        "evaluate": [{"contains": [{"var": "subject"}, "ok"]}],
-                    }
+                "checks": [
+                    {"std.string.contains": [{"var": "subject"}, "ok"]},
                 ],
             },
         ],
@@ -41,30 +41,30 @@ def test_compile_evaluate_leaf_to_spec_lang_expr() -> None:
     assert len(leaves) == 1
     leaf = leaves[0]
     assert leaf.op == "evaluate"
-    assert leaf.expr == ["contains", ["var", "subject"], "ok"]
+    assert leaf.expr == ["std.string.contains", ["var", "subject"], "ok"]
     assert leaf.subject_key == "stdout"
 
 
-def test_compile_non_evaluate_ops_are_rejected() -> None:
-    with pytest.raises(ValueError, match="unsupported op for cli.run.stdout: contain"):
+def test_compile_explicit_evaluate_leaf_is_rejected() -> None:
+    with pytest.raises(ValueError, match="explicit evaluate leaf is not supported"):
         compile_assert_tree(
-            [{"target": "stdout", "must": [{"contain": ["x"]}]}],
+            [{"id": "assert_1", "class": "must", "target": "stdout", "checks": [{"evaluate": {"std.logic.eq": [1, 1]}}]}],
             type_name="cli.run",
         )
 
 
 def test_compile_evaluate_is_universal_across_targets() -> None:
     tree = compile_assert_tree(
-        [{"target": "status", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "200"]}]}]}],
+        [{"id": "assert_1", "class": "must", "target": "status", "checks": [{"std.string.contains": [{"var": "subject"}, "200"]}]}],
         type_name="api.http",
     )
     assert isinstance(tree, GroupNode)
 
 
-def test_compile_only_evaluate_supported_matrix() -> None:
-    with pytest.raises(ValueError, match="unsupported op for cli.run.stdout: json_type"):
+def test_compile_expression_leaf_requires_valid_mapping_ast() -> None:
+    with pytest.raises(ValueError, match="operator args must be a list"):
         compile_assert_tree(
-            [{"target": "stdout", "must": [{"json_type": ["array"]}]}],
+            [{"id": "assert_1", "class": "must", "target": "stdout", "checks": [{"not_an_expr": "array"}]}],
             type_name="cli.run",
         )
 

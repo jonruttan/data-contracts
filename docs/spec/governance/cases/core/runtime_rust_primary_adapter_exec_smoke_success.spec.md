@@ -45,23 +45,22 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - {var: subject}
-      - 0
+  - std.logic.eq:
+    - var: subject
+    - 0
   target: violation_count
 - id: assert_2
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - passed
       - true
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - check_id
       - runtime.rust_adapter_exec_smoke
   target: summary_json

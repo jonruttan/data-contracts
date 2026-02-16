@@ -101,26 +101,19 @@ def _compile_legacy_assert_node(
     if not target:
         raise ValueError("assertion leaf requires inherited target from a parent group")
 
-    leaves: list[InternalAssertNode] = []
-    for op, raw_values in raw_assert.items():
-        if not isinstance(raw_values, list):
-            raise TypeError(f"assertion op '{op}' must be a list")
-        for value in raw_values:
-            leaves.append(
-                _compile_leaf_op(
-                    op=op,
-                    value=value,
-                    target=target,
-                    type_name=type_name,
-                    assert_path=assert_path,
-                )
-            )
-
-    if not leaves:
-        raise ValueError("assertion missing an op key (use evaluate:)")
-    if len(leaves) == 1:
-        return leaves[0]
-    return GroupNode(op="must", target=target, children=leaves, assert_path=assert_path)
+    if "evaluate" in raw_assert:
+        raise ValueError("explicit evaluate leaf is not supported; use expression mapping directly")
+    try:
+        expr = compile_yaml_expr_to_sexpr(raw_assert, field_path=assert_path)
+    except SpecLangYamlAstError as exc:
+        raise ValueError(str(exc)) from exc
+    return PredicateLeaf(
+        target=target,
+        subject_key=target,
+        op="evaluate",
+        expr=expr,
+        assert_path=assert_path,
+    )
 
 
 def _looks_like_assert_step(item: Any) -> bool:

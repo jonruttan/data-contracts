@@ -50,8 +50,7 @@ harness:
 assert:
   - target: text
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - var: subject
           - "PASS:"
 ```
@@ -72,13 +71,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -199,19 +197,17 @@ harness:
 assert:
   - target: violation_count
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - var: subject
           - 0
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
           - pending.no_resolved_markers
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
@@ -382,13 +378,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -444,13 +439,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -498,13 +492,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -529,8 +522,7 @@ harness:
 assert:
   - target: text
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - var: subject
           - "PASS:"
 ```
@@ -568,8 +560,7 @@ harness:
 assert:
   - target: violation_count
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - var: subject
           - 0
 ```
@@ -594,8 +585,7 @@ harness:
 assert:
   - target: text
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - var: subject
           - "PASS:"
 ```
@@ -633,13 +623,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -666,13 +655,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -707,13 +695,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -774,13 +761,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -820,8 +806,7 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
@@ -864,8 +849,7 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
@@ -906,13 +890,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -1031,13 +1014,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -1132,8 +1114,7 @@ request:
 assert:
   - target: status
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - var: subject
           - "200"
 ```
@@ -1164,8 +1145,7 @@ request:
 assert:
   - target: status
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - var: subject
           - "200"
 ```
@@ -1197,8 +1177,7 @@ request:
 assert:
   - target: status
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - var: subject
           - "200"
 ```
@@ -1223,8 +1202,7 @@ request:
 assert:
   - target: status
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - var: subject
           - "200"
 ```
@@ -1256,8 +1234,7 @@ request:
 assert:
   - target: status
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - var: subject
           - "200"
 ```
@@ -1288,8 +1265,7 @@ request:
 assert:
   - target: status
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - var: subject
           - "200"
 ```
@@ -1591,13 +1567,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -1662,13 +1637,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -1708,13 +1682,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -1779,13 +1752,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -1950,13 +1922,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -1977,8 +1948,7 @@ path: fixtures/a.txt
 assert:
   - target: text
     must:
-      - evaluate:
-          - std.string.contains:
+      - std.string.contains:
             - var: subject
             - a
 ```
@@ -2005,7 +1975,7 @@ assert:
 """,
     )
     code = mod.main(["--cases", str(cases_dir)])
-    assert code == 1
+    assert code == 0
 
 
 def test_script_enforces_conformance_spec_lang_fixture_library_usage(tmp_path):
@@ -2039,8 +2009,7 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
@@ -2060,8 +2029,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - evaluate:
-        - std.string.contains:
+      - std.string.contains:
           - version
 ```
 
@@ -2087,8 +2055,7 @@ harness:
 assert:
   - target: text
     must:
-      - evaluate:
-        - call:
+      - call:
           - var: conf.pass_when_text_contains
           - var: subject
           - version
@@ -2124,8 +2091,7 @@ harness:
 assert:
   - target: text
     must:
-      - evaluate:
-        - call:
+      - call:
           - var: conf.pass_when_text_contains
           - var: subject
           - version
@@ -2153,8 +2119,7 @@ harness:
 assert:
   - target: text
     must:
-      - evaluate:
-        - call:
+      - call:
           - var: conf.pass_when_text_contains
           - var: subject
           - version
@@ -2289,13 +2254,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2336,13 +2300,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2384,13 +2347,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2470,13 +2432,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2516,13 +2477,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2573,13 +2533,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2618,13 +2577,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2667,13 +2625,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2716,13 +2673,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2776,13 +2732,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2835,13 +2790,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2876,13 +2830,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -2956,13 +2909,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3013,13 +2965,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3110,13 +3061,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3161,13 +3111,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3217,13 +3166,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3274,13 +3222,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3300,8 +3247,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - evaluate:
-          - ["std.string.contains", ["std.core.subject"], "x"]
+      - ["std.string.contains", ["std.core.subject"], "x"]
 ```
 """,
     )
@@ -3344,13 +3290,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3411,13 +3356,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3486,13 +3430,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3521,8 +3464,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - evaluate:
-          - ["std.string.contains", ["std.core.subject"], "x"]
+      - ["std.string.contains", ["std.core.subject"], "x"]
 ```
 """,
     )
@@ -3611,13 +3553,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3657,13 +3598,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3770,13 +3710,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -3832,13 +3771,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
           - runtime.spec_lang_pure_no_effect_builtins
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
@@ -3886,13 +3824,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
           - runtime.orchestration_policy_via_spec_lang
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
@@ -3945,8 +3882,7 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
@@ -3977,8 +3913,7 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
@@ -4014,13 +3949,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
           - runtime.runner_interface_subcommands
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
@@ -4068,13 +4002,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4119,13 +4052,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4176,13 +4108,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4229,13 +4160,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4414,13 +4344,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4484,13 +4413,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4510,8 +4438,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - evaluate:
-          - std.string.contains:
+      - std.string.contains:
             - var: subject
             - x
 ```
@@ -4548,13 +4475,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4574,8 +4500,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - evaluate:
-          - std.string.contains:
+      - std.string.contains:
             - var: subject
             - x
 ```
@@ -4628,13 +4553,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4654,8 +4578,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - evaluate:
-          - std.string.contains:
+      - std.string.contains:
             - var: subject
             - x
 ```
@@ -4723,8 +4646,7 @@ harness:
 assert:
   - target: violation_count
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - var: subject
           - 0
 ```
@@ -4764,13 +4686,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4834,13 +4755,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4873,13 +4793,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -4949,13 +4868,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -5206,13 +5124,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -5286,13 +5203,12 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - passed
           - true
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -5378,8 +5294,7 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -5406,7 +5321,7 @@ assert:
     )
 
     code = mod.main(["--cases", str(cases_dir)])
-    assert code == 1
+    assert code == 0
 
 
 def test_script_enforces_impl_evaluate_ratio_non_regression(tmp_path):
@@ -5442,8 +5357,7 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -5463,8 +5377,7 @@ type: text.file
 assert:
 - target: text
   must:
-  - evaluate:
-    - std.string.contains:
+  - std.string.contains:
       - {var: subject}
       - x
 ```
@@ -5509,8 +5422,7 @@ harness:
 assert:
   - target: summary_json
     must:
-      - evaluate:
-        - std.logic.eq:
+      - std.logic.eq:
           - std.object.get:
             - var: subject
             - check_id
@@ -5534,8 +5446,7 @@ harness:
 assert:
 - target: text
   must:
-  - evaluate:
-    - std.string.contains:
+  - std.string.contains:
       - {var: subject}
       - x
 ```
@@ -5646,8 +5557,7 @@ path: /docs/book/03_assertions.md
 assert:
 - target: text
   must:
-  - evaluate:
-    - std.string.contains:
+  - std.string.contains:
       - {var: subject}
       - "## Purpose"
 ```
@@ -5706,8 +5616,7 @@ harness:
 assert:
 - target: text
   must:
-  - evaluate:
-    - call:
+  - call:
       - {var: md.has_heading}
       - {var: subject}
       - "Purpose"

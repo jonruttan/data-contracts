@@ -42,8 +42,7 @@ harness:
 assert:
   - target: text
     must:
-      - evaluate:
-        - call:
+      - call:
           - {var: dom.fn}
           - {var: subject}
 ```

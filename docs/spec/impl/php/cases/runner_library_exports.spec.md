@@ -40,9 +40,8 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '# PHP Spec Runner Library Export References'
+  - std.string.contains:
+    - var: subject
+    - '# PHP Spec Runner Library Export References'
   target: text
 ```

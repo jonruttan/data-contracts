@@ -77,21 +77,11 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
         raise ValueError("assertion leaf requires inherited target from a parent group")
     if any(k in leaf for k in ("must", "can", "cannot")):
         raise ValueError("leaf assertion must not include group keys")
-    known_ops = {"evaluate"}
-
-    any_found = False
-    for op, raw in leaf.items():
-        if op not in known_ops:
-            raise ValueError(f"unsupported op: {op}")
-        any_found = True
-        if not isinstance(raw, list):
-            raise TypeError(f"assertion op '{op}' must be a list")
-        canonical = op
-        is_true = True
-        for v in raw:
-            yield target, canonical, v, is_true
-    if not any_found:
-        raise ValueError("assertion missing an op key (use evaluate:)")
+    if "evaluate" in leaf:
+        raise ValueError("explicit evaluate leaf is not supported; use expression mapping directly")
+    if not leaf:
+        raise ValueError("assertion leaf must be a non-empty expression mapping")
+    yield target, "evaluate", leaf, True
 
 
 def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:

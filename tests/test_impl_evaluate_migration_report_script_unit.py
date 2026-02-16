@@ -53,8 +53,7 @@ type: text.file
 assert:
 - target: text
   must:
-  - evaluate:
-    - contains:
+  - contains:
       - {var: subject}
       - token
 ```
@@ -75,6 +74,6 @@ assert:
     assert code == 0
     payload = json.loads(out_json.read_text(encoding="utf-8"))
     assert payload["summary"]["total_cases"] == 2
-    assert payload["summary"]["classification_counts"]["convertible_now_simple"] == 1
-    assert payload["summary"]["classification_counts"]["already_evaluate_primary"] == 1
+    assert payload["summary"]["classification_counts"]["already_evaluate_primary"] == 2
+    assert "convertible_now_simple" not in payload["summary"]["classification_counts"]
     assert "Impl Evaluate Migration" in out_md.read_text(encoding="utf-8")

@@ -15,7 +15,7 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - std.type.json_type:
         - std.json.parse:
@@ -49,22 +49,21 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.and:
+  - std.logic.and:
+    - std.logic.eq:
+      - std.type.json_type:
+        - std.object.get:
+          - std.json.parse:
+            - '{"id":"x"}'
+          - id
+        - string
+      - true
+    - std.logic.not:
       - std.logic.eq:
-        - std.type.json_type:
-          - std.object.get:
-            - std.json.parse:
-              - '{"id":"x"}'
-            - id
-          - string
-        - true
-      - std.logic.not:
-        - std.logic.eq:
-          - std.object.get:
-            - std.json.parse:
-              - '{"id":"x"}'
-            - id
-          - 1
+        - std.object.get:
+          - std.json.parse:
+            - '{"id":"x"}'
+          - id
+        - 1
   target: text
 ```

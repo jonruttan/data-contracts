@@ -20,10 +20,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - port-shell-ok
+  - std.string.contains:
+    - var: subject
+    - port-shell-ok
   target: stdout
 ```
 
@@ -32,7 +31,8 @@ assert:
 ```yaml spec-test
 id: SRPHP-PORT-002
 title: process env passthrough remains stringly typed
-purpose: Verifies env values passed through cli.run are observed as strings by child processes.
+purpose: Verifies env values passed through cli.run are observed as strings by child
+  processes.
 type: cli.run
 argv:
 - echo x:$X_PORT_BOOL y:$X_PORT_NUM
@@ -50,10 +50,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - x:true y:7
+  - std.string.contains:
+    - var: subject
+    - x:true y:7
   target: stdout
 ```
 
@@ -77,9 +76,8 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - path_target.txt
+  - std.string.contains:
+    - var: subject
+    - path_target.txt
   target: stdout_path
 ```

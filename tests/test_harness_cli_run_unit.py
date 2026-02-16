@@ -42,14 +42,14 @@ def test_cli_type_accepts_string_argv_and_systemexit(tmp_path, monkeypatch, caps
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-001",
             "type": "cli.run",
             "argv": "plugins",
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "list"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "list"]}]}],
         },
     )
 
@@ -65,14 +65,14 @@ def test_cli_type_unsupported_stdout_json_type_raises(tmp_path, monkeypatch, cap
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-002",
             "type": "cli.run",
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "nope"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "nope"]}]}],
         },
     )
 
@@ -89,14 +89,14 @@ def test_cli_type_stdout_json_dict(tmp_path, monkeypatch, capsys):
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-003",
             "type": "cli.run",
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "dict"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "dict"]}]}],
         },
     )
 
@@ -113,7 +113,7 @@ def test_cli_type_contain_regex_and_cannot(tmp_path, monkeypatch, capsys):
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-004",
             "type": "cli.run",
@@ -124,11 +124,11 @@ def test_cli_type_contain_regex_and_cannot(tmp_path, monkeypatch, capsys):
                 {
                     "target": "stdout",
                     "must": [
-                        {"evaluate": [{"contains": [{"var": "subject"}, "hello"]}]},
-                        {"evaluate": [{"regex_match": [{"var": "subject"}, "world\\s*$"]}]},
+                        {"contains": [{"var": "subject"}, "hello"]},
+                        {"regex_match": [{"var": "subject"}, "world\\s*$"]},
                     ],
                 },
-                {"target": "stderr", "cannot": [{"evaluate": [{"contains": [{"var": "subject"}, "ERROR:"]}]}]},
+                {"target": "stderr", "cannot": [{"contains": [{"var": "subject"}, "ERROR:"]}]},
             ],
         },
     )
@@ -148,14 +148,14 @@ def test_cli_type_stdout_path_text(tmp_path, monkeypatch, capsys):
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-005",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout_path_text", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "hello"]}]}]}],
+            "assert": [{"target": "stdout_path_text", "must": [{"contains": [{"var": "subject"}, "hello"]}]}],
         },
     )
 
@@ -171,14 +171,14 @@ def test_cli_type_errors_on_unknown_target(tmp_path, monkeypatch, capsys):
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-006",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "nope", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "x"]}]}]}],
+            "assert": [{"target": "nope", "must": [{"contains": [{"var": "subject"}, "x"]}]}],
         },
     )
 
@@ -198,14 +198,14 @@ def test_cli_type_stdout_path_supports_text_sugar_ops(tmp_path, monkeypatch, cap
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-007",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout_path", "must": [{"evaluate": [{"contains": [{"var": "subject"}, ".md"]}]}]}],
+            "assert": [{"target": "stdout_path", "must": [{"contains": [{"var": "subject"}, ".md"]}]}],
         },
     )
 
@@ -217,7 +217,7 @@ def test_cli_type_stdout_path_supports_text_sugar_ops(tmp_path, monkeypatch, cap
 def test_cli_type_unsupported_op_raises(tmp_path, monkeypatch, capsys):
     ep = _install_sut(monkeypatch, lambda _argv: 0)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-008",
             "type": "cli.run",
@@ -230,7 +230,7 @@ def test_cli_type_unsupported_op_raises(tmp_path, monkeypatch, capsys):
 
     from spec_runner.harnesses.cli_run import run
 
-    with pytest.raises(ValueError, match="unsupported op"):
+    with pytest.raises(ValueError, match="unsupported spec_lang symbol"):
         run(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
 
@@ -247,7 +247,7 @@ def test_cli_type_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-011",
             "type": "cli.run",
@@ -258,7 +258,7 @@ def test_cli_type_supports_env_and_setup_files(tmp_path, monkeypatch, capsys):
                 "setup_files": [{"path": "cfg.txt", "text": "hello"}],
                 "env": {"X_CFG": "cfg.txt"},
             },
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "hello"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"contains": [{"var": "subject"}, "hello"]}]}],
         },
     )
 
@@ -277,14 +277,14 @@ def test_cli_type_can_stub_modules(tmp_path, monkeypatch, capsys):
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-014",
             "type": "cli.run",
             "argv": ["plugins"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stub_modules": ["openai"]},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "ok"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"contains": [{"var": "subject"}, "ok"]}]}],
         },
     )
 
@@ -301,14 +301,14 @@ def test_cli_type_can_inject_stdin_text_and_isatty(tmp_path, monkeypatch, capsys
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-012",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stdin_isatty": False, "stdin_text": "hello"},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "stdin=hello"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"contains": [{"var": "subject"}, "stdin=hello"]}]}],
         },
     )
 
@@ -325,7 +325,7 @@ def test_cli_type_can_group_or_semantics(tmp_path, monkeypatch, capsys):
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-010",
             "type": "cli.run",
@@ -333,8 +333,13 @@ def test_cli_type_can_group_or_semantics(tmp_path, monkeypatch, capsys):
             "exit_code": 0,
             "harness": {"entrypoint": ep},
             "assert": [
-                {"can": [{"target": "stderr", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "INFO:"]}]}]}, {"target": "stderr", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "WARN:"]}]}]}]},
-                {"target": "stderr", "cannot": [{"evaluate": [{"contains": [{"var": "subject"}, "ERROR:"]}]}]},
+                {
+                    "can": [
+                        {"target": "stderr", "must": [{"contains": [{"var": "subject"}, "INFO:"]}]},
+                        {"target": "stderr", "must": [{"contains": [{"var": "subject"}, "WARN:"]}]},
+                    ]
+                },
+                {"target": "stderr", "cannot": [{"contains": [{"var": "subject"}, "ERROR:"]}]},
             ],
         },
     )
@@ -351,14 +356,14 @@ def test_cli_type_cannot_json_type(tmp_path, monkeypatch, capsys):
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-017",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "cannot": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "list"]}]}]}],
+            "assert": [{"target": "stdout", "cannot": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "list"]}]}],
         },
     )
 
@@ -386,14 +391,14 @@ def test_cli_type_hook_runs_after_command(tmp_path, monkeypatch, capsys):
     hook_ep = _install_hook(monkeypatch, hook)
 
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-015",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "hook_after": hook_ep, "hook_kwargs": {"extra": "v"}},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "dict"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"json_type": [{"json_parse": [{"var": "subject"}]}, "dict"]}]}],
         },
     )
 
@@ -423,14 +428,14 @@ def test_cli_type_hook_before_runs_before_command(tmp_path, monkeypatch, capsys)
     hook_ep = _install_hook(monkeypatch, hook_before)
 
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-016",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "hook_before": hook_ep, "hook_kwargs": {"extra": "v2"}},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "yes"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"contains": [{"var": "subject"}, "yes"]}]}],
         },
     )
 
@@ -455,27 +460,27 @@ def test_cli_type_stub_modules_do_not_leak_between_cases(tmp_path, monkeypatch, 
     from spec_runner.harnesses.cli_run import run
 
     case_with_stub = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-018",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "stub_modules": [mod_name]},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "imported"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"contains": [{"var": "subject"}, "imported"]}]}],
         },
     )
     run(case_with_stub, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
 
     case_without_stub = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-019",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "missing"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"contains": [{"var": "subject"}, "missing"]}]}],
         },
     )
     run(case_without_stub, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
@@ -484,7 +489,7 @@ def test_cli_type_stub_modules_do_not_leak_between_cases(tmp_path, monkeypatch, 
 def test_cli_type_setup_files_rejects_absolute_path(tmp_path, monkeypatch, capsys):
     ep = _install_sut(monkeypatch, lambda _argv: 0)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-020",
             "type": "cli.run",
@@ -505,7 +510,7 @@ def test_cli_type_setup_files_rejects_absolute_path(tmp_path, monkeypatch, capsy
 def test_cli_type_setup_files_rejects_path_escape(tmp_path, monkeypatch, capsys):
     ep = _install_sut(monkeypatch, lambda _argv: 0)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-021",
             "type": "cli.run",
@@ -525,7 +530,7 @@ def test_cli_type_setup_files_rejects_path_escape(tmp_path, monkeypatch, capsys)
 
 def test_cli_type_requires_explicit_entrypoint(tmp_path, monkeypatch, capsys):
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-022",
             "type": "cli.run",
@@ -544,7 +549,7 @@ def test_cli_type_requires_explicit_entrypoint(tmp_path, monkeypatch, capsys):
 def test_cli_type_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsys):
     ep = _install_sut(monkeypatch, lambda _argv: 0)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-023",
             "type": "cli.run",
@@ -556,11 +561,11 @@ def test_cli_type_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsys
                 {
                     "target": "stdout",
                     "can": [
-                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
-                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                        {"contains": [{"var": "subject"}, ""]},
+                        {"contains": [{"var": "subject"}, ""]},
                     ],
                 },
-                {"target": "stderr", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "WARN: ASSERT_HEALTH AH004"]}]}]},
+                {"target": "stderr", "must": [{"contains": [{"var": "subject"}, "WARN: ASSERT_HEALTH AH004"]}]},
             ],
         },
     )
@@ -573,7 +578,7 @@ def test_cli_type_assert_health_warn_emits_warning(tmp_path, monkeypatch, capsys
 def test_cli_type_assert_health_error_fails(tmp_path, monkeypatch, capsys):
     ep = _install_sut(monkeypatch, lambda _argv: 0)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-024",
             "type": "cli.run",
@@ -585,8 +590,8 @@ def test_cli_type_assert_health_error_fails(tmp_path, monkeypatch, capsys):
                 {
                     "target": "stdout",
                     "can": [
-                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
-                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                        {"contains": [{"var": "subject"}, ""]},
+                        {"contains": [{"var": "subject"}, ""]},
                     ],
                 }
             ],
@@ -602,14 +607,14 @@ def test_cli_type_assert_health_error_fails(tmp_path, monkeypatch, capsys):
 def test_cli_type_failure_includes_case_and_assert_context(tmp_path, monkeypatch, capsys):
     ep = _install_sut(monkeypatch, lambda _argv: 0)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-025",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "missing-value"]}]}]}],
+            "assert": [{"target": "stdout", "must": [{"contains": [{"var": "subject"}, "missing-value"]}]}],
         },
     )
 
@@ -627,7 +632,7 @@ def test_cli_type_failure_includes_case_and_assert_context(tmp_path, monkeypatch
 def test_cli_type_assert_health_warns_on_redundant_branches(tmp_path, monkeypatch, capsys):
     ep = _install_sut(monkeypatch, lambda _argv: 0)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-026",
             "type": "cli.run",
@@ -639,11 +644,11 @@ def test_cli_type_assert_health_warns_on_redundant_branches(tmp_path, monkeypatc
                 {
                     "target": "stdout",
                     "can": [
-                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
-                        {"evaluate": [{"contains": [{"var": "subject"}, ""]}]},
+                        {"contains": [{"var": "subject"}, ""]},
+                        {"contains": [{"var": "subject"}, ""]},
                     ],
                 },
-                {"target": "stderr", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "WARN: ASSERT_HEALTH AH004"]}]}]},
+                {"target": "stderr", "must": [{"contains": [{"var": "subject"}, "WARN: ASSERT_HEALTH AH004"]}]},
             ],
         },
     )
@@ -655,7 +660,7 @@ def test_cli_type_assert_health_warns_on_redundant_branches(tmp_path, monkeypatc
 
 def test_cli_type_rejects_entrypoint_without_colon(tmp_path, monkeypatch, capsys):
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-027",
             "type": "cli.run",
@@ -673,7 +678,7 @@ def test_cli_type_rejects_entrypoint_without_colon(tmp_path, monkeypatch, capsys
 
 def test_cli_type_rejects_missing_entrypoint_module(tmp_path, monkeypatch, capsys):
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-028",
             "type": "cli.run",
@@ -693,7 +698,7 @@ def test_cli_type_rejects_missing_entrypoint_attribute(tmp_path, monkeypatch, ca
     m = types.ModuleType("spec_runner_test_missing_attr")
     monkeypatch.setitem(sys.modules, "spec_runner_test_missing_attr", m)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-029",
             "type": "cli.run",
@@ -715,7 +720,7 @@ def test_cli_type_safe_mode_requires_explicit_entrypoint(tmp_path, monkeypatch, 
         return 0
 
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-033",
             "type": "cli.run",
@@ -749,7 +754,7 @@ def test_cli_type_safe_mode_forbids_hooks(tmp_path, monkeypatch, capsys):
     ep = _install_sut(monkeypatch, fake_main)
     hook_ep = _install_hook(monkeypatch, hook_after)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-034",
             "type": "cli.run",
@@ -780,7 +785,7 @@ def test_cli_type_expr_operator(tmp_path, monkeypatch, capsys):
 
     ep = _install_sut(monkeypatch, fake_main)
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-EXPR-001",
             "type": "cli.run",
@@ -792,13 +797,9 @@ def test_cli_type_expr_operator(tmp_path, monkeypatch, capsys):
                     "target": "stdout",
                     "must": [
                         {
-                            "evaluate": [
-                                {
-                                    "and": [
-                                        {"contains": ["hello"]},
-                                        {"contains": ["world"]},
-                                    ]
-                                }
+                            "and": [
+                                {"contains": ["hello"]},
+                                {"contains": ["world"]},
                             ]
                         }
                     ],
@@ -823,14 +824,14 @@ def test_cli_type_expr_runtime_budget_failure(tmp_path, monkeypatch, capsys):
         deep = {"not": [{"not": [deep]}]}
 
     case = SpecDocTest(
-        doc_path=Path("docs/spec/cli.md"),
+        doc_path=tmp_path / "cli.md",
         test={
             "id": "SR-CLI-UNIT-EXPR-002",
             "type": "cli.run",
             "argv": ["x"],
             "exit_code": 0,
             "harness": {"entrypoint": ep, "spec_lang": {"max_steps": 10}},
-            "assert": [{"target": "stdout", "must": [{"evaluate": [deep]}]}],
+            "assert": [{"target": "stdout", "must": [deep]}],
         },
     )
 

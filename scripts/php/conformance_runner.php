@@ -462,6 +462,29 @@ function lintAssertionHealth(mixed $node, string $path = 'assert', ?string $grou
     if (!is_array($node)) {
         return $diags;
     }
+    $stepClass = trim((string)($node['class'] ?? ''));
+    if (in_array($stepClass, ['must', 'can', 'cannot'], true) && array_key_exists('checks', $node)) {
+        $checks = $node['checks'];
+        if (is_array($checks) && isListArray($checks)) {
+            $seen = [];
+            foreach ($checks as $child) {
+                $key = @json_encode($child, JSON_UNESCAPED_SLASHES);
+                if (!is_string($key) || $key === '') {
+                    $key = serialize($child);
+                }
+                if (array_key_exists($key, $seen)) {
+                    $diags[] = [
+                        'code' => 'AH004',
+                        'path' => "{$path}.checks",
+                        'message' => "redundant sibling assertion branch in '{$stepClass}'",
+                    ];
+                    break;
+                }
+                $seen[$key] = true;
+            }
+        }
+        return array_merge($diags, lintAssertionHealth($checks, "{$path}.checks", $stepClass));
+    }
     foreach (['must', 'can', 'cannot'] as $group) {
         if (array_key_exists($group, $node)) {
             $children = $node[$group];
@@ -1604,37 +1627,18 @@ function loadChainImportedSymbolsForCase(string $fixturePath, array $case, array
     return $out;
 }
 
-function compileLeafExpr(string $op, mixed $value, string $target): array {
-    if ($op === 'evaluate') {
-        $compiled = compileYamlExprToSexpr($value, "evaluate");
-        if (!is_array($compiled) || !isListArray($compiled)) {
-            throw new SchemaError('evaluate expression must compile to a list-based s-expr');
-        }
-        return $compiled;
+function compileAssertionLeafExpr(array $leaf, string $path): array {
+    if (array_key_exists('evaluate', $leaf)) {
+        throw new SchemaError('explicit evaluate leaf is not supported; use expression mapping directly');
     }
-    if ($op === 'contain') {
-        return ['std.string.contains', ['std.core.subject'], (string)$value];
+    if (count($leaf) === 0) {
+        throw new SchemaError('assertion leaf must be a non-empty expression mapping');
     }
-    if ($op === 'regex') {
-        return ['std.string.regex_match', ['std.core.subject'], (string)$value];
+    $compiled = compileYamlExprToSexpr($leaf, $path);
+    if (!is_array($compiled) || !isListArray($compiled)) {
+        throw new SchemaError('assertion expression must compile to a list-based s-expr');
     }
-    if ($op === 'json_type') {
-        $want = specLangNormalizeJsonTypeToken($value);
-        if (!in_array($want, ['null', 'bool', 'number', 'string', 'list', 'dict'], true)) {
-            throw new SchemaError("unsupported json_type: {$value}");
-        }
-        if ($target === 'body_json') {
-            return ['std.type.json_type', ['std.core.subject'], $want];
-        }
-        return ['std.type.json_type', ['std.json.parse', ['std.core.subject']], $want];
-    }
-    if ($op === 'exists') {
-        if ($value !== true && $value !== null) {
-            throw new SchemaError('exists only supports value: true (or null)');
-        }
-        return ['std.logic.eq', ['std.core.subject'], true];
-    }
-    throw new SchemaError("unsupported op: {$op}");
+    return $compiled;
 }
 
 function assertLeafPredicate(
@@ -1649,15 +1653,6 @@ function assertLeafPredicate(
     array $specLangImports = []
 ): void {
     if (!specLangEvalPredicate($expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports)) {
-        if ($op === 'json_type') {
-            $want = '';
-            if (is_array($expr) && count($expr) >= 3) {
-                $want = (string)$expr[2];
-            }
-            throw new AssertionFailure(
-                "[case_id={$caseId} assert_path={$path} target={$target} op=json_type] json_type({$want}) failed"
-            );
-        }
         $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
         throw new AssertionFailure(
             "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
@@ -1675,19 +1670,8 @@ function evalTextLeaf(
     array $specLangSymbols,
     array $specLangImports
 ): void {
-    foreach ($leaf as $op => $raw) {
-        if ($op === 'target') {
-            continue;
-        }
-        if (!is_array($raw) || !isListArray($raw)) {
-            throw new SchemaError("assertion op '{$op}' must be a list");
-        }
-        foreach ($raw as $value) {
-            $expr = compileLeafExpr($op, $value, $target);
-            $subjectForOp = $op === 'exists' ? (is_string($subject) ? trim($subject) !== '' : true) : $subject;
-            assertLeafPredicate($caseId, $path, $target, $op, $expr, $subjectForOp, $specLangLimits, $specLangSymbols, $specLangImports);
-        }
-    }
+    $expr = compileAssertionLeafExpr($leaf, $path);
+    assertLeafPredicate($caseId, $path, $target, 'evaluate', $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
 }
 
 function evalTextAssertNode(
@@ -1719,6 +1703,94 @@ function evalTextAssertNode(
     }
     if (!is_array($node)) {
         throw new SchemaError('assert node must be a mapping or list');
+    }
+    $stepClass = trim((string)($node['class'] ?? ''));
+    if (in_array($stepClass, ['must', 'can', 'cannot'], true) && array_key_exists('checks', $node)) {
+        $stepId = trim((string)($node['id'] ?? ''));
+        if ($stepId === '') {
+            throw new SchemaError("{$path}.id must be a non-empty string");
+        }
+        $extra = array_diff(array_keys($node), ['id', 'class', 'target', 'checks']);
+        if (count($extra) > 0) {
+            throw new SchemaError('unknown key in assert step: ' . (string)array_values($extra)[0]);
+        }
+        $target = trim((string)($node['target'] ?? ''));
+        if ($target === '') {
+            $target = $inheritedTarget ?? '';
+        }
+        $children = $node['checks'];
+        if (!is_array($children) || !isListArray($children)) {
+            throw new SchemaError('assert step checks must be a list');
+        }
+        if (count($children) === 0) {
+            throw new SchemaError('assert step checks must not be empty');
+        }
+        $stepPath = "{$path}<{$stepId}>";
+        if ($stepClass === 'must') {
+            foreach ($children as $i => $child) {
+                evalTextAssertNode(
+                    $child,
+                    $subject,
+                    $contextJson,
+                    $target,
+                    $caseId,
+                    "{$stepPath}.checks[{$i}]",
+                    $specLangLimits,
+                    $specLangSymbols,
+                    $specLangImports
+                );
+            }
+            return;
+        }
+        if ($stepClass === 'can') {
+            $anyPassed = false;
+            foreach ($children as $i => $child) {
+                try {
+                    evalTextAssertNode(
+                        $child,
+                        $subject,
+                        $contextJson,
+                        $target,
+                        $caseId,
+                        "{$stepPath}.checks[{$i}]",
+                        $specLangLimits,
+                        $specLangSymbols,
+                        $specLangImports
+                    );
+                    $anyPassed = true;
+                    break;
+                } catch (AssertionFailure $e) {
+                    // Continue trying other branches.
+                }
+            }
+            if (!$anyPassed) {
+                throw new AssertionFailure("all 'can' branches failed");
+            }
+            return;
+        }
+        $passed = 0;
+        foreach ($children as $i => $child) {
+            try {
+                evalTextAssertNode(
+                    $child,
+                    $subject,
+                    $contextJson,
+                    $target,
+                    $caseId,
+                    "{$stepPath}.checks[{$i}]",
+                    $specLangLimits,
+                    $specLangSymbols,
+                    $specLangImports
+                );
+                $passed += 1;
+            } catch (AssertionFailure $e) {
+                // Expected failing branch for cannot.
+            }
+        }
+        if ($passed > 0) {
+            throw new AssertionFailure("'cannot' failed: {$passed} branch(es) passed");
+        }
+        return;
     }
     $target = $inheritedTarget;
     if (array_key_exists('target', $node)) {
@@ -2223,102 +2295,35 @@ function evalApiHttpLeaf(
     array $specLangSymbols,
     array $specLangImports
 ): void {
-    foreach ($leaf as $op => $raw) {
-        if ($op === 'target') {
-            continue;
-        }
-        if (!is_array($raw) || !isListArray($raw)) {
-            throw new SchemaError("assertion op '{$op}' must be a list");
-        }
-        if ($target === 'status' || $target === 'headers' || $target === 'body_text') {
-            $subject = $target === 'status'
-                ? (string)$resp['status']
-                : ($target === 'headers' ? (string)$resp['headers_text'] : (string)$resp['body_text']);
-            foreach ($raw as $value) {
-                $expr = compileLeafExpr($op, $value, $target);
-                $subjectForOp = $op === 'exists' ? trim((string)$subject) !== '' : $subject;
-                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subjectForOp, $specLangLimits, $specLangSymbols, $specLangImports);
-            }
-            continue;
-        }
-        if ($target === 'body_json') {
-            $parsed = $resp['body_json'] ?? null;
-            $jsonText = json_encode($parsed, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            if ($jsonText === false) {
-                throw new RuntimeException('failed to serialize body_json');
-            }
-            foreach ($raw as $value) {
-                $expr = compileLeafExpr($op, $value, $target);
-                if ($op === 'exists') {
-                    $subject = true;
-                } elseif ($op === 'evaluate' || $op === 'json_type') {
-                    $subject = $parsed;
-                } else {
-                    $subject = $jsonText;
-                }
-                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
-            }
-            continue;
-        }
-        if ($target === 'cors_json') {
-            $cors = $resp['cors_json'] ?? null;
-            foreach ($raw as $value) {
-                $expr = compileLeafExpr($op, $value, $target);
-                if ($op === 'exists') {
-                    $subject = $cors !== null;
-                } elseif ($op === 'evaluate' || $op === 'json_type') {
-                    $subject = $cors;
-                } else {
-                    $jsonText = json_encode($cors, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                    if ($jsonText === false) {
-                        throw new RuntimeException('failed to serialize cors_json');
-                    }
-                    $subject = $jsonText;
-                }
-                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
-            }
-            continue;
-        }
-        if ($target === 'steps_json') {
-            $steps = $resp['steps_json'] ?? [];
-            foreach ($raw as $value) {
-                $expr = compileLeafExpr($op, $value, $target);
-                if ($op === 'exists') {
-                    $subject = is_array($steps);
-                } elseif ($op === 'evaluate' || $op === 'json_type') {
-                    $subject = $steps;
-                } else {
-                    $jsonText = json_encode($steps, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                    if ($jsonText === false) {
-                        throw new RuntimeException('failed to serialize steps_json');
-                    }
-                    $subject = $jsonText;
-                }
-                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
-            }
-            continue;
-        }
-        if ($target === 'context_json') {
-            $context = $resp['context_json'] ?? null;
-            foreach ($raw as $value) {
-                $expr = compileLeafExpr($op, $value, $target);
-                if ($op === 'exists') {
-                    $subject = $context !== null;
-                } elseif ($op === 'evaluate' || $op === 'json_type') {
-                    $subject = $context;
-                } else {
-                    $jsonText = json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                    if ($jsonText === false) {
-                        throw new RuntimeException('failed to serialize context_json');
-                    }
-                    $subject = $jsonText;
-                }
-                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
-            }
-            continue;
-        }
-        throw new SchemaError("unknown assert target for api.http: {$target}");
+    $expr = compileAssertionLeafExpr($leaf, $path);
+    if ($target === 'status' || $target === 'headers' || $target === 'body_text') {
+        $subject = $target === 'status'
+            ? (string)$resp['status']
+            : ($target === 'headers' ? (string)$resp['headers_text'] : (string)$resp['body_text']);
+        assertLeafPredicate($caseId, $path, $target, 'evaluate', $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
+        return;
     }
+    if ($target === 'body_json') {
+        $parsed = $resp['body_json'] ?? null;
+        assertLeafPredicate($caseId, $path, $target, 'evaluate', $expr, $parsed, $specLangLimits, $specLangSymbols, $specLangImports);
+        return;
+    }
+    if ($target === 'cors_json') {
+        $cors = $resp['cors_json'] ?? null;
+        assertLeafPredicate($caseId, $path, $target, 'evaluate', $expr, $cors, $specLangLimits, $specLangSymbols, $specLangImports);
+        return;
+    }
+    if ($target === 'steps_json') {
+        $steps = $resp['steps_json'] ?? [];
+        assertLeafPredicate($caseId, $path, $target, 'evaluate', $expr, $steps, $specLangLimits, $specLangSymbols, $specLangImports);
+        return;
+    }
+    if ($target === 'context_json') {
+        $context = $resp['context_json'] ?? null;
+        assertLeafPredicate($caseId, $path, $target, 'evaluate', $expr, $context, $specLangLimits, $specLangSymbols, $specLangImports);
+        return;
+    }
+    throw new SchemaError("unknown assert target for api.http: {$target}");
 }
 
 function evalApiHttpAssertNode(
@@ -2348,6 +2353,91 @@ function evalApiHttpAssertNode(
     }
     if (!is_array($node)) {
         throw new SchemaError('assert node must be a mapping or list');
+    }
+    $stepClass = trim((string)($node['class'] ?? ''));
+    if (in_array($stepClass, ['must', 'can', 'cannot'], true) && array_key_exists('checks', $node)) {
+        $stepId = trim((string)($node['id'] ?? ''));
+        if ($stepId === '') {
+            throw new SchemaError("{$path}.id must be a non-empty string");
+        }
+        $extra = array_diff(array_keys($node), ['id', 'class', 'target', 'checks']);
+        if (count($extra) > 0) {
+            throw new SchemaError('unknown key in assert step: ' . (string)array_values($extra)[0]);
+        }
+        $target = trim((string)($node['target'] ?? ''));
+        if ($target === '') {
+            $target = $inheritedTarget ?? '';
+        }
+        $children = $node['checks'];
+        if (!is_array($children) || !isListArray($children)) {
+            throw new SchemaError('assert step checks must be a list');
+        }
+        if (count($children) === 0) {
+            throw new SchemaError('assert step checks must not be empty');
+        }
+        $stepPath = "{$path}<{$stepId}>";
+        if ($stepClass === 'must') {
+            foreach ($children as $i => $child) {
+                evalApiHttpAssertNode(
+                    $child,
+                    $resp,
+                    $target,
+                    $caseId,
+                    "{$stepPath}.checks[{$i}]",
+                    $specLangLimits,
+                    $specLangSymbols,
+                    $specLangImports
+                );
+            }
+            return;
+        }
+        if ($stepClass === 'can') {
+            $anyPassed = false;
+            foreach ($children as $i => $child) {
+                try {
+                    evalApiHttpAssertNode(
+                        $child,
+                        $resp,
+                        $target,
+                        $caseId,
+                        "{$stepPath}.checks[{$i}]",
+                        $specLangLimits,
+                        $specLangSymbols,
+                        $specLangImports
+                    );
+                    $anyPassed = true;
+                    break;
+                } catch (AssertionFailure $e) {
+                    // Continue trying other branches.
+                }
+            }
+            if (!$anyPassed) {
+                throw new AssertionFailure("all 'can' branches failed");
+            }
+            return;
+        }
+        $passed = 0;
+        foreach ($children as $i => $child) {
+            try {
+                evalApiHttpAssertNode(
+                    $child,
+                    $resp,
+                    $target,
+                    $caseId,
+                    "{$stepPath}.checks[{$i}]",
+                    $specLangLimits,
+                    $specLangSymbols,
+                    $specLangImports
+                );
+                $passed += 1;
+            } catch (AssertionFailure $e) {
+                // Expected failing branch for cannot.
+            }
+        }
+        if ($passed > 0) {
+            throw new AssertionFailure("'cannot' failed: {$passed} branch(es) passed");
+        }
+        return;
     }
     $target = $inheritedTarget;
     if (array_key_exists('target', $node)) {

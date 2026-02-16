@@ -29,18 +29,14 @@ def test_iter_leaf_assertions_requires_mapping_target_and_op_key():
     with pytest.raises(TypeError, match="assert leaf must be a mapping"):
         list(iter_leaf_assertions(["nope"]))
     with pytest.raises(ValueError, match="requires inherited target"):
-        list(iter_leaf_assertions({"evaluate": [{"eq": [1, 1]}]}))
+        list(iter_leaf_assertions({"std.logic.eq": [1, 1]}))
     with pytest.raises(ValueError, match="must not include key: target"):
         list(iter_leaf_assertions({"target": "stderr"}))
 
 
-def test_iter_leaf_assertions_requires_list_values_and_rejects_unsupported_shapes():
+def test_iter_leaf_assertions_rejects_unsupported_shapes():
     with pytest.raises(ValueError, match="must not include key: target"):
-        list(iter_leaf_assertions({"target": "stderr", "evaluate": [{"eq": [1, 1]}]}, target_override="stderr"))
-    with pytest.raises(TypeError, match="must be a list"):
-        list(iter_leaf_assertions({"evaluate": "x"}, target_override="stderr"))
-    with pytest.raises(ValueError, match="unsupported op"):
-        list(iter_leaf_assertions({"wat": ["x"]}, target_override="stderr"))
+        list(iter_leaf_assertions({"target": "stderr", "std.logic.eq": [1, 1]}, target_override="stderr"))
     with pytest.raises(ValueError, match="must not include group keys"):
         list(iter_leaf_assertions({"must": []}, target_override="stderr"))
 
@@ -49,24 +45,25 @@ def test_iter_leaf_assertions_happy_path():
     assert list(
         iter_leaf_assertions(
             {
-                "evaluate": [{"contains": ["ok"]}],
+                "std.string.contains": [{"var": "subject"}, "ok"],
             },
             target_override="stderr",
         )
     ) == [
-        ("stderr", "evaluate", {"contains": ["ok"]}, True),
+        ("stderr", "evaluate", {"std.string.contains": [{"var": "subject"}, "ok"]}, True),
     ]
 
 
 def test_iter_leaf_assertions_accepts_target_override():
-    assert list(iter_leaf_assertions({"evaluate": [{"contains": ["ok"]}]}, target_override="stderr")) == [
-        ("stderr", "evaluate", {"contains": ["ok"]}, True),
+    assert list(iter_leaf_assertions({"std.string.contains": [{"var": "subject"}, "ok"]}, target_override="stderr")) == [
+        ("stderr", "evaluate", {"std.string.contains": [{"var": "subject"}, "ok"]}, True),
     ]
 
 
-def test_iter_leaf_assertions_rejects_unknown_operator():
-    with pytest.raises(ValueError, match="unsupported op: unknown_op"):
-        list(iter_leaf_assertions({"unknown_op": ["ok"]}, target_override="stderr"))
+def test_iter_leaf_assertions_allows_unknown_operator_for_compiler_stage_validation():
+    assert list(iter_leaf_assertions({"unknown_op": ["ok"]}, target_override="stderr")) == [
+        ("stderr", "evaluate", {"unknown_op": ["ok"]}, True),
+    ]
 
 
 def test_eval_assert_tree_list_is_and():
@@ -145,15 +142,15 @@ def test_eval_assert_tree_group_target_inherited_by_children():
         {
             "target": "stderr",
             "must": [
-                {"evaluate": [{"contains": ["WARN:"]}]},
-                {"evaluate": [{"regex_match": ["boom"]}]},
+                {"std.string.contains": [{"var": "subject"}, "WARN:"]},
+                {"std.string.regex_match": [{"var": "subject"}, "boom"]},
             ],
         },
         eval_leaf=leaf,
     )
     assert seen == [
-        ("stderr", "evaluate", {"contains": ["WARN:"]}, True),
-        ("stderr", "evaluate", {"regex_match": ["boom"]}, True),
+        ("stderr", "evaluate", {"std.string.contains": [{"var": "subject"}, "WARN:"]}, True),
+        ("stderr", "evaluate", {"std.string.regex_match": [{"var": "subject"}, "boom"]}, True),
     ]
 
 
@@ -168,22 +165,22 @@ def test_eval_assert_tree_child_target_overrides_group_target():
         {
             "target": "stderr",
             "must": [
-                {"evaluate": [{"contains": ["WARN:"]}]},
-                {"target": "stdout", "must": [{"evaluate": [{"contains": ["ok"]}]}]},
+                {"std.string.contains": [{"var": "subject"}, "WARN:"]},
+                {"target": "stdout", "must": [{"std.string.contains": [{"var": "subject"}, "ok"]}]},
             ],
         },
         eval_leaf=leaf,
     )
     assert seen == [
-        ("stderr", "evaluate", {"contains": ["WARN:"]}, True),
-        ("stdout", "evaluate", {"contains": ["ok"]}, True),
+        ("stderr", "evaluate", {"std.string.contains": [{"var": "subject"}, "WARN:"]}, True),
+        ("stdout", "evaluate", {"std.string.contains": [{"var": "subject"}, "ok"]}, True),
     ]
 
 
 def test_eval_assert_tree_missing_target_without_inheritance_raises():
     with pytest.raises(ValueError, match="requires inherited target"):
         eval_assert_tree(
-            {"must": [{"evaluate": [{"contains": ["x"]}]}]},
+            {"must": [{"std.string.contains": [{"var": "subject"}, "x"]}]},
             eval_leaf=lambda x: list(iter_leaf_assertions(x)),
         )
 

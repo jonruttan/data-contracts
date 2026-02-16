@@ -33,11 +33,10 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - std.object.get:
-        - {var: subject}
-        - check_id
-      - reference.library_exports_used
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - check_id
+    - reference.library_exports_used
   target: summary_json
 ```

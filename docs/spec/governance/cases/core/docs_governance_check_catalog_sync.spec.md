@@ -32,15 +32,15 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - check_id
       - docs.governance_check_catalog_sync
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - passed
       - true
   target: summary_json

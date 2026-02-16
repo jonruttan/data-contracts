@@ -42,23 +42,22 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - {var: subject}
-      - 0
+  - std.logic.eq:
+    - var: subject
+    - 0
   target: violation_count
 - id: assert_2
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - check_id
       - runtime.public_runner_default_rust
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - passed
       - true
   target: summary_json

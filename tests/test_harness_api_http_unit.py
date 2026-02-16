@@ -21,8 +21,8 @@ def test_api_http_relative_fixture_passes(tmp_path, monkeypatch, capsys):
                 "url": "/fixtures/ok.json",
             },
             "assert": [
-                {"target": "status", "must": [{"evaluate": [{"contains": [{"var": "subject"}, "200"]}]}]},
-                {"target": "body_json", "must": [{"evaluate": [{"json_type": [{"var": "subject"}, "dict"]}]}]},
+                {"target": "status", "must": [{"contains": [{"var": "subject"}, "200"]}]},
+                {"target": "body_json", "must": [{"json_type": [{"var": "subject"}, "dict"]}]},
             ],
         },
     )
@@ -105,13 +105,9 @@ def test_api_http_body_json_expr_operator(tmp_path, monkeypatch, capsys):
                     "target": "body_json",
                     "must": [
                         {
-                            "evaluate": [
-                                {
-                                    "and": [
-                                        {"has_key": ["ok"]},
-                                        {"eq": [{"get": [{"var": "subject"}, "ok"]}, True]},
-                                    ]
-                                }
+                            "and": [
+                                {"has_key": ["ok"]},
+                                {"eq": [{"get": [{"var": "subject"}, "ok"]}, True]},
                             ]
                         }
                     ],
@@ -253,13 +249,9 @@ def test_api_http_oauth_live_fetch_and_context_metadata(tmp_path, monkeypatch, c
                     "target": "context_json",
                     "must": [
                         {
-                            "evaluate": [
-                                {
-                                    "eq": [
-                                        {"get": [{"get": [{"var": "subject"}, "meta"]}, "auth_mode"]},
-                                        "oauth",
-                                    ]
-                                }
+                            "eq": [
+                                {"get": [{"get": [{"var": "subject"}, "meta"]}, "auth_mode"]},
+                                "oauth",
                             ]
                         }
                     ],
@@ -494,7 +486,7 @@ def test_api_http_scenario_round_trip_templating(tmp_path, monkeypatch, capsys):
             "assert": [
                 {
                     "target": "status",
-                    "must": [{"evaluate": [{"contains": [{"var": "subject"}, "204"]}]}],
+                    "must": [{"contains": [{"var": "subject"}, "204"]}],
                 }
             ],
         },
@@ -531,13 +523,9 @@ def test_api_http_chain_template_interpolation(tmp_path, monkeypatch, capsys):
                     "target": "body_json",
                     "must": [
                         {
-                            "evaluate": [
-                                {
-                                    "eq": [
-                                        {"get": [{"var": "subject"}, "id"]},
-                                        "abc-123",
-                                    ]
-                                }
+                            "eq": [
+                                {"get": [{"var": "subject"}, "id"]},
+                                "abc-123",
                             ]
                         }
                     ],

@@ -33,11 +33,10 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - std.object.get:
-        - {var: subject}
-        - check_id
-      - library.public_surface_model
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - check_id
+    - library.public_surface_model
   target: summary_json
 ```

@@ -76,9 +76,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - call:
-      - {var: policy.metric_non_decrease}
+      - var: policy.metric_non_decrease
       - lit:
           current: 10
           baseline: 9
@@ -86,7 +86,7 @@ assert:
       - baseline
       - 0
     - call:
-      - {var: policy.metric_non_increase}
+      - var: policy.metric_non_increase
       - lit:
           current: 8
           baseline: 9

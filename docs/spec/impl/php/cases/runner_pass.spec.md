@@ -15,10 +15,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '# PHP Spec Runner Pass Cases'
+  - std.string.contains:
+    - var: subject
+    - '# PHP Spec Runner Pass Cases'
   target: text
 ```
 
@@ -38,10 +37,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - fixture-content
+  - std.string.contains:
+    - var: subject
+    - fixture-content
   target: text
 ```
 
@@ -61,14 +59,12 @@ assert:
 - id: assert_1
   class: can
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - no-match-token
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - fixture-content
+  - std.string.contains:
+    - var: subject
+    - no-match-token
+  - std.string.contains:
+    - var: subject
+    - fixture-content
   target: text
 ```
 
@@ -92,10 +88,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - hello-runner
+  - std.string.contains:
+    - var: subject
+    - hello-runner
   target: stdout
 ```
 
@@ -121,10 +116,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - 'on'
+  - std.string.contains:
+    - var: subject
+    - 'on'
   target: stdout
 ```
 
@@ -148,10 +142,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - fallback-ok
+  - std.string.contains:
+    - var: subject
+    - fallback-ok
   target: stdout
 ```
 
@@ -160,7 +153,7 @@ assert:
 ```yaml spec-test
 id: SRPHP-RUN-007
 title: cli.run json_type list assertion passes
-purpose: Verifies json_type list assertions are supported for stdout target in cli.run.
+purpose: Verifies json parsing and type checks can be expressed via std.* mapping-AST.
 type: cli.run
 argv:
 - '[]'
@@ -175,7 +168,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - json_type:
+  - std.type.json_type:
+    - std.json.parse:
+      - var: subject
     - list
   target: stdout
 ```
@@ -200,10 +195,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - runner-err
+  - std.string.contains:
+    - var: subject
+    - runner-err
   target: stderr
 ```
 
@@ -212,7 +206,8 @@ assert:
 ```yaml spec-test
 id: SRPHP-RUN-009
 title: cli.run supports stdout_path and stdout_path_text targets
-purpose: Verifies path-based assertions for stdout_path existence and stdout_path_text content.
+purpose: Verifies path-based assertions for stdout_path existence and stdout_path_text
+  content.
 type: cli.run
 argv:
 - docs/spec/impl/php/cases/fixtures/path_target.txt
@@ -227,17 +222,15 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - path_target.txt
+  - std.string.contains:
+    - var: subject
+    - path_target.txt
   target: stdout_path
 - id: assert_2
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - path target file content
+  - std.string.contains:
+    - var: subject
+    - path target file content
   target: stdout_path_text
 ```

@@ -32,19 +32,17 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - {var: subject}
-      - 0
+  - std.logic.eq:
+    - var: subject
+    - 0
   target: violation_count
 - id: assert_2
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - std.object.get:
-        - {var: subject}
-        - check_id
-      - runtime.api_http_parity_contract_sync
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - check_id
+    - runtime.api_http_parity_contract_sync
   target: summary_json
 ```

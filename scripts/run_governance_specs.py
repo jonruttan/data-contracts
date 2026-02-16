@@ -4305,6 +4305,13 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                             for child in children:
                                 _collect_ops(child, inherited_target=node_target)
                     return
+                if "target" in node:
+                    return
+                if "evaluate" in node:
+                    non_evaluate_ops.add("evaluate")
+                    return
+                # Expression-mapping leaf; canonical evaluate form.
+                return
                 for key in node.keys():
                     op = str(key).strip()
                     if not op or op in {"target", "must", "can", "cannot"}:
@@ -4391,6 +4398,13 @@ def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = Non
                     for child in children:
                         _collect_non_eval_ops(child, out)
             return
+        if "target" in node:
+            return
+        if "evaluate" in node:
+            out.add("evaluate")
+            return
+        # Expression-mapping leaf; canonical evaluate form.
+        return
         for key in node.keys():
             op = str(key).strip()
             if not op or op in {"target", "must", "can", "cannot"}:
@@ -6540,6 +6554,11 @@ def _iter_evaluate_expr_nodes(assert_node: object) -> list[object]:
     raw_eval = assert_node.get("evaluate")
     if isinstance(raw_eval, list):
         out.extend(raw_eval)
+        return out
+    if "target" in assert_node:
+        return out
+    if assert_node:
+        out.append(assert_node)
     return out
 
 

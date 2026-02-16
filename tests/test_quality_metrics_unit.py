@@ -63,8 +63,9 @@ type: text.file
 assert:
   - target: text
     must:
-      - evaluate:
-          - [\"contains\", [\"subject\"], \"x\"]
+      - std.string.contains:
+        - var: subject
+        - x
 ```
 """,
     )

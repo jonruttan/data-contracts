@@ -92,7 +92,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - contain: ["SRCONF-PHP-MD-001"]
+      - std.string.contains: [{var: subject}, "SRCONF-PHP-MD-001"]
 ```
 """,
         encoding="utf-8",
@@ -137,7 +137,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - contain: ["SRCONF-PHP-MD-002"]
+      - std.string.contains: [{var: subject}, "SRCONF-PHP-MD-002"]
 ```
 """,
         encoding="utf-8",
@@ -180,7 +180,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - contain: ["SRCONF-PHP-MD-003"]
+      - std.string.contains: [{var: subject}, "SRCONF-PHP-MD-003"]
 ```
 """,
         encoding="utf-8",
@@ -257,7 +257,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - contain: ["SRCONF-PATTERN-PARITY-001"]
+      - std.string.contains: [{var: subject}, "SRCONF-PATTERN-PARITY-001"]
 ```
 """,
         encoding="utf-8",
@@ -271,7 +271,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - contain: ["SRCONF-PATTERN-PARITY-002"]
+      - std.string.contains: [{var: subject}, "SRCONF-PATTERN-PARITY-002"]
 ```
 """,
         encoding="utf-8",
@@ -323,7 +323,7 @@ path: /docs/spec/conformance/cases/core/worktree_virtual_root.spec.md
 assert:
   - target: text
     must:
-      - contain: ["SRCONF-WORKTREE-ROOT-001"]
+      - std.string.contains: [{var: subject}, "SRCONF-WORKTREE-ROOT-001"]
 ```
 """,
         encoding="utf-8",
@@ -366,7 +366,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - contain: ["SRCONF-PHP-FMT-001"]
+      - std.string.contains: [{var: subject}, "SRCONF-PHP-FMT-001"]
 """,
         encoding="utf-8",
     )
@@ -375,7 +375,12 @@ assert:
             {
                 "id": "SRCONF-PHP-FMT-002",
                 "type": "text.file",
-                "assert": [{"target": "text", "must": [{"contain": ["SRCONF-PHP-FMT-002"]}]}],
+                "assert": [
+                    {
+                        "target": "text",
+                        "must": [{"std.string.contains": [{"var": "subject"}, "SRCONF-PHP-FMT-002"]}],
+                    }
+                ],
             }
         ),
         encoding="utf-8",
@@ -420,7 +425,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - contain: [""]
+      - std.string.contains: [{var: subject}, ""]
 ```
 """,
         encoding="utf-8",
@@ -468,7 +473,7 @@ assert_health:
 assert:
   - target: text
     must:
-      - contain: [""]
+      - std.string.contains: [{var: subject}, ""]
 ```
 """,
         encoding="utf-8",
@@ -524,7 +529,7 @@ expect:
 assert:
   - target: text
     must:
-      - contain: ["feature.x"]
+      - std.string.contains: [{var: subject}, "feature.x"]
 ```
 """,
         encoding="utf-8",
@@ -622,7 +627,7 @@ path: ../data/target.txt
 assert:
   - target: text
     must:
-      - contain: ["hello from path fixture"]
+      - std.string.contains: [{var: subject}, "hello from path fixture"]
 ```
 
 ## SRCONF-PHP-MD-PATH-002
@@ -634,7 +639,7 @@ path: ../../outside.txt
 assert:
   - target: text
     must:
-      - contain: ["outside"]
+      - std.string.contains: [{var: subject}, "outside"]
 ```
 """,
         encoding="utf-8",

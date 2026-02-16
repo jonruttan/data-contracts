@@ -58,10 +58,10 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - call:
-        - {var: domain.http.status}
+        - var: domain.http.status
         - lit:
             value:
               status: 200
@@ -78,32 +78,32 @@ assert:
                 scope_requested: read:items
       - 200
     - call:
-      - {var: domain.http.status_is}
+      - var: domain.http.status_is
       - lit:
           value:
             status: 200
           meta: {}
       - 200
     - call:
-      - {var: domain.http.status_is_unauthorized}
+      - var: domain.http.status_is_unauthorized
       - lit:
           value:
             status: 401
           meta: {}
     - call:
-      - {var: domain.http.status_is_forbidden}
+      - var: domain.http.status_is_forbidden
       - lit:
           value:
             status: 403
           meta: {}
     - call:
-      - {var: domain.http.ok_2xx}
+      - var: domain.http.ok_2xx
       - lit:
           value:
             status: 204
           meta: {}
     - call:
-      - {var: domain.http.status_in}
+      - var: domain.http.status_in
       - lit:
           value:
             status: 200
@@ -123,7 +123,7 @@ assert:
         - 201
     - std.logic.eq:
       - call:
-        - {var: domain.http.header_get}
+        - var: domain.http.header_get
         - lit:
             value:
               headers:
@@ -132,7 +132,7 @@ assert:
         - Authorization
       - Bearer abc
     - call:
-      - {var: domain.http.header_contains}
+      - var: domain.http.header_contains
       - lit:
           value:
             headers:
@@ -142,21 +142,21 @@ assert:
       - Bearer
     - std.logic.eq:
       - call:
-        - {var: domain.http.body_text}
+        - var: domain.http.body_text
         - lit:
             value:
               body_text: ok
             meta: {}
       - ok
     - call:
-      - {var: domain.http.body_json}
+      - var: domain.http.body_json
       - lit:
           value:
             body_json:
               ok: true
           meta: {}
     - call:
-      - {var: domain.http.body_json_type_is}
+      - var: domain.http.body_json_type_is
       - lit:
           value:
             body_json:
@@ -164,7 +164,7 @@ assert:
           meta: {}
       - object
     - call:
-      - {var: domain.http.body_json_has_key}
+      - var: domain.http.body_json_has_key
       - lit:
           value:
             body_json:
@@ -172,20 +172,20 @@ assert:
           meta: {}
       - ok
     - call:
-      - {var: domain.http.auth_is_oauth}
+      - var: domain.http.auth_is_oauth
       - lit:
           value: {}
           meta:
             auth_mode: oauth
     - call:
-      - {var: domain.http.has_bearer_header}
+      - var: domain.http.has_bearer_header
       - lit:
           value:
             headers:
               Authorization: Bearer abc
           meta: {}
     - call:
-      - {var: domain.http.oauth_scope_requested}
+      - var: domain.http.oauth_scope_requested
       - lit:
           value: {}
           meta: {}
@@ -193,13 +193,13 @@ assert:
             oauth:
               scope_requested: read:items
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - domain.http.status_in
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - domain.http.auth_is_oauth
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - 'type: spec_lang.library'
   target: text
 ```
@@ -322,15 +322,15 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - call:
-      - {var: make.has_target}
+      - var: make.has_target
       - lit:
           value: "ci-gate:\n\t@echo ok\n"
           meta: {}
       - ci-gate
     - call:
-      - {var: py.is_tuple_projection}
+      - var: py.is_tuple_projection
       - lit:
           value:
           - 1
@@ -338,26 +338,26 @@ assert:
           meta:
             native_kind: python.tuple
     - call:
-      - {var: php.is_assoc_projection}
+      - var: php.is_assoc_projection
       - lit:
           value:
             k: v
           meta:
             php_array_kind: assoc
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - /docs/spec/libraries/domain/http_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - /docs/spec/libraries/domain/make_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - /docs/spec/libraries/domain/markdown_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - /docs/spec/libraries/domain/php_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - /docs/spec/libraries/domain/python_core.spec.md
   target: text
 ```

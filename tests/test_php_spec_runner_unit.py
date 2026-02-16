@@ -190,7 +190,7 @@ def test_php_spec_runner_matches_assert_health_fixture_suite(tmp_path):
     ]
     expected = load_expected_results(cases_dir, implementation="php")
     assert compare_conformance_results(expected, actual) == []
-    assert "WARN: ASSERT_HEALTH AH001" in cp.stderr
+    assert "WARN: ASSERT_HEALTH AH004" in cp.stderr
     assert "WARN: ASSERT_HEALTH AH005" not in cp.stderr
 
 
@@ -270,10 +270,10 @@ harness:
 assert:
   - target: stdout
     must:
-      - contain: ["CK_ALLOWED=ok"]
+      - std.string.contains: [{{var: subject}}, "CK_ALLOWED=ok"]
   - target: stdout
     cannot:
-      - contain: ["CK_SECRET=shh"]
+      - std.string.contains: [{{var: subject}}, "CK_SECRET=shh"]
 ```
 """,
         encoding="utf-8",
@@ -356,7 +356,7 @@ type: text.file
 assert:
   - target: text
     must:
-      - contain: ["SR-PHP-FMT-001"]
+      - std.string.contains: [{var: subject}, "SR-PHP-FMT-001"]
 """,
         encoding="utf-8",
     )
@@ -365,7 +365,12 @@ assert:
             {
                 "id": "SR-PHP-FMT-002",
                 "type": "text.file",
-                "assert": [{"target": "text", "must": [{"contain": ["SR-PHP-FMT-002"]}]}],
+                "assert": [
+                    {
+                        "target": "text",
+                        "must": [{"std.string.contains": [{"var": "subject"}, "SR-PHP-FMT-002"]}],
+                    }
+                ],
             }
         ),
         encoding="utf-8",

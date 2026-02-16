@@ -22,18 +22,16 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 - id: assert_2
   class: must
   checks:
-  - evaluate:
-    - std.type.json_type:
-      - {var: subject}
-      - dict
+  - std.type.json_type:
+    - var: subject
+    - dict
   target: body_json
 ```
 
@@ -42,8 +40,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-API-002
 title: api.http requires request.url
-purpose: Verifies api.http reports a schema violation when request url is missing from portable
-  fixture input.
+purpose: Verifies api.http reports a schema violation when request url is missing
+  from portable fixture input.
 type: api.http
 requires:
   capabilities:
@@ -60,10 +58,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -91,10 +88,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -122,10 +118,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.object.has_key:
-      - {var: subject}
-      - id
+  - std.object.has_key:
+    - var: subject
+    - id
   target: body_json
 ```
 
@@ -150,10 +145,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -178,10 +172,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - abc-123
+  - std.string.contains:
+    - var: subject
+    - abc-123
   target: body_text
 ```
 
@@ -206,12 +199,11 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - std.object.get:
-        - {var: subject}
-        - deleted
-      - true
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - deleted
+    - true
   target: body_json
 ```
 
@@ -236,10 +228,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -264,10 +255,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -294,10 +284,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -328,10 +317,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -340,7 +328,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-API-012
 title: api.http scenario executes round-trip requests in order
-purpose: Verifies requests scenario supports step templating and exposes steps_json target.
+purpose: Verifies requests scenario supports step templating and exposes steps_json
+  target.
 type: api.http
 requires:
   capabilities:
@@ -367,19 +356,17 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 - id: assert_2
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - std.collection.len:
-        - {var: subject}
-      - 3
+  - std.logic.eq:
+    - std.collection.len:
+      - var: subject
+    - 3
   target: steps_json
 ```
 
@@ -388,8 +375,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-API-013
 title: api.http oauth deterministic local token exchange
-purpose: Verifies oauth auth profile resolves env refs and produces oauth context metadata
-  without network access.
+purpose: Verifies oauth auth profile resolves env refs and produces oauth context
+  metadata without network access.
 type: api.http
 requires:
   capabilities:
@@ -415,18 +402,18 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - meta
         - auth_mode
       - oauth
     - std.logic.eq:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - meta
         - oauth_token_source
       - env_ref
@@ -438,7 +425,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-API-014
 title: api.http oauth missing env refs is schema failure
-purpose: Verifies oauth env-ref credentials are required and missing env vars fail as schema.
+purpose: Verifies oauth env-ref credentials are required and missing env vars fail
+  as schema.
 type: api.http
 requires:
   capabilities:
@@ -464,10 +452,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -503,10 +490,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -516,8 +502,8 @@ assert:
 id: SRCONF-API-016
 title: api.http oauth live mode is optional capability
 type: api.http
-purpose: Verifies optional live oauth/network execution can be capability-gated and skipped
-  in portable lanes.
+purpose: Verifies optional live oauth/network execution can be capability-gated and
+  skipped in portable lanes.
 requires:
   capabilities:
   - api.http
@@ -543,10 +529,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```
 
@@ -555,7 +540,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-API-017
 title: api.http exposes new domain.http helper exports for CORS and steps
-purpose: Maintains reference usage for domain.http CORS and scenario helper symbol exports.
+purpose: Maintains reference usage for domain.http CORS and scenario helper symbol
+  exports.
 type: api.http
 requires:
   capabilities:
@@ -604,9 +590,8 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
+  - std.string.contains:
+    - var: subject
+    - '200'
   target: status
 ```

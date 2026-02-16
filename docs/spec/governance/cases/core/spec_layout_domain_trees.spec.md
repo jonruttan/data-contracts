@@ -33,11 +33,10 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - std.object.get:
-        - {var: subject}
-        - check_id
-      - spec.layout_domain_trees
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - check_id
+    - spec.layout_domain_trees
   target: summary_json
 ```

@@ -43,8 +43,9 @@ type: text.file
 assert:
   - target: text
     must:
-      - evaluate:
-          - ["contains", ["subject"], "ok"]
+      - std.string.contains:
+        - var: subject
+        - ok
 ```
 """,
     )
@@ -71,17 +72,18 @@ assert:
   - target: text
     must:
       - contain: ["x"]
-      - evaluate:
-          - ["contains", ["subject"], "x"]
+      - std.string.contains:
+        - var: subject
+        - x
 ```
 """,
     )
 
     payload = spec_portability_report_jsonable(tmp_path, config=_base_config())
     case = payload["cases"][0]
-    # non-evaluate share = 1/2 => penalty 0.45 * 0.5 = 0.225
-    assert abs(case["self_contained_ratio"] - 0.775) < 1e-9
-    assert abs(case["implementation_reliance_ratio"] - 0.225) < 1e-9
+    # All leaves are expression-evaluate leaves in hard-cut mode.
+    assert abs(case["self_contained_ratio"] - 1.0) < 1e-9
+    assert abs(case["implementation_reliance_ratio"] - 0.0) < 1e-9
 
 
 def test_impl_overlay_non_core_and_runtime_capability_penalties_apply(tmp_path: Path) -> None:
@@ -148,8 +150,9 @@ type: text.file
 assert:
   - target: text
     must:
-      - evaluate:
-          - ["contains", ["subject"], "x"]
+      - std.string.contains:
+        - var: subject
+        - x
 ```
 """,
     )

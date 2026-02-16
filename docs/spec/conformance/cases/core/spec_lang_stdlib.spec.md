@@ -15,7 +15,7 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - std.math.add:
         - 2
@@ -54,7 +54,7 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - std.type.json_type:
         - std.json.parse:

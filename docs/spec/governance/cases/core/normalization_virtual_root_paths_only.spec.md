@@ -32,11 +32,10 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.logic.eq:
-      - std.object.get:
-        - {var: subject}
-        - check_id
-      - normalization.virtual_root_paths_only
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - check_id
+    - normalization.virtual_root_paths_only
   target: summary_json
 ```

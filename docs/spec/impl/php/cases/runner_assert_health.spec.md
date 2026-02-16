@@ -23,8 +23,13 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - contain:
-    - ''
+  - must:
+    - std.string.contains:
+      - var: subject
+      - ok
+    - std.string.contains:
+      - var: subject
+      - ok
   target: stdout
 ```
 
@@ -46,15 +51,20 @@ expect:
     status: fail
     category: assertion
     message_tokens:
-    - AH001
+    - AH004
 assert_health:
   mode: error
 assert:
 - id: assert_1
   class: must
   checks:
-  - contain:
-    - ''
+  - must:
+    - std.string.contains:
+      - var: subject
+      - ok
+    - std.string.contains:
+      - var: subject
+      - ok
   target: stdout
 ```
 
@@ -82,7 +92,8 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - contain:
+  - std.string.contains:
+    - var: subject
     - ok
   target: stdout
 ```
@@ -108,8 +119,13 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - contain:
-    - ''
+  - must:
+    - std.string.contains:
+      - var: subject
+      - ok
+    - std.string.contains:
+      - var: subject
+      - ok
   target: stdout
 ```
 
@@ -136,7 +152,12 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - regex:
-    - (?<=o)k
+  - must:
+    - std.string.contains:
+      - var: subject
+      - ok
+    - std.string.contains:
+      - var: subject
+      - ok
   target: stdout
 ```

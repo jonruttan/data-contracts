@@ -212,12 +212,12 @@ def _collect_leaf_ops(node: object, *, inherited_target: str | None = None) -> l
                 for child in children:
                     ops.extend(_collect_leaf_ops(child, inherited_target=node_target))
         return ops
-    known_ops = {"contain", "regex", "json_type", "exists", "evaluate"}
-    for key, value in node.items():
-        if key in {"target", "must", "can", "cannot"}:
-            continue
-        if key in known_ops and isinstance(value, list):
-            ops.extend([key] * len(value))
+    if "target" in node:
+        return ops
+    if "evaluate" in node:
+        return ["evaluate"]
+    # Expression-mapping leaf (operator-keyed mapping AST) counts as evaluate.
+    return ["evaluate"]
     return ops
 
 

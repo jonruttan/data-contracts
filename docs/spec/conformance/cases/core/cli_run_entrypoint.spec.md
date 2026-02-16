@@ -65,9 +65,8 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '"ok": true'
+  - std.string.contains:
+    - var: subject
+    - '"ok": true'
   target: stdout
 ```

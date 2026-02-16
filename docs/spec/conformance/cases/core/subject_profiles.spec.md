@@ -5,8 +5,8 @@
 ```yaml spec-test
 id: SRCONF-PROFILE-001
 title: subject profile schema defines canonical envelope fields
-purpose: Ensures subject profile schema defines JSON-core envelope and deterministic projection
-  constraints.
+purpose: Ensures subject profile schema defines JSON-core envelope and deterministic
+  projection constraints.
 type: text.file
 path: /docs/spec/schema/subject_profiles_v1.yaml
 expect:
@@ -16,18 +16,18 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - profile_id
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - profile_version
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - json_core_only
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - deterministic_projection
   target: text
 ```
@@ -37,8 +37,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PROFILE-002
 title: text.file exposes context_json subject profile envelope
-purpose: Ensures text.file harness provides context_json target with profile metadata and
-  JSON value payload.
+purpose: Ensures text.file harness provides context_json target with profile metadata
+  and JSON value payload.
 type: text.file
 path: /docs/spec/contract/20_subject_profiles_v1.md
 expect:
@@ -48,22 +48,22 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - profile_id
       - text.file/v1
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - profile_version
       - 1
     - std.object.has_key:
-      - {var: subject}
+      - var: subject
       - value
     - std.object.has_key:
-      - {var: subject}
+      - var: subject
       - meta
   target: context_json
 ```

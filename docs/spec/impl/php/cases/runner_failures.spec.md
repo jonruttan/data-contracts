@@ -5,8 +5,8 @@
 ```yaml spec-test
 id: SRPHP-RUN-F001
 title: text.file virtual absolute path missing file fails runtime
-purpose: Verifies virtual-root absolute paths resolve under contract root and fail at runtime
-  when the file is missing.
+purpose: Verifies virtual-root absolute paths resolve under contract root and fail
+  at runtime when the file is missing.
 type: text.file
 path: /tmp/not-allowed.txt
 expect:
@@ -19,10 +19,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - x
+  - std.string.contains:
+    - var: subject
+    - x
   target: text
 ```
 
@@ -44,10 +43,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - outside
+  - std.string.contains:
+    - var: subject
+    - outside
   target: text
 ```
 
@@ -72,10 +70,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - x
+  - std.string.contains:
+    - var: subject
+    - x
   target: stdout
 ```
 
@@ -83,8 +80,8 @@ assert:
 
 ```yaml spec-test
 id: SRPHP-RUN-F004
-title: cli.run rejects unsupported json_type values
-purpose: Verifies cli.run treats unsupported json_type values as schema violations.
+title: cli.run rejects unknown spec-lang symbol usage
+purpose: Verifies unknown expression symbols are rejected as schema failures.
 type: cli.run
 argv:
 - '{}'
@@ -96,13 +93,13 @@ expect:
     status: fail
     category: schema
     message_tokens:
-    - unsupported json_type
+    - unsupported spec_lang symbol
 assert:
 - id: assert_1
   class: must
   checks:
-  - json_type:
-    - nope
+  - not.a.real.symbol:
+    - var: subject
   target: stdout
 ```
 

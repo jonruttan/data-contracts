@@ -15,10 +15,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - 'version: 1'
+  - std.string.contains:
+    - var: subject
+    - 'version: 1'
   target: text
 ```
 
@@ -37,10 +36,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - \A\Z
+  - std.string.regex_match:
+    - var: subject
+    - \A\Z
   target: text
 ```
 
@@ -60,10 +58,9 @@ assert:
   class: must
   checks:
   - must:
-    - evaluate:
-      - std.string.contains:
-        - {var: subject}
-        - 'version: 1'
+    - std.string.contains:
+      - var: subject
+      - 'version: 1'
   target: text
 ```
 
@@ -82,14 +79,12 @@ assert:
 - id: assert_1
   class: can
   checks:
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - (?!)
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - 'version: 1'
+  - std.string.regex_match:
+    - var: subject
+    - (?!)
+  - std.string.contains:
+    - var: subject
+    - 'version: 1'
   target: text
 ```
 
@@ -108,14 +103,12 @@ assert:
 - id: assert_1
   class: can
   checks:
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - \A\Z
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - (?!)
+  - std.string.regex_match:
+    - var: subject
+    - \A\Z
+  - std.string.regex_match:
+    - var: subject
+    - (?!)
   target: text
 ```
 
@@ -134,14 +127,12 @@ assert:
 - id: assert_1
   class: cannot
   checks:
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - \A\Z
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - (?!)
+  - std.string.regex_match:
+    - var: subject
+    - \A\Z
+  - std.string.regex_match:
+    - var: subject
+    - (?!)
   target: text
 ```
 
@@ -160,14 +151,12 @@ assert:
 - id: assert_1
   class: cannot
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - 'version: 1'
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - (?!)
+  - std.string.contains:
+    - var: subject
+    - 'version: 1'
+  - std.string.regex_match:
+    - var: subject
+    - (?!)
   target: text
 ```
 
@@ -187,19 +176,16 @@ assert:
   class: must
   checks:
   - can:
-    - evaluate:
-      - std.string.regex_match:
-        - {var: subject}
-        - \A\Z
-    - evaluate:
-      - std.string.contains:
-        - {var: subject}
-        - 'version: 1'
+    - std.string.regex_match:
+      - var: subject
+      - \A\Z
+    - std.string.contains:
+      - var: subject
+      - 'version: 1'
   - cannot:
-    - evaluate:
-      - std.string.regex_match:
-        - {var: subject}
-        - \A\Z
+    - std.string.regex_match:
+      - var: subject
+      - \A\Z
   target: text
 ```
 
@@ -208,8 +194,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-009
 title: evaluate regex remains pass under assert_health error mode
-purpose: Confirms evaluate regex assertions bypass sugar diagnostics and can pass under error
-  mode.
+purpose: Confirms evaluate regex assertions bypass sugar diagnostics and can pass
+  under error mode.
 type: text.file
 expect:
   portable:
@@ -221,10 +207,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - '(?<=version: )1'
+  - std.string.regex_match:
+    - var: subject
+    - '(?<=version: )1'
   target: text
 ```
 
@@ -233,8 +218,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-010
 title: evaluate empty contains remains pass under assert_health error mode
-purpose: Confirms evaluate contains with empty string does not trigger sugar diagnostic failures
-  in error mode.
+purpose: Confirms evaluate contains with empty string does not trigger sugar diagnostic
+  failures in error mode.
 type: text.file
 expect:
   portable:
@@ -246,10 +231,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - ''
+  - std.string.contains:
+    - var: subject
+    - ''
   target: text
 ```
 
@@ -258,8 +242,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-011
 title: evaluate always-true regex remains pass under assert_health error mode
-purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level AH002
-  failures.
+purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level
+  AH002 failures.
 type: text.file
 expect:
   portable:
@@ -271,10 +255,9 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.regex_match:
-      - {var: subject}
-      - .*
+  - std.string.regex_match:
+    - var: subject
+    - .*
   target: text
 ```
 
@@ -283,25 +266,28 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-012
 title: evaluate duplicate contains remain pass under assert_health error mode
-purpose: Confirms evaluate duplicate contains expressions do not trigger sugar-level AH003
-  diagnostics.
+purpose: Confirms evaluate duplicate contains expressions do not trigger sugar-level
+  AH003 diagnostics.
 type: text.file
 expect:
   portable:
-    status: pass
-    category: null
+    status: fail
+    category: assertion
+    message_tokens:
+    - AH004
+    - assert[0].checks[0].must
 assert_health:
   mode: error
 assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
+  - must:
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - 'version: 1'
     - std.string.contains:
-      - {var: subject}
+      - var: subject
       - 'version: 1'
   target: text
 ```
@@ -311,8 +297,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-PHP-TEXT-013
 title: evaluate sibling branches remain pass under assert_health error mode
-purpose: Confirms evaluate-only non-redundant sibling branches in can groups remain valid
-  in error mode.
+purpose: Confirms evaluate-only non-redundant sibling branches in can groups remain
+  valid in error mode.
 type: text.file
 expect:
   portable:
@@ -324,14 +310,12 @@ assert:
 - id: assert_1
   class: can
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - 'version: 1'
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - 'version: 2'
+  - std.string.contains:
+    - var: subject
+    - 'version: 1'
+  - std.string.contains:
+    - var: subject
+    - 'version: 2'
   target: text
 ```
 
@@ -352,9 +336,8 @@ assert:
 - id: assert_1
   class: must
   checks:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - ''
+  - std.string.contains:
+    - var: subject
+    - ''
   target: text
 ```
