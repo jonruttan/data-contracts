@@ -183,7 +183,7 @@ def test_execute_chain_plan_resolves_path_case_and_exports(tmp_path, monkeypatch
                             "ref": "/docs/spec/dep.spec.md#CASE-DEP-1",
                             "exports": {
                                 "dep_id": {
-                                    "from_target": "body_json",
+                                    "from": "body_json",
                                     "path": "id",
                                 }
                             },
@@ -297,7 +297,7 @@ def test_execute_chain_plan_resolves_import_aliases(tmp_path, monkeypatch, capsy
                             "ref": "/docs/spec/dep.spec.md#CASE-DEP-1",
                             "exports": {
                                 "dep_id": {
-                                    "from_target": "body_json",
+                                    "from": "body_json",
                                     "path": "id",
                                 }
                             },

@@ -2423,7 +2423,7 @@ function loadSpecLangLibraryDoc(string $path): array {
         if ($scope === null) {
             return [];
         }
-        if (!is_array($scope) || isListArray($scope)) {
+        if (!is_array($scope) || (isListArray($scope) && count($scope) > 0)) {
             throw new SchemaError("spec_lang.library {$fieldPrefix} must be a mapping when provided");
         }
         $out = [];
@@ -2461,6 +2461,9 @@ function loadSpecLangLibraryDoc(string $path): array {
         }
         foreach (array_keys($public) as $name) {
             if (array_key_exists($name, $bindings)) {
+                if ($bindings[$name] == $public[$name]) {
+                    continue;
+                }
                 throw new SchemaError("duplicate library symbol in file {$path}: {$name}");
             }
             $bindings[$name] = $public[$name];
@@ -2468,6 +2471,9 @@ function loadSpecLangLibraryDoc(string $path): array {
         }
         foreach (array_keys($private) as $name) {
             if (array_key_exists($name, $bindings)) {
+                if ($bindings[$name] == $private[$name]) {
+                    continue;
+                }
                 throw new SchemaError("duplicate library symbol in file {$path}: {$name}");
             }
             $bindings[$name] = $private[$name];

@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 190
-- checks_with_cases: 184
+- check_count: 196
+- checks_with_cases: 190
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -146,10 +146,12 @@ Provide generated inventory of governance check IDs and case coverage.
 | `impl.evaluate_first_required` | 1 | true |
 | `impl.evaluate_ratio_non_regression` | 1 | true |
 | `impl.library_usage_non_regression` | 1 | true |
+| `library.colocated_symbol_tests_required` | 1 | true |
 | `library.domain_index_sync` | 1 | true |
 | `library.domain_ownership` | 1 | true |
 | `library.legacy_definitions_key_forbidden` | 1 | true |
 | `library.public_surface_model` | 1 | true |
+| `library.single_public_symbol_per_case_required` | 1 | true |
 | `library.verb_first_schema_keys_required` | 1 | true |
 | `naming.filename_policy` | 1 | true |
 | `normalization.docs_token_sync` | 1 | true |
@@ -186,15 +188,19 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.chain_contract_single_location` | 1 | true |
 | `runtime.chain_cycle_forbidden` | 1 | true |
 | `runtime.chain_exports_explicit_only` | 1 | true |
+| `runtime.chain_exports_from_key_required` | 1 | true |
 | `runtime.chain_exports_target_derived_only` | 1 | true |
 | `runtime.chain_fail_fast_default` | 1 | true |
 | `runtime.chain_import_alias_collision_forbidden` | 1 | true |
+| `runtime.chain_legacy_from_target_forbidden` | 1 | true |
+| `runtime.chain_library_symbol_exports_valid` | 1 | true |
 | `runtime.chain_ref_scalar_required` | 1 | true |
 | `runtime.chain_reference_resolution` | 1 | true |
 | `runtime.chain_shared_context_required` | 1 | true |
 | `runtime.chain_state_template_resolution` | 1 | true |
 | `runtime.chain_step_class_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
+| `runtime.executable_spec_lang_includes_forbidden` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |

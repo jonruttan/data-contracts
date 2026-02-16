@@ -251,7 +251,7 @@ For `type: docs.generate`, supported `harness` keys include:
 - `max_nodes` (int, >=1)
 - `max_literal_bytes` (int, >=1)
 - `timeout_ms` (int, >=0, `0` disables timeout)
-- `includes` (list[string], optional): ordered spec-lang library files
+- `includes` (list[string], optional): library include files (library docs only)
 - `exports` (list[string], optional): symbol allowlist exposed to this case
 - `imports` (list[mapping], optional): case-scoped stdlib imports
   - `from` (string, required): `std.*` namespace prefix
@@ -275,6 +275,8 @@ For `type: docs.generate`, supported `harness` keys include:
   `defines.private.<symbol>` (list s-expr authoring is invalid)
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
+- executable case types MUST NOT declare `harness.spec_lang.includes`;
+  executable symbol loading is chain-first via `harness.chain`
 
 `harness.chain` fields:
 
@@ -291,11 +293,13 @@ For `type: docs.generate`, supported `harness` keys include:
       - YAML authors should quote hash-only refs (for example `ref: "#CASE-1"`)
     - `exports` (mapping, optional):
       - export name -> mapping:
-        - `from_target` (string, required)
+        - `from` (string, required)
         - `path` (string dotted selector, optional)
         - `required` (bool, optional, default `true`)
-      - `exports` are allowed only for refs with `#case_id`
-      - `cannot` steps must not declare `exports`
+      - runtime target exports are allowed only for refs with `#case_id`
+      - `from: library.symbol` exports may use file refs without `#case_id`
+      - `from: library.symbol` requires non-empty `path` symbol name
+      - legacy key `from_target` is forbidden
     - `allow_continue` (bool, optional, default `false`)
 - `imports` (list[mapping], optional)
   - each import:

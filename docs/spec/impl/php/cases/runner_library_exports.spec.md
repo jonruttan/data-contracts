@@ -8,13 +8,30 @@ title: impl assertion library exports are referenced by impl fixtures
 purpose: References impl assertion library exports for governance usage tracking.
 type: text.file
 harness:
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/impl/assertion_core.spec.md
-    exports:
-    - impl.assert.contains
-    - impl.assert.regex
-    - impl.assert.json_type
+  chain:
+    steps:
+    - id: lib_assertion_core_spec
+      class: must
+      ref: /docs/spec/libraries/impl/assertion_core.spec.md
+      exports:
+        impl.assert.contains:
+          from: library.symbol
+          path: /impl.assert.contains
+          required: true
+        impl.assert.regex:
+          from: library.symbol
+          path: /impl.assert.regex
+          required: true
+        impl.assert.json_type:
+          from: library.symbol
+          path: /impl.assert.json_type
+          required: true
+    imports:
+    - from_step: lib_assertion_core_spec
+      names:
+      - impl.assert.contains
+      - impl.assert.regex
+      - impl.assert.json_type
 expect:
   portable:
     status: pass

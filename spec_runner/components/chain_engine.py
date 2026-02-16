@@ -8,6 +8,8 @@ from typing import Any, Callable, Mapping
 from spec_runner.codecs import load_external_cases
 from spec_runner.compiler import compile_external_case
 from spec_runner.internal_model import InternalSpecCase
+from spec_runner.spec_lang import limits_from_harness
+from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.virtual_paths import contract_root_for, parse_external_ref, resolve_contract_path
 
 _DOTTED_PATH_PART = re.compile(r"^[A-Za-z0-9_.-]+$")
@@ -25,7 +27,7 @@ class ChainRef:
 
 @dataclass(frozen=True)
 class ChainExport:
-    from_target: str
+    from_source: str
     path: str | None
     required: bool
 
@@ -134,32 +136,47 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
         raw_exports = raw.get("exports") or {}
         if not isinstance(raw_exports, dict):
             raise TypeError(f"harness.chain.steps[{idx}].exports must be a mapping when provided")
-        if raw_exports and not parsed_ref.case_id:
-            raise ValueError(f"harness.chain.steps[{idx}] exports require ref with #case_id fragment")
-        if raw_exports and class_name == "cannot":
-            raise ValueError(
-                f"harness.chain.steps[{idx}] cannot-class step must not declare exports"
-            )
         exports: dict[str, ChainExport] = {}
+        has_library_symbol_export = False
         for export_name, export_raw in raw_exports.items():
             name = str(export_name).strip()
             if not name:
                 raise ValueError(f"harness.chain.steps[{idx}].exports contains empty export key")
             if not isinstance(export_raw, dict):
                 raise TypeError(f"harness.chain.steps[{idx}].exports.{name} must be a mapping")
-            from_target = str(export_raw.get("from_target", "")).strip()
-            if not from_target:
-                raise ValueError(f"harness.chain.steps[{idx}].exports.{name}.from_target is required")
+            if "from_target" in export_raw:
+                raise TypeError(
+                    f"harness.chain.steps[{idx}].exports.{name}.from_target is not supported; use .from"
+                )
+            from_source = str(export_raw.get("from", "")).strip()
+            if not from_source:
+                raise ValueError(f"harness.chain.steps[{idx}].exports.{name}.from is required")
             export_path = export_raw.get("path")
             if export_path is not None and not isinstance(export_path, str):
                 raise TypeError(f"harness.chain.steps[{idx}].exports.{name}.path must be a string when provided")
+            if from_source == "library.symbol":
+                has_library_symbol_export = True
+                symbol_path = str(export_path or "").strip()
+                if symbol_path.startswith("/"):
+                    symbol_path = symbol_path.lstrip("/")
+                if not symbol_path:
+                    raise ValueError(
+                        f"harness.chain.steps[{idx}].exports.{name}.path is required for from=library.symbol"
+                    )
+                export_path = symbol_path
             raw_required = export_raw.get("required", True)
             if not isinstance(raw_required, bool):
                 raise TypeError(f"harness.chain.steps[{idx}].exports.{name}.required must be a bool when provided")
             exports[name] = ChainExport(
-                from_target=from_target,
+                from_source=from_source,
                 path=None if export_path is None else str(export_path),
                 required=raw_required,
+            )
+        if raw_exports and not parsed_ref.case_id and not has_library_symbol_export:
+            raise ValueError(f"harness.chain.steps[{idx}] exports require ref with #case_id fragment")
+        if class_name == "cannot" and raw_exports and not has_library_symbol_export:
+            raise ValueError(
+                f"harness.chain.steps[{idx}] cannot-class exports require from=library.symbol"
             )
         raw_allow_continue = raw.get("allow_continue", False)
         if not isinstance(raw_allow_continue, bool):
@@ -283,24 +300,73 @@ def resolve_chain_reference(step: ChainStep, *, current_case: InternalSpecCase) 
 def extract_exports(*, step: ChainStep, executed_case: InternalSpecCase, target_values: Mapping[str, Any]) -> dict[str, Any]:
     out: dict[str, Any] = {}
     for export_name, export in step.exports.items():
-        if export.from_target not in target_values:
+        if export.from_source == "library.symbol":
+            continue
+        if export.from_source not in target_values:
             if export.required:
                 raise ValueError(
-                    f"chain step {step.id} export {export_name} missing from_target {export.from_target} on case {executed_case.id}"
+                    f"chain step {step.id} export {export_name} missing from source {export.from_source} on case {executed_case.id}"
                 )
             continue
-        raw = target_values[export.from_target]
+        raw = target_values[export.from_source]
         if export.path:
             ok, value = _resolve_dotted_path(raw, export.path)
             if not ok:
                 if export.required:
                     raise ValueError(
-                        f"chain step {step.id} export {export_name} could not resolve path {export.path} from target {export.from_target}"
+                        f"chain step {step.id} export {export_name} could not resolve path {export.path} from source {export.from_source}"
                     )
                 continue
             out[export_name] = value
             continue
         out[export_name] = raw
+    return out
+
+
+def _extract_library_symbol_exports(
+    *,
+    step: ChainStep,
+    refs: list[InternalSpecCase],
+) -> dict[str, Any]:
+    symbols: dict[str, Any] = {}
+    seen_docs: set[Path] = set()
+    for ref_case in refs:
+        if ref_case.doc_path in seen_docs:
+            continue
+        seen_docs.add(ref_case.doc_path)
+        root = contract_root_for(ref_case.doc_path)
+        try:
+            rel_doc = ref_case.doc_path.resolve().relative_to(root.resolve()).as_posix()
+        except ValueError as exc:
+            raise ValueError(
+                f"chain step {step.id} cannot resolve library doc under contract root: {ref_case.doc_path}"
+            ) from exc
+        loaded = load_spec_lang_symbols_for_case(
+            doc_path=ref_case.doc_path,
+            harness={"spec_lang": {"includes": [f"/{rel_doc}"]}},
+            limits=limits_from_harness(ref_case.harness or {}),
+        )
+        for name, value in loaded.items():
+            if name in symbols:
+                continue
+            symbols[name] = value
+
+    out: dict[str, Any] = {}
+    for export_name, export in step.exports.items():
+        if export.from_source != "library.symbol":
+            continue
+        symbol_name = str(export.path or "").strip().lstrip("/")
+        if not symbol_name:
+            raise ValueError(
+                f"chain step {step.id} export {export_name} requires non-empty path for from=library.symbol"
+            )
+        if symbol_name in symbols:
+            out[export_name] = symbols[symbol_name]
+            continue
+        if export.required:
+            raise ValueError(
+                f"chain step {step.id} export {export_name} unresolved library symbol: {symbol_name}"
+            )
     return out
 
 
@@ -320,58 +386,69 @@ def execute_chain_plan(
     for step in steps:
         refs = resolve_chain_reference(step, current_case=case)
         step_exports: dict[str, Any] = {}
+        has_library_symbol_export = any(x.from_source == "library.symbol" for x in step.exports.values())
+        if has_library_symbol_export:
+            non_library_sources = sorted(
+                {x.from_source for x in step.exports.values() if x.from_source != "library.symbol"}
+            )
+            if non_library_sources:
+                raise ValueError(
+                    f"chain step {step.id} cannot mix from=library.symbol with other export sources: "
+                    + ", ".join(non_library_sources)
+                )
         for ref_case in refs:
             ref_key = f"{ref_case.doc_path.resolve().as_posix()}::{ref_case.id}"
             cur_key = f"{case.doc_path.resolve().as_posix()}::{case.id}"
             if ref_key == cur_key:
                 raise RuntimeError(f"chain step {step.id} references current case recursively")
+            passed = False
+            failure: Exception | None = None
             try:
-                run_case_fn(ref_case)
-                targets = ctx.get_case_targets(case_key=ref_key)
-                if targets is None:
-                    targets = {}
-                step_status = "pass"
+                if has_library_symbol_export:
+                    resolved = _extract_library_symbol_exports(step=step, refs=refs)
+                    if step.class_name == "cannot":
+                        passed = not bool(resolved)
+                    else:
+                        step_exports.update(resolved)
+                        passed = True
+                else:
+                    run_case_fn(ref_case)
+                    targets = ctx.get_case_targets(case_key=ref_key)
+                    if targets is None:
+                        targets = {}
+                    if step.exports and step.class_name in {"must", "can"}:
+                        step_exports.update(extract_exports(step=step, executed_case=ref_case, target_values=targets))
+                    if step.class_name == "cannot":
+                        passed = False
+                    else:
+                        passed = True
+            except Exception as exc:
+                failure = exc
                 if step.class_name == "cannot":
-                    raise RuntimeError(
-                        f"chain step {step.id} with class 'cannot' unexpectedly passed"
-                    )
-                if step.exports and step.class_name in {"must", "can"}:
-                    step_exports.update(extract_exports(step=step, executed_case=ref_case, target_values=targets))
-                ctx.chain_trace.append(
-                    {
-                        "step_id": step.id,
-                        "class": step.class_name,
-                        "ref_case_id": ref_case.id,
-                        "ref_doc_path": "/" + ref_case.doc_path.resolve().as_posix().lstrip("/"),
-                        "status": step_status,
-                    }
+                    passed = True
+                elif step.class_name == "can":
+                    passed = False
+                else:
+                    passed = False
+
+            ctx.chain_trace.append(
+                {
+                    "step_id": step.id,
+                    "class": step.class_name,
+                    "ref_case_id": ref_case.id,
+                    "ref_doc_path": "/" + ref_case.doc_path.resolve().as_posix().lstrip("/"),
+                    "status": "pass" if passed else "fail",
+                }
+            )
+            if step.class_name == "cannot" and not passed and fail_fast and not step.allow_continue:
+                raise RuntimeError(
+                    f"chain step {step.id} with class 'cannot' unexpectedly succeeded"
                 )
-            except Exception:
-                if step.class_name == "cannot":
-                    ctx.chain_trace.append(
-                        {
-                            "step_id": step.id,
-                            "class": step.class_name,
-                            "ref_case_id": ref_case.id,
-                            "ref_doc_path": "/" + ref_case.doc_path.resolve().as_posix().lstrip("/"),
-                            "status": "pass",
-                        }
-                    )
-                    continue
-                ctx.chain_trace.append(
-                    {
-                        "step_id": step.id,
-                        "class": step.class_name,
-                        "ref_case_id": ref_case.id,
-                        "ref_doc_path": "/" + ref_case.doc_path.resolve().as_posix().lstrip("/"),
-                        "status": "fail",
-                    }
-                )
-                if step.class_name == "can":
-                    continue
-                if fail_fast and not step.allow_continue:
-                    raise
-        if step.class_name == "cannot" and step_exports:
+            if not passed and step.class_name == "must" and failure is not None and fail_fast and not step.allow_continue:
+                raise failure
+            if has_library_symbol_export:
+                break
+        if step.class_name == "cannot" and step_exports and not has_library_symbol_export:
             raise RuntimeError(f"chain step {step.id} class cannot must not export values")
         ctx.chain_state[step.id] = dict(step_exports)
     resolved_imports: dict[str, Any] = {}

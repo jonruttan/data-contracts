@@ -353,30 +353,70 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                     has_library_paths = isinstance(lib_paths, list) and any(
                         isinstance(x, str) and x.strip() for x in lib_paths
                     )
+                chain_cfg = harness.get("chain")
+                if isinstance(chain_cfg, dict):
+                    steps = chain_cfg.get("steps")
+                    if isinstance(steps, list):
+                        for step in steps:
+                            if not isinstance(step, dict):
+                                continue
+                            exports = step.get("exports")
+                            if not isinstance(exports, dict):
+                                continue
+                            if any(
+                                isinstance(v, dict)
+                                and str(v.get("from", "")).strip() == "library.symbol"
+                                for v in exports.values()
+                            ):
+                                has_library_paths = True
+                                break
                 if case_type == "governance.check":
                     raw_policy = harness.get("policy_evaluate")
                     if isinstance(raw_policy, list):
                         refs = {sym for sym in _collect_var_symbols(raw_policy) if "." in sym}
                         if refs:
+                            available_symbols: set[str] = set()
+                            chain_cfg = harness.get("chain")
+                            if isinstance(chain_cfg, dict):
+                                imports_cfg = chain_cfg.get("imports")
+                                if isinstance(imports_cfg, list):
+                                    for item in imports_cfg:
+                                        if not isinstance(item, dict):
+                                            continue
+                                        names = item.get("names")
+                                        if isinstance(names, list):
+                                            for name in names:
+                                                s = str(name).strip()
+                                                if s:
+                                                    available_symbols.add(s)
+                                        alias_map = item.get("as")
+                                        if isinstance(alias_map, dict):
+                                            for dst in alias_map.values():
+                                                s = str(dst).strip()
+                                                if s:
+                                                    available_symbols.add(s)
                             try:
                                 symbols = load_spec_lang_symbols_for_case(
                                     doc_path=doc_path,
                                     harness=harness,
                                     limits=SpecLangLimits(),
                                 )
+                                available_symbols.update(symbols.keys())
                             except Exception as exc:  # noqa: BLE001
-                                governance_symbol_resolution = 0.0
-                                errs.append(
-                                    f"{rel_path}: case {case_id} unable to load policy symbols ({exc})"
-                                )
-                            else:
-                                unresolved = sorted(sym for sym in refs if sym not in symbols)
-                                if unresolved:
+                                if not available_symbols:
                                     governance_symbol_resolution = 0.0
                                     errs.append(
-                                        f"{rel_path}: case {case_id} unresolved policy symbols: "
-                                        + ", ".join(unresolved)
+                                        f"{rel_path}: case {case_id} unable to load policy symbols ({exc})"
                                     )
+                            else:
+                                pass
+                            unresolved = sorted(sym for sym in refs if sym not in available_symbols)
+                            if unresolved:
+                                governance_symbol_resolution = 0.0
+                                errs.append(
+                                    f"{rel_path}: case {case_id} unresolved policy symbols: "
+                                    + ", ".join(unresolved)
+                                )
             if case_type == "governance.check":
                 native_hint = not has_policy_evaluate
             rows.append(

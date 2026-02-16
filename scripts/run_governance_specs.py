@@ -31,7 +31,10 @@ from spec_runner.spec_lang import (
     eval_predicate,
 )
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
-from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
+from spec_runner.spec_lang_libraries import (
+    compile_library_case_public_symbols,
+    load_spec_lang_symbols_for_case,
+)
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.schema_registry import compile_registry
 from spec_runner.ops_namespace import validate_ops_symbol
@@ -1796,18 +1799,10 @@ def _scan_assert_domain_library_usage_required(root: Path, *, harness: dict | No
                     f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing harness mapping"
                 )
                 continue
-            spec_lang_cfg = harness_map.get("spec_lang")
-            if not isinstance(spec_lang_cfg, dict):
+            lib_paths = _collect_chain_library_refs(case)
+            if not any("/docs/spec/libraries/domain/" in str(x) for x in lib_paths):
                 violations.append(
-                    f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing harness.spec_lang mapping"
-                )
-                continue
-            lib_paths = spec_lang_cfg.get("includes")
-            if not isinstance(lib_paths, list) or not any(
-                isinstance(x, str) and "/docs/spec/libraries/domain/" in str(x) for x in lib_paths
-            ):
-                violations.append(
-                    f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing domain library path in harness.spec_lang.includes"
+                    f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing domain library path in harness.chain steps"
                 )
     if not found:
         violations.append(f"{target_file.relative_to(root)}:1: expected SRCONF-DOMAIN-LIB-* cases")
@@ -2183,16 +2178,11 @@ def _scan_governance_policy_library_usage_required(root: Path, *, harness: dict 
         if not isinstance(harness_map, dict):
             violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
             continue
-        spec_lang_cfg = harness_map.get("spec_lang")
-        has_library_paths = False
-        if isinstance(spec_lang_cfg, dict):
-            lib_paths = spec_lang_cfg.get("includes")
-            has_library_paths = isinstance(lib_paths, list) and any(
-                isinstance(x, str) and x.strip() for x in lib_paths
-            )
+        lib_paths = _collect_chain_library_refs(case)
+        has_library_paths = any(str(x).strip() for x in lib_paths)
         if not has_library_paths:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.spec_lang.includes"
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty chain library refs"
             )
             continue
         policy = harness_map.get("policy_evaluate")
@@ -2258,16 +2248,11 @@ def _scan_conformance_library_policy_usage_required(root: Path, *, harness: dict
         if not isinstance(harness_map, dict):
             violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
             continue
-        spec_lang_cfg = harness_map.get("spec_lang")
-        has_library_paths = False
-        if isinstance(spec_lang_cfg, dict):
-            lib_paths = spec_lang_cfg.get("includes")
-            has_library_paths = isinstance(lib_paths, list) and any(
-                isinstance(x, str) and x.strip() for x in lib_paths
-            )
+        lib_paths = _collect_chain_library_refs(case)
+        has_library_paths = any(str(x).strip() for x in lib_paths)
         if not has_library_paths:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.spec_lang.includes"
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty chain library refs"
             )
             continue
         policy = harness_map.get("policy_evaluate")
@@ -3069,6 +3054,133 @@ def _iter_cases_with_chain(root: Path):
             yield doc_path, case, harness, chain
 
 
+def _collect_chain_library_refs(case: dict) -> list[str]:
+    out: list[str] = []
+    harness = case.get("harness")
+    if not isinstance(harness, dict):
+        return out
+    chain = harness.get("chain")
+    if not isinstance(chain, dict):
+        return out
+    steps = chain.get("steps")
+    if not isinstance(steps, list):
+        return out
+    for step in steps:
+        if not isinstance(step, dict):
+            continue
+        exports = step.get("exports")
+        if not isinstance(exports, dict):
+            continue
+        if not any(
+            isinstance(v, dict) and str(v.get("from", "")).strip() == "library.symbol"
+            for v in exports.values()
+        ):
+            continue
+        try:
+            ref_path, _ref_case_id = _parse_chain_ref_value(step.get("ref"))
+        except ValueError:
+            continue
+        if ref_path:
+            out.append(ref_path)
+    return out
+
+
+def _load_chain_imported_symbol_bindings(
+    root: Path, *, doc_path: Path, case: dict, limits: SpecLangLimits
+) -> dict[str, object]:
+    out: dict[str, object] = {}
+    harness = case.get("harness")
+    if not isinstance(harness, dict):
+        return out
+    chain = harness.get("chain")
+    if not isinstance(chain, dict):
+        return out
+    steps = chain.get("steps")
+    if not isinstance(steps, list):
+        return out
+
+    step_exports: dict[str, dict[str, object]] = {}
+    for step in steps:
+        if not isinstance(step, dict):
+            continue
+        step_id = str(step.get("id", "")).strip()
+        if not step_id:
+            continue
+        exports = step.get("exports")
+        if not isinstance(exports, dict):
+            continue
+        has_library_exports = any(
+            isinstance(v, dict) and str(v.get("from", "")).strip() == "library.symbol"
+            for v in exports.values()
+        )
+        if not has_library_exports:
+            continue
+        try:
+            ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
+        except ValueError:
+            continue
+        if not ref_path:
+            continue
+        try:
+            source_doc = _resolve_chain_ref_doc(root, doc_path, ref_path)
+        except VirtualPathError:
+            continue
+        loaded = list(load_external_cases(source_doc, formats={"md"}))
+        if ref_case_id:
+            loaded = [x for x in loaded if str(x[1].get("id", "")).strip() == ref_case_id]
+        symbols: dict[str, object] = {}
+        for source_path, source_case in loaded:
+            if str(source_case.get("type", "")).strip() != "spec_lang.library":
+                continue
+            try:
+                compiled_public = compile_library_case_public_symbols(
+                    raw_case=source_case,
+                    source_path=source_path,
+                    limits=limits,
+                )
+            except Exception:
+                continue
+            for sym_name, value in compiled_public.items():
+                symbols[sym_name] = value
+        resolved_exports: dict[str, object] = {}
+        for export_name, export_raw in exports.items():
+            if not isinstance(export_raw, dict):
+                continue
+            if str(export_raw.get("from", "")).strip() != "library.symbol":
+                continue
+            symbol_name = str(export_raw.get("path", "")).strip().lstrip("/")
+            if symbol_name and symbol_name in symbols:
+                resolved_exports[str(export_name)] = symbols[symbol_name]
+        if resolved_exports:
+            step_exports[step_id] = resolved_exports
+
+    imports = chain.get("imports")
+    if not isinstance(imports, list):
+        return out
+    for item in imports:
+        if not isinstance(item, dict):
+            continue
+        from_step = str(item.get("from_step", "")).strip()
+        if not from_step or from_step not in step_exports:
+            continue
+        names = item.get("names")
+        if not isinstance(names, list):
+            continue
+        alias_map_raw = item.get("as")
+        alias_map = alias_map_raw if isinstance(alias_map_raw, dict) else {}
+        for raw_name in names:
+            name = str(raw_name).strip()
+            if not name:
+                continue
+            if name not in step_exports[from_step]:
+                continue
+            local = str(alias_map.get(name, name)).strip()
+            if not local:
+                continue
+            out[local] = step_exports[from_step][name]
+    return out
+
+
 def _scan_runtime_chain_step_class_required(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     violations: list[str] = []
@@ -3442,10 +3554,7 @@ def _scan_runtime_chain_exports_target_derived_only(root: Path, *, harness: dict
             if not isinstance(exports, dict):
                 violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports must be mapping")
                 continue
-            if exports and not ref_case_id:
-                violations.append(
-                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports require ref with #case_id fragment"
-                )
+            has_library_symbol = False
             for export_name, export_raw in exports.items():
                 if not isinstance(export_raw, dict):
                     violations.append(
@@ -3453,15 +3562,229 @@ def _scan_runtime_chain_exports_target_derived_only(root: Path, *, harness: dict
                     )
                     continue
                 for key in export_raw.keys():
-                    if str(key) not in {"from_target", "path", "required"}:
+                    if str(key) not in {"from", "path", "required"}:
                         violations.append(
                             f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} has unsupported key {key}"
                         )
-                from_target = str(export_raw.get("from_target", "")).strip()
-                if not from_target:
+                from_source = str(export_raw.get("from", "")).strip()
+                if not from_source:
                     violations.append(
-                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} missing from_target"
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} missing from"
                     )
+                    continue
+                if from_source == "library.symbol":
+                    has_library_symbol = True
+                    if not str(export_raw.get("path", "")).strip():
+                        violations.append(
+                            f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} from=library.symbol requires path"
+                        )
+            if exports and not ref_case_id and not has_library_symbol:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports require ref with #case_id fragment"
+                )
+    return violations
+
+
+def _scan_runtime_chain_exports_from_key_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        steps = chain.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                continue
+            step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
+            exports = step.get("exports")
+            if not isinstance(exports, dict):
+                continue
+            for export_name, export_raw in exports.items():
+                if not isinstance(export_raw, dict):
+                    continue
+                if "from" not in export_raw:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} missing required from key"
+                    )
+    return violations
+
+
+def _scan_runtime_chain_library_symbol_exports_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        steps = chain.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                continue
+            step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
+            exports = step.get("exports")
+            if not isinstance(exports, dict):
+                continue
+            for export_name, export_raw in exports.items():
+                if not isinstance(export_raw, dict):
+                    continue
+                from_source = str(export_raw.get("from", "")).strip()
+                if from_source != "library.symbol":
+                    continue
+                symbol_name = str(export_raw.get("path", "")).strip().lstrip("/")
+                if not symbol_name:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} from=library.symbol requires non-empty path"
+                    )
+    return violations
+
+
+def _scan_runtime_chain_legacy_from_target_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        steps = chain.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                continue
+            step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
+            exports = step.get("exports")
+            if not isinstance(exports, dict):
+                continue
+            for export_name, export_raw in exports.items():
+                if isinstance(export_raw, dict) and "from_target" in export_raw:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} uses legacy from_target key"
+                    )
+    return violations
+
+
+def _scan_runtime_executable_spec_lang_includes_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case in _iter_all_spec_cases(root):
+        case_type = str(case.get("type", "")).strip()
+        if case_type == "spec_lang.library":
+            continue
+        h = case.get("harness")
+        if not isinstance(h, dict):
+            continue
+        spec_lang = h.get("spec_lang")
+        if not isinstance(spec_lang, dict):
+            continue
+        includes = spec_lang.get("includes")
+        if isinstance(includes, list) and includes:
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} harness.spec_lang.includes is forbidden for executable cases; use harness.chain"
+            )
+    return violations
+
+
+def _scan_library_single_public_symbol_per_case(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    libs_root = root / "docs/spec/libraries"
+    if not libs_root.exists():
+        return []
+    violations: list[str] = []
+    for lib_file in sorted(libs_root.rglob("*.spec.md")):
+        if not lib_file.is_file():
+            continue
+        try:
+            loaded = load_external_cases(lib_file, formats={"md"})
+        except Exception as exc:  # noqa: BLE001
+            violations.append(f"{lib_file.relative_to(root)}: unable to parse library file ({exc})")
+            continue
+        for _doc_path, case in loaded:
+            if str(case.get("type", "")).strip() != "spec_lang.library":
+                continue
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            defines = case.get("defines")
+            if not isinstance(defines, dict):
+                continue
+            public = defines.get("public")
+            n = len(public) if isinstance(public, dict) else 0
+            if n != 1:
+                violations.append(
+                    f"{lib_file.relative_to(root)}: case {case_id} must define exactly one defines.public symbol (found {n})"
+                )
+    return violations
+
+
+def _scan_library_colocated_symbol_tests_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    libs_root = root / "docs/spec/libraries"
+    if not libs_root.exists():
+        return []
+    violations: list[str] = []
+    exported_by_file: dict[Path, set[str]] = {}
+    referenced: set[str] = set()
+    for lib_file in sorted(libs_root.rglob("*.spec.md")):
+        if not lib_file.is_file():
+            continue
+        try:
+            loaded = list(load_external_cases(lib_file, formats={"md"}))
+        except Exception as exc:  # noqa: BLE001
+            violations.append(f"{lib_file.relative_to(root)}: unable to parse library file ({exc})")
+            continue
+        has_executable_test_case = False
+        file_exports: set[str] = set()
+        for _doc_path, case in loaded:
+            case_type = str(case.get("type", "")).strip()
+            if case_type and case_type != "spec_lang.library":
+                has_executable_test_case = True
+            if case_type == "spec_lang.library":
+                defines = case.get("defines")
+                if isinstance(defines, dict):
+                    public = defines.get("public")
+                    if isinstance(public, dict):
+                        file_exports.update(str(x).strip() for x in public.keys() if str(x).strip())
+        exported_by_file[lib_file] = file_exports
+        if has_executable_test_case:
+            continue
+
+    scan_roots = [
+        root / "docs/spec/conformance/cases",
+        root / "docs/spec/governance/cases",
+        root / "docs/spec/impl",
+        root / "docs/spec/libraries",
+    ]
+    for base in scan_roots:
+        if not base.exists():
+            continue
+        for _doc_path, case in _iter_all_spec_cases(base):
+            h = case.get("harness")
+            if isinstance(h, dict):
+                chain = h.get("chain")
+                if isinstance(chain, dict):
+                    imports = chain.get("imports")
+                    if isinstance(imports, list):
+                        for item in imports:
+                            if not isinstance(item, dict):
+                                continue
+                            names = item.get("names")
+                            if isinstance(names, list):
+                                for raw in names:
+                                    sym = str(raw).strip()
+                                    if sym and "." in sym:
+                                        referenced.add(sym)
+            raw_assert = case.get("assert")
+            if isinstance(raw_assert, list):
+                for expr in _iter_evaluate_expr_nodes(raw_assert):
+                    referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
+            if isinstance(h, dict):
+                policy = h.get("policy_evaluate")
+                if isinstance(policy, list):
+                    referenced.update(sym for sym in _collect_var_symbols(policy) if "." in sym)
+
+    for lib_file, file_exports in exported_by_file.items():
+        if file_exports and not any(sym in referenced for sym in file_exports):
+            violations.append(
+                f"{lib_file.relative_to(root)}: library file must include colocated executable tests or referenced exports in executable specs"
+            )
     return violations
 
 
@@ -4115,21 +4438,13 @@ def _scan_conformance_spec_lang_fixture_library_usage(root: Path, *, harness: di
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
         if str(case.get("type", "")).strip() != "text.file":
             continue
-        harness_map = case.get("harness")
-        lib_ok = False
-        if isinstance(harness_map, dict):
-            spec_lang_cfg = harness_map.get("spec_lang")
-            if isinstance(spec_lang_cfg, dict):
-                lib_paths = spec_lang_cfg.get("includes")
-                lib_ok = isinstance(lib_paths, list) and any(
-                    isinstance(x, str) and str(x).strip() == required_library_path for x in lib_paths
-                )
+        lib_ok = any(str(x).strip() == required_library_path for x in _collect_chain_library_refs(case))
         calls = _count_helper_calls(case.get("assert"))
         total_calls += calls
         if case_id in required_case_ids:
             seen_required.add(case_id)
             if not lib_ok:
-                violations.append(f"{rel}: case {case_id} missing harness.spec_lang.includes entry {required_library_path}")
+                violations.append(f"{rel}: case {case_id} missing chain library ref {required_library_path}")
             if calls < 1:
                 violations.append(f"{rel}: case {case_id} missing helper call with prefix {required_call_prefix!r}")
 
@@ -5986,6 +6301,8 @@ def _scan_reference_contract_paths_exist(root: Path, *, harness: dict | None = N
             for field, raw in _iter_path_fields(case):
                 if field.split(".")[-1].split("[", 1)[0] not in must_exist_keys:
                     continue
+                if ".exports." in field and field.endswith(".path"):
+                    continue
                 s = str(raw).strip()
                 if not s or s.startswith("external://"):
                     continue
@@ -6100,15 +6417,32 @@ def _scan_reference_policy_symbols_resolve(root: Path, *, harness: dict | None =
         policy_refs = {sym for sym in _collect_var_symbols(policy) if "." in sym}
         if not policy_refs:
             continue
+        symbols: dict[str, object] = {}
         try:
-            symbols = load_spec_lang_symbols_for_case(
-                doc_path=spec.doc_path,
-                harness=harness_map,
-                limits=limits,
+            symbols.update(
+                load_spec_lang_symbols_for_case(
+                    doc_path=spec.doc_path,
+                    harness=harness_map,
+                    limits=limits,
+                )
             )
         except Exception as exc:  # noqa: BLE001
             violations.append(
                 f"{spec.doc_path.relative_to(root)}: case {case_id} unable to load policy symbols ({exc})"
+            )
+            continue
+        try:
+            symbols.update(
+                _load_chain_imported_symbol_bindings(
+                    root,
+                    doc_path=spec.doc_path,
+                    case=case,
+                    limits=limits,
+                )
+            )
+        except Exception as exc:  # noqa: BLE001
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} unable to load chain-imported symbols ({exc})"
             )
             continue
         unresolved = sorted(sym for sym in policy_refs if sym not in symbols)
@@ -6178,6 +6512,25 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
                             sym = str(raw).strip()
                             if sym and "." in sym:
                                 referenced.add(sym)
+                chain = h.get("chain")
+                if isinstance(chain, dict):
+                    raw_imports = chain.get("imports")
+                    if isinstance(raw_imports, list):
+                        for item in raw_imports:
+                            if not isinstance(item, dict):
+                                continue
+                            names = item.get("names")
+                            if isinstance(names, list):
+                                for raw_name in names:
+                                    sym = str(raw_name).strip()
+                                    if sym and "." in sym:
+                                        referenced.add(sym)
+                            aliases = item.get("as")
+                            if isinstance(aliases, dict):
+                                for raw_alias in aliases.values():
+                                    sym = str(raw_alias).strip()
+                                    if sym and "." in sym:
+                                        referenced.add(sym)
                 policy = h.get("policy_evaluate")
                 if isinstance(policy, list):
                     referenced.update(sym for sym in _collect_var_symbols(policy) if "." in sym)
@@ -6538,19 +6891,14 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
             h = case.get("harness")
             if not isinstance(h, dict):
                 continue
-            spec_lang = h.get("spec_lang")
-            if not isinstance(spec_lang, dict):
-                continue
-            libs = spec_lang.get("includes")
-            if not isinstance(libs, list):
-                continue
+            libs = _collect_chain_library_refs(case)
             for idx, raw in enumerate(libs):
                 s = str(raw).strip()
                 if not s or s.startswith("external://"):
                     continue
                 try:
                     normalized = normalize_contract_path(
-                        s, field=f"{case_id}.harness.spec_lang.includes[{idx}]"
+                        s, field=f"{case_id}.harness.chain.steps[{idx}].ref"
                     )
                 except VirtualPathError:
                     continue
@@ -6572,19 +6920,14 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
             h = case.get("harness")
             if not isinstance(h, dict):
                 continue
-            spec_lang = h.get("spec_lang")
-            if not isinstance(spec_lang, dict):
-                continue
-            libs = spec_lang.get("includes")
-            if not isinstance(libs, list):
-                continue
+            libs = _collect_chain_library_refs(case)
             for idx, raw in enumerate(libs):
                 s = str(raw).strip()
                 if not s or s.startswith("external://"):
                     continue
                 try:
                     normalized = normalize_contract_path(
-                        s, field=f"{case_id}.harness.spec_lang.includes[{idx}]"
+                        s, field=f"{case_id}.harness.chain.steps[{idx}].ref"
                     )
                 except VirtualPathError:
                     continue
@@ -6970,12 +7313,16 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.chain_cycle_forbidden": _scan_runtime_chain_cycle_forbidden,
     "runtime.chain_exports_target_derived_only": _scan_runtime_chain_exports_target_derived_only,
     "runtime.chain_exports_explicit_only": _scan_runtime_chain_exports_target_derived_only,
+    "runtime.chain_exports_from_key_required": _scan_runtime_chain_exports_from_key_required,
+    "runtime.chain_legacy_from_target_forbidden": _scan_runtime_chain_legacy_from_target_forbidden,
+    "runtime.chain_library_symbol_exports_valid": _scan_runtime_chain_library_symbol_exports_valid,
     "runtime.chain_import_alias_collision_forbidden": _scan_runtime_chain_import_alias_collision_forbidden,
     "runtime.chain_fail_fast_default": _scan_runtime_chain_fail_fast_default,
     "runtime.chain_state_template_resolution": _scan_runtime_chain_state_template_resolution,
     "runtime.chain_contract_single_location": _scan_runtime_chain_contract_single_location,
     "runtime.universal_chain_support_required": _scan_runtime_universal_chain_support_required,
     "runtime.chain_shared_context_required": _scan_runtime_chain_shared_context_required,
+    "runtime.executable_spec_lang_includes_forbidden": _scan_runtime_executable_spec_lang_includes_forbidden,
     "docs.api_http_tutorial_sync": _scan_docs_api_http_tutorial_sync,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,
@@ -7126,6 +7473,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "library.domain_ownership": _scan_library_domain_ownership,
     "library.domain_index_sync": _scan_library_domain_index_sync,
     "library.public_surface_model": _scan_library_public_surface_model,
+    "library.single_public_symbol_per_case_required": _scan_library_single_public_symbol_per_case,
+    "library.colocated_symbol_tests_required": _scan_library_colocated_symbol_tests_required,
     "library.verb_first_schema_keys_required": _scan_library_verb_first_schema_keys_required,
     "library.legacy_definitions_key_forbidden": _scan_library_legacy_definitions_key_forbidden,
     "schema.verb_first_contract_sync": _scan_schema_verb_first_contract_sync,
@@ -7190,15 +7539,10 @@ def run_governance_check(case, *, ctx) -> None:
             f"governance.check {check_id} case {case_id} requires harness.policy_evaluate"
         )
 
-    # Governance policies can import reusable spec-lang function libraries
-    # via harness.spec_lang.includes/exports.
-    lib_symbols = load_spec_lang_symbols_for_case(
-        doc_path=case.doc_path,
-        harness=h,
-        limits=SpecLangLimits(),
-    )
-    if lib_symbols:
-        symbols = {**lib_symbols, **symbols}
+    case_key = f"{case.doc_path.resolve().as_posix()}::{str(t.get('id', '<unknown>')).strip() or '<unknown>'}"
+    chain_symbols = dict(ctx.get_case_chain_imports(case_key=case_key))
+    if chain_symbols:
+        symbols = {**chain_symbols, **symbols}
     spec_lang_imports = compile_import_bindings((h or {}).get("spec_lang"))
 
     policy_result: GovernancePolicyResult = run_governance_policy(

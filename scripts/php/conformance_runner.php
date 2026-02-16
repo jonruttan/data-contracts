@@ -1275,7 +1275,7 @@ function loadSpecLangLibraryDoc(string $path): array {
         if ($scope === null) {
             return [];
         }
-        if (!is_array($scope) || isListArray($scope)) {
+        if (!is_array($scope) || (isListArray($scope) && count($scope) > 0)) {
             throw new SchemaError("spec_lang.library {$fieldPrefix} must be a mapping when provided");
         }
         $out = [];
@@ -1313,6 +1313,9 @@ function loadSpecLangLibraryDoc(string $path): array {
         }
         foreach (array_keys($public) as $name) {
             if (array_key_exists($name, $bindings)) {
+                if ($bindings[$name] == $public[$name]) {
+                    continue;
+                }
                 throw new SchemaError("duplicate library symbol in file {$path}: {$name}");
             }
             $bindings[$name] = $public[$name];
@@ -1320,6 +1323,9 @@ function loadSpecLangLibraryDoc(string $path): array {
         }
         foreach (array_keys($private) as $name) {
             if (array_key_exists($name, $bindings)) {
+                if ($bindings[$name] == $private[$name]) {
+                    continue;
+                }
                 throw new SchemaError("duplicate library symbol in file {$path}: {$name}");
             }
             $bindings[$name] = $private[$name];
@@ -1457,6 +1463,145 @@ function loadSpecLangSymbolsForCase(string $fixturePath, array $case, array $lim
         return $filtered;
     }
     return $compiled;
+}
+
+function chainRefResolveDocPath(string $fixturePath, string $rawRef): array {
+    $trim = trim($rawRef);
+    if ($trim === '') {
+        throw new SchemaError('harness.chain.steps[*].ref must be a non-empty string');
+    }
+    $hashPos = strpos($trim, '#');
+    if ($hashPos === false) {
+        return ['path' => resolveContractPath($fixturePath, $trim, 'harness.chain.steps.ref'), 'case_id' => null];
+    }
+    $pathPart = trim(substr($trim, 0, $hashPos));
+    $casePart = trim(substr($trim, $hashPos + 1));
+    if ($casePart === '') {
+        throw new SchemaError("harness.chain.steps[*].ref fragment case_id must be non-empty when '#' is present");
+    }
+    if ($pathPart === '') {
+        return ['path' => $fixturePath, 'case_id' => $casePart];
+    }
+    return ['path' => resolveContractPath($fixturePath, $pathPart, 'harness.chain.steps.ref'), 'case_id' => $casePart];
+}
+
+function contractPathFromAbsoluteDoc(string $docPath): string {
+    $root = contractRootFor($docPath);
+    $prefix = rtrim($root, '/\\') . DIRECTORY_SEPARATOR;
+    if (!str_starts_with($docPath, $prefix)) {
+        throw new SchemaError("chain library ref escapes contract root: {$docPath}");
+    }
+    return '/' . ltrim(str_replace('\\', '/', substr($docPath, strlen($prefix))), '/');
+}
+
+function loadChainImportedSymbolsForCase(string $fixturePath, array $case, array $limits): array {
+    $harness = $case['harness'] ?? null;
+    if (!is_array($harness) || isListArray($harness)) {
+        return [];
+    }
+    $chain = $harness['chain'] ?? null;
+    if (!is_array($chain) || isListArray($chain)) {
+        return [];
+    }
+    $steps = $chain['steps'] ?? null;
+    if (!is_array($steps) || !isListArray($steps)) {
+        return [];
+    }
+
+    $stepExports = [];
+    foreach ($steps as $idx => $step) {
+        if (!is_array($step) || isListArray($step)) {
+            throw new SchemaError("harness.chain.steps[{$idx}] must be a mapping");
+        }
+        $stepId = trim((string)($step['id'] ?? ''));
+        if ($stepId === '') {
+            throw new SchemaError("harness.chain.steps[{$idx}].id must be a non-empty string");
+        }
+        $refRaw = $step['ref'] ?? null;
+        if (!is_string($refRaw) || trim($refRaw) === '') {
+            throw new SchemaError("harness.chain.steps[{$idx}].ref must be a non-empty string");
+        }
+        $resolvedRef = chainRefResolveDocPath($fixturePath, $refRaw);
+        $sourceDoc = (string)$resolvedRef['path'];
+        if (!is_file($sourceDoc)) {
+            throw new SchemaError("chain ref path does not exist as file: {$refRaw}");
+        }
+        $exports = $step['exports'] ?? [];
+        if (!is_array($exports) || isListArray($exports)) {
+            continue;
+        }
+        $hasLibraryExport = false;
+        foreach ($exports as $expRaw) {
+            if (is_array($expRaw) && !isListArray($expRaw) && trim((string)($expRaw['from'] ?? '')) === 'library.symbol') {
+                $hasLibraryExport = true;
+                break;
+            }
+        }
+        if (!$hasLibraryExport) {
+            continue;
+        }
+        $includePath = contractPathFromAbsoluteDoc($sourceDoc);
+        $loadedSymbols = loadSpecLangSymbolsForCase(
+            $sourceDoc,
+            ['harness' => ['spec_lang' => ['includes' => [$includePath]]]],
+            $limits
+        );
+        $resolvedExports = [];
+        foreach ($exports as $exportName => $expRaw) {
+            if (!is_array($expRaw) || isListArray($expRaw)) {
+                continue;
+            }
+            if (trim((string)($expRaw['from'] ?? '')) !== 'library.symbol') {
+                continue;
+            }
+            $symbolPath = ltrim(trim((string)($expRaw['path'] ?? '')), '/');
+            $required = !array_key_exists('required', $expRaw) || (bool)$expRaw['required'];
+            if ($symbolPath === '') {
+                throw new SchemaError("harness.chain.steps[{$idx}].exports.{$exportName}.path is required for from=library.symbol");
+            }
+            if (!array_key_exists($symbolPath, $loadedSymbols)) {
+                if ($required) {
+                    throw new SchemaError("chain step {$stepId} export {$exportName} unresolved library symbol: {$symbolPath}");
+                }
+                continue;
+            }
+            $resolvedExports[(string)$exportName] = $loadedSymbols[$symbolPath];
+        }
+        $stepExports[$stepId] = $resolvedExports;
+    }
+
+    $out = [];
+    $imports = $chain['imports'] ?? [];
+    if (!is_array($imports) || !isListArray($imports)) {
+        return $out;
+    }
+    foreach ($imports as $idx => $imp) {
+        if (!is_array($imp) || isListArray($imp)) {
+            throw new SchemaError("harness.chain.imports[{$idx}] must be a mapping");
+        }
+        $fromStep = trim((string)($imp['from_step'] ?? ''));
+        if ($fromStep === '' || !array_key_exists($fromStep, $stepExports)) {
+            continue;
+        }
+        $names = $imp['names'] ?? null;
+        if (!is_array($names) || !isListArray($names)) {
+            throw new SchemaError("harness.chain.imports[{$idx}].names must be a non-empty list");
+        }
+        $aliasesRaw = $imp['as'] ?? [];
+        $aliases = (is_array($aliasesRaw) && !isListArray($aliasesRaw)) ? $aliasesRaw : [];
+        foreach ($names as $rawName) {
+            $name = trim((string)$rawName);
+            if ($name === '' || !array_key_exists($name, $stepExports[$fromStep])) {
+                continue;
+            }
+            $local = trim((string)($aliases[$name] ?? $name));
+            if ($local === '') {
+                continue;
+            }
+            $out[$local] = $stepExports[$fromStep][$name];
+        }
+    }
+    return $out;
 }
 
 function compileLeafExpr(string $op, mixed $value, string $target): array {
@@ -1721,6 +1866,9 @@ function evaluateTextFileCase(string $fixturePath, array $case, string $subject)
         $specLangLimits = specLangLimitsFromCase($case);
         $specLangImports = specLangCompileImportsForCase($case);
         $specLangSymbols = loadSpecLangSymbolsForCase($fixturePath, $case, $specLangLimits);
+        foreach (loadChainImportedSymbolsForCase($fixturePath, $case, $specLangLimits) as $sym => $binding) {
+            $specLangSymbols[(string)$sym] = $binding;
+        }
         $docAbs = (string)realpath($fixturePath);
         if ($docAbs === '') {
             throw new RuntimeException("cannot resolve fixture path: {$fixturePath}");

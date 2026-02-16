@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 211
+- link_count: 217
 - rules_with_conformance_cases: 45
-- rules_with_unit_tests: 211
-- rules_with_implementation_refs: 209
+- rules_with_unit_tests: 217
+- rules_with_implementation_refs: 215
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -81,8 +81,11 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_CYCLE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_CYCLE_FORBIDDEN` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_EXPLICIT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `CHAIN_EXPORTS_FROM_KEY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_FROM_KEY_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
 | `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | 1 | 1 | 0 | 2 | 2 |
+| `CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | 1 | 1 | 0 | 3 | 4 |
+| `CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID` | `docs/spec/contract/policy_v1.yaml#CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID` | 2 | 1 | 0 | 3 | 3 |
 | `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_REFERENCE_CONTRACT_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
 | `CHAIN_SHARED_CONTEXT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_SHARED_CONTEXT_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_STEP_CLASS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_STEP_CLASS_REQUIRED` | 1 | 1 | 0 | 2 | 2 |
@@ -153,6 +156,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `DOC_NORMATIVE_PAGE_TRACEABILITY` | `docs/spec/contract/policy_v1.yaml#DOC_NORMATIVE_PAGE_TRACEABILITY` | 12 | 1 | 0 | 1 | 1 |
 | `DOC_REGEX_PROFILE_LINKAGE` | `docs/spec/contract/policy_v1.yaml#DOC_REGEX_PROFILE_LINKAGE` | 2 | 1 | 0 | 1 | 1 |
 | `EXECUTABLE_DISCOVERY_MARKDOWN_ONLY` | `docs/spec/contract/policy_v1.yaml#EXECUTABLE_DISCOVERY_MARKDOWN_ONLY` | 2 | 1 | 0 | 2 | 3 |
+| `EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN` | 1 | 1 | 0 | 2 | 4 |
 | `EXECUTABLE_SURFACES_MUST_BE_SPEC_MD` | `docs/spec/contract/policy_v1.yaml#EXECUTABLE_SURFACES_MUST_BE_SPEC_MD` | 3 | 1 | 0 | 1 | 2 |
 | `GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY` | 1 | 1 | 0 | 1 | 2 |
 | `GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING` | 2 | 1 | 0 | 1 | 2 |
@@ -170,11 +174,13 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `IMPL_EVALUATE_FIRST_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_FIRST_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
+| `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `LIBRARY_DOMAIN_INDEX_SYNC` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_INDEX_SYNC` | 2 | 1 | 0 | 1 | 3 |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_OWNERSHIP` | 2 | 1 | 0 | 1 | 2 |
 | `LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | 1 | 1 | 0 | 3 | 6 |
 | `LIBRARY_PUBLIC_SURFACE_MODEL` | `docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_MODEL` | 1 | 1 | 0 | 2 | 3 |
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | 2 | 1 | 0 | 2 | 3 |
+| `LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | 1 | 1 | 0 | 3 | 3 |
 | `LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | 1 | 2 | 2 | 1 | 1 |
 | `NAMING_FILENAME_STRICT_SEPARATORS` | `docs/spec/contract/policy_v1.yaml#NAMING_FILENAME_STRICT_SEPARATORS` | 1 | 0 | 0 | 1 | 2 |
 | `NORMALIZATION_CHECK_GATE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#NORMALIZATION_CHECK_GATE_REQUIRED` | 1 | 1 | 0 | 2 | 4 |

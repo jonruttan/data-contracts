@@ -23,8 +23,9 @@ Notes:
   execution (`requests` + `harness.api_http.scenario`) with `steps_json`.
 - Cross-spec chaining is universal across executable case types via
   `harness.chain` with required step classes (`must|can|cannot`), explicit
-  target-derived exports/imports, and scalar refs (`[path][#case_id]`);
-  `harness.spec_lang.includes` remains library-only.
+  target-derived exports/imports, and scalar refs (`[path][#case_id]`).
+- Executable symbol loading is chain-first: `harness.chain` library-symbol
+  exports/imports replace `harness.spec_lang.includes` in executable cases.
 - `api.http` request templating supports chain state lookups in `url`, header
   values, and `body_text` using `{{chain.<step_id>.<export_name>...}}`.
 - all executable harnesses expose chain payload assertions through `chain_json`
@@ -59,8 +60,8 @@ Notes:
 - Objective scorecard reporting now composes all metric families into a single
   objective-aligned health view with tripwire hits and course-correction
   recommendations.
-- Spec-lang now supports reusable library symbols via
-  `harness.spec_lang.includes` and optional `exports` allowlists.
+- Spec-lang library files remain reusable via include paths in library
+  authoring contexts, while executable cases load symbols through chain.
 - Case-scoped import bindings are declared through
   `harness.spec_lang.imports` (`from`/`names` with optional `as` aliases).
 - Spec-lang mapping-AST authoring now uses explicit subject reference node

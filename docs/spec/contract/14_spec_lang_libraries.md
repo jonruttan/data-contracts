@@ -16,8 +16,9 @@ Cases MAY configure library loading via `harness.spec_lang`:
 
 Governance policy reuse:
 
-- `type: governance.check` cases MUST provide `harness.spec_lang.includes`
-  and MUST call exported library symbols from `policy_evaluate`.
+- `type: governance.check` cases MUST load library symbols through
+  `harness.chain` library-symbol exports/imports and MUST call exported
+  library symbols from `policy_evaluate`.
 
 Library paths:
 
@@ -43,6 +44,11 @@ Required fields for each library case:
 - `defines` (mapping)
   - `public` (mapping: symbol -> expression, optional)
   - `private` (mapping: symbol -> expression, optional)
+
+Hard-cut granularity:
+
+- each `type: spec_lang.library` case MUST define exactly one symbol under
+  `defines.public`.
 
 `defines.public.<symbol>` and
 `defines.private.<symbol>` expression encoding:

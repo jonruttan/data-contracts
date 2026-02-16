@@ -85,8 +85,8 @@ OAuth behavior:
 Cross-spec chaining profile:
 
 - all executable case types are chainable through `harness.chain`.
-- `harness.spec_lang.includes` remains library import only and is not used for
-  executable chaining.
+- executable case types MUST NOT use `harness.spec_lang.includes` for symbol
+  loading; use `harness.chain` symbol exports/imports.
 - `harness.chain.fail_fast` is optional and defaults to `true`.
 - `harness.chain.steps` is required when `harness.chain` is present and must
   be non-empty.
@@ -95,11 +95,13 @@ Cross-spec chaining profile:
   - `class` (`must`, `can`, `cannot`)
   - `ref` string in format `[path][#case_id]`
 - `exports` is optional and declares target-derived exported state:
-  - `from_target` (required)
+  - `from` (required)
   - `path` (optional dotted selector)
   - `required` (optional bool, default `true`)
-- `exports` are valid only when `ref` includes `#case_id`.
-- `cannot` steps must not declare `exports`.
+- runtime target exports are valid only when `ref` includes `#case_id`.
+- `from: library.symbol` exports are valid with file refs and require
+  non-empty `path` symbol name.
+- legacy export key `from_target` is forbidden.
 - `allow_continue` is optional and defaults to `false`.
 - `harness.chain.imports` is optional and declares explicit state imports:
   - `from_step` (required)
@@ -167,6 +169,8 @@ Subject profile envelope contract:
 
 - `harness.spec_lang.includes` MAY provide ordered library docs/files
   containing `type: spec_lang.library` reusable function definitions.
+- this include surface is for library authoring/composition; executable case
+  symbol loading is chain-first.
 - `harness.spec_lang.exports` MAY constrain visible imported symbols to an
   explicit allowlist.
 - `harness.spec_lang.imports` MAY declare case-scoped imports using

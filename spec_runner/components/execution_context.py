@@ -2,17 +2,18 @@ from __future__ import annotations
 
 from spec_runner.components.contracts import HarnessExecutionContext
 from spec_runner.spec_lang import compile_import_bindings, limits_from_harness
-from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 
 
 def build_execution_context(*, case_id: str, harness: dict, doc_path) -> HarnessExecutionContext:
+    del doc_path
     limits = limits_from_harness(harness)
     imports = compile_import_bindings((harness or {}).get("spec_lang"))
-    symbols = load_spec_lang_symbols_for_case(
-        doc_path=doc_path,
-        harness=harness,
-        limits=limits,
-    )
+    spec_lang_cfg = dict((harness or {}).get("spec_lang") or {})
+    if spec_lang_cfg.get("includes"):
+        raise ValueError(
+            "harness.spec_lang.includes is not supported for executable cases; use harness.chain symbol exports/imports"
+        )
+    symbols: dict[str, object] = {}
     chain_bindings = dict((harness or {}).get("_chain_imports") or {})
     if chain_bindings:
         for key in chain_bindings:

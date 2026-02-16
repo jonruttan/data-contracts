@@ -9,25 +9,90 @@ purpose: Ensures domain HTTP library exports reusable status-based assertion hel
 type: text.file
 path: /docs/spec/libraries/domain/http_core.spec.md
 harness:
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/domain/http_core.spec.md
-    exports:
-    - domain.http.auth_is_oauth
-    - domain.http.body_json
-    - domain.http.body_json_has_key
-    - domain.http.body_json_type_is
-    - domain.http.body_text
-    - domain.http.has_bearer_header
-    - domain.http.header_contains
-    - domain.http.header_get
-    - domain.http.oauth_scope_requested
-    - domain.http.ok_2xx
-    - domain.http.status
-    - domain.http.status_is
-    - domain.http.status_is_forbidden
-    - domain.http.status_is_unauthorized
-    - domain.http.status_in
+  chain:
+    steps:
+    - id: lib_http_core_spec
+      class: must
+      ref: /docs/spec/libraries/domain/http_core.spec.md
+      exports:
+        domain.http.status:
+          from: library.symbol
+          path: /domain.http.status
+          required: true
+        domain.http.status_in:
+          from: library.symbol
+          path: /domain.http.status_in
+          required: true
+        domain.http.status_is:
+          from: library.symbol
+          path: /domain.http.status_is
+          required: true
+        domain.http.status_is_unauthorized:
+          from: library.symbol
+          path: /domain.http.status_is_unauthorized
+          required: true
+        domain.http.status_is_forbidden:
+          from: library.symbol
+          path: /domain.http.status_is_forbidden
+          required: true
+        domain.http.ok_2xx:
+          from: library.symbol
+          path: /domain.http.ok_2xx
+          required: true
+        domain.http.header_get:
+          from: library.symbol
+          path: /domain.http.header_get
+          required: true
+        domain.http.header_contains:
+          from: library.symbol
+          path: /domain.http.header_contains
+          required: true
+        domain.http.body_text:
+          from: library.symbol
+          path: /domain.http.body_text
+          required: true
+        domain.http.body_json:
+          from: library.symbol
+          path: /domain.http.body_json
+          required: true
+        domain.http.body_json_type_is:
+          from: library.symbol
+          path: /domain.http.body_json_type_is
+          required: true
+        domain.http.body_json_has_key:
+          from: library.symbol
+          path: /domain.http.body_json_has_key
+          required: true
+        domain.http.auth_is_oauth:
+          from: library.symbol
+          path: /domain.http.auth_is_oauth
+          required: true
+        domain.http.has_bearer_header:
+          from: library.symbol
+          path: /domain.http.has_bearer_header
+          required: true
+        domain.http.oauth_scope_requested:
+          from: library.symbol
+          path: /domain.http.oauth_scope_requested
+          required: true
+    imports:
+    - from_step: lib_http_core_spec
+      names:
+      - domain.http.status
+      - domain.http.status_in
+      - domain.http.status_is
+      - domain.http.status_is_unauthorized
+      - domain.http.status_is_forbidden
+      - domain.http.ok_2xx
+      - domain.http.header_get
+      - domain.http.header_contains
+      - domain.http.body_text
+      - domain.http.body_json
+      - domain.http.body_json_type_is
+      - domain.http.body_json_has_key
+      - domain.http.auth_is_oauth
+      - domain.http.has_bearer_header
+      - domain.http.oauth_scope_requested
 expect:
   portable:
     status: pass
@@ -188,28 +253,108 @@ purpose: Ensures domain index remains synchronized with all domain library spec 
 type: text.file
 path: /docs/spec/libraries/domain/index.md
 harness:
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/domain/make_core.spec.md
-    - /docs/spec/libraries/domain/markdown_core.spec.md
-    - /docs/spec/libraries/domain/python_core.spec.md
-    - /docs/spec/libraries/domain/php_core.spec.md
-    exports:
-    - make.has_target
-    - md.code_fence_language_exists
-    - md.has_broken_links
-    - md.has_heading
-    - md.has_yaml_spec_test_fence
-    - md.heading_level_exists
-    - md.link_targets_all_resolve
-    - md.required_sections_present
-    - md.section_order_valid
-    - md.token_dependencies_resolved
-    - md.token_ownership_unique
-    - md.token_present
-    - md.tokens_all_present
-    - py.is_tuple_projection
-    - php.is_assoc_projection
+  chain:
+    steps:
+    - id: lib_make_core_spec
+      class: must
+      ref: /docs/spec/libraries/domain/make_core.spec.md
+      exports:
+        make.has_target:
+          from: library.symbol
+          path: /make.has_target
+          required: true
+    - id: lib_markdown_core_spec
+      class: must
+      ref: /docs/spec/libraries/domain/markdown_core.spec.md
+      exports:
+        md.has_heading:
+          from: library.symbol
+          path: /md.has_heading
+          required: true
+        md.heading_level_exists:
+          from: library.symbol
+          path: /md.heading_level_exists
+          required: true
+        md.section_order_valid:
+          from: library.symbol
+          path: /md.section_order_valid
+          required: true
+        md.required_sections_present:
+          from: library.symbol
+          path: /md.required_sections_present
+          required: true
+        md.link_targets_all_resolve:
+          from: library.symbol
+          path: /md.link_targets_all_resolve
+          required: true
+        md.has_broken_links:
+          from: library.symbol
+          path: /md.has_broken_links
+          required: true
+        md.has_yaml_spec_test_fence:
+          from: library.symbol
+          path: /md.has_yaml_spec_test_fence
+          required: true
+        md.code_fence_language_exists:
+          from: library.symbol
+          path: /md.code_fence_language_exists
+          required: true
+        md.token_present:
+          from: library.symbol
+          path: /md.token_present
+          required: true
+        md.tokens_all_present:
+          from: library.symbol
+          path: /md.tokens_all_present
+          required: true
+        md.token_ownership_unique:
+          from: library.symbol
+          path: /md.token_ownership_unique
+          required: true
+        md.token_dependencies_resolved:
+          from: library.symbol
+          path: /md.token_dependencies_resolved
+          required: true
+    - id: lib_python_core_spec
+      class: must
+      ref: /docs/spec/libraries/domain/python_core.spec.md
+      exports:
+        py.is_tuple_projection:
+          from: library.symbol
+          path: /py.is_tuple_projection
+          required: true
+    - id: lib_php_core_spec
+      class: must
+      ref: /docs/spec/libraries/domain/php_core.spec.md
+      exports:
+        php.is_assoc_projection:
+          from: library.symbol
+          path: /php.is_assoc_projection
+          required: true
+    imports:
+    - from_step: lib_make_core_spec
+      names:
+      - make.has_target
+    - from_step: lib_markdown_core_spec
+      names:
+      - md.has_heading
+      - md.heading_level_exists
+      - md.section_order_valid
+      - md.required_sections_present
+      - md.link_targets_all_resolve
+      - md.has_broken_links
+      - md.has_yaml_spec_test_fence
+      - md.code_fence_language_exists
+      - md.token_present
+      - md.tokens_all_present
+      - md.token_ownership_unique
+      - md.token_dependencies_resolved
+    - from_step: lib_python_core_spec
+      names:
+      - py.is_tuple_projection
+    - from_step: lib_php_core_spec
+      names:
+      - php.is_assoc_projection
 expect:
   portable:
     status: pass

@@ -57,7 +57,8 @@ Provide repeatable recipes for common contributor tasks.
 1. Add function in a `type: spec_lang.library` file.
 2. Keep mapping-AST canonical form.
 3. Export symbol through `defines.public`.
-4. Import via `harness.spec_lang.includes` and call with `call`.
+4. Load reusable symbols via `harness.chain` (`from: library.symbol`) and call
+   with `call`.
 
 ## Add Markdown Structure Assertions
 
@@ -219,7 +220,7 @@ harness:
       ref: '#API-GET-PREREQ'
       exports:
         item_id:
-          from_target: body_json
+          from: body_json
           path: /id
     imports:
     - from_step: preload
@@ -234,7 +235,7 @@ request:
 
 For chained state sharing:
 
-- keep `harness.spec_lang.includes` for library imports only
+- do not use `harness.spec_lang.includes` in executable cases
 - keep executable prerequisites under `harness.chain.steps`
 - set explicit step class (`must|can|cannot`) for every chain step
 - export only target-derived values via explicit `exports`

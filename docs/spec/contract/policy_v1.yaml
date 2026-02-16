@@ -1985,7 +1985,7 @@ rules:
   scope: governance
   applies_to: type_spec_lang_library_shape
   norm: MUST
-  requirement: libraries_use_definitions_public_private_scope_model
+  requirement: libraries_use_defines_public_private_scope_model
   description: 'spec_lang.library cases must define symbols under defines.public/defines.private scopes and avoid legacy shapes.
 
     '
@@ -1994,6 +1994,36 @@ rules:
   references:
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
   - docs/spec/contract/14_spec_lang_libraries.md
+  - scripts/run_governance_specs.py
+- id: LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
+  introduced_in: v1
+  scope: schema
+  applies_to: spec_lang.library.defines.public
+  norm: MUST
+  requirement: each_spec_lang_library_case_defines_exactly_one_public_symbol
+  description: 'Each `type: spec_lang.library` case must define exactly one symbol in defines.public.
+
+    '
+  rationale: Enables function-per-case ownership and deterministic chain import behavior.
+  risk_if_violated: Library case responsibilities and test scope become ambiguous.
+  references:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/governance/cases/core/library_single_public_symbol_per_case_required.spec.md
+  - scripts/run_governance_specs.py
+- id: LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs/spec/libraries/**/*.spec.md
+  norm: MUST
+  requirement: library_files_include_colocated_executable_test_cases
+  description: 'Library spec files must include at least one executable non-library case in the same file.
+
+    '
+  rationale: Keeps library behavior verifiable at the authoring point.
+  risk_if_violated: Library symbol changes can drift without local executable coverage.
+  references:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/governance/cases/core/library_colocated_symbol_tests_required.spec.md
   - scripts/run_governance_specs.py
 - id: SPEC_LANG_STDLIB_PROFILE_DEFINED
   introduced_in: v1
@@ -2513,7 +2543,7 @@ rules:
   applies_to: docs.history.reviews
   norm: MUST
   requirement: reviews_artifacts_must_live_under_docs_history_reviews
-  description: 'Historical review artifacts must live under `docs/history/reviews`; `docs/history/reviews` is forbidden.
+  description: 'Historical review artifacts must live under `docs/history/reviews`; legacy `docs/reviews` is forbidden.
 
     '
   rationale: Separates historical artifacts from canonical product docs.
@@ -2769,6 +2799,53 @@ rules:
   references:
   - docs/spec/contract/04_harness.md
   - spec_runner/components/chain_engine.py
+- id: CHAIN_EXPORTS_FROM_KEY_REQUIRED
+  introduced_in: v1
+  scope: schema
+  applies_to: harness.chain.steps.exports[*].from
+  norm: MUST
+  requirement: chain_exports_must_use_from_key
+  description: 'Each chain export entry must declare a `from` key.
+
+    '
+  rationale: Keeps export source selection explicit and deterministic.
+  risk_if_violated: Export behavior becomes ambiguous and difficult to validate.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/governance/cases/core/runtime_chain_exports_from_key_required.spec.md
+  - spec_runner/components/chain_engine.py
+- id: CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
+  introduced_in: v1
+  scope: schema
+  applies_to: harness.chain.steps.exports[*].from_target
+  norm: MUST_NOT
+  requirement: chain_exports_legacy_from_target_key_is_rejected
+  description: 'Legacy chain export key `from_target` is forbidden; use `from`.
+
+    '
+  rationale: Enforces hard-cut chain export contract consistency.
+  risk_if_violated: Mixed key conventions create portability and migration ambiguity.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/governance/cases/core/runtime_chain_legacy_from_target_forbidden.spec.md
+  - spec_runner/components/chain_engine.py
+- id: CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
+  introduced_in: v1
+  scope: implementation
+  applies_to: harness.chain.steps.exports[*]
+  norm: MUST
+  requirement: library_symbol_exports_require_ref_fragment_and_symbol_path
+  description: 'Chain exports using `from: library.symbol` must define non-empty `path` and reference a specific case via `#case_id`.
+
+    '
+  rationale: Keeps library symbol resolution deterministic and case-scoped.
+  risk_if_violated: Symbol imports can resolve ambiguously across library surfaces.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/governance/cases/core/runtime_chain_library_symbol_exports_valid.spec.md
+  - spec_runner/components/chain_engine.py
 - id: CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   introduced_in: v1
   scope: implementation
@@ -2876,6 +2953,21 @@ rules:
   - docs/spec/contract/04_harness.md
   - docs/spec/governance/cases/core/runtime_chain_contract_single_location.spec.md
   - scripts/run_governance_specs.py
+- id: EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN
+  introduced_in: v1
+  scope: schema
+  applies_to: harness.spec_lang.includes
+  norm: MUST_NOT
+  requirement: executable_cases_must_not_use_spec_lang_includes
+  description: 'Executable cases must not use harness.spec_lang.includes; chain exports/imports are the canonical symbol-loading mechanism.
+
+    '
+  rationale: Prevents competing symbol-loading paths in executable surfaces.
+  risk_if_violated: Runtime behavior and contributor expectations diverge.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/governance/cases/core/runtime_executable_spec_lang_includes_forbidden.spec.md
+  - spec_runner/components/execution_context.py
 - id: DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
   introduced_in: v1
   scope: governance

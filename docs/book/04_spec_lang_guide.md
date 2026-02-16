@@ -31,7 +31,7 @@ Provide practical authoring patterns for spec-lang `evaluate` expressions.
 
 - assertion subjects (`text`, JSON targets, governance summaries)
 - mapping-AST expression nodes
-- optional shared libraries via `harness.spec_lang.includes`
+- executable symbol reuse via chain-loaded library symbols (`harness.chain`)
 
 ## Outputs
 

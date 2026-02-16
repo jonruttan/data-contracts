@@ -2047,6 +2047,35 @@ links:
   - spec_runner/spec_lang_libraries.py
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
   notes: spec_lang.library shape enforcement requires defines.public/defines.private scopes.
+- rule_id: LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_normalize_repo_script_unit.py
+  - tests/test_split_library_cases_per_symbol_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - scripts/normalize_repo.py
+  - scripts/split_library_cases_per_symbol.py
+  notes: Library cases are function-granular with one public symbol per case.
+- rule_id: LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/library_colocated_symbol_tests_required.spec.md
+  notes: Library files must include colocated executable non-library tests.
 - rule_id: SPEC_LANG_STDLIB_PROFILE_DEFINED
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_STDLIB_PROFILE_DEFINED
   contract_refs:
@@ -3038,6 +3067,55 @@ links:
   implementation_refs:
   - spec_runner/components/chain_engine.py
   notes: Cross-case state sharing flows through explicit target-derived exports only.
+- rule_id: CHAIN_EXPORTS_FROM_KEY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_FROM_KEY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_chain_engine_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/chain_engine.py
+  - scripts/run_governance_specs.py
+  - scripts/normalize_repo.py
+  notes: Chain exports must use from key only.
+- rule_id: CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_chain_engine_unit.py
+  - tests/test_convert_chain_export_from_key_script_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/chain_engine.py
+  - scripts/convert_chain_export_from_key.py
+  - scripts/run_governance_specs.py
+  - scripts/normalize_repo.py
+  notes: Legacy from_target is rejected across runtime and tooling.
+- rule_id: CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/contract/14_spec_lang_libraries.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_chain_engine_unit.py
+  - tests/test_spec_lang_libraries_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/chain_engine.py
+  - spec_runner/spec_lang_libraries.py
+  - scripts/run_governance_specs.py
+  notes: from=library.symbol exports require case-scoped refs and explicit symbol paths.
 - rule_id: CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   contract_refs:
@@ -3130,6 +3208,22 @@ links:
   - scripts/run_governance_specs.py
   - scripts/normalize_repo.py
   notes: Chain declarations are constrained to harness.chain and alternate locations are rejected.
+- rule_id: EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_normalize_repo_script_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/execution_context.py
+  - scripts/run_governance_specs.py
+  - scripts/normalize_repo.py
+  - scripts/migrate_includes_to_chain_symbols.py
+  notes: Executable cases must chain-load symbols; includes are library-only.
 - rule_id: LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
   contract_refs:

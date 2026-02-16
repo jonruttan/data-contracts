@@ -3,11 +3,11 @@
 ## LIB-POLICY-002
 
 ```yaml spec-test
-id: LIB-POLICY-002
-title: policy-metrics reusable non-regression predicates
+id: LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE
+title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
 type: spec_lang.library
 defines:
-  private:
+  public:
     policy.metric_non_decrease:
       fn:
       - [subject, field, baseline_field, epsilon]
@@ -20,6 +20,14 @@ defines:
         - std.object.get:
           - {var: subject}
           - {var: baseline_field}
+```
+
+```yaml spec-test
+id: LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE
+title: 'policy-metrics reusable non-regression predicates: policy.metric_non_increase'
+type: spec_lang.library
+defines:
+  public:
     policy.metric_non_increase:
       fn:
       - [subject, field, baseline_field, epsilon]
@@ -32,4 +40,56 @@ defines:
         - std.object.get:
           - {var: subject}
           - {var: baseline_field}
+```
+
+```yaml spec-test
+id: LIB-POLICY-002-900-POLICY-METRIC-SMOKE
+title: policy metric helpers execute as colocated executable checks
+type: text.file
+harness:
+  chain:
+    steps:
+    - id: lib_non_decrease
+      class: must
+      ref: '#LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE'
+      exports:
+        policy.metric_non_decrease:
+          from: library.symbol
+          path: /policy.metric_non_decrease
+          required: true
+    - id: lib_non_increase
+      class: must
+      ref: '#LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE'
+      exports:
+        policy.metric_non_increase:
+          from: library.symbol
+          path: /policy.metric_non_increase
+          required: true
+    imports:
+    - from_step: lib_non_decrease
+      names:
+      - policy.metric_non_decrease
+    - from_step: lib_non_increase
+      names:
+      - policy.metric_non_increase
+assert:
+- target: text
+  must:
+  - evaluate:
+    - call:
+      - {var: policy.metric_non_decrease}
+      - lit:
+          current: 10
+          baseline: 9
+      - current
+      - baseline
+      - 0
+    - call:
+      - {var: policy.metric_non_increase}
+      - lit:
+          current: 8
+          baseline: 9
+      - current
+      - baseline
+      - 0
 ```

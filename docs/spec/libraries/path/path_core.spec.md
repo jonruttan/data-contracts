@@ -3,8 +3,8 @@
 ## LIB-PATH-001
 
 ```yaml spec-test
-id: LIB-PATH-001
-title: path-core reusable pure path logic helpers
+id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES
+title: 'path-core reusable pure path logic helpers: path.normalize_slashes'
 type: spec_lang.library
 defines:
   public:
@@ -15,6 +15,72 @@ defines:
         - {var: path}
         - \
         - /
+  private:
+    path.trim_dot:
+      fn:
+      - [path]
+      - std.string.replace:
+        - {var: path}
+        - ./
+        - ''
+    path.dirname:
+      fn:
+      - [path]
+      - let:
+        - lit:
+          - - segs
+            - call:
+              - {var: path.segments}
+              - {var: path}
+        - if:
+          - std.logic.lte:
+            - std.collection.len:
+              - {var: segs}
+            - 1
+          - ''
+          - std.string.join:
+            - std.collection.slice:
+              - 0
+              - std.math.sub:
+                - std.collection.len:
+                  - {var: segs}
+                - 1
+              - {var: segs}
+            - /
+    path.has_extension:
+      fn:
+      - [path, ext]
+      - std.logic.eq:
+        - call:
+          - {var: path.extension}
+          - {var: path}
+        - {var: ext}
+    path.is_under:
+      fn:
+      - [path, prefix]
+      - std.string.starts_with:
+        - call:
+          - {var: path.normalize_slashes}
+          - {var: path}
+        - call:
+          - {var: path.normalize_slashes}
+          - {var: prefix}
+    path.matches:
+      fn:
+      - [path, pattern]
+      - std.string.regex_match:
+        - call:
+          - {var: path.normalize_slashes}
+          - {var: path}
+        - {var: pattern}
+```
+
+```yaml spec-test
+id: LIB-PATH-001-002-PATH-SEGMENTS
+title: 'path-core reusable pure path logic helpers: path.segments'
+type: spec_lang.library
+defines:
+  public:
     path.segments:
       fn:
       - [path]
@@ -23,6 +89,72 @@ defines:
           - {var: path.normalize_slashes}
           - {var: path}
         - /
+  private:
+    path.trim_dot:
+      fn:
+      - [path]
+      - std.string.replace:
+        - {var: path}
+        - ./
+        - ''
+    path.dirname:
+      fn:
+      - [path]
+      - let:
+        - lit:
+          - - segs
+            - call:
+              - {var: path.segments}
+              - {var: path}
+        - if:
+          - std.logic.lte:
+            - std.collection.len:
+              - {var: segs}
+            - 1
+          - ''
+          - std.string.join:
+            - std.collection.slice:
+              - 0
+              - std.math.sub:
+                - std.collection.len:
+                  - {var: segs}
+                - 1
+              - {var: segs}
+            - /
+    path.has_extension:
+      fn:
+      - [path, ext]
+      - std.logic.eq:
+        - call:
+          - {var: path.extension}
+          - {var: path}
+        - {var: ext}
+    path.is_under:
+      fn:
+      - [path, prefix]
+      - std.string.starts_with:
+        - call:
+          - {var: path.normalize_slashes}
+          - {var: path}
+        - call:
+          - {var: path.normalize_slashes}
+          - {var: prefix}
+    path.matches:
+      fn:
+      - [path, pattern]
+      - std.string.regex_match:
+        - call:
+          - {var: path.normalize_slashes}
+          - {var: path}
+        - {var: pattern}
+```
+
+```yaml spec-test
+id: LIB-PATH-001-003-PATH-BASENAME
+title: 'path-core reusable pure path logic helpers: path.basename'
+type: spec_lang.library
+defines:
+  public:
     path.basename:
       fn:
       - [path]
@@ -42,6 +174,72 @@ defines:
               - std.collection.len:
                 - {var: segs}
               - 1
+  private:
+    path.trim_dot:
+      fn:
+      - [path]
+      - std.string.replace:
+        - {var: path}
+        - ./
+        - ''
+    path.dirname:
+      fn:
+      - [path]
+      - let:
+        - lit:
+          - - segs
+            - call:
+              - {var: path.segments}
+              - {var: path}
+        - if:
+          - std.logic.lte:
+            - std.collection.len:
+              - {var: segs}
+            - 1
+          - ''
+          - std.string.join:
+            - std.collection.slice:
+              - 0
+              - std.math.sub:
+                - std.collection.len:
+                  - {var: segs}
+                - 1
+              - {var: segs}
+            - /
+    path.has_extension:
+      fn:
+      - [path, ext]
+      - std.logic.eq:
+        - call:
+          - {var: path.extension}
+          - {var: path}
+        - {var: ext}
+    path.is_under:
+      fn:
+      - [path, prefix]
+      - std.string.starts_with:
+        - call:
+          - {var: path.normalize_slashes}
+          - {var: path}
+        - call:
+          - {var: path.normalize_slashes}
+          - {var: prefix}
+    path.matches:
+      fn:
+      - [path, pattern]
+      - std.string.regex_match:
+        - call:
+          - {var: path.normalize_slashes}
+          - {var: path}
+        - {var: pattern}
+```
+
+```yaml spec-test
+id: LIB-PATH-001-004-PATH-EXTENSION
+title: 'path-core reusable pure path logic helpers: path.extension'
+type: spec_lang.library
+defines:
+  public:
     path.extension:
       fn:
       - [path]
@@ -127,4 +325,34 @@ defines:
           - {var: path.normalize_slashes}
           - {var: path}
         - {var: pattern}
+```
+
+```yaml spec-test
+id: LIB-PATH-001-900-PATH-SMOKE
+title: path core helpers execute as colocated executable checks
+type: text.file
+harness:
+  chain:
+    steps:
+    - id: lib_path_normalize
+      class: must
+      ref: '#LIB-PATH-001-001-PATH-NORMALIZE-SLASHES'
+      exports:
+        path.normalize_slashes:
+          from: library.symbol
+          path: /path.normalize_slashes
+          required: true
+    imports:
+    - from_step: lib_path_normalize
+      names:
+      - path.normalize_slashes
+assert:
+- target: text
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - call:
+        - {var: path.normalize_slashes}
+        - a\\b\\c.txt
+      - a/b/c.txt
 ```

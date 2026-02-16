@@ -120,6 +120,8 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
             )
         for name, expr in {**public_bindings, **private_bindings}.items():
             if name in bindings:
+                if bindings[name] == expr:
+                    continue
                 raise ValueError(f"duplicate library symbol in file {path}: {name}")
             bindings[name] = expr
         exports.extend(sorted(public_bindings.keys()))
@@ -133,6 +135,59 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
         bindings=bindings,
         exports=tuple(dict.fromkeys(exports)),
     )
+
+
+def compile_library_case_public_symbols(
+    *,
+    raw_case: dict[str, Any],
+    source_path: Path,
+    limits: SpecLangLimits,
+) -> dict[str, Any]:
+    case_type = str(raw_case.get("type", "")).strip()
+    if case_type != "spec_lang.library":
+        raise TypeError("library symbol export requires type spec_lang.library case")
+    if "definitions" in raw_case:
+        raise TypeError(
+            "spec_lang.library legacy key 'definitions' is not supported; use 'defines'"
+        )
+    raw_defines = raw_case.get("defines")
+    if not isinstance(raw_defines, dict):
+        raise TypeError("spec_lang.library requires defines mapping with public/private scopes")
+    raw_public = raw_defines.get("public")
+    raw_private = raw_defines.get("private")
+    if raw_public is None and raw_private is None:
+        raise TypeError("spec_lang.library requires defines.public or defines.private mapping")
+    if raw_public is not None and not isinstance(raw_public, dict):
+        raise TypeError("spec_lang.library defines.public must be mapping when provided")
+    if raw_private is not None and not isinstance(raw_private, dict):
+        raise TypeError("spec_lang.library defines.private must be mapping when provided")
+    public_map = dict(raw_public or {})
+    private_map = dict(raw_private or {})
+    overlap = sorted(set(public_map).intersection(private_map))
+    if overlap:
+        raise ValueError(
+            "spec_lang.library duplicate symbol across defines.public/defines.private: "
+            + ", ".join(overlap)
+        )
+    if not public_map and not private_map:
+        raise TypeError("spec_lang.library requires non-empty defines.public or defines.private mapping")
+    merged_raw: dict[str, Any] = {}
+    for scope_name, scope in (("defines.public", public_map), ("defines.private", private_map)):
+        for raw_name, expr in scope.items():
+            name = str(raw_name).strip()
+            if not name:
+                raise ValueError(f"spec_lang.library {scope_name} symbol name must be non-empty")
+            if name in merged_raw:
+                raise ValueError(f"duplicate library symbol in case {source_path}: {name}")
+            try:
+                merged_raw[name] = compile_yaml_expr_to_sexpr(
+                    expr,
+                    field_path=f"{source_path.as_posix()} {scope_name}.{name}",
+                )
+            except SpecLangYamlAstError as exc:
+                raise ValueError(str(exc)) from exc
+    compiled = compile_symbol_bindings(merged_raw, limits=limits)
+    return {k: compiled[k] for k in public_map.keys()}
 
 
 def _resolve_library_graph(

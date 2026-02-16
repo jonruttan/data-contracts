@@ -11,11 +11,6 @@ type: governance.check
 check: spec.portability_non_regression
 harness:
   root: .
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/policy/policy_core.spec.md
-    exports:
-    - policy.pass_when_no_violations
   portability_non_regression:
     baseline_path: /docs/spec/metrics/spec_portability_baseline.json
     summary_fields:
@@ -62,6 +57,20 @@ harness:
   - call:
     - {var: policy.pass_when_no_violations}
     - {var: subject}
+  chain:
+    steps:
+    - id: lib_policy_core_spec
+      class: must
+      ref: /docs/spec/libraries/policy/policy_core.spec.md
+      exports:
+        policy.pass_when_no_violations:
+          from: library.symbol
+          path: /policy.pass_when_no_violations
+          required: true
+    imports:
+    - from_step: lib_policy_core_spec
+      names:
+      - policy.pass_when_no_violations
 assert:
 - target: violation_count
   must:

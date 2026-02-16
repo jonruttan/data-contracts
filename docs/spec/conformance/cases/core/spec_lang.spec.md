@@ -15,11 +15,20 @@ expect:
     status: pass
     category: null
 harness:
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/conformance/assertion_core.spec.md
-    exports:
-    - conf.pass_when_text_contains
+  chain:
+    steps:
+    - id: lib_assertion_core_spec
+      class: must
+      ref: /docs/spec/libraries/conformance/assertion_core.spec.md
+      exports:
+        conf.pass_when_text_contains:
+          from: library.symbol
+          path: /conf.pass_when_text_contains
+          required: true
+    imports:
+    - from_step: lib_assertion_core_spec
+      names:
+      - conf.pass_when_text_contains
 assert:
 - target: text
   must:
@@ -45,11 +54,20 @@ expect:
     status: pass
     category: null
 harness:
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/conformance/assertion_core.spec.md
-    exports:
-    - conf.pass_when_text_contains
+  chain:
+    steps:
+    - id: lib_assertion_core_spec
+      class: must
+      ref: /docs/spec/libraries/conformance/assertion_core.spec.md
+      exports:
+        conf.pass_when_text_contains:
+          from: library.symbol
+          path: /conf.pass_when_text_contains
+          required: true
+    imports:
+    - from_step: lib_assertion_core_spec
+      names:
+      - conf.pass_when_text_contains
 assert:
 - target: text
   must:
@@ -243,11 +261,20 @@ expect:
     status: pass
     category: null
 harness:
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/conformance/assertion_core.spec.md
-    exports:
-    - conf.pass_when_text_contains
+  chain:
+    steps:
+    - id: lib_assertion_core_spec
+      class: must
+      ref: /docs/spec/libraries/conformance/assertion_core.spec.md
+      exports:
+        conf.pass_when_text_contains:
+          from: library.symbol
+          path: /conf.pass_when_text_contains
+          required: true
+    imports:
+    - from_step: lib_assertion_core_spec
+      names:
+      - conf.pass_when_text_contains
 assert:
 - target: text
   must:

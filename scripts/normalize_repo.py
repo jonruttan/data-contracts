@@ -343,6 +343,67 @@ def _check_chain_contract_shape() -> list[str]:
                 issues.append(
                     f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].ref must be non-empty string"
                 )
+            exports = step.get("exports")
+            if isinstance(exports, dict):
+                for exp_name, exp in exports.items():
+                    if not isinstance(exp, dict):
+                        continue
+                    if "from_target" in exp:
+                        issues.append(
+                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports.{exp_name} legacy key from_target is forbidden; use from"
+                        )
+                    if "from" not in exp:
+                        issues.append(
+                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports.{exp_name}.from is required"
+                        )
+    return issues
+
+
+def _check_executable_spec_lang_includes_forbidden() -> list[str]:
+    issues: list[str] = []
+    for rel, case in _iter_spec_markdown_cases():
+        case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
+        case_type = str(case.get("type", "")).strip()
+        if case_type == "spec_lang.library":
+            continue
+        harness = case.get("harness")
+        if not isinstance(harness, dict):
+            continue
+        spec_lang = harness.get("spec_lang")
+        if not isinstance(spec_lang, dict):
+            continue
+        includes = spec_lang.get("includes")
+        if isinstance(includes, list) and includes:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_EXECUTABLE_CHAIN_FIRST: case {case_id} harness.spec_lang.includes is forbidden for executable cases; use harness.chain"
+            )
+    return issues
+
+
+def _check_library_single_public_symbol() -> list[str]:
+    issues: list[str] = []
+    libs_root = ROOT / "docs/spec/libraries"
+    if not libs_root.exists():
+        return issues
+    for p in sorted(libs_root.rglob("*.spec.md")):
+        rel = p.relative_to(ROOT).as_posix()
+        try:
+            loaded = load_external_cases(p, formats={"md"})
+        except Exception:
+            continue
+        for _doc_path, case in loaded:
+            if str(case.get("type", "")).strip() != "spec_lang.library":
+                continue
+            case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
+            defines = case.get("defines")
+            if not isinstance(defines, dict):
+                continue
+            public = defines.get("public")
+            n = len(public) if isinstance(public, dict) else 0
+            if n != 1:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_LIBRARY_SINGLE_PUBLIC_SYMBOL: case {case_id} must define exactly one public symbol (found {n})"
+                )
     return issues
 
 
@@ -368,7 +429,10 @@ def main(argv: list[str] | None = None) -> int:
     conv_cmd = [sys.executable, "scripts/convert_spec_lang_yaml_ast.py", mode_flag, *scope_paths]
     ops_cmd = [sys.executable, "scripts/convert_ops_symbol_names.py", mode_flag, *scope_paths]
     chain_ref_cmd = [sys.executable, "scripts/convert_chain_ref_format.py", mode_flag, *scope_paths]
+    chain_from_cmd = [sys.executable, "scripts/convert_chain_export_from_key.py", mode_flag, *scope_paths]
     std_cmd = [sys.executable, "scripts/convert_std_symbol_names.py", mode_flag, *scope_paths]
+    migrate_includes_cmd = [sys.executable, "scripts/migrate_includes_to_chain_symbols.py", mode_flag, *scope_paths]
+    split_lib_cases_cmd = [sys.executable, "scripts/split_library_cases_per_symbol.py", mode_flag, "docs/spec/libraries"]
     style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
 
     issues: list[str] = []
@@ -408,6 +472,24 @@ def main(argv: list[str] | None = None) -> int:
             line = line.strip()
             if line:
                 issues.append(f"docs/spec:1: NORMALIZATION_CHAIN_REFS: {line}")
+    chain_from_code, chain_from_out = _run(chain_from_cmd)
+    if chain_from_code != 0:
+        for line in chain_from_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec:1: NORMALIZATION_CHAIN_EXPORT_FROM_KEY: {line}")
+    mig_inc_code, mig_inc_out = _run(migrate_includes_cmd)
+    if mig_inc_code != 0:
+        for line in mig_inc_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec:1: NORMALIZATION_EXECUTABLE_CHAIN_FIRST: {line}")
+    split_lib_code, split_lib_out = _run(split_lib_cases_cmd)
+    if split_lib_code != 0:
+        for line in split_lib_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec:1: NORMALIZATION_LIBRARY_SINGLE_PUBLIC_SYMBOL: {line}")
     std_code, std_out = _run(std_cmd)
     if std_code != 0:
         for line in std_out.splitlines():
@@ -440,6 +522,8 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_harness_componentization())
     issues.extend(_check_library_defines_key())
     issues.extend(_check_chain_contract_shape())
+    issues.extend(_check_executable_spec_lang_includes_forbidden())
+    issues.extend(_check_library_single_public_symbol())
     if issues:
         for issue in sorted(issues):
             print(issue)

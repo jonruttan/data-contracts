@@ -800,11 +800,19 @@ type: governance.check
 check: conformance.case_index_sync
 harness:
   root: .
-  spec_lang:
-    includes:
-      - /cases/libs/policy_core.spec.md
-    exports:
-      - policy.pass_when_no_violations
+  chain:
+    steps:
+      - id: policy_lib
+        class: must
+        ref: /cases/libs/policy_core.spec.md
+        exports:
+          policy.pass_when_no_violations:
+            from: library.symbol
+            path: policy.pass_when_no_violations
+    imports:
+      - from_step: policy_lib
+        names:
+          - policy.pass_when_no_violations
   policy_evaluate:
   - std.logic.eq:
     - true
@@ -836,11 +844,19 @@ type: governance.check
 check: conformance.case_index_sync
 harness:
   root: .
-  spec_lang:
-    includes:
-      - /cases/libs/policy_core.spec.md
-    exports:
-      - policy.pass_when_no_violations
+  chain:
+    steps:
+      - id: policy_lib
+        class: must
+        ref: /cases/libs/policy_core.spec.md
+        exports:
+          policy.pass_when_no_violations:
+            from: library.symbol
+            path: policy.pass_when_no_violations
+    imports:
+      - from_step: policy_lib
+        names:
+          - policy.pass_when_no_violations
   policy_evaluate:
   - call:
     - var: policy.pass_when_no_violations
@@ -2055,11 +2071,19 @@ assert:
 id: SRCONF-EXPR-002
 type: text.file
 harness:
-  spec_lang:
-    includes:
-      - ../../libraries/conformance/assertion_core.spec.md
-    exports:
-      - conf.pass_when_text_contains
+  chain:
+    steps:
+      - id: conf_lib
+        class: must
+        ref: ../../libraries/conformance/assertion_core.spec.md
+        exports:
+          conf.pass_when_text_contains:
+            from: library.symbol
+            path: conf.pass_when_text_contains
+    imports:
+      - from_step: conf_lib
+        names:
+          - conf.pass_when_text_contains
 assert:
   - target: text
     must:
@@ -2084,11 +2108,19 @@ assert:
 id: SRCONF-EXPR-001
 type: text.file
 harness:
-  spec_lang:
-    includes:
-      - ../../libraries/conformance/assertion_core.spec.md
-    exports:
-      - conf.pass_when_text_contains
+  chain:
+    steps:
+      - id: conf_lib
+        class: must
+        ref: ../../libraries/conformance/assertion_core.spec.md
+        exports:
+          conf.pass_when_text_contains:
+            from: library.symbol
+            path: conf.pass_when_text_contains
+    imports:
+      - from_step: conf_lib
+        names:
+          - conf.pass_when_text_contains
 assert:
   - target: text
     must:
@@ -2105,11 +2137,19 @@ assert:
 id: SRCONF-EXPR-002
 type: text.file
 harness:
-  spec_lang:
-    includes:
-      - ../../libraries/conformance/assertion_core.spec.md
-    exports:
-      - conf.pass_when_text_contains
+  chain:
+    steps:
+      - id: conf_lib
+        class: must
+        ref: ../../libraries/conformance/assertion_core.spec.md
+        exports:
+          conf.pass_when_text_contains:
+            from: library.symbol
+            path: conf.pass_when_text_contains
+    imports:
+      - from_step: conf_lib
+        names:
+          - conf.pass_when_text_contains
 assert:
   - target: text
     must:
@@ -4651,11 +4691,19 @@ type: governance.check
 check: governance.policy_library_usage_non_regression
 harness:
   root: {tmp_path}
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/policy/policy_core.spec.md
-    exports:
-    - policy.pass_when_no_violations
+  chain:
+    steps:
+    - id: policy_lib
+      class: must
+      ref: /docs/spec/libraries/policy/policy_core.spec.md
+      exports:
+        policy.pass_when_no_violations:
+          from: library.symbol
+          path: policy.pass_when_no_violations
+    imports:
+    - from_step: policy_lib
+      names:
+      - policy.pass_when_no_violations
   policy_library_usage_non_regression:
     baseline_path: docs/spec/metrics/sla.json
     summary_fields:
@@ -4694,11 +4742,19 @@ type: governance.check
 check: docs.reference_surface_complete
 harness:
   root: .
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/policy/policy_core.spec.md
-    exports:
-    - policy.pass_when_no_violations
+  chain:
+    steps:
+    - id: policy_lib
+      class: must
+      ref: /docs/spec/libraries/policy/policy_core.spec.md
+      exports:
+        policy.pass_when_no_violations:
+          from: library.symbol
+          path: policy.pass_when_no_violations
+    imports:
+    - from_step: policy_lib
+      names:
+      - policy.pass_when_no_violations
   docs_reference_surface:
     required_files: []
   policy_evaluate:

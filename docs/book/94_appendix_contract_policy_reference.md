@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 211
-- must_count: 195
+- rule_count: 217
+- must_count: 199
 - should_count: 12
-- must_not_count: 4
-- active_count: 211
+- must_not_count: 6
+- active_count: 217
 - deprecated_count: 0
 - removed_count: 0
 
@@ -84,8 +84,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | `MUST` | `schema` | `harness.chain` | 4 | `active` |
 | `CHAIN_CYCLE_FORBIDDEN` | `MUST` | `runtime` | `harness.chain.graph` | 3 | `active` |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.exports` | 2 | `active` |
+| `CHAIN_EXPORTS_FROM_KEY_REQUIRED` | `MUST` | `schema` | `harness.chain.steps.exports[*].from` | 4 | `active` |
 | `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `MUST` | `implementation` | `harness.chain.fail_fast` | 2 | `active` |
 | `CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | `MUST_NOT` | `implementation` | `harness.chain.imports` | 4 | `active` |
+| `CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | `MUST_NOT` | `schema` | `harness.chain.steps.exports[*].from_target` | 3 | `active` |
+| `CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID` | `MUST` | `implementation` | `harness.chain.steps.exports[*]` | 4 | `active` |
 | `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.ref` | 3 | `active` |
 | `CHAIN_SHARED_CONTEXT_REQUIRED` | `MUST` | `runtime` | `harness.chain.state` | 3 | `active` |
 | `CHAIN_STEP_CLASS_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.class` | 4 | `active` |
@@ -156,6 +159,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `DOC_NORMATIVE_PAGE_TRACEABILITY` | `MUST` | `governance` | `docs.spec.contract.normative_pages` | 2 | `active` |
 | `DOC_REGEX_PROFILE_LINKAGE` | `MUST` | `governance` | `docs.spec.regex_portability_profile` | 4 | `active` |
 | `EXECUTABLE_DISCOVERY_MARKDOWN_ONLY` | `MUST` | `runtime` | `discovery.canonical_executable_trees` | 2 | `active` |
+| `EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN` | `MUST_NOT` | `schema` | `harness.spec_lang.includes` | 3 | `active` |
 | `EXECUTABLE_SURFACES_MUST_BE_SPEC_MD` | `MUST` | `governance` | `docs.spec.executable_surfaces` | 2 | `active` |
 | `GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `governance` | `governance.check_decisions` | 2 | `active` |
 | `GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING` | `MUST` | `governance` | `scripts.run_governance_specs` | 3 | `active` |
@@ -173,11 +177,13 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `IMPL_EVALUATE_FIRST_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.surface` | 3 | `active` |
 | `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.metric_ratchet` | 3 | `active` |
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.library_usage` | 3 | `active` |
+| `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `MUST` | `governance` | `docs/spec/libraries/**/*.spec.md` | 3 | `active` |
 | `LIBRARY_DOMAIN_INDEX_SYNC` | `MUST` | `governance` | `docs/spec/libraries/*/index.md` | 3 | `active` |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `MUST` | `governance` | `governance_and_conformance_library_paths` | 2 | `active` |
 | `LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | `MUST_NOT` | `schema` | `spec_lang.library.shape` | 2 | `active` |
 | `LIBRARY_PUBLIC_SURFACE_MODEL` | `MUST` | `governance` | `type_spec_lang_library_shape` | 3 | `active` |
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |
+| `LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | `MUST` | `schema` | `spec_lang.library.defines.public` | 3 | `active` |
 | `LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | `MUST` | `schema` | `spec_lang.library.shape` | 2 | `active` |
 | `NAMING_FILENAME_STRICT_SEPARATORS` | `MUST` | `governance` | `docs_and_spec_filenames` | 2 | `active` |
 | `NORMALIZATION_CHECK_GATE_REQUIRED` | `MUST` | `governance` | `scripts.runner_adapter` | 3 | `active` |
