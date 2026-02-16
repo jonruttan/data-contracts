@@ -12,6 +12,7 @@ from spec_runner.docs_generators import (
     replace_generated_block,
     write_json,
 )
+from spec_runner.docs_template_engine import render_moustache
 
 
 def _resolve_cli_path(repo_root: Path, raw: str) -> Path:
@@ -37,6 +38,37 @@ def _parse_rust_subcommands(text: str) -> set[str]:
     return labels
 
 
+def _default_semantics(command: str) -> dict[str, Any]:
+    group = "reporting"
+    if command in {"governance", "normalize-check", "normalize-fix", "lint", "typecheck", "test-core", "test-full"}:
+        group = "verification"
+    elif command.startswith("docs-") or command.startswith("schema-"):
+        group = "docs"
+    elif command.endswith("-json") or command.endswith("-md"):
+        group = "metrics"
+    elif command in {"ci-cleanroom", "ci-gate-summary"}:
+        group = "ci"
+    return {
+        "group": group,
+        "summary": f"Runs `{command}` through the canonical runner entrypoint.",
+        "details": "Deterministic command dispatch through scripts/runner_adapter.sh.",
+        "defaults": [
+            {"name": "impl", "value": "rust", "description": "Default runner implementation lane."},
+        ],
+        "failure_modes": [
+            "Unknown subcommand.",
+            "Underlying command returns non-zero status.",
+        ],
+        "examples": [
+            {
+                "title": "Direct invocation",
+                "command": f"./scripts/runner_adapter.sh {command}",
+                "description": "Execute command with canonical adapter routing.",
+            }
+        ],
+    }
+
+
 def _build_payload(repo_root: Path) -> dict[str, Any]:
     python_text = (repo_root / "scripts/python/runner_adapter.sh").read_text(encoding="utf-8")
     rust_text = (repo_root / "scripts/rust/spec_runner_cli/src/main.rs").read_text(encoding="utf-8")
@@ -49,17 +81,37 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
     all_cmds = sorted(python_cmds.union(rust_cmds))
     rows: list[dict[str, Any]] = []
     for cmd in all_cmds:
+        semantics = _default_semantics(cmd)
         rows.append(
             {
                 "command": cmd,
                 "python_supported": cmd in python_cmds,
                 "rust_supported": cmd in rust_cmds,
                 "parity": cmd in python_cmds and cmd in rust_cmds,
+                "summary": semantics["summary"],
+                "details": semantics["details"],
+                "group": semantics["group"],
+                "defaults": semantics["defaults"],
+                "failure_modes": semantics["failure_modes"],
+                "examples": semantics["examples"],
+                "anchor": cmd.replace("_", "-"),
             }
         )
 
+    complete_rows = 0
+    for row in rows:
+        if (
+            str(row.get("summary", "")).strip()
+            and isinstance(row.get("defaults"), list)
+            and isinstance(row.get("failure_modes"), list)
+            and isinstance(row.get("examples"), list)
+            and bool(row.get("examples"))
+        ):
+            complete_rows += 1
+    coverage = 0.0 if not rows else (complete_rows / len(rows))
+
     return {
-        "version": 1,
+        "version": 2,
         "summary": {
             "command_count": len(all_cmds),
             "python_command_count": len(python_cmds),
@@ -68,33 +120,18 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
             "all_commands_parity": all(bool(r.get("parity")) for r in rows),
             "public_impl_modes": sorted(public_impls),
         },
+        "quality": {
+            "semantics_complete_count": complete_rows,
+            "semantics_coverage_ratio": round(coverage, 4),
+            "score": round((coverage * 0.6) + ((sum(1 for r in rows if bool(r.get("parity"))) / len(rows)) * 0.4 if rows else 0.0), 4),
+        },
         "commands": rows,
     }
 
 
-def _render_md(payload: dict[str, Any]) -> str:
-    summary = dict(payload.get("summary") or {})
-    lines = [
-        "## Generated Runner API Catalog",
-        "",
-        f"- command_count: {int(summary.get('command_count', 0))}",
-        f"- python_command_count: {int(summary.get('python_command_count', 0))}",
-        f"- rust_command_count: {int(summary.get('rust_command_count', 0))}",
-        f"- parity_command_count: {int(summary.get('parity_command_count', 0))}",
-        f"- all_commands_parity: {str(bool(summary.get('all_commands_parity', False))).lower()}",
-        "",
-        "| command | python | rust | parity |",
-        "|---|---|---|---|",
-    ]
-    for row in payload.get("commands") or []:
-        lines.append(
-            f"| `{row.get('command', '')}` | "
-            f"{str(bool(row.get('python_supported', False))).lower()} | "
-            f"{str(bool(row.get('rust_supported', False))).lower()} | "
-            f"{str(bool(row.get('parity', False))).lower()} |"
-        )
-    lines.append("")
-    return "\n".join(lines)
+def _render_md(payload: dict[str, Any], *, template_path: Path) -> str:
+    template = template_path.read_text(encoding="utf-8")
+    return render_moustache(template, {"runner": payload}, strict=True)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -108,7 +145,7 @@ def main(argv: list[str] | None = None) -> int:
     payload = _build_payload(repo_root)
     out_path = _resolve_cli_path(repo_root, str(ns.out))
     doc_path = _resolve_cli_path(repo_root, str(ns.doc_out))
-    md_block = _render_md(payload)
+    md_block = _render_md(payload, template_path=repo_root / "docs/book/templates/runner_api_catalog_template.md")
     updated_doc = replace_generated_block(
         doc_path.read_text(encoding="utf-8"),
         surface_id="runner_api_catalog",

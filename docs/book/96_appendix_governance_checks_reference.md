@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 158
-- checks_with_cases: 152
+- check_count: 164
+- checks_with_cases: 158
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -88,6 +88,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `docs.contract_schema_book_sync` | 1 | true |
 | `docs.current_spec_only_contract` | 1 | true |
 | `docs.current_spec_policy_key_names` | 1 | true |
+| `docs.docgen_quality_score_threshold` | 1 | true |
 | `docs.example_id_uniqueness` | 1 | true |
 | `docs.examples_runnable` | 1 | true |
 | `docs.filename_policy` | 1 | true |
@@ -99,6 +100,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `docs.generator_outputs_sync` | 1 | true |
 | `docs.generator_registry_valid` | 1 | true |
 | `docs.governance_check_catalog_sync` | 1 | true |
+| `docs.harness_reference_semantics_complete` | 1 | true |
 | `docs.harness_type_catalog_sync` | 1 | true |
 | `docs.history_reviews_namespace` | 1 | true |
 | `docs.index_filename_policy` | 1 | true |
@@ -114,14 +116,18 @@ Provide generated inventory of governance check IDs and case coverage.
 | `docs.policy_rule_catalog_sync` | 1 | true |
 | `docs.reference_index_sync` | 1 | true |
 | `docs.reference_manifest_sync` | 1 | true |
+| `docs.reference_namespace_chapters_sync` | 1 | true |
 | `docs.reference_surface_complete` | 1 | true |
 | `docs.regex_doc_sync` | 1 | true |
 | `docs.release_contract_automation_policy` | 1 | true |
 | `docs.required_sections` | 1 | true |
 | `docs.runner_api_catalog_sync` | 1 | true |
+| `docs.runner_reference_semantics_complete` | 1 | true |
 | `docs.security_warning_contract` | 1 | true |
 | `docs.spec_lang_builtin_catalog_sync` | 1 | true |
 | `docs.spec_schema_field_catalog_sync` | 1 | true |
+| `docs.stdlib_examples_complete` | 1 | true |
+| `docs.stdlib_symbol_docs_complete` | 1 | true |
 | `docs.template_data_sources_declared` | 0 | false |
 | `docs.template_paths_valid` | 0 | false |
 | `docs.token_dependency_resolved` | 1 | true |

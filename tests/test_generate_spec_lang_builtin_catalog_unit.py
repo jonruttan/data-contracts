@@ -32,6 +32,9 @@ def test_generate_spec_lang_builtin_catalog_json_shape() -> None:
         )
         assert cp.returncode == 0, cp.stdout + cp.stderr
     payload = json.loads(path.read_text(encoding="utf-8"))
-    assert payload["version"] == 1
+    assert payload["version"] == 2
     assert "summary" in payload
+    assert "quality" in payload
+    assert isinstance(payload.get("chapters"), list)
+    assert isinstance(payload.get("namespaces"), dict)
     assert isinstance(payload.get("builtins"), list)

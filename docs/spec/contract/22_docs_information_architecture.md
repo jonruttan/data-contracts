@@ -10,7 +10,7 @@
 - `/docs/impl` for implementation-specific appendices only.
 - `/docs/history/reviews` for historical review artifacts.
 
-`/docs/reviews` is not a valid active namespace in v1.
+`/docs/history/reviews` is not a valid active namespace in v1.
 
 ## Naming and Index Rules
 

@@ -43,6 +43,7 @@ def test_generate_runner_api_catalog_json_shape(tmp_path: Path) -> None:
     )
     assert cp.returncode == 0, cp.stdout + cp.stderr
     payload = json.loads(out.read_text(encoding="utf-8"))
-    assert payload["version"] == 1
+    assert payload["version"] == 2
+    assert "quality" in payload
     assert "summary" in payload
     assert isinstance(payload.get("commands"), list)

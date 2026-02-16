@@ -1,10 +1,12 @@
 ## Generated Spec-Lang Builtin Catalog
 
 - builtin_count: {{stdlib.summary.builtin_count}}
+- namespace_count: {{stdlib.summary.namespace_count}}
 - parity_count: {{stdlib.summary.parity_count}}
 - all_parity: {{stdlib.summary.all_parity}}
+- doc_quality_score: {{stdlib.quality.score}}
 
-| symbol | arity | category | python | php | parity |
-|---|---|---|---|---|---|
-{{#stdlib.builtins}}| `{{symbol}}` | {{arity}} | `{{category}}` | {{python_supported}} | {{php_supported}} | {{parity}} |
-{{/stdlib.builtins}}
+| namespace | chapter | symbols |
+|---|---|---|
+{{#stdlib.chapters}}| `{{key}}` | `{{path}}` | {{symbol_count}} |
+{{/stdlib.chapters}}

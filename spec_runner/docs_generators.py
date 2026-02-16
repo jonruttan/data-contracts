@@ -103,8 +103,8 @@ def load_docs_generator_registry(repo_root: Path) -> tuple[dict[str, Any] | None
                         )
                     )
                 if s_type in {"json_file", "yaml_file", "generated_artifact"}:
-                    path = str(src.get("path", "")).strip()
-                    if not path:
+                    path_value = str(src.get("path", "")).strip()
+                    if not path_value:
                         issues.append(DocsGeneratorIssue(sloc, "path is required for file/artifact sources"))
                 if s_type == "command_output":
                     cmd = src.get("command")

@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 181
+- link_count: 187
 - rules_with_conformance_cases: 39
-- rules_with_unit_tests: 181
-- rules_with_implementation_refs: 179
+- rules_with_unit_tests: 187
+- rules_with_implementation_refs: 185
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -97,6 +97,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `DOCS_CLI_FLAGS_DOCUMENTED` | `docs/spec/contract/policy_v1.yaml#DOCS_CLI_FLAGS_DOCUMENTED` | 4 | 0 | 0 | 2 | 2 |
 | `DOCS_COMMAND_EXAMPLES_VERIFIED` | `docs/spec/contract/policy_v1.yaml#DOCS_COMMAND_EXAMPLES_VERIFIED` | 1 | 2 | 0 | 3 | 4 |
 | `DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC` | 3 | 1 | 0 | 2 | 2 |
+| `DOCS_DOCGEN_OUTPUT_MIN_QUALITY_SCORE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_DOCGEN_OUTPUT_MIN_QUALITY_SCORE_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT` | `docs/spec/contract/policy_v1.yaml#DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT` | 1 | 1 | 0 | 2 | 2 |
 | `DOCS_EXAMPLE_IDS_UNIQUE` | `docs/spec/contract/policy_v1.yaml#DOCS_EXAMPLE_IDS_UNIQUE` | 1 | 1 | 0 | 3 | 4 |
 | `DOCS_FILENAME_POLICY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_FILENAME_POLICY_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
@@ -107,6 +108,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `DOCS_GENERATOR_REGISTRY_DEFINED` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_REGISTRY_DEFINED` | 2 | 1 | 0 | 1 | 2 |
 | `DOCS_GENERATOR_REPORT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_REPORT_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `DOCS_GOVERNANCE_CHECK_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_GOVERNANCE_CHECK_CATALOG_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
+| `DOCS_HARNESS_FIELD_SEMANTICS_DOC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_HARNESS_FIELD_SEMANTICS_DOC_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | `docs/spec/contract/policy_v1.yaml#DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | 1 | 1 | 0 | 3 | 4 |
@@ -120,11 +122,15 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_REFERENCE_INDEX_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_REFERENCE_INDEX_SYNC` | 2 | 0 | 0 | 2 | 2 |
 | `DOCS_REFERENCE_MANIFEST_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_REFERENCE_MANIFEST_SYNC` | 2 | 1 | 0 | 3 | 4 |
+| `DOCS_REFERENCE_NAMESPACE_CHAPTERS_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_REFERENCE_NAMESPACE_CHAPTERS_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_REF_SURFACE_COMPLETE` | `docs/spec/contract/policy_v1.yaml#DOCS_REF_SURFACE_COMPLETE` | 2 | 1 | 0 | 2 | 2 |
 | `DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY` | `docs/spec/contract/policy_v1.yaml#DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY` | 2 | 0 | 0 | 2 | 3 |
 | `DOCS_REQUIRED_SECTIONS_PRESENT` | `docs/spec/contract/policy_v1.yaml#DOCS_REQUIRED_SECTIONS_PRESENT` | 4 | 0 | 0 | 2 | 2 |
+| `DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED` | 2 | 2 | 0 | 1 | 2 |
+| `DOCS_STDLIB_EXAMPLES_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_STDLIB_EXAMPLES_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `DOCS_TOKEN_DEPENDENCY_RESOLVED` | `docs/spec/contract/policy_v1.yaml#DOCS_TOKEN_DEPENDENCY_RESOLVED` | 1 | 1 | 0 | 3 | 4 |
 | `DOCS_TOKEN_OWNERSHIP_UNIQUE` | `docs/spec/contract/policy_v1.yaml#DOCS_TOKEN_OWNERSHIP_UNIQUE` | 1 | 1 | 0 | 3 | 4 |
 | `DOCS_TRACEABILITY_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_TRACEABILITY_CATALOG_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |

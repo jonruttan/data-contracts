@@ -27,6 +27,16 @@ harness:
     - docs/book/05_howto.md
     - docs/book/06_troubleshooting.md
     - docs/book/07_spec_lang_reference.md
+    - docs/book/93_appendix_spec_lang_builtin_catalog.md
+    - docs/book/93a_std_core.md
+    - docs/book/93b_std_logic.md
+    - docs/book/93c_std_math.md
+    - docs/book/93d_std_string.md
+    - docs/book/93e_std_collection.md
+    - docs/book/93f_std_object.md
+    - docs/book/93g_std_type.md
+    - docs/book/93h_std_set.md
+    - docs/book/93i_std_json_schema_fn_null.md
     required_globs:
     - docs/spec/contract/*.md
   policy_evaluate:

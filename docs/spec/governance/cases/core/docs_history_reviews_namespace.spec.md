@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRGOV-DOCS-LAYOUT-004
 title: review artifacts live under docs/history/reviews
-purpose: Enforces canonical historical review namespace and forbids legacy docs/reviews.
+purpose: Enforces canonical historical review namespace and forbids legacy docs/history/reviews.
 type: governance.check
 check: docs.history_reviews_namespace
 harness:

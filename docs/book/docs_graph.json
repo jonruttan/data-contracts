@@ -311,6 +311,186 @@
       "to": "EX-APP-BUILTIN-001"
     },
     {
+      "from": "/docs/book/93a_std_core.md",
+      "kind": "owns_token",
+      "to": "appendix_std_core_reference"
+    },
+    {
+      "from": "/docs/book/93a_std_core.md",
+      "kind": "requires_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93a_std_core.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93a_std_core.md",
+      "kind": "example",
+      "to": "EX-APP-STD-CORE-001"
+    },
+    {
+      "from": "/docs/book/93b_std_logic.md",
+      "kind": "owns_token",
+      "to": "appendix_std_logic_reference"
+    },
+    {
+      "from": "/docs/book/93b_std_logic.md",
+      "kind": "requires_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93b_std_logic.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93b_std_logic.md",
+      "kind": "example",
+      "to": "EX-APP-STD-LOGIC-001"
+    },
+    {
+      "from": "/docs/book/93c_std_math.md",
+      "kind": "owns_token",
+      "to": "appendix_std_math_reference"
+    },
+    {
+      "from": "/docs/book/93c_std_math.md",
+      "kind": "requires_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93c_std_math.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93c_std_math.md",
+      "kind": "example",
+      "to": "EX-APP-STD-MATH-001"
+    },
+    {
+      "from": "/docs/book/93d_std_string.md",
+      "kind": "owns_token",
+      "to": "appendix_std_string_reference"
+    },
+    {
+      "from": "/docs/book/93d_std_string.md",
+      "kind": "requires_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93d_std_string.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93d_std_string.md",
+      "kind": "example",
+      "to": "EX-APP-STD-STRING-001"
+    },
+    {
+      "from": "/docs/book/93e_std_collection.md",
+      "kind": "owns_token",
+      "to": "appendix_std_collection_reference"
+    },
+    {
+      "from": "/docs/book/93e_std_collection.md",
+      "kind": "requires_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93e_std_collection.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93e_std_collection.md",
+      "kind": "example",
+      "to": "EX-APP-STD-COLLECTION-001"
+    },
+    {
+      "from": "/docs/book/93f_std_object.md",
+      "kind": "owns_token",
+      "to": "appendix_std_object_reference"
+    },
+    {
+      "from": "/docs/book/93f_std_object.md",
+      "kind": "requires_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93f_std_object.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93f_std_object.md",
+      "kind": "example",
+      "to": "EX-APP-STD-OBJECT-001"
+    },
+    {
+      "from": "/docs/book/93g_std_type.md",
+      "kind": "owns_token",
+      "to": "appendix_std_type_reference"
+    },
+    {
+      "from": "/docs/book/93g_std_type.md",
+      "kind": "requires_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93g_std_type.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93g_std_type.md",
+      "kind": "example",
+      "to": "EX-APP-STD-TYPE-001"
+    },
+    {
+      "from": "/docs/book/93h_std_set.md",
+      "kind": "owns_token",
+      "to": "appendix_std_set_reference"
+    },
+    {
+      "from": "/docs/book/93h_std_set.md",
+      "kind": "requires_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93h_std_set.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93h_std_set.md",
+      "kind": "example",
+      "to": "EX-APP-STD-SET-001"
+    },
+    {
+      "from": "/docs/book/93i_std_json_schema_fn_null.md",
+      "kind": "owns_token",
+      "to": "appendix_std_json_schema_fn_null_reference"
+    },
+    {
+      "from": "/docs/book/93i_std_json_schema_fn_null.md",
+      "kind": "requires_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93i_std_json_schema_fn_null.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93i_std_json_schema_fn_null.md",
+      "kind": "example",
+      "to": "EX-APP-STD-JSFN-001"
+    },
+    {
       "from": "/docs/book/94_appendix_contract_policy_reference.md",
       "kind": "owns_token",
       "to": "appendix_contract_policy_reference"
@@ -515,6 +695,69 @@
       "path": "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
       "status": "active",
       "title": "Appendix Spec-Lang Builtin Catalog"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-931",
+      "path": "/docs/book/93a_std_core.md",
+      "status": "active",
+      "title": "Stdlib Core Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-932",
+      "path": "/docs/book/93b_std_logic.md",
+      "status": "active",
+      "title": "Stdlib Logic Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-933",
+      "path": "/docs/book/93c_std_math.md",
+      "status": "active",
+      "title": "Stdlib Math Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-934",
+      "path": "/docs/book/93d_std_string.md",
+      "status": "active",
+      "title": "Stdlib String Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-935",
+      "path": "/docs/book/93e_std_collection.md",
+      "status": "active",
+      "title": "Stdlib Collection Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-936",
+      "path": "/docs/book/93f_std_object.md",
+      "status": "active",
+      "title": "Stdlib Object Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-937",
+      "path": "/docs/book/93g_std_type.md",
+      "status": "active",
+      "title": "Stdlib Type Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-938",
+      "path": "/docs/book/93h_std_set.md",
+      "status": "active",
+      "title": "Stdlib Set Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-939",
+      "path": "/docs/book/93i_std_json_schema_fn_null.md",
+      "status": "active",
+      "title": "Stdlib JSON Schema Fn Null Reference"
     },
     {
       "audience": "reviewer",

@@ -11,7 +11,7 @@ MUST:
   - `docs/spec`
   - `docs/impl`
   - `docs/history/reviews`
-- `docs/reviews` is a forbidden legacy namespace.
+- `docs/history/reviews` is a forbidden legacy namespace.
 - directory index files under `docs/**` MUST be named `index.md`.
 - `README.md` under `docs/**` is forbidden.
 - `.DS_Store` and similar OS/editor artifact files are forbidden in tracked
@@ -108,6 +108,15 @@ Reference generation and graph artifacts:
   - `docs/book/91_appendix_runner_api_reference.md`
   - `docs/book/92_appendix_harness_type_reference.md`
   - `docs/book/93_appendix_spec_lang_builtin_catalog.md`
+  - `docs/book/93a_std_core.md`
+  - `docs/book/93b_std_logic.md`
+  - `docs/book/93c_std_math.md`
+  - `docs/book/93d_std_string.md`
+  - `docs/book/93e_std_collection.md`
+  - `docs/book/93f_std_object.md`
+  - `docs/book/93g_std_type.md`
+  - `docs/book/93h_std_set.md`
+  - `docs/book/93i_std_json_schema_fn_null.md`
   - `docs/book/94_appendix_contract_policy_reference.md`
   - `docs/book/95_appendix_traceability_reference.md`
   - `docs/book/96_appendix_governance_checks_reference.md`
@@ -121,6 +130,13 @@ Reference generation and graph artifacts:
   - `.artifacts/governance-check-catalog.json`
   - `.artifacts/metrics-field-catalog.json`
   - `.artifacts/spec-schema-field-catalog.json`
+- semantic docgen quality thresholds are enforced by governance:
+  - `docs.stdlib_symbol_docs_complete`
+  - `docs.stdlib_examples_complete`
+  - `docs.harness_reference_semantics_complete`
+  - `docs.runner_reference_semantics_complete`
+  - `docs.reference_namespace_chapters_sync`
+  - `docs.docgen_quality_score_threshold`
 - generated sections are read-only and delimited by
   `<!-- GENERATED:START ... -->` / `<!-- GENERATED:END ... -->` markers.
 - docs generator report artifacts are required:

@@ -346,3 +346,246 @@ assert:
       - true
       - true
 ```
+
+## SRDOCGEN-014
+
+```yaml spec-test
+id: SRDOCGEN-014
+type: docs.generate
+title: spec lang core namespace chapter generation
+harness:
+  docs_generate:
+    surface_id: spec_lang_namespace_core
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_lang_namespace_core_template.md
+    output_path: /docs/book/93a_std_core.md
+    marker_surface_id: spec_lang_namespace_core
+    data_sources:
+    - id: stdlib
+      source_type: generated_artifact
+      path: /.artifacts/spec-lang-builtin-catalog.json
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - true
+      - true
+```
+
+## SRDOCGEN-015
+
+```yaml spec-test
+id: SRDOCGEN-015
+type: docs.generate
+title: spec lang logic namespace chapter generation
+harness:
+  docs_generate:
+    surface_id: spec_lang_namespace_logic
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_lang_namespace_logic_template.md
+    output_path: /docs/book/93b_std_logic.md
+    marker_surface_id: spec_lang_namespace_logic
+    data_sources:
+    - id: stdlib
+      source_type: generated_artifact
+      path: /.artifacts/spec-lang-builtin-catalog.json
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - true
+      - true
+```
+
+## SRDOCGEN-016
+
+```yaml spec-test
+id: SRDOCGEN-016
+type: docs.generate
+title: spec lang math namespace chapter generation
+harness:
+  docs_generate:
+    surface_id: spec_lang_namespace_math
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_lang_namespace_math_template.md
+    output_path: /docs/book/93c_std_math.md
+    marker_surface_id: spec_lang_namespace_math
+    data_sources:
+    - id: stdlib
+      source_type: generated_artifact
+      path: /.artifacts/spec-lang-builtin-catalog.json
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - true
+      - true
+```
+
+## SRDOCGEN-017
+
+```yaml spec-test
+id: SRDOCGEN-017
+type: docs.generate
+title: spec lang string namespace chapter generation
+harness:
+  docs_generate:
+    surface_id: spec_lang_namespace_string
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_lang_namespace_string_template.md
+    output_path: /docs/book/93d_std_string.md
+    marker_surface_id: spec_lang_namespace_string
+    data_sources:
+    - id: stdlib
+      source_type: generated_artifact
+      path: /.artifacts/spec-lang-builtin-catalog.json
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - true
+      - true
+```
+
+## SRDOCGEN-018
+
+```yaml spec-test
+id: SRDOCGEN-018
+type: docs.generate
+title: spec lang collection namespace chapter generation
+harness:
+  docs_generate:
+    surface_id: spec_lang_namespace_collection
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_lang_namespace_collection_template.md
+    output_path: /docs/book/93e_std_collection.md
+    marker_surface_id: spec_lang_namespace_collection
+    data_sources:
+    - id: stdlib
+      source_type: generated_artifact
+      path: /.artifacts/spec-lang-builtin-catalog.json
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - true
+      - true
+```
+
+## SRDOCGEN-019
+
+```yaml spec-test
+id: SRDOCGEN-019
+type: docs.generate
+title: spec lang object namespace chapter generation
+harness:
+  docs_generate:
+    surface_id: spec_lang_namespace_object
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_lang_namespace_object_template.md
+    output_path: /docs/book/93f_std_object.md
+    marker_surface_id: spec_lang_namespace_object
+    data_sources:
+    - id: stdlib
+      source_type: generated_artifact
+      path: /.artifacts/spec-lang-builtin-catalog.json
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - true
+      - true
+```
+
+## SRDOCGEN-020
+
+```yaml spec-test
+id: SRDOCGEN-020
+type: docs.generate
+title: spec lang type namespace chapter generation
+harness:
+  docs_generate:
+    surface_id: spec_lang_namespace_type
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_lang_namespace_type_template.md
+    output_path: /docs/book/93g_std_type.md
+    marker_surface_id: spec_lang_namespace_type
+    data_sources:
+    - id: stdlib
+      source_type: generated_artifact
+      path: /.artifacts/spec-lang-builtin-catalog.json
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - true
+      - true
+```
+
+## SRDOCGEN-021
+
+```yaml spec-test
+id: SRDOCGEN-021
+type: docs.generate
+title: spec lang set namespace chapter generation
+harness:
+  docs_generate:
+    surface_id: spec_lang_namespace_set
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_lang_namespace_set_template.md
+    output_path: /docs/book/93h_std_set.md
+    marker_surface_id: spec_lang_namespace_set
+    data_sources:
+    - id: stdlib
+      source_type: generated_artifact
+      path: /.artifacts/spec-lang-builtin-catalog.json
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - true
+      - true
+```
+
+## SRDOCGEN-022
+
+```yaml spec-test
+id: SRDOCGEN-022
+type: docs.generate
+title: spec lang json schema fn null namespace chapter generation
+harness:
+  docs_generate:
+    surface_id: spec_lang_namespace_json_schema_fn_null
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_lang_namespace_json_schema_fn_null_template.md
+    output_path: /docs/book/93i_std_json_schema_fn_null.md
+    marker_surface_id: spec_lang_namespace_json_schema_fn_null
+    data_sources:
+    - id: stdlib
+      source_type: generated_artifact
+      path: /.artifacts/spec-lang-builtin-catalog.json
+assert:
+- target: context_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - true
+      - true
+```

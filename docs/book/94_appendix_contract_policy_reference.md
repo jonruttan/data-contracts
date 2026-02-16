@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 181
-- must_count: 168
+- rule_count: 187
+- must_count: 174
 - should_count: 12
 - must_not_count: 1
-- active_count: 181
+- active_count: 187
 - deprecated_count: 0
 - removed_count: 0
 
@@ -100,6 +100,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `DOCS_CLI_FLAGS_DOCUMENTED` | `MUST` | `governance` | `docs.cli.flags` | 4 | `active` |
 | `DOCS_COMMAND_EXAMPLES_VERIFIED` | `MUST` | `governance` | `docs.reference.examples_v2` | 2 | `active` |
 | `DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC` | `MUST` | `governance` | `docs.contract.schema.book.tokens` | 4 | `active` |
+| `DOCS_DOCGEN_OUTPUT_MIN_QUALITY_SCORE_REQUIRED` | `MUST` | `governance` | `docs.generator.outputs.quality` | 2 | `active` |
 | `DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT` | `MUST` | `governance` | `docs.reference.examples` | 2 | `active` |
 | `DOCS_EXAMPLE_IDS_UNIQUE` | `MUST` | `governance` | `docs.reference.example_ids` | 2 | `active` |
 | `DOCS_FILENAME_POLICY_REQUIRED` | `MUST` | `governance` | `docs.layout.filename_policy` | 2 | `active` |
@@ -110,6 +111,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `DOCS_GENERATOR_REGISTRY_DEFINED` | `MUST` | `governance` | `docs.generator.registry` | 2 | `active` |
 | `DOCS_GENERATOR_REPORT_REQUIRED` | `MUST` | `governance` | `docs.generator.reporting` | 3 | `active` |
 | `DOCS_GOVERNANCE_CHECK_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.governance_checks` | 3 | `active` |
+| `DOCS_HARNESS_FIELD_SEMANTICS_DOC_REQUIRED` | `MUST` | `governance` | `docs.harness_type.profiles` | 2 | `active` |
 | `DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED` | `MUST` | `governance` | `docs.history.reviews` | 2 | `active` |
 | `DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED` | `MUST` | `governance` | `docs.layout.index_filenames` | 2 | `active` |
 | `DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | `MUST` | `governance` | `docs.reference.instructions` | 2 | `active` |
@@ -123,11 +125,15 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.policy_rules` | 3 | `active` |
 | `DOCS_REFERENCE_INDEX_SYNC` | `MUST` | `governance` | `docs.reference.index` | 2 | `active` |
 | `DOCS_REFERENCE_MANIFEST_SYNC` | `MUST` | `governance` | `docs.reference.manifest` | 3 | `active` |
+| `DOCS_REFERENCE_NAMESPACE_CHAPTERS_SYNC_REQUIRED` | `MUST` | `governance` | `docs.book.spec_lang_namespace_chapters` | 2 | `active` |
 | `DOCS_REF_SURFACE_COMPLETE` | `MUST` | `governance` | `docs.reference.surface` | 3 | `active` |
 | `DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY` | `MUST` | `governance` | `docs.release.contract` | 3 | `active` |
 | `DOCS_REQUIRED_SECTIONS_PRESENT` | `MUST` | `governance` | `docs.reference.sections` | 4 | `active` |
+| `DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED` | `MUST` | `governance` | `docs.runner_api.commands` | 2 | `active` |
 | `DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED` | `MUST` | `governance` | `docs.book.spec_lang_chapter_order` | 3 | `active` |
 | `DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.spec_schema_fields` | 4 | `active` |
+| `DOCS_STDLIB_EXAMPLES_REQUIRED` | `MUST` | `governance` | `docs.spec_lang.symbols.examples` | 2 | `active` |
+| `DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED` | `MUST` | `governance` | `docs.spec_lang.symbols.semantic_docs` | 2 | `active` |
 | `DOCS_TOKEN_DEPENDENCY_RESOLVED` | `MUST` | `governance` | `docs.reference.token_dependencies` | 2 | `active` |
 | `DOCS_TOKEN_OWNERSHIP_UNIQUE` | `MUST` | `governance` | `docs.reference.tokens` | 2 | `active` |
 | `DOCS_TRACEABILITY_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.traceability` | 3 | `active` |

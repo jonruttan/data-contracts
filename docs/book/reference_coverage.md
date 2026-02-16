@@ -1,9 +1,9 @@
 # Reference Coverage
 
-- docs_count: 18
-- examples_total: 18
+- docs_count: 27
+- examples_total: 27
 - examples_runnable: 9
-- runnable_example_ratio: 0.5000
+- runnable_example_ratio: 0.3333
 
 ## Docs
 
@@ -19,6 +19,15 @@
 - `/docs/book/91_appendix_runner_api_reference.md` (DOC-REF-091)
 - `/docs/book/92_appendix_harness_type_reference.md` (DOC-REF-092)
 - `/docs/book/93_appendix_spec_lang_builtin_catalog.md` (DOC-REF-093)
+- `/docs/book/93a_std_core.md` (DOC-REF-931)
+- `/docs/book/93b_std_logic.md` (DOC-REF-932)
+- `/docs/book/93c_std_math.md` (DOC-REF-933)
+- `/docs/book/93d_std_string.md` (DOC-REF-934)
+- `/docs/book/93e_std_collection.md` (DOC-REF-935)
+- `/docs/book/93f_std_object.md` (DOC-REF-936)
+- `/docs/book/93g_std_type.md` (DOC-REF-937)
+- `/docs/book/93h_std_set.md` (DOC-REF-938)
+- `/docs/book/93i_std_json_schema_fn_null.md` (DOC-REF-939)
 - `/docs/book/94_appendix_contract_policy_reference.md` (DOC-REF-094)
 - `/docs/book/95_appendix_traceability_reference.md` (DOC-REF-095)
 - `/docs/book/96_appendix_governance_checks_reference.md` (DOC-REF-096)

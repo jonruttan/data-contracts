@@ -91,8 +91,13 @@ Notes:
   `type: docs.generate` cases (`docs/spec/impl/docs_generate/cases/*.spec.md`)
   and moustache-core templates under `docs/book/templates/`.
 - Generated API catalogs now include runner interface commands, harness type
-  profiles, and spec-lang builtin surface/parity with machine artifacts in
+  profiles, and spec-lang builtin semantic references with machine artifacts in
   `.artifacts/*-catalog.json` and generated book pages under `docs/book/`.
+- Spec-lang generated docs now include namespace chapters
+  (`93a_std_core.md` through `93i_std_json_schema_fn_null.md`) with
+  per-symbol signatures, parameters, returns, error conditions, and examples.
+- Governance enforces docs semantic completeness and minimum quality-score
+  thresholds for runner/harness/stdlib generated references.
 - Documentation catalog generation additionally includes policy rule,
   traceability, governance-check, metrics-field, and schema-field references
   with generated pages under `docs/book/91_appendix_*` through
@@ -106,7 +111,7 @@ Notes:
   CI runs `normalize-check` and local workflow uses `normalize-fix`.
 - Docs layout now enforces canonical roots (`docs/book`, `docs/spec`,
   `docs/impl`, `docs/history/reviews`) with `index.md` as the only directory
-  index filename under `docs/**`; legacy `docs/reviews` and docs-local
+  index filename under `docs/**`; legacy `docs/history/reviews` and docs-local
   `README.md` filenames are forbidden.
 - Gate scripts now invoke CI summary orchestration through runner-interface
   subcommand `ci-gate-summary` (no direct gate-script Python summary call).

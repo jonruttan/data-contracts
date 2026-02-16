@@ -57,6 +57,7 @@ Portability and conformance:
 - `07_spec_lang_reference.md`: strict operator semantics reference
 - `90_appendix_cheatsheet.md`: compact templates
 - `91_appendix_runner_api_reference.md` through `99_appendix_reference_index.md`: generated appendices
+- `93a_std_core.md` through `93i_std_json_schema_fn_null.md`: generated namespace chapters
 
 ## Docs Quality Authoring Guide
 

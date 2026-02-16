@@ -10,6 +10,7 @@ from spec_runner.docs_generators import (
     replace_generated_block,
     write_json,
 )
+from spec_runner.docs_template_engine import render_moustache
 from spec_runner.schema_registry import compile_registry
 
 
@@ -25,47 +26,106 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
     if compiled is None:
         raise ValueError("; ".join(errs))
     profiles = dict(compiled.get("type_profiles") or {})
+    semantics: dict[str, dict[str, Any]] = {
+        "text.file": {
+            "summary": "Evaluates file text subjects using filesystem-backed harness extraction.",
+            "defaults": ["path resolved from virtual-root model"],
+            "failure_modes": ["path missing", "decode failure"],
+        },
+        "cli.run": {
+            "summary": "Executes command processes and asserts over output/exit context.",
+            "defaults": ["stdout/stderr capture enabled"],
+            "failure_modes": ["non-zero exit", "timeout", "entrypoint missing"],
+        },
+        "api.http": {
+            "summary": "Performs HTTP requests with deterministic mode and optional live mode.",
+            "defaults": ["mode=deterministic", "auth=none"],
+            "failure_modes": ["request transport failure", "oauth config mismatch"],
+        },
+        "governance.check": {
+            "summary": "Runs governance scanner checks and exposes structured summary/violations.",
+            "defaults": ["policy_evaluate required"],
+            "failure_modes": ["unknown check id", "scanner mismatch"],
+        },
+        "spec_lang.library": {
+            "summary": "Declares reusable spec-lang symbols for evaluate/policy_evaluate expressions.",
+            "defaults": ["mapping-AST definitions only"],
+            "failure_modes": ["duplicate symbol export", "invalid definition shape"],
+        },
+        "orchestration.run": {
+            "summary": "Orchestrates implementation effect ops via ops.* registry dispatch.",
+            "defaults": ["ops capability checks required"],
+            "failure_modes": ["undeclared ops symbol", "capability denied"],
+        },
+        "docs.generate": {
+            "summary": "Generates docs surfaces from declared registry templates and data sources.",
+            "defaults": ["strict template render", "mode=write/check"],
+            "failure_modes": ["template key missing", "generated drift in check mode"],
+        },
+    }
+
     rows: list[dict[str, Any]] = []
     for case_type, prof in sorted(profiles.items()):
         fields = sorted(dict(prof.get("fields") or {}).keys())
+        required_top_level = list(prof.get("required_top_level") or [])
+        allowed_extra = list(prof.get("allowed_top_level_extra") or [])
+        type_semantics = semantics.get(
+            case_type,
+            {
+                "summary": "Harness type profile declared in schema registry.",
+                "defaults": [],
+                "failure_modes": ["schema validation failure"],
+            },
+        )
         rows.append(
             {
                 "case_type": case_type,
                 "field_count": len(fields),
                 "fields": fields,
-                "required_top_level": list(prof.get("required_top_level") or []),
-                "allowed_top_level_extra": list(prof.get("allowed_top_level_extra") or []),
+                "required_top_level": required_top_level,
+                "allowed_top_level_extra": allowed_extra,
+                "required_top_level_md": ", ".join(f"`{x}`" for x in required_top_level) or "-",
+                "allowed_top_level_extra_md": ", ".join(f"`{x}`" for x in allowed_extra) or "-",
+                "summary": type_semantics["summary"],
+                "defaults": type_semantics["defaults"],
+                "failure_modes": type_semantics["failure_modes"],
+                "examples": [
+                    {
+                        "title": "Case type usage",
+                        "snippet": f"type: {case_type}",
+                    }
+                ],
             }
         )
+    complete = 0
+    for row in rows:
+        if (
+            str(row.get("summary", "")).strip()
+            and isinstance(row.get("defaults"), list)
+            and isinstance(row.get("failure_modes"), list)
+            and isinstance(row.get("examples"), list)
+            and bool(row.get("examples"))
+        ):
+            complete += 1
+    coverage = 0.0 if not rows else (complete / len(rows))
     return {
-        "version": 1,
+        "version": 2,
         "summary": {
             "type_profile_count": len(rows),
             "total_type_field_count": sum(int(r.get("field_count", 0)) for r in rows),
+        },
+        "quality": {
+            "semantics_complete_count": complete,
+            "semantics_coverage_ratio": round(coverage, 4),
+            "score": round(coverage, 4),
         },
         "type_profiles": rows,
     }
 
 
-def _render_md(payload: dict[str, Any]) -> str:
-    summary = dict(payload.get("summary") or {})
-    lines = [
-        "## Generated Harness Type Catalog",
-        "",
-        f"- type_profile_count: {int(summary.get('type_profile_count', 0))}",
-        f"- total_type_field_count: {int(summary.get('total_type_field_count', 0))}",
-        "",
-        "| case_type | field_count | required_top_level | allowed_top_level_extra |",
-        "|---|---|---|---|",
-    ]
-    for row in payload.get("type_profiles") or []:
-        req = ", ".join(f"`{x}`" for x in row.get("required_top_level") or []) or "-"
-        extra = ", ".join(f"`{x}`" for x in row.get("allowed_top_level_extra") or []) or "-"
-        lines.append(
-            f"| `{row.get('case_type', '')}` | {int(row.get('field_count', 0))} | {req} | {extra} |"
-        )
-    lines.append("")
-    return "\n".join(lines)
+def _render_md(payload: dict[str, Any], *, template_path: Path) -> str:
+    template = template_path.read_text(encoding="utf-8")
+    return render_moustache(template, {"harness": payload}, strict=True)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -79,7 +139,7 @@ def main(argv: list[str] | None = None) -> int:
     payload = _build_payload(repo_root)
     out_path = _resolve_cli_path(repo_root, str(ns.out))
     doc_path = _resolve_cli_path(repo_root, str(ns.doc_out))
-    md_block = _render_md(payload)
+    md_block = _render_md(payload, template_path=repo_root / "docs/book/templates/harness_type_catalog_template.md")
     updated_doc = replace_generated_block(
         doc_path.read_text(encoding="utf-8"),
         surface_id="harness_type_catalog",

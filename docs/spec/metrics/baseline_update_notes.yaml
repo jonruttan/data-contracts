@@ -13,16 +13,16 @@ entries:
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/docs_operability_baseline.json
-  sha256: a4bc8833d644ce53ecb6427d0c22b8ce56b379a6f92acd0ccea833d7b6a0a2d0
-  rationale: Baseline refreshed after docs book chapter taxonomy hard-cut and appendix catalog expansion.
+  sha256: 168b4ad0de2322026a0af4f55f652ec8f2ac27ce38361035002880c911f717de
+  rationale: Baseline refreshed after spec-lang namespace chapter expansion increased generated appendix doc count.
   measurement_model_change: 'yes'
 - baseline: docs/spec/metrics/contract_assertions_baseline.json
   sha256: 860e283126609531054e431e9f075902547379776efd4681005ea143ee89f40a
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/objective_scorecard_baseline.json
-  sha256: 85302470ebe7d06f68c34f9ec81c69aba94a7ac4c05b24b5de4a9d46810bafc8
-  rationale: Baseline refreshed after OAuth api.http coverage and governance/docs sync additions changed objective aggregate.
+  sha256: 1b84be7d4af3c779eb6d9864da9f636efae87dd0aff660246299b7ceaccfa516
+  rationale: Baseline refreshed after docs namespace reference expansion updated objective aggregate scores.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/python_dependency_baseline.json
   sha256: 8f017d0e8cf87e5e5fffce84e95e1377267cd438a3bc5dc351b7a0ffa1b96f18

@@ -17,6 +17,17 @@ This contract defines the complete fixed stdlib surface for spec-lang v1.
 - All profile symbols MUST exist in Python and PHP implementations.
 - All profile symbols with declared non-null arity MUST match Python declared arity.
 - All profile symbols MUST remain pure and deterministic.
+- Each symbol entry MUST define semantic documentation fields for generated references:
+  - `summary`
+  - `params[]` (`name`, `type`, `description`, `required`)
+  - `returns` (`type`, `description`)
+  - `errors[]` (`category`, `condition`)
+  - `examples[]` (`title`, `expr`, `result`)
+  - `since`
+- Optional semantic fields:
+  - `details`
+  - `deprecated` (`in`, `replacement`, `note`)
+  - `tags`
 - Unknown schema-shape keys for `schema_match` / `schema_errors` MUST fail as `schema`.
 - Governance MUST hard-fail on profile/implementation/docs/conformance drift.
 

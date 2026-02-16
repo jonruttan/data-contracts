@@ -119,6 +119,7 @@ surfaces:
   inputs:
   - /spec_runner/spec_lang.py
   - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /.artifacts/spec-lang-builtin-catalog.json
   - /docs/book/93_appendix_spec_lang_builtin_catalog.md
@@ -135,6 +136,221 @@ surfaces:
   template_path: /docs/book/templates/spec_lang_builtin_catalog_template.md
   output_mode: markers
   marker_surface_id: spec_lang_builtin_catalog
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
+  quality_requirements:
+    min_score: 0.95
+    required_sections:
+    - summary
+    - params
+    - returns
+    - errors
+    - examples
+- surface_id: spec_lang_namespace_core
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  outputs:
+  - /docs/book/93a_std_core.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  determinism_hash_fields:
+  - namespaces
+  read_only_sections:
+  - /docs/book/93a_std_core.md
+  template_path: /docs/book/templates/spec_lang_namespace_core_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_namespace_core
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
+- surface_id: spec_lang_namespace_logic
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  outputs:
+  - /docs/book/93b_std_logic.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  determinism_hash_fields:
+  - namespaces
+  read_only_sections:
+  - /docs/book/93b_std_logic.md
+  template_path: /docs/book/templates/spec_lang_namespace_logic_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_namespace_logic
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
+- surface_id: spec_lang_namespace_math
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  outputs:
+  - /docs/book/93c_std_math.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  determinism_hash_fields:
+  - namespaces
+  read_only_sections:
+  - /docs/book/93c_std_math.md
+  template_path: /docs/book/templates/spec_lang_namespace_math_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_namespace_math
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
+- surface_id: spec_lang_namespace_string
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  outputs:
+  - /docs/book/93d_std_string.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  determinism_hash_fields:
+  - namespaces
+  read_only_sections:
+  - /docs/book/93d_std_string.md
+  template_path: /docs/book/templates/spec_lang_namespace_string_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_namespace_string
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
+- surface_id: spec_lang_namespace_collection
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  outputs:
+  - /docs/book/93e_std_collection.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  determinism_hash_fields:
+  - namespaces
+  read_only_sections:
+  - /docs/book/93e_std_collection.md
+  template_path: /docs/book/templates/spec_lang_namespace_collection_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_namespace_collection
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
+- surface_id: spec_lang_namespace_object
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  outputs:
+  - /docs/book/93f_std_object.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  determinism_hash_fields:
+  - namespaces
+  read_only_sections:
+  - /docs/book/93f_std_object.md
+  template_path: /docs/book/templates/spec_lang_namespace_object_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_namespace_object
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
+- surface_id: spec_lang_namespace_type
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  outputs:
+  - /docs/book/93g_std_type.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  determinism_hash_fields:
+  - namespaces
+  read_only_sections:
+  - /docs/book/93g_std_type.md
+  template_path: /docs/book/templates/spec_lang_namespace_type_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_namespace_type
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
+- surface_id: spec_lang_namespace_set
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  outputs:
+  - /docs/book/93h_std_set.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  determinism_hash_fields:
+  - namespaces
+  read_only_sections:
+  - /docs/book/93h_std_set.md
+  template_path: /docs/book/templates/spec_lang_namespace_set_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_namespace_set
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
+- surface_id: spec_lang_namespace_json_schema_fn_null
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  outputs:
+  - /docs/book/93i_std_json_schema_fn_null.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  determinism_hash_fields:
+  - namespaces
+  read_only_sections:
+  - /docs/book/93i_std_json_schema_fn_null.md
+  template_path: /docs/book/templates/spec_lang_namespace_json_schema_fn_null_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_namespace_json_schema_fn_null
   data_sources:
   - id: stdlib
     source_type: generated_artifact

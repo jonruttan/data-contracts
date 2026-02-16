@@ -2636,7 +2636,7 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_history_reviews_namespace.spec.md
-  notes: Requires `docs/history/reviews` namespace and forbids `docs/reviews`.
+  notes: Requires `docs/history/reviews` namespace and forbids `docs/history/reviews`.
 - rule_id: DOCS_NO_OS_ARTIFACT_FILES_TRACKED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_NO_OS_ARTIFACT_FILES_TRACKED
   contract_refs:
@@ -2762,3 +2762,78 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/harnesses/api_http.py
   notes: Network token/request flows require explicit live-mode opt-in.
+- rule_id: DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
+  contract_refs:
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  schema_refs:
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_spec_lang_reference_docgen_unit.py
+  implementation_refs:
+  - scripts/generate_spec_lang_builtin_catalog.py
+  - docs/book/93a_std_core.md
+  - docs/book/93i_std_json_schema_fn_null.md
+  notes: Generated namespace chapter payloads include semantic symbol docs.
+- rule_id: DOCS_STDLIB_EXAMPLES_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_STDLIB_EXAMPLES_REQUIRED
+  contract_refs:
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+  schema_refs:
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_spec_lang_reference_docgen_unit.py
+  implementation_refs:
+  - scripts/generate_spec_lang_builtin_catalog.py
+  notes: Each symbol includes deterministic examples.
+- rule_id: DOCS_REFERENCE_NAMESPACE_CHAPTERS_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_REFERENCE_NAMESPACE_CHAPTERS_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/book/reference_manifest.yaml
+  notes: Governance enforces namespace chapter presence and manifest synchronization.
+- rule_id: DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/runner_reference_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_runner_reference_docgen_unit.py
+  implementation_refs:
+  - scripts/generate_runner_api_catalog.py
+  notes: Runner reference output includes behavior/default/failure/example sections.
+- rule_id: DOCS_HARNESS_FIELD_SEMANTICS_DOC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_HARNESS_FIELD_SEMANTICS_DOC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/harness_reference_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_harness_reference_docgen_unit.py
+  implementation_refs:
+  - scripts/generate_harness_type_catalog.py
+  notes: Harness reference output includes behavior/default/failure/example sections.
+- rule_id: DOCS_DOCGEN_OUTPUT_MIN_QUALITY_SCORE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_DOCGEN_OUTPUT_MIN_QUALITY_SCORE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_docs_docgen_quality_checks_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: Governance enforces quality score threshold over generated catalog artifacts.

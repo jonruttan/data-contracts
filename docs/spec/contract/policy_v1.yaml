@@ -2513,7 +2513,7 @@ rules:
   applies_to: docs.history.reviews
   norm: MUST
   requirement: reviews_artifacts_must_live_under_docs_history_reviews
-  description: 'Historical review artifacts must live under `docs/history/reviews`; `docs/reviews` is forbidden.
+  description: 'Historical review artifacts must live under `docs/history/reviews`; `docs/history/reviews` is forbidden.
 
     '
   rationale: Separates historical artifacts from canonical product docs.
@@ -2651,3 +2651,87 @@ rules:
   references:
   - docs/spec/governance/cases/core/runtime_api_http_live_mode_explicit.spec.md
   - docs/spec/contract/types/api_http.md
+- id: DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec_lang.symbols.semantic_docs
+  norm: MUST
+  requirement: each_stdlib_symbol_requires_summary_params_returns_errors_examples
+  description: 'Generated spec-lang reference surfaces must include semantic documentation payload for every symbol.
+
+    '
+  rationale: Table-only symbol inventories are insufficient for author onboarding and precise usage.
+  risk_if_violated: Users must source-dive implementation code to understand operators.
+  references:
+  - docs/spec/governance/cases/core/docs_stdlib_symbol_docs_complete.spec.md
+  - scripts/generate_spec_lang_builtin_catalog.py
+- id: DOCS_STDLIB_EXAMPLES_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec_lang.symbols.examples
+  norm: MUST
+  requirement: each_stdlib_symbol_requires_at_least_one_example
+  description: 'Generated spec-lang references must include at least one deterministic example per symbol.
+
+    '
+  rationale: Examples reduce ambiguity and improve first-use success rate.
+  risk_if_violated: Operator usage remains opaque and error-prone.
+  references:
+  - docs/spec/governance/cases/core/docs_stdlib_examples_complete.spec.md
+  - scripts/generate_spec_lang_builtin_catalog.py
+- id: DOCS_REFERENCE_NAMESPACE_CHAPTERS_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.book.spec_lang_namespace_chapters
+  norm: MUST
+  requirement: namespace_reference_chapters_must_exist_and_match_manifest
+  description: 'Namespace chapter files for generated spec-lang docs must exist and be manifest-synchronized.
+
+    '
+  rationale: Keeps chapter navigation deterministic and prevents broken references.
+  risk_if_violated: Readers encounter stale or missing namespace documentation.
+  references:
+  - docs/spec/governance/cases/core/docs_reference_namespace_chapters_sync.spec.md
+  - docs/book/reference_manifest.yaml
+- id: DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.runner_api.commands
+  norm: MUST
+  requirement: generated_runner_command_docs_require_semantics_defaults_failures_examples
+  description: 'Runner API reference pages must include semantic sections for each command.
+
+    '
+  rationale: Command lists without behavior/defaults/failure details are insufficient for operators.
+  risk_if_violated: Operational confusion and incorrect command usage.
+  references:
+  - docs/spec/governance/cases/core/docs_runner_reference_semantics_complete.spec.md
+  - scripts/generate_runner_api_catalog.py
+- id: DOCS_HARNESS_FIELD_SEMANTICS_DOC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.harness_type.profiles
+  norm: MUST
+  requirement: generated_harness_docs_require_semantics_defaults_failures_examples
+  description: 'Harness type reference pages must include semantic sections per case type profile.
+
+    '
+  rationale: Field-only tables do not explain authoring behavior or failure modes.
+  risk_if_violated: Harness usage becomes brittle and implementation-coupled.
+  references:
+  - docs/spec/governance/cases/core/docs_harness_reference_semantics_complete.spec.md
+  - scripts/generate_harness_type_catalog.py
+- id: DOCS_DOCGEN_OUTPUT_MIN_QUALITY_SCORE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.outputs.quality
+  norm: MUST
+  requirement: generated_docs_quality_score_must_meet_threshold
+  description: 'Generated doc surfaces must meet minimum quality score thresholds defined by governance.
+
+    '
+  rationale: Prevents low-information generated docs from regressing silently.
+  risk_if_violated: Generated references degrade into inventory-only output.
+  references:
+  - docs/spec/governance/cases/core/docs_docgen_quality_score_threshold.spec.md
+  - scripts/run_governance_specs.py

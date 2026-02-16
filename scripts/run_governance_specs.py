@@ -23,7 +23,7 @@ from spec_runner.purpose_lint import (
     resolve_purpose_lint_config,
 )
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
-from spec_runner.settings import SETTINGS, governed_config_literals
+from spec_runner.settings import SETTINGS, case_file_name, governed_config_literals
 from spec_runner.spec_lang import (
     SpecLangLimits,
     _builtin_arity_table,
@@ -203,6 +203,7 @@ _SCHEMA_REGISTRY_CONTRACT_DOC = "docs/spec/contract/21_schema_registry_contract.
 _SCHEMA_REGISTRY_COMPILED_ARTIFACT = ".artifacts/schema_registry_compiled.json"
 _DOCS_GENERATOR_REPORT = ".artifacts/docs-generator-report.json"
 _DOCS_GENERATOR_SUMMARY = ".artifacts/docs-generator-summary.md"
+_DOCGEN_QUALITY_MIN_SCORE = 0.95
 
 
 def _resolve_contract_config_path(root: Path, raw: str, *, field: str) -> Path:
@@ -3603,6 +3604,15 @@ def _scan_docs_book_chapter_order_canonical(root: Path, *, harness: dict | None 
         "/docs/book/91_appendix_runner_api_reference.md",
         "/docs/book/92_appendix_harness_type_reference.md",
         "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
+        "/docs/book/93a_std_core.md",
+        "/docs/book/93b_std_logic.md",
+        "/docs/book/93c_std_math.md",
+        "/docs/book/93d_std_string.md",
+        "/docs/book/93e_std_collection.md",
+        "/docs/book/93f_std_object.md",
+        "/docs/book/93g_std_type.md",
+        "/docs/book/93h_std_set.md",
+        "/docs/book/93i_std_json_schema_fn_null.md",
         "/docs/book/94_appendix_contract_policy_reference.md",
         "/docs/book/95_appendix_traceability_reference.md",
         "/docs/book/96_appendix_governance_checks_reference.md",
@@ -3772,6 +3782,15 @@ def _scan_docs_generator_registry_valid(root: Path, *, harness: dict | None = No
         "runner_api_catalog",
         "harness_type_catalog",
         "spec_lang_builtin_catalog",
+        "spec_lang_namespace_core",
+        "spec_lang_namespace_logic",
+        "spec_lang_namespace_math",
+        "spec_lang_namespace_string",
+        "spec_lang_namespace_collection",
+        "spec_lang_namespace_object",
+        "spec_lang_namespace_type",
+        "spec_lang_namespace_set",
+        "spec_lang_namespace_json_schema_fn_null",
         "policy_rule_catalog",
         "traceability_catalog",
         "governance_check_catalog",
@@ -3978,6 +3997,171 @@ def _scan_docs_metrics_field_catalog_sync(root: Path, *, harness: dict | None = 
 def _scan_docs_spec_schema_field_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     return _run_python_script_check(root, ["scripts/generate_spec_schema_field_catalog.py", "--check"])
+
+
+def _read_json_artifact(root: Path, rel: str) -> tuple[dict | None, list[str]]:
+    path = _join_contract_path(root, rel)
+    if not path.exists():
+        return None, [f"{rel}:1: missing generated artifact"]
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        return None, [f"{rel}:1: invalid json ({exc})"]
+    if not isinstance(payload, dict):
+        return None, [f"{rel}:1: expected top-level mapping"]
+    return payload, []
+
+
+def _scan_docs_stdlib_symbol_docs_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    payload, errs = _read_json_artifact(root, ".artifacts/spec-lang-builtin-catalog.json")
+    if errs:
+        return errs
+    violations: list[str] = []
+    for row in payload.get("builtins") or []:
+        if not isinstance(row, dict):
+            continue
+        sym = str(row.get("symbol", "<unknown>"))
+        if not str(row.get("summary", "")).strip():
+            violations.append(f"{sym}: missing summary")
+        params = row.get("params")
+        if not isinstance(params, list):
+            violations.append(f"{sym}: missing params")
+        elif row.get("arity") != 0 and not params:
+            violations.append(f"{sym}: missing params")
+        if not isinstance(row.get("returns"), dict) or not str((row.get("returns") or {}).get("description", "")).strip():
+            violations.append(f"{sym}: missing returns")
+        if not isinstance(row.get("errors"), list) or not row.get("errors"):
+            violations.append(f"{sym}: missing errors")
+        if not isinstance(row.get("examples"), list) or not row.get("examples"):
+            violations.append(f"{sym}: missing examples")
+    return violations
+
+
+def _scan_docs_stdlib_examples_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    payload, errs = _read_json_artifact(root, ".artifacts/spec-lang-builtin-catalog.json")
+    if errs:
+        return errs
+    violations: list[str] = []
+    for row in payload.get("builtins") or []:
+        if not isinstance(row, dict):
+            continue
+        sym = str(row.get("symbol", "<unknown>"))
+        examples = row.get("examples")
+        if not isinstance(examples, list) or not examples:
+            violations.append(f"{sym}: missing examples")
+            continue
+        first = examples[0] if isinstance(examples[0], dict) else {}
+        if not str(first.get("expr", "")).strip() or not str(first.get("result", "")).strip():
+            violations.append(f"{sym}: first example missing expr/result")
+    return violations
+
+
+def _scan_docs_harness_reference_semantics_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    payload, errs = _read_json_artifact(root, ".artifacts/harness-type-catalog.json")
+    if errs:
+        return errs
+    violations: list[str] = []
+    for row in payload.get("type_profiles") or []:
+        if not isinstance(row, dict):
+            continue
+        case_type = str(row.get("case_type", "<unknown>"))
+        if not str(row.get("summary", "")).strip():
+            violations.append(f"{case_type}: missing summary")
+        if not isinstance(row.get("defaults"), list):
+            violations.append(f"{case_type}: missing defaults")
+        if not isinstance(row.get("failure_modes"), list):
+            violations.append(f"{case_type}: missing failure_modes")
+        if not isinstance(row.get("examples"), list) or not row.get("examples"):
+            violations.append(f"{case_type}: missing examples")
+    return violations
+
+
+def _scan_docs_runner_reference_semantics_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    payload, errs = _read_json_artifact(root, ".artifacts/runner-api-catalog.json")
+    if errs:
+        return errs
+    violations: list[str] = []
+    for row in payload.get("commands") or []:
+        if not isinstance(row, dict):
+            continue
+        cmd = str(row.get("command", "<unknown>"))
+        if not str(row.get("summary", "")).strip():
+            violations.append(f"{cmd}: missing summary")
+        if not isinstance(row.get("defaults"), list):
+            violations.append(f"{cmd}: missing defaults")
+        if not isinstance(row.get("failure_modes"), list):
+            violations.append(f"{cmd}: missing failure_modes")
+        if not isinstance(row.get("examples"), list) or not row.get("examples"):
+            violations.append(f"{cmd}: missing examples")
+    return violations
+
+
+def _scan_docs_reference_namespace_chapters_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    required = [
+        "docs/book/93a_std_core.md",
+        "docs/book/93b_std_logic.md",
+        "docs/book/93c_std_math.md",
+        "docs/book/93d_std_string.md",
+        "docs/book/93e_std_collection.md",
+        "docs/book/93f_std_object.md",
+        "docs/book/93g_std_type.md",
+        "docs/book/93h_std_set.md",
+        "docs/book/93i_std_json_schema_fn_null.md",
+    ]
+    out: list[str] = []
+    for rel in required:
+        if not _join_contract_path(root, rel).exists():
+            out.append(f"{rel}:1: missing namespace chapter")
+    manifest, issues = load_reference_manifest(root, "docs/book/reference_manifest.yaml")
+    if issues:
+        out.extend(x.render() for x in issues)
+        return out
+    chapter_paths = [str(x.get("path", "")).strip() for x in (manifest.get("chapters") or []) if isinstance(x, dict)]
+    for rel in required:
+        prefixed = "/" + rel.lstrip("/")
+        if prefixed not in chapter_paths:
+            out.append(f"docs/book/reference_manifest.yaml: missing chapter {prefixed}")
+    return out
+
+
+def _scan_docs_docgen_quality_score_threshold(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    checks = [
+        ("scripts/generate_spec_lang_builtin_catalog.py", ".artifacts/spec-lang-builtin-catalog.json"),
+        ("scripts/generate_runner_api_catalog.py", ".artifacts/runner-api-catalog.json"),
+        ("scripts/generate_harness_type_catalog.py", ".artifacts/harness-type-catalog.json"),
+    ]
+    out: list[str] = []
+    py = root / ".venv/bin/python"
+    for script_rel, rel in checks:
+        # Ensure artifacts exist and are fresh even in cleanroom check-only runs.
+        cp = subprocess.run(
+            [str(py if py.exists() else Path("python3")), script_rel],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if cp.returncode != 0:
+            lines = [x.strip() for x in ((cp.stdout or "") + "\n" + (cp.stderr or "")).splitlines() if x.strip()]
+            out.extend(lines or [f"{script_rel}: generation failed"])
+            continue
+        payload, errs = _read_json_artifact(root, rel)
+        if errs:
+            out.extend(errs)
+            continue
+        quality = payload.get("quality") if isinstance(payload, dict) else None
+        score = float((quality or {}).get("score", 0.0))
+        if score < _DOCGEN_QUALITY_MIN_SCORE:
+            out.append(
+                f"{rel}: quality.score {score:.4f} below required {_DOCGEN_QUALITY_MIN_SCORE:.2f}"
+            )
+    return out
 
 
 def _scan_docs_required_sections(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -5878,6 +6062,12 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.runner_api_catalog_sync": _scan_docs_runner_api_catalog_sync,
     "docs.harness_type_catalog_sync": _scan_docs_harness_type_catalog_sync,
     "docs.spec_lang_builtin_catalog_sync": _scan_docs_spec_lang_builtin_catalog_sync,
+    "docs.stdlib_symbol_docs_complete": _scan_docs_stdlib_symbol_docs_complete,
+    "docs.stdlib_examples_complete": _scan_docs_stdlib_examples_complete,
+    "docs.harness_reference_semantics_complete": _scan_docs_harness_reference_semantics_complete,
+    "docs.runner_reference_semantics_complete": _scan_docs_runner_reference_semantics_complete,
+    "docs.reference_namespace_chapters_sync": _scan_docs_reference_namespace_chapters_sync,
+    "docs.docgen_quality_score_threshold": _scan_docs_docgen_quality_score_threshold,
     "docs.policy_rule_catalog_sync": _scan_docs_policy_rule_catalog_sync,
     "docs.traceability_catalog_sync": _scan_docs_traceability_catalog_sync,
     "docs.governance_check_catalog_sync": _scan_docs_governance_check_catalog_sync,

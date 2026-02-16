@@ -51,10 +51,55 @@ chapters:
   contract_refs:
   - docs/spec/contract/04_harness.md
 - path: /docs/book/93_appendix_spec_lang_builtin_catalog.md
-  summary: generated spec-lang builtin surface catalog.
+  summary: generated spec-lang builtin index and namespace toc.
   contract_refs:
   - docs/spec/contract/03b_spec_lang_v1.md
   - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+- path: /docs/book/93a_std_core.md
+  summary: generated std.core and special-form semantic reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/93b_std_logic.md
+  summary: generated std.logic semantic reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/93c_std_math.md
+  summary: generated std.math semantic reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/93d_std_string.md
+  summary: generated std.string semantic reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/93e_std_collection.md
+  summary: generated std.collection semantic reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/93f_std_object.md
+  summary: generated std.object semantic reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/93g_std_type.md
+  summary: generated std.type semantic reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/93h_std_set.md
+  summary: generated std.set semantic reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/93i_std_json_schema_fn_null.md
+  summary: generated std.json/std.schema/std.fn/std.null semantic reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
 - path: /docs/book/94_appendix_contract_policy_reference.md
   summary: generated policy rule catalog.
   contract_refs:

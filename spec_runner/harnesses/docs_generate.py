@@ -133,6 +133,23 @@ def _load_source(root: Path, raw: dict[str, Any]) -> tuple[str, Any]:
     )
 
 
+def _missing_generated_artifact_paths(root: Path, data_sources: list[dict[str, Any]]) -> list[str]:
+    missing: list[str] = []
+    for raw in data_sources:
+        if not isinstance(raw, dict):
+            continue
+        source_type = str(raw.get("source_type", "")).strip()
+        if source_type != "generated_artifact":
+            continue
+        path_raw = str(raw.get("path", "")).strip()
+        if not path_raw:
+            continue
+        path = resolve_virtual_path(root, path_raw, field="harness.docs_generate.data_sources.path")
+        if not path.exists():
+            missing.append(path_raw)
+    return missing
+
+
 def _render_md_list(values: Any) -> str:
     if not isinstance(values, list) or not values:
         return "-"
@@ -240,6 +257,14 @@ def run(case, *, ctx: SpecRunContext) -> None:
     data_sources = cfg.get("data_sources")
     if not isinstance(data_sources, list) or not data_sources:
         raise ValueError("harness.docs_generate.data_sources must be a non-empty list")
+    if mode == "check":
+        missing_artifacts = _missing_generated_artifact_paths(
+            root, [x for x in data_sources if isinstance(x, dict)]
+        )
+        if missing_artifacts:
+            # In cleanroom/check-only environments, seed generated artifacts first
+            # so strict check mode can compare deterministic rendered output.
+            _run_legacy_generator(root, surface, mode="write")
     sources: dict[str, Any] = {}
     for idx, raw in enumerate(data_sources):
         if not isinstance(raw, dict):
