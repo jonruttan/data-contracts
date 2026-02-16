@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import subprocess
+import sys
 from pathlib import Path
 
 from spec_runner.codecs import load_external_cases
@@ -13,6 +14,7 @@ def _write(path: Path, text: str) -> None:
 
 
 def test_split_library_cases_per_symbol(tmp_path: Path) -> None:
+    repo_root = Path(__file__).resolve().parents[1]
     f = tmp_path / "lib.spec.md"
     _write(
         f,
@@ -39,10 +41,11 @@ defines:
 """,
     )
     cp = subprocess.run(
-        ["./.venv/bin/python", "scripts/split_library_cases_per_symbol.py", "--write", str(f)],
+        [sys.executable, "scripts/split_library_cases_per_symbol.py", "--write", str(f)],
         text=True,
         capture_output=True,
         check=False,
+        cwd=repo_root,
     )
     assert cp.returncode == 0
     loaded = list(load_external_cases(f, formats={"md"}))
@@ -52,4 +55,3 @@ defines:
         public = ((case.get("defines") or {}).get("public") or {})
         assert isinstance(public, dict)
         assert len(public) == 1
-

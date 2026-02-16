@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -11,6 +12,7 @@ def _write(path: Path, text: str) -> None:
 
 
 def test_convert_chain_export_from_key_check_and_write(tmp_path: Path) -> None:
+    repo_root = Path(__file__).resolve().parents[1]
     f = tmp_path / "x.spec.md"
     _write(
         f,
@@ -32,19 +34,20 @@ assert: []
 """,
     )
     cp = subprocess.run(
-        ["./.venv/bin/python", "scripts/convert_chain_export_from_key.py", "--check", str(f)],
+        [sys.executable, "scripts/convert_chain_export_from_key.py", "--check", str(f)],
         text=True,
         capture_output=True,
         check=False,
+        cwd=repo_root,
     )
     assert cp.returncode == 1
     cp = subprocess.run(
-        ["./.venv/bin/python", "scripts/convert_chain_export_from_key.py", "--write", str(f)],
+        [sys.executable, "scripts/convert_chain_export_from_key.py", "--write", str(f)],
         text=True,
         capture_output=True,
         check=False,
+        cwd=repo_root,
     )
     assert cp.returncode == 0
     assert "from_target" not in f.read_text(encoding="utf-8")
     assert "from:" in f.read_text(encoding="utf-8")
-

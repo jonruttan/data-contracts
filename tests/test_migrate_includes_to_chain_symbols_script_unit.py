@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import subprocess
+import sys
 from pathlib import Path
 
 from spec_runner.codecs import load_external_cases
@@ -49,7 +50,7 @@ assert:
 """,
     )
     cp = subprocess.run(
-        ["./.venv/bin/python", "scripts/migrate_includes_to_chain_symbols.py", "--write", str(tmp_path / "docs/spec")],
+        [sys.executable, "scripts/migrate_includes_to_chain_symbols.py", "--write", str(tmp_path / "docs/spec")],
         text=True,
         capture_output=True,
         check=False,
@@ -64,4 +65,3 @@ assert:
     assert isinstance(chain, dict)
     assert isinstance(chain.get("steps"), list) and chain.get("steps")
     assert isinstance(chain.get("imports"), list) and chain.get("imports")
-
