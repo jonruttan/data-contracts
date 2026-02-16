@@ -344,12 +344,14 @@ def test_compile_chain_plan_accepts_compact_symbol_exports(tmp_path):
                         "id": "lib",
                         "class": "must",
                         "ref": "/docs/spec/libraries/domain/http_core.spec.md",
-                        "exports": {
-                            "from": "library.symbol",
-                            "required": True,
-                            "prefix": "domain.http",
-                            "symbols": ["status_is", "status_in"],
-                        },
+                        "exports": [
+                            {
+                                "from": "library.symbol",
+                                "required": True,
+                                "prefix": "domain.http",
+                                "symbols": ["status_is", "status_in"],
+                            }
+                        ],
                     }
                 ]
             }
@@ -362,7 +364,7 @@ def test_compile_chain_plan_accepts_compact_symbol_exports(tmp_path):
     assert steps[0].exports["domain.http.status_in"].path == "domain.http.status_in"
 
 
-def test_compile_chain_plan_rejects_mixed_compact_and_explicit_exports(tmp_path):
+def test_compile_chain_plan_accepts_single_export_entry_list_form(tmp_path):
     (tmp_path / ".git").mkdir(parents=True)
     doc = tmp_path / "docs/spec/case.spec.md"
     doc.parent.mkdir(parents=True, exist_ok=True)
@@ -376,12 +378,15 @@ def test_compile_chain_plan_rejects_mixed_compact_and_explicit_exports(tmp_path)
                     {
                         "id": "lib",
                         "class": "must",
-                        "ref": "/docs/spec/libraries/domain/http_core.spec.md",
-                        "exports": {
-                            "from": "library.symbol",
-                            "symbols": ["domain.http.status_is"],
-                            "domain.http.status_in": {"from": "library.symbol", "path": "/domain.http.status_in"},
-                        },
+                        "ref": "/docs/spec/dep.spec.md#CASE-DEP-1",
+                        "exports": [
+                            {
+                                "as": "dep_id",
+                                "from": "body_json",
+                                "path": "id",
+                                "required": True,
+                            }
+                        ],
                     }
                 ]
             }
@@ -389,5 +394,6 @@ def test_compile_chain_plan_rejects_mixed_compact_and_explicit_exports(tmp_path)
         "assert": [],
     }
     case = compile_external_case(raw, doc_path=doc)
-    with pytest.raises(ValueError, match="unsupported keys"):
-        compile_chain_plan(case)
+    steps, _imports, _fail_fast = compile_chain_plan(case)
+    assert steps[0].exports["dep_id"].from_source == "body_json"
+    assert steps[0].exports["dep_id"].path == "id"

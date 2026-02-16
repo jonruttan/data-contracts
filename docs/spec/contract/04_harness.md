@@ -94,16 +94,15 @@ Cross-spec chaining profile:
   - `id` (unique string)
   - `class` (`must`, `can`, `cannot`)
   - `ref` string in format `[path][#case_id]`
-- `exports` is optional and supports two forms:
-  - explicit mapping form:
-    - export name -> mapping with `from`, optional `path`, optional `required`
-  - compact symbol form:
+- `exports` is optional and is a list of export entries:
+  - symbol-batch entry:
     - `from`, optional `required`, optional `prefix`, required `symbols` list
     - each symbol expands to export name + `path: /<symbol>`
+  - single export entry:
+    - `as` (export name), `from`, optional `path`, optional `required`
 - runtime target exports are valid only when `ref` includes `#case_id`.
 - `from: library.symbol` exports are valid with file refs and require
   non-empty symbol names.
-- compact and explicit forms must not be mixed in one step.
 - legacy export key `from_target` is forbidden.
 - `allow_continue` is optional and defaults to `false`.
 - `harness.chain.imports` is optional and declares explicit state imports:

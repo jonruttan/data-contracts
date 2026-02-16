@@ -537,7 +537,7 @@ harness:
       class: must
       ref: /docs/spec/libraries/domain/http_core.spec.md
       exports:
-        from: library.symbol
+      - from: library.symbol
         required: true
         symbols:
         - domain.http.cors_allow_origin

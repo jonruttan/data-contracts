@@ -291,22 +291,22 @@ For `type: docs.generate`, supported `harness` keys include:
       - `#case_id` with no preceding path is valid and resolves in current doc
       - case id fragment must match `[A-Za-z0-9._:-]+` when present
       - YAML authors should quote hash-only refs (for example `ref: "#CASE-1"`)
-    - `exports` (mapping, optional):
-      - explicit form:
-        - export name -> mapping:
+    - `exports` (list, optional):
+      - each list entry is one of:
+        - symbol-batch entry:
+          - `from` (string, required)
+          - `required` (bool, optional, default `true`)
+          - `prefix` (string, optional)
+          - `symbols` (list[string], required, non-empty)
+          - each symbol expands to export name + `path: /<symbol>`
+        - single export entry:
+          - `as` (string, required export name)
           - `from` (string, required)
           - `path` (string dotted selector, optional)
           - `required` (bool, optional, default `true`)
-      - compact symbol form:
-        - `from` (string, required)
-        - `required` (bool, optional, default `true`)
-        - `prefix` (string, optional)
-        - `symbols` (list[string], required, non-empty)
-        - expands to explicit exports where each symbol maps to `path: /<symbol>`
       - runtime target exports are allowed only for refs with `#case_id`
       - `from: library.symbol` exports may use file refs without `#case_id`
       - `from: library.symbol` requires non-empty symbol names
-      - compact symbol form and explicit export entries MUST NOT be mixed
       - legacy key `from_target` is forbidden
     - `allow_continue` (bool, optional, default `false`)
 - `imports` (list[mapping], optional)
