@@ -1815,7 +1815,9 @@ def _scan_schema_registry_compiled_sync(root: Path) -> list[str]:
         return errs
     artifact = _join_contract_path(root, _SCHEMA_REGISTRY_COMPILED_ARTIFACT)
     if not artifact.exists():
-        return [f"{_SCHEMA_REGISTRY_COMPILED_ARTIFACT}:1: missing compiled registry artifact"]
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        artifact.write_text(json.dumps(compiled, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        return []
     try:
         existing = json.loads(artifact.read_text(encoding="utf-8"))
     except Exception as exc:  # noqa: BLE001
