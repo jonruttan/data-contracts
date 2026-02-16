@@ -66,10 +66,10 @@ harness:
           path: /policy.metric_non_increase
           required: true
     imports:
-    - from_step: lib_non_decrease
+    - from: lib_non_decrease
       names:
       - policy.metric_non_decrease
-    - from_step: lib_non_increase
+    - from: lib_non_increase
       names:
       - policy.metric_non_increase
 assert:

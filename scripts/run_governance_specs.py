@@ -3160,8 +3160,8 @@ def _load_chain_imported_symbol_bindings(
     for item in imports:
         if not isinstance(item, dict):
             continue
-        from_step = str(item.get("from_step", "")).strip()
-        if not from_step or from_step not in step_exports:
+        from_id = str(item.get("from", "")).strip()
+        if not from_id or from_id not in step_exports:
             continue
         names = item.get("names")
         if not isinstance(names, list):
@@ -3172,12 +3172,12 @@ def _load_chain_imported_symbol_bindings(
             name = str(raw_name).strip()
             if not name:
                 continue
-            if name not in step_exports[from_step]:
+            if name not in step_exports[from_id]:
                 continue
             local = str(alias_map.get(name, name)).strip()
             if not local:
                 continue
-            out[local] = step_exports[from_step][name]
+            out[local] = step_exports[from_id][name]
     return out
 
 
@@ -3243,15 +3243,15 @@ def _scan_runtime_chain_import_alias_collision_forbidden(
                     f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}] must be mapping"
                 )
                 continue
-            from_step = str(imp.get("from_step", "")).strip()
-            if not from_step:
+            from_id = str(imp.get("from", "")).strip()
+            if not from_id:
                 violations.append(
-                    f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].from_step must be non-empty"
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].from must be non-empty"
                 )
                 continue
-            if from_step not in step_ids:
+            if from_id not in step_ids:
                 violations.append(
-                    f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].from_step unknown step id {from_step}"
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].from unknown step id {from_id}"
                 )
                 continue
             names = imp.get("names")
@@ -3268,9 +3268,9 @@ def _scan_runtime_chain_import_alias_collision_forbidden(
                         f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].names[{j}] must be non-empty"
                     )
                     continue
-                if name not in step_exports.get(from_step, set()):
+                if name not in step_exports.get(from_id, set()):
                     violations.append(
-                        f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].names[{j}] unknown export {name} from step {from_step}"
+                        f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].names[{j}] unknown export {name} from step {from_id}"
                     )
                 parsed_names.append(name)
             aliases = imp.get("as", {})

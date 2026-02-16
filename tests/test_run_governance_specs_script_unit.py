@@ -810,7 +810,7 @@ harness:
             from: library.symbol
             path: policy.pass_when_no_violations
     imports:
-      - from_step: policy_lib
+      - from: policy_lib
         names:
           - policy.pass_when_no_violations
   policy_evaluate:
@@ -854,7 +854,7 @@ harness:
             from: library.symbol
             path: policy.pass_when_no_violations
     imports:
-      - from_step: policy_lib
+      - from: policy_lib
         names:
           - policy.pass_when_no_violations
   policy_evaluate:
@@ -2081,7 +2081,7 @@ harness:
             from: library.symbol
             path: conf.pass_when_text_contains
     imports:
-      - from_step: conf_lib
+      - from: conf_lib
         names:
           - conf.pass_when_text_contains
 assert:
@@ -2118,7 +2118,7 @@ harness:
             from: library.symbol
             path: conf.pass_when_text_contains
     imports:
-      - from_step: conf_lib
+      - from: conf_lib
         names:
           - conf.pass_when_text_contains
 assert:
@@ -2147,7 +2147,7 @@ harness:
             from: library.symbol
             path: conf.pass_when_text_contains
     imports:
-      - from_step: conf_lib
+      - from: conf_lib
         names:
           - conf.pass_when_text_contains
 assert:
@@ -4701,7 +4701,7 @@ harness:
           from: library.symbol
           path: policy.pass_when_no_violations
     imports:
-    - from_step: policy_lib
+    - from: policy_lib
       names:
       - policy.pass_when_no_violations
   policy_library_usage_non_regression:
@@ -4752,7 +4752,7 @@ harness:
           from: library.symbol
           path: policy.pass_when_no_violations
     imports:
-    - from_step: policy_lib
+    - from: policy_lib
       names:
       - policy.pass_when_no_violations
   docs_reference_surface:

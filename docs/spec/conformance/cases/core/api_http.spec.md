@@ -574,7 +574,7 @@ harness:
           path: /domain.http.step_body_json_get
           required: true
     imports:
-    - from_step: lib_http_core_spec
+    - from: lib_http_core_spec
       names:
       - domain.http.cors_allow_origin
       - domain.http.cors_allows_method

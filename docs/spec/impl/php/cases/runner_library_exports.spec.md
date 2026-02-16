@@ -27,7 +27,7 @@ harness:
           path: /impl.assert.json_type
           required: true
     imports:
-    - from_step: lib_assertion_core_spec
+    - from: lib_assertion_core_spec
       names:
       - impl.assert.contains
       - impl.assert.regex

@@ -76,7 +76,7 @@ harness:
           path: /domain.http.oauth_scope_requested
           required: true
     imports:
-    - from_step: lib_http_core_spec
+    - from: lib_http_core_spec
       names:
       - domain.http.status
       - domain.http.status_in
@@ -332,10 +332,10 @@ harness:
           path: /php.is_assoc_projection
           required: true
     imports:
-    - from_step: lib_make_core_spec
+    - from: lib_make_core_spec
       names:
       - make.has_target
-    - from_step: lib_markdown_core_spec
+    - from: lib_markdown_core_spec
       names:
       - md.has_heading
       - md.heading_level_exists
@@ -349,10 +349,10 @@ harness:
       - md.tokens_all_present
       - md.token_ownership_unique
       - md.token_dependencies_resolved
-    - from_step: lib_python_core_spec
+    - from: lib_python_core_spec
       names:
       - py.is_tuple_projection
-    - from_step: lib_php_core_spec
+    - from: lib_php_core_spec
       names:
       - php.is_assoc_projection
 expect:

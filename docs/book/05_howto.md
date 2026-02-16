@@ -223,7 +223,7 @@ harness:
           from: body_json
           path: /id
     imports:
-    - from_step: preload
+    - from: preload
       names:
       - item_id
       as:

@@ -70,7 +70,7 @@ harness:
           path: /policy.pass_when_no_violations
           required: true
     imports:
-    - from_step: lib_policy_core_spec
+    - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
 assert:

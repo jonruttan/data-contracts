@@ -26,7 +26,7 @@ harness:
           path: /conf.pass_when_text_contains
           required: true
     imports:
-    - from_step: lib_assertion_core_spec
+    - from: lib_assertion_core_spec
       names:
       - conf.pass_when_text_contains
 assert:
@@ -65,7 +65,7 @@ harness:
           path: /conf.pass_when_text_contains
           required: true
     imports:
-    - from_step: lib_assertion_core_spec
+    - from: lib_assertion_core_spec
       names:
       - conf.pass_when_text_contains
 assert:
@@ -272,7 +272,7 @@ harness:
           path: /conf.pass_when_text_contains
           required: true
     imports:
-    - from_step: lib_assertion_core_spec
+    - from: lib_assertion_core_spec
       names:
       - conf.pass_when_text_contains
 assert:

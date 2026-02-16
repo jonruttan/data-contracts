@@ -343,7 +343,7 @@ harness:
           path: /path.normalize_slashes
           required: true
     imports:
-    - from_step: lib_path_normalize
+    - from: lib_path_normalize
       names:
       - path.normalize_slashes
 assert:

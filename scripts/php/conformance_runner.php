@@ -1579,7 +1579,7 @@ function loadChainImportedSymbolsForCase(string $fixturePath, array $case, array
         if (!is_array($imp) || isListArray($imp)) {
             throw new SchemaError("harness.chain.imports[{$idx}] must be a mapping");
         }
-        $fromStep = trim((string)($imp['from_step'] ?? ''));
+        $fromStep = trim((string)($imp['from'] ?? ''));
         if ($fromStep === '' || !array_key_exists($fromStep, $stepExports)) {
             continue;
         }

@@ -303,7 +303,7 @@ For `type: docs.generate`, supported `harness` keys include:
     - `allow_continue` (bool, optional, default `false`)
 - `imports` (list[mapping], optional)
   - each import:
-    - `from_step` (string, required): source step id
+    - `from` (string, required): source step id
     - `names` (list[string], required): exported names from that step
     - `as` (mapping, optional): alias map `name -> local_name`
   - local imported names and aliases must be unique

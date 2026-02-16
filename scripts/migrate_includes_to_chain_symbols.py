@@ -150,7 +150,7 @@ def _migrate_case(case: dict[str, Any], *, doc_path: Path) -> tuple[dict[str, An
         )
         imports.append(
             {
-                "from_step": step_id,
+                "from": step_id,
                 "names": symbols,
             }
         )

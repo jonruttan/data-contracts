@@ -104,7 +104,7 @@ Cross-spec chaining profile:
 - legacy export key `from_target` is forbidden.
 - `allow_continue` is optional and defaults to `false`.
 - `harness.chain.imports` is optional and declares explicit state imports:
-  - `from_step` (required)
+  - `from` (required)
   - `names` (required)
   - `as` alias map (optional)
 - imported local names and aliases must be unique and must not collide with

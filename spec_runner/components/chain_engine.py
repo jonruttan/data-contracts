@@ -43,7 +43,7 @@ class ChainStep:
 
 @dataclass(frozen=True)
 class ChainImport:
-    from_step: str
+    from_id: str
     names: tuple[str, ...]
     aliases: dict[str, str]
 
@@ -202,12 +202,12 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
     for idx, item in enumerate(raw_imports):
         if not isinstance(item, dict):
             raise TypeError(f"harness.chain.imports[{idx}] must be a mapping")
-        from_step = str(item.get("from_step", "")).strip()
-        if not from_step:
-            raise ValueError(f"harness.chain.imports[{idx}].from_step must be non-empty")
-        if from_step not in step_ids:
+        from_id = str(item.get("from", "")).strip()
+        if not from_id:
+            raise ValueError(f"harness.chain.imports[{idx}].from must be non-empty")
+        if from_id not in step_ids:
             raise ValueError(
-                f"harness.chain.imports[{idx}].from_step must reference existing step id"
+                f"harness.chain.imports[{idx}].from must reference existing step id"
             )
         raw_names = item.get("names")
         if not isinstance(raw_names, list) or not raw_names:
@@ -217,9 +217,9 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
             name = str(raw_name).strip()
             if not name:
                 raise ValueError(f"harness.chain.imports[{idx}].names[{j}] must be non-empty")
-            if name not in step_export_names.get(from_step, set()):
+            if name not in step_export_names.get(from_id, set()):
                 raise ValueError(
-                    f"harness.chain.imports[{idx}].names[{j}] references unknown export {name} from step {from_step}"
+                    f"harness.chain.imports[{idx}].names[{j}] references unknown export {name} from step {from_id}"
                 )
             names.append(name)
         raw_aliases = item.get("as", {})
@@ -251,7 +251,7 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
                     f"harness.chain.imports[{idx}] local binding collision for name: {local}"
                 )
             local_seen.add(local)
-        chain_imports.append(ChainImport(from_step=from_step, names=tuple(names), aliases=aliases))
+        chain_imports.append(ChainImport(from_id=from_id, names=tuple(names), aliases=aliases))
     return steps, chain_imports, fail_fast
 
 
@@ -453,11 +453,11 @@ def execute_chain_plan(
         ctx.chain_state[step.id] = dict(step_exports)
     resolved_imports: dict[str, Any] = {}
     for chain_import in chain_imports:
-        state = ctx.chain_state.get(chain_import.from_step, {})
+        state = ctx.chain_state.get(chain_import.from_id, {})
         for name in chain_import.names:
             if name not in state:
                 raise ValueError(
-                    f"harness.chain.imports from_step {chain_import.from_step} missing export {name}"
+                    f"harness.chain.imports from {chain_import.from_id} missing export {name}"
                 )
             local = chain_import.aliases.get(name, name)
             resolved_imports[local] = state[name]

@@ -305,7 +305,7 @@ def test_execute_chain_plan_resolves_import_aliases(tmp_path, monkeypatch, capsy
                     ],
                     "imports": [
                         {
-                            "from_step": "preload",
+                            "from": "preload",
                             "names": ["dep_id"],
                             "as": {"dep_id": "seed_id"},
                         }
