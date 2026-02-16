@@ -1,13 +1,13 @@
 # Governance Cases
 
-## SRGOV-CONF-INDEX-001
+## SRGOV-DOCS-LAYOUT-001
 
 ```yaml spec-test
-id: SRGOV-CONF-INDEX-001
-title: conformance index stays in sync with fixture ids
-purpose: Ensures conformance case index includes all fixture ids and no stale ids.
+id: SRGOV-DOCS-LAYOUT-001
+title: docs layout canonical trees exist
+purpose: Enforces canonical docs root namespaces.
 type: governance.check
-check: conformance.case_index_sync
+check: docs.layout_canonical_trees
 harness:
   root: .
   spec_lang:
@@ -20,23 +20,17 @@ harness:
     - {var: policy.pass_when_no_violations}
     - {var: subject}
 assert:
-- target: violation_count
-  must:
-  - evaluate:
-    - eq:
-      - {var: subject}
-      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
       - get:
         - {var: subject}
-        - passed
-      - true
+        - check_id
+      - docs.layout_canonical_trees
     - eq:
       - get:
         - {var: subject}
-        - check_id
-      - conformance.case_index_sync
+        - passed
+      - true
 ```

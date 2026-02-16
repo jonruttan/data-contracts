@@ -143,6 +143,7 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
     "capture",
 }
 _NORMALIZATION_PROFILE_PATH = "docs/spec/schema/normalization_profile_v1.yaml"
+_DOCS_LAYOUT_PROFILE_PATH = "docs/spec/schema/docs_layout_profile_v1.yaml"
 _PATH_LIKE_KEYS = {
     "path",
     "cases_path",
@@ -477,7 +478,7 @@ def _scan_conformance_case_index_sync(root: Path) -> list[str]:
     violations: list[str] = []
     cases_dir = root / "docs/spec/conformance/cases"
     fixture_ids = _collect_conformance_fixture_ids(root)
-    index_path = cases_dir / "README.md"
+    index_path = cases_dir / "index.md"
     if not fixture_ids and not index_path.exists():
         return violations
     if not index_path.exists():
@@ -4012,6 +4013,100 @@ def _scan_docs_release_contract_automation_policy(root: Path, *, harness: dict |
     return violations
 
 
+def _load_docs_layout_profile(root: Path) -> tuple[dict[str, object] | None, list[str]]:
+    p = root / _DOCS_LAYOUT_PROFILE_PATH
+    if not p.exists():
+        return None, [f"{_DOCS_LAYOUT_PROFILE_PATH}:1: missing docs layout profile"]
+    try:
+        payload = yaml.safe_load(p.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        return None, [f"{_DOCS_LAYOUT_PROFILE_PATH}:1: invalid yaml ({exc})"]
+    if not isinstance(payload, dict):
+        return None, [f"{_DOCS_LAYOUT_PROFILE_PATH}:1: profile must be a mapping"]
+    return payload, []
+
+
+def _scan_docs_layout_canonical_trees(root: Path, *, harness: dict | None = None) -> list[str]:
+    profile, errs = _load_docs_layout_profile(root)
+    if errs:
+        return errs
+    assert profile is not None
+    violations: list[str] = []
+    for raw in profile.get("canonical_roots", []):
+        rel = str(raw).strip()
+        if not rel:
+            continue
+        p = _join_contract_path(root, rel)
+        if not p.exists() or not p.is_dir():
+            violations.append(f"{rel.lstrip('/')}:1: missing canonical docs root")
+    return violations
+
+
+def _scan_docs_index_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
+    profile, errs = _load_docs_layout_profile(root)
+    if errs:
+        return errs
+    assert profile is not None
+    violations: list[str] = []
+    index_name = str(profile.get("index_filename", "index.md")).strip() or "index.md"
+    for raw in profile.get("required_index_dirs", []):
+        rel = str(raw).strip()
+        if not rel:
+            continue
+        d = _join_contract_path(root, rel)
+        if not d.exists() or not d.is_dir():
+            violations.append(f"{rel.lstrip('/')}:1: missing index directory")
+            continue
+        idx = d / index_name
+        if not idx.exists():
+            violations.append(f"{idx.relative_to(root)}: missing required {index_name}")
+
+    docs_root = root / "docs"
+    if docs_root.exists():
+        for p in sorted(docs_root.rglob("README.md")):
+            if p.is_file():
+                violations.append(f"{p.relative_to(root)}: forbidden filename README.md under docs/")
+    return violations
+
+
+def _scan_docs_filename_policy(root: Path, *, harness: dict | None = None) -> list[str]:
+    docs_root = root / "docs"
+    if not docs_root.exists():
+        return ["docs:1: missing docs root"]
+    violations: list[str] = []
+    for p in sorted(x for x in docs_root.rglob("*") if x.is_file()):
+        rel = p.relative_to(root).as_posix()
+        if any(ch.isupper() for ch in rel):
+            violations.append(f"{rel}: uppercase characters are forbidden")
+        if " " in rel:
+            violations.append(f"{rel}: spaces are forbidden")
+        if not re.fullmatch(r"[a-z0-9_./-]+", rel):
+            violations.append(f"{rel}: unsupported characters for docs filename policy")
+    return violations
+
+
+def _scan_docs_history_reviews_namespace(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    legacy = root / "docs/reviews"
+    canonical = root / "docs/history/reviews"
+    if legacy.exists():
+        violations.append("docs/reviews: forbidden legacy review root exists")
+    if not canonical.exists() or not canonical.is_dir():
+        violations.append("docs/history/reviews: missing canonical review root")
+    return violations
+
+
+def _scan_docs_no_os_artifact_files(root: Path, *, harness: dict | None = None) -> list[str]:
+    docs_root = root / "docs"
+    if not docs_root.exists():
+        return []
+    violations: list[str] = []
+    for p in sorted(docs_root.rglob(".DS_Store")):
+        if p.is_file():
+            violations.append(f"{p.relative_to(root)}: OS artifact files are forbidden")
+    return violations
+
+
 def _scan_runtime_scope_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -5099,7 +5194,7 @@ def _scan_normalization_profile_sync(root: Path, *, harness: dict | None = None)
         return errs
     assert profile is not None
     violations: list[str] = []
-    required_top = ("version", "paths", "expression", "spec_style", "docs_token_sync")
+    required_top = ("version", "paths", "docs_layout", "expression", "spec_style", "docs_token_sync")
     for key in required_top:
         if key not in profile:
             violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: missing required key: {key}")
@@ -5111,6 +5206,13 @@ def _scan_normalization_profile_sync(root: Path, *, harness: dict | None = None)
             vals = paths.get(key)
             if not isinstance(vals, list) or not vals or any(not isinstance(x, str) or not x.strip() for x in vals):
                 violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: paths.{key} must be a non-empty list of strings")
+    docs_layout = profile.get("docs_layout")
+    if not isinstance(docs_layout, dict):
+        violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: docs_layout must be a mapping")
+    else:
+        for key in ("profile_path", "canonical_roots", "forbidden_roots", "index_filename", "required_index_dirs", "forbidden_filenames"):
+            if key not in docs_layout:
+                violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: docs_layout missing required key: {key}")
     expr = profile.get("expression")
     if not isinstance(expr, dict):
         violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: expression must be a mapping")
@@ -5467,6 +5569,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.make_commands_sync": _scan_docs_make_commands_sync,
     "docs.adoption_profiles_sync": _scan_docs_adoption_profiles_sync,
     "docs.release_contract_automation_policy": _scan_docs_release_contract_automation_policy,
+    "docs.layout_canonical_trees": _scan_docs_layout_canonical_trees,
+    "docs.index_filename_policy": _scan_docs_index_filename_policy,
+    "docs.filename_policy": _scan_docs_filename_policy,
+    "docs.history_reviews_namespace": _scan_docs_history_reviews_namespace,
+    "docs.no_os_artifact_files": _scan_docs_no_os_artifact_files,
     "runtime.scope_sync": _scan_runtime_scope_sync,
     "orchestration.ops_symbol_grammar": _scan_orchestration_ops_symbol_grammar,
     "orchestration.ops_legacy_underscore_forbidden": _scan_orchestration_ops_legacy_underscore_forbidden,

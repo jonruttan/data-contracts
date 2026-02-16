@@ -428,7 +428,7 @@ links:
   contract_refs:
   - docs/spec/contract/06_conformance.md
   - docs/spec/contract/07_portable_spec_authoring.md
-  - docs/spec/conformance/README.md
+  - docs/spec/conformance/index.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
   conformance_case_ids: []
@@ -2582,3 +2582,72 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md
   notes: Ensures docs generator execution emits deterministic report artifacts.
+- rule_id: DOCS_LAYOUT_CANONICAL_TREES_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_LAYOUT_CANONICAL_TREES_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/contract/22_docs_information_architecture.md
+  schema_refs:
+  - docs/spec/schema/docs_layout_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_layout_canonical_trees.spec.md
+  notes: Enforces canonical docs tree roots and forbids legacy review root.
+- rule_id: DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/contract/22_docs_information_architecture.md
+  schema_refs:
+  - docs/spec/schema/docs_layout_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_index_filename_policy.spec.md
+  notes: Requires `index.md` for docs directory index files and forbids docs-local README index files.
+- rule_id: DOCS_FILENAME_POLICY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_FILENAME_POLICY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/contract/22_docs_information_architecture.md
+  schema_refs:
+  - docs/spec/schema/docs_layout_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_filename_policy.spec.md
+  notes: Enforces lowercase/no-space docs filename policy.
+- rule_id: DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/22_docs_information_architecture.md
+  schema_refs:
+  - docs/spec/schema/docs_layout_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_history_reviews_namespace.spec.md
+  notes: Requires `docs/history/reviews` namespace and forbids `docs/reviews`.
+- rule_id: DOCS_NO_OS_ARTIFACT_FILES_TRACKED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_NO_OS_ARTIFACT_FILES_TRACKED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_layout_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/normalize_docs_layout.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_no_os_artifact_files.spec.md
+  notes: Hard-fails tracked OS/editor artifact files under docs.

@@ -6,8 +6,8 @@ This page is machine-generated from governance check registrations and case mapp
 
 ## Generated Governance Check Catalog
 
-- check_count: 142
-- checks_with_cases: 142
+- check_count: 147
+- checks_with_cases: 147
 - checks_without_cases: 0
 
 | check_id | case_count | has_case |
@@ -48,16 +48,21 @@ This page is machine-generated from governance check registrations and case mapp
 | `docs.current_spec_policy_key_names` | 1 | true |
 | `docs.example_id_uniqueness` | 1 | true |
 | `docs.examples_runnable` | 1 | true |
+| `docs.filename_policy` | 1 | true |
 | `docs.generated_files_clean` | 1 | true |
 | `docs.generated_sections_read_only` | 1 | true |
 | `docs.generator_outputs_sync` | 1 | true |
 | `docs.generator_registry_valid` | 1 | true |
 | `docs.governance_check_catalog_sync` | 1 | true |
 | `docs.harness_type_catalog_sync` | 1 | true |
+| `docs.history_reviews_namespace` | 1 | true |
+| `docs.index_filename_policy` | 1 | true |
 | `docs.instructions_complete` | 1 | true |
+| `docs.layout_canonical_trees` | 1 | true |
 | `docs.make_commands_sync` | 1 | true |
 | `docs.meta_schema_valid` | 1 | true |
 | `docs.metrics_field_catalog_sync` | 1 | true |
+| `docs.no_os_artifact_files` | 1 | true |
 | `docs.operability_metric` | 1 | true |
 | `docs.operability_non_regression` | 1 | true |
 | `docs.policy_rule_catalog_sync` | 1 | true |

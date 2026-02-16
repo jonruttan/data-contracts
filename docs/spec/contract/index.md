@@ -31,6 +31,11 @@ Read in order:
 19. `docs/spec/contract/15_governance_subject_model.md`
 20. `docs/spec/contract/16_rust_primary_transition.md`
 21. `docs/spec/contract/17_objective_metrics.md`
+22. `docs/spec/contract/18_governance_subject_extractors.md`
+23. `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`
+24. `docs/spec/contract/20_subject_profiles_v1.md`
+25. `docs/spec/contract/21_schema_registry_contract.md`
+26. `docs/spec/contract/22_docs_information_architecture.md`
 
 Type contracts:
 

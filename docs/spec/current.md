@@ -92,6 +92,10 @@ Notes:
 - Normalization tooling is unified under `scripts/normalize_repo.py` with
   profile-driven rules from `docs/spec/schema/normalization_profile_v1.yaml`;
   CI runs `normalize-check` and local workflow uses `normalize-fix`.
+- Docs layout now enforces canonical roots (`docs/book`, `docs/spec`,
+  `docs/impl`, `docs/history/reviews`) with `index.md` as the only directory
+  index filename under `docs/**`; legacy `docs/reviews` and docs-local
+  `README.md` filenames are forbidden.
 - Gate scripts now invoke CI summary orchestration through runner-interface
   subcommand `ci-gate-summary` (no direct gate-script Python summary call).
 - Orchestration effect symbols now use deep-dot `ops.*` naming (for example

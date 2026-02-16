@@ -114,6 +114,11 @@ def test_docs_generator_check_ids_are_registered() -> None:
         "docs.governance_check_catalog_sync",
         "docs.metrics_field_catalog_sync",
         "docs.spec_schema_field_catalog_sync",
+        "docs.layout_canonical_trees",
+        "docs.index_filename_policy",
+        "docs.filename_policy",
+        "docs.history_reviews_namespace",
+        "docs.no_os_artifact_files",
     }
     for check_id in required:
         assert check_id in mod._CHECKS
@@ -911,11 +916,11 @@ assert:
 ```
 """,
     )
-    _write_text(tmp_path / "docs/spec/conformance/cases/README.md", "# Cases\n\n- SRCONF-IDX-001\n")
+    _write_text(tmp_path / "docs/spec/conformance/cases/index.md", "# Cases\n\n- SRCONF-IDX-001\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
 
-    _write_text(tmp_path / "docs/spec/conformance/cases/README.md", "# Cases\n\n- SRCONF-STALE-999\n")
+    _write_text(tmp_path / "docs/spec/conformance/cases/index.md", "# Cases\n\n- SRCONF-STALE-999\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
 
@@ -1760,7 +1765,7 @@ expect:
 ```
 """,
     )
-    _write_text(tmp_path / "docs/spec/conformance/cases/README.md", "# Cases\n\n- SRCONF-STYLE-001\n")
+    _write_text(tmp_path / "docs/spec/conformance/cases/index.md", "# Cases\n\n- SRCONF-STYLE-001\n")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
 
@@ -4621,7 +4626,7 @@ def test_script_enforces_normalization_profile_sync(tmp_path):
     )
     _write_text(
         tmp_path / "docs/spec/schema/normalization_profile_v1.yaml",
-        "version: 1\npaths:\n  specs: [docs/spec]\n  contracts: [docs/spec/contract]\n  tests: [tests]\nexpression:\n  expression_fields: [evaluate, policy_evaluate]\nspec_style:\n  conformance_max_block_lines: 120\ndocs_token_sync:\n  rules: []\n",
+        "version: 1\npaths:\n  specs: [docs/spec]\n  contracts: [docs/spec/contract]\n  tests: [tests]\ndocs_layout:\n  profile_path: docs/spec/schema/docs_layout_profile_v1.yaml\n  canonical_roots: [/docs/book, /docs/spec, /docs/impl, /docs/history/reviews]\n  forbidden_roots: [/docs/reviews]\n  index_filename: index.md\n  required_index_dirs: [/docs/book, /docs/spec]\n  forbidden_filenames: [README.md, .DS_Store]\nexpression:\n  expression_fields: [evaluate, policy_evaluate]\nspec_style:\n  conformance_max_block_lines: 120\ndocs_token_sync:\n  rules: []\n",
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0

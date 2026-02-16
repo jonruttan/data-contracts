@@ -14,6 +14,7 @@ Related docs/reference schemas:
 - `docs/spec/schema/reference_manifest_v1.md`
 - `docs/spec/schema/objective_metrics_schema_v1.md`
 - `docs/spec/schema/docs_generator_registry_v1.yaml`
+- `docs/spec/schema/docs_layout_profile_v1.yaml`
 - `docs/spec/schema/runner_api_catalog_v1.yaml`
 - `docs/spec/schema/harness_type_catalog_v1.yaml`
 - `docs/spec/schema/spec_lang_builtin_catalog_v1.yaml`

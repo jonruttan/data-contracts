@@ -1,13 +1,13 @@
 # Governance Cases
 
-## SRGOV-CONF-INDEX-001
+## SRGOV-DOCS-LAYOUT-002
 
 ```yaml spec-test
-id: SRGOV-CONF-INDEX-001
-title: conformance index stays in sync with fixture ids
-purpose: Ensures conformance case index includes all fixture ids and no stale ids.
+id: SRGOV-DOCS-LAYOUT-002
+title: docs use index.md as canonical directory index filename
+purpose: Enforces index.md-only docs directory index policy.
 type: governance.check
-check: conformance.case_index_sync
+check: docs.index_filename_policy
 harness:
   root: .
   spec_lang:
@@ -20,23 +20,17 @@ harness:
     - {var: policy.pass_when_no_violations}
     - {var: subject}
 assert:
-- target: violation_count
-  must:
-  - evaluate:
-    - eq:
-      - {var: subject}
-      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
       - get:
         - {var: subject}
-        - passed
-      - true
+        - check_id
+      - docs.index_filename_policy
     - eq:
       - get:
         - {var: subject}
-        - check_id
-      - conformance.case_index_sync
+        - passed
+      - true
 ```

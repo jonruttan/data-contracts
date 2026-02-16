@@ -202,7 +202,7 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 `run_governance_specs.py` (via `contract.governance_check`) enforces
 conformance case doc freshness:
 every `SRCONF-*` fixture case id must be listed in
-`docs/spec/conformance/cases/README.md`, and stale ids in that index fail CI.
+`docs/spec/conformance/cases/index.md`, and stale ids in that index fail CI.
 
 Local equivalent:
 

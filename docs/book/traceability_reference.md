@@ -6,10 +6,10 @@ This page is machine-generated from traceability link mappings.
 
 ## Generated Traceability Catalog
 
-- link_count: 168
+- link_count: 173
 - rules_with_conformance_cases: 34
-- rules_with_unit_tests: 168
-- rules_with_implementation_refs: 166
+- rules_with_unit_tests: 173
+- rules_with_implementation_refs: 171
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -51,6 +51,7 @@ This page is machine-generated from traceability link mappings.
 | `DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC` | 3 | 1 | 0 | 2 | 2 |
 | `DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT` | `docs/spec/contract/policy_v1.yaml#DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT` | 1 | 1 | 0 | 2 | 2 |
 | `DOCS_EXAMPLE_IDS_UNIQUE` | `docs/spec/contract/policy_v1.yaml#DOCS_EXAMPLE_IDS_UNIQUE` | 1 | 1 | 0 | 3 | 4 |
+| `DOCS_FILENAME_POLICY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_FILENAME_POLICY_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `DOCS_GENERATED_ARTIFACTS_FRESH` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_ARTIFACTS_FRESH` | 2 | 1 | 0 | 3 | 4 |
 | `DOCS_GENERATED_SECTIONS_READ_ONLY` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_SECTIONS_READ_ONLY` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_GENERATED_SURFACES_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_SURFACES_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
@@ -58,10 +59,14 @@ This page is machine-generated from traceability link mappings.
 | `DOCS_GENERATOR_REGISTRY_DEFINED` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_REGISTRY_DEFINED` | 2 | 1 | 0 | 1 | 2 |
 | `DOCS_GENERATOR_REPORT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_REPORT_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `DOCS_GOVERNANCE_CHECK_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_GOVERNANCE_CHECK_CATALOG_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
+| `DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
+| `DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | `docs/spec/contract/policy_v1.yaml#DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | 1 | 1 | 0 | 3 | 4 |
+| `DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `DOCS_MAKE_COMMANDS_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_MAKE_COMMANDS_SYNC` | 2 | 0 | 0 | 2 | 2 |
 | `DOCS_META_SCHEMA_VALID` | `docs/spec/contract/policy_v1.yaml#DOCS_META_SCHEMA_VALID` | 1 | 2 | 0 | 3 | 4 |
 | `DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
+| `DOCS_NO_OS_ARTIFACT_FILES_TRACKED` | `docs/spec/contract/policy_v1.yaml#DOCS_NO_OS_ARTIFACT_FILES_TRACKED` | 1 | 1 | 0 | 1 | 3 |
 | `DOCS_OPERABILITY_METRIC_REPORTED` | `docs/spec/contract/policy_v1.yaml#DOCS_OPERABILITY_METRIC_REPORTED` | 2 | 1 | 0 | 3 | 3 |
 | `DOCS_OPERABILITY_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_OPERABILITY_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |

@@ -401,7 +401,7 @@ rules:
   rationale: Prevents contract pages from drifting stale without governance signal.
   risk_if_violated: Normative docs can silently diverge from enforced behavior.
   references:
-  - docs/spec/contract/README.md
+  - docs/spec/contract/index.md
   - docs/spec/contract/traceability_v1.yaml
 - id: DOC_REGEX_PROFILE_LINKAGE
   introduced_in: v1
@@ -490,7 +490,7 @@ rules:
   references:
   - docs/spec/contract/06_conformance.md
   - docs/spec/contract/07_portable_spec_authoring.md
-  - docs/spec/conformance/README.md
+  - docs/spec/conformance/index.md
 - id: PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY
   introduced_in: v1
   scope: conformance
@@ -918,7 +918,7 @@ rules:
   risk_if_violated: Copy/paste examples fail and increase support load.
   references:
   - docs/spec/contract/10_docs_quality.md
-  - docs/book/README.md
+  - docs/book/index.md
 - id: DOCS_CLI_FLAGS_DOCUMENTED
   introduced_in: v1
   scope: governance
@@ -2464,3 +2464,74 @@ rules:
   - scripts/docs_generate_all.py
   - docs/spec/schema/docs_generator_registry_v1.yaml
   - docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md
+- id: DOCS_LAYOUT_CANONICAL_TREES_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.layout.roots
+  norm: MUST
+  requirement: docs_tree_roots_must_match_canonical_layout_profile
+  description: 'Docs roots must match canonical layout contract (`book`, `spec`, `impl`, `history/reviews`) and exclude legacy review root.
+
+    '
+  rationale: Keeps docs discoverable and prevents namespace drift.
+  risk_if_violated: Readers and tooling diverge on docs location assumptions.
+  references:
+  - docs/spec/contract/22_docs_information_architecture.md
+  - docs/spec/schema/docs_layout_profile_v1.yaml
+  - docs/spec/governance/cases/core/docs_layout_canonical_trees.spec.md
+- id: DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.layout.index_filenames
+  norm: MUST
+  requirement: docs_directory_indexes_must_use_index_md_only
+  description: 'Directory index files under docs must use `index.md`; docs-local `README.md` is forbidden.
+
+    '
+  rationale: Removes mixed index naming and simplifies linking/governance checks.
+  risk_if_violated: Broken links and inconsistent navigational expectations.
+  references:
+  - docs/spec/contract/22_docs_information_architecture.md
+  - docs/spec/governance/cases/core/docs_index_filename_policy.spec.md
+- id: DOCS_FILENAME_POLICY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.layout.filename_policy
+  norm: MUST
+  requirement: docs_paths_must_use_lowercase_without_spaces
+  description: 'Docs filenames must be lowercase and deterministic using `_` for words and `-` for major sections.
+
+    '
+  rationale: Avoids platform/path instability and keeps naming coherent.
+  risk_if_violated: Cross-platform path issues and inconsistent discoverability.
+  references:
+  - docs/spec/governance/cases/core/docs_filename_policy.spec.md
+  - docs/spec/governance/cases/core/naming_filename_policy.spec.md
+- id: DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.history.reviews
+  norm: MUST
+  requirement: reviews_artifacts_must_live_under_docs_history_reviews
+  description: 'Historical review artifacts must live under `docs/history/reviews`; `docs/reviews` is forbidden.
+
+    '
+  rationale: Separates historical artifacts from canonical product docs.
+  risk_if_violated: Review snapshots pollute active docs surface and increase confusion.
+  references:
+  - docs/spec/contract/22_docs_information_architecture.md
+  - docs/spec/governance/cases/core/docs_history_reviews_namespace.spec.md
+- id: DOCS_NO_OS_ARTIFACT_FILES_TRACKED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.layout.artifact_files
+  norm: MUST
+  requirement: docs_tree_must_not_track_os_editor_artifact_files
+  description: 'OS/editor artifact files (for example `.DS_Store`) must not be tracked under docs.
+
+    '
+  rationale: Keeps repository clean and deterministic.
+  risk_if_violated: Noisy diffs and spurious CI/layout failures.
+  references:
+  - docs/spec/governance/cases/core/docs_no_os_artifact_files.spec.md
+  - scripts/normalize_docs_layout.py

@@ -2,7 +2,7 @@
 
 Date: YYYY-MM-DD
 Model: <fill in>
-Prompt: `docs/reviews/prompts/adoption_7_personas.md`
+Prompt: `docs/history/reviews/prompts/adoption_7_personas.md`
 Prompt revision: <git sha>
 Repo revision: <git sha>
 

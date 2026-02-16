@@ -74,7 +74,7 @@ def _write_min_policy_trace(tmp_path: Path, *, rule_id: str) -> None:
                 "requirement": "x",
                 "rationale": "because",
                 "risk_if_violated": "risk",
-                "references": ["docs/spec/contract/README.md"],
+                "references": ["docs/spec/contract/index.md"],
             }
         ]
     }
@@ -99,7 +99,7 @@ def _write_min_policy_trace(tmp_path: Path, *, rule_id: str) -> None:
         tmp_path / "docs/spec/contract/traceability_v1.yaml",
         yaml.safe_dump(trace, sort_keys=False),
     )
-    _write_text(tmp_path / "docs/spec/contract/README.md", "x\n")
+    _write_text(tmp_path / "docs/spec/contract/index.md", "x\n")
 
 
 def test_contract_governance_passes_on_repo_state():
@@ -391,7 +391,7 @@ def test_contract_governance_fails_when_normative_doc_missing_traceability_cover
                 "requirement": "traceability",
                 "rationale": "because",
                 "risk_if_violated": "risk",
-                "references": ["docs/spec/contract/README.md"],
+                "references": ["docs/spec/contract/index.md"],
             }
         ]
     }
@@ -416,7 +416,7 @@ def test_contract_governance_fails_when_normative_doc_missing_traceability_cover
         tmp_path / "docs/spec/contract/traceability_v1.yaml",
         yaml.safe_dump(trace, sort_keys=False),
     )
-    _write_text(tmp_path / "docs/spec/contract/README.md", "x\n")
+    _write_text(tmp_path / "docs/spec/contract/index.md", "x\n")
 
     errs = check_contract_governance(tmp_path)
     assert any("normative contract doc missing traceability coverage: docs/spec/contract/05_errors.md" in e for e in errs)

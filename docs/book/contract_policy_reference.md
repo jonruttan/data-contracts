@@ -6,11 +6,11 @@ This page is machine-generated from policy rule definitions.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 168
-- must_count: 155
+- rule_count: 173
+- must_count: 160
 - should_count: 12
 - must_not_count: 1
-- active_count: 168
+- active_count: 173
 - deprecated_count: 0
 - removed_count: 0
 
@@ -54,6 +54,7 @@ This page is machine-generated from policy rule definitions.
 | `DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC` | `MUST` | `governance` | `docs.contract.schema.book.tokens` | 4 | `active` |
 | `DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT` | `MUST` | `governance` | `docs.reference.examples` | 2 | `active` |
 | `DOCS_EXAMPLE_IDS_UNIQUE` | `MUST` | `governance` | `docs.reference.example_ids` | 2 | `active` |
+| `DOCS_FILENAME_POLICY_REQUIRED` | `MUST` | `governance` | `docs.layout.filename_policy` | 2 | `active` |
 | `DOCS_GENERATED_ARTIFACTS_FRESH` | `MUST` | `governance` | `docs.reference.generated_artifacts` | 3 | `active` |
 | `DOCS_GENERATED_SECTIONS_READ_ONLY` | `MUST` | `governance` | `docs.generator.read_only_sections` | 4 | `active` |
 | `DOCS_GENERATED_SURFACES_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.outputs` | 2 | `active` |
@@ -61,10 +62,14 @@ This page is machine-generated from policy rule definitions.
 | `DOCS_GENERATOR_REGISTRY_DEFINED` | `MUST` | `governance` | `docs.generator.registry` | 2 | `active` |
 | `DOCS_GENERATOR_REPORT_REQUIRED` | `MUST` | `governance` | `docs.generator.reporting` | 3 | `active` |
 | `DOCS_GOVERNANCE_CHECK_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.governance_checks` | 3 | `active` |
+| `DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED` | `MUST` | `governance` | `docs.history.reviews` | 2 | `active` |
+| `DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED` | `MUST` | `governance` | `docs.layout.index_filenames` | 2 | `active` |
 | `DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | `MUST` | `governance` | `docs.reference.instructions` | 2 | `active` |
+| `DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | `MUST` | `governance` | `docs.layout.roots` | 3 | `active` |
 | `DOCS_MAKE_COMMANDS_SYNC` | `MUST` | `governance` | `docs.command.entrypoints` | 2 | `active` |
 | `DOCS_META_SCHEMA_VALID` | `MUST` | `governance` | `docs.reference.doc_meta` | 3 | `active` |
 | `DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.metrics_fields` | 3 | `active` |
+| `DOCS_NO_OS_ARTIFACT_FILES_TRACKED` | `MUST` | `governance` | `docs.layout.artifact_files` | 2 | `active` |
 | `DOCS_OPERABILITY_METRIC_REPORTED` | `MUST` | `governance` | `docs.operability.metric_report` | 2 | `active` |
 | `DOCS_OPERABILITY_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `docs.operability.metric_non_regression` | 3 | `active` |
 | `DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.policy_rules` | 3 | `active` |

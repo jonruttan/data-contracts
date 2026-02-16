@@ -20,7 +20,7 @@ harness:
     path: /docs/book/reference_index.md
     include_glob: docs/book/*.md
     exclude_files:
-    - docs/book/README.md
+    - docs/book/index.md
     - docs/book/reference_index.md
     - docs/book/reference_coverage.md
     - docs/book/runner_api_reference.md

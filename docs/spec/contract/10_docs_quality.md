@@ -2,6 +2,22 @@
 
 Documentation is a tested product surface.
 
+## Layout and Naming
+
+MUST:
+
+- docs information architecture MUST follow canonical roots:
+  - `docs/book`
+  - `docs/spec`
+  - `docs/impl`
+  - `docs/history/reviews`
+- `docs/reviews` is a forbidden legacy namespace.
+- directory index files under `docs/**` MUST be named `index.md`.
+- `README.md` under `docs/**` is forbidden.
+- `.DS_Store` and similar OS/editor artifact files are forbidden in tracked
+  docs paths.
+- docs filenames MUST be lowercase and MUST NOT include spaces.
+
 ## Reference Surface
 
 The canonical reference manual surface for v1 is:

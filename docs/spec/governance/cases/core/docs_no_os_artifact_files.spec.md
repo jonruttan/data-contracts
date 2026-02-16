@@ -1,13 +1,13 @@
 # Governance Cases
 
-## SRGOV-CONF-INDEX-001
+## SRGOV-DOCS-LAYOUT-005
 
 ```yaml spec-test
-id: SRGOV-CONF-INDEX-001
-title: conformance index stays in sync with fixture ids
-purpose: Ensures conformance case index includes all fixture ids and no stale ids.
+id: SRGOV-DOCS-LAYOUT-005
+title: docs tree excludes OS/editor artifact files
+purpose: Prevents tracked filesystem artifacts (for example .DS_Store) in docs surfaces.
 type: governance.check
-check: conformance.case_index_sync
+check: docs.no_os_artifact_files
 harness:
   root: .
   spec_lang:
@@ -20,23 +20,17 @@ harness:
     - {var: policy.pass_when_no_violations}
     - {var: subject}
 assert:
-- target: violation_count
-  must:
-  - evaluate:
-    - eq:
-      - {var: subject}
-      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
       - get:
         - {var: subject}
-        - passed
-      - true
+        - check_id
+      - docs.no_os_artifact_files
     - eq:
       - get:
         - {var: subject}
-        - check_id
-      - conformance.case_index_sync
+        - passed
+      - true
 ```

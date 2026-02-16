@@ -24,6 +24,29 @@ paths:
   - docs/book
   tests:
   - tests
+docs_layout:
+  profile_path: docs/spec/schema/docs_layout_profile_v1.yaml
+  canonical_roots:
+  - /docs/book
+  - /docs/spec
+  - /docs/impl
+  - /docs/history/reviews
+  forbidden_roots:
+  - /docs/reviews
+  index_filename: index.md
+  required_index_dirs:
+  - /docs/book
+  - /docs/impl
+  - /docs/spec
+  - /docs/spec/contract
+  - /docs/spec/conformance
+  - /docs/spec/conformance/cases
+  - /docs/spec/governance
+  - /docs/spec/impl/php/cases
+  - /docs/history/reviews
+  forbidden_filenames:
+  - README.md
+  - .DS_Store
 expression:
   mapping_ast_only: true
   lit_required_for_collections: true

@@ -1,13 +1,13 @@
 # Governance Cases
 
-## SRGOV-CONF-INDEX-001
+## SRGOV-DOCS-LAYOUT-003
 
 ```yaml spec-test
-id: SRGOV-CONF-INDEX-001
-title: conformance index stays in sync with fixture ids
-purpose: Ensures conformance case index includes all fixture ids and no stale ids.
+id: SRGOV-DOCS-LAYOUT-003
+title: docs filenames follow canonical lowercase policy
+purpose: Enforces lowercase, underscore, and hyphen filename policy across docs.
 type: governance.check
-check: conformance.case_index_sync
+check: docs.filename_policy
 harness:
   root: .
   spec_lang:
@@ -20,23 +20,17 @@ harness:
     - {var: policy.pass_when_no_violations}
     - {var: subject}
 assert:
-- target: violation_count
-  must:
-  - evaluate:
-    - eq:
-      - {var: subject}
-      - 0
 - target: summary_json
   must:
   - evaluate:
     - eq:
       - get:
         - {var: subject}
-        - passed
-      - true
+        - check_id
+      - docs.filename_policy
     - eq:
       - get:
         - {var: subject}
-        - check_id
-      - conformance.case_index_sync
+        - passed
+      - true
 ```

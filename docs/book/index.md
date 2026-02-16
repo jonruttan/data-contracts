@@ -31,7 +31,7 @@ Full authoring:
 
 Portability and conformance:
 
-1. `docs/spec/conformance/README.md`
+1. `docs/spec/conformance/index.md`
 2. `docs/spec/conformance/cases/*.spec.md`
 3. `docs/spec/impl/php.md`
 

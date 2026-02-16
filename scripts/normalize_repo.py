@@ -224,6 +224,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     mode_flag = "--check" if ns.check else "--write"
+    docs_layout_cmd = [sys.executable, "scripts/normalize_docs_layout.py", mode_flag]
     domain_layout_cmd = [sys.executable, "scripts/migrate_spec_layout_domain_trees.py", mode_flag]
     vpath_cmd = [sys.executable, "scripts/convert_virtual_root_paths.py", mode_flag, *scope_paths]
     conv_cmd = [sys.executable, "scripts/convert_spec_lang_yaml_ast.py", mode_flag, *scope_paths]
@@ -231,6 +232,12 @@ def main(argv: list[str] | None = None) -> int:
     style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
 
     issues: list[str] = []
+    docs_layout_code, docs_layout_out = _run(docs_layout_cmd)
+    if docs_layout_code != 0:
+        for line in docs_layout_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs:1: NORMALIZATION_DOCS_LAYOUT: {line}")
     domain_code, domain_out = _run(domain_layout_cmd)
     if domain_code != 0:
         for line in domain_out.splitlines():

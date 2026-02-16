@@ -6,7 +6,7 @@ This folder contains the normative and working specification docs for
 ## How To Navigate
 
 - Start with design intent: `docs/design_philosophy.md`
-- Start with guided authoring: `docs/book/README.md`
+- Start with guided authoring: `docs/book/index.md`
 - Use stable schema shape: `docs/spec/schema/schema_v1.md`
 - Use portable behavior contract: `docs/spec/contract/`
 - Use spec-lang/evaluate contract: `docs/spec/contract/03b_spec_lang_v1.md`
@@ -19,7 +19,8 @@ This folder contains the normative and working specification docs for
 - `docs/spec/schema/`: schema docs for executable `spec-test` case shape
 - `docs/spec/conformance/`: cross-runtime conformance rules and fixtures
 - `docs/spec/governance/`: executable governance checks run via `spec_runner`
-- `docs/spec/impl/`: implementation-specific notes (Python/PHP)
+- `docs/spec/impl/`: executable implementation fixture suites
+- `docs/impl/`: implementation-specific appendices (Python/PHP)
 - `docs/spec/pending/`: draft proposals not yet adopted
 
 ## Authoring Rules

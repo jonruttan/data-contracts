@@ -28,7 +28,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--prompt",
-        default="docs/reviews/prompts/adoption_7_personas.md",
+        default="docs/history/reviews/prompts/adoption_7_personas.md",
         help="Path to prompt file used for the review",
     )
     ap.add_argument(
@@ -43,7 +43,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--out-dir",
-        default="docs/reviews/snapshots",
+        default="docs/history/reviews/snapshots",
         help="Directory where snapshot file is written",
     )
     ns = ap.parse_args(argv)

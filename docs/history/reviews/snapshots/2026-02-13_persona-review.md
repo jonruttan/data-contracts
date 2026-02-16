@@ -2,7 +2,7 @@
 
 Date: 2026-02-13
 Model: codex-gpt5
-Prompt: `docs/reviews/prompts/adoption_7_personas.md`
+Prompt: `docs/history/reviews/prompts/adoption_7_personas.md`
 Prompt revision: 678376d
 Repo revision: 678376d
 
