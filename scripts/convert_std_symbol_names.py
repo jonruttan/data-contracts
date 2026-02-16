@@ -99,7 +99,7 @@ def _walk(node: Any, *, field_path: str = "$") -> tuple[Any, bool]:
                 out[key] = rewritten
                 changed = changed or (rewritten != value)
                 continue
-            if key in {"public", "private"} and isinstance(value, dict) and field_path.endswith(".definitions"):
+            if key in {"public", "private"} and isinstance(value, dict) and field_path.endswith(".defines"):
                 rewritten_scope: dict[str, Any] = {}
                 for sym, expr in value.items():
                     rewritten_scope[str(sym)] = _rewrite_expr_node(

@@ -6,7 +6,7 @@
 id: LIB-DOMAIN-PHP-001
 title: php projection helper functions
 type: spec_lang.library
-definitions:
+defines:
   public:
     php.is_assoc_projection:
       fn:

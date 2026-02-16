@@ -8,7 +8,7 @@ title: policy-core reusable governance predicates
 type: spec_lang.library
 imports:
 - /docs/spec/libraries/path/path_core.spec.md
-definitions:
+defines:
   public:
     policy.pass_when_no_violations:
       fn:

@@ -32,7 +32,7 @@ docs_layout:
   - /docs/impl
   - /docs/history/reviews
   forbidden_roots:
-  - /docs/history/reviews
+  - /docs/reviews
   index_filename: index.md
   required_index_dirs:
   - /docs/book
@@ -104,6 +104,14 @@ docs_token_sync:
     - "operator-keyed mapping AST"
     must_not_contain:
     - "YAML list s-expressions"
+  - id: NORMALIZATION_LIBRARY_DEFINES_WORDING
+    file: docs/spec/contract/14_spec_lang_libraries.md
+    must_contain:
+    - "defines.public"
+    - "defines.private"
+    must_not_contain:
+    - "definitions.public"
+    - "definitions.private"
 replacements:
   rules:
   - id: NORMALIZATION_REWRITE_SCHEMA_EVALUATE_SHAPE

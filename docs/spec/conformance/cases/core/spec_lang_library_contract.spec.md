@@ -4,9 +4,9 @@
 
 ```yaml spec-test
 id: SRCONF-LIB-CONTRACT-001
-title: policy library uses flat definitions scopes
-purpose: Ensures policy library authoring uses definitions.public/definitions.private symbol
-  maps without nested functions blocks.
+title: policy library uses flat defines scopes
+purpose: Ensures policy library authoring uses defines.public/defines.private symbol maps
+  without nested functions blocks.
 type: text.file
 path: /docs/spec/libraries/policy/policy_core.spec.md
 expect:
@@ -18,7 +18,7 @@ assert:
   - evaluate:
     - std.string.contains:
       - {var: subject}
-      - 'definitions:'
+      - 'defines:'
     - std.string.contains:
       - {var: subject}
       - 'public:'
@@ -35,9 +35,9 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-LIB-CONTRACT-002
-title: path library uses flat definitions scopes
-purpose: Ensures path library authoring uses definitions.public/definitions.private symbol
-  maps without nested functions blocks.
+title: path library uses flat defines scopes
+purpose: Ensures path library authoring uses defines.public/defines.private symbol maps without
+  nested functions blocks.
 type: text.file
 path: /docs/spec/libraries/path/path_core.spec.md
 expect:
@@ -49,7 +49,7 @@ assert:
   - evaluate:
     - std.string.contains:
       - {var: subject}
-      - 'definitions:'
+      - 'defines:'
     - std.string.contains:
       - {var: subject}
       - 'public:'

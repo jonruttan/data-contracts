@@ -23,7 +23,7 @@ sections_required:
 - '## Failure Modes'
 ```
 
-This page is machine-generated from policy rule definitions.
+This page is machine-generated from policy rule defines.
 
 ## Purpose
 
@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 204
-- must_count: 190
+- rule_count: 207
+- must_count: 192
 - should_count: 12
-- must_not_count: 2
-- active_count: 204
+- must_not_count: 3
+- active_count: 207
 - deprecated_count: 0
 - removed_count: 0
 
@@ -172,8 +172,10 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.library_usage` | 3 | `active` |
 | `LIBRARY_DOMAIN_INDEX_SYNC` | `MUST` | `governance` | `docs/spec/libraries/*/index.md` | 3 | `active` |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `MUST` | `governance` | `governance_and_conformance_library_paths` | 2 | `active` |
+| `LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | `MUST_NOT` | `schema` | `spec_lang.library.shape` | 2 | `active` |
 | `LIBRARY_PUBLIC_SURFACE_MODEL` | `MUST` | `governance` | `type_spec_lang_library_shape` | 3 | `active` |
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |
+| `LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | `MUST` | `schema` | `spec_lang.library.shape` | 2 | `active` |
 | `NAMING_FILENAME_STRICT_SEPARATORS` | `MUST` | `governance` | `docs_and_spec_filenames` | 2 | `active` |
 | `NORMALIZATION_CHECK_GATE_REQUIRED` | `MUST` | `governance` | `scripts.runner_adapter` | 3 | `active` |
 | `NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC` | `MUST` | `governance` | `docs.spec.contract_schema_book_wording` | 2 | `active` |
@@ -236,6 +238,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `SCHEMA_REGISTRY_VALIDATION_REQUIRED` | `MUST` | `runtime` | `case.validation.pre_dispatch` | 3 | `active` |
 | `SCHEMA_TYPE_PROFILE_COVERAGE_REQUIRED` | `MUST` | `governance` | `schema.registry.type_profiles` | 5 | `active` |
 | `SCHEMA_UNKNOWN_KEYS_HARD_FAIL` | `MUST` | `runtime` | `case.top_level_keys` | 2 | `active` |
+| `SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED` | `MUST` | `governance` | `schema.contract.sync` | 4 | `active` |
 | `SPEC_DOMAIN_INDEX_SYNC` | `MUST` | `governance` | `domain index files` | 2 | `active` |
 | `SPEC_LANG_ADOPTION_METRIC_REPORTED` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_report` | 2 | `active` |
 | `SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |

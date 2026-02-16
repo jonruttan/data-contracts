@@ -267,13 +267,13 @@ def _library_public_surface_ratio(repo_root: Path) -> tuple[float, int, int]:
         for _doc_path, case in load_external_cases(lib_file, formats={"md"}):
             if str(case.get("type", "")).strip() != "spec_lang.library":
                 continue
-            definitions = case.get("definitions")
-            if not isinstance(definitions, dict):
+            defines = case.get("defines")
+            if not isinstance(defines, dict):
                 continue
             public_keys: list[str] = []
             private_keys: list[str] = []
-            scoped_public = definitions.get("public")
-            scoped_private = definitions.get("private")
+            scoped_public = defines.get("public")
+            scoped_private = defines.get("private")
             if isinstance(scoped_public, dict):
                 public_keys.extend(str(k).strip() for k in scoped_public.keys())
             if isinstance(scoped_private, dict):

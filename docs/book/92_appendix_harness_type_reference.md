@@ -58,7 +58,7 @@ Provide generated reference for harness-specific type overlays and required fiel
 | `docs.generate` | 8 | - | - |
 | `governance.check` | 1 | `check` | - |
 | `orchestration.run` | 6 | - | - |
-| `spec_lang.library` | 2 | `definitions` | `imports` |
+| `spec_lang.library` | 2 | `defines` | `imports` |
 | `text.file` | 1 | - | - |
 
 
@@ -141,7 +141,7 @@ Provide generated reference for harness-specific type overlays and required fiel
 
 - Summary: Declares reusable spec-lang symbols for evaluate/policy_evaluate expressions.
 - Defaults:
-  - mapping-AST definitions only
+  - mapping-AST defines only
 
 - Failure Modes:
   - duplicate symbol export

@@ -146,12 +146,12 @@ def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
                     changed = changed or ch
                 out[key] = out_items
                 changed = changed or (converted != v)
-            elif key == "definitions" and isinstance(v, dict):
-                definitions: dict[str, Any] = {}
+            elif key == "defines" and isinstance(v, dict):
+                defines: dict[str, Any] = {}
                 for scope_name, scope_map in v.items():
                     scope_key = str(scope_name)
                     if not isinstance(scope_map, dict):
-                        definitions[scope_key] = scope_map
+                        defines[scope_key] = scope_map
                         continue
                     scope_out: dict[str, Any] = {}
                     for sym_name, sym_expr in scope_map.items():
@@ -165,8 +165,8 @@ def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
                         sym_item, ch = _walk_convert(expr_node, path=sym_path)
                         scope_out[sym_key] = _normalize_expr_node(sym_item)
                         changed = changed or ch or (expr_node != sym_expr)
-                    definitions[scope_key] = scope_out
-                out[key] = definitions
+                    defines[scope_key] = scope_out
+                out[key] = defines
             else:
                 got, ch = _walk_convert(v, path=f"{path}.{key}")
                 out[key] = got
@@ -188,9 +188,9 @@ def _validate_expr_fields(node: Any, *, path: str = "") -> None:
                 if not isinstance(v, list) or not v:
                     raise SpecLangYamlAstError(f"{current}: expression list must be a non-empty list")
                 compile_yaml_expr_list(v, field_path=current)
-            if key == "definitions":
+            if key == "defines":
                 if not isinstance(v, dict):
-                    raise SpecLangYamlAstError(f"{current}: definitions must be a mapping")
+                    raise SpecLangYamlAstError(f"{current}: defines must be a mapping")
                 for scope_name, scope_map in v.items():
                     if not isinstance(scope_map, dict):
                         raise SpecLangYamlAstError(f"{current}.{scope_name}: scope must be a mapping")
@@ -212,7 +212,7 @@ def _contains_expr_fields(node: Any) -> bool:
     if isinstance(node, dict):
         for k, v in node.items():
             key = str(k)
-            if key in {"evaluate", "policy_evaluate", "definitions"}:
+            if key in {"evaluate", "policy_evaluate", "defines"}:
                 return True
             if _contains_expr_fields(v):
                 return True

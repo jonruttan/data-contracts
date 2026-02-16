@@ -6,7 +6,7 @@
 id: LIB-DOMAIN-HTTP-001
 title: http projection helper functions
 type: spec_lang.library
-definitions:
+defines:
   public:
     domain.http.status:
       fn:

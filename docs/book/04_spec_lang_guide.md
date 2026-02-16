@@ -101,7 +101,7 @@ policy_evaluate:
 1. Validate shape first: run `normalize-check`.
 2. Confirm subject shape using assertion targets (for example `summary_json`).
 3. Reduce expression to minimal failing predicate, then expand.
-4. Move stable repeated logic into library definitions.
+4. Move stable repeated logic into library defines.
 
 ## Cross-References
 

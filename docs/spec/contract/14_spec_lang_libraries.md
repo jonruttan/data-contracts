@@ -40,12 +40,12 @@ Required fields for each library case:
 
 - `id`
 - `type: spec_lang.library`
-- `definitions` (mapping)
+- `defines` (mapping)
   - `public` (mapping: symbol -> expression, optional)
   - `private` (mapping: symbol -> expression, optional)
 
-`definitions.public.<symbol>` and
-`definitions.private.<symbol>` expression encoding:
+`defines.public.<symbol>` and
+`defines.private.<symbol>` expression encoding:
 
 - MUST use operator-keyed mapping-AST expression nodes (same canonical encoding
   as `evaluate`/`policy_evaluate`)
@@ -58,8 +58,8 @@ Optional fields:
 
 Export model:
 
-- Exported symbols are derived from all `definitions.public` symbol keys.
-- `definitions.private` symbols are loadable only inside library code and
+- Exported symbols are derived from all `defines.public` symbol keys.
+- `defines.private` symbols are loadable only inside library code and
   are not externally importable via harness exports.
 
 ## Resolution Rules

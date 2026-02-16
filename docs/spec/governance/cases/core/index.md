@@ -92,7 +92,9 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/impl_library_usage_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/library_domain_index_sync.spec.md`
 - `/docs/spec/governance/cases/core/library_domain_ownership.spec.md`
+- `/docs/spec/governance/cases/core/library_legacy_definitions_key_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/library_public_surface_model.spec.md`
+- `/docs/spec/governance/cases/core/library_verb_first_schema_keys_required.spec.md`
 - `/docs/spec/governance/cases/core/naming_filename_policy.spec.md`
 - `/docs/spec/governance/cases/core/normalization_docs_token_sync.spec.md`
 - `/docs/spec/governance/cases/core/normalization_library_mapping_ast_only.spec.md`
@@ -167,6 +169,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/schema_registry_docs_sync.spec.md`
 - `/docs/spec/governance/cases/core/schema_registry_valid.spec.md`
 - `/docs/spec/governance/cases/core/schema_type_profiles_complete.spec.md`
+- `/docs/spec/governance/cases/core/schema_verb_first_contract_sync.spec.md`
 - `/docs/spec/governance/cases/core/security_warning_docs.spec.md`
 - `/docs/spec/governance/cases/core/spec_domain_index_sync.spec.md`
 - `/docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md`

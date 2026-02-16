@@ -6,7 +6,7 @@
 id: LIB-DOMAIN-MAKE-001
 title: makefile projection helper functions
 type: spec_lang.library
-definitions:
+defines:
   public:
     make.has_target:
       fn:

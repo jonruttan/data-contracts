@@ -63,8 +63,8 @@ Notes:
 - Spec-lang mapping-AST authoring now uses explicit subject reference node
   `{var: subject}`.
 - Library function authoring is mapping-AST only (`type: spec_lang.library`
-  `definitions.public.<symbol>` and
-  `definitions.private.<symbol>` values use canonical expression
+  `defines.public.<symbol>` and
+  `defines.private.<symbol>` values use canonical expression
   nodes, not list s-expr authoring).
 - Canonical reusable libraries now include `path_core`, `policy_core`, and
   `policy_metrics` under `docs/spec/libraries/`, with domain helper libraries

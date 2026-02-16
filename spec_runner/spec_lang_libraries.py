@@ -95,23 +95,27 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
         case_imports = _as_non_empty_str_list(case.get("imports"), field="imports")
         imports.extend(case_imports)
 
-        raw_definitions = case.get("definitions")
-        if not isinstance(raw_definitions, dict):
-            raise TypeError("spec_lang.library requires definitions mapping with public/private scopes")
+        if "definitions" in case:
+            raise TypeError(
+                "spec_lang.library legacy key 'definitions' is not supported; use 'defines'"
+            )
+        raw_defines = case.get("defines")
+        if not isinstance(raw_defines, dict):
+            raise TypeError("spec_lang.library requires defines mapping with public/private scopes")
         public_bindings = _compile_definition_scope(
-            raw_definitions.get("public"), field_path="definitions.public"
+            raw_defines.get("public"), field_path="defines.public"
         )
         private_bindings = _compile_definition_scope(
-            raw_definitions.get("private"), field_path="definitions.private"
+            raw_defines.get("private"), field_path="defines.private"
         )
         if not public_bindings and not private_bindings:
             raise TypeError(
-                "spec_lang.library requires non-empty definitions.public or definitions.private mapping"
+                "spec_lang.library requires non-empty defines.public or defines.private mapping"
             )
         overlap = sorted(set(public_bindings).intersection(private_bindings))
         if overlap:
             raise ValueError(
-                "spec_lang.library duplicate symbol across definitions.public/definitions.private: "
+                "spec_lang.library duplicate symbol across defines.public/defines.private: "
                 + ", ".join(overlap)
             )
         for name, expr in {**public_bindings, **private_bindings}.items():
@@ -121,7 +125,7 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
         exports.extend(sorted(public_bindings.keys()))
 
     if not bindings:
-        raise ValueError(f"library file has no spec_lang.library definitions: {path}")
+        raise ValueError(f"library file has no spec_lang.library defines: {path}")
 
     return _LibraryDoc(
         path=path,
@@ -193,13 +197,11 @@ def load_spec_lang_symbols_for_case(
     if consumer_exports:
         export_allow = set(consumer_exports)
 
-    if export_allow:
-        filtered = {k: v for k, v in merged_bindings.items() if k in export_allow}
-        unknown = sorted(x for x in export_allow if x not in merged_bindings)
-        if unknown:
-            raise ValueError(
-                "harness.spec_lang.exports contains unknown symbols: " + ", ".join(unknown)
-            )
-        merged_bindings = filtered
+    unknown = sorted(x for x in export_allow if x not in merged_bindings)
+    if unknown:
+        raise ValueError("harness.spec_lang.exports contains unknown symbols: " + ", ".join(unknown))
 
-    return compile_symbol_bindings(merged_bindings, limits=limits)
+    compiled = compile_symbol_bindings(merged_bindings, limits=limits)
+    if export_allow:
+        return {k: v for k, v in compiled.items() if k in export_allow}
+    return compiled

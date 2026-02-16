@@ -27,7 +27,7 @@ def test_load_spec_lang_symbols_from_library_paths(tmp_path: Path) -> None:
 ```yaml spec-test
 id: LIB-1
 type: spec_lang.library
-definitions:
+defines:
   public:
     is_warn:
       fn:
@@ -67,7 +67,7 @@ def test_library_import_cycle_is_rejected(tmp_path: Path) -> None:
 id: LIB-A
 type: spec_lang.library
 imports: ["/libs/b.spec.md"]
-definitions:
+defines:
   public:
     a:
       fn:
@@ -82,7 +82,7 @@ definitions:
 id: LIB-B
 type: spec_lang.library
 imports: ["/libs/a.spec.md"]
-definitions:
+defines:
   public:
     b:
       fn:
@@ -108,7 +108,7 @@ def test_duplicate_library_symbol_is_rejected(tmp_path: Path) -> None:
         """```yaml spec-test
 id: LIB-A
 type: spec_lang.library
-definitions:
+defines:
   public:
     same:
       fn:
@@ -122,7 +122,7 @@ definitions:
         """```yaml spec-test
 id: LIB-B
 type: spec_lang.library
-definitions:
+defines:
   public:
     same:
       fn:
@@ -148,7 +148,7 @@ def test_harness_exports_filters_symbols(tmp_path: Path) -> None:
         """```yaml spec-test
 id: LIB-A
 type: spec_lang.library
-definitions:
+defines:
   public:
     keep:
       fn:
@@ -172,6 +172,42 @@ definitions:
     assert "drop" not in symbols
 
 
+def test_harness_exports_keeps_private_dependencies(tmp_path: Path) -> None:
+    case_doc = tmp_path / "cases" / "sample.spec.md"
+    _write(case_doc, "# Case\n")
+    _write(
+        tmp_path / "libs" / "a.spec.md",
+        """```yaml spec-test
+id: LIB-A
+type: spec_lang.library
+defines:
+  public:
+    keep:
+      fn:
+      - [x]
+      - call:
+        - {var: helper}
+        - {var: x}
+  private:
+    helper:
+      fn:
+      - [x]
+      - std.logic.eq:
+        - {var: x}
+        - ok
+```
+""",
+    )
+
+    symbols = load_spec_lang_symbols_for_case(
+        doc_path=case_doc,
+        harness={"spec_lang": {"includes": ["/libs/a.spec.md"], "exports": ["keep"]}},
+        limits=SpecLangLimits(timeout_ms=0),
+    )
+    expr = ["call", ["var", "keep"], "ok"]
+    assert eval_predicate(expr, subject=None, symbols=symbols) is True
+
+
 def test_library_function_rejects_list_s_expr_authoring(tmp_path: Path) -> None:
     case_doc = tmp_path / "cases" / "sample.spec.md"
     _write(case_doc, "# Case\n")
@@ -180,7 +216,7 @@ def test_library_function_rejects_list_s_expr_authoring(tmp_path: Path) -> None:
         """```yaml spec-test
 id: LIB-BAD
 type: spec_lang.library
-definitions:
+defines:
   public:
     bad: ["fn", ["x"], ["var", "x"]]
 ```

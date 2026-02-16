@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 204
-- rules_with_conformance_cases: 44
-- rules_with_unit_tests: 204
-- rules_with_implementation_refs: 202
+- link_count: 207
+- rules_with_conformance_cases: 45
+- rules_with_unit_tests: 207
+- rules_with_implementation_refs: 205
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -169,8 +169,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `LIBRARY_DOMAIN_INDEX_SYNC` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_INDEX_SYNC` | 2 | 1 | 0 | 1 | 3 |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_OWNERSHIP` | 2 | 1 | 0 | 1 | 2 |
+| `LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | 1 | 1 | 0 | 3 | 6 |
 | `LIBRARY_PUBLIC_SURFACE_MODEL` | `docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_MODEL` | 1 | 1 | 0 | 2 | 3 |
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | 2 | 1 | 0 | 2 | 3 |
+| `LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | 1 | 2 | 2 | 1 | 1 |
 | `NAMING_FILENAME_STRICT_SEPARATORS` | `docs/spec/contract/policy_v1.yaml#NAMING_FILENAME_STRICT_SEPARATORS` | 1 | 0 | 0 | 1 | 2 |
 | `NORMALIZATION_CHECK_GATE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#NORMALIZATION_CHECK_GATE_REQUIRED` | 1 | 1 | 0 | 2 | 4 |
 | `NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC` | `docs/spec/contract/policy_v1.yaml#NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC` | 2 | 2 | 0 | 2 | 3 |
@@ -233,6 +235,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `SCHEMA_REGISTRY_VALIDATION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#SCHEMA_REGISTRY_VALIDATION_REQUIRED` | 1 | 1 | 2 | 1 | 2 |
 | `SCHEMA_TYPE_PROFILE_COVERAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#SCHEMA_TYPE_PROFILE_COVERAGE_REQUIRED` | 1 | 4 | 1 | 1 | 2 |
 | `SCHEMA_UNKNOWN_KEYS_HARD_FAIL` | `docs/spec/contract/policy_v1.yaml#SCHEMA_UNKNOWN_KEYS_HARD_FAIL` | 1 | 1 | 1 | 1 | 1 |
+| `SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED` | 2 | 1 | 0 | 1 | 1 |
 | `SPEC_DOMAIN_INDEX_SYNC` | `docs/spec/contract/policy_v1.yaml#SPEC_DOMAIN_INDEX_SYNC` | 1 | 1 | 0 | 1 | 3 |
 | `SPEC_LANG_ADOPTION_METRIC_REPORTED` | `docs/spec/contract/policy_v1.yaml#SPEC_LANG_ADOPTION_METRIC_REPORTED` | 2 | 1 | 0 | 3 | 3 |
 | `SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |

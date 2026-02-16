@@ -1918,7 +1918,7 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/reference_library_exports_used.spec.md
-  notes: Library definitions.public symbols must be referenced by policies/expressions or harness exports.
+  notes: Library defines.public symbols must be referenced by policies/expressions or harness exports.
 - rule_id: REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
   contract_refs:
@@ -1932,7 +1932,7 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md
-  notes: definitions.private symbols are forbidden from external case policy/assertion references.
+  notes: defines.private symbols are forbidden from external case policy/assertion references.
 - rule_id: REFERENCE_CHECK_IDS_EXIST
   policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_CHECK_IDS_EXIST
   contract_refs:
@@ -2046,7 +2046,7 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/spec_lang_libraries.py
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
-  notes: spec_lang.library shape enforcement requires definitions.public/definitions.private scopes.
+  notes: spec_lang.library shape enforcement requires defines.public/defines.private scopes.
 - rule_id: SPEC_LANG_STDLIB_PROFILE_DEFINED
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_STDLIB_PROFILE_DEFINED
   contract_refs:
@@ -3076,3 +3076,50 @@ links:
   - spec_runner/dispatcher.py
   - spec_runner/harnesses/api_http.py
   notes: Shared runtime context carries chain_state and chain_trace across prerequisite execution.
+- rule_id: LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/schema/registry/v1/types/spec_lang_library.yaml
+  conformance_case_ids:
+  - SRCONF-LIB-CONTRACT-001
+  - SRCONF-LIB-CONTRACT-002
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: Library contract and governance enforce verb-first defines.public/private schema keys.
+- rule_id: LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_spec_lang_libraries_unit.py
+  - tests/test_convert_definitions_to_defines_script_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/spec_lang_libraries.py
+  - scripts/php/spec_runner.php
+  - scripts/php/conformance_runner.php
+  - scripts/run_governance_specs.py
+  - scripts/normalize_repo.py
+  - scripts/convert_definitions_to_defines.py
+  notes: Runtime, governance, normalization, and codemod tooling hard-cut legacy definitions key usage.
+- rule_id: SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/current.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: Governance enforces defines wording alignment across schema, contract, and current snapshot docs.

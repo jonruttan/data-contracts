@@ -6,7 +6,7 @@
 id: LIB-DOMAIN-MD-001
 title: markdown projection helper functions
 type: spec_lang.library
-definitions:
+defines:
   public:
     domain.markdown.has_heading:
       fn:
@@ -414,6 +414,7 @@ definitions:
       - call:
         - {var: domain.markdown.token_dependencies_resolved}
         - {var: subject}
+  private:
     markdown._text:
       fn:
       - [subject]

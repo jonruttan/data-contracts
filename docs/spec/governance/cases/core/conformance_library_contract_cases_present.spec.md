@@ -6,7 +6,7 @@
 id: SRGOV-CONF-LIB-CONTRACT-001
 title: conformance library contract coverage cases are present
 purpose: Ensures conformance includes executable evaluate-based coverage for flat spec_lang.library
-  definitions contract behavior.
+  defines contract behavior.
 type: governance.check
 check: conformance.library_contract_cases_present
 harness:

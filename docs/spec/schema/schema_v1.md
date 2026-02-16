@@ -271,8 +271,8 @@ For `type: docs.generate`, supported `harness` keys include:
 - external references use `external://provider/id` and are deny-by-default
   unless capability and harness policy explicitly allow provider access
 - `type: spec_lang.library` function values MUST use mapping-AST expression
-  encoding under `definitions.public.<symbol>` and/or
-  `definitions.private.<symbol>` (list s-expr authoring is invalid)
+  encoding under `defines.public.<symbol>` and/or
+  `defines.private.<symbol>` (list s-expr authoring is invalid)
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
 
@@ -510,7 +510,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `docs.generate` | - | - |
 | `governance.check` | `check` | - |
 | `orchestration.run` | - | - |
-| `spec_lang.library` | `definitions` | `imports` |
+| `spec_lang.library` | `defines` | `imports` |
 | `text.file` | - | - |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V1 -->
@@ -546,6 +546,6 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `docs.generate` | 8 | - |
 | `governance.check` | 1 | `check` |
 | `orchestration.run` | 6 | - |
-| `spec_lang.library` | 2 | `definitions` |
+| `spec_lang.library` | 2 | `defines` |
 | `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->

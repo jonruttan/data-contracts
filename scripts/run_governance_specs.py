@@ -5940,10 +5940,10 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
         for _doc_path, case in loaded:
             if str(case.get("type", "")).strip() != "spec_lang.library":
                 continue
-            raw_definitions = case.get("definitions")
-            if not isinstance(raw_definitions, dict):
+            raw_defines = case.get("defines")
+            if not isinstance(raw_defines, dict):
                 continue
-            raw_public = raw_definitions.get("public")
+            raw_public = raw_defines.get("public")
             if not isinstance(raw_public, dict):
                 continue
             for raw in raw_public.keys():
@@ -5989,10 +5989,10 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
                 for expr in _iter_evaluate_expr_nodes(raw_assert):
                     referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
             if str(case.get("type", "")).strip() == "spec_lang.library":
-                raw_definitions = case.get("definitions")
-                if isinstance(raw_definitions, dict):
+                raw_defines = case.get("defines")
+                if isinstance(raw_defines, dict):
                     for scope in ("public", "private"):
-                        scoped = raw_definitions.get(scope)
+                        scoped = raw_defines.get(scope)
                         if isinstance(scoped, dict):
                             for expr in scoped.values():
                                 referenced.update(
@@ -6023,17 +6023,17 @@ def _scan_library_public_surface_model(root: Path, *, harness: dict | None = Non
         for _doc_path, case in loaded:
             if str(case.get("type", "")).strip() != "spec_lang.library":
                 continue
-            raw_definitions = case.get("definitions")
-            if not isinstance(raw_definitions, dict):
+            raw_defines = case.get("defines")
+            if not isinstance(raw_defines, dict):
                 violations.append(
-                    f"{lib_file.relative_to(root)}: spec_lang.library requires definitions mapping"
+                    f"{lib_file.relative_to(root)}: spec_lang.library requires defines mapping"
                 )
                 continue
-            raw_public = raw_definitions.get("public")
-            raw_private = raw_definitions.get("private")
+            raw_public = raw_defines.get("public")
+            raw_private = raw_defines.get("private")
             if not isinstance(raw_public, dict) and not isinstance(raw_private, dict):
                 violations.append(
-                    f"{lib_file.relative_to(root)}: spec_lang.library requires definitions.public or definitions.private mapping"
+                    f"{lib_file.relative_to(root)}: spec_lang.library requires defines.public or defines.private mapping"
                 )
                 continue
             public_symbols: set[str] = set()
@@ -6047,9 +6047,75 @@ def _scan_library_public_surface_model(root: Path, *, harness: dict | None = Non
                 overlap = [s for s in overlap if s]
                 if overlap:
                     violations.append(
-                        f"{lib_file.relative_to(root)}: duplicate symbol across definitions.public/definitions.private: "
+                        f"{lib_file.relative_to(root)}: duplicate symbol across defines.public/defines.private: "
                         + ", ".join(overlap)
                     )
+    return violations
+
+
+def _scan_library_legacy_definitions_key_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    libs_root = root / "docs/spec/libraries"
+    if not libs_root.exists():
+        return []
+    violations: list[str] = []
+    for lib_file in sorted(libs_root.rglob("*.spec.md")):
+        if not lib_file.is_file():
+            continue
+        try:
+            loaded = load_external_cases(lib_file, formats={"md"})
+        except Exception as exc:  # noqa: BLE001
+            violations.append(f"{lib_file.relative_to(root)}: unable to parse library file ({exc})")
+            continue
+        for _doc_path, case in loaded:
+            if str(case.get("type", "")).strip() != "spec_lang.library":
+                continue
+            if "definitions" in case:
+                violations.append(
+                    f"{lib_file.relative_to(root)}: spec_lang.library legacy key 'definitions' is forbidden; use 'defines'"
+                )
+    return violations
+
+
+def _scan_library_verb_first_schema_keys_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations = _scan_library_public_surface_model(root, harness=harness)
+    violations.extend(_scan_library_legacy_definitions_key_forbidden(root, harness=harness))
+    return violations
+
+
+def _scan_schema_verb_first_contract_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    checks: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
+        (
+            "docs/spec/contract/14_spec_lang_libraries.md",
+            ("defines.public", "defines.private"),
+            ("definitions.public", "definitions.private"),
+        ),
+        (
+            "docs/spec/schema/schema_v1.md",
+            ("`defines`",),
+            ("`definitions`", "definitions.public", "definitions.private"),
+        ),
+        (
+            "docs/spec/current.md",
+            ("defines.public", "defines.private"),
+            ("definitions.public", "definitions.private"),
+        ),
+    )
+    violations: list[str] = []
+    for rel, required_tokens, forbidden_tokens in checks:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing file")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in raw:
+                violations.append(f"{rel}:1: missing required token {tok!r}")
+        for tok in forbidden_tokens:
+            if tok in raw:
+                line = raw[: raw.find(tok)].count("\n") + 1
+                violations.append(f"{rel}:{line}: forbidden legacy token present: {tok!r}")
     return violations
 
 
@@ -6067,10 +6133,10 @@ def _scan_reference_private_symbols_forbidden(root: Path, *, harness: dict | Non
             for _doc_path, case in loaded:
                 if str(case.get("type", "")).strip() != "spec_lang.library":
                     continue
-                raw_definitions = case.get("definitions")
-                if not isinstance(raw_definitions, dict):
+                raw_defines = case.get("defines")
+                if not isinstance(raw_defines, dict):
                     continue
-                raw_private = raw_definitions.get("private")
+                raw_private = raw_defines.get("private")
                 if not isinstance(raw_private, dict):
                     continue
                 for sym in raw_private.keys():
@@ -6368,10 +6434,10 @@ def _scan_library_domain_index_sync(root: Path, *, harness: dict | None = None) 
             for _doc_path, case in loaded:
                 if str(case.get("type", "")).strip() != "spec_lang.library":
                     continue
-                raw_definitions = case.get("definitions")
-                if not isinstance(raw_definitions, dict):
+                raw_defines = case.get("defines")
+                if not isinstance(raw_defines, dict):
                     continue
-                raw_public = raw_definitions.get("public")
+                raw_public = raw_defines.get("public")
                 if not isinstance(raw_public, dict):
                     continue
                 for item in raw_public.keys():
@@ -6474,20 +6540,20 @@ def _scan_normalization_library_mapping_ast_only(root: Path, *, harness: dict | 
             case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
             if str(case.get("type", "")).strip() != "spec_lang.library":
                 continue
-            definitions = case.get("definitions")
-            if not isinstance(definitions, dict) or not definitions:
-                violations.append(f"{rel}: case {case_id} must provide non-empty definitions mapping")
+            defines = case.get("defines")
+            if not isinstance(defines, dict) or not defines:
+                violations.append(f"{rel}: case {case_id} must provide non-empty defines mapping")
                 continue
             scopes = []
-            raw_public = definitions.get("public")
-            raw_private = definitions.get("private")
+            raw_public = defines.get("public")
+            raw_private = defines.get("private")
             if isinstance(raw_public, dict):
                 scopes.append(("public", raw_public))
             if isinstance(raw_private, dict):
                 scopes.append(("private", raw_private))
             if not scopes:
                 violations.append(
-                    f"{rel}: case {case_id} must provide definitions.public or definitions.private mapping"
+                    f"{rel}: case {case_id} must provide defines.public or defines.private mapping"
                 )
                 continue
             for scope_name, scoped_map in scopes:
@@ -6495,7 +6561,7 @@ def _scan_normalization_library_mapping_ast_only(root: Path, *, harness: dict | 
                     name = str(raw_name).strip()
                     if not name:
                         violations.append(
-                            f"{rel}: case {case_id} has empty symbol name in definitions.{scope_name}"
+                            f"{rel}: case {case_id} has empty symbol name in defines.{scope_name}"
                         )
                         continue
                     try:
@@ -6503,7 +6569,7 @@ def _scan_normalization_library_mapping_ast_only(root: Path, *, harness: dict | 
                             expr,
                             field_path=(
                                 f"{rel.as_posix()} case {case_id} "
-                                f"definitions.{scope_name}.{name}"
+                                f"defines.{scope_name}.{name}"
                             ),
                         )
                     except SpecLangYamlAstError as exc:
@@ -6856,6 +6922,9 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "library.domain_ownership": _scan_library_domain_ownership,
     "library.domain_index_sync": _scan_library_domain_index_sync,
     "library.public_surface_model": _scan_library_public_surface_model,
+    "library.verb_first_schema_keys_required": _scan_library_verb_first_schema_keys_required,
+    "library.legacy_definitions_key_forbidden": _scan_library_legacy_definitions_key_forbidden,
+    "schema.verb_first_contract_sync": _scan_schema_verb_first_contract_sync,
     "normalization.profile_sync": _scan_normalization_profile_sync,
     "normalization.mapping_ast_only": _scan_normalization_mapping_ast_only,
     "normalization.library_mapping_ast_only": _scan_normalization_library_mapping_ast_only,

@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRGOV-NORM-005
 title: library function expressions use mapping-ast authoring
-purpose: Enforces spec-lang library function definitions use canonical mapping-ast expression
+purpose: Enforces spec-lang library function defines use canonical mapping-ast expression
   syntax only.
 type: governance.check
 check: normalization.library_mapping_ast_only

@@ -1299,14 +1299,17 @@ function loadSpecLangLibraryDoc(string $path): array {
         foreach (asNonEmptyStringList($case['imports'] ?? null, 'imports') as $imp) {
             $imports[] = $imp;
         }
-        $definitions = $case['definitions'] ?? null;
-        if (!is_array($definitions) || isListArray($definitions)) {
-            throw new SchemaError('spec_lang.library requires definitions mapping with public/private scopes');
+        if (array_key_exists('definitions', $case)) {
+            throw new SchemaError("spec_lang.library legacy key 'definitions' is not supported; use 'defines'");
         }
-        $public = $compileDefinitionScope($definitions['public'] ?? null, 'definitions.public');
-        $private = $compileDefinitionScope($definitions['private'] ?? null, 'definitions.private');
+        $defines = $case['defines'] ?? null;
+        if (!is_array($defines) || isListArray($defines)) {
+            throw new SchemaError('spec_lang.library requires defines mapping with public/private scopes');
+        }
+        $public = $compileDefinitionScope($defines['public'] ?? null, 'defines.public');
+        $private = $compileDefinitionScope($defines['private'] ?? null, 'defines.private');
         if (count($public) === 0 && count($private) === 0) {
-            throw new SchemaError('spec_lang.library requires non-empty definitions.public or definitions.private mapping');
+            throw new SchemaError('spec_lang.library requires non-empty defines.public or defines.private mapping');
         }
         foreach (array_keys($public) as $name) {
             if (array_key_exists($name, $bindings)) {
@@ -1323,7 +1326,7 @@ function loadSpecLangLibraryDoc(string $path): array {
         }
     }
     if (count($bindings) === 0) {
-        throw new SchemaError("library file has no spec_lang.library definitions: {$path}");
+        throw new SchemaError("library file has no spec_lang.library defines: {$path}");
     }
     return [
         'imports' => array_values(array_unique($imports)),
@@ -1433,25 +1436,27 @@ function loadSpecLangSymbolsForCase(string $fixturePath, array $case, array $lim
             $exportAllow[$name] = true;
         }
     }
+    $unknown = [];
+    foreach ($exportAllow as $name => $_true) {
+        if (!array_key_exists($name, $mergedBindings)) {
+            $unknown[] = $name;
+        }
+    }
+    if (count($unknown) > 0) {
+        sort($unknown, SORT_STRING);
+        throw new SchemaError(
+            'harness.spec_lang.exports contains unknown symbols: ' . implode(', ', $unknown)
+        );
+    }
+    $compiled = compileSpecLangSymbolBindings($mergedBindings, $limits);
     if (count($exportAllow) > 0) {
         $filtered = [];
-        $unknown = [];
         foreach ($exportAllow as $name => $_true) {
-            if (!array_key_exists($name, $mergedBindings)) {
-                $unknown[] = $name;
-                continue;
-            }
-            $filtered[$name] = $mergedBindings[$name];
+            $filtered[$name] = $compiled[$name];
         }
-        if (count($unknown) > 0) {
-            sort($unknown, SORT_STRING);
-            throw new SchemaError(
-                'harness.spec_lang.exports contains unknown symbols: ' . implode(', ', $unknown)
-            );
-        }
-        $mergedBindings = $filtered;
+        return $filtered;
     }
-    return compileSpecLangSymbolBindings($mergedBindings, $limits);
+    return $compiled;
 }
 
 function compileLeafExpr(string $op, mixed $value, string $target): array {

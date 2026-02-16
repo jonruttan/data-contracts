@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 180
-- checks_with_cases: 174
+- check_count: 183
+- checks_with_cases: 177
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -148,7 +148,9 @@ Provide generated inventory of governance check IDs and case coverage.
 | `impl.library_usage_non_regression` | 1 | true |
 | `library.domain_index_sync` | 1 | true |
 | `library.domain_ownership` | 1 | true |
+| `library.legacy_definitions_key_forbidden` | 1 | true |
 | `library.public_surface_model` | 1 | true |
+| `library.verb_first_schema_keys_required` | 1 | true |
 | `naming.filename_policy` | 1 | true |
 | `normalization.docs_token_sync` | 1 | true |
 | `normalization.library_mapping_ast_only` | 1 | true |
@@ -217,6 +219,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `schema.registry_docs_sync` | 1 | true |
 | `schema.registry_valid` | 1 | true |
 | `schema.type_profiles_complete` | 1 | true |
+| `schema.verb_first_contract_sync` | 1 | true |
 | `spec.contract_assertions_metric` | 1 | true |
 | `spec.contract_assertions_non_regression` | 1 | true |
 | `spec.domain_index_sync` | 1 | true |

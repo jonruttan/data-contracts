@@ -127,6 +127,9 @@ def test_docs_generator_check_ids_are_registered() -> None:
         "docs.history_reviews_namespace",
         "docs.no_os_artifact_files",
         "docs.markdown_structured_assertions_required",
+        "library.verb_first_schema_keys_required",
+        "library.legacy_definitions_key_forbidden",
+        "schema.verb_first_contract_sync",
     }
     for check_id in required:
         assert check_id in mod._CHECKS
@@ -728,7 +731,7 @@ def test_script_enforces_conformance_library_policy_usage_required(tmp_path):
 ```yaml spec-test
 id: LIB-POLICY-CORE-TEST-001
 type: spec_lang.library
-definitions:
+defines:
   public:
     policy.pass_when_no_violations:
       fn:
@@ -4722,7 +4725,7 @@ assert:
 ```yaml spec-test
 id: L1
 type: spec_lang.library
-definitions:
+defines:
   public:
     policy.pass_when_no_violations:
       fn:
@@ -5070,7 +5073,7 @@ def test_script_enforces_normalization_library_mapping_ast_only(tmp_path):
 ```yaml spec-test
 id: LIB-PATH
 type: spec_lang.library
-definitions:
+defines:
   public:
     ok:
       fn:
@@ -5091,7 +5094,7 @@ definitions:
 ```yaml spec-test
 id: LIB-PATH
 type: spec_lang.library
-definitions:
+defines:
   public:
     bad: ["fn", ["x"], ["var", "x"]]
 ```
@@ -5609,7 +5612,7 @@ def test_docs_markdown_structured_assertions_required_allows_markdown_helpers(tm
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001
 type: spec_lang.library
-definitions:
+defines:
   public:
     md.has_heading:
       fn:

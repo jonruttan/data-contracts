@@ -75,6 +75,6 @@ Provide generated case-shape field reference derived from schema registry profil
 | `docs.generate` | 8 | - |
 | `governance.check` | 1 | `check` |
 | `orchestration.run` | 6 | - |
-| `spec_lang.library` | 2 | `definitions` |
+| `spec_lang.library` | 2 | `defines` |
 | `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->

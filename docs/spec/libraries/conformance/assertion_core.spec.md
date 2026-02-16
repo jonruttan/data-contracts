@@ -6,7 +6,7 @@
 id: LIB-CONF-ASSERT-001
 title: reusable conformance assertion helper functions
 type: spec_lang.library
-definitions:
+defines:
   public:
     conf.pass_when_text_contains:
       fn:

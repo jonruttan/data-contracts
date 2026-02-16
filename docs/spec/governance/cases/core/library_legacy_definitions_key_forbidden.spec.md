@@ -1,14 +1,13 @@
 # Governance Cases
 
-## SRGOV-REF-SYMBOLS-004
+## SRGOV-LIB-VERB-002
 
 ```yaml spec-test
-id: SRGOV-REF-SYMBOLS-004
-title: private library symbols are not referenced externally
-purpose: Ensures conformance/governance/impl cases do not reference defines.private symbols
-  from library docs.
+id: SRGOV-LIB-VERB-002
+title: legacy definitions key is forbidden in library cases
+purpose: Ensures spec_lang.library cases do not use the legacy definitions key.
 type: governance.check
-check: reference.private_symbols_forbidden
+check: library.legacy_definitions_key_forbidden
 harness:
   root: .
   spec_lang:
@@ -28,5 +27,5 @@ assert:
       - std.object.get:
         - {var: subject}
         - check_id
-      - reference.private_symbols_forbidden
+      - library.legacy_definitions_key_forbidden
 ```

@@ -49,7 +49,7 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
         },
         "spec_lang.library": {
             "summary": "Declares reusable spec-lang symbols for evaluate/policy_evaluate expressions.",
-            "defaults": ["mapping-AST definitions only"],
+            "defaults": ["mapping-AST defines only"],
             "failure_modes": ["duplicate symbol export", "invalid definition shape"],
         },
         "orchestration.run": {

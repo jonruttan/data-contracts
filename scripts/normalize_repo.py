@@ -9,6 +9,8 @@ from typing import Any
 
 import yaml
 
+from spec_runner.codecs import load_external_cases
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_PATH = ROOT / "docs/spec/schema/normalization_profile_v1.yaml"
@@ -242,6 +244,32 @@ def _check_harness_componentization() -> list[str]:
     return issues
 
 
+def _check_library_defines_key() -> list[str]:
+    issues: list[str] = []
+    libs_root = ROOT / "docs/spec/libraries"
+    if not libs_root.exists():
+        return issues
+    for p in sorted(libs_root.rglob("*.spec.md")):
+        if not p.is_file():
+            continue
+        rel = p.relative_to(ROOT).as_posix()
+        try:
+            loaded = load_external_cases(p, formats={"md"})
+        except Exception as exc:  # noqa: BLE001
+            issues.append(f"{rel}:1: NORMALIZATION_LIBRARY_DEFINES_KEY_REQUIRED: unable to parse file ({exc})")
+            continue
+        for _doc_path, case in loaded:
+            if str(case.get("type", "")).strip() != "spec_lang.library":
+                continue
+            if "definitions" in case:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_LIBRARY_DEFINES_KEY_REQUIRED: legacy key 'definitions' is forbidden; use 'defines'"
+                )
+            if "defines" not in case:
+                issues.append(f"{rel}:1: NORMALIZATION_LIBRARY_DEFINES_KEY_REQUIRED: missing required key 'defines'")
+    return issues
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Unified normalization check/fix runner for specs, contracts, and tests.")
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -334,6 +362,7 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_docs_tokens(profile))
     issues.extend(_check_dogfood_executable_surface())
     issues.extend(_check_harness_componentization())
+    issues.extend(_check_library_defines_key())
     if issues:
         for issue in sorted(issues):
             print(issue)

@@ -6,7 +6,7 @@
 id: LIB-DOMAIN-PY-001
 title: python projection helper functions
 type: spec_lang.library
-definitions:
+defines:
   public:
     py.is_tuple_projection:
       fn:

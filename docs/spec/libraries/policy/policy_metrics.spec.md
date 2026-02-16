@@ -6,7 +6,7 @@
 id: LIB-POLICY-002
 title: policy-metrics reusable non-regression predicates
 type: spec_lang.library
-definitions:
+defines:
   private:
     policy.metric_non_decrease:
       fn:

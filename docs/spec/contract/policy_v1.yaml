@@ -1859,7 +1859,7 @@ rules:
   applies_to: docs/spec/libraries/* exports
   norm: MUST
   requirement: public_library_symbols_must_be_referenced
-  description: 'Library definitions.public symbols must be referenced by at least one case policy/expression or harness.spec_lang.exports declaration.
+  description: 'Library defines.public symbols must be referenced by at least one case policy/expression or harness.spec_lang.exports declaration.
 
     '
   rationale: Keeps library surfaces minimal and avoids dead exported symbols.
@@ -1873,7 +1873,7 @@ rules:
   applies_to: cross_case_library_symbol_references
   norm: MUST
   requirement: definitions_private_symbols_must_not_be_referenced_by_cases
-  description: 'Symbols declared under definitions.private must not be referenced from conformance/governance/impl case policies or assertions.
+  description: 'Symbols declared under defines.private must not be referenced from conformance/governance/impl case policies or assertions.
 
     '
   rationale: Preserves private helper encapsulation inside library documents.
@@ -1986,7 +1986,7 @@ rules:
   applies_to: type_spec_lang_library_shape
   norm: MUST
   requirement: libraries_use_definitions_public_private_scope_model
-  description: 'spec_lang.library cases must define symbols under definitions.public/definitions.private scopes and avoid legacy shapes.
+  description: 'spec_lang.library cases must define symbols under defines.public/defines.private scopes and avoid legacy shapes.
 
     '
   rationale: Provides explicit API visibility boundaries and deterministic export derivation.
@@ -2986,3 +2986,47 @@ rules:
   references:
   - docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md
   - spec_runner/components/subject_router.py
+- id: LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
+  introduced_in: v1
+  scope: schema
+  applies_to: spec_lang.library.shape
+  norm: MUST
+  requirement: library_cases_use_defines_public_private_keys
+  description: 'spec_lang.library cases must use defines.public/defines.private and verb-first library key naming.
+
+    '
+  rationale: Keeps library authoring consistent with verb-first contract language.
+  risk_if_violated: Mixed key naming increases parser ambiguity and docs drift.
+  references:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/governance/cases/core/library_verb_first_schema_keys_required.spec.md
+- id: LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN
+  introduced_in: v1
+  scope: schema
+  applies_to: spec_lang.library.shape
+  norm: MUST_NOT
+  requirement: legacy_definitions_key_is_rejected
+  description: 'spec_lang.library legacy key `definitions` is forbidden; `defines` is the only accepted key.
+
+    '
+  rationale: Enforces immediate hard cut and removes compatibility ambiguity.
+  risk_if_violated: Legacy payloads continue to leak into canonical authoring surfaces.
+  references:
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/governance/cases/core/library_legacy_definitions_key_forbidden.spec.md
+- id: SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: schema.contract.sync
+  norm: MUST
+  requirement: schema_contract_current_docs_use_defines_wording
+  description: 'schema_v1, library contract, and current snapshot docs must consistently use defines wording and reject legacy definitions wording.
+
+    '
+  rationale: Keeps contract, schema, and snapshot docs synchronized for contributors and tooling.
+  risk_if_violated: Docs contradict runtime and governance checks.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/14_spec_lang_libraries.md
+  - docs/spec/current.md
+  - docs/spec/governance/cases/core/schema_verb_first_contract_sync.spec.md

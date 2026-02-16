@@ -6,7 +6,7 @@
 id: LIB-IMPL-ASSERT-001
 title: reusable impl assertion helper functions
 type: spec_lang.library
-definitions:
+defines:
   public:
     impl.assert.contains:
       fn:
