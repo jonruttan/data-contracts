@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 207
-- must_count: 192
+- rule_count: 211
+- must_count: 195
 - should_count: 12
-- must_not_count: 3
-- active_count: 207
+- must_not_count: 4
+- active_count: 211
 - deprecated_count: 0
 - removed_count: 0
 
@@ -81,11 +81,14 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `ASSERT_SUGAR_OPERATORS_COMPILE_ONLY` | `MUST` | `implementation` | `assert.tree.operator_surface` | 4 | `active` |
 | `ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN` | `MUST` | `contract` | `assert.tree.target_applicability` | 4 | `active` |
 | `ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY` | `MUST` | `contract` | `assert.tree.operator_model` | 3 | `active` |
+| `CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | `MUST` | `schema` | `harness.chain` | 4 | `active` |
 | `CHAIN_CYCLE_FORBIDDEN` | `MUST` | `runtime` | `harness.chain.graph` | 3 | `active` |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.exports` | 2 | `active` |
 | `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `MUST` | `implementation` | `harness.chain.fail_fast` | 2 | `active` |
+| `CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | `MUST_NOT` | `implementation` | `harness.chain.imports` | 4 | `active` |
 | `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.ref` | 3 | `active` |
 | `CHAIN_SHARED_CONTEXT_REQUIRED` | `MUST` | `runtime` | `harness.chain.state` | 3 | `active` |
+| `CHAIN_STEP_CLASS_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.class` | 4 | `active` |
 | `CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT` | `MUST` | `conformance` | `fixtures.cli.run` | 2 | `active` |
 | `CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY` | `MUST_NOT` | `conformance` | `fixtures.cli.run` | 2 | `active` |
 | `CLI_RUN_ENTRYPOINT_REQUIRED` | `MUST` | `case` | `cli.run.harness.entrypoint` | 2 | `active` |
@@ -264,4 +267,5 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `SPEC_PORTABILITY_METRIC_REPORTED` | `MUST` | `governance` | `specs.portability.metric_report` | 4 | `active` |
 | `SPEC_PORTABILITY_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `specs.portability.metric_non_regression` | 3 | `active` |
 | `SPEC_PORTABILITY_THRESHOLD_ENFORCED` | `SHOULD` | `governance` | `specs.portability.metric_thresholds` | 3 | `active` |
+| `UNIVERSAL_CHAIN_SUPPORT_REQUIRED` | `MUST` | `runtime` | `harness.chain.universal_support` | 3 | `active` |
 <!-- GENERATED:END policy_rule_catalog -->

@@ -139,10 +139,16 @@ def test_chain_governance_check_ids_are_registered() -> None:
     mod = _load_script_module()
     required = {
         "runtime.chain_reference_resolution",
+        "runtime.chain_ref_scalar_required",
+        "runtime.chain_step_class_required",
         "runtime.chain_cycle_forbidden",
         "runtime.chain_exports_target_derived_only",
+        "runtime.chain_import_alias_collision_forbidden",
         "runtime.chain_fail_fast_default",
         "runtime.chain_state_template_resolution",
+        "runtime.chain_contract_single_location",
+        "runtime.universal_chain_support_required",
+        "runtime.chain_shared_context_required",
     }
     for check_id in required:
         assert check_id in mod._CHECKS
@@ -5518,6 +5524,7 @@ harness:
   chain:
     steps:
     - id: preload
+      class: must
       ref: /docs/spec/conformance/cases/core/dep.spec.md#DEP-1
 assert: []
 ```
@@ -5549,6 +5556,7 @@ harness:
   chain:
     steps:
     - id: preload
+      class: must
       ref:
         case_id: DEP-1
 assert: []

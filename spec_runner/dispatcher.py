@@ -31,6 +31,8 @@ class SpecRunContext:
     chain_state: dict[str, Any] = field(default_factory=dict)
     chain_trace: list[dict[str, Any]] = field(default_factory=list)
     _case_target_values: dict[str, dict[str, Any]] = field(default_factory=dict)
+    _case_chain_imports: dict[str, dict[str, Any]] = field(default_factory=dict)
+    _case_chain_payloads: dict[str, dict[str, Any]] = field(default_factory=dict)
     _active_case_keys: set[str] = field(default_factory=set)
 
     def patch_context(self) -> Any:
@@ -44,6 +46,18 @@ class SpecRunContext:
 
     def get_case_targets(self, *, case_key: str) -> Mapping[str, Any] | None:
         return self._case_target_values.get(case_key)
+
+    def set_case_chain_imports(self, *, case_key: str, imports: Mapping[str, Any]) -> None:
+        self._case_chain_imports[case_key] = dict(imports)
+
+    def get_case_chain_imports(self, *, case_key: str) -> Mapping[str, Any]:
+        return dict(self._case_chain_imports.get(case_key, {}))
+
+    def set_case_chain_payload(self, *, case_key: str, payload: Mapping[str, Any]) -> None:
+        self._case_chain_payloads[case_key] = dict(payload)
+
+    def get_case_chain_payload(self, *, case_key: str) -> Mapping[str, Any]:
+        return dict(self._case_chain_payloads.get(case_key, {"state": {}, "trace": [], "imports": {}}))
 
     def push_active_case(self, case_key: str) -> None:
         if case_key in self._active_case_keys:

@@ -282,6 +282,7 @@ For `type: docs.generate`, supported `harness` keys include:
 - `steps` (list, required when `harness.chain` is present; non-empty)
   - each step:
     - `id` (string, required, unique)
+    - `class` (string, required): one of `must`, `can`, `cannot`
     - `ref` (string, required): `[path][#case_id]`
       - path may be virtual-absolute (`/...`) or relative
       - `#case_id` fragment is optional
@@ -293,7 +294,17 @@ For `type: docs.generate`, supported `harness` keys include:
         - `from_target` (string, required)
         - `path` (string dotted selector, optional)
         - `required` (bool, optional, default `true`)
+      - `exports` are allowed only for refs with `#case_id`
+      - `cannot` steps must not declare `exports`
     - `allow_continue` (bool, optional, default `false`)
+- `imports` (list[mapping], optional)
+  - each import:
+    - `from_step` (string, required): source step id
+    - `names` (list[string], required): exported names from that step
+    - `as` (mapping, optional): alias map `name -> local_name`
+  - local imported names and aliases must be unique
+  - local imported names and aliases must not shadow reserved names:
+    `subject`, `if`, `let`, `fn`, `call`, `var`
 
 Chain reference resolution:
 
@@ -301,6 +312,14 @@ Chain reference resolution:
 - `path#case_id`: resolve one exact case in referenced document.
 - `path`: execute all cases in referenced document in order.
 - relative paths resolve from current `.spec.md` document directory.
+
+Chain execution model:
+
+- all executable case types may declare `harness.chain`.
+- chain state sharing is explicit via `exports` + `imports`.
+- top-level `chain` and type-specific `*.chain` aliases are forbidden.
+- scalar `ref` is the only supported reference format; legacy mapping refs are
+  invalid.
 
 Chain template interpolation:
 
@@ -332,6 +351,7 @@ Assertion targets for `cli.run`:
 - `stderr`: text output from command stderr
 - `stdout_path`: path printed on first non-empty stdout line
 - `stdout_path_text`: UTF-8 text from file at `stdout_path`
+- `chain_json`: shared chain state/trace/imports envelope
 - `context_json`: JSON subject profile envelope
 
 ## Types

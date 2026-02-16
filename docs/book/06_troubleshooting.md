@@ -67,8 +67,10 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 | schema error for `request.method` | verb not in supported suite | use `GET/POST/PUT/PATCH/DELETE/HEAD/OPTIONS` |
 | schema error for `request.cors.preflight` | method is not `OPTIONS` | set `method: OPTIONS` for preflight |
 | schema error for `requests` scenario shape | invalid step id/order/fields | validate each `requests[*]` step has `id`, `method`, and `url` |
+| chain schema failure for step class | missing or invalid `harness.chain.steps[*].class` | use one of `must`, `can`, `cannot` |
 | chain reference/schema failure | invalid `harness.chain.steps[*].ref` or unresolved case | validate scalar ref format `[path][#case_id]` and run governance chain checks |
 | chain template resolution failure | `{{chain.<step>.<export>}}` points to missing export | add explicit `exports` on prerequisite step and use exact export names |
+| chain import alias collision | duplicate imported local names or reserved name shadowing | fix `harness.chain.imports` names/aliases and avoid reserved names |
 | runtime error in deterministic mode | network URL used without live mode | set `harness.api_http.mode: live` |
 | missing round-trip values | bad `{{steps.*}}` path | verify step `id` and `steps_json` structure |
 | CORS assertion fails | raw headers differ from expectation | assert via normalized `cors_json` fields |

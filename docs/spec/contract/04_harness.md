@@ -30,11 +30,13 @@ For `cli.run`:
 - `stderr`
 - `stdout_path`
 - `stdout_path_text`
+- `chain_json`
 - `context_json` (JSON subject profile envelope)
 
 For `text.file`:
 
 - `text`
+- `chain_json`
 - `context_json` (JSON subject profile envelope)
 
 For `api.http`:
@@ -45,6 +47,7 @@ For `api.http`:
 - `body_json`
 - `cors_json`
 - `steps_json`
+- `chain_json`
 - `context_json` (JSON subject profile envelope)
 
 `api.http` auth/runtime profile:
@@ -81,7 +84,7 @@ OAuth behavior:
 
 Cross-spec chaining profile:
 
-- `harness.chain` is the executable prerequisite workflow surface.
+- all executable case types are chainable through `harness.chain`.
 - `harness.spec_lang.includes` remains library import only and is not used for
   executable chaining.
 - `harness.chain.fail_fast` is optional and defaults to `true`.
@@ -89,12 +92,21 @@ Cross-spec chaining profile:
   be non-empty.
 - each step requires:
   - `id` (unique string)
+  - `class` (`must`, `can`, `cannot`)
   - `ref` string in format `[path][#case_id]`
 - `exports` is optional and declares target-derived exported state:
   - `from_target` (required)
   - `path` (optional dotted selector)
   - `required` (optional bool, default `true`)
+- `exports` are valid only when `ref` includes `#case_id`.
+- `cannot` steps must not declare `exports`.
 - `allow_continue` is optional and defaults to `false`.
+- `harness.chain.imports` is optional and declares explicit state imports:
+  - `from_step` (required)
+  - `names` (required)
+  - `as` alias map (optional)
+- imported local names and aliases must be unique and must not collide with
+  reserved names (`subject`, `if`, `let`, `fn`, `call`, `var`).
 
 Reference resolution:
 
@@ -103,6 +115,8 @@ Reference resolution:
 - `path` only: execute all cases in referenced document in document order.
 - relative `path` values resolve from current spec document directory.
 - when using hash-only refs in YAML, quote them (for example `ref: "#CASE-1"`).
+- top-level `chain` and type-specific `*.chain` aliases are forbidden; chain
+  is declared only at `harness.chain`.
 
 Cycle and recursion safety:
 
@@ -115,6 +129,8 @@ State interpolation:
 - downstream `api.http` request fields support
   `{{chain.<step_id>.<export_name>...}}` template resolution in `url`, header
   values, and `body_text`.
+- `chain_json` exposes case-scoped chain payload (`state`, `trace`, `imports`)
+  for assertions across all executable harness types.
 
 For `orchestration.run`:
 
@@ -122,12 +138,14 @@ For `orchestration.run`:
 - `stdout`
 - `stderr`
 - `exit_code`
+- `chain_json`
 - `context_json` (JSON subject profile envelope)
 
 For `docs.generate`:
 
 - `result_json`
 - `output_text`
+- `chain_json`
 - `context_json` (JSON subject profile envelope)
 
 ## Subject-Driven Assertion Contract

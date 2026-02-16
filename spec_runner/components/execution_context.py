@@ -13,10 +13,18 @@ def build_execution_context(*, case_id: str, harness: dict, doc_path) -> Harness
         harness=harness,
         limits=limits,
     )
+    chain_bindings = dict((harness or {}).get("_chain_imports") or {})
+    if chain_bindings:
+        for key in chain_bindings:
+            s = str(key).strip()
+            if not s:
+                raise ValueError("harness.chain.imports local binding names must be non-empty strings")
+            if s in symbols:
+                raise ValueError(f"harness.chain.imports local binding collides with existing symbol: {s}")
+        symbols = {**symbols, **{str(k): v for k, v in chain_bindings.items()}}
     return HarnessExecutionContext(
         case_id=case_id,
         limits=limits,
         imports=imports,
         symbols=symbols,
     )
-

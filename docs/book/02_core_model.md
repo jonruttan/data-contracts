@@ -74,6 +74,9 @@ Core types currently used in this repo:
 - `text.file`
 - `cli.run`
 
+All executable types support optional prerequisite chaining through
+`harness.chain`.
+
 ### `text.file`
 
 - Default subject: containing spec document.
@@ -106,6 +109,16 @@ id: BK-CM-002
 type: cli.run
 entrypoint: /bin/echo
 ```
+
+## Universal Chaining
+
+Use `harness.chain` to declare prerequisite execution for any executable case
+type.
+
+- `steps[*].class` is required: `must`, `can`, `cannot`
+- `steps[*].ref` uses scalar format `[path][#case_id]` or `#case_id`
+- `imports` can rename exported values for local use
+- chain assertions can target `chain_json`
 
 ## Conformance Metadata
 

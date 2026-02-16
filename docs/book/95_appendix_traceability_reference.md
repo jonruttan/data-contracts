@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 207
+- link_count: 211
 - rules_with_conformance_cases: 45
-- rules_with_unit_tests: 207
-- rules_with_implementation_refs: 205
+- rules_with_unit_tests: 211
+- rules_with_implementation_refs: 209
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -78,11 +78,14 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `ASSERT_SUGAR_OPERATORS_COMPILE_ONLY` | `docs/spec/contract/policy_v1.yaml#ASSERT_SUGAR_OPERATORS_COMPILE_ONLY` | 3 | 1 | 1 | 3 | 4 |
 | `ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN` | `docs/spec/contract/policy_v1.yaml#ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN` | 4 | 1 | 0 | 1 | 2 |
 | `ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY` | `docs/spec/contract/policy_v1.yaml#ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY` | 3 | 1 | 1 | 2 | 3 |
+| `CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_CYCLE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_CYCLE_FORBIDDEN` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_EXPLICIT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | 1 | 1 | 0 | 2 | 2 |
 | `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_REFERENCE_CONTRACT_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
 | `CHAIN_SHARED_CONTEXT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_SHARED_CONTEXT_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
+| `CHAIN_STEP_CLASS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_STEP_CLASS_REQUIRED` | 1 | 1 | 0 | 2 | 2 |
 | `CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT` | `docs/spec/contract/policy_v1.yaml#CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT` | 2 | 1 | 2 | 2 | 0 |
 | `CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY` | `docs/spec/contract/policy_v1.yaml#CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY` | 2 | 1 | 2 | 2 | 0 |
 | `CLI_RUN_ENTRYPOINT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CLI_RUN_ENTRYPOINT_REQUIRED` | 1 | 1 | 1 | 2 | 1 |
@@ -261,4 +264,5 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `SPEC_PORTABILITY_METRIC_REPORTED` | `docs/spec/contract/policy_v1.yaml#SPEC_PORTABILITY_METRIC_REPORTED` | 2 | 1 | 0 | 3 | 3 |
 | `SPEC_PORTABILITY_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#SPEC_PORTABILITY_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `SPEC_PORTABILITY_THRESHOLD_ENFORCED` | `docs/spec/contract/policy_v1.yaml#SPEC_PORTABILITY_THRESHOLD_ENFORCED` | 2 | 1 | 0 | 2 | 2 |
+| `UNIVERSAL_CHAIN_SUPPORT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#UNIVERSAL_CHAIN_SUPPORT_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 <!-- GENERATED:END traceability_catalog -->

@@ -3069,6 +3069,203 @@ def _iter_cases_with_chain(root: Path):
             yield doc_path, case, harness, chain
 
 
+def _scan_runtime_chain_step_class_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        steps = chain.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                continue
+            step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
+            class_name = str(step.get("class", "")).strip()
+            if class_name not in {"must", "can", "cannot"}:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} class must be one of: must, can, cannot"
+                )
+                continue
+            if class_name == "cannot" and isinstance(step.get("exports"), dict) and step.get("exports"):
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} cannot-class must not declare exports"
+                )
+    return violations
+
+
+def _scan_runtime_chain_import_alias_collision_forbidden(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    reserved = {"subject", "if", "let", "fn", "call", "var"}
+    violations: list[str] = []
+    for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        steps = chain.get("steps")
+        if not isinstance(steps, list):
+            continue
+        step_ids: set[str] = set()
+        step_exports: dict[str, set[str]] = {}
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                continue
+            sid = str(step.get("id", "")).strip() or f"<step[{idx}]>"
+            step_ids.add(sid)
+            exports = step.get("exports") or {}
+            if isinstance(exports, dict):
+                step_exports[sid] = {str(x).strip() for x in exports.keys() if str(x).strip()}
+            else:
+                step_exports[sid] = set()
+
+        imports = chain.get("imports", [])
+        if imports is None:
+            imports = []
+        if not isinstance(imports, list):
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports must be list")
+            continue
+        local_seen: set[str] = set()
+        for idx, imp in enumerate(imports):
+            if not isinstance(imp, dict):
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}] must be mapping"
+                )
+                continue
+            from_step = str(imp.get("from_step", "")).strip()
+            if not from_step:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].from_step must be non-empty"
+                )
+                continue
+            if from_step not in step_ids:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].from_step unknown step id {from_step}"
+                )
+                continue
+            names = imp.get("names")
+            if not isinstance(names, list) or not names:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].names must be non-empty list"
+                )
+                continue
+            parsed_names: list[str] = []
+            for j, raw_name in enumerate(names):
+                name = str(raw_name).strip()
+                if not name:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].names[{j}] must be non-empty"
+                    )
+                    continue
+                if name not in step_exports.get(from_step, set()):
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].names[{j}] unknown export {name} from step {from_step}"
+                    )
+                parsed_names.append(name)
+            aliases = imp.get("as", {})
+            if aliases is None:
+                aliases = {}
+            if not isinstance(aliases, dict):
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].as must be mapping when provided"
+                )
+                continue
+            for raw_from, raw_to in aliases.items():
+                from_name = str(raw_from).strip()
+                to_name = str(raw_to).strip()
+                if not from_name or not to_name:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].as keys and values must be non-empty strings"
+                    )
+                    continue
+                if from_name not in parsed_names:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}].as unknown name {from_name}"
+                    )
+            for name in parsed_names:
+                local = str(aliases.get(name, name)).strip()
+                if not local:
+                    continue
+                if local in reserved:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}] local name {local} collides with reserved symbol"
+                    )
+                    continue
+                if local in local_seen:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} harness.chain.imports[{idx}] local name collision: {local}"
+                    )
+                    continue
+                local_seen.add(local)
+    return violations
+
+
+def _scan_runtime_chain_contract_single_location(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case in _iter_all_spec_cases(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        if "chain" in case:
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} top-level chain is forbidden; use harness.chain"
+            )
+        harness_map = case.get("harness")
+        if not isinstance(harness_map, dict):
+            continue
+        for h_key, h_value in harness_map.items():
+            k = str(h_key).strip()
+            if k == "chain":
+                continue
+            if isinstance(h_value, dict) and "chain" in h_value:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} type-specific {k}.chain is forbidden; use harness.chain"
+                )
+    return violations
+
+
+def _scan_runtime_universal_chain_support_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    rel = "spec_runner/dispatcher.py"
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing dispatcher module"]
+    text = p.read_text(encoding="utf-8")
+    required_tokens = (
+        "execute_case_chain(",
+        "\"api.http\":",
+        "\"cli.run\":",
+        "\"docs.generate\":",
+        "\"orchestration.run\":",
+        "\"text.file\":",
+    )
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{rel}:1: missing universal chain support token {tok}")
+    return violations
+
+
+def _scan_runtime_chain_shared_context_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    rel = "spec_runner/dispatcher.py"
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing dispatcher module"]
+    text = p.read_text(encoding="utf-8")
+    required_tokens = (
+        "chain_state:",
+        "chain_trace:",
+        "set_case_chain_imports(",
+        "get_case_chain_imports(",
+        "set_case_chain_payload(",
+        "get_case_chain_payload(",
+    )
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{rel}:1: missing chain shared-context token {tok}")
+    return violations
+
+
 def _parse_chain_ref_value(raw: object) -> tuple[str | None, str | None]:
     if isinstance(raw, dict):
         raise ValueError("legacy mapping format for step.ref is not supported; use string [path][#case_id]")
@@ -6768,10 +6965,17 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.api_http_scenario_roundtrip": _scan_runtime_api_http_scenario_roundtrip,
     "runtime.api_http_parity_contract_sync": _scan_runtime_api_http_parity_contract_sync,
     "runtime.chain_reference_resolution": _scan_runtime_chain_reference_resolution,
+    "runtime.chain_ref_scalar_required": _scan_runtime_chain_reference_resolution,
+    "runtime.chain_step_class_required": _scan_runtime_chain_step_class_required,
     "runtime.chain_cycle_forbidden": _scan_runtime_chain_cycle_forbidden,
     "runtime.chain_exports_target_derived_only": _scan_runtime_chain_exports_target_derived_only,
+    "runtime.chain_exports_explicit_only": _scan_runtime_chain_exports_target_derived_only,
+    "runtime.chain_import_alias_collision_forbidden": _scan_runtime_chain_import_alias_collision_forbidden,
     "runtime.chain_fail_fast_default": _scan_runtime_chain_fail_fast_default,
     "runtime.chain_state_template_resolution": _scan_runtime_chain_state_template_resolution,
+    "runtime.chain_contract_single_location": _scan_runtime_chain_contract_single_location,
+    "runtime.universal_chain_support_required": _scan_runtime_universal_chain_support_required,
+    "runtime.chain_shared_context_required": _scan_runtime_chain_shared_context_required,
     "docs.api_http_tutorial_sync": _scan_docs_api_http_tutorial_sync,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,

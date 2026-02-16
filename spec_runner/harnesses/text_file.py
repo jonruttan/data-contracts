@@ -36,12 +36,19 @@ def run(case, *, ctx) -> None:
             "source_doc": "/" + doc_path.relative_to(root).as_posix().lstrip("/"),
         },
     }
-    execution = build_execution_context(case_id=case_id, harness=case.harness, doc_path=case.doc_path)
+    case_key = f"{case.doc_path.resolve().as_posix()}::{case_id}"
+    chain_imports = dict(ctx.get_case_chain_imports(case_key=case_key))
+    chain_payload = dict(ctx.get_case_chain_payload(case_key=case_key))
+    execution = build_execution_context(
+        case_id=case_id,
+        harness={**case.harness, "_chain_imports": chain_imports},
+        doc_path=case.doc_path,
+    )
     targets = {
         "text": text,
         "context_json": text_subject_profile,
+        "chain_json": chain_payload,
     }
-    case_key = f"{case.doc_path.resolve().as_posix()}::{case_id}"
     ctx.set_case_targets(case_key=case_key, targets=targets)
     run_assertions_with_context(
         assert_tree=case.assert_tree,

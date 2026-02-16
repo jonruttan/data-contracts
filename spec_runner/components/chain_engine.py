@@ -12,6 +12,8 @@ from spec_runner.virtual_paths import contract_root_for, parse_external_ref, res
 
 _DOTTED_PATH_PART = re.compile(r"^[A-Za-z0-9_.-]+$")
 _CASE_ID_PART = re.compile(r"^[A-Za-z0-9._:-]+$")
+_STEP_CLASS_VALUES = {"must", "can", "cannot"}
+_RESERVED_IMPORT_NAMES = {"subject", "if", "let", "fn", "call", "var"}
 
 
 @dataclass(frozen=True)
@@ -31,9 +33,17 @@ class ChainExport:
 @dataclass(frozen=True)
 class ChainStep:
     id: str
+    class_name: str
     ref: ChainRef
     exports: dict[str, ChainExport]
     allow_continue: bool
+
+
+@dataclass(frozen=True)
+class ChainImport:
+    from_step: str
+    names: tuple[str, ...]
+    aliases: dict[str, str]
 
 
 def parse_spec_ref(raw_ref: str) -> ChainRef:
@@ -83,13 +93,17 @@ def _resolve_dotted_path(value: Any, dotted: str) -> tuple[bool, Any]:
     return True, current
 
 
-def compile_chain_plan(case: InternalSpecCase) -> list[ChainStep]:
+def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[ChainImport], bool]:
     harness = case.harness or {}
     raw_chain = harness.get("chain")
     if raw_chain is None:
-        return []
+        return [], [], True
     if not isinstance(raw_chain, dict):
         raise TypeError("harness.chain must be a mapping")
+    raw_fail_fast = raw_chain.get("fail_fast", True)
+    if not isinstance(raw_fail_fast, bool):
+        raise TypeError("harness.chain.fail_fast must be a bool when provided")
+    fail_fast = bool(raw_fail_fast)
     raw_steps = raw_chain.get("steps")
     if not isinstance(raw_steps, list) or not raw_steps:
         raise ValueError("harness.chain.steps must be a non-empty list")
@@ -104,6 +118,11 @@ def compile_chain_plan(case: InternalSpecCase) -> list[ChainStep]:
         if step_id in seen_ids:
             raise ValueError(f"harness.chain.steps has duplicate id: {step_id}")
         seen_ids.add(step_id)
+        class_name = str(raw.get("class", "")).strip()
+        if class_name not in _STEP_CLASS_VALUES:
+            raise ValueError(
+                f"harness.chain.steps[{idx}].class must be one of: must, can, cannot"
+            )
         raw_ref = raw.get("ref")
         if isinstance(raw_ref, dict):
             raise TypeError(
@@ -117,6 +136,10 @@ def compile_chain_plan(case: InternalSpecCase) -> list[ChainStep]:
             raise TypeError(f"harness.chain.steps[{idx}].exports must be a mapping when provided")
         if raw_exports and not parsed_ref.case_id:
             raise ValueError(f"harness.chain.steps[{idx}] exports require ref with #case_id fragment")
+        if raw_exports and class_name == "cannot":
+            raise ValueError(
+                f"harness.chain.steps[{idx}] cannot-class step must not declare exports"
+            )
         exports: dict[str, ChainExport] = {}
         for export_name, export_raw in raw_exports.items():
             name = str(export_name).strip()
@@ -144,12 +167,75 @@ def compile_chain_plan(case: InternalSpecCase) -> list[ChainStep]:
         steps.append(
             ChainStep(
                 id=step_id,
+                class_name=class_name,
                 ref=parsed_ref,
                 exports=exports,
                 allow_continue=raw_allow_continue,
             )
         )
-    return steps
+    raw_imports = raw_chain.get("imports", [])
+    if raw_imports is None:
+        raw_imports = []
+    if not isinstance(raw_imports, list):
+        raise TypeError("harness.chain.imports must be a list when provided")
+    chain_imports: list[ChainImport] = []
+    local_seen: set[str] = set()
+    step_ids = {x.id for x in steps}
+    step_export_names = {x.id: set(x.exports.keys()) for x in steps}
+    for idx, item in enumerate(raw_imports):
+        if not isinstance(item, dict):
+            raise TypeError(f"harness.chain.imports[{idx}] must be a mapping")
+        from_step = str(item.get("from_step", "")).strip()
+        if not from_step:
+            raise ValueError(f"harness.chain.imports[{idx}].from_step must be non-empty")
+        if from_step not in step_ids:
+            raise ValueError(
+                f"harness.chain.imports[{idx}].from_step must reference existing step id"
+            )
+        raw_names = item.get("names")
+        if not isinstance(raw_names, list) or not raw_names:
+            raise TypeError(f"harness.chain.imports[{idx}].names must be a non-empty list")
+        names: list[str] = []
+        for j, raw_name in enumerate(raw_names):
+            name = str(raw_name).strip()
+            if not name:
+                raise ValueError(f"harness.chain.imports[{idx}].names[{j}] must be non-empty")
+            if name not in step_export_names.get(from_step, set()):
+                raise ValueError(
+                    f"harness.chain.imports[{idx}].names[{j}] references unknown export {name} from step {from_step}"
+                )
+            names.append(name)
+        raw_aliases = item.get("as", {})
+        if raw_aliases is None:
+            raw_aliases = {}
+        if not isinstance(raw_aliases, dict):
+            raise TypeError(f"harness.chain.imports[{idx}].as must be a mapping when provided")
+        aliases: dict[str, str] = {}
+        for raw_from, raw_to in raw_aliases.items():
+            from_name = str(raw_from).strip()
+            to_name = str(raw_to).strip()
+            if not from_name or not to_name:
+                raise ValueError(
+                    f"harness.chain.imports[{idx}].as keys and values must be non-empty strings"
+                )
+            if from_name not in names:
+                raise ValueError(
+                    f"harness.chain.imports[{idx}].as references name not in names: {from_name}"
+                )
+            aliases[from_name] = to_name
+        for name in names:
+            local = aliases.get(name, name)
+            if local in _RESERVED_IMPORT_NAMES:
+                raise ValueError(
+                    f"harness.chain.imports[{idx}] local binding collides with reserved name: {local}"
+                )
+            if local in local_seen:
+                raise ValueError(
+                    f"harness.chain.imports[{idx}] local binding collision for name: {local}"
+                )
+            local_seen.add(local)
+        chain_imports.append(ChainImport(from_step=from_step, names=tuple(names), aliases=aliases))
+    return steps, chain_imports, fail_fast
 
 
 def _resolve_ref_path(*, ref_path: str, current_case: InternalSpecCase) -> Path:
@@ -224,13 +310,13 @@ def execute_chain_plan(
     ctx,
     run_case_fn: Callable[[InternalSpecCase], None],
 ) -> None:
-    steps = compile_chain_plan(case)
+    steps, chain_imports, fail_fast = compile_chain_plan(case)
     if not steps:
         return
-    raw_fail_fast = ((case.harness or {}).get("chain") or {}).get("fail_fast", True)
-    if not isinstance(raw_fail_fast, bool):
-        raise TypeError("harness.chain.fail_fast must be a bool when provided")
-    fail_fast = raw_fail_fast
+    case_key = f"{case.doc_path.resolve().as_posix()}::{case.id}"
+    # Preserve previous chain execution state per case run.
+    ctx.chain_state.clear()
+    ctx.chain_trace.clear()
     for step in steps:
         refs = resolve_chain_reference(step, current_case=case)
         step_exports: dict[str, Any] = {}
@@ -244,28 +330,69 @@ def execute_chain_plan(
                 targets = ctx.get_case_targets(case_key=ref_key)
                 if targets is None:
                     targets = {}
-                if step.exports:
+                step_status = "pass"
+                if step.class_name == "cannot":
+                    raise RuntimeError(
+                        f"chain step {step.id} with class 'cannot' unexpectedly passed"
+                    )
+                if step.exports and step.class_name in {"must", "can"}:
                     step_exports.update(extract_exports(step=step, executed_case=ref_case, target_values=targets))
                 ctx.chain_trace.append(
                     {
                         "step_id": step.id,
+                        "class": step.class_name,
                         "ref_case_id": ref_case.id,
                         "ref_doc_path": "/" + ref_case.doc_path.resolve().as_posix().lstrip("/"),
-                        "status": "pass",
+                        "status": step_status,
                     }
                 )
             except Exception:
+                if step.class_name == "cannot":
+                    ctx.chain_trace.append(
+                        {
+                            "step_id": step.id,
+                            "class": step.class_name,
+                            "ref_case_id": ref_case.id,
+                            "ref_doc_path": "/" + ref_case.doc_path.resolve().as_posix().lstrip("/"),
+                            "status": "pass",
+                        }
+                    )
+                    continue
                 ctx.chain_trace.append(
                     {
                         "step_id": step.id,
+                        "class": step.class_name,
                         "ref_case_id": ref_case.id,
                         "ref_doc_path": "/" + ref_case.doc_path.resolve().as_posix().lstrip("/"),
                         "status": "fail",
                     }
                 )
+                if step.class_name == "can":
+                    continue
                 if fail_fast and not step.allow_continue:
                     raise
+        if step.class_name == "cannot" and step_exports:
+            raise RuntimeError(f"chain step {step.id} class cannot must not export values")
         ctx.chain_state[step.id] = dict(step_exports)
+    resolved_imports: dict[str, Any] = {}
+    for chain_import in chain_imports:
+        state = ctx.chain_state.get(chain_import.from_step, {})
+        for name in chain_import.names:
+            if name not in state:
+                raise ValueError(
+                    f"harness.chain.imports from_step {chain_import.from_step} missing export {name}"
+                )
+            local = chain_import.aliases.get(name, name)
+            resolved_imports[local] = state[name]
+    ctx.set_case_chain_imports(case_key=case_key, imports=resolved_imports)
+    ctx.set_case_chain_payload(
+        case_key=case_key,
+        payload={
+            "state": dict(ctx.chain_state),
+            "trace": list(ctx.chain_trace),
+            "imports": dict(resolved_imports),
+        },
+    )
 
 
 def execute_case_chain(

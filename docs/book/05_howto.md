@@ -215,11 +215,18 @@ harness:
   chain:
     steps:
     - id: preload
-      ref: "#API-GET-PREREQ"
+      class: must
+      ref: '#API-GET-PREREQ'
       exports:
         item_id:
           from_target: body_json
           path: /id
+    imports:
+    - from_step: preload
+      names:
+      - item_id
+      as:
+        item_id: seed_id
 request:
   method: POST
   url: /docs/spec/conformance/cases/fixtures/api_http_item_{{chain.preload.item_id}}.json
@@ -229,7 +236,10 @@ For chained state sharing:
 
 - keep `harness.spec_lang.includes` for library imports only
 - keep executable prerequisites under `harness.chain.steps`
+- set explicit step class (`must|can|cannot`) for every chain step
 - export only target-derived values via explicit `exports`
+- import only explicit exported names via `harness.chain.imports` (with
+  optional renaming)
 
 ## Escalation Path
 

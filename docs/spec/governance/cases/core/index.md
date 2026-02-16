@@ -130,11 +130,17 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_api_http_scenario_roundtrip.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_verb_suite.spec.md`
 - `/docs/spec/governance/cases/core/runtime_assertions_via_spec_lang.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_contract_single_location.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_cycle_forbidden.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_exports_explicit_only.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_exports_target_derived_only.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_fail_fast_default.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_import_alias_collision_forbidden.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_ref_scalar_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_reference_resolution.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_shared_context_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_state_template_resolution.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_step_class_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_config_literals.spec.md`
 - `/docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
@@ -162,6 +168,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_scope_sync.spec.md`
 - `/docs/spec/governance/cases/core/runtime_settings_import_policy.spec.md`
 - `/docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md`
+- `/docs/spec/governance/cases/core/runtime_universal_chain_support_required.spec.md`
 - `/docs/spec/governance/cases/core/schema_harness_contract_overlay_sync.spec.md`
 - `/docs/spec/governance/cases/core/schema_harness_type_overlay_complete.spec.md`
 - `/docs/spec/governance/cases/core/schema_no_prose_only_rules.spec.md`

@@ -21,11 +21,14 @@ Notes:
 - `api.http` v2 supports practical REST verbs (`GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS`),
   CORS preflight/actual projection via `cors_json`, and scenario round-trip
   execution (`requests` + `harness.api_http.scenario`) with `steps_json`.
-- Cross-spec chaining is available via `harness.chain.steps` with explicit
-  target-derived exports and scalar refs (`[path][#case_id]`);
+- Cross-spec chaining is universal across executable case types via
+  `harness.chain` with required step classes (`must|can|cannot`), explicit
+  target-derived exports/imports, and scalar refs (`[path][#case_id]`);
   `harness.spec_lang.includes` remains library-only.
 - `api.http` request templating supports chain state lookups in `url`, header
   values, and `body_text` using `{{chain.<step_id>.<export_name>...}}`.
+- all executable harnesses expose chain payload assertions through `chain_json`
+  (`state`, `trace`, `imports`) alongside existing type targets.
 - Markdown assertion helpers now use expanded domain library surface under
   `domain.markdown.*` with ergonomic `md.*` aliases and dual-input semantics
   (raw markdown text or markdown profile envelope with structured `context`).

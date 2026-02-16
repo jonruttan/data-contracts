@@ -3076,6 +3076,60 @@ links:
   - spec_runner/dispatcher.py
   - spec_runner/harnesses/api_http.py
   notes: Shared runtime context carries chain_state and chain_trace across prerequisite execution.
+- rule_id: UNIVERSAL_CHAIN_SUPPORT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#UNIVERSAL_CHAIN_SUPPORT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_dispatcher_unit.py
+  implementation_refs:
+  - spec_runner/dispatcher.py
+  - scripts/run_governance_specs.py
+  notes: Dispatcher executes chain orchestration before all executable harness dispatch paths.
+- rule_id: CHAIN_STEP_CLASS_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_STEP_CLASS_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_chain_engine_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/chain_engine.py
+  - scripts/run_governance_specs.py
+  notes: Chain step classes are explicit and validated as must/can/cannot.
+- rule_id: CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_chain_engine_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/chain_engine.py
+  - scripts/run_governance_specs.py
+  notes: Chain import alias maps are validated for unknown names, collisions, and reserved symbol shadowing.
+- rule_id: CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - scripts/normalize_repo.py
+  notes: Chain declarations are constrained to harness.chain and alternate locations are rejected.
 - rule_id: LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
   contract_refs:

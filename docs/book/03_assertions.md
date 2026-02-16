@@ -86,6 +86,7 @@ assert:
 Why invalid:
 
 - leaf nodes must not include `target`.
+- chain-aware cases can assert chain execution state via `target: chain_json`.
 
 ## Operators
 
@@ -181,6 +182,12 @@ assert:
     - list
   - contain:
     - '[]'
+- target: chain_json
+  must:
+  - evaluate:
+    - std.object.has_key:
+      - var: subject
+      - state
 ```
 
 ## Markdown Assertions Cookbook

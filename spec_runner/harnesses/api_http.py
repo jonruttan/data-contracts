@@ -738,7 +738,6 @@ def run(case, *, ctx) -> None:
         raise TypeError("api.http requires request mapping or requests list")
 
     h = case.harness
-    execution = build_execution_context(case_id=case_id, harness=h, doc_path=case.doc_path)
     mode, oauth, scenario = _parse_api_http_harness(h)
     timeout_seconds = float(h.get("timeout_seconds", 5))
 
@@ -875,6 +874,14 @@ def run(case, *, ctx) -> None:
         },
     }
 
+    case_key = f"{case.doc_path.resolve().as_posix()}::{case_id}"
+    chain_imports = dict(ctx.get_case_chain_imports(case_key=case_key))
+    chain_payload = dict(ctx.get_case_chain_payload(case_key=case_key))
+    execution = build_execution_context(
+        case_id=case_id,
+        harness={**case.harness, "_chain_imports": chain_imports},
+        doc_path=case.doc_path,
+    )
     targets = {
         "status": status_text,
         "headers": headers_text,
@@ -883,8 +890,8 @@ def run(case, *, ctx) -> None:
         "cors_json": cors_json_value,
         "steps_json": steps_json_value,
         "context_json": context_profile,
+        "chain_json": chain_payload,
     }
-    case_key = f"{case.doc_path.resolve().as_posix()}::{case_id}"
     ctx.set_case_targets(case_key=case_key, targets=targets)
     run_assertions_with_context(
         assert_tree=case.assert_tree,

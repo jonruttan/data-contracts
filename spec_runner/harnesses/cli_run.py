@@ -118,7 +118,14 @@ def run(case, *, ctx) -> None:
         hook_after_ep = None
 
     runtime_env = _runtime_env(ctx)
-    execution = build_execution_context(case_id=case_id, harness=h, doc_path=case.doc_path)
+    case_key = f"{case.doc_path.resolve().as_posix()}::{case_id}"
+    chain_imports = dict(ctx.get_case_chain_imports(case_key=case_key))
+    chain_payload = dict(ctx.get_case_chain_payload(case_key=case_key))
+    execution = build_execution_context(
+        case_id=case_id,
+        harness={**h, "_chain_imports": chain_imports},
+        doc_path=case.doc_path,
+    )
     safe_mode = _is_safe_mode_enabled(runtime_env)
 
     with _GLOBAL_SIDE_EFFECT_LOCK:
@@ -313,8 +320,8 @@ def run(case, *, ctx) -> None:
         "stderr": stderr_subject,
         "stdout_path.exists": stdout_path_exists,
         "context_json": context_profile,
+        "chain_json": chain_payload,
     }
-    case_key = f"{case.doc_path.resolve().as_posix()}::{case_id}"
     ctx.set_case_targets(case_key=case_key, targets=targets)
 
     def _subject_for_key(subject_key: str):

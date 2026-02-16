@@ -2813,6 +2813,69 @@ rules:
   - docs/spec/contract/04_harness.md
   - spec_runner/dispatcher.py
   - spec_runner/harnesses/api_http.py
+- id: UNIVERSAL_CHAIN_SUPPORT_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: harness.chain.universal_support
+  norm: MUST
+  requirement: all_executable_case_types_support_harness_chain
+  description: 'All executable case types must execute through canonical harness.chain orchestration when chain is configured.
+
+    '
+  rationale: Chaining is a universal task primitive and must not depend on case type.
+  risk_if_violated: Authors must learn type-specific chaining behavior and workflows become brittle.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/governance/cases/core/runtime_universal_chain_support_required.spec.md
+  - spec_runner/dispatcher.py
+- id: CHAIN_STEP_CLASS_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: harness.chain.steps.class
+  norm: MUST
+  requirement: each_chain_step_declares_must_can_cannot_class
+  description: 'Each harness.chain step must declare class as one of must, can, cannot.
+
+    '
+  rationale: Makes prerequisite intent explicit and deterministic.
+  risk_if_violated: Chain behavior becomes ambiguous between required and optional steps.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/04_harness.md
+  - docs/spec/governance/cases/core/runtime_chain_step_class_required.spec.md
+  - spec_runner/components/chain_engine.py
+- id: CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN
+  introduced_in: v1
+  scope: implementation
+  applies_to: harness.chain.imports
+  norm: MUST_NOT
+  requirement: chain_import_aliases_must_not_collide_or_shadow_reserved_names
+  description: 'harness.chain.imports local names and aliases must not collide and must not shadow reserved symbols.
+
+    '
+  rationale: Keeps imported task state deterministic and readable.
+  risk_if_violated: Subtle symbol capture bugs can silently change assertion meaning.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/04_harness.md
+  - docs/spec/governance/cases/core/runtime_chain_import_alias_collision_forbidden.spec.md
+  - spec_runner/components/chain_engine.py
+- id: CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED
+  introduced_in: v1
+  scope: schema
+  applies_to: harness.chain
+  norm: MUST
+  requirement: chain_contract_must_be_declared_only_under_harness_chain
+  description: 'Chain orchestration must be declared only at harness.chain; top-level chain and type-specific *.chain aliases are forbidden.
+
+    '
+  rationale: Preserves one discoverable contract location for all task types.
+  risk_if_violated: Multiple chain syntaxes create compatibility and tooling drift.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/contract/04_harness.md
+  - docs/spec/governance/cases/core/runtime_chain_contract_single_location.spec.md
+  - scripts/run_governance_specs.py
 - id: DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
   introduced_in: v1
   scope: governance

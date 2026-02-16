@@ -44,13 +44,20 @@ def run(case, *, ctx: SpecRunContext) -> None:
             "changed": bool(op["changed"]),
         },
     }
-    execution = build_execution_context(case_id=case.id, harness=case.harness, doc_path=case.doc_path)
+    case_key = f"{case.doc_path.resolve().as_posix()}::{case.id}"
+    chain_imports = dict(ctx.get_case_chain_imports(case_key=case_key))
+    chain_payload = dict(ctx.get_case_chain_payload(case_key=case_key))
+    execution = build_execution_context(
+        case_id=case.id,
+        harness={**case.harness, "_chain_imports": chain_imports},
+        doc_path=case.doc_path,
+    )
     targets = {
         "result_json": result_envelope,
         "context_json": context_profile,
         "output_text": op["output_text"],
+        "chain_json": chain_payload,
     }
-    case_key = f"{case.doc_path.resolve().as_posix()}::{case.id}"
     ctx.set_case_targets(case_key=case_key, targets=targets)
     run_assertions_with_context(
         assert_tree=case.assert_tree,

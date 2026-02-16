@@ -33,6 +33,7 @@ _HARNESS_FILES = (
     "spec_runner/harnesses/docs_generate.py",
     "spec_runner/harnesses/api_http.py",
 )
+_CHAIN_CLASS_VALUES = {"must", "can", "cannot"}
 
 
 def _load_profile(path: Path) -> dict[str, Any]:
@@ -270,6 +271,81 @@ def _check_library_defines_key() -> list[str]:
     return issues
 
 
+def _iter_spec_markdown_cases() -> list[tuple[str, dict[str, Any]]]:
+    pairs: list[tuple[str, dict[str, Any]]] = []
+    roots = (ROOT / "docs/spec", ROOT / "tests")
+    for base in roots:
+        if not base.exists():
+            continue
+        for p in sorted(base.rglob("*.spec.md")):
+            if not p.is_file():
+                continue
+            rel = p.relative_to(ROOT).as_posix()
+            try:
+                loaded = load_external_cases(p, formats={"md"})
+            except Exception:
+                continue
+            for _doc_path, case in loaded:
+                if isinstance(case, dict):
+                    pairs.append((rel, case))
+    return pairs
+
+
+def _check_chain_contract_shape() -> list[str]:
+    issues: list[str] = []
+    for rel, case in _iter_spec_markdown_cases():
+        case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
+        if "chain" in case:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CHAIN_SINGLE_LOCATION: case {case_id} top-level chain is forbidden; use harness.chain"
+            )
+        harness = case.get("harness")
+        if not isinstance(harness, dict):
+            continue
+        for key, value in harness.items():
+            if key == "chain":
+                continue
+            if isinstance(value, dict) and "chain" in value:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SINGLE_LOCATION: case {case_id} type-specific {key}.chain is forbidden; use harness.chain"
+                )
+        chain = harness.get("chain")
+        if chain is None:
+            continue
+        if not isinstance(chain, dict):
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain must be mapping"
+            )
+            continue
+        steps = chain.get("steps")
+        if not isinstance(steps, list) or not steps:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps must be non-empty list"
+            )
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}] must be mapping"
+                )
+                continue
+            class_name = str(step.get("class", "")).strip()
+            if class_name not in _CHAIN_CLASS_VALUES:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].class must be one of must, can, cannot"
+                )
+            ref = step.get("ref")
+            if isinstance(ref, dict):
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].ref legacy mapping form is forbidden; use scalar [path][#case_id]"
+                )
+            elif not isinstance(ref, str) or not ref.strip():
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].ref must be non-empty string"
+                )
+    return issues
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Unified normalization check/fix runner for specs, contracts, and tests.")
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -363,6 +439,7 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_dogfood_executable_surface())
     issues.extend(_check_harness_componentization())
     issues.extend(_check_library_defines_key())
+    issues.extend(_check_chain_contract_shape())
     if issues:
         for issue in sorted(issues):
             print(issue)

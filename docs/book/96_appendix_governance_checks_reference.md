@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 183
-- checks_with_cases: 177
+- check_count: 190
+- checks_with_cases: 184
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -183,11 +183,17 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.api_http_scenario_roundtrip` | 1 | true |
 | `runtime.api_http_verb_suite` | 1 | true |
 | `runtime.assertions_via_spec_lang` | 1 | true |
+| `runtime.chain_contract_single_location` | 1 | true |
 | `runtime.chain_cycle_forbidden` | 1 | true |
+| `runtime.chain_exports_explicit_only` | 1 | true |
 | `runtime.chain_exports_target_derived_only` | 1 | true |
 | `runtime.chain_fail_fast_default` | 1 | true |
+| `runtime.chain_import_alias_collision_forbidden` | 1 | true |
+| `runtime.chain_ref_scalar_required` | 1 | true |
 | `runtime.chain_reference_resolution` | 1 | true |
+| `runtime.chain_shared_context_required` | 1 | true |
 | `runtime.chain_state_template_resolution` | 1 | true |
+| `runtime.chain_step_class_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
@@ -212,6 +218,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.scope_sync` | 1 | true |
 | `runtime.settings_import_policy` | 1 | true |
 | `runtime.spec_lang_pure_no_effect_builtins` | 1 | true |
+| `runtime.universal_chain_support_required` | 1 | true |
 | `schema.harness_contract_overlay_sync` | 1 | true |
 | `schema.harness_type_overlay_complete` | 1 | true |
 | `schema.no_prose_only_rules` | 1 | true |
