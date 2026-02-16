@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRPHP-RUN-F001
 title: text.file virtual absolute path missing file fails runtime
-purpose: Verifies virtual-root absolute paths resolve under contract root and fail at runtime when the file is missing.
+purpose: Verifies virtual-root absolute paths resolve under contract root and fail at runtime
+  when the file is missing.
 type: text.file
 path: /tmp/not-allowed.txt
 expect:
@@ -17,8 +18,10 @@ expect:
 assert:
 - target: text
   must:
-  - contain:
-    - x
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - x
 ```
 
 ## SRPHP-RUN-F002
@@ -38,8 +41,10 @@ expect:
 assert:
 - target: text
   must:
-  - contain:
-    - outside
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - outside
 ```
 
 ## SRPHP-RUN-F003
@@ -62,8 +67,10 @@ expect:
 assert:
 - target: stdout
   must:
-  - contain:
-    - x
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - x
 ```
 
 ## SRPHP-RUN-F004

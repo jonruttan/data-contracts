@@ -80,6 +80,7 @@ assert:
     assert payload["errors"] == []
     assert payload["summary"]["total_cases"] == 1
     assert "governance_library_backed_policy_ratio" in payload["summary"]
+    assert "impl_library_backed_case_ratio" in payload["summary"]
     assert "conformance" in payload["segments"]
 
 
@@ -90,6 +91,7 @@ def test_runner_independence_report_basic_shape(tmp_path: Path) -> None:
     payload = runner_independence_report_jsonable(tmp_path)
     assert payload["errors"] == []
     assert "overall_runner_independence_ratio" in payload["summary"]
+    assert "rust_subcommand_native_coverage_ratio" in payload["summary"]
 
 
 def test_python_dependency_report_basic_shape(tmp_path: Path) -> None:

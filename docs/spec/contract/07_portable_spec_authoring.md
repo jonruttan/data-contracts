@@ -16,6 +16,12 @@ implementation-independent.
 - Conformance fixtures MUST use evaluate-only assertion trees for decision semantics.
 - Governance executable cases MUST use evaluate-only assertion trees for
   decision semantics.
+- Implementation fixture suites SHOULD use evaluate-first assertion trees; sugar
+  operators are non-canonical in `docs/spec/impl/**` and are only permitted for
+  explicitly allowlisted schema-behavior fixtures.
+- Repeated impl assertion predicates SHOULD be expressed via shared helper
+  libraries (for example `/docs/spec/libraries/impl/assertion_core.spec.md`)
+  instead of repeated inline expression trees.
 - Sugar operators (`contain`, `regex`, `json_type`, `exists`) remain schema
   syntax for non-governance/non-conformance surfaces only.
 

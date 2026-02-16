@@ -19,8 +19,10 @@ expect:
 assert:
 - target: stdout
   must:
-  - contain:
-    - port-shell-ok
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - port-shell-ok
 ```
 
 ## SRPHP-PORT-002
@@ -45,8 +47,10 @@ expect:
 assert:
 - target: stdout
   must:
-  - contain:
-    - x:true y:7
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - x:true y:7
 ```
 
 ## SRPHP-PORT-003
@@ -68,6 +72,8 @@ expect:
 assert:
 - target: stdout_path
   must:
-  - exists:
-    - true
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - path_target.txt
 ```

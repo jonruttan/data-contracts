@@ -2858,9 +2858,10 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                             for child in children:
                                 _collect_ops(child, inherited_target=node_target)
                     return
-                for _target, op, _value, _is_true in iter_leaf_assertions(
-                    node, target_override=inherited_target
-                ):
+                for key in node.keys():
+                    op = str(key).strip()
+                    if not op or op in {"target", "must", "can", "cannot"}:
+                        continue
                     if op != "evaluate":
                         non_evaluate_ops.add(op)
 
@@ -2890,6 +2891,184 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
         policy_evaluate=policy_evaluate,
         policy_path="harness.spec_lang_preferred.policy_evaluate",
         violations=violations,
+    )
+
+
+def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("impl_evaluate_first")
+    if not isinstance(cfg, dict):
+        return ["impl.evaluate_first_required requires harness.impl_evaluate_first mapping in governance spec"]
+    roots = cfg.get("roots")
+    if (
+        not isinstance(roots, list)
+        or not roots
+        or any(not isinstance(x, str) or not x.strip() for x in roots)
+    ):
+        return ["harness.impl_evaluate_first.roots must be a non-empty list of non-empty strings"]
+    allow_case_ids_raw = cfg.get("allow_sugar_case_ids", [])
+    if not isinstance(allow_case_ids_raw, list) or any(
+        not isinstance(x, str) for x in allow_case_ids_raw
+    ):
+        return ["harness.impl_evaluate_first.allow_sugar_case_ids must be a list of strings"]
+    allow_case_ids = {x.strip() for x in allow_case_ids_raw if x.strip()}
+    try:
+        policy_evaluate = normalize_policy_evaluate(
+            cfg.get("policy_evaluate"), field="harness.impl_evaluate_first.policy_evaluate"
+        )
+    except ValueError as exc:
+        return [str(exc)]
+
+    def _collect_non_eval_ops(node: object, out: set[str]) -> None:
+        if node is None:
+            return
+        if isinstance(node, list):
+            for child in node:
+                _collect_non_eval_ops(child, out)
+            return
+        if not isinstance(node, dict):
+            return
+        present_groups = [k for k in ("must", "can", "cannot") if k in node]
+        if present_groups:
+            for key in present_groups:
+                children = node.get(key, [])
+                if isinstance(children, list):
+                    for child in children:
+                        _collect_non_eval_ops(child, out)
+            return
+        for key in node.keys():
+            op = str(key).strip()
+            if not op or op in {"target", "must", "can", "cannot"}:
+                continue
+            if op != "evaluate":
+                out.add(op)
+
+    all_rows: list[dict[str, object]] = []
+    for rel_root in roots:
+        base = _join_contract_path(root, rel_root)
+        if not base.exists():
+            violations.append(f"{rel_root}:1: missing impl root for evaluate-first scan")
+            continue
+        for spec_file in sorted(base.rglob(SETTINGS.case.default_file_pattern)):
+            if not spec_file.is_file():
+                continue
+            for spec in iter_spec_doc_tests(spec_file.parent, file_pattern=spec_file.name):
+                try:
+                    rel = str(spec.doc_path.resolve().relative_to(root))
+                except ValueError:
+                    rel = str(spec.doc_path)
+                non_evaluate_ops: set[str] = set()
+                _collect_non_eval_ops(spec.test.get("assert", []) or [], non_evaluate_ops)
+                case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
+                is_allowlisted = case_id in allow_case_ids
+                all_rows.append(
+                    {
+                        "id": case_id,
+                        "file": rel,
+                        "type": str(spec.test.get("type", "")).strip(),
+                        "non_evaluate_ops": sorted(non_evaluate_ops),
+                        "allowlisted": is_allowlisted,
+                    }
+                )
+                if non_evaluate_ops and not is_allowlisted:
+                    found = ", ".join(sorted(non_evaluate_ops))
+                    violations.append(
+                        f"{rel}: case {case_id} uses unsupported sugar ops ({found}); "
+                        "use evaluate-first assertions for impl surface or add explicit allow_sugar_case_ids entry"
+                    )
+
+    return _policy_outcome(
+        subject=all_rows,
+        policy_evaluate=policy_evaluate,
+        policy_path="harness.impl_evaluate_first.policy_evaluate",
+        violations=violations,
+    )
+
+
+def _scan_impl_evaluate_ratio_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("impl_evaluate_first_non_regression")
+    if not isinstance(cfg, dict):
+        return [
+            "impl.evaluate_ratio_non_regression requires harness.impl_evaluate_first_non_regression mapping in governance spec"
+        ]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.impl_evaluate_first_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("spec_lang_adoption")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.impl_evaluate_first_non_regression.spec_lang_adoption must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.impl_evaluate_first_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.impl_evaluate_first_non_regression.epsilon must be >= 0"]
+
+    current = spec_lang_adoption_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current spec-lang adoption report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get(
+            "summary_fields",
+            {"overall_logic_self_contained_ratio": "non_decrease"},
+        ),
+        segment_fields=cfg.get(
+            "segment_fields",
+            {"impl": {"mean_logic_self_contained_ratio": "non_decrease"}},
+        ),
+        epsilon=epsilon,
+    )
+
+
+def _scan_impl_library_usage_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("impl_library_usage_non_regression")
+    if not isinstance(cfg, dict):
+        return [
+            "impl.library_usage_non_regression requires harness.impl_library_usage_non_regression mapping in governance spec"
+        ]
+    baseline_path = str(cfg.get("baseline_path", "")).strip()
+    if not baseline_path:
+        return ["harness.impl_library_usage_non_regression.baseline_path must be a non-empty string"]
+    report_cfg = cfg.get("spec_lang_adoption")
+    if report_cfg is not None and not isinstance(report_cfg, dict):
+        return ["harness.impl_library_usage_non_regression.spec_lang_adoption must be a mapping when provided"]
+    epsilon_raw = cfg.get("epsilon", 1e-12)
+    try:
+        epsilon = float(epsilon_raw)
+    except (TypeError, ValueError):
+        return ["harness.impl_library_usage_non_regression.epsilon must be numeric"]
+    if epsilon < 0:
+        return ["harness.impl_library_usage_non_regression.epsilon must be >= 0"]
+
+    current = spec_lang_adoption_report_jsonable(root, config=report_cfg)
+    current_errs = current.get("errors") or []
+    if isinstance(current_errs, list) and any(str(e).strip() for e in current_errs):
+        return [f"current spec-lang adoption report has errors: {str(e)}" for e in current_errs if str(e).strip()]
+    baseline, baseline_errs = _load_baseline_json(root, baseline_path)
+    if baseline is None:
+        return baseline_errs
+    return compare_metric_non_regression(
+        current=current,
+        baseline=baseline,
+        summary_fields=cfg.get(
+            "summary_fields",
+            {"impl_library_backed_case_ratio": "non_decrease"},
+        ),
+        segment_fields=cfg.get(
+            "segment_fields",
+            {"impl": {"library_backed_case_ratio": "non_decrease"}},
+        ),
+        epsilon=epsilon,
     )
 
 
@@ -5007,6 +5186,9 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.extension_requires_capabilities": _scan_conformance_extension_requires_capabilities,
     "conformance.type_contract_field_sync": _scan_conformance_type_contract_field_sync,
     "conformance.spec_lang_preferred": _scan_conformance_spec_lang_preferred,
+    "impl.evaluate_first_required": _scan_impl_evaluate_first_required,
+    "impl.evaluate_ratio_non_regression": _scan_impl_evaluate_ratio_non_regression,
+    "impl.library_usage_non_regression": _scan_impl_library_usage_non_regression,
     "conformance.spec_lang_fixture_library_usage": _scan_conformance_spec_lang_fixture_library_usage,
     "conformance.library_contract_cases_present": _scan_conformance_library_contract_cases_present,
     "conformance.evaluate_first_ratio_non_regression": _scan_conformance_evaluate_first_ratio_non_regression,

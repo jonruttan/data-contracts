@@ -5,8 +5,8 @@ entries:
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/spec_lang_adoption_baseline.json
-  sha256: 148e80ee3109a8e4ee1c59f7535c38039dce4c67d338447883b45e2f97d195ab
-  rationale: Baseline refreshed after library public/private scope model and public-surface ratio metric.
+  sha256: 962a88dfc8d7757ade1ec40ec2e5eba9eb4a555d273d4c996141fbd28c73ca25
+  rationale: Baseline refreshed after impl evaluate-first uplift and impl library-backed case ratio tracking.
   measurement_model_change: 'yes'
 - baseline: docs/spec/metrics/runner_independence_baseline.json
   sha256: 7066ab5a9fb38c0b2815562015914e9ebdf8087ed77ecdb6c533afd3655923f0

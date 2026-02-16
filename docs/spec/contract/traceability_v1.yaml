@@ -614,6 +614,52 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Conformance evaluate-only coverage is pinned by baseline-backed non-regression checks.
+- rule_id: IMPL_EVALUATE_FIRST_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_FIRST_REQUIRED
+  contract_refs:
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/governance/cases/core/impl_evaluate_first_required.spec.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/impl/php/cases/runner_pass.spec.md
+  notes: Governance enforces evaluate-first assertion authoring in impl fixture surfaces.
+- rule_id: IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED
+  contract_refs:
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/governance/cases/core/impl_evaluate_ratio_non_regression.spec.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - scripts/run_governance_specs.py
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  notes: Impl evaluate ratio is ratcheted via baseline-backed non-regression checks.
+- rule_id: IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED
+  contract_refs:
+  - docs/spec/contract/07_portable_spec_authoring.md
+  - docs/spec/governance/cases/core/impl_library_usage_non_regression.spec.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_quality_metrics_unit.py
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/quality_metrics.py
+  - scripts/run_governance_specs.py
+  - docs/spec/metrics/spec_lang_adoption_baseline.json
+  notes: Impl library-backed assertion ratio is ratcheted to preserve reusable helper adoption.
 - rule_id: CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
   contract_refs:

@@ -14,8 +14,10 @@ expect:
 assert:
 - target: text
   must:
-  - contain:
-    - '# PHP Spec Runner Pass Cases'
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - '# PHP Spec Runner Pass Cases'
 ```
 
 ## SRPHP-RUN-002
@@ -33,8 +35,10 @@ expect:
 assert:
 - target: text
   must:
-  - contain:
-    - fixture-content
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - fixture-content
 ```
 
 ## SRPHP-RUN-003
@@ -52,10 +56,14 @@ expect:
 assert:
 - target: text
   can:
-  - contain:
-    - no-match-token
-  - contain:
-    - fixture-content
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - no-match-token
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - fixture-content
 ```
 
 ## SRPHP-RUN-004
@@ -77,8 +85,10 @@ expect:
 assert:
 - target: stdout
   must:
-  - contain:
-    - hello-runner
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - hello-runner
 ```
 
 ## SRPHP-RUN-005
@@ -102,8 +112,10 @@ expect:
 assert:
 - target: stdout
   must:
-  - contain:
-    - 'on'
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - 'on'
 ```
 
 ## SRPHP-RUN-006
@@ -125,8 +137,10 @@ expect:
 assert:
 - target: stdout
   must:
-  - contain:
-    - fallback-ok
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - fallback-ok
 ```
 
 ## SRPHP-RUN-007
@@ -171,8 +185,10 @@ expect:
 assert:
 - target: stderr
   must:
-  - contain:
-    - runner-err
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - runner-err
 ```
 
 ## SRPHP-RUN-009
@@ -194,18 +210,12 @@ expect:
 assert:
 - target: stdout_path
   must:
-  - exists:
-    - true
-  - contain:
-    - path_target.txt
   - evaluate:
     - contains:
       - {var: subject}
       - path_target.txt
 - target: stdout_path_text
   must:
-  - contain:
-    - path target file content
   - evaluate:
     - contains:
       - {var: subject}

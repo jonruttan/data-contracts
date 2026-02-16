@@ -4,6 +4,7 @@ Canonical domain index for executable specs in this subtree.
 
 ## Files
 
+- `/docs/spec/governance/cases/core/assert_adapter_projection_contract_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_compiler_schema_matrix_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_domain_library_usage_required.spec.md`
 - `/docs/spec/governance/cases/core/assert_domain_profiles_docs_sync.spec.md`
@@ -13,7 +14,6 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/assert_sugar_compile_only_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_type_contract_subject_semantics_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_universal_core_sync.spec.md`
-- `/docs/spec/governance/cases/core/assert_adapter_projection_contract_sync.spec.md`
 - `/docs/spec/governance/cases/core/conformance_api_http_portable_shape.spec.md`
 - `/docs/spec/governance/cases/core/conformance_case_doc_style_guard.spec.md`
 - `/docs/spec/governance/cases/core/conformance_case_index_sync.spec.md`
@@ -60,6 +60,9 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/governance_policy_library_usage_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/governance_policy_library_usage_required.spec.md`
 - `/docs/spec/governance/cases/core/governance_structured_assertions_required.spec.md`
+- `/docs/spec/governance/cases/core/impl_evaluate_first_required.spec.md`
+- `/docs/spec/governance/cases/core/impl_evaluate_ratio_non_regression.spec.md`
+- `/docs/spec/governance/cases/core/impl_library_usage_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/library_domain_index_sync.spec.md`
 - `/docs/spec/governance/cases/core/library_domain_ownership.spec.md`
 - `/docs/spec/governance/cases/core/library_public_surface_model.spec.md`
@@ -112,24 +115,24 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_scope_sync.spec.md`
 - `/docs/spec/governance/cases/core/runtime_settings_import_policy.spec.md`
 - `/docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md`
-- `/docs/spec/governance/cases/core/security_warning_docs.spec.md`
-- `/docs/spec/governance/cases/core/spec_domain_index_sync.spec.md`
-- `/docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md`
-- `/docs/spec/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md`
-- `/docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md`
-- `/docs/spec/governance/cases/core/spec_lang_adoption_metric.spec.md`
-- `/docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md`
-- `/docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md`
-- `/docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md`
-- `/docs/spec/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md`
-- `/docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md`
-- `/docs/spec/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md`
-- `/docs/spec/governance/cases/core/spec_layout_domain_trees.spec.md`
-- `/docs/spec/governance/cases/core/spec_portability_metric.spec.md`
-- `/docs/spec/governance/cases/core/spec_portability_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/schema_no_prose_only_rules.spec.md`
 - `/docs/spec/governance/cases/core/schema_registry_compiled_sync.spec.md`
 - `/docs/spec/governance/cases/core/schema_registry_docs_sync.spec.md`
 - `/docs/spec/governance/cases/core/schema_registry_valid.spec.md`
 - `/docs/spec/governance/cases/core/schema_type_profiles_complete.spec.md`
+- `/docs/spec/governance/cases/core/security_warning_docs.spec.md`
+- `/docs/spec/governance/cases/core/spec_domain_index_sync.spec.md`
+- `/docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md`
+- `/docs/spec/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_adoption_metric.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md`
+- `/docs/spec/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md`
+- `/docs/spec/governance/cases/core/spec_layout_domain_trees.spec.md`
+- `/docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md`
+- `/docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md`
+- `/docs/spec/governance/cases/core/spec_portability_metric.spec.md`
+- `/docs/spec/governance/cases/core/spec_portability_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/v1_scope_doc.spec.md`

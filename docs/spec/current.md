@@ -31,6 +31,9 @@ Notes:
 - Conformance and governance assertion authoring is evaluate-only for
   decision semantics; sugar assertion operators are not allowed in these
   assertion trees.
+- Impl fixture suites are now evaluate-first with shared impl helper libraries;
+  non-evaluate sugar is reserved for explicit, allowlisted schema-behavior
+  fixtures only.
 - Portability governance enforces non-regression on configured spec-lang
   self-containment baseline metrics.
 - Additional ratchet-only metrics track spec-lang adoption, runner

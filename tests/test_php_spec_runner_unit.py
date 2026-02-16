@@ -32,6 +32,13 @@ def _env_bin() -> str | None:
     return shutil.which("env")
 
 
+def _copy_impl_libraries(*, repo_root: Path, dest_root: Path) -> None:
+    src = repo_root / "docs/spec/libraries/impl/assertion_core.spec.md"
+    dest = dest_root / "docs/spec/libraries/impl/assertion_core.spec.md"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+
+
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_spec_runner_matches_pass_fixture_suite(tmp_path):
@@ -52,6 +59,7 @@ def test_php_spec_runner_matches_pass_fixture_suite(tmp_path):
             (fixtures_root / "fixtures" / name).read_text(encoding="utf-8"),
             encoding="utf-8",
         )
+    _copy_impl_libraries(repo_root=repo_root, dest_root=tmp_path)
 
     cp = subprocess.run(
         [
@@ -102,6 +110,7 @@ def test_php_spec_runner_matches_failure_fixture_suite(tmp_path):
         (fixtures_root / "fixtures" / "sample.txt").read_text(encoding="utf-8"),
         encoding="utf-8",
     )
+    _copy_impl_libraries(repo_root=repo_root, dest_root=tmp_path)
 
     cp = subprocess.run(
         [
@@ -147,6 +156,7 @@ def test_php_spec_runner_matches_assert_health_fixture_suite(tmp_path):
         (fixtures_root / assert_health_case).read_text(encoding="utf-8"),
         encoding="utf-8",
     )
+    _copy_impl_libraries(repo_root=repo_root, dest_root=tmp_path)
 
     env = os.environ.copy()
     env["SPEC_RUNNER_ASSERT_HEALTH"] = "warn"
@@ -203,6 +213,7 @@ def test_php_spec_runner_matches_portability_fixture_suite(tmp_path):
         (fixtures_root / "fixtures" / "path_target.txt").read_text(encoding="utf-8"),
         encoding="utf-8",
     )
+    _copy_impl_libraries(repo_root=repo_root, dest_root=tmp_path)
 
     cp = subprocess.run(
         [

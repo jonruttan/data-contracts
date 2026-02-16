@@ -389,6 +389,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                     "native_logic_escape_hint": 1.0 if native_hint else 0.0,
                     "has_policy_evaluate": 1.0 if has_policy_evaluate else 0.0,
                     "library_backed_policy": 1.0 if (case_type == "governance.check" and has_library_paths) else 0.0,
+                    "library_backed_case": 1.0 if has_library_paths else 0.0,
                     "governance_symbol_resolution": governance_symbol_resolution
                     if case_type == "governance.check"
                     else 1.0,
@@ -418,10 +419,16 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
         seg_rows = [r for r in rows if str(r["segment"]) == seg]
         summary = _summarize_segment(
             seg_rows,
-            ["logic_self_contained_ratio", "native_logic_escape_hint", "library_backed_policy"],
+            [
+                "logic_self_contained_ratio",
+                "native_logic_escape_hint",
+                "library_backed_policy",
+                "library_backed_case",
+            ],
         )
         summary["native_logic_escape_case_ratio"] = summary.pop("mean_native_logic_escape_hint")
         summary["library_backed_policy_ratio"] = summary.pop("mean_library_backed_policy")
+        summary["library_backed_case_ratio"] = summary.pop("mean_library_backed_case")
         segments[seg] = summary
 
     total = len(rows)
@@ -432,6 +439,12 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
     gov_library_ratio = _safe_ratio(
         sum(float(r.get("library_backed_policy", 0.0)) for r in gov_rows),
         float(gov_total),
+        default=0.0,
+    )
+    impl_rows = [r for r in rows if str(r.get("segment", "")) == "impl"]
+    impl_library_case_ratio = _safe_ratio(
+        sum(float(r.get("library_backed_case", 0.0)) for r in impl_rows),
+        float(len(impl_rows)),
         default=0.0,
     )
     gov_symbol_resolution_ratio = _safe_ratio(
@@ -463,6 +476,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             "overall_logic_self_contained_ratio": overall_logic,
             "native_logic_escape_case_ratio": native_ratio,
             "governance_library_backed_policy_ratio": gov_library_ratio,
+            "impl_library_backed_case_ratio": impl_library_case_ratio,
             "governance_symbol_resolution_ratio": gov_symbol_resolution_ratio,
             "library_public_surface_ratio": library_public_ratio,
             "library_public_symbol_count": library_public_count,
@@ -709,13 +723,6 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
     rows: list[dict[str, Any]] = []
     errors: list[str] = []
 
-    rust_native_files = {
-        "scripts/rust/spec_runner_cli/src/main.rs",
-        "scripts/rust/runner_adapter.sh",
-    }
-    rust_native_hits = 0
-    rust_native_total = 0
-
     for segment, patterns in segment_files.items():
         seg = str(segment).strip()
         if not seg:
@@ -767,11 +774,6 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
                     "runner_independence_ratio": score,
                 }
             )
-            if rel in rust_native_files:
-                rust_native_total += 1
-                if "python" not in text and "scripts/run_governance_specs.py" not in text:
-                    rust_native_hits += 1
-
     rows.sort(key=lambda r: (str(r["segment"]), str(r["file"])))
     segments: dict[str, Any] = {}
     segment_order = [str(k).strip() for k in segment_files.keys() if str(k).strip()]
@@ -799,6 +801,11 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
     total = len(rows)
     overall_ratio = _safe_ratio(sum(float(r["runner_independence_ratio"]) for r in rows), float(total), default=0.0)
     direct_total = sum(int(r.get("direct_runtime_invocation_count", 0)) for r in rows)
+    rust_coverage_ratio = _safe_ratio(
+        sum(float(r["rust_primary_path_coverage_ratio"]) for r in rows),
+        float(total),
+        default=0.0,
+    )
 
     return {
         "version": 1,
@@ -806,9 +813,7 @@ def runner_independence_report_jsonable(repo_root: Path, config: dict[str, Any] 
             "total_files": total,
             "overall_runner_independence_ratio": overall_ratio,
             "direct_runtime_invocation_count": direct_total,
-            "rust_subcommand_native_coverage_ratio": _safe_ratio(
-                float(rust_native_hits), float(max(1, rust_native_total)), default=0.0
-            ),
+            "rust_subcommand_native_coverage_ratio": rust_coverage_ratio,
         },
         "segments": segments,
         "files": rows,

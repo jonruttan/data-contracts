@@ -4849,3 +4849,206 @@ def test_scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks_detects_
     out = mod._scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks(tmp_path)  # noqa: SLF001
     assert out
     assert "must not embed executable spec-test blocks" in out[0]
+
+
+def test_script_enforces_impl_evaluate_first_required(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "impl_evaluate_first_required.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-IMPL-SPECLANG-001
+
+```yaml spec-test
+id: SRGOV-TEST-IMPL-SPECLANG-001
+type: governance.check
+check: impl.evaluate_first_required
+harness:
+  root: {tmp_path}
+  impl_evaluate_first:
+    roots:
+    - docs/spec/impl
+    allow_sugar_case_ids: []
+    policy_evaluate:
+    - eq:
+      - count:
+        - filter:
+          - fn:
+            - [row]
+            - gt:
+              - count:
+                - get:
+                  - {{var: row}}
+                  - non_evaluate_ops
+              - 0
+          - {{var: subject}}
+      - 0
+assert:
+  - target: summary_json
+    must:
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - impl.evaluate_first_required
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/impl/php/cases/a.spec.md",
+        """# Impl
+
+## IMP-1
+
+```yaml spec-test
+id: IMP-1
+type: text.file
+assert:
+- target: text
+  must:
+  - contain:
+    - x
+```
+""",
+    )
+
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_impl_evaluate_ratio_non_regression(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        tmp_path / "docs/spec/metrics/sla.json",
+        '{"summary":{"overall_logic_self_contained_ratio":1.0},"segments":{"impl":{"mean_logic_self_contained_ratio":1.0}}}\n',
+    )
+    _write_text(
+        cases_dir / "impl_evaluate_ratio_non_regression.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-IMPL-SPECLANG-002
+
+```yaml spec-test
+id: SRGOV-TEST-IMPL-SPECLANG-002
+type: governance.check
+check: impl.evaluate_ratio_non_regression
+harness:
+  root: {tmp_path}
+  impl_evaluate_first_non_regression:
+    baseline_path: docs/spec/metrics/sla.json
+    segment_fields:
+      impl:
+        mean_logic_self_contained_ratio: non_decrease
+    spec_lang_adoption:
+      roots:
+      - docs/spec/impl
+      segment_rules:
+      - prefix: docs/spec/impl
+        segment: impl
+assert:
+  - target: summary_json
+    must:
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - impl.evaluate_ratio_non_regression
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/impl/php/cases/a.spec.md",
+        """# Impl
+
+## IMP-2
+
+```yaml spec-test
+id: IMP-2
+type: text.file
+assert:
+- target: text
+  must:
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - x
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+def test_script_enforces_impl_library_usage_non_regression(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        tmp_path / "docs/spec/metrics/sla.json",
+        '{"summary":{"impl_library_backed_case_ratio":1.0},"segments":{"impl":{"library_backed_case_ratio":1.0}}}\n',
+    )
+    _write_text(
+        cases_dir / "impl_library_usage_non_regression.spec.md",
+        f"""# Governance
+
+## SRGOV-TEST-IMPL-SPECLANG-003
+
+```yaml spec-test
+id: SRGOV-TEST-IMPL-SPECLANG-003
+type: governance.check
+check: impl.library_usage_non_regression
+harness:
+  root: {tmp_path}
+  impl_library_usage_non_regression:
+    baseline_path: docs/spec/metrics/sla.json
+    summary_fields:
+      impl_library_backed_case_ratio: non_decrease
+    segment_fields:
+      impl:
+        library_backed_case_ratio: non_decrease
+    spec_lang_adoption:
+      roots:
+      - docs/spec/impl
+      segment_rules:
+      - prefix: docs/spec/impl
+        segment: impl
+assert:
+  - target: summary_json
+    must:
+      - evaluate:
+        - eq:
+          - get:
+            - var: subject
+            - check_id
+          - impl.library_usage_non_regression
+```
+""",
+    )
+    _write_text(
+        tmp_path / "docs/spec/impl/php/cases/a.spec.md",
+        """# Impl
+
+## IMP-3
+
+```yaml spec-test
+id: IMP-3
+type: text.file
+harness:
+  spec_lang:
+    library_paths:
+    - /docs/spec/libraries/impl/assertion_core.spec.md
+assert:
+- target: text
+  must:
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - x
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
