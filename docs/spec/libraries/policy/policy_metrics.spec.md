@@ -11,25 +11,25 @@ definitions:
     policy.metric_non_decrease:
       fn:
       - [subject, field, baseline_field, epsilon]
-      - gte:
-        - add:
-          - get:
+      - std.logic.gte:
+        - std.math.add:
+          - std.object.get:
             - {var: subject}
             - {var: field}
           - {var: epsilon}
-        - get:
+        - std.object.get:
           - {var: subject}
           - {var: baseline_field}
     policy.metric_non_increase:
       fn:
       - [subject, field, baseline_field, epsilon]
-      - lte:
-        - sub:
-          - get:
+      - std.logic.lte:
+        - std.math.sub:
+          - std.object.get:
             - {var: subject}
             - {var: field}
           - {var: epsilon}
-        - get:
+        - std.object.get:
           - {var: subject}
           - {var: baseline_field}
 ```

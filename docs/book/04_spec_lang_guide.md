@@ -55,15 +55,15 @@ Use staged boolean guards:
 
 ```yaml
 - evaluate:
-  - and:
-    - is_dict:
+  - std.logic.and:
+    - std.type.is_dict:
       - var: subject
-    - has_key:
+    - std.object.has_key:
       - var: subject
       - violations
-    - eq:
-      - count:
-        - get:
+    - std.logic.eq:
+      - std.collection.count:
+        - std.object.get:
           - var: subject
           - violations
       - 0

@@ -24,13 +24,13 @@ assert:
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - spec.no_executable_yaml_json_in_case_trees
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true

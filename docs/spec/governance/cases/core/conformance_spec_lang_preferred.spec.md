@@ -20,14 +20,14 @@ harness:
     - /docs/spec/conformance/cases
     - /docs/spec/governance/cases
     policy_evaluate:
-    - eq:
-      - count:
-        - filter:
+    - std.logic.eq:
+      - std.collection.count:
+        - std.collection.filter:
           - fn:
             - [row]
-            - gt:
-              - count:
-                - get:
+            - std.logic.gt:
+              - std.collection.count:
+                - std.object.get:
                   - {var: row}
                   - non_evaluate_ops
               - 0
@@ -41,19 +41,19 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - {var: subject}
       - 0
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - conformance.spec_lang_preferred

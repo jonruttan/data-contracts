@@ -16,7 +16,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - Spec-Test Schema (v1)
 ```

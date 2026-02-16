@@ -41,8 +41,8 @@ harness:
     - \$_ENV\b
     - \bSystem\.getenv\s*\(
     policy_evaluate:
-    - is_empty:
-      - get:
+    - std.collection.is_empty:
+      - std.object.get:
         - {var: subject}
         - violations
   policy_evaluate:
@@ -53,19 +53,19 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - {var: subject}
       - 0
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - conformance.no_ambient_assumptions

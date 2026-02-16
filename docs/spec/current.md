@@ -44,6 +44,8 @@ Notes:
   recommendations.
 - Spec-lang now supports reusable library symbols via
   `harness.spec_lang.includes` and optional `exports` allowlists.
+- Case-scoped import bindings are declared through
+  `harness.spec_lang.imports` (`from`/`names` with optional `as` aliases).
 - Spec-lang mapping-AST authoring now uses explicit subject reference node
   `{var: subject}`.
 - Library function authoring is mapping-AST only (`type: spec_lang.library`

@@ -15,16 +15,16 @@ assert:
 - target: text
   must:
   - evaluate:
-    - eq:
-      - json_type:
-        - json_parse:
+    - std.logic.eq:
+      - std.type.json_type:
+        - std.json.parse:
           - '{"id":1,"tags":["alpha","beta"]}'
         - dict
       - true
-    - eq:
-      - json_type:
-        - get:
-          - json_parse:
+    - std.logic.eq:
+      - std.type.json_type:
+        - std.object.get:
+          - std.json.parse:
             - '{"id":1,"tags":["alpha","beta"]}'
           - tags
         - list
@@ -47,19 +47,19 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - json_type:
-          - get:
-            - json_parse:
+    - std.logic.and:
+      - std.logic.eq:
+        - std.type.json_type:
+          - std.object.get:
+            - std.json.parse:
               - '{"id":"x"}'
             - id
           - string
         - true
-      - not:
-        - eq:
-          - get:
-            - json_parse:
+      - std.logic.not:
+        - std.logic.eq:
+          - std.object.get:
+            - std.json.parse:
               - '{"id":"x"}'
             - id
           - 1

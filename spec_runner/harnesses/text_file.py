@@ -11,7 +11,7 @@ from spec_runner.assertion_health import (
     resolve_assert_health_mode,
 )
 from spec_runner.compiler import compile_external_case
-from spec_runner.spec_lang import limits_from_harness
+from spec_runner.spec_lang import compile_import_bindings, limits_from_harness
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.virtual_paths import contract_root_for, resolve_contract_path
 
@@ -56,6 +56,7 @@ def run(case, *, ctx) -> None:
     }
     assert_spec = t.get("assert", []) or []
     spec_lang_limits = limits_from_harness(case.harness)
+    spec_lang_imports = compile_import_bindings((case.harness or {}).get("spec_lang"))
     spec_lang_symbols = load_spec_lang_symbols_for_case(
         doc_path=case.doc_path,
         harness=case.harness,
@@ -82,4 +83,5 @@ def run(case, *, ctx) -> None:
         subject_for_key=_subject_for_key,
         limits=spec_lang_limits,
         symbols=spec_lang_symbols,
+        imports=spec_lang_imports,
     )

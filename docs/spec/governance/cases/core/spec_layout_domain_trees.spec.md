@@ -24,8 +24,8 @@ assert:
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - spec.layout_domain_trees

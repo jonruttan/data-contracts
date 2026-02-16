@@ -24,13 +24,13 @@ assert:
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - schema.no_prose_only_rules
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true

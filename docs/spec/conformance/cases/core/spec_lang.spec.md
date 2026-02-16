@@ -54,12 +54,12 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
+    - std.logic.and:
       - call:
         - {var: conf.pass_when_text_contains}
         - {var: subject}
         - version
-      - starts_with:
+      - std.string.starts_with:
         - {var: subject}
         - '#'
 ```
@@ -103,7 +103,7 @@ assert:
                 - add:
                   - {var: acc}
                   - 1
-      - eq:
+      - std.logic.eq:
         - call:
           - {var: loop}
           - 1500
@@ -131,7 +131,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - starts_with:
+    - std.string.starts_with:
       - {var: subject}
       - NOPE_PREFIX
 ```
@@ -287,13 +287,13 @@ assert:
 - target: text
   must:
   - evaluate:
-    - eq:
-      - intersection:
-        - json_parse:
+    - std.logic.eq:
+      - std.set.intersection:
+        - std.json.parse:
           - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
-        - json_parse:
+        - std.json.parse:
           - '[{"k":2},{"k":4},{"k":1}]'
-      - json_parse:
+      - std.json.parse:
         - '[{"k":1},{"k":2}]'
 ```
 
@@ -320,13 +320,13 @@ assert:
 - target: text
   must:
   - evaluate:
-    - eq:
-      - union:
-        - json_parse:
+    - std.logic.eq:
+      - std.set.union:
+        - std.json.parse:
           - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
-        - json_parse:
+        - std.json.parse:
           - '[{"k":2},{"k":4},{"k":1}]'
-      - json_parse:
+      - std.json.parse:
         - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
 ```
 
@@ -353,22 +353,22 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - difference:
-          - json_parse:
+    - std.logic.and:
+      - std.logic.eq:
+        - std.set.difference:
+          - std.json.parse:
             - '[{"k":1},{"k":2},{"k":3}]'
-          - json_parse:
+          - std.json.parse:
             - '[{"k":2},{"k":4}]'
-        - json_parse:
+        - std.json.parse:
           - '[{"k":1},{"k":3}]'
-      - eq:
-        - symmetric_difference:
-          - json_parse:
+      - std.logic.eq:
+        - std.set.symmetric_difference:
+          - std.json.parse:
             - '[{"k":1},{"k":2},{"k":3}]'
-          - json_parse:
+          - std.json.parse:
             - '[{"k":2},{"k":4}]'
-        - json_parse:
+        - std.json.parse:
           - '[{"k":1},{"k":3},{"k":4}]'
 ```
 
@@ -395,26 +395,26 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - set_equals:
-        - json_parse:
+    - std.logic.and:
+      - std.set.set_equals:
+        - std.json.parse:
           - '[{"k":1},{"k":2},{"k":3}]'
-        - json_parse:
+        - std.json.parse:
           - '[{"k":3},{"k":1},{"k":2}]'
-      - is_subset:
-        - json_parse:
+      - std.set.is_subset:
+        - std.json.parse:
           - '[{"k":1},{"k":2}]'
-        - json_parse:
+        - std.json.parse:
           - '[{"k":1},{"k":2},{"k":3}]'
-      - is_superset:
-        - json_parse:
+      - std.set.is_superset:
+        - std.json.parse:
           - '[{"k":1},{"k":2},{"k":3}]'
-        - json_parse:
+        - std.json.parse:
           - '[{"k":1},{"k":3}]'
-      - includes:
-        - json_parse:
+      - std.collection.includes:
+        - std.json.parse:
           - '[{"k":1},{"k":2},{"k":3}]'
-        - json_parse:
+        - std.json.parse:
           - '{"k":2}'
 ```
 
@@ -441,24 +441,24 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - map:
+    - std.logic.and:
+      - std.logic.eq:
+        - std.collection.map:
           - call:
-            - {var: add}
+            - {var: std.math.add}
             - 10
-          - json_parse:
+          - std.json.parse:
             - '[1,2,3]'
-        - json_parse:
+        - std.json.parse:
           - '[11,12,13]'
-      - eq:
-        - filter:
+      - std.logic.eq:
+        - std.collection.filter:
           - call:
-            - {var: lt}
+            - {var: std.logic.lt}
             - 3
-          - json_parse:
+          - std.json.parse:
             - '[1,2,3,4,5]'
-        - json_parse:
+        - std.json.parse:
           - '[4,5]'
 ```
 
@@ -486,64 +486,64 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - reduce:
-          - {var: add}
+    - std.logic.and:
+      - std.logic.eq:
+        - std.collection.reduce:
+          - {var: std.math.add}
           - 0
-          - json_parse:
+          - std.json.parse:
             - '[1,2,3,4]'
         - 10
-      - eq:
-        - reject:
+      - std.logic.eq:
+        - std.collection.reject:
           - call:
-            - {var: lt}
+            - {var: std.logic.lt}
             - 2
-          - json_parse:
+          - std.json.parse:
             - '[1,2,3,4]'
-        - json_parse:
+        - std.json.parse:
           - '[1,2]'
-      - eq:
-        - find:
+      - std.logic.eq:
+        - std.collection.find:
           - call:
-            - {var: lt}
+            - {var: std.logic.lt}
             - 3
-          - json_parse:
+          - std.json.parse:
             - '[1,2,3,4]'
         - 4
-      - eq:
-        - partition:
+      - std.logic.eq:
+        - std.collection.partition:
           - call:
-            - {var: lt}
+            - {var: std.logic.lt}
             - 2
-          - json_parse:
+          - std.json.parse:
             - '[1,2,3,4]'
-        - json_parse:
+        - std.json.parse:
           - '[[3,4],[1,2]]'
-      - eq:
-        - group_by:
+      - std.logic.eq:
+        - std.collection.group_by:
           - fn:
             - [x]
             - if:
-              - gt:
+              - std.logic.gt:
                 - {var: x}
                 - 2
               - hi
               - lo
-          - json_parse:
+          - std.json.parse:
             - '[1,2,3,4]'
-        - json_parse:
+        - std.json.parse:
           - '{"lo":[1,2],"hi":[3,4]}'
-      - eq:
-        - uniq_by:
+      - std.logic.eq:
+        - std.collection.uniq_by:
           - fn:
             - [x]
-            - get:
+            - std.object.get:
               - {var: x}
               - k
-          - json_parse:
+          - std.json.parse:
             - '[{"k":1},{"k":1},{"k":2}]'
-        - json_parse:
+        - std.json.parse:
           - '[{"k":1},{"k":2}]'
 ```
 
@@ -570,48 +570,48 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - flatten:
-          - json_parse:
+    - std.logic.and:
+      - std.logic.eq:
+        - std.collection.flatten:
+          - std.json.parse:
             - '[1,[2,[3],[]],4]'
-        - json_parse:
+        - std.json.parse:
           - '[1,2,3,4]'
-      - eq:
-        - concat:
-          - json_parse:
+      - std.logic.eq:
+        - std.collection.concat:
+          - std.json.parse:
             - '[1,2]'
-          - json_parse:
+          - std.json.parse:
             - '[3]'
-        - json_parse:
+        - std.json.parse:
           - '[1,2,3]'
-      - eq:
-        - append:
+      - std.logic.eq:
+        - std.collection.append:
           - 3
-          - json_parse:
+          - std.json.parse:
             - '[1,2]'
-        - json_parse:
+        - std.json.parse:
           - '[1,2,3]'
-      - eq:
-        - prepend:
+      - std.logic.eq:
+        - std.collection.prepend:
           - 0
-          - json_parse:
+          - std.json.parse:
             - '[1,2]'
-        - json_parse:
+        - std.json.parse:
           - '[0,1,2]'
-      - eq:
-        - take:
+      - std.logic.eq:
+        - std.collection.take:
           - 2
-          - json_parse:
+          - std.json.parse:
             - '[1,2,3]'
-        - json_parse:
+        - std.json.parse:
           - '[1,2]'
-      - eq:
-        - drop:
+      - std.logic.eq:
+        - std.collection.drop:
           - 2
-          - json_parse:
+          - std.json.parse:
             - '[1,2,3]'
-        - json_parse:
+        - std.json.parse:
           - '[3]'
 ```
 
@@ -639,10 +639,10 @@ assert:
 - target: text
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - call:
         - call:
-          - {var: add}
+          - {var: std.math.add}
           - 2
         - 3
       - 5
@@ -676,7 +676,7 @@ assert:
   - evaluate:
     - call:
       - call:
-        - {var: add}
+        - {var: std.math.add}
         - 1
       - 2
       - 3
@@ -707,9 +707,9 @@ assert:
 - target: text
   must:
   - evaluate:
-    - intersection:
+    - std.set.intersection:
       - not-a-list
-      - json_parse:
+      - std.json.parse:
         - '[]'
 ```
 
@@ -736,93 +736,93 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - mul:
+    - std.logic.and:
+      - std.logic.eq:
+        - std.math.mul:
           - 3
           - 4
         - 12
-      - eq:
-        - div:
+      - std.logic.eq:
+        - std.math.div:
           - 9
           - 2
         - 4.5
-      - eq:
-        - mod:
+      - std.logic.eq:
+        - std.math.mod:
           - 9
           - 4
         - 1
-      - eq:
-        - pow:
+      - std.logic.eq:
+        - std.math.pow:
           - 2
           - 5
         - 32
-      - eq:
-        - clamp:
+      - std.logic.eq:
+        - std.math.clamp:
           - 1
           - 5
           - 9
         - 5
-      - eq:
-        - round:
+      - std.logic.eq:
+        - std.math.round:
           - 2.5
         - 3
-      - eq:
-        - slice:
+      - std.logic.eq:
+        - std.collection.slice:
           - 1
           - 3
-          - json_parse:
+          - std.json.parse:
             - '[0,1,2,3]'
-        - json_parse:
+        - std.json.parse:
           - '[1,2]'
-      - eq:
-        - reverse:
-          - json_parse:
+      - std.logic.eq:
+        - std.collection.reverse:
+          - std.json.parse:
             - '[1,2,3]'
-        - json_parse:
+        - std.json.parse:
           - '[3,2,1]'
-      - eq:
-        - zip:
-          - json_parse:
+      - std.logic.eq:
+        - std.collection.zip:
+          - std.json.parse:
             - '[1,2,3]'
-          - json_parse:
+          - std.json.parse:
             - '[4,5]'
-        - json_parse:
+        - std.json.parse:
           - '[[1,4],[2,5]]'
-      - eq:
-        - zip_with:
-          - {var: add}
-          - json_parse:
+      - std.logic.eq:
+        - std.collection.zip_with:
+          - {var: std.math.add}
+          - std.json.parse:
             - '[1,2,3]'
-          - json_parse:
+          - std.json.parse:
             - '[4,5,6]'
-        - json_parse:
+        - std.json.parse:
           - '[5,7,9]'
-      - eq:
-        - range:
+      - std.logic.eq:
+        - std.math.range:
           - 2
           - 5
-        - json_parse:
+        - std.json.parse:
           - '[2,3,4]'
-      - eq:
-        - repeat:
+      - std.logic.eq:
+        - std.collection.repeat:
           - x
           - 3
-        - json_parse:
+        - std.json.parse:
           - '["x","x","x"]'
-      - is_null:
+      - std.type.is_null:
         - null
-      - is_bool:
+      - std.type.is_bool:
         - true
-      - is_number:
+      - std.type.is_number:
         - 3.14
-      - is_string:
+      - std.type.is_string:
         - x
-      - is_list:
-        - json_parse:
+      - std.type.is_list:
+        - std.json.parse:
           - '[1,2]'
-      - is_dict:
-        - json_parse:
+      - std.type.is_dict:
+        - std.json.parse:
           - '{"a":1}'
 ```
 
@@ -849,73 +849,73 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - keys:
-          - json_parse:
+    - std.logic.and:
+      - std.logic.eq:
+        - std.object.keys:
+          - std.json.parse:
             - '{"a":1,"b":2}'
-        - json_parse:
+        - std.json.parse:
           - '["a","b"]'
-      - eq:
-        - values:
-          - json_parse:
+      - std.logic.eq:
+        - std.object.values:
+          - std.json.parse:
             - '{"a":1,"b":2}'
-        - json_parse:
+        - std.json.parse:
           - '[1,2]'
-      - eq:
-        - entries:
-          - json_parse:
+      - std.logic.eq:
+        - std.object.entries:
+          - std.json.parse:
             - '{"a":1}'
-        - json_parse:
+        - std.json.parse:
           - '[["a",1]]'
-      - eq:
-        - merge:
-          - json_parse:
+      - std.logic.eq:
+        - std.object.merge:
+          - std.json.parse:
             - '{"a":1}'
-          - json_parse:
+          - std.json.parse:
             - '{"b":2}'
-        - json_parse:
+        - std.json.parse:
           - '{"a":1,"b":2}'
-      - eq:
-        - assoc:
+      - std.logic.eq:
+        - std.object.assoc:
           - b
           - 2
-          - json_parse:
+          - std.json.parse:
             - '{"a":1}'
-        - json_parse:
+        - std.json.parse:
           - '{"a":1,"b":2}'
-      - eq:
-        - dissoc:
+      - std.logic.eq:
+        - std.object.dissoc:
           - a
-          - json_parse:
+          - std.json.parse:
             - '{"a":1,"b":2}'
-        - json_parse:
+        - std.json.parse:
           - '{"b":2}'
-      - eq:
-        - pick:
-          - json_parse:
+      - std.logic.eq:
+        - std.object.pick:
+          - std.json.parse:
             - '["a"]'
-          - json_parse:
+          - std.json.parse:
             - '{"a":1,"b":2}'
-        - json_parse:
+        - std.json.parse:
           - '{"a":1}'
-      - eq:
-        - omit:
-          - json_parse:
+      - std.logic.eq:
+        - std.object.omit:
+          - std.json.parse:
             - '["a"]'
-          - json_parse:
+          - std.json.parse:
             - '{"a":1,"b":2}'
-        - json_parse:
+        - std.json.parse:
           - '{"b":2}'
-      - prop_eq:
+      - std.object.prop_eq:
         - a
         - 1
-        - json_parse:
+        - std.json.parse:
           - '{"a":1}'
-      - where:
-        - json_parse:
+      - std.object.where:
+        - std.json.parse:
           - '{"a":1}'
-        - json_parse:
+        - std.json.parse:
           - '{"a":1,"b":2}'
 ```
 
@@ -942,48 +942,48 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - compose:
+    - std.logic.and:
+      - std.logic.eq:
+        - std.fn.compose:
           - call:
-            - {var: add}
+            - {var: std.math.add}
             - 1
           - call:
-            - {var: mul}
+            - {var: std.math.mul}
             - 2
           - 3
         - 7
-      - eq:
-        - pipe:
+      - std.logic.eq:
+        - std.fn.pipe:
           - call:
-            - {var: mul}
+            - {var: std.math.mul}
             - 2
           - call:
-            - {var: add}
+            - {var: std.math.add}
             - 1
           - 3
         - 7
-      - eq:
+      - std.logic.eq:
         - call:
           - call:
-            - {var: always}
+            - {var: std.fn.always}
             - k
           - 999
         - k
-      - eq:
-        - replace:
+      - std.logic.eq:
+        - std.string.replace:
           - a-b-c
           - '-'
           - ':'
         - a:b:c
-      - eq:
-        - pad_left:
+      - std.logic.eq:
+        - std.string.pad_left:
           - '7'
           - 3
           - '0'
         - '007'
-      - eq:
-        - pad_right:
+      - std.logic.eq:
+        - std.string.pad_right:
           - '7'
           - 3
           - '0'
@@ -1014,55 +1014,55 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - abs:
+    - std.logic.and:
+      - std.logic.eq:
+        - std.math.abs:
           - -7
         - 7
-      - eq:
-        - negate:
+      - std.logic.eq:
+        - std.math.negate:
           - 3
         - -3
-      - eq:
-        - inc:
+      - std.logic.eq:
+        - std.math.inc:
           - 3
         - 4
-      - eq:
-        - dec:
+      - std.logic.eq:
+        - std.math.dec:
           - 3
         - 2
-      - eq:
-        - floor:
+      - std.logic.eq:
+        - std.math.floor:
           - 3.9
         - 3
-      - eq:
-        - ceil:
+      - std.logic.eq:
+        - std.math.ceil:
           - 3.1
         - 4
-      - eq:
-        - compare:
+      - std.logic.eq:
+        - std.logic.compare:
           - 3
           - 5
         - -1
-      - eq:
-        - compare:
+      - std.logic.eq:
+        - std.logic.compare:
           - 5
           - 5
         - 0
-      - eq:
-        - compare:
+      - std.logic.eq:
+        - std.logic.compare:
           - 7
           - 5
         - 1
-      - between:
+      - std.logic.between:
         - 1
         - 3
         - 2
-      - xor:
+      - std.logic.xor:
         - true
         - false
-      - not:
-        - xor:
+      - std.logic.not:
+        - std.logic.xor:
           - true
           - true
 ```
@@ -1091,150 +1091,150 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - eq:
-        - count:
-          - json_parse:
+    - std.logic.and:
+      - std.logic.eq:
+        - std.collection.count:
+          - std.json.parse:
             - '[1,2,3]'
         - 3
-      - eq:
-        - first:
-          - json_parse:
+      - std.logic.eq:
+        - std.collection.first:
+          - std.json.parse:
             - '[9,8,7]'
         - 9
-      - eq:
-        - rest:
-          - json_parse:
+      - std.logic.eq:
+        - std.collection.rest:
+          - std.json.parse:
             - '[9,8,7]'
-        - json_parse:
+        - std.json.parse:
           - '[8,7]'
-      - eq:
-        - trim:
+      - std.logic.eq:
+        - std.string.trim:
           - '  x  '
         - x
-      - eq:
-        - lower:
+      - std.logic.eq:
+        - std.string.lower:
           - AbC
         - abc
-      - eq:
-        - upper:
+      - std.logic.eq:
+        - std.string.upper:
           - AbC
         - ABC
-      - eq:
-        - split:
+      - std.logic.eq:
+        - std.string.split:
           - a,b,c
           - ','
-        - json_parse:
+        - std.json.parse:
           - '["a","b","c"]'
-      - eq:
-        - join:
-          - json_parse:
+      - std.logic.eq:
+        - std.string.join:
+          - std.json.parse:
             - '["a","b","c"]'
           - '-'
         - a-b-c
-      - eq:
-        - coalesce:
+      - std.logic.eq:
+        - std.null.coalesce:
           - null
           - x
         - x
-      - eq:
-        - distinct:
-          - json_parse:
+      - std.logic.eq:
+        - std.collection.distinct:
+          - std.json.parse:
             - '[1,1,2,2,3]'
-        - json_parse:
+        - std.json.parse:
           - '[1,2,3]'
-      - eq:
-        - sort_by:
-          - json_parse:
+      - std.logic.eq:
+        - std.collection.sort_by:
+          - std.json.parse:
             - '[3,1,2]'
-          - {var: identity}
-        - json_parse:
+          - {var: std.fn.identity}
+        - std.json.parse:
           - '[1,2,3]'
-      - eq:
-        - pluck:
-          - json_parse:
+      - std.logic.eq:
+        - std.object.pluck:
+          - std.json.parse:
             - '[{"k":1},{"k":2}]'
           - k
-        - json_parse:
+        - std.json.parse:
           - '[1,2]'
-      - all:
-        - json_parse:
+      - std.collection.all:
+        - std.json.parse:
           - '[true,true,true]'
-      - any:
-        - json_parse:
+      - std.collection.any:
+        - std.json.parse:
           - '[false,true,false]'
-      - none:
-        - json_parse:
+      - std.collection.none:
+        - std.json.parse:
           - '[false,false]'
-      - is_empty:
-        - json_parse:
+      - std.collection.is_empty:
+        - std.json.parse:
           - '[]'
-      - matches:
+      - std.string.matches:
         - a42
         - a[0-9]+
-      - matches_all:
+      - std.string.matches_all:
         - a42
-        - json_parse:
+        - std.json.parse:
           - '["^a","[0-9]+$"]'
-      - regex_match:
+      - std.string.regex_match:
         - a42
         - a[0-9]+
-      - eq:
-        - json_type:
-          - json_parse:
+      - std.logic.eq:
+        - std.type.json_type:
+          - std.json.parse:
             - '[1,2]'
           - list
         - true
-      - eq:
-        - json_type:
-          - json_parse:
+      - std.logic.eq:
+        - std.type.json_type:
+          - std.json.parse:
             - '{"x":1}'
           - object
         - true
-      - eq:
-        - json_type:
-          - json_parse:
+      - std.logic.eq:
+        - std.type.json_type:
+          - std.json.parse:
             - '[1,2]'
           - array
         - true
-      - eq:
-        - json_type:
+      - std.logic.eq:
+        - std.type.json_type:
           - true
           - boolean
         - true
-      - has_key:
-        - json_parse:
+      - std.object.has_key:
+        - std.json.parse:
           - '{"x":1}'
         - x
-      - in:
+      - std.collection.in:
         - x
-        - json_parse:
+        - std.json.parse:
           - '{"x":1}'
-      - eq:
-        - len:
+      - std.logic.eq:
+        - std.collection.len:
           - abcd
         - 4
-      - is_boolean:
+      - std.type.is_boolean:
         - true
-      - is_array:
-        - json_parse:
+      - std.type.is_array:
+        - std.json.parse:
           - '[1,2]'
-      - is_object:
-        - json_parse:
+      - std.type.is_object:
+        - std.json.parse:
           - '{"x":1}'
-      - eq:
-        - sum:
-          - json_parse:
+      - std.logic.eq:
+        - std.math.sum:
+          - std.json.parse:
             - '[1,2,3]'
         - 6
-      - eq:
-        - min:
-          - json_parse:
+      - std.logic.eq:
+        - std.math.min:
+          - std.json.parse:
             - '[4,2,8]'
         - 2
-      - eq:
-        - max:
-          - json_parse:
+      - std.logic.eq:
+        - std.math.max:
+          - std.json.parse:
             - '[4,2,8]'
         - 8
 ```
@@ -1265,6 +1265,6 @@ assert:
 - target: text
   must:
   - evaluate:
-    - compare:
+    - std.logic.compare:
       - 1
 ```

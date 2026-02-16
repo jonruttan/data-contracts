@@ -23,7 +23,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - '# PHP Spec Runner Library Export References'
 ```

@@ -24,13 +24,13 @@ assert:
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - spec.generated_data_artifacts_not_embedded_in_spec_blocks
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true

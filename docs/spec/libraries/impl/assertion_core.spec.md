@@ -11,19 +11,19 @@ definitions:
     impl.assert.contains:
       fn:
       - [subject, token]
-      - contains:
+      - std.string.contains:
         - {var: subject}
         - {var: token}
     impl.assert.regex:
       fn:
       - [subject, pattern]
-      - regex_match:
+      - std.string.regex_match:
         - {var: subject}
         - {var: pattern}
     impl.assert.json_type:
       fn:
       - [subject, type_name]
-      - json_type:
+      - std.type.json_type:
         - {var: subject}
         - {var: type_name}
 ```

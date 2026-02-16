@@ -79,7 +79,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - CHEAT-003
 ```
 

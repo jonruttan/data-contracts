@@ -30,8 +30,8 @@ assert:
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - conformance.library_contract_cases_present

@@ -11,9 +11,9 @@ definitions:
     http.status_in:
       fn:
       - [subject, allowed]
-      - in:
-        - get:
-          - get:
+      - std.collection.in:
+        - std.object.get:
+          - std.object.get:
             - {var: subject}
             - value
           - status

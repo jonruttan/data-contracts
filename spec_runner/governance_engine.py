@@ -33,11 +33,18 @@ def run_governance_policy(
     subject: Any,
     limits: SpecLangLimits | None = None,
     symbols: Mapping[str, Any] | None = None,
+    imports: Mapping[str, str] | None = None,
     policy_path: str = "harness.policy_evaluate",
 ) -> GovernancePolicyResult:
     cfg = limits or SpecLangLimits()
     try:
-        ok = eval_predicate(policy_evaluate, subject=subject, limits=cfg, symbols=symbols)
+        ok = eval_predicate(
+            policy_evaluate,
+            subject=subject,
+            limits=cfg,
+            symbols=symbols,
+            imports=imports,
+        )
     except Exception as exc:  # noqa: BLE001
         return GovernancePolicyResult(
             passed=False,

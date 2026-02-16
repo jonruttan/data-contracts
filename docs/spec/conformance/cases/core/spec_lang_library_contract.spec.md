@@ -16,17 +16,17 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'definitions:'
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'public:'
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'private:'
-    - not:
-      - contains:
+    - std.logic.not:
+      - std.string.contains:
         - {var: subject}
         - 'functions:'
 ```
@@ -47,17 +47,17 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'definitions:'
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'public:'
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'private:'
-    - not:
-      - contains:
+    - std.logic.not:
+      - std.string.contains:
         - {var: subject}
         - 'functions:'
 ```
@@ -78,11 +78,11 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - policy.pass_when_no_violations
-    - not:
-      - contains:
+    - std.logic.not:
+      - std.string.contains:
         - {var: subject}
         - policy.fail_when_has_violations
 ```

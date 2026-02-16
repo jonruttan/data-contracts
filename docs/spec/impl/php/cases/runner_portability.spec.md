@@ -20,7 +20,7 @@ assert:
 - target: stdout
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - port-shell-ok
 ```
@@ -48,7 +48,7 @@ assert:
 - target: stdout
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - x:true y:7
 ```
@@ -73,7 +73,7 @@ assert:
 - target: stdout_path
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - path_target.txt
 ```

@@ -65,7 +65,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - hello
 ```
 
@@ -171,11 +171,11 @@ Text + boolean composition:
 
 ```yaml
 - evaluate:
-  - and:
-    - contains:
+  - std.logic.and:
+    - std.string.contains:
       - WARN
-    - not:
-      - contains:
+    - std.logic.not:
+      - std.string.contains:
         - ERROR
 ```
 
@@ -183,12 +183,12 @@ JSON field check (for `target: body_json`):
 
 ```yaml
 - evaluate:
-  - and:
-    - has_key:
+  - std.logic.and:
+    - std.object.has_key:
       - items
-    - eq:
-      - json_type:
-        - get:
+    - std.logic.eq:
+      - std.type.json_type:
+        - std.object.get:
           - var: subject
           - items
       - true
@@ -235,10 +235,10 @@ Set algebra + deep equality:
 
 ```yaml
 - evaluate:
-  - intersection:
-    - json_parse:
+  - std.set.intersection:
+    - std.json.parse:
       - '[{"k":1},{"k":2},{"k":2}]'
-    - json_parse:
+    - std.json.parse:
       - '[{"k":2},{"k":3}]'
 ```
 

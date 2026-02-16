@@ -28,20 +28,20 @@ harness:
     - SRPHP-RUN-F004
     - SRPHP-RUN-F008
     policy_evaluate:
-    - eq:
-      - count:
-        - filter:
+    - std.logic.eq:
+      - std.collection.count:
+        - std.collection.filter:
           - fn:
             - [row]
-            - and:
-              - gt:
-                - count:
-                  - get:
+            - std.logic.and:
+              - std.logic.gt:
+                - std.collection.count:
+                  - std.object.get:
                     - {var: row}
                     - non_evaluate_ops
                 - 0
-              - not:
-                - get:
+              - std.logic.not:
+                - std.object.get:
                   - {var: row}
                   - allowlisted
           - {var: subject}
@@ -54,19 +54,19 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - {var: subject}
       - 0
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - impl.evaluate_first_required

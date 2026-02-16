@@ -114,10 +114,10 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - contains:
+    - std.logic.and:
+      - std.string.contains:
         - version
-      - starts_with:
+      - std.string.starts_with:
         - var: subject
         - '#'
 ```

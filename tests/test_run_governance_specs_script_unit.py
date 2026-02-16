@@ -25,8 +25,8 @@ def _write_text(path: Path, text: str) -> None:
         text = re.sub(
             r"\nassert:\n",
             "\n  policy_evaluate:\n"
-            "  - is_empty:\n"
-            "    - get:\n"
+            "  - std.collection.is_empty:\n"
+            "    - std.object.get:\n"
             "      - var: subject\n"
             "      - violations\n"
             "assert:\n",
@@ -51,7 +51,7 @@ assert:
   - target: text
     must:
       - evaluate:
-        - contains:
+        - std.string.contains:
           - var: subject
           - "PASS:"
 ```
@@ -73,13 +73,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - {check}
@@ -164,26 +164,26 @@ check: pending.no_resolved_markers
 harness:
   root: {tmp_path}
   policy_evaluate:
-  - eq:
+  - std.logic.eq:
     - true
     - true
 assert:
   - target: violation_count
     must:
       - evaluate:
-        - eq:
+        - std.logic.eq:
           - var: subject
           - 0
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - pending.no_resolved_markers
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
@@ -354,13 +354,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.python_bin_resolver_sync
@@ -416,13 +416,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.runner_interface_gate_sync
@@ -470,13 +470,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - governance.policy_evaluate_required
@@ -501,7 +501,7 @@ assert:
   - target: text
     must:
       - evaluate:
-        - contains:
+        - std.string.contains:
           - var: subject
           - "PASS:"
 ```
@@ -532,15 +532,15 @@ harness:
     ignore_checks:
       - governance.structured_assertions_required
   policy_evaluate:
-  - is_empty:
-    - get:
+  - std.collection.is_empty:
+    - std.object.get:
       - var: subject
       - violations
 assert:
   - target: violation_count
     must:
       - evaluate:
-        - eq:
+        - std.logic.eq:
           - var: subject
           - 0
 ```
@@ -559,14 +559,14 @@ check: pending.no_resolved_markers
 harness:
   root: .
   policy_evaluate:
-  - eq:
+  - std.logic.eq:
     - true
     - true
 assert:
   - target: text
     must:
       - evaluate:
-        - contains:
+        - std.string.contains:
           - var: subject
           - "PASS:"
 ```
@@ -597,21 +597,21 @@ harness:
     ignore_checks:
       - governance.policy_library_usage_required
   policy_evaluate:
-  - is_empty:
-    - get:
+  - std.collection.is_empty:
+    - std.object.get:
       - var: subject
       - violations
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - governance.policy_library_usage_required
@@ -631,20 +631,20 @@ check: pending.no_resolved_markers
 harness:
   root: .
   policy_evaluate:
-  - eq:
+  - std.logic.eq:
     - true
     - true
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - pending.no_resolved_markers
@@ -672,20 +672,20 @@ harness:
     exports:
       - policy.pass_when_no_violations
   policy_evaluate:
-  - eq:
+  - std.logic.eq:
     - true
     - true
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - pending.no_resolved_markers
@@ -713,8 +713,8 @@ definitions:
     policy.pass_when_no_violations:
       fn:
       - [subject]
-      - is_empty:
-        - get:
+      - std.collection.is_empty:
+        - std.object.get:
           - var: subject
           - violations
 ```
@@ -738,21 +738,21 @@ harness:
     ignore_checks:
       - conformance.library_policy_usage_required
   policy_evaluate:
-  - is_empty:
-    - get:
+  - std.collection.is_empty:
+    - std.object.get:
       - var: subject
       - violations
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.library_policy_usage_required
@@ -777,15 +777,15 @@ harness:
     exports:
       - policy.pass_when_no_violations
   policy_evaluate:
-  - eq:
+  - std.logic.eq:
     - true
     - true
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
@@ -820,8 +820,8 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
@@ -862,13 +862,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.scope_sync
@@ -987,13 +987,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.api_http_portable_shape
@@ -1138,25 +1138,25 @@ harness:
       - "\\\\brand(?:int|range)?\\\\s*\\\\("
       - "\\\\bMath\\\\.random\\\\s*\\\\("
     policy_evaluate:
-      - eq:
-        - count:
-          - filter:
+      - std.logic.eq:
+        - std.collection.count:
+          - std.collection.filter:
             - fn:
               - [row]
-              - gt:
-                - count:
-                  - filter:
+              - std.logic.gt:
+                - std.collection.count:
+                  - std.collection.filter:
                     - fn:
                       - [s]
-                      - any:
-                        - map:
+                      - std.collection.any:
+                        - std.collection.map:
                           - fn:
                             - [p]
-                            - matches:
+                            - std.string.matches:
                               - var: s
                               - var: p
                           - var: patterns
-                    - get:
+                    - std.object.get:
                       - var: row
                       - strings
                 - 0
@@ -1166,13 +1166,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.portable_determinism_guard
@@ -1237,13 +1237,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.portable_determinism_guard
@@ -1275,21 +1275,21 @@ harness:
       - "\\\\bos\\\\.getenv\\\\s*\\\\("
       - "\\\\bdatetime\\\\.now\\\\s*\\\\("
     policy_evaluate:
-      - is_empty:
-        - get:
+      - std.collection.is_empty:
+        - std.object.get:
           - var: subject
           - violations
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.no_ambient_assumptions
@@ -1354,13 +1354,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.no_ambient_assumptions
@@ -1508,14 +1508,14 @@ harness:
     roots:
       - docs/spec/conformance/cases
     policy_evaluate:
-      - eq:
-        - count:
-          - filter:
+      - std.logic.eq:
+        - std.collection.count:
+          - std.collection.filter:
             - fn:
               - [row]
-              - gt:
-                - count:
-                  - get:
+              - std.logic.gt:
+                - std.collection.count:
+                  - std.object.get:
                     - var: row
                     - non_evaluate_ops
                 - 0
@@ -1525,13 +1525,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.spec_lang_preferred
@@ -1552,7 +1552,7 @@ assert:
   - target: text
     must:
       - evaluate:
-          - contains:
+          - std.string.contains:
             - var: subject
             - a
 ```
@@ -1606,16 +1606,16 @@ harness:
       - SRCONF-EXPR-001
       - SRCONF-EXPR-002
   policy_evaluate:
-    - is_empty:
-      - get:
+    - std.collection.is_empty:
+      - std.object.get:
         - var: subject
         - violations
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
@@ -1635,7 +1635,7 @@ assert:
   - target: text
     must:
       - evaluate:
-        - contains:
+        - std.string.contains:
           - version
 ```
 
@@ -1840,13 +1840,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.reference_surface_complete
@@ -1887,13 +1887,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.reference_index_sync
@@ -1935,13 +1935,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.examples_runnable
@@ -2021,13 +2021,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.required_sections
@@ -2067,13 +2067,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.cli_flags_documented
@@ -2124,13 +2124,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.contract_schema_book_sync
@@ -2169,13 +2169,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.examples_runnable
@@ -2218,13 +2218,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.examples_runnable
@@ -2267,13 +2267,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.reference_index_sync
@@ -2327,13 +2327,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.assertions_via_spec_lang
@@ -2342,15 +2342,15 @@ assert:
     )
     _write_text(
         tmp_path / "scripts/php/conformance_runner.php",
-        "function evalTextLeaf() { compileLeafExpr('contain','x','text'); assertLeafPredicate('id','assert','text','contain',['contains',['subject'],'x'],'x',[]); specLangEvalPredicate(['contains',['subject'],'x'],'x',[]); }\n",
+        "function evalTextLeaf() { compileLeafExpr('contain','x','text'); assertLeafPredicate('id','assert','text','contain',['std.string.contains',['std.core.subject'],'x'],'x',[]); specLangEvalPredicate(['std.string.contains',['std.core.subject'],'x'],'x',[]); }\n",
     )
     _write_text(
         tmp_path / "scripts/php/spec_runner.php",
-        "function evalTextLeaf() { compileLeafExpr('contain','x','text'); assertLeafPredicate('id','assert','text','contain',['contains',['subject'],'x'],'x',[]); specLangEvalPredicate(['contains',['subject'],'x'],'x',[]); }\n",
+        "function evalTextLeaf() { compileLeafExpr('contain','x','text'); assertLeafPredicate('id','assert','text','contain',['std.string.contains',['std.core.subject'],'x'],'x',[]); specLangEvalPredicate(['std.string.contains',['std.core.subject'],'x'],'x',[]); }\n",
     )
     _write_text(
         tmp_path / "spec_runner/assertions.py",
-        "def evaluate_internal_assert_tree():\n    eval_predicate(['contains',['subject'],'x'], subject='x')\n",
+        "def evaluate_internal_assert_tree():\n    eval_predicate(['std.string.contains',['std.core.subject'],'x'], subject='x')\n",
     )
     _write_text(
         tmp_path / "spec_runner/harnesses/text_file.py",
@@ -2386,13 +2386,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - contract.governance_check
@@ -2427,13 +2427,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.purpose_quality_gate
@@ -2507,13 +2507,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.purpose_quality_gate
@@ -2564,13 +2564,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - contract.coverage_threshold
@@ -2661,13 +2661,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.make_commands_sync
@@ -2712,13 +2712,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.adoption_profiles_sync
@@ -2768,13 +2768,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - naming.filename_policy
@@ -2825,13 +2825,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - spec.portability_metric
@@ -2851,7 +2851,7 @@ assert:
   - target: text
     must:
       - evaluate:
-          - ["contains", ["subject"], "x"]
+          - ["std.string.contains", ["std.core.subject"], "x"]
 ```
 """,
     )
@@ -2895,13 +2895,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - spec.portability_metric
@@ -2957,18 +2957,18 @@ harness:
     report:
       top_n: 5
     policy_evaluate:
-      - ["eq", 1, 2]
+      - ["std.logic.eq", 1, 2]
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - spec.portability_metric
@@ -3031,19 +3031,19 @@ harness:
         top_n: 5
       policy_evaluate:
         - and
-        - ["has_key", ["subject"], "summary"]
-        - ["has_key", ["subject"], "segments"]
+        - ["std.object.has_key", ["std.core.subject"], "summary"]
+        - ["std.object.has_key", ["std.core.subject"], "segments"]
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - spec.portability_non_regression
@@ -3072,7 +3072,7 @@ assert:
   - target: text
     must:
       - evaluate:
-          - ["contains", ["subject"], "x"]
+          - ["std.string.contains", ["std.core.subject"], "x"]
 ```
 """,
     )
@@ -3162,13 +3162,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.meta_schema_valid
@@ -3208,13 +3208,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.generated_files_clean
@@ -3321,13 +3321,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.release_contract_automation_policy
@@ -3383,13 +3383,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.spec_lang_pure_no_effect_builtins
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
@@ -3437,13 +3437,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.orchestration_policy_via_spec_lang
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
@@ -3452,7 +3452,7 @@ assert:
     )
     _write_text(
         tmp_path / "scripts/ci_gate_summary.py",
-        "def x():\n    _load_gate_policy_expr()\n    eval_predicate(['eq', 1, 1], subject=[])\n    gate_policy='ok'\n    policy_evaluate=['eq',1,1]\n",
+        "def x():\n    _load_gate_policy_expr()\n    eval_predicate(['std.logic.eq', 1, 1], subject=[])\n    gate_policy='ok'\n    policy_evaluate=['std.logic.eq',1,1]\n",
     )
     _write_text(
         tmp_path / "docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md",
@@ -3496,8 +3496,8 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
@@ -3528,8 +3528,8 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
@@ -3565,13 +3565,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.runner_interface_subcommands
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
@@ -3619,13 +3619,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.runner_interface_ci_lane
@@ -3670,13 +3670,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.rust_adapter_no_delegate
@@ -3727,13 +3727,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.rust_adapter_exec_smoke
@@ -3780,13 +3780,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.rust_adapter_subcommand_parity
@@ -3859,7 +3859,7 @@ def test_script_enforces_assert_sugar_compile_only_sync(tmp_path):
         'supported = {"evaluate"}\n'
         'elif op == "evaluate"\n',
     )
-    _write_text(tmp_path / "spec_runner/assertions.py", "def x():\n    eval_predicate(['eq', 1, 1], subject='x')\n")
+    _write_text(tmp_path / "spec_runner/assertions.py", "def x():\n    eval_predicate(['std.logic.eq', 1, 1], subject='x')\n")
 
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
@@ -3959,19 +3959,19 @@ harness:
   root: {tmp_path}
   spec_lang_builtin_sync:
     required_ops:
-    - eq
-    - contains
+    - std.logic.eq
+    - std.string.contains
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - assert.spec_lang_builtin_surface_sync
@@ -3980,17 +3980,17 @@ assert:
     )
     _write_text(
         tmp_path / "docs/spec/contract/03b_spec_lang_v1.md",
-        "# Spec-Lang v1 Contract\n\n## Core Forms\n\n- `eq`\n- `contains`\n\n## Equality + Set Algebra Semantics\n",
+        "# Spec-Lang v1 Contract\n\n## Core Forms\n\n- `std.logic.eq`\n- `std.string.contains`\n\n## Equality + Set Algebra Semantics\n",
     )
     _write_text(
         tmp_path / "spec_runner/spec_lang.py",
-        "def _builtin_arity_table():\n    return {'eq': 2, 'contains': 2}\n",
+        "def _builtin_arity_table():\n    return {'std.logic.eq': 2, 'std.string.contains': 2}\n",
     )
     _write_text(
         tmp_path / "scripts/php/spec_runner.php",
         """<?php
-if ($op === 'eq') { return true; }
-if ($op === 'contains') { return true; }
+if ($op === 'std.logic.eq') { return true; }
+if ($op === 'std.string.contains') { return true; }
 """,
     )
 
@@ -4000,7 +4000,7 @@ if ($op === 'contains') { return true; }
     _write_text(
         tmp_path / "scripts/php/spec_runner.php",
         """<?php
-if ($op === 'eq') { return true; }
+if ($op === 'std.logic.eq') { return true; }
 """,
     )
     code = mod.main(["--cases", str(cases_dir)])
@@ -4028,20 +4028,20 @@ harness:
       - prefix: docs/spec/conformance/cases
         segment: conformance
     policy_evaluate:
-      - has_key:
+      - std.object.has_key:
         - var: subject
         - summary
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - spec.spec_lang_adoption_metric
@@ -4061,7 +4061,7 @@ assert:
   - target: text
     must:
       - evaluate:
-          - contains:
+          - std.string.contains:
             - var: subject
             - x
 ```
@@ -4099,13 +4099,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - spec.spec_lang_adoption_non_regression
@@ -4125,7 +4125,7 @@ assert:
   - target: text
     must:
       - evaluate:
-          - contains:
+          - std.string.contains:
             - var: subject
             - x
 ```
@@ -4171,21 +4171,21 @@ harness:
       - prefix: docs/spec/conformance/cases
         segment: conformance
   policy_evaluate:
-  - is_empty:
-    - get:
+  - std.collection.is_empty:
+    - std.object.get:
       - var: subject
       - violations
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - conformance.evaluate_first_ratio_non_regression
@@ -4205,7 +4205,7 @@ assert:
   - target: text
     must:
       - evaluate:
-          - contains:
+          - std.string.contains:
             - var: subject
             - x
 ```
@@ -4266,7 +4266,7 @@ assert:
   - target: violation_count
     must:
       - evaluate:
-        - eq:
+        - std.logic.eq:
           - var: subject
           - 0
 ```
@@ -4299,13 +4299,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.reference_surface_complete
@@ -4326,8 +4326,8 @@ definitions:
     policy.pass_when_no_violations:
       fn:
       - [subject]
-      - is_empty:
-        - get:
+      - std.collection.is_empty:
+        - std.object.get:
           - var: subject
           - violations
 ```
@@ -4369,13 +4369,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.runner_independence_metric
@@ -4408,13 +4408,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - docs.operability_metric
@@ -4484,13 +4484,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - spec.contract_assertions_metric
@@ -4734,20 +4734,20 @@ harness:
     default_gate_required_tokens:
       - SPEC_RUNNER_BIN
     policy_evaluate:
-      - has_key:
+      - std.object.has_key:
           - var: subject
           - summary
 assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.python_dependency_metric
@@ -4821,13 +4821,13 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - passed
           - true
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - runtime.python_dependency_non_regression
@@ -4896,14 +4896,14 @@ harness:
     - docs/spec/impl
     allow_sugar_case_ids: []
     policy_evaluate:
-    - eq:
-      - count:
-        - filter:
+    - std.logic.eq:
+      - std.collection.count:
+        - std.collection.filter:
           - fn:
             - [row]
-            - gt:
-              - count:
-                - get:
+            - std.logic.gt:
+              - std.collection.count:
+                - std.object.get:
                   - {{var: row}}
                   - non_evaluate_ops
               - 0
@@ -4913,8 +4913,8 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - impl.evaluate_first_required
@@ -4977,8 +4977,8 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - impl.evaluate_ratio_non_regression
@@ -4998,7 +4998,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - x
 ```
@@ -5044,8 +5044,8 @@ assert:
   - target: summary_json
     must:
       - evaluate:
-        - eq:
-          - get:
+        - std.logic.eq:
+          - std.object.get:
             - var: subject
             - check_id
           - impl.library_usage_non_regression
@@ -5069,7 +5069,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - x
 ```

@@ -53,19 +53,19 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - {var: subject}
       - 0
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - runtime.runner_interface_subcommands

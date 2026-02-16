@@ -32,13 +32,13 @@ definitions:
     is_warn:
       fn:
       - [text]
-      - contains:
+      - std.string.contains:
         - {var: text}
         - WARN
     is_error:
       fn:
       - [text]
-      - contains:
+      - std.string.contains:
         - {var: text}
         - ERROR
 ```
@@ -51,9 +51,9 @@ definitions:
         limits=SpecLangLimits(timeout_ms=0),
     )
     expr = [
-        "and",
-        ["call", ["var", "is_warn"], ["subject"]],
-        ["not", ["call", ["var", "is_error"], ["subject"]]],
+        "std.logic.and",
+        ["call", ["var", "is_warn"], ["std.core.subject"]],
+        ["std.logic.not", ["call", ["var", "is_error"], ["std.core.subject"]]],
     ]
     assert eval_predicate(expr, subject="WARN: sample", symbols=symbols) is True
 

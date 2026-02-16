@@ -11,8 +11,8 @@ definitions:
     md.has_heading:
       fn:
       - [subject, heading]
-      - contains:
-        - get:
+      - std.string.contains:
+        - std.object.get:
           - {var: subject}
           - value
         - {var: heading}

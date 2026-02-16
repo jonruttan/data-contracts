@@ -19,18 +19,18 @@ harness:
   objective_scorecard:
     manifest_path: /docs/spec/metrics/objective_manifest.yaml
     policy_evaluate:
-    - and:
-      - has_key:
+    - std.logic.and:
+      - std.object.has_key:
         - {var: subject}
         - summary
-      - has_key:
+      - std.object.has_key:
         - {var: subject}
         - objectives
-      - has_key:
+      - std.object.has_key:
         - {var: subject}
         - tripwire_hits
-      - has_key:
-        - get:
+      - std.object.has_key:
+        - std.object.get:
           - {var: subject}
           - summary
         - overall_min_score
@@ -42,19 +42,19 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - {var: subject}
       - 0
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - objective.scorecard_metric

@@ -35,25 +35,25 @@ harness:
     - \brand(?:int|range)?\s*\(
     - \bMath\.random\s*\(
     policy_evaluate:
-    - eq:
-      - count:
-        - filter:
+    - std.logic.eq:
+      - std.collection.count:
+        - std.collection.filter:
           - fn:
             - [row]
-            - gt:
-              - count:
-                - filter:
+            - std.logic.gt:
+              - std.collection.count:
+                - std.collection.filter:
                   - fn:
                     - [s]
-                    - any:
-                      - map:
+                    - std.collection.any:
+                      - std.collection.map:
                         - fn:
                           - [p]
-                          - matches:
+                          - std.string.matches:
                             - {var: s}
                             - {var: p}
                         - {var: patterns}
-                  - get:
+                  - std.object.get:
                     - {var: row}
                     - strings
               - 0
@@ -67,19 +67,19 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - {var: subject}
       - 0
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - conformance.portable_determinism_guard

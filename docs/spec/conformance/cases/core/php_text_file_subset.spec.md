@@ -15,7 +15,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'version: 1'
 ```
@@ -35,7 +35,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - \A\Z
 ```
@@ -56,7 +56,7 @@ assert:
   must:
   - must:
     - evaluate:
-      - contains:
+      - std.string.contains:
         - {var: subject}
         - 'version: 1'
 ```
@@ -76,11 +76,11 @@ assert:
 - target: text
   can:
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - (?!)
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'version: 1'
 ```
@@ -100,11 +100,11 @@ assert:
 - target: text
   can:
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - \A\Z
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - (?!)
 ```
@@ -124,11 +124,11 @@ assert:
 - target: text
   cannot:
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - \A\Z
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - (?!)
 ```
@@ -148,11 +148,11 @@ assert:
 - target: text
   cannot:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'version: 1'
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - (?!)
 ```
@@ -173,16 +173,16 @@ assert:
   must:
   - can:
     - evaluate:
-      - regex_match:
+      - std.string.regex_match:
         - {var: subject}
         - \A\Z
     - evaluate:
-      - contains:
+      - std.string.contains:
         - {var: subject}
         - 'version: 1'
   - cannot:
     - evaluate:
-      - regex_match:
+      - std.string.regex_match:
         - {var: subject}
         - \A\Z
 ```
@@ -205,7 +205,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - '(?<=version: )1'
 ```
@@ -228,7 +228,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - ''
 ```
@@ -251,7 +251,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - .*
 ```
@@ -274,10 +274,10 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'version: 1'
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'version: 1'
 ```
@@ -300,11 +300,11 @@ assert:
 - target: text
   can:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'version: 1'
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'version: 2'
 ```
@@ -326,7 +326,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - ''
 ```

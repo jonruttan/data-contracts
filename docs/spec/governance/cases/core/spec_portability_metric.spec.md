@@ -47,21 +47,21 @@ harness:
       top_n: 10
     enforce: false
     policy_evaluate:
-    - and:
-      - json_type:
+    - std.logic.and:
+      - std.type.json_type:
         - {var: subject}
         - dict
-      - has_key:
+      - std.object.has_key:
         - {var: subject}
         - summary
-      - has_key:
+      - std.object.has_key:
         - {var: subject}
         - segments
-      - has_key:
+      - std.object.has_key:
         - {var: subject}
         - worst_cases
-      - json_type:
-        - get:
+      - std.type.json_type:
+        - std.object.get:
           - {var: subject}
           - summary
         - dict
@@ -73,19 +73,19 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - {var: subject}
       - 0
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - spec.portability_metric

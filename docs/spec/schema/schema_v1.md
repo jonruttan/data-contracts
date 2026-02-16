@@ -178,6 +178,10 @@ For `type: cli.run`, supported `harness` keys include:
 - `timeout_ms` (int, >=0, `0` disables timeout)
 - `includes` (list[string], optional): ordered spec-lang library files
 - `exports` (list[string], optional): symbol allowlist exposed to this case
+- `imports` (list[mapping], optional): case-scoped stdlib imports
+  - `from` (string, required): `std.*` namespace prefix
+  - `names` (list[string], required): symbols imported from namespace
+  - `as` (mapping, optional): alias map `symbol -> local_name`
 - `references` (mapping, optional): external reference policy
   - `mode` (string): `deny` (default) or `allow`
   - `providers` (list[string]): allowlisted provider names
@@ -324,7 +328,9 @@ assert:
 - target: stderr
   cannot:
   - evaluate:
-    - {contains: [{var: subject}, 'ERROR:']}
+    - std.string.contains:
+      - var: subject
+      - 'ERROR:'
 ```
 
 Author in canonical form:
@@ -340,17 +346,26 @@ assert:
 - target: stderr
   must:
   - evaluate:
-    - {contains: [{var: subject}, 'WARN:']}
+    - std.string.contains:
+      - var: subject
+      - 'WARN:'
 - target: stderr
   cannot:
   - evaluate:
-    - {contains: [{var: subject}, 'ERROR:']}
+    - std.string.contains:
+      - var: subject
+      - 'ERROR:'
 - target: stdout
   can:
   - evaluate:
-    - {json_type: [{json_parse: [{var: subject}]}, list]}
+    - std.type.json_type:
+      - std.json.parse:
+        - var: subject
+      - list
   - evaluate:
-    - {contains: [{var: subject}, '[]']}
+    - std.string.contains:
+      - var: subject
+      - '[]'
 ```
 
 <!-- BEGIN GENERATED: SCHEMA_REGISTRY_V1 -->

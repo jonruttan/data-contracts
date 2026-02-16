@@ -18,27 +18,27 @@ harness:
     - policy.pass_when_no_violations
   python_dependency:
     policy_evaluate:
-    - and:
-      - has_key:
+    - std.logic.and:
+      - std.object.has_key:
         - {var: subject}
         - summary
-      - has_key:
-        - get:
+      - std.object.has_key:
+        - std.object.get:
           - {var: subject}
           - summary
         - non_python_lane_python_exec_count
-      - has_key:
-        - get:
+      - std.object.has_key:
+        - std.object.get:
           - {var: subject}
           - summary
         - transitive_adapter_python_exec_count
-      - has_key:
-        - get:
+      - std.object.has_key:
+        - std.object.get:
           - {var: subject}
           - summary
         - default_lane_python_free_ratio
-      - has_key:
-        - get:
+      - std.object.has_key:
+        - std.object.get:
           - {var: subject}
           - summary
         - python_usage_scope_violation_count
@@ -50,19 +50,19 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - {var: subject}
       - 0
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - runtime.python_dependency_metric

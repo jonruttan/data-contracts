@@ -7,6 +7,7 @@ from typing import Any
 import yaml
 
 from spec_runner.spec_lang import _builtin_arity_table
+from spec_runner.spec_lang_std_names import FLAT_TO_STD
 
 
 PROFILE_PATH = "docs/spec/schema/spec_lang_stdlib_profile_v1.yaml"
@@ -69,8 +70,13 @@ def _php_surface(repo_root: Path) -> dict[str, int | None]:
     if not php_file.exists():
         return {}
     raw = php_file.read_text(encoding="utf-8")
-    ops = set(re.findall(r"\$op === '([a-z_]+)'", raw))
-    return {sym: None for sym in sorted(ops)}
+    flat_ops = set(re.findall(r"\$op === '([a-z0-9_.]+)'", raw))
+    out: dict[str, int | None] = {}
+    for sym in sorted(flat_ops):
+        out[FLAT_TO_STD.get(sym, sym)] = None
+    for sym in SPECIAL_FORMS:
+        out[sym] = None
+    return out
 
 
 def spec_lang_stdlib_report_jsonable(repo_root: Path) -> dict[str, Any]:

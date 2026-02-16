@@ -11,7 +11,7 @@ from spec_runner.assertions import (
 )
 from spec_runner.compiler import compile_external_case
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
-from spec_runner.spec_lang import limits_from_harness
+from spec_runner.spec_lang import compile_import_bindings, limits_from_harness
 from spec_runner.virtual_paths import contract_root_for, resolve_contract_path
 
 
@@ -80,6 +80,7 @@ def run(case, *, ctx) -> None:
 
     h = case.harness
     spec_lang_limits = limits_from_harness(h)
+    spec_lang_imports = compile_import_bindings((h or {}).get("spec_lang"))
     spec_lang_symbols = load_spec_lang_symbols_for_case(
         doc_path=case.doc_path,
         harness=h,
@@ -137,4 +138,5 @@ def run(case, *, ctx) -> None:
         subject_for_key=_subject_for_key,
         limits=spec_lang_limits,
         symbols=spec_lang_symbols,
+        imports=spec_lang_imports,
     )

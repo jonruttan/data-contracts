@@ -15,23 +15,23 @@ assert:
 - target: text
   must:
   - evaluate:
-    - eq:
-      - add:
+    - std.logic.eq:
+      - std.math.add:
         - 2
         - 3
       - 5
-    - eq:
-      - sub:
+    - std.logic.eq:
+      - std.math.sub:
         - 9
         - 4
       - 5
-    - eq:
-      - add:
+    - std.logic.eq:
+      - std.math.add:
         - 1
         - 1
       - 2
-    - eq:
-      - sub:
+    - std.logic.eq:
+      - std.math.sub:
         - 3
         - 3
       - 0
@@ -52,22 +52,22 @@ assert:
 - target: text
   must:
   - evaluate:
-    - eq:
-      - json_type:
-        - json_parse:
+    - std.logic.eq:
+      - std.type.json_type:
+        - std.json.parse:
           - '{"a":1,"b":2}'
         - dict
       - true
-    - eq:
-      - has_key:
-        - json_parse:
+    - std.logic.eq:
+      - std.object.has_key:
+        - std.json.parse:
           - '{"a":{"b":1}}'
         - a
       - true
-    - eq:
-      - json_type:
-        - get:
-          - json_parse:
+    - std.logic.eq:
+      - std.type.json_type:
+        - std.object.get:
+          - std.json.parse:
             - '{"a":{"b":1}}'
           - a
         - dict

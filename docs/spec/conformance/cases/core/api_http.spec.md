@@ -22,19 +22,19 @@ assert:
 - target: status
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - '200'
 - target: body_text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - '"ok":true'
 - target: body_json
   must:
   - evaluate:
-    - json_type:
+    - std.type.json_type:
       - {var: subject}
       - dict
 ```
@@ -62,7 +62,7 @@ assert:
 - target: status
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - '200'
 ```
@@ -91,7 +91,7 @@ assert:
 - target: status
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - '200'
 ```

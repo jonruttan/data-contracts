@@ -24,7 +24,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - regex_match:
+    - std.string.regex_match:
       - {var: subject}
       - \A\Z
 ```

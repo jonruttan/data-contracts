@@ -11,9 +11,9 @@ definitions:
     py.is_tuple_projection:
       fn:
       - [subject]
-      - eq:
-        - get:
-          - get:
+      - std.logic.eq:
+        - std.object.get:
+          - std.object.get:
             - {var: subject}
             - meta
           - native_kind

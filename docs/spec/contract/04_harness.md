@@ -71,6 +71,8 @@ Subject profile envelope contract:
   containing `type: spec_lang.library` reusable function definitions.
 - `harness.spec_lang.exports` MAY constrain visible imported symbols to an
   explicit allowlist.
+- `harness.spec_lang.imports` MAY declare case-scoped imports using
+  `from: std.<namespace>` and `names: [...]` with optional `as` aliases.
 
 ## Orchestration Tooling
 

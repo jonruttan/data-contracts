@@ -11,32 +11,32 @@ definitions:
     conf.pass_when_text_contains:
       fn:
       - [subject, token]
-      - contains:
+      - std.string.contains:
         - {var: subject}
         - {var: token}
   private:
     conf.pass_when_text_regex:
       fn:
       - [subject, pattern]
-      - regex_match:
+      - std.string.regex_match:
         - {var: subject}
         - {var: pattern}
     conf.eq:
       fn:
       - [subject, value]
-      - eq:
+      - std.logic.eq:
         - {var: subject}
         - {var: value}
     conf.has_error_category:
       fn:
       - [subject, category]
-      - contains:
+      - std.string.contains:
         - {var: subject}
         - {var: category}
     conf.json_type_is:
       fn:
       - [subject, type_name]
-      - json_type:
+      - std.type.json_type:
         - {var: subject}
         - {var: type_name}
 ```

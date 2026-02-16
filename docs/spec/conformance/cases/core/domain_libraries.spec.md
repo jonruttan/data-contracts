@@ -30,10 +30,10 @@ assert:
       - lit:
         - 200
         - 201
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - http.status_in
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'type: spec_lang.library'
 ```
@@ -95,19 +95,19 @@ assert:
             k: v
           meta:
             php_array_kind: assoc
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - /docs/spec/libraries/domain/http_core.spec.md
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - /docs/spec/libraries/domain/make_core.spec.md
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - /docs/spec/libraries/domain/markdown_core.spec.md
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - /docs/spec/libraries/domain/php_core.spec.md
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - /docs/spec/libraries/domain/python_core.spec.md
 ```

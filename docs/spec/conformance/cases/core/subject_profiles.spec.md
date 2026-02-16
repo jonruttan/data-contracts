@@ -16,16 +16,16 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - profile_id
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - profile_version
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - json_core_only
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - deterministic_projection
 ```
@@ -46,20 +46,20 @@ assert:
 - target: context_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - profile_id
       - text.file/v1
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - profile_version
       - 1
-    - has_key:
+    - std.object.has_key:
       - {var: subject}
       - value
-    - has_key:
+    - std.object.has_key:
       - {var: subject}
       - meta
 ```

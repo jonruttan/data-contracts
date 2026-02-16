@@ -99,10 +99,10 @@ assert:
 - target: text
   must:
   - evaluate:
-    - and:
-      - contains:
+    - std.logic.and:
+      - std.string.contains:
         - BK-QS-002B
-      - starts_with:
+      - std.string.starts_with:
         - var: subject
         - 'id:'
 ```

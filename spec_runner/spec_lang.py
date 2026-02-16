@@ -8,6 +8,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
+from spec_runner.spec_lang_std_names import FLAT_TO_STD, SPECIAL_FORMS, STD_TO_FLAT, namespace_index
+
 
 @dataclass(frozen=True)
 class SpecLangLimits:
@@ -52,6 +54,7 @@ class _Env:
 class _EvalState:
     subject: Any
     limits: SpecLangLimits
+    imports: dict[str, str]
     steps: int = 0
     started: float = 0.0
 
@@ -403,7 +406,7 @@ def _round_half_away_from_zero(v: int | float) -> int:
 
 def _builtin_arity_table() -> dict[str, int]:
     # Fixed arity table used by builtin currying.
-    return {
+    flat = {
         "subject": 0,
         "contains": 2,
         "starts_with": 2,
@@ -535,9 +538,84 @@ def _builtin_arity_table() -> dict[str, int]:
         "or": 2,
         "not": 1,
     }
+    return {FLAT_TO_STD[name]: arity for name, arity in flat.items()}
 
 
 _BUILTIN_ARITY = _builtin_arity_table()
+_STD_NAMESPACE_INDEX = namespace_index()
+
+
+def _flat_symbol_for_runtime(symbol: str) -> str:
+    return STD_TO_FLAT.get(symbol, symbol)
+
+
+def compile_import_bindings(
+    harness_spec_lang: Mapping[str, Any] | None,
+) -> dict[str, str]:
+    cfg = dict(harness_spec_lang or {})
+    raw_imports = cfg.get("imports")
+    if raw_imports is None:
+        return {}
+    if not isinstance(raw_imports, list):
+        raise ValueError("harness.spec_lang.imports must be a list")
+
+    out: dict[str, str] = {}
+    for idx, item in enumerate(raw_imports):
+        field = f"harness.spec_lang.imports[{idx}]"
+        if not isinstance(item, dict):
+            raise ValueError(f"{field} must be a mapping")
+        ns = str(item.get("from", "")).strip()
+        if not ns:
+            raise ValueError(f"{field}.from must be a non-empty string")
+        allowed = _STD_NAMESPACE_INDEX.get(ns)
+        if allowed is None:
+            raise ValueError(f"{field}.from unknown namespace: {ns}")
+
+        names = item.get("names")
+        if not isinstance(names, list) or not names:
+            raise ValueError(f"{field}.names must be a non-empty list")
+
+        alias_raw = item.get("as")
+        alias_map: dict[str, str] = {}
+        if alias_raw is not None:
+            if not isinstance(alias_raw, dict):
+                raise ValueError(f"{field}.as must be a mapping")
+            for raw_from, raw_to in alias_raw.items():
+                from_name = str(raw_from).strip()
+                to_name = str(raw_to).strip()
+                if not from_name or not to_name:
+                    raise ValueError(f"{field}.as keys/values must be non-empty strings")
+                alias_map[from_name] = to_name
+
+        for j, raw_name in enumerate(names):
+            short = str(raw_name).strip()
+            if not short:
+                raise ValueError(f"{field}.names[{j}] must be a non-empty string")
+            if short not in allowed:
+                raise ValueError(f"{field}.names[{j}] unknown symbol in namespace {ns}: {short}")
+            local = alias_map.get(short, short)
+            if local in SPECIAL_FORMS:
+                raise ValueError(f"{field} import collides with reserved special form: {local}")
+            if local in out and out[local] != f"{ns}.{short}":
+                raise ValueError(f"{field} import collision for local name: {local}")
+            out[local] = f"{ns}.{short}"
+
+    return out
+
+
+def _resolve_op_symbol(head: str, imports: Mapping[str, str]) -> str:
+    if head in SPECIAL_FORMS:
+        return head
+    if head in _BUILTIN_ARITY:
+        return head
+    if head.startswith("std."):
+        raise ValueError(f"unsupported spec_lang symbol: {head}")
+    if head in imports:
+        return imports[head]
+    if head in FLAT_TO_STD:
+        # Internal list-token AST may still carry flat names; normalize at runtime.
+        return FLAT_TO_STD[head]
+    raise ValueError(f"unsupported spec_lang symbol: {head}")
 
 
 def _eval_non_tail(expr: Any, env: _Env, st: _EvalState) -> Any:
@@ -585,6 +663,7 @@ def _eval_callable_like(fn_val: Any, call_args: list[Any], st: _EvalState) -> An
 
 
 def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
+    op = _flat_symbol_for_runtime(op)
     if op == "subject":
         _require_arity(op, args, 0)
         return st.subject
@@ -1155,6 +1234,7 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
 
 
 def _eval_builtin(op: str, args: list[Any], env: _Env, st: _EvalState) -> Any:
+    op = _flat_symbol_for_runtime(op)
     if op == "var":
         _require_arity(op, args, 1)
         name = args[0]
@@ -1348,7 +1428,7 @@ def _eval_tail(expr: Any, env: _Env, st: _EvalState) -> Any:
             return [_eval_non_tail(item, current_env, st) for item in current_expr]
         if not head:
             raise ValueError("spec_lang expression head must be non-empty string symbol")
-        op = head
+        op = _resolve_op_symbol(head, st.imports)
         args = list(current_expr[1:])
 
         if op == "if":
@@ -1428,7 +1508,7 @@ def compile_symbol_bindings(
     limits: SpecLangLimits | None = None,
 ) -> dict[str, Any]:
     cfg = limits or SpecLangLimits()
-    st = _EvalState(subject=None, limits=cfg, started=time.perf_counter())
+    st = _EvalState(subject=None, limits=cfg, imports={}, started=time.perf_counter())
     slots: dict[str, Any] = {}
     env = _Env(vars=slots, parent=None)
     for raw_name in bindings:
@@ -1451,12 +1531,26 @@ def eval_expr(
     subject: Any,
     limits: SpecLangLimits | None = None,
     symbols: Mapping[str, Any] | None = None,
+    imports: Mapping[str, str] | None = None,
 ) -> Any:
     cfg = limits or SpecLangLimits()
     validate_expr_shape(expr, limits=cfg)
     if not _is_json_value(subject):
         raise ValueError("spec_lang subject must be a JSON value")
-    st = _EvalState(subject=subject, limits=cfg, started=time.perf_counter())
+    resolved_imports: dict[str, str] = {}
+    if imports:
+        for raw_name, raw_symbol in imports.items():
+            name = str(raw_name).strip()
+            symbol = str(raw_symbol).strip()
+            if not name or not symbol:
+                raise ValueError("spec_lang imports must use non-empty string names and symbols")
+            if name in SPECIAL_FORMS:
+                raise ValueError(f"spec_lang imports cannot shadow special form: {name}")
+            if symbol not in _BUILTIN_ARITY:
+                raise ValueError(f"spec_lang imports unknown symbol: {symbol}")
+            resolved_imports[name] = symbol
+
+    st = _EvalState(subject=subject, limits=cfg, imports=resolved_imports, started=time.perf_counter())
     root_symbols: dict[str, Any] = {}
     if symbols:
         for raw_name, value in symbols.items():
@@ -1464,6 +1558,8 @@ def eval_expr(
             if not name:
                 raise ValueError("spec_lang symbol name must be non-empty")
             root_symbols[name] = value
+    for local_name, canonical_symbol in resolved_imports.items():
+        root_symbols[local_name] = _BuiltinFn(canonical_symbol, _BUILTIN_ARITY[canonical_symbol])
     # Canonical authoring uses `{var: subject}` for the current subject.
     root_symbols["subject"] = subject
     return _eval_tail(expr, _Env(vars=root_symbols, parent=None), st)
@@ -1475,8 +1571,9 @@ def eval_predicate(
     subject: Any,
     limits: SpecLangLimits | None = None,
     symbols: Mapping[str, Any] | None = None,
+    imports: Mapping[str, str] | None = None,
 ) -> bool:
-    got = eval_expr(expr, subject=subject, limits=limits, symbols=symbols)
+    got = eval_expr(expr, subject=subject, limits=limits, symbols=symbols, imports=imports)
     return bool(got)
 
 

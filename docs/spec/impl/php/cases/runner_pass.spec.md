@@ -15,7 +15,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - '# PHP Spec Runner Pass Cases'
 ```
@@ -36,7 +36,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - fixture-content
 ```
@@ -57,11 +57,11 @@ assert:
 - target: text
   can:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - no-match-token
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - fixture-content
 ```
@@ -86,7 +86,7 @@ assert:
 - target: stdout
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - hello-runner
 ```
@@ -113,7 +113,7 @@ assert:
 - target: stdout
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'on'
 ```
@@ -138,7 +138,7 @@ assert:
 - target: stdout
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - fallback-ok
 ```
@@ -186,7 +186,7 @@ assert:
 - target: stderr
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - runner-err
 ```
@@ -211,13 +211,13 @@ assert:
 - target: stdout_path
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - path_target.txt
 - target: stdout_path_text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - path target file content
 ```

@@ -65,7 +65,7 @@ assert:
 - target: stdout
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - '"ok": true'
 ```

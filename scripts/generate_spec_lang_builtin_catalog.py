@@ -23,32 +23,20 @@ def _resolve_cli_path(repo_root: Path, raw: str) -> Path:
 
 def _php_builtin_symbols(php_text: str) -> set[str]:
     out: set[str] = set()
-    for m in re.finditer(r"if \(\$op === '([a-z0-9_]+)'\)", php_text):
+    for m in re.finditer(r"if \(\$op === '([a-z0-9_.]+)'\)", php_text):
         out.add(m.group(1))
     for m in re.finditer(r"if \(in_array\(\$op,\s*\[([^\]]+)\]", php_text):
         body = m.group(1)
-        for lit in re.finditer(r"'([a-z0-9_]+)'", body):
+        for lit in re.finditer(r"'([a-z0-9_.]+)'", body):
             out.add(lit.group(1))
     return out
 
 
 def _classify(name: str) -> str:
-    if name in {"add", "sub", "mul", "div", "mod", "pow", "abs", "negate", "inc", "dec", "clamp", "round", "floor", "ceil", "sum", "min", "max"}:
-        return "numeric"
-    if name in {"eq", "neq", "equals", "lt", "lte", "gt", "gte", "compare", "between", "and", "or", "not", "xor"}:
-        return "comparison_logic"
-    if name in {"contains", "starts_with", "ends_with", "regex_match", "matches", "matches_all", "trim", "lower", "upper", "split", "join", "replace", "pad_left", "pad_right"}:
-        return "string_regex"
-    if name in {"json_type", "is_null", "is_bool", "is_boolean", "is_number", "is_integer", "is_string", "is_list", "is_array", "is_dict", "is_object"}:
-        return "type_predicate"
-    if name in {"has_key", "get", "get_in", "get_or", "has_path", "keys", "values", "entries", "merge", "merge_deep", "assoc", "dissoc", "pick", "omit", "prop_eq", "where", "keys_exact", "keys_include", "keys_exclude"}:
-        return "object"
-    if name in {"len", "count", "first", "rest", "last", "nth", "map", "filter", "reject", "find", "reduce", "partition", "group_by", "uniq_by", "flatten", "concat", "append", "prepend", "take", "drop", "slice", "reverse", "zip", "zip_with", "range", "repeat", "any", "all", "none", "is_empty", "distinct", "sort", "sort_by", "pluck", "includes", "in", "contains_all", "contains_any"}:
-        return "collection"
-    if name in {"union", "intersection", "difference", "symmetric_difference", "is_subset", "is_superset", "set_equals"}:
-        return "set"
-    if name in {"json_parse", "json_stringify", "schema_match", "schema_errors", "coalesce", "default_to", "subject", "identity", "always", "compose", "pipe"}:
-        return "core"
+    if name.startswith("std."):
+        parts = name.split(".")
+        if len(parts) > 1:
+            return parts[1]
     return "other"
 
 

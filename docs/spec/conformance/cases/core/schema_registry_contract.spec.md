@@ -17,13 +17,13 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - 'END GENERATED: SCHEMA_REGISTRY_V1'
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - Generated Registry Snapshot
 ```

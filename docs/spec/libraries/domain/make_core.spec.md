@@ -11,8 +11,8 @@ definitions:
     make.has_target:
       fn:
       - [subject, target]
-      - contains:
-        - get:
+      - std.string.contains:
+        - std.object.get:
           - {var: subject}
           - value
         - {var: target}

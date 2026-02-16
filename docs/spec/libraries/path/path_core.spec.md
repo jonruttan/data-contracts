@@ -11,14 +11,14 @@ definitions:
     path.normalize_slashes:
       fn:
       - [path]
-      - replace:
+      - std.string.replace:
         - {var: path}
         - \
         - /
     path.segments:
       fn:
       - [path]
-      - split:
+      - std.string.split:
         - call:
           - {var: path.normalize_slashes}
           - {var: path}
@@ -33,13 +33,13 @@ definitions:
               - {var: path.segments}
               - {var: path}
         - if:
-          - is_empty:
+          - std.collection.is_empty:
             - {var: segs}
           - ''
-          - get:
+          - std.object.get:
             - {var: segs}
-            - sub:
-              - len:
+            - std.math.sub:
+              - std.collection.len:
                 - {var: segs}
               - 1
     path.extension:
@@ -58,22 +58,22 @@ definitions:
                 - {var: base}
                 - .
           - if:
-            - lte:
-              - len:
+            - std.logic.lte:
+              - std.collection.len:
                 - {var: parts}
               - 1
             - ''
-            - get:
+            - std.object.get:
               - {var: parts}
-              - sub:
-                - len:
+              - std.math.sub:
+                - std.collection.len:
                   - {var: parts}
                 - 1
   private:
     path.trim_dot:
       fn:
       - [path]
-      - replace:
+      - std.string.replace:
         - {var: path}
         - ./
         - ''
@@ -87,16 +87,16 @@ definitions:
               - {var: path.segments}
               - {var: path}
         - if:
-          - lte:
-            - len:
+          - std.logic.lte:
+            - std.collection.len:
               - {var: segs}
             - 1
           - ''
-          - join:
-            - slice:
+          - std.string.join:
+            - std.collection.slice:
               - 0
-              - sub:
-                - len:
+              - std.math.sub:
+                - std.collection.len:
                   - {var: segs}
                 - 1
               - {var: segs}
@@ -104,7 +104,7 @@ definitions:
     path.has_extension:
       fn:
       - [path, ext]
-      - eq:
+      - std.logic.eq:
         - call:
           - {var: path.extension}
           - {var: path}
@@ -112,7 +112,7 @@ definitions:
     path.is_under:
       fn:
       - [path, prefix]
-      - starts_with:
+      - std.string.starts_with:
         - call:
           - {var: path.normalize_slashes}
           - {var: path}
@@ -122,7 +122,7 @@ definitions:
     path.matches:
       fn:
       - [path, pattern]
-      - regex_match:
+      - std.string.regex_match:
         - call:
           - {var: path.normalize_slashes}
           - {var: path}

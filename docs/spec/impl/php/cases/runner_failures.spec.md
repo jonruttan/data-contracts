@@ -19,7 +19,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - x
 ```
@@ -42,7 +42,7 @@ assert:
 - target: text
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - outside
 ```
@@ -68,7 +68,7 @@ assert:
 - target: stdout
   must:
   - evaluate:
-    - contains:
+    - std.string.contains:
       - {var: subject}
       - x
 ```

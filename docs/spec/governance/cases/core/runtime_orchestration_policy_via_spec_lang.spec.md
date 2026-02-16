@@ -29,13 +29,13 @@ harness:
       - policy_evaluate
     forbidden_tokens: []
     policy_evaluate:
-    - eq:
-      - count:
-        - filter:
+    - std.logic.eq:
+      - std.collection.count:
+        - std.collection.filter:
           - fn:
             - [step]
-            - neq:
-              - get:
+            - std.logic.neq:
+              - std.object.get:
                 - {var: step}
                 - status
               - pass
@@ -49,19 +49,19 @@ assert:
 - target: violation_count
   must:
   - evaluate:
-    - eq:
+    - std.logic.eq:
       - {var: subject}
       - 0
 - target: summary_json
   must:
   - evaluate:
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - passed
       - true
-    - eq:
-      - get:
+    - std.logic.eq:
+      - std.object.get:
         - {var: subject}
         - check_id
       - runtime.orchestration_policy_via_spec_lang

@@ -24,7 +24,12 @@ from spec_runner.purpose_lint import (
 )
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import SETTINGS, governed_config_literals
-from spec_runner.spec_lang import SpecLangLimits, _builtin_arity_table, eval_predicate
+from spec_runner.spec_lang import (
+    SpecLangLimits,
+    _builtin_arity_table,
+    compile_import_bindings,
+    eval_predicate,
+)
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
@@ -1580,45 +1585,51 @@ def _scan_assert_spec_lang_builtin_surface_sync(root: Path, *, harness: dict | N
         return ["harness.spec_lang_builtin_sync.required_ops must be a non-empty list of non-empty strings"]
     required = {str(x).strip() for x in required_ops if str(x).strip()}
 
-    contract = root / "docs/spec/contract/03b_spec_lang_v1.md"
-    py_impl = root / "spec_runner/spec_lang.py"
-    php_impl = root / "scripts/php/spec_runner.php"
-    if not contract.exists() or not py_impl.exists() or not php_impl.exists():
-        return [
-            "assert.spec_lang_builtin_surface_sync requires contract + python/php implementation files"
-        ]
-
-    contract_raw = contract.read_text(encoding="utf-8")
-    try:
-        core_start = contract_raw.index("## Core Forms")
-        core_end = contract_raw.index("## Equality + Set Algebra Semantics")
-    except ValueError:
-        return [
-            "docs/spec/contract/03b_spec_lang_v1.md:1: missing Core Forms or Equality + Set Algebra Semantics section"
-        ]
-    core_raw = contract_raw[core_start:core_end]
-    contract_ops = {str(x).strip() for x in re.findall(r"- `([a-z_]+)`", core_raw) if str(x).strip()}
-    # Internal/runtime forms are not builtin operator symbols.
-    contract_ops -= {"fn", "if", "let", "call", "var"}
-    if not contract_ops:
-        return ["docs/spec/contract/03b_spec_lang_v1.md:1: no builtin operator tokens found in Core Forms"]
-    unknown = sorted(required - contract_ops)
+    stdlib_report = spec_lang_stdlib_report_jsonable(root)
+    profile_symbols = {
+        str(k).strip()
+        for k in (stdlib_report.get("profile_symbols") or {}).keys()
+        if str(k).strip()
+    }
+    if not profile_symbols:
+        # Unit-test fallback: allow contract-only surface checks when stdlib profile
+        # fixture is not present.
+        contract = root / "docs/spec/contract/03b_spec_lang_v1.md"
+        if not contract.exists():
+            return [
+                "assert.spec_lang_builtin_surface_sync requires stdlib profile or contract docs with builtin symbols"
+            ]
+        contract_raw = contract.read_text(encoding="utf-8")
+        profile_symbols = {
+            str(x).strip()
+            for x in re.findall(r"`([a-z0-9_.]+)`", contract_raw)
+            if str(x).strip()
+        }
+        profile_symbols -= {"fn", "if", "let", "call", "var"}
+    unknown = sorted(required - profile_symbols)
     for op in unknown:
-        violations.append(f"docs/spec/contract/03b_spec_lang_v1.md:1: required_ops entry is not documented builtin: {op}")
-    contract_ops = set(required)
-    if not contract_ops:
+        violations.append(
+            f"docs/spec/schema/spec_lang_stdlib_profile_v1.yaml:1: required_ops entry is not in stdlib profile: {op}"
+        )
+    required = {op for op in required if op in profile_symbols}
+    if not required:
         return violations
 
     py_ops = set(_builtin_arity_table().keys())
-    py_missing = sorted(contract_ops - py_ops)
+    py_missing = sorted(required - py_ops)
     for op in py_missing:
         violations.append(f"spec_runner/spec_lang.py:1: missing builtin documented in contract: {op}")
-
-    php_raw = php_impl.read_text(encoding="utf-8")
-    # PHP builtin handlers are implemented with a mix of direct branches and grouped forms.
-    # Use contract-token presence as the sync signal to avoid false negatives from parser shape.
-    php_ops = {op for op in contract_ops if f"'{op}'" in php_raw}
-    php_missing = sorted(contract_ops - php_ops)
+    php_ops = {
+        str(x).strip()
+        for x in (stdlib_report.get("php_symbols") or [])
+        if str(x).strip()
+    }
+    if not php_ops:
+        php_impl = root / "scripts/php/spec_runner.php"
+        if php_impl.exists():
+            php_raw = php_impl.read_text(encoding="utf-8")
+            php_ops = {op for op in required if f"'{op}'" in php_raw}
+    php_missing = sorted(required - php_ops)
     for op in php_missing:
         violations.append(f"scripts/php/spec_runner.php:1: missing builtin documented in contract: {op}")
 
@@ -5713,6 +5724,7 @@ def run_governance_check(case, *, ctx) -> None:
     )
     if lib_symbols:
         symbols = {**lib_symbols, **symbols}
+    spec_lang_imports = compile_import_bindings((h or {}).get("spec_lang"))
 
     policy_result: GovernancePolicyResult = run_governance_policy(
         check_id=check_id,
@@ -5720,6 +5732,7 @@ def run_governance_check(case, *, ctx) -> None:
         policy_evaluate=policy_evaluate,
         subject=subject,
         symbols=symbols,
+        imports=spec_lang_imports,
         policy_path=policy_path,
     )
     if policy_result.passed:
@@ -5764,7 +5777,12 @@ def run_governance_check(case, *, ctx) -> None:
             else:
                 raise TypeError("evaluate assertion op value must be a list or mapping AST expression")
             expr = normalize_policy_evaluate(raw_expr_list, field=f"{assert_path}.{target}.evaluate")
-            ok = eval_predicate(expr, subject=subject_value, limits=spec_lang_limits)
+            ok = eval_predicate(
+                expr,
+                subject=subject_value,
+                limits=spec_lang_limits,
+                imports=spec_lang_imports,
+            )
             if bool(ok) is not bool(is_true):
                 raise AssertionError(f"{op} assertion failed")
 

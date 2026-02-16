@@ -11,6 +11,8 @@ Cases MAY configure library loading via `harness.spec_lang`:
 
 - `includes` (list[string]): ordered paths to library spec docs/files
 - `exports` (list[string], optional): explicit symbol allowlist visible to case
+- `imports` (list[mapping], optional): case-scoped stdlib import bindings
+  (`from`, `names`, optional `as`)
 
 Governance policy reuse:
 

@@ -13,31 +13,31 @@ definitions:
     policy.pass_when_no_violations:
       fn:
       - [subject]
-      - is_empty:
-        - get:
+      - std.collection.is_empty:
+        - std.object.get:
           - {var: subject}
           - violations
   private:
     policy.fail_when_has_violations:
       fn:
       - [subject]
-      - not:
+      - std.logic.not:
         - call:
           - {var: policy.pass_when_no_violations}
           - {var: subject}
     policy.check_id_is:
       fn:
       - [subject, expected]
-      - eq:
-        - get:
+      - std.logic.eq:
+        - std.object.get:
           - {var: subject}
           - check_id
         - {var: expected}
     policy.violation_count_is:
       fn:
       - [subject, expected]
-      - eq:
-        - get:
+      - std.logic.eq:
+        - std.object.get:
           - {var: subject}
           - violation_count
         - {var: expected}
