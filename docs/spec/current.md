@@ -99,6 +99,10 @@ Notes:
 - Spec-lang generated docs now include namespace chapters
   (`93a_std_core.md` through `93i_std_json_schema_fn_null.md`) with
   per-symbol signatures, parameters, returns, error conditions, and examples.
+- Harness execution workflow is now hard-cut componentized around shared
+  components (`build_execution_context`, `run_assertions_with_context`,
+  `resolve_subject_for_target`) across `text.file`, `cli.run`,
+  `orchestration.run`, `docs.generate`, and `api.http`.
 - Governance enforces docs semantic completeness and minimum quality-score
   thresholds for runner/harness/stdlib generated references.
 - Documentation catalog generation additionally includes policy rule,

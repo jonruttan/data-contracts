@@ -2824,3 +2824,77 @@ rules:
   references:
   - docs/spec/governance/cases/core/docs_docgen_quality_score_threshold.spec.md
   - scripts/run_governance_specs.py
+- id: HARNESS_WORKFLOW_COMPONENTS_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: harness.execution.workflow
+  norm: MUST
+  requirement: harnesses_use_shared_execution_components
+  description: 'Harnesses must execute runtime setup, target routing, and assertion evaluation through shared component APIs.
+
+    '
+  rationale: Removes duplicated harness glue and keeps behavior consistent.
+  risk_if_violated: Drift and regressions across harness types.
+  references:
+  - docs/spec/governance/cases/core/architecture_harness_workflow_components_required.spec.md
+  - spec_runner/components/execution_context.py
+  - spec_runner/components/assertion_engine.py
+  - spec_runner/components/subject_router.py
+- id: HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN
+  introduced_in: v1
+  scope: implementation
+  applies_to: harness.execution.workflow
+  norm: MUST_NOT
+  requirement: duplicate_harness_workflow_tokens
+  description: 'Harness modules must not reintroduce local spec-lang setup or direct assertion evaluation glue.
+
+    '
+  rationale: Preserves the hard-cut decomposition boundary.
+  risk_if_violated: Architecture backslides into per-harness divergence.
+  references:
+  - docs/spec/governance/cases/core/architecture_harness_local_workflow_duplication_forbidden.spec.md
+  - scripts/run_governance_specs.py
+- id: HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
+  introduced_in: v1
+  scope: schema
+  applies_to: schema.registry.v1.types
+  norm: MUST
+  requirement: behavior_heavy_harness_types_have_non_empty_fields
+  description: 'Type overlays for behavior-heavy harnesses must declare non-empty fields mappings.
+
+    '
+  rationale: Ensures runtime behavior is represented in machine schema.
+  risk_if_violated: Validation and docs drift from implementation.
+  references:
+  - docs/spec/governance/cases/core/schema_harness_type_overlay_complete.spec.md
+  - docs/spec/schema/registry/v1/types/orchestration_run.yaml
+  - docs/spec/schema/registry/v1/types/docs_generate.yaml
+- id: HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: harness.contract.schema_sync
+  norm: MUST
+  requirement: contract_current_and_type_overlays_stay_in_sync
+  description: 'Harness contract docs, current snapshot, and type overlays must remain synchronized for orchestration.run and docs.generate.
+
+    '
+  rationale: Prevents prose/schema/runtime drift.
+  risk_if_violated: Contributors receive conflicting requirements.
+  references:
+  - docs/spec/governance/cases/core/schema_harness_contract_overlay_sync.spec.md
+  - docs/spec/contract/04_harness.md
+  - docs/spec/current.md
+- id: HARNESS_SUBJECT_TARGET_MAP_DECLARED
+  introduced_in: v1
+  scope: implementation
+  applies_to: harness.assertion.targets
+  norm: MUST
+  requirement: explicit_target_subject_mapping
+  description: 'Harnesses must declare explicit target mapping used by assertions.
+
+    '
+  rationale: Keeps assertion routing deterministic and auditable.
+  risk_if_violated: Hidden target behavior and brittle assertions.
+  references:
+  - docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md
+  - spec_runner/components/subject_router.py

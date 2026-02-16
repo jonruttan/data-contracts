@@ -204,6 +204,13 @@ _SCHEMA_REGISTRY_COMPILED_ARTIFACT = ".artifacts/schema_registry_compiled.json"
 _DOCS_GENERATOR_REPORT = ".artifacts/docs-generator-report.json"
 _DOCS_GENERATOR_SUMMARY = ".artifacts/docs-generator-summary.md"
 _DOCGEN_QUALITY_MIN_SCORE = 0.95
+_HARNESS_FILES = (
+    "spec_runner/harnesses/text_file.py",
+    "spec_runner/harnesses/cli_run.py",
+    "spec_runner/harnesses/orchestration_run.py",
+    "spec_runner/harnesses/docs_generate.py",
+    "spec_runner/harnesses/api_http.py",
+)
 
 
 def _resolve_contract_config_path(root: Path, raw: str, *, field: str) -> Path:
@@ -212,6 +219,13 @@ def _resolve_contract_config_path(root: Path, raw: str, *, field: str) -> Path:
 
 def _join_contract_path(root: Path, raw: object) -> Path:
     return root / str(raw).lstrip("/")
+
+
+def _line_for(text: str, token: str) -> int:
+    idx = text.find(token)
+    if idx < 0:
+        return 1
+    return text[:idx].count("\n") + 1
 
 
 def _iter_path_fields(node: object, *, key_path: str = ""):
@@ -4844,6 +4858,130 @@ def _scan_runtime_scope_sync(root: Path, *, harness: dict | None = None) -> list
     return violations
 
 
+def _scan_architecture_harness_workflow_components_required(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    required_tokens = (
+        "from spec_runner.components.execution_context import build_execution_context",
+        "from spec_runner.components.assertion_engine import run_assertions_with_context",
+        "from spec_runner.components.subject_router import resolve_subject_for_target",
+    )
+    violations: list[str] = []
+    for rel in _HARNESS_FILES:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing harness file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing required component workflow token {tok}")
+    return violations
+
+
+def _scan_architecture_harness_local_workflow_duplication_forbidden(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    forbidden_tokens = (
+        "compile_import_bindings(",
+        "limits_from_harness(",
+        "load_spec_lang_symbols_for_case(",
+        "evaluate_internal_assert_tree(",
+    )
+    violations: list[str] = []
+    for rel in _HARNESS_FILES:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in forbidden_tokens:
+            if tok in text:
+                line = _line_for(text, tok)
+                violations.append(f"{rel}:{line}: forbidden legacy harness-workflow token present: {tok}")
+    return violations
+
+
+def _scan_schema_harness_type_overlay_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    required = {
+        "docs/spec/schema/registry/v1/types/orchestration_run.yaml": (
+            "required_top_level",
+            "allowed_top_level_extra",
+            "fields",
+        ),
+        "docs/spec/schema/registry/v1/types/docs_generate.yaml": (
+            "required_top_level",
+            "allowed_top_level_extra",
+            "fields",
+        ),
+    }
+    violations: list[str] = []
+    for rel, keys in required.items():
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing required type overlay")
+            continue
+        payload = yaml.safe_load(p.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            violations.append(f"{rel}:1: type overlay must be a mapping")
+            continue
+        for key in keys:
+            if key not in payload:
+                violations.append(f"{rel}:1: missing key {key}")
+        fields = payload.get("fields")
+        if not isinstance(fields, dict) or not fields:
+            violations.append(f"{rel}:1: fields must be a non-empty mapping")
+    return violations
+
+
+def _scan_schema_harness_contract_overlay_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    contract = _join_contract_path(root, "docs/spec/contract/04_harness.md")
+    current = _join_contract_path(root, "docs/spec/current.md")
+    overlays = (
+        _join_contract_path(root, "docs/spec/schema/registry/v1/types/orchestration_run.yaml"),
+        _join_contract_path(root, "docs/spec/schema/registry/v1/types/docs_generate.yaml"),
+    )
+    violations: list[str] = []
+    if not contract.exists():
+        violations.append("docs/spec/contract/04_harness.md:1: missing harness contract doc")
+        return violations
+    if not current.exists():
+        violations.append("docs/spec/current.md:1: missing current spec doc")
+        return violations
+    contract_text = contract.read_text(encoding="utf-8").lower()
+    current_text = current.read_text(encoding="utf-8").lower()
+    required_tokens = ("orchestration.run", "docs.generate", "components")
+    for tok in required_tokens:
+        if tok not in contract_text:
+            violations.append(f"docs/spec/contract/04_harness.md:1: missing token {tok}")
+        if tok not in current_text:
+            violations.append(f"docs/spec/current.md:1: missing token {tok}")
+    for p in overlays:
+        if not p.exists():
+            continue
+        payload = yaml.safe_load(p.read_text(encoding="utf-8"))
+        case_type = str((payload or {}).get("case_type", "")).strip()
+        if case_type and case_type not in contract_text:
+            violations.append(f"docs/spec/contract/04_harness.md:1: missing overlay case_type token {case_type}")
+    return violations
+
+
+def _scan_runtime_harness_subject_target_map_declared(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for rel in _HARNESS_FILES:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            continue
+        text = p.read_text(encoding="utf-8")
+        if "targets = {" not in text:
+            violations.append(f"{rel}:1: missing declared target mapping (targets = {{...}})")
+    return violations
+
+
 def _scan_runtime_python_bin_resolver_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -6296,6 +6434,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.history_reviews_namespace": _scan_docs_history_reviews_namespace,
     "docs.no_os_artifact_files": _scan_docs_no_os_artifact_files,
     "runtime.scope_sync": _scan_runtime_scope_sync,
+    "architecture.harness_workflow_components_required": _scan_architecture_harness_workflow_components_required,
+    "architecture.harness_local_workflow_duplication_forbidden": _scan_architecture_harness_local_workflow_duplication_forbidden,
+    "schema.harness_type_overlay_complete": _scan_schema_harness_type_overlay_complete,
+    "schema.harness_contract_overlay_sync": _scan_schema_harness_contract_overlay_sync,
+    "runtime.harness_subject_target_map_declared": _scan_runtime_harness_subject_target_map_declared,
     "orchestration.ops_symbol_grammar": _scan_orchestration_ops_symbol_grammar,
     "orchestration.ops_legacy_underscore_forbidden": _scan_orchestration_ops_legacy_underscore_forbidden,
     "orchestration.ops_registry_sync": _scan_orchestration_ops_registry_sync,

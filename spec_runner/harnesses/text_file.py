@@ -1,26 +1,8 @@
-import os
-import sys
-
-from spec_runner.assertions import (
-    evaluate_internal_assert_tree,
-)
-from spec_runner.assertion_health import (
-    format_assertion_health_error,
-    format_assertion_health_warning,
-    lint_assert_tree,
-    resolve_assert_health_mode,
-)
 from spec_runner.compiler import compile_external_case
-from spec_runner.spec_lang import compile_import_bindings, limits_from_harness
-from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
+from spec_runner.components.assertion_engine import run_assertions_with_context
+from spec_runner.components.execution_context import build_execution_context
+from spec_runner.components.subject_router import resolve_subject_for_target
 from spec_runner.virtual_paths import contract_root_for, resolve_contract_path
-
-
-def _runtime_env(ctx) -> dict[str, str]:
-    raw_env = getattr(ctx, "env", None)
-    if raw_env is None:
-        return dict(os.environ)
-    return {str(k): str(v) for k, v in raw_env.items()}
 
 
 def run(case, *, ctx) -> None:
@@ -54,34 +36,16 @@ def run(case, *, ctx) -> None:
             "source_doc": "/" + doc_path.relative_to(root).as_posix().lstrip("/"),
         },
     }
-    assert_spec = t.get("assert", []) or []
-    spec_lang_limits = limits_from_harness(case.harness)
-    spec_lang_imports = compile_import_bindings((case.harness or {}).get("spec_lang"))
-    spec_lang_symbols = load_spec_lang_symbols_for_case(
-        doc_path=case.doc_path,
-        harness=case.harness,
-        limits=spec_lang_limits,
-    )
-    mode = resolve_assert_health_mode(t, env=_runtime_env(ctx))
-    diags = lint_assert_tree(assert_spec)
-    if diags and mode == "error":
-        raise AssertionError(format_assertion_health_error(diags))
-    if diags and mode == "warn":
-        for d in diags:
-            print(format_assertion_health_warning(d), file=sys.stderr)
-
-    def _subject_for_key(subject_key: str):
-        if subject_key != "text":
-            if subject_key == "context_json":
-                return text_subject_profile
-            raise ValueError(f"unknown assert target for text.file: {subject_key}")
-        return text
-
-    evaluate_internal_assert_tree(
-        case.assert_tree,
-        case_id=case_id,
-        subject_for_key=_subject_for_key,
-        limits=spec_lang_limits,
-        symbols=spec_lang_symbols,
-        imports=spec_lang_imports,
+    execution = build_execution_context(case_id=case_id, harness=case.harness, doc_path=case.doc_path)
+    targets = {
+        "text": text,
+        "context_json": text_subject_profile,
+    }
+    run_assertions_with_context(
+        assert_tree=case.assert_tree,
+        raw_assert_spec=t.get("assert", []) or [],
+        raw_case=t,
+        ctx=ctx,
+        execution=execution,
+        subject_for_key=lambda k: resolve_subject_for_target(k, targets, type_name="text.file"),
     )

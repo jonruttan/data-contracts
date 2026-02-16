@@ -47,12 +47,14 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 169
-- checks_with_cases: 163
+- check_count: 174
+- checks_with_cases: 168
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
 |---|---|---|
+| `architecture.harness_local_workflow_duplication_forbidden` | 1 | true |
+| `architecture.harness_workflow_components_required` | 1 | true |
 | `assert.adapter_projection_contract_sync` | 1 | true |
 | `assert.compiler_schema_matrix_sync` | 1 | true |
 | `assert.domain_library_usage_required` | 1 | true |
@@ -179,6 +181,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.api_http_verb_suite` | 1 | true |
 | `runtime.assertions_via_spec_lang` | 1 | true |
 | `runtime.config_literals` | 1 | true |
+| `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |
@@ -201,6 +204,8 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.scope_sync` | 1 | true |
 | `runtime.settings_import_policy` | 1 | true |
 | `runtime.spec_lang_pure_no_effect_builtins` | 1 | true |
+| `schema.harness_contract_overlay_sync` | 1 | true |
+| `schema.harness_type_overlay_complete` | 1 | true |
 | `schema.no_prose_only_rules` | 1 | true |
 | `schema.registry_compiled_sync` | 1 | true |
 | `schema.registry_docs_sync` | 1 | true |

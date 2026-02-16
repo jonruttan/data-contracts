@@ -4,6 +4,9 @@
 
 - Runner dispatches by case `type`.
 - Harness receives parsed case and execution context.
+- Harness runtime workflow is componentized and MUST use shared components:
+  `build_execution_context`, `run_assertions_with_context`,
+  `resolve_subject_for_target`.
 
 ## Entrypoint
 

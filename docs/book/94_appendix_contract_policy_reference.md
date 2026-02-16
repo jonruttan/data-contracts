@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 193
-- must_count: 180
+- rule_count: 198
+- must_count: 184
 - should_count: 12
-- must_not_count: 1
-- active_count: 193
+- must_not_count: 2
+- active_count: 198
 - deprecated_count: 0
 - removed_count: 0
 
@@ -156,6 +156,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED` | `SHOULD` | `governance` | `governance.check.assertions` | 3 | `active` |
 | `GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS` | `SHOULD` | `governance` | `governance.check.subject_decision_split` | 2 | `active` |
 | `GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |
+| `HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED` | `MUST` | `governance` | `harness.contract.schema_sync` | 3 | `active` |
+| `HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | `MUST_NOT` | `implementation` | `harness.execution.workflow` | 2 | `active` |
+| `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `MUST` | `implementation` | `harness.assertion.targets` | 2 | `active` |
+| `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `MUST` | `schema` | `schema.registry.v1.types` | 3 | `active` |
+| `HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | `MUST` | `implementation` | `harness.execution.workflow` | 4 | `active` |
 | `IMPL_EVALUATE_FIRST_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.surface` | 3 | `active` |
 | `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.metric_ratchet` | 3 | `active` |
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.library_usage` | 3 | `active` |

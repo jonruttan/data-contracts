@@ -12,10 +12,11 @@ from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 
-from spec_runner.assertions import evaluate_internal_assert_tree
 from spec_runner.compiler import compile_external_case
-from spec_runner.spec_lang import compile_import_bindings, limits_from_harness
-from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
+from spec_runner.components.assertion_engine import run_assertions_with_context
+from spec_runner.components.effects.http_ops import run_http_op
+from spec_runner.components.execution_context import build_execution_context
+from spec_runner.components.subject_router import resolve_subject_for_target
 from spec_runner.virtual_paths import contract_root_for, resolve_contract_path
 
 _OAUTH_TOKEN_CACHE: dict[tuple[str, str, str, str], tuple[str, float]] = {}
@@ -696,14 +697,8 @@ def run(case, *, ctx) -> None:
         raise TypeError("api.http requires request mapping or requests list")
 
     h = case.harness
+    execution = build_execution_context(case_id=case_id, harness=h, doc_path=case.doc_path)
     mode, oauth, scenario = _parse_api_http_harness(h)
-    spec_lang_limits = limits_from_harness(h)
-    spec_lang_imports = compile_import_bindings((h or {}).get("spec_lang"))
-    spec_lang_symbols = load_spec_lang_symbols_for_case(
-        doc_path=case.doc_path,
-        harness=h,
-        limits=spec_lang_limits,
-    )
     timeout_seconds = float(h.get("timeout_seconds", 5))
 
     auth_mode = "none"
@@ -740,14 +735,16 @@ def run(case, *, ctx) -> None:
                     "used_cached_token": used_cached_token,
                 }
             )
-        response = _fetch_response(
-            case,
-            method=method,
-            url=url,
-            headers=headers,
-            body_bytes=body_bytes,
-            timeout_seconds=timeout_seconds,
-            mode=mode,
+        response = run_http_op(
+            lambda: _fetch_response(
+                case,
+                method=method,
+                url=url,
+                headers=headers,
+                body_bytes=body_bytes,
+                timeout_seconds=timeout_seconds,
+                mode=mode,
+            )
         )
         body_text_value = str(response["body_text"])
         body_json_value = _json_or_none(body_text_value)
@@ -833,28 +830,20 @@ def run(case, *, ctx) -> None:
         },
     }
 
-    def _subject_for_key(subject_key: str):
-        if subject_key == "status":
-            return status_text
-        if subject_key == "headers":
-            return headers_text
-        if subject_key == "body_text":
-            return body_text_value
-        if subject_key == "body_json":
-            return body_json_value
-        if subject_key == "cors_json":
-            return cors_json_value
-        if subject_key == "steps_json":
-            return steps_json_value
-        if subject_key == "context_json":
-            return context_profile
-        raise ValueError(f"unknown assert target for api.http: {subject_key}")
-
-    evaluate_internal_assert_tree(
-        case.assert_tree,
-        case_id=case_id,
-        subject_for_key=_subject_for_key,
-        limits=spec_lang_limits,
-        symbols=spec_lang_symbols,
-        imports=spec_lang_imports,
+    targets = {
+        "status": status_text,
+        "headers": headers_text,
+        "body_text": body_text_value,
+        "body_json": body_json_value,
+        "cors_json": cors_json_value,
+        "steps_json": steps_json_value,
+        "context_json": context_profile,
+    }
+    run_assertions_with_context(
+        assert_tree=case.assert_tree,
+        raw_assert_spec=t.get("assert", []) or [],
+        raw_case=t,
+        ctx=ctx,
+        execution=execution,
+        subject_for_key=lambda k: resolve_subject_for_target(k, targets, type_name="api.http"),
     )

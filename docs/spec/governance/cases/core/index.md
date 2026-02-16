@@ -14,6 +14,8 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/assert_sugar_compile_only_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_type_contract_subject_semantics_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_universal_core_sync.spec.md`
+- `/docs/spec/governance/cases/core/architecture_harness_local_workflow_duplication_forbidden.spec.md`
+- `/docs/spec/governance/cases/core/architecture_harness_workflow_components_required.spec.md`
 - `/docs/spec/governance/cases/core/conformance_api_http_portable_shape.spec.md`
 - `/docs/spec/governance/cases/core/conformance_case_doc_style_guard.spec.md`
 - `/docs/spec/governance/cases/core/conformance_case_index_sync.spec.md`
@@ -120,6 +122,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_api_http_cors_support.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_scenario_roundtrip.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_parity_contract_sync.spec.md`
+- `/docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_oauth_docs_sync.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_oauth_env_only.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_oauth_no_secret_literals.spec.md`
@@ -156,6 +159,8 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/schema_registry_docs_sync.spec.md`
 - `/docs/spec/governance/cases/core/schema_registry_valid.spec.md`
 - `/docs/spec/governance/cases/core/schema_type_profiles_complete.spec.md`
+- `/docs/spec/governance/cases/core/schema_harness_contract_overlay_sync.spec.md`
+- `/docs/spec/governance/cases/core/schema_harness_type_overlay_complete.spec.md`
 - `/docs/spec/governance/cases/core/security_warning_docs.spec.md`
 - `/docs/spec/governance/cases/core/spec_domain_index_sync.spec.md`
 - `/docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md`

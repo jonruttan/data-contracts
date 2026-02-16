@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 193
+- link_count: 198
 - rules_with_conformance_cases: 44
-- rules_with_unit_tests: 193
-- rules_with_implementation_refs: 191
+- rules_with_unit_tests: 198
+- rules_with_implementation_refs: 196
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -153,6 +153,11 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS` | 1 | 1 | 0 | 1 | 1 |
 | `GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION` | 3 | 1 | 0 | 2 | 3 |
+| `HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED` | 2 | 2 | 0 | 1 | 1 |
+| `HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | 1 | 1 | 0 | 1 | 1 |
+| `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `docs/spec/contract/policy_v1.yaml#HARNESS_SUBJECT_TARGET_MAP_DECLARED` | 1 | 1 | 0 | 1 | 2 |
+| `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | 1 | 2 | 0 | 1 | 1 |
+| `HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | 1 | 1 | 0 | 1 | 8 |
 | `IMPL_EVALUATE_FIRST_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_FIRST_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |

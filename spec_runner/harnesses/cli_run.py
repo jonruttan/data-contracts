@@ -7,7 +7,6 @@ import importlib
 import threading
 
 from spec_runner.assertions import (
-    evaluate_internal_assert_tree,
     assert_stdout_path_exists,
     first_nonempty_line,
 )
@@ -18,9 +17,10 @@ from spec_runner.assertion_health import (
     resolve_assert_health_mode,
 )
 from spec_runner.compiler import compile_external_case
+from spec_runner.components.assertion_engine import run_assertions_with_context
+from spec_runner.components.execution_context import build_execution_context
+from spec_runner.components.subject_router import resolve_subject_for_target
 from spec_runner.settings import SETTINGS
-from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
-from spec_runner.spec_lang import compile_import_bindings, limits_from_harness
 
 
 _GLOBAL_SIDE_EFFECT_LOCK = threading.RLock()
@@ -118,22 +118,8 @@ def run(case, *, ctx) -> None:
         hook_after_ep = None
 
     runtime_env = _runtime_env(ctx)
-    spec_lang_limits = limits_from_harness(h)
-    spec_lang_imports = compile_import_bindings((h or {}).get("spec_lang"))
-    spec_lang_symbols = load_spec_lang_symbols_for_case(
-        doc_path=case.doc_path,
-        harness=h,
-        limits=spec_lang_limits,
-    )
+    execution = build_execution_context(case_id=case_id, harness=h, doc_path=case.doc_path)
     safe_mode = _is_safe_mode_enabled(runtime_env)
-    mode = resolve_assert_health_mode(t, env=runtime_env)
-    assert_spec = t.get("assert", []) or []
-    diags = lint_assert_tree(assert_spec)
-    if diags and mode == "error":
-        raise AssertionError(format_assertion_health_error(diags))
-    if diags and mode == "warn":
-        for d in diags:
-            print(format_assertion_health_warning(d), file=sys.stderr)
 
     with _GLOBAL_SIDE_EFFECT_LOCK:
         with ctx.patch_context() as mp:
@@ -297,38 +283,54 @@ def run(case, *, ctx) -> None:
         },
     }
 
+    line = first_nonempty_line(captured.out)
+    stdout_path_exists = False
+    if line:
+        try:
+            from pathlib import Path
+
+            stdout_path_exists = Path(line).exists()
+        except (OSError, ValueError):
+            stdout_path_exists = False
+    mode = resolve_assert_health_mode(t, env=runtime_env)
+    diags = lint_assert_tree(t.get("assert", []) or [])
+    warning_lines: list[str] = []
+    if diags and mode == "error":
+        raise AssertionError(format_assertion_health_error(diags))
+    if diags and mode == "warn":
+        for d in diags:
+            rendered = format_assertion_health_warning(d)
+            warning_lines.append(rendered)
+            print(rendered, file=sys.stderr)
+    stderr_subject = captured.err
+    if warning_lines:
+        joiner = "\n" if stderr_subject and not stderr_subject.endswith("\n") else ""
+        joined_warnings = "\n".join(warning_lines)
+        stderr_subject = f"{stderr_subject}{joiner}{joined_warnings}"
+
+    targets = {
+        "stdout": captured.out,
+        "stderr": stderr_subject,
+        "stdout_path.exists": stdout_path_exists,
+        "context_json": context_profile,
+    }
+
     def _subject_for_key(subject_key: str):
-        if subject_key == "stdout":
-            return captured.out
-        if subject_key == "stderr":
-            return captured.err
         if subject_key == "stdout_path":
-            line = first_nonempty_line(captured.out)
-            if not line:
+            line_local = first_nonempty_line(captured.out)
+            if not line_local:
                 raise AssertionError("expected stdout to contain a path")
-            return line
+            return line_local
         if subject_key == "stdout_path_text":
             p = assert_stdout_path_exists(captured.out)
             return p.read_text(encoding="utf-8")
-        if subject_key == "stdout_path.exists":
-            line = first_nonempty_line(captured.out)
-            if not line:
-                return False
-            try:
-                from pathlib import Path
+        return resolve_subject_for_target(subject_key, targets, type_name="cli.run")
 
-                return Path(line).exists()
-            except (OSError, ValueError):
-                return False
-        if subject_key == "context_json":
-            return context_profile
-        raise ValueError(f"unknown assert target: {subject_key}")
-
-    evaluate_internal_assert_tree(
-        case.assert_tree,
-        case_id=case_id,
+    run_assertions_with_context(
+        assert_tree=case.assert_tree,
+        raw_assert_spec=[],
+        raw_case={},
+        ctx=ctx,
+        execution=execution,
         subject_for_key=_subject_for_key,
-        limits=spec_lang_limits,
-        symbols=spec_lang_symbols,
-        imports=spec_lang_imports,
     )

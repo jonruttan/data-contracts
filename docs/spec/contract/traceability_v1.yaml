@@ -2927,3 +2927,74 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   notes: Governance enforces quality score threshold over generated catalog artifacts.
+- rule_id: HARNESS_WORKFLOW_COMPONENTS_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_WORKFLOW_COMPONENTS_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/execution_context.py
+  - spec_runner/components/assertion_engine.py
+  - spec_runner/components/subject_router.py
+  - spec_runner/harnesses/text_file.py
+  - spec_runner/harnesses/cli_run.py
+  - spec_runner/harnesses/orchestration_run.py
+  - spec_runner/harnesses/docs_generate.py
+  - spec_runner/harnesses/api_http.py
+  notes: Shared component workflow is required across all harness types.
+- rule_id: HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: Governance forbids legacy per-harness workflow tokens.
+- rule_id: HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/registry/v1/types/orchestration_run.yaml
+  - docs/spec/schema/registry/v1/types/docs_generate.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: Overlay completeness is hard-failed by governance.
+- rule_id: HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/current.md
+  schema_refs:
+  - docs/spec/schema/registry/v1/types/orchestration_run.yaml
+  - docs/spec/schema/registry/v1/types/docs_generate.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: Contract prose and overlays must remain aligned.
+- rule_id: HARNESS_SUBJECT_TARGET_MAP_DECLARED
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_SUBJECT_TARGET_MAP_DECLARED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - spec_runner/components/subject_router.py
+  notes: Harnesses must declare explicit target mapping for assertions.

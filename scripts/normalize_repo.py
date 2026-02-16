@@ -24,6 +24,13 @@ _DATA_ARTIFACT_GLOBS = (
     "docs/book/reference_manifest.yaml",
     "docs/spec/schema/*.yaml",
 )
+_HARNESS_FILES = (
+    "spec_runner/harnesses/text_file.py",
+    "spec_runner/harnesses/cli_run.py",
+    "spec_runner/harnesses/orchestration_run.py",
+    "spec_runner/harnesses/docs_generate.py",
+    "spec_runner/harnesses/api_http.py",
+)
 
 
 def _load_profile(path: Path) -> dict[str, Any]:
@@ -208,6 +215,33 @@ def _check_dogfood_executable_surface() -> list[str]:
     return issues
 
 
+def _check_harness_componentization() -> list[str]:
+    issues: list[str] = []
+    required_tokens = (
+        "build_execution_context(",
+        "run_assertions_with_context(",
+        "resolve_subject_for_target(",
+    )
+    forbidden_tokens = (
+        "compile_import_bindings(",
+        "limits_from_harness(",
+        "load_spec_lang_symbols_for_case(",
+        "evaluate_internal_assert_tree(",
+    )
+    for rel in _HARNESS_FILES:
+        p = ROOT / rel
+        if not p.exists():
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                issues.append(f"{rel}:1: NORMALIZATION_HARNESS_COMPONENTIZATION: missing token {tok}")
+        for tok in forbidden_tokens:
+            if tok in text:
+                issues.append(f"{rel}:1: NORMALIZATION_HARNESS_COMPONENTIZATION: forbidden legacy token {tok}")
+    return issues
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Unified normalization check/fix runner for specs, contracts, and tests.")
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -292,6 +326,7 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_replacements_drift(profile))
     issues.extend(_check_docs_tokens(profile))
     issues.extend(_check_dogfood_executable_surface())
+    issues.extend(_check_harness_componentization())
     if issues:
         for issue in sorted(issues):
             print(issue)

@@ -4,4 +4,28 @@ type: type
 case_type: orchestration.run
 required_top_level: []
 allowed_top_level_extra: []
-fields: {}
+fields:
+  harness:
+    type: any
+    required: true
+    since: v1
+  harness.orchestration:
+    type: mapping
+    required: false
+    since: v1
+  harness.orchestration.tool_id:
+    type: string
+    required: false
+    since: v1
+  harness.orchestration.impl:
+    type: string
+    required: false
+    since: v1
+  harness.orchestration.args:
+    type: list
+    required: false
+    since: v1
+  harness.orchestration.capabilities:
+    type: list
+    required: false
+    since: v1

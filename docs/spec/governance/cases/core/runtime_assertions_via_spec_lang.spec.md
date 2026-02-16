@@ -47,17 +47,17 @@ harness:
       - def assert_text_op(
     - path: /spec_runner/harnesses/text_file.py
       required_tokens:
-      - evaluate_internal_assert_tree(
+      - run_assertions_with_context(
       forbidden_tokens:
       - contain assertion failed
     - path: /spec_runner/harnesses/cli_run.py
       required_tokens:
-      - evaluate_internal_assert_tree(
+      - run_assertions_with_context(
       forbidden_tokens:
       - contain assertion failed
     - path: /spec_runner/harnesses/api_http.py
       required_tokens:
-      - evaluate_internal_assert_tree(
+      - run_assertions_with_context(
       forbidden_tokens:
       - contain assertion failed
   policy_evaluate:
