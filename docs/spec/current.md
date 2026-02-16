@@ -18,6 +18,9 @@ Notes:
 - `api.http` now supports harness-scoped OAuth client-credentials auth via
   env-ref inputs only (`harness.api_http.auth.oauth`) with deterministic mode
   default and explicit live-mode opt-in for network token/request fetches.
+- `api.http` v2 supports practical REST verbs (`GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS`),
+  CORS preflight/actual projection via `cors_json`, and scenario round-trip
+  execution (`requests` + `harness.api_http.scenario`) with `steps_json`.
 - Spec-lang stdlib completeness and parity are contract-defined by
   `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml` and
   `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`.

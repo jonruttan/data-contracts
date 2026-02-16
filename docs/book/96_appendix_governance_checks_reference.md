@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 164
-- checks_with_cases: 158
+- check_count: 169
+- checks_with_cases: 163
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -82,6 +82,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `contract.coverage_threshold` | 1 | true |
 | `contract.governance_check` | 1 | true |
 | `docs.adoption_profiles_sync` | 1 | true |
+| `docs.api_http_tutorial_sync` | 1 | true |
 | `docs.book_chapter_order_canonical` | 1 | true |
 | `docs.cli_flags_documented` | 1 | true |
 | `docs.command_examples_verified` | 1 | true |
@@ -168,10 +169,14 @@ Provide generated inventory of governance check IDs and case coverage.
 | `reference.private_symbols_forbidden` | 1 | true |
 | `reference.symbols_exist` | 1 | true |
 | `reference.token_anchors_exist` | 1 | true |
+| `runtime.api_http_cors_support` | 1 | true |
 | `runtime.api_http_live_mode_explicit` | 1 | true |
 | `runtime.api_http_oauth_docs_sync` | 1 | true |
 | `runtime.api_http_oauth_env_only` | 1 | true |
 | `runtime.api_http_oauth_no_secret_literals` | 1 | true |
+| `runtime.api_http_parity_contract_sync` | 1 | true |
+| `runtime.api_http_scenario_roundtrip` | 1 | true |
+| `runtime.api_http_verb_suite` | 1 | true |
 | `runtime.assertions_via_spec_lang` | 1 | true |
 | `runtime.config_literals` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |

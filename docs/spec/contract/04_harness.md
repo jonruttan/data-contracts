@@ -40,6 +40,8 @@ For `api.http`:
 - `headers`
 - `body_text`
 - `body_json`
+- `cors_json`
+- `steps_json`
 - `context_json` (JSON subject profile envelope)
 
 `api.http` auth/runtime profile:
@@ -47,6 +49,12 @@ For `api.http`:
 - `harness.api_http.mode` (optional): `deterministic` (default) or `live`
   - `deterministic` forbids network `http(s)` fetches for request/token URLs
   - `live` allows network `http(s)` fetches
+- `harness.api_http.scenario` (optional mapping):
+  - `setup.command` / `teardown.command` for lifecycle shell commands
+  - optional `setup.ready_probe` polling (`url`, `method`, expected status list,
+    timeout/interval)
+  - optional `cwd` / `env` for setup/teardown commands
+  - `fail_fast` (default `true`)
 - `harness.api_http.auth.oauth` (optional mapping):
   - `grant_type`: must be `client_credentials`
   - `token_url` (required)
@@ -63,6 +71,10 @@ OAuth behavior:
 - bearer token is injected as `Authorization: Bearer <token>` unless request
   headers already define `Authorization`
 - `api.http` context metadata must not include raw secret/token values
+- request CORS helper (`request.cors`) supports preflight and actual request
+  checks through normalized `cors_json` projection
+- scenario requests (`requests`) support `{{steps.<id>...}}` template lookups
+  in `url`, header values, and `body_text`
 
 For `orchestration.run`:
 

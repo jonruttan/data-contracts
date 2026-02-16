@@ -1946,6 +1946,120 @@ function fetchApiHttpOAuthToken(array $cfg): array {
     ];
 }
 
+function apiHttpJsonOrNull(string $text): mixed {
+    if (trim($text) === '') {
+        return null;
+    }
+    $decoded = json_decode($text, true);
+    if ($decoded === null && trim($text) !== 'null') {
+        return null;
+    }
+    return $decoded;
+}
+
+function apiHttpHeaderMapGet(array $headers, string $key): ?string {
+    $want = strtolower(trim($key));
+    foreach ($headers as $k => $v) {
+        if (strtolower(trim((string)$k)) === $want) {
+            return (string)$v;
+        }
+    }
+    return null;
+}
+
+function apiHttpHeaderMapSet(array &$headers, string $key, string $value): void {
+    $want = strtolower(trim($key));
+    foreach ($headers as $k => $_v) {
+        if (strtolower(trim((string)$k)) === $want) {
+            $headers[$k] = $value;
+            return;
+        }
+    }
+    $headers[$key] = $value;
+}
+
+function apiHttpCorsProjection(array $headers): array {
+    $csv = function (?string $raw): array {
+        if ($raw === null) {
+            return [];
+        }
+        $parts = preg_split('/,/', $raw) ?: [];
+        $out = [];
+        foreach ($parts as $p) {
+            $token = trim((string)$p);
+            if ($token !== '') {
+                $out[] = $token;
+            }
+        }
+        return $out;
+    };
+    $asBool = function (?string $raw): ?bool {
+        if ($raw === null) {
+            return null;
+        }
+        $v = strtolower(trim($raw));
+        if ($v === 'true') {
+            return true;
+        }
+        if ($v === 'false') {
+            return false;
+        }
+        return null;
+    };
+    $asInt = function (?string $raw): ?int {
+        if ($raw === null || trim($raw) === '') {
+            return null;
+        }
+        if (!preg_match('/^-?\d+$/', trim($raw))) {
+            return null;
+        }
+        return (int)trim($raw);
+    };
+    $vary = array_map('strtolower', $csv(apiHttpHeaderMapGet($headers, 'Vary')));
+    return [
+        'allow_origin' => apiHttpHeaderMapGet($headers, 'Access-Control-Allow-Origin'),
+        'allow_methods' => $csv(apiHttpHeaderMapGet($headers, 'Access-Control-Allow-Methods')),
+        'allow_headers' => $csv(apiHttpHeaderMapGet($headers, 'Access-Control-Allow-Headers')),
+        'expose_headers' => $csv(apiHttpHeaderMapGet($headers, 'Access-Control-Expose-Headers')),
+        'allow_credentials' => $asBool(apiHttpHeaderMapGet($headers, 'Access-Control-Allow-Credentials')),
+        'max_age' => $asInt(apiHttpHeaderMapGet($headers, 'Access-Control-Max-Age')),
+        'vary_origin' => in_array('origin', $vary, true),
+    ];
+}
+
+function apiHttpRenderTemplate(string $raw, array $steps): string {
+    return (string)preg_replace_callback(
+        '/\{\{\s*steps\.([A-Za-z0-9_.-]+)\s*\}\}/',
+        function (array $m) use ($steps): string {
+            $parts = array_values(array_filter(explode('.', (string)$m[1]), fn($x) => $x !== ''));
+            if (count($parts) < 2) {
+                throw new SchemaError('api.http scenario template must reference a step field');
+            }
+            $stepId = (string)$parts[0];
+            if (!array_key_exists($stepId, $steps)) {
+                throw new SchemaError("api.http scenario template references unknown step: {$stepId}");
+            }
+            $cur = $steps[$stepId];
+            for ($i = 1; $i < count($parts); $i++) {
+                $key = (string)$parts[$i];
+                if (!is_array($cur) || !array_key_exists($key, $cur)) {
+                    throw new SchemaError("api.http scenario template path not found: steps." . (string)$m[1]);
+                }
+                $cur = $cur[$key];
+            }
+            if (is_array($cur)) {
+                $json = json_encode($cur, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                return $json === false ? '' : $json;
+            }
+            if ($cur === null) {
+                return '';
+            }
+            return (string)$cur;
+        },
+        $raw
+    );
+}
+
 function evalApiHttpLeaf(
     array $leaf,
     array $resp,
@@ -1975,12 +2089,7 @@ function evalApiHttpLeaf(
             continue;
         }
         if ($target === 'body_json') {
-            $parsed = json_decode((string)$resp['body_text'], true);
-            if ($parsed === null && trim((string)$resp['body_text']) !== 'null') {
-                throw new AssertionFailure(
-                    "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] body_json parse failed"
-                );
-            }
+            $parsed = $resp['body_json'] ?? null;
             $jsonText = json_encode($parsed, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             if ($jsonText === false) {
                 throw new RuntimeException('failed to serialize body_json');
@@ -1992,6 +2101,44 @@ function evalApiHttpLeaf(
                 } elseif ($op === 'evaluate' || $op === 'json_type') {
                     $subject = $parsed;
                 } else {
+                    $subject = $jsonText;
+                }
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
+            }
+            continue;
+        }
+        if ($target === 'cors_json') {
+            $cors = $resp['cors_json'] ?? null;
+            foreach ($raw as $value) {
+                $expr = compileLeafExpr($op, $value, $target);
+                if ($op === 'exists') {
+                    $subject = $cors !== null;
+                } elseif ($op === 'evaluate' || $op === 'json_type') {
+                    $subject = $cors;
+                } else {
+                    $jsonText = json_encode($cors, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                    if ($jsonText === false) {
+                        throw new RuntimeException('failed to serialize cors_json');
+                    }
+                    $subject = $jsonText;
+                }
+                assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
+            }
+            continue;
+        }
+        if ($target === 'steps_json') {
+            $steps = $resp['steps_json'] ?? [];
+            foreach ($raw as $value) {
+                $expr = compileLeafExpr($op, $value, $target);
+                if ($op === 'exists') {
+                    $subject = is_array($steps);
+                } elseif ($op === 'evaluate' || $op === 'json_type') {
+                    $subject = $steps;
+                } else {
+                    $jsonText = json_encode($steps, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                    if ($jsonText === false) {
+                        throw new RuntimeException('failed to serialize steps_json');
+                    }
                     $subject = $jsonText;
                 }
                 assertLeafPredicate($caseId, $path, $target, $op, $expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports);
@@ -2157,25 +2304,16 @@ function evalApiHttpAssertNode(
 
 function evaluateApiHttpCase(string $fixturePath, array $case): array {
     $request = $case['request'] ?? null;
-    if (!is_array($request)) {
-        throw new SchemaError('api.http requires request mapping');
+    $requests = $case['requests'] ?? null;
+    if ($request !== null && $requests !== null) {
+        throw new SchemaError('api.http request and requests are mutually exclusive');
     }
-    $method = strtoupper(trim((string)($request['method'] ?? '')));
-    if ($method === '') {
-        throw new SchemaError('api.http request.method is required');
+    if ($request === null && $requests === null) {
+        throw new SchemaError('api.http requires request mapping or requests list');
     }
-    if (!array_key_exists('url', $request) || trim((string)$request['url']) === '') {
-        throw new SchemaError('api.http request.url is required');
-    }
+    $supportedMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
     $mode = resolveApiHttpMode($case);
-    $resolved = resolveApiHttpUrl($fixturePath, (string)$request['url']);
-    if ($resolved['source_type'] === 'url' && $mode !== 'live') {
-        throw new SchemaError('api.http request.url network usage requires harness.api_http.mode=live');
-    }
     $oauthCfg = parseApiHttpOAuthConfig($fixturePath, $case, $mode);
-    $headersText = '';
-    $status = 200;
-    $bodyText = '';
     $oauthMeta = [
         'auth_mode' => $oauthCfg === null ? 'none' : 'oauth',
         'oauth_token_source' => $oauthCfg === null ? 'none' : 'env_ref',
@@ -2184,88 +2322,223 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
         'token_fetch_ms' => 0,
         'used_cached_token' => false,
     ];
-    $headerMap = [];
-    $hdrs = $request['headers'] ?? [];
-    if ($hdrs !== null && !is_array($hdrs)) {
-        throw new SchemaError('api.http request.headers must be a mapping');
-    }
-    if (is_array($hdrs)) {
-        foreach ($hdrs as $k => $v) {
-            $headerMap[(string)$k] = (string)$v;
+    $timeout = 5;
+    if (isset($case['harness']) && is_array($case['harness']) && array_key_exists('timeout_seconds', $case['harness'])) {
+        $timeout = (int)$case['harness']['timeout_seconds'];
+        if ($timeout <= 0) {
+            $timeout = 5;
         }
     }
-    if ($oauthCfg !== null) {
-        $tokenResp = fetchApiHttpOAuthToken($oauthCfg);
-        $parts = @parse_url(($oauthCfg['resolved']['source_type'] ?? '') === 'url'
-            ? (string)$oauthCfg['resolved']['url']
-            : (string)$oauthCfg['resolved']['path']);
-        $oauthMeta['token_url_host'] = is_array($parts) && isset($parts['host'])
-            ? (string)$parts['host']
-            : '';
-        $oauthMeta['scope_requested'] = $oauthCfg['scope'] ?? false;
-        $oauthMeta['token_fetch_ms'] = (int)$tokenResp['token_fetch_ms'];
-        $oauthMeta['used_cached_token'] = (bool)$tokenResp['used_cached_token'];
-        if (!array_key_exists('Authorization', $headerMap)) {
-            $headerMap['Authorization'] = 'Bearer ' . (string)$tokenResp['token'];
-        }
-    }
+    $stepsOut = [];
+    $stepIndex = [];
 
-    if ($resolved['source_type'] === 'file') {
-        $body = file_get_contents((string)$resolved['path']);
-        if ($body === false) {
-            throw new RuntimeException("cannot read fixture file: {$resolved['path']}");
+    $runOne = function (array $req, array $stepIndexCurrent) use (
+        $fixturePath,
+        $mode,
+        $oauthCfg,
+        &$oauthMeta,
+        $timeout,
+        $supportedMethods
+    ): array {
+        $method = strtoupper(trim((string)($req['method'] ?? '')));
+        if ($method === '') {
+            throw new SchemaError('api.http request.method is required');
         }
-        $bodyText = (string)$body;
-    } else {
-        $headers = [];
-        foreach ($headerMap as $k => $v) {
-            $headers[] = (string)$k . ': ' . (string)$v;
+        if (!in_array($method, $supportedMethods, true)) {
+            throw new SchemaError('api.http request.method must be one of: GET, HEAD, OPTIONS, PATCH, POST, PUT, DELETE');
         }
-        $bodyData = null;
-        if (array_key_exists('body_text', $request) && array_key_exists('body_json', $request)) {
-            throw new SchemaError('api.http request.body_text and request.body_json are mutually exclusive');
+        $rawUrl = trim((string)($req['url'] ?? ''));
+        if ($rawUrl === '') {
+            throw new SchemaError('api.http request.url is required');
         }
-        if (array_key_exists('body_text', $request)) {
-            $bodyData = (string)$request['body_text'];
-        } elseif (array_key_exists('body_json', $request)) {
-            $encoded = json_encode($request['body_json'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            if ($encoded === false) {
-                throw new SchemaError('api.http request.body_json must be json-serializable');
+        $url = apiHttpRenderTemplate($rawUrl, $stepIndexCurrent);
+        $query = $req['query'] ?? null;
+        if ($query !== null) {
+            if (!is_array($query)) {
+                throw new SchemaError('api.http request.query must be a mapping');
             }
-            $bodyData = $encoded;
-            $headers[] = 'Content-Type: application/json';
-        }
-        $timeout = 5;
-        if (isset($case['harness']) && is_array($case['harness']) && array_key_exists('timeout_seconds', $case['harness'])) {
-            $timeout = (int)$case['harness']['timeout_seconds'];
-            if ($timeout <= 0) {
-                $timeout = 5;
+            $parts = @parse_url($url);
+            if ($parts !== false && is_array($parts) && array_key_exists('scheme', $parts)) {
+                $existing = [];
+                parse_str((string)($parts['query'] ?? ''), $existing);
+                $merged = array_merge($existing, $query);
+                $base = (string)$parts['scheme'] . '://' . (string)($parts['host'] ?? '');
+                if (isset($parts['port'])) {
+                    $base .= ':' . (string)$parts['port'];
+                }
+                $base .= (string)($parts['path'] ?? '');
+                $qs = http_build_query($merged);
+                $url = $qs === '' ? $base : $base . '?' . $qs;
             }
         }
-        $opts = [
-            'http' => [
-                'method' => $method,
-                'header' => implode("\r\n", $headers),
-                'ignore_errors' => true,
-                'timeout' => $timeout,
-            ],
+        $resolved = resolveApiHttpUrl($fixturePath, $url);
+        if ($resolved['source_type'] === 'url' && $mode !== 'live') {
+            throw new SchemaError('api.http request.url network usage requires harness.api_http.mode=live');
+        }
+
+        $headerMap = [];
+        $hdrs = $req['headers'] ?? [];
+        if ($hdrs !== null && !is_array($hdrs)) {
+            throw new SchemaError('api.http request.headers must be a mapping');
+        }
+        if (is_array($hdrs)) {
+            foreach ($hdrs as $k => $v) {
+                $headerMap[(string)$k] = apiHttpRenderTemplate((string)$v, $stepIndexCurrent);
+            }
+        }
+
+        $cors = $req['cors'] ?? null;
+        if ($cors !== null) {
+            if (!is_array($cors)) {
+                throw new SchemaError('api.http request.cors must be a mapping');
+            }
+            $origin = trim((string)($cors['origin'] ?? ''));
+            if ($origin !== '' && apiHttpHeaderMapGet($headerMap, 'Origin') === null) {
+                apiHttpHeaderMapSet($headerMap, 'Origin', $origin);
+            }
+            $preflight = (bool)($cors['preflight'] ?? false);
+            if ($preflight) {
+                if ($method !== 'OPTIONS') {
+                    throw new SchemaError('api.http request.cors.preflight requires request.method OPTIONS');
+                }
+                $requestMethod = strtoupper(trim((string)($cors['request_method'] ?? '')));
+                if ($requestMethod === '') {
+                    throw new SchemaError('api.http request.cors.request_method is required for preflight');
+                }
+                apiHttpHeaderMapSet($headerMap, 'Access-Control-Request-Method', $requestMethod);
+                if (array_key_exists('request_headers', $cors)) {
+                    if (!is_array($cors['request_headers'])) {
+                        throw new SchemaError('api.http request.cors.request_headers must be a list');
+                    }
+                    $vals = [];
+                    foreach ($cors['request_headers'] as $h) {
+                        $token = trim((string)$h);
+                        if ($token !== '') {
+                            $vals[] = $token;
+                        }
+                    }
+                    apiHttpHeaderMapSet($headerMap, 'Access-Control-Request-Headers', implode(', ', $vals));
+                }
+            }
+        }
+
+        if ($oauthCfg !== null) {
+            $tokenResp = fetchApiHttpOAuthToken($oauthCfg);
+            $parts = @parse_url(($oauthCfg['resolved']['source_type'] ?? '') === 'url'
+                ? (string)$oauthCfg['resolved']['url']
+                : (string)$oauthCfg['resolved']['path']);
+            $oauthMeta['token_url_host'] = is_array($parts) && isset($parts['host'])
+                ? (string)$parts['host']
+                : '';
+            $oauthMeta['scope_requested'] = $oauthCfg['scope'] ?? false;
+            $oauthMeta['token_fetch_ms'] = (int)$tokenResp['token_fetch_ms'];
+            $oauthMeta['used_cached_token'] = (bool)$tokenResp['used_cached_token'];
+            if (apiHttpHeaderMapGet($headerMap, 'Authorization') === null) {
+                apiHttpHeaderMapSet($headerMap, 'Authorization', 'Bearer ' . (string)$tokenResp['token']);
+            }
+        }
+
+        $status = 200;
+        $bodyText = '';
+        $headersText = '';
+        $respHeaderMap = [];
+        if ($resolved['source_type'] === 'file') {
+            $body = file_get_contents((string)$resolved['path']);
+            if ($body === false) {
+                throw new RuntimeException("cannot read fixture file: {$resolved['path']}");
+            }
+            $bodyText = (string)$body;
+        } else {
+            $headers = [];
+            foreach ($headerMap as $k => $v) {
+                $headers[] = (string)$k . ': ' . (string)$v;
+            }
+            $bodyData = null;
+            if (array_key_exists('body_text', $req) && array_key_exists('body_json', $req)) {
+                throw new SchemaError('api.http request.body_text and request.body_json are mutually exclusive');
+            }
+            if (array_key_exists('body_text', $req)) {
+                $bodyData = apiHttpRenderTemplate((string)$req['body_text'], $stepIndexCurrent);
+            } elseif (array_key_exists('body_json', $req)) {
+                $encoded = json_encode($req['body_json'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                if ($encoded === false) {
+                    throw new SchemaError('api.http request.body_json must be json-serializable');
+                }
+                $bodyData = $encoded;
+                if (apiHttpHeaderMapGet($headerMap, 'Content-Type') === null) {
+                    $headers[] = 'Content-Type: application/json';
+                }
+            }
+            $opts = [
+                'http' => [
+                    'method' => $method,
+                    'header' => implode("\r\n", $headers),
+                    'ignore_errors' => true,
+                    'timeout' => $timeout,
+                ],
+            ];
+            if ($bodyData !== null) {
+                $opts['http']['content'] = $bodyData;
+            }
+            $ctx = stream_context_create($opts);
+            $body = @file_get_contents((string)$resolved['url'], false, $ctx);
+            if ($body === false) {
+                throw new RuntimeException("api.http request failed: {$resolved['url']}");
+            }
+            $bodyText = (string)$body;
+            $responseHeaders = $http_response_header ?? [];
+            if (is_array($responseHeaders) && count($responseHeaders) > 0) {
+                $headersText = implode("\n", $responseHeaders);
+                if (preg_match('/\s(\d{3})\s/', (string)$responseHeaders[0], $m) === 1) {
+                    $status = (int)$m[1];
+                }
+                foreach ($responseHeaders as $line) {
+                    if (!is_string($line) || strpos($line, ':') === false) {
+                        continue;
+                    }
+                    [$k, $v] = explode(':', $line, 2);
+                    $respHeaderMap[trim($k)] = trim($v);
+                }
+            }
+        }
+        return [
+            'status' => $status,
+            'headers_text' => $headersText,
+            'headers_map' => $respHeaderMap,
+            'body_text' => $bodyText,
+            'body_json' => apiHttpJsonOrNull($bodyText),
+            'cors_json' => apiHttpCorsProjection($respHeaderMap),
+            'method' => $method,
+            'url' => $url,
         ];
-        if ($bodyData !== null) {
-            $opts['http']['content'] = $bodyData;
+    };
+
+    if ($request !== null) {
+        if (!is_array($request)) {
+            throw new SchemaError('api.http requires request mapping');
         }
-        $ctx = stream_context_create($opts);
-        $body = @file_get_contents((string)$resolved['url'], false, $ctx);
-        if ($body === false) {
-            throw new RuntimeException("api.http request failed: {$resolved['url']}");
+        $result = $runOne($request, []);
+    } else {
+        if (!is_array($requests) || !isListArray($requests) || count($requests) === 0) {
+            throw new SchemaError('api.http requests must be a non-empty list');
         }
-        $bodyText = (string)$body;
-        $responseHeaders = $http_response_header ?? [];
-        if (is_array($responseHeaders) && count($responseHeaders) > 0) {
-            $headersText = implode("\n", $responseHeaders);
-            if (preg_match('/\s(\d{3})\s/', (string)$responseHeaders[0], $m) === 1) {
-                $status = (int)$m[1];
+        foreach ($requests as $i => $step) {
+            if (!is_array($step)) {
+                throw new SchemaError("api.http requests[{$i}] must be a mapping");
             }
+            $sid = trim((string)($step['id'] ?? ''));
+            if ($sid === '') {
+                throw new SchemaError("api.http requests[{$i}].id is required");
+            }
+            if (array_key_exists($sid, $stepIndex)) {
+                throw new SchemaError("api.http requests duplicate id: {$sid}");
+            }
+            $stepResult = $runOne($step, $stepIndex);
+            $stepResult['id'] = $sid;
+            $stepsOut[] = $stepResult;
+            $stepIndex[$sid] = $stepResult;
         }
+        $result = $stepsOut[count($stepsOut) - 1];
     }
 
     $mode = resolveAssertHealthMode($case);
@@ -2290,17 +2563,33 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
     evalApiHttpAssertNode(
         $assertSpec,
         [
-            'status' => $status,
-            'headers_text' => $headersText,
-            'body_text' => $bodyText,
+            'status' => (int)$result['status'],
+            'headers_text' => (string)$result['headers_text'],
+            'body_text' => (string)$result['body_text'],
+            'body_json' => $result['body_json'],
+            'cors_json' => $result['cors_json'],
+            'steps_json' => array_map(
+                fn($s) => [
+                    'id' => $s['id'] ?? '',
+                    'method' => $s['method'] ?? '',
+                    'url' => $s['url'] ?? '',
+                    'status' => $s['status'] ?? 0,
+                    'headers' => $s['headers_map'] ?? [],
+                    'body_text' => $s['body_text'] ?? '',
+                    'body_json' => $s['body_json'] ?? null,
+                    'cors_json' => $s['cors_json'] ?? [],
+                ],
+                $stepsOut
+            ),
             'context_json' => [
-                'profile_id' => 'api.http/v1',
-                'profile_version' => 1,
+                'profile_id' => 'api.http/v2',
+                'profile_version' => 2,
                 'value' => [
-                    'status' => $status,
-                    'headers' => [],
-                    'body_text' => $bodyText,
-                    'body_json' => json_decode((string)$bodyText, true),
+                    'status' => (int)$result['status'],
+                    'headers' => $result['headers_map'],
+                    'body_text' => (string)$result['body_text'],
+                    'body_json' => $result['body_json'],
+                    'cors' => $result['cors_json'],
                 ],
                 'meta' => [
                     'auth_mode' => $oauthMeta['auth_mode'],
@@ -2313,6 +2602,26 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
                         'token_fetch_ms' => $oauthMeta['token_fetch_ms'],
                         'used_cached_token' => $oauthMeta['used_cached_token'],
                     ],
+                    'scenario' => [
+                        'setup_started' => false,
+                        'setup_ready' => false,
+                        'teardown_ran' => false,
+                        'step_count' => count($stepsOut) > 0 ? count($stepsOut) : 1,
+                        'step_ids' => array_values(array_map(fn($s) => (string)($s['id'] ?? ''), $stepsOut)),
+                    ],
+                    'steps' => array_map(
+                        fn($s) => [
+                            'id' => $s['id'] ?? '',
+                            'method' => $s['method'] ?? '',
+                            'url' => $s['url'] ?? '',
+                            'status' => $s['status'] ?? 0,
+                            'headers' => $s['headers_map'] ?? [],
+                            'body_text' => $s['body_text'] ?? '',
+                            'body_json' => $s['body_json'] ?? null,
+                            'cors_json' => $s['cors_json'] ?? [],
+                        ],
+                        $stepsOut
+                    ),
                 ],
             ],
         ],

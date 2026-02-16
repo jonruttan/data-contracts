@@ -25,7 +25,7 @@ profiles:
 - id: cli.run/v1
   type: cli.run
   target: context_json
-- id: api.http/v1
+- id: api.http/v2
   type: api.http
   target: context_json
 - id: python.generic/v1

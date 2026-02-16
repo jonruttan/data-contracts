@@ -2651,6 +2651,95 @@ rules:
   references:
   - docs/spec/governance/cases/core/runtime_api_http_live_mode_explicit.spec.md
   - docs/spec/contract/types/api_http.md
+- id: API_HTTP_VERB_SUITE_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: api.http.request.method
+  norm: MUST
+  requirement: api_http_supports_practical_rest_verbs
+  description: 'api.http request.method must support GET, POST, PUT, PATCH, DELETE, HEAD, and OPTIONS.
+
+    '
+  rationale: REST contract coverage requires full practical verb support in one portable type.
+  risk_if_violated: Specs cannot represent common endpoint behavior consistently.
+  references:
+  - docs/spec/contract/types/api_http.md
+  - docs/spec/conformance/cases/core/api_http.spec.md
+  - spec_runner/harnesses/api_http.py
+- id: API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED
+  introduced_in: v1
+  scope: implementation
+  applies_to: api.http.request.cors
+  norm: MUST
+  requirement: api_http_supports_cors_preflight_and_actual_projection
+  description: 'api.http must support CORS request helpers and normalized response projection for preflight and actual calls.
+
+    '
+  rationale: CORS behavior must be testable without ad hoc raw-header parsing in every spec.
+  risk_if_violated: Browser-facing API contracts remain under-specified and brittle.
+  references:
+  - docs/spec/contract/types/api_http.md
+  - docs/spec/contract/types/http_profile.md
+  - docs/spec/libraries/domain/http_core.spec.md
+- id: API_HTTP_SCENARIO_ROUNDTRIP_SUPPORTED
+  introduced_in: v1
+  scope: implementation
+  applies_to: api.http.requests.scenario
+  norm: MUST
+  requirement: api_http_supports_ordered_multi_step_roundtrip_execution
+  description: 'api.http must support ordered requests scenarios with step interpolation for round-trip endpoint testing.
+
+    '
+  rationale: End-to-end endpoint workflows require setup, chaining, and cleanup within one case.
+  risk_if_violated: Round-trip behavior is fragmented across unrelated harnesses.
+  references:
+  - docs/spec/contract/types/api_http.md
+  - docs/spec/conformance/cases/core/api_http.spec.md
+  - spec_runner/harnesses/api_http.py
+- id: API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: api.http.harness.scenario.lifecycle
+  norm: MUST
+  requirement: scenario_setup_probe_teardown_behavior_is_deterministic
+  description: 'Scenario setup/probe/teardown execution must be deterministic and teardown must be attempted.
+
+    '
+  rationale: Prevents flaky lifecycle behavior and leaking background processes in CI.
+  risk_if_violated: Non-deterministic failures and resource leakage in test runs.
+  references:
+  - docs/spec/contract/types/api_http.md
+  - spec_runner/harnesses/api_http.py
+- id: API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED
+  introduced_in: v1
+  scope: conformance
+  applies_to: api.http.shared_capability_fixtures
+  norm: MUST
+  requirement: python_and_php_api_http_shared_fixtures_must_match_status_category
+  description: 'Python and PHP conformance runners must match status/category outcomes for shared api.http fixtures.
+
+    '
+  rationale: Keeps extension behavior portable across declared implementations.
+  risk_if_violated: Multi-implementation conformance guarantees drift.
+  references:
+  - scripts/php/conformance_runner.php
+  - spec_runner/harnesses/api_http.py
+  - tests/test_conformance_parity_unit.py
+- id: API_HTTP_TUTORIAL_COVERAGE_REQUIRED
+  introduced_in: v1
+  scope: docs
+  applies_to: docs.book.rest_and_cors_tutorials
+  norm: MUST
+  requirement: docs_include_get_post_put_patch_delete_cors_roundtrip_guidance
+  description: 'Contributor docs must include practical api.http tutorials for REST verbs, CORS preflight, and scenario round-trip usage.
+
+    '
+  rationale: New contributors need executable guidance rather than implementation source-diving.
+  risk_if_violated: Feature surface exists but remains hard to adopt correctly.
+  references:
+  - docs/book/05_howto.md
+  - docs/book/06_troubleshooting.md
+  - docs/spec/contract/types/api_http.md
 - id: DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
   introduced_in: v1
   scope: governance

@@ -47,21 +47,27 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 187
-- must_count: 174
+- rule_count: 193
+- must_count: 180
 - should_count: 12
 - must_not_count: 1
-- active_count: 187
+- active_count: 193
 - deprecated_count: 0
 - removed_count: 0
 
 | id | norm | scope | applies_to | references | lifecycle |
 |---|---|---|---|---|---|
+| `API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED` | `MUST` | `implementation` | `api.http.request.cors` | 3 | `active` |
 | `API_HTTP_DETERMINISTIC_DEFAULT_REQUIRED` | `MUST` | `implementation` | `api.http.harness.mode` | 2 | `active` |
 | `API_HTTP_LIVE_MODE_EXPLICIT_OPT_IN_REQUIRED` | `MUST` | `governance` | `api.http.network_execution` | 2 | `active` |
 | `API_HTTP_OAUTH_ENV_REF_ONLY_REQUIRED` | `MUST` | `governance` | `api.http.harness.auth.oauth.credentials` | 3 | `active` |
 | `API_HTTP_OAUTH_HARNESS_PROFILE_SUPPORTED` | `MUST` | `implementation` | `api.http.harness.auth.oauth` | 3 | `active` |
 | `API_HTTP_OAUTH_SECRET_REDACTION_REQUIRED` | `MUST` | `implementation` | `api.http.context_and_diagnostics` | 2 | `active` |
+| `API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED` | `MUST` | `conformance` | `api.http.shared_capability_fixtures` | 3 | `active` |
+| `API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED` | `MUST` | `implementation` | `api.http.harness.scenario.lifecycle` | 2 | `active` |
+| `API_HTTP_SCENARIO_ROUNDTRIP_SUPPORTED` | `MUST` | `implementation` | `api.http.requests.scenario` | 3 | `active` |
+| `API_HTTP_TUTORIAL_COVERAGE_REQUIRED` | `MUST` | `docs` | `docs.book.rest_and_cors_tutorials` | 3 | `active` |
+| `API_HTTP_VERB_SUITE_REQUIRED` | `MUST` | `implementation` | `api.http.request.method` | 3 | `active` |
 | `ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED` | `MUST` | `governance` | `docs.contract.adapter_projection_sync` | 8 | `active` |
 | `ASSERT_COMPILER_SCHEMA_MATRIX_SYNC` | `MUST` | `governance` | `assert.tree.compiler_contract_sync` | 4 | `active` |
 | `ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED` | `MUST` | `governance` | `harness.subject_projection.context_profiles` | 6 | `active` |

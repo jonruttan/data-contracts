@@ -168,6 +168,15 @@ For `type: cli.run`, supported `harness` keys include:
 For `type: api.http`, supported `harness` keys include:
 
 - `api_http.mode` (string): `deterministic` (default) or `live`
+- `api_http.scenario` (mapping, optional):
+  - `setup.command` (list[string])
+  - `setup.cwd` (virtual-root path, optional)
+  - `setup.env` (mapping, optional)
+  - `setup.ready_probe` (mapping, optional)
+  - `teardown.command` (list[string])
+  - `teardown.cwd` (virtual-root path, optional)
+  - `teardown.env` (mapping, optional)
+  - `fail_fast` (bool, default `true`)
 - `harness.api_http.auth.oauth` (mapping):
   - `grant_type`: `client_credentials`
   - `token_url`: token endpoint URL or contract path
@@ -186,6 +195,26 @@ OAuth and execution rules:
 - network `http(s)` token/request URLs require `harness.api_http.mode: live`
 - deterministic mode forbids network token/request fetches
 - context profile metadata MUST redact secret/token values
+
+`api.http` request shape (v2):
+
+- `request` (mapping) for single-request cases, or `requests` (non-empty list) for scenario cases
+- request fields:
+  - `method`: `GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS`
+  - `url`
+  - `headers` (optional mapping)
+  - `query` (optional mapping; merged into URL deterministically)
+  - `body_text` / `body_json` (mutually exclusive)
+  - `cors` (optional mapping):
+    - `origin`
+    - `request_method` (required when `preflight=true`)
+    - `request_headers` (optional list)
+    - `preflight` (optional bool, default `false`)
+
+`api.http` additional assert targets:
+
+- `cors_json` (normalized CORS projection for final response)
+- `steps_json` (ordered step envelopes in scenario mode)
 
 For `type: docs.generate`, supported `harness` keys include:
 
@@ -435,7 +464,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 | type | required keys | extra keys |
 |---|---|---|
-| `api.http` | `request` | - |
+| `api.http` | - | - |
 | `cli.run` | - | - |
 | `docs.generate` | - | - |
 | `governance.check` | `check` | - |
@@ -450,7 +479,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 - top_level_field_count: 10
 - type_profile_count: 7
-- total_type_field_count: 7
+- total_type_field_count: 9
 
 ### Top-Level Fields
 
@@ -471,7 +500,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 | case_type | field_count | required_top_level |
 |---|---|---|
-| `api.http` | 1 | `request` |
+| `api.http` | 3 | - |
 | `cli.run` | 2 | - |
 | `docs.generate` | 0 | - |
 | `governance.check` | 1 | `check` |
@@ -479,4 +508,3 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `spec_lang.library` | 2 | `definitions` |
 | `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->
-

@@ -72,6 +72,92 @@ Provide repeatable recipes for common contributor tasks.
 - Governance only: `./scripts/runner_adapter.sh governance`
 - Full local gate: `./scripts/runner_adapter.sh ci-cleanroom`
 
+## REST API How-To (`api.http`)
+
+Use `type: api.http` for endpoint tests. The practical method suite is:
+`GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`.
+
+### GET
+
+```yaml
+type: api.http
+request:
+  method: GET
+  url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
+```
+
+### POST
+
+```yaml
+type: api.http
+request:
+  method: POST
+  url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+  body_json:
+    name: example
+```
+
+### UPDATE (PUT and PATCH)
+
+```yaml
+type: api.http
+request:
+  method: PUT
+  url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
+```
+
+```yaml
+type: api.http
+request:
+  method: PATCH
+  url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
+```
+
+### DELETE
+
+```yaml
+type: api.http
+request:
+  method: DELETE
+  url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
+```
+
+### CORS Preflight (OPTIONS)
+
+```yaml
+type: api.http
+request:
+  method: OPTIONS
+  url: https://api.example.invalid/items
+  cors:
+    preflight: true
+    origin: https://client.example
+    request_method: POST
+    request_headers: [authorization, content-type]
+```
+
+### Round-Trip Scenario (`requests`)
+
+```yaml
+type: api.http
+harness:
+  api_http:
+    scenario:
+      fail_fast: true
+requests:
+- id: create
+  method: POST
+  url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+- id: get
+  method: GET
+  url: /docs/spec/conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json
+- id: cleanup
+  method: DELETE
+  url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
+```
+
+Use `steps_json` assertions to validate full round-trip order and output.
+
 ## Escalation Path
 
 If a failure appears implementation-specific, move from book docs to:

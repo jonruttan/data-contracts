@@ -48,12 +48,12 @@ Provide generated reference for harness-specific type overlays and required fiel
 ## Generated Harness Type Catalog
 
 - type_profile_count: 7
-- total_type_field_count: 7
+- total_type_field_count: 9
 - doc_quality_score: 1.0
 
 | case_type | field_count | required_top_level | allowed_top_level_extra |
 |---|---|---|---|
-| `api.http` | 1 | `request` | - |
+| `api.http` | 3 | - | - |
 | `cli.run` | 2 | - | - |
 | `docs.generate` | 0 | - | - |
 | `governance.check` | 1 | `check` | - |

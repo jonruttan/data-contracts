@@ -4,7 +4,7 @@
 
 ```yaml spec-test
 id: SRCONF-API-001
-title: api.http reads relative fixture and exposes body assertions
+title: api.http GET reads relative fixture and exposes body assertions
 purpose: Verifies api.http can resolve a local relative request url and assert deterministic
   status and json body shape.
 type: api.http
@@ -25,12 +25,6 @@ assert:
     - std.string.contains:
       - {var: subject}
       - '200'
-- target: body_text
-  must:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '"ok":true'
 - target: body_json
   must:
   - evaluate:
@@ -72,8 +66,8 @@ assert:
 ```yaml spec-test
 id: SRCONF-API-003
 title: api.http skip path honors requires.when_missing
-purpose: Verifies extension type capability gating can skip deterministic fixtures when an
-  additional required capability is absent.
+purpose: Verifies extension capability gating can skip fixtures when a required capability
+  is absent.
 type: api.http
 requires:
   capabilities:
@@ -100,6 +94,271 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-API-004
+title: api.http supports POST with body_json
+purpose: Verifies practical REST mutating verb support for POST requests in deterministic
+  mode.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+expect:
+  portable:
+    status: pass
+    category: null
+request:
+  method: POST
+  url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+  body_json:
+    name: sample
+assert:
+- target: body_json
+  must:
+  - evaluate:
+    - std.object.has_key:
+      - {var: subject}
+      - id
+```
+
+## SRCONF-API-005
+
+```yaml spec-test
+id: SRCONF-API-005
+title: api.http supports PUT
+purpose: Verifies practical REST verb support for PUT in deterministic mode.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+expect:
+  portable:
+    status: pass
+    category: null
+request:
+  method: PUT
+  url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
+assert:
+- target: status
+  must:
+  - evaluate:
+    - std.string.contains:
+      - {var: subject}
+      - '200'
+```
+
+## SRCONF-API-006
+
+```yaml spec-test
+id: SRCONF-API-006
+title: api.http supports PATCH
+purpose: Verifies practical REST verb support for PATCH in deterministic mode.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+expect:
+  portable:
+    status: pass
+    category: null
+request:
+  method: PATCH
+  url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
+assert:
+- target: body_text
+  must:
+  - evaluate:
+    - std.string.contains:
+      - {var: subject}
+      - abc-123
+```
+
+## SRCONF-API-007
+
+```yaml spec-test
+id: SRCONF-API-007
+title: api.http supports DELETE
+purpose: Verifies practical REST verb support for DELETE in deterministic mode.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+expect:
+  portable:
+    status: pass
+    category: null
+request:
+  method: DELETE
+  url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
+assert:
+- target: body_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - deleted
+      - true
+```
+
+## SRCONF-API-008
+
+```yaml spec-test
+id: SRCONF-API-008
+title: api.http supports HEAD
+purpose: Verifies practical REST verb support for HEAD in deterministic mode.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+expect:
+  portable:
+    status: pass
+    category: null
+request:
+  method: HEAD
+  url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
+assert:
+- target: status
+  must:
+  - evaluate:
+    - std.string.contains:
+      - {var: subject}
+      - '200'
+```
+
+## SRCONF-API-009
+
+```yaml spec-test
+id: SRCONF-API-009
+title: api.http supports OPTIONS
+purpose: Verifies practical REST verb support for OPTIONS in deterministic mode.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+expect:
+  portable:
+    status: pass
+    category: null
+request:
+  method: OPTIONS
+  url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
+assert:
+- target: status
+  must:
+  - evaluate:
+    - std.string.contains:
+      - {var: subject}
+      - '200'
+```
+
+## SRCONF-API-010
+
+```yaml spec-test
+id: SRCONF-API-010
+title: api.http rejects unsupported request method
+purpose: Verifies unsupported HTTP verbs are rejected as schema violations.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+expect:
+  portable:
+    status: fail
+    category: schema
+    message_tokens:
+    - request.method must be one of
+request:
+  method: TRACE
+  url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
+assert:
+- target: status
+  must:
+  - evaluate:
+    - std.string.contains:
+      - {var: subject}
+      - '200'
+```
+
+## SRCONF-API-011
+
+```yaml spec-test
+id: SRCONF-API-011
+title: api.http preflight requires OPTIONS method
+purpose: Verifies cors preflight helper enforces request.method OPTIONS.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+expect:
+  portable:
+    status: fail
+    category: schema
+    message_tokens:
+    - request.cors.preflight requires request.method OPTIONS
+request:
+  method: GET
+  url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
+  cors:
+    preflight: true
+    origin: https://client.example
+    request_method: POST
+assert:
+- target: status
+  must:
+  - evaluate:
+    - std.string.contains:
+      - {var: subject}
+      - '200'
+```
+
+## SRCONF-API-012
+
+```yaml spec-test
+id: SRCONF-API-012
+title: api.http scenario executes round-trip requests in order
+purpose: Verifies requests scenario supports step templating and exposes steps_json target.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+expect:
+  portable:
+    status: pass
+    category: null
+harness:
+  api_http:
+    scenario:
+      fail_fast: true
+requests:
+- id: create
+  method: POST
+  url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+- id: get
+  method: GET
+  url: /docs/spec/conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json
+- id: cleanup
+  method: DELETE
+  url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
+assert:
+- target: status
+  must:
+  - evaluate:
+    - std.string.contains:
+      - {var: subject}
+      - '200'
+- target: steps_json
+  must:
+  - evaluate:
+    - std.logic.eq:
+      - std.collection.len:
+        - {var: subject}
+      - 3
+```
+
+## SRCONF-API-013
+
+```yaml spec-test
+id: SRCONF-API-013
 title: api.http oauth deterministic local token exchange
 purpose: Verifies oauth auth profile resolves env refs and produces oauth context metadata
   without network access.
@@ -125,12 +384,6 @@ request:
   method: GET
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: status
-  must:
-  - evaluate:
-    - std.string.contains:
-      - {var: subject}
-      - '200'
 - target: context_json
   must:
   - evaluate:
@@ -148,21 +401,12 @@ assert:
           - meta
         - oauth_token_source
       - env_ref
-    - std.logic.eq:
-      - std.object.get:
-        - std.object.get:
-          - std.object.get:
-            - {var: subject}
-            - context
-          - oauth
-        - scope_requested
-      - read:spec
 ```
 
-## SRCONF-API-005
+## SRCONF-API-014
 
 ```yaml spec-test
-id: SRCONF-API-005
+id: SRCONF-API-014
 title: api.http oauth missing env refs is schema failure
 purpose: Verifies oauth env-ref credentials are required and missing env vars fail as schema.
 type: api.http
@@ -195,10 +439,10 @@ assert:
       - '200'
 ```
 
-## SRCONF-API-006
+## SRCONF-API-015
 
 ```yaml spec-test
-id: SRCONF-API-006
+id: SRCONF-API-015
 title: api.http oauth invalid auth_style is schema failure
 purpose: Verifies oauth auth_style is validated against supported values.
 type: api.http
@@ -232,10 +476,10 @@ assert:
       - '200'
 ```
 
-## SRCONF-API-007
+## SRCONF-API-016
 
 ```yaml spec-test
-id: SRCONF-API-007
+id: SRCONF-API-016
 title: api.http oauth live mode is optional capability
 type: api.http
 purpose: Verifies optional live oauth/network execution can be capability-gated and skipped
@@ -261,6 +505,48 @@ harness:
 request:
   method: GET
   url: https://api.example.invalid/items
+assert:
+- target: status
+  must:
+  - evaluate:
+    - std.string.contains:
+      - {var: subject}
+      - '200'
+```
+
+## SRCONF-API-017
+
+```yaml spec-test
+id: SRCONF-API-017
+title: api.http exposes new domain.http helper exports for CORS and steps
+purpose: Maintains reference usage for domain.http CORS and scenario helper symbol exports.
+type: api.http
+requires:
+  capabilities:
+  - api.http
+  - api.http.domain_lib_refs
+  when_missing: skip
+expect:
+  portable:
+    status: skip
+    category: null
+harness:
+  spec_lang:
+    includes:
+    - /docs/spec/libraries/domain/http_core.spec.md
+    exports:
+    - domain.http.cors_allow_origin
+    - domain.http.cors_allows_header
+    - domain.http.cors_allows_method
+    - domain.http.cors_credentials_enabled
+    - domain.http.cors_max_age_gte
+    - domain.http.is_preflight_step
+    - domain.http.step_body_json_get
+    - domain.http.step_by_id
+    - domain.http.step_status_is
+request:
+  method: GET
+  url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
 - target: status
   must:

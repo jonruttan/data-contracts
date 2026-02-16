@@ -1744,7 +1744,7 @@ def _scan_assert_domain_profiles_docs_sync(root: Path, *, harness: dict | None =
     required_profile_ids = {
         "python_profile.md": "python.generic/v1",
         "php_profile.md": "php.generic/v1",
-        "http_profile.md": "api.http/v1",
+        "http_profile.md": "api.http/v2",
         "markdown_profile.md": "markdown.generic/v1",
         "makefile_profile.md": "makefile.generic/v1",
     }
@@ -2688,13 +2688,33 @@ def _scan_conformance_api_http_portable_shape(root: Path, *, harness: dict | Non
             )
 
         request = case.get("request")
-        if not isinstance(request, dict):
-            violations.append(f"{case_id}: api.http requires request mapping")
-        elif not schema_failure_fixture:
-            for field in sorted(required_request_fields):
-                value = str(request.get(field, "")).strip()
-                if not value:
-                    violations.append(f"{case_id}: api.http request.{field} is required")
+        requests = case.get("requests")
+        if request is not None and requests is not None:
+            violations.append(f"{case_id}: api.http request and requests are mutually exclusive")
+        elif request is None and requests is None:
+            violations.append(f"{case_id}: api.http requires request mapping or requests list")
+        elif isinstance(request, dict):
+            if not schema_failure_fixture:
+                for field in sorted(required_request_fields):
+                    value = str(request.get(field, "")).strip()
+                    if not value:
+                        violations.append(f"{case_id}: api.http request.{field} is required")
+        elif isinstance(requests, list):
+            if not requests:
+                violations.append(f"{case_id}: api.http requests must be a non-empty list")
+            for idx, step in enumerate(requests):
+                if not isinstance(step, dict):
+                    violations.append(f"{case_id}: api.http requests[{idx}] must be a mapping")
+                    continue
+                for field in sorted(required_request_fields):
+                    value = str(step.get(field, "")).strip()
+                    if not value:
+                        violations.append(f"{case_id}: api.http requests[{idx}].{field} is required")
+                step_id = str(step.get("id", "")).strip()
+                if not step_id:
+                    violations.append(f"{case_id}: api.http requests[{idx}].id is required")
+        else:
+            violations.append(f"{case_id}: api.http requires request mapping or requests list")
 
         targets = _collect_assert_targets(case.get("assert", []))
         for t in targets:
@@ -2763,15 +2783,24 @@ def _scan_runtime_api_http_oauth_no_secret_literals(root: Path) -> list[str]:
             for key in sorted(forbidden_keys):
                 if key in oauth:
                     violations.append(f"{case_id}: oauth secret literal field is forbidden: {key}")
+        request_nodes: list[dict] = []
         request = case.get("request")
         if isinstance(request, dict):
-            headers = request.get("headers")
-            if isinstance(headers, dict):
-                for raw_key, raw_value in headers.items():
-                    key = str(raw_key).strip().lower()
-                    value = str(raw_value).strip()
-                    if key == "authorization" and value.lower().startswith("bearer "):
-                        violations.append(f"{case_id}: inline bearer Authorization header is forbidden")
+            request_nodes.append(request)
+        requests = case.get("requests")
+        if isinstance(requests, list):
+            for step in requests:
+                if isinstance(step, dict):
+                    request_nodes.append(step)
+        for req in request_nodes:
+            headers = req.get("headers")
+            if not isinstance(headers, dict):
+                continue
+            for raw_key, raw_value in headers.items():
+                key = str(raw_key).strip().lower()
+                value = str(raw_value).strip()
+                if key == "authorization" and value.lower().startswith("bearer "):
+                    violations.append(f"{case_id}: inline bearer Authorization header is forbidden")
     return violations
 
 
@@ -2785,13 +2814,18 @@ def _scan_runtime_api_http_live_mode_explicit(root: Path) -> list[str]:
             if isinstance(api_http, dict):
                 mode = str(api_http.get("mode", "deterministic")).strip().lower() or "deterministic"
         request = case.get("request")
-        request_url = ""
+        request_urls: list[str] = []
         if isinstance(request, dict):
-            request_url = str(request.get("url", "")).strip()
+            request_urls.append(str(request.get("url", "")).strip())
+        requests = case.get("requests")
+        if isinstance(requests, list):
+            for step in requests:
+                if isinstance(step, dict):
+                    request_urls.append(str(step.get("url", "")).strip())
         oauth = _oauth_block(case)
         token_url = "" if oauth is None else str(oauth.get("token_url", "")).strip()
-        if _is_live_network_url(request_url) and mode != "live":
-            violations.append(f"{case_id}: network request.url requires harness.api_http.mode=live")
+        if any(_is_live_network_url(u) for u in request_urls) and mode != "live":
+            violations.append(f"{case_id}: network request url requires harness.api_http.mode=live")
         if _is_live_network_url(token_url) and mode != "live":
             violations.append(f"{case_id}: network oauth token_url requires harness.api_http.mode=live")
     return violations
@@ -2835,6 +2869,177 @@ def _scan_runtime_api_http_oauth_docs_sync(root: Path) -> list[str]:
         for token in tokens:
             if token not in raw:
                 violations.append(f"{rel}: missing oauth sync token '{token}'")
+    return violations
+
+
+def _scan_runtime_api_http_verb_suite(root: Path) -> list[str]:
+    supported = {"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
+    seen: set[str] = set()
+    violations: list[str] = []
+    for case_id, case in _iter_api_http_cases(root):
+        request = case.get("request")
+        requests = case.get("requests")
+        request_nodes: list[tuple[str, dict[str, object]]] = []
+        if isinstance(request, dict):
+            request_nodes.append((case_id, request))
+        if isinstance(requests, list):
+            for idx, raw in enumerate(requests):
+                if isinstance(raw, dict):
+                    request_nodes.append((f"{case_id}.requests[{idx}]", raw))
+        for node_id, req in request_nodes:
+            expect = case.get("expect")
+            schema_fixture = False
+            if isinstance(expect, dict):
+                portable = expect.get("portable")
+                if isinstance(portable, dict):
+                    status = str(portable.get("status", "")).strip().lower()
+                    category = str(portable.get("category", "")).strip().lower()
+                    schema_fixture = status == "fail" and category == "schema"
+            method = str(req.get("method", "")).strip().upper()
+            if not method:
+                violations.append(f"{node_id}: api.http request.method is required")
+                continue
+            if method not in supported:
+                if not schema_fixture:
+                    violations.append(f"{node_id}: unsupported method '{method}'")
+                continue
+            seen.add(method)
+    missing = sorted(supported - seen)
+    if missing:
+        violations.append(f"api.http conformance coverage missing methods: {', '.join(missing)}")
+    return violations
+
+
+def _scan_runtime_api_http_cors_support(root: Path) -> list[str]:
+    required_tokens: dict[str, tuple[str, ...]] = {
+        "spec_runner/harnesses/api_http.py": (
+            "request.cors",
+            "preflight",
+            "Access-Control-Request-Method",
+            "cors_json",
+        ),
+        "docs/spec/contract/types/api_http.md": (
+            "request.cors",
+            "preflight",
+            "cors_json",
+        ),
+        "docs/spec/contract/types/http_profile.md": (
+            "value.cors",
+            "allow_origin",
+            "allow_methods",
+        ),
+        "docs/spec/libraries/domain/http_core.spec.md": (
+            "domain.http.cors_allow_origin",
+            "domain.http.cors_allows_method",
+            "domain.http.cors_allows_header",
+        ),
+        "docs/spec/conformance/cases/core/api_http.spec.md": (
+            "request.cors",
+            "preflight",
+        ),
+    }
+    violations: list[str] = []
+    for rel, tokens in required_tokens.items():
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}: missing required api.http CORS surface")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in raw:
+                violations.append(f"{rel}: missing CORS token '{token}'")
+    return violations
+
+
+def _scan_runtime_api_http_scenario_roundtrip(root: Path) -> list[str]:
+    violations: list[str] = []
+    has_requests_case = False
+    for case_id, case in _iter_api_http_cases(root):
+        requests = case.get("requests")
+        if not isinstance(requests, list) or not requests:
+            continue
+        has_requests_case = True
+        ids: set[str] = set()
+        for idx, step in enumerate(requests):
+            if not isinstance(step, dict):
+                violations.append(f"{case_id}.requests[{idx}]: step must be a mapping")
+                continue
+            step_id = str(step.get("id", "")).strip()
+            if not step_id:
+                violations.append(f"{case_id}.requests[{idx}]: id is required")
+                continue
+            if step_id in ids:
+                violations.append(f"{case_id}: duplicate requests step id '{step_id}'")
+            ids.add(step_id)
+    if not has_requests_case:
+        violations.append("api.http roundtrip conformance requires at least one case using requests list")
+    for rel, tokens in {
+        "spec_runner/harnesses/api_http.py": ("harness.api_http.scenario", "steps_json", "steps."),
+        "docs/spec/contract/types/api_http.md": ("harness.api_http.scenario", "requests", "steps_json"),
+        "docs/spec/conformance/cases/core/api_http.spec.md": ("requests:", "{{steps.", "steps_json"),
+    }.items():
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}: missing required api.http scenario surface")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in raw:
+                violations.append(f"{rel}: missing scenario token '{token}'")
+    return violations
+
+
+def _scan_runtime_api_http_parity_contract_sync(root: Path) -> list[str]:
+    violations: list[str] = []
+    checks: dict[str, tuple[str, ...]] = {
+        "spec_runner/harnesses/api_http.py": ("_SUPPORTED_METHODS", "cors_json", "steps_json"),
+        "scripts/php/conformance_runner.php": ("api.http", "request.method", "context_json"),
+        "docs/spec/contract/types/api_http.md": ("GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS", "steps_json", "cors_json"),
+    }
+    for rel, tokens in checks.items():
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}: missing parity sync surface")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in raw:
+                violations.append(f"{rel}: missing parity sync token '{token}'")
+    return violations
+
+
+def _scan_docs_api_http_tutorial_sync(root: Path) -> list[str]:
+    required_tokens: dict[str, tuple[str, ...]] = {
+        "docs/book/05_howto.md": (
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS",
+            "CORS",
+            "round-trip",
+            "api.http",
+        ),
+        "docs/book/06_troubleshooting.md": (
+            "api.http",
+            "CORS",
+            "preflight",
+            "requests",
+            "steps_json",
+        ),
+    }
+    violations: list[str] = []
+    for rel, tokens in required_tokens.items():
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}: missing api.http tutorial document")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        lowered = raw.lower()
+        for token in tokens:
+            if token.lower() not in lowered:
+                violations.append(f"{rel}: missing tutorial token '{token}'")
     return violations
 
 
@@ -5971,6 +6176,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.api_http_oauth_no_secret_literals": _scan_runtime_api_http_oauth_no_secret_literals,
     "runtime.api_http_live_mode_explicit": _scan_runtime_api_http_live_mode_explicit,
     "runtime.api_http_oauth_docs_sync": _scan_runtime_api_http_oauth_docs_sync,
+    "runtime.api_http_verb_suite": _scan_runtime_api_http_verb_suite,
+    "runtime.api_http_cors_support": _scan_runtime_api_http_cors_support,
+    "runtime.api_http_scenario_roundtrip": _scan_runtime_api_http_scenario_roundtrip,
+    "runtime.api_http_parity_contract_sync": _scan_runtime_api_http_parity_contract_sync,
+    "docs.api_http_tutorial_sync": _scan_docs_api_http_tutorial_sync,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,
     "runtime.rust_adapter_no_delegate": _scan_runtime_rust_adapter_no_delegate,

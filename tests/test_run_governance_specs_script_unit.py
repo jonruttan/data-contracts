@@ -1071,7 +1071,7 @@ def test_script_enforces_runtime_api_http_oauth_env_only(tmp_path):
         _case_for_check("SRGOV-TEST-RUNTIME-APIHTTP-001", "runtime.api_http_oauth_env_only", tmp_path),
     )
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        tmp_path / "docs/spec/conformance/cases/core/api_http.spec.md",
         """# API
 
 ## SRCONF-API-OAUTH-001
@@ -1103,7 +1103,7 @@ assert:
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        tmp_path / "docs/spec/conformance/cases/core/api_http.spec.md",
         """# API
 
 ## SRCONF-API-OAUTH-001
@@ -1144,7 +1144,7 @@ def test_script_enforces_runtime_api_http_oauth_no_secret_literals(tmp_path):
         _case_for_check("SRGOV-TEST-RUNTIME-APIHTTP-002", "runtime.api_http_oauth_no_secret_literals", tmp_path),
     )
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        tmp_path / "docs/spec/conformance/cases/core/api_http.spec.md",
         """# API
 
 ## SRCONF-API-OAUTH-002
@@ -1168,7 +1168,7 @@ assert:
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
     _write_text(
-        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        tmp_path / "docs/spec/conformance/cases/core/api_http.spec.md",
         """# API
 
 ## SRCONF-API-OAUTH-002
@@ -1286,6 +1286,180 @@ def test_script_enforces_runtime_api_http_oauth_docs_sync(tmp_path):
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
     _write_text(tmp_path / "docs/spec/contract/types/http_profile.md", "meta.auth_mode\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runtime_api_http_verb_suite(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_api_http_verb_suite.spec.md",
+        _case_for_check("SRGOV-TEST-RUNTIME-APIHTTP-VERB-001", "runtime.api_http_verb_suite", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        """# API
+
+## SRCONF-API-GET
+
+```yaml spec-test
+id: SRCONF-API-GET
+type: api.http
+request:
+  method: GET
+  url: /fixtures/ok.json
+assert: []
+```
+
+## SRCONF-API-POST
+
+```yaml spec-test
+id: SRCONF-API-POST
+type: api.http
+request:
+  method: POST
+  url: /fixtures/ok.json
+assert: []
+```
+
+## SRCONF-API-PUT
+
+```yaml spec-test
+id: SRCONF-API-PUT
+type: api.http
+request:
+  method: PUT
+  url: /fixtures/ok.json
+assert: []
+```
+
+## SRCONF-API-PATCH
+
+```yaml spec-test
+id: SRCONF-API-PATCH
+type: api.http
+request:
+  method: PATCH
+  url: /fixtures/ok.json
+assert: []
+```
+
+## SRCONF-API-DELETE
+
+```yaml spec-test
+id: SRCONF-API-DELETE
+type: api.http
+request:
+  method: DELETE
+  url: /fixtures/ok.json
+assert: []
+```
+
+## SRCONF-API-HEAD
+
+```yaml spec-test
+id: SRCONF-API-HEAD
+type: api.http
+request:
+  method: HEAD
+  url: /fixtures/ok.json
+assert: []
+```
+
+## SRCONF-API-OPTIONS
+
+```yaml spec-test
+id: SRCONF-API-OPTIONS
+type: api.http
+request:
+  method: OPTIONS
+  url: /fixtures/ok.json
+assert: []
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/api.spec.md",
+        """# API
+
+## SRCONF-API-GET
+
+```yaml spec-test
+id: SRCONF-API-GET
+type: api.http
+request:
+  method: GET
+  url: /fixtures/ok.json
+assert: []
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_runtime_api_http_scenario_roundtrip(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "runtime_api_http_scenario_roundtrip.spec.md",
+        _case_for_check("SRGOV-TEST-RUNTIME-APIHTTP-SCENARIO-001", "runtime.api_http_scenario_roundtrip", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/core/api_http.spec.md",
+        """# API
+
+## SRCONF-API-SCENARIO
+
+```yaml spec-test
+id: SRCONF-API-SCENARIO
+type: api.http
+requests:
+  - id: create
+    method: POST
+    url: /fixtures/create.json
+  - id: get
+    method: GET
+    url: /fixtures/item_{{steps.create.body_json.id}}.json
+assert:
+  - target: steps_json
+    must:
+      - exists: [true]
+```
+""",
+    )
+    _write_text(tmp_path / "spec_runner/harnesses/api_http.py", "harness.api_http.scenario\nsteps_json\n{{steps.")
+    _write_text(tmp_path / "docs/spec/contract/types/api_http.md", "harness.api_http.scenario\nrequests\nsteps_json")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+    _write_text(tmp_path / "docs/spec/conformance/cases/core/api_http.spec.md", "# API\n")
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+
+def test_script_enforces_docs_api_http_tutorial_sync(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "docs_api_http_tutorial_sync.spec.md",
+        _case_for_check("SRGOV-TEST-DOCS-APIHTTP-001", "docs.api_http_tutorial_sync", tmp_path),
+    )
+    _write_text(
+        tmp_path / "docs/book/05_howto.md",
+        "api.http GET POST PUT PATCH DELETE OPTIONS CORS round-trip",
+    )
+    _write_text(
+        tmp_path / "docs/book/06_troubleshooting.md",
+        "api.http CORS preflight requests steps_json",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+    _write_text(tmp_path / "docs/book/06_troubleshooting.md", "api.http")
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 1
 

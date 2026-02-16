@@ -49,7 +49,7 @@ Provide generated case-shape field reference derived from schema registry profil
 
 - top_level_field_count: 10
 - type_profile_count: 7
-- total_type_field_count: 7
+- total_type_field_count: 9
 
 ### Top-Level Fields
 
@@ -70,7 +70,7 @@ Provide generated case-shape field reference derived from schema registry profil
 
 | case_type | field_count | required_top_level |
 |---|---|---|
-| `api.http` | 1 | `request` |
+| `api.http` | 3 | - |
 | `cli.run` | 2 | - |
 | `docs.generate` | 0 | - |
 | `governance.check` | 1 | `check` |

@@ -160,4 +160,104 @@ definitions:
             - oauth
           - scope_requested
         - null
+    domain.http.cors_allow_origin:
+      fn:
+      - [subject]
+      - std.object.get:
+        - std.object.get:
+          - std.object.get:
+            - {var: subject}
+            - value
+          - cors
+        - allow_origin
+    domain.http.cors_allows_method:
+      fn:
+      - [subject, method_name]
+      - std.collection.includes:
+        - std.object.get:
+          - std.object.get:
+            - std.object.get:
+              - {var: subject}
+              - value
+            - cors
+          - allow_methods
+        - {var: method_name}
+    domain.http.cors_allows_header:
+      fn:
+      - [subject, header_name]
+      - std.collection.includes:
+        - std.object.get:
+          - std.object.get:
+            - std.object.get:
+              - {var: subject}
+              - value
+            - cors
+          - allow_headers
+        - {var: header_name}
+    domain.http.cors_credentials_enabled:
+      fn:
+      - [subject]
+      - std.logic.eq:
+        - std.object.get:
+          - std.object.get:
+            - std.object.get:
+              - {var: subject}
+              - value
+            - cors
+          - allow_credentials
+        - true
+    domain.http.cors_max_age_gte:
+      fn:
+      - [subject, min_age]
+      - std.logic.gte:
+        - std.object.get:
+          - std.object.get:
+            - std.object.get:
+              - {var: subject}
+              - value
+            - cors
+          - max_age
+        - {var: min_age}
+    domain.http.is_preflight_step:
+      fn:
+      - [step]
+      - std.logic.eq:
+        - std.object.get:
+          - {var: step}
+          - method
+        - OPTIONS
+    domain.http.step_by_id:
+      fn:
+      - [steps, step_id]
+      - std.collection.find:
+        - fn:
+          - [row]
+          - std.logic.eq:
+            - std.object.get:
+              - {var: row}
+              - id
+            - {var: step_id}
+        - {var: steps}
+    domain.http.step_status_is:
+      fn:
+      - [steps, step_id, expected]
+      - std.logic.eq:
+        - std.object.get:
+          - call:
+            - {var: domain.http.step_by_id}
+            - {var: steps}
+            - {var: step_id}
+          - status
+        - {var: expected}
+    domain.http.step_body_json_get:
+      fn:
+      - [steps, step_id, field]
+      - std.object.get:
+        - std.object.get:
+          - call:
+            - {var: domain.http.step_by_id}
+            - {var: steps}
+            - {var: step_id}
+          - body_json
+        - {var: field}
 ```

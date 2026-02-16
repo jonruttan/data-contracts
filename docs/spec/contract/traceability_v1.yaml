@@ -2762,6 +2762,96 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/harnesses/api_http.py
   notes: Network token/request flows require explicit live-mode opt-in.
+- rule_id: API_HTTP_VERB_SUITE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_VERB_SUITE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/types/api_http.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-004
+  - SRCONF-API-005
+  - SRCONF-API-006
+  - SRCONF-API-007
+  - SRCONF-API-008
+  - SRCONF-API-009
+  - SRCONF-API-010
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  implementation_refs:
+  - spec_runner/harnesses/api_http.py
+  - scripts/php/conformance_runner.php
+  notes: Practical REST verb suite is validated and rejects unsupported methods.
+- rule_id: API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED
+  contract_refs:
+  - docs/spec/contract/types/api_http.md
+  - docs/spec/contract/types/http_profile.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-011
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  implementation_refs:
+  - spec_runner/harnesses/api_http.py
+  - docs/spec/libraries/domain/http_core.spec.md
+  notes: CORS preflight request constraints and normalized response projection are explicit.
+- rule_id: API_HTTP_SCENARIO_ROUNDTRIP_SUPPORTED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_SCENARIO_ROUNDTRIP_SUPPORTED
+  contract_refs:
+  - docs/spec/contract/types/api_http.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-012
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  implementation_refs:
+  - spec_runner/harnesses/api_http.py
+  - scripts/php/conformance_runner.php
+  notes: Scenario requests execute ordered round-trip flow with step interpolation.
+- rule_id: API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/types/api_http.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-012
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  implementation_refs:
+  - spec_runner/harnesses/api_http.py
+  notes: Setup/probe/teardown semantics are deterministic with teardown in finally behavior.
+- rule_id: API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/types/api_http.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRCONF-API-001
+  - SRCONF-API-012
+  unit_test_refs:
+  - tests/test_conformance_parity_unit.py
+  - tests/test_php_spec_runner_unit.py
+  implementation_refs:
+  - spec_runner/conformance_parity.py
+  - scripts/php/conformance_runner.php
+  notes: Shared api.http fixture outcomes stay parity-consistent across python/php lanes.
+- rule_id: API_HTTP_TUTORIAL_COVERAGE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_TUTORIAL_COVERAGE_REQUIRED
+  contract_refs:
+  - docs/book/05_howto.md
+  - docs/book/06_troubleshooting.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: Docs include contributor tutorials for REST verbs, CORS, and round-trip scenarios.
 - rule_id: DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
   contract_refs:

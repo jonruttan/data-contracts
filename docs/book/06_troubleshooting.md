@@ -57,6 +57,23 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 | `schema.registry_*` | registry/docs mismatch | `./scripts/runner_adapter.sh schema-registry-build` |
 | `normalization.*` | canonical formatting/path drift | `./scripts/runner_adapter.sh normalize-check` |
 | `runtime.*` | adapter/runner contract drift | `./scripts/runner_adapter.sh governance` |
+| `runtime.api_http_*` | `api.http` verbs/CORS/scenario drift | `./scripts/runner_adapter.sh governance` |
+
+## API HTTP Troubleshooting
+
+| Symptom | Likely Cause | Fix |
+|---|---|---|
+| schema error for `request.method` | verb not in supported suite | use `GET/POST/PUT/PATCH/DELETE/HEAD/OPTIONS` |
+| schema error for `request.cors.preflight` | method is not `OPTIONS` | set `method: OPTIONS` for preflight |
+| schema error for `requests` scenario shape | invalid step id/order/fields | validate each `requests[*]` step has `id`, `method`, and `url` |
+| runtime error in deterministic mode | network URL used without live mode | set `harness.api_http.mode: live` |
+| missing round-trip values | bad `{{steps.*}}` path | verify step `id` and `steps_json` structure |
+| CORS assertion fails | raw headers differ from expectation | assert via normalized `cors_json` fields |
+
+First command for API flow issues:
+
+- `./scripts/runner_adapter.sh governance`
+- `./scripts/runner_adapter.sh normalize-check`
 
 ## Fast Recovery Playbook
 

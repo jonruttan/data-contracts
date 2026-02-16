@@ -19,7 +19,7 @@ Case fixtures that portable runner implementations execute.
 ## Fixture File Guide
 
 - `assertion-health.spec.md`: assertion-health diagnostics and mode behavior
-- `api-http.spec.md`: portable `api.http` extension behavior and capability gating
+- `core/api_http.spec.md`: portable `api.http` extension behavior, CORS, verbs, and scenario coverage
 - `domain_libraries.spec.md`: domain library contract coverage for non-core projection helpers
 - `spec_lang.spec.md`: `evaluate` operator behavior, schema/runtime failures, TCO, and ramda-style utility conformance
 - `spec_lang_library_contract.spec.md`: flat `spec_lang.library` definitions contract coverage
@@ -43,6 +43,16 @@ Case fixtures that portable runner implementations execute.
 - `SRCONF-API-005`
 - `SRCONF-API-006`
 - `SRCONF-API-007`
+- `SRCONF-API-008`
+- `SRCONF-API-009`
+- `SRCONF-API-010`
+- `SRCONF-API-011`
+- `SRCONF-API-012`
+- `SRCONF-API-013`
+- `SRCONF-API-014`
+- `SRCONF-API-015`
+- `SRCONF-API-016`
+- `SRCONF-API-017`
 - `SRCONF-CLI-001`
 - `SRCONF-CLI-002`
 - `SRCONF-DOMAIN-LIB-001`

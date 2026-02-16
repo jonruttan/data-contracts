@@ -47,18 +47,24 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 187
-- rules_with_conformance_cases: 39
-- rules_with_unit_tests: 187
-- rules_with_implementation_refs: 185
+- link_count: 193
+- rules_with_conformance_cases: 44
+- rules_with_unit_tests: 193
+- rules_with_implementation_refs: 191
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
+| `API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED` | 2 | 1 | 1 | 1 | 2 |
 | `API_HTTP_DETERMINISTIC_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_DETERMINISTIC_DEFAULT_REQUIRED` | 1 | 1 | 2 | 1 | 1 |
 | `API_HTTP_LIVE_MODE_EXPLICIT_OPT_IN_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_LIVE_MODE_EXPLICIT_OPT_IN_REQUIRED` | 1 | 1 | 1 | 2 | 2 |
 | `API_HTTP_OAUTH_ENV_REF_ONLY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_OAUTH_ENV_REF_ONLY_REQUIRED` | 1 | 1 | 1 | 2 | 2 |
 | `API_HTTP_OAUTH_HARNESS_PROFILE_SUPPORTED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_OAUTH_HARNESS_PROFILE_SUPPORTED` | 2 | 1 | 1 | 1 | 1 |
 | `API_HTTP_OAUTH_SECRET_REDACTION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_OAUTH_SECRET_REDACTION_REQUIRED` | 1 | 1 | 1 | 1 | 1 |
+| `API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED` | 1 | 1 | 2 | 2 | 2 |
+| `API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED` | 1 | 1 | 1 | 1 | 1 |
+| `API_HTTP_SCENARIO_ROUNDTRIP_SUPPORTED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_SCENARIO_ROUNDTRIP_SUPPORTED` | 1 | 1 | 1 | 1 | 2 |
+| `API_HTTP_TUTORIAL_COVERAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_TUTORIAL_COVERAGE_REQUIRED` | 2 | 0 | 0 | 1 | 1 |
+| `API_HTTP_VERB_SUITE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_VERB_SUITE_REQUIRED` | 1 | 1 | 7 | 1 | 2 |
 | `ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED` | 1 | 1 | 1 | 1 | 7 |
 | `ASSERT_COMPILER_SCHEMA_MATRIX_SYNC` | `docs/spec/contract/policy_v1.yaml#ASSERT_COMPILER_SCHEMA_MATRIX_SYNC` | 3 | 1 | 0 | 2 | 3 |
 | `ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED` | 2 | 2 | 1 | 1 | 5 |

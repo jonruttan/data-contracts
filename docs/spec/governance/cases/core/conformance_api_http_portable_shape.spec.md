@@ -23,6 +23,7 @@ harness:
     - title
     - purpose
     - request
+    - requests
     - assert
     - expect
     - requires
@@ -33,6 +34,8 @@ harness:
     - headers
     - body_text
     - body_json
+    - cors_json
+    - steps_json
     - context_json
     required_request_fields:
     - method

@@ -6,37 +6,80 @@
 
 ## Purpose
 
-Define portable API endpoint behavior checks without coupling specs to one runtime.
+Define portable REST endpoint checks with deterministic defaults, CORS-aware response projection, and optional scenario round-trip orchestration.
 
 ## Required Fields
 
 - `id` (string)
 - `type` (must equal `api.http`)
-- `request.method` (string)
-- `request.url` (string)
+- one of:
+  - `request` (mapping) for single-request mode
+  - `requests` (non-empty list[mapping]) for scenario mode
 - `assert` (assertion tree)
 
-## Optional Fields
+## Request Model (v2)
 
-- `request.headers` (mapping[string, string])
-- `request.body_text` (string)
-- `request.body_json` (mapping or list)
-- `harness` (mapping for setup, if needed)
+`request` and each `requests[*]` step support:
+
+- `id` (required in `requests[*]`, unique per case)
+- `method` (required): one of `GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS`
+- `url` (required): URL or contract path (`/` = contract root)
+- `headers` (optional mapping[string,string])
+- `body_text` (optional string)
+- `body_json` (optional mapping/list/scalar JSON)
+- `query` (optional mapping) merged into URL deterministically
+- `cors` (optional mapping):
+  - `origin` (optional string)
+  - `request_method` (required when `preflight=true`)
+  - `request_headers` (optional list[string])
+  - `preflight` (optional bool, default `false`)
+
+Rules:
+
+- `body_text` and `body_json` are mutually exclusive.
+- CORS preflight requires `method: OPTIONS`.
+- `request.cors` is the canonical CORS helper node.
+
+## Harness Model
 
 `harness.api_http` (optional):
 
-- `mode` (`deterministic` | `live`, default `deterministic`)
-- `auth.oauth` (mapping):
-  - `grant_type` (`client_credentials`)
-  - `token_url` (string)
-  - `client_id_env` (string env var name)
-  - `client_secret_env` (string env var name)
-  - `scope` (optional string)
-  - `audience` (optional string)
-  - `auth_style` (`basic` | `body`, default `basic`)
+- `mode`: `deterministic|live` (default `deterministic`)
+- `auth.oauth` (optional mapping):
+  - `grant_type`: `client_credentials`
+  - `token_url`
+  - `client_id_env`
+  - `client_secret_env`
+  - `scope` (optional)
+  - `audience` (optional)
+  - `auth_style`: `basic|body` (default `basic`)
   - `token_field` (default `access_token`)
   - `expires_field` (default `expires_in`)
   - `refresh_skew_seconds` (default `30`)
+- `scenario` (optional mapping):
+  - `setup` (optional):
+    - `command` (required list[string])
+    - `cwd` (optional virtual-root path)
+    - `env` (optional mapping[string,string])
+    - `ready_probe` (optional):
+      - `url` (required)
+      - `method` (optional, default `GET`)
+      - `expect_status_in` (optional list[int], default `[200,204]`)
+      - `timeout_ms` (optional, default `10000`)
+      - `interval_ms` (optional, default `200`)
+  - `teardown` (optional):
+    - `command` (required list[string])
+    - `cwd` / `env` optional
+  - `fail_fast` (optional bool, default `true`)
+
+Canonical lifecycle key: `harness.api_http.scenario`.
+
+## Scenario Templating
+
+In scenario mode (`requests`), `url`, header values, and `body_text` support moustache step substitution:
+
+- `{{steps.<id>.status}}`
+- `{{steps.<id>.body_json.<field>}}`
 
 ## Targets
 
@@ -44,31 +87,25 @@ Define portable API endpoint behavior checks without coupling specs to one runti
 - `headers`
 - `body_text`
 - `body_json`
+- `cors_json`
+- `steps_json`
 - `context_json`
+
+Target semantics:
+
+- In scenario mode, `status|headers|body_text|body_json|cors_json` target the final step.
+- `steps_json` provides ordered step result envelopes.
+- `context_json` is `api.http/v2` profile and includes scenario + OAuth metadata.
 
 ## Type Rules
 
 - Transport/setup details MUST live under `harness`.
 - Portable behavior assertions MUST use canonical `assert` groups/operators.
-- `request.method` SHOULD be uppercase HTTP token form (for example `GET`, `POST`).
-- `request.url` MAY be a URL or a contract path (`/` = contract root);
-  root-relative values normalize to canonical `/...` and MUST remain inside
-  contract root.
-- network URLs (`http://` / `https://`) require `harness.api_http.mode: live`;
-  deterministic mode allows contract-root and `file://` paths only.
-- OAuth credentials are env-ref only (`*_env`); inline secret literals are
-  forbidden.
-- target semantics:
-  - `status`: HTTP status string
-  - `headers`: deterministic header text view
-  - `body_text`: response body text
-  - `body_json`: parsed JSON value from body text
-  - `context_json`: JSON subject profile envelope for `api.http/v1` including
-    auth metadata (`meta.auth_mode`, `meta.oauth_token_source`,
-    `context.oauth.*`) without raw token/secret values
+- network URLs (`http://` / `https://`) require `harness.api_http.mode: live`.
+- OAuth credentials are env-ref only (`*_env`); inline secret literals are forbidden.
+- context metadata MUST redact token/secret values.
 
 ## Conformance Notes
 
 - `api.http` is an extension type and not required for v1 core conformance.
-- Implementations that advertise the same `api.http` capability MUST produce
-  matching status/category outcomes for shared-capability fixtures.
+- Implementations advertising shared `api.http` capability MUST produce matching status/category outcomes for shared fixtures.
