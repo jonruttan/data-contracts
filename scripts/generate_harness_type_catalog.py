@@ -71,7 +71,7 @@ def _render_md(payload: dict[str, Any]) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Generate harness type catalog from schema registry.")
     ap.add_argument("--out", default=".artifacts/harness-type-catalog.json")
-    ap.add_argument("--doc-out", default="docs/book/harness_type_reference.md")
+    ap.add_argument("--doc-out", default="docs/book/92_appendix_harness_type_reference.md")
     ap.add_argument("--check", action="store_true")
     ns = ap.parse_args(argv)
 

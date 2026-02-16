@@ -103,6 +103,7 @@ def test_schema_registry_check_ids_are_registered() -> None:
 def test_docs_generator_check_ids_are_registered() -> None:
     mod = _load_script_module()
     required = {
+        "docs.book_chapter_order_canonical",
         "docs.generator_registry_valid",
         "docs.generator_outputs_sync",
         "docs.generated_sections_read_only",

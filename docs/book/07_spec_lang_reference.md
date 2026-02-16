@@ -1,8 +1,8 @@
-# Chapter 4: Spec-Lang Reference (`evaluate`)
+# Chapter 7: Spec-Lang Reference (`evaluate`)
 
 ```yaml doc-meta
-doc_id: DOC-REF-005
-title: Chapter 4 Spec-Lang Reference
+doc_id: DOC-REF-007
+title: Chapter 7 Spec-Lang Reference
 status: active
 audience: reviewer
 owns_tokens:
@@ -24,7 +24,7 @@ sections_required:
 - '## Failure Modes'
 ```
 
-This chapter is the practical reference for the `evaluate` assertion leaf.
+This chapter is the strict semantic reference for the `evaluate` assertion leaf.
 
 Normative profile references:
 
@@ -33,8 +33,7 @@ Normative profile references:
 
 Authoring note:
 
-- Conformance authoring is sugar-first by default.
-- This chapter applies when `evaluate` is required by case intent.
+- Authoring is evaluate-first in contract-critical surfaces.
 
 ## Purpose
 

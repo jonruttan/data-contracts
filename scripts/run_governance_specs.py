@@ -3430,6 +3430,45 @@ def _scan_docs_reference_index_sync(root: Path, *, harness: dict | None = None) 
     return violations
 
 
+def _scan_docs_book_chapter_order_canonical(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    manifest, issues = load_reference_manifest(root, "docs/book/reference_manifest.yaml")
+    if issues:
+        return [x.render() for x in issues]
+    chapters = manifest.get("chapters") if isinstance(manifest, dict) else None
+    if not isinstance(chapters, list):
+        return ["docs/book/reference_manifest.yaml:1: chapters must be a non-empty list"]
+    actual = []
+    for row in chapters:
+        if isinstance(row, dict):
+            actual.append(str(row.get("path", "")).strip())
+    expected = [
+        "/docs/book/00_first_10_minutes.md",
+        "/docs/book/01_quickstart.md",
+        "/docs/book/02_core_model.md",
+        "/docs/book/03_assertions.md",
+        "/docs/book/04_spec_lang_guide.md",
+        "/docs/book/05_howto.md",
+        "/docs/book/06_troubleshooting.md",
+        "/docs/book/07_spec_lang_reference.md",
+        "/docs/book/90_appendix_cheatsheet.md",
+        "/docs/book/91_appendix_runner_api_reference.md",
+        "/docs/book/92_appendix_harness_type_reference.md",
+        "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
+        "/docs/book/94_appendix_contract_policy_reference.md",
+        "/docs/book/95_appendix_traceability_reference.md",
+        "/docs/book/96_appendix_governance_checks_reference.md",
+        "/docs/book/97_appendix_metrics_reference.md",
+        "/docs/book/98_appendix_spec_case_shape_reference.md",
+        "/docs/book/99_appendix_reference_index.md",
+    ]
+    if actual != expected:
+        return [
+            "docs/book/reference_manifest.yaml:1: canonical chapter order mismatch for docs.book_chapter_order_canonical"
+        ]
+    return []
+
+
 def _load_docs_quality_context(root: Path, harness: dict | None = None) -> tuple[dict, list[str], dict[str, dict], list[str]]:
     h = harness or {}
     cfg = h.get("docs_quality")
@@ -5543,6 +5582,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.evaluate_first_ratio_non_regression": _scan_conformance_evaluate_first_ratio_non_regression,
     "docs.reference_surface_complete": _scan_docs_reference_surface_complete,
     "docs.reference_index_sync": _scan_docs_reference_index_sync,
+    "docs.book_chapter_order_canonical": _scan_docs_book_chapter_order_canonical,
     "docs.meta_schema_valid": _scan_docs_meta_schema_valid,
     "docs.reference_manifest_sync": _scan_docs_reference_manifest_sync,
     "docs.token_ownership_unique": _scan_docs_token_ownership_unique,

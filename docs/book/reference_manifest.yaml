@@ -15,14 +15,67 @@ chapters:
   - docs/spec/contract/02_case_shape.md
   - docs/spec/contract/01_discovery.md
 - path: /docs/book/03_assertions.md
-  summary: assertion tree and operators.
+  summary: assertion tree and evaluate-first authoring boundary.
   contract_refs:
   - docs/spec/contract/03_assertions.md
-- path: /docs/book/04_spec_lang_reference.md
-  summary: evaluate language reference including currying, set algebra, and collection transforms.
+- path: /docs/book/04_spec_lang_guide.md
+  summary: practical spec-lang composition patterns and debugging.
   contract_refs:
   - docs/spec/contract/03b_spec_lang_v1.md
-- path: /docs/book/appendix_cheatsheet.md
+  - docs/spec/contract/14_spec_lang_libraries.md
+- path: /docs/book/05_howto.md
+  summary: common contributor workflows for specs, libraries, and governance.
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/contract/12_runner_interface.md
+- path: /docs/book/06_troubleshooting.md
+  summary: deterministic triage playbooks for docs/spec/governance failures.
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/contract/12_runner_interface.md
+- path: /docs/book/07_spec_lang_reference.md
+  summary: strict operator semantics and error behavior reference.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/90_appendix_cheatsheet.md
   summary: compact authoring cheatsheet.
   contract_refs:
   - docs/spec/schema/schema_v1.md
+- path: /docs/book/91_appendix_runner_api_reference.md
+  summary: generated runner command surface reference.
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+- path: /docs/book/92_appendix_harness_type_reference.md
+  summary: generated harness type profile reference.
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+- path: /docs/book/93_appendix_spec_lang_builtin_catalog.md
+  summary: generated spec-lang builtin surface catalog.
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+- path: /docs/book/94_appendix_contract_policy_reference.md
+  summary: generated policy rule catalog.
+  contract_refs:
+  - docs/spec/contract/policy_v1.yaml
+- path: /docs/book/95_appendix_traceability_reference.md
+  summary: generated contract traceability catalog.
+  contract_refs:
+  - docs/spec/contract/traceability_v1.yaml
+- path: /docs/book/96_appendix_governance_checks_reference.md
+  summary: generated governance check catalog.
+  contract_refs:
+  - docs/spec/contract/15_governance_subject_model.md
+- path: /docs/book/97_appendix_metrics_reference.md
+  summary: generated metrics field catalog.
+  contract_refs:
+  - docs/spec/contract/17_objective_metrics.md
+- path: /docs/book/98_appendix_spec_case_shape_reference.md
+  summary: generated schema field catalog for case shapes.
+  contract_refs:
+  - docs/spec/contract/21_schema_registry_contract.md
+- path: /docs/book/99_appendix_reference_index.md
+  summary: wrapper page linking generated reference index and coverage pages.
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md

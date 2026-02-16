@@ -100,7 +100,7 @@ def _render_md(payload: dict[str, Any]) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Generate runner API catalog JSON and markdown section.")
     ap.add_argument("--out", default=".artifacts/runner-api-catalog.json")
-    ap.add_argument("--doc-out", default="docs/book/runner_api_reference.md")
+    ap.add_argument("--doc-out", default="docs/book/91_appendix_runner_api_reference.md")
     ap.add_argument("--check", action="store_true")
     ns = ap.parse_args(argv)
 

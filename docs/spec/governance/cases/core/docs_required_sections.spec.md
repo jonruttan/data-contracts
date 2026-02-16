@@ -29,7 +29,7 @@ harness:
     - '## Targets'
     - '## Operators'
     - '## Checklist'
-    docs/book/04_spec_lang_reference.md:
+    docs/book/07_spec_lang_reference.md:
     - '## 1) What `evaluate` Is'
     - '## 3) Core Forms'
     - '## 5) Budgets (`harness.spec_lang`)'
@@ -39,6 +39,22 @@ harness:
     - '# Reference Index'
     - Canonical order for reference-manual chapters.
     - how to use
+    docs/book/04_spec_lang_guide.md:
+    - '## Mental Model'
+    - '## Common Authoring Patterns'
+    - '## Anti-Patterns'
+    - '## Library Usage Patterns'
+    - '## Debugging Evaluate Expressions'
+    docs/book/05_howto.md:
+    - '## Add A New Spec Case'
+    - '## Add Or Reuse A Library Function'
+    - '## Add A Governance Check'
+    - '## Run Local Gate Subsets'
+    docs/book/06_troubleshooting.md:
+    - '## Triage Flow'
+    - '## Check-ID To Cause Mapping'
+    - '## Fast Recovery Playbook'
+    - '## When To Escalate'
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

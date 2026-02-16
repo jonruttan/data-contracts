@@ -955,7 +955,7 @@ links:
   - docs/spec/contract/10_docs_quality.md
   - docs/book/02_core_model.md
   - docs/book/03_assertions.md
-  - docs/book/04_spec_lang_reference.md
+  - docs/book/07_spec_lang_reference.md
   schema_refs: []
   conformance_case_ids: []
   unit_test_refs:
@@ -2651,3 +2651,43 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_no_os_artifact_files.spec.md
   notes: Hard-fails tracked OS/editor artifact files under docs.
+- rule_id: DOCS_BOOK_CHAPTER_ORDER_CANONICAL
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_BOOK_CHAPTER_ORDER_CANONICAL
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/book/reference_manifest.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md
+  notes: Enforces canonical Learn -> Do -> Debug chapter order and appendix order.
+- rule_id: DOCS_BOOK_APPENDIX_CATALOG_NAMESPACE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_BOOK_APPENDIX_CATALOG_NAMESPACE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  - docs/book/reference_manifest.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_docs_generate_all_script_unit.py
+  implementation_refs:
+  - scripts/docs_generate_all.py
+  - docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md
+  notes: Keeps generated catalog chapters in `9x_appendix_*` namespace.
+- rule_id: DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/book/reference_manifest.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md
+  notes: Enforces guide chapter before strict spec-lang reference chapter.

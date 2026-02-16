@@ -111,7 +111,7 @@ def _render_md(payload: dict[str, Any]) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Generate contract policy rule catalog JSON and markdown section.")
     ap.add_argument("--out", default=".artifacts/policy-rule-catalog.json")
-    ap.add_argument("--doc-out", default="docs/book/contract_policy_reference.md")
+    ap.add_argument("--doc-out", default="docs/book/94_appendix_contract_policy_reference.md")
     ap.add_argument("--check", action="store_true")
     ns = ap.parse_args(argv)
 

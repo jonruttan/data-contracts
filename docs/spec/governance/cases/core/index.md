@@ -36,6 +36,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/contract_governance_check.spec.md`
 - `/docs/spec/governance/cases/core/current_spec_only_contract.spec.md`
 - `/docs/spec/governance/cases/core/docs_adoption_profiles_sync.spec.md`
+- `/docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md`
 - `/docs/spec/governance/cases/core/docs_cli_flags_documented.spec.md`
 - `/docs/spec/governance/cases/core/docs_command_examples_verified.spec.md`
 - `/docs/spec/governance/cases/core/docs_contract_schema_book_sync.spec.md`

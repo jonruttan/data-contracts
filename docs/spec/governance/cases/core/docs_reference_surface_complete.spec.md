@@ -23,7 +23,10 @@ harness:
     - docs/spec/contract/10_docs_quality.md
     - docs/book/02_core_model.md
     - docs/book/03_assertions.md
-    - docs/book/04_spec_lang_reference.md
+    - docs/book/04_spec_lang_guide.md
+    - docs/book/05_howto.md
+    - docs/book/06_troubleshooting.md
+    - docs/book/07_spec_lang_reference.md
     required_globs:
     - docs/spec/contract/*.md
   policy_evaluate:

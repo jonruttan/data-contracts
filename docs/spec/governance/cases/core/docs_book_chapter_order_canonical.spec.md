@@ -1,14 +1,14 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-002
+## SRGOV-DOCS-REF-018
 
 ```yaml spec-test
-id: SRGOV-DOCS-REF-002
-title: reference index stays synced with chapter files
-purpose: Ensures the machine-checked reference index entries stay aligned with the actual
-  chapter set and order.
+id: SRGOV-DOCS-REF-018
+title: docs book chapter order is canonical
+purpose: Enforces the hard-cut Learn -> Do -> Debug chapter order and appendix namespace ordering
+  in the reference manifest.
 type: governance.check
-check: docs.reference_index_sync
+check: docs.book_chapter_order_canonical
 harness:
   root: .
   spec_lang:
@@ -16,13 +16,6 @@ harness:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
-  reference_index:
-    path: /docs/book/reference_index.md
-    include_glob: docs/book/*.md
-    exclude_files:
-    - docs/book/index.md
-    - docs/book/reference_index.md
-    - docs/book/reference_coverage.md
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}
@@ -46,5 +39,5 @@ assert:
       - get:
         - {var: subject}
         - check_id
-      - docs.reference_index_sync
+      - docs.book_chapter_order_canonical
 ```

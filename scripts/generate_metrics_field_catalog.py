@@ -96,7 +96,7 @@ def _render_md(payload: dict[str, Any]) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Generate metrics field catalog JSON and markdown section.")
     ap.add_argument("--out", default=".artifacts/metrics-field-catalog.json")
-    ap.add_argument("--doc-out", default="docs/book/metrics_reference.md")
+    ap.add_argument("--doc-out", default="docs/book/97_appendix_metrics_reference.md")
     ap.add_argument("--check", action="store_true")
     ns = ap.parse_args(argv)
 

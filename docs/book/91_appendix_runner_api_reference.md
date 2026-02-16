@@ -1,6 +1,47 @@
 # Runner API Reference
 
+```yaml doc-meta
+doc_id: DOC-REF-091
+title: Appendix Runner API Reference
+status: active
+audience: reviewer
+owns_tokens:
+- appendix_runner_api_reference
+requires_tokens:
+- trusted_inputs_required
+commands:
+- run: ./scripts/runner_adapter.sh docs-generate-check
+  purpose: Verify generated runner API surface is in sync.
+examples:
+- id: EX-APP-RUNNER-001
+  runnable: false
+  opt_out_reason: Generated reference page intentionally contains no runnable fenced examples.
+sections_required:
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
+```
+
 Machine-generated runner command catalog.
+
+## Purpose
+
+Provide generated command-surface documentation for the canonical runner interface.
+
+## Inputs
+
+- runner adapter scripts and rust CLI command registrations
+
+## Outputs
+
+- deterministic command parity table across implementations
+
+## Failure Modes
+
+- stale generated block when command surfaces change
+- missing generated markers
+- catalog/parity drift
 
 <!-- GENERATED:START runner_api_catalog -->
 

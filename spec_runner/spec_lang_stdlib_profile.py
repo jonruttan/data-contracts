@@ -13,7 +13,7 @@ PROFILE_PATH = "docs/spec/schema/spec_lang_stdlib_profile_v1.yaml"
 DOC_SYNC_FILES = (
     "docs/spec/contract/03b_spec_lang_v1.md",
     "docs/spec/schema/schema_v1.md",
-    "docs/book/04_spec_lang_reference.md",
+    "docs/book/07_spec_lang_reference.md",
 )
 DOC_SYNC_REQUIRED_TOKENS = (
     "spec_lang_stdlib_profile_v1.yaml",

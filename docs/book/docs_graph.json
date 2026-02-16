@@ -121,59 +121,314 @@
       "to": "EX-ASSERTIONS-001"
     },
     {
-      "from": "/docs/book/04_spec_lang_reference.md",
+      "from": "/docs/book/04_spec_lang_guide.md",
+      "kind": "owns_token",
+      "to": "spec_lang_guide_patterns"
+    },
+    {
+      "from": "/docs/book/04_spec_lang_guide.md",
+      "kind": "owns_token",
+      "to": "spec_lang_debug_patterns"
+    },
+    {
+      "from": "/docs/book/04_spec_lang_guide.md",
+      "kind": "requires_token",
+      "to": "must"
+    },
+    {
+      "from": "/docs/book/04_spec_lang_guide.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh normalize-check"
+    },
+    {
+      "from": "/docs/book/04_spec_lang_guide.md",
+      "kind": "example",
+      "to": "EX-SPECLANG-GUIDE-001"
+    },
+    {
+      "from": "/docs/book/05_howto.md",
+      "kind": "owns_token",
+      "to": "authoring_workflows"
+    },
+    {
+      "from": "/docs/book/05_howto.md",
+      "kind": "owns_token",
+      "to": "governance_workflow_quickpath"
+    },
+    {
+      "from": "/docs/book/05_howto.md",
+      "kind": "requires_token",
+      "to": "spec_lang_guide_patterns"
+    },
+    {
+      "from": "/docs/book/05_howto.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh governance"
+    },
+    {
+      "from": "/docs/book/05_howto.md",
+      "kind": "example",
+      "to": "EX-HOWTO-001"
+    },
+    {
+      "from": "/docs/book/06_troubleshooting.md",
+      "kind": "owns_token",
+      "to": "troubleshooting_triage_matrix"
+    },
+    {
+      "from": "/docs/book/06_troubleshooting.md",
+      "kind": "owns_token",
+      "to": "first_command_on_failure"
+    },
+    {
+      "from": "/docs/book/06_troubleshooting.md",
+      "kind": "requires_token",
+      "to": "governance_workflow_quickpath"
+    },
+    {
+      "from": "/docs/book/06_troubleshooting.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh ci-cleanroom"
+    },
+    {
+      "from": "/docs/book/06_troubleshooting.md",
+      "kind": "example",
+      "to": "EX-TROUBLE-001"
+    },
+    {
+      "from": "/docs/book/07_spec_lang_reference.md",
       "kind": "owns_token",
       "to": "spec-lang"
     },
     {
-      "from": "/docs/book/04_spec_lang_reference.md",
+      "from": "/docs/book/07_spec_lang_reference.md",
       "kind": "owns_token",
       "to": "tail-call-optimization"
     },
     {
-      "from": "/docs/book/04_spec_lang_reference.md",
+      "from": "/docs/book/07_spec_lang_reference.md",
       "kind": "owns_token",
       "to": "spec_lang_forms"
     },
     {
-      "from": "/docs/book/04_spec_lang_reference.md",
+      "from": "/docs/book/07_spec_lang_reference.md",
       "kind": "requires_token",
       "to": "minimal_examples"
     },
     {
-      "from": "/docs/book/04_spec_lang_reference.md",
+      "from": "/docs/book/07_spec_lang_reference.md",
       "kind": "command",
       "to": "python scripts/evaluate_style.py --check docs/spec"
     },
     {
-      "from": "/docs/book/04_spec_lang_reference.md",
+      "from": "/docs/book/07_spec_lang_reference.md",
       "kind": "example",
       "to": "EX-SPECLANG-001"
     },
     {
-      "from": "/docs/book/appendix_cheatsheet.md",
+      "from": "/docs/book/90_appendix_cheatsheet.md",
       "kind": "owns_token",
       "to": "cheatsheet"
     },
     {
-      "from": "/docs/book/appendix_cheatsheet.md",
+      "from": "/docs/book/90_appendix_cheatsheet.md",
       "kind": "owns_token",
       "to": "minimal_examples"
     },
     {
-      "from": "/docs/book/appendix_cheatsheet.md",
+      "from": "/docs/book/90_appendix_cheatsheet.md",
       "kind": "requires_token",
       "to": "first_run_walkthrough"
     },
     {
-      "from": "/docs/book/appendix_cheatsheet.md",
+      "from": "/docs/book/90_appendix_cheatsheet.md",
       "kind": "command",
       "to": "python scripts/evaluate_style.py --check docs/spec"
     },
     {
-      "from": "/docs/book/appendix_cheatsheet.md",
+      "from": "/docs/book/90_appendix_cheatsheet.md",
       "kind": "example",
       "to": "EX-CHEATSHEET-001"
+    },
+    {
+      "from": "/docs/book/91_appendix_runner_api_reference.md",
+      "kind": "owns_token",
+      "to": "appendix_runner_api_reference"
+    },
+    {
+      "from": "/docs/book/91_appendix_runner_api_reference.md",
+      "kind": "requires_token",
+      "to": "trusted_inputs_required"
+    },
+    {
+      "from": "/docs/book/91_appendix_runner_api_reference.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/91_appendix_runner_api_reference.md",
+      "kind": "example",
+      "to": "EX-APP-RUNNER-001"
+    },
+    {
+      "from": "/docs/book/92_appendix_harness_type_reference.md",
+      "kind": "owns_token",
+      "to": "appendix_harness_type_reference"
+    },
+    {
+      "from": "/docs/book/92_appendix_harness_type_reference.md",
+      "kind": "requires_token",
+      "to": "core_case_model"
+    },
+    {
+      "from": "/docs/book/92_appendix_harness_type_reference.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/92_appendix_harness_type_reference.md",
+      "kind": "example",
+      "to": "EX-APP-HARNESS-001"
+    },
+    {
+      "from": "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
+      "kind": "owns_token",
+      "to": "appendix_spec_lang_builtin_catalog"
+    },
+    {
+      "from": "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
+      "kind": "requires_token",
+      "to": "spec-lang"
+    },
+    {
+      "from": "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
+      "kind": "example",
+      "to": "EX-APP-BUILTIN-001"
+    },
+    {
+      "from": "/docs/book/94_appendix_contract_policy_reference.md",
+      "kind": "owns_token",
+      "to": "appendix_contract_policy_reference"
+    },
+    {
+      "from": "/docs/book/94_appendix_contract_policy_reference.md",
+      "kind": "requires_token",
+      "to": "quickstart_minimal_case"
+    },
+    {
+      "from": "/docs/book/94_appendix_contract_policy_reference.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/94_appendix_contract_policy_reference.md",
+      "kind": "example",
+      "to": "EX-APP-POLICY-001"
+    },
+    {
+      "from": "/docs/book/95_appendix_traceability_reference.md",
+      "kind": "owns_token",
+      "to": "appendix_traceability_reference"
+    },
+    {
+      "from": "/docs/book/95_appendix_traceability_reference.md",
+      "kind": "requires_token",
+      "to": "quickstart_minimal_case"
+    },
+    {
+      "from": "/docs/book/95_appendix_traceability_reference.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/95_appendix_traceability_reference.md",
+      "kind": "example",
+      "to": "EX-APP-TRACE-001"
+    },
+    {
+      "from": "/docs/book/96_appendix_governance_checks_reference.md",
+      "kind": "owns_token",
+      "to": "appendix_governance_checks_reference"
+    },
+    {
+      "from": "/docs/book/96_appendix_governance_checks_reference.md",
+      "kind": "requires_token",
+      "to": "governance_workflow_quickpath"
+    },
+    {
+      "from": "/docs/book/96_appendix_governance_checks_reference.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/96_appendix_governance_checks_reference.md",
+      "kind": "example",
+      "to": "EX-APP-GOVCHECK-001"
+    },
+    {
+      "from": "/docs/book/97_appendix_metrics_reference.md",
+      "kind": "owns_token",
+      "to": "appendix_metrics_reference"
+    },
+    {
+      "from": "/docs/book/97_appendix_metrics_reference.md",
+      "kind": "requires_token",
+      "to": "quickstart_minimal_case"
+    },
+    {
+      "from": "/docs/book/97_appendix_metrics_reference.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/97_appendix_metrics_reference.md",
+      "kind": "example",
+      "to": "EX-APP-METRICS-001"
+    },
+    {
+      "from": "/docs/book/98_appendix_spec_case_shape_reference.md",
+      "kind": "owns_token",
+      "to": "appendix_spec_case_shape_reference"
+    },
+    {
+      "from": "/docs/book/98_appendix_spec_case_shape_reference.md",
+      "kind": "requires_token",
+      "to": "core_case_model"
+    },
+    {
+      "from": "/docs/book/98_appendix_spec_case_shape_reference.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/98_appendix_spec_case_shape_reference.md",
+      "kind": "example",
+      "to": "EX-APP-SCHEMA-001"
+    },
+    {
+      "from": "/docs/book/99_appendix_reference_index.md",
+      "kind": "owns_token",
+      "to": "appendix_reference_index_wrapper"
+    },
+    {
+      "from": "/docs/book/99_appendix_reference_index.md",
+      "kind": "requires_token",
+      "to": "quickstart_minimal_case"
+    },
+    {
+      "from": "/docs/book/99_appendix_reference_index.md",
+      "kind": "command",
+      "to": "./scripts/runner_adapter.sh docs-generate-check"
+    },
+    {
+      "from": "/docs/book/99_appendix_reference_index.md",
+      "kind": "example",
+      "to": "EX-APP-REFIDX-001"
     }
   ],
   "nodes": [
@@ -206,18 +461,102 @@
       "title": "Chapter 3 Assertions"
     },
     {
-      "audience": "reviewer",
+      "audience": "author",
       "doc_id": "DOC-REF-005",
-      "path": "/docs/book/04_spec_lang_reference.md",
+      "path": "/docs/book/04_spec_lang_guide.md",
       "status": "active",
-      "title": "Chapter 4 Spec-Lang Reference"
+      "title": "Chapter 4 Spec-Lang Guide"
+    },
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-008",
+      "path": "/docs/book/05_howto.md",
+      "status": "active",
+      "title": "Chapter 5 How-To Workflows"
+    },
+    {
+      "audience": "maintainer",
+      "doc_id": "DOC-REF-010",
+      "path": "/docs/book/06_troubleshooting.md",
+      "status": "active",
+      "title": "Chapter 6 Troubleshooting"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-007",
+      "path": "/docs/book/07_spec_lang_reference.md",
+      "status": "active",
+      "title": "Chapter 7 Spec-Lang Reference"
     },
     {
       "audience": "author",
       "doc_id": "DOC-REF-006",
-      "path": "/docs/book/appendix_cheatsheet.md",
+      "path": "/docs/book/90_appendix_cheatsheet.md",
       "status": "active",
       "title": "Appendix Cheatsheet"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-091",
+      "path": "/docs/book/91_appendix_runner_api_reference.md",
+      "status": "active",
+      "title": "Appendix Runner API Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-092",
+      "path": "/docs/book/92_appendix_harness_type_reference.md",
+      "status": "active",
+      "title": "Appendix Harness Type Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-093",
+      "path": "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
+      "status": "active",
+      "title": "Appendix Spec-Lang Builtin Catalog"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-094",
+      "path": "/docs/book/94_appendix_contract_policy_reference.md",
+      "status": "active",
+      "title": "Appendix Contract Policy Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-095",
+      "path": "/docs/book/95_appendix_traceability_reference.md",
+      "status": "active",
+      "title": "Appendix Traceability Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-096",
+      "path": "/docs/book/96_appendix_governance_checks_reference.md",
+      "status": "active",
+      "title": "Appendix Governance Checks Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-097",
+      "path": "/docs/book/97_appendix_metrics_reference.md",
+      "status": "active",
+      "title": "Appendix Metrics Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-098",
+      "path": "/docs/book/98_appendix_spec_case_shape_reference.md",
+      "status": "active",
+      "title": "Appendix Spec Case Shape Reference"
+    },
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-099",
+      "path": "/docs/book/99_appendix_reference_index.md",
+      "status": "active",
+      "title": "Appendix Reference Index Wrapper"
     }
   ],
   "root": ".",

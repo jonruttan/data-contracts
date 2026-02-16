@@ -105,7 +105,7 @@ def _render_md(payload: dict[str, Any]) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Generate spec-lang builtin catalog and parity summary.")
     ap.add_argument("--out", default=".artifacts/spec-lang-builtin-catalog.json")
-    ap.add_argument("--doc-out", default="docs/book/spec_lang_builtin_catalog.md")
+    ap.add_argument("--doc-out", default="docs/book/93_appendix_spec_lang_builtin_catalog.md")
     ap.add_argument("--check", action="store_true")
     ns = ap.parse_args(argv)
 

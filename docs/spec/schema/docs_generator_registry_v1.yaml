@@ -53,7 +53,7 @@ surfaces:
   - /scripts/rust/spec_runner_cli/src/main.rs
   outputs:
   - /.artifacts/runner-api-catalog.json
-  - /docs/book/runner_api_reference.md
+  - /docs/book/91_appendix_runner_api_reference.md
   generator: generate_runner_api_catalog
   check_mode_supported: true
   owner_contract_docs:
@@ -63,7 +63,7 @@ surfaces:
   - summary
   - commands
   read_only_sections:
-  - /docs/book/runner_api_reference.md
+  - /docs/book/91_appendix_runner_api_reference.md
 - surface_id: harness_type_catalog
   source_type: registry_yaml
   inputs:
@@ -71,7 +71,7 @@ surfaces:
   - /docs/spec/schema/registry_schema_v1.yaml
   outputs:
   - /.artifacts/harness-type-catalog.json
-  - /docs/book/harness_type_reference.md
+  - /docs/book/92_appendix_harness_type_reference.md
   generator: generate_harness_type_catalog
   check_mode_supported: true
   owner_contract_docs:
@@ -81,7 +81,7 @@ surfaces:
   - summary
   - type_profiles
   read_only_sections:
-  - /docs/book/harness_type_reference.md
+  - /docs/book/92_appendix_harness_type_reference.md
 - surface_id: spec_lang_builtin_catalog
   source_type: code_scan
   inputs:
@@ -89,7 +89,7 @@ surfaces:
   - /scripts/php/spec_runner.php
   outputs:
   - /.artifacts/spec-lang-builtin-catalog.json
-  - /docs/book/spec_lang_builtin_catalog.md
+  - /docs/book/93_appendix_spec_lang_builtin_catalog.md
   generator: generate_spec_lang_builtin_catalog
   check_mode_supported: true
   owner_contract_docs:
@@ -99,14 +99,14 @@ surfaces:
   - summary
   - builtins
   read_only_sections:
-  - /docs/book/spec_lang_builtin_catalog.md
+  - /docs/book/93_appendix_spec_lang_builtin_catalog.md
 - surface_id: policy_rule_catalog
   source_type: registry_yaml
   inputs:
   - /docs/spec/contract/policy_v1.yaml
   outputs:
   - /.artifacts/policy-rule-catalog.json
-  - /docs/book/contract_policy_reference.md
+  - /docs/book/94_appendix_contract_policy_reference.md
   generator: generate_policy_rule_catalog
   check_mode_supported: true
   owner_contract_docs:
@@ -116,14 +116,14 @@ surfaces:
   - summary
   - rules
   read_only_sections:
-  - /docs/book/contract_policy_reference.md
+  - /docs/book/94_appendix_contract_policy_reference.md
 - surface_id: traceability_catalog
   source_type: registry_yaml
   inputs:
   - /docs/spec/contract/traceability_v1.yaml
   outputs:
   - /.artifacts/traceability-catalog.json
-  - /docs/book/traceability_reference.md
+  - /docs/book/95_appendix_traceability_reference.md
   generator: generate_traceability_catalog
   check_mode_supported: true
   owner_contract_docs:
@@ -133,7 +133,7 @@ surfaces:
   - summary
   - links
   read_only_sections:
-  - /docs/book/traceability_reference.md
+  - /docs/book/95_appendix_traceability_reference.md
 - surface_id: governance_check_catalog
   source_type: code_scan
   inputs:
@@ -141,7 +141,7 @@ surfaces:
   - /docs/spec/governance/cases/core
   outputs:
   - /.artifacts/governance-check-catalog.json
-  - /docs/book/governance_checks_reference.md
+  - /docs/book/96_appendix_governance_checks_reference.md
   generator: generate_governance_check_catalog
   check_mode_supported: true
   owner_contract_docs:
@@ -151,7 +151,7 @@ surfaces:
   - summary
   - checks
   read_only_sections:
-  - /docs/book/governance_checks_reference.md
+  - /docs/book/96_appendix_governance_checks_reference.md
 - surface_id: metrics_field_catalog
   source_type: code_scan
   inputs:
@@ -159,7 +159,7 @@ surfaces:
   - /docs/spec/metrics
   outputs:
   - /.artifacts/metrics-field-catalog.json
-  - /docs/book/metrics_reference.md
+  - /docs/book/97_appendix_metrics_reference.md
   generator: generate_metrics_field_catalog
   check_mode_supported: true
   owner_contract_docs:
@@ -169,7 +169,7 @@ surfaces:
   - summary
   - baselines
   read_only_sections:
-  - /docs/book/metrics_reference.md
+  - /docs/book/97_appendix_metrics_reference.md
 - surface_id: spec_schema_field_catalog
   source_type: registry_yaml
   inputs:
@@ -178,7 +178,7 @@ surfaces:
   outputs:
   - /.artifacts/spec-schema-field-catalog.json
   - /docs/spec/schema/schema_v1.md
-  - /docs/book/spec_case_shape_reference.md
+  - /docs/book/98_appendix_spec_case_shape_reference.md
   generator: generate_spec_schema_field_catalog
   check_mode_supported: true
   owner_contract_docs:
@@ -190,4 +190,4 @@ surfaces:
   - type_profiles
   read_only_sections:
   - /docs/spec/schema/schema_v1.md
-  - /docs/book/spec_case_shape_reference.md
+  - /docs/book/98_appendix_spec_case_shape_reference.md

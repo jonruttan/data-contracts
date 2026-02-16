@@ -99,7 +99,7 @@ docs_token_sync:
     must_not_contain:
     - "YAML list S-expressions"
   - id: NORMALIZATION_BOOK_REFERENCE_MAPPING_AST_WORDING
-    file: docs/book/04_spec_lang_reference.md
+    file: docs/book/07_spec_lang_reference.md
     must_contain:
     - "operator-keyed mapping AST"
     must_not_contain:

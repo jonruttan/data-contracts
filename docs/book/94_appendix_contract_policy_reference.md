@@ -1,16 +1,57 @@
 # Contract Policy Reference
 
+```yaml doc-meta
+doc_id: DOC-REF-094
+title: Appendix Contract Policy Reference
+status: active
+audience: reviewer
+owns_tokens:
+- appendix_contract_policy_reference
+requires_tokens:
+- quickstart_minimal_case
+commands:
+- run: ./scripts/runner_adapter.sh docs-generate-check
+  purpose: Verify generated policy catalog remains synchronized.
+examples:
+- id: EX-APP-POLICY-001
+  runnable: false
+  opt_out_reason: Generated reference page intentionally contains no runnable fenced examples.
+sections_required:
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
+```
+
 This page is machine-generated from policy rule definitions.
+
+## Purpose
+
+Provide generated policy-rule inventory for governance and traceability review.
+
+## Inputs
+
+- policy rule source file (`policy_v1.yaml`)
+
+## Outputs
+
+- deterministic policy rule catalog tables
+
+## Failure Modes
+
+- stale generated block after policy edits
+- missing generated markers
+- policy/source drift
 
 <!-- GENERATED:START policy_rule_catalog -->
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 173
-- must_count: 160
+- rule_count: 176
+- must_count: 163
 - should_count: 12
 - must_not_count: 1
-- active_count: 173
+- active_count: 176
 - deprecated_count: 0
 - removed_count: 0
 
@@ -49,6 +90,8 @@ This page is machine-generated from policy rule definitions.
 | `DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES` | `MUST` | `governance` | `docs.spec.data_artifacts` | 2 | `active` |
 | `DOCS_ADOPTION_PROFILES_SYNC` | `MUST` | `governance` | `docs.adoption.profiles` | 3 | `active` |
 | `DOCS_API_CATALOGS_GENERATED_AND_SYNCED` | `MUST` | `governance` | `docs.generator.api_catalogs` | 6 | `active` |
+| `DOCS_BOOK_APPENDIX_CATALOG_NAMESPACE_REQUIRED` | `MUST` | `governance` | `docs.book.appendix_catalog_naming` | 3 | `active` |
+| `DOCS_BOOK_CHAPTER_ORDER_CANONICAL` | `MUST` | `governance` | `docs.book.chapter_order` | 2 | `active` |
 | `DOCS_CLI_FLAGS_DOCUMENTED` | `MUST` | `governance` | `docs.cli.flags` | 4 | `active` |
 | `DOCS_COMMAND_EXAMPLES_VERIFIED` | `MUST` | `governance` | `docs.reference.examples_v2` | 2 | `active` |
 | `DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC` | `MUST` | `governance` | `docs.contract.schema.book.tokens` | 4 | `active` |
@@ -78,6 +121,7 @@ This page is machine-generated from policy rule definitions.
 | `DOCS_REF_SURFACE_COMPLETE` | `MUST` | `governance` | `docs.reference.surface` | 3 | `active` |
 | `DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY` | `MUST` | `governance` | `docs.release.contract` | 3 | `active` |
 | `DOCS_REQUIRED_SECTIONS_PRESENT` | `MUST` | `governance` | `docs.reference.sections` | 4 | `active` |
+| `DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED` | `MUST` | `governance` | `docs.book.spec_lang_chapter_order` | 3 | `active` |
 | `DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.spec_schema_fields` | 4 | `active` |
 | `DOCS_TOKEN_DEPENDENCY_RESOLVED` | `MUST` | `governance` | `docs.reference.token_dependencies` | 2 | `active` |
 | `DOCS_TOKEN_OWNERSHIP_UNIQUE` | `MUST` | `governance` | `docs.reference.tokens` | 2 | `active` |

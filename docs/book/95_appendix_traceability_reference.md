@@ -1,15 +1,56 @@
 # Traceability Reference
 
+```yaml doc-meta
+doc_id: DOC-REF-095
+title: Appendix Traceability Reference
+status: active
+audience: reviewer
+owns_tokens:
+- appendix_traceability_reference
+requires_tokens:
+- quickstart_minimal_case
+commands:
+- run: ./scripts/runner_adapter.sh docs-generate-check
+  purpose: Verify generated traceability catalog remains synchronized.
+examples:
+- id: EX-APP-TRACE-001
+  runnable: false
+  opt_out_reason: Generated reference page intentionally contains no runnable fenced examples.
+sections_required:
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
+```
+
 This page is machine-generated from traceability link mappings.
+
+## Purpose
+
+Provide generated policy-to-contract/schema/test implementation traceability links.
+
+## Inputs
+
+- traceability registry YAML
+
+## Outputs
+
+- deterministic traceability catalog tables
+
+## Failure Modes
+
+- stale generated block after traceability edits
+- missing generated markers
+- unresolved rule references
 
 <!-- GENERATED:START traceability_catalog -->
 
 ## Generated Traceability Catalog
 
-- link_count: 173
+- link_count: 176
 - rules_with_conformance_cases: 34
-- rules_with_unit_tests: 173
-- rules_with_implementation_refs: 171
+- rules_with_unit_tests: 176
+- rules_with_implementation_refs: 174
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -46,6 +87,8 @@ This page is machine-generated from traceability link mappings.
 | `DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES` | `docs/spec/contract/policy_v1.yaml#DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_ADOPTION_PROFILES_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_ADOPTION_PROFILES_SYNC` | 3 | 0 | 0 | 2 | 3 |
 | `DOCS_API_CATALOGS_GENERATED_AND_SYNCED` | `docs/spec/contract/policy_v1.yaml#DOCS_API_CATALOGS_GENERATED_AND_SYNCED` | 2 | 3 | 0 | 3 | 6 |
+| `DOCS_BOOK_APPENDIX_CATALOG_NAMESPACE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_BOOK_APPENDIX_CATALOG_NAMESPACE_REQUIRED` | 1 | 2 | 0 | 1 | 2 |
+| `DOCS_BOOK_CHAPTER_ORDER_CANONICAL` | `docs/spec/contract/policy_v1.yaml#DOCS_BOOK_CHAPTER_ORDER_CANONICAL` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_CLI_FLAGS_DOCUMENTED` | `docs/spec/contract/policy_v1.yaml#DOCS_CLI_FLAGS_DOCUMENTED` | 4 | 0 | 0 | 2 | 2 |
 | `DOCS_COMMAND_EXAMPLES_VERIFIED` | `docs/spec/contract/policy_v1.yaml#DOCS_COMMAND_EXAMPLES_VERIFIED` | 1 | 2 | 0 | 3 | 4 |
 | `DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC` | 3 | 1 | 0 | 2 | 2 |
@@ -75,6 +118,7 @@ This page is machine-generated from traceability link mappings.
 | `DOCS_REF_SURFACE_COMPLETE` | `docs/spec/contract/policy_v1.yaml#DOCS_REF_SURFACE_COMPLETE` | 2 | 1 | 0 | 2 | 2 |
 | `DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY` | `docs/spec/contract/policy_v1.yaml#DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY` | 2 | 0 | 0 | 2 | 3 |
 | `DOCS_REQUIRED_SECTIONS_PRESENT` | `docs/spec/contract/policy_v1.yaml#DOCS_REQUIRED_SECTIONS_PRESENT` | 4 | 0 | 0 | 2 | 2 |
+| `DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED` | 2 | 2 | 0 | 1 | 2 |
 | `DOCS_TOKEN_DEPENDENCY_RESOLVED` | `docs/spec/contract/policy_v1.yaml#DOCS_TOKEN_DEPENDENCY_RESOLVED` | 1 | 1 | 0 | 3 | 4 |
 | `DOCS_TOKEN_OWNERSHIP_UNIQUE` | `docs/spec/contract/policy_v1.yaml#DOCS_TOKEN_OWNERSHIP_UNIQUE` | 1 | 1 | 0 | 3 | 4 |

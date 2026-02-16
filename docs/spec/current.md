@@ -87,8 +87,12 @@ Notes:
   `.artifacts/*-catalog.json` and generated book pages under `docs/book/`.
 - Documentation catalog generation additionally includes policy rule,
   traceability, governance-check, metrics-field, and schema-field references
-  with generated pages under `docs/book/*_reference.md` and synchronized
-  machine artifacts in `.artifacts/`.
+  with generated pages under `docs/book/91_appendix_*` through
+  `docs/book/98_appendix_*` and synchronized machine artifacts in
+  `.artifacts/`.
+- Book chapter taxonomy is canonicalized to Learn -> Do -> Debug flow:
+  `04_spec_lang_guide.md` appears before strict semantics in
+  `07_spec_lang_reference.md`, while generated catalogs are appendices only.
 - Normalization tooling is unified under `scripts/normalize_repo.py` with
   profile-driven rules from `docs/spec/schema/normalization_profile_v1.yaml`;
   CI runs `normalize-check` and local workflow uses `normalize-fix`.

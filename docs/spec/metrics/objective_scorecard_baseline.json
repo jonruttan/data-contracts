@@ -8,10 +8,7 @@
     "tripwire_status": {}
   },
   "course_correction_recommendations": [
-    "OBJ-DET-PORT: freeze baseline and add pending spec with deterministic remediation plan.",
-    "OBJ-META-SELF: close traceability/evidence gaps before accepting metric improvements.",
-    "OBJ-MINIMAL-REUSE: consolidate duplicated runtime entrypoints into shared interface/config.",
-    "OBJ-SPECLANG-DECISION: add/upgrade evaluate coverage and remove native decision escapes."
+    "OBJ-DOCS-OPERABILITY: repair docs build/lint drift and re-generate canonical artifacts."
   ],
   "errors": [],
   "manifest_path": "docs/spec/metrics/objective_manifest.yaml",
@@ -21,31 +18,31 @@
         {
           "field": "runtime_specific_capability_penalty_share",
           "id": "runtime_specific_capability_penalty_share",
-          "score": 0.9772727272727273,
+          "score": 0.9876543209876543,
           "source": "derived",
-          "value": 0.022727272727272728,
-          "value_rendered": "0.022727"
+          "value": 0.012345679012345678,
+          "value_rendered": "0.012346"
         },
         {
           "field": "expect_impl_overlay_penalty_share",
           "id": "expect_impl_overlay_penalty_share",
-          "score": 0.9848484848484849,
+          "score": 0.9259259259259259,
           "source": "derived",
-          "value": 0.015151515151515152,
-          "value_rendered": "0.015152"
+          "value": 0.07407407407407407,
+          "value_rendered": "0.074074"
         }
       ],
       "id": "OBJ-DET-PORT",
       "name": "Determinism and Portability",
       "primary": {
         "field": "summary.overall_self_contained_ratio",
-        "score": 0.4958712121212121,
+        "score": 0.8679012345679012,
         "source": "spec_portability",
-        "value": 0.4958712121212121,
-        "value_rendered": "0.495871"
+        "value": 0.8679012345679012,
+        "value_rendered": "0.867901"
       },
-      "score": 0.6899469696969698,
-      "status": "yellow",
+      "score": 0.9034567901234568,
+      "status": "green",
       "tripwire_hits": []
     },
     {
@@ -53,23 +50,23 @@
         {
           "field": "segments.book.mean_opt_out_density_ratio",
           "id": "docs_opt_out_density",
-          "score": 1.0,
+          "score": 0.5,
           "source": "docs_operability",
-          "value": 0.0,
-          "value_rendered": "0.000000"
+          "value": 0.5,
+          "value_rendered": "0.500000"
         }
       ],
       "id": "OBJ-DOCS-OPERABILITY",
       "name": "Docs Operability",
       "primary": {
         "field": "summary.overall_docs_operability_ratio",
-        "score": 1.0,
+        "score": 0.875,
         "source": "docs_operability",
-        "value": 1.0,
-        "value_rendered": "1.000000"
+        "value": 0.875,
+        "value_rendered": "0.875000"
       },
-      "score": 1.0,
-      "status": "green",
+      "score": 0.7250000000000001,
+      "status": "yellow",
       "tripwire_hits": []
     },
     {
@@ -77,10 +74,10 @@
         {
           "field": "governance_policy_evaluate_coverage_ratio",
           "id": "governance_policy_evaluate_coverage_ratio",
-          "score": 0.136986301369863,
+          "score": 1.0,
           "source": "derived",
-          "value": 0.136986301369863,
-          "value_rendered": "0.136986"
+          "value": 1.0,
+          "value_rendered": "1.000000"
         }
       ],
       "id": "OBJ-META-SELF",
@@ -92,8 +89,8 @@
         "value": 1.0,
         "value_rendered": "1.000000"
       },
-      "score": 0.6547945205479452,
-      "status": "yellow",
+      "score": 1.0,
+      "status": "green",
       "tripwire_hits": []
     },
     {
@@ -101,23 +98,39 @@
         {
           "field": "summary.direct_runtime_invocation_count",
           "id": "direct_runtime_invocation_count",
-          "score": 0.55,
+          "score": 1.0,
           "source": "runner_independence",
-          "value": 9.0,
-          "value_rendered": "9.000000"
+          "value": 0.0,
+          "value_rendered": "0.000000"
+        },
+        {
+          "field": "summary.non_python_lane_python_exec_count",
+          "id": "non_python_lane_python_exec_count",
+          "score": 1.0,
+          "source": "python_dependency",
+          "value": 0.0,
+          "value_rendered": "0.000000"
+        },
+        {
+          "field": "summary.transitive_adapter_python_exec_count",
+          "id": "transitive_adapter_python_exec_count",
+          "score": 1.0,
+          "source": "python_dependency",
+          "value": 0.0,
+          "value_rendered": "0.000000"
         }
       ],
       "id": "OBJ-MINIMAL-REUSE",
       "name": "Minimal Reusable Parts",
       "primary": {
         "field": "summary.overall_runner_independence_ratio",
-        "score": 0.8333333333333334,
+        "score": 1.0,
         "source": "runner_independence",
-        "value": 0.8333333333333334,
-        "value_rendered": "0.833333"
+        "value": 1.0,
+        "value_rendered": "1.000000"
       },
-      "score": 0.72,
-      "status": "yellow",
+      "score": 1.0,
+      "status": "green",
       "tripwire_hits": []
     },
     {
@@ -125,35 +138,35 @@
         {
           "field": "summary.native_logic_escape_case_ratio",
           "id": "native_logic_escape_case_ratio",
-          "score": 0.5227272727272727,
+          "score": 1.0,
           "source": "spec_lang_adoption",
-          "value": 0.4772727272727273,
-          "value_rendered": "0.477273"
+          "value": 0.0,
+          "value_rendered": "0.000000"
         }
       ],
       "id": "OBJ-SPECLANG-DECISION",
       "name": "Spec-Lang Decision Plane",
       "primary": {
         "field": "summary.overall_logic_self_contained_ratio",
-        "score": 0.09015151515151515,
+        "score": 0.9670781893004116,
         "source": "spec_lang_adoption",
-        "value": 0.09015151515151515,
-        "value_rendered": "0.090152"
+        "value": 0.9670781893004116,
+        "value_rendered": "0.967078"
       },
-      "score": 0.2631818181818182,
-      "status": "red",
+      "score": 0.980246913580247,
+      "status": "green",
       "tripwire_hits": []
     }
   ],
   "summary": {
     "objective_count": 5,
-    "overall_mean_score": 0.6655846616853467,
-    "overall_min_score": 0.2631818181818182,
-    "overall_status": "red",
+    "overall_mean_score": 0.9217407407407407,
+    "overall_min_score": 0.7250000000000001,
+    "overall_status": "yellow",
     "status_counts": {
-      "green": 1,
-      "red": 1,
-      "yellow": 3
+      "green": 4,
+      "red": 0,
+      "yellow": 1
     },
     "tripwire_hit_count": 0
   },

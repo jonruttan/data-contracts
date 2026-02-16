@@ -21,7 +21,10 @@ harness:
     - docs/book/01_quickstart.md
     - docs/book/02_core_model.md
     - docs/book/03_assertions.md
-    - docs/book/04_spec_lang_reference.md
+    - docs/book/04_spec_lang_guide.md
+    - docs/book/05_howto.md
+    - docs/book/06_troubleshooting.md
+    - docs/book/07_spec_lang_reference.md
     - docs/development.md
   policy_evaluate:
   - call:

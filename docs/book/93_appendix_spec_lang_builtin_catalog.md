@@ -1,6 +1,47 @@
 # Spec-Lang Builtin Catalog
 
+```yaml doc-meta
+doc_id: DOC-REF-093
+title: Appendix Spec-Lang Builtin Catalog
+status: active
+audience: reviewer
+owns_tokens:
+- appendix_spec_lang_builtin_catalog
+requires_tokens:
+- spec-lang
+commands:
+- run: ./scripts/runner_adapter.sh docs-generate-check
+  purpose: Verify generated builtin catalog remains synchronized.
+examples:
+- id: EX-APP-BUILTIN-001
+  runnable: false
+  opt_out_reason: Generated reference page intentionally contains no runnable fenced examples.
+sections_required:
+- '## Purpose'
+- '## Inputs'
+- '## Outputs'
+- '## Failure Modes'
+```
+
 Machine-generated spec-lang builtin catalog and parity summary.
+
+## Purpose
+
+Provide generated catalog coverage for the spec-lang builtin surface and parity.
+
+## Inputs
+
+- python and php builtin symbol tables
+
+## Outputs
+
+- symbol/arity/category matrix with parity flags
+
+## Failure Modes
+
+- stale generated block after builtin changes
+- parity scan drift
+- missing generated markers
 
 <!-- GENERATED:START spec_lang_builtin_catalog -->
 

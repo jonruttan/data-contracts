@@ -13,7 +13,7 @@ Practical guide for authoring and running executable spec tests in this repo.
 Fast start:
 
 1. `docs/book/01_quickstart.md`
-2. `docs/book/appendix_cheatsheet.md`
+2. `docs/book/90_appendix_cheatsheet.md`
 
 Deterministic onboarding:
 
@@ -25,9 +25,12 @@ Full authoring:
 1. `docs/book/01_quickstart.md`
 2. `docs/book/02_core_model.md`
 3. `docs/book/03_assertions.md`
-4. `docs/book/04_spec_lang_reference.md`
-5. `docs/spec/schema/schema_v1.md`
-6. `docs/spec/contract/`
+4. `docs/book/04_spec_lang_guide.md`
+5. `docs/book/05_howto.md`
+6. `docs/book/06_troubleshooting.md`
+7. `docs/book/07_spec_lang_reference.md`
+8. `docs/spec/schema/schema_v1.md`
+9. `docs/spec/contract/`
 
 Portability and conformance:
 
@@ -48,7 +51,12 @@ Portability and conformance:
 - `01_quickstart.md`: smallest runnable examples
 - `02_core_model.md`: case shape, discovery, types, harness rules
 - `03_assertions.md`: assertion tree and operators
-- `04_spec_lang_reference.md`: complete `evaluate`/spec-lang reference
+- `04_spec_lang_guide.md`: practical composition, reuse, and debugging patterns
+- `05_howto.md`: task-focused contributor workflows
+- `06_troubleshooting.md`: triage and recovery playbooks
+- `07_spec_lang_reference.md`: strict operator semantics reference
+- `90_appendix_cheatsheet.md`: compact templates
+- `91_appendix_runner_api_reference.md` through `99_appendix_reference_index.md`: generated appendices
 
 ## Docs Quality Authoring Guide
 

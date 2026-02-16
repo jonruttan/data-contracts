@@ -33,6 +33,9 @@ MUST:
   the actual reference-manual chapter set and order.
 - the machine-readable reference manifest (`docs/book/reference_manifest.yaml`)
   MUST remain synchronized with generated reference artifacts.
+- book chapter order MUST follow canonical Learn -> Do -> Debug flow with:
+  - `04_spec_lang_guide.md` before `07_spec_lang_reference.md`
+  - generated catalog surfaces restricted to `9x_appendix_*` chapters
 
 ## Required Section Coverage
 
@@ -102,14 +105,14 @@ Reference generation and graph artifacts:
   - `docs/book/reference_coverage.md`
   - `docs/book/docs_graph.json`
 - API catalog generators produce:
-  - `docs/book/runner_api_reference.md`
-  - `docs/book/harness_type_reference.md`
-  - `docs/book/spec_lang_builtin_catalog.md`
-  - `docs/book/contract_policy_reference.md`
-  - `docs/book/traceability_reference.md`
-  - `docs/book/governance_checks_reference.md`
-  - `docs/book/metrics_reference.md`
-  - `docs/book/spec_case_shape_reference.md`
+  - `docs/book/91_appendix_runner_api_reference.md`
+  - `docs/book/92_appendix_harness_type_reference.md`
+  - `docs/book/93_appendix_spec_lang_builtin_catalog.md`
+  - `docs/book/94_appendix_contract_policy_reference.md`
+  - `docs/book/95_appendix_traceability_reference.md`
+  - `docs/book/96_appendix_governance_checks_reference.md`
+  - `docs/book/97_appendix_metrics_reference.md`
+  - `docs/book/98_appendix_spec_case_shape_reference.md`
   - `.artifacts/runner-api-catalog.json`
   - `.artifacts/harness-type-catalog.json`
   - `.artifacts/spec-lang-builtin-catalog.json`
