@@ -2,23 +2,28 @@
 
 ## Tree Model
 
-`assert` is an assertion tree with:
+`assert` is a list of assertion steps.
 
-- list: implicit AND
-- group mapping with exactly one of `must` / `can` / `cannot`
-- leaf mapping with operator keys
+Each assertion step has:
+
+- `id`
+- `class` (`must` | `can` | `cannot`)
+- optional `target`
+- `checks` (non-empty list)
+
+`checks` entries are assertion-tree nodes (group or leaf mappings).
 
 ## Group Semantics
 
-- `must`: all children must pass
-- `can`: at least one child must pass
-- `cannot`: no child may pass
-- group child lists must be non-empty
+- `must`: all `checks` must pass
+- `can`: at least one check must pass
+- `cannot`: no check may pass
+- check lists must be non-empty
 
 ## Target Rules
 
-- `target` is defined on group nodes.
-- Leaf nodes inherit `target` from parent groups.
+- `target` is defined on assertion steps and may be refined by inner group nodes.
+- Leaf nodes inherit `target` from the step/group chain.
 - Leaf nodes MUST NOT include `target`.
 - A leaf without inherited `target` is invalid.
 

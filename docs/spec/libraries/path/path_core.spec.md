@@ -347,12 +347,14 @@ harness:
       names:
       - path.normalize_slashes
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - call:
         - {var: path.normalize_slashes}
         - a\\b\\c.txt
       - a/b/c.txt
+  target: text
 ```

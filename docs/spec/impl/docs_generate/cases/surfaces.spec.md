@@ -18,12 +18,14 @@ harness:
       source_type: generated_artifact
       path: /docs/book/reference_index.md
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-002
@@ -44,12 +46,14 @@ harness:
       source_type: generated_artifact
       path: /docs/book/reference_coverage.md
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-003
@@ -72,12 +76,14 @@ harness:
       - cat
       - docs/book/docs_graph.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-004
@@ -98,12 +104,14 @@ harness:
       source_type: generated_artifact
       path: /docs/spec/schema/schema_v1.md
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-005
@@ -125,12 +133,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/runner-api-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-006
@@ -152,12 +162,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/harness-type-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-007
@@ -179,12 +191,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-008
@@ -206,12 +220,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/policy-rule-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-009
@@ -233,12 +249,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/traceability-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-010
@@ -260,12 +278,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/governance-check-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-011
@@ -287,12 +307,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/metrics-field-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-012
@@ -313,12 +335,14 @@ harness:
       source_type: generated_artifact
       path: /docs/book/98_appendix_spec_case_shape_reference.md
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-013
@@ -339,12 +363,14 @@ harness:
       source_type: generated_artifact
       path: /docs/spec/schema/schema_v1.md
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-014
@@ -366,12 +392,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-015
@@ -393,12 +421,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-016
@@ -420,12 +450,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-017
@@ -447,12 +479,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-018
@@ -474,12 +508,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-019
@@ -501,12 +537,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-020
@@ -528,12 +566,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-021
@@ -555,12 +595,14 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```
 
 ## SRDOCGEN-022
@@ -582,10 +624,12 @@ harness:
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - true
       - true
+  target: context_json
 ```

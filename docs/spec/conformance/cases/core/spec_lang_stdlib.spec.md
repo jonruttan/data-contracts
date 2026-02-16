@@ -12,8 +12,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.math.add:
@@ -35,6 +36,7 @@ assert:
         - 3
         - 3
       - 0
+  target: text
 ```
 
 ## SRCONF-STDLIB-002
@@ -49,8 +51,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.type.json_type:
@@ -72,4 +75,5 @@ assert:
           - a
         - dict
       - true
+  target: text
 ```

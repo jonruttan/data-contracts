@@ -133,6 +133,55 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
             return
         if not isinstance(node, dict):
             raise TypeError("assert node must be a mapping or a list")
+        step_class = str(node.get("class", "")).strip() if "class" in node else ""
+        if step_class in {"must", "can", "cannot"} and "checks" in node:
+            step_id = str(node.get("id", "")).strip()
+            if not step_id:
+                raise ValueError(f"{path}.id must be a non-empty string")
+            extra = [k for k in node.keys() if k not in ("id", "class", "target", "checks")]
+            if extra:
+                bad = sorted(str(k) for k in extra)[0]
+                raise ValueError(f"unknown key in assert step: {bad}")
+            node_target = str(node.get("target", "")).strip() or inherited_target
+            children = node.get("checks")
+            if not isinstance(children, list):
+                raise TypeError("assert step checks must be a list")
+            if not children:
+                raise ValueError("assert step checks must not be empty")
+            step_path = f"{path}<{step_id}>"
+            if step_class == "must":
+                for idx, child in enumerate(children):
+                    _eval_node(child, inherited_target=node_target, path=f"{step_path}.checks[{idx}]")
+                return
+            if step_class == "can":
+                failures: list[BaseException] = []
+                any_passed = False
+                for idx, child in enumerate(children):
+                    try:
+                        _eval_node(child, inherited_target=node_target, path=f"{step_path}.checks[{idx}]")
+                        any_passed = True
+                        break
+                    except AssertionError as e:
+                        failures.append(e)
+                if not any_passed:
+                    msg = "all 'can' branches failed"
+                    if failures:
+                        details = "\n".join(f"- {str(e) or e.__class__.__name__}" for e in failures[:5])
+                        msg = f"{msg}:\n{details}"
+                    raise AssertionError(msg)
+                return
+            if step_class == "cannot":
+                passed = 0
+                for idx, child in enumerate(children):
+                    try:
+                        _eval_node(child, inherited_target=node_target, path=f"{step_path}.checks[{idx}]")
+                        passed += 1
+                    except AssertionError:
+                        continue
+                if passed:
+                    raise AssertionError(f"'cannot' failed: {passed} branch(es) passed")
+                return
+
         present_groups = [k for k in ("must", "can", "cannot") if k in node]
         if present_groups:
             if len(present_groups) > 1:

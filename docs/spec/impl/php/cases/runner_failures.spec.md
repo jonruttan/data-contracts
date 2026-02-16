@@ -16,12 +16,14 @@ expect:
     message_tokens:
     - cannot read fixture file
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - x
+  target: text
 ```
 
 ## SRPHP-RUN-F002
@@ -39,12 +41,14 @@ expect:
     message_tokens:
     - text.file path escapes contract root
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - outside
+  target: text
 ```
 
 ## SRPHP-RUN-F003
@@ -65,12 +69,14 @@ expect:
     message_tokens:
     - requires explicit harness.entrypoint
 assert:
-- target: stdout
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - x
+  target: stdout
 ```
 
 ## SRPHP-RUN-F004
@@ -92,10 +98,12 @@ expect:
     message_tokens:
     - unsupported json_type
 assert:
-- target: stdout
-  must:
+- id: assert_1
+  class: must
+  checks:
   - json_type:
     - nope
+  target: stdout
 ```
 
 ## SRPHP-RUN-F005
@@ -172,9 +180,11 @@ expect:
     message_tokens:
     - 'leaf assertion must not include key: target'
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - target: text
     contain:
     - fixture-content
+  target: text
 ```

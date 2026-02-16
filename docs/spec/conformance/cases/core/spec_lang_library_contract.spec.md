@@ -13,8 +13,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
@@ -29,6 +30,7 @@ assert:
       - std.string.contains:
         - {var: subject}
         - 'functions:'
+  target: text
 ```
 
 ## SRCONF-LIB-CONTRACT-002
@@ -44,8 +46,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
@@ -60,6 +63,7 @@ assert:
       - std.string.contains:
         - {var: subject}
         - 'functions:'
+  target: text
 ```
 
 ## SRCONF-LIB-CONTRACT-003
@@ -75,8 +79,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
@@ -85,4 +90,5 @@ assert:
       - std.string.contains:
         - {var: subject}
         - policy.fail_when_has_violations
+  target: text
 ```

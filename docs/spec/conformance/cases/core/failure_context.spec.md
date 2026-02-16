@@ -21,10 +21,12 @@ expect:
     - target=text
     - op=evaluate
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.regex_match:
       - {var: subject}
       - \A\Z
+  target: text
 ```

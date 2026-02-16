@@ -30,12 +30,14 @@ harness:
       names:
       - policy.pass_when_no_violations
 assert:
-- target: summary_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.object.get:
         - {var: subject}
         - check_id
       - library.public_surface_model
+  target: summary_json
 ```

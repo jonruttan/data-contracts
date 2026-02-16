@@ -79,14 +79,17 @@ harness:
       names:
       - policy.pass_when_no_violations
 assert:
-- target: violation_count
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - {var: subject}
       - 0
-- target: summary_json
-  must:
+  target: violation_count
+- id: assert_2
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.object.get:
@@ -98,4 +101,5 @@ assert:
         - {var: subject}
         - check_id
       - spec.portability_metric
+  target: summary_json
 ```

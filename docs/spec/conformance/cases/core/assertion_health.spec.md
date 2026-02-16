@@ -23,12 +23,14 @@ expect:
 assert_health:
   mode: warn
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - ''
+  target: text
 ```
 
 ## SRCONF-AH-002
@@ -46,12 +48,14 @@ expect:
 assert_health:
   mode: error
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - ''
+  target: text
 ```
 
 ## SRCONF-AH-003
@@ -68,12 +72,14 @@ expect:
 assert_health:
   mode: nope
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - spec-test
+  target: text
 ```
 
 ## SRCONF-AH-004
@@ -90,12 +96,14 @@ expect:
 assert_health:
   mode: ignore
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - ''
+  target: text
 ```
 
 ## SRCONF-AH-005
@@ -113,8 +121,9 @@ expect:
 assert_health:
   mode: error
 assert:
-- target: text
-  can:
+- id: assert_1
+  class: can
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
@@ -123,6 +132,7 @@ assert:
     - std.string.contains:
       - {var: subject}
       - 'version: 2'
+  target: text
 ```
 
 ## SRCONF-AH-006
@@ -140,10 +150,12 @@ expect:
 assert_health:
   mode: error
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.regex_match:
       - {var: subject}
       - '(?<=version: )1'
+  target: text
 ```

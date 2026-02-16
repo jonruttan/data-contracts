@@ -37,10 +37,12 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '# PHP Spec Runner Library Export References'
+  target: text
 ```

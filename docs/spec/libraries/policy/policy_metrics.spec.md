@@ -73,8 +73,9 @@ harness:
       names:
       - policy.metric_non_increase
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - call:
       - {var: policy.metric_non_decrease}
@@ -92,4 +93,5 @@ assert:
       - current
       - baseline
       - 0
+  target: text
 ```

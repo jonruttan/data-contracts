@@ -12,8 +12,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.type.json_type:
@@ -29,6 +30,7 @@ assert:
           - tags
         - list
       - true
+  target: text
 ```
 
 ## SRCONF-STDLIB-004
@@ -44,8 +46,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -63,4 +66,5 @@ assert:
               - '{"id":"x"}'
             - id
           - 1
+  target: text
 ```

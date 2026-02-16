@@ -30,13 +30,15 @@ harness:
       names:
       - conf.pass_when_text_contains
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - call:
       - {var: conf.pass_when_text_contains}
       - {var: subject}
       - 'version: 1'
+  target: text
 ```
 
 ## SRCONF-EXPR-002
@@ -69,8 +71,9 @@ harness:
       names:
       - conf.pass_when_text_contains
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - call:
@@ -80,6 +83,7 @@ assert:
       - std.string.starts_with:
         - {var: subject}
         - '#'
+  target: text
 ```
 
 ## SRCONF-EXPR-003
@@ -100,8 +104,9 @@ expect:
     message_tokens:
     - spec_lang let binding must be [name, expr]
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - let:
       - lit:
@@ -127,6 +132,7 @@ assert:
           - 1500
           - 0
         - 1500
+  target: text
 ```
 
 ## SRCONF-EXPR-004
@@ -146,12 +152,14 @@ expect:
     message_tokens:
     - op=evaluate
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.starts_with:
       - {var: subject}
       - NOPE_PREFIX
+  target: text
 ```
 
 ## SRCONF-EXPR-005
@@ -171,10 +179,12 @@ expect:
     message_tokens:
     - operator args must be a list
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - bad: shape
+  target: text
 ```
 
 ## SRCONF-EXPR-006
@@ -194,11 +204,13 @@ expect:
     message_tokens:
     - unsupported spec_lang symbol
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - unknown_symbol:
       - 1
+  target: text
 ```
 
 ## SRCONF-EXPR-007
@@ -222,8 +234,9 @@ harness:
   spec_lang:
     max_steps: 20
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - let:
       - lit:
@@ -243,6 +256,7 @@ assert:
       - call:
         - {var: loop}
         - 1000
+  target: text
 ```
 
 ## SRCONF-EXPR-008
@@ -276,8 +290,9 @@ harness:
       names:
       - conf.pass_when_text_contains
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - call:
       - {var: conf.pass_when_text_contains}
@@ -288,6 +303,7 @@ assert:
       - {var: conf.pass_when_text_contains}
       - {var: subject}
       - 'version: 1'
+  target: text
 ```
 
 ## SRCONF-EXPR-009
@@ -311,8 +327,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.set.intersection:
@@ -322,6 +339,7 @@ assert:
           - '[{"k":2},{"k":4},{"k":1}]'
       - std.json.parse:
         - '[{"k":1},{"k":2}]'
+  target: text
 ```
 
 ## SRCONF-EXPR-010
@@ -344,8 +362,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.set.union:
@@ -355,6 +374,7 @@ assert:
           - '[{"k":2},{"k":4},{"k":1}]'
       - std.json.parse:
         - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
+  target: text
 ```
 
 ## SRCONF-EXPR-011
@@ -377,8 +397,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -397,6 +418,7 @@ assert:
             - '[{"k":2},{"k":4}]'
         - std.json.parse:
           - '[{"k":1},{"k":3},{"k":4}]'
+  target: text
 ```
 
 ## SRCONF-EXPR-012
@@ -419,8 +441,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.set.set_equals:
@@ -443,6 +466,7 @@ assert:
           - '[{"k":1},{"k":2},{"k":3}]'
         - std.json.parse:
           - '{"k":2}'
+  target: text
 ```
 
 ## SRCONF-EXPR-013
@@ -465,8 +489,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -487,6 +512,7 @@ assert:
             - '[1,2,3,4,5]'
         - std.json.parse:
           - '[4,5]'
+  target: text
 ```
 
 ## SRCONF-EXPR-014
@@ -510,8 +536,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -572,6 +599,7 @@ assert:
             - '[{"k":1},{"k":1},{"k":2}]'
         - std.json.parse:
           - '[{"k":1},{"k":2}]'
+  target: text
 ```
 
 ## SRCONF-EXPR-015
@@ -594,8 +622,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -640,6 +669,7 @@ assert:
             - '[1,2,3]'
         - std.json.parse:
           - '[3]'
+  target: text
 ```
 
 ## SRCONF-EXPR-016
@@ -663,8 +693,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - call:
@@ -673,6 +704,7 @@ assert:
           - 2
         - 3
       - 5
+  target: text
 ```
 
 ## SRCONF-EXPR-017
@@ -698,8 +730,9 @@ expect:
       message_tokens:
       - over-application error
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - call:
       - call:
@@ -707,6 +740,7 @@ assert:
         - 1
       - 2
       - 3
+  target: text
 ```
 
 ## SRCONF-EXPR-018
@@ -731,13 +765,15 @@ expect:
       message_tokens:
       - expects list
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.set.intersection:
       - not-a-list
       - std.json.parse:
         - '[]'
+  target: text
 ```
 
 ## SRCONF-EXPR-019
@@ -760,8 +796,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -851,6 +888,7 @@ assert:
       - std.type.is_dict:
         - std.json.parse:
           - '{"a":1}'
+  target: text
 ```
 
 ## SRCONF-EXPR-020
@@ -873,8 +911,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -944,6 +983,7 @@ assert:
           - '{"a":1}'
         - std.json.parse:
           - '{"a":1,"b":2}'
+  target: text
 ```
 
 ## SRCONF-EXPR-021
@@ -966,8 +1006,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -1015,6 +1056,7 @@ assert:
           - 3
           - '0'
         - '700'
+  target: text
 ```
 
 ## SRCONF-EXPR-022
@@ -1038,8 +1080,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -1092,6 +1135,7 @@ assert:
         - std.logic.xor:
           - true
           - true
+  target: text
 ```
 
 ## SRCONF-EXPR-023
@@ -1115,8 +1159,9 @@ expect:
       status: pass
       category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.and:
       - std.logic.eq:
@@ -1264,6 +1309,7 @@ assert:
           - std.json.parse:
             - '[4,2,8]'
         - 8
+  target: text
 ```
 
 ## SRCONF-EXPR-024
@@ -1289,9 +1335,11 @@ expect:
       message_tokens:
       - arity error
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.compare:
       - 1
+  target: text
 ```

@@ -19,18 +19,22 @@ request:
   method: GET
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
-- target: body_json
-  must:
+  target: status
+- id: assert_2
+  class: must
+  checks:
   - evaluate:
     - std.type.json_type:
       - {var: subject}
       - dict
+  target: body_json
 ```
 
 ## SRCONF-API-002
@@ -53,12 +57,14 @@ expect:
 request:
   method: GET
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-003
@@ -82,12 +88,14 @@ request:
   method: GET
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-004
@@ -111,12 +119,14 @@ request:
   body_json:
     name: sample
 assert:
-- target: body_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.object.has_key:
       - {var: subject}
       - id
+  target: body_json
 ```
 
 ## SRCONF-API-005
@@ -137,12 +147,14 @@ request:
   method: PUT
   url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-006
@@ -163,12 +175,14 @@ request:
   method: PATCH
   url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
 assert:
-- target: body_text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - abc-123
+  target: body_text
 ```
 
 ## SRCONF-API-007
@@ -189,14 +203,16 @@ request:
   method: DELETE
   url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
 assert:
-- target: body_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.object.get:
         - {var: subject}
         - deleted
       - true
+  target: body_json
 ```
 
 ## SRCONF-API-008
@@ -217,12 +233,14 @@ request:
   method: HEAD
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-009
@@ -243,12 +261,14 @@ request:
   method: OPTIONS
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-010
@@ -271,12 +291,14 @@ request:
   method: TRACE
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-011
@@ -303,12 +325,14 @@ request:
     origin: https://client.example
     request_method: POST
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-012
@@ -340,19 +364,23 @@ requests:
   method: DELETE
   url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
-- target: steps_json
-  must:
+  target: status
+- id: assert_2
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.collection.len:
         - {var: subject}
       - 3
+  target: steps_json
 ```
 
 ## SRCONF-API-013
@@ -384,8 +412,9 @@ request:
   method: GET
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.object.get:
@@ -401,6 +430,7 @@ assert:
           - meta
         - oauth_token_source
       - env_ref
+  target: context_json
 ```
 
 ## SRCONF-API-014
@@ -431,12 +461,14 @@ request:
   method: GET
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-015
@@ -468,12 +500,14 @@ request:
   method: GET
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-016
@@ -506,12 +540,14 @@ request:
   method: GET
   url: https://api.example.invalid/items
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```
 
 ## SRCONF-API-017
@@ -565,10 +601,12 @@ request:
   method: GET
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 assert:
-- target: status
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '200'
+  target: status
 ```

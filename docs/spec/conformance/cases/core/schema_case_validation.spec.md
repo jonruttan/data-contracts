@@ -13,12 +13,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - Spec-Test Schema (v1)
+  target: text
 ```
 
 ## SRCONF-SCHEMA-CASE-002
@@ -33,9 +35,11 @@ expect:
     status: fail
     category: schema
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - unknown_symbol_for_schema_case:
       - {var: subject}
+  target: text
 ```

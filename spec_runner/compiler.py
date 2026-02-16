@@ -35,7 +35,7 @@ def _compile_leaf_op(*, op: str, value: Any, target: str, type_name: str, assert
     return PredicateLeaf(target=target, subject_key=subject_key, op=op, expr=expr, assert_path=assert_path)
 
 
-def compile_assert_tree(
+def _compile_legacy_assert_node(
     raw_assert: Any,
     *,
     type_name: str,
@@ -50,7 +50,7 @@ def compile_assert_tree(
             op="must",
             target=inherited_target,
             children=[
-                compile_assert_tree(
+                _compile_legacy_assert_node(
                     child,
                     type_name=type_name,
                     inherited_target=inherited_target,
@@ -81,7 +81,7 @@ def compile_assert_tree(
             op=group_op,
             target=group_target,
             children=[
-                compile_assert_tree(
+                _compile_legacy_assert_node(
                     child,
                     type_name=type_name,
                     inherited_target=group_target,
@@ -123,6 +123,81 @@ def compile_assert_tree(
     return GroupNode(op="must", target=target, children=leaves, assert_path=assert_path)
 
 
+def _looks_like_assert_step(item: Any) -> bool:
+    return isinstance(item, dict) and "id" in item and "class" in item and "checks" in item
+
+
+def compile_assert_tree(
+    raw_assert: Any,
+    *,
+    type_name: str,
+    inherited_target: str | None = None,
+    assert_path: str = "assert",
+    strict_steps: bool = False,
+) -> InternalAssertNode:
+    if raw_assert is None:
+        return GroupNode(op="must", target=inherited_target, children=[], assert_path=assert_path)
+    if not isinstance(raw_assert, list):
+        if strict_steps:
+            raise TypeError("assert must be a list of step mappings")
+        return _compile_legacy_assert_node(
+            raw_assert,
+            type_name=type_name,
+            inherited_target=inherited_target,
+            assert_path=assert_path,
+        )
+
+    if not raw_assert:
+        return GroupNode(op="must", target=inherited_target, children=[], assert_path=assert_path)
+
+    is_step_form = all(_looks_like_assert_step(x) for x in raw_assert)
+    if strict_steps and not is_step_form:
+        raise ValueError("assert must use step form entries with id/class/checks")
+    if not is_step_form:
+        return _compile_legacy_assert_node(
+            raw_assert,
+            type_name=type_name,
+            inherited_target=inherited_target,
+            assert_path=assert_path,
+        )
+
+    seen_ids: set[str] = set()
+    step_nodes: list[InternalAssertNode] = []
+    for idx, raw_step in enumerate(raw_assert):
+        assert isinstance(raw_step, dict)
+        step_id = str(raw_step.get("id", "")).strip()
+        if not step_id:
+            raise ValueError(f"{assert_path}[{idx}].id must be a non-empty string")
+        if step_id in seen_ids:
+            raise ValueError(f"{assert_path} has duplicate step id: {step_id}")
+        seen_ids.add(step_id)
+        class_name = str(raw_step.get("class", "")).strip()
+        if class_name not in {"must", "can", "cannot"}:
+            raise ValueError(f"{assert_path}[{idx}].class must be one of: must, can, cannot")
+        step_target = str(raw_step.get("target", "")).strip() or inherited_target
+        raw_checks = raw_step.get("checks")
+        if not isinstance(raw_checks, list) or not raw_checks:
+            raise TypeError(f"{assert_path}[{idx}].checks must be a non-empty list")
+        children = [
+            _compile_legacy_assert_node(
+                check,
+                type_name=type_name,
+                inherited_target=step_target,
+                assert_path=f"{assert_path}[{idx}].checks[{cidx}]",
+            )
+            for cidx, check in enumerate(raw_checks)
+        ]
+        step_nodes.append(
+            GroupNode(
+                op=cast(Literal["must", "can", "cannot"], class_name),
+                target=step_target,
+                children=children,
+                assert_path=f"{assert_path}[{idx}]<{step_id}>",
+            )
+        )
+    return GroupNode(op="must", target=inherited_target, children=step_nodes, assert_path=assert_path)
+
+
 def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> InternalSpecCase:
     if not isinstance(raw_case, dict):
         raise TypeError("spec case must be a mapping")
@@ -145,7 +220,16 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
     else:
         raise TypeError("harness must be a mapping")
 
-    assert_tree = compile_assert_tree(raw_case.get("assert", []) or [], type_name=type_name)
+    repo_docs_spec = (Path(__file__).resolve().parents[1] / "docs/spec").resolve()
+    try:
+        is_canonical_spec = doc_path.resolve().is_relative_to(repo_docs_spec)
+    except Exception:
+        is_canonical_spec = False
+    assert_tree = compile_assert_tree(
+        raw_case.get("assert", []) or [],
+        type_name=type_name,
+        strict_steps=is_canonical_spec,
+    )
 
     metadata = {
         "expect": raw_case.get("expect"),

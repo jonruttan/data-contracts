@@ -13,8 +13,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
@@ -28,6 +29,7 @@ assert:
     - std.string.contains:
       - {var: subject}
       - deterministic_projection
+  target: text
 ```
 
 ## SRCONF-PROFILE-002
@@ -43,8 +45,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: context_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.object.get:
@@ -62,4 +65,5 @@ assert:
     - std.object.has_key:
       - {var: subject}
       - meta
+  target: context_json
 ```

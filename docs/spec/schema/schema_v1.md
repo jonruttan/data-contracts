@@ -394,20 +394,26 @@ Universal core operator:
 - evaluator subjects MUST be JSON values only (`null`, boolean, number, string,
   list, object with string keys).
 
-## Assertion Leaf Shape
+## Assertion Step Shape
 
-Assertion leaves are mappings with:
+`assert` is a list of assertion step mappings.
 
-- one or more operator keys with list values
+Each step requires:
 
-Assertion group nodes (`must` / `can` / `cannot`) MAY include `target`; child leaves
-inherit that target.
-Each group node MUST include exactly one of `must`, `can`, or `cannot`.
+- `id` (string, unique per case)
+- `class` (`must` | `can` | `cannot`)
+- `checks` (non-empty list of assertion nodes)
+- `target` (optional; inherited by checks when provided)
+
+Checks are legacy assertion nodes:
+
+- group mapping with exactly one of `must` / `can` / `cannot`
+- leaf mapping with operator keys and list values
 
 Leaf constraints:
 
 - leaf assertions MUST NOT include `target`
-- leaves require inherited target from a parent group
+- leaves require inherited target from the step or an enclosing group
 
 Supported operators:
 

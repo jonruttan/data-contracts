@@ -27,12 +27,14 @@ harness:
       names:
       - policy.pass_when_no_violations
 assert:
-- target: summary_json
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - std.object.get:
         - {var: subject}
         - passed
       - true
+  target: summary_json
 ```

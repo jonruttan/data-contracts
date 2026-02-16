@@ -62,10 +62,12 @@ exit_code: 0
 harness:
   entrypoint: spec_runner.conformance_fixtures:main
 assert:
-- target: stdout
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '"ok": true'
+  target: stdout
 ```

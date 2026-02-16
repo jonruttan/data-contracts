@@ -55,8 +55,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - call:
@@ -200,6 +201,7 @@ assert:
     - std.string.contains:
       - {var: subject}
       - 'type: spec_lang.library'
+  target: text
 ```
 
 ## SRCONF-DOMAIN-LIB-002
@@ -317,8 +319,9 @@ expect:
   portable:
     status: pass
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - call:
       - {var: make.has_target}
@@ -356,4 +359,5 @@ assert:
     - std.string.contains:
       - {var: subject}
       - /docs/spec/libraries/domain/python_core.spec.md
+  target: text
 ```

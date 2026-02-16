@@ -33,10 +33,12 @@ harness:
       names:
       - policy.pass_when_no_violations
 assert:
-- target: violation_count
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.logic.eq:
       - {var: subject}
       - 0
+  target: violation_count
 ```

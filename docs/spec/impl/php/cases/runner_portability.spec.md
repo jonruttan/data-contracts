@@ -17,12 +17,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: stdout
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - port-shell-ok
+  target: stdout
 ```
 
 ## SRPHP-PORT-002
@@ -45,12 +47,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: stdout
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - x:true y:7
+  target: stdout
 ```
 
 ## SRPHP-PORT-003
@@ -70,10 +74,12 @@ expect:
     status: pass
     category: null
 assert:
-- target: stdout_path
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - path_target.txt
+  target: stdout_path
 ```

@@ -12,12 +12,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - 'version: 1'
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-002
@@ -32,12 +34,14 @@ expect:
     status: fail
     category: assertion
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.regex_match:
       - {var: subject}
       - \A\Z
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-003
@@ -52,13 +56,15 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - must:
     - evaluate:
       - std.string.contains:
         - {var: subject}
         - 'version: 1'
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-004
@@ -73,8 +79,9 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  can:
+- id: assert_1
+  class: can
+  checks:
   - evaluate:
     - std.string.regex_match:
       - {var: subject}
@@ -83,6 +90,7 @@ assert:
     - std.string.contains:
       - {var: subject}
       - 'version: 1'
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-005
@@ -97,8 +105,9 @@ expect:
     status: fail
     category: assertion
 assert:
-- target: text
-  can:
+- id: assert_1
+  class: can
+  checks:
   - evaluate:
     - std.string.regex_match:
       - {var: subject}
@@ -107,6 +116,7 @@ assert:
     - std.string.regex_match:
       - {var: subject}
       - (?!)
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-006
@@ -121,8 +131,9 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  cannot:
+- id: assert_1
+  class: cannot
+  checks:
   - evaluate:
     - std.string.regex_match:
       - {var: subject}
@@ -131,6 +142,7 @@ assert:
     - std.string.regex_match:
       - {var: subject}
       - (?!)
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-007
@@ -145,8 +157,9 @@ expect:
     status: fail
     category: assertion
 assert:
-- target: text
-  cannot:
+- id: assert_1
+  class: cannot
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
@@ -155,6 +168,7 @@ assert:
     - std.string.regex_match:
       - {var: subject}
       - (?!)
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-008
@@ -169,8 +183,9 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - can:
     - evaluate:
       - std.string.regex_match:
@@ -185,6 +200,7 @@ assert:
       - std.string.regex_match:
         - {var: subject}
         - \A\Z
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-009
@@ -202,12 +218,14 @@ expect:
 assert_health:
   mode: error
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.regex_match:
       - {var: subject}
       - '(?<=version: )1'
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-010
@@ -225,12 +243,14 @@ expect:
 assert_health:
   mode: error
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - ''
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-011
@@ -248,12 +268,14 @@ expect:
 assert_health:
   mode: error
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.regex_match:
       - {var: subject}
       - .*
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-012
@@ -271,8 +293,9 @@ expect:
 assert_health:
   mode: error
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
@@ -280,6 +303,7 @@ assert:
     - std.string.contains:
       - {var: subject}
       - 'version: 1'
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-013
@@ -297,8 +321,9 @@ expect:
 assert_health:
   mode: error
 assert:
-- target: text
-  can:
+- id: assert_1
+  class: can
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
@@ -307,6 +332,7 @@ assert:
     - std.string.contains:
       - {var: subject}
       - 'version: 2'
+  target: text
 ```
 
 ## SRCONF-PHP-TEXT-014
@@ -323,10 +349,12 @@ expect:
 assert_health:
   mode: warn
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - ''
+  target: text
 ```

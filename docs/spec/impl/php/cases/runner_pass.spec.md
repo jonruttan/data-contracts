@@ -12,12 +12,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - '# PHP Spec Runner Pass Cases'
+  target: text
 ```
 
 ## SRPHP-RUN-002
@@ -33,12 +35,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - fixture-content
+  target: text
 ```
 
 ## SRPHP-RUN-003
@@ -54,8 +58,9 @@ expect:
     status: pass
     category: null
 assert:
-- target: text
-  can:
+- id: assert_1
+  class: can
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
@@ -64,6 +69,7 @@ assert:
     - std.string.contains:
       - {var: subject}
       - fixture-content
+  target: text
 ```
 
 ## SRPHP-RUN-004
@@ -83,12 +89,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: stdout
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - hello-runner
+  target: stdout
 ```
 
 ## SRPHP-RUN-005
@@ -110,12 +118,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: stdout
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - 'on'
+  target: stdout
 ```
 
 ## SRPHP-RUN-006
@@ -135,12 +145,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: stdout
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - fallback-ok
+  target: stdout
 ```
 
 ## SRPHP-RUN-007
@@ -160,10 +172,12 @@ expect:
     status: pass
     category: null
 assert:
-- target: stdout
-  must:
+- id: assert_1
+  class: must
+  checks:
   - json_type:
     - list
+  target: stdout
 ```
 
 ## SRPHP-RUN-008
@@ -183,12 +197,14 @@ expect:
     status: pass
     category: null
 assert:
-- target: stderr
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - runner-err
+  target: stderr
 ```
 
 ## SRPHP-RUN-009
@@ -208,16 +224,20 @@ expect:
     status: pass
     category: null
 assert:
-- target: stdout_path
-  must:
+- id: assert_1
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - path_target.txt
-- target: stdout_path_text
-  must:
+  target: stdout_path
+- id: assert_2
+  class: must
+  checks:
   - evaluate:
     - std.string.contains:
       - {var: subject}
       - path target file content
+  target: stdout_path_text
 ```

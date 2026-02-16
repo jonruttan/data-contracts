@@ -4288,6 +4288,14 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                     return
                 if not isinstance(node, dict):
                     return
+                step_class = str(node.get("class", "")).strip() if "class" in node else ""
+                if step_class in {"must", "can", "cannot"} and "checks" in node:
+                    node_target = str(node.get("target", "")).strip() or inherited_target
+                    raw_checks = node.get("checks")
+                    if isinstance(raw_checks, list):
+                        for child in raw_checks:
+                            _collect_ops(child, inherited_target=node_target)
+                    return
                 present_groups = [k for k in ("must", "can", "cannot") if k in node]
                 if present_groups:
                     node_target = str(node.get("target", "")).strip() or inherited_target
@@ -4367,6 +4375,13 @@ def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = Non
                 _collect_non_eval_ops(child, out)
             return
         if not isinstance(node, dict):
+            return
+        step_class = str(node.get("class", "")).strip() if "class" in node else ""
+        if step_class in {"must", "can", "cannot"} and "checks" in node:
+            raw_checks = node.get("checks")
+            if isinstance(raw_checks, list):
+                for child in raw_checks:
+                    _collect_non_eval_ops(child, out)
             return
         present_groups = [k for k in ("must", "can", "cannot") if k in node]
         if present_groups:
@@ -6509,6 +6524,13 @@ def _iter_evaluate_expr_nodes(assert_node: object) -> list[object]:
             out.extend(_iter_evaluate_expr_nodes(child))
         return out
     if not isinstance(assert_node, dict):
+        return out
+    step_class = str(assert_node.get("class", "")).strip() if "class" in assert_node else ""
+    if step_class in {"must", "can", "cannot"} and "checks" in assert_node:
+        raw_checks = assert_node.get("checks")
+        if isinstance(raw_checks, list):
+            for child in raw_checks:
+                out.extend(_iter_evaluate_expr_nodes(child))
         return out
     for key in ("must", "can", "cannot"):
         raw_children = assert_node.get(key)

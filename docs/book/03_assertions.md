@@ -25,15 +25,15 @@ sections_required:
 - '## Failure Modes'
 ```
 
-Assertions are an expression tree with explicit group semantics.
+Assertions are step-oriented with explicit class semantics.
 
 ## Purpose
 
-Define assertion-tree semantics and canonical leaf operator usage.
+Define assertion-step semantics and canonical evaluate usage.
 
 ## Inputs
 
-- `assert` trees with group nodes and leaf operators
+- `assert` step lists with `id`, `class`, `target`, and `checks`
 
 ## Outputs
 
@@ -45,13 +45,16 @@ Define assertion-tree semantics and canonical leaf operator usage.
 - non-list operator values
 - invalid `evaluate` expression roots
 
-## Tree Shape
+## Step Shape
 
-`assert` supports:
+`assert` uses one canonical shape:
 
-- list: implicit AND over children
-- group mapping: exactly one of `must` / `can` / `cannot`
-- leaf mapping: operator lists
+- list of steps
+- each step declares:
+  - `id`
+  - `class` (`must`, `can`, `cannot`)
+  - optional `target`
+  - `checks` (non-empty list of assertion nodes)
 
 ## Group Semantics
 
@@ -61,26 +64,34 @@ Define assertion-tree semantics and canonical leaf operator usage.
 
 ## Targets
 
-Target is set on a group node and inherited by leaves.
+Target is set on an assertion step and inherited by checks/leaves.
 
 Valid:
 
 ```yaml
 assert:
-- target: stdout
-  must:
-  - contain:
-    - ok
+- id: assert_1
+  class: must
+  target: stdout
+  checks:
+  - evaluate:
+    - std.string.contains:
+      - var: subject
+      - ok
 ```
 
 Invalid:
 
 ```yaml
 assert:
-- must:
+- id: assert_1
+  class: must
+  checks:
   - target: stdout
-    contain:
-    - ok
+    evaluate:
+    - std.string.contains:
+      - var: subject
+      - ok
 ```
 
 Why invalid:
@@ -90,23 +101,11 @@ Why invalid:
 
 ## Operators
 
-Canonical operators:
+Canonical operator:
 
-- `contain`
-- `regex`
-- `json_type`
-- `exists`
 - `evaluate`
 
 All operator values are lists.
-
-Authoring policy:
-
-- Use sugar operators by default (`contain`, `regex`, `json_type`, `exists`).
-- Use `evaluate` only when case intent requires expression composition or
-  value/collection logic that sugar cannot express clearly.
-- `evaluate` includes deep-equality set algebra and collection transforms,
-  with automatic builtin currying by arity for function-style composition.
 
 `evaluate` uses spec-lang v1 operator-keyed mapping AST nodes:
 
