@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 198
-- must_count: 184
+- rule_count: 203
+- must_count: 189
 - should_count: 12
 - must_not_count: 2
-- active_count: 198
+- active_count: 203
 - deprecated_count: 0
 - removed_count: 0
 
@@ -81,6 +81,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `ASSERT_SUGAR_OPERATORS_COMPILE_ONLY` | `MUST` | `implementation` | `assert.tree.operator_surface` | 4 | `active` |
 | `ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN` | `MUST` | `contract` | `assert.tree.target_applicability` | 4 | `active` |
 | `ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY` | `MUST` | `contract` | `assert.tree.operator_model` | 3 | `active` |
+| `CHAIN_CYCLE_FORBIDDEN` | `MUST` | `runtime` | `harness.chain.graph` | 3 | `active` |
+| `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.exports` | 2 | `active` |
+| `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `MUST` | `implementation` | `harness.chain.fail_fast` | 2 | `active` |
+| `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.ref` | 3 | `active` |
+| `CHAIN_SHARED_CONTEXT_REQUIRED` | `MUST` | `runtime` | `harness.chain.state` | 3 | `active` |
 | `CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT` | `MUST` | `conformance` | `fixtures.cli.run` | 2 | `active` |
 | `CLI_RUN_CONFORMANCE_NO_ENV_DEPENDENCY` | `MUST_NOT` | `conformance` | `fixtures.cli.run` | 2 | `active` |
 | `CLI_RUN_ENTRYPOINT_REQUIRED` | `MUST` | `case` | `cli.run.harness.entrypoint` | 2 | `active` |

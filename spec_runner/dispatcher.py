@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Mapping, Protocol
 
 from spec_runner.codecs import load_external_cases
 from spec_runner.compiler import compile_external_case
+from spec_runner.components.chain_engine import execute_case_chain
 from spec_runner.doc_parser import SpecDocTest
 from spec_runner.internal_model import InternalSpecCase
 
@@ -27,12 +28,30 @@ class SpecRunContext:
     patcher: RuntimePatcher
     capture: RuntimeCapture
     env: Mapping[str, str] | None = None
+    chain_state: dict[str, Any] = field(default_factory=dict)
+    chain_trace: list[dict[str, Any]] = field(default_factory=list)
+    _case_target_values: dict[str, dict[str, Any]] = field(default_factory=dict)
+    _active_case_keys: set[str] = field(default_factory=set)
 
     def patch_context(self) -> Any:
         return self.patcher.context()
 
     def read_capture(self) -> Any:
         return self.capture.readouterr()
+
+    def set_case_targets(self, *, case_key: str, targets: Mapping[str, Any]) -> None:
+        self._case_target_values[case_key] = dict(targets)
+
+    def get_case_targets(self, *, case_key: str) -> Mapping[str, Any] | None:
+        return self._case_target_values.get(case_key)
+
+    def push_active_case(self, case_key: str) -> None:
+        if case_key in self._active_case_keys:
+            raise RuntimeError(f"recursive case execution detected for {case_key}")
+        self._active_case_keys.add(case_key)
+
+    def pop_active_case(self, case_key: str) -> None:
+        self._active_case_keys.discard(case_key)
 
 
 def iter_cases(
@@ -88,9 +107,20 @@ def run_case(
         doc_path = case.doc_path if isinstance(case, SpecDocTest) else case.doc_path
         raise RuntimeError(f"unknown spec-test type: {type_} (from {doc_path})")
 
-    # Core runner types execute compiled internal cases. External custom runners
-    # keep receiving SpecDocTest for backward compatibility.
-    if type_ in {"api.http", "cli.run", "docs.generate", "orchestration.run", "text.file"}:
-        fn(_to_internal_case(case), ctx=ctx)
-        return
-    fn(case, ctx=ctx)
+    internal_case = _to_internal_case(case)
+    case_key = f"{internal_case.doc_path.resolve().as_posix()}::{internal_case.id}"
+    ctx.push_active_case(case_key)
+    try:
+        execute_case_chain(
+            internal_case,
+            ctx=ctx,
+            run_case_fn=lambda chained_case: run_case(chained_case, ctx=ctx, type_runners=type_runners),
+        )
+        # Core runner types execute compiled internal cases. External custom runners
+        # keep receiving SpecDocTest for backward compatibility.
+        if type_ in {"api.http", "cli.run", "docs.generate", "orchestration.run", "text.file"}:
+            fn(internal_case, ctx=ctx)
+            return
+        fn(case, ctx=ctx)
+    finally:
+        ctx.pop_active_case(case_key)

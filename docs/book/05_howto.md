@@ -158,6 +158,47 @@ requests:
 
 Use `steps_json` assertions to validate full round-trip order and output.
 
+### Cross-Spec Chain (GET prerequisite -> POST dependent)
+
+Use `harness.chain.steps` when the dependent case should run prerequisite
+cases first and consume exported state.
+
+Prerequisite case:
+
+```yaml
+id: API-GET-PREREQ
+type: api.http
+request:
+  method: GET
+  url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+```
+
+Dependent case:
+
+```yaml
+id: API-POST-WITH-CHAIN
+type: api.http
+harness:
+  chain:
+    steps:
+    - id: preload
+      ref:
+        case_id: API-GET-PREREQ
+      exports:
+        item_id:
+          from_target: body_json
+          path: /id
+request:
+  method: POST
+  url: /docs/spec/conformance/cases/fixtures/api_http_item_{{chain.preload.item_id}}.json
+```
+
+For chained state sharing:
+
+- keep `harness.spec_lang.includes` for library imports only
+- keep executable prerequisites under `harness.chain.steps`
+- export only target-derived values via explicit `exports`
+
 ## Escalation Path
 
 If a failure appears implementation-specific, move from book docs to:

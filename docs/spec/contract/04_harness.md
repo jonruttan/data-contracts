@@ -79,6 +79,43 @@ OAuth behavior:
 - scenario requests (`requests`) support `{{steps.<id>...}}` template lookups
   in `url`, header values, and `body_text`
 
+Cross-spec chaining profile:
+
+- `harness.chain` is the executable prerequisite workflow surface.
+- `harness.spec_lang.includes` remains library import only and is not used for
+  executable chaining.
+- `harness.chain.fail_fast` is optional and defaults to `true`.
+- `harness.chain.steps` is required when `harness.chain` is present and must
+  be non-empty.
+- each step requires:
+  - `id` (unique string)
+  - `ref` mapping with at least one of:
+    - `path` (virtual-root path)
+    - `case_id` (string)
+- `exports` is optional and declares target-derived exported state:
+  - `from_target` (required)
+  - `path` (optional dotted selector)
+  - `required` (optional bool, default `true`)
+- `allow_continue` is optional and defaults to `false`.
+
+Reference resolution:
+
+- `case_id` only: resolve in current document.
+- `path + case_id`: resolve exact case in referenced document.
+- `path` only: execute all cases in referenced document in document order.
+
+Cycle and recursion safety:
+
+- direct self-reference is forbidden.
+- indirect chain cycles are forbidden.
+- recursive re-entry during execution is forbidden.
+
+State interpolation:
+
+- downstream `api.http` request fields support
+  `{{chain.<step_id>.<export_name>...}}` template resolution in `url`, header
+  values, and `body_text`.
+
 For `orchestration.run`:
 
 - `result_json`

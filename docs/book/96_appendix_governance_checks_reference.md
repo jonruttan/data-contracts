@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 174
-- checks_with_cases: 168
+- check_count: 179
+- checks_with_cases: 173
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -180,6 +180,11 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.api_http_scenario_roundtrip` | 1 | true |
 | `runtime.api_http_verb_suite` | 1 | true |
 | `runtime.assertions_via_spec_lang` | 1 | true |
+| `runtime.chain_cycle_forbidden` | 1 | true |
+| `runtime.chain_exports_target_derived_only` | 1 | true |
+| `runtime.chain_fail_fast_default` | 1 | true |
+| `runtime.chain_reference_resolution` | 1 | true |
+| `runtime.chain_state_template_resolution` | 1 | true |
 | `runtime.config_literals` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |

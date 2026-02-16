@@ -505,3 +505,48 @@ def test_api_http_scenario_round_trip_templating(tmp_path, monkeypatch, capsys):
     assert seen_methods == ["POST", "GET", "DELETE"]
     assert seen_urls[1].endswith("/abc-123")
     assert seen_urls[2].endswith("/abc-123")
+
+
+def test_api_http_chain_template_interpolation(tmp_path, monkeypatch, capsys):
+    fixture = tmp_path / "fixtures" / "api_http_item_abc-123.json"
+    fixture.parent.mkdir(parents=True, exist_ok=True)
+    fixture.write_text('{"id":"abc-123","ok":true}', encoding="utf-8")
+
+    doc = tmp_path / "case.spec.md"
+    doc.write_text("# case\n", encoding="utf-8")
+    case = SpecDocTest(
+        doc_path=doc,
+        test={
+            "id": "SR-API-UNIT-CHAIN-001",
+            "type": "api.http",
+            "request": {
+                "method": "GET",
+                "url": "/fixtures/api_http_item_{{chain.preload.item_id}}.json",
+                "headers": {
+                    "X-Item": "{{chain.preload.item_id}}",
+                },
+            },
+            "assert": [
+                {
+                    "target": "body_json",
+                    "must": [
+                        {
+                            "evaluate": [
+                                {
+                                    "eq": [
+                                        {"get": [{"var": "subject"}, "id"]},
+                                        "abc-123",
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                }
+            ],
+        },
+    )
+    from spec_runner.harnesses.api_http import run
+
+    ctx = SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys)
+    ctx.chain_state["preload"] = {"item_id": "abc-123"}
+    run(case, ctx=ctx)

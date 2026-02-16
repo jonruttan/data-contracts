@@ -131,6 +131,19 @@ def test_docs_generator_check_ids_are_registered() -> None:
         assert check_id in mod._CHECKS
 
 
+def test_chain_governance_check_ids_are_registered() -> None:
+    mod = _load_script_module()
+    required = {
+        "runtime.chain_reference_resolution",
+        "runtime.chain_cycle_forbidden",
+        "runtime.chain_exports_target_derived_only",
+        "runtime.chain_fail_fast_default",
+        "runtime.chain_state_template_resolution",
+    }
+    for check_id in required:
+        assert check_id in mod._CHECKS
+
+
 def test_script_returns_zero_when_governance_case_passes(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

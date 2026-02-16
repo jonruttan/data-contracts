@@ -314,6 +314,8 @@ def run(case, *, ctx) -> None:
         "stdout_path.exists": stdout_path_exists,
         "context_json": context_profile,
     }
+    case_key = f"{case.doc_path.resolve().as_posix()}::{case_id}"
+    ctx.set_case_targets(case_key=case_key, targets=targets)
 
     def _subject_for_key(subject_key: str):
         if subject_key == "stdout_path":

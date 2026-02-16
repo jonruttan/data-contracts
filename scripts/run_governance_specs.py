@@ -204,6 +204,7 @@ _SCHEMA_REGISTRY_COMPILED_ARTIFACT = ".artifacts/schema_registry_compiled.json"
 _DOCS_GENERATOR_REPORT = ".artifacts/docs-generator-report.json"
 _DOCS_GENERATOR_SUMMARY = ".artifacts/docs-generator-summary.md"
 _DOCGEN_QUALITY_MIN_SCORE = 0.95
+_CHAIN_TEMPLATE_PATTERN = re.compile(r"\{\{\s*chain\.([A-Za-z0-9_.-]+)\s*\}\}")
 _HARNESS_FILES = (
     "spec_runner/harnesses/text_file.py",
     "spec_runner/harnesses/cli_run.py",
@@ -3054,6 +3055,267 @@ def _scan_docs_api_http_tutorial_sync(root: Path) -> list[str]:
         for token in tokens:
             if token.lower() not in lowered:
                 violations.append(f"{rel}: missing tutorial token '{token}'")
+    return violations
+
+
+def _iter_cases_with_chain(root: Path):
+    for doc_path, case in _iter_all_spec_cases(root):
+        harness = case.get("harness")
+        if not isinstance(harness, dict):
+            continue
+        chain = harness.get("chain")
+        if isinstance(chain, dict):
+            yield doc_path, case, harness, chain
+
+
+def _scan_runtime_chain_reference_resolution(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        steps = chain.get("steps")
+        if not isinstance(steps, list) or not steps:
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness.chain.steps must be non-empty list")
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                violations.append(f"{doc_path.relative_to(root)}: case {case_id} step[{idx}] must be mapping")
+                continue
+            step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
+            ref = step.get("ref")
+            if not isinstance(ref, dict):
+                violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} ref must be mapping")
+                continue
+            ref_path = str(ref.get("path", "")).strip()
+            ref_case_id = str(ref.get("case_id", "")).strip()
+            if not ref_path and not ref_case_id:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} ref requires path and/or case_id"
+                )
+                continue
+            if ref_path:
+                try:
+                    p = resolve_contract_path(root, ref_path, field="harness.chain.steps.ref.path")
+                except VirtualPathError as exc:
+                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} invalid ref.path ({exc})")
+                    continue
+                if not p.exists() or not p.is_file():
+                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} missing ref.path {ref_path}")
+                    continue
+                found = list(load_external_cases(p, formats={"md"}))
+                if ref_case_id:
+                    matched = [x for x in found if str(x[1].get("id", "")).strip() == ref_case_id]
+                    if len(matched) != 1:
+                        violations.append(
+                            f"{doc_path.relative_to(root)}: case {case_id} step {step_id} unresolved ref.case_id {ref_case_id} in {ref_path}"
+                        )
+            else:
+                found = list(load_external_cases(doc_path, formats={"md"}))
+                matched = [x for x in found if str(x[1].get("id", "")).strip() == ref_case_id]
+                if len(matched) != 1:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} unresolved local ref.case_id {ref_case_id}"
+                    )
+    return violations
+
+
+def _scan_runtime_chain_cycle_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    docs = {(doc_path.resolve().as_posix(), str(case.get("id", "")).strip()): (doc_path, case) for doc_path, case in _iter_all_spec_cases(root)}
+    graph: dict[str, set[str]] = {}
+    violations: list[str] = []
+    for (doc_key, case_id), (doc_path, case) in docs.items():
+        if not case_id:
+            continue
+        node = f"{doc_key}::{case_id}"
+        graph.setdefault(node, set())
+        harness_map = case.get("harness")
+        if not isinstance(harness_map, dict):
+            continue
+        chain = harness_map.get("chain")
+        if not isinstance(chain, dict):
+            continue
+        steps = chain.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for step in steps:
+            if not isinstance(step, dict):
+                continue
+            ref = step.get("ref")
+            if not isinstance(ref, dict):
+                continue
+            ref_path = str(ref.get("path", "")).strip()
+            ref_case_id = str(ref.get("case_id", "")).strip()
+            targets: list[str] = []
+            if ref_path:
+                try:
+                    p = resolve_contract_path(root, ref_path, field="harness.chain.steps.ref.path")
+                except Exception:
+                    continue
+                found = list(load_external_cases(p, formats={"md"}))
+                if ref_case_id:
+                    targets = [
+                        f"{d.resolve().as_posix()}::{str(t.get('id', '')).strip()}"
+                        for d, t in found
+                        if str(t.get("id", "")).strip() == ref_case_id
+                    ]
+                else:
+                    targets = [
+                        f"{d.resolve().as_posix()}::{str(t.get('id', '')).strip()}"
+                        for d, t in found
+                        if str(t.get("id", "")).strip()
+                    ]
+            elif ref_case_id:
+                found = list(load_external_cases(doc_path, formats={"md"}))
+                targets = [
+                    f"{d.resolve().as_posix()}::{str(t.get('id', '')).strip()}"
+                    for d, t in found
+                    if str(t.get("id", "")).strip() == ref_case_id
+                ]
+            for target in targets:
+                if target:
+                    graph[node].add(target)
+
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def _dfs(node: str, stack: list[str]) -> None:
+        if node in visiting:
+            cycle = stack[stack.index(node):] + [node] if node in stack else stack + [node]
+            violations.append(f"chain cycle detected: {' -> '.join(cycle)}")
+            return
+        if node in visited:
+            return
+        visiting.add(node)
+        stack.append(node)
+        for nxt in sorted(graph.get(node, set())):
+            _dfs(nxt, stack)
+        stack.pop()
+        visiting.remove(node)
+        visited.add(node)
+
+    for node in sorted(graph.keys()):
+        _dfs(node, [])
+    return violations
+
+
+def _scan_runtime_chain_exports_target_derived_only(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        steps = chain.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                continue
+            step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
+            ref = step.get("ref")
+            ref_case_id = str(ref.get("case_id", "")).strip() if isinstance(ref, dict) else ""
+            exports = step.get("exports") or {}
+            if not isinstance(exports, dict):
+                violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports must be mapping")
+                continue
+            if exports and not ref_case_id:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports require ref.case_id"
+                )
+            for export_name, export_raw in exports.items():
+                if not isinstance(export_raw, dict):
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} must be mapping"
+                    )
+                    continue
+                for key in export_raw.keys():
+                    if str(key) not in {"from_target", "path", "required"}:
+                        violations.append(
+                            f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} has unsupported key {key}"
+                        )
+                from_target = str(export_raw.get("from_target", "")).strip()
+                if not from_target:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} missing from_target"
+                    )
+    return violations
+
+
+def _scan_runtime_chain_fail_fast_default(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        if "fail_fast" in chain and not isinstance(chain.get("fail_fast"), bool):
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness.chain.fail_fast must be bool")
+        steps = chain.get("steps")
+        if isinstance(steps, list):
+            for idx, step in enumerate(steps):
+                if not isinstance(step, dict):
+                    continue
+                if "allow_continue" in step and not isinstance(step.get("allow_continue"), bool):
+                    step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} allow_continue must be bool"
+                    )
+    return violations
+
+
+def _scan_runtime_chain_state_template_resolution(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case in _iter_all_spec_cases(root):
+        if str(case.get("type", "")).strip() != "api.http":
+            continue
+        chain_map = (((case.get("harness") or {}) if isinstance(case.get("harness"), dict) else {}).get("chain"))
+        exported: set[tuple[str, str]] = set()
+        if isinstance(chain_map, dict) and isinstance(chain_map.get("steps"), list):
+            for step in chain_map.get("steps") or []:
+                if not isinstance(step, dict):
+                    continue
+                sid = str(step.get("id", "")).strip()
+                exports = step.get("exports") or {}
+                if sid and isinstance(exports, dict):
+                    for name in exports.keys():
+                        exported.add((sid, str(name)))
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+
+        def _scan_text(raw: str, where: str) -> None:
+            for m in _CHAIN_TEMPLATE_PATTERN.finditer(str(raw)):
+                dotted = m.group(1)
+                parts = [p for p in dotted.split(".") if p]
+                if len(parts) < 2:
+                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} {where} invalid chain template {m.group(0)}")
+                    continue
+                if (parts[0], parts[1]) not in exported:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} {where} unresolved chain reference {parts[0]}.{parts[1]}"
+                    )
+
+        request = case.get("request")
+        if isinstance(request, dict):
+            if isinstance(request.get("url"), str):
+                _scan_text(str(request.get("url")), "request.url")
+            headers = request.get("headers")
+            if isinstance(headers, dict):
+                for k, v in headers.items():
+                    if isinstance(v, str):
+                        _scan_text(v, f"request.headers.{k}")
+            if isinstance(request.get("body_text"), str):
+                _scan_text(str(request.get("body_text")), "request.body_text")
+        requests = case.get("requests")
+        if isinstance(requests, list):
+            for idx, step in enumerate(requests):
+                if not isinstance(step, dict):
+                    continue
+                if isinstance(step.get("url"), str):
+                    _scan_text(str(step.get("url")), f"requests[{idx}].url")
+                headers = step.get("headers")
+                if isinstance(headers, dict):
+                    for k, v in headers.items():
+                        if isinstance(v, str):
+                            _scan_text(v, f"requests[{idx}].headers.{k}")
+                if isinstance(step.get("body_text"), str):
+                    _scan_text(str(step.get("body_text")), f"requests[{idx}].body_text")
     return violations
 
 
@@ -6318,6 +6580,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.api_http_cors_support": _scan_runtime_api_http_cors_support,
     "runtime.api_http_scenario_roundtrip": _scan_runtime_api_http_scenario_roundtrip,
     "runtime.api_http_parity_contract_sync": _scan_runtime_api_http_parity_contract_sync,
+    "runtime.chain_reference_resolution": _scan_runtime_chain_reference_resolution,
+    "runtime.chain_cycle_forbidden": _scan_runtime_chain_cycle_forbidden,
+    "runtime.chain_exports_target_derived_only": _scan_runtime_chain_exports_target_derived_only,
+    "runtime.chain_fail_fast_default": _scan_runtime_chain_fail_fast_default,
+    "runtime.chain_state_template_resolution": _scan_runtime_chain_state_template_resolution,
     "docs.api_http_tutorial_sync": _scan_docs_api_http_tutorial_sync,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,

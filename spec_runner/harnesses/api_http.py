@@ -22,6 +22,7 @@ from spec_runner.virtual_paths import contract_root_for, resolve_contract_path
 _OAUTH_TOKEN_CACHE: dict[tuple[str, str, str, str], tuple[str, float]] = {}
 _SUPPORTED_METHODS = {"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
 _TEMPLATE_STEP_PATTERN = re.compile(r"\{\{\s*steps\.([A-Za-z0-9_.-]+)\s*\}\}")
+_TEMPLATE_CHAIN_PATTERN = re.compile(r"\{\{\s*chain\.([A-Za-z0-9_.-]+)\s*\}\}")
 
 
 def _resolve_relative_subject_path(doc_path: Path, rel: str) -> Path:
@@ -402,6 +403,46 @@ def _render_request_template(step: dict[str, Any], *, steps: dict[str, dict[str,
     return rendered
 
 
+def _render_chain_template(raw: str, *, chain_state: dict[str, Any]) -> str:
+    text = str(raw)
+
+    def _replace(match: re.Match[str]) -> str:
+        dotted = match.group(1)
+        parts = [p for p in dotted.split(".") if p]
+        if len(parts) < 2:
+            raise ValueError(f"api.http chain template must reference step and export: {dotted}")
+        step_id = parts[0]
+        current: Any = chain_state.get(step_id)
+        if current is None:
+            raise ValueError(f"api.http chain template references unknown step: {step_id}")
+        for key in parts[1:]:
+            if not isinstance(current, dict) or key not in current:
+                raise ValueError(f"api.http chain template path not found: chain.{dotted}")
+            current = current[key]
+        if isinstance(current, (dict, list)):
+            return json.dumps(current, ensure_ascii=False, separators=(",", ":"))
+        if current is None:
+            return ""
+        return str(current)
+
+    return _TEMPLATE_CHAIN_PATTERN.sub(_replace, text)
+
+
+def _render_request_chain(step: dict[str, Any], *, chain_state: dict[str, Any]) -> dict[str, Any]:
+    rendered = dict(step)
+    if "url" in rendered:
+        rendered["url"] = _render_chain_template(str(rendered["url"]), chain_state=chain_state)
+    raw_headers = rendered.get("headers")
+    if isinstance(raw_headers, dict):
+        headers: dict[str, str] = {}
+        for k, v in raw_headers.items():
+            headers[str(k)] = _render_chain_template(str(v), chain_state=chain_state)
+        rendered["headers"] = headers
+    if "body_text" in rendered and rendered.get("body_text") is not None:
+        rendered["body_text"] = _render_chain_template(str(rendered["body_text"]), chain_state=chain_state)
+    return rendered
+
+
 def _prepare_request(*, request: dict[str, Any]) -> tuple[str, str, dict[str, str], bytes | None, dict[str, Any] | None]:
     method = str(request.get("method", "")).strip().upper()
     if not method:
@@ -715,9 +756,12 @@ def run(case, *, ctx) -> None:
             "used_cached_token": False,
         }
 
+    chain_state = dict(getattr(ctx, "chain_state", {}) or {})
+
     if request is not None:
         if not isinstance(request, dict):
             raise TypeError("api.http requires request mapping")
+        request = _render_request_chain(dict(request), chain_state=chain_state)
         method, url, headers, body_bytes, _cors_req = _prepare_request(request=request)
         if oauth is not None:
             token, used_cached_token, token_fetch_ms = _oauth_access_token(
@@ -769,6 +813,7 @@ def run(case, *, ctx) -> None:
             step_id = str(step.get("id", "")).strip()
             if not step_id:
                 raise ValueError(f"api.http requests[{idx}].id is required")
+            requests[idx] = _render_request_chain(dict(step), chain_state=chain_state)
         scenario_cfg = scenario or {}
         final, step_results, scenario_meta, _ = _run_scenario(
             case,
@@ -839,6 +884,8 @@ def run(case, *, ctx) -> None:
         "steps_json": steps_json_value,
         "context_json": context_profile,
     }
+    case_key = f"{case.doc_path.resolve().as_posix()}::{case_id}"
+    ctx.set_case_targets(case_key=case_key, targets=targets)
     run_assertions_with_context(
         assert_tree=case.assert_tree,
         raw_assert_spec=t.get("assert", []) or [],

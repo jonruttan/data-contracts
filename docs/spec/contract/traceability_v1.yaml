@@ -2998,3 +2998,67 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/components/subject_router.py
   notes: Harnesses must declare explicit target mapping for assertions.
+- rule_id: CHAIN_REFERENCE_CONTRACT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_REFERENCE_CONTRACT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_dispatcher_unit.py
+  - tests/test_chain_engine_unit.py
+  implementation_refs:
+  - spec_runner/components/chain_engine.py
+  - spec_runner/dispatcher.py
+  notes: Chain references are schema-checked and resolved deterministically.
+- rule_id: CHAIN_EXPORTS_EXPLICIT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_EXPLICIT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_chain_engine_unit.py
+  implementation_refs:
+  - spec_runner/components/chain_engine.py
+  notes: Cross-case state sharing flows through explicit target-derived exports only.
+- rule_id: CHAIN_FAIL_FAST_DEFAULT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_chain_engine_unit.py
+  implementation_refs:
+  - spec_runner/components/chain_engine.py
+  notes: Chain execution defaults to fail-fast true when not specified.
+- rule_id: CHAIN_CYCLE_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_CYCLE_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - spec_runner/dispatcher.py
+  notes: Governance and runtime recursion guards reject direct and indirect cycles.
+- rule_id: CHAIN_SHARED_CONTEXT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_SHARED_CONTEXT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_harness_api_http_unit.py
+  implementation_refs:
+  - spec_runner/dispatcher.py
+  - spec_runner/harnesses/api_http.py
+  notes: Shared runtime context carries chain_state and chain_trace across prerequisite execution.

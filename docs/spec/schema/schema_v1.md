@@ -267,6 +267,35 @@ For `type: docs.generate`, supported `harness` keys include:
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
 
+`harness.chain` fields:
+
+- `fail_fast` (bool, optional, default `true`)
+- `steps` (list, required when `harness.chain` is present; non-empty)
+  - each step:
+    - `id` (string, required, unique)
+    - `ref` (mapping, required):
+      - `path` (virtual-root path, optional)
+      - `case_id` (string, optional)
+      - at least one of `path` or `case_id` is required
+    - `exports` (mapping, optional):
+      - export name -> mapping:
+        - `from_target` (string, required)
+        - `path` (string dotted selector, optional)
+        - `required` (bool, optional, default `true`)
+    - `allow_continue` (bool, optional, default `false`)
+
+Chain reference resolution:
+
+- `case_id` only: resolve within current `.spec.md` document.
+- `path + case_id`: resolve one exact case in referenced document.
+- `path` only: execute all cases in referenced document in order.
+
+Chain template interpolation:
+
+- `api.http` request `url`, header values, and `body_text` support
+  `{{chain.<step_id>.<export_name>}}` lookups from exported chain state.
+- unresolved chain template references are schema/runtime failures.
+
 Documentation generator model:
 
 - docs generation surfaces are declared in

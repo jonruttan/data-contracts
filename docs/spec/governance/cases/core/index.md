@@ -4,6 +4,8 @@ Canonical domain index for executable specs in this subtree.
 
 ## Files
 
+- `/docs/spec/governance/cases/core/architecture_harness_local_workflow_duplication_forbidden.spec.md`
+- `/docs/spec/governance/cases/core/architecture_harness_workflow_components_required.spec.md`
 - `/docs/spec/governance/cases/core/assert_adapter_projection_contract_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_compiler_schema_matrix_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_domain_library_usage_required.spec.md`
@@ -14,8 +16,6 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/assert_sugar_compile_only_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_type_contract_subject_semantics_sync.spec.md`
 - `/docs/spec/governance/cases/core/assert_universal_core_sync.spec.md`
-- `/docs/spec/governance/cases/core/architecture_harness_local_workflow_duplication_forbidden.spec.md`
-- `/docs/spec/governance/cases/core/architecture_harness_workflow_components_required.spec.md`
 - `/docs/spec/governance/cases/core/conformance_api_http_portable_shape.spec.md`
 - `/docs/spec/governance/cases/core/conformance_case_doc_style_guard.spec.md`
 - `/docs/spec/governance/cases/core/conformance_case_index_sync.spec.md`
@@ -38,6 +38,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/contract_governance_check.spec.md`
 - `/docs/spec/governance/cases/core/current_spec_only_contract.spec.md`
 - `/docs/spec/governance/cases/core/docs_adoption_profiles_sync.spec.md`
+- `/docs/spec/governance/cases/core/docs_api_http_tutorial_sync.spec.md`
 - `/docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md`
 - `/docs/spec/governance/cases/core/docs_cli_flags_documented.spec.md`
 - `/docs/spec/governance/cases/core/docs_command_examples_verified.spec.md`
@@ -117,18 +118,22 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/regex_doc_sync.spec.md`
 - `/docs/spec/governance/cases/core/runner_independence_metric.spec.md`
 - `/docs/spec/governance/cases/core/runner_independence_non_regression.spec.md`
-- `/docs/spec/governance/cases/core/runtime_api_http_live_mode_explicit.spec.md`
-- `/docs/spec/governance/cases/core/runtime_api_http_verb_suite.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_cors_support.spec.md`
-- `/docs/spec/governance/cases/core/runtime_api_http_scenario_roundtrip.spec.md`
-- `/docs/spec/governance/cases/core/runtime_api_http_parity_contract_sync.spec.md`
-- `/docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
+- `/docs/spec/governance/cases/core/runtime_api_http_live_mode_explicit.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_oauth_docs_sync.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_oauth_env_only.spec.md`
 - `/docs/spec/governance/cases/core/runtime_api_http_oauth_no_secret_literals.spec.md`
-- `/docs/spec/governance/cases/core/docs_api_http_tutorial_sync.spec.md`
+- `/docs/spec/governance/cases/core/runtime_api_http_parity_contract_sync.spec.md`
+- `/docs/spec/governance/cases/core/runtime_api_http_scenario_roundtrip.spec.md`
+- `/docs/spec/governance/cases/core/runtime_api_http_verb_suite.spec.md`
 - `/docs/spec/governance/cases/core/runtime_assertions_via_spec_lang.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_cycle_forbidden.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_exports_target_derived_only.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_fail_fast_default.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_reference_resolution.spec.md`
+- `/docs/spec/governance/cases/core/runtime_chain_state_template_resolution.spec.md`
 - `/docs/spec/governance/cases/core/runtime_config_literals.spec.md`
+- `/docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
 - `/docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md`
 - `/docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md`
@@ -154,13 +159,13 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_scope_sync.spec.md`
 - `/docs/spec/governance/cases/core/runtime_settings_import_policy.spec.md`
 - `/docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md`
+- `/docs/spec/governance/cases/core/schema_harness_contract_overlay_sync.spec.md`
+- `/docs/spec/governance/cases/core/schema_harness_type_overlay_complete.spec.md`
 - `/docs/spec/governance/cases/core/schema_no_prose_only_rules.spec.md`
 - `/docs/spec/governance/cases/core/schema_registry_compiled_sync.spec.md`
 - `/docs/spec/governance/cases/core/schema_registry_docs_sync.spec.md`
 - `/docs/spec/governance/cases/core/schema_registry_valid.spec.md`
 - `/docs/spec/governance/cases/core/schema_type_profiles_complete.spec.md`
-- `/docs/spec/governance/cases/core/schema_harness_contract_overlay_sync.spec.md`
-- `/docs/spec/governance/cases/core/schema_harness_type_overlay_complete.spec.md`
 - `/docs/spec/governance/cases/core/security_warning_docs.spec.md`
 - `/docs/spec/governance/cases/core/spec_domain_index_sync.spec.md`
 - `/docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md`

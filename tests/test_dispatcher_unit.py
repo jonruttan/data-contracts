@@ -38,3 +38,42 @@ def test_run_context_requires_patcher_and_capture(tmp_path):
 def test_default_type_runners_include_api_http():
     runners = default_type_runners()
     assert "api.http" in runners
+
+
+def test_run_case_rejects_recursive_chain_reentry(tmp_path, monkeypatch, capsys):
+    (tmp_path / ".git").mkdir(parents=True)
+    case_doc = tmp_path / "docs/spec/recur.spec.md"
+    case_doc.parent.mkdir(parents=True, exist_ok=True)
+    case_doc.write_text(
+        """# Recursion
+
+## CASE-RECUR
+
+```yaml spec-test
+id: CASE-RECUR
+type: text.file
+path: /README.md
+harness:
+  chain:
+    steps:
+    - id: self
+      ref:
+        case_id: CASE-RECUR
+assert: []
+```
+""",
+        encoding="utf-8",
+    )
+    (tmp_path / "README.md").write_text("ok\n", encoding="utf-8")
+    case = SpecDocTest(
+        doc_path=case_doc,
+        test={
+            "id": "CASE-RECUR",
+            "type": "text.file",
+            "path": "/README.md",
+            "harness": {"chain": {"steps": [{"id": "self", "ref": {"case_id": "CASE-RECUR"}}]}},
+            "assert": [],
+        },
+    )
+    with pytest.raises(RuntimeError, match="references current case recursively"):
+        run_case(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))

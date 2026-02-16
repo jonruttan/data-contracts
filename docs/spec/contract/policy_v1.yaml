@@ -2740,6 +2740,79 @@ rules:
   - docs/book/05_howto.md
   - docs/book/06_troubleshooting.md
   - docs/spec/contract/types/api_http.md
+- id: CHAIN_REFERENCE_CONTRACT_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: harness.chain.steps.ref
+  norm: MUST
+  requirement: chain_steps_must_use_explicit_reference_contract
+  description: 'Cross-spec chaining must use explicit harness.chain step references (`path` and/or `case_id`) with deterministic resolution behavior.
+
+    '
+  rationale: Keeps prerequisite execution and reference semantics unambiguous.
+  risk_if_violated: Chained execution becomes brittle or non-deterministic.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+  - spec_runner/components/chain_engine.py
+- id: CHAIN_EXPORTS_EXPLICIT_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: harness.chain.steps.exports
+  norm: MUST
+  requirement: chain_state_sharing_requires_explicit_target_derived_exports
+  description: 'State propagation between chained cases must be declared via explicit exports derived from assertion targets.
+
+    '
+  rationale: Prevents implicit coupling to internal harness runtime structures.
+  risk_if_violated: Cross-spec state exchange becomes opaque and fragile.
+  references:
+  - docs/spec/contract/04_harness.md
+  - spec_runner/components/chain_engine.py
+- id: CHAIN_FAIL_FAST_DEFAULT_REQUIRED
+  introduced_in: v1
+  scope: implementation
+  applies_to: harness.chain.fail_fast
+  norm: MUST
+  requirement: chain_execution_defaults_to_fail_fast_true
+  description: 'Chain execution must default to fail-fast behavior unless explicitly overridden.
+
+    '
+  rationale: Makes prerequisite failures visible immediately and deterministic.
+  risk_if_violated: Downstream assertions may run on invalid state.
+  references:
+  - docs/spec/contract/04_harness.md
+  - spec_runner/components/chain_engine.py
+- id: CHAIN_CYCLE_FORBIDDEN
+  introduced_in: v1
+  scope: runtime
+  applies_to: harness.chain.graph
+  norm: MUST
+  requirement: chain_graph_cycles_and_recursive_reentry_must_hard_fail
+  description: 'Direct self-reference, indirect cycles, and recursive re-entry in chain execution are forbidden and must fail deterministically.
+
+    '
+  rationale: Prevents unbounded recursion and non-terminating execution plans.
+  risk_if_violated: Runner instability and unpredictable behavior.
+  references:
+  - docs/spec/governance/cases/core/runtime_chain_cycle_forbidden.spec.md
+  - spec_runner/components/chain_engine.py
+  - spec_runner/dispatcher.py
+- id: CHAIN_SHARED_CONTEXT_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: harness.chain.state
+  norm: MUST
+  requirement: chain_state_must_flow_through_shared_run_context
+  description: 'Chained execution must preserve shared context state and support chain template resolution in downstream harness fields.
+
+    '
+  rationale: Enables deterministic orchestration across chained specs.
+  risk_if_violated: Step exports cannot be consumed reliably by dependent cases.
+  references:
+  - docs/spec/contract/04_harness.md
+  - spec_runner/dispatcher.py
+  - spec_runner/harnesses/api_http.py
 - id: DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
   introduced_in: v1
   scope: governance

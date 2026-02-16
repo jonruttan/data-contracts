@@ -41,6 +41,8 @@ def run(case, *, ctx) -> None:
         "text": text,
         "context_json": text_subject_profile,
     }
+    case_key = f"{case.doc_path.resolve().as_posix()}::{case_id}"
+    ctx.set_case_targets(case_key=case_key, targets=targets)
     run_assertions_with_context(
         assert_tree=case.assert_tree,
         raw_assert_spec=t.get("assert", []) or [],

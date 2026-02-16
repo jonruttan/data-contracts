@@ -50,6 +50,8 @@ def run(case, *, ctx: SpecRunContext) -> None:
         "context_json": context_profile,
         "output_text": op["output_text"],
     }
+    case_key = f"{case.doc_path.resolve().as_posix()}::{case.id}"
+    ctx.set_case_targets(case_key=case_key, targets=targets)
     run_assertions_with_context(
         assert_tree=case.assert_tree,
         raw_assert_spec=case.raw_case.get("assert", []) or [],
@@ -58,4 +60,3 @@ def run(case, *, ctx: SpecRunContext) -> None:
         execution=execution,
         subject_for_key=lambda k: resolve_subject_for_target(k, targets, type_name="docs.generate"),
     )
-
