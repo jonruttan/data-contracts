@@ -31,7 +31,7 @@ def _runner_command(runner_bin: str, runner_impl: str, subcommand: str) -> list[
 def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[str]]]:
     return [
         ("governance", _runner_command(runner_bin, runner_impl, "governance")),
-        ("docs_build_check", _runner_command(runner_bin, runner_impl, "docs-build-check")),
+        ("docs_generate_check", _runner_command(runner_bin, runner_impl, "docs-generate-check")),
         ("docs_lint", _runner_command(runner_bin, runner_impl, "docs-lint")),
         ("normalize_check", _runner_command(runner_bin, runner_impl, "normalize-check")),
         ("schema_registry_build", _runner_command(runner_bin, runner_impl, "schema-registry-build")),

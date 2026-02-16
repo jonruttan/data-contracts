@@ -43,6 +43,10 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/docs_example_id_uniqueness.spec.md`
 - `/docs/spec/governance/cases/core/docs_examples_runnable.spec.md`
 - `/docs/spec/governance/cases/core/docs_generated_files_clean.spec.md`
+- `/docs/spec/governance/cases/core/docs_generated_sections_read_only.spec.md`
+- `/docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md`
+- `/docs/spec/governance/cases/core/docs_generator_registry_valid.spec.md`
+- `/docs/spec/governance/cases/core/docs_harness_type_catalog_sync.spec.md`
 - `/docs/spec/governance/cases/core/docs_instructions_complete.spec.md`
 - `/docs/spec/governance/cases/core/docs_make_commands_sync.spec.md`
 - `/docs/spec/governance/cases/core/docs_meta_schema_valid.spec.md`
@@ -52,6 +56,8 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/docs_reference_manifest_sync.spec.md`
 - `/docs/spec/governance/cases/core/docs_reference_surface_complete.spec.md`
 - `/docs/spec/governance/cases/core/docs_release_contract_automation_policy.spec.md`
+- `/docs/spec/governance/cases/core/docs_runner_api_catalog_sync.spec.md`
+- `/docs/spec/governance/cases/core/docs_spec_lang_builtin_catalog_sync.spec.md`
 - `/docs/spec/governance/cases/core/docs_required_sections.spec.md`
 - `/docs/spec/governance/cases/core/docs_token_dependency_resolved.spec.md`
 - `/docs/spec/governance/cases/core/docs_token_ownership_unique.spec.md`

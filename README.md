@@ -53,6 +53,7 @@ python -m pytest tests/test_conformance_runner_unit.py
 CI merge gate (GitHub Actions `spec_runner` job) runs:
 
 - `python scripts/run_governance_specs.py`
+- `python scripts/docs_generate_all.py --check`
 - `python -m ruff check .`
 - `python scripts/evaluate_style.py --check docs/spec`
 - `python -m mypy spec_runner`
@@ -160,7 +161,7 @@ Runner-only keys MUST live under `harness:` to keep the spec format clean.
 
 Canonical boolean groups are `must`, `can`, and `cannot`.
 Text assertions use `contain` and `regex`.
-Expression assertions use `evaluate` (spec-lang list S-expressions).
+Expression assertions use `evaluate` (spec-lang mapping-AST forms).
 Each assertion group uses exactly one of `must` / `can` / `cannot`, and group
 lists must be non-empty.
 
@@ -193,3 +194,7 @@ custom pattern with `iter_cases(Path(...), file_pattern="*.md")`.
 The runner core is generic, but individual `type` harnesses may be specific to
 the system under test. Keep `spec_runner` focused on stable parsing,
 dispatching, and assertions; treat adapters as project-owned code.
+Docs generation entrypoints:
+
+- `./scripts/runner_adapter.sh docs-generate`
+- `./scripts/runner_adapter.sh docs-generate-check`

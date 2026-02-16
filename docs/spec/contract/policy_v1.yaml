@@ -2237,3 +2237,95 @@ rules:
   references:
   - docs/spec/contract/21_schema_registry_contract.md
   - docs/spec/governance/cases/core/schema_no_prose_only_rules.spec.md
+- id: DOCS_GENERATOR_REGISTRY_DEFINED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.registry
+  norm: MUST
+  requirement: docs_generator_registry_must_exist_and_validate
+  description: 'A machine-readable docs generator registry must define all generated docs surfaces.
+
+    '
+  rationale: Makes generated docs inputs/outputs explicit and governable.
+  risk_if_violated: Doc generation behavior drifts into ad-hoc scripts and hidden conventions.
+  references:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  - docs/spec/governance/cases/core/docs_generator_registry_valid.spec.md
+- id: DOCS_GENERATOR_ORCHESTRATOR_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: docs.generator.execution
+  norm: MUST
+  requirement: docs_generation_must_run_through_single_orchestrator
+  description: 'Docs generation/check entrypoints must run through a single orchestrator command surface.
+
+    '
+  rationale: Provides one deterministic execution path for generated docs surfaces.
+  risk_if_violated: Divergent command paths produce inconsistent artifacts.
+  references:
+  - scripts/docs_generate_all.py
+  - scripts/runner_adapter.sh
+  - docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md
+- id: DOCS_GENERATED_SURFACES_SYNC_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.outputs
+  norm: MUST
+  requirement: generated_docs_surfaces_must_be_up_to_date
+  description: 'All declared docs generation outputs must be synchronized in check mode.
+
+    '
+  rationale: Prevents stale generated artifacts from reaching mainline.
+  risk_if_violated: Readers consume outdated docs and invalid references.
+  references:
+  - scripts/docs_generate_all.py
+  - docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md
+- id: DOCS_GENERATED_SECTIONS_READ_ONLY
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.read_only_sections
+  norm: MUST
+  requirement: generated_markdown_sections_must_use_read_only_markers
+  description: 'Generated markdown surfaces with mixed manual/procedural content must preserve generated section markers and read-only blocks.
+
+    '
+  rationale: Allows manual prose while keeping generator-owned sections deterministic.
+  risk_if_violated: Manual edits to generated blocks silently drift from source data.
+  references:
+  - docs/book/runner_api_reference.md
+  - docs/book/harness_type_reference.md
+  - docs/book/spec_lang_builtin_catalog.md
+  - docs/spec/governance/cases/core/docs_generated_sections_read_only.spec.md
+- id: DOCS_API_CATALOGS_GENERATED_AND_SYNCED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.api_catalogs
+  norm: MUST
+  requirement: runner_harness_builtin_catalogs_must_be_generated_and_synced
+  description: 'Runner API, harness type, and spec-lang builtin catalogs must be generated from implementation/registry surfaces and remain synchronized.
+
+    '
+  rationale: Makes reference docs implementation-aware without manual drift.
+  risk_if_violated: API documentation becomes stale and misleading.
+  references:
+  - scripts/generate_runner_api_catalog.py
+  - scripts/generate_harness_type_catalog.py
+  - scripts/generate_spec_lang_builtin_catalog.py
+  - docs/spec/governance/cases/core/docs_runner_api_catalog_sync.spec.md
+  - docs/spec/governance/cases/core/docs_harness_type_catalog_sync.spec.md
+  - docs/spec/governance/cases/core/docs_spec_lang_builtin_catalog_sync.spec.md
+- id: DOCS_GENERATOR_REPORT_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.generator.reporting
+  norm: MUST
+  requirement: docs_generator_report_artifacts_must_be_emitted
+  description: 'Docs orchestrator execution must emit deterministic JSON and markdown summary artifacts.
+
+    '
+  rationale: Provides auditable output for generator health and CI diagnostics.
+  risk_if_violated: Docs generation failures become opaque and harder to triage.
+  references:
+  - .artifacts/docs-generator-report.json
+  - .artifacts/docs-generator-summary.md
+  - scripts/docs_generate_all.py

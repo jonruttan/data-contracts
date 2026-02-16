@@ -13,6 +13,10 @@ Related docs/reference schemas:
 - `docs/spec/schema/docs_schema_v1.md`
 - `docs/spec/schema/reference_manifest_v1.md`
 - `docs/spec/schema/objective_metrics_schema_v1.md`
+- `docs/spec/schema/docs_generator_registry_v1.yaml`
+- `docs/spec/schema/runner_api_catalog_v1.yaml`
+- `docs/spec/schema/harness_type_catalog_v1.yaml`
+- `docs/spec/schema/spec_lang_builtin_catalog_v1.yaml`
 - `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml`
 - `docs/spec/schema/subject_profiles_v1.yaml`
 - `docs/spec/schema/registry_schema_v1.yaml`
@@ -188,6 +192,15 @@ For `type: cli.run`, supported `harness` keys include:
   `definitions.private.<symbol>` (list s-expr authoring is invalid)
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
+
+Documentation generator model:
+
+- docs generation surfaces are declared in
+  `docs/spec/schema/docs_generator_registry_v1.yaml`.
+- generator-owned markdown sections MUST use read-only markers:
+  - `<!-- GENERATED:START surface_id -->`
+  - `<!-- GENERATED:END surface_id -->`
+- CI/governance check mode MUST verify generated docs artifacts are synchronized.
 
 Implementation note:
 

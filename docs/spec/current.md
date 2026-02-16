@@ -79,6 +79,12 @@ Notes:
 - Docs quality v2 adds schema-backed `doc-meta`, manifest-driven reference
   generation, and governance checks for docs token ownership/dependencies and
   generated artifact freshness.
+- Documentation generation is registry-first via
+  `docs/spec/schema/docs_generator_registry_v1.yaml` and canonical orchestrator
+  command `scripts/docs_generate_all.py` (`--build` / `--check`).
+- Generated API catalogs now include runner interface commands, harness type
+  profiles, and spec-lang builtin surface/parity with machine artifacts in
+  `.artifacts/*-catalog.json` and generated book pages under `docs/book/`.
 - Normalization tooling is unified under `scripts/normalize_repo.py` with
   profile-driven rules from `docs/spec/schema/normalization_profile_v1.yaml`;
   CI runs `normalize-check` and local workflow uses `normalize-fix`.

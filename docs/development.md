@@ -24,7 +24,7 @@ python -m ruff check .
 python -m mypy spec_runner
 python -m compileall -q spec_runner scripts tests
 python scripts/evaluate_style.py --check docs/spec
-python scripts/docs_build_reference.py --check
+python scripts/docs_generate_all.py --check
 python scripts/docs_lint.py
 ```
 
@@ -111,7 +111,7 @@ Fast docs-only gate:
 ./scripts/docs_doctor.sh
 make docs-doctor
 make verify-docs
-make docs-build
+make docs-generate
 make docs-check
 make ci-smoke
 ```
@@ -129,7 +129,7 @@ make ci-smoke
 2. Regenerate docs artifacts:
 
 ```sh
-make docs-build
+make docs-generate
 ```
 
 3. Re-run docs checks:

@@ -79,11 +79,24 @@ MUST:
 
 Reference generation and graph artifacts:
 
-- `scripts/docs_build_reference.py` renders:
+- `scripts/docs_generate_all.py --build` is the canonical generator orchestrator.
+- `scripts/docs_generate_all.py --check` is the canonical hard-fail freshness check.
+- `scripts/docs_build_reference.py` remains a surface-specific wrapper and renders:
   - `docs/book/reference_index.md`
   - `docs/book/reference_coverage.md`
   - `docs/book/docs_graph.json`
-- `scripts/docs_build_reference.py --check` enforces freshness.
+- API catalog generators produce:
+  - `docs/book/runner_api_reference.md`
+  - `docs/book/harness_type_reference.md`
+  - `docs/book/spec_lang_builtin_catalog.md`
+  - `.artifacts/runner-api-catalog.json`
+  - `.artifacts/harness-type-catalog.json`
+  - `.artifacts/spec-lang-builtin-catalog.json`
+- generated sections are read-only and delimited by
+  `<!-- GENERATED:START ... -->` / `<!-- GENERATED:END ... -->` markers.
+- docs generator report artifacts are required:
+  - `.artifacts/docs-generator-report.json`
+  - `.artifacts/docs-generator-summary.md`
 
 These requirements are enforced by governance checks and CI gates as hard
 failures.

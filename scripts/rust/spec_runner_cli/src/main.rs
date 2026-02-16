@@ -398,14 +398,56 @@ fn main() {
             &root,
         ),
         "ci-gate-summary" => run_cmd(&py, &with_forwarded(vec![script(&root, "ci_gate_summary.py")], &forwarded), &root),
-        "docs-build" => run_cmd(&py, &with_forwarded(vec![script(&root, "docs_build_reference.py")], &forwarded), &root),
+        "docs-generate" => run_cmd(
+            &py,
+            &with_forwarded(vec![script(&root, "docs_generate_all.py"), "--build".to_string()], &forwarded),
+            &root,
+        ),
+        "docs-generate-check" => run_cmd(
+            &py,
+            &with_forwarded(vec![script(&root, "docs_generate_all.py"), "--check".to_string()], &forwarded),
+            &root,
+        ),
+        "docs-build" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "docs_generate_all.py"),
+                    "--build".to_string(),
+                    "--surface".to_string(),
+                    "reference_book".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
         "docs-build-check" => run_cmd(
             &py,
-            &with_forwarded(vec![script(&root, "docs_build_reference.py"), "--check".to_string()], &forwarded),
+            &with_forwarded(
+                vec![
+                    script(&root, "docs_generate_all.py"),
+                    "--check".to_string(),
+                    "--surface".to_string(),
+                    "reference_book".to_string(),
+                ],
+                &forwarded,
+            ),
             &root,
         ),
         "docs-lint" => run_cmd(&py, &with_forwarded(vec![script(&root, "docs_lint.py")], &forwarded), &root),
-        "docs-graph" => run_cmd(&py, &with_forwarded(vec![script(&root, "docs_graph_export.py")], &forwarded), &root),
+        "docs-graph" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "docs_generate_all.py"),
+                    "--build".to_string(),
+                    "--surface".to_string(),
+                    "docs_graph".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
         "conformance-parity" => run_cmd(
             &py,
             &with_forwarded(

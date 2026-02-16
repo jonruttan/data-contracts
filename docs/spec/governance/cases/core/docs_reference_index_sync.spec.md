@@ -23,6 +23,9 @@ harness:
     - docs/book/README.md
     - docs/book/reference_index.md
     - docs/book/reference_coverage.md
+    - docs/book/runner_api_reference.md
+    - docs/book/harness_type_reference.md
+    - docs/book/spec_lang_builtin_catalog.md
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

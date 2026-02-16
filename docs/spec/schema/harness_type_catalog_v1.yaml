@@ -1,0 +1,13 @@
+version: 1
+type: docs.harness_type_catalog
+required_top_level:
+- version
+- summary
+- type_profiles
+fields:
+  version:
+    type: int
+  summary:
+    type: mapping
+  type_profiles:
+    type: list

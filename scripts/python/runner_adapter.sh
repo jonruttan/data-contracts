@@ -105,17 +105,23 @@ case "${subcommand}" in
   ci-gate-summary)
     exec "${PYTHON_BIN}" scripts/ci_gate_summary.py "$@"
     ;;
+  docs-generate)
+    exec "${PYTHON_BIN}" scripts/docs_generate_all.py --build "$@"
+    ;;
+  docs-generate-check)
+    exec "${PYTHON_BIN}" scripts/docs_generate_all.py --check "$@"
+    ;;
   docs-build)
-    exec "${PYTHON_BIN}" scripts/docs_build_reference.py "$@"
+    exec "${PYTHON_BIN}" scripts/docs_generate_all.py --build --surface reference_book "$@"
     ;;
   docs-build-check)
-    exec "${PYTHON_BIN}" scripts/docs_build_reference.py --check "$@"
+    exec "${PYTHON_BIN}" scripts/docs_generate_all.py --check --surface reference_book "$@"
     ;;
   docs-lint)
     exec "${PYTHON_BIN}" scripts/docs_lint.py "$@"
     ;;
   docs-graph)
-    exec "${PYTHON_BIN}" scripts/docs_graph_export.py "$@"
+    exec "${PYTHON_BIN}" scripts/docs_generate_all.py --build --surface docs_graph "$@"
     ;;
   conformance-parity)
     exec "${PYTHON_BIN}" scripts/compare_conformance_parity.py \

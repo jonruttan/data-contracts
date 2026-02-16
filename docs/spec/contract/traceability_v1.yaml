@@ -2367,3 +2367,94 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   notes: Schema contract wording must reference registry-backed machine constraints.
+- rule_id: DOCS_GENERATOR_REGISTRY_DEFINED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_REGISTRY_DEFINED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_docs_generate_all_script_unit.py
+  implementation_refs:
+  - scripts/docs_generate_all.py
+  - docs/spec/governance/cases/core/docs_generator_registry_valid.spec.md
+  notes: Validates docs generator registry structure and required surfaces.
+- rule_id: DOCS_GENERATOR_ORCHESTRATOR_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_ORCHESTRATOR_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_docs_generate_all_script_unit.py
+  implementation_refs:
+  - scripts/docs_generate_all.py
+  - scripts/runner_adapter.sh
+  - scripts/python/runner_adapter.sh
+  - scripts/rust/spec_runner_cli/src/main.rs
+  notes: Ensures a single docs generation orchestrator command path.
+- rule_id: DOCS_GENERATED_SURFACES_SYNC_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_SURFACES_SYNC_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_docs_generate_all_script_unit.py
+  implementation_refs:
+  - scripts/docs_generate_all.py
+  - docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md
+  notes: Hard-fails when any declared generated docs surface is stale.
+- rule_id: DOCS_GENERATED_SECTIONS_READ_ONLY
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_SECTIONS_READ_ONLY
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_docs_generate_all_script_unit.py
+  implementation_refs:
+  - scripts/docs_generate_all.py
+  - docs/spec/governance/cases/core/docs_generated_sections_read_only.spec.md
+  notes: Enforces generated marker boundaries for mixed manual/generated docs.
+- rule_id: DOCS_API_CATALOGS_GENERATED_AND_SYNCED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_API_CATALOGS_GENERATED_AND_SYNCED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/runner_api_catalog_v1.yaml
+  - docs/spec/schema/harness_type_catalog_v1.yaml
+  - docs/spec/schema/spec_lang_builtin_catalog_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_generate_runner_api_catalog_unit.py
+  - tests/test_generate_harness_type_catalog_unit.py
+  - tests/test_generate_spec_lang_builtin_catalog_unit.py
+  implementation_refs:
+  - scripts/generate_runner_api_catalog.py
+  - scripts/generate_harness_type_catalog.py
+  - scripts/generate_spec_lang_builtin_catalog.py
+  - docs/spec/governance/cases/core/docs_runner_api_catalog_sync.spec.md
+  - docs/spec/governance/cases/core/docs_harness_type_catalog_sync.spec.md
+  - docs/spec/governance/cases/core/docs_spec_lang_builtin_catalog_sync.spec.md
+  notes: Catalog generators define and verify machine-backed API documentation surfaces.
+- rule_id: DOCS_GENERATOR_REPORT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_REPORT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/10_docs_quality.md
+  schema_refs:
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_docs_generate_all_script_unit.py
+  implementation_refs:
+  - scripts/docs_generate_all.py
+  - .artifacts/docs-generator-report.json
+  - .artifacts/docs-generator-summary.md
+  notes: Ensures docs generator execution emits deterministic report artifacts.

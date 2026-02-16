@@ -1,4 +1,4 @@
-.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke core-check check ci-gate test
+.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check docs-generate docs-generate-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke core-check check ci-gate test
 .DEFAULT_GOAL := help
 
 help: ## Display this help section
@@ -17,6 +17,12 @@ verify-docs: ## Alias for docs-doctor
 
 docs-build: ## Generate reference docs artifacts (index, coverage, graph)
 	@./scripts/runner_adapter.sh docs-build
+
+docs-generate: ## Generate all registry-backed docs surfaces
+	@./scripts/runner_adapter.sh docs-generate
+
+docs-generate-check: ## Verify all registry-backed docs surfaces are up-to-date
+	@./scripts/runner_adapter.sh docs-generate-check
 
 docs-lint: ## Run docs metadata/schema and quality lint checks
 	@./scripts/runner_adapter.sh docs-lint
@@ -47,7 +53,7 @@ schema-docs-build: ## Regenerate schema docs snapshot from registry
 
 ci-smoke: ## Fast CI preflight (governance + docs + style)
 	@./scripts/runner_adapter.sh governance
-	@./scripts/runner_adapter.sh docs-build-check
+	@./scripts/runner_adapter.sh docs-generate-check
 	@./scripts/runner_adapter.sh docs-lint
 	@./scripts/runner_adapter.sh normalize-check
 	@./scripts/runner_adapter.sh schema-registry-check

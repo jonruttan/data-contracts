@@ -28,6 +28,8 @@ Required subcommands:
 - `python-dependency-json`
 - `python-dependency-md`
 - `ci-gate-summary`
+- `docs-generate`
+- `docs-generate-check`
 - `conformance-parity`
 - `test-core`
 - `test-full`

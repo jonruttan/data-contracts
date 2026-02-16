@@ -100,6 +100,20 @@ def test_schema_registry_check_ids_are_registered() -> None:
         assert check_id in mod._CHECKS
 
 
+def test_docs_generator_check_ids_are_registered() -> None:
+    mod = _load_script_module()
+    required = {
+        "docs.generator_registry_valid",
+        "docs.generator_outputs_sync",
+        "docs.generated_sections_read_only",
+        "docs.runner_api_catalog_sync",
+        "docs.harness_type_catalog_sync",
+        "docs.spec_lang_builtin_catalog_sync",
+    }
+    for check_id in required:
+        assert check_id in mod._CHECKS
+
+
 def test_script_returns_zero_when_governance_case_passes(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

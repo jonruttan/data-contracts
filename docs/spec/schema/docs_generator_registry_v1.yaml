@@ -1,0 +1,102 @@
+version: 1
+surfaces:
+- surface_id: reference_book
+  source_type: manifest_yaml
+  inputs:
+  - /docs/book/reference_manifest.yaml
+  - /docs/book
+  outputs:
+  - /docs/book/reference_index.md
+  - /docs/book/reference_coverage.md
+  - /docs/book/docs_graph.json
+  generator: docs_build_reference
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/10_docs_quality.md
+  - /docs/spec/contract/12_runner_interface.md
+  determinism_hash_fields:
+  - outputs
+  read_only_sections: []
+- surface_id: schema_docs
+  source_type: registry_yaml
+  inputs:
+  - /docs/spec/schema/registry/v1
+  - /docs/spec/schema/registry_schema_v1.yaml
+  outputs:
+  - /docs/spec/schema/schema_v1.md
+  generator: generate_schema_docs
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/21_schema_registry_contract.md
+  determinism_hash_fields:
+  - outputs
+  read_only_sections: []
+- surface_id: docs_graph
+  source_type: manifest_yaml
+  inputs:
+  - /docs/book/reference_manifest.yaml
+  - /docs/book
+  outputs:
+  - /docs/book/docs_graph.json
+  generator: docs_build_reference
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/10_docs_quality.md
+  determinism_hash_fields:
+  - outputs
+  read_only_sections: []
+- surface_id: runner_api_catalog
+  source_type: code_scan
+  inputs:
+  - /scripts/runner_adapter.sh
+  - /scripts/python/runner_adapter.sh
+  - /scripts/rust/spec_runner_cli/src/main.rs
+  outputs:
+  - /.artifacts/runner-api-catalog.json
+  - /docs/book/runner_api_reference.md
+  generator: generate_runner_api_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/12_runner_interface.md
+  - /docs/spec/contract/16_rust_primary_transition.md
+  determinism_hash_fields:
+  - summary
+  - commands
+  read_only_sections:
+  - /docs/book/runner_api_reference.md
+- surface_id: harness_type_catalog
+  source_type: registry_yaml
+  inputs:
+  - /docs/spec/schema/registry/v1
+  - /docs/spec/schema/registry_schema_v1.yaml
+  outputs:
+  - /.artifacts/harness-type-catalog.json
+  - /docs/book/harness_type_reference.md
+  generator: generate_harness_type_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/04_harness.md
+  - /docs/spec/schema/schema_v1.md
+  determinism_hash_fields:
+  - summary
+  - type_profiles
+  read_only_sections:
+  - /docs/book/harness_type_reference.md
+- surface_id: spec_lang_builtin_catalog
+  source_type: code_scan
+  inputs:
+  - /spec_runner/spec_lang.py
+  - /scripts/php/spec_runner.php
+  outputs:
+  - /.artifacts/spec-lang-builtin-catalog.json
+  - /docs/book/spec_lang_builtin_catalog.md
+  generator: generate_spec_lang_builtin_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /docs/spec/contract/03b_spec_lang_v1.md
+  - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  determinism_hash_fields:
+  - summary
+  - builtins
+  read_only_sections:
+  - /docs/book/spec_lang_builtin_catalog.md

@@ -44,6 +44,9 @@ from spec_runner.docs_quality import load_reference_manifest
 from spec_runner.docs_quality import manifest_chapter_paths
 from spec_runner.docs_quality import render_reference_coverage
 from spec_runner.docs_quality import render_reference_index
+from spec_runner.docs_generators import REGISTRY_PATH as DOCS_GENERATOR_REGISTRY_PATH
+from spec_runner.docs_generators import load_docs_generator_registry
+from spec_runner.docs_generators import parse_generated_block
 from spec_runner.quality_metrics import compare_metric_non_regression
 from spec_runner.quality_metrics import contract_assertions_report_jsonable
 from spec_runner.quality_metrics import docs_operability_report_jsonable
@@ -185,6 +188,8 @@ _SCHEMA_REGISTRY_ROOT = "docs/spec/schema/registry/v1"
 _SCHEMA_REGISTRY_SCHEMA = "docs/spec/schema/registry_schema_v1.yaml"
 _SCHEMA_REGISTRY_CONTRACT_DOC = "docs/spec/contract/21_schema_registry_contract.md"
 _SCHEMA_REGISTRY_COMPILED_ARTIFACT = ".artifacts/schema_registry_compiled.json"
+_DOCS_GENERATOR_REPORT = ".artifacts/docs-generator-report.json"
+_DOCS_GENERATOR_SUMMARY = ".artifacts/docs-generator-summary.md"
 
 
 def _resolve_contract_config_path(root: Path, raw: str, *, field: str) -> Path:
@@ -3425,6 +3430,86 @@ def _scan_docs_generated_files_clean(root: Path, *, harness: dict | None = None)
     return out
 
 
+def _run_python_script_check(root: Path, args: list[str]) -> list[str]:
+    py = root / ".venv/bin/python"
+    cmd = [str(py if py.exists() else Path("python3")), *args]
+    cp = subprocess.run(cmd, cwd=root, check=False, capture_output=True, text=True)
+    if cp.returncode == 0:
+        return []
+    lines = [x.strip() for x in ((cp.stdout or "") + "\n" + (cp.stderr or "")).splitlines() if x.strip()]
+    if not lines:
+        return [f"{' '.join(args)} failed with exit code {cp.returncode}"]
+    return lines
+
+
+def _scan_docs_generator_registry_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    registry, issues = load_docs_generator_registry(root)
+    out = [x.render() for x in issues]
+    if registry is None:
+        return out
+    required_surfaces = {
+        "reference_book",
+        "schema_docs",
+        "docs_graph",
+        "runner_api_catalog",
+        "harness_type_catalog",
+        "spec_lang_builtin_catalog",
+    }
+    seen = {
+        str(x.get("surface_id", "")).strip()
+        for x in (registry.get("surfaces") or [])
+        if isinstance(x, dict)
+    }
+    missing = sorted(required_surfaces - seen)
+    for sid in missing:
+        out.append(f"{DOCS_GENERATOR_REGISTRY_PATH.as_posix()}: missing required surface_id {sid}")
+    return out
+
+
+def _scan_docs_generator_outputs_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/docs_generate_all.py", "--check"])
+
+
+def _scan_docs_generated_sections_read_only(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    registry, issues = load_docs_generator_registry(root)
+    if registry is None:
+        return [x.render() for x in issues]
+    out: list[str] = []
+    surfaces = [x for x in (registry.get("surfaces") or []) if isinstance(x, dict)]
+    for surface in surfaces:
+        sid = str(surface.get("surface_id", "")).strip() or "<unknown>"
+        for raw in surface.get("read_only_sections") or []:
+            p = _join_contract_path(root, str(raw))
+            rel = p.relative_to(root).as_posix() if p.exists() else str(raw)
+            if not p.exists():
+                out.append(f"{rel}:1: missing read_only_sections file for {sid}")
+                continue
+            text = p.read_text(encoding="utf-8")
+            try:
+                parse_generated_block(text, surface_id=sid)
+            except Exception as exc:  # noqa: BLE001
+                out.append(f"{rel}:1: invalid generated section markers for {sid} ({exc})")
+    return out
+
+
+def _scan_docs_runner_api_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/generate_runner_api_catalog.py", "--check"])
+
+
+def _scan_docs_harness_type_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/generate_harness_type_catalog.py", "--check"])
+
+
+def _scan_docs_spec_lang_builtin_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/generate_spec_lang_builtin_catalog.py", "--check"])
+
+
 def _scan_docs_required_sections(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -5205,6 +5290,12 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.command_examples_verified": _scan_docs_command_examples_verified,
     "docs.example_id_uniqueness": _scan_docs_example_id_uniqueness,
     "docs.generated_files_clean": _scan_docs_generated_files_clean,
+    "docs.generator_registry_valid": _scan_docs_generator_registry_valid,
+    "docs.generator_outputs_sync": _scan_docs_generator_outputs_sync,
+    "docs.generated_sections_read_only": _scan_docs_generated_sections_read_only,
+    "docs.runner_api_catalog_sync": _scan_docs_runner_api_catalog_sync,
+    "docs.harness_type_catalog_sync": _scan_docs_harness_type_catalog_sync,
+    "docs.spec_lang_builtin_catalog_sync": _scan_docs_spec_lang_builtin_catalog_sync,
     "docs.required_sections": _scan_docs_required_sections,
     "docs.examples_runnable": _scan_docs_examples_runnable,
     "docs.cli_flags_documented": _scan_docs_cli_flags_documented,
