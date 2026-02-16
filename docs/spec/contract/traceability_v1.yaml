@@ -2455,6 +2455,6 @@ links:
   - tests/test_docs_generate_all_script_unit.py
   implementation_refs:
   - scripts/docs_generate_all.py
-  - .artifacts/docs-generator-report.json
-  - .artifacts/docs-generator-summary.md
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md
   notes: Ensures docs generator execution emits deterministic report artifacts.

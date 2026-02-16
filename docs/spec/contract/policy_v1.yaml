@@ -2326,6 +2326,6 @@ rules:
   rationale: Provides auditable output for generator health and CI diagnostics.
   risk_if_violated: Docs generation failures become opaque and harder to triage.
   references:
-  - .artifacts/docs-generator-report.json
-  - .artifacts/docs-generator-summary.md
   - scripts/docs_generate_all.py
+  - docs/spec/schema/docs_generator_registry_v1.yaml
+  - docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md
