@@ -42,6 +42,14 @@ For `api.http`:
 - `body_json`
 - `context_json` (JSON subject profile envelope)
 
+For `orchestration.run`:
+
+- `result_json`
+- `stdout`
+- `stderr`
+- `exit_code`
+- `context_json` (JSON subject profile envelope)
+
 ## Subject-Driven Assertion Contract
 
 - Harnesses/adapters own target subject extraction and normalization.
@@ -63,6 +71,19 @@ Subject profile envelope contract:
   containing `type: spec_lang.library` reusable function definitions.
 - `harness.spec_lang.exports` MAY constrain visible imported symbols to an
   explicit allowlist.
+
+## Orchestration Tooling
+
+- `type: orchestration.run` uses `harness.orchestration` for runner tool
+  dispatch contracts.
+- tool definitions are registry-backed per implementation:
+  - `docs/spec/tools/python/tools_v1.yaml`
+  - `docs/spec/tools/rust/tools_v1.yaml`
+- `effect_symbol` naming MUST use deep-dot `ops.*` hierarchy:
+  `ops.<segment>(.<segment>)+`
+  (for example `ops.fs.file.read`, `ops.time.clock.now_utc`,
+  `ops.proc.command.exec`).
+- legacy underscore forms are forbidden.
 
 ## Path Safety
 

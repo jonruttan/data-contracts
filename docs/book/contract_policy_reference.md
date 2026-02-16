@@ -6,11 +6,11 @@ This page is machine-generated from policy rule definitions.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 164
-- must_count: 151
+- rule_count: 168
+- must_count: 155
 - should_count: 12
 - must_not_count: 1
-- active_count: 164
+- active_count: 168
 - deprecated_count: 0
 - removed_count: 0
 
@@ -110,6 +110,10 @@ This page is machine-generated from policy rule definitions.
 | `OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `docs.spec.metrics.objective_scorecard` | 2 | `active` |
 | `OBJECTIVE_SCORECARD_REPORTED` | `MUST` | `governance` | `docs.spec.metrics.objective_scorecard` | 3 | `active` |
 | `OBJECTIVE_TRIPWIRES_ENFORCED` | `MUST` | `governance` | `docs.spec.metrics.objective_tripwires` | 2 | `active` |
+| `ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | `MUST` | `governance` | `orchestration.case.capabilities` | 2 | `active` |
+| `ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | `MUST` | `governance` | `orchestration.ops.symbol_grammar` | 3 | `active` |
+| `ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED` | `MUST` | `governance` | `orchestration.tools.registry` | 4 | `active` |
+| `ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN` | `MUST` | `governance` | `orchestration.ops.legacy_symbols` | 2 | `active` |
 | `ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY` | `MUST` | `governance` | `runtime.gate_orchestration_policy` | 2 | `active` |
 | `PORTABLE_SPEC_CANONICAL_SINGLE_SET` | `MUST` | `conformance` | `fixtures.portable.canonical_set` | 3 | `active` |
 | `PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION` | `SHOULD` | `conformance` | `fixtures.portable.determinism` | 3 | `active` |

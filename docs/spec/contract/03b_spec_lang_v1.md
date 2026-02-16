@@ -34,6 +34,17 @@ Purity requirement:
 - Subjects consumed by the evaluator MUST be JSON-core values only; native
   runtime values must be projected into JSON profile envelopes.
 
+Orchestration effect namespace:
+
+- `ops.*` symbols are reserved for orchestration harnesses and are not core
+  pure stdlib builtins.
+- Core spec-lang evaluation remains pure; side-effect operations are adapter
+  concerns exposed through orchestration contracts.
+- canonical effect symbol naming uses deep-dot hierarchy:
+  `ops.<segment>(.<segment>)+` (for example `ops.fs.file.read`,
+  `ops.proc.command.exec`).
+- underscore shorthand forms are invalid.
+
 ## Core Forms
 
 Boolean:

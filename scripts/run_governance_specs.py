@@ -29,6 +29,9 @@ from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonabl
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.schema_registry import compile_registry
+from spec_runner.ops_namespace import validate_ops_symbol
+from spec_runner.ops_namespace import is_legacy_underscore_form
+from spec_runner.ops_namespace import validate_registry_entry as validate_ops_registry_entry
 from spec_runner.conformance_purpose import PURPOSE_WARNING_CODES
 from spec_runner.conformance_purpose import conformance_purpose_report_jsonable
 from spec_runner.contract_governance import check_contract_governance
@@ -109,6 +112,10 @@ _CURRENT_SPEC_FORBIDDEN_PATTERNS = (
 )
 _TYPE_CONTRACTS_DIR = "docs/spec/contract/types"
 _CORE_TYPES = {"text.file", "cli.run"}
+_ORCHESTRATION_TOOLS_FILES = (
+    "docs/spec/tools/python/tools_v1.yaml",
+    "docs/spec/tools/rust/tools_v1.yaml",
+)
 _COMMON_CASE_TOP_LEVEL_KEYS = {
     "id",
     "type",
@@ -1877,11 +1884,133 @@ def _scan_schema_type_profiles_complete(root: Path) -> list[str]:
     if compiled is None:
         return errs
     type_profiles = compiled.get("type_profiles") or {}
-    required = {"cli.run", "text.file", "governance.check", "spec_lang.library"}
+    required = {
+        "cli.run",
+        "text.file",
+        "governance.check",
+        "spec_lang.library",
+        "orchestration.run",
+    }
     violations: list[str] = []
     for ctype in sorted(required):
         if ctype not in type_profiles:
             violations.append(f"{_SCHEMA_REGISTRY_ROOT}:1: missing required type profile for {ctype}")
+    return violations
+
+
+def _iter_orchestration_cases(root: Path):
+    base = _join_contract_path(root, "docs/spec")
+    if not base.exists():
+        return
+    for spec in iter_spec_doc_tests(base):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() == "orchestration.run":
+            yield spec.doc_path, case
+
+
+def _load_tool_registry(root: Path, rel: str) -> tuple[list[dict], list[str]]:
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [], [f"{rel}:1: missing tools registry"]
+    payload = yaml.safe_load(p.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        return [], [f"{rel}:1: tools registry must be a mapping"]
+    tools = payload.get("tools")
+    if not isinstance(tools, list):
+        return [], [f"{rel}:1: tools must be a list"]
+    out: list[dict] = []
+    violations: list[str] = []
+    for i, item in enumerate(tools):
+        if not isinstance(item, dict):
+            violations.append(f"{rel}:1: tools[{i}] must be a mapping")
+            continue
+        out.append(item)
+    return out, violations
+
+
+def _scan_orchestration_ops_symbol_grammar(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    for rel in _ORCHESTRATION_TOOLS_FILES:
+        tools, errs = _load_tool_registry(root, rel)
+        violations.extend(errs)
+        for idx, tool in enumerate(tools):
+            symbol = str(tool.get("effect_symbol", "")).strip()
+            if not symbol:
+                continue
+            for diag in validate_ops_symbol(symbol, context=f"{rel}:tools[{idx}]"):
+                violations.append(f"{rel}:1: {diag.code}: {diag.message}")
+    return violations
+
+
+def _scan_orchestration_ops_legacy_underscore_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    for rel in _ORCHESTRATION_TOOLS_FILES:
+        tools, errs = _load_tool_registry(root, rel)
+        violations.extend(errs)
+        for idx, tool in enumerate(tools):
+            symbol = str(tool.get("effect_symbol", "")).strip()
+            if symbol and is_legacy_underscore_form(symbol):
+                violations.append(
+                    f"{rel}:1: ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN: tools[{idx}] uses forbidden symbol {symbol}"
+                )
+    return violations
+
+
+def _scan_orchestration_ops_registry_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    tool_ids: set[str] = set()
+    for rel in _ORCHESTRATION_TOOLS_FILES:
+        tools, errs = _load_tool_registry(root, rel)
+        violations.extend(errs)
+        for idx, tool in enumerate(tools):
+            for diag in validate_ops_registry_entry(tool, where=f"{rel}:tools[{idx}]"):
+                violations.append(f"{rel}:1: {diag.code}: {diag.message}")
+            tool_id = str(tool.get("tool_id", "")).strip()
+            if not tool_id:
+                violations.append(f"{rel}:1: ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED: tools[{idx}] missing tool_id")
+                continue
+            tool_ids.add(tool_id)
+            for key in ("input_schema_ref", "output_schema_ref", "stability", "since"):
+                if not str(tool.get(key, "")).strip():
+                    violations.append(f"{rel}:1: ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED: tool {tool_id} missing {key}")
+    # Any orchestration.run case should reference a known tool_id.
+    for doc_path, case in _iter_orchestration_cases(root):
+        orch = dict((case.get("harness") or {}).get("orchestration") or {})
+        tool_id = str(orch.get("tool_id", "")).strip()
+        if tool_id and tool_id not in tool_ids:
+            rel = doc_path.relative_to(root).as_posix()
+            violations.append(f"{rel}:1: ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED: unknown tool_id {tool_id}")
+    return violations
+
+
+def _scan_orchestration_ops_capability_bindings(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    capability_by_tool: dict[str, str] = {}
+    for rel in _ORCHESTRATION_TOOLS_FILES:
+        tools, errs = _load_tool_registry(root, rel)
+        violations.extend(errs)
+        for tool in tools:
+            tool_id = str(tool.get("tool_id", "")).strip()
+            cap = str(tool.get("capability_id", "")).strip()
+            if tool_id and cap:
+                capability_by_tool[tool_id] = cap
+    for doc_path, case in _iter_orchestration_cases(root):
+        orch = dict((case.get("harness") or {}).get("orchestration") or {})
+        tool_id = str(orch.get("tool_id", "")).strip()
+        if not tool_id:
+            continue
+        required_cap = capability_by_tool.get(tool_id, "")
+        caps = orch.get("capabilities") or []
+        if not isinstance(caps, list):
+            rel = doc_path.relative_to(root).as_posix()
+            violations.append(f"{rel}:1: ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED: harness.orchestration.capabilities must be a list")
+            continue
+        cap_set = {str(x).strip() for x in caps if str(x).strip()}
+        if required_cap and required_cap not in cap_set:
+            rel = doc_path.relative_to(root).as_posix()
+            violations.append(
+                f"{rel}:1: ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED: tool {tool_id} requires capability {required_cap}"
+            )
     return violations
 
 
@@ -5339,6 +5468,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.adoption_profiles_sync": _scan_docs_adoption_profiles_sync,
     "docs.release_contract_automation_policy": _scan_docs_release_contract_automation_policy,
     "runtime.scope_sync": _scan_runtime_scope_sync,
+    "orchestration.ops_symbol_grammar": _scan_orchestration_ops_symbol_grammar,
+    "orchestration.ops_legacy_underscore_forbidden": _scan_orchestration_ops_legacy_underscore_forbidden,
+    "orchestration.ops_registry_sync": _scan_orchestration_ops_registry_sync,
+    "orchestration.ops_capability_bindings": _scan_orchestration_ops_capability_bindings,
     "naming.filename_policy": _scan_naming_filename_policy,
     "normalization.virtual_root_paths_only": _scan_normalization_virtual_root_paths_only,
     "reference.contract_paths_exist": _scan_reference_contract_paths_exist,

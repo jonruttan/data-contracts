@@ -94,6 +94,9 @@ Notes:
   CI runs `normalize-check` and local workflow uses `normalize-fix`.
 - Gate scripts now invoke CI summary orchestration through runner-interface
   subcommand `ci-gate-summary` (no direct gate-script Python summary call).
+- Orchestration effect symbols now use deep-dot `ops.*` naming (for example
+  `ops.fs.file.read`, `ops.proc.command.exec`) with underscore shorthand forms
+  forbidden by governance.
 - Gate scripts default to canonical adapter (`scripts/runner_adapter.sh`)
   in rust mode; Python runner lane remains explicit opt-in via
   `SPEC_RUNNER_IMPL=python` (or `--impl python`).

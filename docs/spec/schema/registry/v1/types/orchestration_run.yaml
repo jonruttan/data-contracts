@@ -1,0 +1,7 @@
+version: 1
+id: schema.registry.v1.type.orchestration_run
+type: type
+case_type: orchestration.run
+required_top_level: []
+allowed_top_level_extra: []
+fields: {}

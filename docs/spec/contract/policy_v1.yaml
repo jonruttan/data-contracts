@@ -1486,6 +1486,65 @@ rules:
   references:
   - scripts/ci_gate_summary.py
   - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
+- id: ORCHESTRATION_OPS_DEEP_DOT_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: orchestration.ops.symbol_grammar
+  norm: MUST
+  requirement: orchestration_effect_symbols_must_use_deep_dot_ops_namespace
+  description: 'Orchestration effect symbols must use canonical deep-dot ops naming (`ops.<segment>(.<segment>)+`).
+
+    '
+  rationale: Keeps effect capability naming explicit, composable, and machine-checkable.
+  risk_if_violated: Effect operations drift into ad-hoc naming and become difficult to govern.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/governance/cases/core/orchestration_ops_symbol_grammar.spec.md
+- id: ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN
+  introduced_in: v1
+  scope: governance
+  applies_to: orchestration.ops.legacy_symbols
+  norm: MUST
+  requirement: legacy_underscore_ops_symbols_must_be_rejected
+  description: 'Legacy underscore shorthand ops symbols (for example `ops.fs.read_file`) are forbidden.
+
+    '
+  rationale: Enforces one canonical naming surface and removes ambiguity.
+  risk_if_violated: Parallel symbol spellings create drift and policy bypasses.
+  references:
+  - spec_runner/ops_namespace.py
+  - docs/spec/governance/cases/core/orchestration_ops_legacy_underscore_forbidden.spec.md
+- id: ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: orchestration.tools.registry
+  norm: MUST
+  requirement: orchestration_tool_entries_must_define_symbol_capability_and_schema_refs
+  description: 'Runner tool registries must declare canonical effect_symbol, capability_id, and schema references for each tool.
+
+    '
+  rationale: Keeps orchestration tooling explicit and cross-implementation auditable.
+  risk_if_violated: Tool behavior and contract assertions drift apart.
+  references:
+  - docs/spec/tools/python/tools_v1.yaml
+  - docs/spec/tools/rust/tools_v1.yaml
+  - docs/spec/schema/orchestration_result_v1.yaml
+  - docs/spec/governance/cases/core/orchestration_ops_registry_sync.spec.md
+- id: ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: orchestration.case.capabilities
+  norm: MUST
+  requirement: orchestration_cases_must_declare_required_tool_capability_ids
+  description: 'Each orchestration case using a tool_id must bind the corresponding capability_id in harness orchestration capabilities.
+
+    '
+  rationale: Prevents hidden effect escalation in executable orchestration specs.
+  risk_if_violated: Cases can invoke effectful operations without explicit capability contracts.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/governance/cases/core/orchestration_ops_capability_bindings.spec.md
 - id: CONTRACT_MUST_RULE_COVERAGE_COMPLETE
   introduced_in: v1
   scope: governance

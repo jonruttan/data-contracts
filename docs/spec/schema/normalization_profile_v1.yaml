@@ -41,6 +41,14 @@ spec_style:
     - lit_scalar
 docs_token_sync:
   rules:
+  - id: NORMALIZATION_OPS_DEEP_DOT_WORDING
+    file: docs/spec/contract/04_harness.md
+    must_contain:
+    - "ops.fs.file.read"
+    - "ops.proc.command.exec"
+    must_not_contain:
+    - "ops.fs.read_file"
+    - "ops.proc.exec"
   - id: NORMALIZATION_SCHEMA_MAPPING_AST_WORDING
     file: docs/spec/schema/schema_v1.md
     must_contain:

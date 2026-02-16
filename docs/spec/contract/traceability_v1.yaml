@@ -1391,6 +1391,63 @@ links:
   - scripts/ci_gate_summary.py
   - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
   notes: CI gate summary loads a spec-lang decision expression from governance policy case.
+- rule_id: ORCHESTRATION_OPS_DEEP_DOT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_DEEP_DOT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_ops_namespace_unit.py
+  implementation_refs:
+  - spec_runner/ops_namespace.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/orchestration_ops_symbol_grammar.spec.md
+  notes: Ops effect symbols are validated against deep-dot canonical grammar.
+- rule_id: ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_ops_namespace_unit.py
+  implementation_refs:
+  - spec_runner/ops_namespace.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/orchestration_ops_legacy_underscore_forbidden.spec.md
+  notes: Legacy underscore shorthand ops symbols are hard-failed.
+- rule_id: ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/orchestration_result_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_harness_orchestration_run_unit.py
+  implementation_refs:
+  - docs/spec/tools/python/tools_v1.yaml
+  - docs/spec/tools/rust/tools_v1.yaml
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/orchestration_ops_registry_sync.spec.md
+  notes: Orchestration tools registry must declare effect symbols, capabilities, and schema refs.
+- rule_id: ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_harness_orchestration_run_unit.py
+  implementation_refs:
+  - spec_runner/harnesses/orchestration_run.py
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/orchestration_ops_capability_bindings.spec.md
+  notes: Orchestration cases must bind required capability ids for selected tools.
 - rule_id: CURRENT_SPEC_POLICY_KEY_NAMES
   policy_ref: docs/spec/contract/policy_v1.yaml#CURRENT_SPEC_POLICY_KEY_NAMES
   contract_refs:

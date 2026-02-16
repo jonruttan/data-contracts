@@ -227,6 +227,7 @@ def main(argv: list[str] | None = None) -> int:
     domain_layout_cmd = [sys.executable, "scripts/migrate_spec_layout_domain_trees.py", mode_flag]
     vpath_cmd = [sys.executable, "scripts/convert_virtual_root_paths.py", mode_flag, *scope_paths]
     conv_cmd = [sys.executable, "scripts/convert_spec_lang_yaml_ast.py", mode_flag, *scope_paths]
+    ops_cmd = [sys.executable, "scripts/convert_ops_symbol_names.py", mode_flag, *scope_paths]
     style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
 
     issues: list[str] = []
@@ -248,6 +249,12 @@ def main(argv: list[str] | None = None) -> int:
             line = line.strip()
             if line:
                 issues.append(f"docs/spec:1: NORMALIZATION_MAPPING_AST_ONLY: {line}")
+    ops_code, ops_out = _run(ops_cmd)
+    if ops_code != 0:
+        for line in ops_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec:1: NORMALIZATION_OPS_SYMBOLS: {line}")
     style_code, style_out = _run(style_cmd)
     if style_code != 0:
         for line in style_out.splitlines():

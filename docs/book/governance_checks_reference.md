@@ -6,8 +6,8 @@ This page is machine-generated from governance check registrations and case mapp
 
 ## Generated Governance Check Catalog
 
-- check_count: 138
-- checks_with_cases: 138
+- check_count: 142
+- checks_with_cases: 142
 - checks_without_cases: 0
 
 | check_id | case_count | has_case |
@@ -96,6 +96,10 @@ This page is machine-generated from governance check registrations and case mapp
 | `objective.scorecard_metric` | 1 | true |
 | `objective.scorecard_non_regression` | 1 | true |
 | `objective.tripwires_clean` | 1 | true |
+| `orchestration.ops_capability_bindings` | 1 | true |
+| `orchestration.ops_legacy_underscore_forbidden` | 1 | true |
+| `orchestration.ops_registry_sync` | 1 | true |
+| `orchestration.ops_symbol_grammar` | 1 | true |
 | `pending.no_resolved_markers` | 1 | true |
 | `reference.check_ids_exist` | 1 | true |
 | `reference.contract_paths_exist` | 1 | true |

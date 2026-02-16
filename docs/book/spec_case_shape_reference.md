@@ -7,7 +7,7 @@ This page is machine-generated from the schema registry type and field profiles.
 ## Generated Spec Schema Field Catalog
 
 - top_level_field_count: 10
-- type_profile_count: 5
+- type_profile_count: 6
 - total_type_field_count: 7
 
 ### Top-Level Fields
@@ -32,6 +32,7 @@ This page is machine-generated from the schema registry type and field profiles.
 | `api.http` | 1 | `request` |
 | `cli.run` | 2 | - |
 | `governance.check` | 1 | `check` |
+| `orchestration.run` | 0 | - |
 | `spec_lang.library` | 2 | `definitions` |
 | `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->

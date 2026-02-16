@@ -19,6 +19,7 @@ Related docs/reference schemas:
 - `docs/spec/schema/spec_lang_builtin_catalog_v1.yaml`
 - `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml`
 - `docs/spec/schema/subject_profiles_v1.yaml`
+- `docs/spec/schema/orchestration_result_v1.yaml`
 - `docs/spec/schema/registry_schema_v1.yaml`
 - `docs/spec/schema/registry/v1/*.yaml`
 - `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`
@@ -160,6 +161,8 @@ For `type: cli.run`, supported `harness` keys include:
 - `hook_after` (string): hook entrypoint invoked after running the CLI
 - `hook_kwargs` (mapping): keyword arguments passed through to the hook
 - `spec_lang` (mapping): evaluator budgets for `evaluate` leaves
+- `orchestration` (mapping): orchestration tool dispatch contract for
+  `type: orchestration.run`
 
 `setup_files[*].path` constraints:
 
@@ -225,6 +228,7 @@ Currently supported types:
 
 - `cli.run` (core)
 - `text.file` (core)
+- `orchestration.run` (core extension)
 
 Type contracts live under:
 
@@ -298,6 +302,10 @@ Operator constraints:
   `docs/spec/contract/14_spec_lang_libraries.md`
 - runtime pass/fail decisions MUST execute through compiled spec-lang
   expressions
+- orchestration effect symbol names use deep-dot `ops.*` hierarchy:
+  `ops.<segment>(.<segment>)+` (for example `ops.fs.file.read`,
+  `ops.proc.command.exec`)
+- underscore shorthand ops symbols are invalid
 - path fields in scoped harness/type config use virtual-root canonical `/...`
   form; `..` contract-root escapes are invalid
 - regex portability guidance for spec-lang expressions is defined in
@@ -350,9 +358,9 @@ assert:
 
 This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
-- profile_count: 9
+- profile_count: 10
 - top_level_fields: 10
-- type_profiles: 5
+- type_profiles: 6
 
 ### Top-Level Keys
 
@@ -376,6 +384,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `api.http` | `request` | - |
 | `cli.run` | - | - |
 | `governance.check` | `check` | - |
+| `orchestration.run` | - | - |
 | `spec_lang.library` | `definitions` | `imports` |
 | `text.file` | - | - |
 
@@ -385,7 +394,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 ## Generated Spec Schema Field Catalog
 
 - top_level_field_count: 10
-- type_profile_count: 5
+- type_profile_count: 6
 - total_type_field_count: 7
 
 ### Top-Level Fields
@@ -410,6 +419,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `api.http` | 1 | `request` |
 | `cli.run` | 2 | - |
 | `governance.check` | 1 | `check` |
+| `orchestration.run` | 0 | - |
 | `spec_lang.library` | 2 | `definitions` |
 | `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->

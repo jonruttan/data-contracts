@@ -6,10 +6,10 @@ This page is machine-generated from traceability link mappings.
 
 ## Generated Traceability Catalog
 
-- link_count: 164
+- link_count: 168
 - rules_with_conformance_cases: 34
-- rules_with_unit_tests: 164
-- rules_with_implementation_refs: 162
+- rules_with_unit_tests: 168
+- rules_with_implementation_refs: 166
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -107,6 +107,10 @@ This page is machine-generated from traceability link mappings.
 | `OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
 | `OBJECTIVE_SCORECARD_REPORTED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_REPORTED` | 1 | 1 | 0 | 3 | 5 |
 | `OBJECTIVE_TRIPWIRES_ENFORCED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_TRIPWIRES_ENFORCED` | 1 | 1 | 0 | 1 | 3 |
+| `ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
+| `ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
+| `ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED` | 1 | 1 | 0 | 1 | 4 |
+| `ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN` | 1 | 1 | 0 | 1 | 3 |
 | `ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY` | 1 | 0 | 0 | 2 | 2 |
 | `PORTABLE_SPEC_CANONICAL_SINGLE_SET` | `docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_CANONICAL_SINGLE_SET` | 3 | 1 | 0 | 2 | 2 |
 | `PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION` | `docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION` | 2 | 1 | 2 | 1 | 1 |
