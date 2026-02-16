@@ -3054,6 +3054,54 @@ def _iter_cases_with_chain(root: Path):
             yield doc_path, case, harness, chain
 
 
+def _expand_chain_step_exports(raw_exports: object) -> tuple[dict[str, dict], list[str]]:
+    if raw_exports is None:
+        return {}, []
+    if not isinstance(raw_exports, dict):
+        return {}, ["exports must be mapping"]
+    if "symbols" not in raw_exports:
+        return dict(raw_exports), []
+
+    allowed = {"from", "required", "prefix", "symbols"}
+    errors: list[str] = []
+    unknown = sorted(str(k) for k in raw_exports.keys() if str(k) not in allowed)
+    if unknown:
+        errors.append(f"exports compact form has unsupported keys: {', '.join(unknown)}")
+    from_source = str(raw_exports.get("from", "")).strip()
+    if not from_source:
+        errors.append("exports compact form requires non-empty from")
+    raw_required = raw_exports.get("required", True)
+    if not isinstance(raw_required, bool):
+        errors.append("exports compact form required must be bool")
+    raw_prefix = raw_exports.get("prefix", "")
+    if raw_prefix is None:
+        raw_prefix = ""
+    if not isinstance(raw_prefix, str):
+        errors.append("exports compact form prefix must be string")
+        raw_prefix = ""
+    prefix = raw_prefix.strip()
+    raw_symbols = raw_exports.get("symbols")
+    if not isinstance(raw_symbols, list) or not raw_symbols:
+        errors.append("exports compact form symbols must be non-empty list")
+        raw_symbols = []
+    if errors:
+        return {}, errors
+
+    expanded: dict[str, dict] = {}
+    for idx, raw_symbol in enumerate(raw_symbols):
+        symbol = str(raw_symbol).strip()
+        if not symbol:
+            errors.append(f"exports compact form symbols[{idx}] must be non-empty string")
+            continue
+        full_name = f"{prefix}.{symbol}" if prefix else symbol
+        expanded[full_name] = {
+            "from": from_source,
+            "path": f"/{full_name.lstrip('/')}",
+            "required": raw_required,
+        }
+    return expanded, errors
+
+
 def _collect_chain_library_refs(case: dict) -> list[str]:
     out: list[str] = []
     harness = case.get("harness")
@@ -3068,8 +3116,8 @@ def _collect_chain_library_refs(case: dict) -> list[str]:
     for step in steps:
         if not isinstance(step, dict):
             continue
-        exports = step.get("exports")
-        if not isinstance(exports, dict):
+        exports, errors = _expand_chain_step_exports(step.get("exports"))
+        if errors:
             continue
         if not any(
             isinstance(v, dict) and str(v.get("from", "")).strip() == "library.symbol"
@@ -3106,8 +3154,8 @@ def _load_chain_imported_symbol_bindings(
         step_id = str(step.get("id", "")).strip()
         if not step_id:
             continue
-        exports = step.get("exports")
-        if not isinstance(exports, dict):
+        exports, errors = _expand_chain_step_exports(step.get("exports"))
+        if errors:
             continue
         has_library_exports = any(
             isinstance(v, dict) and str(v.get("from", "")).strip() == "library.symbol"
@@ -3199,7 +3247,8 @@ def _scan_runtime_chain_step_class_required(root: Path, *, harness: dict | None 
                     f"{doc_path.relative_to(root)}: case {case_id} step {step_id} class must be one of: must, can, cannot"
                 )
                 continue
-            if class_name == "cannot" and isinstance(step.get("exports"), dict) and step.get("exports"):
+            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            if class_name == "cannot" and exports and not errors:
                 violations.append(
                     f"{doc_path.relative_to(root)}: case {case_id} step {step_id} cannot-class must not declare exports"
                 )
@@ -3224,11 +3273,11 @@ def _scan_runtime_chain_import_alias_collision_forbidden(
                 continue
             sid = str(step.get("id", "")).strip() or f"<step[{idx}]>"
             step_ids.add(sid)
-            exports = step.get("exports") or {}
-            if isinstance(exports, dict):
-                step_exports[sid] = {str(x).strip() for x in exports.keys() if str(x).strip()}
-            else:
+            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            if errors:
                 step_exports[sid] = set()
+            else:
+                step_exports[sid] = {str(x).strip() for x in exports.keys() if str(x).strip()}
 
         imports = chain.get("imports", [])
         if imports is None:
@@ -3550,9 +3599,10 @@ def _scan_runtime_chain_exports_target_derived_only(root: Path, *, harness: dict
                 _ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
             except ValueError:
                 ref_case_id = None
-            exports = step.get("exports") or {}
-            if not isinstance(exports, dict):
-                violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports must be mapping")
+            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            if errors:
+                for err in errors:
+                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} {err}")
                 continue
             has_library_symbol = False
             for export_name, export_raw in exports.items():
@@ -3597,8 +3647,8 @@ def _scan_runtime_chain_exports_from_key_required(root: Path, *, harness: dict |
             if not isinstance(step, dict):
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            exports = step.get("exports")
-            if not isinstance(exports, dict):
+            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            if errors:
                 continue
             for export_name, export_raw in exports.items():
                 if not isinstance(export_raw, dict):
@@ -3622,8 +3672,8 @@ def _scan_runtime_chain_library_symbol_exports_valid(root: Path, *, harness: dic
             if not isinstance(step, dict):
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            exports = step.get("exports")
-            if not isinstance(exports, dict):
+            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            if errors:
                 continue
             for export_name, export_raw in exports.items():
                 if not isinstance(export_raw, dict):
@@ -3651,8 +3701,8 @@ def _scan_runtime_chain_legacy_from_target_forbidden(root: Path, *, harness: dic
             if not isinstance(step, dict):
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            exports = step.get("exports")
-            if not isinstance(exports, dict):
+            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            if errors:
                 continue
             for export_name, export_raw in exports.items():
                 if isinstance(export_raw, dict) and "from_target" in export_raw:
@@ -3821,8 +3871,8 @@ def _scan_runtime_chain_state_template_resolution(root: Path, *, harness: dict |
                 if not isinstance(step, dict):
                     continue
                 sid = str(step.get("id", "")).strip()
-                exports = step.get("exports") or {}
-                if sid and isinstance(exports, dict):
+                exports, _errors = _expand_chain_step_exports(step.get("exports"))
+                if sid:
                     for name in exports.keys():
                         exported.add((sid, str(name)))
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"

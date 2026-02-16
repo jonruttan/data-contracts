@@ -15,66 +15,24 @@ harness:
       class: must
       ref: /docs/spec/libraries/domain/http_core.spec.md
       exports:
-        domain.http.status:
-          from: library.symbol
-          path: /domain.http.status
-          required: true
-        domain.http.status_in:
-          from: library.symbol
-          path: /domain.http.status_in
-          required: true
-        domain.http.status_is:
-          from: library.symbol
-          path: /domain.http.status_is
-          required: true
-        domain.http.status_is_unauthorized:
-          from: library.symbol
-          path: /domain.http.status_is_unauthorized
-          required: true
-        domain.http.status_is_forbidden:
-          from: library.symbol
-          path: /domain.http.status_is_forbidden
-          required: true
-        domain.http.ok_2xx:
-          from: library.symbol
-          path: /domain.http.ok_2xx
-          required: true
-        domain.http.header_get:
-          from: library.symbol
-          path: /domain.http.header_get
-          required: true
-        domain.http.header_contains:
-          from: library.symbol
-          path: /domain.http.header_contains
-          required: true
-        domain.http.body_text:
-          from: library.symbol
-          path: /domain.http.body_text
-          required: true
-        domain.http.body_json:
-          from: library.symbol
-          path: /domain.http.body_json
-          required: true
-        domain.http.body_json_type_is:
-          from: library.symbol
-          path: /domain.http.body_json_type_is
-          required: true
-        domain.http.body_json_has_key:
-          from: library.symbol
-          path: /domain.http.body_json_has_key
-          required: true
-        domain.http.auth_is_oauth:
-          from: library.symbol
-          path: /domain.http.auth_is_oauth
-          required: true
-        domain.http.has_bearer_header:
-          from: library.symbol
-          path: /domain.http.has_bearer_header
-          required: true
-        domain.http.oauth_scope_requested:
-          from: library.symbol
-          path: /domain.http.oauth_scope_requested
-          required: true
+        from: library.symbol
+        required: true
+        symbols:
+        - domain.http.status
+        - domain.http.status_in
+        - domain.http.status_is
+        - domain.http.status_is_unauthorized
+        - domain.http.status_is_forbidden
+        - domain.http.ok_2xx
+        - domain.http.header_get
+        - domain.http.header_contains
+        - domain.http.body_text
+        - domain.http.body_json
+        - domain.http.body_json_type_is
+        - domain.http.body_json_has_key
+        - domain.http.auth_is_oauth
+        - domain.http.has_bearer_header
+        - domain.http.oauth_scope_requested
     imports:
     - from: lib_http_core_spec
       names:

@@ -16,6 +16,7 @@ _DOTTED_PATH_PART = re.compile(r"^[A-Za-z0-9_.-]+$")
 _CASE_ID_PART = re.compile(r"^[A-Za-z0-9._:-]+$")
 _STEP_CLASS_VALUES = {"must", "can", "cannot"}
 _RESERVED_IMPORT_NAMES = {"subject", "if", "let", "fn", "call", "var"}
+_CHAIN_COMPACT_EXPORT_KEYS = {"from", "required", "prefix", "symbols"}
 
 
 @dataclass(frozen=True)
@@ -95,6 +96,50 @@ def _resolve_dotted_path(value: Any, dotted: str) -> tuple[bool, Any]:
     return True, current
 
 
+def _expand_step_exports(raw_exports: object, *, step_idx: int) -> dict[str, dict[str, Any]]:
+    if raw_exports is None:
+        return {}
+    if not isinstance(raw_exports, dict):
+        raise TypeError(f"harness.chain.steps[{step_idx}].exports must be a mapping when provided")
+    if "symbols" not in raw_exports:
+        return dict(raw_exports)
+    unknown = sorted(str(k) for k in raw_exports.keys() if str(k) not in _CHAIN_COMPACT_EXPORT_KEYS)
+    if unknown:
+        raise ValueError(
+            f"harness.chain.steps[{step_idx}].exports compact form has unsupported keys: {', '.join(unknown)}"
+        )
+    from_source = str(raw_exports.get("from", "")).strip()
+    if not from_source:
+        raise ValueError(f"harness.chain.steps[{step_idx}].exports.from is required in compact form")
+    raw_required = raw_exports.get("required", True)
+    if not isinstance(raw_required, bool):
+        raise TypeError(f"harness.chain.steps[{step_idx}].exports.required must be a bool when provided")
+    raw_prefix = raw_exports.get("prefix", "")
+    if raw_prefix is None:
+        raw_prefix = ""
+    if not isinstance(raw_prefix, str):
+        raise TypeError(f"harness.chain.steps[{step_idx}].exports.prefix must be a string when provided")
+    prefix = raw_prefix.strip()
+    raw_symbols = raw_exports.get("symbols")
+    if not isinstance(raw_symbols, list) or not raw_symbols:
+        raise TypeError(f"harness.chain.steps[{step_idx}].exports.symbols must be a non-empty list")
+    expanded: dict[str, dict[str, Any]] = {}
+    for j, raw_symbol in enumerate(raw_symbols):
+        name = str(raw_symbol).strip()
+        if not name:
+            raise ValueError(
+                f"harness.chain.steps[{step_idx}].exports.symbols[{j}] must be a non-empty string"
+            )
+        full_name = f"{prefix}.{name}" if prefix else name
+        symbol_path = full_name.lstrip("/")
+        expanded[full_name] = {
+            "from": from_source,
+            "path": f"/{symbol_path}",
+            "required": raw_required,
+        }
+    return expanded
+
+
 def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[ChainImport], bool]:
     harness = case.harness or {}
     raw_chain = harness.get("chain")
@@ -133,9 +178,7 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
         if not isinstance(raw_ref, str):
             raise TypeError(f"harness.chain.steps[{idx}].ref must be a string")
         parsed_ref = parse_spec_ref(raw_ref)
-        raw_exports = raw.get("exports") or {}
-        if not isinstance(raw_exports, dict):
-            raise TypeError(f"harness.chain.steps[{idx}].exports must be a mapping when provided")
+        raw_exports = _expand_step_exports(raw.get("exports"), step_idx=idx)
         exports: dict[str, ChainExport] = {}
         has_library_symbol_export = False
         for export_name, export_raw in raw_exports.items():

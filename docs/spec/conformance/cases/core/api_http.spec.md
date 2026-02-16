@@ -537,42 +537,18 @@ harness:
       class: must
       ref: /docs/spec/libraries/domain/http_core.spec.md
       exports:
-        domain.http.cors_allow_origin:
-          from: library.symbol
-          path: /domain.http.cors_allow_origin
-          required: true
-        domain.http.cors_allows_method:
-          from: library.symbol
-          path: /domain.http.cors_allows_method
-          required: true
-        domain.http.cors_allows_header:
-          from: library.symbol
-          path: /domain.http.cors_allows_header
-          required: true
-        domain.http.cors_credentials_enabled:
-          from: library.symbol
-          path: /domain.http.cors_credentials_enabled
-          required: true
-        domain.http.cors_max_age_gte:
-          from: library.symbol
-          path: /domain.http.cors_max_age_gte
-          required: true
-        domain.http.is_preflight_step:
-          from: library.symbol
-          path: /domain.http.is_preflight_step
-          required: true
-        domain.http.step_by_id:
-          from: library.symbol
-          path: /domain.http.step_by_id
-          required: true
-        domain.http.step_status_is:
-          from: library.symbol
-          path: /domain.http.step_status_is
-          required: true
-        domain.http.step_body_json_get:
-          from: library.symbol
-          path: /domain.http.step_body_json_get
-          required: true
+        from: library.symbol
+        required: true
+        symbols:
+        - domain.http.cors_allow_origin
+        - domain.http.cors_allows_method
+        - domain.http.cors_allows_header
+        - domain.http.cors_credentials_enabled
+        - domain.http.cors_max_age_gte
+        - domain.http.is_preflight_step
+        - domain.http.step_by_id
+        - domain.http.step_status_is
+        - domain.http.step_body_json_get
     imports:
     - from: lib_http_core_spec
       names:

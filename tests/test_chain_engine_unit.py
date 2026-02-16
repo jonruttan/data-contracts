@@ -327,3 +327,67 @@ def test_execute_chain_plan_resolves_import_aliases(tmp_path, monkeypatch, capsy
     host_key = f"{host.doc_path.resolve().as_posix()}::{host.id}"
     imports = dict(ctx.get_case_chain_imports(case_key=host_key))
     assert imports["seed_id"] == "abc-123"
+
+
+def test_compile_chain_plan_accepts_compact_symbol_exports(tmp_path):
+    (tmp_path / ".git").mkdir(parents=True)
+    doc = tmp_path / "docs/spec/case.spec.md"
+    doc.parent.mkdir(parents=True, exist_ok=True)
+    raw = {
+        "id": "CASE-A",
+        "type": "text.file",
+        "path": "/README.md",
+        "harness": {
+            "chain": {
+                "steps": [
+                    {
+                        "id": "lib",
+                        "class": "must",
+                        "ref": "/docs/spec/libraries/domain/http_core.spec.md",
+                        "exports": {
+                            "from": "library.symbol",
+                            "required": True,
+                            "prefix": "domain.http",
+                            "symbols": ["status_is", "status_in"],
+                        },
+                    }
+                ]
+            }
+        },
+        "assert": [],
+    }
+    case = compile_external_case(raw, doc_path=doc)
+    steps, _imports, _fail_fast = compile_chain_plan(case)
+    assert steps[0].exports["domain.http.status_is"].path == "domain.http.status_is"
+    assert steps[0].exports["domain.http.status_in"].path == "domain.http.status_in"
+
+
+def test_compile_chain_plan_rejects_mixed_compact_and_explicit_exports(tmp_path):
+    (tmp_path / ".git").mkdir(parents=True)
+    doc = tmp_path / "docs/spec/case.spec.md"
+    doc.parent.mkdir(parents=True, exist_ok=True)
+    raw = {
+        "id": "CASE-A",
+        "type": "text.file",
+        "path": "/README.md",
+        "harness": {
+            "chain": {
+                "steps": [
+                    {
+                        "id": "lib",
+                        "class": "must",
+                        "ref": "/docs/spec/libraries/domain/http_core.spec.md",
+                        "exports": {
+                            "from": "library.symbol",
+                            "symbols": ["domain.http.status_is"],
+                            "domain.http.status_in": {"from": "library.symbol", "path": "/domain.http.status_in"},
+                        },
+                    }
+                ]
+            }
+        },
+        "assert": [],
+    }
+    case = compile_external_case(raw, doc_path=doc)
+    with pytest.raises(ValueError, match="unsupported keys"):
+        compile_chain_plan(case)
