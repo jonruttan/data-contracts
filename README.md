@@ -1,204 +1,109 @@
 # Spec Runner
 
-`spec_runner` is a small **executable-spec runner**: it scans Markdown
-documents for fenced blocks tagged `yaml spec-test`, parses them, and executes
-them via pluggable harnesses keyed by `type`.
+`spec_runner` is an executable-spec runner for Markdown-authored cases.
+It discovers `yaml spec-test` blocks in `*.spec.md` files, validates case shape
+against contract/schema rules, and executes typed harnesses through a stable
+runner interface.
 
-It is designed to be publishable and reusable across projects; each project
-can provide its own `type` adapters.
+The project is contract-first: schema, policy, governance checks, and generated
+docs are treated as product surfaces.
 
-## Install
+## Project Status and Safety
 
-```sh
-python -m pip install spec-runner
-```
+This project is **pre-alpha** and changes quickly.
 
-For development:
+Trust model:
 
-```sh
-make setup
-```
+- `spec_runner` is **not a sandbox**.
+- Specs are trusted inputs.
+- Running untrusted specs is unsafe and out of scope for v1.
 
-If system Python is externally managed (PEP 668), use the venv flow above.
+Reference contracts:
 
-Contract governance check:
+- `/Users/jon/Workspace/Development/spec_runner/docs/spec/contract/08_v1_scope.md`
+- `/Users/jon/Workspace/Development/spec_runner/docs/spec/contract/04_harness.md`
 
-```sh
-python scripts/run_governance_specs.py
-```
+## Quickstart (Contributors)
 
-Installable CLI entrypoints (packaging surface for conformance flow):
-
-```sh
-spec-runner-conformance --help
-spec-runner-parity --help
-spec-runner-validate-report --help
-```
-
-Lint and static syntax checks:
-
-```sh
-python -m ruff check .
-python scripts/evaluate_style.py --check docs/spec
-python -m mypy spec_runner
-python -m compileall -q spec_runner scripts tests
-```
-
-Conformance reference test:
-
-```sh
-python -m pytest tests/test_conformance_runner_unit.py
-```
-
-CI merge gate (GitHub Actions `spec_runner` job) runs:
-
-- `python scripts/run_governance_specs.py`
-- `python scripts/docs_generate_all.py --check`
-- `python -m ruff check .`
-- `python scripts/evaluate_style.py --check docs/spec`
-- `python -m mypy spec_runner`
-- `python -m compileall -q spec_runner scripts tests`
-- `python -m pytest`
-
-Machine-readable gate summary artifact:
-
-- `.artifacts/gate-summary.json` (versioned per-step status/exit code/duration)
-
-Optional reporting wrapper:
-
-- `python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`
-
-## Quickstart
-
-Deterministic first-run walkthrough:
-
-- `docs/book/00_first_10_minutes.md`
-
-Trust/safety model (read before running specs from outside your repo):
-
-- `spec_runner` is not a sandbox.
-- Spec files are trusted inputs; `cli.run` and hooks execute project code with
-  runner process privileges.
-- Running untrusted spec documents is unsafe and out of scope for v1.
-
-Before editing/running local checks:
+Setup:
 
 ```sh
 make setup
-make core-check
+```
+
+Canonical local verification:
+
+```sh
 make verify-docs
+make core-check
 make check
 ```
 
 Adoption profiles:
 
-- Core profile (lightweight): `make core-check`
-- Full profile (pre-merge): `make check`
-- Override runner implementation for gate scripts:
-  - `SPEC_RUNNER_BIN=/path/to/compatible-runner make core-check`
-  - `SPEC_RUNNER_BIN=/path/to/compatible-runner make check`
-  - Canonical local adapter (rust default): `./scripts/runner_adapter.sh governance`
-  - Explicit Python lane: `./scripts/runner_adapter.sh --impl python governance`
+- **Core profile**: `make core-check`
+- **Full profile**: `make check`
 
-1. Create a spec doc with a fenced `yaml spec-test` block:
+## Canonical Runner Interface
 
-```yaml
-id: EX-CLI-001
-type: cli.run
-argv: ["--help"]
-exit_code: 0
-harness:
-  entrypoint: "myproj.cli:main"
+Single public entrypoint:
+
+```sh
+./scripts/runner_adapter.sh
+```
+
+Default lane (rust):
+
+```sh
+./scripts/runner_adapter.sh governance
+```
+
+Explicit Python lane (opt-in):
+
+```sh
+./scripts/runner_adapter.sh --impl python governance
+# or
+SPEC_RUNNER_IMPL=python ./scripts/runner_adapter.sh governance
+```
+
+Runner interface contract:
+
+- `/Users/jon/Workspace/Development/spec_runner/docs/spec/contract/12_runner_interface.md`
+
+## Minimal `.spec.md` Example
+
+```yaml spec-test
+id: EX-TEXT-001
+type: text.file
+path: /README.md
 assert:
-  - target: stdout
-    must:
-      - contain: ["usage:", "options:"]
-  - target: stderr
-    must:
-      - contain: ["WARN:"]
-  - target: stderr
-    cannot:
-      - contain: ["ERROR:"]
+- target: text
+  must:
+  - evaluate:
+    - contains:
+      - {var: subject}
+      - "Spec Runner"
 ```
 
-2. In your test suite, run the collected cases:
+Notes:
 
-```python
-from pathlib import Path
+- Expression authoring uses mapping-AST form.
+- Runner-only setup belongs under `harness`.
+- Canonical executable format is `*.spec.md`.
 
-from spec_runner.dispatcher import SpecRunContext, iter_cases, run_case
+## Where To Go Next
 
-def test_specs_from_docs(tmp_path, monkeypatch, capsys):
-    cases = iter_cases(Path("docs/spec"))
-    monkeypatch.setenv("SPEC_RUNNER_ENTRYPOINT", "myproj.cli:main")
-    for case in cases:
-        run_case(case, ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys))
-```
+- Development workflows: `/Users/jon/Workspace/Development/spec_runner/docs/development.md`
+- Book index: `/Users/jon/Workspace/Development/spec_runner/docs/book/index.md`
+- Current snapshot: `/Users/jon/Workspace/Development/spec_runner/docs/spec/current.md`
+- Schema: `/Users/jon/Workspace/Development/spec_runner/docs/spec/schema/schema_v1.md`
+- Contract index: `/Users/jon/Workspace/Development/spec_runner/docs/spec/contract/index.md`
+- Implementation appendices: `/Users/jon/Workspace/Development/spec_runner/docs/impl/index.md`
 
-## Layout
+## Repo Layout
 
-- `spec_runner/`: runner implementation (parser, dispatcher, harnesses)
-- `tests/`: unit tests for runner internals
-- `docs/design_philosophy.md`: project design principles and change bar
-- `docs/spec/contract/`: language-neutral contract docs
-- `docs/spec/schema/`: schema docs (syntax/shape)
-- `docs/spec/impl/`: implementation-specific notes (Python/PHP)
-- `docs/spec/conformance/`: cross-language conformance contract docs
-- `docs/spec/conformance/cases/`: cross-language conformance case specs
-- `docs/release_checklist.md`: executable release contract entrypoints
+- `spec_runner/`: core runtime and harness code
+- `scripts/`: runner adapters, gates, and generators
+- `docs/`: book, contract/schema specs, implementation appendices
+- `tests/`: executable and unit-level validation
 
-## Schema (v1)
-
-Each `yaml spec-test` test case is a mapping with:
-
-- `id` (required)
-- `type` (required)
-- `title` (optional)
-- type-specific keys (e.g. `argv`, `exit_code`, `assert` for `cli.run`)
-- `harness` (optional): runner-only setup inputs (fixture files, stubs, stdin)
-
-Runner-only keys MUST live under `harness:` to keep the spec format clean.
-
-Canonical boolean groups are `must`, `can`, and `cannot`.
-Text assertions use `contain` and `regex`.
-Expression assertions use `evaluate` (spec-lang mapping-AST forms).
-Each assertion group uses exactly one of `must` / `can` / `cannot`, and group
-lists must be non-empty.
-
-Write assertions in canonical form:
-- use `must` (AND), `can` (OR), `cannot` (negation)
-- use `contain` / `regex` as leaf operators
-- put all operator values in lists
-
-Assertion groups can carry a shared `target`, which child
-leaves inherit unless overridden.
-Leaf assertions do not carry `target` directly.
-
-Canonical schema doc: `docs/spec/schema/schema_v1.md`.
-Portable contract docs: `docs/spec/contract/`.
-Machine-readable policy:
-`docs/spec/contract/policy_v1.yaml`.
-Traceability mapping:
-`docs/spec/contract/traceability_v1.yaml`.
-V1 scope/non-goals/compatibility commitments:
-`docs/spec/contract/08_v1_scope.md`.
-Rust-primary transition contract:
-`docs/spec/contract/16_rust_primary_transition.md`.
-
-Discovery note: `iter_cases(Path(...))` scans files matching the configured
-default case-file pattern in that directory (non-recursive). You can pass a
-custom pattern with `iter_cases(Path(...), file_pattern="*.md")`.
-
-## Reuse / Publishing Notes
-
-The runner core is generic, but individual `type` harnesses may be specific to
-the system under test. Keep `spec_runner` focused on stable parsing,
-dispatching, and assertions; treat adapters as project-owned code.
-Docs generation entrypoints:
-
-- `./scripts/runner_adapter.sh docs-generate`
-- `./scripts/runner_adapter.sh docs-generate-check`
-
-Clean-checkout CI parity entrypoint:
-
-- `./scripts/runner_adapter.sh ci-cleanroom`
