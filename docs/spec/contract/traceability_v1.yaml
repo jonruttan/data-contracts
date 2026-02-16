@@ -1959,7 +1959,7 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/library_domain_ownership.spec.md
-  notes: Governance enforces domain ownership boundaries for harness.spec_lang.library_paths.
+  notes: Governance enforces domain ownership boundaries for harness.spec_lang.includes.
 - rule_id: LIBRARY_DOMAIN_INDEX_SYNC
   policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_INDEX_SYNC
   contract_refs:

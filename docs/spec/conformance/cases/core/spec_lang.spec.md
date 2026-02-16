@@ -16,7 +16,7 @@ expect:
     category: null
 harness:
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/conformance/assertion_core.spec.md
     exports:
     - conf.pass_when_text_contains
@@ -46,7 +46,7 @@ expect:
     category: null
 harness:
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/conformance/assertion_core.spec.md
     exports:
     - conf.pass_when_text_contains
@@ -244,7 +244,7 @@ expect:
     category: null
 harness:
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/conformance/assertion_core.spec.md
     exports:
     - conf.pass_when_text_contains

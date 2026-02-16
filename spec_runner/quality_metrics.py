@@ -349,7 +349,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             if isinstance(harness, dict):
                 spec_lang_cfg = harness.get("spec_lang")
                 if isinstance(spec_lang_cfg, dict):
-                    lib_paths = spec_lang_cfg.get("library_paths")
+                    lib_paths = spec_lang_cfg.get("includes")
                     has_library_paths = isinstance(lib_paths, list) and any(
                         isinstance(x, str) and x.strip() for x in lib_paths
                     )

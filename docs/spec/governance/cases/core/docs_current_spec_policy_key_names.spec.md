@@ -12,7 +12,7 @@ check: docs.current_spec_policy_key_names
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations

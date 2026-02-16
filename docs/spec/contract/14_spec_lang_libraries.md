@@ -9,12 +9,12 @@ without host-language hooks.
 
 Cases MAY configure library loading via `harness.spec_lang`:
 
-- `library_paths` (list[string]): ordered paths to library spec docs/files
+- `includes` (list[string]): ordered paths to library spec docs/files
 - `exports` (list[string], optional): explicit symbol allowlist visible to case
 
 Governance policy reuse:
 
-- `type: governance.check` cases MUST provide `harness.spec_lang.library_paths`
+- `type: governance.check` cases MUST provide `harness.spec_lang.includes`
   and MUST call exported library symbols from `policy_evaluate`.
 
 Library paths:

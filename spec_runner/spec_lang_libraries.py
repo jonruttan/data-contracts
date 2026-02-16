@@ -35,7 +35,7 @@ def _resolve_library_path(
     else:
         root = contract_root_for(base_doc)
         try:
-            p = resolve_contract_path(root, raw, field="harness.spec_lang.library_paths")
+            p = resolve_contract_path(root, raw, field="harness.spec_lang.includes")
         except VirtualPathError as exc:
             raise ValueError(str(exc)) from exc
     if not p.exists() or not p.is_file():
@@ -169,7 +169,7 @@ def load_spec_lang_symbols_for_case(
     limits: SpecLangLimits,
 ) -> dict[str, Any]:
     cfg = dict((harness or {}).get("spec_lang") or {})
-    lib_paths = _as_non_empty_str_list(cfg.get("library_paths"), field="harness.spec_lang.library_paths")
+    lib_paths = _as_non_empty_str_list(cfg.get("includes"), field="harness.spec_lang.includes")
     if not lib_paths:
         return {}
     requires = dict((harness or {}).get("requires") or {})

@@ -266,7 +266,7 @@ Library configuration (optional):
 ```yaml
 harness:
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/common.spec.md
     exports:
     - is_portable_case
@@ -275,7 +275,7 @@ harness:
 Library contract details:
 
 - `docs/spec/contract/14_spec_lang_libraries.md`
-- `library_paths` supports `.spec.md`, `.spec.yaml`, and `.spec.yml` includes
+- `includes` supports `.spec.md`, `.spec.yaml`, and `.spec.yml` includes
   while executable case discovery remains Markdown-default unless explicitly
   opted in by runner interface flags
 - `functions.<symbol>` in `type: spec_lang.library` cases uses mapping-AST

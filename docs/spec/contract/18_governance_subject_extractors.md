@@ -32,7 +32,7 @@ Governance check implementations SHOULD return a structured payload with:
 
 - Final verdict MUST be the result of `policy_evaluate`.
 - Governance checks MUST wire shared policy libraries via
-  `harness.spec_lang.library_paths`.
+  `harness.spec_lang.includes`.
 - Governance `policy_evaluate` MUST call exported library symbols.
 - Path-bearing governance harness fields use virtual-root canonical `/...`
   semantics (`/` = contract root).

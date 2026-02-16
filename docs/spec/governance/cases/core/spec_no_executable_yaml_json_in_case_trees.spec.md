@@ -12,7 +12,7 @@ check: spec.no_executable_yaml_json_in_case_trees
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations

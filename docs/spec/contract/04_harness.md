@@ -59,7 +59,7 @@ Subject profile envelope contract:
 
 ## Spec-Lang Reuse
 
-- `harness.spec_lang.library_paths` MAY provide ordered library docs/files
+- `harness.spec_lang.includes` MAY provide ordered library docs/files
   containing `type: spec_lang.library` reusable function definitions.
 - `harness.spec_lang.exports` MAY constrain visible imported symbols to an
   explicit allowlist.

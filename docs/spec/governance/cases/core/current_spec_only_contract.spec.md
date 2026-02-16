@@ -12,7 +12,7 @@ check: docs.current_spec_only_contract
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations

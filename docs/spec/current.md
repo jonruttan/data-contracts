@@ -43,7 +43,7 @@ Notes:
   objective-aligned health view with tripwire hits and course-correction
   recommendations.
 - Spec-lang now supports reusable library symbols via
-  `harness.spec_lang.library_paths` and optional `exports` allowlists.
+  `harness.spec_lang.includes` and optional `exports` allowlists.
 - Spec-lang mapping-AST authoring now uses explicit subject reference node
   `{var: subject}`.
 - Library function authoring is mapping-AST only (`type: spec_lang.library`

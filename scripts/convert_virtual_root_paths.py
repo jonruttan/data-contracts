@@ -29,7 +29,7 @@ _EXACT_PATH_KEYS = {
     "reference_manifest",
     "notes_path",
 }
-_LIST_PATH_KEYS = {"library_paths", "required_paths", "baseline_paths", "roots", "imports"}
+_LIST_PATH_KEYS = {"required_paths", "baseline_paths", "roots", "imports"}
 _SKIP_ANCESTORS = {"setup_files", "request"}
 
 
@@ -105,7 +105,11 @@ def _walk(node: Any, *, source_file: Path, key_path: list[str] | None = None) ->
                     out[key] = nv
                     changed = changed or ch
                     continue
-            if key in _LIST_PATH_KEYS and isinstance(v, list):
+            is_spec_lang_includes = key == "includes" and (
+                key_path == ["harness", "spec_lang"]
+                or key_path[-2:] == ["harness", "spec_lang"]
+            )
+            if (key in _LIST_PATH_KEYS or is_spec_lang_includes) and isinstance(v, list):
                 items: list[Any] = []
                 local_changed = False
                 for idx, item in enumerate(v):

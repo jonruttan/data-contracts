@@ -1592,7 +1592,7 @@ rules:
 - id: SPEC_LANG_LIBRARY_INCLUDE_FORMAT_SCOPE
   introduced_in: v1
   scope: schema
-  applies_to: harness.spec_lang.library_paths
+  applies_to: harness.spec_lang.includes
   norm: MUST
   requirement: library_includes_support_md_yaml_while_default_discovery_stays_md
   description: 'Spec-lang library includes must support `.spec.md`, `.spec.yaml`, and `.spec.yml`; executable case discovery remains Markdown-default unless explicitly opted in.
@@ -2047,7 +2047,7 @@ rules:
   applies_to: conformance.domain_assertions.library_usage
   norm: MUST
   requirement: domain_assertion_cases_use_shared_domain_libraries
-  description: 'Domain-focused conformance assertions must use shared spec-lang domain library helpers via harness.spec_lang.library_paths.
+  description: 'Domain-focused conformance assertions must use shared spec-lang domain library helpers via harness.spec_lang.includes.
 
     '
   rationale: Reduces duplicated inline logic and keeps domain behavior reusable.

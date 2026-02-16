@@ -47,7 +47,7 @@ def report(cases_dir: Path) -> dict[str, Any]:
         if isinstance(harness, dict):
             spec_lang = harness.get("spec_lang")
             if isinstance(spec_lang, dict):
-                lib_paths = spec_lang.get("library_paths")
+                lib_paths = spec_lang.get("includes")
                 has_library_paths = isinstance(lib_paths, list) and any(
                     isinstance(x, str) and x.strip() for x in lib_paths
                 )

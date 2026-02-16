@@ -18,7 +18,7 @@ harness:
     - SRCONF-LIB-CONTRACT-002
     - SRCONF-LIB-CONTRACT-003
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations

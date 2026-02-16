@@ -3,7 +3,7 @@ title: Spec Runner Normalization Profile
 paths:
   virtual_root_scoped_fields:
   - path
-  - library_paths
+  - includes
   - cases_path
   - baseline_path
   - manifest_path

@@ -11,7 +11,7 @@ check: schema.type_profiles_complete
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations

@@ -9,7 +9,7 @@ purpose: References impl assertion library exports for governance usage tracking
 type: text.file
 harness:
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/impl/assertion_core.spec.md
     exports:
     - impl.assert.contains

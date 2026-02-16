@@ -12,7 +12,7 @@ check: runtime.no_public_direct_rust_adapter_docs
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations

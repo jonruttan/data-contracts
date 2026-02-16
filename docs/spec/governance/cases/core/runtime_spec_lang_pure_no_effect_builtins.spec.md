@@ -12,7 +12,7 @@ check: runtime.spec_lang_pure_no_effect_builtins
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations

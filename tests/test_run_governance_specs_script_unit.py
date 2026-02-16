@@ -642,7 +642,7 @@ check: pending.no_resolved_markers
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
       - ../../docs/spec/libraries/policy/policy_core.spec.md
     exports:
       - policy.pass_when_no_violations
@@ -747,7 +747,7 @@ check: conformance.case_index_sync
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
       - /cases/libs/policy_core.spec.md
     exports:
       - policy.pass_when_no_violations
@@ -783,7 +783,7 @@ check: conformance.case_index_sync
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
       - /cases/libs/policy_core.spec.md
     exports:
       - policy.pass_when_no_violations
@@ -1621,7 +1621,7 @@ id: SRCONF-EXPR-002
 type: text.file
 harness:
   spec_lang:
-    library_paths:
+    includes:
       - ../../libraries/conformance/assertion_core.spec.md
     exports:
       - conf.pass_when_text_contains
@@ -1650,7 +1650,7 @@ id: SRCONF-EXPR-001
 type: text.file
 harness:
   spec_lang:
-    library_paths:
+    includes:
       - ../../libraries/conformance/assertion_core.spec.md
     exports:
       - conf.pass_when_text_contains
@@ -1671,7 +1671,7 @@ id: SRCONF-EXPR-002
 type: text.file
 harness:
   spec_lang:
-    library_paths:
+    includes:
       - ../../libraries/conformance/assertion_core.spec.md
     exports:
       - conf.pass_when_text_contains
@@ -4217,7 +4217,7 @@ check: governance.policy_library_usage_non_regression
 harness:
   root: {tmp_path}
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
@@ -4260,7 +4260,7 @@ check: docs.reference_surface_complete
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
@@ -5038,7 +5038,7 @@ id: IMP-3
 type: text.file
 harness:
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/impl/assertion_core.spec.md
 assert:
 - target: text

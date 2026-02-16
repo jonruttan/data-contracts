@@ -30,10 +30,11 @@ def is_external_ref_allowed(
     if ext is None:
         return True, None
 
-    cfg = dict((harness or {}).get("external_refs") or {})
+    spec_lang_cfg = dict((harness or {}).get("spec_lang") or {})
+    cfg = dict(spec_lang_cfg.get("references") or {})
     mode = str(cfg.get("mode", "deny")).strip().lower() or "deny"
     if mode != "allow":
-        return False, f"external ref denied by policy (harness.external_refs.mode={mode!r})"
+        return False, f"external ref denied by policy (harness.spec_lang.references.mode={mode!r})"
 
     caps = _as_non_empty_strings(dict(requires or {}).get("capabilities"))
     if "external.ref.v1" not in caps:
@@ -65,5 +66,6 @@ def resolve_external_ref(
     if resolver is None:
         raise VirtualPathError(f"no resolver registered for external provider: {ext.provider}")
 
-    rules = dict((dict((harness or {}).get("external_refs") or {}).get("rules") or {}))
+    spec_lang_cfg = dict((harness or {}).get("spec_lang") or {})
+    rules = dict((dict(spec_lang_cfg.get("references") or {}).get("rules") or {}))
     return resolver(ext, rules)

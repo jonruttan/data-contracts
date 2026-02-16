@@ -12,7 +12,7 @@ check: conformance.spec_lang_fixture_library_usage
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations

@@ -135,7 +135,6 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
 _NORMALIZATION_PROFILE_PATH = "docs/spec/schema/normalization_profile_v1.yaml"
 _PATH_LIKE_KEYS = {
     "path",
-    "library_paths",
     "cases_path",
     "baseline_path",
     "manifest_path",
@@ -204,7 +203,10 @@ def _iter_path_fields(node: object, *, key_path: str = ""):
             if key in {"request", "setup_files"}:
                 yield from _iter_path_fields(v, key_path=current)
                 continue
-            if key in _PATH_LIKE_KEYS:
+            is_spec_lang_includes = key == "includes" and (
+                key_path == "harness.spec_lang" or key_path.endswith(".harness.spec_lang")
+            )
+            if key in _PATH_LIKE_KEYS or is_spec_lang_includes:
                 if isinstance(v, str):
                     yield current, v
                 elif isinstance(v, list):
@@ -1759,12 +1761,12 @@ def _scan_assert_domain_library_usage_required(root: Path, *, harness: dict | No
                     f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing harness.spec_lang mapping"
                 )
                 continue
-            lib_paths = spec_lang_cfg.get("library_paths")
+            lib_paths = spec_lang_cfg.get("includes")
             if not isinstance(lib_paths, list) or not any(
                 isinstance(x, str) and "/docs/spec/libraries/domain/" in str(x) for x in lib_paths
             ):
                 violations.append(
-                    f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing domain library path in harness.spec_lang.library_paths"
+                    f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing domain library path in harness.spec_lang.includes"
                 )
     if not found:
         violations.append(f"{target_file.relative_to(root)}:1: expected SRCONF-DOMAIN-LIB-* cases")
@@ -2021,13 +2023,13 @@ def _scan_governance_policy_library_usage_required(root: Path, *, harness: dict 
         spec_lang_cfg = harness_map.get("spec_lang")
         has_library_paths = False
         if isinstance(spec_lang_cfg, dict):
-            lib_paths = spec_lang_cfg.get("library_paths")
+            lib_paths = spec_lang_cfg.get("includes")
             has_library_paths = isinstance(lib_paths, list) and any(
                 isinstance(x, str) and x.strip() for x in lib_paths
             )
         if not has_library_paths:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.spec_lang.library_paths"
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.spec_lang.includes"
             )
             continue
         policy = harness_map.get("policy_evaluate")
@@ -2096,13 +2098,13 @@ def _scan_conformance_library_policy_usage_required(root: Path, *, harness: dict
         spec_lang_cfg = harness_map.get("spec_lang")
         has_library_paths = False
         if isinstance(spec_lang_cfg, dict):
-            lib_paths = spec_lang_cfg.get("library_paths")
+            lib_paths = spec_lang_cfg.get("includes")
             has_library_paths = isinstance(lib_paths, list) and any(
                 isinstance(x, str) and x.strip() for x in lib_paths
             )
         if not has_library_paths:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.spec_lang.library_paths"
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.spec_lang.includes"
             )
             continue
         policy = harness_map.get("policy_evaluate")
@@ -3128,7 +3130,7 @@ def _scan_conformance_spec_lang_fixture_library_usage(root: Path, *, harness: di
         if isinstance(harness_map, dict):
             spec_lang_cfg = harness_map.get("spec_lang")
             if isinstance(spec_lang_cfg, dict):
-                lib_paths = spec_lang_cfg.get("library_paths")
+                lib_paths = spec_lang_cfg.get("includes")
                 lib_ok = isinstance(lib_paths, list) and any(
                     isinstance(x, str) and str(x).strip() == required_library_path for x in lib_paths
                 )
@@ -3137,7 +3139,7 @@ def _scan_conformance_spec_lang_fixture_library_usage(root: Path, *, harness: di
         if case_id in required_case_ids:
             seen_required.add(case_id)
             if not lib_ok:
-                violations.append(f"{rel}: case {case_id} missing harness.spec_lang.library_paths entry {required_library_path}")
+                violations.append(f"{rel}: case {case_id} missing harness.spec_lang.includes entry {required_library_path}")
             if calls < 1:
                 violations.append(f"{rel}: case {case_id} missing helper call with prefix {required_call_prefix!r}")
 
@@ -4209,7 +4211,7 @@ def _scan_reference_contract_paths_exist(root: Path, *, harness: dict | None = N
     ]
     must_exist_keys = {
         "path",
-        "library_paths",
+        "includes",
         "cases_path",
         "baseline_path",
         "manifest_path",
@@ -4270,7 +4272,7 @@ def _scan_reference_symbols_exist(root: Path, *, harness: dict | None = None) ->
         spec_lang_cfg = harness_map.get("spec_lang")
         if not isinstance(spec_lang_cfg, dict):
             continue
-        if not spec_lang_cfg.get("library_paths"):
+        if not spec_lang_cfg.get("includes"):
             continue
         try:
             load_spec_lang_symbols_for_case(
@@ -4573,7 +4575,8 @@ def _scan_reference_external_refs_policy(root: Path, *, harness: dict | None = N
             requires = dict(case.get("requires") or {})
             caps = set(str(x).strip() for x in (requires.get("capabilities") or []) if str(x).strip())
             h = dict(case.get("harness") or {})
-            ext_cfg = dict(h.get("external_refs") or {})
+            spec_lang_cfg = dict(h.get("spec_lang") or {})
+            ext_cfg = dict(spec_lang_cfg.get("references") or {})
             mode = str(ext_cfg.get("mode", "deny")).strip().lower() or "deny"
             providers = set(
                 str(x).strip() for x in (ext_cfg.get("providers") or []) if str(x).strip()
@@ -4588,7 +4591,7 @@ def _scan_reference_external_refs_policy(root: Path, *, harness: dict | None = N
                     )
                 if mode != "allow":
                     violations.append(
-                        f"{rel}: case {case_id} external ref at {field} requires harness.external_refs.mode=allow"
+                        f"{rel}: case {case_id} external ref at {field} requires harness.spec_lang.references.mode=allow"
                     )
                 if ext.provider not in providers:
                     violations.append(
@@ -4716,7 +4719,7 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
             spec_lang = h.get("spec_lang")
             if not isinstance(spec_lang, dict):
                 continue
-            libs = spec_lang.get("library_paths")
+            libs = spec_lang.get("includes")
             if not isinstance(libs, list):
                 continue
             for idx, raw in enumerate(libs):
@@ -4725,7 +4728,7 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
                     continue
                 try:
                     normalized = normalize_contract_path(
-                        s, field=f"{case_id}.harness.spec_lang.library_paths[{idx}]"
+                        s, field=f"{case_id}.harness.spec_lang.includes[{idx}]"
                     )
                 except VirtualPathError:
                     continue
@@ -4735,7 +4738,7 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
                 ):
                     rel = doc_path.relative_to(root)
                     violations.append(
-                        f"{rel}: case {case_id} library_paths[{idx}] must be under "
+                        f"{rel}: case {case_id} includes[{idx}] must be under "
                         "/docs/spec/libraries/conformance/ or /docs/spec/libraries/domain/"
                     )
 
@@ -4750,7 +4753,7 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
             spec_lang = h.get("spec_lang")
             if not isinstance(spec_lang, dict):
                 continue
-            libs = spec_lang.get("library_paths")
+            libs = spec_lang.get("includes")
             if not isinstance(libs, list):
                 continue
             for idx, raw in enumerate(libs):
@@ -4759,7 +4762,7 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
                     continue
                 try:
                     normalized = normalize_contract_path(
-                        s, field=f"{case_id}.harness.spec_lang.library_paths[{idx}]"
+                        s, field=f"{case_id}.harness.spec_lang.includes[{idx}]"
                     )
                 except VirtualPathError:
                     continue
@@ -4770,7 +4773,7 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
                 if not allowed:
                     rel = doc_path.relative_to(root)
                     violations.append(
-                        f"{rel}: case {case_id} library_paths[{idx}] must be under "
+                        f"{rel}: case {case_id} includes[{idx}] must be under "
                         "/docs/spec/libraries/policy/ or /docs/spec/libraries/path/"
                     )
     return violations
@@ -5296,7 +5299,7 @@ def run_governance_check(case, *, ctx) -> None:
         )
 
     # Governance policies can import reusable spec-lang function libraries
-    # via harness.spec_lang.library_paths/exports.
+    # via harness.spec_lang.includes/exports.
     lib_symbols = load_spec_lang_symbols_for_case(
         doc_path=case.doc_path,
         harness=h,

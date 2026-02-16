@@ -13,7 +13,7 @@ def _is_library_backed(harness: dict[str, Any]) -> bool:
     spec_lang = harness.get("spec_lang")
     if not isinstance(spec_lang, dict):
         return False
-    paths = spec_lang.get("library_paths")
+    paths = spec_lang.get("includes")
     return isinstance(paths, list) and any(isinstance(x, str) and x.strip() for x in paths)
 
 

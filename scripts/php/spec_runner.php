@@ -2307,12 +2307,12 @@ function asNonEmptyStringList(mixed $value, string $field): array {
 function resolveLibraryPath(string $baseDocPath, string $relPath): string {
     $raw = trim($relPath);
     if ($raw === '') {
-        throw new SchemaError('harness.spec_lang.library_paths item must be non-empty');
+        throw new SchemaError('harness.spec_lang.includes item must be non-empty');
     }
     if (str_starts_with($raw, 'external://')) {
-        throw new SchemaError('harness.spec_lang.library_paths external refs are denied by default');
+        throw new SchemaError('harness.spec_lang.includes external refs are denied by default');
     }
-    $resolved = resolveContractPath($baseDocPath, $raw, 'harness.spec_lang.library_paths');
+    $resolved = resolveContractPath($baseDocPath, $raw, 'harness.spec_lang.includes');
     if (!is_file($resolved)) {
         throw new SchemaError("library path does not exist: {$relPath}");
     }
@@ -2453,7 +2453,7 @@ function loadSpecLangSymbolsForCase(string $fixturePath, array $case, array $lim
     if (!is_array($cfg) || isListArray($cfg)) {
         throw new SchemaError('harness.spec_lang must be a mapping');
     }
-    $libPaths = asNonEmptyStringList($cfg['library_paths'] ?? null, 'harness.spec_lang.library_paths');
+    $libPaths = asNonEmptyStringList($cfg['includes'] ?? null, 'harness.spec_lang.includes');
     if (count($libPaths) === 0) {
         return [];
     }

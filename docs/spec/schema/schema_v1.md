@@ -168,14 +168,14 @@ For `type: cli.run`, supported `harness` keys include:
 - `max_nodes` (int, >=1)
 - `max_literal_bytes` (int, >=1)
 - `timeout_ms` (int, >=0, `0` disables timeout)
-- `library_paths` (list[string], optional): ordered spec-lang library files
+- `includes` (list[string], optional): ordered spec-lang library files
 - `exports` (list[string], optional): symbol allowlist exposed to this case
-- `external_refs` (mapping, optional): external reference policy
+- `references` (mapping, optional): external reference policy
   - `mode` (string): `deny` (default) or `allow`
   - `providers` (list[string]): allowlisted provider names
   - `rules` (mapping, optional): provider-specific rule payloads for adapters
 
-`harness.spec_lang.library_paths` format scope:
+`harness.spec_lang.includes` format scope:
 
 - library include paths MAY target `.spec.md`, `.spec.yaml`, or `.spec.yml`
   files

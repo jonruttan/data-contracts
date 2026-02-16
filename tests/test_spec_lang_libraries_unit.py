@@ -47,7 +47,7 @@ definitions:
 
     symbols = load_spec_lang_symbols_for_case(
         doc_path=case_doc,
-        harness={"spec_lang": {"library_paths": ["/libs/common.spec.md"]}},
+        harness={"spec_lang": {"includes": ["/libs/common.spec.md"]}},
         limits=SpecLangLimits(timeout_ms=0),
     )
     expr = [
@@ -95,7 +95,7 @@ definitions:
     with pytest.raises(ValueError, match="cycle"):
         load_spec_lang_symbols_for_case(
             doc_path=case_doc,
-            harness={"spec_lang": {"library_paths": ["/libs/a.spec.md"]}},
+            harness={"spec_lang": {"includes": ["/libs/a.spec.md"]}},
             limits=SpecLangLimits(timeout_ms=0),
         )
 
@@ -135,7 +135,7 @@ definitions:
     with pytest.raises(ValueError, match="duplicate exported library symbol"):
         load_spec_lang_symbols_for_case(
             doc_path=case_doc,
-            harness={"spec_lang": {"library_paths": ["/libs/a.spec.md", "/libs/b.spec.md"]}},
+            harness={"spec_lang": {"includes": ["/libs/a.spec.md", "/libs/b.spec.md"]}},
             limits=SpecLangLimits(timeout_ms=0),
         )
 
@@ -165,7 +165,7 @@ definitions:
 
     symbols = load_spec_lang_symbols_for_case(
         doc_path=case_doc,
-        harness={"spec_lang": {"library_paths": ["/libs/a.spec.md"], "exports": ["keep"]}},
+        harness={"spec_lang": {"includes": ["/libs/a.spec.md"], "exports": ["keep"]}},
         limits=SpecLangLimits(timeout_ms=0),
     )
     assert "keep" in symbols
@@ -189,6 +189,6 @@ definitions:
     with pytest.raises(ValueError, match="list expressions are not allowed"):
         load_spec_lang_symbols_for_case(
             doc_path=case_doc,
-            harness={"spec_lang": {"library_paths": ["/libs/bad.spec.md"]}},
+            harness={"spec_lang": {"includes": ["/libs/bad.spec.md"]}},
             limits=SpecLangLimits(timeout_ms=0),
         )

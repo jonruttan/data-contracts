@@ -12,7 +12,7 @@ purpose: Ensures core harness adapters expose context_json subject profile targe
 harness:
   root: .
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations

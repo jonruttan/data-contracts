@@ -10,7 +10,7 @@ type: text.file
 path: /docs/spec/libraries/domain/http_core.spec.md
 harness:
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/domain/http_core.spec.md
     exports:
     - http.status_in
@@ -48,7 +48,7 @@ type: text.file
 path: /docs/spec/libraries/domain/index.md
 harness:
   spec_lang:
-    library_paths:
+    includes:
     - /docs/spec/libraries/domain/make_core.spec.md
     - /docs/spec/libraries/domain/markdown_core.spec.md
     - /docs/spec/libraries/domain/python_core.spec.md
