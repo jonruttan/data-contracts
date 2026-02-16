@@ -114,6 +114,9 @@ make verify-docs
 make docs-generate
 make docs-check
 make ci-smoke
+
+# Clean-checkout parity (recommended before push)
+make ci-cleanroom
 ```
 
 ## CI Triage (Docs Quality)
@@ -124,6 +127,9 @@ When CI fails with `SRGOV-DOCS-QUAL-*`:
 
 ```sh
 make ci-smoke
+
+# Run full gate exactly from a fresh worktree clone state
+make ci-cleanroom
 ```
 
 2. Regenerate docs artifacts:

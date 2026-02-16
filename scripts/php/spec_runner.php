@@ -379,7 +379,7 @@ function contractRootFor(string $docPath): string {
     $docAbs = normalizePath((string)realpath($docPath));
     $cur = dirname($docAbs);
     while (true) {
-        if (is_dir($cur . '/.git')) {
+        if (is_dir($cur . '/.git') || is_file($cur . '/.git')) {
             return $cur;
         }
         $parent = dirname($cur);

@@ -105,6 +105,9 @@ case "${subcommand}" in
   ci-gate-summary)
     exec "${PYTHON_BIN}" scripts/ci_gate_summary.py "$@"
     ;;
+  ci-cleanroom)
+    exec "${ROOT_DIR}/scripts/ci_cleanroom.sh" "$@"
+    ;;
   docs-generate)
     exec "${PYTHON_BIN}" scripts/docs_generate_all.py --build "$@"
     ;;

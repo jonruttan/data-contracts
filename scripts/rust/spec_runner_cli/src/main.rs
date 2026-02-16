@@ -398,6 +398,11 @@ fn main() {
             &root,
         ),
         "ci-gate-summary" => run_cmd(&py, &with_forwarded(vec![script(&root, "ci_gate_summary.py")], &forwarded), &root),
+        "ci-cleanroom" => run_cmd(
+            &script(&root, "ci_cleanroom.sh"),
+            &with_forwarded(vec![], &forwarded),
+            &root,
+        ),
         "docs-generate" => run_cmd(
             &py,
             &with_forwarded(vec![script(&root, "docs_generate_all.py"), "--build".to_string()], &forwarded),

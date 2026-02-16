@@ -6,14 +6,15 @@ Machine-generated runner command catalog.
 
 ## Generated Runner API Catalog
 
-- command_count: 39
-- python_command_count: 39
-- rust_command_count: 39
-- parity_command_count: 39
+- command_count: 40
+- python_command_count: 40
+- rust_command_count: 40
+- parity_command_count: 40
 - all_commands_parity: true
 
 | command | python | rust | parity |
 |---|---|---|---|
+| `ci-cleanroom` | true | true | true |
 | `ci-gate-summary` | true | true | true |
 | `compilecheck` | true | true | true |
 | `conformance-parity` | true | true | true |

@@ -302,6 +302,58 @@ assert:
 
 @pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
 @pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
+def test_php_bootstrap_runner_resolves_virtual_root_with_worktree_git_file(tmp_path):
+    repo_root = Path(__file__).resolve().parents[1]
+    php_runner = repo_root / "scripts/php/conformance_runner.php"
+
+    worktree_root = tmp_path / "worktree_repo"
+    case_dir = worktree_root / "docs/spec/conformance/cases/core"
+    case_dir.mkdir(parents=True)
+    # Simulate git worktree layout where .git is a file, not a directory.
+    (worktree_root / ".git").write_text("gitdir: /tmp/fake-gitdir\n", encoding="utf-8")
+
+    case_file = case_dir / case_file_name("worktree_virtual_root")
+    case_file.write_text(
+        """# Worktree Root Test
+
+```yaml spec-test
+id: SRCONF-WORKTREE-ROOT-001
+type: text.file
+path: /docs/spec/conformance/cases/core/worktree_virtual_root.spec.md
+assert:
+  - target: text
+    must:
+      - contain: ["SRCONF-WORKTREE-ROOT-001"]
+```
+""",
+        encoding="utf-8",
+    )
+
+    out_json = tmp_path / "php-worktree-report.json"
+    subprocess.run(
+        [
+            "php",
+            str(php_runner),
+            "--cases",
+            str(case_file),
+            "--out",
+            str(out_json),
+        ],
+        check=True,
+        cwd=worktree_root,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    errs = validate_conformance_report_payload(payload)
+    assert errs == []
+    assert payload["results"] == [
+        {"id": "SRCONF-WORKTREE-ROOT-001", "status": "pass", "category": None, "message": None}
+    ]
+
+
+@pytest.mark.skipif(shutil.which("php") is None, reason="php is not installed")
+@pytest.mark.skipif(not _php_has_yaml_extension(), reason="php yaml_parse extension is not installed")
 def test_php_bootstrap_runner_can_load_yaml_and_json_cases_with_opt_in_formats(tmp_path):
     repo_root = Path(__file__).resolve().parents[1]
     php_runner = repo_root / "scripts/php/conformance_runner.php"

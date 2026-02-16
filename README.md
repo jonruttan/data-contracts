@@ -198,3 +198,7 @@ Docs generation entrypoints:
 
 - `./scripts/runner_adapter.sh docs-generate`
 - `./scripts/runner_adapter.sh docs-generate-check`
+
+Clean-checkout CI parity entrypoint:
+
+- `./scripts/runner_adapter.sh ci-cleanroom`
