@@ -1,0 +1,7 @@
+version: 1
+id: schema.registry.v1.type.docs_generate
+type: type
+case_type: docs.generate
+required_top_level: []
+allowed_top_level_extra: []
+fields: {}

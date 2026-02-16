@@ -87,6 +87,9 @@ Notes:
 - Documentation generation is registry-first via
   `docs/spec/schema/docs_generator_registry_v1.yaml` and canonical orchestrator
   command `scripts/docs_generate_all.py` (`--build` / `--check`).
+- Docs generation is now spec-driven through executable
+  `type: docs.generate` cases (`docs/spec/impl/docs_generate/cases/*.spec.md`)
+  and moustache-core templates under `docs/book/templates/`.
 - Generated API catalogs now include runner interface commands, harness type
   profiles, and spec-lang builtin surface/parity with machine artifacts in
   `.artifacts/*-catalog.json` and generated book pages under `docs/book/`.

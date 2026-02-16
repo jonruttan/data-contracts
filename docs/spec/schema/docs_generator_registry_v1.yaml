@@ -17,6 +17,12 @@ surfaces:
   determinism_hash_fields:
   - outputs
   read_only_sections: []
+  template_path: /docs/book/templates/passthrough_text.md
+  output_mode: full_file
+  data_sources:
+  - id: content
+    source_type: generated_artifact
+    path: /docs/book/reference_index.md
 - surface_id: schema_docs
   source_type: registry_yaml
   inputs:
@@ -31,6 +37,12 @@ surfaces:
   determinism_hash_fields:
   - outputs
   read_only_sections: []
+  template_path: /docs/book/templates/passthrough_text.md
+  output_mode: full_file
+  data_sources:
+  - id: content
+    source_type: generated_artifact
+    path: /docs/spec/schema/schema_v1.md
 - surface_id: docs_graph
   source_type: manifest_yaml
   inputs:
@@ -45,6 +57,12 @@ surfaces:
   determinism_hash_fields:
   - outputs
   read_only_sections: []
+  template_path: /docs/book/templates/passthrough_text.md
+  output_mode: full_file
+  data_sources:
+  - id: content
+    source_type: generated_artifact
+    path: /docs/book/docs_graph.json
 - surface_id: runner_api_catalog
   source_type: code_scan
   inputs:
@@ -64,6 +82,13 @@ surfaces:
   - commands
   read_only_sections:
   - /docs/book/91_appendix_runner_api_reference.md
+  template_path: /docs/book/templates/runner_api_catalog_template.md
+  output_mode: markers
+  marker_surface_id: runner_api_catalog
+  data_sources:
+  - id: runner
+    source_type: generated_artifact
+    path: /.artifacts/runner-api-catalog.json
 - surface_id: harness_type_catalog
   source_type: registry_yaml
   inputs:
@@ -82,6 +107,13 @@ surfaces:
   - type_profiles
   read_only_sections:
   - /docs/book/92_appendix_harness_type_reference.md
+  template_path: /docs/book/templates/harness_type_catalog_template.md
+  output_mode: markers
+  marker_surface_id: harness_type_catalog
+  data_sources:
+  - id: harness
+    source_type: generated_artifact
+    path: /.artifacts/harness-type-catalog.json
 - surface_id: spec_lang_builtin_catalog
   source_type: code_scan
   inputs:
@@ -100,6 +132,13 @@ surfaces:
   - builtins
   read_only_sections:
   - /docs/book/93_appendix_spec_lang_builtin_catalog.md
+  template_path: /docs/book/templates/spec_lang_builtin_catalog_template.md
+  output_mode: markers
+  marker_surface_id: spec_lang_builtin_catalog
+  data_sources:
+  - id: stdlib
+    source_type: generated_artifact
+    path: /.artifacts/spec-lang-builtin-catalog.json
 - surface_id: policy_rule_catalog
   source_type: registry_yaml
   inputs:
@@ -117,6 +156,13 @@ surfaces:
   - rules
   read_only_sections:
   - /docs/book/94_appendix_contract_policy_reference.md
+  template_path: /docs/book/templates/policy_rule_catalog_template.md
+  output_mode: markers
+  marker_surface_id: policy_rule_catalog
+  data_sources:
+  - id: policy
+    source_type: generated_artifact
+    path: /.artifacts/policy-rule-catalog.json
 - surface_id: traceability_catalog
   source_type: registry_yaml
   inputs:
@@ -134,6 +180,13 @@ surfaces:
   - links
   read_only_sections:
   - /docs/book/95_appendix_traceability_reference.md
+  template_path: /docs/book/templates/traceability_catalog_template.md
+  output_mode: markers
+  marker_surface_id: traceability_catalog
+  data_sources:
+  - id: trace
+    source_type: generated_artifact
+    path: /.artifacts/traceability-catalog.json
 - surface_id: governance_check_catalog
   source_type: code_scan
   inputs:
@@ -152,6 +205,13 @@ surfaces:
   - checks
   read_only_sections:
   - /docs/book/96_appendix_governance_checks_reference.md
+  template_path: /docs/book/templates/governance_check_catalog_template.md
+  output_mode: markers
+  marker_surface_id: governance_check_catalog
+  data_sources:
+  - id: checks
+    source_type: generated_artifact
+    path: /.artifacts/governance-check-catalog.json
 - surface_id: metrics_field_catalog
   source_type: code_scan
   inputs:
@@ -170,6 +230,13 @@ surfaces:
   - baselines
   read_only_sections:
   - /docs/book/97_appendix_metrics_reference.md
+  template_path: /docs/book/templates/metrics_field_catalog_template.md
+  output_mode: markers
+  marker_surface_id: metrics_field_catalog
+  data_sources:
+  - id: metrics
+    source_type: generated_artifact
+    path: /.artifacts/metrics-field-catalog.json
 - surface_id: spec_schema_field_catalog
   source_type: registry_yaml
   inputs:
@@ -191,3 +258,10 @@ surfaces:
   read_only_sections:
   - /docs/spec/schema/schema_v1.md
   - /docs/book/98_appendix_spec_case_shape_reference.md
+  template_path: /docs/book/templates/spec_schema_field_catalog_template.md
+  output_mode: markers
+  marker_surface_id: spec_schema_field_catalog
+  data_sources:
+  - id: schema
+    source_type: generated_artifact
+    path: /.artifacts/spec-schema-field-catalog.json

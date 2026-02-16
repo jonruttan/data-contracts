@@ -187,6 +187,21 @@ OAuth and execution rules:
 - deterministic mode forbids network token/request fetches
 - context profile metadata MUST redact secret/token values
 
+For `type: docs.generate`, supported `harness` keys include:
+
+- `harness.docs_generate.surface_id` (required)
+- `harness.docs_generate.mode` (required): `write|check`
+- `harness.docs_generate.output_mode` (required): `markers|full_file`
+- `harness.docs_generate.template_path` (required): virtual-root path
+- `harness.docs_generate.output_path` (required): virtual-root path
+- `harness.docs_generate.marker_surface_id` (required when `output_mode=markers`)
+- `harness.docs_generate.data_sources` (required list):
+  - `id`
+  - `source_type`: `json_file|yaml_file|generated_artifact|command_output`
+  - `path` for file/artifact source types
+  - `command` for `command_output` source type
+- `harness.docs_generate.strict` (optional bool, default `true`)
+
 `setup_files[*].path` constraints:
 
 - MUST be relative
@@ -255,6 +270,7 @@ Currently supported types:
 
 - `cli.run` (core)
 - `text.file` (core)
+- `docs.generate` (core extension)
 - `orchestration.run` (core extension)
 
 Type contracts live under:
@@ -396,9 +412,9 @@ assert:
 
 This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
-- profile_count: 10
+- profile_count: 11
 - top_level_fields: 10
-- type_profiles: 6
+- type_profiles: 7
 
 ### Top-Level Keys
 
@@ -421,6 +437,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 |---|---|---|
 | `api.http` | `request` | - |
 | `cli.run` | - | - |
+| `docs.generate` | - | - |
 | `governance.check` | `check` | - |
 | `orchestration.run` | - | - |
 | `spec_lang.library` | `definitions` | `imports` |
@@ -432,7 +449,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 ## Generated Spec Schema Field Catalog
 
 - top_level_field_count: 10
-- type_profile_count: 6
+- type_profile_count: 7
 - total_type_field_count: 7
 
 ### Top-Level Fields
@@ -456,8 +473,10 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 |---|---|---|
 | `api.http` | 1 | `request` |
 | `cli.run` | 2 | - |
+| `docs.generate` | 0 | - |
 | `governance.check` | 1 | `check` |
 | `orchestration.run` | 0 | - |
 | `spec_lang.library` | 2 | `definitions` |
 | `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->
+

@@ -72,6 +72,44 @@ def load_docs_generator_registry(repo_root: Path) -> tuple[dict[str, Any] | None
             issues.append(DocsGeneratorIssue(loc, "generator must be non-empty"))
         if not isinstance(raw.get("check_mode_supported"), bool):
             issues.append(DocsGeneratorIssue(loc, "check_mode_supported must be bool"))
+        template_path = str(raw.get("template_path", "")).strip()
+        if not template_path:
+            issues.append(DocsGeneratorIssue(loc, "template_path must be non-empty"))
+        output_mode = str(raw.get("output_mode", "")).strip()
+        if output_mode not in {"markers", "full_file"}:
+            issues.append(DocsGeneratorIssue(loc, "output_mode must be markers|full_file"))
+        if output_mode == "markers":
+            marker_surface_id = str(raw.get("marker_surface_id", "")).strip()
+            if not marker_surface_id:
+                issues.append(DocsGeneratorIssue(loc, "marker_surface_id is required when output_mode=markers"))
+        data_sources = raw.get("data_sources")
+        if not isinstance(data_sources, list) or not data_sources:
+            issues.append(DocsGeneratorIssue(loc, "data_sources must be a non-empty list"))
+        else:
+            for src_idx, src in enumerate(data_sources):
+                sloc = f"{loc}.data_sources[{src_idx}]"
+                if not isinstance(src, dict):
+                    issues.append(DocsGeneratorIssue(sloc, "data source entry must be a mapping"))
+                    continue
+                sid = str(src.get("id", "")).strip()
+                if not sid:
+                    issues.append(DocsGeneratorIssue(sloc, "id must be non-empty"))
+                s_type = str(src.get("source_type", "")).strip()
+                if s_type not in {"json_file", "yaml_file", "generated_artifact", "command_output"}:
+                    issues.append(
+                        DocsGeneratorIssue(
+                            sloc,
+                            "source_type must be json_file|yaml_file|generated_artifact|command_output",
+                        )
+                    )
+                if s_type in {"json_file", "yaml_file", "generated_artifact"}:
+                    path = str(src.get("path", "")).strip()
+                    if not path:
+                        issues.append(DocsGeneratorIssue(sloc, "path is required for file/artifact sources"))
+                if s_type == "command_output":
+                    cmd = src.get("command")
+                    if not isinstance(cmd, list) or not cmd or any(not str(x).strip() for x in cmd):
+                        issues.append(DocsGeneratorIssue(sloc, "command must be a non-empty list of args"))
     return (payload if not issues else None), issues
 
 

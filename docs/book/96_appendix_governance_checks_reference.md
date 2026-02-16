@@ -47,9 +47,9 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 152
+- check_count: 158
 - checks_with_cases: 152
-- checks_without_cases: 0
+- checks_without_cases: 6
 
 | check_id | case_count | has_case |
 |---|---|---|
@@ -91,8 +91,11 @@ Provide generated inventory of governance check IDs and case coverage.
 | `docs.example_id_uniqueness` | 1 | true |
 | `docs.examples_runnable` | 1 | true |
 | `docs.filename_policy` | 1 | true |
+| `docs.generate_check_passes` | 0 | false |
 | `docs.generated_files_clean` | 1 | true |
 | `docs.generated_sections_read_only` | 1 | true |
+| `docs.generation_registry_surface_case_sync` | 0 | false |
+| `docs.generation_spec_cases_present` | 0 | false |
 | `docs.generator_outputs_sync` | 1 | true |
 | `docs.generator_registry_valid` | 1 | true |
 | `docs.governance_check_catalog_sync` | 1 | true |
@@ -107,6 +110,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `docs.no_os_artifact_files` | 1 | true |
 | `docs.operability_metric` | 1 | true |
 | `docs.operability_non_regression` | 1 | true |
+| `docs.output_mode_contract_valid` | 0 | false |
 | `docs.policy_rule_catalog_sync` | 1 | true |
 | `docs.reference_index_sync` | 1 | true |
 | `docs.reference_manifest_sync` | 1 | true |
@@ -118,6 +122,8 @@ Provide generated inventory of governance check IDs and case coverage.
 | `docs.security_warning_contract` | 1 | true |
 | `docs.spec_lang_builtin_catalog_sync` | 1 | true |
 | `docs.spec_schema_field_catalog_sync` | 1 | true |
+| `docs.template_data_sources_declared` | 0 | false |
+| `docs.template_paths_valid` | 0 | false |
 | `docs.token_dependency_resolved` | 1 | true |
 | `docs.token_ownership_unique` | 1 | true |
 | `docs.traceability_catalog_sync` | 1 | true |

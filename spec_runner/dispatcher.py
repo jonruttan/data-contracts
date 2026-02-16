@@ -51,12 +51,14 @@ def default_type_runners() -> dict[str, TypeRunner]:
     # Lazy import to avoid circular imports during collection.
     from spec_runner.harnesses.api_http import run as run_api_http
     from spec_runner.harnesses.cli_run import run as run_cli
+    from spec_runner.harnesses.docs_generate import run as run_docs_generate
     from spec_runner.harnesses.orchestration_run import run as run_orchestration
     from spec_runner.harnesses.text_file import run as run_text_file
 
     return {
         "api.http": run_api_http,
         "cli.run": run_cli,
+        "docs.generate": run_docs_generate,
         "orchestration.run": run_orchestration,
         "text.file": run_text_file,
     }
@@ -88,7 +90,7 @@ def run_case(
 
     # Core runner types execute compiled internal cases. External custom runners
     # keep receiving SpecDocTest for backward compatibility.
-    if type_ in {"api.http", "cli.run", "orchestration.run", "text.file"}:
+    if type_ in {"api.http", "cli.run", "docs.generate", "orchestration.run", "text.file"}:
         fn(_to_internal_case(case), ctx=ctx)
         return
     fn(case, ctx=ctx)

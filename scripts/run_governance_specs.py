@@ -3794,6 +3794,129 @@ def _scan_docs_generator_outputs_sync(root: Path, *, harness: dict | None = None
     return _run_python_script_check(root, ["scripts/docs_generate_all.py", "--check"])
 
 
+def _scan_docs_generation_spec_cases_present(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    cases_root = root / "docs/spec/impl/docs_generate/cases"
+    if not cases_root.exists():
+        return ["docs/spec/impl/docs_generate/cases:1: missing docs.generate case tree"]
+    hits: list[str] = []
+    for spec in iter_spec_doc_tests(cases_root, file_pattern=case_file_name("*")):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() != "docs.generate":
+            continue
+        docs_generate = (((case.get("harness") or {}) if isinstance(case.get("harness"), dict) else {}).get("docs_generate"))
+        if isinstance(docs_generate, dict) and str(docs_generate.get("surface_id", "")).strip():
+            hits.append(str(docs_generate.get("surface_id", "")).strip())
+    if not hits:
+        return ["docs/spec/impl/docs_generate/cases:1: missing executable docs.generate surface cases"]
+    return []
+
+
+def _scan_docs_generation_registry_surface_case_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    registry, issues = load_docs_generator_registry(root)
+    if registry is None:
+        return [x.render() for x in issues]
+    expected = {
+        str(s.get("surface_id", "")).strip()
+        for s in (registry.get("surfaces") or [])
+        if isinstance(s, dict) and str(s.get("surface_id", "")).strip()
+    }
+    seen: set[str] = set()
+    cases_root = root / "docs/spec/impl/docs_generate/cases"
+    if not cases_root.exists():
+        return ["docs/spec/impl/docs_generate/cases:1: missing docs.generate case tree"]
+    for spec in iter_spec_doc_tests(cases_root, file_pattern=case_file_name("*")):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() != "docs.generate":
+            continue
+        harness_map = case.get("harness")
+        if not isinstance(harness_map, dict):
+            continue
+        docs_generate = harness_map.get("docs_generate")
+        if not isinstance(docs_generate, dict):
+            continue
+        sid = str(docs_generate.get("surface_id", "")).strip()
+        if sid:
+            seen.add(sid)
+    missing = sorted(expected - seen)
+    return [f"docs/spec/impl/docs_generate/cases: missing docs.generate case for surface_id {sid}" for sid in missing]
+
+
+def _scan_docs_template_paths_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    registry, issues = load_docs_generator_registry(root)
+    if registry is None:
+        return [x.render() for x in issues]
+    out: list[str] = []
+    for surface in (registry.get("surfaces") or []):
+        if not isinstance(surface, dict):
+            continue
+        sid = str(surface.get("surface_id", "")).strip() or "<unknown>"
+        template_path = str(surface.get("template_path", "")).strip()
+        if not template_path:
+            out.append(f"{DOCS_GENERATOR_REGISTRY_PATH.as_posix()}: surface {sid} missing template_path")
+            continue
+        p = _join_contract_path(root, template_path)
+        if not p.exists():
+            out.append(f"{template_path}:1: template path missing for surface {sid}")
+    return out
+
+
+def _scan_docs_template_data_sources_declared(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    registry, issues = load_docs_generator_registry(root)
+    if registry is None:
+        return [x.render() for x in issues]
+    out: list[str] = []
+    for surface in (registry.get("surfaces") or []):
+        if not isinstance(surface, dict):
+            continue
+        sid = str(surface.get("surface_id", "")).strip() or "<unknown>"
+        data_sources = surface.get("data_sources")
+        if not isinstance(data_sources, list) or not data_sources:
+            out.append(f"{DOCS_GENERATOR_REGISTRY_PATH.as_posix()}: surface {sid} must declare non-empty data_sources")
+            continue
+        for idx, src in enumerate(data_sources):
+            if not isinstance(src, dict):
+                out.append(
+                    f"{DOCS_GENERATOR_REGISTRY_PATH.as_posix()}: surface {sid} data_sources[{idx}] must be a mapping"
+                )
+                continue
+            source_type = str(src.get("source_type", "")).strip()
+            if source_type in {"json_file", "yaml_file", "generated_artifact"}:
+                raw_path = str(src.get("path", "")).strip()
+                if not raw_path:
+                    out.append(
+                        f"{DOCS_GENERATOR_REGISTRY_PATH.as_posix()}: surface {sid} data_sources[{idx}] missing path"
+                    )
+    return out
+
+
+def _scan_docs_output_mode_contract_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    registry, issues = load_docs_generator_registry(root)
+    if registry is None:
+        return [x.render() for x in issues]
+    out: list[str] = []
+    for surface in (registry.get("surfaces") or []):
+        if not isinstance(surface, dict):
+            continue
+        sid = str(surface.get("surface_id", "")).strip() or "<unknown>"
+        output_mode = str(surface.get("output_mode", "")).strip()
+        if output_mode not in {"markers", "full_file"}:
+            out.append(f"{DOCS_GENERATOR_REGISTRY_PATH.as_posix()}: surface {sid} invalid output_mode {output_mode!r}")
+            continue
+        if output_mode == "markers" and not str(surface.get("marker_surface_id", "")).strip():
+            out.append(f"{DOCS_GENERATOR_REGISTRY_PATH.as_posix()}: surface {sid} requires marker_surface_id")
+    return out
+
+
+def _scan_docs_generate_check_passes(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_script_check(root, ["scripts/docs_generate_specs.py", "--check"])
+
+
 def _scan_docs_generated_sections_read_only(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     registry, issues = load_docs_generator_registry(root)
@@ -5745,6 +5868,12 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.generated_files_clean": _scan_docs_generated_files_clean,
     "docs.generator_registry_valid": _scan_docs_generator_registry_valid,
     "docs.generator_outputs_sync": _scan_docs_generator_outputs_sync,
+    "docs.generation_spec_cases_present": _scan_docs_generation_spec_cases_present,
+    "docs.generation_registry_surface_case_sync": _scan_docs_generation_registry_surface_case_sync,
+    "docs.template_paths_valid": _scan_docs_template_paths_valid,
+    "docs.template_data_sources_declared": _scan_docs_template_data_sources_declared,
+    "docs.output_mode_contract_valid": _scan_docs_output_mode_contract_valid,
+    "docs.generate_check_passes": _scan_docs_generate_check_passes,
     "docs.generated_sections_read_only": _scan_docs_generated_sections_read_only,
     "docs.runner_api_catalog_sync": _scan_docs_runner_api_catalog_sync,
     "docs.harness_type_catalog_sync": _scan_docs_harness_type_catalog_sync,

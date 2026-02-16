@@ -72,6 +72,12 @@ For `orchestration.run`:
 - `exit_code`
 - `context_json` (JSON subject profile envelope)
 
+For `docs.generate`:
+
+- `result_json`
+- `output_text`
+- `context_json` (JSON subject profile envelope)
+
 ## Subject-Driven Assertion Contract
 
 - Harnesses/adapters own target subject extraction and normalization.
@@ -108,6 +114,17 @@ Subject profile envelope contract:
   (for example `ops.fs.file.read`, `ops.time.clock.now_utc`,
   `ops.proc.command.exec`).
 - legacy underscore forms are forbidden.
+
+## Docs Generation Harness
+
+- `type: docs.generate` uses `harness.docs_generate` for spec-driven docs
+  generation surfaces.
+- `surface_id` MUST resolve to a declared docs generator surface in
+  `docs/spec/schema/docs_generator_registry_v1.yaml`.
+- output behavior is explicit: `output_mode` is `markers` or `full_file`.
+- marker mode writes only inside generated marker boundaries.
+- template rendering uses moustache-core semantics and declared data sources
+  (`json_file`, `yaml_file`, `generated_artifact`, `command_output`).
 
 ## Path Safety
 

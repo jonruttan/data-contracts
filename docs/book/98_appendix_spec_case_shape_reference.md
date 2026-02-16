@@ -48,7 +48,7 @@ Provide generated case-shape field reference derived from schema registry profil
 ## Generated Spec Schema Field Catalog
 
 - top_level_field_count: 10
-- type_profile_count: 6
+- type_profile_count: 7
 - total_type_field_count: 7
 
 ### Top-Level Fields
@@ -72,6 +72,7 @@ Provide generated case-shape field reference derived from schema registry profil
 |---|---|---|
 | `api.http` | 1 | `request` |
 | `cli.run` | 2 | - |
+| `docs.generate` | 0 | - |
 | `governance.check` | 1 | `check` |
 | `orchestration.run` | 0 | - |
 | `spec_lang.library` | 2 | `definitions` |
