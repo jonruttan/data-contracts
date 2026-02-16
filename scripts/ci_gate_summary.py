@@ -34,6 +34,7 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
         ("docs_build_check", _runner_command(runner_bin, runner_impl, "docs-build-check")),
         ("docs_lint", _runner_command(runner_bin, runner_impl, "docs-lint")),
         ("normalize_check", _runner_command(runner_bin, runner_impl, "normalize-check")),
+        ("schema_registry_build", _runner_command(runner_bin, runner_impl, "schema-registry-build")),
         ("schema_registry_check", _runner_command(runner_bin, runner_impl, "schema-registry-check")),
         ("schema_docs_check", _runner_command(runner_bin, runner_impl, "schema-docs-check")),
         ("spec_portability_json", _runner_command(runner_bin, runner_impl, "spec-portability-json")),
