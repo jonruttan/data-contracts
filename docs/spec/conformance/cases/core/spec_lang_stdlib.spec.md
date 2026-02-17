@@ -304,3 +304,64 @@ assert:
       - true
   target: text
 ```
+
+## SRCONF-STDLIB-009
+
+```yaml spec-test
+id: SRCONF-STDLIB-009
+title: ops fs path relativize and common_prefix evaluate deterministically
+purpose: Validates pure relative-path and common-prefix helpers.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: pass
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.path.relativize:
+        - /a/b/c
+        - /a/d/e
+      - ../../d/e
+    - std.logic.eq:
+      - ops.fs.path.relativize:
+        - a/b
+        - a/b/c/d
+      - c/d
+    - std.logic.eq:
+      - ops.fs.path.common_prefix:
+        - lit: [/a/b/c.md, /a/b/d.md]
+      - /a/b
+    - std.logic.eq:
+      - ops.fs.path.common_prefix:
+        - lit: [docs/spec/current.md, docs/spec/schema/schema_v1.md]
+      - docs/spec
+  target: text
+```
+
+## SRCONF-STDLIB-010
+
+```yaml spec-test
+id: SRCONF-STDLIB-010
+title: ops fs path common_prefix fails schema for non-string entries
+purpose: Ensures common_prefix rejects list entries that are not strings.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: fail
+    category: schema
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.path.common_prefix:
+        - lit: [/a/b, 7]
+      - /a
+  target: text
+```

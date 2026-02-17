@@ -484,6 +484,59 @@ def _fs_normalize_ext(ext: str) -> str:
     return token if token.startswith(".") else f".{token}"
 
 
+def _fs_relativize(base: str, path: str) -> str:
+    base_norm = _fs_normalize_path(base)
+    path_norm = _fs_normalize_path(path)
+    base_abs = base_norm.startswith("/")
+    path_abs = path_norm.startswith("/")
+    if base_abs != path_abs:
+        return path_norm
+    base_parts = _fs_split_segments(base_norm)
+    path_parts = _fs_split_segments(path_norm)
+    i = 0
+    while i < len(base_parts) and i < len(path_parts) and base_parts[i] == path_parts[i]:
+        i += 1
+    up = [".."] * (len(base_parts) - i)
+    down = path_parts[i:]
+    rel_parts = up + down
+    if not rel_parts:
+        return "."
+    return "/".join(rel_parts)
+
+
+def _fs_common_prefix(paths: list[str]) -> str:
+    if not paths:
+        return "."
+    normalized = [_fs_normalize_path(p) for p in paths]
+    abs_flags = [p.startswith("/") for p in normalized]
+    if any(flag != abs_flags[0] for flag in abs_flags):
+        return "."
+    split_paths = [_fs_split_segments(p) for p in normalized]
+    prefix: list[str] = []
+    idx = 0
+    while True:
+        current: str | None = None
+        for parts in split_paths:
+            if idx >= len(parts):
+                current = None
+                break
+            value = parts[idx]
+            if current is None:
+                current = value
+                continue
+            if value != current:
+                current = None
+                break
+        if current is None:
+            break
+        prefix.append(current)
+        idx += 1
+    if not prefix:
+        return "/" if abs_flags[0] else "."
+    joined = "/".join(prefix)
+    return f"/{joined}" if abs_flags[0] else joined
+
+
 def _builtin_arity_table() -> dict[str, int]:
     # Fixed arity table used by builtin currying.
     flat = {
@@ -624,6 +677,8 @@ def _builtin_arity_table() -> dict[str, int]:
         "ops_fs_path_is_abs": 1,
         "ops_fs_path_has_ext": 2,
         "ops_fs_path_change_ext": 2,
+        "ops_fs_path_relativize": 2,
+        "ops_fs_path_common_prefix": 1,
         "ops_fs_file_exists": 1,
         "ops_fs_file_is_file": 1,
         "ops_fs_file_is_dir": 1,
@@ -1395,6 +1450,20 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         if parent == ".":
             return next_base
         return f"{parent}/{next_base}"
+    if op == "ops.fs.path.relativize":
+        _require_arity(op, args, 2)
+        if not isinstance(args[0], str) or not isinstance(args[1], str):
+            raise ValueError("spec_lang ops.fs.path.relativize expects string args")
+        return _fs_relativize(args[0], args[1])
+    if op == "ops.fs.path.common_prefix":
+        _require_arity(op, args, 1)
+        raw_paths = _require_list_arg(op, args[0])
+        paths: list[str] = []
+        for raw in raw_paths:
+            if not isinstance(raw, str):
+                raise ValueError("spec_lang ops.fs.path.common_prefix expects list of strings")
+            paths.append(raw)
+        return _fs_common_prefix(paths)
     if op == "ops.fs.file.exists":
         _require_arity(op, args, 1)
         meta = _require_dict_arg(op, args[0])

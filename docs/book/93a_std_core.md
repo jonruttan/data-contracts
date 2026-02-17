@@ -791,6 +791,38 @@ Provide generated semantic reference for `std.core` and special forms.
   - result: Deterministic result per symbol contract.
 
 
+### `ops.fs.path.common_prefix`
+
+- Signature: `ops.fs.path.common_prefix/1`
+- Summary: Evaluates `common_prefix` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.common_prefix(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
 ### `ops.fs.path.dirname`
 
 - Signature: `ops.fs.path.dirname/1`
@@ -982,6 +1014,39 @@ Provide generated semantic reference for `std.core` and special forms.
 
 - **Basic usage**
   - expr: `ops.fs.path.normalize(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.relativize`
+
+- Signature: `ops.fs.path.relativize/2`
+- Summary: Evaluates `relativize` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.relativize(arg1, arg2)`
   - result: Deterministic result per symbol contract.
 
 

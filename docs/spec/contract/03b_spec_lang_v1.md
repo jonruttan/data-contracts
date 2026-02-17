@@ -189,6 +189,8 @@ Filesystem utility (pure, metadata-only):
 - `ops.fs.path.is_abs`
 - `ops.fs.path.has_ext`
 - `ops.fs.path.change_ext`
+- `ops.fs.path.relativize`
+- `ops.fs.path.common_prefix`
 - `ops.fs.file.exists`
 - `ops.fs.file.is_file`
 - `ops.fs.file.is_dir`
