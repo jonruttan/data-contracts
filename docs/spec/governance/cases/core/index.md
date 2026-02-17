@@ -154,6 +154,10 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_domain_library_preferred_for_http_helpers.spec.md`
 - `/docs/spec/governance/cases/core/runtime_executable_spec_lang_includes_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
+- `/docs/spec/governance/cases/core/runtime_legacy_timeout_envs_deprecated.spec.md`
+- `/docs/spec/governance/cases/core/runtime_liveness_hard_cap_token_emitted.spec.md`
+- `/docs/spec/governance/cases/core/runtime_liveness_stall_token_emitted.spec.md`
+- `/docs/spec/governance/cases/core/runtime_liveness_watchdog_contract_valid.spec.md`
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
 - `/docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md`
 - `/docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md`

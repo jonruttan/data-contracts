@@ -22,6 +22,22 @@ Environment equivalents:
 - `SPEC_RUNNER_PROFILE_HEARTBEAT_MS`
 - `SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS`
 
+Liveness controls (governance-first):
+
+- `--liveness-level off|basic|strict`
+- `--liveness-stall-ms <int>` (default `30000`)
+- `--liveness-min-events <int>` (default `1`)
+- `--liveness-hard-cap-ms <int>` (default `1800000`)
+- `--liveness-kill-grace-ms <int>` (default `5000`)
+
+Environment equivalents:
+
+- `SPEC_RUNNER_LIVENESS_LEVEL`
+- `SPEC_RUNNER_LIVENESS_STALL_MS`
+- `SPEC_RUNNER_LIVENESS_MIN_EVENTS`
+- `SPEC_RUNNER_LIVENESS_HARD_CAP_MS`
+- `SPEC_RUNNER_LIVENESS_KILL_GRACE_MS`
+
 ## Artifact
 
 - Schema: `/docs/spec/schema/run_trace_v1.yaml`
@@ -59,10 +75,20 @@ Required top-level fields:
 - `timeout.subprocess.io_drain`
 - `timeout.case.harness`
 - `timeout.case.chain`
+- `stall.runner.no_progress`
+- `stall.subprocess.no_output_no_event`
+- `timeout.hard_cap.emergency`
+- `watchdog.kill.term`
+- `watchdog.kill.killed`
+
+## Legacy Timeout Deprecation
+
+- `SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS` and
+  `SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS` are deprecated.
+- When present, governance maps them to emergency hard-cap behavior.
 
 ## Redaction
 
 - Profiling artifacts MUST NOT expose raw secret values.
 - Secret-like keys (`token`, `secret`, `password`, `authorization`, `cookie`, `key`) MUST be redacted.
 - `env_profile` may include metadata (set/length/hash) but not raw values.
-

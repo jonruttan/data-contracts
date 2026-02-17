@@ -1,6 +1,6 @@
 use serde_json::{json, Map, Value};
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 fn now_iso_utc_fallback() -> String {
@@ -199,6 +199,11 @@ impl RunProfiler {
             "SPEC_RUNNER_PROFILE_LEVEL",
             "SPEC_RUNNER_PROFILE_HEARTBEAT_MS",
             "SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS",
+            "SPEC_RUNNER_LIVENESS_LEVEL",
+            "SPEC_RUNNER_LIVENESS_STALL_MS",
+            "SPEC_RUNNER_LIVENESS_MIN_EVENTS",
+            "SPEC_RUNNER_LIVENESS_HARD_CAP_MS",
+            "SPEC_RUNNER_LIVENESS_KILL_GRACE_MS",
             "SPEC_RUNNER_IMPL",
         ] {
             let raw = std::env::var(key).unwrap_or_default();

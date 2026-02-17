@@ -74,6 +74,12 @@ from spec_runner.governance_engine import GovernancePolicyResult, normalize_poli
 from spec_runner.spec_portability import spec_portability_report_jsonable
 from spec_runner.virtual_paths import VirtualPathError, normalize_contract_path, parse_external_ref, resolve_contract_path
 from spec_runner.components.profiler import RunProfiler, profile_config_from_args
+from spec_runner.components.liveness import (
+    LivenessConfig,
+    LivenessError,
+    config_from_env as liveness_config_from_env,
+    run_subprocess_with_liveness,
+)
 
 
 _SECURITY_WARNING_DOCS = (
@@ -222,7 +228,7 @@ _RAW_HTTP_META_ALLOWED_CASE_FILES = {
 }
 _OPS_FS_SYMBOL_PATTERN = re.compile(r"\bops\.fs\.[a-z0-9_.]+\b")
 _GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS = float(
-    os.environ.get("SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS", "120")
+    os.environ.get("SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS", "0")
 )
 _GOVERNANCE_TRACE = os.environ.get("SPEC_RUNNER_GOVERNANCE_TRACE", "").strip().lower() in {
     "1",
@@ -236,32 +242,53 @@ _ACTIVE_PROFILER: contextvars.ContextVar[RunProfiler | None] = contextvars.Conte
 )
 
 
+def _effective_governance_liveness() -> tuple[LivenessConfig, list[str]]:
+    warnings: list[str] = []
+    cfg = liveness_config_from_env(default_level="off")
+    hard_cap_ms = int(cfg.hard_cap_ms)
+    legacy_env = ""
+    if _GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS > 0:
+        legacy_env = "SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS"
+        hard_cap_ms = int(_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS * 1000.0)
+    raw_adapter_timeout = str(os.environ.get("SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS", "")).strip()
+    if raw_adapter_timeout:
+        legacy_env = "SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS"
+        try:
+            hard_cap_ms = int(float(raw_adapter_timeout) * 1000.0)
+        except ValueError:
+            pass
+    if legacy_env:
+        warnings.append(
+            f"{legacy_env} is deprecated; use SPEC_RUNNER_LIVENESS_HARD_CAP_MS / --liveness-hard-cap-ms"
+        )
+    return (
+        LivenessConfig(
+            level=cfg.level,
+            stall_ms=int(cfg.stall_ms),
+            min_events=int(cfg.min_events),
+            hard_cap_ms=max(int(hard_cap_ms), 1),
+            kill_grace_ms=int(cfg.kill_grace_ms),
+        ),
+        warnings,
+    )
+
+
 def _profiled_subprocess_run(
     cmd: list[str],
     *,
     cwd: Path,
-    timeout: float | None = None,
     phase: str,
     text: bool = True,
 ) -> subprocess.CompletedProcess[str]:
+    del text
     profiler = _ACTIVE_PROFILER.get()
-    if profiler is not None:
-        return profiler.subprocess_run(
-            command=cmd,
-            cwd=cwd,
-            timeout=timeout,
-            check=False,
-            capture_output=True,
-            text=text,
-            phase=phase,
-        )
-    return subprocess.run(
-        cmd,
+    cfg, _ = _effective_governance_liveness()
+    return run_subprocess_with_liveness(
+        command=cmd,
         cwd=cwd,
-        check=False,
-        capture_output=True,
-        text=text,
-        timeout=timeout,
+        profiler=profiler,
+        phase=phase,
+        cfg=cfg,
     )
 _HARNESS_FILES = (
     "spec_runner/harnesses/text_file.py",
@@ -5211,14 +5238,11 @@ def _run_python_script_check(root: Path, args: list[str]) -> list[str]:
         cp = _profiled_subprocess_run(
             cmd,
             cwd=root,
-            timeout=_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS,
             phase="governance.python_script_check",
         )
-    except subprocess.TimeoutExpired:
+    except LivenessError as exc:
         return [
-            f"{' '.join(args)} timed out after "
-            f"{int(_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS)}s; set "
-            "SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS to override"
+            f"{' '.join(args)} failed liveness watchdog: {exc.reason_token}"
         ]
     if cp.returncode == 0:
         return []
@@ -5603,13 +5627,11 @@ def _scan_docs_docgen_quality_score_threshold(root: Path, *, harness: dict | Non
             cp = _profiled_subprocess_run(
                 [str(py if py.exists() else Path("python3")), script_rel],
                 cwd=root,
-                timeout=_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS,
                 phase="governance.docgen_quality",
             )
-        except subprocess.TimeoutExpired:
+        except LivenessError as exc:
             out.append(
-                f"{script_rel}: timed out after {int(_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS)}s; "
-                "set SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS to override"
+                f"{script_rel}: liveness watchdog triggered ({exc.reason_token})"
             )
             continue
         if cp.returncode != 0:
@@ -6332,6 +6354,133 @@ def _scan_runtime_profiling_span_taxonomy(root: Path, *, harness: dict | None = 
     violations: list[str] = []
     if missing:
         violations.append(f"{trace_rel}:1: missing required span names: {', '.join(missing)}")
+    return violations
+
+
+def _scan_runtime_liveness_watchdog_contract_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    required_docs = (
+        (
+            "docs/spec/contract/24_runtime_profiling_contract.md",
+            (
+                "SPEC_RUNNER_LIVENESS_LEVEL",
+                "SPEC_RUNNER_LIVENESS_STALL_MS",
+                "SPEC_RUNNER_LIVENESS_MIN_EVENTS",
+                "SPEC_RUNNER_LIVENESS_HARD_CAP_MS",
+                "SPEC_RUNNER_LIVENESS_KILL_GRACE_MS",
+            ),
+        ),
+        (
+            "docs/spec/schema/run_trace_v1.yaml",
+            (
+                "stall.runner.no_progress",
+                "stall.subprocess.no_output_no_event",
+                "timeout.hard_cap.emergency",
+                "watchdog.kill.term",
+                "watchdog.kill.killed",
+            ),
+        ),
+    )
+    for rel, tokens in required_docs:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing liveness contract artifact")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in text:
+                violations.append(f"{rel}:1: missing liveness token {token}")
+    return violations
+
+
+def _scan_runtime_liveness_stall_token_emitted(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("liveness_trace_tokens")
+    if not isinstance(cfg, dict):
+        return ["runtime.liveness_stall_token_emitted requires harness.liveness_trace_tokens mapping in governance spec"]
+    trace_rel = str(cfg.get("trace_path", ".artifacts/run-trace.json")).strip()
+    trace_path = _join_contract_path(root, trace_rel)
+    if not trace_path.exists():
+        return [f"{trace_rel}:1: missing run trace for liveness token check"]
+    try:
+        payload = json.loads(trace_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [f"{trace_rel}:1: invalid JSON: {exc.msg} at line {exc.lineno} column {exc.colno}"]
+    required = cfg.get("required_tokens", ["stall.runner.no_progress", "stall.subprocess.no_output_no_event"])
+    if not isinstance(required, list) or any(not isinstance(x, str) or not x.strip() for x in required):
+        return ["harness.liveness_trace_tokens.required_tokens must be a non-empty list of strings"]
+    events = payload.get("events")
+    if not isinstance(events, list):
+        return [f"{trace_rel}:1: events must be a list"]
+    seen: set[str] = set()
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+        attrs = event.get("attrs")
+        if isinstance(attrs, dict):
+            tok = str(attrs.get("reason_token", "")).strip()
+            if tok:
+                seen.add(tok)
+    missing = [tok for tok in required if tok not in seen]
+    return [f"{trace_rel}:1: missing required liveness reason tokens: {', '.join(missing)}"] if missing else []
+
+
+def _scan_runtime_liveness_hard_cap_token_emitted(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("liveness_trace_tokens")
+    if not isinstance(cfg, dict):
+        return ["runtime.liveness_hard_cap_token_emitted requires harness.liveness_trace_tokens mapping in governance spec"]
+    trace_rel = str(cfg.get("trace_path", ".artifacts/run-trace.json")).strip()
+    trace_path = _join_contract_path(root, trace_rel)
+    if not trace_path.exists():
+        return [f"{trace_rel}:1: missing run trace for liveness hard-cap token check"]
+    try:
+        payload = json.loads(trace_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [f"{trace_rel}:1: invalid JSON: {exc.msg} at line {exc.lineno} column {exc.colno}"]
+    events = payload.get("events")
+    if not isinstance(events, list):
+        return [f"{trace_rel}:1: events must be a list"]
+    tokens = {
+        str((event.get("attrs") or {}).get("reason_token", "")).strip()
+        for event in events
+        if isinstance(event, dict) and isinstance(event.get("attrs"), dict)
+    }
+    required_any = {"timeout.hard_cap.emergency", "watchdog.kill.term", "watchdog.kill.killed"}
+    if not (tokens & required_any):
+        return [f"{trace_rel}:1: expected at least one hard-cap/kill liveness token ({', '.join(sorted(required_any))})"]
+    return []
+
+
+def _scan_runtime_legacy_timeout_envs_deprecated(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    docs = (
+        "docs/book/06_troubleshooting.md",
+        "docs/spec/contract/24_runtime_profiling_contract.md",
+    )
+    required_tokens = (
+        "SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS",
+        "SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS",
+        "deprecated",
+    )
+    for rel in docs:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing deprecation doc")
+            continue
+        text = p.read_text(encoding="utf-8").lower()
+        for token in required_tokens:
+            if token.lower() not in text:
+                violations.append(f"{rel}:1: missing timeout deprecation token {token}")
+    src = _join_contract_path(root, "scripts/run_governance_specs.py")
+    if src.exists():
+        text = src.read_text(encoding="utf-8")
+        if "is deprecated; use SPEC_RUNNER_LIVENESS_HARD_CAP_MS" not in text:
+            violations.append(
+                "scripts/run_governance_specs.py:1: missing legacy-timeout deprecation remediation message"
+            )
     return violations
 
 
@@ -7674,19 +7823,17 @@ def _run_normalize_check_cached(root: Path, *, scope: str) -> tuple[int, list[st
         proc = _profiled_subprocess_run(
             cmd,
             cwd=root,
-            timeout=_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS,
             phase="governance.normalize_check",
         )
         out = (proc.stdout or "").splitlines() + (proc.stderr or "").splitlines()
         violations = [line.strip() for line in out if line.strip()]
         result = (int(proc.returncode), violations)
-    except subprocess.TimeoutExpired:
+    except LivenessError as exc:
         result = (
             124,
             [
-                "scripts/normalize_repo.py --check timed out after "
-                f"{int(_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS)}s; set "
-                "SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS to override"
+                "scripts/normalize_repo.py --check failed liveness watchdog: "
+                f"{exc.reason_token}"
             ],
         )
     with _SCAN_CACHE_LOCK:
@@ -8133,6 +8280,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.profiling_contract_artifacts": _scan_runtime_profiling_contract_artifacts,
     "runtime.profiling_redaction_policy": _scan_runtime_profiling_redaction_policy,
     "runtime.profiling_span_taxonomy": _scan_runtime_profiling_span_taxonomy,
+    "runtime.liveness_watchdog_contract_valid": _scan_runtime_liveness_watchdog_contract_valid,
+    "runtime.liveness_stall_token_emitted": _scan_runtime_liveness_stall_token_emitted,
+    "runtime.liveness_hard_cap_token_emitted": _scan_runtime_liveness_hard_cap_token_emitted,
+    "runtime.legacy_timeout_envs_deprecated": _scan_runtime_legacy_timeout_envs_deprecated,
     "architecture.harness_workflow_components_required": _scan_architecture_harness_workflow_components_required,
     "architecture.harness_local_workflow_duplication_forbidden": _scan_architecture_harness_local_workflow_duplication_forbidden,
     "schema.harness_type_overlay_complete": _scan_schema_harness_type_overlay_complete,
@@ -8333,6 +8484,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--profile-summary-out", default="", help="Run trace summary markdown output path")
     ap.add_argument("--profile-heartbeat-ms", type=int, default=0, help="Profiler heartbeat interval (ms)")
     ap.add_argument("--profile-stall-threshold-ms", type=int, default=0, help="Profiler stall warning threshold (ms)")
+    ap.add_argument("--liveness-level", default="", help="off|basic|strict (default off)")
+    ap.add_argument("--liveness-stall-ms", type=int, default=0, help="No-progress stall window in ms")
+    ap.add_argument("--liveness-min-events", type=int, default=0, help="Minimum progress events per stall window")
+    ap.add_argument("--liveness-hard-cap-ms", type=int, default=0, help="Emergency hard cap in ms")
+    ap.add_argument("--liveness-kill-grace-ms", type=int, default=0, help="TERM->KILL grace interval in ms")
     ap.add_argument(
         "--workers",
         type=int,
@@ -8340,6 +8496,21 @@ def main(argv: list[str] | None = None) -> int:
         help="Worker count override (0=auto, 1=sequential for hang isolation)",
     )
     ns = ap.parse_args(argv)
+    if str(ns.liveness_level).strip():
+        os.environ["SPEC_RUNNER_LIVENESS_LEVEL"] = str(ns.liveness_level).strip()
+    if int(ns.liveness_stall_ms or 0) > 0:
+        os.environ["SPEC_RUNNER_LIVENESS_STALL_MS"] = str(int(ns.liveness_stall_ms))
+    if int(ns.liveness_min_events or 0) > 0:
+        os.environ["SPEC_RUNNER_LIVENESS_MIN_EVENTS"] = str(int(ns.liveness_min_events))
+    if int(ns.liveness_hard_cap_ms or 0) > 0:
+        os.environ["SPEC_RUNNER_LIVENESS_HARD_CAP_MS"] = str(int(ns.liveness_hard_cap_ms))
+    if int(ns.liveness_kill_grace_ms or 0) > 0:
+        os.environ["SPEC_RUNNER_LIVENESS_KILL_GRACE_MS"] = str(int(ns.liveness_kill_grace_ms))
+
+    liveness_cfg, liveness_warnings = _effective_governance_liveness()
+    for warning in liveness_warnings:
+        print(f"WARN: {warning}", file=sys.stderr)
+
     _reset_scan_caches()
     repo_root = Path(__file__).resolve().parents[1]
     profiler_cfg = profile_config_from_args(
@@ -8354,6 +8525,18 @@ def main(argv: list[str] | None = None) -> int:
         env=dict(os.environ),
     )
     profiler = RunProfiler(profiler_cfg)
+    if profiler.cfg.enabled:
+        profiler.event(
+            kind="checkpoint",
+            attrs={
+                "phase": "governance.liveness_config",
+                "liveness_level": liveness_cfg.level,
+                "liveness_stall_ms": int(liveness_cfg.stall_ms),
+                "liveness_min_events": int(liveness_cfg.min_events),
+                "liveness_hard_cap_ms": int(liveness_cfg.hard_cap_ms),
+                "liveness_kill_grace_ms": int(liveness_cfg.kill_grace_ms),
+            },
+        )
 
     case_pattern = str(ns.case_file_pattern).strip()
     if not case_pattern:
@@ -8374,6 +8557,11 @@ def main(argv: list[str] | None = None) -> int:
         for case in iter_cases(cases_path, file_pattern=case_pattern)
         if str(case.test.get("type", "")).strip() == "governance.check"
     ]
+    if profiler.cfg.enabled:
+        profiler.event(
+            kind="checkpoint",
+            attrs={"phase": "governance.case_loading.complete", "case_count": len(governance_cases)},
+        )
     if include_prefixes:
         governance_cases = [
             case
@@ -8414,6 +8602,15 @@ def main(argv: list[str] | None = None) -> int:
                 case_started = time.perf_counter()
                 token = _ACTIVE_PROFILER.set(profiler if profiler.cfg.enabled else None)
                 try:
+                    if profiler.cfg.enabled:
+                        profiler.event(
+                            kind="checkpoint",
+                            attrs={
+                                "phase": "governance.case_compile.start",
+                                "case_id": case_id,
+                                "check_id": check_id,
+                            },
+                        )
                     span_cm = (
                         profiler.span(
                             name="check.execute",
@@ -8425,7 +8622,25 @@ def main(argv: list[str] | None = None) -> int:
                         else contextlib.nullcontext()
                     )
                     with span_cm:
+                        if profiler.cfg.enabled:
+                            profiler.event(
+                                kind="checkpoint",
+                                attrs={
+                                    "phase": "governance.assertion.evaluate.start",
+                                    "case_id": case_id,
+                                    "check_id": check_id,
+                                },
+                            )
                         run_case(case, ctx=ctx, type_runners={"governance.check": run_governance_check})
+                        if profiler.cfg.enabled:
+                            profiler.event(
+                                kind="checkpoint",
+                                attrs={
+                                    "phase": "governance.assertion.evaluate.complete",
+                                    "case_id": case_id,
+                                    "check_id": check_id,
+                                },
+                            )
                     elapsed_ms = (time.perf_counter() - case_started) * 1000.0
                     if _GOVERNANCE_TRACE:
                         print(
@@ -8435,6 +8650,16 @@ def main(argv: list[str] | None = None) -> int:
                     return idx, case_id, check_id, elapsed_ms, None, list(ctx.profile_rows)
                 except BaseException as e:  # noqa: BLE001
                     elapsed_ms = (time.perf_counter() - case_started) * 1000.0
+                    if profiler.cfg.enabled:
+                        profiler.event(
+                            kind="checkpoint",
+                            attrs={
+                                "phase": "governance.check.error",
+                                "case_id": case_id,
+                                "check_id": check_id,
+                                "error": str(e),
+                            },
+                        )
                     if _GOVERNANCE_TRACE:
                         print(
                             f"[governance.trace] fail idx={idx} check={check_id} case={case_id} ms={elapsed_ms:.2f} err={e}",
@@ -8442,6 +8667,15 @@ def main(argv: list[str] | None = None) -> int:
                         )
                     return idx, case_id, check_id, elapsed_ms, f"{case_id}: {e}", list(ctx.profile_rows)
                 finally:
+                    if profiler.cfg.enabled:
+                        profiler.event(
+                            kind="checkpoint",
+                            attrs={
+                                "phase": "governance.check.complete",
+                                "case_id": case_id,
+                                "check_id": check_id,
+                            },
+                        )
                     _ACTIVE_PROFILER.reset(token)
 
             requested_workers = int(getattr(ns, "workers", 0) or 0)

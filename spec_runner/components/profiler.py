@@ -269,6 +269,14 @@ class RunProfiler:
                                 },
                             }
                         )
+                        self._events.append(
+                            {
+                                "ts_ns": int(now_ns),
+                                "kind": "watchdog",
+                                "span_id": self._run_total_span_id,
+                                "attrs": {"reason_token": "stall.runner.no_progress"},
+                            }
+                        )
                         self._stall_emitted = True
 
         self._heartbeat_thread = threading.Thread(target=_run, name="spec-runner-profiler-heartbeat", daemon=True)
@@ -521,4 +529,3 @@ def profile_config_from_args(
         args=list(args),
         env=env,
     )
-

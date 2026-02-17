@@ -1,16 +1,21 @@
 # Governance Cases
 
-## SRGOV-PROFILE-CONTRACT-001
+## SRGOV-LIVENESS-STALL-001
 
 ```yaml spec-test
-id: SRGOV-PROFILE-CONTRACT-001
-title: runtime profiling contract artifacts exist and are discoverable
-purpose: Ensures run trace schema and profiling contract docs are present and linked in current
-  snapshot notes.
+id: SRGOV-LIVENESS-STALL-001
+title: run trace contains liveness stall reason tokens
+purpose: Ensures watchdog reason tokens for runner/subprocess stall semantics are observable
+  in run trace artifacts.
 type: governance.check
-check: runtime.profiling_contract_artifacts
+check: runtime.liveness_stall_token_emitted
 harness:
   root: .
+  liveness_trace_tokens:
+    trace_path: docs/spec/governance/cases/fixtures/run_trace_liveness_sample.json
+    required_tokens:
+    - stall.runner.no_progress
+    - stall.subprocess.no_output_no_event
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}
@@ -33,4 +38,3 @@ assert:
     - 0
   target: violation_count
 ```
-

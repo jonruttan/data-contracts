@@ -1,16 +1,17 @@
 # Governance Cases
 
-## SRGOV-PROFILE-CONTRACT-001
+## SRGOV-LIVENESS-HARDCAP-001
 
 ```yaml spec-test
-id: SRGOV-PROFILE-CONTRACT-001
-title: runtime profiling contract artifacts exist and are discoverable
-purpose: Ensures run trace schema and profiling contract docs are present and linked in current
-  snapshot notes.
+id: SRGOV-LIVENESS-HARDCAP-001
+title: run trace includes hard-cap and kill escalation reason tokens
+purpose: Ensures emergency hard-cap watchdog behavior is represented in trace token taxonomy.
 type: governance.check
-check: runtime.profiling_contract_artifacts
+check: runtime.liveness_hard_cap_token_emitted
 harness:
   root: .
+  liveness_trace_tokens:
+    trace_path: docs/spec/governance/cases/fixtures/run_trace_liveness_sample.json
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}
@@ -33,4 +34,3 @@ assert:
     - 0
   target: violation_count
 ```
-

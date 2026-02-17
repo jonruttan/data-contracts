@@ -47,17 +47,27 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 ## Generated Runner API Catalog
 
-- command_count: 52
+- command_count: 62
 - python_command_count: 43
-- rust_command_count: 52
+- rust_command_count: 62
 - parity_command_count: 43
 - all_commands_parity: false
-- doc_quality_score: 0.9308
+- doc_quality_score: 0.8774
 
 | command | group | python | rust | parity |
 |---|---|---|---|---|
 | `--expr-file` | `reporting` | false | true | false |
 | `--expr-json` | `metrics` | false | true | false |
+| `--liveness-hard-cap-ms` | `reporting` | false | true | false |
+| `--liveness-kill-grace-ms` | `reporting` | false | true | false |
+| `--liveness-level` | `reporting` | false | true | false |
+| `--liveness-min-events` | `reporting` | false | true | false |
+| `--liveness-stall-ms` | `reporting` | false | true | false |
+| `--profile-heartbeat-ms` | `reporting` | false | true | false |
+| `--profile-level` | `reporting` | false | true | false |
+| `--profile-out` | `reporting` | false | true | false |
+| `--profile-stall-threshold-ms` | `reporting` | false | true | false |
+| `--profile-summary-out` | `reporting` | false | true | false |
 | `--subject-file` | `reporting` | false | true | false |
 | `--subject-json` | `metrics` | false | true | false |
 | `-v` | `reporting` | false | true | false |
@@ -140,6 +150,156 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 - Examples:
   - `./scripts/runner_adapter.sh --expr-json`: Execute command with canonical adapter routing.
+
+
+#### `--liveness-hard-cap-ms`
+
+- Summary: Runs `--liveness-hard-cap-ms` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --liveness-hard-cap-ms`: Execute command with canonical adapter routing.
+
+
+#### `--liveness-kill-grace-ms`
+
+- Summary: Runs `--liveness-kill-grace-ms` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --liveness-kill-grace-ms`: Execute command with canonical adapter routing.
+
+
+#### `--liveness-level`
+
+- Summary: Runs `--liveness-level` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --liveness-level`: Execute command with canonical adapter routing.
+
+
+#### `--liveness-min-events`
+
+- Summary: Runs `--liveness-min-events` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --liveness-min-events`: Execute command with canonical adapter routing.
+
+
+#### `--liveness-stall-ms`
+
+- Summary: Runs `--liveness-stall-ms` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --liveness-stall-ms`: Execute command with canonical adapter routing.
+
+
+#### `--profile-heartbeat-ms`
+
+- Summary: Runs `--profile-heartbeat-ms` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --profile-heartbeat-ms`: Execute command with canonical adapter routing.
+
+
+#### `--profile-level`
+
+- Summary: Runs `--profile-level` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --profile-level`: Execute command with canonical adapter routing.
+
+
+#### `--profile-out`
+
+- Summary: Runs `--profile-out` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --profile-out`: Execute command with canonical adapter routing.
+
+
+#### `--profile-stall-threshold-ms`
+
+- Summary: Runs `--profile-stall-threshold-ms` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --profile-stall-threshold-ms`: Execute command with canonical adapter routing.
+
+
+#### `--profile-summary-out`
+
+- Summary: Runs `--profile-summary-out` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --profile-summary-out`: Execute command with canonical adapter routing.
 
 
 #### `--subject-file`

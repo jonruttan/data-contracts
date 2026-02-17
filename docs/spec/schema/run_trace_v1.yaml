@@ -72,4 +72,8 @@ timeout_reason_tokens:
 - timeout.subprocess.io_drain
 - timeout.case.harness
 - timeout.case.chain
-
+- stall.runner.no_progress
+- stall.subprocess.no_output_no_event
+- timeout.hard_cap.emergency
+- watchdog.kill.term
+- watchdog.kill.killed

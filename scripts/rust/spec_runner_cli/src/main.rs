@@ -1145,6 +1145,46 @@ fn main() {
                 std::env::set_var("SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS", args[arg_index + 1].clone());
                 arg_index += 2;
             }
+            "--liveness-level" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --liveness-level requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_LIVENESS_LEVEL", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
+            "--liveness-stall-ms" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --liveness-stall-ms requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_LIVENESS_STALL_MS", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
+            "--liveness-min-events" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --liveness-min-events requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_LIVENESS_MIN_EVENTS", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
+            "--liveness-hard-cap-ms" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --liveness-hard-cap-ms requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_LIVENESS_HARD_CAP_MS", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
+            "--liveness-kill-grace-ms" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --liveness-kill-grace-ms requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_LIVENESS_KILL_GRACE_MS", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
             _ => break,
         }
     }

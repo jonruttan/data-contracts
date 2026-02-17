@@ -11,6 +11,11 @@ profile_out=""
 profile_summary_out=""
 profile_heartbeat_ms=""
 profile_stall_threshold_ms=""
+liveness_level=""
+liveness_stall_ms=""
+liveness_min_events=""
+liveness_hard_cap_ms=""
+liveness_kill_grace_ms=""
 while [[ $# -gt 0 ]]; do
   case "${1:-}" in
     --verbose|-v)
@@ -43,6 +48,26 @@ while [[ $# -gt 0 ]]; do
       ;;
     --profile-stall-threshold-ms)
       profile_stall_threshold_ms="${2:-}"
+      shift 2
+      ;;
+    --liveness-level)
+      liveness_level="${2:-}"
+      shift 2
+      ;;
+    --liveness-stall-ms)
+      liveness_stall_ms="${2:-}"
+      shift 2
+      ;;
+    --liveness-min-events)
+      liveness_min_events="${2:-}"
+      shift 2
+      ;;
+    --liveness-hard-cap-ms)
+      liveness_hard_cap_ms="${2:-}"
+      shift 2
+      ;;
+    --liveness-kill-grace-ms)
+      liveness_kill_grace_ms="${2:-}"
       shift 2
       ;;
     *)
@@ -84,6 +109,21 @@ if [[ -n "${profile_heartbeat_ms}" ]]; then
 fi
 if [[ -n "${profile_stall_threshold_ms}" ]]; then
   export SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS="${profile_stall_threshold_ms}"
+fi
+if [[ -n "${liveness_level}" ]]; then
+  export SPEC_RUNNER_LIVENESS_LEVEL="${liveness_level}"
+fi
+if [[ -n "${liveness_stall_ms}" ]]; then
+  export SPEC_RUNNER_LIVENESS_STALL_MS="${liveness_stall_ms}"
+fi
+if [[ -n "${liveness_min_events}" ]]; then
+  export SPEC_RUNNER_LIVENESS_MIN_EVENTS="${liveness_min_events}"
+fi
+if [[ -n "${liveness_hard_cap_ms}" ]]; then
+  export SPEC_RUNNER_LIVENESS_HARD_CAP_MS="${liveness_hard_cap_ms}"
+fi
+if [[ -n "${liveness_kill_grace_ms}" ]]; then
+  export SPEC_RUNNER_LIVENESS_KILL_GRACE_MS="${liveness_kill_grace_ms}"
 fi
 
 case "${impl}" in

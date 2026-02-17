@@ -1,14 +1,14 @@
 # Governance Cases
 
-## SRGOV-PROFILE-CONTRACT-001
+## SRGOV-LIVENESS-DEPRECATION-001
 
 ```yaml spec-test
-id: SRGOV-PROFILE-CONTRACT-001
-title: runtime profiling contract artifacts exist and are discoverable
-purpose: Ensures run trace schema and profiling contract docs are present and linked in current
-  snapshot notes.
+id: SRGOV-LIVENESS-DEPRECATION-001
+title: governance legacy timeout envs are marked deprecated
+purpose: Ensures legacy governance timeout environment variables remain documented as deprecated
+  and mapped to liveness hard-cap behavior.
 type: governance.check
-check: runtime.profiling_contract_artifacts
+check: runtime.legacy_timeout_envs_deprecated
 harness:
   root: .
   policy_evaluate:
@@ -33,4 +33,3 @@ assert:
     - 0
   target: violation_count
 ```
-

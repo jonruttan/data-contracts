@@ -1,14 +1,14 @@
 # Governance Cases
 
-## SRGOV-PROFILE-CONTRACT-001
+## SRGOV-LIVENESS-CONTRACT-001
 
 ```yaml spec-test
-id: SRGOV-PROFILE-CONTRACT-001
-title: runtime profiling contract artifacts exist and are discoverable
-purpose: Ensures run trace schema and profiling contract docs are present and linked in current
-  snapshot notes.
+id: SRGOV-LIVENESS-CONTRACT-001
+title: runtime liveness watchdog contract docs and schema are synchronized
+purpose: Ensures liveness controls and reason tokens are declared in runtime profiling contract
+  and schema artifacts.
 type: governance.check
-check: runtime.profiling_contract_artifacts
+check: runtime.liveness_watchdog_contract_valid
 harness:
   root: .
   policy_evaluate:
@@ -33,4 +33,3 @@ assert:
     - 0
   target: violation_count
 ```
-

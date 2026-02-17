@@ -16,6 +16,10 @@ Notes:
   `--profile-level off|basic|detailed|debug`, producing deterministic
   `run_trace_v1` artifacts at `/.artifacts/run-trace.json` and
   `/.artifacts/run-trace-summary.md` with span/event timeout diagnostics.
+- Governance hang handling is liveness-first: no-progress stall detection
+  (`--liveness-*` / `SPEC_RUNNER_LIVENESS_*`) is primary with emergency
+  hard-cap fallback; legacy governance timeout env vars are deprecated and
+  mapped to hard-cap behavior.
 - Subject projection now follows JSON-core profile envelopes
   (`profile_id`, `profile_version`, `value`, `meta`, optional `context`);
   evaluator subjects are JSON-only.

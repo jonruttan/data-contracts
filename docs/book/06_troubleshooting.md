@@ -74,25 +74,26 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 | runtime error in deterministic mode | network URL used without live mode | set `harness.api_http.mode: live` |
 | missing round-trip values | bad `{{steps.*}}` path | verify step `id` and `steps_json` structure |
 | CORS assertion fails | raw headers differ from expectation | assert via normalized `cors_json` fields |
-| adapter timeout failure (`timed out after ...`) | command exceeded adapter timeout guard | raise `SPEC_RUNNER_TIMEOUT_*_SECONDS` for the command and rerun |
+| liveness watchdog failure (`stall.*` / `timeout.hard_cap.emergency`) | no progress detected or emergency cap exceeded | rerun with `--profile-level debug` and tune `--liveness-*` knobs |
 
 First command for API flow issues:
 
 - `./scripts/runner_adapter.sh governance`
 - `./scripts/runner_adapter.sh normalize-check`
 
-## Timeout Overrides
+## Liveness Controls
 
-The adapter enforces timeouts for potentially long commands:
+Governance now uses progress-based hang detection:
 
-- `governance`: `SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS` (default `120`)
-- `governance-heavy`: `SPEC_RUNNER_TIMEOUT_GOVERNANCE_HEAVY_SECONDS` (default `180`)
-- `normalize-check` / `normalize-fix`: `SPEC_RUNNER_TIMEOUT_NORMALIZE_SECONDS` (default `120`)
-- `docs-generate*` / `docs-build*`: `SPEC_RUNNER_TIMEOUT_DOCS_SECONDS` (default `180`)
-- `conformance-parity`: `SPEC_RUNNER_TIMEOUT_CONFORMANCE_PARITY_SECONDS` (default `240`)
+- `--liveness-level off|basic|strict`
+- `--liveness-stall-ms` (default `30000`)
+- `--liveness-min-events` (default `1`)
+- `--liveness-hard-cap-ms` (default `1800000`)
+- `--liveness-kill-grace-ms` (default `5000`)
 
-If timeout triggers during local debugging, increase only the relevant variable
-for that invocation.
+Legacy variables `SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS` and
+`SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS` are deprecated and map to
+emergency hard-cap behavior.
 
 ## Timeout Profiling
 

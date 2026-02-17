@@ -76,13 +76,13 @@ jobs:
         id: python_parity
         continue-on-error: true
         run: |
-          ./scripts/runner_adapter.sh --impl python governance
+          ./scripts/runner_adapter.sh --impl python --liveness-level basic governance
           ./scripts/runner_adapter.sh --impl python conformance-parity
 
       - name: Diagnostic rerun with detailed profiling (python parity)
         if: steps.python_parity.outcome == 'failure'
         run: |
-          ./scripts/runner_adapter.sh --impl python --profile-level detailed --profile-out .artifacts/python-parity-run-trace.json --profile-summary-out .artifacts/python-parity-run-trace-summary.md governance || true
+          ./scripts/runner_adapter.sh --impl python --liveness-level strict --profile-level detailed --profile-out .artifacts/python-parity-run-trace.json --profile-summary-out .artifacts/python-parity-run-trace-summary.md governance || true
           ./scripts/runner_adapter.sh --impl python --profile-level detailed --profile-out .artifacts/python-conformance-parity-run-trace.json --profile-summary-out .artifacts/python-conformance-parity-run-trace-summary.md conformance-parity || true
 
       - name: Enforce Python parity lane result
@@ -144,7 +144,7 @@ jobs:
           SPEC_RUNNER_BIN: ./scripts/runner_adapter.sh
           SPEC_RUNNER_IMPL: rust
         run: |
-          ./scripts/runner_adapter.sh --impl rust --profile-level detailed --profile-out .artifacts/rust-governance-run-trace.json --profile-summary-out .artifacts/rust-governance-run-trace-summary.md governance || true
+          ./scripts/runner_adapter.sh --impl rust --liveness-level strict --profile-level detailed --profile-out .artifacts/rust-governance-run-trace.json --profile-summary-out .artifacts/rust-governance-run-trace-summary.md governance || true
           ./scripts/runner_adapter.sh --impl rust --profile-level detailed --profile-out .artifacts/rust-ci-cleanroom-run-trace.json --profile-summary-out .artifacts/rust-ci-cleanroom-run-trace-summary.md ci-cleanroom || true
 
       - name: Enforce Rust core gate result

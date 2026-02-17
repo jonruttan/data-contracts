@@ -75,6 +75,22 @@ Environment equivalents:
 - `SPEC_RUNNER_PROFILE_HEARTBEAT_MS`
 - `SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS`
 
+Liveness controls (governance-first):
+
+- `--liveness-level off|basic|strict`
+- `--liveness-stall-ms <int>`
+- `--liveness-min-events <int>`
+- `--liveness-hard-cap-ms <int>`
+- `--liveness-kill-grace-ms <int>`
+
+Environment equivalents:
+
+- `SPEC_RUNNER_LIVENESS_LEVEL`
+- `SPEC_RUNNER_LIVENESS_STALL_MS`
+- `SPEC_RUNNER_LIVENESS_MIN_EVENTS`
+- `SPEC_RUNNER_LIVENESS_HARD_CAP_MS`
+- `SPEC_RUNNER_LIVENESS_KILL_GRACE_MS`
+
 Runtime scope note:
 
 - required support targets in v1 remain Python runner and PHP runner

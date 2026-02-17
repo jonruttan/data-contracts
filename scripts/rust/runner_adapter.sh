@@ -207,6 +207,26 @@ while [[ $# -gt 0 ]]; do
       export SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS="${2:-}"
       shift 2
       ;;
+    --liveness-level)
+      export SPEC_RUNNER_LIVENESS_LEVEL="${2:-}"
+      shift 2
+      ;;
+    --liveness-stall-ms)
+      export SPEC_RUNNER_LIVENESS_STALL_MS="${2:-}"
+      shift 2
+      ;;
+    --liveness-min-events)
+      export SPEC_RUNNER_LIVENESS_MIN_EVENTS="${2:-}"
+      shift 2
+      ;;
+    --liveness-hard-cap-ms)
+      export SPEC_RUNNER_LIVENESS_HARD_CAP_MS="${2:-}"
+      shift 2
+      ;;
+    --liveness-kill-grace-ms)
+      export SPEC_RUNNER_LIVENESS_KILL_GRACE_MS="${2:-}"
+      shift 2
+      ;;
     *)
       break
       ;;
@@ -228,11 +248,7 @@ esac
 
 case "${subcommand}" in
   governance)
-    run_with_timeout_env \
-      SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS \
-      300 \
-      governance \
-      run_rust_subcommand "${subcommand}" "$@"
+    run_rust_subcommand "${subcommand}" "$@"
     ;;
   governance-heavy)
     run_with_timeout_env \

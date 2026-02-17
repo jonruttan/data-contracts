@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 203
-- checks_with_cases: 197
+- check_count: 210
+- checks_with_cases: 204
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -207,9 +207,16 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.domain_library_preferred_for_http_helpers` | 1 | true |
 | `runtime.executable_spec_lang_includes_forbidden` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
+| `runtime.legacy_timeout_envs_deprecated` | 1 | true |
+| `runtime.liveness_hard_cap_token_emitted` | 1 | true |
+| `runtime.liveness_stall_token_emitted` | 1 | true |
+| `runtime.liveness_watchdog_contract_valid` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |
+| `runtime.profiling_contract_artifacts` | 1 | true |
+| `runtime.profiling_redaction_policy` | 1 | true |
+| `runtime.profiling_span_taxonomy` | 1 | true |
 | `runtime.public_runner_default_rust` | 1 | true |
 | `runtime.public_runner_entrypoint_single` | 1 | true |
 | `runtime.python_bin_resolver_sync` | 1 | true |
