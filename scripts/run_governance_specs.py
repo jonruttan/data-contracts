@@ -227,6 +227,12 @@ _ITER_CASES_CACHE: dict[tuple[int, str, str | None, tuple[str, ...] | None], lis
 _ALL_SPEC_CASES_CACHE: dict[tuple[int, str], list[tuple[Path, dict[str, Any]]]] = {}
 _CHAIN_CASES_CACHE: dict[tuple[int, str], list[tuple[Path, dict[str, Any], dict[str, Any], dict[str, Any]]]] = {}
 _CONFORMANCE_IDS_CACHE: dict[tuple[int, str], set[str]] = {}
+_CHAIN_REF_CASES_CACHE: dict[
+    tuple[int, str, str, str],
+    tuple[list[tuple[Path, dict[str, Any]]], list[str]],
+] = {}
+_GLOBAL_SYMBOL_REFERENCES_CACHE: dict[tuple[int, str], set[str]] = {}
+_NORMALIZE_CHECK_CACHE: dict[tuple[int, str, str], tuple[int, list[str]]] = {}
 _SCAN_CACHE_LOCK = threading.RLock()
 
 
@@ -239,6 +245,9 @@ def _reset_scan_caches() -> None:
         _ALL_SPEC_CASES_CACHE.clear()
         _CHAIN_CASES_CACHE.clear()
         _CONFORMANCE_IDS_CACHE.clear()
+        _CHAIN_REF_CASES_CACHE.clear()
+        _GLOBAL_SYMBOL_REFERENCES_CACHE.clear()
+        _NORMALIZE_CHECK_CACHE.clear()
 
 
 def load_external_cases(path: Path, *, formats: set[str] | None = None, md_pattern: str | None = None):
@@ -3198,29 +3207,13 @@ def _producer_step_exports(
 ) -> tuple[set[str], list[str]]:
     errors: list[str] = []
     names: set[str] = set()
-    try:
-        ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
-    except ValueError as exc:
-        return set(), [str(exc)]
-
-    if ref_path:
-        try:
-            resolved_doc = _resolve_chain_ref_doc(root, consumer_doc_path, ref_path)
-        except VirtualPathError as exc:
-            return set(), [f"invalid ref ({exc})"]
-    else:
-        resolved_doc = consumer_doc_path
-
-    try:
-        loaded = list(load_external_cases(resolved_doc, formats={"md"}))
-    except Exception as exc:  # noqa: BLE001
-        return set(), [f"unable to load producer cases ({exc})"]
-
-    if ref_case_id:
-        loaded = [item for item in loaded if str(item[1].get("id", "")).strip() == ref_case_id]
-        if len(loaded) != 1:
-            target = ref_path or _rel_path(root, consumer_doc_path)
-            return set(), [f"unresolved case fragment {ref_case_id} in {target}"]
+    loaded, resolve_errors = _resolve_chain_step_cases(
+        root,
+        consumer_doc_path=consumer_doc_path,
+        raw_ref=step.get("ref"),
+    )
+    if resolve_errors:
+        return set(), resolve_errors
 
     for _source_doc, source_case in loaded:
         source_harness = source_case.get("harness")
@@ -3568,6 +3561,71 @@ def _resolve_chain_ref_doc(root: Path, doc_path: Path, ref_path: str) -> Path:
     return candidate
 
 
+def _resolve_chain_step_cases(
+    root: Path,
+    *,
+    consumer_doc_path: Path,
+    raw_ref: object,
+) -> tuple[list[tuple[Path, dict[str, Any]]], list[str]]:
+    if not isinstance(raw_ref, str):
+        return [], ["step.ref must be a string"]
+    ref_text = str(raw_ref).strip()
+    if not ref_text:
+        return [], ["step.ref must be a non-empty string"]
+    with _SCAN_CACHE_LOCK:
+        cache_key = (_SCAN_CACHE_TOKEN, str(root.resolve()), consumer_doc_path.resolve().as_posix(), ref_text)
+        cached = _CHAIN_REF_CASES_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    try:
+        ref_path, ref_case_id = _parse_chain_ref_value(ref_text)
+    except ValueError as exc:
+        result = ([], [str(exc)])
+        with _SCAN_CACHE_LOCK:
+            _CHAIN_REF_CASES_CACHE[cache_key] = result
+        return result
+
+    if ref_path:
+        try:
+            resolved_doc = _resolve_chain_ref_doc(root, consumer_doc_path, ref_path)
+        except VirtualPathError as exc:
+            result = ([], [f"invalid ref ({exc})"])
+            with _SCAN_CACHE_LOCK:
+                _CHAIN_REF_CASES_CACHE[cache_key] = result
+            return result
+        if not resolved_doc.exists() or not resolved_doc.is_file():
+            result = ([], [f"missing ref path {ref_path}"])
+            with _SCAN_CACHE_LOCK:
+                _CHAIN_REF_CASES_CACHE[cache_key] = result
+            return result
+    else:
+        resolved_doc = consumer_doc_path
+
+    try:
+        loaded = list(load_external_cases(resolved_doc, formats={"md"}))
+    except Exception as exc:  # noqa: BLE001
+        result = ([], [f"unable to load producer cases ({exc})"])
+        with _SCAN_CACHE_LOCK:
+            _CHAIN_REF_CASES_CACHE[cache_key] = result
+        return result
+
+    if ref_case_id:
+        filtered = [item for item in loaded if str(item[1].get("id", "")).strip() == ref_case_id]
+        if len(filtered) != 1:
+            target = ref_path or _rel_path(root, consumer_doc_path)
+            result = ([], [f"unresolved case fragment {ref_case_id} in {target}"])
+            with _SCAN_CACHE_LOCK:
+                _CHAIN_REF_CASES_CACHE[cache_key] = result
+            return result
+        loaded = filtered
+
+    result = (loaded, [])
+    with _SCAN_CACHE_LOCK:
+        _CHAIN_REF_CASES_CACHE[cache_key] = result
+    return result
+
+
 def _scan_runtime_chain_reference_resolution(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     violations: list[str] = []
@@ -3590,35 +3648,15 @@ def _scan_runtime_chain_reference_resolution(root: Path, *, harness: dict | None
                 violations.append(f"{doc_path.relative_to(root)}: case {case_id} step[{idx}] must be mapping")
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            try:
-                ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
-            except ValueError as exc:
-                violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} {exc}")
-                continue
-            if ref_path:
-                try:
-                    p = _resolve_chain_ref_doc(root, doc_path, ref_path)
-                except VirtualPathError as exc:
-                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} invalid ref ({exc})")
-                    continue
-                if not p.exists() or not p.is_file():
-                    violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} missing ref path {ref_path}")
-                    continue
-                found = list(load_external_cases(p, formats={"md"}))
-                if ref_case_id:
-                    matched = [x for x in found if str(x[1].get("id", "")).strip() == ref_case_id]
-                    if len(matched) != 1:
-                        violations.append(
-                            f"{doc_path.relative_to(root)}: case {case_id} step {step_id} unresolved case fragment {ref_case_id} in {ref_path}"
-                        )
-            else:
-                assert ref_case_id is not None
-                found = list(load_external_cases(doc_path, formats={"md"}))
-                matched = [x for x in found if str(x[1].get("id", "")).strip() == ref_case_id]
-                if len(matched) != 1:
-                    violations.append(
-                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} unresolved local case fragment {ref_case_id}"
-                    )
+            _loaded, errors = _resolve_chain_step_cases(
+                root,
+                consumer_doc_path=doc_path,
+                raw_ref=step.get("ref"),
+            )
+            for err in errors:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} {err}"
+                )
     return violations
 
 
@@ -3644,36 +3682,16 @@ def _scan_runtime_chain_cycle_forbidden(root: Path, *, harness: dict | None = No
         for step in steps:
             if not isinstance(step, dict):
                 continue
-            try:
-                ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
-            except ValueError:
-                continue
-            targets: list[str] = []
-            if ref_path:
-                try:
-                    p = _resolve_chain_ref_doc(root, doc_path, ref_path)
-                except Exception:
-                    continue
-                found = list(load_external_cases(p, formats={"md"}))
-                if ref_case_id:
-                    targets = [
-                        f"{d.resolve().as_posix()}::{str(t.get('id', '')).strip()}"
-                        for d, t in found
-                        if str(t.get("id", "")).strip() == ref_case_id
-                    ]
-                else:
-                    targets = [
-                            f"{d.resolve().as_posix()}::{str(t.get('id', '')).strip()}"
-                            for d, t in found
-                            if str(t.get("id", "")).strip()
-                    ]
-            elif ref_case_id:
-                found = list(load_external_cases(doc_path, formats={"md"}))
-                targets = [
-                    f"{d.resolve().as_posix()}::{str(t.get('id', '')).strip()}"
-                    for d, t in found
-                    if str(t.get("id", "")).strip() == ref_case_id
-                ]
+            found, _errors = _resolve_chain_step_cases(
+                root,
+                consumer_doc_path=doc_path,
+                raw_ref=step.get("ref"),
+            )
+            targets = [
+                f"{d.resolve().as_posix()}::{str(t.get('id', '')).strip()}"
+                for d, t in found
+                if str(t.get("id", "")).strip()
+            ]
             for target in targets:
                 if target:
                     graph[node].add(target)
@@ -3983,39 +4001,7 @@ def _scan_library_colocated_symbol_tests_required(root: Path, *, harness: dict |
         if has_executable_test_case:
             continue
 
-    scan_roots = [
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/impl",
-        root / "docs/spec/libraries",
-    ]
-    for base in scan_roots:
-        if not base.exists():
-            continue
-        for _doc_path, case in _iter_all_spec_cases(base):
-            h = case.get("harness")
-            if isinstance(h, dict):
-                chain = h.get("chain")
-                if isinstance(chain, dict):
-                    imports = chain.get("imports")
-                    if isinstance(imports, list):
-                        for item in imports:
-                            if not isinstance(item, dict):
-                                continue
-                            names = item.get("names")
-                            if isinstance(names, list):
-                                for raw in names:
-                                    sym = str(raw).strip()
-                                    if sym and "." in sym:
-                                        referenced.add(sym)
-            raw_assert = case.get("assert")
-            if isinstance(raw_assert, list):
-                for expr in _iter_evaluate_expr_nodes(raw_assert):
-                    referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
-            if isinstance(h, dict):
-                policy = h.get("policy_evaluate")
-                if isinstance(policy, list):
-                    referenced.update(sym for sym in _collect_var_symbols(policy) if "." in sym)
+    referenced.update(_collect_global_symbol_references(root))
 
     for lib_file, file_exports in exported_by_file.items():
         if file_exports and not any(sym in referenced for sym in file_exports):
@@ -6687,6 +6673,73 @@ def _iter_evaluate_expr_nodes(assert_node: object) -> list[object]:
     return out
 
 
+def _collect_global_symbol_references(root: Path) -> set[str]:
+    with _SCAN_CACHE_LOCK:
+        cache_key = (_SCAN_CACHE_TOKEN, str(root.resolve()))
+        cached = _GLOBAL_SYMBOL_REFERENCES_CACHE.get(cache_key)
+    if cached is not None:
+        return set(cached)
+
+    referenced: set[str] = set()
+    scan_roots = [
+        root / "docs/spec/conformance/cases",
+        root / "docs/spec/governance/cases",
+        root / "docs/spec/impl",
+        root / "docs/spec/libraries",
+    ]
+    for base in scan_roots:
+        if not base.exists():
+            continue
+        for _doc_path, case in _iter_all_spec_cases(base):
+            h = case.get("harness")
+            if isinstance(h, dict):
+                spec_lang = h.get("spec_lang")
+                if isinstance(spec_lang, dict):
+                    raw_exports = spec_lang.get("exports")
+                    if isinstance(raw_exports, list):
+                        for raw in raw_exports:
+                            sym = str(raw).strip()
+                            if sym and "." in sym:
+                                referenced.add(sym)
+                chain = h.get("chain")
+                if isinstance(chain, dict):
+                    raw_imports = chain.get("imports")
+                    if isinstance(raw_imports, list):
+                        for item in raw_imports:
+                            if not isinstance(item, dict):
+                                continue
+                            names = item.get("names")
+                            if isinstance(names, list):
+                                for raw_name in names:
+                                    sym = str(raw_name).strip()
+                                    if sym and "." in sym:
+                                        referenced.add(sym)
+                            aliases = item.get("as")
+                            if isinstance(aliases, dict):
+                                for raw_alias in aliases.values():
+                                    sym = str(raw_alias).strip()
+                                    if sym and "." in sym:
+                                        referenced.add(sym)
+                policy = h.get("policy_evaluate")
+                if isinstance(policy, list):
+                    referenced.update(sym for sym in _collect_var_symbols(policy) if "." in sym)
+            raw_assert = case.get("assert")
+            if isinstance(raw_assert, list):
+                for expr in _iter_evaluate_expr_nodes(raw_assert):
+                    referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
+            if str(case.get("type", "")).strip() == "spec_lang.export":
+                raw_defines = case.get("defines")
+                if isinstance(raw_defines, dict):
+                    for scope in ("public", "private"):
+                        scoped = raw_defines.get(scope)
+                        if isinstance(scoped, dict):
+                            for expr in scoped.values():
+                                referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
+    with _SCAN_CACHE_LOCK:
+        _GLOBAL_SYMBOL_REFERENCES_CACHE[cache_key] = set(referenced)
+    return referenced
+
+
 def _scan_reference_policy_symbols_resolve(root: Path, *, harness: dict | None = None) -> list[str]:
     cases_dir = root / "docs/spec/governance/cases"
     if not cases_dir.exists():
@@ -6781,63 +6834,7 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
     if violations:
         return violations
 
-    referenced: set[str] = set()
-    scan_roots = [
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/impl",
-        root / "docs/spec/libraries",
-    ]
-    for base in scan_roots:
-        if not base.exists():
-            continue
-        for doc_path, case in _iter_all_spec_cases(base):
-            h = case.get("harness")
-            if isinstance(h, dict):
-                spec_lang = h.get("spec_lang")
-                if isinstance(spec_lang, dict):
-                    raw_exports = spec_lang.get("exports")
-                    if isinstance(raw_exports, list):
-                        for raw in raw_exports:
-                            sym = str(raw).strip()
-                            if sym and "." in sym:
-                                referenced.add(sym)
-                chain = h.get("chain")
-                if isinstance(chain, dict):
-                    raw_imports = chain.get("imports")
-                    if isinstance(raw_imports, list):
-                        for item in raw_imports:
-                            if not isinstance(item, dict):
-                                continue
-                            names = item.get("names")
-                            if isinstance(names, list):
-                                for raw_name in names:
-                                    sym = str(raw_name).strip()
-                                    if sym and "." in sym:
-                                        referenced.add(sym)
-                            aliases = item.get("as")
-                            if isinstance(aliases, dict):
-                                for raw_alias in aliases.values():
-                                    sym = str(raw_alias).strip()
-                                    if sym and "." in sym:
-                                        referenced.add(sym)
-                policy = h.get("policy_evaluate")
-                if isinstance(policy, list):
-                    referenced.update(sym for sym in _collect_var_symbols(policy) if "." in sym)
-            raw_assert = case.get("assert")
-            if isinstance(raw_assert, list):
-                for expr in _iter_evaluate_expr_nodes(raw_assert):
-                    referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
-            if str(case.get("type", "")).strip() == "spec_lang.export":
-                raw_defines = case.get("defines")
-                if isinstance(raw_defines, dict):
-                    for scope in ("public", "private"):
-                        scoped = raw_defines.get(scope)
-                        if isinstance(scoped, dict):
-                            for expr in scoped.values():
-                                referenced.update(
-                                    sym for sym in _collect_var_symbols(expr) if "." in sym
-                                )
+    referenced = _collect_global_symbol_references(root)
 
     for sym, src in sorted(exported.items(), key=lambda item: item[0]):
         if sym not in referenced:
@@ -7341,13 +7338,26 @@ def _scan_normalization_profile_sync(root: Path, *, harness: dict | None = None)
     return violations
 
 
-def _scan_normalization_mapping_ast_only(root: Path, *, harness: dict | None = None) -> list[str]:
-    cmd = [sys.executable, "scripts/normalize_repo.py", "--check", "--scope", "all"]
+def _run_normalize_check_cached(root: Path, *, scope: str) -> tuple[int, list[str]]:
+    with _SCAN_CACHE_LOCK:
+        cache_key = (_SCAN_CACHE_TOKEN, str(root.resolve()), scope)
+        cached = _NORMALIZE_CHECK_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+    cmd = [sys.executable, "scripts/normalize_repo.py", "--check", "--scope", scope]
     proc = subprocess.run(cmd, cwd=root, capture_output=True, text=True, check=False)
-    if proc.returncode == 0:
-        return []
     out = (proc.stdout or "").splitlines() + (proc.stderr or "").splitlines()
     violations = [line.strip() for line in out if line.strip()]
+    result = (int(proc.returncode), violations)
+    with _SCAN_CACHE_LOCK:
+        _NORMALIZE_CHECK_CACHE[cache_key] = result
+    return result
+
+
+def _scan_normalization_mapping_ast_only(root: Path, *, harness: dict | None = None) -> list[str]:
+    code, violations = _run_normalize_check_cached(root, scope="all")
+    if code == 0:
+        return []
     return violations or ["normalization.mapping_ast_only: normalize check failed"]
 
 
