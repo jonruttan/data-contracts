@@ -11,8 +11,20 @@ from spec_runner.conformance import report_to_jsonable, run_conformance_cases
 from spec_runner.conformance_parity import ParityConfig, build_parity_artifact, run_parity_check
 from spec_runner.conformance import validate_conformance_report_payload
 from spec_runner.contract_governance import contract_coverage_jsonable
+from spec_runner.docs_quality import (
+    DocsIssue,
+    check_command_examples_verified,
+    check_example_id_uniqueness,
+    check_instructions_complete,
+    check_token_dependency_resolved,
+    check_token_ownership_unique,
+    load_docs_meta_for_paths,
+    load_reference_manifest,
+    manifest_chapter_paths,
+)
 from spec_runner.schema_registry import compile_registry, write_compiled_registry_artifact
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
+from spec_runner.virtual_paths import VirtualPathError, resolve_contract_path
 from spec_runner.dispatcher import SpecRunContext
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import SETTINGS
@@ -322,3 +334,49 @@ def schema_registry_report_main(argv: list[str] | None = None) -> int:
     out.write_text(raw, encoding="utf-8")
     print(f"wrote {out}")
     return 0 if not errs else 1
+
+
+def _render_docs_issues(issues: list[DocsIssue]) -> None:
+    for issue in issues:
+        print(issue.render())
+
+
+def docs_lint_main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="Lint docs quality contract rules.")
+    ap.add_argument("--manifest", default="docs/book/reference_manifest.yaml")
+    ns = ap.parse_args(argv)
+
+    root = Path.cwd()
+    manifest, manifest_issues = load_reference_manifest(root, str(ns.manifest))
+    issues: list[DocsIssue] = []
+    issues.extend(manifest_issues)
+    if manifest_issues:
+        _render_docs_issues(issues)
+        return 1
+
+    docs = manifest_chapter_paths(manifest)
+    metas, meta_issues, _meta_lines = load_docs_meta_for_paths(root, docs)
+    issues.extend(meta_issues)
+
+    for rel in docs:
+        if rel in metas:
+            try:
+                doc_path = resolve_contract_path(root, str(rel), field="reference_manifest.chapters.path")
+            except VirtualPathError as exc:
+                issues.append(
+                    DocsIssue(path=str(rel), line=1, message=str(exc))
+                )
+                continue
+            metas[rel]["__text__"] = doc_path.read_text(encoding="utf-8")
+
+    issues.extend(check_token_ownership_unique(metas))
+    issues.extend(check_token_dependency_resolved(metas))
+    issues.extend(check_instructions_complete(root, metas))
+    issues.extend(check_command_examples_verified(root, docs))
+    issues.extend(check_example_id_uniqueness(metas))
+
+    if issues:
+        _render_docs_issues(issues)
+        return 1
+    print("OK: docs lint passed")
+    return 0
