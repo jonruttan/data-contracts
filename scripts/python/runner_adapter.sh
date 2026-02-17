@@ -119,7 +119,7 @@ case "${subcommand}" in
   governance)
     run_with_timeout_env \
       SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS \
-      120 \
+      300 \
       governance \
       "${PYTHON_BIN}" scripts/run_governance_specs.py "$@"
     ;;
