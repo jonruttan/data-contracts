@@ -7,6 +7,61 @@ cd "${ROOT_DIR}"
 source "${ROOT_DIR}/scripts/lib/python_bin.sh"
 PYTHON_BIN="$(resolve_python_bin "${ROOT_DIR}")"
 
+run_with_timeout() {
+  local timeout_seconds="$1"
+  local label="$2"
+  local env_var_name="$3"
+  shift 3
+
+  if [[ ! "${timeout_seconds}" =~ ^[0-9]+$ ]] || [[ "${timeout_seconds}" -le 0 ]]; then
+    echo "ERROR: invalid timeout '${timeout_seconds}' for ${env_var_name}; expected positive integer seconds" >&2
+    return 2
+  fi
+
+  local timeout_flag
+  timeout_flag="$(mktemp -t spec_runner_timeout.XXXXXX)"
+  rm -f "${timeout_flag}"
+
+  "$@" &
+  local cmd_pid=$!
+  (
+    sleep "${timeout_seconds}"
+    if kill -0 "${cmd_pid}" 2>/dev/null; then
+      : > "${timeout_flag}"
+      kill -TERM "${cmd_pid}" 2>/dev/null || true
+      sleep 5
+      kill -KILL "${cmd_pid}" 2>/dev/null || true
+    fi
+  ) &
+  local watchdog_pid=$!
+
+  local cmd_status=0
+  if ! wait "${cmd_pid}"; then
+    cmd_status=$?
+  fi
+  kill "${watchdog_pid}" 2>/dev/null || true
+  wait "${watchdog_pid}" 2>/dev/null || true
+
+  if [[ -f "${timeout_flag}" ]]; then
+    rm -f "${timeout_flag}"
+    echo "ERROR: '${label}' timed out after ${timeout_seconds}s. Override with ${env_var_name}=<seconds>." >&2
+    return 124
+  fi
+
+  rm -f "${timeout_flag}"
+  return "${cmd_status}"
+}
+
+run_with_timeout_env() {
+  local env_var_name="$1"
+  local default_seconds="$2"
+  local label="$3"
+  shift 3
+
+  local timeout_seconds="${!env_var_name:-${default_seconds}}"
+  run_with_timeout "${timeout_seconds}" "${label}" "${env_var_name}" "$@"
+}
+
 subcommand="${1:-}"
 if [[ -z "${subcommand}" ]]; then
   echo "ERROR: missing runner adapter subcommand" >&2
@@ -16,10 +71,18 @@ shift
 
 case "${subcommand}" in
   governance)
-    exec "${PYTHON_BIN}" scripts/run_governance_specs.py "$@"
+    run_with_timeout_env \
+      SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS \
+      120 \
+      governance \
+      "${PYTHON_BIN}" scripts/run_governance_specs.py "$@"
     ;;
   governance-heavy)
-    exec "${PYTHON_BIN}" scripts/run_governance_specs.py \
+    run_with_timeout_env \
+      SPEC_RUNNER_TIMEOUT_GOVERNANCE_HEAVY_SECONDS \
+      180 \
+      governance-heavy \
+      "${PYTHON_BIN}" scripts/run_governance_specs.py \
       --check-prefix runtime.chain \
       --check-prefix library. \
       --check-prefix normalization.mapping_ast_only \
@@ -30,10 +93,18 @@ case "${subcommand}" in
     exec "${PYTHON_BIN}" scripts/evaluate_style.py --check docs/spec "$@"
     ;;
   normalize-check)
-    exec "${PYTHON_BIN}" scripts/normalize_repo.py --check "$@"
+    run_with_timeout_env \
+      SPEC_RUNNER_TIMEOUT_NORMALIZE_SECONDS \
+      120 \
+      normalize-check \
+      "${PYTHON_BIN}" scripts/normalize_repo.py --check "$@"
     ;;
   normalize-fix)
-    exec "${PYTHON_BIN}" scripts/normalize_repo.py --write "$@"
+    run_with_timeout_env \
+      SPEC_RUNNER_TIMEOUT_NORMALIZE_SECONDS \
+      120 \
+      normalize-fix \
+      "${PYTHON_BIN}" scripts/normalize_repo.py --write "$@"
     ;;
   schema-registry-check)
     exec "${PYTHON_BIN}" scripts/schema_registry_report.py --format json --out .artifacts/schema_registry_report.json --check "$@"
@@ -120,16 +191,32 @@ case "${subcommand}" in
     exec "${PYTHON_BIN}" scripts/perf_smoke.py "$@"
     ;;
   docs-generate)
-    exec "${PYTHON_BIN}" scripts/docs_generate_all.py --build "$@"
+    run_with_timeout_env \
+      SPEC_RUNNER_TIMEOUT_DOCS_SECONDS \
+      180 \
+      docs-generate \
+      "${PYTHON_BIN}" scripts/docs_generate_all.py --build "$@"
     ;;
   docs-generate-check)
-    exec "${PYTHON_BIN}" scripts/docs_generate_all.py --check "$@"
+    run_with_timeout_env \
+      SPEC_RUNNER_TIMEOUT_DOCS_SECONDS \
+      180 \
+      docs-generate-check \
+      "${PYTHON_BIN}" scripts/docs_generate_all.py --check "$@"
     ;;
   docs-build)
-    exec "${PYTHON_BIN}" scripts/docs_generate_all.py --build --surface reference_book "$@"
+    run_with_timeout_env \
+      SPEC_RUNNER_TIMEOUT_DOCS_SECONDS \
+      180 \
+      docs-build \
+      "${PYTHON_BIN}" scripts/docs_generate_all.py --build --surface reference_book "$@"
     ;;
   docs-build-check)
-    exec "${PYTHON_BIN}" scripts/docs_generate_all.py --check --surface reference_book "$@"
+    run_with_timeout_env \
+      SPEC_RUNNER_TIMEOUT_DOCS_SECONDS \
+      180 \
+      docs-build-check \
+      "${PYTHON_BIN}" scripts/docs_generate_all.py --check --surface reference_book "$@"
     ;;
   docs-lint)
     exec "${PYTHON_BIN}" scripts/docs_lint.py "$@"
@@ -138,7 +225,11 @@ case "${subcommand}" in
     exec "${PYTHON_BIN}" scripts/docs_generate_all.py --build --surface docs_graph "$@"
     ;;
   conformance-parity)
-    exec "${PYTHON_BIN}" scripts/compare_conformance_parity.py \
+    run_with_timeout_env \
+      SPEC_RUNNER_TIMEOUT_CONFORMANCE_PARITY_SECONDS \
+      240 \
+      conformance-parity \
+      "${PYTHON_BIN}" scripts/compare_conformance_parity.py \
       --cases docs/spec/conformance/cases \
       --php-runner scripts/php/conformance_runner.php \
       --out .artifacts/conformance-parity.json \

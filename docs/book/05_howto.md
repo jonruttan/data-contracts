@@ -155,6 +155,24 @@ assert:
 - Governance only: `./scripts/runner_adapter.sh governance`
 - Full local gate: `./scripts/runner_adapter.sh ci-cleanroom`
 
+## Configure Adapter Timeouts
+
+Long-running adapter commands now have deterministic timeout guards. Override
+defaults with environment variables when working on large repos or slower CI
+workers.
+
+- `SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS` (default `120`)
+- `SPEC_RUNNER_TIMEOUT_GOVERNANCE_HEAVY_SECONDS` (default `180`)
+- `SPEC_RUNNER_TIMEOUT_NORMALIZE_SECONDS` (default `120`)
+- `SPEC_RUNNER_TIMEOUT_DOCS_SECONDS` (default `180`)
+- `SPEC_RUNNER_TIMEOUT_CONFORMANCE_PARITY_SECONDS` (default `240`)
+
+Example:
+
+```bash
+SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS=300 ./scripts/runner_adapter.sh governance
+```
+
 ## Domain-First Decision Flow
 
 1. If a `domain.*` helper exists for your intent, use it.
