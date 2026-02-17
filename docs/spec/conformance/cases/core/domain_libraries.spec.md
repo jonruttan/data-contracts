@@ -202,6 +202,9 @@ harness:
     - id: lib_markdown_core_spec
       class: must
       ref: /docs/spec/libraries/domain/markdown_core.spec.md
+    - id: lib_path_core_spec
+      class: must
+      ref: /docs/spec/libraries/domain/path_core.spec.md
     - id: lib_python_core_spec
       class: must
       ref: /docs/spec/libraries/domain/python_core.spec.md
@@ -226,6 +229,17 @@ harness:
       - domain.markdown.token_ownership_unique
       - domain.markdown.token_present
       - domain.markdown.tokens_all_present
+    - from: lib_path_core_spec
+      names:
+      - domain.path.normalize
+      - domain.path.eq
+      - domain.path.is_spec_md
+      - domain.path.is_in_docs
+      - domain.path.sorted
+      - domain.file.is_existing_file
+      - domain.file.is_existing_dir
+      - domain.file.has_ext
+      - domain.file.name
     - from: lib_python_core_spec
       names:
       - py.is_tuple_projection
@@ -261,6 +275,53 @@ assert:
             k: v
           meta:
             php_array_kind: assoc
+    - std.logic.eq:
+      - call:
+        - var: domain.path.normalize
+        - /docs//spec/./libraries/domain/http_core.spec.md
+      - /docs/spec/libraries/domain/http_core.spec.md
+    - call:
+      - var: domain.path.eq
+      - /docs/spec/libraries/domain/http_core.spec.md
+      - /docs/spec/libraries/domain//http_core.spec.md
+    - call:
+      - var: domain.path.is_spec_md
+      - /docs/spec/libraries/domain/http_core.spec.md
+    - call:
+      - var: domain.path.is_in_docs
+      - /docs/spec/libraries/domain/http_core.spec.md
+    - std.logic.eq:
+      - call:
+        - var: domain.path.sorted
+        - lit:
+          - /docs/b
+          - /docs/a
+      - lit:
+        - /docs/a
+        - /docs/b
+    - call:
+      - var: domain.file.is_existing_file
+      - lit:
+          path: /docs/spec/libraries/domain/http_core.spec.md
+          exists: true
+          type: file
+    - call:
+      - var: domain.file.is_existing_dir
+      - lit:
+          path: /docs/spec/libraries/domain
+          exists: true
+          type: dir
+    - call:
+      - var: domain.file.has_ext
+      - lit:
+          path: /docs/spec/libraries/domain/http_core.spec.md
+      - .md
+    - std.logic.eq:
+      - call:
+        - var: domain.file.name
+        - lit:
+            path: /docs/spec/libraries/domain/http_core.spec.md
+      - http_core.spec.md
     - std.string.contains:
       - var: subject
       - /docs/spec/libraries/domain/http_core.spec.md
@@ -270,6 +331,9 @@ assert:
     - std.string.contains:
       - var: subject
       - /docs/spec/libraries/domain/markdown_core.spec.md
+    - std.string.contains:
+      - var: subject
+      - /docs/spec/libraries/domain/path_core.spec.md
     - std.string.contains:
       - var: subject
       - /docs/spec/libraries/domain/php_core.spec.md

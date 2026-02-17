@@ -7,6 +7,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/libraries/domain/http_core.spec.md`
 - `/docs/spec/libraries/domain/make_core.spec.md`
 - `/docs/spec/libraries/domain/markdown_core.spec.md`
+- `/docs/spec/libraries/domain/path_core.spec.md`
 - `/docs/spec/libraries/domain/php_core.spec.md`
 - `/docs/spec/libraries/domain/python_core.spec.md`
 
@@ -49,6 +50,10 @@ Canonical domain index for executable specs in this subtree.
 - `domain.markdown.token_present` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `domain.markdown.tokens_all_present` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `make.has_target` (/docs/spec/libraries/domain/make_core.spec.md)
+- `domain.file.has_ext` (/docs/spec/libraries/domain/path_core.spec.md)
+- `domain.file.is_existing_dir` (/docs/spec/libraries/domain/path_core.spec.md)
+- `domain.file.is_existing_file` (/docs/spec/libraries/domain/path_core.spec.md)
+- `domain.file.name` (/docs/spec/libraries/domain/path_core.spec.md)
 - `markdown._context` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `markdown._headings` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `markdown._links` (/docs/spec/libraries/domain/markdown_core.spec.md)
@@ -68,5 +73,10 @@ Canonical domain index for executable specs in this subtree.
 - `domain.markdown.token_ownership_unique` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `domain.markdown.token_present` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `domain.markdown.tokens_all_present` (/docs/spec/libraries/domain/markdown_core.spec.md)
+- `domain.path.eq` (/docs/spec/libraries/domain/path_core.spec.md)
+- `domain.path.is_in_docs` (/docs/spec/libraries/domain/path_core.spec.md)
+- `domain.path.is_spec_md` (/docs/spec/libraries/domain/path_core.spec.md)
+- `domain.path.normalize` (/docs/spec/libraries/domain/path_core.spec.md)
+- `domain.path.sorted` (/docs/spec/libraries/domain/path_core.spec.md)
 - `php.is_assoc_projection` (/docs/spec/libraries/domain/php_core.spec.md)
 - `py.is_tuple_projection` (/docs/spec/libraries/domain/python_core.spec.md)
