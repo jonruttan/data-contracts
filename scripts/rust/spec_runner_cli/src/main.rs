@@ -1,3 +1,5 @@
+mod spec_lang;
+
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -5,6 +7,17 @@ use std::process::{self, Command};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 use serde_json::{json, Value};
+use spec_lang::{eval_mapping_ast, EvalLimits};
+
+fn debug_enabled() -> bool {
+    matches!(std::env::var("SPEC_RUNNER_DEBUG").ok().as_deref(), Some("1") | Some("true") | Some("yes"))
+}
+
+fn debug_log(msg: &str) {
+    if debug_enabled() {
+        eprintln!("[spec_runner_cli debug] {msg}");
+    }
+}
 
 fn find_repo_root() -> Result<PathBuf, String> {
     let mut cur = env::current_dir().map_err(|e| format!("failed to read cwd: {e}"))?;
@@ -13,7 +26,13 @@ fn find_repo_root() -> Result<PathBuf, String> {
             return Ok(cur);
         }
         match cur.parent() {
-            Some(parent) => cur = parent.to_path_buf(),
+            Some(parent) => {
+                let next = parent.to_path_buf();
+                if next == cur {
+                    return Err("unable to find repository root (.git)".to_string());
+                }
+                cur = next;
+            }
             None => return Err("unable to find repository root (.git)".to_string()),
         }
     }
@@ -209,24 +228,38 @@ fn ensure_validate_report_export_contract(case_block: &str, spec_ref: &str) -> R
 }
 
 fn validate_report_payload(payload: &Value) -> Vec<String> {
-    let mut out = Vec::<String>::new();
-    let version_ok = payload
-        .as_object()
-        .and_then(|m| m.get("version"))
-        .and_then(Value::as_i64)
-        == Some(1);
-    if !version_ok {
-        out.push("report.version must equal 1".to_string());
+    let expr = json!({
+      "std.collection.concat": [
+        {"if": [
+          {"std.logic.eq": [
+            {"std.object.get": [{"var":"subject"}, {"lit":"version"}]},
+            {"lit": 1}
+          ]},
+          {"lit": []},
+          {"lit": ["report.version must equal 1"]}
+        ]},
+        {"if": [
+          {"std.type.is_list": [
+            {"std.object.get": [{"var":"subject"}, {"lit":"results"}]}
+          ]},
+          {"lit": []},
+          {"lit": ["report.results must be a list"]}
+        ]}
+      ]
+    });
+    match eval_mapping_ast(
+        &expr,
+        payload.clone(),
+        std::collections::HashMap::new(),
+        EvalLimits::default(),
+    ) {
+        Ok(Value::Array(items)) => items
+            .into_iter()
+            .filter_map(|v| v.as_str().map(|s| s.to_string()))
+            .collect::<Vec<_>>(),
+        Ok(_) => vec!["validate_report expression must return list".to_string()],
+        Err(e) => vec![format!("spec_lang error: {}", e.message)],
     }
-    let results_ok = payload
-        .as_object()
-        .and_then(|m| m.get("results"))
-        .map(|v| v.is_array())
-        .unwrap_or(false);
-    if !results_ok {
-        out.push("report.results must be a list".to_string());
-    }
-    out
 }
 
 fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
@@ -296,6 +329,138 @@ fn run_spec_ref_print(subcommand: &str) -> i32 {
     };
     println!("{spec_ref}");
     0
+}
+
+fn run_spec_eval_native(root: &Path, forwarded: &[String]) -> i32 {
+    let mut expr_json: Option<String> = None;
+    let mut expr_file: Option<String> = None;
+    let mut subject_json: Option<String> = None;
+    let mut subject_file: Option<String> = None;
+
+    let mut i = 0usize;
+    while i < forwarded.len() {
+        let arg = forwarded[i].as_str();
+        match arg {
+            "--expr-json" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --expr-json requires value");
+                    return 2;
+                }
+                expr_json = Some(forwarded[i + 1].clone());
+                i += 2;
+            }
+            "--expr-file" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --expr-file requires value");
+                    return 2;
+                }
+                expr_file = Some(forwarded[i + 1].clone());
+                i += 2;
+            }
+            "--subject-json" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --subject-json requires value");
+                    return 2;
+                }
+                subject_json = Some(forwarded[i + 1].clone());
+                i += 2;
+            }
+            "--subject-file" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --subject-file requires value");
+                    return 2;
+                }
+                subject_file = Some(forwarded[i + 1].clone());
+                i += 2;
+            }
+            _ => {
+                eprintln!("ERROR: unsupported spec-eval arg: {arg}");
+                return 2;
+            }
+        }
+    }
+
+    let expr_val: Value = match (expr_json, expr_file) {
+        (Some(raw), None) => match serde_json::from_str(&raw) {
+            Ok(v) => v,
+            Err(e) => {
+                eprintln!("ERROR: invalid --expr-json: {e}");
+                return 2;
+            }
+        },
+        (None, Some(path)) => {
+            let p = root.join(path.trim_start_matches('/'));
+            let raw = match fs::read_to_string(&p) {
+                Ok(s) => s,
+                Err(e) => {
+                    eprintln!("ERROR: failed to read --expr-file {}: {e}", p.display());
+                    return 2;
+                }
+            };
+            match serde_json::from_str(&raw) {
+                Ok(v) => v,
+                Err(e) => {
+                    eprintln!("ERROR: invalid JSON in --expr-file {}: {e}", p.display());
+                    return 2;
+                }
+            }
+        }
+        _ => {
+            eprintln!("ERROR: provide exactly one of --expr-json or --expr-file");
+            return 2;
+        }
+    };
+
+    let subject_val: Value = match (subject_json, subject_file) {
+        (Some(raw), None) => match serde_json::from_str(&raw) {
+            Ok(v) => v,
+            Err(e) => {
+                eprintln!("ERROR: invalid --subject-json: {e}");
+                return 2;
+            }
+        },
+        (None, Some(path)) => {
+            let p = root.join(path.trim_start_matches('/'));
+            let raw = match fs::read_to_string(&p) {
+                Ok(s) => s,
+                Err(e) => {
+                    eprintln!("ERROR: failed to read --subject-file {}: {e}", p.display());
+                    return 2;
+                }
+            };
+            match serde_json::from_str(&raw) {
+                Ok(v) => v,
+                Err(e) => {
+                    eprintln!("ERROR: invalid JSON in --subject-file {}: {e}", p.display());
+                    return 2;
+                }
+            }
+        }
+        (None, None) => Value::Null,
+        _ => {
+            eprintln!("ERROR: provide at most one of --subject-json or --subject-file");
+            return 2;
+        }
+    };
+
+    match eval_mapping_ast(
+        &expr_val,
+        subject_val,
+        std::collections::HashMap::new(),
+        EvalLimits::default(),
+    ) {
+        Ok(v) => {
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&v).unwrap_or_else(|_| "null".to_string())
+            );
+            0
+        }
+        Err(e) => {
+            eprintln!("ERROR: {}", e.message);
+            1
+        }
+    }
 }
 
 fn runner_command(runner_bin: &str, runner_impl: &str, subcommand: &str) -> Vec<String> {
@@ -695,7 +860,9 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
 }
 
 fn main() {
+    debug_log("main:start");
     let args: Vec<String> = env::args().collect();
+    debug_log("main:args_collected");
     if args.len() < 2 {
         eprintln!("ERROR: missing runner adapter subcommand");
         process::exit(2);
@@ -703,6 +870,7 @@ fn main() {
 
     let subcommand = args[1].clone();
     let forwarded: Vec<String> = args[2..].to_vec();
+    debug_log("main:subcommand_parsed");
 
     let root = match find_repo_root() {
         Ok(p) => p,
@@ -711,6 +879,7 @@ fn main() {
             process::exit(1);
         }
     };
+    debug_log("main:repo_root_resolved");
 
     let py = python_path(&root);
     let ruff = tool_path(&root, "ruff");
@@ -718,6 +887,7 @@ fn main() {
     let pytest = tool_path(&root, "pytest");
 
     let code = match subcommand.as_str() {
+        "spec-eval" => run_spec_eval_native(&root, &forwarded),
         "spec-ref" => {
             if forwarded.len() != 1 {
                 eprintln!("usage: spec-ref <subcommand>");

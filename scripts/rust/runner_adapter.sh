@@ -5,7 +5,16 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "${ROOT_DIR}"
 
 RUST_CLI_MANIFEST="${ROOT_DIR}/scripts/rust/spec_runner_cli/Cargo.toml"
+RUST_CLI_TARGET=""
 RUST_CLI_BIN="${ROOT_DIR}/target/debug/spec_runner_cli"
+
+# Prefer native Apple Silicon binaries when available to avoid Rosetta/runtime hangs.
+if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then
+  ARM_TARGET="aarch64-apple-darwin"
+  ARM_BIN="${ROOT_DIR}/target/${ARM_TARGET}/debug/spec_runner_cli"
+  RUST_CLI_TARGET="${ARM_TARGET}"
+  RUST_CLI_BIN="${ARM_BIN}"
+fi
 
 run_rust_subcommand() {
   local cmd="$1"
@@ -14,7 +23,32 @@ run_rust_subcommand() {
     "${RUST_CLI_BIN}" "${cmd}" "$@"
     return
   fi
-  cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${cmd}" "$@"
+  if [[ -n "${RUST_CLI_TARGET}" ]] && ! rustup target list --installed 2>/dev/null | grep -qx "${RUST_CLI_TARGET}"; then
+    echo "ERROR: missing Rust target '${RUST_CLI_TARGET}'. Install with: rustup target add ${RUST_CLI_TARGET}" >&2
+    return 2
+  fi
+  if [[ -n "${RUST_CLI_TARGET}" ]]; then
+    cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" --target "${RUST_CLI_TARGET}" -- "${cmd}" "$@"
+  else
+    cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${cmd}" "$@"
+  fi
+}
+
+exec_rust_subcommand() {
+  local cmd="$1"
+  shift
+  if [[ -x "${RUST_CLI_BIN}" ]]; then
+    exec "${RUST_CLI_BIN}" "${cmd}" "$@"
+  fi
+  if [[ -n "${RUST_CLI_TARGET}" ]] && ! rustup target list --installed 2>/dev/null | grep -qx "${RUST_CLI_TARGET}"; then
+    echo "ERROR: missing Rust target '${RUST_CLI_TARGET}'. Install with: rustup target add ${RUST_CLI_TARGET}" >&2
+    exit 2
+  fi
+  if [[ -n "${RUST_CLI_TARGET}" ]]; then
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" --target "${RUST_CLI_TARGET}" -- "${cmd}" "$@"
+  else
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${cmd}" "$@"
+  fi
 }
 
 run_with_timeout() {
@@ -80,18 +114,12 @@ fi
 shift
 
 case "${subcommand}" in
-  spec-ref)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+  spec-eval|spec-ref|validate-report|style-check|schema-registry-check|schema-registry-build|schema-docs-check|schema-docs-build|lint|typecheck|compilecheck|conformance-purpose-json|conformance-purpose-md|spec-portability-json|spec-portability-md|spec-lang-adoption-json|spec-lang-adoption-md|runner-independence-json|runner-independence-md|python-dependency-json|python-dependency-md|docs-operability-json|docs-operability-md|contract-assertions-json|contract-assertions-md|objective-scorecard-json|objective-scorecard-md|spec-lang-stdlib-json|spec-lang-stdlib-md|ci-gate-summary|ci-cleanroom|perf-smoke|docs-generate|docs-generate-check|docs-build|docs-build-check|docs-lint|docs-graph|conformance-parity|test-core|test-full)
+    exec_rust_subcommand "${subcommand}" "$@"
     ;;
-  validate-report)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
+esac
+
+case "${subcommand}" in
   governance)
     run_with_timeout_env \
       SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS \
@@ -106,12 +134,6 @@ case "${subcommand}" in
       governance-heavy \
       run_rust_subcommand "${subcommand}" "$@"
     ;;
-  style-check)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
   normalize-check)
     run_with_timeout_env \
       SPEC_RUNNER_TIMEOUT_NORMALIZE_SECONDS \
@@ -125,132 +147,6 @@ case "${subcommand}" in
       120 \
       normalize-fix \
       run_rust_subcommand "${subcommand}" "$@"
-    ;;
-  schema-registry-check)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  schema-registry-build)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  schema-docs-check)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  schema-docs-build)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  lint)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  typecheck)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  compilecheck)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  conformance-purpose-json)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  conformance-purpose-md)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  spec-portability-json)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  spec-portability-md)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  spec-lang-adoption-json)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  spec-lang-adoption-md)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  runner-independence-json)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  runner-independence-md)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  python-dependency-json)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  python-dependency-md)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  docs-operability-json)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  docs-operability-md)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  contract-assertions-json)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
-    ;;
-  contract-assertions-md)
-    if [[ -x "${RUST_CLI_BIN}" ]]; then
-      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
-    fi
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
   objective-scorecard-json)
     if [[ -x "${RUST_CLI_BIN}" ]]; then
