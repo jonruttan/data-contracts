@@ -47,15 +47,17 @@ Provide generated inventory of metric baseline fields used by objective/governan
 
 ## Generated Metrics Field Catalog
 
-- baseline_count: 10
+- baseline_count: 12
 - unique_summary_field_count: 35
 - unique_segment_field_count: 108
 
 | baseline | summary_fields | segment_count |
 |---|---|---|
 | `/docs/spec/metrics/contract_assertions_baseline.json` | 5 | 4 |
+| `/docs/spec/metrics/docs_generate_profile_baseline.json` | 0 | 0 |
 | `/docs/spec/metrics/docs_generate_timing_baseline.json` | 0 | 0 |
 | `/docs/spec/metrics/docs_operability_baseline.json` | 2 | 5 |
+| `/docs/spec/metrics/governance_profile_baseline.json` | 0 | 0 |
 | `/docs/spec/metrics/governance_timing_baseline.json` | 0 | 0 |
 | `/docs/spec/metrics/objective_scorecard_baseline.json` | 6 | 0 |
 | `/docs/spec/metrics/python_dependency_baseline.json` | 5 | 0 |

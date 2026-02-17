@@ -2,10 +2,13 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 from pathlib import Path
 from typing import Any
+
+import yaml
 
 
 def _resolve(root: Path, raw: str) -> Path:
@@ -43,6 +46,17 @@ def _read_total_ms(path: Path) -> float:
     return float(value)
 
 
+def _sha256_hex(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        while True:
+            chunk = fh.read(8192)
+            if not chunk:
+                break
+            h.update(chunk)
+    return h.hexdigest()
+
+
 def _read_baseline(path: Path) -> tuple[float, float, float]:
     payload = _load_json(path)
     baseline = payload.get("baseline")
@@ -61,6 +75,37 @@ def _read_baseline(path: Path) -> tuple[float, float, float]:
     return float(base_ms), float(ratio), float(absolute)
 
 
+def _load_baseline_notes(path: Path) -> dict[str, str]:
+    try:
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise ValueError(f"missing baseline notes file: {path}") from exc
+    except yaml.YAMLError as exc:
+        raise ValueError(f"invalid yaml baseline notes: {path}: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise ValueError(f"baseline notes payload must be a mapping: {path}")
+    entries = payload.get("entries")
+    if not isinstance(entries, list):
+        raise ValueError(f"baseline notes entries must be a list: {path}")
+    out: dict[str, str] = {}
+    for idx, item in enumerate(entries):
+        if not isinstance(item, dict):
+            raise ValueError(f"baseline notes entry[{idx}] must be a mapping: {path}")
+        baseline = str(item.get("baseline", "")).strip()
+        sha = str(item.get("sha256", "")).strip()
+        if not baseline or not sha:
+            continue
+        out[baseline] = sha
+    return out
+
+
+def _contract_rel(root: Path, path: Path) -> str:
+    try:
+        return "/" + path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return path.resolve().as_posix()
+
+
 def _run(cmd: list[str], *, cwd: Path) -> int:
     cp = subprocess.run(cmd, cwd=cwd, check=False)
     return int(cp.returncode)
@@ -71,8 +116,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--mode", choices=("warn", "strict"), default="warn")
     ap.add_argument("--governance-baseline", default="/docs/spec/metrics/governance_timing_baseline.json")
     ap.add_argument("--docs-baseline", default="/docs/spec/metrics/docs_generate_timing_baseline.json")
+    ap.add_argument("--governance-profile-baseline", default="/docs/spec/metrics/governance_profile_baseline.json")
+    ap.add_argument("--docs-profile-baseline", default="/docs/spec/metrics/docs_generate_profile_baseline.json")
     ap.add_argument("--governance-timing", default="/.artifacts/governance-timing.json")
     ap.add_argument("--docs-timing", default="/.artifacts/docs-generate-timing.json")
+    ap.add_argument("--governance-profile", default="/.artifacts/governance-profile.json")
+    ap.add_argument("--docs-profile", default="/.artifacts/docs-generate-profile.json")
+    ap.add_argument("--baseline-notes", default="/docs/spec/metrics/baseline_update_notes.yaml")
     ap.add_argument("--report-out", default="/.artifacts/perf-smoke-report.json")
     ap.add_argument("--compare-only", action="store_true", help="Skip command execution and compare existing timing files")
     ns = ap.parse_args(argv)
@@ -83,27 +133,54 @@ def main(argv: list[str] | None = None) -> int:
 
     governance_timing = _resolve(root, ns.governance_timing)
     docs_timing = _resolve(root, ns.docs_timing)
+    governance_profile = _resolve(root, ns.governance_profile)
+    docs_profile = _resolve(root, ns.docs_profile)
     governance_baseline = _resolve(root, ns.governance_baseline)
     docs_baseline = _resolve(root, ns.docs_baseline)
+    governance_profile_baseline = _resolve(root, ns.governance_profile_baseline)
+    docs_profile_baseline = _resolve(root, ns.docs_profile_baseline)
+    baseline_notes = _resolve(root, ns.baseline_notes)
     report_out = _resolve(root, ns.report_out)
 
     checks: list[dict[str, Any]] = []
     failures: list[str] = []
 
     if not ns.compare_only:
-        code = _run([py_bin, "scripts/run_governance_specs.py", "--timing-out", str(governance_timing)], cwd=root)
+        code = _run(
+            [
+                py_bin,
+                "scripts/run_governance_specs.py",
+                "--timing-out",
+                str(governance_timing),
+                "--profile",
+                "--profile-out",
+                str(governance_profile),
+            ],
+            cwd=root,
+        )
         if code != 0:
             return code
         code = _run(
-            [py_bin, "scripts/docs_generate_all.py", "--check", "--timing-out", str(docs_timing)],
+            [
+                py_bin,
+                "scripts/docs_generate_all.py",
+                "--check",
+                "--timing-out",
+                str(docs_timing),
+                "--profile",
+                "--profile-out",
+                str(docs_profile),
+            ],
             cwd=root,
         )
         if code != 0:
             return code
 
     for label, timing_path, baseline_path in (
-        ("governance", governance_timing, governance_baseline),
-        ("docs_generate", docs_timing, docs_baseline),
+        ("governance_timing", governance_timing, governance_baseline),
+        ("docs_generate_timing", docs_timing, docs_baseline),
+        ("governance_profile", governance_profile, governance_profile_baseline),
+        ("docs_generate_profile", docs_profile, docs_profile_baseline),
     ):
         current = _read_total_ms(timing_path)
         baseline_ms, ratio, absolute = _read_baseline(baseline_path)
@@ -122,6 +199,31 @@ def main(argv: list[str] | None = None) -> int:
         if not ok:
             failures.append(
                 f"{label}: timing regression ({current:.3f}ms > allowed {allowed:.3f}ms; baseline {baseline_ms:.3f}ms)"
+            )
+
+    notes = _load_baseline_notes(baseline_notes)
+    for baseline_path in (
+        governance_baseline,
+        docs_baseline,
+        governance_profile_baseline,
+        docs_profile_baseline,
+    ):
+        baseline_key = _contract_rel(root, baseline_path)
+        expected_sha = _sha256_hex(baseline_path)
+        noted_sha = notes.get(baseline_key, "") or notes.get(baseline_key.lstrip("/"), "")
+        ok = noted_sha == expected_sha
+        checks.append(
+            {
+                "id": f"baseline_notes:{baseline_key}",
+                "baseline": baseline_key,
+                "expected_sha256": expected_sha,
+                "noted_sha256": noted_sha,
+                "status": "pass" if ok else "fail",
+            }
+        )
+        if not ok:
+            failures.append(
+                f"baseline notes mismatch for {baseline_key} (expected sha256 {expected_sha})"
             )
 
     payload = {
