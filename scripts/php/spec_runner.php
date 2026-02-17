@@ -2707,7 +2707,7 @@ function evalAssertNode(
         if (count($children) === 0) {
             throw new SchemaError('assert step checks must not be empty');
         }
-        $stepPath = "{$path}<{$stepId}>";
+        $stepPath = $path;
         if ($stepClass === 'must') {
             foreach ($children as $i => $child) {
                 evalAssertNode($child, $target, $caseId, "{$stepPath}.checks[{$i}]", $evalLeaf);

@@ -1797,7 +1797,7 @@ function evalTextAssertNode(
         if (count($children) === 0) {
             throw new SchemaError('assert step checks must not be empty');
         }
-        $stepPath = "{$path}<{$stepId}>";
+        $stepPath = $path;
         if ($stepClass === 'must') {
             foreach ($children as $i => $child) {
                 evalTextAssertNode(
@@ -2447,7 +2447,7 @@ function evalApiHttpAssertNode(
         if (count($children) === 0) {
             throw new SchemaError('assert step checks must not be empty');
         }
-        $stepPath = "{$path}<{$stepId}>";
+        $stepPath = $path;
         if ($stepClass === 'must') {
             foreach ($children as $i => $child) {
                 evalApiHttpAssertNode(

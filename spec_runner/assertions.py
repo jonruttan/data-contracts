@@ -138,7 +138,7 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                 raise TypeError("assert step checks must be a list")
             if not children:
                 raise ValueError("assert step checks must not be empty")
-            step_path = f"{path}<{step_id}>"
+            step_path = path
             if step_class == "must":
                 for idx, child in enumerate(children):
                     _eval_node(child, inherited_target=node_target, path=f"{step_path}.checks[{idx}]")
