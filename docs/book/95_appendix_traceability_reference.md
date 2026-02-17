@@ -48,7 +48,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 ## Generated Traceability Catalog
 
 - link_count: 219
-- rules_with_conformance_cases: 47
+- rules_with_conformance_cases: 50
 - rules_with_unit_tests: 219
 - rules_with_implementation_refs: 217
 
@@ -85,9 +85,9 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `CHAIN_EXPORTS_LIST_ONLY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_LIST_ONLY_REQUIRED` | 1 | 1 | 1 | 2 | 3 |
 | `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | 1 | 1 | 0 | 2 | 2 |
-| `CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | 1 | 1 | 0 | 3 | 4 |
+| `CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | 1 | 1 | 1 | 2 | 4 |
 | `CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID` | `docs/spec/contract/policy_v1.yaml#CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID` | 2 | 1 | 0 | 3 | 3 |
-| `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_REFERENCE_CONTRACT_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
+| `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_REFERENCE_CONTRACT_REQUIRED` | 1 | 1 | 1 | 2 | 3 |
 | `CHAIN_SHARED_CONTEXT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_SHARED_CONTEXT_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_STEP_CLASS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_STEP_CLASS_REQUIRED` | 1 | 1 | 0 | 2 | 2 |
 | `CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT` | `docs/spec/contract/policy_v1.yaml#CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT` | 2 | 1 | 2 | 2 | 0 |
@@ -179,7 +179,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `LIBRARY_DOMAIN_INDEX_SYNC` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_INDEX_SYNC` | 2 | 1 | 0 | 1 | 3 |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_OWNERSHIP` | 2 | 1 | 0 | 1 | 2 |
-| `LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | 1 | 1 | 0 | 3 | 6 |
+| `LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | 1 | 1 | 1 | 2 | 6 |
 | `LIBRARY_PUBLIC_SURFACE_MODEL` | `docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_MODEL` | 1 | 1 | 0 | 2 | 3 |
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | 2 | 1 | 0 | 2 | 3 |
 | `LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | 1 | 1 | 0 | 3 | 3 |
