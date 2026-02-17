@@ -26,6 +26,7 @@ harness:
       - domain.http.header_contains
       - domain.http.header_get
       - domain.http.oauth_scope_requested
+      - domain.http.oauth_token_source_is
       - domain.http.ok_2xx
       - domain.http.status
       - domain.http.status_in
@@ -173,6 +174,13 @@ assert:
           context:
             oauth:
               scope_requested: read:items
+    - call:
+      - var: domain.http.oauth_token_source_is
+      - lit:
+          value: {}
+          meta:
+            oauth_token_source: env_ref
+      - env_ref
     - std.string.contains:
       - var: subject
       - domain.http.status_in

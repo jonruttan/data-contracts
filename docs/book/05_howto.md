@@ -155,6 +155,14 @@ assert:
 - Governance only: `./scripts/runner_adapter.sh governance`
 - Full local gate: `./scripts/runner_adapter.sh ci-cleanroom`
 
+## Domain-First Decision Flow
+
+1. If a `domain.*` helper exists for your intent, use it.
+2. If no `domain.*` helper exists, add one in the relevant domain library.
+3. Use raw `ops.*` directly only in:
+   - domain library implementation specs
+   - primitive stdlib/conformance coverage specs
+
 ## REST API How-To (`api.http`)
 
 Use `type: api.http` for endpoint tests. The practical method suite is:

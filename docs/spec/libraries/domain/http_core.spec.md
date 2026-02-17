@@ -320,6 +320,31 @@ harness:
 ```
 
 ```yaml spec-test
+id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-OAUTH-TOKEN-SOURCE-IS
+type: spec.export
+assert:
+- id: __export__domain.http.oauth_token_source_is
+  class: must
+  checks:
+  - std.logic.eq:
+    - std.object.get:
+      - std.object.get:
+        - var: subject
+        - meta
+      - oauth_token_source
+    - var: expected
+harness:
+  chain:
+    exports:
+    - as: domain.http.oauth_token_source_is
+      from: assert.function
+      path: /__export__domain.http.oauth_token_source_is
+      params:
+      - subject
+      - expected
+```
+
+```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-HAS-BEARER-HEADER
 type: spec.export
 assert:

@@ -29,6 +29,7 @@ Canonical domain index for executable specs in this subtree.
 - `domain.http.header_get` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.is_preflight_step` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.oauth_scope_requested` (/docs/spec/libraries/domain/http_core.spec.md)
+- `domain.http.oauth_token_source_is` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.ok_2xx` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.status` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.status_is` (/docs/spec/libraries/domain/http_core.spec.md)

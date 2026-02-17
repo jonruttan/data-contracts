@@ -151,6 +151,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_chain_step_class_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_config_literals.spec.md`
 - `/docs/spec/governance/cases/core/runtime_domain_library_preferred_for_fs_ops.spec.md`
+- `/docs/spec/governance/cases/core/runtime_domain_library_preferred_for_http_helpers.spec.md`
 - `/docs/spec/governance/cases/core/runtime_executable_spec_lang_includes_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`

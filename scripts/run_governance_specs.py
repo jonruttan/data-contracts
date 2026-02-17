@@ -214,6 +214,9 @@ _MD_NAMESPACE_LEGACY_PATTERN = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
 _RAW_OPS_FS_ALLOWED_CASE_FILES = {
     "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
 }
+_RAW_HTTP_META_ALLOWED_CASE_FILES = {
+    "docs/spec/conformance/cases/core/api_http.spec.md",
+}
 _OPS_FS_SYMBOL_PATTERN = re.compile(r"\bops\.fs\.[a-z0-9_.]+\b")
 _HARNESS_FILES = (
     "spec_runner/harnesses/text_file.py",
@@ -3945,6 +3948,79 @@ def _scan_runtime_domain_library_preferred_for_fs_ops(
                 f"{rel_doc}: case {case_id} uses raw ops.fs symbols ({', '.join(raw_fs_ops)}); "
                 "prefer domain.path.* / domain.fs.* helpers in executable specs"
             )
+    return violations
+
+
+def _expr_contains_http_meta_projection(expr: object) -> bool:
+    text = json.dumps(expr, sort_keys=True, ensure_ascii=True)
+    return "std.object.get" in text and (
+        "\"auth_mode\"" in text or "\"oauth_token_source\"" in text
+    )
+
+
+def _expr_uses_domain_http_meta_helpers(expr: object) -> bool:
+    wanted = {"domain.http.auth_is_oauth", "domain.http.oauth_token_source_is"}
+
+    def _walk(node: object) -> bool:
+        if isinstance(node, dict):
+            for key, value in node.items():
+                op = str(key).strip()
+                if op in wanted:
+                    return True
+                if op == "var" and str(value).strip() in wanted:
+                    return True
+                if _walk(value):
+                    return True
+            return False
+        if isinstance(node, list):
+            return any(_walk(x) for x in node)
+        return False
+
+    return _walk(expr)
+
+
+def _scan_runtime_domain_library_preferred_for_http_helpers(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    violations: list[str] = []
+    scan_roots = (
+        root / "docs/spec/conformance/cases",
+        root / "docs/spec/governance/cases",
+        root / "docs/spec/impl",
+    )
+    for base in scan_roots:
+        if not base.exists():
+            continue
+        for doc_path, case in _iter_all_spec_cases(base):
+            if str(case.get("type", "")).strip() != "api.http":
+                continue
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            rel_doc = _rel_path(root, doc_path)
+            if rel_doc in _RAW_HTTP_META_ALLOWED_CASE_FILES:
+                continue
+            assert_tree = case.get("assert", []) or []
+            leaf_rows: list[tuple[str, str, object, bool]] = []
+            def _collect_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
+                del assert_path
+                for row in iter_leaf_assertions(leaf, target_override=inherited_target):
+                    leaf_rows.append(row)
+            try:
+                eval_assert_tree(assert_tree, eval_leaf=_collect_leaf)
+            except Exception:
+                continue
+            for target, op, value, _ in leaf_rows:
+                if target != "context_json" or op != "evaluate":
+                    continue
+                if not _expr_contains_http_meta_projection(value):
+                    continue
+                if _expr_uses_domain_http_meta_helpers(value):
+                    continue
+                violations.append(
+                    f"{rel_doc}: case {case_id} projects oauth http meta fields with raw std.object.get; "
+                    "prefer domain.http.auth_is_oauth/domain.http.oauth_token_source_is"
+                )
+                break
     return violations
 
 
@@ -7766,6 +7842,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.chain_shared_context_required": _scan_runtime_chain_shared_context_required,
     "runtime.executable_spec_lang_includes_forbidden": _scan_runtime_executable_spec_lang_includes_forbidden,
     "runtime.domain_library_preferred_for_fs_ops": _scan_runtime_domain_library_preferred_for_fs_ops,
+    "runtime.domain_library_preferred_for_http_helpers": _scan_runtime_domain_library_preferred_for_http_helpers,
     "runtime.spec_lang_export_type_forbidden": _scan_runtime_spec_lang_export_type_forbidden,
     "docs.api_http_tutorial_sync": _scan_docs_api_http_tutorial_sync,
     "docs.examples_prefer_domain_fs_helpers": _scan_docs_examples_prefer_domain_fs_helpers,
