@@ -367,14 +367,45 @@ def _resolve_ref_path(*, ref_path: str, current_case: InternalSpecCase) -> Path:
     return resolved
 
 
-def resolve_chain_reference(step: ChainStep, *, current_case: InternalSpecCase) -> list[InternalSpecCase]:
+def _load_doc_internal_cases(
+    doc_path: Path,
+    *,
+    doc_cases_cache: dict[str, list[InternalSpecCase]],
+    case_index_cache: dict[str, dict[str, list[InternalSpecCase]]],
+) -> list[InternalSpecCase]:
+    key = doc_path.resolve().as_posix()
+    cached = doc_cases_cache.get(key)
+    if cached is not None:
+        return cached
+    docs = load_external_cases(doc_path, formats={"md"})
+    compiled = [compile_external_case(test, doc_path=source_path) for source_path, test in docs]
+    doc_cases_cache[key] = compiled
+    case_index: dict[str, list[InternalSpecCase]] = {}
+    for case in compiled:
+        case_index.setdefault(case.id, []).append(case)
+    case_index_cache[key] = case_index
+    return compiled
+
+
+def resolve_chain_reference(
+    step: ChainStep,
+    *,
+    current_case: InternalSpecCase,
+    doc_cases_cache: dict[str, list[InternalSpecCase]],
+    case_index_cache: dict[str, dict[str, list[InternalSpecCase]]],
+) -> list[InternalSpecCase]:
     if step.ref.path:
         resolved = _resolve_ref_path(ref_path=step.ref.path, current_case=current_case)
         if not resolved.exists() or not resolved.is_file():
             raise ValueError(f"chain ref path does not exist as file: {step.ref.path}")
-        docs = list(load_external_cases(resolved, formats={"md"}))
+        docs = _load_doc_internal_cases(
+            resolved,
+            doc_cases_cache=doc_cases_cache,
+            case_index_cache=case_index_cache,
+        )
         if step.ref.case_id:
-            filtered = [x for x in docs if str(x[1].get("id", "")).strip() == step.ref.case_id]
+            case_index = case_index_cache.get(resolved.resolve().as_posix(), {})
+            filtered = list(case_index.get(step.ref.case_id, []))
             if not filtered:
                 raise ValueError(
                     f"chain step {step.id} could not resolve case_id {step.ref.case_id} in {step.ref.path}"
@@ -383,17 +414,22 @@ def resolve_chain_reference(step: ChainStep, *, current_case: InternalSpecCase) 
                 raise ValueError(
                     f"chain step {step.id} resolved duplicate case_id {step.ref.case_id} in {step.ref.path}"
                 )
-            return [compile_external_case(filtered[0][1], doc_path=filtered[0][0])]
-        return [compile_external_case(test, doc_path=doc_path) for doc_path, test in docs]
+            return [filtered[0]]
+        return docs
 
     assert step.ref.case_id is not None
-    docs = list(load_external_cases(current_case.doc_path, formats={"md"}))
-    filtered = [x for x in docs if str(x[1].get("id", "")).strip() == step.ref.case_id]
+    _load_doc_internal_cases(
+        current_case.doc_path,
+        doc_cases_cache=doc_cases_cache,
+        case_index_cache=case_index_cache,
+    )
+    local_index = case_index_cache.get(current_case.doc_path.resolve().as_posix(), {})
+    filtered = list(local_index.get(step.ref.case_id, []))
     if not filtered:
         raise ValueError(f"chain step {step.id} could not resolve local case_id {step.ref.case_id}")
     if len(filtered) > 1:
         raise ValueError(f"chain step {step.id} resolved duplicate local case_id {step.ref.case_id}")
-    return [compile_external_case(filtered[0][1], doc_path=filtered[0][0])]
+    return [filtered[0]]
 
 
 def extract_exports(*, step: ChainStep, executed_case: InternalSpecCase, target_values: Mapping[str, Any]) -> dict[str, Any]:
@@ -426,6 +462,7 @@ def _extract_library_symbol_exports(
     *,
     step: ChainStep,
     refs: list[InternalSpecCase],
+    symbol_cache: dict[tuple[str, tuple[int, int, int, int]], dict[str, Any]],
 ) -> dict[str, Any]:
     symbols: dict[str, Any] = {}
     seen_docs: set[Path] = set()
@@ -433,18 +470,26 @@ def _extract_library_symbol_exports(
         if ref_case.doc_path in seen_docs:
             continue
         seen_docs.add(ref_case.doc_path)
-        root = contract_root_for(ref_case.doc_path)
-        try:
-            rel_doc = ref_case.doc_path.resolve().relative_to(root.resolve()).as_posix()
-        except ValueError as exc:
-            raise ValueError(
-                f"chain step {step.id} cannot resolve library doc under contract root: {ref_case.doc_path}"
-            ) from exc
-        loaded = load_spec_lang_symbols_for_case(
-            doc_path=ref_case.doc_path,
-            harness={"spec_lang": {"includes": [f"/{rel_doc}"]}},
-            limits=limits_from_harness(ref_case.harness or {}),
+        limits = limits_from_harness(ref_case.harness or {})
+        cache_key = (
+            ref_case.doc_path.resolve().as_posix(),
+            (int(limits.max_steps), int(limits.max_nodes), int(limits.max_literal_bytes), int(limits.timeout_ms)),
         )
+        loaded = symbol_cache.get(cache_key)
+        if loaded is None:
+            root = contract_root_for(ref_case.doc_path)
+            try:
+                rel_doc = ref_case.doc_path.resolve().relative_to(root.resolve()).as_posix()
+            except ValueError as exc:
+                raise ValueError(
+                    f"chain step {step.id} cannot resolve library doc under contract root: {ref_case.doc_path}"
+                ) from exc
+            loaded = load_spec_lang_symbols_for_case(
+                doc_path=ref_case.doc_path,
+                harness={"spec_lang": {"includes": [f"/{rel_doc}"]}},
+                limits=limits,
+            )
+            symbol_cache[cache_key] = loaded
         for name, value in loaded.items():
             if name in symbols:
                 continue
@@ -478,12 +523,20 @@ def execute_chain_plan(
     steps, chain_imports, fail_fast = compile_chain_plan(case)
     if not steps:
         return
+    doc_cases_cache: dict[str, list[InternalSpecCase]] = {}
+    case_index_cache: dict[str, dict[str, list[InternalSpecCase]]] = {}
+    symbol_cache: dict[tuple[str, tuple[int, int, int, int]], dict[str, Any]] = {}
     case_key = f"{case.doc_path.resolve().as_posix()}::{case.id}"
     # Preserve previous chain execution state per case run.
     ctx.chain_state.clear()
     ctx.chain_trace.clear()
     for step in steps:
-        refs = resolve_chain_reference(step, current_case=case)
+        refs = resolve_chain_reference(
+            step,
+            current_case=case,
+            doc_cases_cache=doc_cases_cache,
+            case_index_cache=case_index_cache,
+        )
         step_exports: dict[str, Any] = {}
         has_library_symbol_export = any(x.from_source == "library.symbol" for x in step.exports.values())
         if has_library_symbol_export:
@@ -504,7 +557,7 @@ def execute_chain_plan(
             failure: Exception | None = None
             try:
                 if has_library_symbol_export:
-                    resolved = _extract_library_symbol_exports(step=step, refs=refs)
+                    resolved = _extract_library_symbol_exports(step=step, refs=refs, symbol_cache=symbol_cache)
                     if step.class_name == "cannot":
                         passed = not bool(resolved)
                     else:
