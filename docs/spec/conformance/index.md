@@ -27,6 +27,6 @@ runner behavior (currently Python and PHP bootstrap subset coverage).
 ## Artifacts
 
 - Contract coverage:
-  - `python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json`
+  - `python -m spec_runner.spec_lang_commands contract-coverage-report --out .artifacts/contract-coverage.json`
 - Purpose report:
   - `python scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json`

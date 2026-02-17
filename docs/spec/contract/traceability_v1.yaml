@@ -1025,7 +1025,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - spec_runner/docs_quality.py
-  - scripts/docs_lint.py
+  - spec_runner/spec_lang_commands.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_meta_schema_valid.spec.md
   notes: Reference chapter doc-meta blocks are schema-validated.
@@ -1060,7 +1060,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - spec_runner/docs_quality.py
-  - scripts/docs_lint.py
+  - spec_runner/spec_lang_commands.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_token_ownership_unique.spec.md
   notes: Canonical doc tokens must have exactly one owner page.
@@ -1077,7 +1077,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - spec_runner/docs_quality.py
-  - scripts/docs_lint.py
+  - spec_runner/spec_lang_commands.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_token_dependency_resolved.spec.md
   notes: Requires-token dependencies must resolve to owner docs and owner content.
@@ -1094,7 +1094,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - spec_runner/docs_quality.py
-  - scripts/docs_lint.py
+  - spec_runner/spec_lang_commands.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_instructions_complete.spec.md
   notes: Instruction docs must retain required operational sections.
@@ -1112,7 +1112,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - spec_runner/docs_quality.py
-  - scripts/docs_lint.py
+  - spec_runner/spec_lang_commands.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_command_examples_verified.spec.md
   notes: Docs examples are validated or explicitly opted out with reason.
@@ -1129,7 +1129,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - spec_runner/docs_quality.py
-  - scripts/docs_lint.py
+  - spec_runner/spec_lang_commands.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_example_id_uniqueness.spec.md
   notes: Example identifiers remain unique across canonical docs metadata.
@@ -2088,7 +2088,7 @@ links:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/spec_lang_stdlib_profile.py
-  - scripts/spec_lang_stdlib_report.py
+  - spec_runner/spec_lang_commands.py
   - docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md
   notes: Defines canonical stdlib profile source of truth for implementation and docs parity checks.
 - rule_id: SPEC_LANG_STDLIB_PROFILE_COMPLETE
@@ -2380,7 +2380,7 @@ links:
   - tests/test_schema_registry_unit.py
   implementation_refs:
   - spec_runner/schema_registry.py
-  - scripts/schema_registry_report.py
+  - spec_runner/spec_lang_commands.py
   notes: Registry YAML profiles are the source of truth for executable case-shape constraints.
 - rule_id: SCHEMA_REGISTRY_VALIDATION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_REGISTRY_VALIDATION_REQUIRED

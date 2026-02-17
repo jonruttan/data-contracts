@@ -107,10 +107,10 @@ case "${subcommand}" in
       "${PYTHON_BIN}" scripts/normalize_repo.py --write "$@"
     ;;
   schema-registry-check)
-    exec "${PYTHON_BIN}" scripts/schema_registry_report.py --format json --out .artifacts/schema_registry_report.json --check "$@"
+    exec "${PYTHON_BIN}" -m spec_runner.spec_lang_commands schema-registry-report --format json --out .artifacts/schema_registry_report.json --check "$@"
     ;;
   schema-registry-build)
-    exec "${PYTHON_BIN}" scripts/schema_registry_report.py --format json --out .artifacts/schema_registry_report.json "$@"
+    exec "${PYTHON_BIN}" -m spec_runner.spec_lang_commands schema-registry-report --format json --out .artifacts/schema_registry_report.json "$@"
     ;;
   schema-docs-check)
     exec "${PYTHON_BIN}" scripts/generate_schema_docs.py --check "$@"
@@ -176,10 +176,10 @@ case "${subcommand}" in
     exec "${PYTHON_BIN}" scripts/objective_scorecard_report.py --format md --out .artifacts/objective-scorecard-summary.md "$@"
     ;;
   spec-lang-stdlib-json)
-    exec "${PYTHON_BIN}" scripts/spec_lang_stdlib_report.py --out .artifacts/spec-lang-stdlib.json "$@"
+    exec "${PYTHON_BIN}" -m spec_runner.spec_lang_commands spec-lang-stdlib-report --out .artifacts/spec-lang-stdlib.json "$@"
     ;;
   spec-lang-stdlib-md)
-    exec "${PYTHON_BIN}" scripts/spec_lang_stdlib_report.py --format md --out .artifacts/spec-lang-stdlib-summary.md "$@"
+    exec "${PYTHON_BIN}" -m spec_runner.spec_lang_commands spec-lang-stdlib-report --format md --out .artifacts/spec-lang-stdlib-summary.md "$@"
     ;;
   ci-gate-summary)
     exec "${PYTHON_BIN}" scripts/ci_gate_summary.py "$@"
@@ -219,7 +219,7 @@ case "${subcommand}" in
       "${PYTHON_BIN}" scripts/docs_generate_all.py --check --surface reference_book "$@"
     ;;
   docs-lint)
-    exec "${PYTHON_BIN}" scripts/docs_lint.py "$@"
+    exec "${PYTHON_BIN}" -m spec_runner.spec_lang_commands docs-lint "$@"
     ;;
   docs-graph)
     exec "${PYTHON_BIN}" scripts/docs_generate_all.py --build --surface docs_graph "$@"

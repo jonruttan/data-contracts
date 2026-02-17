@@ -496,7 +496,9 @@ fn main() {
             &py,
             &with_forwarded(
                 vec![
-                    script(&root, "schema_registry_report.py"),
+                    "-m".to_string(),
+                    "spec_runner.spec_lang_commands".to_string(),
+                    "schema-registry-report".to_string(),
                     "--format".to_string(),
                     "json".to_string(),
                     "--out".to_string(),
@@ -511,7 +513,9 @@ fn main() {
             &py,
             &with_forwarded(
                 vec![
-                    script(&root, "schema_registry_report.py"),
+                    "-m".to_string(),
+                    "spec_runner.spec_lang_commands".to_string(),
+                    "schema-registry-report".to_string(),
                     "--format".to_string(),
                     "json".to_string(),
                     "--out".to_string(),
@@ -760,7 +764,9 @@ fn main() {
             &py,
             &with_forwarded(
                 vec![
-                    script(&root, "spec_lang_stdlib_report.py"),
+                    "-m".to_string(),
+                    "spec_runner.spec_lang_commands".to_string(),
+                    "spec-lang-stdlib-report".to_string(),
                     "--out".to_string(),
                     ".artifacts/spec-lang-stdlib.json".to_string(),
                 ],
@@ -772,7 +778,9 @@ fn main() {
             &py,
             &with_forwarded(
                 vec![
-                    script(&root, "spec_lang_stdlib_report.py"),
+                    "-m".to_string(),
+                    "spec_runner.spec_lang_commands".to_string(),
+                    "spec-lang-stdlib-report".to_string(),
                     "--format".to_string(),
                     "md".to_string(),
                     "--out".to_string(),
@@ -829,7 +837,18 @@ fn main() {
             ),
             &root,
         ),
-        "docs-lint" => run_cmd(&py, &with_forwarded(vec![script(&root, "docs_lint.py")], &forwarded), &root),
+        "docs-lint" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    "-m".to_string(),
+                    "spec_runner.spec_lang_commands".to_string(),
+                    "docs-lint".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
         "docs-graph" => run_cmd(
             &py,
             &with_forwarded(

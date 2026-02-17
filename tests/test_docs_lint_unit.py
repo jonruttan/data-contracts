@@ -1,18 +1,14 @@
-# SPEC-OPT-OUT: Exercises docs-lint script wiring and metadata edge-cases not yet represented as stable .spec.md fixtures.
+# SPEC-OPT-OUT: Exercises docs-lint command wiring and metadata edge-cases not yet represented as stable .spec.md fixtures.
 from __future__ import annotations
 
-import importlib.util
 from pathlib import Path
+from types import SimpleNamespace
+
+from spec_runner import spec_lang_commands
 
 
-def _load_docs_lint_module():
-    repo_root = Path(__file__).resolve().parents[1]
-    script_path = repo_root / "scripts/docs_lint.py"
-    spec = importlib.util.spec_from_file_location("docs_lint_script", script_path)
-    assert spec is not None and spec.loader is not None
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+def _load_docs_lint_module() -> SimpleNamespace:
+    return SimpleNamespace(main=spec_lang_commands.docs_lint_main)
 
 
 def _write_text(path: Path, text: str) -> None:

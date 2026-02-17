@@ -43,12 +43,12 @@ def validate_report_main(argv: list[str] | None = None) -> int:
 
 
 @lru_cache(maxsize=1)
-def _load_validate_report_errors_fn_expr() -> list[object]:
+def _load_conformance_export_functions() -> dict[str, list[object]]:
     repo_root = Path(__file__).resolve().parents[1]
     lib_path = repo_root / "docs/spec/libraries/domain/conformance_core.spec.md"
-    target_symbol = "domain.conformance.validate_report_errors"
     if not lib_path.exists():
         raise RuntimeError(f"missing spec library file: {lib_path}")
+    out: dict[str, list[object]] = {}
     for _doc_path, raw_case in load_external_cases(lib_path, formats={"md"}):
         if str(raw_case.get("type", "")).strip() != "spec.export":
             continue
@@ -59,25 +59,28 @@ def _load_validate_report_errors_fn_expr() -> list[object]:
         for exp in exports:
             if not isinstance(exp, dict):
                 continue
-            if str(exp.get("as", "")).strip() != target_symbol:
+            symbol_name = str(exp.get("as", "")).strip()
+            if not symbol_name:
                 continue
             if str(exp.get("from", "")).strip() != "assert.function":
-                raise RuntimeError(f"{target_symbol} must use from: assert.function")
+                raise RuntimeError(f"{symbol_name} must use from: assert.function")
             step_id = str(exp.get("path", "")).strip().lstrip("/")
             params = exp.get("params")
             if not isinstance(params, list) or not params or not all(isinstance(x, str) and x.strip() for x in params):
-                raise RuntimeError(f"{target_symbol} must declare non-empty string params list")
+                raise RuntimeError(f"{symbol_name} must declare non-empty string params list")
             assert_steps = raw_case.get("assert")
             if not isinstance(assert_steps, list):
-                raise RuntimeError(f"{target_symbol} producer case must include assert list")
+                raise RuntimeError(f"{symbol_name} producer case must include assert list")
+            found_step = False
             for step in assert_steps:
                 if not isinstance(step, dict):
                     continue
                 if str(step.get("id", "")).strip() != step_id:
                     continue
+                found_step = True
                 checks = step.get("checks")
                 if not isinstance(checks, list) or len(checks) != 1 or not isinstance(checks[0], dict):
-                    raise RuntimeError(f"{target_symbol} export step must have exactly one expression check")
+                    raise RuntimeError(f"{symbol_name} export step must have exactly one expression check")
                 try:
                     body_expr = compile_yaml_expr_to_sexpr(
                         checks[0],
@@ -85,18 +88,24 @@ def _load_validate_report_errors_fn_expr() -> list[object]:
                     )
                 except SpecLangYamlAstError as exc:
                     raise RuntimeError(str(exc)) from exc
-                return ["fn", [str(x).strip() for x in params], body_expr]
-            raise RuntimeError(f"{target_symbol} export step id not found: {step_id}")
-    raise RuntimeError(f"symbol not found in spec export library: {target_symbol}")
+                out[symbol_name] = ["fn", [str(x).strip() for x in params], body_expr]
+            if not found_step:
+                raise RuntimeError(f"{symbol_name} export step id not found: {step_id}")
+    if not out:
+        raise RuntimeError(f"no conformance exports found in: {lib_path}")
+    return out
 
 
 def _validate_report_payload_spec_lang(payload: object) -> list[str]:
-    fn_expr = _load_validate_report_errors_fn_expr()
+    symbols = _load_conformance_export_functions()
+    fn_expr = symbols.get("domain.conformance.validate_report_errors")
+    if not isinstance(fn_expr, list):
+        raise RuntimeError("missing symbol: domain.conformance.validate_report_errors")
     result = eval_expr(
         ["call", fn_expr, ["var", "subject"]],
         subject=payload,
         limits=SpecLangLimits(),
-        symbols={},
+        symbols=symbols,
         imports={},
     )
     if not isinstance(result, list):
@@ -294,3 +303,36 @@ def docs_lint_main(argv: list[str] | None = None) -> int:
         return 1
     print("OK: docs lint passed")
     return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="Spec-lang backed command entrypoints.")
+    ap.add_argument(
+        "command",
+        choices=(
+            "validate-report",
+            "spec-lang-stdlib-report",
+            "contract-coverage-report",
+            "schema-registry-report",
+            "docs-lint",
+        ),
+        help="Command to run.",
+    )
+    ap.add_argument("args", nargs=argparse.REMAINDER)
+    ns = ap.parse_args(argv)
+    forwarded = list(ns.args or [])
+    if ns.command == "validate-report":
+        return validate_report_main(forwarded)
+    if ns.command == "spec-lang-stdlib-report":
+        return spec_lang_stdlib_report_main(forwarded)
+    if ns.command == "contract-coverage-report":
+        return contract_coverage_report_main(forwarded)
+    if ns.command == "schema-registry-report":
+        return schema_registry_report_main(forwarded)
+    if ns.command == "docs-lint":
+        return docs_lint_main(forwarded)
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

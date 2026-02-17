@@ -25,7 +25,7 @@ python -m mypy spec_runner
 python -m compileall -q spec_runner scripts tests
 python scripts/evaluate_style.py --check docs/spec
 python scripts/docs_generate_all.py --check
-python scripts/docs_lint.py
+python -m spec_runner.spec_lang_commands docs-lint
 ```
 
 ## Adoption Profiles
@@ -274,7 +274,7 @@ python -m compileall -q spec_runner scripts tests
 Optional wrapper (reporting artifact; not a primary gate):
 
 ```sh
-python scripts/contract_coverage_report.py --out .artifacts/contract-coverage.json
+python -m spec_runner.spec_lang_commands contract-coverage-report --out .artifacts/contract-coverage.json
 ```
 
 ## Conformance Purpose Report
