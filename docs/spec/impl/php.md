@@ -99,7 +99,7 @@ php scripts/php/conformance_runner.php \
 Validate the produced report against the Python contract validator:
 
 ```sh
-python3 scripts/validate_conformance_report.py .artifacts/php-conformance-report.json
+spec-runner-validate-report .artifacts/php-conformance-report.json
 ```
 
 Bootstrap parity subset fixture:

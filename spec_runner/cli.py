@@ -9,7 +9,6 @@ from tempfile import TemporaryDirectory
 
 from spec_runner.conformance import report_to_jsonable, run_conformance_cases
 from spec_runner.conformance_parity import ParityConfig, build_parity_artifact, run_parity_check
-from spec_runner.conformance import validate_conformance_report_payload
 from spec_runner.contract_governance import contract_coverage_jsonable
 from spec_runner.docs_quality import (
     DocsIssue,
@@ -173,22 +172,6 @@ def compare_parity_main(argv: list[str] | None = None) -> int:
         return 1
 
     print(f"OK: conformance parity matched for {cfg.cases_dir}")
-    return 0
-
-
-def validate_report_main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Validate a conformance JSON report payload.")
-    ap.add_argument("report", help="Path to report JSON file")
-    ns = ap.parse_args(argv)
-
-    p = Path(ns.report)
-    payload = json.loads(p.read_text(encoding="utf-8"))
-    errs = validate_conformance_report_payload(payload)
-    if errs:
-        for e in errs:
-            print(f"ERROR: {e}", file=sys.stderr)
-        return 1
-    print(f"OK: valid conformance report ({p})")
     return 0
 
 

@@ -9,4 +9,4 @@ def test_pyproject_declares_core_cli_entrypoints():
     assert "[project.scripts]" in raw
     assert 'spec-runner-conformance = "spec_runner.cli:conformance_runner_main"' in raw
     assert 'spec-runner-parity = "spec_runner.cli:compare_parity_main"' in raw
-    assert 'spec-runner-validate-report = "spec_runner.cli:validate_report_main"' in raw
+    assert 'spec-runner-validate-report = "spec_runner.spec_lang_commands:validate_report_main"' in raw

@@ -10,7 +10,7 @@ argv:
 - docs/spec/impl/python/fixtures/conformance_report_valid.json
 exit_code: 0
 harness:
-  entrypoint: spec_runner.cli:validate_report_main
+  entrypoint: spec_runner.spec_lang_commands:validate_report_main
 assert:
 - id: assert_1
   class: must
@@ -31,7 +31,7 @@ argv:
 - docs/spec/impl/python/fixtures/conformance_report_invalid.json
 exit_code: 1
 harness:
-  entrypoint: spec_runner.cli:validate_report_main
+  entrypoint: spec_runner.spec_lang_commands:validate_report_main
 assert:
 - id: assert_1
   class: must

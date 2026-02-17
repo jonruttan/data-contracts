@@ -5,6 +5,7 @@ Canonical domain index for executable specs in this subtree.
 ## Files
 
 - `/docs/spec/libraries/domain/http_core.spec.md`
+- `/docs/spec/libraries/domain/conformance_core.spec.md`
 - `/docs/spec/libraries/domain/fs_core.spec.md`
 - `/docs/spec/libraries/domain/make_core.spec.md`
 - `/docs/spec/libraries/domain/markdown_core.spec.md`
@@ -14,6 +15,7 @@ Canonical domain index for executable specs in this subtree.
 
 ## Exported Symbols
 
+- `domain.conformance.validate_report_errors` (/docs/spec/libraries/domain/conformance_core.spec.md)
 - `domain.http.auth_is_oauth` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.body_json` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.body_json_has_key` (/docs/spec/libraries/domain/http_core.spec.md)
