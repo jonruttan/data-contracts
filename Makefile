@@ -66,12 +66,8 @@ ci-cleanroom: ## Run full CI gate in a fresh git worktree (clean-checkout parity
 perf-smoke: ## Run governance/docs timing checks against perf baselines (warn mode)
 	@./scripts/runner_adapter.sh perf-smoke --mode warn
 
-prepush: ## Required local pre-push gate (typecheck + normalize + governance + parity + tests)
-	@./scripts/runner_adapter.sh typecheck
-	@./scripts/runner_adapter.sh normalize-check
-	@./scripts/runner_adapter.sh governance
-	@./scripts/runner_adapter.sh conformance-parity
-	@./scripts/runner_adapter.sh test-full
+prepush: ## Required local pre-push gate (normalize + governance + governance-heavy + docs + perf)
+	@./scripts/prepush_gate.sh
 
 check: ## Alias for ci-gate
 	@$(MAKE) ci-gate

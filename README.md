@@ -45,6 +45,9 @@ Required local pre-push gate:
 make prepush
 ```
 
+`make prepush` runs the fast CI-critical checks (`normalize-check`, `governance`,
+`governance-heavy`, `docs-generate-check`, and strict perf-smoke compare).
+
 Clean-checkout CI parity gate (recommended before push):
 
 ```sh

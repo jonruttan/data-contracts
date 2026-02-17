@@ -125,6 +125,21 @@ Required local pre-push gate:
 make prepush
 ```
 
+The pre-push gate runs the fast CI-critical contract path:
+
+- `normalize-check`
+- `governance`
+- `governance-heavy`
+- `docs-generate-check`
+- `perf-smoke --mode strict --compare-only`
+
+Use an explicit runner lane when needed:
+
+```sh
+SPEC_RUNNER_IMPL=python make prepush
+SPEC_RUNNER_IMPL=rust make prepush
+```
+
 ## CI Triage (Docs Quality)
 
 When CI fails with `SRGOV-DOCS-QUAL-*`:
