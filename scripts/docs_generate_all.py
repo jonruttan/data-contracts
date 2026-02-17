@@ -12,6 +12,7 @@ def main(argv: list[str] | None = None) -> int:
     mode.add_argument("--build", action="store_true")
     mode.add_argument("--check", action="store_true")
     ap.add_argument("--surface", default="", help="Optional docs surface_id filter")
+    ap.add_argument("--jobs", type=int, default=0, help="Parallel jobs for docs generation (0=auto)")
     ap.add_argument("--report-out", default=".artifacts/docs-generator-report.json")
     ap.add_argument("--summary-out", default=".artifacts/docs-generator-summary.md")
     ns = ap.parse_args(argv)
@@ -27,6 +28,8 @@ def main(argv: list[str] | None = None) -> int:
         "--summary-out",
         str(ns.summary_out),
     ]
+    if int(ns.jobs) != 0:
+        cmd += ["--jobs", str(int(ns.jobs))]
     if str(ns.surface).strip():
         cmd += ["--surface", str(ns.surface).strip()]
     cp = subprocess.run(cmd, cwd=repo_root, check=False)

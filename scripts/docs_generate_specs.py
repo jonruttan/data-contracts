@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import json
 import os
 from pathlib import Path
@@ -64,6 +65,7 @@ def main(argv: list[str] | None = None) -> int:
     mode.add_argument("--check", action="store_true")
     ap.add_argument("--surface", default="", help="Optional docs surface_id filter")
     ap.add_argument("--cases", default="docs/spec/impl/docs_generate/cases")
+    ap.add_argument("--jobs", type=int, default=0, help="Parallel jobs for independent docs surfaces (0=auto)")
     ap.add_argument("--report-out", default=".artifacts/docs-generator-report.json")
     ap.add_argument("--summary-out", default=".artifacts/docs-generator-summary.md")
     ns = ap.parse_args(argv)
@@ -93,20 +95,47 @@ def main(argv: list[str] | None = None) -> int:
     env["SPEC_DOCS_GENERATE_MODE"] = mode_value
 
     with TemporaryDirectory(prefix="spec-runner-docs-generate-") as td:
-        ctx = SpecRunContext(
-            tmp_path=Path(td),
-            patcher=MiniMonkeyPatch(),
-            capture=MiniCapsys(),
-            env=env,
-        )
-        for case, sid in selected:
+        td_path = Path(td)
+
+        def _run_one(task: tuple[int, Any, str]) -> tuple[int, dict[str, Any], str | None]:
+            idx, case, sid = task
             case_id = str(case.test.get("id", "")).strip() or "<unknown>"
+            case_tmp = td_path / f"case_{idx}"
+            case_tmp.mkdir(parents=True, exist_ok=True)
+            ctx = SpecRunContext(
+                tmp_path=case_tmp,
+                patcher=MiniMonkeyPatch(),
+                capture=MiniCapsys(),
+                env=env,
+            )
             try:
                 run_case(case, ctx=ctx)
-                rows.append({"case_id": case_id, "surface_id": sid, "status": "pass"})
+                return idx, {"case_id": case_id, "surface_id": sid, "status": "pass"}, None
             except BaseException as exc:  # noqa: BLE001
-                rows.append({"case_id": case_id, "surface_id": sid, "status": "fail"})
-                errors.append(f"{case_id}: {exc}")
+                return idx, {"case_id": case_id, "surface_id": sid, "status": "fail"}, f"{case_id}: {exc}"
+
+        indexed = [(idx, case, sid) for idx, (case, sid) in enumerate(selected)]
+        if len(indexed) <= 1:
+            for task in indexed:
+                _idx, row, err = _run_one(task)
+                rows.append(row)
+                if err:
+                    errors.append(err)
+        else:
+            auto_workers = max(1, os.cpu_count() or 1)
+            requested = int(ns.jobs)
+            if requested <= 0:
+                max_workers = min(auto_workers, len(indexed))
+            else:
+                max_workers = min(max(1, requested), len(indexed))
+            results: list[tuple[int, dict[str, Any], str | None]] = []
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+                for result in executor.map(_run_one, indexed):
+                    results.append(result)
+            for _idx, row, err in sorted(results, key=lambda x: x[0]):
+                rows.append(row)
+                if err:
+                    errors.append(err)
 
     passed = sum(1 for x in rows if x["status"] == "pass")
     failed = len(rows) - passed
