@@ -4786,6 +4786,98 @@ assert:
     assert code == 0
 
 
+def test_script_enforces_runtime_chain_exports_list_only_required(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "chain_exports_list_only.spec.md",
+        _case_for_check(
+            "SRGOV-TEST-CHAIN-FORM-001",
+            "runtime.chain_exports_list_only_required",
+            tmp_path,
+        ),
+    )
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/core/sample.spec.md",
+        """# Sample
+
+## SAMPLE-CHAIN-001
+
+```yaml spec-test
+id: SAMPLE-CHAIN-001
+type: text.file
+path: /README.md
+harness:
+  chain:
+    steps:
+    - id: dep
+      class: must
+      ref: /docs/spec/libraries/policy/policy_core.spec.md#LIB-POLICY-001-000-PASS-WHEN-NO-VIOLATIONS
+      exports:
+        policy.pass_when_no_violations:
+          from: body_json
+          path: id
+assert: []
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+    _write_text(
+        tmp_path / "docs/spec/conformance/cases/core/sample.spec.md",
+        """# Sample
+
+## SAMPLE-CHAIN-001
+
+```yaml spec-test
+id: SAMPLE-CHAIN-001
+type: text.file
+path: /README.md
+harness:
+  chain:
+    steps:
+    - id: dep
+      class: must
+      ref: /docs/spec/libraries/policy/policy_core.spec.md#LIB-POLICY-001-000-PASS-WHEN-NO-VIOLATIONS
+      exports:
+      - as: policy.pass_when_no_violations
+        from: body_json
+        path: id
+assert: []
+```
+""",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
+def test_script_enforces_docs_markdown_namespace_legacy_alias_forbidden(tmp_path):
+    mod = _load_script_module()
+    cases_dir = tmp_path / "cases"
+    _write_text(
+        cases_dir / "markdown_namespace.spec.md",
+        _case_for_check(
+            "SRGOV-TEST-DOCS-MD-002",
+            "docs.markdown_namespace_legacy_alias_forbidden",
+            tmp_path,
+        ),
+    )
+    _write_text(
+        tmp_path / "docs/book/03_assertions.md",
+        "Use md.has_heading for markdown checks.\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 1
+
+    _write_text(
+        tmp_path / "docs/book/03_assertions.md",
+        "Use domain.markdown.has_heading for markdown checks.\n",
+    )
+    code = mod.main(["--cases", str(cases_dir)])
+    assert code == 0
+
+
 def test_script_enforces_docs_operability_metric(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"

@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 196
-- checks_with_cases: 190
+- check_count: 198
+- checks_with_cases: 192
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -110,6 +110,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `docs.instructions_complete` | 1 | true |
 | `docs.layout_canonical_trees` | 1 | true |
 | `docs.make_commands_sync` | 1 | true |
+| `docs.markdown_namespace_legacy_alias_forbidden` | 1 | true |
 | `docs.markdown_structured_assertions_required` | 1 | true |
 | `docs.meta_schema_valid` | 1 | true |
 | `docs.metrics_field_catalog_sync` | 1 | true |
@@ -189,6 +190,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.chain_cycle_forbidden` | 1 | true |
 | `runtime.chain_exports_explicit_only` | 1 | true |
 | `runtime.chain_exports_from_key_required` | 1 | true |
+| `runtime.chain_exports_list_only_required` | 1 | true |
 | `runtime.chain_exports_target_derived_only` | 1 | true |
 | `runtime.chain_fail_fast_default` | 1 | true |
 | `runtime.chain_import_alias_collision_forbidden` | 1 | true |

@@ -209,6 +209,7 @@ _DOCS_GENERATOR_SUMMARY = ".artifacts/docs-generator-summary.md"
 _DOCGEN_QUALITY_MIN_SCORE = 0.95
 _CHAIN_TEMPLATE_PATTERN = re.compile(r"\{\{\s*chain\.([A-Za-z0-9_.-]+)\s*\}\}")
 _CHAIN_REF_CASE_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]+$")
+_MD_NAMESPACE_LEGACY_PATTERN = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
 _HARNESS_FILES = (
     "spec_runner/harnesses/text_file.py",
     "spec_runner/harnesses/cli_run.py",
@@ -3692,6 +3693,26 @@ def _scan_runtime_chain_exports_from_key_required(root: Path, *, harness: dict |
     return violations
 
 
+def _scan_runtime_chain_exports_list_only_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        steps = chain.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                continue
+            step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
+            raw_exports = step.get("exports")
+            if raw_exports is not None and not isinstance(raw_exports, list):
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports must be list (canonical form)"
+                )
+    return violations
+
+
 def _scan_runtime_chain_library_symbol_exports_valid(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     violations: list[str] = []
@@ -3763,6 +3784,24 @@ def _scan_runtime_executable_spec_lang_includes_forbidden(root: Path, *, harness
             violations.append(
                 f"{doc_path.relative_to(root)}: case {case_id} harness.spec_lang.includes is forbidden for executable cases; use harness.chain"
             )
+    return violations
+
+
+def _scan_docs_markdown_namespace_legacy_alias_forbidden(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for rel in ("docs/spec", "docs/book"):
+        base = root / rel
+        if not base.exists():
+            continue
+        for p in sorted(base.rglob("*.md")):
+            text = p.read_text(encoding="utf-8")
+            if _MD_NAMESPACE_LEGACY_PATTERN.search(text):
+                violations.append(
+                    f"{p.relative_to(root)}: legacy markdown alias namespace md.* is forbidden; use domain.markdown.*"
+                )
     return violations
 
 
@@ -7440,6 +7479,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.chain_exports_target_derived_only": _scan_runtime_chain_exports_target_derived_only,
     "runtime.chain_exports_explicit_only": _scan_runtime_chain_exports_target_derived_only,
     "runtime.chain_exports_from_key_required": _scan_runtime_chain_exports_from_key_required,
+    "runtime.chain_exports_list_only_required": _scan_runtime_chain_exports_list_only_required,
     "runtime.chain_legacy_from_target_forbidden": _scan_runtime_chain_legacy_from_target_forbidden,
     "runtime.chain_library_symbol_exports_valid": _scan_runtime_chain_library_symbol_exports_valid,
     "runtime.chain_import_alias_collision_forbidden": _scan_runtime_chain_import_alias_collision_forbidden,
@@ -7543,6 +7583,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.spec_lang_builtin_catalog_sync": _scan_docs_spec_lang_builtin_catalog_sync,
     "docs.stdlib_symbol_docs_complete": _scan_docs_stdlib_symbol_docs_complete,
     "docs.stdlib_examples_complete": _scan_docs_stdlib_examples_complete,
+    "docs.markdown_namespace_legacy_alias_forbidden": _scan_docs_markdown_namespace_legacy_alias_forbidden,
     "docs.harness_reference_semantics_complete": _scan_docs_harness_reference_semantics_complete,
     "docs.runner_reference_semantics_complete": _scan_docs_runner_reference_semantics_complete,
     "docs.reference_namespace_chapters_sync": _scan_docs_reference_namespace_chapters_sync,
