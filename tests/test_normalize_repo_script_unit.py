@@ -91,3 +91,36 @@ def test_normalize_write_applies_replacements(tmp_path, monkeypatch):
     code = mod.main(["--write"])
     assert code == 0
     assert "new token" in p.read_text(encoding="utf-8")
+
+
+def test_normalize_check_rejects_legacy_md_namespace_symbols(tmp_path, monkeypatch):
+    mod = _load_script_module()
+    profile = _seed_profile(tmp_path)
+    _write(tmp_path / "docs/spec/schema/schema_v1.md", "mapping AST\n")
+    _write(
+        tmp_path / "docs/spec/conformance/cases/core/sample.spec.md",
+        """# Sample
+
+```yaml spec-test
+id: SAMPLE-001
+type: text.file
+path: /README.md
+assert:
+- id: assert_1
+  class: must
+  target: text
+  checks:
+  - call:
+    - {var: md.has_heading}
+    - {var: subject}
+    - Contract
+```
+""",
+    )
+
+    monkeypatch.setattr(mod, "ROOT", tmp_path)
+    monkeypatch.setattr(mod, "PROFILE_PATH", profile)
+    monkeypatch.setattr(mod, "_run", lambda _cmd: (0, ""))
+
+    code = mod.main(["--check"])
+    assert code == 1

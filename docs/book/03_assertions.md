@@ -278,3 +278,30 @@ Symptom: `assert group must include exactly one key`
 - Group nodes use exactly one of `must/can/cannot`.
 - Sugar is the default authoring form unless `evaluate` is required.
 - Portable regex subset is used when cross-runtime parity matters.
+
+## Chain Export Migration
+
+Legacy per-symbol export blocks are no longer canonical:
+
+```yaml
+exports:
+- as: domain.markdown.has_heading
+  from: library.symbol
+  path: /domain.markdown.has_heading
+  required: true
+- as: domain.markdown.required_sections_present
+  from: library.symbol
+  path: /domain.markdown.required_sections_present
+  required: true
+```
+
+Use compact symbol-batch export form:
+
+```yaml
+exports:
+- from: library.symbol
+  required: true
+  symbols:
+  - domain.markdown.has_heading
+  - domain.markdown.required_sections_present
+```

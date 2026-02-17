@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -34,6 +35,7 @@ _HARNESS_FILES = (
     "spec_runner/harnesses/api_http.py",
 )
 _CHAIN_CLASS_VALUES = {"must", "can", "cannot"}
+_MD_SYMBOL_RE = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
 
 
 def _load_profile(path: Path) -> dict[str, Any]:
@@ -414,6 +416,24 @@ def _check_library_single_public_symbol() -> list[str]:
     return issues
 
 
+def _check_markdown_namespace_legacy_alias_forbidden() -> list[str]:
+    issues: list[str] = []
+    scan_roots = [ROOT / "docs/spec", ROOT / "docs/book"]
+    for base in scan_roots:
+        if not base.exists():
+            continue
+        for p in sorted(base.rglob("*")):
+            if not p.is_file() or p.suffix not in {".md", ".py", ".yaml", ".yml", ".json"}:
+                continue
+            rel = p.relative_to(ROOT).as_posix()
+            text = p.read_text(encoding="utf-8")
+            if _MD_SYMBOL_RE.search(text):
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_MARKDOWN_NAMESPACE: legacy md.* symbol alias is forbidden; use domain.markdown.*"
+                )
+    return issues
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Unified normalization check/fix runner for specs, contracts, and tests.")
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -538,6 +558,7 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_chain_contract_shape())
     issues.extend(_check_executable_spec_lang_includes_forbidden())
     issues.extend(_check_library_single_public_symbol())
+    issues.extend(_check_markdown_namespace_legacy_alias_forbidden())
     if issues:
         for issue in sorted(issues):
             print(issue)
