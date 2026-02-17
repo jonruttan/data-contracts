@@ -4,7 +4,6 @@
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS
-title: 'http projection helper functions: domain.http.status'
 type: spec.export
 assert:
 - id: __export__domain.http.status
@@ -23,12 +22,10 @@ harness:
       path: /__export__domain.http.status
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN
-title: 'http projection helper functions: domain.http.status_in'
 type: spec.export
 assert:
 - id: __export__domain.http.status_in
@@ -50,12 +47,10 @@ harness:
       params:
       - subject
       - allowed
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS
-title: 'http projection helper functions: domain.http.status_is'
 type: spec.export
 assert:
 - id: __export__domain.http.status_is
@@ -77,12 +72,10 @@ harness:
       params:
       - subject
       - expected
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED
-title: 'http projection helper functions: domain.http.status_is_unauthorized'
 type: spec.export
 assert:
 - id: __export__domain.http.status_is_unauthorized
@@ -100,12 +93,10 @@ harness:
       path: /__export__domain.http.status_is_unauthorized
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN
-title: 'http projection helper functions: domain.http.status_is_forbidden'
 type: spec.export
 assert:
 - id: __export__domain.http.status_is_forbidden
@@ -123,12 +114,10 @@ harness:
       path: /__export__domain.http.status_is_forbidden
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX
-title: 'http projection helper functions: domain.http.ok_2xx'
 type: spec.export
 assert:
 - id: __export__domain.http.ok_2xx
@@ -157,12 +146,10 @@ harness:
       path: /__export__domain.http.ok_2xx
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET
-title: 'http projection helper functions: domain.http.header_get'
 type: spec.export
 assert:
 - id: __export__domain.http.header_get
@@ -184,12 +171,10 @@ harness:
       params:
       - subject
       - key
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS
-title: 'http projection helper functions: domain.http.header_contains'
 type: spec.export
 assert:
 - id: __export__domain.http.header_contains
@@ -214,12 +199,10 @@ harness:
       - subject
       - key
       - token
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT
-title: 'http projection helper functions: domain.http.body_text'
 type: spec.export
 assert:
 - id: __export__domain.http.body_text
@@ -238,12 +221,10 @@ harness:
       path: /__export__domain.http.body_text
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON
-title: 'http projection helper functions: domain.http.body_json'
 type: spec.export
 assert:
 - id: __export__domain.http.body_json
@@ -262,12 +243,10 @@ harness:
       path: /__export__domain.http.body_json
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS
-title: 'http projection helper functions: domain.http.body_json_type_is'
 type: spec.export
 assert:
 - id: __export__domain.http.body_json_type_is
@@ -289,12 +268,10 @@ harness:
       params:
       - subject
       - expected_type
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY
-title: 'http projection helper functions: domain.http.body_json_has_key'
 type: spec.export
 assert:
 - id: __export__domain.http.body_json_has_key
@@ -316,12 +293,10 @@ harness:
       params:
       - subject
       - key
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH
-title: 'http projection helper functions: domain.http.auth_is_oauth'
 type: spec.export
 assert:
 - id: __export__domain.http.auth_is_oauth
@@ -342,12 +317,10 @@ harness:
       path: /__export__domain.http.auth_is_oauth
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-HAS-BEARER-HEADER
-title: 'http projection helper functions: domain.http.has_bearer_header'
 type: spec.export
 assert:
 - id: __export__domain.http.has_bearer_header
@@ -370,12 +343,10 @@ harness:
       path: /__export__domain.http.has_bearer_header
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED
-title: 'http projection helper functions: domain.http.oauth_scope_requested'
 type: spec.export
 assert:
 - id: __export__domain.http.oauth_scope_requested
@@ -398,12 +369,10 @@ harness:
       path: /__export__domain.http.oauth_scope_requested
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN
-title: 'http projection helper functions: domain.http.cors_allow_origin'
 type: spec.export
 assert:
 - id: __export__domain.http.cors_allow_origin
@@ -424,12 +393,10 @@ harness:
       path: /__export__domain.http.cors_allow_origin
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD
-title: 'http projection helper functions: domain.http.cors_allows_method'
 type: spec.export
 assert:
 - id: __export__domain.http.cors_allows_method
@@ -453,12 +420,10 @@ harness:
       params:
       - subject
       - method_name
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER
-title: 'http projection helper functions: domain.http.cors_allows_header'
 type: spec.export
 assert:
 - id: __export__domain.http.cors_allows_header
@@ -482,12 +447,10 @@ harness:
       params:
       - subject
       - header_name
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED
-title: 'http projection helper functions: domain.http.cors_credentials_enabled'
 type: spec.export
 assert:
 - id: __export__domain.http.cors_credentials_enabled
@@ -510,12 +473,10 @@ harness:
       path: /__export__domain.http.cors_credentials_enabled
       params:
       - subject
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE
-title: 'http projection helper functions: domain.http.cors_max_age_gte'
 type: spec.export
 assert:
 - id: __export__domain.http.cors_max_age_gte
@@ -539,12 +500,10 @@ harness:
       params:
       - subject
       - min_age
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP
-title: 'http projection helper functions: domain.http.is_preflight_step'
 type: spec.export
 assert:
 - id: __export__domain.http.is_preflight_step
@@ -563,12 +522,10 @@ harness:
       path: /__export__domain.http.is_preflight_step
       params:
       - step
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID
-title: 'http projection helper functions: domain.http.step_by_id'
 type: spec.export
 assert:
 - id: __export__domain.http.step_by_id
@@ -592,12 +549,10 @@ harness:
       params:
       - steps
       - step_id
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS
-title: 'http projection helper functions: domain.http.step_status_is'
 type: spec.export
 assert:
 - id: __export__domain.http.step_status_is
@@ -621,12 +576,10 @@ harness:
       - steps
       - step_id
       - expected
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET
-title: 'http projection helper functions: domain.http.step_body_json_get'
 type: spec.export
 assert:
 - id: __export__domain.http.step_body_json_get
@@ -650,5 +603,4 @@ harness:
       - steps
       - step_id
       - field
-      required: true
 ```

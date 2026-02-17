@@ -4,7 +4,6 @@
 
 ```yaml spec-test
 id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES
-title: 'path-core reusable pure path logic helpers: path.normalize_slashes'
 type: spec.export
 assert:
 - id: __export__path.normalize_slashes
@@ -79,45 +78,38 @@ harness:
       path: /__export__path.normalize_slashes
       params:
       - path
-      required: true
     - as: path.trim_dot
       from: assert.function
       path: /__export__path.trim_dot
       params:
       - path
-      required: true
     - as: path.dirname
       from: assert.function
       path: /__export__path.dirname
       params:
       - path
-      required: true
     - as: path.has_extension
       from: assert.function
       path: /__export__path.has_extension
       params:
       - path
       - ext
-      required: true
     - as: path.is_under
       from: assert.function
       path: /__export__path.is_under
       params:
       - path
       - prefix
-      required: true
     - as: path.matches
       from: assert.function
       path: /__export__path.matches
       params:
       - path
       - pattern
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-PATH-001-002-PATH-SEGMENTS
-title: 'path-core reusable pure path logic helpers: path.segments'
 type: spec.export
 assert:
 - id: __export__path.segments
@@ -193,45 +185,38 @@ harness:
       path: /__export__path.segments
       params:
       - path
-      required: true
     - as: path.trim_dot
       from: assert.function
       path: /__export__path.trim_dot
       params:
       - path
-      required: true
     - as: path.dirname
       from: assert.function
       path: /__export__path.dirname
       params:
       - path
-      required: true
     - as: path.has_extension
       from: assert.function
       path: /__export__path.has_extension
       params:
       - path
       - ext
-      required: true
     - as: path.is_under
       from: assert.function
       path: /__export__path.is_under
       params:
       - path
       - prefix
-      required: true
     - as: path.matches
       from: assert.function
       path: /__export__path.matches
       params:
       - path
       - pattern
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-PATH-001-003-PATH-BASENAME
-title: 'path-core reusable pure path logic helpers: path.basename'
 type: spec.export
 assert:
 - id: __export__path.basename
@@ -318,45 +303,38 @@ harness:
       path: /__export__path.basename
       params:
       - path
-      required: true
     - as: path.trim_dot
       from: assert.function
       path: /__export__path.trim_dot
       params:
       - path
-      required: true
     - as: path.dirname
       from: assert.function
       path: /__export__path.dirname
       params:
       - path
-      required: true
     - as: path.has_extension
       from: assert.function
       path: /__export__path.has_extension
       params:
       - path
       - ext
-      required: true
     - as: path.is_under
       from: assert.function
       path: /__export__path.is_under
       params:
       - path
       - prefix
-      required: true
     - as: path.matches
       from: assert.function
       path: /__export__path.matches
       params:
       - path
       - pattern
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-PATH-001-004-PATH-EXTENSION
-title: 'path-core reusable pure path logic helpers: path.extension'
 type: spec.export
 assert:
 - id: __export__path.extension
@@ -451,45 +429,38 @@ harness:
       path: /__export__path.extension
       params:
       - path
-      required: true
     - as: path.trim_dot
       from: assert.function
       path: /__export__path.trim_dot
       params:
       - path
-      required: true
     - as: path.dirname
       from: assert.function
       path: /__export__path.dirname
       params:
       - path
-      required: true
     - as: path.has_extension
       from: assert.function
       path: /__export__path.has_extension
       params:
       - path
       - ext
-      required: true
     - as: path.is_under
       from: assert.function
       path: /__export__path.is_under
       params:
       - path
       - prefix
-      required: true
     - as: path.matches
       from: assert.function
       path: /__export__path.matches
       params:
       - path
       - pattern
-      required: true
 ```
 
 ```yaml spec-test
 id: LIB-PATH-001-900-PATH-SMOKE
-title: path core helpers execute as colocated executable checks
 type: text.file
 harness:
   chain:
