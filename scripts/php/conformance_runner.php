@@ -981,6 +981,57 @@ function specLangFsCommonPrefix(array $paths): string {
     return $absolute ? '/' . $joined : $joined;
 }
 
+function specLangFsParents(string $path): array {
+    $normalized = specLangFsNormalizePath($path);
+    if ($normalized === '/' || $normalized === '.') {
+        return [];
+    }
+    $out = [];
+    $current = $normalized;
+    while (true) {
+        $parent = specLangFsDirname($current);
+        if ($parent === $current || in_array($parent, $out, true)) {
+            break;
+        }
+        $out[] = $parent;
+        if ($parent === '/' || $parent === '.') {
+            break;
+        }
+        $current = $parent;
+    }
+    return $out;
+}
+
+function specLangFsWithin(string $base, string $path): bool {
+    $baseNorm = specLangFsNormalizePath($base);
+    $pathNorm = specLangFsNormalizePath($path);
+    $baseAbs = str_starts_with($baseNorm, '/');
+    $pathAbs = str_starts_with($pathNorm, '/');
+    if ($baseAbs !== $pathAbs) {
+        return false;
+    }
+    if ($baseNorm === $pathNorm) {
+        return true;
+    }
+    if ($baseNorm === '/' && $pathAbs) {
+        return true;
+    }
+    if ($baseNorm === '.' && !$pathAbs) {
+        return true;
+    }
+    $baseParts = specLangFsSplitSegments($baseNorm);
+    $pathParts = specLangFsSplitSegments($pathNorm);
+    if (count($pathParts) < count($baseParts)) {
+        return false;
+    }
+    for ($i = 0; $i < count($baseParts); $i++) {
+        if ($pathParts[$i] !== $baseParts[$i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function specLangSpecialForms(): array {
     return ['if' => true, 'let' => true, 'fn' => true, 'call' => true, 'var' => true, 'lit' => true];
 }
@@ -1003,6 +1054,8 @@ function specLangFlatBuiltinFromStd(string $symbol): string {
         'ops.fs.path.change_ext' => 'ops_fs_path_change_ext',
         'ops.fs.path.relativize' => 'ops_fs_path_relativize',
         'ops.fs.path.common_prefix' => 'ops_fs_path_common_prefix',
+        'ops.fs.path.parents' => 'ops_fs_path_parents',
+        'ops.fs.path.within' => 'ops_fs_path_within',
         'ops.fs.file.exists' => 'ops_fs_file_exists',
         'ops.fs.file.is_file' => 'ops_fs_file_is_file',
         'ops.fs.file.is_dir' => 'ops_fs_file_is_dir',
@@ -1305,12 +1358,19 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         || $op === 'ops_fs_path_stem'
         || $op === 'ops_fs_path_is_abs'
         || $op === 'ops_fs_path_common_prefix'
+        || $op === 'ops_fs_path_parents'
     ) {
         specLangRequireArity($op, $args, 1);
         $arg = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
         if ($op === 'ops_fs_path_common_prefix') {
             $paths = specLangRequireListArg($op, $arg);
             return specLangFsCommonPrefix($paths);
+        }
+        if ($op === 'ops_fs_path_parents') {
+            if (!is_string($arg)) {
+                throw new SchemaError("spec_lang {$op} expects string path");
+            }
+            return specLangFsParents($arg);
         }
         $path = $arg;
         if (!is_string($path)) {
@@ -1341,6 +1401,7 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         || $op === 'ops_fs_path_has_ext'
         || $op === 'ops_fs_path_change_ext'
         || $op === 'ops_fs_path_relativize'
+        || $op === 'ops_fs_path_within'
     ) {
         specLangRequireArity($op, $args, 2);
         $left = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -1357,6 +1418,9 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         if ($op === 'ops_fs_path_relativize') {
             return specLangFsRelativize($left, $right);
+        }
+        if ($op === 'ops_fs_path_within') {
+            return specLangFsWithin($left, $right);
         }
         $normalized = specLangFsNormalizePath($left);
         $base = specLangFsBasename($normalized);

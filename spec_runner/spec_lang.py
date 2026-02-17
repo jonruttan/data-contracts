@@ -537,6 +537,43 @@ def _fs_common_prefix(paths: list[str]) -> str:
     return f"/{joined}" if abs_flags[0] else joined
 
 
+def _fs_parents(path: str) -> list[str]:
+    normalized = _fs_normalize_path(path)
+    if normalized in {"/", "."}:
+        return []
+    out: list[str] = []
+    current = normalized
+    while True:
+        parent = _fs_dirname(current)
+        if parent == current or parent in out:
+            break
+        out.append(parent)
+        if parent in {"/", "."}:
+            break
+        current = parent
+    return out
+
+
+def _fs_within(base: str, path: str) -> bool:
+    base_norm = _fs_normalize_path(base)
+    path_norm = _fs_normalize_path(path)
+    base_abs = base_norm.startswith("/")
+    path_abs = path_norm.startswith("/")
+    if base_abs != path_abs:
+        return False
+    if base_norm == path_norm:
+        return True
+    if base_norm == "/" and path_abs:
+        return True
+    if base_norm == "." and not path_abs:
+        return True
+    base_parts = _fs_split_segments(base_norm)
+    path_parts = _fs_split_segments(path_norm)
+    if len(path_parts) < len(base_parts):
+        return False
+    return path_parts[: len(base_parts)] == base_parts
+
+
 def _builtin_arity_table() -> dict[str, int]:
     # Fixed arity table used by builtin currying.
     flat = {
@@ -679,6 +716,8 @@ def _builtin_arity_table() -> dict[str, int]:
         "ops_fs_path_change_ext": 2,
         "ops_fs_path_relativize": 2,
         "ops_fs_path_common_prefix": 1,
+        "ops_fs_path_parents": 1,
+        "ops_fs_path_within": 2,
         "ops_fs_file_exists": 1,
         "ops_fs_file_is_file": 1,
         "ops_fs_file_is_dir": 1,
@@ -1464,6 +1503,16 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
                 raise ValueError("spec_lang ops.fs.path.common_prefix expects list of strings")
             paths.append(raw)
         return _fs_common_prefix(paths)
+    if op == "ops.fs.path.parents":
+        _require_arity(op, args, 1)
+        if not isinstance(args[0], str):
+            raise ValueError("spec_lang ops.fs.path.parents expects string path")
+        return _fs_parents(args[0])
+    if op == "ops.fs.path.within":
+        _require_arity(op, args, 2)
+        if not isinstance(args[0], str) or not isinstance(args[1], str):
+            raise ValueError("spec_lang ops.fs.path.within expects string args")
+        return _fs_within(args[0], args[1])
     if op == "ops.fs.file.exists":
         _require_arity(op, args, 1)
         meta = _require_dict_arg(op, args[0])

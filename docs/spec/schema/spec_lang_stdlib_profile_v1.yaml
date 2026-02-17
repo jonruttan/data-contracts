@@ -162,6 +162,8 @@ categories:
   - ops.fs.path.change_ext
   - ops.fs.path.relativize
   - ops.fs.path.common_prefix
+  - ops.fs.path.parents
+  - ops.fs.path.within
   fs_file:
   - ops.fs.file.exists
   - ops.fs.file.is_file
@@ -1208,6 +1210,20 @@ symbols:
   ops.fs.path.common_prefix:
     category: fs_path
     arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.parents:
+    category: fs_path
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.within:
+    category: fs_path
+    arity: 2
     pure: true
     deterministic: true
     error_class: schema

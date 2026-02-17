@@ -86,7 +86,8 @@ Notes:
   policy authoring (`sum`, `min`, `max`, `sort_by`, `pluck`, `distinct`,
   `is_empty`, `coalesce`, `matches_all`).
 - Spec-lang now includes pure filesystem utility helpers under `ops.*`:
-  `ops.fs.path.*` (normalize/join/split/dirname/basename/ext/stem) and
+  `ops.fs.path.*` (normalize/join/split/dirname/basename/ext/stem,
+  relativize/common_prefix/parents/within) and
   `ops.fs.file.*` metadata predicates/getters (`exists`, `is_file`, `is_dir`,
   `size_bytes`, `path`, `name`, `parent`, `ext`, `get`).
 - Spec-lang now includes pure JSON helpers under `ops.fs.json.*`:

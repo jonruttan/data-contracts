@@ -146,6 +146,8 @@ FLAT_TO_STD: Final[dict[str, str]] = {
     "ops_fs_path_change_ext": "ops.fs.path.change_ext",
     "ops_fs_path_relativize": "ops.fs.path.relativize",
     "ops_fs_path_common_prefix": "ops.fs.path.common_prefix",
+    "ops_fs_path_parents": "ops.fs.path.parents",
+    "ops_fs_path_within": "ops.fs.path.within",
     "ops_fs_file_exists": "ops.fs.file.exists",
     "ops_fs_file_is_file": "ops.fs.file.is_file",
     "ops_fs_file_is_dir": "ops.fs.file.is_dir",

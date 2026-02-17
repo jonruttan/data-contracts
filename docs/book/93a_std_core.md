@@ -1017,6 +1017,38 @@ Provide generated semantic reference for `std.core` and special forms.
   - result: Deterministic result per symbol contract.
 
 
+### `ops.fs.path.parents`
+
+- Signature: `ops.fs.path.parents/1`
+- Summary: Evaluates `parents` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.parents(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
 ### `ops.fs.path.relativize`
 
 - Signature: `ops.fs.path.relativize/2`
@@ -1111,6 +1143,39 @@ Provide generated semantic reference for `std.core` and special forms.
 
 - **Basic usage**
   - expr: `ops.fs.path.stem(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.within`
+
+- Signature: `ops.fs.path.within/2`
+- Summary: Evaluates `within` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.within(arg1, arg2)`
   - result: Deterministic result per symbol contract.
 
 

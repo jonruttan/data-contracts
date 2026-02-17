@@ -365,3 +365,69 @@ assert:
       - /a
   target: text
 ```
+
+## SRCONF-STDLIB-011
+
+```yaml spec-test
+id: SRCONF-STDLIB-011
+title: ops fs path parents and within evaluate deterministically
+purpose: Validates pure parent chain and containment helpers.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: pass
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.path.parents:
+        - /a/b/c
+      - lit: [/a/b, /a, /]
+    - std.logic.eq:
+      - ops.fs.path.parents:
+        - a/b/c
+      - lit: [a/b, a, .]
+    - std.logic.eq:
+      - ops.fs.path.within:
+        - /a/b
+        - /a/b/c/d
+      - true
+    - std.logic.eq:
+      - ops.fs.path.within:
+        - docs/spec
+        - docs/spec/current.md
+      - true
+    - std.logic.eq:
+      - ops.fs.path.within:
+        - /a/b
+        - /a/c
+      - false
+  target: text
+```
+
+## SRCONF-STDLIB-012
+
+```yaml spec-test
+id: SRCONF-STDLIB-012
+title: ops fs path parents fails schema for non-string argument
+purpose: Ensures parents rejects non-string input.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: fail
+    category: schema
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.path.parents:
+        - 7
+      - lit: []
+  target: text
+```

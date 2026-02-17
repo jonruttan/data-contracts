@@ -124,3 +124,5 @@ Case fixtures that portable runner implementations execute.
 
 - `SRCONF-STDLIB-009`
 - `SRCONF-STDLIB-010`
+- `SRCONF-STDLIB-011`
+- `SRCONF-STDLIB-012`
