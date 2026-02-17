@@ -5,6 +5,7 @@ Canonical domain index for executable specs in this subtree.
 ## Files
 
 - `/docs/spec/libraries/domain/http_core.spec.md`
+- `/docs/spec/libraries/domain/fs_core.spec.md`
 - `/docs/spec/libraries/domain/make_core.spec.md`
 - `/docs/spec/libraries/domain/markdown_core.spec.md`
 - `/docs/spec/libraries/domain/path_core.spec.md`
@@ -37,6 +38,12 @@ Canonical domain index for executable specs in this subtree.
 - `domain.http.step_body_json_get` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.step_by_id` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.step_status_is` (/docs/spec/libraries/domain/http_core.spec.md)
+- `domain.fs.file_ext_eq` (/docs/spec/libraries/domain/fs_core.spec.md)
+- `domain.fs.glob_any_spec_files` (/docs/spec/libraries/domain/fs_core.spec.md)
+- `domain.fs.is_docs_spec_file` (/docs/spec/libraries/domain/fs_core.spec.md)
+- `domain.fs.json_get_or_text` (/docs/spec/libraries/domain/fs_core.spec.md)
+- `domain.fs.json_has_path_text` (/docs/spec/libraries/domain/fs_core.spec.md)
+- `domain.fs.sort_spec_files` (/docs/spec/libraries/domain/fs_core.spec.md)
 - `domain.markdown.code_fence_language_exists` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `domain.markdown.has_broken_links` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `domain.markdown.has_heading` (/docs/spec/libraries/domain/markdown_core.spec.md)

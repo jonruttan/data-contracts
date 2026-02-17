@@ -202,6 +202,9 @@ harness:
     - id: lib_markdown_core_spec
       class: must
       ref: /docs/spec/libraries/domain/markdown_core.spec.md
+    - id: lib_fs_core_spec
+      class: must
+      ref: /docs/spec/libraries/domain/fs_core.spec.md
     - id: lib_path_core_spec
       class: must
       ref: /docs/spec/libraries/domain/path_core.spec.md
@@ -229,6 +232,14 @@ harness:
       - domain.markdown.token_ownership_unique
       - domain.markdown.token_present
       - domain.markdown.tokens_all_present
+    - from: lib_fs_core_spec
+      names:
+      - domain.fs.file_ext_eq
+      - domain.fs.glob_any_spec_files
+      - domain.fs.is_docs_spec_file
+      - domain.fs.json_get_or_text
+      - domain.fs.json_has_path_text
+      - domain.fs.sort_spec_files
     - from: lib_path_core_spec
       names:
       - domain.path.normalize
@@ -300,6 +311,45 @@ assert:
         - /docs/a
         - /docs/b
     - call:
+      - var: domain.fs.is_docs_spec_file
+      - /docs/spec/conformance/cases/core/domain_libraries.spec.md
+    - std.logic.eq:
+      - call:
+        - var: domain.fs.sort_spec_files
+        - lit:
+          - /docs/b.md
+          - /docs/a.spec.md
+          - /docs/a.md
+          - /docs/b.spec.md
+      - lit:
+        - /docs/a.spec.md
+        - /docs/b.spec.md
+    - call:
+      - var: domain.fs.glob_any_spec_files
+      - lit:
+        - /docs/a.md
+        - /docs/a.spec.md
+    - std.logic.eq:
+      - call:
+        - var: domain.fs.json_get_or_text
+        - '{"a":{"b":7}}'
+        - lit:
+          - a
+          - b
+        - 0
+      - 7
+    - call:
+      - var: domain.fs.json_has_path_text
+      - '{"a":{"b":7}}'
+      - lit:
+        - a
+        - b
+    - call:
+      - var: domain.fs.file_ext_eq
+      - lit:
+          path: /docs/spec/libraries/domain/http_core.spec.md
+      - md
+    - call:
       - var: domain.file.is_existing_file
       - lit:
           path: /docs/spec/libraries/domain/http_core.spec.md
@@ -325,6 +375,9 @@ assert:
     - std.string.contains:
       - var: subject
       - /docs/spec/libraries/domain/http_core.spec.md
+    - std.string.contains:
+      - var: subject
+      - /docs/spec/libraries/domain/fs_core.spec.md
     - std.string.contains:
       - var: subject
       - /docs/spec/libraries/domain/make_core.spec.md
