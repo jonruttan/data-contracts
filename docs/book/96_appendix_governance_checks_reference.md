@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 198
-- checks_with_cases: 192
+- check_count: 199
+- checks_with_cases: 193
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -251,4 +251,5 @@ Provide generated inventory of governance check IDs and case coverage.
 | `spec_lang.stdlib_docs_sync` | 1 | true |
 | `spec_lang.stdlib_profile_complete` | 1 | true |
 | `spec_lang.stdlib_py_php_parity` | 1 | true |
+| `tests.unit_opt_out_non_regression` | 1 | true |
 <!-- GENERATED:END governance_check_catalog -->

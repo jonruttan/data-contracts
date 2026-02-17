@@ -47,10 +47,10 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 ## Generated Runner API Catalog
 
-- command_count: 40
-- python_command_count: 40
-- rust_command_count: 40
-- parity_command_count: 40
+- command_count: 41
+- python_command_count: 41
+- rust_command_count: 41
+- parity_command_count: 41
 - all_commands_parity: true
 - doc_quality_score: 1.0
 
@@ -78,6 +78,7 @@ Provide generated command-surface documentation for the canonical runner interfa
 | `normalize-fix` | `verification` | true | true | true |
 | `objective-scorecard-json` | `metrics` | true | true | true |
 | `objective-scorecard-md` | `metrics` | true | true | true |
+| `perf-smoke` | `reporting` | true | true | true |
 | `python-dependency-json` | `metrics` | true | true | true |
 | `python-dependency-md` | `metrics` | true | true | true |
 | `runner-independence-json` | `metrics` | true | true | true |
@@ -428,6 +429,21 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 - Examples:
   - `./scripts/runner_adapter.sh objective-scorecard-md`: Execute command with canonical adapter routing.
+
+
+#### `perf-smoke`
+
+- Summary: Runs `perf-smoke` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh perf-smoke`: Execute command with canonical adapter routing.
 
 
 #### `python-dependency-json`

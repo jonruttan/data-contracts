@@ -108,6 +108,9 @@ case "${subcommand}" in
   ci-cleanroom)
     exec "${ROOT_DIR}/scripts/ci_cleanroom.sh" "$@"
     ;;
+  perf-smoke)
+    exec "${PYTHON_BIN}" scripts/perf_smoke.py "$@"
+    ;;
   docs-generate)
     exec "${PYTHON_BIN}" scripts/docs_generate_all.py --build "$@"
     ;;

@@ -1,4 +1,4 @@
-.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check docs-generate docs-generate-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke ci-cleanroom prepush core-check check ci-gate test
+.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check docs-generate docs-generate-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke ci-cleanroom perf-smoke prepush core-check check ci-gate test
 .DEFAULT_GOAL := help
 
 help: ## Display this help section
@@ -62,6 +62,9 @@ ci-smoke: ## Fast CI preflight (governance + docs + style)
 
 ci-cleanroom: ## Run full CI gate in a fresh git worktree (clean-checkout parity)
 	@./scripts/runner_adapter.sh ci-cleanroom
+
+perf-smoke: ## Run governance/docs timing checks against perf baselines (warn mode)
+	@./scripts/runner_adapter.sh perf-smoke --mode warn
 
 prepush: ## Required local pre-push gate (typecheck + normalize + governance + parity + tests)
 	@./scripts/runner_adapter.sh typecheck

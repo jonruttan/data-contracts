@@ -403,6 +403,11 @@ fn main() {
             &with_forwarded(vec![], &forwarded),
             &root,
         ),
+        "perf-smoke" => run_cmd(
+            &py,
+            &with_forwarded(vec![script(&root, "perf_smoke.py")], &forwarded),
+            &root,
+        ),
         "docs-generate" => run_cmd(
             &py,
             &with_forwarded(vec![script(&root, "docs_generate_all.py"), "--build".to_string()], &forwarded),

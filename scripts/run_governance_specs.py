@@ -221,6 +221,8 @@ _HARNESS_FILES = (
     "spec_runner/harnesses/docs_generate.py",
     "spec_runner/harnesses/api_http.py",
 )
+_UNIT_TEST_OPT_OUT_BASELINE_PATH = "docs/spec/metrics/unit_test_opt_out_baseline.json"
+_UNIT_TEST_OPT_OUT_PREFIX = "# SPEC-OPT-OUT:"
 
 _SCAN_CACHE_TOKEN = 0
 _EXTERNAL_CASES_CACHE: dict[tuple[int, str, tuple[str, ...], str | None], list[tuple[Path, dict[str, Any]]]] = {}
@@ -7510,6 +7512,50 @@ def _scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks(
     return violations
 
 
+def _scan_tests_unit_opt_out_non_regression(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    tests_root = root / "tests"
+    baseline_path = root / _UNIT_TEST_OPT_OUT_BASELINE_PATH
+    if not tests_root.exists():
+        return violations
+    if not baseline_path.exists():
+        return [f"{_UNIT_TEST_OPT_OUT_BASELINE_PATH}:1: missing opt-out baseline file"]
+
+    try:
+        baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [f"{_UNIT_TEST_OPT_OUT_BASELINE_PATH}:{exc.lineno}: invalid JSON baseline"]
+    if not isinstance(baseline, dict):
+        return [f"{_UNIT_TEST_OPT_OUT_BASELINE_PATH}:1: baseline must be a JSON object"]
+    max_allowed = baseline.get("max_opt_out_file_count")
+    if not isinstance(max_allowed, int):
+        return [f"{_UNIT_TEST_OPT_OUT_BASELINE_PATH}:1: max_opt_out_file_count must be an integer"]
+
+    unit_files = sorted(p for p in tests_root.glob("test_*_unit.py") if p.is_file())
+    opt_out_count = 0
+    for path in unit_files:
+        rel = path.relative_to(root).as_posix()
+        first_non_empty = ""
+        first_line_no = 1
+        for idx, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            if line.strip():
+                first_non_empty = line.strip()
+                first_line_no = idx
+                break
+        if first_non_empty.startswith(_UNIT_TEST_OPT_OUT_PREFIX):
+            opt_out_count += 1
+        else:
+            violations.append(
+                f"{rel}:{first_line_no}: unit test files must declare '{_UNIT_TEST_OPT_OUT_PREFIX} <reason>' for opt-out tracking"
+            )
+    if opt_out_count > max_allowed:
+        violations.append(
+            "tests: opt-out file count increased "
+            f"({opt_out_count} > baseline {max_allowed}); convert coverage to .spec.md and lower baseline"
+        )
+    return violations
+
+
 GovernanceCheckOutcome = list[str] | dict[str, object]
 GovernanceCheck = Callable[..., GovernanceCheckOutcome]
 
@@ -7711,6 +7757,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "spec.no_executable_yaml_json_in_case_trees": _scan_spec_no_executable_yaml_json_in_case_trees,
     "spec.library_cases_markdown_only": _scan_spec_library_cases_markdown_only,
     "spec.generated_data_artifacts_not_embedded_in_spec_blocks": _scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks,
+    "tests.unit_opt_out_non_regression": _scan_tests_unit_opt_out_non_regression,
     "schema.registry_valid": _scan_schema_registry_valid,
     "schema.registry_docs_sync": _scan_schema_registry_docs_sync,
     "schema.registry_compiled_sync": _scan_schema_registry_compiled_sync,

@@ -200,4 +200,5 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md`
 - `/docs/spec/governance/cases/core/spec_portability_metric.spec.md`
 - `/docs/spec/governance/cases/core/spec_portability_non_regression.spec.md`
+- `/docs/spec/governance/cases/core/tests_unit_opt_out_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/v1_scope_doc.spec.md`

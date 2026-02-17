@@ -1,0 +1,42 @@
+# Governance Cases
+
+## SRGOV-TEST-UNIT-OPT-OUT-001
+
+```yaml spec-test
+id: SRGOV-TEST-UNIT-OPT-OUT-001
+title: unit test opt-out usage is measured and non-regressing
+purpose: Tracks unit-test opt-out usage and enforces a non-regression baseline so opt-out
+  coverage is reduced over time.
+type: governance.check
+check: tests.unit_opt_out_non_regression
+harness:
+  root: .
+  policy_evaluate:
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
+  chain:
+    steps:
+    - id: lib_policy_core_spec
+      class: must
+      ref: /docs/spec/libraries/policy/policy_core.spec.md
+      exports:
+      - as: policy.pass_when_no_violations
+        from: library.symbol
+        required: true
+        path: /policy.pass_when_no_violations
+    imports:
+    - from: lib_policy_core_spec
+      names:
+      - policy.pass_when_no_violations
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - check_id
+    - tests.unit_opt_out_non_regression
+  target: summary_json
+```
