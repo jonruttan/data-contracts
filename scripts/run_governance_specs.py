@@ -3225,16 +3225,26 @@ def _producer_step_exports(
     for _source_doc, source_case in loaded:
         source_harness = source_case.get("harness")
         if not isinstance(source_harness, dict):
-            continue
+            source_harness = {}
         source_chain = source_harness.get("chain")
-        if not isinstance(source_chain, dict):
-            continue
-        expanded, parse_errors = _expand_chain_step_exports(source_chain.get("exports"))
-        if parse_errors:
-            for err in parse_errors:
-                errors.append(f"producer harness.chain.exports {err}")
-            continue
-        names.update(str(name).strip() for name in expanded.keys() if str(name).strip())
+        if isinstance(source_chain, dict):
+            expanded, parse_errors = _expand_chain_step_exports(source_chain.get("exports"))
+            if parse_errors:
+                for err in parse_errors:
+                    errors.append(f"producer harness.chain.exports {err}")
+                continue
+            names.update(str(name).strip() for name in expanded.keys() if str(name).strip())
+
+        # Implicit producer export model for spec_lang.export: defines.public keys.
+        if str(source_case.get("type", "")).strip() == "spec_lang.export":
+            raw_defines = source_case.get("defines")
+            if isinstance(raw_defines, dict):
+                raw_public = raw_defines.get("public")
+                if isinstance(raw_public, dict):
+                    for raw_name in raw_public.keys():
+                        name = str(raw_name).strip()
+                        if name:
+                            names.add(name)
     return names, errors
 
 

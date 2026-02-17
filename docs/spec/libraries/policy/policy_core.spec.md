@@ -41,11 +41,4 @@ defines:
           - {var: subject}
           - violation_count
         - {var: expected}
-harness:
-  chain:
-    exports:
-    - as: policy.pass_when_no_violations
-      from: assert.function
-      path: /policy.pass_when_no_violations
-      required: true
 ```

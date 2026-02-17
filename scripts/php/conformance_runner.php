@@ -1581,46 +1581,63 @@ function loadChainImportedSymbolsForCase(string $fixturePath, array $case, array
                 continue;
             }
             $producerHarness = $producerCase['harness'] ?? null;
-            if (!is_array($producerHarness) || isListArray($producerHarness)) {
-                continue;
+            $producerChain = null;
+            if (is_array($producerHarness) && !isListArray($producerHarness)) {
+                $producerChain = $producerHarness['chain'] ?? null;
             }
-            $producerChain = $producerHarness['chain'] ?? null;
-            if (!is_array($producerChain) || isListArray($producerChain)) {
-                continue;
+            $producerExports = (is_array($producerChain) && !isListArray($producerChain))
+                ? ($producerChain['exports'] ?? null)
+                : null;
+            if (is_array($producerExports) && isListArray($producerExports)) {
+                foreach ($producerExports as $entryIdx => $entryRaw) {
+                    if (!is_array($entryRaw) || isListArray($entryRaw)) {
+                        throw new SchemaError("producer harness.chain.exports[{$entryIdx}] must be a mapping");
+                    }
+                    $exportName = trim((string)($entryRaw['as'] ?? ''));
+                    if ($exportName === '') {
+                        throw new SchemaError("producer harness.chain.exports[{$entryIdx}].as is required");
+                    }
+                    if (array_key_exists($exportName, $exports)) {
+                        continue;
+                    }
+                    $fromSource = trim((string)($entryRaw['from'] ?? ''));
+                    if ($fromSource !== 'assert.function') {
+                        throw new SchemaError(
+                            "producer harness.chain.exports[{$entryIdx}].from must be assert.function"
+                        );
+                    }
+                    $symbolPath = trim((string)($entryRaw['path'] ?? ''));
+                    if ($symbolPath === '') {
+                        throw new SchemaError(
+                            "producer harness.chain.exports[{$entryIdx}].path is required for from=assert.function"
+                        );
+                    }
+                    $required = !array_key_exists('required', $entryRaw) || (bool)$entryRaw['required'];
+                    $exports[$exportName] = [
+                        'from' => $fromSource,
+                        'path' => $symbolPath,
+                        'required' => $required,
+                    ];
+                }
             }
-            $producerExports = $producerChain['exports'] ?? null;
-            if (!is_array($producerExports) || !isListArray($producerExports)) {
-                continue;
-            }
-            foreach ($producerExports as $entryIdx => $entryRaw) {
-                if (!is_array($entryRaw) || isListArray($entryRaw)) {
-                    throw new SchemaError("producer harness.chain.exports[{$entryIdx}] must be a mapping");
+
+            // Implicit producer exports for spec_lang.export: defines.public keys.
+            if (trim((string)($producerCase['type'] ?? '')) === 'spec_lang.export') {
+                $defines = $producerCase['defines'] ?? null;
+                $public = is_array($defines) && !isListArray($defines) ? ($defines['public'] ?? null) : null;
+                if (is_array($public) && !isListArray($public)) {
+                    foreach ($public as $symbolName => $_expr) {
+                        $exportName = trim((string)$symbolName);
+                        if ($exportName === '' || array_key_exists($exportName, $exports)) {
+                            continue;
+                        }
+                        $exports[$exportName] = [
+                            'from' => 'assert.function',
+                            'path' => $exportName,
+                            'required' => true,
+                        ];
+                    }
                 }
-                $exportName = trim((string)($entryRaw['as'] ?? ''));
-                if ($exportName === '') {
-                    throw new SchemaError("producer harness.chain.exports[{$entryIdx}].as is required");
-                }
-                if (array_key_exists($exportName, $exports)) {
-                    continue;
-                }
-                $fromSource = trim((string)($entryRaw['from'] ?? ''));
-                if ($fromSource !== 'assert.function') {
-                    throw new SchemaError(
-                        "producer harness.chain.exports[{$entryIdx}].from must be assert.function"
-                    );
-                }
-                $symbolPath = trim((string)($entryRaw['path'] ?? ''));
-                if ($symbolPath === '') {
-                    throw new SchemaError(
-                        "producer harness.chain.exports[{$entryIdx}].path is required for from=assert.function"
-                    );
-                }
-                $required = !array_key_exists('required', $entryRaw) || (bool)$entryRaw['required'];
-                $exports[$exportName] = [
-                    'from' => $fromSource,
-                    'path' => $symbolPath,
-                    'required' => $required,
-                ];
             }
         }
         if (count($exports) === 0) {

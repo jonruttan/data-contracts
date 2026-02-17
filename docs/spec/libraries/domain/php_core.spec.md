@@ -18,11 +18,4 @@ defines:
             - meta
           - php_array_kind
         - assoc
-harness:
-  chain:
-    exports:
-    - as: php.is_assoc_projection
-      from: assert.function
-      path: /php.is_assoc_projection
-      required: true
 ```

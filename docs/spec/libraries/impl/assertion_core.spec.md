@@ -15,21 +15,6 @@ defines:
         - {var: subject}
         - {var: token}
   private: {}
-harness:
-  chain:
-    exports:
-    - as: impl.assert.contains
-      from: assert.function
-      path: /impl.assert.contains
-      required: true
-    - as: impl.assert.regex
-      from: assert.function
-      path: /impl.assert.regex
-      required: true
-    - as: impl.assert.json_type
-      from: assert.function
-      path: /impl.assert.json_type
-      required: true
 ```
 
 ```yaml spec-test
@@ -45,21 +30,6 @@ defines:
         - {var: subject}
         - {var: pattern}
   private: {}
-harness:
-  chain:
-    exports:
-    - as: impl.assert.contains
-      from: assert.function
-      path: /impl.assert.contains
-      required: true
-    - as: impl.assert.regex
-      from: assert.function
-      path: /impl.assert.regex
-      required: true
-    - as: impl.assert.json_type
-      from: assert.function
-      path: /impl.assert.json_type
-      required: true
 ```
 
 ```yaml spec-test
@@ -75,19 +45,4 @@ defines:
         - {var: subject}
         - {var: type_name}
   private: {}
-harness:
-  chain:
-    exports:
-    - as: impl.assert.contains
-      from: assert.function
-      path: /impl.assert.contains
-      required: true
-    - as: impl.assert.regex
-      from: assert.function
-      path: /impl.assert.regex
-      required: true
-    - as: impl.assert.json_type
-      from: assert.function
-      path: /impl.assert.json_type
-      required: true
 ```

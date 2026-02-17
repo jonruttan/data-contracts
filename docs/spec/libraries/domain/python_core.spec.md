@@ -18,11 +18,4 @@ defines:
             - meta
           - native_kind
         - python.tuple
-harness:
-  chain:
-    exports:
-    - as: py.is_tuple_projection
-      from: assert.function
-      path: /py.is_tuple_projection
-      required: true
 ```

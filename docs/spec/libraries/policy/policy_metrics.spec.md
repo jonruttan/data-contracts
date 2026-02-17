@@ -20,13 +20,6 @@ defines:
         - std.object.get:
           - {var: subject}
           - {var: baseline_field}
-harness:
-  chain:
-    exports:
-    - as: policy.metric_non_decrease
-      from: assert.function
-      path: /policy.metric_non_decrease
-      required: true
 ```
 
 ```yaml spec-test
@@ -47,13 +40,6 @@ defines:
         - std.object.get:
           - {var: subject}
           - {var: baseline_field}
-harness:
-  chain:
-    exports:
-    - as: policy.metric_non_increase
-      from: assert.function
-      path: /policy.metric_non_increase
-      required: true
 ```
 
 ```yaml spec-test

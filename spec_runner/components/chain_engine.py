@@ -293,9 +293,28 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
 def _producer_case_exports(producer_case: InternalSpecCase) -> dict[str, ChainProducedImport]:
     harness = producer_case.harness or {}
     chain = harness.get("chain")
-    if not isinstance(chain, dict):
-        return {}
-    return _expand_producer_exports(chain.get("exports"), field_prefix="harness.chain.exports")
+    declared: dict[str, ChainProducedImport] = {}
+    if isinstance(chain, dict):
+        declared = _expand_producer_exports(chain.get("exports"), field_prefix="harness.chain.exports")
+
+    # Canonical implicit export model for spec_lang.export: every defines.public symbol
+    # is producer-exported unless explicitly overridden in harness.chain.exports.
+    if producer_case.type == "spec_lang.export":
+        raw_defines = producer_case.raw_case.get("defines")
+        if isinstance(raw_defines, dict):
+            raw_public = raw_defines.get("public")
+            if isinstance(raw_public, dict):
+                for raw_name in raw_public.keys():
+                    name = str(raw_name).strip()
+                    if not name or name in declared:
+                        continue
+                    declared[name] = ChainProducedImport(
+                        from_source="assert.function",
+                        path=name,
+                        params=(),
+                        required=True,
+                    )
+    return declared
 
 
 def _resolve_ref_path(*, ref_path: str, current_case: InternalSpecCase) -> Path:
@@ -542,7 +561,7 @@ def execute_chain_plan(
                 step_values.update(_extract_assert_function_imports(step=step, refs=refs))
                 if not step_values:
                     raise ValueError(
-                        f"chain step {step.id} did not expose producer harness.chain.exports"
+                        f"chain step {step.id} did not expose producer exports"
                     )
             except Exception as exc:
                 compile_success = False
