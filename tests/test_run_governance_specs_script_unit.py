@@ -3,6 +3,8 @@ import importlib.util
 from pathlib import Path
 import re
 
+from spec_runner.codecs import load_external_cases
+
 
 def _load_script_module():
     repo_root = Path(__file__).resolve().parents[1]
@@ -4876,6 +4878,36 @@ def test_script_enforces_docs_markdown_namespace_legacy_alias_forbidden(tmp_path
     )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
+
+
+def test_chain_exports_conformance_case_points_to_negative_fixture():
+    repo_root = Path(__file__).resolve().parents[1]
+    loaded = load_external_cases(
+        repo_root / "docs/spec/conformance/cases/core/chain_exports.spec.md",
+        formats={"md"},
+    )
+    _, case = loaded[0]
+    assert case["id"] == "SRCONF-CHAIN-EXPORT-001"
+    assert case["path"] == "/fixtures/chain_exports_list_only_negative/docs/spec/conformance/cases/core/bad_chain.spec.md"
+    fixture_text = (repo_root / "fixtures/chain_exports_list_only_negative/docs/spec/conformance/cases/core/bad_chain.spec.md").read_text(
+        encoding="utf-8"
+    )
+    assert "legacy mapping-form chain exports example" in fixture_text
+    assert "non-executable" in fixture_text
+
+
+def test_markdown_namespace_conformance_case_points_to_negative_fixture():
+    repo_root = Path(__file__).resolve().parents[1]
+    loaded = load_external_cases(
+        repo_root / "docs/spec/conformance/cases/core/markdown_namespace.spec.md",
+        formats={"md"},
+    )
+    _, case = loaded[0]
+    assert case["id"] == "SRCONF-MARKDOWN-NS-001"
+    assert case["path"] == "/fixtures/markdown_namespace_negative/docs/book/index.md"
+    fixture_text = (repo_root / "fixtures/markdown_namespace_negative/docs/book/index.md").read_text(encoding="utf-8")
+    assert "md.has_heading" in fixture_text
+    assert "legacy markdown alias tokens" in fixture_text
 
 
 def test_script_enforces_docs_operability_metric(tmp_path):
