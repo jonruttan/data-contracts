@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
-import sys
 from pathlib import Path
 from typing import Any
 
@@ -92,11 +91,11 @@ def main(argv: list[str] | None = None) -> int:
     failures: list[str] = []
 
     if not ns.compare_only:
-        code = _run([py_bin, "scripts/run_governance_specs.py", "--timing-out", str(ns.governance_timing)], cwd=root)
+        code = _run([py_bin, "scripts/run_governance_specs.py", "--timing-out", str(governance_timing)], cwd=root)
         if code != 0:
             return code
         code = _run(
-            [py_bin, "scripts/docs_generate_all.py", "--check", "--timing-out", str(ns.docs_timing)],
+            [py_bin, "scripts/docs_generate_all.py", "--check", "--timing-out", str(docs_timing)],
             cwd=root,
         )
         if code != 0:
@@ -134,7 +133,7 @@ def main(argv: list[str] | None = None) -> int:
     }
     report_out.parent.mkdir(parents=True, exist_ok=True)
     report_out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(f"wrote {ns.report_out}")
+    print(f"wrote {report_out.relative_to(root).as_posix() if report_out.is_relative_to(root) else report_out}")
     if failures:
         for msg in failures:
             print(f"WARN: {msg}" if ns.mode == "warn" else f"ERROR: {msg}")

@@ -32,6 +32,7 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
     return [
         ("governance", _runner_command(runner_bin, runner_impl, "governance")),
         ("docs_generate_check", _runner_command(runner_bin, runner_impl, "docs-generate-check")),
+        ("perf_smoke", _runner_command(runner_bin, runner_impl, "perf-smoke") + ["--mode", "warn"]),
         ("docs_lint", _runner_command(runner_bin, runner_impl, "docs-lint")),
         ("normalize_check", _runner_command(runner_bin, runner_impl, "normalize-check")),
         ("schema_registry_build", _runner_command(runner_bin, runner_impl, "schema-registry-build")),
@@ -87,6 +88,39 @@ def _run_steps(steps: list[tuple[str, list[str]]]) -> list[dict[str, object]]:
             }
         )
     return rows
+
+
+def _collect_unit_test_opt_out(root: Path) -> dict[str, int]:
+    tests_root = root / "tests"
+    baseline_path = root / "docs/spec/metrics/unit_test_opt_out_baseline.json"
+    prefix = "# SPEC-OPT-OUT:"
+    total = 0
+    opted_out = 0
+    if tests_root.exists():
+        for path in sorted(tests_root.glob("test_*_unit.py")):
+            if not path.is_file():
+                continue
+            total += 1
+            first_non_empty = ""
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    first_non_empty = line.strip()
+                    break
+            if first_non_empty.startswith(prefix):
+                opted_out += 1
+    baseline_max = 0
+    if baseline_path.exists():
+        try:
+            payload = json.loads(baseline_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            payload = {}
+        if isinstance(payload, dict) and isinstance(payload.get("max_opt_out_file_count"), int):
+            baseline_max = int(payload["max_opt_out_file_count"])
+    return {
+        "total_unit_test_files": total,
+        "opt_out_file_count": opted_out,
+        "baseline_max_opt_out_file_count": baseline_max,
+    }
 
 
 def _load_gate_policy_expr(policy_case: Path) -> list[object]:
@@ -171,6 +205,7 @@ def main(argv: list[str] | None = None) -> int:
         "steps": steps,
         "runner_bin": str(ns.runner_bin),
         "runner_impl": str(ns.runner_impl),
+        "unit_test_opt_out": _collect_unit_test_opt_out(Path.cwd()),
     }
     out_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     trace_out = str(ns.trace_out or "").strip()
