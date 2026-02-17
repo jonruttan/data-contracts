@@ -2543,7 +2543,7 @@ rules:
   applies_to: docs.history.reviews
   norm: MUST
   requirement: reviews_artifacts_must_live_under_docs_history_reviews
-  description: 'Historical review artifacts must live under `docs/history/reviews`; legacy `docs/reviews` is forbidden.
+  description: 'Historical review artifacts must live under `docs/history/reviews`; legacy `docs/history/reviews` is forbidden.
 
     '
   rationale: Separates historical artifacts from canonical product docs.
@@ -2788,10 +2788,10 @@ rules:
 - id: CHAIN_EXPORTS_EXPLICIT_REQUIRED
   introduced_in: v1
   scope: implementation
-  applies_to: harness.chain.steps.exports
+  applies_to: harness.chain.steps.imports
   norm: MUST
   requirement: chain_state_sharing_requires_explicit_target_derived_exports
-  description: 'State propagation between chained cases must be declared via explicit exports derived from assertion targets.
+  description: 'State propagation between chained cases must be declared via explicit step imports derived from assertion targets.
 
     '
   rationale: Prevents implicit coupling to internal harness runtime structures.
@@ -2802,10 +2802,10 @@ rules:
 - id: CHAIN_EXPORTS_FROM_KEY_REQUIRED
   introduced_in: v1
   scope: schema
-  applies_to: harness.chain.steps.exports[*].from
+  applies_to: harness.chain.steps.imports[*].from
   norm: MUST
   requirement: chain_exports_must_use_from_key
-  description: 'Each chain export entry must declare a `from` key.
+  description: 'Each chain step import entry must declare a `from` key.
 
     '
   rationale: Keeps export source selection explicit and deterministic.
@@ -2818,10 +2818,10 @@ rules:
 - id: CHAIN_EXPORTS_LIST_ONLY_REQUIRED
   introduced_in: v1
   scope: schema
-  applies_to: harness.chain.steps.exports
+  applies_to: harness.chain.steps.imports
   norm: MUST
   requirement: chain_exports_use_list_form_only
-  description: 'Chain step exports must use list-form entries; mapping-form exports are forbidden.
+  description: 'Chain step imports must use list-form entries; mapping-form entries are forbidden.
 
     '
   rationale: Keeps export parsing deterministic and enables batch symbol export syntax.
@@ -2835,10 +2835,10 @@ rules:
 - id: CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
   introduced_in: v1
   scope: schema
-  applies_to: harness.chain.steps.exports[*].from_target
+  applies_to: harness.chain.steps.imports[*].from_target
   norm: MUST_NOT
   requirement: chain_exports_legacy_from_target_key_is_rejected
-  description: 'Legacy chain export key `from_target` is forbidden; use `from`.
+  description: 'Legacy chain step import key `from_target` is forbidden; use `from`.
 
     '
   rationale: Enforces hard-cut chain export contract consistency.
@@ -2850,14 +2850,14 @@ rules:
 - id: CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
   introduced_in: v1
   scope: implementation
-  applies_to: harness.chain.steps.exports[*]
+  applies_to: harness.chain.steps.imports[*]
   norm: MUST
-  requirement: library_symbol_exports_require_ref_fragment_and_symbol_path
-  description: 'Chain exports using `from: library.symbol` must define non-empty `path` and reference a specific case via `#case_id`.
+  requirement: assert_function_imports_require_symbol_path
+  description: 'Chain step imports using `from: assert.function` must define non-empty `path`.
 
     '
-  rationale: Keeps library symbol resolution deterministic and case-scoped.
-  risk_if_violated: Symbol imports can resolve ambiguously across library surfaces.
+  rationale: Keeps compile-only function import resolution deterministic.
+  risk_if_violated: Function imports can resolve ambiguously across producer surfaces.
   references:
   - docs/spec/contract/04_harness.md
   - docs/spec/contract/14_spec_lang_libraries.md

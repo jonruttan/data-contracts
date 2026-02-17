@@ -279,8 +279,8 @@ harness:
   spec_lang:
     includes:
     - /docs/spec/libraries/common.spec.md
-    exports:
-    - is_portable_case
+    imports:
+    - /is_portable_case
 ```
 
 Library contract details:

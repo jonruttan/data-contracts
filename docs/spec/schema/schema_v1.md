@@ -291,22 +291,22 @@ For `type: docs.generate`, supported `harness` keys include:
       - `#case_id` with no preceding path is valid and resolves in current doc
       - case id fragment must match `[A-Za-z0-9._:-]+` when present
       - YAML authors should quote hash-only refs (for example `ref: "#CASE-1"`)
-    - `exports` (list, optional):
+    - `imports` (list, optional):
       - each list entry is one of:
         - symbol-batch entry:
           - `from` (string, required)
           - `required` (bool, optional, default `true`)
           - `prefix` (string, optional)
           - `symbols` (list[string], required, non-empty)
-          - each symbol expands to export name + `path: /<symbol>`
-        - single export entry:
-          - `as` (string, required export name)
+          - each symbol expands to import name + `path: /<symbol>`
+        - single import entry:
+          - `as` (string, required import name)
           - `from` (string, required)
           - `path` (string dotted selector, optional)
           - `required` (bool, optional, default `true`)
-      - runtime target exports are allowed only for refs with `#case_id`
-      - `from: library.symbol` exports may use file refs without `#case_id`
-      - `from: library.symbol` requires non-empty symbol names
+      - runtime target imports are allowed only for refs with `#case_id`
+      - `from: assert.function` imports may use file refs without `#case_id`
+      - `from: assert.function` requires non-empty symbol names
       - legacy key `from_target` is forbidden
     - `allow_continue` (bool, optional, default `false`)
 - `imports` (list[mapping], optional)
@@ -328,7 +328,7 @@ Chain reference resolution:
 Chain execution model:
 
 - all executable case types may declare `harness.chain`.
-- chain state sharing is explicit via `exports` + `imports`.
+- chain state sharing is explicit via step-level `imports` + `harness.chain.imports`.
 - top-level `chain` and type-specific `*.chain` aliases are forbidden.
 - scalar `ref` is the only supported reference format; legacy mapping refs are
   invalid.

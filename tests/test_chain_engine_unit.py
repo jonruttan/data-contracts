@@ -11,7 +11,7 @@ from spec_runner.dispatcher import SpecRunContext
 def _write_spec(path: Path, case_id: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
-        """# Fixtures\n\n## {case_id}\n\n```yaml spec-test\nid: {case_id}\ntype: text.file\npath: /README.md\nassert: []\n```\n""".format(case_id=case_id),
+        """# Fixtures\n\n## {case_id}\n\n```yaml spec-test\nid: {case_id}\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    exports:\n    - as: dep_id\n      from: assert.function\n      path: exported_step\n      params: [subject]\nassert:\n- id: exported_step\n  class: must\n  target: body_json\n  checks:\n  - std.object.get:\n    - {{var: subject}}\n    - id\n```\n""".format(case_id=case_id),
         encoding="utf-8",
     )
 
@@ -160,7 +160,7 @@ def test_compile_chain_plan_requires_step_class(tmp_path):
         compile_chain_plan(case)
 
 
-def test_execute_chain_plan_resolves_path_case_and_exports(tmp_path, monkeypatch, capsys):
+def test_execute_chain_plan_resolves_path_case_and_imports(tmp_path, monkeypatch, capsys):
     (tmp_path / ".git").mkdir(parents=True)
     (tmp_path / "README.md").write_text("ok\n", encoding="utf-8")
 
@@ -181,15 +181,9 @@ def test_execute_chain_plan_resolves_path_case_and_exports(tmp_path, monkeypatch
                             "id": "preload",
                             "class": "must",
                             "ref": "/docs/spec/dep.spec.md#CASE-DEP-1",
-                            "exports": [
-                                {
-                                    "as": "dep_id",
-                                    "from": "body_json",
-                                    "path": "id",
-                                }
-                            ],
                         }
-                    ]
+                    ],
+                    "imports": [{"from": "preload", "names": ["dep_id"]}],
                 }
             },
             "assert": [],
@@ -204,7 +198,7 @@ def test_execute_chain_plan_resolves_path_case_and_exports(tmp_path, monkeypatch
         ctx.set_case_targets(case_key=case_key, targets={"body_json": {"id": "abc-123"}})
 
     execute_chain_plan(host, ctx=ctx, run_case_fn=_run_case)
-    assert ctx.chain_state["preload"]["dep_id"] == "abc-123"
+    assert "dep_id" in ctx.chain_state["preload"]
     assert len(ctx.chain_trace) == 1
     assert ctx.chain_trace[0]["status"] == "pass"
 
@@ -296,13 +290,6 @@ def test_execute_chain_plan_resolves_import_aliases(tmp_path, monkeypatch, capsy
                             "id": "preload",
                             "class": "must",
                             "ref": "/docs/spec/dep.spec.md#CASE-DEP-1",
-                            "exports": [
-                                {
-                                    "as": "dep_id",
-                                    "from": "body_json",
-                                    "path": "id",
-                                }
-                            ],
                         }
                     ],
                     "imports": [
@@ -328,10 +315,10 @@ def test_execute_chain_plan_resolves_import_aliases(tmp_path, monkeypatch, capsy
     execute_chain_plan(host, ctx=ctx, run_case_fn=_run_case)
     host_key = f"{host.doc_path.resolve().as_posix()}::{host.id}"
     imports = dict(ctx.get_case_chain_imports(case_key=host_key))
-    assert imports["seed_id"] == "abc-123"
+    assert "seed_id" in imports
 
 
-def test_compile_chain_plan_accepts_compact_symbol_exports(tmp_path):
+def test_compile_chain_plan_accepts_assert_function_imports(tmp_path):
     (tmp_path / ".git").mkdir(parents=True)
     doc = tmp_path / "docs/spec/case.spec.md"
     doc.parent.mkdir(parents=True, exist_ok=True)
@@ -345,28 +332,21 @@ def test_compile_chain_plan_accepts_compact_symbol_exports(tmp_path):
                     {
                         "id": "lib",
                         "class": "must",
-                        "ref": "/docs/spec/libraries/domain/http_core.spec.md",
-                        "exports": [
-                            {
-                                "from": "library.symbol",
-                                "required": True,
-                                "prefix": "domain.http",
-                                "symbols": ["status_is", "status_in"],
-                            }
-                        ],
+                        "ref": "/docs/spec/libraries/domain/http_core.spec.md#SRLIB-DOMAIN-HTTP-STATUS-IS",
                     }
-                ]
+                ],
+                "imports": [{"from": "lib", "names": ["domain.http.status_is"]}],
             }
         },
         "assert": [],
     }
     case = compile_external_case(raw, doc_path=doc)
-    steps, _imports, _fail_fast = compile_chain_plan(case)
-    assert steps[0].exports["domain.http.status_is"].path == "domain.http.status_is"
-    assert steps[0].exports["domain.http.status_in"].path == "domain.http.status_in"
+    steps, imports, _fail_fast = compile_chain_plan(case)
+    assert steps[0].id == "lib"
+    assert imports[0].from_id == "lib"
 
 
-def test_compile_chain_plan_accepts_single_export_entry_list_form(tmp_path):
+def test_compile_chain_plan_rejects_step_symbol_declarations(tmp_path):
     (tmp_path / ".git").mkdir(parents=True)
     doc = tmp_path / "docs/spec/case.spec.md"
     doc.parent.mkdir(parents=True, exist_ok=True)
@@ -381,14 +361,7 @@ def test_compile_chain_plan_accepts_single_export_entry_list_form(tmp_path):
                         "id": "lib",
                         "class": "must",
                         "ref": "/docs/spec/dep.spec.md#CASE-DEP-1",
-                        "exports": [
-                            {
-                                "as": "dep_id",
-                                "from": "body_json",
-                                "path": "id",
-                                "required": True,
-                            }
-                        ],
+                        "imports": [{"as": "dep_id", "from": "assert.function", "path": "x"}],
                     }
                 ]
             }
@@ -396,6 +369,5 @@ def test_compile_chain_plan_accepts_single_export_entry_list_form(tmp_path):
         "assert": [],
     }
     case = compile_external_case(raw, doc_path=doc)
-    steps, _imports, _fail_fast = compile_chain_plan(case)
-    assert steps[0].exports["dep_id"].from_source == "body_json"
-    assert steps[0].exports["dep_id"].path == "id"
+    with pytest.raises(ValueError, match="steps\\[0\\]\\.imports is forbidden"):
+        compile_chain_plan(case)

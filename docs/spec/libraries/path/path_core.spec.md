@@ -73,6 +73,13 @@ defines:
           - {var: path.normalize_slashes}
           - {var: path}
         - {var: pattern}
+harness:
+  chain:
+    exports:
+    - as: path.normalize_slashes
+      from: assert.function
+      path: /path.normalize_slashes
+      required: true
 ```
 
 ```yaml spec-test
@@ -147,6 +154,13 @@ defines:
           - {var: path.normalize_slashes}
           - {var: path}
         - {var: pattern}
+harness:
+  chain:
+    exports:
+    - as: path.segments
+      from: assert.function
+      path: /path.segments
+      required: true
 ```
 
 ```yaml spec-test
@@ -232,6 +246,13 @@ defines:
           - {var: path.normalize_slashes}
           - {var: path}
         - {var: pattern}
+harness:
+  chain:
+    exports:
+    - as: path.basename
+      from: assert.function
+      path: /path.basename
+      required: true
 ```
 
 ```yaml spec-test
@@ -325,6 +346,13 @@ defines:
           - {var: path.normalize_slashes}
           - {var: path}
         - {var: pattern}
+harness:
+  chain:
+    exports:
+    - as: path.extension
+      from: assert.function
+      path: /path.extension
+      required: true
 ```
 
 ```yaml spec-test
@@ -337,11 +365,6 @@ harness:
     - id: lib_path_normalize
       class: must
       ref: '#LIB-PATH-001-001-PATH-NORMALIZE-SLASHES'
-      exports:
-      - as: path.normalize_slashes
-        from: library.symbol
-        required: true
-        path: /path.normalize_slashes
     imports:
     - from: lib_path_normalize
       names:

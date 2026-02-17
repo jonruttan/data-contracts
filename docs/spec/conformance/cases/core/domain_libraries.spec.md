@@ -14,43 +14,24 @@ harness:
     - id: lib_http_core_spec
       class: must
       ref: /docs/spec/libraries/domain/http_core.spec.md
-      exports:
-      - from: library.symbol
-        required: true
-        symbols:
-        - domain.http.status
-        - domain.http.status_in
-        - domain.http.status_is
-        - domain.http.status_is_unauthorized
-        - domain.http.status_is_forbidden
-        - domain.http.ok_2xx
-        - domain.http.header_get
-        - domain.http.header_contains
-        - domain.http.body_text
-        - domain.http.body_json
-        - domain.http.body_json_type_is
-        - domain.http.body_json_has_key
-        - domain.http.auth_is_oauth
-        - domain.http.has_bearer_header
-        - domain.http.oauth_scope_requested
     imports:
     - from: lib_http_core_spec
       names:
+      - domain.http.auth_is_oauth
+      - domain.http.body_json
+      - domain.http.body_json_has_key
+      - domain.http.body_json_type_is
+      - domain.http.body_text
+      - domain.http.has_bearer_header
+      - domain.http.header_contains
+      - domain.http.header_get
+      - domain.http.oauth_scope_requested
+      - domain.http.ok_2xx
       - domain.http.status
       - domain.http.status_in
       - domain.http.status_is
-      - domain.http.status_is_unauthorized
       - domain.http.status_is_forbidden
-      - domain.http.ok_2xx
-      - domain.http.header_get
-      - domain.http.header_contains
-      - domain.http.body_text
-      - domain.http.body_json
-      - domain.http.body_json_type_is
-      - domain.http.body_json_has_key
-      - domain.http.auth_is_oauth
-      - domain.http.has_bearer_header
-      - domain.http.oauth_scope_requested
+      - domain.http.status_is_unauthorized
 expect:
   portable:
     status: pass
@@ -218,64 +199,33 @@ harness:
     - id: lib_make_core_spec
       class: must
       ref: /docs/spec/libraries/domain/make_core.spec.md
-      exports:
-      - as: make.has_target
-        from: library.symbol
-        required: true
-        path: /make.has_target
     - id: lib_markdown_core_spec
       class: must
       ref: /docs/spec/libraries/domain/markdown_core.spec.md
-      exports:
-      - from: library.symbol
-        required: true
-        symbols:
-        - domain.markdown.has_heading
-        - domain.markdown.heading_level_exists
-        - domain.markdown.section_order_valid
-        - domain.markdown.required_sections_present
-        - domain.markdown.link_targets_all_resolve
-        - domain.markdown.has_broken_links
-        - domain.markdown.has_yaml_spec_test_fence
-        - domain.markdown.code_fence_language_exists
-        - domain.markdown.token_present
-        - domain.markdown.tokens_all_present
-        - domain.markdown.token_ownership_unique
-        - domain.markdown.token_dependencies_resolved
     - id: lib_python_core_spec
       class: must
       ref: /docs/spec/libraries/domain/python_core.spec.md
-      exports:
-      - as: py.is_tuple_projection
-        from: library.symbol
-        required: true
-        path: /py.is_tuple_projection
     - id: lib_php_core_spec
       class: must
       ref: /docs/spec/libraries/domain/php_core.spec.md
-      exports:
-      - as: php.is_assoc_projection
-        from: library.symbol
-        required: true
-        path: /php.is_assoc_projection
     imports:
     - from: lib_make_core_spec
       names:
       - make.has_target
     - from: lib_markdown_core_spec
       names:
-      - domain.markdown.has_heading
-      - domain.markdown.heading_level_exists
-      - domain.markdown.section_order_valid
-      - domain.markdown.required_sections_present
-      - domain.markdown.link_targets_all_resolve
-      - domain.markdown.has_broken_links
-      - domain.markdown.has_yaml_spec_test_fence
       - domain.markdown.code_fence_language_exists
+      - domain.markdown.has_broken_links
+      - domain.markdown.has_heading
+      - domain.markdown.has_yaml_spec_test_fence
+      - domain.markdown.heading_level_exists
+      - domain.markdown.link_targets_all_resolve
+      - domain.markdown.required_sections_present
+      - domain.markdown.section_order_valid
+      - domain.markdown.token_dependencies_resolved
+      - domain.markdown.token_ownership_unique
       - domain.markdown.token_present
       - domain.markdown.tokens_all_present
-      - domain.markdown.token_ownership_unique
-      - domain.markdown.token_dependencies_resolved
     - from: lib_python_core_spec
       names:
       - py.is_tuple_projection

@@ -39,4 +39,11 @@ defines:
       - std.type.json_type:
         - {var: subject}
         - {var: type_name}
+harness:
+  chain:
+    exports:
+    - as: conf.pass_when_text_contains
+      from: assert.function
+      path: /conf.pass_when_text_contains
+      required: true
 ```

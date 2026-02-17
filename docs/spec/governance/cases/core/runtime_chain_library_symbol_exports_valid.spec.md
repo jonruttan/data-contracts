@@ -2,8 +2,9 @@
 
 ```yaml spec-test
 id: SRGOV-CHAIN-FROM-003
-title: chain library symbol exports are valid
-purpose: Ensures from=library.symbol exports include valid symbol path and contract shape.
+title: chain assert function imports are valid
+purpose: Ensures from=assert.function step imports include valid symbol path and contract
+  shape.
 type: governance.check
 check: runtime.chain_library_symbol_exports_valid
 harness:
@@ -17,11 +18,6 @@ harness:
     - id: lib_policy_core_spec
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md
-      exports:
-      - as: policy.pass_when_no_violations
-        from: library.symbol
-        required: true
-        path: /policy.pass_when_no_violations
     imports:
     - from: lib_policy_core_spec
       names:

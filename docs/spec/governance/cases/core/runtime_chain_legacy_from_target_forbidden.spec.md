@@ -1,11 +1,11 @@
-# runtime.chain_legacy_from_target_forbidden
+# runtime.chain_legacy_from_forbidden
 
 ```yaml spec-test
 id: SRGOV-CHAIN-FROM-002
 title: chain exports forbid legacy from_target key
 purpose: Ensures harness.chain step exports reject from_target and require from.
 type: governance.check
-check: runtime.chain_legacy_from_target_forbidden
+check: runtime.chain_legacy_from_forbidden
 harness:
   root: .
   policy_evaluate:
@@ -17,11 +17,6 @@ harness:
     - id: lib_policy_core_spec
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md
-      exports:
-      - as: policy.pass_when_no_violations
-        from: library.symbol
-        required: true
-        path: /policy.pass_when_no_violations
     imports:
     - from: lib_policy_core_spec
       names:

@@ -5,8 +5,7 @@ canonical_roots:
 - /docs/spec
 - /docs/impl
 - /docs/history/reviews
-forbidden_roots:
-- /docs/reviews
+forbidden_roots: []
 index_filename: index.md
 required_index_dirs:
 - /docs/book

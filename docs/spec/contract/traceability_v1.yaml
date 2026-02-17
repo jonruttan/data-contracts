@@ -3113,7 +3113,7 @@ links:
   - spec_runner/components/chain_engine.py
   - scripts/run_governance_specs.py
   - scripts/normalize_repo.py
-  notes: Chain exports are list-only and mapping-form exports are rejected.
+  notes: Chain step imports are list-only and mapping-form entries are rejected.
 - rule_id: CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
   contract_refs:
@@ -3147,7 +3147,7 @@ links:
   - spec_runner/components/chain_engine.py
   - spec_runner/spec_lang_libraries.py
   - scripts/run_governance_specs.py
-  notes: from=library.symbol exports require case-scoped refs and explicit symbol paths.
+  notes: from=assert.function step imports require explicit symbol path, with compile-only resolution.
 - rule_id: CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   contract_refs:

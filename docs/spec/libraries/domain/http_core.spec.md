@@ -17,6 +17,105 @@ defines:
           - value
         - status
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -36,6 +135,105 @@ defines:
           - status
         - {var: allowed}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -55,6 +253,105 @@ defines:
           - status
         - {var: expected}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -71,6 +368,105 @@ defines:
         - {var: subject}
         - 401
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -87,6 +483,105 @@ defines:
         - {var: subject}
         - 403
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -114,6 +609,105 @@ defines:
             - status
           - 300
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -133,6 +727,105 @@ defines:
           - headers
         - {var: key}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -154,6 +847,105 @@ defines:
           - {var: key}
         - {var: token}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -171,6 +963,105 @@ defines:
           - value
         - body_text
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -188,6 +1079,105 @@ defines:
           - value
         - body_json
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -207,6 +1197,105 @@ defines:
           - body_json
         - {var: expected_type}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -226,6 +1315,105 @@ defines:
           - body_json
         - {var: key}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -245,6 +1433,105 @@ defines:
           - auth_mode
         - oauth
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -266,6 +1553,105 @@ defines:
           - Authorization
         - 'Bearer '
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -287,6 +1673,105 @@ defines:
           - scope_requested
         - null
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -306,6 +1791,105 @@ defines:
           - cors
         - allow_origin
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -327,6 +1911,105 @@ defines:
           - allow_methods
         - {var: method_name}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -348,6 +2031,105 @@ defines:
           - allow_headers
         - {var: header_name}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -369,6 +2151,105 @@ defines:
           - allow_credentials
         - true
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -390,6 +2271,105 @@ defines:
           - max_age
         - {var: min_age}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -407,6 +2387,105 @@ defines:
           - method
         - OPTIONS
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -428,6 +2507,105 @@ defines:
             - {var: step_id}
         - {var: steps}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -448,6 +2626,105 @@ defines:
           - status
         - {var: expected}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```
 
 ```yaml spec-test
@@ -468,4 +2745,103 @@ defines:
           - body_json
         - {var: field}
   private: {}
+harness:
+  chain:
+    exports:
+    - as: domain.http.cors_allow_origin
+      from: assert.function
+      path: /domain.http.cors_allow_origin
+      required: true
+    - as: domain.http.cors_allows_method
+      from: assert.function
+      path: /domain.http.cors_allows_method
+      required: true
+    - as: domain.http.cors_allows_header
+      from: assert.function
+      path: /domain.http.cors_allows_header
+      required: true
+    - as: domain.http.cors_credentials_enabled
+      from: assert.function
+      path: /domain.http.cors_credentials_enabled
+      required: true
+    - as: domain.http.cors_max_age_gte
+      from: assert.function
+      path: /domain.http.cors_max_age_gte
+      required: true
+    - as: domain.http.is_preflight_step
+      from: assert.function
+      path: /domain.http.is_preflight_step
+      required: true
+    - as: domain.http.step_by_id
+      from: assert.function
+      path: /domain.http.step_by_id
+      required: true
+    - as: domain.http.step_status_is
+      from: assert.function
+      path: /domain.http.step_status_is
+      required: true
+    - as: domain.http.step_body_json_get
+      from: assert.function
+      path: /domain.http.step_body_json_get
+      required: true
+    - as: domain.http.status
+      from: assert.function
+      path: /domain.http.status
+      required: true
+    - as: domain.http.status_in
+      from: assert.function
+      path: /domain.http.status_in
+      required: true
+    - as: domain.http.status_is
+      from: assert.function
+      path: /domain.http.status_is
+      required: true
+    - as: domain.http.status_is_unauthorized
+      from: assert.function
+      path: /domain.http.status_is_unauthorized
+      required: true
+    - as: domain.http.status_is_forbidden
+      from: assert.function
+      path: /domain.http.status_is_forbidden
+      required: true
+    - as: domain.http.ok_2xx
+      from: assert.function
+      path: /domain.http.ok_2xx
+      required: true
+    - as: domain.http.header_get
+      from: assert.function
+      path: /domain.http.header_get
+      required: true
+    - as: domain.http.header_contains
+      from: assert.function
+      path: /domain.http.header_contains
+      required: true
+    - as: domain.http.body_text
+      from: assert.function
+      path: /domain.http.body_text
+      required: true
+    - as: domain.http.body_json
+      from: assert.function
+      path: /domain.http.body_json
+      required: true
+    - as: domain.http.body_json_type_is
+      from: assert.function
+      path: /domain.http.body_json_type_is
+      required: true
+    - as: domain.http.body_json_has_key
+      from: assert.function
+      path: /domain.http.body_json_has_key
+      required: true
+    - as: domain.http.auth_is_oauth
+      from: assert.function
+      path: /domain.http.auth_is_oauth
+      required: true
+    - as: domain.http.has_bearer_header
+      from: assert.function
+      path: /domain.http.has_bearer_header
+      required: true
+    - as: domain.http.oauth_scope_requested
+      from: assert.function
+      path: /domain.http.oauth_scope_requested
+      required: true
 ```

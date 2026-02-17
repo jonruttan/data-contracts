@@ -35,10 +35,7 @@ from spec_runner.spec_lang import (
     eval_predicate,
 )
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
-from spec_runner.spec_lang_libraries import (
-    compile_library_case_public_symbols,
-    load_spec_lang_symbols_for_case,
-)
+from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.schema_registry import compile_registry
 from spec_runner.ops_namespace import validate_ops_symbol
@@ -3136,6 +3133,13 @@ def _iter_cases_with_chain(root: Path):
     yield from cached
 
 
+def _rel_path(root: Path, path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(root.resolve()))
+    except ValueError:
+        return str(path)
+
+
 def _expand_chain_step_exports(raw_exports: object) -> tuple[dict[str, dict], list[str]]:
     if raw_exports is None:
         return {}, []
@@ -3148,72 +3152,90 @@ def _expand_chain_step_exports(raw_exports: object) -> tuple[dict[str, dict], li
         if not isinstance(raw_entry, dict):
             errors.append(f"exports[{idx}] must be mapping")
             continue
-        if "symbols" in raw_entry:
-            allowed = {"from", "required", "prefix", "symbols"}
-            unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in allowed)
-            if unknown:
-                errors.append(
-                    f"exports[{idx}] compact form has unsupported keys: {', '.join(unknown)}"
-                )
-            from_source = str(raw_entry.get("from", "")).strip()
-            if not from_source:
-                errors.append(f"exports[{idx}] compact form requires non-empty from")
-            raw_required = raw_entry.get("required", True)
-            if not isinstance(raw_required, bool):
-                errors.append(f"exports[{idx}] compact form required must be bool")
-            raw_prefix = raw_entry.get("prefix", "")
-            if raw_prefix is None:
-                raw_prefix = ""
-            if not isinstance(raw_prefix, str):
-                errors.append(f"exports[{idx}] compact form prefix must be string")
-                raw_prefix = ""
-            prefix = raw_prefix.strip()
-            raw_symbols = raw_entry.get("symbols")
-            if not isinstance(raw_symbols, list) or not raw_symbols:
-                errors.append(f"exports[{idx}] compact form symbols must be non-empty list")
-                raw_symbols = []
-            for sym_idx, raw_symbol in enumerate(raw_symbols):
-                symbol = str(raw_symbol).strip()
-                if not symbol:
-                    errors.append(f"exports[{idx}] compact form symbols[{sym_idx}] must be non-empty string")
-                    continue
-                full_name = f"{prefix}.{symbol}" if prefix else symbol
-                if full_name in expanded:
-                    errors.append(f"exports duplicate key {full_name}")
-                    continue
-                expanded[full_name] = {
-                    "from": from_source,
-                    "path": f"/{full_name.lstrip('/')}",
-                    "required": raw_required,
-                }
-            continue
 
-        allowed = {"as", "from", "path", "required"}
+        allowed = {"as", "from", "path", "params", "required"}
         unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in allowed)
         if unknown:
             errors.append(f"exports[{idx}] entry has unsupported keys: {', '.join(unknown)}")
         export_name = str(raw_entry.get("as", "")).strip()
         if not export_name:
-            errors.append(f"exports[{idx}] non-symbol entry requires non-empty as")
+            errors.append(f"exports[{idx}] entry requires non-empty as")
             continue
         if export_name in expanded:
             errors.append(f"exports duplicate key {export_name}")
             continue
         from_source = str(raw_entry.get("from", "")).strip()
         if not from_source:
-            errors.append(f"exports[{idx}] non-symbol entry requires non-empty from")
+            errors.append(f"exports[{idx}] entry requires non-empty from")
+        elif from_source != "assert.function":
+            errors.append(f"exports[{idx}] from must be assert.function")
         export_path = raw_entry.get("path")
         if export_path is not None and not isinstance(export_path, str):
             errors.append(f"exports[{idx}] path must be string when provided")
+        params = raw_entry.get("params")
+        if params is not None:
+            if not isinstance(params, list) or not params:
+                errors.append(f"exports[{idx}] params must be non-empty list when provided")
+            elif any(not isinstance(x, str) or not str(x).strip() for x in params):
+                errors.append(f"exports[{idx}] params entries must be non-empty strings")
         raw_required = raw_entry.get("required", True)
         if not isinstance(raw_required, bool):
             errors.append(f"exports[{idx}] required must be bool")
         expanded[export_name] = {
             "from": from_source,
             "path": export_path,
+            "params": params,
             "required": raw_required,
         }
     return expanded, errors
+
+
+def _producer_step_exports(
+    root: Path,
+    *,
+    consumer_doc_path: Path,
+    step: dict,
+) -> tuple[set[str], list[str]]:
+    errors: list[str] = []
+    names: set[str] = set()
+    try:
+        ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
+    except ValueError as exc:
+        return set(), [str(exc)]
+
+    if ref_path:
+        try:
+            resolved_doc = _resolve_chain_ref_doc(root, consumer_doc_path, ref_path)
+        except VirtualPathError as exc:
+            return set(), [f"invalid ref ({exc})"]
+    else:
+        resolved_doc = consumer_doc_path
+
+    try:
+        loaded = list(load_external_cases(resolved_doc, formats={"md"}))
+    except Exception as exc:  # noqa: BLE001
+        return set(), [f"unable to load producer cases ({exc})"]
+
+    if ref_case_id:
+        loaded = [item for item in loaded if str(item[1].get("id", "")).strip() == ref_case_id]
+        if len(loaded) != 1:
+            target = ref_path or _rel_path(root, consumer_doc_path)
+            return set(), [f"unresolved case fragment {ref_case_id} in {target}"]
+
+    for _source_doc, source_case in loaded:
+        source_harness = source_case.get("harness")
+        if not isinstance(source_harness, dict):
+            continue
+        source_chain = source_harness.get("chain")
+        if not isinstance(source_chain, dict):
+            continue
+        expanded, parse_errors = _expand_chain_step_exports(source_chain.get("exports"))
+        if parse_errors:
+            for err in parse_errors:
+                errors.append(f"producer harness.chain.exports {err}")
+            continue
+        names.update(str(name).strip() for name in expanded.keys() if str(name).strip())
+    return names, errors
 
 
 def _collect_chain_library_refs(case: dict) -> list[str]:
@@ -3227,16 +3249,21 @@ def _collect_chain_library_refs(case: dict) -> list[str]:
     steps = chain.get("steps")
     if not isinstance(steps, list):
         return out
+    imports = chain.get("imports")
+    import_from_ids: set[str] = set()
+    if isinstance(imports, list):
+        for item in imports:
+            if not isinstance(item, dict):
+                continue
+            from_id = str(item.get("from", "")).strip()
+            if from_id:
+                import_from_ids.add(from_id)
+
     for step in steps:
         if not isinstance(step, dict):
             continue
-        exports, errors = _expand_chain_step_exports(step.get("exports"))
-        if errors:
-            continue
-        if not any(
-            isinstance(v, dict) and str(v.get("from", "")).strip() == "library.symbol"
-            for v in exports.values()
-        ):
+        step_id = str(step.get("id", "")).strip()
+        if step_id and import_from_ids and step_id not in import_from_ids:
             continue
         try:
             ref_path, _ref_case_id = _parse_chain_ref_value(step.get("ref"))
@@ -3250,6 +3277,7 @@ def _collect_chain_library_refs(case: dict) -> list[str]:
 def _load_chain_imported_symbol_bindings(
     root: Path, *, doc_path: Path, case: dict, limits: SpecLangLimits
 ) -> dict[str, object]:
+    del limits
     out: dict[str, object] = {}
     harness = case.get("harness")
     if not isinstance(harness, dict):
@@ -3268,53 +3296,13 @@ def _load_chain_imported_symbol_bindings(
         step_id = str(step.get("id", "")).strip()
         if not step_id:
             continue
-        exports, errors = _expand_chain_step_exports(step.get("exports"))
-        if errors:
-            continue
-        has_library_exports = any(
-            isinstance(v, dict) and str(v.get("from", "")).strip() == "library.symbol"
-            for v in exports.values()
+        export_names, _errors = _producer_step_exports(
+            root,
+            consumer_doc_path=doc_path,
+            step=step,
         )
-        if not has_library_exports:
-            continue
-        try:
-            ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
-        except ValueError:
-            continue
-        if not ref_path:
-            continue
-        try:
-            source_doc = _resolve_chain_ref_doc(root, doc_path, ref_path)
-        except VirtualPathError:
-            continue
-        loaded = list(load_external_cases(source_doc, formats={"md"}))
-        if ref_case_id:
-            loaded = [x for x in loaded if str(x[1].get("id", "")).strip() == ref_case_id]
-        symbols: dict[str, object] = {}
-        for source_path, source_case in loaded:
-            if str(source_case.get("type", "")).strip() != "spec_lang.library":
-                continue
-            try:
-                compiled_public = compile_library_case_public_symbols(
-                    raw_case=source_case,
-                    source_path=source_path,
-                    limits=limits,
-                )
-            except Exception:
-                continue
-            for sym_name, value in compiled_public.items():
-                symbols[sym_name] = value
-        resolved_exports: dict[str, object] = {}
-        for export_name, export_raw in exports.items():
-            if not isinstance(export_raw, dict):
-                continue
-            if str(export_raw.get("from", "")).strip() != "library.symbol":
-                continue
-            symbol_name = str(export_raw.get("path", "")).strip().lstrip("/")
-            if symbol_name and symbol_name in symbols:
-                resolved_exports[str(export_name)] = symbols[symbol_name]
-        if resolved_exports:
-            step_exports[step_id] = resolved_exports
+        if export_names:
+            step_exports[step_id] = {name: {"__chain_export__": True} for name in export_names}
 
     imports = chain.get("imports")
     if not isinstance(imports, list):
@@ -3360,12 +3348,6 @@ def _scan_runtime_chain_step_class_required(root: Path, *, harness: dict | None 
                 violations.append(
                     f"{doc_path.relative_to(root)}: case {case_id} step {step_id} class must be one of: must, can, cannot"
                 )
-                continue
-            exports, errors = _expand_chain_step_exports(step.get("exports"))
-            if class_name == "cannot" and exports and not errors:
-                violations.append(
-                    f"{doc_path.relative_to(root)}: case {case_id} step {step_id} cannot-class must not declare exports"
-                )
     return violations
 
 
@@ -3387,11 +3369,15 @@ def _scan_runtime_chain_import_alias_collision_forbidden(
                 continue
             sid = str(step.get("id", "")).strip() or f"<step[{idx}]>"
             step_ids.add(sid)
-            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            export_names, errors = _producer_step_exports(
+                root,
+                consumer_doc_path=doc_path,
+                step=step,
+            )
             if errors:
                 step_exports[sid] = set()
             else:
-                step_exports[sid] = {str(x).strip() for x in exports.keys() if str(x).strip()}
+                step_exports[sid] = {str(x).strip() for x in export_names if str(x).strip()}
 
         imports = chain.get("imports", [])
         if imports is None:
@@ -3578,7 +3564,15 @@ def _scan_runtime_chain_reference_resolution(root: Path, *, harness: dict | None
     for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
         steps = chain.get("steps")
-        if not isinstance(steps, list) or not steps:
+        has_exports = "exports" in chain
+        if not isinstance(steps, list):
+            if has_exports:
+                continue
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness.chain.steps must be list")
+            continue
+        if not steps and has_exports:
+            continue
+        if not steps:
             violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness.chain.steps must be non-empty list")
             continue
         for idx, step in enumerate(steps):
@@ -3713,7 +3707,7 @@ def _scan_runtime_chain_exports_target_derived_only(root: Path, *, harness: dict
                 _ref_path, ref_case_id = _parse_chain_ref_value(step.get("ref"))
             except ValueError:
                 ref_case_id = None
-            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            exports, errors = _expand_chain_step_exports(step.get("imports"))
             if errors:
                 for err in errors:
                     violations.append(f"{doc_path.relative_to(root)}: case {case_id} step {step_id} {err}")
@@ -3736,11 +3730,11 @@ def _scan_runtime_chain_exports_target_derived_only(root: Path, *, harness: dict
                         f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} missing from"
                     )
                     continue
-                if from_source == "library.symbol":
+                if from_source == "assert.function":
                     has_library_symbol = True
                     if not str(export_raw.get("path", "")).strip():
                         violations.append(
-                            f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} from=library.symbol requires path"
+                            f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} from={from_source} requires path"
                         )
             if exports and not ref_case_id and not has_library_symbol:
                 violations.append(
@@ -3761,7 +3755,7 @@ def _scan_runtime_chain_exports_from_key_required(root: Path, *, harness: dict |
             if not isinstance(step, dict):
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            exports, errors = _expand_chain_step_exports(step.get("imports"))
             if errors:
                 continue
             for export_name, export_raw in exports.items():
@@ -3786,7 +3780,7 @@ def _scan_runtime_chain_exports_list_only_required(root: Path, *, harness: dict 
             if not isinstance(step, dict):
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            raw_exports = step.get("exports")
+            raw_exports = step.get("imports")
             if raw_exports is not None and not isinstance(raw_exports, list):
                 violations.append(
                     f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports must be list (canonical form)"
@@ -3806,24 +3800,24 @@ def _scan_runtime_chain_library_symbol_exports_valid(root: Path, *, harness: dic
             if not isinstance(step, dict):
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            exports, errors = _expand_chain_step_exports(step.get("imports"))
             if errors:
                 continue
             for export_name, export_raw in exports.items():
                 if not isinstance(export_raw, dict):
                     continue
                 from_source = str(export_raw.get("from", "")).strip()
-                if from_source != "library.symbol":
+                if from_source != "assert.function":
                     continue
                 symbol_name = str(export_raw.get("path", "")).strip().lstrip("/")
                 if not symbol_name:
                     violations.append(
-                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} from=library.symbol requires non-empty path"
+                        f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} from={from_source} requires non-empty path"
                     )
     return violations
 
 
-def _scan_runtime_chain_legacy_from_target_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_runtime_chain_legacy_from_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     violations: list[str] = []
     for doc_path, case, _harness, chain in _iter_cases_with_chain(root):
@@ -3835,11 +3829,21 @@ def _scan_runtime_chain_legacy_from_target_forbidden(root: Path, *, harness: dic
             if not isinstance(step, dict):
                 continue
             step_id = str(step.get("id", "")).strip() or f"<step[{idx}]>"
-            exports, errors = _expand_chain_step_exports(step.get("exports"))
+            exports, errors = _expand_chain_step_exports(step.get("imports"))
             if errors:
                 continue
+            raw_imports = step.get("imports")
+            if not isinstance(raw_imports, list):
+                continue
             for export_name, export_raw in exports.items():
-                if isinstance(export_raw, dict) and "from_target" in export_raw:
+                if not isinstance(export_raw, dict):
+                    continue
+                if any(
+                    isinstance(item, dict)
+                    and str(item.get("as", "")).strip() == str(export_name).strip()
+                    and "from_target" in item
+                    for item in raw_imports
+                ):
                     violations.append(
                         f"{doc_path.relative_to(root)}: case {case_id} step {step_id} export {export_name} uses legacy from_target key"
                     )
@@ -4023,10 +4027,15 @@ def _scan_runtime_chain_state_template_resolution(root: Path, *, harness: dict |
                 if not isinstance(step, dict):
                     continue
                 sid = str(step.get("id", "")).strip()
-                exports, _errors = _expand_chain_step_exports(step.get("exports"))
-                if sid:
-                    for name in exports.keys():
-                        exported.add((sid, str(name)))
+                if not sid:
+                    continue
+                export_names, _errors = _producer_step_exports(
+                    root,
+                    consumer_doc_path=doc_path,
+                    step=step,
+                )
+                for name in export_names:
+                    exported.add((sid, str(name)))
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
 
         def _scan_text(raw: str, where: str) -> None:
@@ -6533,7 +6542,7 @@ def _scan_reference_contract_paths_exist(root: Path, *, harness: dict | None = N
                 if field.split(".")[-1].split("[", 1)[0] not in must_exist_keys:
                     continue
                 if (
-                    (".exports." in field or ".exports[" in field)
+                    (".exports." in field or ".exports[" in field or ".imports." in field or ".imports[" in field)
                     and field.endswith(".path")
                 ):
                     continue
@@ -6558,11 +6567,15 @@ def _scan_reference_check_ids_exist(root: Path, *, harness: dict | None = None) 
     for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
         case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
         check_id = str(spec.test.get("check", "")).strip()
+        try:
+            rel_doc = spec.doc_path.relative_to(root)
+        except ValueError:
+            rel_doc = Path(spec.doc_path)
         if not check_id:
-            violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing check id")
+            violations.append(f"{rel_doc}: case {case_id} missing check id")
             continue
         if check_id not in _CHECKS:
-            violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} unknown check id: {check_id}")
+            violations.append(f"{rel_doc}: case {case_id} unknown check id: {check_id}")
     return violations
 
 
@@ -6674,7 +6687,7 @@ def _scan_reference_policy_symbols_resolve(root: Path, *, harness: dict | None =
             )
         except Exception as exc:  # noqa: BLE001
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} unable to load policy symbols ({exc})"
+                f"{_rel_path(root, spec.doc_path)}: case {case_id} unable to load policy symbols ({exc})"
             )
             continue
         try:
@@ -6688,13 +6701,13 @@ def _scan_reference_policy_symbols_resolve(root: Path, *, harness: dict | None =
             )
         except Exception as exc:  # noqa: BLE001
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} unable to load chain-imported symbols ({exc})"
+                f"{_rel_path(root, spec.doc_path)}: case {case_id} unable to load chain-imported symbols ({exc})"
             )
             continue
         unresolved = sorted(sym for sym in policy_refs if sym not in symbols)
         if unresolved:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} unresolved policy symbols: "
+                f"{_rel_path(root, spec.doc_path)}: case {case_id} unresolved policy symbols: "
                 + ", ".join(unresolved)
             )
     return violations
@@ -7605,7 +7618,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.chain_exports_explicit_only": _scan_runtime_chain_exports_target_derived_only,
     "runtime.chain_exports_from_key_required": _scan_runtime_chain_exports_from_key_required,
     "runtime.chain_exports_list_only_required": _scan_runtime_chain_exports_list_only_required,
-    "runtime.chain_legacy_from_target_forbidden": _scan_runtime_chain_legacy_from_target_forbidden,
+    "runtime.chain_legacy_from_forbidden": _scan_runtime_chain_legacy_from_forbidden,
     "runtime.chain_library_symbol_exports_valid": _scan_runtime_chain_library_symbol_exports_valid,
     "runtime.chain_import_alias_collision_forbidden": _scan_runtime_chain_import_alias_collision_forbidden,
     "runtime.chain_fail_fast_default": _scan_runtime_chain_fail_fast_default,

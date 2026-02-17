@@ -16,4 +16,11 @@ defines:
           - {var: subject}
           - value
         - {var: target}
+harness:
+  chain:
+    exports:
+    - as: make.has_target
+      from: assert.function
+      path: /make.has_target
+      required: true
 ```

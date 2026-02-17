@@ -363,22 +363,15 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                     )
                 chain_cfg = harness.get("chain")
                 if isinstance(chain_cfg, dict):
-                    steps = chain_cfg.get("steps")
-                    if isinstance(steps, list):
-                        for step in steps:
-                            if not isinstance(step, dict):
+                    imports_cfg = chain_cfg.get("imports")
+                    if isinstance(imports_cfg, list):
+                        for item in imports_cfg:
+                            if not isinstance(item, dict):
                                 continue
-                            exports = step.get("exports")
-                            if not isinstance(exports, list):
-                                continue
-                            step_has_library = False
-                            for entry in exports:
-                                if not isinstance(entry, dict):
-                                    continue
-                                if str(entry.get("from", "")).strip() == "library.symbol":
-                                    step_has_library = True
-                                    break
-                            if step_has_library:
+                            names = item.get("names")
+                            if isinstance(names, list) and any(
+                                isinstance(x, str) and x.strip() for x in names
+                            ):
                                 has_library_paths = True
                                 break
                 if case_type == "governance.check":

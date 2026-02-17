@@ -57,7 +57,7 @@ Provide repeatable recipes for common contributor tasks.
 1. Add function in a `type: spec_lang.library` file.
 2. Keep mapping-AST canonical form.
 3. Export symbol through `defines.public`.
-4. Load reusable symbols via `harness.chain` (`from: library.symbol`) and call
+4. Load reusable symbols via `harness.chain` (`from: assert.function`) and call
    with `call`.
 
 ## Add Markdown Structure Assertions

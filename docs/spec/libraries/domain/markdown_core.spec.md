@@ -166,6 +166,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -322,6 +373,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -452,6 +554,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -549,6 +702,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -649,6 +853,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -741,6 +996,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -840,6 +1146,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -949,6 +1306,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -1048,6 +1456,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -1145,6 +1604,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -1245,6 +1755,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 
@@ -1345,6 +1906,57 @@ defines:
             - {var: markdown._context}
             - {var: subject}
           - token_dependencies
+harness:
+  chain:
+    exports:
+    - as: domain.markdown.has_heading
+      from: assert.function
+      path: /domain.markdown.has_heading
+      required: true
+    - as: domain.markdown.heading_level_exists
+      from: assert.function
+      path: /domain.markdown.heading_level_exists
+      required: true
+    - as: domain.markdown.section_order_valid
+      from: assert.function
+      path: /domain.markdown.section_order_valid
+      required: true
+    - as: domain.markdown.required_sections_present
+      from: assert.function
+      path: /domain.markdown.required_sections_present
+      required: true
+    - as: domain.markdown.link_targets_all_resolve
+      from: assert.function
+      path: /domain.markdown.link_targets_all_resolve
+      required: true
+    - as: domain.markdown.has_broken_links
+      from: assert.function
+      path: /domain.markdown.has_broken_links
+      required: true
+    - as: domain.markdown.has_yaml_spec_test_fence
+      from: assert.function
+      path: /domain.markdown.has_yaml_spec_test_fence
+      required: true
+    - as: domain.markdown.code_fence_language_exists
+      from: assert.function
+      path: /domain.markdown.code_fence_language_exists
+      required: true
+    - as: domain.markdown.token_present
+      from: assert.function
+      path: /domain.markdown.token_present
+      required: true
+    - as: domain.markdown.tokens_all_present
+      from: assert.function
+      path: /domain.markdown.tokens_all_present
+      required: true
+    - as: domain.markdown.token_ownership_unique
+      from: assert.function
+      path: /domain.markdown.token_ownership_unique
+      required: true
+    - as: domain.markdown.token_dependencies_resolved
+      from: assert.function
+      path: /domain.markdown.token_dependencies_resolved
+      required: true
 ```
 
 

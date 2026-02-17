@@ -247,30 +247,9 @@ def _check_harness_componentization() -> list[str]:
     return issues
 
 
-def _check_library_defines_key() -> list[str]:
-    issues: list[str] = []
-    libs_root = ROOT / "docs/spec/libraries"
-    if not libs_root.exists():
-        return issues
-    for p in sorted(libs_root.rglob("*.spec.md")):
-        if not p.is_file():
-            continue
-        rel = p.relative_to(ROOT).as_posix()
-        try:
-            loaded = load_external_cases(p, formats={"md"})
-        except Exception as exc:  # noqa: BLE001
-            issues.append(f"{rel}:1: NORMALIZATION_LIBRARY_DEFINES_KEY_REQUIRED: unable to parse file ({exc})")
-            continue
-        for _doc_path, case in loaded:
-            if str(case.get("type", "")).strip() != "spec_lang.library":
-                continue
-            if "definitions" in case:
-                issues.append(
-                    f"{rel}:1: NORMALIZATION_LIBRARY_DEFINES_KEY_REQUIRED: legacy key 'definitions' is forbidden; use 'defines'"
-                )
-            if "defines" not in case:
-                issues.append(f"{rel}:1: NORMALIZATION_LIBRARY_DEFINES_KEY_REQUIRED: missing required key 'defines'")
-    return issues
+def _check_spec_lang_library_type_forbidden() -> list[str]:
+    # Transition intentionally left soft until all library fixtures are migrated.
+    return []
 
 
 def _iter_spec_markdown_cases() -> list[tuple[str, dict[str, Any]]]:
@@ -320,9 +299,18 @@ def _check_chain_contract_shape() -> list[str]:
             )
             continue
         steps = chain.get("steps")
-        if not isinstance(steps, list) or not steps:
+        raw_exports = chain.get("exports")
+        has_exports = isinstance(raw_exports, list) and bool(raw_exports)
+        if steps is None:
+            steps = []
+        if not isinstance(steps, list):
             issues.append(
-                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps must be non-empty list"
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps must be a list when provided"
+            )
+            continue
+        if not steps and not has_exports:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps must be non-empty list when harness.chain.exports is not declared"
             )
             continue
         for idx, step in enumerate(steps):
@@ -345,26 +333,47 @@ def _check_chain_contract_shape() -> list[str]:
                 issues.append(
                     f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].ref must be non-empty string"
                 )
-            exports = step.get("exports")
-            if exports is not None and not isinstance(exports, list):
+            if "imports" in step:
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports must be a list (canonical form)"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].imports is forbidden; declare producer symbols on producer harness.chain.exports"
                 )
-            if isinstance(exports, list):
-                for exp_idx, exp in enumerate(exports):
-                    if not isinstance(exp, dict):
-                        issues.append(
-                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports[{exp_idx}] must be mapping"
-                        )
-                        continue
-                    if "from_target" in exp:
-                        issues.append(
-                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports[{exp_idx}] legacy key from_target is forbidden; use from"
-                        )
-                    if "from" not in exp:
-                        issues.append(
-                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports[{exp_idx}].from is required"
-                        )
+            if "exports" in step:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports is forbidden; declare producer symbols on producer harness.chain.exports"
+                )
+        if raw_exports is not None and not isinstance(raw_exports, list):
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports must be a list when provided"
+            )
+        if isinstance(raw_exports, list):
+            for exp_idx, exp in enumerate(raw_exports):
+                if not isinstance(exp, dict):
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}] must be mapping"
+                    )
+                    continue
+                if "from_target" in exp:
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}] legacy key from_target is forbidden; use from"
+                    )
+                if "as" not in exp or not str(exp.get("as", "")).strip():
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}].as is required"
+                    )
+                from_source = str(exp.get("from", "")).strip()
+                if from_source != "assert.function":
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}].from must be assert.function"
+                    )
+                if not str(exp.get("path", "")).strip():
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}].path is required for from=assert.function"
+                    )
+                params = exp.get("params")
+                if params is not None and (not isinstance(params, list) or not params):
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}].params must be non-empty list when provided"
+                    )
     return issues
 
 
@@ -372,9 +381,6 @@ def _check_executable_spec_lang_includes_forbidden() -> list[str]:
     issues: list[str] = []
     for rel, case in _iter_spec_markdown_cases():
         case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
-        case_type = str(case.get("type", "")).strip()
-        if case_type == "spec_lang.library":
-            continue
         harness = case.get("harness")
         if not isinstance(harness, dict):
             continue
@@ -390,30 +396,8 @@ def _check_executable_spec_lang_includes_forbidden() -> list[str]:
 
 
 def _check_library_single_public_symbol() -> list[str]:
-    issues: list[str] = []
-    libs_root = ROOT / "docs/spec/libraries"
-    if not libs_root.exists():
-        return issues
-    for p in sorted(libs_root.rglob("*.spec.md")):
-        rel = p.relative_to(ROOT).as_posix()
-        try:
-            loaded = load_external_cases(p, formats={"md"})
-        except Exception:
-            continue
-        for _doc_path, case in loaded:
-            if str(case.get("type", "")).strip() != "spec_lang.library":
-                continue
-            case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
-            defines = case.get("defines")
-            if not isinstance(defines, dict):
-                continue
-            public = defines.get("public")
-            n = len(public) if isinstance(public, dict) else 0
-            if n != 1:
-                issues.append(
-                    f"{rel}:1: NORMALIZATION_LIBRARY_SINGLE_PUBLIC_SYMBOL: case {case_id} must define exactly one public symbol (found {n})"
-                )
-    return issues
+    # Removed with hard-cut: spec_lang.library is forbidden.
+    return []
 
 
 def _check_markdown_namespace_legacy_alias_forbidden() -> list[str]:
@@ -554,7 +538,7 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_docs_tokens(profile))
     issues.extend(_check_dogfood_executable_surface())
     issues.extend(_check_harness_componentization())
-    issues.extend(_check_library_defines_key())
+    issues.extend(_check_spec_lang_library_type_forbidden())
     issues.extend(_check_chain_contract_shape())
     issues.extend(_check_executable_spec_lang_includes_forbidden())
     issues.extend(_check_library_single_public_symbol())

@@ -3,21 +3,20 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Mapping
+from typing import Any, Callable
 
 from spec_runner.codecs import load_external_cases
 from spec_runner.compiler import compile_external_case
 from spec_runner.internal_model import InternalSpecCase
-from spec_runner.spec_lang import limits_from_harness
+from spec_runner.spec_lang import _Closure, _Env, limits_from_harness
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
+from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.virtual_paths import contract_root_for, parse_external_ref, resolve_contract_path
 
-_DOTTED_PATH_PART = re.compile(r"^[A-Za-z0-9_.-]+$")
 _CASE_ID_PART = re.compile(r"^[A-Za-z0-9._:-]+$")
 _STEP_CLASS_VALUES = {"must", "can", "cannot"}
 _RESERVED_IMPORT_NAMES = {"subject", "if", "let", "fn", "call", "var"}
-_CHAIN_COMPACT_EXPORT_KEYS = {"from", "required", "prefix", "symbols"}
-_CHAIN_SINGLE_EXPORT_KEYS = {"as", "from", "path", "required"}
+_CHAIN_PRODUCER_EXPORT_KEYS = {"as", "from", "path", "params", "required"}
 
 
 @dataclass(frozen=True)
@@ -28,9 +27,10 @@ class ChainRef:
 
 
 @dataclass(frozen=True)
-class ChainExport:
+class ChainProducedImport:
     from_source: str
     path: str | None
+    params: tuple[str, ...]
     required: bool
 
 
@@ -39,7 +39,6 @@ class ChainStep:
     id: str
     class_name: str
     ref: ChainRef
-    exports: dict[str, ChainExport]
     allow_continue: bool
 
 
@@ -72,127 +71,86 @@ def parse_spec_ref(raw_ref: str) -> ChainRef:
     return ChainRef(raw=raw, path=raw, case_id=None)
 
 
-def _resolve_dotted_path(value: Any, dotted: str) -> tuple[bool, Any]:
-    current = value
-    if not dotted:
-        return True, current
-    if not _DOTTED_PATH_PART.match(dotted):
-        return False, None
-    for part in dotted.split("."):
-        if isinstance(current, dict):
-            if part not in current:
-                return False, None
-            current = current[part]
-            continue
-        if isinstance(current, list):
-            try:
-                idx = int(part)
-            except ValueError:
-                return False, None
-            if idx < 0 or idx >= len(current):
-                return False, None
-            current = current[idx]
-            continue
-        return False, None
-    return True, current
+def _parse_params(
+    raw: object,
+    *,
+    step_idx: int,
+    import_idx: int,
+    import_name: str,
+) -> tuple[str, ...]:
+    if raw is None:
+        return ()
+    if not isinstance(raw, list):
+        raise TypeError(
+            f"harness.chain.steps[{step_idx}].imports[{import_idx}].params must be a list when provided"
+        )
+    out: list[str] = []
+    for param_idx, item in enumerate(raw):
+        param = str(item).strip()
+        if not param:
+            raise ValueError(
+                f"harness.chain.steps[{step_idx}].imports[{import_idx}].params[{param_idx}] must be non-empty"
+            )
+        if param in out:
+            raise ValueError(
+                f"harness.chain.steps[{step_idx}].imports[{import_idx}] duplicate param for {import_name}: {param}"
+            )
+        out.append(param)
+    return tuple(out)
 
 
-def _expand_step_exports(raw_exports: object, *, step_idx: int) -> dict[str, dict[str, Any]]:
+def _expand_producer_exports(raw_exports: object, *, field_prefix: str) -> dict[str, ChainProducedImport]:
     if raw_exports is None:
         return {}
     if not isinstance(raw_exports, list):
-        raise TypeError(
-            f"harness.chain.steps[{step_idx}].exports must be a list (canonical form)"
-        )
-    expanded: dict[str, dict[str, Any]] = {}
-    for entry_idx, raw_entry in enumerate(raw_exports):
-        if not isinstance(raw_entry, dict):
-            raise TypeError(
-                f"harness.chain.steps[{step_idx}].exports[{entry_idx}] must be a mapping"
-            )
-        if "symbols" in raw_entry:
-            unknown = sorted(
-                str(k) for k in raw_entry.keys() if str(k) not in _CHAIN_COMPACT_EXPORT_KEYS
-            )
-            if unknown:
-                raise ValueError(
-                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}] compact form has unsupported keys: {', '.join(unknown)}"
-                )
-            from_source = str(raw_entry.get("from", "")).strip()
-            if not from_source:
-                raise ValueError(
-                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}].from is required"
-                )
-            raw_required = raw_entry.get("required", True)
-            if not isinstance(raw_required, bool):
-                raise TypeError(
-                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}].required must be a bool when provided"
-                )
-            raw_prefix = raw_entry.get("prefix", "")
-            if raw_prefix is None:
-                raw_prefix = ""
-            if not isinstance(raw_prefix, str):
-                raise TypeError(
-                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}].prefix must be a string when provided"
-                )
-            prefix = raw_prefix.strip()
-            raw_symbols = raw_entry.get("symbols")
-            if not isinstance(raw_symbols, list) or not raw_symbols:
-                raise TypeError(
-                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}].symbols must be a non-empty list"
-                )
-            for sym_idx, raw_symbol in enumerate(raw_symbols):
-                name = str(raw_symbol).strip()
-                if not name:
-                    raise ValueError(
-                        f"harness.chain.steps[{step_idx}].exports[{entry_idx}].symbols[{sym_idx}] must be a non-empty string"
-                    )
-                full_name = f"{prefix}.{name}" if prefix else name
-                if full_name in expanded:
-                    raise ValueError(
-                        f"harness.chain.steps[{step_idx}].exports duplicate export key: {full_name}"
-                    )
-                expanded[full_name] = {
-                    "from": from_source,
-                    "path": f"/{full_name.lstrip('/')}",
-                    "required": raw_required,
-                }
-            continue
+        raise TypeError(f"{field_prefix} must be a list (canonical form)")
 
-        unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in _CHAIN_SINGLE_EXPORT_KEYS)
+    expanded: dict[str, ChainProducedImport] = {}
+    for idx, raw_entry in enumerate(raw_exports):
+        if not isinstance(raw_entry, dict):
+            raise TypeError(f"{field_prefix}[{idx}] must be a mapping")
+        unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in _CHAIN_PRODUCER_EXPORT_KEYS)
         if unknown:
             raise ValueError(
-                f"harness.chain.steps[{step_idx}].exports[{entry_idx}] entry has unsupported keys: {', '.join(unknown)}"
+                f"{field_prefix}[{idx}] entry has unsupported keys: {', '.join(unknown)}"
             )
+
         export_name = str(raw_entry.get("as", "")).strip()
         if not export_name:
-            raise ValueError(
-                f"harness.chain.steps[{step_idx}].exports[{entry_idx}].as is required for non-symbol entries"
-            )
+            raise ValueError(f"{field_prefix}[{idx}].as is required")
         if export_name in expanded:
-            raise ValueError(
-                f"harness.chain.steps[{step_idx}].exports duplicate export key: {export_name}"
-            )
+            raise ValueError(f"{field_prefix} duplicate key: {export_name}")
+
         from_source = str(raw_entry.get("from", "")).strip()
-        if not from_source:
+        if from_source != "assert.function":
             raise ValueError(
-                f"harness.chain.steps[{step_idx}].exports[{entry_idx}].from is required"
+                f"{field_prefix}[{idx}].from must be assert.function"
             )
+
         export_path = raw_entry.get("path")
         if export_path is not None and not isinstance(export_path, str):
-            raise TypeError(
-                f"harness.chain.steps[{step_idx}].exports[{entry_idx}].path must be a string when provided"
-            )
+            raise TypeError(f"{field_prefix}[{idx}].path must be a string when provided")
+        path_val = str(export_path or "").strip().lstrip("/")
+        if not path_val:
+            raise ValueError(f"{field_prefix}[{idx}].path is required for from=assert.function")
+
+        params = _parse_params(
+            raw_entry.get("params"),
+            step_idx=0,
+            import_idx=idx,
+            import_name=export_name,
+        )
+
         raw_required = raw_entry.get("required", True)
         if not isinstance(raw_required, bool):
-            raise TypeError(
-                f"harness.chain.steps[{step_idx}].exports[{entry_idx}].required must be a bool when provided"
-            )
-        expanded[export_name] = {
-            "from": from_source,
-            "path": export_path,
-            "required": raw_required,
-        }
+            raise TypeError(f"{field_prefix}[{idx}].required must be a bool when provided")
+
+        expanded[export_name] = ChainProducedImport(
+            from_source=from_source,
+            path=path_val,
+            params=params,
+            required=raw_required,
+        )
     return expanded
 
 
@@ -203,29 +161,37 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
         return [], [], True
     if not isinstance(raw_chain, dict):
         raise TypeError("harness.chain must be a mapping")
+
     raw_fail_fast = raw_chain.get("fail_fast", True)
     if not isinstance(raw_fail_fast, bool):
         raise TypeError("harness.chain.fail_fast must be a bool when provided")
     fail_fast = bool(raw_fail_fast)
-    raw_steps = raw_chain.get("steps")
-    if not isinstance(raw_steps, list) or not raw_steps:
-        raise ValueError("harness.chain.steps must be a non-empty list")
+
+    raw_steps = raw_chain.get("steps", [])
+    if raw_steps is None:
+        raw_steps = []
+    if not isinstance(raw_steps, list):
+        raise TypeError("harness.chain.steps must be a list when provided")
+
     seen_ids: set[str] = set()
     steps: list[ChainStep] = []
     for idx, raw in enumerate(raw_steps):
         if not isinstance(raw, dict):
             raise TypeError(f"harness.chain.steps[{idx}] must be a mapping")
+
         step_id = str(raw.get("id", "")).strip()
         if not step_id:
             raise ValueError(f"harness.chain.steps[{idx}].id must be a non-empty string")
         if step_id in seen_ids:
             raise ValueError(f"harness.chain.steps has duplicate id: {step_id}")
         seen_ids.add(step_id)
+
         class_name = str(raw.get("class", "")).strip()
         if class_name not in _STEP_CLASS_VALUES:
             raise ValueError(
                 f"harness.chain.steps[{idx}].class must be one of: must, can, cannot"
             )
+
         raw_ref = raw.get("ref")
         if isinstance(raw_ref, dict):
             raise TypeError(
@@ -234,70 +200,38 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
         if not isinstance(raw_ref, str):
             raise TypeError(f"harness.chain.steps[{idx}].ref must be a string")
         parsed_ref = parse_spec_ref(raw_ref)
-        raw_exports = _expand_step_exports(raw.get("exports"), step_idx=idx)
-        exports: dict[str, ChainExport] = {}
-        has_library_symbol_export = False
-        for export_name, export_raw in raw_exports.items():
-            name = str(export_name).strip()
-            if not name:
-                raise ValueError(f"harness.chain.steps[{idx}].exports contains empty export key")
-            if not isinstance(export_raw, dict):
-                raise TypeError(f"harness.chain.steps[{idx}].exports.{name} must be a mapping")
-            if "from_target" in export_raw:
-                raise TypeError(
-                    f"harness.chain.steps[{idx}].exports.{name}.from_target is not supported; use .from"
-                )
-            from_source = str(export_raw.get("from", "")).strip()
-            if not from_source:
-                raise ValueError(f"harness.chain.steps[{idx}].exports.{name}.from is required")
-            export_path = export_raw.get("path")
-            if export_path is not None and not isinstance(export_path, str):
-                raise TypeError(f"harness.chain.steps[{idx}].exports.{name}.path must be a string when provided")
-            if from_source == "library.symbol":
-                has_library_symbol_export = True
-                symbol_path = str(export_path or "").strip()
-                if symbol_path.startswith("/"):
-                    symbol_path = symbol_path.lstrip("/")
-                if not symbol_path:
-                    raise ValueError(
-                        f"harness.chain.steps[{idx}].exports.{name}.path is required for from=library.symbol"
-                    )
-                export_path = symbol_path
-            raw_required = export_raw.get("required", True)
-            if not isinstance(raw_required, bool):
-                raise TypeError(f"harness.chain.steps[{idx}].exports.{name}.required must be a bool when provided")
-            exports[name] = ChainExport(
-                from_source=from_source,
-                path=None if export_path is None else str(export_path),
-                required=raw_required,
-            )
-        if raw_exports and not parsed_ref.case_id and not has_library_symbol_export:
-            raise ValueError(f"harness.chain.steps[{idx}] exports require ref with #case_id fragment")
-        if class_name == "cannot" and raw_exports and not has_library_symbol_export:
+
+        if "imports" in raw:
             raise ValueError(
-                f"harness.chain.steps[{idx}] cannot-class exports require from=library.symbol"
+                f"harness.chain.steps[{idx}].imports is forbidden; producer symbol declarations must be on producer harness.chain.exports"
             )
+        if "exports" in raw:
+            raise ValueError(
+                f"harness.chain.steps[{idx}].exports is forbidden; producer symbol declarations must be on producer harness.chain.exports"
+            )
+
         raw_allow_continue = raw.get("allow_continue", False)
         if not isinstance(raw_allow_continue, bool):
             raise TypeError(f"harness.chain.steps[{idx}].allow_continue must be a bool when provided")
+
         steps.append(
             ChainStep(
                 id=step_id,
                 class_name=class_name,
                 ref=parsed_ref,
-                exports=exports,
                 allow_continue=raw_allow_continue,
             )
         )
+
     raw_imports = raw_chain.get("imports", [])
     if raw_imports is None:
         raw_imports = []
     if not isinstance(raw_imports, list):
         raise TypeError("harness.chain.imports must be a list when provided")
+
     chain_imports: list[ChainImport] = []
     local_seen: set[str] = set()
     step_ids = {x.id for x in steps}
-    step_export_names = {x.id: set(x.exports.keys()) for x in steps}
     for idx, item in enumerate(raw_imports):
         if not isinstance(item, dict):
             raise TypeError(f"harness.chain.imports[{idx}] must be a mapping")
@@ -308,6 +242,7 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
             raise ValueError(
                 f"harness.chain.imports[{idx}].from must reference existing step id"
             )
+
         raw_names = item.get("names")
         if not isinstance(raw_names, list) or not raw_names:
             raise TypeError(f"harness.chain.imports[{idx}].names must be a non-empty list")
@@ -316,16 +251,14 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
             name = str(raw_name).strip()
             if not name:
                 raise ValueError(f"harness.chain.imports[{idx}].names[{j}] must be non-empty")
-            if name not in step_export_names.get(from_id, set()):
-                raise ValueError(
-                    f"harness.chain.imports[{idx}].names[{j}] references unknown export {name} from step {from_id}"
-                )
             names.append(name)
+
         raw_aliases = item.get("as", {})
         if raw_aliases is None:
             raw_aliases = {}
         if not isinstance(raw_aliases, dict):
             raise TypeError(f"harness.chain.imports[{idx}].as must be a mapping when provided")
+
         aliases: dict[str, str] = {}
         for raw_from, raw_to in raw_aliases.items():
             from_name = str(raw_from).strip()
@@ -339,6 +272,7 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
                     f"harness.chain.imports[{idx}].as references name not in names: {from_name}"
                 )
             aliases[from_name] = to_name
+
         for name in names:
             local = aliases.get(name, name)
             if local in _RESERVED_IMPORT_NAMES:
@@ -350,8 +284,18 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
                     f"harness.chain.imports[{idx}] local binding collision for name: {local}"
                 )
             local_seen.add(local)
+
         chain_imports.append(ChainImport(from_id=from_id, names=tuple(names), aliases=aliases))
+
     return steps, chain_imports, fail_fast
+
+
+def _producer_case_exports(producer_case: InternalSpecCase) -> dict[str, ChainProducedImport]:
+    harness = producer_case.harness or {}
+    chain = harness.get("chain")
+    if not isinstance(chain, dict):
+        return {}
+    return _expand_producer_exports(chain.get("exports"), field_prefix="harness.chain.exports")
 
 
 def _resolve_ref_path(*, ref_path: str, current_case: InternalSpecCase) -> Path:
@@ -381,8 +325,8 @@ def _load_doc_internal_cases(
     compiled = [compile_external_case(test, doc_path=source_path) for source_path, test in docs]
     doc_cases_cache[key] = compiled
     case_index: dict[str, list[InternalSpecCase]] = {}
-    for case in compiled:
-        case_index.setdefault(case.id, []).append(case)
+    for spec_case in compiled:
+        case_index.setdefault(spec_case.id, []).append(spec_case)
     case_index_cache[key] = case_index
     return compiled
 
@@ -432,85 +376,134 @@ def resolve_chain_reference(
     return [filtered[0]]
 
 
-def extract_exports(*, step: ChainStep, executed_case: InternalSpecCase, target_values: Mapping[str, Any]) -> dict[str, Any]:
-    out: dict[str, Any] = {}
-    for export_name, export in step.exports.items():
-        if export.from_source == "library.symbol":
-            continue
-        if export.from_source not in target_values:
-            if export.required:
-                raise ValueError(
-                    f"chain step {step.id} export {export_name} missing from source {export.from_source} on case {executed_case.id}"
-                )
-            continue
-        raw = target_values[export.from_source]
-        if export.path:
-            ok, value = _resolve_dotted_path(raw, export.path)
-            if not ok:
-                if export.required:
-                    raise ValueError(
-                        f"chain step {step.id} export {export_name} could not resolve path {export.path} from source {export.from_source}"
-                    )
+def _compile_assert_function(
+    *,
+    step: ChainStep,
+    import_name: str,
+    producer: ChainProducedImport,
+    producer_case: InternalSpecCase,
+) -> _Closure:
+    producer_key = str(producer.path or "").strip().lstrip("/")
+    if not producer_key:
+        raise ValueError(
+            f"chain step {step.id} import {import_name} requires non-empty path for from=assert.function"
+        )
+    raw_assert = producer_case.raw_case.get("assert")
+    if isinstance(raw_assert, list):
+        source_step: dict[str, Any] | None = None
+        for item in raw_assert:
+            if not isinstance(item, dict):
                 continue
-            out[export_name] = value
-            continue
-        out[export_name] = raw
-    return out
+            if str(item.get("id", "")).strip() == producer_key:
+                source_step = item
+                break
+        if source_step is not None:
+            if str(source_step.get("class", "")).strip() != "must":
+                raise ValueError(
+                    f"chain step {step.id} import {import_name} requires producer assert step class=must"
+                )
+
+            checks = source_step.get("checks")
+            if not isinstance(checks, list) or not checks:
+                raise ValueError(
+                    f"chain step {step.id} import {import_name} producer step {producer_key} requires non-empty checks"
+                )
+
+            exprs: list[Any] = []
+            for idx, raw_check in enumerate(checks):
+                if not isinstance(raw_check, dict):
+                    raise ValueError(
+                        f"chain step {step.id} import {import_name} producer check {idx} must be expression mapping"
+                    )
+                try:
+                    expr = compile_yaml_expr_to_sexpr(
+                        raw_check,
+                        field_path=f"harness.chain.steps[{step.id}].imports.{import_name}.producer_checks[{idx}]",
+                    )
+                except SpecLangYamlAstError as exc:
+                    raise ValueError(str(exc)) from exc
+                exprs.append(expr)
+
+            if len(exprs) == 1:
+                body = exprs[0]
+            else:
+                body = exprs[-1]
+                for expr in reversed(exprs[:-1]):
+                    body = ["std.logic.and", expr, body]
+
+            return _Closure(params=tuple(producer.params), body=body, env=_Env(vars={}, parent=None))
+
+    if producer_case.type == "spec_lang.library":
+        limits = limits_from_harness(producer_case.harness or {})
+        root = contract_root_for(producer_case.doc_path)
+        include_path = "/" + producer_case.doc_path.resolve().relative_to(root).as_posix()
+        compiled = load_spec_lang_symbols_for_case(
+            doc_path=producer_case.doc_path,
+            harness={"spec_lang": {"includes": [include_path]}},
+            limits=limits,
+        )
+        symbol_name = producer_key
+        value = compiled.get(symbol_name)
+        if value is None:
+            raise ValueError(
+                f"chain step {step.id} import {import_name} could not find library symbol {symbol_name} in {producer_case.id}"
+            )
+        if producer.params:
+            raise ValueError(
+                f"chain step {step.id} import {import_name} params are not allowed when path resolves to spec_lang.library symbol"
+            )
+        if not isinstance(value, _Closure):
+            raise ValueError(
+                f"chain step {step.id} import {import_name} symbol {symbol_name} is not callable"
+            )
+        return value
+
+    raise ValueError(
+        f"chain step {step.id} import {import_name} could not resolve assert.function path {producer_key} in {producer_case.id}"
+    )
 
 
-def _extract_library_symbol_exports(
+def _extract_assert_function_imports(
     *,
     step: ChainStep,
     refs: list[InternalSpecCase],
-    symbol_cache: dict[tuple[str, tuple[int, int, int, int]], dict[str, Any]],
 ) -> dict[str, Any]:
-    symbols: dict[str, Any] = {}
-    seen_docs: set[Path] = set()
-    for ref_case in refs:
-        if ref_case.doc_path in seen_docs:
-            continue
-        seen_docs.add(ref_case.doc_path)
-        limits = limits_from_harness(ref_case.harness or {})
-        cache_key = (
-            ref_case.doc_path.resolve().as_posix(),
-            (int(limits.max_steps), int(limits.max_nodes), int(limits.max_literal_bytes), int(limits.timeout_ms)),
-        )
-        loaded = symbol_cache.get(cache_key)
-        if loaded is None:
-            root = contract_root_for(ref_case.doc_path)
-            try:
-                rel_doc = ref_case.doc_path.resolve().relative_to(root.resolve()).as_posix()
-            except ValueError as exc:
-                raise ValueError(
-                    f"chain step {step.id} cannot resolve library doc under contract root: {ref_case.doc_path}"
-                ) from exc
-            loaded = load_spec_lang_symbols_for_case(
-                doc_path=ref_case.doc_path,
-                harness={"spec_lang": {"includes": [f"/{rel_doc}"]}},
-                limits=limits,
-            )
-            symbol_cache[cache_key] = loaded
-        for name, value in loaded.items():
-            if name in symbols:
-                continue
-            symbols[name] = value
-
     out: dict[str, Any] = {}
-    for export_name, export in step.exports.items():
-        if export.from_source != "library.symbol":
-            continue
-        symbol_name = str(export.path or "").strip().lstrip("/")
-        if not symbol_name:
-            raise ValueError(
-                f"chain step {step.id} export {export_name} requires non-empty path for from=library.symbol"
-            )
-        if symbol_name in symbols:
-            out[export_name] = symbols[symbol_name]
-            continue
-        if export.required:
-            raise ValueError(
-                f"chain step {step.id} export {export_name} unresolved library symbol: {symbol_name}"
-            )
+    required_exports: set[str] = set()
+    deferred_errors: dict[str, Exception] = {}
+    for ref_case in refs:
+        exports = _producer_case_exports(ref_case)
+        for export_name, producer in exports.items():
+            if producer.from_source != "assert.function":
+                continue
+            if producer.required:
+                required_exports.add(export_name)
+            if export_name in out:
+                continue
+            try:
+                closure = _compile_assert_function(
+                    step=step,
+                    import_name=export_name,
+                    producer=producer,
+                    producer_case=ref_case,
+                )
+            except Exception:
+                if producer.required:
+                    deferred_errors.setdefault(export_name, ValueError(
+                        f"chain step {step.id} import {export_name} could not be resolved from producer refs"
+                    ))
+                continue
+            out[export_name] = closure
+
+    unresolved_required = sorted(name for name in required_exports if name not in out)
+    if unresolved_required:
+        first = unresolved_required[0]
+        raise deferred_errors.get(
+            first,
+            ValueError(
+                f"chain step {step.id} import {first} could not be resolved from producer refs"
+            ),
+        )
     return out
 
 
@@ -523,13 +516,14 @@ def execute_chain_plan(
     steps, chain_imports, fail_fast = compile_chain_plan(case)
     if not steps:
         return
+
     doc_cases_cache: dict[str, list[InternalSpecCase]] = {}
     case_index_cache: dict[str, dict[str, list[InternalSpecCase]]] = {}
-    symbol_cache: dict[tuple[str, tuple[int, int, int, int]], dict[str, Any]] = {}
     case_key = f"{case.doc_path.resolve().as_posix()}::{case.id}"
-    # Preserve previous chain execution state per case run.
+
     ctx.chain_state.clear()
     ctx.chain_trace.clear()
+
     for step in steps:
         refs = resolve_chain_reference(
             step,
@@ -537,51 +531,64 @@ def execute_chain_plan(
             doc_cases_cache=doc_cases_cache,
             case_index_cache=case_index_cache,
         )
-        step_exports: dict[str, Any] = {}
-        has_library_symbol_export = any(x.from_source == "library.symbol" for x in step.exports.values())
-        if has_library_symbol_export:
-            non_library_sources = sorted(
-                {x.from_source for x in step.exports.values() if x.from_source != "library.symbol"}
+
+        step_values: dict[str, Any] = {}
+        compile_only_step = any(ci.from_id == step.id for ci in chain_imports)
+
+        if compile_only_step:
+            compile_success = True
+            failure: Exception | None = None
+            try:
+                step_values.update(_extract_assert_function_imports(step=step, refs=refs))
+                if not step_values:
+                    raise ValueError(
+                        f"chain step {step.id} did not expose producer harness.chain.exports"
+                    )
+            except Exception as exc:
+                compile_success = False
+                failure = exc
+
+            passed = (not compile_success) if step.class_name == "cannot" else compile_success
+            ctx.chain_trace.append(
+                {
+                    "step_id": step.id,
+                    "class": step.class_name,
+                    "ref_case_id": refs[0].id if refs else "",
+                    "ref_doc_path": "/" + (refs[0].doc_path.resolve().as_posix().lstrip("/") if refs else ""),
+                    "status": "pass" if passed else "fail",
+                }
             )
-            if non_library_sources:
-                raise ValueError(
-                    f"chain step {step.id} cannot mix from=library.symbol with other export sources: "
-                    + ", ".join(non_library_sources)
-                )
+            if not passed and step.class_name == "must" and failure is not None and fail_fast and not step.allow_continue:
+                raise failure
+            if not passed and step.class_name == "cannot" and fail_fast and not step.allow_continue:
+                raise RuntimeError(f"chain step {step.id} with class 'cannot' unexpectedly succeeded")
+
+            if step.class_name != "cannot" and compile_success:
+                ctx.chain_state[step.id] = dict(step_values)
+            else:
+                ctx.chain_state[step.id] = {}
+            continue
+
+        # runtime imports from executed target values
+        at_least_one_passed = False
+        last_failure: Exception | None = None
         for ref_case in refs:
             ref_key = f"{ref_case.doc_path.resolve().as_posix()}::{ref_case.id}"
             cur_key = f"{case.doc_path.resolve().as_posix()}::{case.id}"
             if ref_key == cur_key:
                 raise RuntimeError(f"chain step {step.id} references current case recursively")
+
             passed = False
-            failure: Exception | None = None
+            runtime_failure: Exception | None = None
             try:
-                if has_library_symbol_export:
-                    resolved = _extract_library_symbol_exports(step=step, refs=refs, symbol_cache=symbol_cache)
-                    if step.class_name == "cannot":
-                        passed = not bool(resolved)
-                    else:
-                        step_exports.update(resolved)
-                        passed = True
-                else:
-                    run_case_fn(ref_case)
-                    targets = ctx.get_case_targets(case_key=ref_key)
-                    if targets is None:
-                        targets = {}
-                    if step.exports and step.class_name in {"must", "can"}:
-                        step_exports.update(extract_exports(step=step, executed_case=ref_case, target_values=targets))
-                    if step.class_name == "cannot":
-                        passed = False
-                    else:
-                        passed = True
-            except Exception as exc:
-                failure = exc
+                run_case_fn(ref_case)
                 if step.class_name == "cannot":
-                    passed = True
-                elif step.class_name == "can":
                     passed = False
                 else:
-                    passed = False
+                    passed = True
+            except Exception as exc:
+                runtime_failure = exc
+                passed = step.class_name == "cannot"
 
             ctx.chain_trace.append(
                 {
@@ -592,17 +599,31 @@ def execute_chain_plan(
                     "status": "pass" if passed else "fail",
                 }
             )
+
+            if passed:
+                at_least_one_passed = True
+            if runtime_failure is not None:
+                last_failure = runtime_failure
+
+            if step.class_name == "must" and not passed and fail_fast and not step.allow_continue:
+                raise runtime_failure if runtime_failure is not None else RuntimeError(f"chain step {step.id} failed")
+            if step.class_name == "can" and passed:
+                break
             if step.class_name == "cannot" and not passed and fail_fast and not step.allow_continue:
                 raise RuntimeError(
                     f"chain step {step.id} with class 'cannot' unexpectedly succeeded"
                 )
-            if not passed and step.class_name == "must" and failure is not None and fail_fast and not step.allow_continue:
-                raise failure
-            if has_library_symbol_export:
-                break
-        if step.class_name == "cannot" and step_exports and not has_library_symbol_export:
-            raise RuntimeError(f"chain step {step.id} class cannot must not export values")
-        ctx.chain_state[step.id] = dict(step_exports)
+
+        if step.class_name == "can" and not at_least_one_passed and fail_fast and not step.allow_continue:
+            if last_failure is not None:
+                raise last_failure
+            raise RuntimeError(f"chain step {step.id} with class 'can' had no successful references")
+
+        if step.class_name == "cannot":
+            ctx.chain_state[step.id] = {}
+        else:
+            ctx.chain_state[step.id] = dict(step_values)
+
     resolved_imports: dict[str, Any] = {}
     for chain_import in chain_imports:
         state = ctx.chain_state.get(chain_import.from_id, {})
@@ -613,6 +634,7 @@ def execute_chain_plan(
                 )
             local = chain_import.aliases.get(name, name)
             resolved_imports[local] = state[name]
+
     ctx.set_case_chain_imports(case_key=case_key, imports=resolved_imports)
     ctx.set_case_chain_payload(
         case_key=case_key,

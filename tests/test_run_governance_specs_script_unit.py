@@ -688,7 +688,7 @@ harness:
   spec_lang:
     includes:
       - ../../docs/spec/libraries/policy/policy_core.spec.md
-    exports:
+    imports:
       - policy.pass_when_no_violations
   policy_evaluate:
   - std.logic.eq:
@@ -726,6 +726,12 @@ def test_script_enforces_conformance_library_policy_usage_required(tmp_path):
 ```yaml spec-test
 id: LIB-POLICY-CORE-TEST-001
 type: spec_lang.library
+harness:
+  chain:
+    exports:
+    - as: policy.pass_when_no_violations
+      from: assert.function
+      path: /policy.pass_when_no_violations
 defines:
   public:
     policy.pass_when_no_violations:
@@ -793,10 +799,6 @@ harness:
       - id: policy_lib
         class: must
         ref: /cases/libs/policy_core.spec.md
-        exports:
-          - as: policy.pass_when_no_violations
-            from: library.symbol
-            path: policy.pass_when_no_violations
     imports:
       - from: policy_lib
         names:
@@ -836,10 +838,6 @@ harness:
       - id: policy_lib
         class: must
         ref: /cases/libs/policy_core.spec.md
-        exports:
-          - as: policy.pass_when_no_violations
-            from: library.symbol
-            path: policy.pass_when_no_violations
     imports:
       - from: policy_lib
         names:
@@ -2046,9 +2044,9 @@ harness:
       - id: conf_lib
         class: must
         ref: ../../libraries/conformance/assertion_core.spec.md
-        exports:
+        imports:
           - as: conf.pass_when_text_contains
-            from: library.symbol
+            from: assert.function
             path: conf.pass_when_text_contains
     imports:
       - from: conf_lib
@@ -2082,9 +2080,9 @@ harness:
       - id: conf_lib
         class: must
         ref: ../../libraries/conformance/assertion_core.spec.md
-        exports:
+        imports:
           - as: conf.pass_when_text_contains
-            from: library.symbol
+            from: assert.function
             path: conf.pass_when_text_contains
     imports:
       - from: conf_lib
@@ -2110,9 +2108,9 @@ harness:
       - id: conf_lib
         class: must
         ref: ../../libraries/conformance/assertion_core.spec.md
-        exports:
+        imports:
           - as: conf.pass_when_text_contains
-            from: library.symbol
+            from: assert.function
             path: conf.pass_when_text_contains
     imports:
       - from: conf_lib
@@ -4634,10 +4632,6 @@ harness:
     - id: policy_lib
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md
-      exports:
-        - as: policy.pass_when_no_violations
-          from: library.symbol
-          path: policy.pass_when_no_violations
     imports:
     - from: policy_lib
       names:
@@ -4684,9 +4678,9 @@ harness:
     - id: policy_lib
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md
-      exports:
+      imports:
         - as: policy.pass_when_no_violations
-          from: library.symbol
+          from: assert.function
           path: policy.pass_when_no_violations
     imports:
     - from: policy_lib
@@ -4723,6 +4717,12 @@ assert:
 ```yaml spec-test
 id: L1
 type: spec_lang.library
+harness:
+  chain:
+    exports:
+    - as: policy.pass_when_no_violations
+      from: assert.function
+      path: /policy.pass_when_no_violations
 defines:
   public:
     policy.pass_when_no_violations:
@@ -4815,7 +4815,7 @@ harness:
     - id: dep
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md#LIB-POLICY-001-000-PASS-WHEN-NO-VIOLATIONS
-      exports:
+      imports:
         policy.pass_when_no_violations:
           from: body_json
           path: id
@@ -4842,7 +4842,7 @@ harness:
     - id: dep
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md#LIB-POLICY-001-000-PASS-WHEN-NO-VIOLATIONS
-      exports:
+      imports:
       - as: policy.pass_when_no_violations
         from: body_json
         path: id
@@ -5748,7 +5748,7 @@ harness:
   spec_lang:
     includes:
     - /docs/spec/libraries/domain/markdown_core.spec.md
-    exports:
+    imports:
     - domain.markdown.has_heading
 assert:
 - target: text

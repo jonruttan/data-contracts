@@ -194,7 +194,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.chain_exports_target_derived_only` | 1 | true |
 | `runtime.chain_fail_fast_default` | 1 | true |
 | `runtime.chain_import_alias_collision_forbidden` | 1 | true |
-| `runtime.chain_legacy_from_target_forbidden` | 1 | true |
+| `runtime.chain_legacy_from_forbidden` | 1 | true |
 | `runtime.chain_library_symbol_exports_valid` | 1 | true |
 | `runtime.chain_ref_scalar_required` | 1 | true |
 | `runtime.chain_reference_resolution` | 1 | true |

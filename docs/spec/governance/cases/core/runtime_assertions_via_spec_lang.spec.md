@@ -64,11 +64,6 @@ harness:
     - id: lib_policy_core_spec
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md
-      exports:
-      - as: policy.pass_when_no_violations
-        from: library.symbol
-        required: true
-        path: /policy.pass_when_no_violations
     imports:
     - from: lib_policy_core_spec
       names:

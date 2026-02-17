@@ -286,11 +286,11 @@ Legacy per-symbol export blocks are no longer canonical:
 ```yaml
 exports:
 - as: domain.markdown.has_heading
-  from: library.symbol
+  from: assert.function
   path: /domain.markdown.has_heading
   required: true
 - as: domain.markdown.required_sections_present
-  from: library.symbol
+  from: assert.function
   path: /domain.markdown.required_sections_present
   required: true
 ```
@@ -299,7 +299,7 @@ Use compact symbol-batch export form:
 
 ```yaml
 exports:
-- from: library.symbol
+- from: assert.function
   required: true
   symbols:
   - domain.markdown.has_heading
