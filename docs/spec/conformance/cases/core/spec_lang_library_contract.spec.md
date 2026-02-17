@@ -82,9 +82,8 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-LIB-CONTRACT-003
-title: library index exports only public symbols
-purpose: Ensures generated library index contains public export symbols and does not
-  expose private-only symbols.
+title: policy library index tracks canonical files
+purpose: Ensures generated policy library index includes canonical file references.
 type: text.file
 path: /docs/spec/libraries/policy/index.md
 expect:
@@ -97,10 +96,9 @@ assert:
   - must:
     - std.string.contains:
       - var: subject
-      - policy.pass_when_no_violations
-    - std.logic.not:
-      - std.string.contains:
-        - var: subject
-        - policy.fail_when_has_violations
+      - /docs/spec/libraries/policy/policy_core.spec.md
+    - std.string.contains:
+      - var: subject
+      - /docs/spec/libraries/policy/policy_metrics.spec.md
   target: text
 ```

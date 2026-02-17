@@ -248,8 +248,14 @@ def _check_harness_componentization() -> list[str]:
 
 
 def _check_spec_lang_library_type_forbidden() -> list[str]:
-    # Transition intentionally left soft until all library fixtures are migrated.
-    return []
+    issues: list[str] = []
+    for rel, case in _iter_spec_markdown_cases():
+        case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
+        if str(case.get("type", "")).strip() == "spec_lang.export":
+            issues.append(
+                f"{rel}:1: NORMALIZATION_SPEC_EXPORT_HARD_CUT: case {case_id} uses forbidden type spec_lang.export; use spec.export"
+            )
+    return issues
 
 
 def _iter_spec_markdown_cases() -> list[tuple[str, dict[str, Any]]]:

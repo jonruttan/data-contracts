@@ -8,7 +8,3 @@ Canonical domain index for executable specs in this subtree.
 
 ## Exported Symbols
 
-- `path.basename` (/docs/spec/libraries/path/path_core.spec.md)
-- `path.extension` (/docs/spec/libraries/path/path_core.spec.md)
-- `path.normalize_slashes` (/docs/spec/libraries/path/path_core.spec.md)
-- `path.segments` (/docs/spec/libraries/path/path_core.spec.md)

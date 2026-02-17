@@ -3882,6 +3882,27 @@ def _scan_runtime_executable_spec_lang_includes_forbidden(root: Path, *, harness
     return violations
 
 
+def _scan_runtime_spec_lang_export_type_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    scan_roots = [
+        root / "docs/spec/conformance/cases",
+        root / "docs/spec/governance/cases",
+        root / "docs/spec/impl",
+        root / "docs/spec/libraries",
+    ]
+    for base in scan_roots:
+        if not base.exists():
+            continue
+        for doc_path, case in _iter_all_spec_cases(base):
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            if str(case.get("type", "")).strip() == "spec_lang.export":
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} uses forbidden type spec_lang.export; use spec.export"
+                )
+    return violations
+
+
 def _scan_docs_markdown_namespace_legacy_alias_forbidden(
     root: Path, *, harness: dict | None = None
 ) -> list[str]:
@@ -7637,6 +7658,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.universal_chain_support_required": _scan_runtime_universal_chain_support_required,
     "runtime.chain_shared_context_required": _scan_runtime_chain_shared_context_required,
     "runtime.executable_spec_lang_includes_forbidden": _scan_runtime_executable_spec_lang_includes_forbidden,
+    "runtime.spec_lang_export_type_forbidden": _scan_runtime_spec_lang_export_type_forbidden,
     "docs.api_http_tutorial_sync": _scan_docs_api_http_tutorial_sync,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,

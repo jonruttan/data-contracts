@@ -175,6 +175,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_rust_primary_subcommand_parity.spec.md`
 - `/docs/spec/governance/cases/core/runtime_scope_sync.spec.md`
 - `/docs/spec/governance/cases/core/runtime_settings_import_policy.spec.md`
+- `/docs/spec/governance/cases/core/runtime_spec_lang_export_type_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md`
 - `/docs/spec/governance/cases/core/runtime_universal_chain_support_required.spec.md`
 - `/docs/spec/governance/cases/core/schema_harness_contract_overlay_sync.spec.md`

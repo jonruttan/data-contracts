@@ -22,3 +22,53 @@ assert:
     - var: subject
     - non-executable
 ```
+
+## SRCONF-CHAIN-EXPORT-002
+
+```yaml spec-test
+id: SRCONF-CHAIN-EXPORT-002
+title: producer export path must resolve to producer assert step id
+purpose: Ensures from=assert.function exports fail with schema category when export path
+  does not resolve to a producer assert step.
+type: text.file
+path: /docs/spec/libraries/conformance/chain_export_validation.spec.md
+harness:
+  chain:
+    steps:
+    - id: bad_export_path_fixture
+      class: must
+      ref: /docs/spec/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-PATH
+    imports:
+    - from: bad_export_path_fixture
+      names:
+      - bad.path.symbol
+expect:
+  portable:
+    status: fail
+    category: schema
+```
+
+## SRCONF-CHAIN-EXPORT-003
+
+```yaml spec-test
+id: SRCONF-CHAIN-EXPORT-003
+title: producer export source assert step must use class must
+purpose: Ensures from=assert.function exports fail with schema category when source step class
+  is not must.
+type: text.file
+path: /docs/spec/libraries/conformance/chain_export_validation.spec.md
+harness:
+  chain:
+    steps:
+    - id: bad_export_class_fixture
+      class: must
+      ref: /docs/spec/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-CLASS
+    imports:
+    - from: bad_export_class_fixture
+      names:
+      - bad.class.symbol
+expect:
+  portable:
+    status: fail
+    category: schema
+```
