@@ -21,6 +21,7 @@ harness:
     - make core-check
     - make check
     - make prepush
+    - make ci-cleanroom
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

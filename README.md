@@ -45,6 +45,12 @@ Required local pre-push gate:
 make prepush
 ```
 
+Clean-checkout CI parity gate (recommended before push):
+
+```sh
+make ci-cleanroom
+```
+
 Adoption profiles:
 
 - **Core profile**: `make core-check`
