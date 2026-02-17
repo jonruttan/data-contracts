@@ -3054,10 +3054,12 @@ harness:
     files:
       - README.md
       - docs/development.md
+      - .github/pull_request_template.md
     required_tokens:
       - make verify-docs
       - make core-check
       - make check
+      - make prepush
 assert:
   - target: summary_json
     must:
@@ -3074,8 +3076,12 @@ assert:
 ```
 """,
     )
-    _write_text(tmp_path / "README.md", "make verify-docs\nmake core-check\nmake check\n")
-    _write_text(tmp_path / "docs/development.md", "make verify-docs\nmake core-check\nmake check\n")
+    _write_text(tmp_path / "README.md", "make verify-docs\nmake core-check\nmake check\nmake prepush\n")
+    _write_text(tmp_path / "docs/development.md", "make verify-docs\nmake core-check\nmake check\nmake prepush\n")
+    _write_text(
+        tmp_path / ".github/pull_request_template.md",
+        "make verify-docs\nmake core-check\nmake check\nmake prepush\n",
+    )
     code = mod.main(["--cases", str(cases_dir)])
     assert code == 0
 

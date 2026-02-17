@@ -5,8 +5,10 @@
 
 ## Validation
 
-- [ ] `./scripts/ci_gate.sh`
-- [ ] `./scripts/docs_doctor.sh` (or `make verify-docs`)
+- [ ] `make verify-docs`
+- [ ] `make core-check`
+- [ ] `make check`
+- [ ] `make prepush`
 
 ## Docs Drift Checklist
 

@@ -15,10 +15,12 @@ harness:
     files:
     - README.md
     - docs/development.md
+    - .github/pull_request_template.md
     required_tokens:
     - make verify-docs
     - make core-check
     - make check
+    - make prepush
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}
