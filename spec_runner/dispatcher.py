@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+import time
 from typing import Any, Callable, Mapping, Protocol
 
 from spec_runner.codecs import load_external_cases
@@ -34,6 +35,8 @@ class SpecRunContext:
     _case_chain_imports: dict[str, dict[str, Any]] = field(default_factory=dict)
     _case_chain_payloads: dict[str, dict[str, Any]] = field(default_factory=dict)
     _active_case_keys: set[str] = field(default_factory=set)
+    profile_enabled: bool = False
+    profile_rows: list[dict[str, Any]] = field(default_factory=list)
 
     def patch_context(self) -> Any:
         return self.patcher.context()
@@ -66,6 +69,11 @@ class SpecRunContext:
 
     def pop_active_case(self, case_key: str) -> None:
         self._active_case_keys.discard(case_key)
+
+    def add_profile_row(self, row: Mapping[str, Any]) -> None:
+        if not self.profile_enabled:
+            return
+        self.profile_rows.append(dict(row))
 
 
 def iter_cases(
@@ -123,18 +131,52 @@ def run_case(
 
     internal_case = _to_internal_case(case)
     case_key = f"{internal_case.doc_path.resolve().as_posix()}::{internal_case.id}"
+    started = time.perf_counter()
+    chain_started: float | None = None
+    harness_started: float | None = None
+    chain_elapsed_ms = 0.0
+    harness_elapsed_ms = 0.0
+    status = "pass"
+    error: str | None = None
     ctx.push_active_case(case_key)
     try:
+        chain_started = time.perf_counter()
         execute_case_chain(
             internal_case,
             ctx=ctx,
             run_case_fn=lambda chained_case: run_case(chained_case, ctx=ctx, type_runners=type_runners),
         )
+        chain_elapsed_ms = (time.perf_counter() - chain_started) * 1000.0
         # Core runner types execute compiled internal cases. External custom runners
         # keep receiving SpecDocTest for backward compatibility.
+        harness_started = time.perf_counter()
         if type_ in {"api.http", "cli.run", "docs.generate", "orchestration.run", "text.file"}:
             fn(internal_case, ctx=ctx)
+            harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
             return
         fn(case, ctx=ctx)
+        harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
+    except BaseException as exc:  # noqa: BLE001
+        status = "fail"
+        error = str(exc)
+        if chain_started is not None and chain_elapsed_ms <= 0.0:
+            chain_elapsed_ms = (time.perf_counter() - chain_started) * 1000.0
+        if harness_started is not None and harness_elapsed_ms <= 0.0:
+            harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
+        raise
     finally:
+        total_elapsed_ms = (time.perf_counter() - started) * 1000.0
+        ctx.add_profile_row(
+            {
+                "case_id": internal_case.id,
+                "case_type": internal_case.type,
+                "doc_path": internal_case.doc_path.as_posix(),
+                "case_key": case_key,
+                "status": status,
+                "duration_ms": round(float(total_elapsed_ms), 3),
+                "chain_duration_ms": round(float(chain_elapsed_ms), 3),
+                "harness_duration_ms": round(float(harness_elapsed_ms), 3),
+                "error": error,
+            }
+        )
         ctx.pop_active_case(case_key)

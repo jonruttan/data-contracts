@@ -16,6 +16,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--report-out", default=".artifacts/docs-generator-report.json")
     ap.add_argument("--summary-out", default=".artifacts/docs-generator-summary.md")
     ap.add_argument("--timing-out", default=".artifacts/docs-generate-timing.json")
+    ap.add_argument("--profile", action="store_true", help="Emit per-case harness timing profile JSON")
+    ap.add_argument("--profile-out", default=".artifacts/docs-generate-profile.json")
     ns = ap.parse_args(argv)
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -31,6 +33,9 @@ def main(argv: list[str] | None = None) -> int:
         "--timing-out",
         str(ns.timing_out),
     ]
+    if bool(ns.profile):
+        cmd.append("--profile")
+        cmd += ["--profile-out", str(ns.profile_out)]
     if int(ns.jobs) != 0:
         cmd += ["--jobs", str(int(ns.jobs))]
     if str(ns.surface).strip():

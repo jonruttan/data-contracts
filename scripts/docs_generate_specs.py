@@ -70,6 +70,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--report-out", default=".artifacts/docs-generator-report.json")
     ap.add_argument("--summary-out", default=".artifacts/docs-generator-summary.md")
     ap.add_argument("--timing-out", default=".artifacts/docs-generate-timing.json")
+    ap.add_argument("--profile", action="store_true", help="Emit per-case harness timing profile JSON")
+    ap.add_argument("--profile-out", default=".artifacts/docs-generate-profile.json")
     ns = ap.parse_args(argv)
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -94,6 +96,7 @@ def main(argv: list[str] | None = None) -> int:
 
     rows: list[dict[str, Any]] = []
     timing_rows: list[dict[str, Any]] = []
+    profile_rows: list[dict[str, Any]] = []
     started = time.perf_counter()
     env = dict(os.environ)
     env["SPEC_DOCS_GENERATE_MODE"] = mode_value
@@ -102,7 +105,7 @@ def main(argv: list[str] | None = None) -> int:
         td_path = Path(td)
         workers_used = 1
 
-        def _run_one(task: tuple[int, Any, str]) -> tuple[int, dict[str, Any], float, str | None]:
+        def _run_one(task: tuple[int, Any, str]) -> tuple[int, dict[str, Any], float, str | None, list[dict[str, Any]]]:
             idx, case, sid = task
             case_id = str(case.test.get("id", "")).strip() or "<unknown>"
             case_tmp = td_path / f"case_{idx}"
@@ -112,20 +115,27 @@ def main(argv: list[str] | None = None) -> int:
                 patcher=MiniMonkeyPatch(),
                 capture=MiniCapsys(),
                 env=env,
+                profile_enabled=bool(ns.profile),
             )
             case_started = time.perf_counter()
             try:
                 run_case(case, ctx=ctx)
                 elapsed_ms = (time.perf_counter() - case_started) * 1000.0
-                return idx, {"case_id": case_id, "surface_id": sid, "status": "pass"}, elapsed_ms, None
+                return idx, {"case_id": case_id, "surface_id": sid, "status": "pass"}, elapsed_ms, None, list(ctx.profile_rows)
             except BaseException as exc:  # noqa: BLE001
                 elapsed_ms = (time.perf_counter() - case_started) * 1000.0
-                return idx, {"case_id": case_id, "surface_id": sid, "status": "fail"}, elapsed_ms, f"{case_id}: {exc}"
+                return (
+                    idx,
+                    {"case_id": case_id, "surface_id": sid, "status": "fail"},
+                    elapsed_ms,
+                    f"{case_id}: {exc}",
+                    list(ctx.profile_rows),
+                )
 
         indexed = [(idx, case, sid) for idx, (case, sid) in enumerate(selected)]
         if len(indexed) <= 1:
             for task in indexed:
-                _idx, row, elapsed_ms, err = _run_one(task)
+                _idx, row, elapsed_ms, err, case_profile_rows = _run_one(task)
                 rows.append(row)
                 timing_rows.append(
                     {
@@ -136,6 +146,7 @@ def main(argv: list[str] | None = None) -> int:
                         "status": str(row.get("status", "fail")),
                     }
                 )
+                profile_rows.extend(case_profile_rows)
                 if err:
                     errors.append(err)
         else:
@@ -146,11 +157,11 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 max_workers = min(max(1, requested), len(indexed))
             workers_used = max_workers
-            results: list[tuple[int, dict[str, Any], float, str | None]] = []
+            results: list[tuple[int, dict[str, Any], float, str | None, list[dict[str, Any]]]] = []
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
                 for result in executor.map(_run_one, indexed):
                     results.append(result)
-            for _idx, row, elapsed_ms, err in sorted(results, key=lambda x: x[0]):
+            for _idx, row, elapsed_ms, err, case_profile_rows in sorted(results, key=lambda x: x[0]):
                 rows.append(row)
                 timing_rows.append(
                     {
@@ -161,6 +172,7 @@ def main(argv: list[str] | None = None) -> int:
                         "status": str(row.get("status", "fail")),
                     }
                 )
+                profile_rows.extend(case_profile_rows)
                 if err:
                     errors.append(err)
 
@@ -199,9 +211,27 @@ def main(argv: list[str] | None = None) -> int:
         "cases": timing_rows,
     }
     timing_path.write_text(json.dumps(timing_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if ns.profile:
+        sorted_profile = sorted(profile_rows, key=lambda row: float(row.get("duration_ms", 0.0)), reverse=True)
+        profile_payload = {
+            "version": 1,
+            "status": payload["status"],
+            "summary": {
+                "case_count": len(rows),
+                "record_count": len(sorted_profile),
+                "total_duration_ms": round(float(total_ms), 3),
+            },
+            "top_slowest": sorted_profile[:20],
+            "records": sorted_profile,
+        }
+        profile_path = _resolve_out(repo_root, str(ns.profile_out), field="docs_generate_specs.profile_out")
+        profile_path.parent.mkdir(parents=True, exist_ok=True)
+        profile_path.write_text(json.dumps(profile_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"wrote {ns.report_out}")
     print(f"wrote {ns.summary_out}")
     print(f"wrote {ns.timing_out}")
+    if ns.profile:
+        print(f"wrote {ns.profile_out}")
     if errors:
         for err in errors:
             print(err)

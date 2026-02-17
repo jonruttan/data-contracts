@@ -7959,6 +7959,8 @@ def main(argv: list[str] | None = None) -> int:
         help="Glob pattern for case files when --cases points to a directory",
     )
     ap.add_argument("--timing-out", default=".artifacts/governance-timing.json")
+    ap.add_argument("--profile", action="store_true", help="Emit per-case harness timing profile JSON")
+    ap.add_argument("--profile-out", default=".artifacts/governance-profile.json")
     ns = ap.parse_args(argv)
     _reset_scan_caches()
 
@@ -7980,11 +7982,12 @@ def main(argv: list[str] | None = None) -> int:
         if str(case.test.get("type", "")).strip() == "governance.check"
     ]
     timing_rows: list[dict[str, Any]] = []
+    profile_rows: list[dict[str, Any]] = []
     workers_used = 1
     with TemporaryDirectory(prefix="spec-runner-governance-") as td:
         td_path = Path(td)
 
-        def _run_one(args: tuple[int, Any]) -> tuple[int, str, str, float, str | None]:
+        def _run_one(args: tuple[int, Any]) -> tuple[int, str, str, float, str | None, list[dict[str, Any]]]:
             idx, case = args
             case_id = str(case.test.get("id", "<unknown>")).strip() or "<unknown>"
             check_id = str(case.test.get("check", "")).strip()
@@ -7994,19 +7997,20 @@ def main(argv: list[str] | None = None) -> int:
                 tmp_path=case_tmp,
                 patcher=MiniMonkeyPatch(),
                 capture=MiniCapsys(),
+                profile_enabled=bool(ns.profile),
             )
             case_started = time.perf_counter()
             try:
                 run_case(case, ctx=ctx, type_runners={"governance.check": run_governance_check})
                 elapsed_ms = (time.perf_counter() - case_started) * 1000.0
-                return idx, case_id, check_id, elapsed_ms, None
+                return idx, case_id, check_id, elapsed_ms, None, list(ctx.profile_rows)
             except BaseException as e:  # noqa: BLE001
                 elapsed_ms = (time.perf_counter() - case_started) * 1000.0
-                return idx, case_id, check_id, elapsed_ms, f"{case_id}: {e}"
+                return idx, case_id, check_id, elapsed_ms, f"{case_id}: {e}", list(ctx.profile_rows)
 
         if len(governance_cases) <= 1:
             for idx, case in enumerate(governance_cases):
-                _idx, case_id, check_id, elapsed_ms, failure = _run_one((idx, case))
+                _idx, case_id, check_id, elapsed_ms, failure, case_profile_rows = _run_one((idx, case))
                 timing_rows.append(
                     {
                         "index": int(_idx),
@@ -8016,16 +8020,17 @@ def main(argv: list[str] | None = None) -> int:
                         "status": "fail" if failure else "pass",
                     }
                 )
+                profile_rows.extend(case_profile_rows)
                 if failure:
                     failures.append(failure)
         else:
             max_workers = min(max(1, os.cpu_count() or 1), len(governance_cases))
             workers_used = max_workers
-            results: list[tuple[int, str, str, float, str | None]] = []
+            results: list[tuple[int, str, str, float, str | None, list[dict[str, Any]]]] = []
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
                 for result in executor.map(_run_one, enumerate(governance_cases)):
                     results.append(result)
-            for _idx, case_id, check_id, elapsed_ms, failure in sorted(results, key=lambda x: x[0]):
+            for _idx, case_id, check_id, elapsed_ms, failure, case_profile_rows in sorted(results, key=lambda x: x[0]):
                 timing_rows.append(
                     {
                         "index": int(_idx),
@@ -8035,6 +8040,7 @@ def main(argv: list[str] | None = None) -> int:
                         "status": "fail" if failure else "pass",
                     }
                 )
+                profile_rows.extend(case_profile_rows)
                 if failure:
                     failures.append(failure)
 
@@ -8055,6 +8061,23 @@ def main(argv: list[str] | None = None) -> int:
     timing_out.parent.mkdir(parents=True, exist_ok=True)
     timing_out.write_text(json.dumps(timing_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"wrote {ns.timing_out}")
+    if ns.profile:
+        sorted_profile = sorted(profile_rows, key=lambda row: float(row.get("duration_ms", 0.0)), reverse=True)
+        profile_payload = {
+            "version": 1,
+            "status": timing_payload["status"],
+            "summary": {
+                "case_count": len(governance_cases),
+                "record_count": len(sorted_profile),
+                "total_duration_ms": timing_payload["summary"]["total_duration_ms"],
+            },
+            "top_slowest": sorted_profile[:20],
+            "records": sorted_profile,
+        }
+        profile_out = _resolve_contract_config_path(repo_root, str(ns.profile_out), field="run_governance_specs.profile_out")
+        profile_out.parent.mkdir(parents=True, exist_ok=True)
+        profile_out.write_text(json.dumps(profile_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print(f"wrote {ns.profile_out}")
 
     if failures:
         for line in failures:
