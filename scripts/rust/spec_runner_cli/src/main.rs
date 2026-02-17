@@ -7,6 +7,7 @@ use std::process::{self, Command};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 use serde_json::{json, Value};
+use serde_yaml::Value as YamlValue;
 use spec_lang::{eval_mapping_ast, EvalLimits};
 
 fn debug_enabled() -> bool {
@@ -250,28 +251,88 @@ fn ensure_validate_report_export_contract(case_block: &str, spec_ref: &str) -> R
     Ok(())
 }
 
-fn validate_report_payload(payload: &Value) -> Vec<String> {
-    let expr = json!({
-      "std.collection.concat": [
-        {"if": [
-          {"std.logic.eq": [
-            {"std.object.get": [{"var":"subject"}, {"lit":"version"}]},
-            {"lit": 1}
-          ]},
-          {"lit": []},
-          {"lit": ["report.version must equal 1"]}
-        ]},
-        {"if": [
-          {"std.type.is_list": [
-            {"std.object.get": [{"var":"subject"}, {"lit":"results"}]}
-          ]},
-          {"lit": []},
-          {"lit": ["report.results must be a list"]}
-        ]}
-      ]
-    });
+fn yaml_to_json(value: &YamlValue) -> Value {
+    match value {
+        YamlValue::Null => Value::Null,
+        YamlValue::Bool(b) => Value::Bool(*b),
+        YamlValue::Number(n) => {
+            if let Some(i) = n.as_i64() {
+                Value::Number(i.into())
+            } else if let Some(f) = n.as_f64() {
+                serde_json::Number::from_f64(f)
+                    .map(Value::Number)
+                    .unwrap_or(Value::Null)
+            } else {
+                Value::Null
+            }
+        }
+        YamlValue::String(s) => Value::String(s.clone()),
+        YamlValue::Sequence(seq) => Value::Array(seq.iter().map(yaml_to_json).collect()),
+        YamlValue::Mapping(map) => {
+            let mut out = serde_json::Map::new();
+            for (k, v) in map {
+                if let YamlValue::String(key) = k {
+                    out.insert(key.clone(), yaml_to_json(v));
+                }
+            }
+            Value::Object(out)
+        }
+        _ => Value::Null,
+    }
+}
+
+fn parse_validate_report_expr_from_case(case_block: &str, spec_ref: &str) -> Result<Value, String> {
+    let doc: YamlValue = serde_yaml::from_str(case_block)
+        .map_err(|e| format!("failed to parse producer yaml for {spec_ref}: {e}"))?;
+    let root = match doc {
+        YamlValue::Mapping(m) => m,
+        _ => return Err(format!("invalid producer case shape for {spec_ref}: expected mapping")),
+    };
+    let assert_node = root
+        .get(&YamlValue::String("assert".to_string()))
+        .ok_or_else(|| format!("missing assert in producer case: {spec_ref}"))?;
+    let assert_seq = match assert_node {
+        YamlValue::Sequence(seq) => seq,
+        _ => return Err(format!("producer assert must be sequence: {spec_ref}")),
+    };
+    let target_step_id = "__export__domain.conformance.validate_report_errors";
+    for step in assert_seq {
+        let step_map = match step {
+            YamlValue::Mapping(m) => m,
+            _ => continue,
+        };
+        let sid = step_map
+            .get(&YamlValue::String("id".to_string()))
+            .and_then(|v| match v {
+                YamlValue::String(s) => Some(s.as_str()),
+                _ => None,
+            })
+            .unwrap_or("");
+        if sid != target_step_id {
+            continue;
+        }
+        let checks = step_map
+            .get(&YamlValue::String("checks".to_string()))
+            .ok_or_else(|| format!("producer step missing checks: {target_step_id}"))?;
+        let check_seq = match checks {
+            YamlValue::Sequence(seq) => seq,
+            _ => return Err(format!("producer checks must be sequence: {target_step_id}")),
+        };
+        if check_seq.len() != 1 {
+            return Err(format!(
+                "producer checks must contain exactly one expression: {target_step_id}"
+            ));
+        }
+        return Ok(yaml_to_json(&check_seq[0]));
+    }
+    Err(format!(
+        "producer step not found in {spec_ref}: {target_step_id}"
+    ))
+}
+
+fn validate_report_payload(payload: &Value, expr: &Value) -> Vec<String> {
     match eval_mapping_ast(
-        &expr,
+        expr,
         payload.clone(),
         std::collections::HashMap::new(),
         EvalLimits::default(),
@@ -340,7 +401,15 @@ fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
         eprintln!("ERROR: {e}");
         return 1;
     }
-    let errors = validate_report_payload(&payload);
+    let expr = match parse_validate_report_expr_from_case(&case_block, spec_ref) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: {e}");
+            return 1;
+        }
+    };
+    debug_log_at(2, "validate-report:loaded expression from producer export");
+    let errors = validate_report_payload(&payload, &expr);
     debug_log(&format!("validate-report:error-count={}", errors.len()));
     if errors.is_empty() {
         println!("OK: valid conformance report ({})", report_path.display());
