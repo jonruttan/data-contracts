@@ -5,7 +5,7 @@ entries:
   rationale: Baseline refreshed after objective-aligned measurement framework update.
   measurement_model_change: 'no'
 - baseline: docs/spec/metrics/spec_lang_adoption_baseline.json
-  sha256: a2b135b02b4d8d90006b8bc50cf2880973c42033ee5972b410bf619036a27e65
+  sha256: d0fd64e6c1096d4851297f3d204fdaf7b64c23ac2ae27e4c7c77712bd37d3156
   rationale: Baseline refreshed after chain-first library loading hard-cut and one-public-symbol-per-library-case migration.
   measurement_model_change: 'yes'
 - baseline: docs/spec/metrics/runner_independence_baseline.json

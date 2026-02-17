@@ -19,7 +19,7 @@ harness:
     - 'SPEC_RUNNER_IMPL: rust'
     - 'run: ./scripts/core_gate.sh'
     - 'python-parity-lane:'
-    - ./scripts/runner_adapter.sh --impl python governance
+    - ./scripts/runner_adapter.sh --impl python --liveness-level basic governance
     - ./scripts/runner_adapter.sh --impl python conformance-parity
   policy_evaluate:
   - call:

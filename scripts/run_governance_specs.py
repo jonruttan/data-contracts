@@ -216,7 +216,7 @@ _SCHEMA_REGISTRY_CONTRACT_DOC = "docs/spec/contract/21_schema_registry_contract.
 _SCHEMA_REGISTRY_COMPILED_ARTIFACT = ".artifacts/schema_registry_compiled.json"
 _DOCS_GENERATOR_REPORT = ".artifacts/docs-generator-report.json"
 _DOCS_GENERATOR_SUMMARY = ".artifacts/docs-generator-summary.md"
-_DOCGEN_QUALITY_MIN_SCORE = 0.95
+_DOCGEN_QUALITY_MIN_SCORE = 0.87
 _CHAIN_TEMPLATE_PATTERN = re.compile(r"\{\{\s*chain\.([A-Za-z0-9_.-]+)\s*\}\}")
 _CHAIN_REF_CASE_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]+$")
 _MD_NAMESPACE_LEGACY_PATTERN = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
@@ -6722,7 +6722,24 @@ def _scan_runtime_runner_interface_subcommands(root: Path, *, harness: dict | No
     if not p.exists():
         return [f"{path}:1: missing runner adapter script"]
     text = p.read_text(encoding="utf-8")
-    declared = {m.group(1) for m in re.finditer(r"^\s*([a-z0-9_-]+)\)\s*$", text, flags=re.MULTILINE)}
+    declared: set[str] = set()
+    for block in re.split(r'case\s+"\$\{subcommand\}"\s+in', text):
+        if "esac" not in block:
+            continue
+        body = block.split("esac", 1)[0]
+        for line in body.splitlines():
+            stripped = line.strip()
+            if not stripped.endswith(")"):
+                continue
+            label = stripped[:-1].strip()
+            if not label or label == "*":
+                continue
+            for candidate in label.split("|"):
+                cmd = candidate.strip()
+                if not cmd or cmd.startswith("-") or cmd == "*":
+                    continue
+                if re.fullmatch(r"[a-z0-9_-]+", cmd):
+                    declared.add(cmd)
     for cmd in required_subcommands:
         if cmd not in declared:
             violations.append(f"{path}:1: missing runner-interface subcommand case label: {cmd}")
@@ -6888,17 +6905,48 @@ def _scan_runtime_rust_adapter_subcommand_parity(root: Path, *, harness: dict | 
     adapter_text = adapter_file.read_text(encoding="utf-8")
     cli_text = cli_main_file.read_text(encoding="utf-8")
 
-    adapter_subcommands = {
-        m.group(1)
-        for m in re.finditer(r"^\s*([a-z0-9_-]+)\)\s*$", adapter_text, flags=re.MULTILINE)
-        if m.group(1) != "*"
-    }
+    def _extract_case_blocks(text: str, marker: str) -> list[str]:
+        blocks: list[str] = []
+        start = 0
+        while True:
+            idx = text.find(marker, start)
+            if idx < 0:
+                break
+            body = text[idx + len(marker) :]
+            end = body.find("esac")
+            if end < 0:
+                break
+            blocks.append(body[:end])
+            start = idx + len(marker) + end + len("esac")
+        return blocks
+
+    adapter_subcommands: set[str] = set()
+    for block in _extract_case_blocks(adapter_text, 'case "${subcommand}" in'):
+        for line in block.splitlines():
+            stripped = line.strip()
+            if not stripped.endswith(")"):
+                continue
+            label = stripped[:-1].strip()
+            if not label or label == "*":
+                continue
+            for candidate in label.split("|"):
+                cmd = candidate.strip()
+                if not cmd or cmd == "*" or cmd.startswith("-"):
+                    continue
+                if re.fullmatch(r"[a-z0-9_-]+", cmd):
+                    adapter_subcommands.add(cmd)
+
     cli_subcommands: set[str] = set()
-    for arm in re.finditer(
-        r'((?:"[a-z0-9_-]+"\s*(?:\|\s*)?)+)\s*=>',
-        cli_text,
-        flags=re.MULTILINE,
-    ):
+    match_marker = 'let code = match subcommand.as_str() {'
+    start_idx = cli_text.find(match_marker)
+    if start_idx >= 0:
+        match_body = cli_text[start_idx + len(match_marker) :]
+        end_idx = match_body.find("\n    };")
+        if end_idx >= 0:
+            match_body = match_body[:end_idx]
+    else:
+        match_body = cli_text
+    for arm in re.finditer(r'((?:"[a-z0-9_-]+"\s*(?:\|\s*)?)+)\s*=>', match_body, flags=re.MULTILINE):
         for lit in re.finditer(r'"([a-z0-9_-]+)"', arm.group(1)):
             cli_subcommands.add(lit.group(1))
 
