@@ -4,6 +4,7 @@ import json
 import math
 import re
 import time
+from fnmatch import fnmatch
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
@@ -636,6 +637,10 @@ def _builtin_arity_table() -> dict[str, int]:
         "ops_fs_json_get": 2,
         "ops_fs_json_get_or": 3,
         "ops_fs_json_has_path": 2,
+        "ops_fs_glob_match": 2,
+        "ops_fs_glob_filter": 2,
+        "ops_fs_glob_any": 2,
+        "ops_fs_glob_all": 2,
         "and": 2,
         "or": 2,
         "not": 1,
@@ -1461,6 +1466,48 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         path = _require_list_arg(op, args[1])
         ok, _ = _get_in_path(args[0], path)
         return ok
+    if op == "ops.fs.glob.match":
+        _require_arity(op, args, 2)
+        if not isinstance(args[0], str) or not isinstance(args[1], str):
+            raise ValueError("spec_lang ops.fs.glob.match expects string args")
+        return fnmatch(args[0], args[1])
+    if op == "ops.fs.glob.filter":
+        _require_arity(op, args, 2)
+        paths = _require_list_arg(op, args[0])
+        pattern = args[1]
+        if not isinstance(pattern, str):
+            raise ValueError("spec_lang ops.fs.glob.filter expects string pattern")
+        out: list[str] = []
+        for raw in paths:
+            if not isinstance(raw, str):
+                raise ValueError("spec_lang ops.fs.glob.filter expects list of strings")
+            if fnmatch(raw, pattern):
+                out.append(raw)
+        return out
+    if op == "ops.fs.glob.any":
+        _require_arity(op, args, 2)
+        paths = _require_list_arg(op, args[0])
+        pattern = args[1]
+        if not isinstance(pattern, str):
+            raise ValueError("spec_lang ops.fs.glob.any expects string pattern")
+        for raw in paths:
+            if not isinstance(raw, str):
+                raise ValueError("spec_lang ops.fs.glob.any expects list of strings")
+            if fnmatch(raw, pattern):
+                return True
+        return False
+    if op == "ops.fs.glob.all":
+        _require_arity(op, args, 2)
+        paths = _require_list_arg(op, args[0])
+        pattern = args[1]
+        if not isinstance(pattern, str):
+            raise ValueError("spec_lang ops.fs.glob.all expects string pattern")
+        for raw in paths:
+            if not isinstance(raw, str):
+                raise ValueError("spec_lang ops.fs.glob.all expects list of strings")
+            if not fnmatch(raw, pattern):
+                return False
+        return True
     if op == "and":
         _require_arity(op, args, 2)
         return _truthy(args[0]) and _truthy(args[1])

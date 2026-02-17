@@ -240,3 +240,67 @@ assert:
       - 1
   target: text
 ```
+
+## SRCONF-STDLIB-007
+
+```yaml spec-test
+id: SRCONF-STDLIB-007
+title: ops fs glob helpers evaluate deterministically
+purpose: Validates pure glob matching/filter helpers under ops.fs.glob.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: pass
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.glob.match:
+        - docs/spec/current.md
+        - docs/spec/*.md
+      - true
+    - std.logic.eq:
+      - ops.fs.glob.filter:
+        - lit: [docs/spec/current.md, docs/book/index.md, README.md]
+        - docs/spec/*.md
+      - lit: [docs/spec/current.md]
+    - std.logic.eq:
+      - ops.fs.glob.any:
+        - lit: [docs/spec/current.md, docs/book/index.md]
+        - docs/spec/*.md
+      - true
+    - std.logic.eq:
+      - ops.fs.glob.all:
+        - lit: [docs/spec/current.md]
+        - docs/spec/*.md
+      - true
+  target: text
+```
+
+## SRCONF-STDLIB-008
+
+```yaml spec-test
+id: SRCONF-STDLIB-008
+title: ops fs glob helpers fail schema for bad argument shapes
+purpose: Ensures ops.fs.glob helpers reject invalid list element types.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: fail
+    category: schema
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.glob.any:
+        - lit: [7, docs/spec/current.md]
+        - docs/spec/*.md
+      - true
+  target: text
+```

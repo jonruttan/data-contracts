@@ -34,6 +34,7 @@ This contract defines the complete fixed stdlib surface for spec-lang v1.
   - `ops.fs.path.*` for POSIX-style path transforms
   - `ops.fs.file.*` for metadata-dict predicates/getters
   - `ops.fs.json.*` for JSON parse and path lookup helpers
+  - `ops.fs.glob.*` for deterministic glob pattern matching/filtering
 
 ## Schema Shape DSL Keys
 

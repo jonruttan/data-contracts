@@ -91,6 +91,8 @@ Notes:
   `size_bytes`, `path`, `name`, `parent`, `ext`, `get`).
 - Spec-lang now includes pure JSON helpers under `ops.fs.json.*`:
   `parse`, `get`, `get_or`, and `has_path` for deterministic JSON/path lookup.
+- Spec-lang now includes pure glob helpers under `ops.fs.glob.*`:
+  `match`, `filter`, `any`, and `all` for deterministic path pattern checks.
 - Spec-lang now includes Ramda-style deep equality, set algebra
   (`union`, `intersection`, `difference`, `symmetric_difference`,
   `is_subset`, `is_superset`, `set_equals`), expanded collection transforms

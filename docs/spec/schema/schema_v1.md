@@ -462,6 +462,8 @@ Operator constraints:
   deterministic with no evaluator side effects
 - pure JSON helpers under `ops.fs.json.*` are allowed for parse/path lookup
   (`parse`, `get`, `get_or`, `has_path`) and remain evaluator-pure
+- pure glob helpers under `ops.fs.glob.*` are allowed for deterministic
+  pattern matching/filtering (`match`, `filter`, `any`, `all`)
 - underscore shorthand ops symbols are invalid
 - path fields in scoped harness/type config use virtual-root canonical `/...`
   form; `..` contract-root escapes are invalid

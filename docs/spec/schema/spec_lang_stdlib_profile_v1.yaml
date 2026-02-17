@@ -175,6 +175,11 @@ categories:
   - ops.fs.json.get
   - ops.fs.json.get_or
   - ops.fs.json.has_path
+  fs_glob:
+  - ops.fs.glob.match
+  - ops.fs.glob.filter
+  - ops.fs.glob.any
+  - ops.fs.glob.all
 symbols:
   std.core.subject:
     category: core_control
@@ -1277,6 +1282,34 @@ symbols:
     parity_required: true
   ops.fs.json.has_path:
     category: fs_json
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.glob.match:
+    category: fs_glob
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.glob.filter:
+    category: fs_glob
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.glob.any:
+    category: fs_glob
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.glob.all:
+    category: fs_glob
     arity: 2
     pure: true
     deterministic: true

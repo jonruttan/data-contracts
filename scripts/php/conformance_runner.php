@@ -932,6 +932,10 @@ function specLangFlatBuiltinFromStd(string $symbol): string {
         'ops.fs.json.get' => 'ops_fs_json_get',
         'ops.fs.json.get_or' => 'ops_fs_json_get_or',
         'ops.fs.json.has_path' => 'ops_fs_json_has_path',
+        'ops.fs.glob.match' => 'ops_fs_glob_match',
+        'ops.fs.glob.filter' => 'ops_fs_glob_filter',
+        'ops.fs.glob.any' => 'ops_fs_glob_any',
+        'ops.fs.glob.all' => 'ops_fs_glob_all',
     ];
     if (array_key_exists($symbol, $map)) {
         return $map[$symbol];
@@ -1355,6 +1359,39 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
         [$ok, $_value] = specLangGetInPath($obj, $path);
         return $ok;
+    }
+    if ($op === 'ops_fs_glob_match') {
+        specLangRequireArity($op, $args, 2);
+        $path = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $pattern = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if (!is_string($path) || !is_string($pattern)) {
+            throw new SchemaError('spec_lang ops.fs.glob.match expects string args');
+        }
+        return fnmatch($pattern, $path);
+    }
+    if ($op === 'ops_fs_glob_filter' || $op === 'ops_fs_glob_any' || $op === 'ops_fs_glob_all') {
+        specLangRequireArity($op, $args, 2);
+        $paths = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $pattern = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if (!is_string($pattern)) {
+            throw new SchemaError("spec_lang {$op} expects string pattern");
+        }
+        $matched = [];
+        foreach ($paths as $raw) {
+            if (!is_string($raw)) {
+                throw new SchemaError("spec_lang {$op} expects list of strings");
+            }
+            if (fnmatch($pattern, $raw)) {
+                $matched[] = $raw;
+            }
+        }
+        if ($op === 'ops_fs_glob_filter') {
+            return $matched;
+        }
+        if ($op === 'ops_fs_glob_any') {
+            return count($matched) > 0;
+        }
+        return count($matched) === count($paths);
     }
     throw new SchemaError("unsupported spec_lang symbol: {$op}");
 }

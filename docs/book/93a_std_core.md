@@ -462,6 +462,138 @@ Provide generated semantic reference for `std.core` and special forms.
   - result: Deterministic result per symbol contract.
 
 
+### `ops.fs.glob.all`
+
+- Signature: `ops.fs.glob.all/2`
+- Summary: Evaluates `all` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.glob.all(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.glob.any`
+
+- Signature: `ops.fs.glob.any/2`
+- Summary: Evaluates `any` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.glob.any(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.glob.filter`
+
+- Signature: `ops.fs.glob.filter/2`
+- Summary: Evaluates `filter` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.glob.filter(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.glob.match`
+
+- Signature: `ops.fs.glob.match/2`
+- Summary: Evaluates `match` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.glob.match(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
 ### `ops.fs.json.get`
 
 - Signature: `ops.fs.json.get/2`

@@ -202,6 +202,10 @@ Filesystem utility (pure, metadata-only):
 - `ops.fs.json.get`
 - `ops.fs.json.get_or`
 - `ops.fs.json.has_path`
+- `ops.fs.glob.match`
+- `ops.fs.glob.filter`
+- `ops.fs.glob.any`
+- `ops.fs.glob.all`
 
 Recursion/control:
 
