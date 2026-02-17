@@ -6,7 +6,7 @@ cd "${ROOT_DIR}"
 
 RUST_CLI_MANIFEST="${ROOT_DIR}/scripts/rust/spec_runner_cli/Cargo.toml"
 RUST_CLI_TARGET=""
-RUST_CLI_BIN="${ROOT_DIR}/target/debug/spec_runner_cli"
+RUST_CLI_BIN=""
 
 is_debug_enabled() {
   local val="${SPEC_RUNNER_DEBUG:-}"
@@ -41,9 +41,29 @@ debug_log_at() {
 # Prefer native Apple Silicon binaries when available to avoid Rosetta/runtime hangs.
 if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then
   ARM_TARGET="aarch64-apple-darwin"
-  ARM_BIN="${ROOT_DIR}/target/${ARM_TARGET}/debug/spec_runner_cli"
+  ARM_BIN_LOCAL="${ROOT_DIR}/scripts/rust/spec_runner_cli/target/${ARM_TARGET}/debug/spec_runner_cli"
+  ARM_BIN_ROOT="${ROOT_DIR}/target/${ARM_TARGET}/debug/spec_runner_cli"
   RUST_CLI_TARGET="${ARM_TARGET}"
-  RUST_CLI_BIN="${ARM_BIN}"
+  if [[ -x "${ARM_BIN_LOCAL}" ]]; then
+    RUST_CLI_BIN="${ARM_BIN_LOCAL}"
+  elif [[ -x "${ARM_BIN_ROOT}" ]]; then
+    RUST_CLI_BIN="${ARM_BIN_ROOT}"
+  else
+    RUST_CLI_BIN="${ARM_BIN_LOCAL}"
+  fi
+fi
+
+# Default host-target binary resolution for non-ARM or when target-specific binary is unset.
+if [[ -z "${RUST_CLI_BIN}" ]]; then
+  HOST_BIN_LOCAL="${ROOT_DIR}/scripts/rust/spec_runner_cli/target/debug/spec_runner_cli"
+  HOST_BIN_ROOT="${ROOT_DIR}/target/debug/spec_runner_cli"
+  if [[ -x "${HOST_BIN_LOCAL}" ]]; then
+    RUST_CLI_BIN="${HOST_BIN_LOCAL}"
+  elif [[ -x "${HOST_BIN_ROOT}" ]]; then
+    RUST_CLI_BIN="${HOST_BIN_ROOT}"
+  else
+    RUST_CLI_BIN="${HOST_BIN_LOCAL}"
+  fi
 fi
 
 debug_log "root=${ROOT_DIR}"
