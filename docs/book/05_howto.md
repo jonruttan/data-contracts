@@ -98,6 +98,50 @@ assert:
       - {var: subject}
 ```
 
+## Prefer Domain FS Helpers Over Raw `ops.fs.*`
+
+1. Chain-load:
+   - `/docs/spec/libraries/domain/fs_core.spec.md`
+2. Use domain wrappers in executable specs:
+   - `domain.fs.json_get_text`
+   - `domain.fs.json_get_or_text`
+   - `domain.fs.json_path_eq_text`
+   - `domain.fs.glob_filter`
+   - `domain.fs.glob_all`
+
+Example:
+
+```yaml
+harness:
+  chain:
+    steps:
+    - id: lib_fs
+      class: must
+      ref: /docs/spec/libraries/domain/fs_core.spec.md
+    imports:
+    - from: lib_fs
+      names:
+      - domain.fs.json_path_eq_text
+      - domain.fs.glob_filter
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - call:
+      - {var: domain.fs.json_path_eq_text}
+      - '{"meta":{"ok":true}}'
+      - lit: [meta, ok]
+      - true
+    - std.logic.eq:
+      - call:
+        - {var: domain.fs.glob_filter}
+        - lit: [/docs/a.md, /docs/a.spec.md]
+        - '*.spec.md'
+      - lit: [/docs/a.spec.md]
+  target: context_json
+```
+
 ## Add A Governance Check
 
 1. Add scanner/check implementation and check id.

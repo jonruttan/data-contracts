@@ -142,3 +142,97 @@ harness:
       - ext
       required: true
 ```
+
+```yaml spec-test
+id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
+type: spec.export
+assert:
+- id: __export__domain.fs.json_get_text
+  class: must
+  checks:
+  - ops.fs.json.get:
+    - ops.fs.json.parse:
+      - var: json_text
+    - var: path_segments
+harness:
+  chain:
+    exports:
+    - as: domain.fs.json_get_text
+      from: assert.function
+      path: /__export__domain.fs.json_get_text
+      params:
+      - json_text
+      - path_segments
+      required: true
+```
+
+```yaml spec-test
+id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
+type: spec.export
+assert:
+- id: __export__domain.fs.json_path_eq_text
+  class: must
+  checks:
+  - std.logic.eq:
+    - call:
+      - var: domain.fs.json_get_or_text
+      - var: json_text
+      - var: path_segments
+      - null
+    - var: expected
+harness:
+  chain:
+    exports:
+    - as: domain.fs.json_path_eq_text
+      from: assert.function
+      path: /__export__domain.fs.json_path_eq_text
+      params:
+      - json_text
+      - path_segments
+      - expected
+      required: true
+```
+
+```yaml spec-test
+id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
+type: spec.export
+assert:
+- id: __export__domain.fs.glob_filter
+  class: must
+  checks:
+  - ops.fs.glob.filter:
+    - var: paths
+    - var: pattern
+harness:
+  chain:
+    exports:
+    - as: domain.fs.glob_filter
+      from: assert.function
+      path: /__export__domain.fs.glob_filter
+      params:
+      - paths
+      - pattern
+      required: true
+```
+
+```yaml spec-test
+id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
+type: spec.export
+assert:
+- id: __export__domain.fs.glob_all
+  class: must
+  checks:
+  - ops.fs.glob.all:
+    - var: paths
+    - var: pattern
+harness:
+  chain:
+    exports:
+    - as: domain.fs.glob_all
+      from: assert.function
+      path: /__export__domain.fs.glob_all
+      params:
+      - paths
+      - pattern
+      required: true
+```
