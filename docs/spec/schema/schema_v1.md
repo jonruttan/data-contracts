@@ -270,9 +270,10 @@ For `type: docs.generate`, supported `harness` keys include:
   root-relative values normalize to canonical `/...`
 - external references use `external://provider/id` and are deny-by-default
   unless capability and harness policy explicitly allow provider access
-- `type: spec_lang.export` function values MUST use mapping-AST expression
-  encoding under `defines.public.<symbol>` and/or
-  `defines.private.<symbol>` (list s-expr authoring is invalid)
+- `type: spec.export` producer cases define reusable symbols through
+  `harness.chain.exports` entries using `from: assert.function`; function
+  bodies are sourced from producer assert-step `checks` expression mappings
+- Canonical export source marker is ``assert.function``.
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
 - executable case types MUST NOT declare `harness.spec_lang.includes`;
@@ -548,7 +549,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `docs.generate` | - | - |
 | `governance.check` | `check` | - |
 | `orchestration.run` | - | - |
-| `spec_lang.export` | `defines` | `imports` |
+| `spec.export` | `assert`, `harness` | `imports` |
 | `text.file` | - | - |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V1 -->
@@ -584,6 +585,6 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `docs.generate` | 8 | - |
 | `governance.check` | 1 | `check` |
 | `orchestration.run` | 6 | - |
-| `spec_lang.export` | 2 | `defines` |
+| `spec.export` | 2 | `assert`, `harness` |
 | `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->

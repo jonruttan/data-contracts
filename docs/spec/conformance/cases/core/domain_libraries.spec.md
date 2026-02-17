@@ -181,7 +181,7 @@ assert:
       - domain.http.auth_is_oauth
     - std.string.contains:
       - var: subject
-      - 'type: spec_lang.export'
+      - 'type: spec.export'
   target: text
 ```
 

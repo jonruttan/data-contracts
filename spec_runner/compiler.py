@@ -218,11 +218,17 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
         is_canonical_spec = doc_path.resolve().is_relative_to(repo_docs_spec)
     except Exception:
         is_canonical_spec = False
-    assert_tree = compile_assert_tree(
-        raw_case.get("assert", []) or [],
-        type_name=type_name,
-        strict_steps=is_canonical_spec,
-    )
+    producer_export_type = type_name in {"spec.export"}
+    if producer_export_type:
+        # Producer-only case type: exported callables are compiled from raw
+        # assert step checks via chain_engine, not from runtime assertion targets.
+        assert_tree = GroupNode(op="must", target=None, children=[], assert_path="assert")
+    else:
+        assert_tree = compile_assert_tree(
+            raw_case.get("assert", []) or [],
+            type_name=type_name,
+            strict_steps=is_canonical_spec,
+        )
 
     metadata = {
         "expect": raw_case.get("expect"),

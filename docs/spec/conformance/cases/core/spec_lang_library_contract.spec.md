@@ -4,9 +4,9 @@
 
 ```yaml spec-test
 id: SRCONF-LIB-CONTRACT-001
-title: policy library uses flat defines scopes
-purpose: Ensures policy library authoring uses defines.public/defines.private symbol
-  maps without nested functions blocks.
+title: policy library uses producer chain exports
+purpose: Ensures policy library authoring uses producer-owned harness.chain.exports with
+  assert.function source mappings.
 type: text.file
 path: /docs/spec/libraries/policy/policy_core.spec.md
 expect:
@@ -19,17 +19,23 @@ assert:
   - must:
     - std.string.contains:
       - var: subject
-      - 'defines:'
+      - 'type: spec.export'
     - std.string.contains:
       - var: subject
-      - 'public:'
+      - 'harness:'
     - std.string.contains:
       - var: subject
-      - 'private:'
+      - 'chain:'
+    - std.string.contains:
+      - var: subject
+      - 'exports:'
+    - std.string.contains:
+      - var: subject
+      - 'from: assert.function'
     - std.logic.not:
       - std.string.contains:
         - var: subject
-        - 'functions:'
+        - 'defines:'
   target: text
 ```
 
@@ -37,9 +43,9 @@ assert:
 
 ```yaml spec-test
 id: SRCONF-LIB-CONTRACT-002
-title: path library uses flat defines scopes
-purpose: Ensures path library authoring uses defines.public/defines.private symbol
-  maps without nested functions blocks.
+title: path library uses producer chain exports
+purpose: Ensures path library authoring uses producer-owned harness.chain.exports with
+  assert.function source mappings.
 type: text.file
 path: /docs/spec/libraries/path/path_core.spec.md
 expect:
@@ -52,17 +58,23 @@ assert:
   - must:
     - std.string.contains:
       - var: subject
-      - 'defines:'
+      - 'type: spec.export'
     - std.string.contains:
       - var: subject
-      - 'public:'
+      - 'harness:'
     - std.string.contains:
       - var: subject
-      - 'private:'
+      - 'chain:'
+    - std.string.contains:
+      - var: subject
+      - 'exports:'
+    - std.string.contains:
+      - var: subject
+      - 'from: assert.function'
     - std.logic.not:
       - std.string.contains:
         - var: subject
-        - 'functions:'
+        - 'defines:'
   target: text
 ```
 

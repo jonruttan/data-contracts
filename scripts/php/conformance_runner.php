@@ -1316,68 +1316,88 @@ function loadSpecLangLibraryDoc(string $path): array {
     $imports = [];
     $bindings = [];
     $exports = [];
-    $compileDefinitionScope = function(mixed $scope, string $fieldPrefix) use ($path): array {
-        if ($scope === null) {
-            return [];
-        }
-        if (!is_array($scope) || (isListArray($scope) && count($scope) > 0)) {
-            throw new SchemaError("spec_lang.export {$fieldPrefix} must be a mapping when provided");
-        }
-        $out = [];
-        foreach ($scope as $rawName => $expr) {
-            $name = trim((string)$rawName);
-            if ($name === '') {
-                throw new SchemaError("spec_lang.export {$fieldPrefix} symbol name must be non-empty");
-            }
-            if (array_key_exists($name, $out)) {
-                throw new SchemaError("spec_lang.export duplicate symbol inside scope {$fieldPrefix}: {$name}");
-            }
-            $out[$name] = compileYamlExprToSexpr($expr, "{$path} {$fieldPrefix}.{$name}");
-        }
-        return $out;
-    };
     foreach (parseCases($path) as $case) {
         $type = trim((string)($case['type'] ?? ''));
-        if ($type !== 'spec_lang.export') {
+        if ($type !== 'spec.export') {
             continue;
         }
         foreach (asNonEmptyStringList($case['imports'] ?? null, 'imports') as $imp) {
             $imports[] = $imp;
         }
-        if (array_key_exists('definitions', $case)) {
-            throw new SchemaError("spec_lang.export legacy key 'definitions' is not supported; use 'defines'");
-        }
-        $defines = $case['defines'] ?? null;
-        if (!is_array($defines) || isListArray($defines)) {
-            throw new SchemaError('spec_lang.export requires defines mapping with public/private scopes');
-        }
-        $public = $compileDefinitionScope($defines['public'] ?? null, 'defines.public');
-        $private = $compileDefinitionScope($defines['private'] ?? null, 'defines.private');
-        if (count($public) === 0 && count($private) === 0) {
-            throw new SchemaError('spec_lang.export requires non-empty defines.public or defines.private mapping');
-        }
-        foreach (array_keys($public) as $name) {
-            if (array_key_exists($name, $bindings)) {
-                if ($bindings[$name] == $public[$name]) {
+        $rawAssert = $case['assert'] ?? null;
+        $assertSteps = [];
+        if (is_array($rawAssert) && isListArray($rawAssert)) {
+            foreach ($rawAssert as $step) {
+                if (!is_array($step) || isListArray($step)) {
                     continue;
                 }
-                throw new SchemaError("duplicate library symbol in file {$path}: {$name}");
+                $sid = trim((string)($step['id'] ?? ''));
+                if ($sid !== '') {
+                    $assertSteps[$sid] = $step;
+                }
             }
-            $bindings[$name] = $public[$name];
+        }
+        $harness = $case['harness'] ?? null;
+        $chain = (is_array($harness) && !isListArray($harness)) ? ($harness['chain'] ?? null) : null;
+        $producerExports = (is_array($chain) && !isListArray($chain)) ? ($chain['exports'] ?? null) : null;
+        if (!is_array($producerExports) || !isListArray($producerExports)) {
+            continue;
+        }
+        foreach ($producerExports as $entryIdx => $entryRaw) {
+            if (!is_array($entryRaw) || isListArray($entryRaw)) {
+                throw new SchemaError("harness.chain.exports[{$entryIdx}] must be a mapping");
+            }
+            $name = trim((string)($entryRaw['as'] ?? ''));
+            if ($name === '') {
+                throw new SchemaError("harness.chain.exports[{$entryIdx}].as is required");
+            }
+            if (array_key_exists($name, $bindings)) {
+                continue;
+            }
+            $fromSource = trim((string)($entryRaw['from'] ?? ''));
+            if ($fromSource !== 'assert.function') {
+                throw new SchemaError("harness.chain.exports[{$entryIdx}].from must be assert.function");
+            }
+            $stepId = ltrim(trim((string)($entryRaw['path'] ?? '')), '/');
+            if ($stepId === '') {
+                throw new SchemaError("harness.chain.exports[{$entryIdx}].path is required for from=assert.function");
+            }
+            if (!array_key_exists($stepId, $assertSteps)) {
+                throw new SchemaError("harness.chain.exports[{$entryIdx}] unresolved assert step id: {$stepId}");
+            }
+            $srcStep = $assertSteps[$stepId];
+            if (trim((string)($srcStep['class'] ?? '')) !== 'must') {
+                throw new SchemaError("harness.chain.exports[{$entryIdx}] source assert step must use class=must");
+            }
+            $checks = $srcStep['checks'] ?? null;
+            if (!is_array($checks) || !isListArray($checks) || count($checks) === 0) {
+                throw new SchemaError("harness.chain.exports[{$entryIdx}] source assert step requires non-empty checks");
+            }
+            $paramsRaw = $entryRaw['params'] ?? null;
+            if (!is_array($paramsRaw) || !isListArray($paramsRaw)) {
+                throw new SchemaError("harness.chain.exports[{$entryIdx}].params must be a list");
+            }
+            $params = [];
+            foreach ($paramsRaw as $pIdx => $rawParam) {
+                if (!is_string($rawParam) || trim($rawParam) === '') {
+                    throw new SchemaError("harness.chain.exports[{$entryIdx}].params[{$pIdx}] must be non-empty string");
+                }
+                $params[] = trim($rawParam);
+            }
+            $exprs = [];
+            foreach ($checks as $cIdx => $rawCheck) {
+                $exprs[] = compileYamlExprToSexpr($rawCheck, "{$path} harness.chain.exports[{$entryIdx}].checks[{$cIdx}]");
+            }
+            $body = $exprs[count($exprs) - 1];
+            for ($i = count($exprs) - 2; $i >= 0; $i -= 1) {
+                $body = ['std.logic.and', $exprs[$i], $body];
+            }
+            $bindings[$name] = ['fn', $params, $body];
             $exports[] = $name;
-        }
-        foreach (array_keys($private) as $name) {
-            if (array_key_exists($name, $bindings)) {
-                if ($bindings[$name] == $private[$name]) {
-                    continue;
-                }
-                throw new SchemaError("duplicate library symbol in file {$path}: {$name}");
-            }
-            $bindings[$name] = $private[$name];
         }
     }
     if (count($bindings) === 0) {
-        throw new SchemaError("library file has no spec_lang.export defines: {$path}");
+        throw new SchemaError("library file has no spec.export chain exports: {$path}");
     }
     return [
         'imports' => array_values(array_unique($imports)),
@@ -1657,13 +1677,13 @@ function loadChainImportedSymbolsForCase(string $fixturePath, array $case, array
             if ($symbolPath === '') {
                 throw new SchemaError("producer harness.chain.exports.{$exportName}.path is required for from=assert.function");
             }
-            if (!array_key_exists($symbolPath, $loadedSymbols)) {
+            if (!array_key_exists((string)$exportName, $loadedSymbols)) {
                 if ($required) {
-                    throw new SchemaError("chain step {$stepId} import {$exportName} unresolved producer symbol: {$symbolPath}");
+                    throw new SchemaError("chain step {$stepId} import {$exportName} unresolved producer symbol: {$exportName}");
                 }
                 continue;
             }
-            $resolvedExports[(string)$exportName] = $loadedSymbols[$symbolPath];
+            $resolvedExports[(string)$exportName] = $loadedSymbols[(string)$exportName];
         }
         $stepExports[$stepId] = $resolvedExports;
     }

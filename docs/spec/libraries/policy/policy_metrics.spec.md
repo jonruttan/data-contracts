@@ -5,41 +5,63 @@
 ```yaml spec-test
 id: LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
-type: spec_lang.export
-defines:
-  public:
-    policy.metric_non_decrease:
-      fn:
-      - [subject, field, baseline_field, epsilon]
-      - std.logic.gte:
-        - std.math.add:
-          - std.object.get:
-            - {var: subject}
-            - {var: field}
-          - {var: epsilon}
-        - std.object.get:
-          - {var: subject}
-          - {var: baseline_field}
+type: spec.export
+assert:
+- id: __export__policy.metric_non_decrease
+  class: must
+  checks:
+  - std.logic.gte:
+    - std.math.add:
+      - std.object.get:
+        - var: subject
+        - var: field
+      - var: epsilon
+    - std.object.get:
+      - var: subject
+      - var: baseline_field
+harness:
+  chain:
+    exports:
+    - as: policy.metric_non_decrease
+      from: assert.function
+      path: /__export__policy.metric_non_decrease
+      params:
+      - subject
+      - field
+      - baseline_field
+      - epsilon
+      required: true
 ```
 
 ```yaml spec-test
 id: LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_increase'
-type: spec_lang.export
-defines:
-  public:
-    policy.metric_non_increase:
-      fn:
-      - [subject, field, baseline_field, epsilon]
-      - std.logic.lte:
-        - std.math.sub:
-          - std.object.get:
-            - {var: subject}
-            - {var: field}
-          - {var: epsilon}
-        - std.object.get:
-          - {var: subject}
-          - {var: baseline_field}
+type: spec.export
+assert:
+- id: __export__policy.metric_non_increase
+  class: must
+  checks:
+  - std.logic.lte:
+    - std.math.sub:
+      - std.object.get:
+        - var: subject
+        - var: field
+      - var: epsilon
+    - std.object.get:
+      - var: subject
+      - var: baseline_field
+harness:
+  chain:
+    exports:
+    - as: policy.metric_non_increase
+      from: assert.function
+      path: /__export__policy.metric_non_increase
+      params:
+      - subject
+      - field
+      - baseline_field
+      - epsilon
+      required: true
 ```
 
 ```yaml spec-test

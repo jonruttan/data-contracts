@@ -5,44 +5,68 @@
 ```yaml spec-test
 id: LIB-IMPL-ASSERT-001-001-IMPL-ASSERT-CONTAINS
 title: 'reusable impl assertion helper functions: impl.assert.contains'
-type: spec_lang.export
-defines:
-  public:
-    impl.assert.contains:
-      fn:
-      - [subject, token]
-      - std.string.contains:
-        - {var: subject}
-        - {var: token}
-  private: {}
+type: spec.export
+assert:
+- id: __export__impl.assert.contains
+  class: must
+  checks:
+  - std.string.contains:
+    - var: subject
+    - var: token
+harness:
+  chain:
+    exports:
+    - as: impl.assert.contains
+      from: assert.function
+      path: /__export__impl.assert.contains
+      params:
+      - subject
+      - token
+      required: true
 ```
 
 ```yaml spec-test
 id: LIB-IMPL-ASSERT-001-002-IMPL-ASSERT-REGEX
 title: 'reusable impl assertion helper functions: impl.assert.regex'
-type: spec_lang.export
-defines:
-  public:
-    impl.assert.regex:
-      fn:
-      - [subject, pattern]
-      - std.string.regex_match:
-        - {var: subject}
-        - {var: pattern}
-  private: {}
+type: spec.export
+assert:
+- id: __export__impl.assert.regex
+  class: must
+  checks:
+  - std.string.regex_match:
+    - var: subject
+    - var: pattern
+harness:
+  chain:
+    exports:
+    - as: impl.assert.regex
+      from: assert.function
+      path: /__export__impl.assert.regex
+      params:
+      - subject
+      - pattern
+      required: true
 ```
 
 ```yaml spec-test
 id: LIB-IMPL-ASSERT-001-003-IMPL-ASSERT-JSON-TYPE
 title: 'reusable impl assertion helper functions: impl.assert.json_type'
-type: spec_lang.export
-defines:
-  public:
-    impl.assert.json_type:
-      fn:
-      - [subject, type_name]
-      - std.type.json_type:
-        - {var: subject}
-        - {var: type_name}
-  private: {}
+type: spec.export
+assert:
+- id: __export__impl.assert.json_type
+  class: must
+  checks:
+  - std.type.json_type:
+    - var: subject
+    - var: type_name
+harness:
+  chain:
+    exports:
+    - as: impl.assert.json_type
+      from: assert.function
+      path: /__export__impl.assert.json_type
+      params:
+      - subject
+      - type_name
+      required: true
 ```

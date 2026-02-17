@@ -5,40 +5,65 @@
 ```yaml spec-test
 id: LIB-POLICY-001
 title: policy-core reusable governance predicates
-type: spec_lang.export
-imports:
-- /docs/spec/libraries/path/path_core.spec.md
-defines:
-  public:
-    policy.pass_when_no_violations:
-      fn:
-      - [subject]
-      - std.collection.is_empty:
-        - std.object.get:
-          - {var: subject}
-          - violations
-  private:
-    policy.fail_when_has_violations:
-      fn:
-      - [subject]
-      - std.logic.not:
-        - call:
-          - {var: policy.pass_when_no_violations}
-          - {var: subject}
-    policy.check_id_is:
-      fn:
-      - [subject, expected]
-      - std.logic.eq:
-        - std.object.get:
-          - {var: subject}
-          - check_id
-        - {var: expected}
-    policy.violation_count_is:
-      fn:
-      - [subject, expected]
-      - std.logic.eq:
-        - std.object.get:
-          - {var: subject}
-          - violation_count
-        - {var: expected}
+type: spec.export
+assert:
+- id: __export__policy.pass_when_no_violations
+  class: must
+  checks:
+  - std.collection.is_empty:
+    - std.object.get:
+      - var: subject
+      - violations
+- id: __export__policy.fail_when_has_violations
+  class: must
+  checks:
+  - std.logic.not:
+    - call:
+      - var: policy.pass_when_no_violations
+      - var: subject
+- id: __export__policy.check_id_is
+  class: must
+  checks:
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - check_id
+    - var: expected
+- id: __export__policy.violation_count_is
+  class: must
+  checks:
+  - std.logic.eq:
+    - std.object.get:
+      - var: subject
+      - violation_count
+    - var: expected
+harness:
+  chain:
+    exports:
+    - as: policy.pass_when_no_violations
+      from: assert.function
+      path: /__export__policy.pass_when_no_violations
+      params:
+      - subject
+      required: true
+    - as: policy.fail_when_has_violations
+      from: assert.function
+      path: /__export__policy.fail_when_has_violations
+      params:
+      - subject
+      required: true
+    - as: policy.check_id_is
+      from: assert.function
+      path: /__export__policy.check_id_is
+      params:
+      - subject
+      - expected
+      required: true
+    - as: policy.violation_count_is
+      from: assert.function
+      path: /__export__policy.violation_count_is
+      params:
+      - subject
+      - expected
+      required: true
 ```

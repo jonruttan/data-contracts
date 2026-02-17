@@ -107,9 +107,11 @@ docs_token_sync:
   - id: NORMALIZATION_LIBRARY_DEFINES_WORDING
     file: docs/spec/contract/14_spec_lang_libraries.md
     must_contain:
+    - "harness.chain.exports"
+    - "from: assert.function"
+    must_not_contain:
     - "defines.public"
     - "defines.private"
-    must_not_contain:
     - "definitions.public"
     - "definitions.private"
 replacements:

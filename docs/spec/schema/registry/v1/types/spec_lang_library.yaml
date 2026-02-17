@@ -1,17 +1,18 @@
 version: 1
 id: schema.registry.v1.type.spec_lang_library
 type: type
-case_type: spec_lang.export
+case_type: spec.export
 required_top_level:
-  - defines
+  - assert
+  - harness
 allowed_top_level_extra:
   - imports
 fields:
-  defines:
-    type: mapping
+  assert:
+    type: list
     required: true
     since: v1
-  imports:
-    type: list
+  harness:
+    type: mapping
     required: false
     since: v1

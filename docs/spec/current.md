@@ -70,10 +70,9 @@ Notes:
   `harness.spec_lang.imports` (`from`/`names` with optional `as` aliases).
 - Spec-lang mapping-AST authoring now uses explicit subject reference node
   `{var: subject}`.
-- Library function authoring is mapping-AST only (`type: spec_lang.export`
-  `defines.public.<symbol>` and
-  `defines.private.<symbol>` values use canonical expression
-  nodes, not list s-expr authoring).
+- Library producer authoring uses `type: spec.export` with producer-owned
+  `harness.chain.exports` entries (`from: assert.function`) sourced from
+  assert-step `checks` expression mappings.
 - Canonical reusable libraries now include `path_core`, `policy_core`, and
   `policy_metrics` under `docs/spec/libraries/`, with domain helper libraries
   under `docs/spec/libraries/domain/`.

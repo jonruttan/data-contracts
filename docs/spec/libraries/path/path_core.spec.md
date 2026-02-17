@@ -5,326 +5,486 @@
 ```yaml spec-test
 id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES
 title: 'path-core reusable pure path logic helpers: path.normalize_slashes'
-type: spec_lang.export
-defines:
-  public:
-    path.normalize_slashes:
-      fn:
-      - [path]
-      - std.string.replace:
-        - {var: path}
-        - \
-        - /
-  private:
-    path.trim_dot:
-      fn:
-      - [path]
-      - std.string.replace:
-        - {var: path}
-        - ./
-        - ''
-    path.dirname:
-      fn:
-      - [path]
-      - let:
-        - lit:
-          - - segs
-            - call:
-              - {var: path.segments}
-              - {var: path}
-        - if:
-          - std.logic.lte:
+type: spec.export
+assert:
+- id: __export__path.normalize_slashes
+  class: must
+  checks:
+  - std.string.replace:
+    - var: path
+    - \
+    - /
+- id: __export__path.trim_dot
+  class: must
+  checks:
+  - std.string.replace:
+    - var: path
+    - ./
+    - ''
+- id: __export__path.dirname
+  class: must
+  checks:
+  - let:
+    - lit:
+      - - segs
+        - call:
+          - var: path.segments
+          - var: path
+    - if:
+      - std.logic.lte:
+        - std.collection.len:
+          - var: segs
+        - 1
+      - ''
+      - std.string.join:
+        - std.collection.slice:
+          - 0
+          - std.math.sub:
             - std.collection.len:
-              - {var: segs}
+              - var: segs
             - 1
-          - ''
-          - std.string.join:
-            - std.collection.slice:
-              - 0
-              - std.math.sub:
-                - std.collection.len:
-                  - {var: segs}
-                - 1
-              - {var: segs}
-            - /
-    path.has_extension:
-      fn:
-      - [path, ext]
-      - std.logic.eq:
-        - call:
-          - {var: path.extension}
-          - {var: path}
-        - {var: ext}
-    path.is_under:
-      fn:
-      - [path, prefix]
-      - std.string.starts_with:
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: path}
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: prefix}
-    path.matches:
-      fn:
-      - [path, pattern]
-      - std.string.regex_match:
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: path}
-        - {var: pattern}
+          - var: segs
+        - /
+- id: __export__path.has_extension
+  class: must
+  checks:
+  - std.logic.eq:
+    - call:
+      - var: path.extension
+      - var: path
+    - var: ext
+- id: __export__path.is_under
+  class: must
+  checks:
+  - std.string.starts_with:
+    - call:
+      - var: path.normalize_slashes
+      - var: path
+    - call:
+      - var: path.normalize_slashes
+      - var: prefix
+- id: __export__path.matches
+  class: must
+  checks:
+  - std.string.regex_match:
+    - call:
+      - var: path.normalize_slashes
+      - var: path
+    - var: pattern
+harness:
+  chain:
+    exports:
+    - as: path.normalize_slashes
+      from: assert.function
+      path: /__export__path.normalize_slashes
+      params:
+      - path
+      required: true
+    - as: path.trim_dot
+      from: assert.function
+      path: /__export__path.trim_dot
+      params:
+      - path
+      required: true
+    - as: path.dirname
+      from: assert.function
+      path: /__export__path.dirname
+      params:
+      - path
+      required: true
+    - as: path.has_extension
+      from: assert.function
+      path: /__export__path.has_extension
+      params:
+      - path
+      - ext
+      required: true
+    - as: path.is_under
+      from: assert.function
+      path: /__export__path.is_under
+      params:
+      - path
+      - prefix
+      required: true
+    - as: path.matches
+      from: assert.function
+      path: /__export__path.matches
+      params:
+      - path
+      - pattern
+      required: true
 ```
 
 ```yaml spec-test
 id: LIB-PATH-001-002-PATH-SEGMENTS
 title: 'path-core reusable pure path logic helpers: path.segments'
-type: spec_lang.export
-defines:
-  public:
-    path.segments:
-      fn:
-      - [path]
-      - std.string.split:
+type: spec.export
+assert:
+- id: __export__path.segments
+  class: must
+  checks:
+  - std.string.split:
+    - call:
+      - var: path.normalize_slashes
+      - var: path
+    - /
+- id: __export__path.trim_dot
+  class: must
+  checks:
+  - std.string.replace:
+    - var: path
+    - ./
+    - ''
+- id: __export__path.dirname
+  class: must
+  checks:
+  - let:
+    - lit:
+      - - segs
         - call:
-          - {var: path.normalize_slashes}
-          - {var: path}
-        - /
-  private:
-    path.trim_dot:
-      fn:
-      - [path]
-      - std.string.replace:
-        - {var: path}
-        - ./
-        - ''
-    path.dirname:
-      fn:
-      - [path]
-      - let:
-        - lit:
-          - - segs
-            - call:
-              - {var: path.segments}
-              - {var: path}
-        - if:
-          - std.logic.lte:
+          - var: path.segments
+          - var: path
+    - if:
+      - std.logic.lte:
+        - std.collection.len:
+          - var: segs
+        - 1
+      - ''
+      - std.string.join:
+        - std.collection.slice:
+          - 0
+          - std.math.sub:
             - std.collection.len:
-              - {var: segs}
+              - var: segs
             - 1
-          - ''
-          - std.string.join:
-            - std.collection.slice:
-              - 0
-              - std.math.sub:
-                - std.collection.len:
-                  - {var: segs}
-                - 1
-              - {var: segs}
-            - /
-    path.has_extension:
-      fn:
-      - [path, ext]
-      - std.logic.eq:
-        - call:
-          - {var: path.extension}
-          - {var: path}
-        - {var: ext}
-    path.is_under:
-      fn:
-      - [path, prefix]
-      - std.string.starts_with:
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: path}
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: prefix}
-    path.matches:
-      fn:
-      - [path, pattern]
-      - std.string.regex_match:
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: path}
-        - {var: pattern}
+          - var: segs
+        - /
+- id: __export__path.has_extension
+  class: must
+  checks:
+  - std.logic.eq:
+    - call:
+      - var: path.extension
+      - var: path
+    - var: ext
+- id: __export__path.is_under
+  class: must
+  checks:
+  - std.string.starts_with:
+    - call:
+      - var: path.normalize_slashes
+      - var: path
+    - call:
+      - var: path.normalize_slashes
+      - var: prefix
+- id: __export__path.matches
+  class: must
+  checks:
+  - std.string.regex_match:
+    - call:
+      - var: path.normalize_slashes
+      - var: path
+    - var: pattern
+harness:
+  chain:
+    exports:
+    - as: path.segments
+      from: assert.function
+      path: /__export__path.segments
+      params:
+      - path
+      required: true
+    - as: path.trim_dot
+      from: assert.function
+      path: /__export__path.trim_dot
+      params:
+      - path
+      required: true
+    - as: path.dirname
+      from: assert.function
+      path: /__export__path.dirname
+      params:
+      - path
+      required: true
+    - as: path.has_extension
+      from: assert.function
+      path: /__export__path.has_extension
+      params:
+      - path
+      - ext
+      required: true
+    - as: path.is_under
+      from: assert.function
+      path: /__export__path.is_under
+      params:
+      - path
+      - prefix
+      required: true
+    - as: path.matches
+      from: assert.function
+      path: /__export__path.matches
+      params:
+      - path
+      - pattern
+      required: true
 ```
 
 ```yaml spec-test
 id: LIB-PATH-001-003-PATH-BASENAME
 title: 'path-core reusable pure path logic helpers: path.basename'
-type: spec_lang.export
-defines:
-  public:
-    path.basename:
-      fn:
-      - [path]
-      - let:
-        - lit:
-          - - segs
-            - call:
-              - {var: path.segments}
-              - {var: path}
-        - if:
-          - std.collection.is_empty:
-            - {var: segs}
-          - ''
-          - std.object.get:
-            - {var: segs}
-            - std.math.sub:
-              - std.collection.len:
-                - {var: segs}
-              - 1
-  private:
-    path.trim_dot:
-      fn:
-      - [path]
-      - std.string.replace:
-        - {var: path}
-        - ./
-        - ''
-    path.dirname:
-      fn:
-      - [path]
-      - let:
-        - lit:
-          - - segs
-            - call:
-              - {var: path.segments}
-              - {var: path}
-        - if:
-          - std.logic.lte:
+type: spec.export
+assert:
+- id: __export__path.basename
+  class: must
+  checks:
+  - let:
+    - lit:
+      - - segs
+        - call:
+          - var: path.segments
+          - var: path
+    - if:
+      - std.collection.is_empty:
+        - var: segs
+      - ''
+      - std.object.get:
+        - var: segs
+        - std.math.sub:
+          - std.collection.len:
+            - var: segs
+          - 1
+- id: __export__path.trim_dot
+  class: must
+  checks:
+  - std.string.replace:
+    - var: path
+    - ./
+    - ''
+- id: __export__path.dirname
+  class: must
+  checks:
+  - let:
+    - lit:
+      - - segs
+        - call:
+          - var: path.segments
+          - var: path
+    - if:
+      - std.logic.lte:
+        - std.collection.len:
+          - var: segs
+        - 1
+      - ''
+      - std.string.join:
+        - std.collection.slice:
+          - 0
+          - std.math.sub:
             - std.collection.len:
-              - {var: segs}
+              - var: segs
             - 1
-          - ''
-          - std.string.join:
-            - std.collection.slice:
-              - 0
-              - std.math.sub:
-                - std.collection.len:
-                  - {var: segs}
-                - 1
-              - {var: segs}
-            - /
-    path.has_extension:
-      fn:
-      - [path, ext]
-      - std.logic.eq:
-        - call:
-          - {var: path.extension}
-          - {var: path}
-        - {var: ext}
-    path.is_under:
-      fn:
-      - [path, prefix]
-      - std.string.starts_with:
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: path}
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: prefix}
-    path.matches:
-      fn:
-      - [path, pattern]
-      - std.string.regex_match:
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: path}
-        - {var: pattern}
+          - var: segs
+        - /
+- id: __export__path.has_extension
+  class: must
+  checks:
+  - std.logic.eq:
+    - call:
+      - var: path.extension
+      - var: path
+    - var: ext
+- id: __export__path.is_under
+  class: must
+  checks:
+  - std.string.starts_with:
+    - call:
+      - var: path.normalize_slashes
+      - var: path
+    - call:
+      - var: path.normalize_slashes
+      - var: prefix
+- id: __export__path.matches
+  class: must
+  checks:
+  - std.string.regex_match:
+    - call:
+      - var: path.normalize_slashes
+      - var: path
+    - var: pattern
+harness:
+  chain:
+    exports:
+    - as: path.basename
+      from: assert.function
+      path: /__export__path.basename
+      params:
+      - path
+      required: true
+    - as: path.trim_dot
+      from: assert.function
+      path: /__export__path.trim_dot
+      params:
+      - path
+      required: true
+    - as: path.dirname
+      from: assert.function
+      path: /__export__path.dirname
+      params:
+      - path
+      required: true
+    - as: path.has_extension
+      from: assert.function
+      path: /__export__path.has_extension
+      params:
+      - path
+      - ext
+      required: true
+    - as: path.is_under
+      from: assert.function
+      path: /__export__path.is_under
+      params:
+      - path
+      - prefix
+      required: true
+    - as: path.matches
+      from: assert.function
+      path: /__export__path.matches
+      params:
+      - path
+      - pattern
+      required: true
 ```
 
 ```yaml spec-test
 id: LIB-PATH-001-004-PATH-EXTENSION
 title: 'path-core reusable pure path logic helpers: path.extension'
-type: spec_lang.export
-defines:
-  public:
-    path.extension:
-      fn:
-      - [path]
-      - let:
-        - lit:
-          - - base
-            - call:
-              - {var: path.basename}
-              - {var: path}
-        - let:
-          - lit:
-            - - parts
-              - split:
-                - {var: base}
-                - .
-          - if:
-            - std.logic.lte:
-              - std.collection.len:
-                - {var: parts}
-              - 1
-            - ''
-            - std.object.get:
-              - {var: parts}
-              - std.math.sub:
-                - std.collection.len:
-                  - {var: parts}
-                - 1
-  private:
-    path.trim_dot:
-      fn:
-      - [path]
-      - std.string.replace:
-        - {var: path}
-        - ./
+type: spec.export
+assert:
+- id: __export__path.extension
+  class: must
+  checks:
+  - let:
+    - lit:
+      - - base
+        - call:
+          - var: path.basename
+          - var: path
+    - let:
+      - lit:
+        - - parts
+          - split:
+            - var: base
+            - .
+      - if:
+        - std.logic.lte:
+          - std.collection.len:
+            - var: parts
+          - 1
         - ''
-    path.dirname:
-      fn:
-      - [path]
-      - let:
-        - lit:
-          - - segs
-            - call:
-              - {var: path.segments}
-              - {var: path}
-        - if:
-          - std.logic.lte:
+        - std.object.get:
+          - var: parts
+          - std.math.sub:
             - std.collection.len:
-              - {var: segs}
+              - var: parts
             - 1
-          - ''
-          - std.string.join:
-            - std.collection.slice:
-              - 0
-              - std.math.sub:
-                - std.collection.len:
-                  - {var: segs}
-                - 1
-              - {var: segs}
-            - /
-    path.has_extension:
-      fn:
-      - [path, ext]
-      - std.logic.eq:
+- id: __export__path.trim_dot
+  class: must
+  checks:
+  - std.string.replace:
+    - var: path
+    - ./
+    - ''
+- id: __export__path.dirname
+  class: must
+  checks:
+  - let:
+    - lit:
+      - - segs
         - call:
-          - {var: path.extension}
-          - {var: path}
-        - {var: ext}
-    path.is_under:
-      fn:
-      - [path, prefix]
-      - std.string.starts_with:
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: path}
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: prefix}
-    path.matches:
-      fn:
-      - [path, pattern]
-      - std.string.regex_match:
-        - call:
-          - {var: path.normalize_slashes}
-          - {var: path}
-        - {var: pattern}
+          - var: path.segments
+          - var: path
+    - if:
+      - std.logic.lte:
+        - std.collection.len:
+          - var: segs
+        - 1
+      - ''
+      - std.string.join:
+        - std.collection.slice:
+          - 0
+          - std.math.sub:
+            - std.collection.len:
+              - var: segs
+            - 1
+          - var: segs
+        - /
+- id: __export__path.has_extension
+  class: must
+  checks:
+  - std.logic.eq:
+    - call:
+      - var: path.extension
+      - var: path
+    - var: ext
+- id: __export__path.is_under
+  class: must
+  checks:
+  - std.string.starts_with:
+    - call:
+      - var: path.normalize_slashes
+      - var: path
+    - call:
+      - var: path.normalize_slashes
+      - var: prefix
+- id: __export__path.matches
+  class: must
+  checks:
+  - std.string.regex_match:
+    - call:
+      - var: path.normalize_slashes
+      - var: path
+    - var: pattern
+harness:
+  chain:
+    exports:
+    - as: path.extension
+      from: assert.function
+      path: /__export__path.extension
+      params:
+      - path
+      required: true
+    - as: path.trim_dot
+      from: assert.function
+      path: /__export__path.trim_dot
+      params:
+      - path
+      required: true
+    - as: path.dirname
+      from: assert.function
+      path: /__export__path.dirname
+      params:
+      - path
+      required: true
+    - as: path.has_extension
+      from: assert.function
+      path: /__export__path.has_extension
+      params:
+      - path
+      - ext
+      required: true
+    - as: path.is_under
+      from: assert.function
+      path: /__export__path.is_under
+      params:
+      - path
+      - prefix
+      required: true
+    - as: path.matches
+      from: assert.function
+      path: /__export__path.matches
+      params:
+      - path
+      - pattern
+      required: true
 ```
 
 ```yaml spec-test

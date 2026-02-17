@@ -58,7 +58,7 @@ Provide generated reference for harness-specific type overlays and required fiel
 | `docs.generate` | 8 | - | - |
 | `governance.check` | 1 | `check` | - |
 | `orchestration.run` | 6 | - | - |
-| `spec_lang.export` | 2 | `defines` | `imports` |
+| `spec.export` | 2 | `assert`, `harness` | `imports` |
 | `text.file` | 1 | - | - |
 
 
@@ -137,18 +137,17 @@ Provide generated reference for harness-specific type overlays and required fiel
   - `type: orchestration.run`
 
 
-#### `spec_lang.export`
+#### `spec.export`
 
-- Summary: Declares reusable spec-lang symbols for evaluate/policy_evaluate expressions.
+- Summary: Harness type profile declared in schema registry.
 - Defaults:
-  - mapping-AST defines only
+  - -
 
 - Failure Modes:
-  - duplicate symbol export
-  - invalid definition shape
+  - schema validation failure
 
 - Examples:
-  - `type: spec_lang.export`
+  - `type: spec.export`
 
 
 #### `text.file`

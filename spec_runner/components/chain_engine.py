@@ -8,8 +8,7 @@ from typing import Any, Callable
 from spec_runner.codecs import load_external_cases
 from spec_runner.compiler import compile_external_case
 from spec_runner.internal_model import InternalSpecCase
-from spec_runner.spec_lang import _Closure, _Env, limits_from_harness
-from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
+from spec_runner.spec_lang import _Closure, _Env, compile_symbol_bindings, limits_from_harness
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.virtual_paths import contract_root_for, parse_external_ref, resolve_contract_path
 
@@ -293,28 +292,9 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
 def _producer_case_exports(producer_case: InternalSpecCase) -> dict[str, ChainProducedImport]:
     harness = producer_case.harness or {}
     chain = harness.get("chain")
-    declared: dict[str, ChainProducedImport] = {}
-    if isinstance(chain, dict):
-        declared = _expand_producer_exports(chain.get("exports"), field_prefix="harness.chain.exports")
-
-    # Canonical implicit export model for spec_lang.export: every defines.public symbol
-    # is producer-exported unless explicitly overridden in harness.chain.exports.
-    if producer_case.type == "spec_lang.export":
-        raw_defines = producer_case.raw_case.get("defines")
-        if isinstance(raw_defines, dict):
-            raw_public = raw_defines.get("public")
-            if isinstance(raw_public, dict):
-                for raw_name in raw_public.keys():
-                    name = str(raw_name).strip()
-                    if not name or name in declared:
-                        continue
-                    declared[name] = ChainProducedImport(
-                        from_source="assert.function",
-                        path=name,
-                        params=(),
-                        required=True,
-                    )
-    return declared
+    if not isinstance(chain, dict):
+        return {}
+    return _expand_producer_exports(chain.get("exports"), field_prefix="harness.chain.exports")
 
 
 def _resolve_ref_path(*, ref_path: str, current_case: InternalSpecCase) -> Path:
@@ -452,34 +432,25 @@ def _compile_assert_function(
 
             return _Closure(params=tuple(producer.params), body=body, env=_Env(vars={}, parent=None))
 
-    if producer_case.type == "spec_lang.export":
-        limits = limits_from_harness(producer_case.harness or {})
-        root = contract_root_for(producer_case.doc_path)
-        include_path = "/" + producer_case.doc_path.resolve().relative_to(root).as_posix()
-        compiled = load_spec_lang_symbols_for_case(
-            doc_path=producer_case.doc_path,
-            harness={"spec_lang": {"includes": [include_path]}},
-            limits=limits,
-        )
-        symbol_name = producer_key
-        value = compiled.get(symbol_name)
-        if value is None:
-            raise ValueError(
-                f"chain step {step.id} import {import_name} could not find library symbol {symbol_name} in {producer_case.id}"
-            )
-        if producer.params:
-            raise ValueError(
-                f"chain step {step.id} import {import_name} params are not allowed when path resolves to spec_lang.export symbol"
-            )
-        if not isinstance(value, _Closure):
-            raise ValueError(
-                f"chain step {step.id} import {import_name} symbol {symbol_name} is not callable"
-            )
-        return value
-
     raise ValueError(
         f"chain step {step.id} import {import_name} could not resolve assert.function path {producer_key} in {producer_case.id}"
     )
+
+
+def _compile_assert_function_expr(
+    *,
+    step: ChainStep,
+    import_name: str,
+    producer: ChainProducedImport,
+    producer_case: InternalSpecCase,
+) -> list[Any]:
+    closure = _compile_assert_function(
+        step=step,
+        import_name=import_name,
+        producer=producer,
+        producer_case=producer_case,
+    )
+    return ["fn", list(closure.params), closure.body]
 
 
 def _extract_assert_function_imports(
@@ -487,7 +458,7 @@ def _extract_assert_function_imports(
     step: ChainStep,
     refs: list[InternalSpecCase],
 ) -> dict[str, Any]:
-    out: dict[str, Any] = {}
+    merged_exprs: dict[str, Any] = {}
     required_exports: set[str] = set()
     deferred_errors: dict[str, Exception] = {}
     for ref_case in refs:
@@ -497,10 +468,10 @@ def _extract_assert_function_imports(
                 continue
             if producer.required:
                 required_exports.add(export_name)
-            if export_name in out:
+            if export_name in merged_exprs:
                 continue
             try:
-                closure = _compile_assert_function(
+                merged_exprs[export_name] = _compile_assert_function_expr(
                     step=step,
                     import_name=export_name,
                     producer=producer,
@@ -512,9 +483,8 @@ def _extract_assert_function_imports(
                         f"chain step {step.id} import {export_name} could not be resolved from producer refs"
                     ))
                 continue
-            out[export_name] = closure
 
-    unresolved_required = sorted(name for name in required_exports if name not in out)
+    unresolved_required = sorted(name for name in required_exports if name not in merged_exprs)
     if unresolved_required:
         first = unresolved_required[0]
         raise deferred_errors.get(
@@ -523,7 +493,16 @@ def _extract_assert_function_imports(
                 f"chain step {step.id} import {first} could not be resolved from producer refs"
             ),
         )
-    return out
+    if not merged_exprs:
+        return {}
+
+    try:
+        compiled = compile_symbol_bindings(merged_exprs, limits=limits_from_harness({}))
+    except Exception as exc:  # noqa: BLE001
+        raise ValueError(
+            f"chain step {step.id} could not compile producer export symbols"
+        ) from exc
+    return compiled
 
 
 def execute_chain_plan(

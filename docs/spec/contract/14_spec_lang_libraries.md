@@ -35,28 +35,19 @@ Library paths:
 
 ## Library Document Shape
 
-Library files are normal spec docs containing `type: spec_lang.export` cases.
+Library files are normal spec docs containing `type: spec.export` producer cases.
 
-Required fields for each library case:
+Required fields for each producer case:
 
 - `id`
-- `type: spec_lang.export`
-- `defines` (mapping)
-  - `public` (mapping: symbol -> expression, optional)
-  - `private` (mapping: symbol -> expression, optional)
-
-Hard-cut granularity:
-
-- each `type: spec_lang.export` case MUST define exactly one symbol under
-  `defines.public`.
-
-`defines.public.<symbol>` and
-`defines.private.<symbol>` expression encoding:
-
-- MUST use operator-keyed mapping-AST expression nodes (same canonical encoding
-  as `evaluate`/`policy_evaluate`)
-- MUST NOT use list s-expr authoring form
-- scalar literals are allowed
+- `type: spec.export`
+- `assert` (list of step mappings whose `checks` carry function bodies)
+- `harness.chain.exports` (list of exported symbols)
+  - each export entry uses:
+    - `as` (symbol name)
+    - `from: assert.function`
+    - `path` (producer assert step id path)
+    - `params` (ordered argument names)
 
 Optional fields:
 
@@ -64,9 +55,9 @@ Optional fields:
 
 Export model:
 
-- Exported symbols are derived from all `defines.public` symbol keys.
-- `defines.private` symbols are loadable only inside library code and
-  are not externally importable via harness exports.
+- Exported symbols are declared explicitly in `harness.chain.exports`.
+- Export bodies are compiled from producer assert steps referenced by
+  `path` with `from: assert.function`.
 
 ## Resolution Rules
 

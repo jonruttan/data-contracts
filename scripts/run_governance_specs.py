@@ -1983,7 +1983,7 @@ def _scan_schema_type_profiles_complete(root: Path) -> list[str]:
         "cli.run",
         "text.file",
         "governance.check",
-        "spec_lang.export",
+        "spec.export",
         "orchestration.run",
     }
     violations: list[str] = []
@@ -6907,18 +6907,18 @@ def _scan_schema_verb_first_contract_sync(root: Path, *, harness: dict | None = 
     checks: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         (
             "docs/spec/contract/14_spec_lang_libraries.md",
-            ("defines.public", "defines.private"),
-            ("definitions.public", "definitions.private"),
+            ("type: spec.export", "harness.chain.exports", "from: assert.function"),
+            ("type: spec_lang.export", "defines.public", "defines.private", "definitions.public", "definitions.private"),
         ),
         (
             "docs/spec/schema/schema_v1.md",
-            ("`defines`",),
-            ("`definitions`", "definitions.public", "definitions.private"),
+            ("`spec.export`", "`harness.chain.exports`", "`assert.function`"),
+            ("`spec_lang.export`", "`defines`", "`definitions`", "definitions.public", "definitions.private"),
         ),
         (
             "docs/spec/current.md",
-            ("defines.public", "defines.private"),
-            ("definitions.public", "definitions.private"),
+            ("spec.export", "harness.chain.exports"),
+            ("spec_lang.export", "defines.public", "defines.private", "definitions.public", "definitions.private"),
         ),
     )
     violations: list[str] = []
