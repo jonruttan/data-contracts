@@ -164,6 +164,8 @@ categories:
   - ops.fs.path.common_prefix
   - ops.fs.path.parents
   - ops.fs.path.within
+  - ops.fs.path.compare
+  - ops.fs.path.sort
   fs_file:
   - ops.fs.file.exists
   - ops.fs.file.is_file
@@ -1224,6 +1226,20 @@ symbols:
   ops.fs.path.within:
     category: fs_path
     arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.compare:
+    category: fs_path
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.sort:
+    category: fs_path
+    arity: 1
     pure: true
     deterministic: true
     error_class: schema

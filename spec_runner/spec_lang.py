@@ -718,6 +718,8 @@ def _builtin_arity_table() -> dict[str, int]:
         "ops_fs_path_common_prefix": 1,
         "ops_fs_path_parents": 1,
         "ops_fs_path_within": 2,
+        "ops_fs_path_compare": 2,
+        "ops_fs_path_sort": 1,
         "ops_fs_file_exists": 1,
         "ops_fs_file_is_file": 1,
         "ops_fs_file_is_dir": 1,
@@ -1513,6 +1515,22 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         if not isinstance(args[0], str) or not isinstance(args[1], str):
             raise ValueError("spec_lang ops.fs.path.within expects string args")
         return _fs_within(args[0], args[1])
+    if op == "ops.fs.path.compare":
+        _require_arity(op, args, 2)
+        if not isinstance(args[0], str) or not isinstance(args[1], str):
+            raise ValueError("spec_lang ops.fs.path.compare expects string args")
+        left = _fs_normalize_path(args[0])
+        right = _fs_normalize_path(args[1])
+        return -1 if left < right else (1 if left > right else 0)
+    if op == "ops.fs.path.sort":
+        _require_arity(op, args, 1)
+        raw_paths = _require_list_arg(op, args[0])
+        normalized: list[str] = []
+        for raw in raw_paths:
+            if not isinstance(raw, str):
+                raise ValueError("spec_lang ops.fs.path.sort expects list of strings")
+            normalized.append(_fs_normalize_path(raw))
+        return sorted(normalized)
     if op == "ops.fs.file.exists":
         _require_arity(op, args, 1)
         meta = _require_dict_arg(op, args[0])

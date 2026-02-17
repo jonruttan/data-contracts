@@ -1305,6 +1305,8 @@ function specLangFlatBuiltinFromStd(string $symbol): string {
         'ops.fs.path.common_prefix' => 'ops_fs_path_common_prefix',
         'ops.fs.path.parents' => 'ops_fs_path_parents',
         'ops.fs.path.within' => 'ops_fs_path_within',
+        'ops.fs.path.compare' => 'ops_fs_path_compare',
+        'ops.fs.path.sort' => 'ops_fs_path_sort',
         'ops.fs.file.exists' => 'ops_fs_file_exists',
         'ops.fs.file.is_file' => 'ops_fs_file_is_file',
         'ops.fs.file.is_dir' => 'ops_fs_file_is_dir',
@@ -2436,6 +2438,7 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         || $op === 'ops_fs_path_is_abs'
         || $op === 'ops_fs_path_common_prefix'
         || $op === 'ops_fs_path_parents'
+        || $op === 'ops_fs_path_sort'
     ) {
         specLangRequireArity($op, $args, 1);
         $arg = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -2448,6 +2451,18 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
                 throw new SchemaError("spec_lang {$op} expects string path");
             }
             return specLangFsParents($arg);
+        }
+        if ($op === 'ops_fs_path_sort') {
+            $paths = specLangRequireListArg($op, $arg);
+            $normalized = [];
+            foreach ($paths as $raw) {
+                if (!is_string($raw)) {
+                    throw new SchemaError('spec_lang ops.fs.path.sort expects list of strings');
+                }
+                $normalized[] = specLangFsNormalizePath($raw);
+            }
+            sort($normalized, SORT_STRING);
+            return array_values($normalized);
         }
         $path = $arg;
         if (!is_string($path)) {
@@ -2479,6 +2494,7 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         || $op === 'ops_fs_path_change_ext'
         || $op === 'ops_fs_path_relativize'
         || $op === 'ops_fs_path_within'
+        || $op === 'ops_fs_path_compare'
     ) {
         specLangRequireArity($op, $args, 2);
         $left = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -2498,6 +2514,17 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         }
         if ($op === 'ops_fs_path_within') {
             return specLangFsWithin($left, $right);
+        }
+        if ($op === 'ops_fs_path_compare') {
+            $leftNorm = specLangFsNormalizePath($left);
+            $rightNorm = specLangFsNormalizePath($right);
+            if ($leftNorm < $rightNorm) {
+                return -1;
+            }
+            if ($leftNorm > $rightNorm) {
+                return 1;
+            }
+            return 0;
         }
         $normalized = specLangFsNormalizePath($left);
         $base = specLangFsBasename($normalized);

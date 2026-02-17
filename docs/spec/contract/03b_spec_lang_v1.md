@@ -193,6 +193,8 @@ Filesystem utility (pure, metadata-only):
 - `ops.fs.path.common_prefix`
 - `ops.fs.path.parents`
 - `ops.fs.path.within`
+- `ops.fs.path.compare`
+- `ops.fs.path.sort`
 - `ops.fs.file.exists`
 - `ops.fs.file.is_file`
 - `ops.fs.file.is_dir`

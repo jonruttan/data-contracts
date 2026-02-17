@@ -431,3 +431,60 @@ assert:
       - lit: []
   target: text
 ```
+
+## SRCONF-STDLIB-013
+
+```yaml spec-test
+id: SRCONF-STDLIB-013
+title: ops fs path compare and sort evaluate deterministically
+purpose: Validates pure normalized path compare and sort helpers.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: pass
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.path.compare:
+        - /a//b
+        - /a/b
+      - 0
+    - std.logic.eq:
+      - ops.fs.path.compare:
+        - /a/b
+        - /a/c
+      - -1
+    - std.logic.eq:
+      - ops.fs.path.sort:
+        - lit: [/b/z, /a//c, /a/b]
+      - lit: [/a/b, /a/c, /b/z]
+  target: text
+```
+
+## SRCONF-STDLIB-014
+
+```yaml spec-test
+id: SRCONF-STDLIB-014
+title: ops fs path sort fails schema for non-string entries
+purpose: Ensures sort rejects list entries that are not strings.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: fail
+    category: schema
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.path.sort:
+        - lit: [/a/b, 7]
+      - lit: [/a/b]
+  target: text
+```
