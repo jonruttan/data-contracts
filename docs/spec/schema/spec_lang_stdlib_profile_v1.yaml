@@ -170,6 +170,11 @@ categories:
   - ops.fs.file.parent
   - ops.fs.file.ext
   - ops.fs.file.get
+  fs_json:
+  - ops.fs.json.parse
+  - ops.fs.json.get
+  - ops.fs.json.get_or
+  - ops.fs.json.has_path
 symbols:
   std.core.subject:
     category: core_control
@@ -1245,6 +1250,34 @@ symbols:
   ops.fs.file.get:
     category: fs_file
     arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.json.parse:
+    category: fs_json
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.json.get:
+    category: fs_json
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.json.get_or:
+    category: fs_json
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.json.has_path:
+    category: fs_json
+    arity: 2
     pure: true
     deterministic: true
     error_class: schema

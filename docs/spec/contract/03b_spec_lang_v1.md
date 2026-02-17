@@ -198,6 +198,10 @@ Filesystem utility (pure, metadata-only):
 - `ops.fs.file.parent`
 - `ops.fs.file.ext`
 - `ops.fs.file.get`
+- `ops.fs.json.parse`
+- `ops.fs.json.get`
+- `ops.fs.json.get_or`
+- `ops.fs.json.has_path`
 
 Recursion/control:
 

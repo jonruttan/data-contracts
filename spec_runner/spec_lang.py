@@ -632,6 +632,10 @@ def _builtin_arity_table() -> dict[str, int]:
         "ops_fs_file_parent": 1,
         "ops_fs_file_ext": 1,
         "ops_fs_file_get": 3,
+        "ops_fs_json_parse": 1,
+        "ops_fs_json_get": 2,
+        "ops_fs_json_get_or": 3,
+        "ops_fs_json_has_path": 2,
         "and": 2,
         "or": 2,
         "not": 1,
@@ -1436,6 +1440,27 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         meta = _require_dict_arg(op, args[0])
         key = str(args[1])
         return meta.get(key, args[2])
+    if op == "ops.fs.json.parse":
+        _require_arity(op, args, 1)
+        raw = args[0]
+        if not isinstance(raw, str):
+            raise ValueError("spec_lang ops.fs.json.parse expects string input")
+        return json.loads(raw)
+    if op == "ops.fs.json.get":
+        _require_arity(op, args, 2)
+        path = _require_list_arg(op, args[1])
+        ok, value = _get_in_path(args[0], path)
+        return value if ok else None
+    if op == "ops.fs.json.get_or":
+        _require_arity(op, args, 3)
+        path = _require_list_arg(op, args[1])
+        ok, value = _get_in_path(args[0], path)
+        return value if ok else args[2]
+    if op == "ops.fs.json.has_path":
+        _require_arity(op, args, 2)
+        path = _require_list_arg(op, args[1])
+        ok, _ = _get_in_path(args[0], path)
+        return ok
     if op == "and":
         _require_arity(op, args, 2)
         return _truthy(args[0]) and _truthy(args[1])

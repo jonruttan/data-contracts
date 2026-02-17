@@ -460,6 +460,8 @@ Operator constraints:
 - pure spec-lang utility symbols may also use `ops.*` namespaces
   (for example `ops.fs.path.normalize`, `ops.fs.file.exists`) and MUST remain
   deterministic with no evaluator side effects
+- pure JSON helpers under `ops.fs.json.*` are allowed for parse/path lookup
+  (`parse`, `get`, `get_or`, `has_path`) and remain evaluator-pure
 - underscore shorthand ops symbols are invalid
 - path fields in scoped harness/type config use virtual-root canonical `/...`
   form; `..` contract-root escapes are invalid

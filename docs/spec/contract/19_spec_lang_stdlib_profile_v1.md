@@ -33,6 +33,7 @@ This contract defines the complete fixed stdlib surface for spec-lang v1.
 - Filesystem utility symbols are pure-only and contract-virtual:
   - `ops.fs.path.*` for POSIX-style path transforms
   - `ops.fs.file.*` for metadata-dict predicates/getters
+  - `ops.fs.json.*` for JSON parse and path lookup helpers
 
 ## Schema Shape DSL Keys
 

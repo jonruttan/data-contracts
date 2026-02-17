@@ -764,6 +764,36 @@ function specLangRequireDictArg(string $op, mixed $value): array {
     return $value;
 }
 
+function specLangRequireListArg(string $op, mixed $value): array {
+    if (!is_array($value) || !isListArray($value)) {
+        throw new SchemaError("spec_lang {$op} expects list");
+    }
+    return $value;
+}
+
+function specLangGetInPath(mixed $obj, array $path): array {
+    $cur = $obj;
+    foreach ($path as $part) {
+        if (is_array($cur) && isListArray($cur)) {
+            if (!is_int($part) || $part < 0 || $part >= count($cur)) {
+                return [false, null];
+            }
+            $cur = $cur[$part];
+            continue;
+        }
+        if (is_array($cur) && !isListArray($cur)) {
+            $key = (string)$part;
+            if (!array_key_exists($key, $cur)) {
+                return [false, null];
+            }
+            $cur = $cur[$key];
+            continue;
+        }
+        return [false, null];
+    }
+    return [true, $cur];
+}
+
 function specLangFsNormalizePath(string $path): string {
     $raw = trim($path);
     if ($raw === '') {
@@ -898,6 +928,10 @@ function specLangFlatBuiltinFromStd(string $symbol): string {
         'ops.fs.file.parent' => 'ops_fs_file_parent',
         'ops.fs.file.ext' => 'ops_fs_file_ext',
         'ops.fs.file.get' => 'ops_fs_file_get',
+        'ops.fs.json.parse' => 'ops_fs_json_parse',
+        'ops.fs.json.get' => 'ops_fs_json_get',
+        'ops.fs.json.get_or' => 'ops_fs_json_get_or',
+        'ops.fs.json.has_path' => 'ops_fs_json_has_path',
     ];
     if (array_key_exists($symbol, $map)) {
         return $map[$symbol];
@@ -1287,6 +1321,40 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         $key = (string)specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
         $default = specLangEvalNonTail($args[2], $env, $subject, $limits, $state);
         return array_key_exists($key, $meta) ? $meta[$key] : $default;
+    }
+    if ($op === 'ops_fs_json_parse') {
+        specLangRequireArity($op, $args, 1);
+        $raw = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!is_string($raw)) {
+            throw new SchemaError('spec_lang ops.fs.json.parse expects string input');
+        }
+        try {
+            return json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new SchemaError('spec_lang ops.fs.json.parse invalid JSON');
+        }
+    }
+    if ($op === 'ops_fs_json_get') {
+        specLangRequireArity($op, $args, 2);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        [$ok, $value] = specLangGetInPath($obj, $path);
+        return $ok ? $value : null;
+    }
+    if ($op === 'ops_fs_json_get_or') {
+        specLangRequireArity($op, $args, 3);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        $default = specLangEvalNonTail($args[2], $env, $subject, $limits, $state);
+        [$ok, $value] = specLangGetInPath($obj, $path);
+        return $ok ? $value : $default;
+    }
+    if ($op === 'ops_fs_json_has_path') {
+        specLangRequireArity($op, $args, 2);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        [$ok, $_value] = specLangGetInPath($obj, $path);
+        return $ok;
     }
     throw new SchemaError("unsupported spec_lang symbol: {$op}");
 }

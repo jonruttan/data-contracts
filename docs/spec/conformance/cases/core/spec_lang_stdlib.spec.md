@@ -176,3 +176,67 @@ assert:
       - fallback
   target: text
 ```
+
+## SRCONF-STDLIB-005
+
+```yaml spec-test
+id: SRCONF-STDLIB-005
+title: ops fs json helpers evaluate deterministically
+purpose: Validates pure json parse/path helpers under ops.fs.json.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: pass
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.json.parse:
+        - '{"a":{"b":[1,2,3]}}'
+      - lit: {a: {b: [1, 2, 3]}}
+    - std.logic.eq:
+      - ops.fs.json.get:
+        - lit: {a: {b: [1, 2, 3]}}
+        - lit: [a, b, 1]
+      - 2
+    - std.logic.eq:
+      - ops.fs.json.get_or:
+        - lit: {a: {b: [1, 2, 3]}}
+        - lit: [a, c]
+        - fallback
+      - fallback
+    - std.logic.eq:
+      - ops.fs.json.has_path:
+        - lit: {a: {b: [1, 2, 3]}}
+        - lit: [a, b, 0]
+      - true
+  target: text
+```
+
+## SRCONF-STDLIB-006
+
+```yaml spec-test
+id: SRCONF-STDLIB-006
+title: ops fs json helpers fail schema for bad argument shapes
+purpose: Ensures ops.fs.json path utilities reject invalid path shapes.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: fail
+    category: schema
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.json.get:
+        - lit: {a: 1}
+        - a
+      - 1
+  target: text
+```

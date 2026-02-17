@@ -462,6 +462,138 @@ Provide generated semantic reference for `std.core` and special forms.
   - result: Deterministic result per symbol contract.
 
 
+### `ops.fs.json.get`
+
+- Signature: `ops.fs.json.get/2`
+- Summary: Evaluates `get` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.json.get(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.json.get_or`
+
+- Signature: `ops.fs.json.get_or/3`
+- Summary: Evaluates `get_or` with arity 3.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+| `arg3` | `json` | true | Positional argument 3. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.json.get_or(arg1, arg2, arg3)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.json.has_path`
+
+- Signature: `ops.fs.json.has_path/2`
+- Summary: Evaluates `has_path` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.json.has_path(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.json.parse`
+
+- Signature: `ops.fs.json.parse/1`
+- Summary: Evaluates `parse` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.json.parse(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
 ### `ops.fs.path.basename`
 
 - Signature: `ops.fs.path.basename/1`
