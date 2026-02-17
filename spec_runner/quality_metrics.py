@@ -369,13 +369,16 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                             if not isinstance(step, dict):
                                 continue
                             exports = step.get("exports")
-                            if not isinstance(exports, dict):
+                            if not isinstance(exports, list):
                                 continue
-                            if any(
-                                isinstance(v, dict)
-                                and str(v.get("from", "")).strip() == "library.symbol"
-                                for v in exports.values()
-                            ):
+                            step_has_library = False
+                            for entry in exports:
+                                if not isinstance(entry, dict):
+                                    continue
+                                if str(entry.get("from", "")).strip() == "library.symbol":
+                                    step_has_library = True
+                                    break
+                            if step_has_library:
                                 has_library_paths = True
                                 break
                 if case_type == "governance.check":

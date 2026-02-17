@@ -53,18 +53,18 @@ harness:
       class: must
       ref: '#LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE'
       exports:
-        policy.metric_non_decrease:
-          from: library.symbol
-          path: /policy.metric_non_decrease
-          required: true
+      - as: policy.metric_non_decrease
+        from: library.symbol
+        required: true
+        path: /policy.metric_non_decrease
     - id: lib_non_increase
       class: must
       ref: '#LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE'
       exports:
-        policy.metric_non_increase:
-          from: library.symbol
-          path: /policy.metric_non_increase
-          required: true
+      - as: policy.metric_non_increase
+        from: library.symbol
+        required: true
+        path: /policy.metric_non_increase
     imports:
     - from: lib_non_decrease
       names:

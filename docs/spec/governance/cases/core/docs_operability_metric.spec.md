@@ -35,10 +35,10 @@ harness:
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md
       exports:
-        policy.pass_when_no_violations:
-          from: library.symbol
-          path: /policy.pass_when_no_violations
-          required: true
+      - as: policy.pass_when_no_violations
+        from: library.symbol
+        required: true
+        path: /policy.pass_when_no_violations
     imports:
     - from: lib_policy_core_spec
       names:

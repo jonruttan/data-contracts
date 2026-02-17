@@ -181,12 +181,13 @@ def test_execute_chain_plan_resolves_path_case_and_exports(tmp_path, monkeypatch
                             "id": "preload",
                             "class": "must",
                             "ref": "/docs/spec/dep.spec.md#CASE-DEP-1",
-                            "exports": {
-                                "dep_id": {
+                            "exports": [
+                                {
+                                    "as": "dep_id",
                                     "from": "body_json",
                                     "path": "id",
                                 }
-                            },
+                            ],
                         }
                     ]
                 }
@@ -295,12 +296,13 @@ def test_execute_chain_plan_resolves_import_aliases(tmp_path, monkeypatch, capsy
                             "id": "preload",
                             "class": "must",
                             "ref": "/docs/spec/dep.spec.md#CASE-DEP-1",
-                            "exports": {
-                                "dep_id": {
+                            "exports": [
+                                {
+                                    "as": "dep_id",
                                     "from": "body_json",
                                     "path": "id",
                                 }
-                            },
+                            ],
                         }
                     ],
                     "imports": [

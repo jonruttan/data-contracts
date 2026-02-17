@@ -100,139 +100,100 @@ def _resolve_dotted_path(value: Any, dotted: str) -> tuple[bool, Any]:
 def _expand_step_exports(raw_exports: object, *, step_idx: int) -> dict[str, dict[str, Any]]:
     if raw_exports is None:
         return {}
-    if isinstance(raw_exports, list):
-        expanded: dict[str, dict[str, Any]] = {}
-        for entry_idx, raw_entry in enumerate(raw_exports):
-            if not isinstance(raw_entry, dict):
-                raise TypeError(
-                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}] must be a mapping"
-                )
-            if "symbols" in raw_entry:
-                unknown = sorted(
-                    str(k) for k in raw_entry.keys() if str(k) not in _CHAIN_COMPACT_EXPORT_KEYS
-                )
-                if unknown:
-                    raise ValueError(
-                        f"harness.chain.steps[{step_idx}].exports[{entry_idx}] compact form has unsupported keys: {', '.join(unknown)}"
-                    )
-                from_source = str(raw_entry.get("from", "")).strip()
-                if not from_source:
-                    raise ValueError(
-                        f"harness.chain.steps[{step_idx}].exports[{entry_idx}].from is required"
-                    )
-                raw_required = raw_entry.get("required", True)
-                if not isinstance(raw_required, bool):
-                    raise TypeError(
-                        f"harness.chain.steps[{step_idx}].exports[{entry_idx}].required must be a bool when provided"
-                    )
-                raw_prefix = raw_entry.get("prefix", "")
-                if raw_prefix is None:
-                    raw_prefix = ""
-                if not isinstance(raw_prefix, str):
-                    raise TypeError(
-                        f"harness.chain.steps[{step_idx}].exports[{entry_idx}].prefix must be a string when provided"
-                    )
-                prefix = raw_prefix.strip()
-                raw_symbols = raw_entry.get("symbols")
-                if not isinstance(raw_symbols, list) or not raw_symbols:
-                    raise TypeError(
-                        f"harness.chain.steps[{step_idx}].exports[{entry_idx}].symbols must be a non-empty list"
-                    )
-                for sym_idx, raw_symbol in enumerate(raw_symbols):
-                    name = str(raw_symbol).strip()
-                    if not name:
-                        raise ValueError(
-                            f"harness.chain.steps[{step_idx}].exports[{entry_idx}].symbols[{sym_idx}] must be a non-empty string"
-                        )
-                    full_name = f"{prefix}.{name}" if prefix else name
-                    if full_name in expanded:
-                        raise ValueError(
-                            f"harness.chain.steps[{step_idx}].exports duplicate export key: {full_name}"
-                        )
-                    expanded[full_name] = {
-                        "from": from_source,
-                        "path": f"/{full_name.lstrip('/')}",
-                        "required": raw_required,
-                    }
-                continue
-
-            unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in _CHAIN_SINGLE_EXPORT_KEYS)
+    if not isinstance(raw_exports, list):
+        raise TypeError(
+            f"harness.chain.steps[{step_idx}].exports must be a list (canonical form)"
+        )
+    expanded: dict[str, dict[str, Any]] = {}
+    for entry_idx, raw_entry in enumerate(raw_exports):
+        if not isinstance(raw_entry, dict):
+            raise TypeError(
+                f"harness.chain.steps[{step_idx}].exports[{entry_idx}] must be a mapping"
+            )
+        if "symbols" in raw_entry:
+            unknown = sorted(
+                str(k) for k in raw_entry.keys() if str(k) not in _CHAIN_COMPACT_EXPORT_KEYS
+            )
             if unknown:
                 raise ValueError(
-                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}] entry has unsupported keys: {', '.join(unknown)}"
-                )
-            export_name = str(raw_entry.get("as", "")).strip()
-            if not export_name:
-                raise ValueError(
-                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}].as is required for non-symbol entries"
-                )
-            if export_name in expanded:
-                raise ValueError(
-                    f"harness.chain.steps[{step_idx}].exports duplicate export key: {export_name}"
+                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}] compact form has unsupported keys: {', '.join(unknown)}"
                 )
             from_source = str(raw_entry.get("from", "")).strip()
             if not from_source:
                 raise ValueError(
                     f"harness.chain.steps[{step_idx}].exports[{entry_idx}].from is required"
                 )
-            export_path = raw_entry.get("path")
-            if export_path is not None and not isinstance(export_path, str):
-                raise TypeError(
-                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}].path must be a string when provided"
-                )
             raw_required = raw_entry.get("required", True)
             if not isinstance(raw_required, bool):
                 raise TypeError(
                     f"harness.chain.steps[{step_idx}].exports[{entry_idx}].required must be a bool when provided"
                 )
-            expanded[export_name] = {
-                "from": from_source,
-                "path": export_path,
-                "required": raw_required,
-            }
-        return expanded
+            raw_prefix = raw_entry.get("prefix", "")
+            if raw_prefix is None:
+                raw_prefix = ""
+            if not isinstance(raw_prefix, str):
+                raise TypeError(
+                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}].prefix must be a string when provided"
+                )
+            prefix = raw_prefix.strip()
+            raw_symbols = raw_entry.get("symbols")
+            if not isinstance(raw_symbols, list) or not raw_symbols:
+                raise TypeError(
+                    f"harness.chain.steps[{step_idx}].exports[{entry_idx}].symbols must be a non-empty list"
+                )
+            for sym_idx, raw_symbol in enumerate(raw_symbols):
+                name = str(raw_symbol).strip()
+                if not name:
+                    raise ValueError(
+                        f"harness.chain.steps[{step_idx}].exports[{entry_idx}].symbols[{sym_idx}] must be a non-empty string"
+                    )
+                full_name = f"{prefix}.{name}" if prefix else name
+                if full_name in expanded:
+                    raise ValueError(
+                        f"harness.chain.steps[{step_idx}].exports duplicate export key: {full_name}"
+                    )
+                expanded[full_name] = {
+                    "from": from_source,
+                    "path": f"/{full_name.lstrip('/')}",
+                    "required": raw_required,
+                }
+            continue
 
-    if not isinstance(raw_exports, dict):
-        raise TypeError(
-            f"harness.chain.steps[{step_idx}].exports must be a list (canonical) or mapping"
-        )
-    if "symbols" not in raw_exports:
-        return dict(raw_exports)
-    unknown = sorted(str(k) for k in raw_exports.keys() if str(k) not in _CHAIN_COMPACT_EXPORT_KEYS)
-    if unknown:
-        raise ValueError(
-            f"harness.chain.steps[{step_idx}].exports compact form has unsupported keys: {', '.join(unknown)}"
-        )
-    from_source = str(raw_exports.get("from", "")).strip()
-    if not from_source:
-        raise ValueError(f"harness.chain.steps[{step_idx}].exports.from is required in compact form")
-    raw_required = raw_exports.get("required", True)
-    if not isinstance(raw_required, bool):
-        raise TypeError(f"harness.chain.steps[{step_idx}].exports.required must be a bool when provided")
-    raw_prefix = raw_exports.get("prefix", "")
-    if raw_prefix is None:
-        raw_prefix = ""
-    if not isinstance(raw_prefix, str):
-        raise TypeError(f"harness.chain.steps[{step_idx}].exports.prefix must be a string when provided")
-    prefix = raw_prefix.strip()
-    raw_symbols = raw_exports.get("symbols")
-    if not isinstance(raw_symbols, list) or not raw_symbols:
-        raise TypeError(f"harness.chain.steps[{step_idx}].exports.symbols must be a non-empty list")
-    expanded_compact: dict[str, dict[str, Any]] = {}
-    for j, raw_symbol in enumerate(raw_symbols):
-        name = str(raw_symbol).strip()
-        if not name:
+        unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in _CHAIN_SINGLE_EXPORT_KEYS)
+        if unknown:
             raise ValueError(
-                f"harness.chain.steps[{step_idx}].exports.symbols[{j}] must be a non-empty string"
+                f"harness.chain.steps[{step_idx}].exports[{entry_idx}] entry has unsupported keys: {', '.join(unknown)}"
             )
-        full_name = f"{prefix}.{name}" if prefix else name
-        symbol_path = full_name.lstrip("/")
-        expanded_compact[full_name] = {
+        export_name = str(raw_entry.get("as", "")).strip()
+        if not export_name:
+            raise ValueError(
+                f"harness.chain.steps[{step_idx}].exports[{entry_idx}].as is required for non-symbol entries"
+            )
+        if export_name in expanded:
+            raise ValueError(
+                f"harness.chain.steps[{step_idx}].exports duplicate export key: {export_name}"
+            )
+        from_source = str(raw_entry.get("from", "")).strip()
+        if not from_source:
+            raise ValueError(
+                f"harness.chain.steps[{step_idx}].exports[{entry_idx}].from is required"
+            )
+        export_path = raw_entry.get("path")
+        if export_path is not None and not isinstance(export_path, str):
+            raise TypeError(
+                f"harness.chain.steps[{step_idx}].exports[{entry_idx}].path must be a string when provided"
+            )
+        raw_required = raw_entry.get("required", True)
+        if not isinstance(raw_required, bool):
+            raise TypeError(
+                f"harness.chain.steps[{step_idx}].exports[{entry_idx}].required must be a bool when provided"
+            )
+        expanded[export_name] = {
             "from": from_source,
-            "path": f"/{symbol_path}",
+            "path": export_path,
             "required": raw_required,
         }
-    return expanded_compact
+    return expanded
 
 
 def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[ChainImport], bool]:

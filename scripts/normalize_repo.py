@@ -344,17 +344,24 @@ def _check_chain_contract_shape() -> list[str]:
                     f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].ref must be non-empty string"
                 )
             exports = step.get("exports")
-            if isinstance(exports, dict):
-                for exp_name, exp in exports.items():
+            if exports is not None and not isinstance(exports, list):
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports must be a list (canonical form)"
+                )
+            if isinstance(exports, list):
+                for exp_idx, exp in enumerate(exports):
                     if not isinstance(exp, dict):
+                        issues.append(
+                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports[{exp_idx}] must be mapping"
+                        )
                         continue
                     if "from_target" in exp:
                         issues.append(
-                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports.{exp_name} legacy key from_target is forbidden; use from"
+                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports[{exp_idx}] legacy key from_target is forbidden; use from"
                         )
                     if "from" not in exp:
                         issues.append(
-                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports.{exp_name}.from is required"
+                            f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports[{exp_idx}].from is required"
                         )
     return issues
 
@@ -430,6 +437,7 @@ def main(argv: list[str] | None = None) -> int:
     ops_cmd = [sys.executable, "scripts/convert_ops_symbol_names.py", mode_flag, *scope_paths]
     chain_ref_cmd = [sys.executable, "scripts/convert_chain_ref_format.py", mode_flag, *scope_paths]
     chain_from_cmd = [sys.executable, "scripts/convert_chain_export_from_key.py", mode_flag, *scope_paths]
+    chain_exports_cmd = [sys.executable, "scripts/convert_chain_exports_to_list.py", mode_flag, *scope_paths]
     std_cmd = [sys.executable, "scripts/convert_std_symbol_names.py", mode_flag, *scope_paths]
     migrate_includes_cmd = [sys.executable, "scripts/migrate_includes_to_chain_symbols.py", mode_flag, *scope_paths]
     split_lib_cases_cmd = [sys.executable, "scripts/split_library_cases_per_symbol.py", mode_flag, "docs/spec/libraries"]
@@ -478,6 +486,12 @@ def main(argv: list[str] | None = None) -> int:
             line = line.strip()
             if line:
                 issues.append(f"docs/spec:1: NORMALIZATION_CHAIN_EXPORT_FROM_KEY: {line}")
+    chain_exports_code, chain_exports_out = _run(chain_exports_cmd)
+    if chain_exports_code != 0:
+        for line in chain_exports_out.splitlines():
+            line = line.strip()
+            if line:
+                issues.append(f"docs/spec:1: NORMALIZATION_CHAIN_EXPORTS_LIST: {line}")
     mig_inc_code, mig_inc_out = _run(migrate_includes_cmd)
     if mig_inc_code != 0:
         for line in mig_inc_out.splitlines():

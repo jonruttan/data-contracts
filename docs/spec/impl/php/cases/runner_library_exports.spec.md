@@ -14,18 +14,18 @@ harness:
       class: must
       ref: /docs/spec/libraries/impl/assertion_core.spec.md
       exports:
-        impl.assert.contains:
-          from: library.symbol
-          path: /impl.assert.contains
-          required: true
-        impl.assert.regex:
-          from: library.symbol
-          path: /impl.assert.regex
-          required: true
-        impl.assert.json_type:
-          from: library.symbol
-          path: /impl.assert.json_type
-          required: true
+      - as: impl.assert.contains
+        from: library.symbol
+        required: true
+        path: /impl.assert.contains
+      - as: impl.assert.regex
+        from: library.symbol
+        required: true
+        path: /impl.assert.regex
+      - as: impl.assert.json_type
+        from: library.symbol
+        required: true
+        path: /impl.assert.json_type
     imports:
     - from: lib_assertion_core_spec
       names:

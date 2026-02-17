@@ -3057,120 +3057,78 @@ def _iter_cases_with_chain(root: Path):
 def _expand_chain_step_exports(raw_exports: object) -> tuple[dict[str, dict], list[str]]:
     if raw_exports is None:
         return {}, []
-    if isinstance(raw_exports, list):
-        errors: list[str] = []
-        expanded: dict[str, dict] = {}
-        for idx, raw_entry in enumerate(raw_exports):
-            if not isinstance(raw_entry, dict):
-                errors.append(f"exports[{idx}] must be mapping")
-                continue
-            if "symbols" in raw_entry:
-                allowed = {"from", "required", "prefix", "symbols"}
-                unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in allowed)
-                if unknown:
-                    errors.append(
-                        f"exports[{idx}] compact form has unsupported keys: {', '.join(unknown)}"
-                    )
-                from_source = str(raw_entry.get("from", "")).strip()
-                if not from_source:
-                    errors.append(f"exports[{idx}] compact form requires non-empty from")
-                raw_required = raw_entry.get("required", True)
-                if not isinstance(raw_required, bool):
-                    errors.append(f"exports[{idx}] compact form required must be bool")
-                raw_prefix = raw_entry.get("prefix", "")
-                if raw_prefix is None:
-                    raw_prefix = ""
-                if not isinstance(raw_prefix, str):
-                    errors.append(f"exports[{idx}] compact form prefix must be string")
-                    raw_prefix = ""
-                prefix = raw_prefix.strip()
-                raw_symbols = raw_entry.get("symbols")
-                if not isinstance(raw_symbols, list) or not raw_symbols:
-                    errors.append(f"exports[{idx}] compact form symbols must be non-empty list")
-                    raw_symbols = []
-                for sym_idx, raw_symbol in enumerate(raw_symbols):
-                    symbol = str(raw_symbol).strip()
-                    if not symbol:
-                        errors.append(f"exports[{idx}] compact form symbols[{sym_idx}] must be non-empty string")
-                        continue
-                    full_name = f"{prefix}.{symbol}" if prefix else symbol
-                    if full_name in expanded:
-                        errors.append(f"exports duplicate key {full_name}")
-                        continue
-                    expanded[full_name] = {
-                        "from": from_source,
-                        "path": f"/{full_name.lstrip('/')}",
-                        "required": raw_required,
-                    }
-                continue
+    if not isinstance(raw_exports, list):
+        return {}, ["exports must be list (canonical form)"]
 
-            allowed = {"as", "from", "path", "required"}
+    errors: list[str] = []
+    expanded: dict[str, dict] = {}
+    for idx, raw_entry in enumerate(raw_exports):
+        if not isinstance(raw_entry, dict):
+            errors.append(f"exports[{idx}] must be mapping")
+            continue
+        if "symbols" in raw_entry:
+            allowed = {"from", "required", "prefix", "symbols"}
             unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in allowed)
             if unknown:
-                errors.append(f"exports[{idx}] entry has unsupported keys: {', '.join(unknown)}")
-            export_name = str(raw_entry.get("as", "")).strip()
-            if not export_name:
-                errors.append(f"exports[{idx}] non-symbol entry requires non-empty as")
-                continue
-            if export_name in expanded:
-                errors.append(f"exports duplicate key {export_name}")
-                continue
+                errors.append(
+                    f"exports[{idx}] compact form has unsupported keys: {', '.join(unknown)}"
+                )
             from_source = str(raw_entry.get("from", "")).strip()
             if not from_source:
-                errors.append(f"exports[{idx}] non-symbol entry requires non-empty from")
-            export_path = raw_entry.get("path")
-            if export_path is not None and not isinstance(export_path, str):
-                errors.append(f"exports[{idx}] path must be string when provided")
+                errors.append(f"exports[{idx}] compact form requires non-empty from")
             raw_required = raw_entry.get("required", True)
             if not isinstance(raw_required, bool):
-                errors.append(f"exports[{idx}] required must be bool")
-            expanded[export_name] = {
-                "from": from_source,
-                "path": export_path,
-                "required": raw_required,
-            }
-        return expanded, errors
-
-    if not isinstance(raw_exports, dict):
-        return {}, ["exports must be mapping"]
-    if "symbols" not in raw_exports:
-        return dict(raw_exports), []
-
-    allowed = {"from", "required", "prefix", "symbols"}
-    errors: list[str] = []
-    unknown = sorted(str(k) for k in raw_exports.keys() if str(k) not in allowed)
-    if unknown:
-        errors.append(f"exports compact form has unsupported keys: {', '.join(unknown)}")
-    from_source = str(raw_exports.get("from", "")).strip()
-    if not from_source:
-        errors.append("exports compact form requires non-empty from")
-    raw_required = raw_exports.get("required", True)
-    if not isinstance(raw_required, bool):
-        errors.append("exports compact form required must be bool")
-    raw_prefix = raw_exports.get("prefix", "")
-    if raw_prefix is None:
-        raw_prefix = ""
-    if not isinstance(raw_prefix, str):
-        errors.append("exports compact form prefix must be string")
-        raw_prefix = ""
-    prefix = raw_prefix.strip()
-    raw_symbols = raw_exports.get("symbols")
-    if not isinstance(raw_symbols, list) or not raw_symbols:
-        errors.append("exports compact form symbols must be non-empty list")
-        raw_symbols = []
-    if errors:
-        return {}, errors
-
-    expanded: dict[str, dict] = {}
-    for idx, raw_symbol in enumerate(raw_symbols):
-        symbol = str(raw_symbol).strip()
-        if not symbol:
-            errors.append(f"exports compact form symbols[{idx}] must be non-empty string")
+                errors.append(f"exports[{idx}] compact form required must be bool")
+            raw_prefix = raw_entry.get("prefix", "")
+            if raw_prefix is None:
+                raw_prefix = ""
+            if not isinstance(raw_prefix, str):
+                errors.append(f"exports[{idx}] compact form prefix must be string")
+                raw_prefix = ""
+            prefix = raw_prefix.strip()
+            raw_symbols = raw_entry.get("symbols")
+            if not isinstance(raw_symbols, list) or not raw_symbols:
+                errors.append(f"exports[{idx}] compact form symbols must be non-empty list")
+                raw_symbols = []
+            for sym_idx, raw_symbol in enumerate(raw_symbols):
+                symbol = str(raw_symbol).strip()
+                if not symbol:
+                    errors.append(f"exports[{idx}] compact form symbols[{sym_idx}] must be non-empty string")
+                    continue
+                full_name = f"{prefix}.{symbol}" if prefix else symbol
+                if full_name in expanded:
+                    errors.append(f"exports duplicate key {full_name}")
+                    continue
+                expanded[full_name] = {
+                    "from": from_source,
+                    "path": f"/{full_name.lstrip('/')}",
+                    "required": raw_required,
+                }
             continue
-        full_name = f"{prefix}.{symbol}" if prefix else symbol
-        expanded[full_name] = {
+
+        allowed = {"as", "from", "path", "required"}
+        unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in allowed)
+        if unknown:
+            errors.append(f"exports[{idx}] entry has unsupported keys: {', '.join(unknown)}")
+        export_name = str(raw_entry.get("as", "")).strip()
+        if not export_name:
+            errors.append(f"exports[{idx}] non-symbol entry requires non-empty as")
+            continue
+        if export_name in expanded:
+            errors.append(f"exports duplicate key {export_name}")
+            continue
+        from_source = str(raw_entry.get("from", "")).strip()
+        if not from_source:
+            errors.append(f"exports[{idx}] non-symbol entry requires non-empty from")
+        export_path = raw_entry.get("path")
+        if export_path is not None and not isinstance(export_path, str):
+            errors.append(f"exports[{idx}] path must be string when provided")
+        raw_required = raw_entry.get("required", True)
+        if not isinstance(raw_required, bool):
+            errors.append(f"exports[{idx}] required must be bool")
+        expanded[export_name] = {
             "from": from_source,
-            "path": f"/{full_name.lstrip('/')}",
+            "path": export_path,
             "required": raw_required,
         }
     return expanded, errors
@@ -6454,7 +6412,10 @@ def _scan_reference_contract_paths_exist(root: Path, *, harness: dict | None = N
             for field, raw in _iter_path_fields(case):
                 if field.split(".")[-1].split("[", 1)[0] not in must_exist_keys:
                     continue
-                if ".exports." in field and field.endswith(".path"):
+                if (
+                    (".exports." in field or ".exports[" in field)
+                    and field.endswith(".path")
+                ):
                     continue
                 s = str(raw).strip()
                 if not s or s.startswith("external://"):

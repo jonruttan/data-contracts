@@ -132,14 +132,13 @@ def _migrate_case(case: dict[str, Any], *, doc_path: Path) -> tuple[dict[str, An
         if not symbols:
             continue
         step_id = _next_step_id(existing_step_ids, Path(inc).stem)
-        exports = {
-            sym: {
+        exports = [
+            {
                 "from": "library.symbol",
-                "path": sym,
                 "required": True,
+                "symbols": symbols,
             }
-            for sym in symbols
-        }
+        ]
         steps.append(
             {
                 "id": step_id,

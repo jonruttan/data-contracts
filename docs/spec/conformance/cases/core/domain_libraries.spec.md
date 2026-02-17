@@ -219,78 +219,78 @@ harness:
       class: must
       ref: /docs/spec/libraries/domain/make_core.spec.md
       exports:
-        make.has_target:
-          from: library.symbol
-          path: /make.has_target
-          required: true
+      - as: make.has_target
+        from: library.symbol
+        required: true
+        path: /make.has_target
     - id: lib_markdown_core_spec
       class: must
       ref: /docs/spec/libraries/domain/markdown_core.spec.md
       exports:
-        md.has_heading:
-          from: library.symbol
-          path: /md.has_heading
-          required: true
-        md.heading_level_exists:
-          from: library.symbol
-          path: /md.heading_level_exists
-          required: true
-        md.section_order_valid:
-          from: library.symbol
-          path: /md.section_order_valid
-          required: true
-        md.required_sections_present:
-          from: library.symbol
-          path: /md.required_sections_present
-          required: true
-        md.link_targets_all_resolve:
-          from: library.symbol
-          path: /md.link_targets_all_resolve
-          required: true
-        md.has_broken_links:
-          from: library.symbol
-          path: /md.has_broken_links
-          required: true
-        md.has_yaml_spec_test_fence:
-          from: library.symbol
-          path: /md.has_yaml_spec_test_fence
-          required: true
-        md.code_fence_language_exists:
-          from: library.symbol
-          path: /md.code_fence_language_exists
-          required: true
-        md.token_present:
-          from: library.symbol
-          path: /md.token_present
-          required: true
-        md.tokens_all_present:
-          from: library.symbol
-          path: /md.tokens_all_present
-          required: true
-        md.token_ownership_unique:
-          from: library.symbol
-          path: /md.token_ownership_unique
-          required: true
-        md.token_dependencies_resolved:
-          from: library.symbol
-          path: /md.token_dependencies_resolved
-          required: true
+      - as: md.has_heading
+        from: library.symbol
+        required: true
+        path: /md.has_heading
+      - as: md.heading_level_exists
+        from: library.symbol
+        required: true
+        path: /md.heading_level_exists
+      - as: md.section_order_valid
+        from: library.symbol
+        required: true
+        path: /md.section_order_valid
+      - as: md.required_sections_present
+        from: library.symbol
+        required: true
+        path: /md.required_sections_present
+      - as: md.link_targets_all_resolve
+        from: library.symbol
+        required: true
+        path: /md.link_targets_all_resolve
+      - as: md.has_broken_links
+        from: library.symbol
+        required: true
+        path: /md.has_broken_links
+      - as: md.has_yaml_spec_test_fence
+        from: library.symbol
+        required: true
+        path: /md.has_yaml_spec_test_fence
+      - as: md.code_fence_language_exists
+        from: library.symbol
+        required: true
+        path: /md.code_fence_language_exists
+      - as: md.token_present
+        from: library.symbol
+        required: true
+        path: /md.token_present
+      - as: md.tokens_all_present
+        from: library.symbol
+        required: true
+        path: /md.tokens_all_present
+      - as: md.token_ownership_unique
+        from: library.symbol
+        required: true
+        path: /md.token_ownership_unique
+      - as: md.token_dependencies_resolved
+        from: library.symbol
+        required: true
+        path: /md.token_dependencies_resolved
     - id: lib_python_core_spec
       class: must
       ref: /docs/spec/libraries/domain/python_core.spec.md
       exports:
-        py.is_tuple_projection:
-          from: library.symbol
-          path: /py.is_tuple_projection
-          required: true
+      - as: py.is_tuple_projection
+        from: library.symbol
+        required: true
+        path: /py.is_tuple_projection
     - id: lib_php_core_spec
       class: must
       ref: /docs/spec/libraries/domain/php_core.spec.md
       exports:
-        php.is_assoc_projection:
-          from: library.symbol
-          path: /php.is_assoc_projection
-          required: true
+      - as: php.is_assoc_projection
+        from: library.symbol
+        required: true
+        path: /php.is_assoc_projection
     imports:
     - from: lib_make_core_spec
       names:

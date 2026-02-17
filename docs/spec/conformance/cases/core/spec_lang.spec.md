@@ -21,10 +21,10 @@ harness:
       class: must
       ref: /docs/spec/libraries/conformance/assertion_core.spec.md
       exports:
-        conf.pass_when_text_contains:
-          from: library.symbol
-          path: /conf.pass_when_text_contains
-          required: true
+      - as: conf.pass_when_text_contains
+        from: library.symbol
+        required: true
+        path: /conf.pass_when_text_contains
     imports:
     - from: lib_assertion_core_spec
       names:
@@ -62,10 +62,10 @@ harness:
       class: must
       ref: /docs/spec/libraries/conformance/assertion_core.spec.md
       exports:
-        conf.pass_when_text_contains:
-          from: library.symbol
-          path: /conf.pass_when_text_contains
-          required: true
+      - as: conf.pass_when_text_contains
+        from: library.symbol
+        required: true
+        path: /conf.pass_when_text_contains
     imports:
     - from: lib_assertion_core_spec
       names:
@@ -276,10 +276,10 @@ harness:
       class: must
       ref: /docs/spec/libraries/conformance/assertion_core.spec.md
       exports:
-        conf.pass_when_text_contains:
-          from: library.symbol
-          path: /conf.pass_when_text_contains
-          required: true
+      - as: conf.pass_when_text_contains
+        from: library.symbol
+        required: true
+        path: /conf.pass_when_text_contains
     imports:
     - from: lib_assertion_core_spec
       names:

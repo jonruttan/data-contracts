@@ -792,7 +792,7 @@ harness:
         class: must
         ref: /cases/libs/policy_core.spec.md
         exports:
-          policy.pass_when_no_violations:
+          - as: policy.pass_when_no_violations
             from: library.symbol
             path: policy.pass_when_no_violations
     imports:
@@ -835,7 +835,7 @@ harness:
         class: must
         ref: /cases/libs/policy_core.spec.md
         exports:
-          policy.pass_when_no_violations:
+          - as: policy.pass_when_no_violations
             from: library.symbol
             path: policy.pass_when_no_violations
     imports:
@@ -2045,7 +2045,7 @@ harness:
         class: must
         ref: ../../libraries/conformance/assertion_core.spec.md
         exports:
-          conf.pass_when_text_contains:
+          - as: conf.pass_when_text_contains
             from: library.symbol
             path: conf.pass_when_text_contains
     imports:
@@ -2081,7 +2081,7 @@ harness:
         class: must
         ref: ../../libraries/conformance/assertion_core.spec.md
         exports:
-          conf.pass_when_text_contains:
+          - as: conf.pass_when_text_contains
             from: library.symbol
             path: conf.pass_when_text_contains
     imports:
@@ -2109,7 +2109,7 @@ harness:
         class: must
         ref: ../../libraries/conformance/assertion_core.spec.md
         exports:
-          conf.pass_when_text_contains:
+          - as: conf.pass_when_text_contains
             from: library.symbol
             path: conf.pass_when_text_contains
     imports:
@@ -4633,7 +4633,7 @@ harness:
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md
       exports:
-        policy.pass_when_no_violations:
+        - as: policy.pass_when_no_violations
           from: library.symbol
           path: policy.pass_when_no_violations
     imports:
@@ -4683,7 +4683,7 @@ harness:
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md
       exports:
-        policy.pass_when_no_violations:
+        - as: policy.pass_when_no_violations
           from: library.symbol
           path: policy.pass_when_no_violations
     imports:

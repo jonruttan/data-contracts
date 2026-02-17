@@ -338,10 +338,10 @@ harness:
       class: must
       ref: '#LIB-PATH-001-001-PATH-NORMALIZE-SLASHES'
       exports:
-        path.normalize_slashes:
-          from: library.symbol
-          path: /path.normalize_slashes
-          required: true
+      - as: path.normalize_slashes
+        from: library.symbol
+        required: true
+        path: /path.normalize_slashes
     imports:
     - from: lib_path_normalize
       names:
