@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 219
-- must_count: 200
+- rule_count: 222
+- must_count: 203
 - should_count: 12
 - must_not_count: 7
-- active_count: 219
+- active_count: 222
 - deprecated_count: 0
 - removed_count: 0
 
@@ -222,6 +222,9 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `implementation` | `runtime.assertion_decisions` | 2 | `active` |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `MUST` | `governance` | `runtime.default_gate.adapter` | 3 | `active` |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `MUST` | `governance` | `runtime.non_python_lanes.exec_tokens` | 2 | `active` |
+| `RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | `MUST` | `governance` | `runtime.profiling.contract` | 3 | `active` |
+| `RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | `MUST` | `governance` | `runtime.profiling.redaction` | 2 | `active` |
+| `RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED` | `MUST` | `governance` | `runtime.profiling.span_taxonomy` | 3 | `active` |
 | `RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION` | `MUST` | `governance` | `docs.runner_interface.public_usage` | 2 | `active` |
 | `RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED` | `MUST` | `governance` | `runtime.runner_interface.default_mode` | 2 | `active` |
 | `RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED` | `MUST` | `governance` | `runtime.python_dependency.metric_report` | 2 | `active` |

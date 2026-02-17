@@ -354,7 +354,6 @@ fn yaml_to_json(value: &YamlValue) -> Value {
             }
             Value::Object(out)
         }
-        _ => Value::Null,
     }
 }
 

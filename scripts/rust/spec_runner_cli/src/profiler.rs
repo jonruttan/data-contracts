@@ -45,8 +45,6 @@ fn sanitize_attrs(attrs: Value) -> Value {
 #[derive(Debug, Clone)]
 pub struct ProfileOptions {
     pub level: String,
-    pub out_path: String,
-    pub summary_out_path: String,
     pub runner_impl: String,
     pub command: String,
     pub args: Vec<String>,
@@ -102,10 +100,6 @@ impl RunProfiler {
 
     fn now_ns(&self) -> i64 {
         self.started_monotonic.elapsed().as_nanos() as i64
-    }
-
-    pub fn enabled(&self) -> bool {
-        self.enabled
     }
 
     pub fn start_span(
@@ -276,10 +270,6 @@ impl RunProfiler {
 pub fn profile_options_from_env(command: &str, args: &[String]) -> ProfileOptions {
     ProfileOptions {
         level: std::env::var("SPEC_RUNNER_PROFILE_LEVEL").unwrap_or_else(|_| "off".to_string()),
-        out_path: std::env::var("SPEC_RUNNER_PROFILE_OUT")
-            .unwrap_or_else(|_| "/.artifacts/run-trace.json".to_string()),
-        summary_out_path: std::env::var("SPEC_RUNNER_PROFILE_SUMMARY_OUT")
-            .unwrap_or_else(|_| "/.artifacts/run-trace-summary.md".to_string()),
         runner_impl: std::env::var("SPEC_RUNNER_IMPL").unwrap_or_else(|_| "rust".to_string()),
         command: command.to_string(),
         args: args.to_vec(),
@@ -294,8 +284,6 @@ mod tests {
     fn profiler_records_span_and_event() {
         let opts = ProfileOptions {
             level: "basic".to_string(),
-            out_path: "/tmp/run-trace.json".to_string(),
-            summary_out_path: "/tmp/run-trace-summary.md".to_string(),
             runner_impl: "rust".to_string(),
             command: "governance".to_string(),
             args: vec![],
@@ -320,8 +308,6 @@ mod tests {
         fs::create_dir_all(&root).expect("mkdir");
         let opts = ProfileOptions {
             level: "basic".to_string(),
-            out_path: "/.artifacts/run-trace.json".to_string(),
-            summary_out_path: "/.artifacts/run-trace-summary.md".to_string(),
             runner_impl: "rust".to_string(),
             command: "governance".to_string(),
             args: vec![],

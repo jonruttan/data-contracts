@@ -3311,7 +3311,8 @@ links:
   schema_refs:
   - docs/spec/schema/run_trace_v1.yaml
   conformance_case_ids: []
-  unit_test_refs: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
   - spec_runner/components/profiler.py
@@ -3323,7 +3324,8 @@ links:
   schema_refs:
   - docs/spec/schema/run_trace_v1.yaml
   conformance_case_ids: []
-  unit_test_refs: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
   - spec_runner/components/profiler.py
@@ -3335,7 +3337,8 @@ links:
   schema_refs:
   - docs/spec/schema/run_trace_v1.yaml
   conformance_case_ids: []
-  unit_test_refs: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
   - spec_runner/components/profiler.py

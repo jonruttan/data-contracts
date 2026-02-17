@@ -7,7 +7,7 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 from selectors import DefaultSelector, EVENT_READ
-from typing import Any, Mapping
+from typing import Any, cast
 
 from spec_runner.components.profiler import RunProfiler
 
@@ -207,10 +207,17 @@ def run_subprocess_with_liveness(
             had_io = False
             for key, _ in selector.select(timeout=0.2):
                 stream_name = str(key.data)
-                chunk = key.fileobj.read1(4096) if hasattr(key.fileobj, "read1") else key.fileobj.read(4096)
+                file_obj = key.fileobj
+                if isinstance(file_obj, int):
+                    continue
+                readable_obj = cast(Any, file_obj)
+                if hasattr(file_obj, "read1"):
+                    chunk = readable_obj.read1(4096)
+                else:
+                    chunk = readable_obj.read(4096)
                 if not chunk:
                     try:
-                        selector.unregister(key.fileobj)
+                        selector.unregister(file_obj)
                     except Exception:  # noqa: BLE001
                         pass
                     continue

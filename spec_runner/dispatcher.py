@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 import time
-from typing import Any, Callable, Mapping, Protocol
+from typing import Any, Callable, Mapping, Protocol, cast
 
 from spec_runner.codecs import load_external_cases
 from spec_runner.compiler import compile_external_case
@@ -21,6 +21,10 @@ class RuntimeCapture(Protocol):
 
 
 TypeRunner = Callable[..., None]
+
+
+class RuntimeProfiler(Protocol):
+    def span(self, *, name: str, kind: str, phase: str, attrs: Mapping[str, Any] | None = None) -> Any: ...
 
 
 @dataclass(frozen=True)
@@ -141,7 +145,8 @@ def run_case(
     error: str | None = None
     ctx.push_active_case(case_key)
     try:
-        profiler = getattr(ctx, "profiler", None)
+        raw_profiler = getattr(ctx, "profiler", None)
+        profiler = cast(RuntimeProfiler | None, raw_profiler)
         case_span_cm = (
             profiler.span(
                 name="case.run",
@@ -174,6 +179,7 @@ def run_case(
             return
 
         with case_span_cm:
+            assert profiler is not None
             chain_started = time.perf_counter()
             chain_span_cm = profiler.span(
                 name="case.chain",

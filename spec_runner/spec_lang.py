@@ -1519,18 +1519,18 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         _require_arity(op, args, 2)
         if not isinstance(args[0], str) or not isinstance(args[1], str):
             raise ValueError("spec_lang ops.fs.path.compare expects string args")
-        left = _fs_normalize_path(args[0])
-        right = _fs_normalize_path(args[1])
-        return -1 if left < right else (1 if left > right else 0)
+        path_left = _fs_normalize_path(args[0])
+        path_right = _fs_normalize_path(args[1])
+        return -1 if path_left < path_right else (1 if path_left > path_right else 0)
     if op == "ops.fs.path.sort":
         _require_arity(op, args, 1)
         raw_paths = _require_list_arg(op, args[0])
-        normalized: list[str] = []
+        normalized_paths: list[str] = []
         for raw in raw_paths:
             if not isinstance(raw, str):
                 raise ValueError("spec_lang ops.fs.path.sort expects list of strings")
-            normalized.append(_fs_normalize_path(raw))
-        return sorted(normalized)
+            normalized_paths.append(_fs_normalize_path(raw))
+        return sorted(normalized_paths)
     if op == "ops.fs.file.exists":
         _require_arity(op, args, 1)
         meta = _require_dict_arg(op, args[0])
@@ -1613,13 +1613,13 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         pattern = args[1]
         if not isinstance(pattern, str):
             raise ValueError("spec_lang ops.fs.glob.filter expects string pattern")
-        out: list[str] = []
+        matched_paths: list[str] = []
         for raw in paths:
             if not isinstance(raw, str):
                 raise ValueError("spec_lang ops.fs.glob.filter expects list of strings")
             if fnmatch(raw, pattern):
-                out.append(raw)
-        return out
+                matched_paths.append(raw)
+        return matched_paths
     if op == "ops.fs.glob.any":
         _require_arity(op, args, 2)
         paths = _require_list_arg(op, args[0])

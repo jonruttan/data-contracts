@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 219
+- link_count: 222
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 219
-- rules_with_implementation_refs: 217
+- rules_with_unit_tests: 222
+- rules_with_implementation_refs: 220
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -219,6 +219,9 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | 2 | 1 | 0 | 2 | 3 |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `docs/spec/contract/policy_v1.yaml#RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | 2 | 0 | 0 | 2 | 2 |
+| `RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
+| `RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
+| `RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION` | 1 | 1 | 0 | 1 | 4 |
 | `RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED` | 2 | 1 | 0 | 1 | 3 |
 | `RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED` | 2 | 0 | 0 | 3 | 3 |
