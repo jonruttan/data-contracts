@@ -15,6 +15,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--jobs", type=int, default=0, help="Parallel jobs for docs generation (0=auto)")
     ap.add_argument("--report-out", default=".artifacts/docs-generator-report.json")
     ap.add_argument("--summary-out", default=".artifacts/docs-generator-summary.md")
+    ap.add_argument("--timing-out", default=".artifacts/docs-generate-timing.json")
     ns = ap.parse_args(argv)
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -27,6 +28,8 @@ def main(argv: list[str] | None = None) -> int:
         str(ns.report_out),
         "--summary-out",
         str(ns.summary_out),
+        "--timing-out",
+        str(ns.timing_out),
     ]
     if int(ns.jobs) != 0:
         cmd += ["--jobs", str(int(ns.jobs))]

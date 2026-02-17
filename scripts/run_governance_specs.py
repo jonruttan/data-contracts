@@ -11,6 +11,7 @@ import subprocess
 import sys
 import re
 import threading
+import time
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, Callable
@@ -7865,6 +7866,7 @@ def main(argv: list[str] | None = None) -> int:
         default=SETTINGS.case.default_file_pattern,
         help="Glob pattern for case files when --cases points to a directory",
     )
+    ap.add_argument("--timing-out", default=".artifacts/governance-timing.json")
     ns = ap.parse_args(argv)
     _reset_scan_caches()
 
@@ -7879,16 +7881,21 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     failures: list[str] = []
+    started = time.perf_counter()
     governance_cases = [
         case
         for case in iter_cases(cases_path, file_pattern=case_pattern)
         if str(case.test.get("type", "")).strip() == "governance.check"
     ]
+    timing_rows: list[dict[str, Any]] = []
+    workers_used = 1
     with TemporaryDirectory(prefix="spec-runner-governance-") as td:
         td_path = Path(td)
 
-        def _run_one(args: tuple[int, Any]) -> tuple[int, str | None]:
+        def _run_one(args: tuple[int, Any]) -> tuple[int, str, str, float, str | None]:
             idx, case = args
+            case_id = str(case.test.get("id", "<unknown>")).strip() or "<unknown>"
+            check_id = str(case.test.get("check", "")).strip()
             case_tmp = td_path / f"case_{idx}"
             case_tmp.mkdir(parents=True, exist_ok=True)
             ctx = SpecRunContext(
@@ -7896,26 +7903,66 @@ def main(argv: list[str] | None = None) -> int:
                 patcher=MiniMonkeyPatch(),
                 capture=MiniCapsys(),
             )
+            case_started = time.perf_counter()
             try:
                 run_case(case, ctx=ctx, type_runners={"governance.check": run_governance_check})
-                return idx, None
+                elapsed_ms = (time.perf_counter() - case_started) * 1000.0
+                return idx, case_id, check_id, elapsed_ms, None
             except BaseException as e:  # noqa: BLE001
-                return idx, f"{case.test.get('id', '<unknown>')}: {e}"
+                elapsed_ms = (time.perf_counter() - case_started) * 1000.0
+                return idx, case_id, check_id, elapsed_ms, f"{case_id}: {e}"
 
         if len(governance_cases) <= 1:
             for idx, case in enumerate(governance_cases):
-                _idx, failure = _run_one((idx, case))
+                _idx, case_id, check_id, elapsed_ms, failure = _run_one((idx, case))
+                timing_rows.append(
+                    {
+                        "index": int(_idx),
+                        "case_id": case_id,
+                        "check_id": check_id,
+                        "duration_ms": round(float(elapsed_ms), 3),
+                        "status": "fail" if failure else "pass",
+                    }
+                )
                 if failure:
                     failures.append(failure)
         else:
             max_workers = min(max(1, os.cpu_count() or 1), len(governance_cases))
-            results: list[tuple[int, str | None]] = []
+            workers_used = max_workers
+            results: list[tuple[int, str, str, float, str | None]] = []
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
                 for result in executor.map(_run_one, enumerate(governance_cases)):
                     results.append(result)
-            for _idx, failure in sorted(results, key=lambda x: x[0]):
+            for _idx, case_id, check_id, elapsed_ms, failure in sorted(results, key=lambda x: x[0]):
+                timing_rows.append(
+                    {
+                        "index": int(_idx),
+                        "case_id": case_id,
+                        "check_id": check_id,
+                        "duration_ms": round(float(elapsed_ms), 3),
+                        "status": "fail" if failure else "pass",
+                    }
+                )
                 if failure:
                     failures.append(failure)
+
+    total_ms = (time.perf_counter() - started) * 1000.0
+    timing_payload = {
+        "version": 1,
+        "status": "fail" if failures else "pass",
+        "summary": {
+            "case_count": len(governance_cases),
+            "failed_count": len(failures),
+            "workers_used": int(workers_used),
+            "total_duration_ms": round(float(total_ms), 3),
+        },
+        "cases": timing_rows,
+    }
+    repo_root = Path(__file__).resolve().parents[1]
+    timing_out = _resolve_contract_config_path(repo_root, str(ns.timing_out), field="run_governance_specs.timing_out")
+    timing_out.parent.mkdir(parents=True, exist_ok=True)
+    timing_out.write_text(json.dumps(timing_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(f"wrote {ns.timing_out}")
 
     if failures:
         for line in failures:

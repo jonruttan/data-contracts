@@ -5,6 +5,7 @@ import argparse
 import concurrent.futures
 import json
 import os
+import time
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
@@ -68,6 +69,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--jobs", type=int, default=0, help="Parallel jobs for independent docs surfaces (0=auto)")
     ap.add_argument("--report-out", default=".artifacts/docs-generator-report.json")
     ap.add_argument("--summary-out", default=".artifacts/docs-generator-summary.md")
+    ap.add_argument("--timing-out", default=".artifacts/docs-generate-timing.json")
     ns = ap.parse_args(argv)
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -91,13 +93,16 @@ def main(argv: list[str] | None = None) -> int:
         errors.append(f"unknown surface_id: {str(ns.surface).strip()}")
 
     rows: list[dict[str, Any]] = []
+    timing_rows: list[dict[str, Any]] = []
+    started = time.perf_counter()
     env = dict(os.environ)
     env["SPEC_DOCS_GENERATE_MODE"] = mode_value
 
     with TemporaryDirectory(prefix="spec-runner-docs-generate-") as td:
         td_path = Path(td)
+        workers_used = 1
 
-        def _run_one(task: tuple[int, Any, str]) -> tuple[int, dict[str, Any], str | None]:
+        def _run_one(task: tuple[int, Any, str]) -> tuple[int, dict[str, Any], float, str | None]:
             idx, case, sid = task
             case_id = str(case.test.get("id", "")).strip() or "<unknown>"
             case_tmp = td_path / f"case_{idx}"
@@ -108,17 +113,29 @@ def main(argv: list[str] | None = None) -> int:
                 capture=MiniCapsys(),
                 env=env,
             )
+            case_started = time.perf_counter()
             try:
                 run_case(case, ctx=ctx)
-                return idx, {"case_id": case_id, "surface_id": sid, "status": "pass"}, None
+                elapsed_ms = (time.perf_counter() - case_started) * 1000.0
+                return idx, {"case_id": case_id, "surface_id": sid, "status": "pass"}, elapsed_ms, None
             except BaseException as exc:  # noqa: BLE001
-                return idx, {"case_id": case_id, "surface_id": sid, "status": "fail"}, f"{case_id}: {exc}"
+                elapsed_ms = (time.perf_counter() - case_started) * 1000.0
+                return idx, {"case_id": case_id, "surface_id": sid, "status": "fail"}, elapsed_ms, f"{case_id}: {exc}"
 
         indexed = [(idx, case, sid) for idx, (case, sid) in enumerate(selected)]
         if len(indexed) <= 1:
             for task in indexed:
-                _idx, row, err = _run_one(task)
+                _idx, row, elapsed_ms, err = _run_one(task)
                 rows.append(row)
+                timing_rows.append(
+                    {
+                        "index": int(_idx),
+                        "case_id": str(row.get("case_id", "")),
+                        "surface_id": str(row.get("surface_id", "")),
+                        "duration_ms": round(float(elapsed_ms), 3),
+                        "status": str(row.get("status", "fail")),
+                    }
+                )
                 if err:
                     errors.append(err)
         else:
@@ -128,12 +145,22 @@ def main(argv: list[str] | None = None) -> int:
                 max_workers = min(auto_workers, len(indexed))
             else:
                 max_workers = min(max(1, requested), len(indexed))
-            results: list[tuple[int, dict[str, Any], str | None]] = []
+            workers_used = max_workers
+            results: list[tuple[int, dict[str, Any], float, str | None]] = []
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
                 for result in executor.map(_run_one, indexed):
                     results.append(result)
-            for _idx, row, err in sorted(results, key=lambda x: x[0]):
+            for _idx, row, elapsed_ms, err in sorted(results, key=lambda x: x[0]):
                 rows.append(row)
+                timing_rows.append(
+                    {
+                        "index": int(_idx),
+                        "case_id": str(row.get("case_id", "")),
+                        "surface_id": str(row.get("surface_id", "")),
+                        "duration_ms": round(float(elapsed_ms), 3),
+                        "status": str(row.get("status", "fail")),
+                    }
+                )
                 if err:
                     errors.append(err)
 
@@ -153,12 +180,28 @@ def main(argv: list[str] | None = None) -> int:
 
     report_path = _resolve_out(repo_root, str(ns.report_out), field="docs_generate_specs.report_out")
     summary_path = _resolve_out(repo_root, str(ns.summary_out), field="docs_generate_specs.summary_out")
+    timing_path = _resolve_out(repo_root, str(ns.timing_out), field="docs_generate_specs.timing_out")
     report_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.parent.mkdir(parents=True, exist_ok=True)
+    timing_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     summary_path.write_text(_render_summary(payload), encoding="utf-8")
+    total_ms = (time.perf_counter() - started) * 1000.0
+    timing_payload = {
+        "version": 1,
+        "status": payload["status"],
+        "summary": {
+            "case_count": len(rows),
+            "failed_count": int(failed),
+            "workers_used": int(workers_used),
+            "total_duration_ms": round(float(total_ms), 3),
+        },
+        "cases": timing_rows,
+    }
+    timing_path.write_text(json.dumps(timing_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"wrote {ns.report_out}")
     print(f"wrote {ns.summary_out}")
+    print(f"wrote {ns.timing_out}")
     if errors:
         for err in errors:
             print(err)
