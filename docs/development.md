@@ -142,6 +142,8 @@ relevant files changed.
 make python-parity
 # or include it in prepush
 SPEC_PREPUSH_PYTHON_PARITY=1 make prepush
+# or run the parity-enabled prepush target directly
+make prepush-parity
 ```
 
 Use an explicit runner lane when needed:

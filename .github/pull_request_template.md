@@ -9,6 +9,7 @@
 - [ ] `make core-check`
 - [ ] `make check`
 - [ ] `make prepush`
+- [ ] `make prepush-parity`
 - [ ] `make ci-cleanroom`
 
 ## Docs Drift Checklist

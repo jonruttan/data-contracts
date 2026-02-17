@@ -1,4 +1,4 @@
-.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check docs-generate docs-generate-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke ci-cleanroom perf-smoke prepush python-parity core-check check ci-gate test
+.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check docs-generate docs-generate-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke ci-cleanroom perf-smoke prepush prepush-parity python-parity core-check check ci-gate test
 .DEFAULT_GOAL := help
 
 help: ## Display this help section
@@ -68,6 +68,9 @@ perf-smoke: ## Run governance/docs timing checks against perf baselines (warn mo
 
 prepush: ## Required local pre-push gate (Rust-default normalize + governance + heavy + docs + perf)
 	@./scripts/prepush_gate.sh
+
+prepush-parity: ## Required local pre-push gate with Python parity lane enabled
+	@SPEC_PREPUSH_PYTHON_PARITY=1 ./scripts/prepush_gate.sh
 
 python-parity: ## Optional Python validation lane (governance + conformance parity)
 	@./scripts/runner_adapter.sh --impl python governance

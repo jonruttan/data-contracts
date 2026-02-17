@@ -4,8 +4,9 @@
 
 ```yaml spec-test
 id: SRGOV-RUNTIME-CONFIG-005
-title: ci workflow exercises rust runner interface lane
-purpose: Ensures CI runs core gate through the public runner interface in explicit rust mode.
+title: ci workflow exercises rust runner interface and python parity lanes
+purpose: Ensures CI runs core gate through the public runner interface in explicit rust mode
+  and keeps a dedicated python parity lane runnable.
 type: governance.check
 check: runtime.runner_interface_ci_lane
 harness:
@@ -17,6 +18,9 @@ harness:
     - 'SPEC_RUNNER_BIN: ./scripts/runner_adapter.sh'
     - 'SPEC_RUNNER_IMPL: rust'
     - 'run: ./scripts/core_gate.sh'
+    - 'python-parity-lane:'
+    - ./scripts/runner_adapter.sh --impl python governance
+    - ./scripts/runner_adapter.sh --impl python conformance-parity
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

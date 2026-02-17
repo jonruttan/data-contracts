@@ -1487,7 +1487,7 @@ links:
   - .github/workflows/ci.yml
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_runner_interface_ci_lane.spec.md
-  notes: Governance verifies CI includes a core gate lane with SPEC_RUNNER_BIN set to rust adapter.
+  notes: Governance verifies CI includes a rust core-gate lane and a python governance+parity lane.
 - rule_id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_DELEGATION
   contract_refs:

@@ -1161,12 +1161,12 @@ rules:
   scope: governance
   applies_to: runtime.runner_interface.ci_lane
   norm: MUST
-  requirement: ci_includes_public_runner_lane_via_spec_runner_bin
-  description: 'CI must include a lane that runs core gate with SPEC_RUNNER_BIN set to scripts/runner_adapter.sh.
+  requirement: ci_includes_public_runner_lane_and_python_parity_lane
+  description: 'CI must include a lane that runs core gate with SPEC_RUNNER_BIN set to scripts/runner_adapter.sh and a dedicated python parity lane that runs governance and conformance-parity.
 
     '
   rationale: Ensures the public runner interface contract is continuously exercised in automation.
-  risk_if_violated: The public entrypoint can drift without CI visibility.
+  risk_if_violated: The public entrypoint or python parity path can drift without CI visibility.
   references:
   - docs/spec/contract/12_runner_interface.md
   - docs/spec/governance/cases/core/runtime_runner_interface_ci_lane.spec.md
