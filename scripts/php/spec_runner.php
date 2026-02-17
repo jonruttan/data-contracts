@@ -2569,26 +2569,7 @@ function compileSpecLangSymbolBindings(array $bindings, array $limits): array {
     return $env->vars;
 }
 
-function loadSpecLangSymbolsForCase(string $fixturePath, array $case, array $limits): array {
-    $harness = $case['harness'] ?? [];
-    if (!is_array($harness) || isListArray($harness)) {
-        return [];
-    }
-    if (!array_key_exists('spec_lang', $harness) || $harness['spec_lang'] === null) {
-        return [];
-    }
-    $cfg = $harness['spec_lang'];
-    if (!is_array($cfg) || isListArray($cfg)) {
-        throw new SchemaError('harness.spec_lang must be a mapping');
-    }
-    $libPaths = asNonEmptyStringList($cfg['includes'] ?? null, 'harness.spec_lang.includes');
-    if (count($libPaths) === 0) {
-        return [];
-    }
-    $entryDocs = [];
-    foreach ($libPaths as $rel) {
-        $entryDocs[] = resolveLibraryPath($fixturePath, $rel);
-    }
+function loadSpecLangSymbolsFromEntryDocs(array $entryDocs, array $limits): array {
     $graph = resolveSpecLangLibraryGraph($entryDocs);
 
     $mergedBindings = [];
@@ -2605,26 +2586,6 @@ function loadSpecLangSymbolsForCase(string $fixturePath, array $case, array $lim
         }
     }
 
-    $consumerExports = asNonEmptyStringList($cfg['exports'] ?? null, 'harness.spec_lang.exports');
-    if (count($consumerExports) > 0) {
-        $exportAllow = [];
-        foreach ($consumerExports as $name) {
-            $exportAllow[$name] = true;
-        }
-    }
-    $unknown = [];
-    foreach ($exportAllow as $name => $_true) {
-        if (!array_key_exists($name, $mergedBindings)) {
-            $unknown[] = $name;
-        }
-    }
-    if (count($unknown) > 0) {
-        sort($unknown, SORT_STRING);
-        throw new SchemaError(
-            'harness.spec_lang.exports contains unknown symbols: ' . implode(', ', $unknown)
-        );
-    }
-
     $compiled = compileSpecLangSymbolBindings($mergedBindings, $limits);
     if (count($exportAllow) > 0) {
         $filtered = [];
@@ -2635,6 +2596,34 @@ function loadSpecLangSymbolsForCase(string $fixturePath, array $case, array $lim
     }
 
     return $compiled;
+}
+
+function loadSpecLangSymbolsForCase(string $fixturePath, array $case, array $limits): array {
+    $harness = $case['harness'] ?? [];
+    if (!is_array($harness) || isListArray($harness)) {
+        return [];
+    }
+    if (!array_key_exists('spec_lang', $harness) || $harness['spec_lang'] === null) {
+        return [];
+    }
+    $cfg = $harness['spec_lang'];
+    if (!is_array($cfg) || isListArray($cfg)) {
+        throw new SchemaError('harness.spec_lang must be a mapping');
+    }
+    $libPaths = asNonEmptyStringList($cfg['includes'] ?? null, 'harness.spec_lang.includes');
+    if (count($libPaths) > 0) {
+        throw new SchemaError(
+            'harness.spec_lang.includes is not supported for executable cases; use harness.chain imports'
+        );
+    }
+    $consumerExports = asNonEmptyStringList($cfg['exports'] ?? null, 'harness.spec_lang.exports');
+    if (count($consumerExports) > 0) {
+        throw new SchemaError(
+            'harness.spec_lang.exports is not supported for executable cases; use harness.chain imports'
+        );
+    }
+
+    return [];
 }
 
 function compileAssertionLeafExpr(array $leaf, string $path): array {
