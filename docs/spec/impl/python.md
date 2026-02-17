@@ -10,6 +10,10 @@ Current implementation locations:
 - dispatch: `spec_runner/dispatcher.py`
 - harnesses: `spec_runner/harnesses/`
 
+Implementation-owned executable cases:
+
+- `docs/spec/impl/python/cases/validate_conformance_report.spec.md`
+
 ## Supported Flags
 
 Python conformance runner script:
