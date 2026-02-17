@@ -8,8 +8,10 @@ if [[ -z "${SPEC_RUNNER_BIN:-}" ]]; then
   SPEC_RUNNER_BIN="${ROOT_DIR}/scripts/runner_adapter.sh"
 fi
 if [[ -z "${SPEC_RUNNER_IMPL:-}" ]]; then
-  SPEC_RUNNER_IMPL="python"
+  SPEC_RUNNER_IMPL="rust"
 fi
+
+RUN_PYTHON_PARITY="${SPEC_PREPUSH_PYTHON_PARITY:-0}"
 
 run_step() {
   local name="$1"
@@ -80,5 +82,12 @@ else
 fi
 
 run_step perf-smoke "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" perf-smoke --mode strict --compare-only
+
+if [[ "${RUN_PYTHON_PARITY}" == "1" ]]; then
+  run_step python-governance "${SPEC_RUNNER_BIN}" --impl python governance
+  run_step python-conformance-parity "${SPEC_RUNNER_BIN}" --impl python conformance-parity
+else
+  echo "[prepush] skip python parity lane (set SPEC_PREPUSH_PYTHON_PARITY=1 to enable)"
+fi
 
 echo "[prepush] PASS"

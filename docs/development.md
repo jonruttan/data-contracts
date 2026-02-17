@@ -136,6 +136,14 @@ The pre-push gate runs the fast CI-critical contract path:
 `governance-heavy` and `docs-generate-check` are path-scoped and only run when
 relevant files changed.
 
+`make prepush` is Rust-default. Optional Python parity lane:
+
+```sh
+make python-parity
+# or include it in prepush
+SPEC_PREPUSH_PYTHON_PARITY=1 make prepush
+```
+
 Use an explicit runner lane when needed:
 
 ```sh
