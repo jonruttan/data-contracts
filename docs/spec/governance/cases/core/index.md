@@ -46,6 +46,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/docs_current_spec_policy_key_names.spec.md`
 - `/docs/spec/governance/cases/core/docs_docgen_quality_score_threshold.spec.md`
 - `/docs/spec/governance/cases/core/docs_example_id_uniqueness.spec.md`
+- `/docs/spec/governance/cases/core/docs_examples_prefer_domain_fs_helpers.spec.md`
 - `/docs/spec/governance/cases/core/docs_examples_runnable.spec.md`
 - `/docs/spec/governance/cases/core/docs_filename_policy.spec.md`
 - `/docs/spec/governance/cases/core/docs_generated_files_clean.spec.md`

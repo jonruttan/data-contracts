@@ -255,6 +255,19 @@ Currying with collection forms:
       - '[1,2,3]'
 ```
 
+## 4.5) Domain Helper Preference For FS Workflows
+
+In executable specs, prefer domain helpers over raw filesystem primitives.
+
+| Primitive family | Preferred helper family |
+| --- | --- |
+| path normalization/ordering | `domain.path.*` |
+| file metadata predicates | `domain.file.*` |
+| json text path lookups | `domain.fs.json_*` |
+| glob filtering/matching | `domain.fs.glob_*` |
+
+Use raw `ops.fs.*` directly only in stdlib primitive conformance and domain-library implementation specs.
+
 ## 5) Budgets (`harness.spec_lang`)
 
 Optional per-case evaluator limits:

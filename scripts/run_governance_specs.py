@@ -214,6 +214,7 @@ _MD_NAMESPACE_LEGACY_PATTERN = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
 _RAW_OPS_FS_ALLOWED_CASE_FILES = {
     "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
 }
+_OPS_FS_SYMBOL_PATTERN = re.compile(r"\bops\.fs\.[a-z0-9_.]+\b")
 _HARNESS_FILES = (
     "spec_runner/harnesses/text_file.py",
     "spec_runner/harnesses/cli_run.py",
@@ -5655,6 +5656,55 @@ def _validate_python_block(block_lines: list[str]) -> str | None:
     return None
 
 
+def _scan_docs_examples_prefer_domain_fs_helpers(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("examples_prefer_domain_fs_helpers")
+    if not isinstance(cfg, dict):
+        return [
+            "docs.examples_prefer_domain_fs_helpers requires harness.examples_prefer_domain_fs_helpers mapping in governance spec"
+        ]
+    raw_files = cfg.get("files")
+    if (
+        not isinstance(raw_files, list)
+        or not raw_files
+        or any(not isinstance(x, str) or not x.strip() for x in raw_files)
+    ):
+        return ["harness.examples_prefer_domain_fs_helpers.files must be a non-empty list of non-empty strings"]
+
+    for rel in raw_files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing docs file for fs helper preference scan")
+            continue
+        lines = p.read_text(encoding="utf-8").splitlines()
+        i = 0
+        while i < len(lines):
+            opening = _is_markdown_fence_opening(lines[i])
+            if not opening:
+                i += 1
+                continue
+            ch, min_len, language_raw = opening
+            language = str(language_raw).strip().lower()
+            block_start = i + 1
+            i += 1
+            block: list[str] = []
+            while i < len(lines) and not _is_closing_fence(lines[i], ch=ch, min_len=min_len):
+                block.append(lines[i])
+                i += 1
+            if language.startswith("yaml"):
+                block_text = "\n".join(block)
+                symbols = sorted(set(_OPS_FS_SYMBOL_PATTERN.findall(block_text)))
+                if symbols:
+                    violations.append(
+                        f"{rel}:{block_start}: yaml example uses raw ops.fs symbols ({', '.join(symbols)}); "
+                        "prefer domain.path.* / domain.fs.* helpers"
+                    )
+            if i < len(lines):
+                i += 1
+    return violations
+
+
 def _scan_docs_examples_runnable(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -7718,6 +7768,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.domain_library_preferred_for_fs_ops": _scan_runtime_domain_library_preferred_for_fs_ops,
     "runtime.spec_lang_export_type_forbidden": _scan_runtime_spec_lang_export_type_forbidden,
     "docs.api_http_tutorial_sync": _scan_docs_api_http_tutorial_sync,
+    "docs.examples_prefer_domain_fs_helpers": _scan_docs_examples_prefer_domain_fs_helpers,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,
     "runtime.runner_interface_ci_lane": _scan_runtime_runner_interface_ci_lane,
     "runtime.rust_adapter_no_delegate": _scan_runtime_rust_adapter_no_delegate,
