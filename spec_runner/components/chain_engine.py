@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import threading
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
@@ -16,6 +17,11 @@ _CASE_ID_PART = re.compile(r"^[A-Za-z0-9._:-]+$")
 _STEP_CLASS_VALUES = {"must", "can", "cannot"}
 _RESERVED_IMPORT_NAMES = {"subject", "if", "let", "fn", "call", "var"}
 _CHAIN_PRODUCER_EXPORT_KEYS = {"as", "from", "path", "params", "required"}
+_PRODUCER_EXPORT_CACHE_LOCK = threading.RLock()
+_PRODUCER_EXPORT_CACHE: dict[tuple[str, str], dict[str, Any]] = {}
+_DOC_CASES_CACHE_LOCK = threading.RLock()
+_DOC_CASES_CACHE: dict[tuple[str, int, int], list[InternalSpecCase]] = {}
+_DOC_CASE_INDEX_CACHE: dict[tuple[str, int, int], dict[str, list[InternalSpecCase]]] = {}
 
 
 @dataclass(frozen=True)
@@ -316,17 +322,35 @@ def _load_doc_internal_cases(
     doc_cases_cache: dict[str, list[InternalSpecCase]],
     case_index_cache: dict[str, dict[str, list[InternalSpecCase]]],
 ) -> list[InternalSpecCase]:
-    key = doc_path.resolve().as_posix()
-    cached = doc_cases_cache.get(key)
+    resolved = doc_path.resolve()
+    local_key = resolved.as_posix()
+    cached = doc_cases_cache.get(local_key)
     if cached is not None:
         return cached
+    try:
+        st = resolved.stat()
+        global_key = (resolved.as_posix(), int(st.st_mtime_ns), int(st.st_size))
+    except OSError:
+        global_key = (resolved.as_posix(), -1, -1)
+
+    with _DOC_CASES_CACHE_LOCK:
+        global_cached = _DOC_CASES_CACHE.get(global_key)
+        global_index = _DOC_CASE_INDEX_CACHE.get(global_key)
+    if global_cached is not None and global_index is not None:
+        doc_cases_cache[local_key] = global_cached
+        case_index_cache[local_key] = global_index
+        return global_cached
+
     docs = load_external_cases(doc_path, formats={"md"})
     compiled = [compile_external_case(test, doc_path=source_path) for source_path, test in docs]
-    doc_cases_cache[key] = compiled
+    doc_cases_cache[local_key] = compiled
     case_index: dict[str, list[InternalSpecCase]] = {}
     for spec_case in compiled:
         case_index.setdefault(spec_case.id, []).append(spec_case)
-    case_index_cache[key] = case_index
+    case_index_cache[local_key] = case_index
+    with _DOC_CASES_CACHE_LOCK:
+        _DOC_CASES_CACHE[global_key] = compiled
+        _DOC_CASE_INDEX_CACHE[global_key] = case_index
     return compiled
 
 
@@ -453,38 +477,102 @@ def _compile_assert_function_expr(
     return ["fn", list(closure.params), closure.body]
 
 
+def _producer_cache_key(producer_case: InternalSpecCase) -> tuple[str, str]:
+    resolved = producer_case.doc_path.resolve().as_posix()
+    raw = producer_case.raw_case
+    try:
+        # Stable per-case signature covering assert and chain export declarations.
+        import json
+
+        signature = json.dumps(
+            {
+                "assert": raw.get("assert"),
+                "chain": (raw.get("harness") or {}).get("chain") if isinstance(raw.get("harness"), dict) else None,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+    except Exception:
+        signature = repr(raw.get("assert")) + "|" + repr((raw.get("harness") or {}).get("chain"))
+    return (f"{resolved}::{producer_case.id}", signature)
+
+
+def _get_compiled_producer_exports(
+    *,
+    step: ChainStep,
+    producer_case: InternalSpecCase,
+) -> dict[str, Any]:
+    cache_key = _producer_cache_key(producer_case)
+    with _PRODUCER_EXPORT_CACHE_LOCK:
+        cached = _PRODUCER_EXPORT_CACHE.get(cache_key)
+        if cached is not None:
+            return dict(cached)
+
+    exports = _producer_case_exports(producer_case)
+    exprs: dict[str, Any] = {}
+    required_names: set[str] = set()
+    for export_name, producer in exports.items():
+        if producer.from_source != "assert.function":
+            continue
+        if producer.required:
+            required_names.add(export_name)
+        exprs[export_name] = _compile_assert_function_expr(
+            step=step,
+            import_name=export_name,
+            producer=producer,
+            producer_case=producer_case,
+        )
+
+    for required_name in sorted(required_names):
+        if required_name not in exprs:
+            raise ValueError(
+                f"chain step {step.id} import {required_name} could not be resolved from producer refs"
+            )
+    if not exprs:
+        with _PRODUCER_EXPORT_CACHE_LOCK:
+            _PRODUCER_EXPORT_CACHE[cache_key] = {}
+        return {}
+
+    try:
+        compiled = compile_symbol_bindings(exprs, limits=limits_from_harness({}))
+    except Exception as exc:  # noqa: BLE001
+        raise ValueError(
+            f"chain step {step.id} could not compile producer export symbols"
+        ) from exc
+    with _PRODUCER_EXPORT_CACHE_LOCK:
+        _PRODUCER_EXPORT_CACHE[cache_key] = dict(compiled)
+    return dict(compiled)
+
+
 def _extract_assert_function_imports(
     *,
     step: ChainStep,
     refs: list[InternalSpecCase],
 ) -> dict[str, Any]:
-    merged_exprs: dict[str, Any] = {}
+    merged_bindings: dict[str, Any] = {}
     required_exports: set[str] = set()
     deferred_errors: dict[str, Exception] = {}
     for ref_case in refs:
         exports = _producer_case_exports(ref_case)
         for export_name, producer in exports.items():
-            if producer.from_source != "assert.function":
-                continue
-            if producer.required:
+            if producer.from_source == "assert.function" and producer.required:
                 required_exports.add(export_name)
-            if export_name in merged_exprs:
-                continue
-            try:
-                merged_exprs[export_name] = _compile_assert_function_expr(
-                    step=step,
-                    import_name=export_name,
-                    producer=producer,
-                    producer_case=ref_case,
-                )
-            except Exception:
-                if producer.required:
-                    deferred_errors.setdefault(export_name, ValueError(
-                        f"chain step {step.id} import {export_name} could not be resolved from producer refs"
-                    ))
-                continue
+        try:
+            compiled_exports = _get_compiled_producer_exports(step=step, producer_case=ref_case)
+        except Exception as exc:
+            for export_name, producer in exports.items():
+                if producer.from_source == "assert.function" and producer.required:
+                    deferred_errors.setdefault(
+                        export_name,
+                        ValueError(
+                            f"chain step {step.id} import {export_name} could not be resolved from producer refs"
+                        ),
+                    )
+            continue
+        for export_name, symbol in compiled_exports.items():
+            merged_bindings.setdefault(export_name, symbol)
 
-    unresolved_required = sorted(name for name in required_exports if name not in merged_exprs)
+    unresolved_required = sorted(name for name in required_exports if name not in merged_bindings)
     if unresolved_required:
         first = unresolved_required[0]
         raise deferred_errors.get(
@@ -493,16 +581,9 @@ def _extract_assert_function_imports(
                 f"chain step {step.id} import {first} could not be resolved from producer refs"
             ),
         )
-    if not merged_exprs:
+    if not merged_bindings:
         return {}
-
-    try:
-        compiled = compile_symbol_bindings(merged_exprs, limits=limits_from_harness({}))
-    except Exception as exc:  # noqa: BLE001
-        raise ValueError(
-            f"chain step {step.id} could not compile producer export symbols"
-        ) from exc
-    return compiled
+    return merged_bindings
 
 
 def execute_chain_plan(
