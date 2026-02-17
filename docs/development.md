@@ -133,6 +133,9 @@ The pre-push gate runs the fast CI-critical contract path:
 - `docs-generate-check`
 - `perf-smoke --mode strict --compare-only`
 
+`governance-heavy` and `docs-generate-check` are path-scoped and only run when
+relevant files changed.
+
 Use an explicit runner lane when needed:
 
 ```sh

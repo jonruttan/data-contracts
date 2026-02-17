@@ -47,6 +47,8 @@ make prepush
 
 `make prepush` runs the fast CI-critical checks (`normalize-check`, `governance`,
 `governance-heavy`, `docs-generate-check`, and strict perf-smoke compare).
+`governance-heavy` and `docs-generate-check` are path-scoped to relevant
+changes.
 
 Clean-checkout CI parity gate (recommended before push):
 
