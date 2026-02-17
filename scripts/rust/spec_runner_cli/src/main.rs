@@ -37,7 +37,9 @@ fn run_cmd(program: &str, args: &[String], root: &Path) -> i32 {
 }
 
 fn with_forwarded(base: Vec<String>, forwarded: &[String]) -> Vec<String> {
-    base.into_iter().chain(forwarded.iter().cloned()).collect::<Vec<_>>()
+    base.into_iter()
+        .chain(forwarded.iter().cloned())
+        .collect::<Vec<_>>()
 }
 
 fn tool_path(root: &Path, name: &str) -> String {
@@ -53,7 +55,12 @@ fn python_path(root: &Path) -> String {
     if local.exists() {
         return local.to_string_lossy().to_string();
     }
-    let parent = root.join("..").join("..").join(".venv").join("bin").join("python");
+    let parent = root
+        .join("..")
+        .join("..")
+        .join(".venv")
+        .join("bin")
+        .join("python");
     if parent.exists() {
         return parent.to_string_lossy().to_string();
     }
@@ -61,7 +68,10 @@ fn python_path(root: &Path) -> String {
 }
 
 fn script(root: &Path, file: &str) -> String {
-    root.join("scripts").join(file).to_string_lossy().to_string()
+    root.join("scripts")
+        .join(file)
+        .to_string_lossy()
+        .to_string()
 }
 
 fn now_iso_utc_fallback() -> String {
@@ -69,6 +79,223 @@ fn now_iso_utc_fallback() -> String {
         Ok(d) => format!("{}", d.as_secs()),
         Err(_) => "0".to_string(),
     }
+}
+
+fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
+    match subcommand {
+        "validate-report" => Some(
+            "/docs/spec/libraries/domain/conformance_core.spec.md#LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS",
+        ),
+        "docs-lint" => Some("/docs/spec/impl/python/cases/docs_lint.spec.md#SRPY-DOCSLINT-001"),
+        "schema-registry-build" => Some(
+            "/docs/spec/impl/python/cases/schema_registry_report.spec.md#SRPY-SCHEMA-REG-001",
+        ),
+        "schema-registry-check" => Some(
+            "/docs/spec/impl/python/cases/schema_registry_report.spec.md#SRPY-SCHEMA-REG-002",
+        ),
+        "spec-lang-stdlib-json" => Some(
+            "/docs/spec/impl/python/cases/spec_lang_stdlib_report.spec.md#SRPY-STDLIB-REP-001",
+        ),
+        "spec-lang-stdlib-md" => Some(
+            "/docs/spec/impl/python/cases/spec_lang_stdlib_report.spec.md#SRPY-STDLIB-REP-002",
+        ),
+        "contract-assertions-json" => Some(
+            "/docs/spec/impl/python/cases/contract_coverage_report.spec.md#SRPY-CONTRACT-REP-001",
+        ),
+        "contract-assertions-md" => Some(
+            "/docs/spec/impl/python/cases/contract_coverage_report.spec.md#SRPY-CONTRACT-REP-002",
+        ),
+        _ => None,
+    }
+}
+
+fn parse_spec_ref(spec_ref: &str) -> Result<(String, Option<String>), String> {
+    let raw = spec_ref.trim();
+    if raw.is_empty() {
+        return Err("spec ref must not be empty".to_string());
+    }
+    let mut parts = raw.splitn(2, '#');
+    let path = parts.next().unwrap_or("").trim().to_string();
+    let frag = parts.next().map(|s| s.trim().to_string());
+    if path.is_empty() {
+        return Err(format!("spec ref must include path: {spec_ref}"));
+    }
+    if let Some(f) = &frag {
+        if f.is_empty() {
+            return Err(format!("spec ref has empty case id fragment: {spec_ref}"));
+        }
+    }
+    Ok((path, frag))
+}
+
+fn extract_spec_test_blocks(markdown: &str) -> Vec<String> {
+    let mut blocks = Vec::<String>::new();
+    let mut in_block = false;
+    let mut cur = String::new();
+    for line in markdown.lines() {
+        let trimmed = line.trim_end();
+        if !in_block && trimmed == "```yaml spec-test" {
+            in_block = true;
+            cur.clear();
+            continue;
+        }
+        if in_block && trimmed == "```" {
+            blocks.push(cur.clone());
+            in_block = false;
+            cur.clear();
+            continue;
+        }
+        if in_block {
+            cur.push_str(line);
+            cur.push('\n');
+        }
+    }
+    blocks
+}
+
+fn block_id(block: &str) -> Option<String> {
+    for line in block.lines() {
+        let t = line.trim();
+        if let Some(rest) = t.strip_prefix("id:") {
+            let v = rest.trim();
+            if !v.is_empty() {
+                return Some(v.to_string());
+            }
+        }
+    }
+    None
+}
+
+fn load_case_block_from_spec_ref(root: &Path, spec_ref: &str) -> Result<String, String> {
+    let (path_raw, case_id) = parse_spec_ref(spec_ref)?;
+    let rel = path_raw.trim_start_matches('/');
+    let path = root.join(rel);
+    let text = fs::read_to_string(&path)
+        .map_err(|e| format!("failed to read producer spec {}: {e}", path.display()))?;
+    let blocks = extract_spec_test_blocks(&text);
+    if blocks.is_empty() {
+        return Err(format!("no `yaml spec-test` blocks in {}", path.display()));
+    }
+    for block in blocks {
+        if let Some(want) = &case_id {
+            if block_id(&block).as_deref() != Some(want.as_str()) {
+                continue;
+            }
+        }
+        return Ok(block);
+    }
+    Err(format!("case not found via spec ref: {}", spec_ref))
+}
+
+fn ensure_validate_report_export_contract(case_block: &str, spec_ref: &str) -> Result<(), String> {
+    let required_tokens = [
+        "type: spec.export",
+        "as: domain.conformance.validate_report_errors",
+        "from: assert.function",
+        "path: /__export__domain.conformance.validate_report_errors",
+        "params:",
+        "- report",
+        "report.version must equal 1",
+        "report.results must be a list",
+    ];
+    for token in required_tokens {
+        if !case_block.contains(token) {
+            return Err(format!(
+                "producer contract drift for {spec_ref}: missing token `{token}`"
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn validate_report_payload(payload: &Value) -> Vec<String> {
+    let mut out = Vec::<String>::new();
+    let version_ok = payload
+        .as_object()
+        .and_then(|m| m.get("version"))
+        .and_then(Value::as_i64)
+        == Some(1);
+    if !version_ok {
+        out.push("report.version must equal 1".to_string());
+    }
+    let results_ok = payload
+        .as_object()
+        .and_then(|m| m.get("results"))
+        .map(|v| v.is_array())
+        .unwrap_or(false);
+    if !results_ok {
+        out.push("report.results must be a list".to_string());
+    }
+    out
+}
+
+fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
+    if forwarded.len() != 1 {
+        eprintln!("usage: validate-report <report-json-path>");
+        return 2;
+    }
+    let report_path = {
+        let p = PathBuf::from(&forwarded[0]);
+        if p.is_absolute() {
+            p
+        } else {
+            root.join(p)
+        }
+    };
+    let report_text = match fs::read_to_string(&report_path) {
+        Ok(s) => s,
+        Err(e) => {
+            eprintln!(
+                "ERROR: failed to read report {}: {e}",
+                report_path.display()
+            );
+            return 1;
+        }
+    };
+    let payload: Value = match serde_json::from_str(&report_text) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: invalid report json {}: {e}", report_path.display());
+            return 1;
+        }
+    };
+    let spec_ref = match command_spec_ref("validate-report") {
+        Some(v) => v,
+        None => {
+            eprintln!("ERROR: missing spec ref registration for validate-report");
+            return 1;
+        }
+    };
+    let case_block = match load_case_block_from_spec_ref(root, spec_ref) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: {e}");
+            return 1;
+        }
+    };
+    if let Err(e) = ensure_validate_report_export_contract(&case_block, spec_ref) {
+        eprintln!("ERROR: {e}");
+        return 1;
+    }
+    let errors = validate_report_payload(&payload);
+    if errors.is_empty() {
+        println!("OK: valid conformance report ({})", report_path.display());
+        0
+    } else {
+        for err in errors {
+            eprintln!("ERROR: {err}");
+        }
+        1
+    }
+}
+
+fn run_spec_ref_print(subcommand: &str) -> i32 {
+    let Some(spec_ref) = command_spec_ref(subcommand) else {
+        eprintln!("ERROR: no registered spec ref for command: {subcommand}");
+        return 1;
+    };
+    println!("{spec_ref}");
+    0
 }
 
 fn runner_command(runner_bin: &str, runner_impl: &str, subcommand: &str) -> Vec<String> {
@@ -227,7 +454,10 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
     }
 
     let default_steps = vec![
-        ("governance", runner_command(&runner_bin, &runner_impl, "governance")),
+        (
+            "governance",
+            runner_command(&runner_bin, &runner_impl, "governance"),
+        ),
         (
             "governance_heavy",
             runner_command(&runner_bin, &runner_impl, "governance-heavy"),
@@ -236,16 +466,16 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "docs_generate_check",
             runner_command(&runner_bin, &runner_impl, "docs-generate-check"),
         ),
+        ("perf_smoke", {
+            let mut c = runner_command(&runner_bin, &runner_impl, "perf-smoke");
+            c.push("--mode".to_string());
+            c.push("strict".to_string());
+            c
+        }),
         (
-            "perf_smoke",
-            {
-                let mut c = runner_command(&runner_bin, &runner_impl, "perf-smoke");
-                c.push("--mode".to_string());
-                c.push("strict".to_string());
-                c
-            },
+            "docs_lint",
+            runner_command(&runner_bin, &runner_impl, "docs-lint"),
         ),
-        ("docs_lint", runner_command(&runner_bin, &runner_impl, "docs-lint")),
         (
             "normalize_check",
             runner_command(&runner_bin, &runner_impl, "normalize-check"),
@@ -331,8 +561,14 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             runner_command(&runner_bin, &runner_impl, "style-check"),
         ),
         ("ruff", runner_command(&runner_bin, &runner_impl, "lint")),
-        ("mypy", runner_command(&runner_bin, &runner_impl, "typecheck")),
-        ("compileall", runner_command(&runner_bin, &runner_impl, "compilecheck")),
+        (
+            "mypy",
+            runner_command(&runner_bin, &runner_impl, "typecheck"),
+        ),
+        (
+            "compileall",
+            runner_command(&runner_bin, &runner_impl, "compilecheck"),
+        ),
         (
             "conformance_purpose_json",
             runner_command(&runner_bin, &runner_impl, "conformance-purpose-json"),
@@ -345,7 +581,10 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "conformance_parity",
             runner_command(&runner_bin, &runner_impl, "conformance-parity"),
         ),
-        ("pytest", runner_command(&runner_bin, &runner_impl, "test-full")),
+        (
+            "pytest",
+            runner_command(&runner_bin, &runner_impl, "test-full"),
+        ),
     ];
 
     let started = now_iso_utc_fallback();
@@ -371,7 +610,11 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         .all(|s| s.get("status").and_then(Value::as_str) == Some("pass"));
     let first_failure = steps
         .iter()
-        .find_map(|s| s.get("exit_code").and_then(Value::as_i64).filter(|c| *c != 0))
+        .find_map(|s| {
+            s.get("exit_code")
+                .and_then(Value::as_i64)
+                .filter(|c| *c != 0)
+        })
         .unwrap_or(1) as i32;
     let exit_code = if verdict { 0 } else { first_failure };
 
@@ -395,19 +638,34 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
     let out_path = root.join(out.trim_start_matches('/'));
     if let Some(parent) = out_path.parent() {
         if let Err(e) = fs::create_dir_all(parent) {
-            eprintln!("ERROR: failed to create output directory for {}: {e}", out_path.display());
+            eprintln!(
+                "ERROR: failed to create output directory for {}: {e}",
+                out_path.display()
+            );
             return 1;
         }
     }
-    if let Err(e) = fs::write(&out_path, format!("{}\n", serde_json::to_string_pretty(&payload).unwrap_or_else(|_| "{}".to_string()))) {
-        eprintln!("ERROR: failed to write gate summary {}: {e}", out_path.display());
+    if let Err(e) = fs::write(
+        &out_path,
+        format!(
+            "{}\n",
+            serde_json::to_string_pretty(&payload).unwrap_or_else(|_| "{}".to_string())
+        ),
+    ) {
+        eprintln!(
+            "ERROR: failed to write gate summary {}: {e}",
+            out_path.display()
+        );
         return 1;
     }
     if !trace_out.trim().is_empty() {
         let trace_path = root.join(trace_out.trim_start_matches('/'));
         if let Some(parent) = trace_path.parent() {
             if let Err(e) = fs::create_dir_all(parent) {
-                eprintln!("ERROR: failed to create trace directory for {}: {e}", trace_path.display());
+                eprintln!(
+                    "ERROR: failed to create trace directory for {}: {e}",
+                    trace_path.display()
+                );
                 return 1;
             }
         }
@@ -417,8 +675,17 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "runner_impl": payload.get("runner_impl").cloned().unwrap_or(Value::Null),
             "steps": payload.get("steps").cloned().unwrap_or(Value::Array(vec![])),
         });
-        if let Err(e) = fs::write(&trace_path, format!("{}\n", serde_json::to_string_pretty(&trace_payload).unwrap_or_else(|_| "{}".to_string()))) {
-            eprintln!("ERROR: failed to write gate trace {}: {e}", trace_path.display());
+        if let Err(e) = fs::write(
+            &trace_path,
+            format!(
+                "{}\n",
+                serde_json::to_string_pretty(&trace_payload).unwrap_or_else(|_| "{}".to_string())
+            ),
+        ) {
+            eprintln!(
+                "ERROR: failed to write gate trace {}: {e}",
+                trace_path.display()
+            );
             return 1;
         }
         println!("[gate] trace: {}", trace_path.display());
@@ -451,7 +718,20 @@ fn main() {
     let pytest = tool_path(&root, "pytest");
 
     let code = match subcommand.as_str() {
-        "governance" => run_cmd(&py, &with_forwarded(vec![script(&root, "run_governance_specs.py")], &forwarded), &root),
+        "spec-ref" => {
+            if forwarded.len() != 1 {
+                eprintln!("usage: spec-ref <subcommand>");
+                2
+            } else {
+                run_spec_ref_print(&forwarded[0])
+            }
+        }
+        "validate-report" => run_validate_report_native(&root, &forwarded),
+        "governance" => run_cmd(
+            &py,
+            &with_forwarded(vec![script(&root, "run_governance_specs.py")], &forwarded),
+            &root,
+        ),
         "governance-heavy" => run_cmd(
             &py,
             &with_forwarded(
@@ -484,12 +764,18 @@ fn main() {
         ),
         "normalize-check" => run_cmd(
             &py,
-            &with_forwarded(vec![script(&root, "normalize_repo.py"), "--check".to_string()], &forwarded),
+            &with_forwarded(
+                vec![script(&root, "normalize_repo.py"), "--check".to_string()],
+                &forwarded,
+            ),
             &root,
         ),
         "normalize-fix" => run_cmd(
             &py,
-            &with_forwarded(vec![script(&root, "normalize_repo.py"), "--write".to_string()], &forwarded),
+            &with_forwarded(
+                vec![script(&root, "normalize_repo.py"), "--write".to_string()],
+                &forwarded,
+            ),
             &root,
         ),
         "schema-registry-check" => run_cmd(
@@ -527,7 +813,13 @@ fn main() {
         ),
         "schema-docs-check" => run_cmd(
             &py,
-            &with_forwarded(vec![script(&root, "generate_schema_docs.py"), "--check".to_string()], &forwarded),
+            &with_forwarded(
+                vec![
+                    script(&root, "generate_schema_docs.py"),
+                    "--check".to_string(),
+                ],
+                &forwarded,
+            ),
             &root,
         ),
         "schema-docs-build" => run_cmd(
@@ -535,8 +827,16 @@ fn main() {
             &with_forwarded(vec![script(&root, "generate_schema_docs.py")], &forwarded),
             &root,
         ),
-        "lint" => run_cmd(&ruff, &with_forwarded(vec!["check".to_string(), ".".to_string()], &forwarded), &root),
-        "typecheck" => run_cmd(&mypy, &with_forwarded(vec!["spec_runner".to_string()], &forwarded), &root),
+        "lint" => run_cmd(
+            &ruff,
+            &with_forwarded(vec!["check".to_string(), ".".to_string()], &forwarded),
+            &root,
+        ),
+        "typecheck" => run_cmd(
+            &mypy,
+            &with_forwarded(vec!["spec_runner".to_string()], &forwarded),
+            &root,
+        ),
         "compilecheck" => run_cmd(
             &py,
             &with_forwarded(
@@ -803,12 +1103,18 @@ fn main() {
         ),
         "docs-generate" => run_cmd(
             &py,
-            &with_forwarded(vec![script(&root, "docs_generate_all.py"), "--build".to_string()], &forwarded),
+            &with_forwarded(
+                vec![script(&root, "docs_generate_all.py"), "--build".to_string()],
+                &forwarded,
+            ),
             &root,
         ),
         "docs-generate-check" => run_cmd(
             &py,
-            &with_forwarded(vec![script(&root, "docs_generate_all.py"), "--check".to_string()], &forwarded),
+            &with_forwarded(
+                vec![script(&root, "docs_generate_all.py"), "--check".to_string()],
+                &forwarded,
+            ),
             &root,
         ),
         "docs-build" => run_cmd(

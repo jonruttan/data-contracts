@@ -80,6 +80,18 @@ fi
 shift
 
 case "${subcommand}" in
+  spec-ref)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
+  validate-report)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
   governance)
     run_with_timeout_env \
       SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS \

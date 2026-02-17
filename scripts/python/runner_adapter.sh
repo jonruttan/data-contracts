@@ -70,6 +70,9 @@ fi
 shift
 
 case "${subcommand}" in
+  validate-report)
+    exec "${PYTHON_BIN}" -m spec_runner.spec_lang_commands validate-report "$@"
+    ;;
   governance)
     run_with_timeout_env \
       SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS \
