@@ -38,6 +38,14 @@ Environment equivalents:
 - `SPEC_RUNNER_LIVENESS_HARD_CAP_MS`
 - `SPEC_RUNNER_LIVENESS_KILL_GRACE_MS`
 
+Fail-fast gate controls:
+
+- `--fail-fast` (default `true`)
+- `--continue-on-fail` (disables fail-fast)
+- `--profile-on-fail off|basic|detailed` (default `basic`)
+- `SPEC_RUNNER_FAIL_FAST`
+- `SPEC_RUNNER_PROFILE_ON_FAIL`
+
 ## Artifact
 
 - Schema: `/docs/spec/schema/run_trace_v1.yaml`
@@ -49,6 +57,19 @@ Required top-level fields:
 - `version`, `run_id`, `runner_impl`, `started_at`, `ended_at`, `status`
 - `command`, `args`, `env_profile`
 - `spans`, `events`, `summary`
+
+Fail-fast gate summary payload contract:
+
+- `fail_fast_enabled: bool`
+- `first_failure_step: string|null`
+- `aborted_after_step: string|null`
+- `skipped_step_count: int`
+- step rows MAY include `skip_reason` and `blocked_by` when status is `skipped`.
+
+On failing `ci-gate-summary` runs with profile-on-fail enabled:
+
+- `/.artifacts/run-trace.json` MUST be written.
+- `/.artifacts/run-trace-summary.md` MUST be written.
 
 ## Required Span Taxonomy
 

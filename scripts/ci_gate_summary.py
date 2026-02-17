@@ -14,6 +14,97 @@ from spec_runner.governance_engine import normalize_policy_evaluate
 from spec_runner.spec_lang import SpecLangLimits, eval_predicate
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = str(os.environ.get(name, "")).strip().lower()
+    if not raw:
+        return default
+    if raw in {"1", "true", "yes", "on"}:
+        return True
+    if raw in {"0", "false", "no", "off"}:
+        return False
+    return default
+
+
+def _coerce_profile_level(raw: str) -> str:
+    level = str(raw or "").strip().lower()
+    if level in {"off", "basic", "detailed", "debug"}:
+        return level
+    return "off"
+
+
+def _write_fail_profile_artifacts(
+    *,
+    trace_path: Path,
+    summary_path: Path,
+    payload: dict[str, object],
+) -> None:
+    trace_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    run_trace = {
+        "version": 1,
+        "run_id": f"gate-{int(time.time() * 1000)}",
+        "runner_impl": payload.get("runner_impl"),
+        "started_at": payload.get("started_at"),
+        "ended_at": payload.get("finished_at"),
+        "status": payload.get("status"),
+        "command": "ci-gate-summary",
+        "args": [],
+        "env_profile": {},
+        "spans": [
+            {
+                "span_id": "s1",
+                "parent_span_id": None,
+                "kind": "run",
+                "name": "run.total",
+                "phase": "run.total",
+                "start_ns": 0,
+                "end_ns": int(payload.get("total_duration_ms", 0)) * 1_000_000,
+                "duration_ms": float(payload.get("total_duration_ms", 0)),
+                "status": "ok" if payload.get("status") == "pass" else "error",
+                "attrs": {"source": "ci-gate-summary"},
+                "error": None,
+            }
+        ],
+        "events": payload.get("events", []),
+        "summary": {
+            "step_count": len(payload.get("steps", [])) if isinstance(payload.get("steps"), list) else 0,
+            "failed_step": payload.get("first_failure_step"),
+        },
+    }
+    trace_path.write_text(json.dumps(run_trace, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    rows = []
+    steps = payload.get("steps")
+    if isinstance(steps, list):
+        for row in steps:
+            if isinstance(row, dict):
+                rows.append(
+                    (
+                        str(row.get("name", "")),
+                        str(row.get("status", "")),
+                        str(row.get("duration_ms", "")),
+                    )
+                )
+    md = [
+        "# Run Trace Summary",
+        "",
+        f"- status: `{payload.get('status', 'unknown')}`",
+        f"- first_failure_step: `{payload.get('first_failure_step', '')}`",
+        f"- skipped_step_count: `{payload.get('skipped_step_count', 0)}`",
+        "",
+        "## Steps",
+        "",
+        "| step | status | duration_ms |",
+        "|---|---|---|",
+    ]
+    for name, status, duration in rows:
+        md.append(f"| `{name}` | `{status}` | `{duration}` |")
+    md.append("")
+    md.append("## Suggested Next Command")
+    md.append("")
+    md.append("- `./scripts/runner_adapter.sh --impl rust --profile-level detailed ci-gate-summary`")
+    summary_path.write_text("\n".join(md) + "\n", encoding="utf-8")
+
+
 def _now_iso_utc() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
@@ -71,9 +162,45 @@ def _run_command(command: list[str]) -> int:
     return int(proc.returncode)
 
 
-def _run_steps(steps: list[tuple[str, list[str]]]) -> list[dict[str, object]]:
+def _run_steps(
+    steps: list[tuple[str, list[str]]],
+    *,
+    fail_fast: bool,
+) -> tuple[list[dict[str, object]], list[dict[str, object]], str | None]:
     rows: list[dict[str, object]] = []
+    events: list[dict[str, object]] = []
+    first_failure_step: str | None = None
+    aborted = False
     for name, command in steps:
+        if aborted:
+            rows.append(
+                {
+                    "name": name,
+                    "command": command,
+                    "status": "skipped",
+                    "exit_code": None,
+                    "duration_ms": 0,
+                    "skip_reason": "fail_fast.after_failure",
+                    "blocked_by": first_failure_step,
+                }
+            )
+            events.append(
+                {
+                    "ts_ns": time.monotonic_ns(),
+                    "kind": "checkpoint",
+                    "span_id": "run.total",
+                    "attrs": {"event": "gate.step.skipped", "step": name, "blocked_by": first_failure_step},
+                }
+            )
+            continue
+        events.append(
+            {
+                "ts_ns": time.monotonic_ns(),
+                "kind": "checkpoint",
+                "span_id": "run.total",
+                "attrs": {"event": "gate.step.start", "step": name},
+            }
+        )
         print(f"[gate] {name}: {' '.join(command)}")
         t0 = time.perf_counter()
         code = _run_command(command)
@@ -88,7 +215,27 @@ def _run_steps(steps: list[tuple[str, list[str]]]) -> list[dict[str, object]]:
                 "duration_ms": duration_ms,
             }
         )
-    return rows
+        events.append(
+            {
+                "ts_ns": time.monotonic_ns(),
+                "kind": "checkpoint",
+                "span_id": "run.total",
+                "attrs": {"event": f"gate.step.{status}", "step": name, "exit_code": code},
+            }
+        )
+        if status == "fail" and first_failure_step is None:
+            first_failure_step = name
+            if fail_fast:
+                aborted = True
+                events.append(
+                    {
+                        "ts_ns": time.monotonic_ns(),
+                        "kind": "checkpoint",
+                        "span_id": "run.total",
+                        "attrs": {"event": "gate.fail_fast.abort", "after_step": name},
+                    }
+                )
+    return rows, events, first_failure_step
 
 
 def _collect_unit_test_opt_out(root: Path) -> dict[str, int]:
@@ -178,18 +325,51 @@ def main(argv: list[str] | None = None) -> int:
         default=os.environ.get("SPEC_RUNNER_TRACE_OUT", ""),
         help="Optional output path for command execution trace JSON.",
     )
+    ap.add_argument(
+        "--fail-fast",
+        action="store_true",
+        default=False,
+        help="Stop after first failing gate step (default: true unless --continue-on-fail).",
+    )
+    ap.add_argument(
+        "--continue-on-fail",
+        action="store_true",
+        help="Disable fail-fast and execute all gate steps.",
+    )
+    ap.add_argument(
+        "--profile-on-fail",
+        default=os.environ.get("SPEC_RUNNER_PROFILE_ON_FAIL", "basic"),
+        help="off|basic|detailed for fail-fast diagnostics (default: basic).",
+    )
     ns = ap.parse_args(argv)
 
     out_path = Path(str(ns.out))
     out_path.parent.mkdir(parents=True, exist_ok=True)
     policy_case = Path(str(ns.policy_case))
     policy_evaluate = _load_gate_policy_expr(policy_case)
+    fail_fast_env_default = _env_bool("SPEC_RUNNER_FAIL_FAST", True)
+    fail_fast_enabled = not bool(ns.continue_on_fail)
+    if ns.fail_fast:
+        fail_fast_enabled = True
+    elif not ns.continue_on_fail:
+        fail_fast_enabled = fail_fast_env_default
+    profile_on_fail = _coerce_profile_level(str(ns.profile_on_fail))
 
     started = _now_iso_utc()
     t0 = time.perf_counter()
-    steps = _run_steps(_default_steps(str(ns.runner_bin), str(ns.runner_impl)))
+    steps, events, first_failure_step = _run_steps(
+        _default_steps(str(ns.runner_bin), str(ns.runner_impl)),
+        fail_fast=fail_fast_enabled,
+    )
     verdict = _evaluate_gate_policy(rows=steps, policy_evaluate=policy_evaluate)
-    first_failure = next((int(step["exit_code"]) for step in steps if int(step["exit_code"]) != 0), 1)
+    first_failure = next(
+        (
+            int(step["exit_code"])
+            for step in steps
+            if step.get("exit_code") is not None and int(step["exit_code"]) != 0
+        ),
+        1,
+    )
     exit_code = 0 if verdict else first_failure
     total_duration_ms = int((time.perf_counter() - t0) * 1000)
     finished = _now_iso_utc()
@@ -204,6 +384,11 @@ def main(argv: list[str] | None = None) -> int:
         "finished_at": finished,
         "total_duration_ms": total_duration_ms,
         "steps": steps,
+        "events": events,
+        "fail_fast_enabled": bool(fail_fast_enabled),
+        "first_failure_step": first_failure_step,
+        "aborted_after_step": first_failure_step if (first_failure_step and fail_fast_enabled) else None,
+        "skipped_step_count": sum(1 for step in steps if str(step.get("status", "")) == "skipped"),
         "runner_bin": str(ns.runner_bin),
         "runner_impl": str(ns.runner_impl),
         "unit_test_opt_out": _collect_unit_test_opt_out(Path.cwd()),
@@ -218,9 +403,20 @@ def main(argv: list[str] | None = None) -> int:
             "runner_bin": str(ns.runner_bin),
             "runner_impl": str(ns.runner_impl),
             "steps": steps,
+            "events": events,
+            "fail_fast_enabled": bool(fail_fast_enabled),
+            "first_failure_step": first_failure_step,
         }
         trace_path.write_text(json.dumps(trace_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         print(f"[gate] trace: {trace_path}")
+    if exit_code != 0 and profile_on_fail != "off":
+        _write_fail_profile_artifacts(
+            trace_path=Path(".artifacts/run-trace.json"),
+            summary_path=Path(".artifacts/run-trace-summary.md"),
+            payload=payload,
+        )
+        print("[gate] profile: .artifacts/run-trace.json")
+        print("[gate] profile-summary: .artifacts/run-trace-summary.md")
     print(f"[gate] summary: {out_path}")
     return exit_code
 

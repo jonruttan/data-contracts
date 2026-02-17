@@ -3344,3 +3344,58 @@ links:
   - spec_runner/components/profiler.py
   - scripts/rust/spec_runner_cli/src/profiler.rs
   notes: Runtime profiling traces include required run/case/check/subprocess span taxonomy.
+- rule_id: RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - scripts/run_governance_specs.py
+  notes: Gate orchestration defaults to deterministic fail-fast and emits explicit abort markers.
+- rule_id: RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - scripts/run_governance_specs.py
+  notes: Gate summary payload includes deterministic skipped-tail metadata for fail-fast runs.
+- rule_id: RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED
+  contract_refs:
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  schema_refs:
+  - docs/spec/schema/run_trace_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - scripts/run_governance_specs.py
+  notes: Failing gate runs with profile-on-fail enabled emit diagnostic trace artifacts.
+- rule_id: RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/contract/18_governance_subject_extractors.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - scripts/run_governance_specs.py
+  notes: Policy evaluation considers full rows including skipped statuses to preserve fail-fast correctness.

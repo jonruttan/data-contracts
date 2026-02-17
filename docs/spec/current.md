@@ -20,6 +20,11 @@ Notes:
   (`--liveness-*` / `SPEC_RUNNER_LIVENESS_*`) is primary with emergency
   hard-cap fallback; legacy governance timeout env vars are deprecated and
   mapped to hard-cap behavior.
+- Gate orchestration now defaults to fail-fast in `ci-gate-summary` with
+  deterministic skipped-tail rows (`skip_reason: fail_fast.after_failure`)
+  and profile-on-fail diagnostics (`--profile-on-fail`,
+  `SPEC_RUNNER_PROFILE_ON_FAIL`) that emit `/.artifacts/run-trace.json` and
+  `/.artifacts/run-trace-summary.md` for failing runs.
 - Subject projection now follows JSON-core profile envelopes
   (`profile_id`, `profile_version`, `value`, `meta`, optional `context`);
   evaluator subjects are JSON-only.

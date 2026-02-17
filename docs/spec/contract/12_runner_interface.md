@@ -75,6 +75,17 @@ Environment equivalents:
 - `SPEC_RUNNER_PROFILE_HEARTBEAT_MS`
 - `SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS`
 
+Gate fail-fast controls (`ci-gate-summary`):
+
+- `--fail-fast` (default `true`)
+- `--continue-on-fail` (sets fail-fast false)
+- `--profile-on-fail off|basic|detailed` (default `basic`)
+
+Environment equivalents:
+
+- `SPEC_RUNNER_FAIL_FAST`
+- `SPEC_RUNNER_PROFILE_ON_FAIL`
+
 Liveness controls (governance-first):
 
 - `--liveness-level off|basic|strict`

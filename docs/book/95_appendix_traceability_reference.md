@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 222
+- link_count: 226
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 222
-- rules_with_implementation_refs: 220
+- rules_with_unit_tests: 226
+- rules_with_implementation_refs: 224
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -218,7 +218,11 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | `docs/spec/contract/policy_v1.yaml#RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | 2 | 1 | 0 | 2 | 7 |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | 2 | 1 | 0 | 2 | 3 |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
+| `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
+| `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
+| `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | 1 | 0 | 0 | 1 | 3 |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `docs/spec/contract/policy_v1.yaml#RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | 2 | 0 | 0 | 2 | 2 |
+| `RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED` | 1 | 1 | 0 | 1 | 3 |

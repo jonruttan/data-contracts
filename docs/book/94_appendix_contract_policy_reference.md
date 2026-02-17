@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 222
-- must_count: 203
+- rule_count: 226
+- must_count: 207
 - should_count: 12
 - must_not_count: 7
-- active_count: 222
+- active_count: 226
 - deprecated_count: 0
 - removed_count: 0
 
@@ -221,7 +221,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | `MUST` | `implementation` | `runtime.assertion_execution` | 2 | `active` |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `implementation` | `runtime.assertion_decisions` | 2 | `active` |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `MUST` | `governance` | `runtime.default_gate.adapter` | 3 | `active` |
+| `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `MUST` | `governance` | `runtime.gate.fail_fast` | 3 | `active` |
+| `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `MUST` | `governance` | `runtime.gate.policy` | 4 | `active` |
+| `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `MUST` | `governance` | `runtime.gate.summary_contract` | 4 | `active` |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `MUST` | `governance` | `runtime.non_python_lanes.exec_tokens` | 2 | `active` |
+| `RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | `MUST` | `governance` | `runtime.gate.profile_on_fail` | 4 | `active` |
 | `RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | `MUST` | `governance` | `runtime.profiling.contract` | 3 | `active` |
 | `RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | `MUST` | `governance` | `runtime.profiling.redaction` | 2 | `active` |
 | `RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED` | `MUST` | `governance` | `runtime.profiling.span_taxonomy` | 3 | `active` |

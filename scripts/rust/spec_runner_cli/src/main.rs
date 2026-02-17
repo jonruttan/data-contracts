@@ -201,6 +201,30 @@ fn now_iso_utc_fallback() -> String {
     }
 }
 
+fn env_bool(name: &str, default_value: bool) -> bool {
+    let raw = std::env::var(name).unwrap_or_default();
+    let normalized = raw.trim().to_ascii_lowercase();
+    if normalized.is_empty() {
+        return default_value;
+    }
+    if matches!(normalized.as_str(), "1" | "true" | "yes" | "on") {
+        return true;
+    }
+    if matches!(normalized.as_str(), "0" | "false" | "no" | "off") {
+        return false;
+    }
+    default_value
+}
+
+fn profile_level_or_off(raw: &str) -> String {
+    let lvl = raw.trim().to_ascii_lowercase();
+    if matches!(lvl.as_str(), "off" | "basic" | "detailed" | "debug") {
+        lvl
+    } else {
+        "off".to_string()
+    }
+}
+
 fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
     match subcommand {
         "validate-report" => Some(
@@ -787,6 +811,12 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut runner_bin = format!("./{}/{}", "scripts", "runner_adapter.sh");
     let mut runner_impl = env::var("SPEC_RUNNER_IMPL").unwrap_or_else(|_| "rust".to_string());
     let mut trace_out = env::var("SPEC_RUNNER_TRACE_OUT").unwrap_or_default();
+    let mut fail_fast = env_bool("SPEC_RUNNER_FAIL_FAST", true);
+    let mut profile_on_fail = profile_level_or_off(
+        env::var("SPEC_RUNNER_PROFILE_ON_FAIL")
+            .unwrap_or_else(|_| "basic".to_string())
+            .as_str(),
+    );
 
     let mut i = 0usize;
     while i < forwarded.len() {
@@ -833,6 +863,25 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
                 eprintln!("ERROR: --policy-case requires value");
                 return 2;
             }
+            i += 2;
+            continue;
+        }
+        if arg == "--fail-fast" {
+            fail_fast = true;
+            i += 1;
+            continue;
+        }
+        if arg == "--continue-on-fail" {
+            fail_fast = false;
+            i += 1;
+            continue;
+        }
+        if arg == "--profile-on-fail" {
+            if i + 1 >= forwarded.len() {
+                eprintln!("ERROR: --profile-on-fail requires value");
+                return 2;
+            }
+            profile_on_fail = profile_level_or_off(&forwarded[i + 1]);
             i += 2;
             continue;
         }
@@ -977,7 +1026,34 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
     let started = now_iso_utc_fallback();
     let t0 = Instant::now();
     let mut steps = Vec::<Value>::new();
+    let mut events = Vec::<Value>::new();
+    let mut first_failure_step: Option<String> = None;
+    let mut aborted = false;
     for (name, command) in default_steps {
+        if aborted {
+            steps.push(json!({
+                "name": name,
+                "command": command,
+                "status": "skipped",
+                "exit_code": Value::Null,
+                "duration_ms": 0,
+                "skip_reason": "fail_fast.after_failure",
+                "blocked_by": first_failure_step.clone(),
+            }));
+            events.push(json!({
+                "ts_ns": t0.elapsed().as_nanos() as i64,
+                "kind": "checkpoint",
+                "span_id": "run.total",
+                "attrs": {"event":"gate.step.skipped","step":name,"blocked_by":first_failure_step.clone()}
+            }));
+            continue;
+        }
+        events.push(json!({
+            "ts_ns": t0.elapsed().as_nanos() as i64,
+            "kind": "checkpoint",
+            "span_id": "run.total",
+            "attrs": {"event":"gate.step.start","step":name}
+        }));
         println!("[gate] {name}: {}", command.join(" "));
         let step_start = Instant::now();
         let code = run_command_capture_code(&command, root);
@@ -990,6 +1066,24 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "exit_code": code,
             "duration_ms": duration_ms,
         }));
+        events.push(json!({
+            "ts_ns": t0.elapsed().as_nanos() as i64,
+            "kind": "checkpoint",
+            "span_id": "run.total",
+            "attrs": {"event":format!("gate.step.{}", status),"step":name,"exit_code":code}
+        }));
+        if status == "fail" && first_failure_step.is_none() {
+            first_failure_step = Some(name.to_string());
+            if fail_fast {
+                aborted = true;
+                events.push(json!({
+                    "ts_ns": t0.elapsed().as_nanos() as i64,
+                    "kind": "checkpoint",
+                    "span_id": "run.total",
+                    "attrs": {"event":"gate.fail_fast.abort","after_step":name}
+                }));
+            }
+        }
     }
 
     let verdict = steps
@@ -1007,6 +1101,16 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
 
     let finished = now_iso_utc_fallback();
     let total_duration_ms = t0.elapsed().as_millis() as i64;
+    let skipped_step_count = steps
+        .iter()
+        .filter(|x| x.get("status").and_then(Value::as_str) == Some("skipped"))
+        .count();
+    let first_failure_for_payload = first_failure_step.clone();
+    let aborted_after_for_payload = if fail_fast {
+        first_failure_step.clone()
+    } else {
+        None
+    };
     let payload = json!({
         "version": 1,
         "status": if verdict { "pass" } else { "fail" },
@@ -1017,6 +1121,11 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         "finished_at": finished,
         "total_duration_ms": total_duration_ms,
         "steps": steps,
+        "events": events,
+        "fail_fast_enabled": fail_fast,
+        "first_failure_step": first_failure_for_payload,
+        "aborted_after_step": aborted_after_for_payload,
+        "skipped_step_count": skipped_step_count,
         "runner_bin": runner_bin,
         "runner_impl": runner_impl,
         "unit_test_opt_out": collect_unit_test_opt_out(root),
@@ -1061,6 +1170,9 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "runner_bin": payload.get("runner_bin").cloned().unwrap_or(Value::Null),
             "runner_impl": payload.get("runner_impl").cloned().unwrap_or(Value::Null),
             "steps": payload.get("steps").cloned().unwrap_or(Value::Array(vec![])),
+            "events": payload.get("events").cloned().unwrap_or(Value::Array(vec![])),
+            "fail_fast_enabled": payload.get("fail_fast_enabled").cloned().unwrap_or(Value::Bool(false)),
+            "first_failure_step": payload.get("first_failure_step").cloned().unwrap_or(Value::Null),
         });
         if let Err(e) = fs::write(
             &trace_path,
@@ -1076,6 +1188,71 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             return 1;
         }
         println!("[gate] trace: {}", trace_path.display());
+    }
+    if exit_code != 0 && profile_on_fail != "off" {
+        let run_trace_path = root.join(".artifacts/run-trace.json");
+        let run_summary_path = root.join(".artifacts/run-trace-summary.md");
+        if let Some(parent) = run_trace_path.parent() {
+            let _ = fs::create_dir_all(parent);
+        }
+        if let Some(parent) = run_summary_path.parent() {
+            let _ = fs::create_dir_all(parent);
+        }
+        let fail_profile_payload = json!({
+            "version": 1,
+            "run_id": format!("gate-{}", SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_millis()).unwrap_or(0)),
+            "runner_impl": payload.get("runner_impl").cloned().unwrap_or(Value::Null),
+            "started_at": payload.get("started_at").cloned().unwrap_or(Value::Null),
+            "ended_at": payload.get("finished_at").cloned().unwrap_or(Value::Null),
+            "status": payload.get("status").cloned().unwrap_or(Value::Null),
+            "command": "ci-gate-summary",
+            "args": [],
+            "env_profile": {},
+            "spans": [{
+                "span_id":"s1",
+                "parent_span_id": Value::Null,
+                "kind":"run",
+                "name":"run.total",
+                "phase":"run.total",
+                "start_ns":0,
+                "end_ns": payload.get("total_duration_ms").and_then(Value::as_i64).unwrap_or(0) * 1_000_000,
+                "duration_ms": payload.get("total_duration_ms").and_then(Value::as_i64).unwrap_or(0),
+                "status": if exit_code == 0 { "ok" } else { "error" },
+                "attrs": {"source":"ci-gate-summary"},
+                "error": Value::Null
+            }],
+            "events": payload.get("events").cloned().unwrap_or(Value::Array(vec![])),
+            "summary": {
+                "step_count": payload.get("steps").and_then(Value::as_array).map(|x| x.len()).unwrap_or(0),
+                "failed_step": payload.get("first_failure_step").cloned().unwrap_or(Value::Null)
+            }
+        });
+        let _ = fs::write(
+            &run_trace_path,
+            format!(
+                "{}\n",
+                serde_json::to_string_pretty(&fail_profile_payload).unwrap_or_else(|_| "{}".to_string())
+            ),
+        );
+        let mut summary_md = String::new();
+        summary_md.push_str("# Run Trace Summary\n\n");
+        summary_md.push_str(&format!(
+            "- status: `{}`\n",
+            payload.get("status").and_then(Value::as_str).unwrap_or("unknown")
+        ));
+        summary_md.push_str(&format!(
+            "- first_failure_step: `{}`\n",
+            payload.get("first_failure_step").and_then(Value::as_str).unwrap_or("")
+        ));
+        summary_md.push_str(&format!(
+            "- skipped_step_count: `{}`\n\n",
+            payload.get("skipped_step_count").and_then(Value::as_u64).unwrap_or(0)
+        ));
+        summary_md.push_str("## Suggested Next Command\n\n");
+        summary_md.push_str("- `spec_runner_cli --profile-level detailed ci-gate-summary`\n");
+        let _ = fs::write(&run_summary_path, summary_md);
+        println!("[gate] profile: {}", run_trace_path.display());
+        println!("[gate] profile-summary: {}", run_summary_path.display());
     }
     println!("[gate] summary: {}", out_path.display());
     exit_code

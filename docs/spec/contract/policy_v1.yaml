@@ -3256,3 +3256,58 @@ rules:
   - docs/spec/schema/run_trace_v1.yaml
   - docs/spec/contract/24_runtime_profiling_contract.md
   - docs/spec/governance/cases/core/runtime_profiling_span_taxonomy.spec.md
+- id: RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.gate.fail_fast
+  norm: MUST
+  requirement: ci_gate_summary_must_abort_after_first_failure_by_default
+  description: CI gate orchestration must support deterministic fail-fast behavior and mark skipped tail steps.
+  rationale: Reduces turnaround time while preserving deterministic diagnostics.
+  risk_if_violated: Gates continue expensive work after known failure and slow feedback loops.
+  references:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - docs/spec/governance/cases/core/runtime_gate_fail_fast_behavior_required.spec.md
+- id: RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.gate.summary_contract
+  norm: MUST
+  requirement: gate_summary_must_include_skipped_rows_and_abort_metadata
+  description: Gate summary payloads must include skipped row metadata for fail-fast runs.
+  rationale: Preserves machine-readable post-failure context without running the full gate.
+  risk_if_violated: Diagnostics lose cause-chain detail and become brittle.
+  references:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  - docs/spec/governance/cases/core/runtime_gate_skipped_steps_contract_required.spec.md
+- id: RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.gate.profile_on_fail
+  norm: MUST
+  requirement: failing_gate_runs_emit_profile_artifacts_when_profile_on_fail_enabled
+  description: Failing gate runs must emit lightweight trace and summary artifacts when profile-on-fail is enabled.
+  rationale: Ensures failures are diagnosable without rerunning first.
+  risk_if_violated: Hang and failure triage remains slow and manual.
+  references:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  - docs/spec/governance/cases/core/runtime_profile_artifacts_on_fail_required.spec.md
+- id: RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.gate.policy
+  norm: MUST
+  requirement: gate_policy_must_evaluate_full_rows_including_skipped_statuses
+  description: Gate policy evaluation must include skipped rows so skipped statuses remain non-pass in final verdict.
+  rationale: Preserves correctness when fail-fast short-circuits execution.
+  risk_if_violated: Fail-fast runs could incorrectly report pass semantics.
+  references:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
+  - docs/spec/governance/cases/core/runtime_gate_policy_evaluates_with_skipped_rows.spec.md

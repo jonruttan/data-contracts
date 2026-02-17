@@ -120,6 +120,18 @@ while [[ $# -gt 0 ]]; do
       export SPEC_RUNNER_LIVENESS_KILL_GRACE_MS="${2:-}"
       shift 2
       ;;
+    --fail-fast)
+      export SPEC_RUNNER_FAIL_FAST=1
+      shift
+      ;;
+    --continue-on-fail)
+      export SPEC_RUNNER_FAIL_FAST=0
+      shift
+      ;;
+    --profile-on-fail)
+      export SPEC_RUNNER_PROFILE_ON_FAIL="${2:-}"
+      shift 2
+      ;;
     *)
       break
       ;;

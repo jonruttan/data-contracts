@@ -16,6 +16,8 @@ liveness_stall_ms=""
 liveness_min_events=""
 liveness_hard_cap_ms=""
 liveness_kill_grace_ms=""
+fail_fast_setting=""
+profile_on_fail=""
 while [[ $# -gt 0 ]]; do
   case "${1:-}" in
     --verbose|-v)
@@ -68,6 +70,18 @@ while [[ $# -gt 0 ]]; do
       ;;
     --liveness-kill-grace-ms)
       liveness_kill_grace_ms="${2:-}"
+      shift 2
+      ;;
+    --fail-fast)
+      fail_fast_setting="1"
+      shift
+      ;;
+    --continue-on-fail)
+      fail_fast_setting="0"
+      shift
+      ;;
+    --profile-on-fail)
+      profile_on_fail="${2:-}"
       shift 2
       ;;
     *)
@@ -124,6 +138,12 @@ if [[ -n "${liveness_hard_cap_ms}" ]]; then
 fi
 if [[ -n "${liveness_kill_grace_ms}" ]]; then
   export SPEC_RUNNER_LIVENESS_KILL_GRACE_MS="${liveness_kill_grace_ms}"
+fi
+if [[ -n "${fail_fast_setting}" ]]; then
+  export SPEC_RUNNER_FAIL_FAST="${fail_fast_setting}"
+fi
+if [[ -n "${profile_on_fail}" ]]; then
+  export SPEC_RUNNER_PROFILE_ON_FAIL="${profile_on_fail}"
 fi
 
 case "${impl}" in

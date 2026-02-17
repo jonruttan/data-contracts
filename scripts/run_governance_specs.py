@@ -6453,6 +6453,138 @@ def _scan_runtime_liveness_hard_cap_token_emitted(root: Path, *, harness: dict |
     return []
 
 
+def _scan_runtime_gate_fail_fast_behavior_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("gate_fail_fast")
+    if not isinstance(cfg, dict):
+        return ["runtime.gate_fail_fast_behavior_required requires harness.gate_fail_fast mapping in governance spec"]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens")
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.gate_fail_fast.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.gate_fail_fast.required_tokens must be a non-empty list of non-empty strings"]
+    violations: list[str] = []
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing gate fail-fast file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing fail-fast token {tok}")
+    return violations
+
+
+def _scan_runtime_gate_skipped_steps_contract_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("gate_skipped_contract")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.gate_skipped_steps_contract_required requires harness.gate_skipped_contract mapping in governance spec"
+        ]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens")
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.gate_skipped_contract.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.gate_skipped_contract.required_tokens must be a non-empty list of non-empty strings"]
+    violations: list[str] = []
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing skipped-steps contract file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing skipped-steps token {tok}")
+    return violations
+
+
+def _scan_runtime_profile_artifacts_on_fail_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("profile_on_fail")
+    if not isinstance(cfg, dict):
+        return ["runtime.profile_artifacts_on_fail_required requires harness.profile_on_fail mapping in governance spec"]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens")
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.profile_on_fail.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.profile_on_fail.required_tokens must be a non-empty list of non-empty strings"]
+    violations: list[str] = []
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing profile-on-fail file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing profile-on-fail token {tok}")
+    return violations
+
+
+def _scan_runtime_gate_policy_evaluates_with_skipped_rows(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("gate_policy_skipped_rows")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.gate_policy_evaluates_with_skipped_rows requires harness.gate_policy_skipped_rows mapping in governance spec"
+        ]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens")
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.gate_policy_skipped_rows.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.gate_policy_skipped_rows.required_tokens must be a non-empty list of non-empty strings"]
+    violations: list[str] = []
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing gate policy file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing skipped-rows policy token {tok}")
+    return violations
+
+
 def _scan_runtime_legacy_timeout_envs_deprecated(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     violations: list[str] = []
@@ -8331,6 +8463,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.liveness_watchdog_contract_valid": _scan_runtime_liveness_watchdog_contract_valid,
     "runtime.liveness_stall_token_emitted": _scan_runtime_liveness_stall_token_emitted,
     "runtime.liveness_hard_cap_token_emitted": _scan_runtime_liveness_hard_cap_token_emitted,
+    "runtime.gate_fail_fast_behavior_required": _scan_runtime_gate_fail_fast_behavior_required,
+    "runtime.gate_skipped_steps_contract_required": _scan_runtime_gate_skipped_steps_contract_required,
+    "runtime.profile_artifacts_on_fail_required": _scan_runtime_profile_artifacts_on_fail_required,
+    "runtime.gate_policy_evaluates_with_skipped_rows": _scan_runtime_gate_policy_evaluates_with_skipped_rows,
     "runtime.legacy_timeout_envs_deprecated": _scan_runtime_legacy_timeout_envs_deprecated,
     "architecture.harness_workflow_components_required": _scan_architecture_harness_workflow_components_required,
     "architecture.harness_local_workflow_duplication_forbidden": _scan_architecture_harness_local_workflow_duplication_forbidden,
