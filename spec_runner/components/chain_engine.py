@@ -497,7 +497,7 @@ def _producer_cache_key(producer_case: InternalSpecCase) -> tuple[str, str]:
     return (f"{resolved}::{producer_case.id}", signature)
 
 
-def _get_compiled_producer_exports(
+def _get_producer_export_exprs(
     *,
     step: ChainStep,
     producer_case: InternalSpecCase,
@@ -532,16 +532,9 @@ def _get_compiled_producer_exports(
         with _PRODUCER_EXPORT_CACHE_LOCK:
             _PRODUCER_EXPORT_CACHE[cache_key] = {}
         return {}
-
-    try:
-        compiled = compile_symbol_bindings(exprs, limits=limits_from_harness({}))
-    except Exception as exc:  # noqa: BLE001
-        raise ValueError(
-            f"chain step {step.id} could not compile producer export symbols"
-        ) from exc
     with _PRODUCER_EXPORT_CACHE_LOCK:
-        _PRODUCER_EXPORT_CACHE[cache_key] = dict(compiled)
-    return dict(compiled)
+        _PRODUCER_EXPORT_CACHE[cache_key] = dict(exprs)
+    return dict(exprs)
 
 
 def _extract_assert_function_imports(
@@ -549,7 +542,7 @@ def _extract_assert_function_imports(
     step: ChainStep,
     refs: list[InternalSpecCase],
 ) -> dict[str, Any]:
-    merged_bindings: dict[str, Any] = {}
+    merged_exprs: dict[str, Any] = {}
     required_exports: set[str] = set()
     deferred_errors: dict[str, Exception] = {}
     for ref_case in refs:
@@ -558,7 +551,7 @@ def _extract_assert_function_imports(
             if producer.from_source == "assert.function" and producer.required:
                 required_exports.add(export_name)
         try:
-            compiled_exports = _get_compiled_producer_exports(step=step, producer_case=ref_case)
+            producer_exprs = _get_producer_export_exprs(step=step, producer_case=ref_case)
         except Exception as exc:
             for export_name, producer in exports.items():
                 if producer.from_source == "assert.function" and producer.required:
@@ -569,10 +562,10 @@ def _extract_assert_function_imports(
                         ),
                     )
             continue
-        for export_name, symbol in compiled_exports.items():
-            merged_bindings.setdefault(export_name, symbol)
+        for export_name, expr in producer_exprs.items():
+            merged_exprs.setdefault(export_name, expr)
 
-    unresolved_required = sorted(name for name in required_exports if name not in merged_bindings)
+    unresolved_required = sorted(name for name in required_exports if name not in merged_exprs)
     if unresolved_required:
         first = unresolved_required[0]
         raise deferred_errors.get(
@@ -581,9 +574,14 @@ def _extract_assert_function_imports(
                 f"chain step {step.id} import {first} could not be resolved from producer refs"
             ),
         )
-    if not merged_bindings:
+    if not merged_exprs:
         return {}
-    return merged_bindings
+    try:
+        return compile_symbol_bindings(merged_exprs, limits=limits_from_harness({}))
+    except Exception as exc:  # noqa: BLE001
+        raise ValueError(
+            f"chain step {step.id} could not compile producer export symbols"
+        ) from exc
 
 
 def execute_chain_plan(
