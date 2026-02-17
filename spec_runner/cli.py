@@ -10,6 +10,7 @@ from tempfile import TemporaryDirectory
 from spec_runner.conformance import report_to_jsonable, run_conformance_cases
 from spec_runner.conformance_parity import ParityConfig, build_parity_artifact, run_parity_check
 from spec_runner.conformance import validate_conformance_report_payload
+from spec_runner.contract_governance import contract_coverage_jsonable
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
 from spec_runner.dispatcher import SpecRunContext
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
@@ -222,6 +223,29 @@ def spec_lang_stdlib_report_main(argv: list[str] | None = None) -> int:
         else json.dumps(payload, indent=2, sort_keys=True) + "\n"
     )
 
+    if ns.out:
+        out = Path(ns.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(raw, encoding="utf-8")
+        print(f"wrote {out}")
+    else:
+        print(raw, end="")
+    return 0
+
+
+def contract_coverage_report_main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(
+        description=(
+            "Emit optional spec_runner contract coverage report as JSON "
+            "(artifact/reporting helper; not a primary gate)."
+        )
+    )
+    ap.add_argument("--out", help="Optional output path for JSON report.")
+    ns = ap.parse_args(argv)
+
+    repo_root = Path(__file__).resolve().parents[1]
+    payload = contract_coverage_jsonable(repo_root)
+    raw = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if ns.out:
         out = Path(ns.out)
         out.parent.mkdir(parents=True, exist_ok=True)
