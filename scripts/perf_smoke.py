@@ -111,6 +111,21 @@ def _run(cmd: list[str], *, cwd: Path) -> int:
     return int(cp.returncode)
 
 
+def _ensure_generated_file(
+    *,
+    path: Path,
+    regenerate_cmd: list[str],
+    cwd: Path,
+) -> None:
+    if path.exists():
+        return
+    code = _run(regenerate_cmd, cwd=cwd)
+    if code != 0:
+        raise ValueError(f"failed to regenerate missing file: {path}")
+    if not path.exists():
+        raise ValueError(f"missing file: {path}")
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Run local perf smoke checks for governance/docs timing.")
     ap.add_argument("--mode", choices=("warn", "strict"), default="warn")
@@ -146,35 +161,37 @@ def main(argv: list[str] | None = None) -> int:
     failures: list[str] = []
 
     if not ns.compare_only:
-        code = _run(
-            [
-                py_bin,
-                "scripts/run_governance_specs.py",
-                "--timing-out",
-                str(governance_timing),
-                "--profile",
-                "--profile-out",
-                str(governance_profile),
-            ],
-            cwd=root,
-        )
+        governance_cmd = [
+            py_bin,
+            "scripts/run_governance_specs.py",
+            "--timing-out",
+            str(governance_timing),
+            "--profile",
+            "--profile-out",
+            str(governance_profile),
+        ]
+        code = _run(governance_cmd, cwd=root)
         if code != 0:
             return code
-        code = _run(
-            [
-                py_bin,
-                "scripts/docs_generate_all.py",
-                "--check",
-                "--timing-out",
-                str(docs_timing),
-                "--profile",
-                "--profile-out",
-                str(docs_profile),
-            ],
-            cwd=root,
-        )
+        docs_cmd = [
+            py_bin,
+            "scripts/docs_generate_all.py",
+            "--check",
+            "--timing-out",
+            str(docs_timing),
+            "--profile",
+            "--profile-out",
+            str(docs_profile),
+        ]
+        code = _run(docs_cmd, cwd=root)
         if code != 0:
             return code
+        # CI can occasionally observe missing profile artifacts despite
+        # successful command exits; regenerate once to keep perf checks stable.
+        _ensure_generated_file(path=governance_timing, regenerate_cmd=governance_cmd, cwd=root)
+        _ensure_generated_file(path=governance_profile, regenerate_cmd=governance_cmd, cwd=root)
+        _ensure_generated_file(path=docs_timing, regenerate_cmd=docs_cmd, cwd=root)
+        _ensure_generated_file(path=docs_profile, regenerate_cmd=docs_cmd, cwd=root)
 
     for label, timing_path, baseline_path in (
         ("governance_timing", governance_timing, governance_baseline),

@@ -218,6 +218,7 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
         is_canonical_spec = doc_path.resolve().is_relative_to(repo_docs_spec)
     except Exception:
         is_canonical_spec = False
+    assert_tree: InternalAssertNode
     producer_export_type = type_name in {"spec.export"}
     if producer_export_type:
         # Producer-only case type: exported callables are compiled from raw

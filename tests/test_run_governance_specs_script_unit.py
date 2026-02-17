@@ -725,22 +725,23 @@ def test_script_enforces_conformance_library_policy_usage_required(tmp_path):
 
 ```yaml spec-test
 id: LIB-POLICY-CORE-TEST-001
-type: spec_lang.export
+type: spec.export
 harness:
   chain:
     exports:
     - as: policy.pass_when_no_violations
       from: assert.function
-      path: /policy.pass_when_no_violations
-defines:
-  public:
-    policy.pass_when_no_violations:
-      fn:
-      - [subject]
-      - std.collection.is_empty:
-        - std.object.get:
-          - var: subject
-          - violations
+      path: export_policy_pass_when_no_violations
+      params: [subject]
+assert:
+- id: export_policy_pass_when_no_violations
+  class: must
+  target: subject
+  checks:
+  - std.collection.is_empty:
+    - std.object.get:
+      - var: subject
+      - violations
 ```
 """,
     )
@@ -4678,10 +4679,6 @@ harness:
     - id: policy_lib
       class: must
       ref: /docs/spec/libraries/policy/policy_core.spec.md
-      imports:
-        - as: policy.pass_when_no_violations
-          from: assert.function
-          path: policy.pass_when_no_violations
     imports:
     - from: policy_lib
       names:
@@ -4716,22 +4713,23 @@ assert:
 
 ```yaml spec-test
 id: L1
-type: spec_lang.export
+type: spec.export
 harness:
   chain:
     exports:
     - as: policy.pass_when_no_violations
       from: assert.function
-      path: /policy.pass_when_no_violations
-defines:
-  public:
-    policy.pass_when_no_violations:
-      fn:
-      - [subject]
-      - std.collection.is_empty:
-        - std.object.get:
-          - var: subject
-          - violations
+      path: export_policy_pass_when_no_violations
+      params: [subject]
+assert:
+- id: export_policy_pass_when_no_violations
+  class: must
+  target: subject
+  checks:
+  - std.collection.is_empty:
+    - std.object.get:
+      - var: subject
+      - violations
 ```
 """,
     )

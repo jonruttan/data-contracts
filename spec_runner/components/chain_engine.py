@@ -552,7 +552,7 @@ def _extract_assert_function_imports(
                 required_exports.add(export_name)
         try:
             producer_exprs = _get_producer_export_exprs(step=step, producer_case=ref_case)
-        except Exception as exc:
+        except Exception:
             for export_name, producer in exports.items():
                 if producer.from_source == "assert.function" and producer.required:
                     deferred_errors.setdefault(
