@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 217
-- rules_with_conformance_cases: 45
-- rules_with_unit_tests: 217
-- rules_with_implementation_refs: 215
+- link_count: 219
+- rules_with_conformance_cases: 47
+- rules_with_unit_tests: 219
+- rules_with_implementation_refs: 217
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -82,6 +82,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `CHAIN_CYCLE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_CYCLE_FORBIDDEN` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_EXPLICIT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `CHAIN_EXPORTS_FROM_KEY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_FROM_KEY_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
+| `CHAIN_EXPORTS_LIST_ONLY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_LIST_ONLY_REQUIRED` | 1 | 1 | 1 | 2 | 3 |
 | `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | 1 | 1 | 0 | 2 | 2 |
 | `CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | 1 | 1 | 0 | 3 | 4 |
@@ -131,6 +132,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | `docs/spec/contract/policy_v1.yaml#DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | 1 | 1 | 0 | 3 | 4 |
 | `DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `DOCS_MAKE_COMMANDS_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_MAKE_COMMANDS_SYNC` | 2 | 0 | 0 | 2 | 2 |
+| `DOCS_MARKDOWN_NAMESPACE_LEGACY_ALIAS_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#DOCS_MARKDOWN_NAMESPACE_LEGACY_ALIAS_FORBIDDEN` | 2 | 1 | 1 | 1 | 2 |
 | `DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_META_SCHEMA_VALID` | `docs/spec/contract/policy_v1.yaml#DOCS_META_SCHEMA_VALID` | 1 | 2 | 0 | 3 | 4 |
 | `DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |

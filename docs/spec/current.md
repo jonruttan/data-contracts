@@ -24,6 +24,8 @@ Notes:
 - Cross-spec chaining is universal across executable case types via
   `harness.chain` with required step classes (`must|can|cannot`), explicit
   target-derived exports/imports, and scalar refs (`[path][#case_id]`).
+- Chain export shape is hard-cut to list-only entries under
+  `harness.chain.steps[*].exports`; legacy mapping-form exports are rejected.
 - Executable symbol loading is chain-first: `harness.chain` library-symbol
   exports/imports replace `harness.spec_lang.includes` in executable cases.
 - `api.http` request templating supports chain state lookups in `url`, header
@@ -31,8 +33,10 @@ Notes:
 - all executable harnesses expose chain payload assertions through `chain_json`
   (`state`, `trace`, `imports`) alongside existing type targets.
 - Markdown assertion helpers now use expanded domain library surface under
-  `domain.markdown.*` with ergonomic `md.*` aliases and dual-input semantics
-  (raw markdown text or markdown profile envelope with structured `context`).
+  `domain.markdown.*` with dual-input semantics (raw markdown text or markdown
+  profile envelope with structured `context`).
+- Hard-cut markdown namespace enforcement is active for governed surfaces:
+  legacy `md.*` usage is rejected by governance and conformance fixtures.
 - Spec-lang stdlib completeness and parity are contract-defined by
   `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml` and
   `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`.

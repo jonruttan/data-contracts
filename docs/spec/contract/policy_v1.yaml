@@ -2815,6 +2815,23 @@ rules:
   - docs/spec/schema/schema_v1.md
   - docs/spec/governance/cases/core/runtime_chain_exports_from_key_required.spec.md
   - spec_runner/components/chain_engine.py
+- id: CHAIN_EXPORTS_LIST_ONLY_REQUIRED
+  introduced_in: v1
+  scope: schema
+  applies_to: harness.chain.steps.exports
+  norm: MUST
+  requirement: chain_exports_use_list_form_only
+  description: 'Chain step exports must use list-form entries; mapping-form exports are forbidden.
+
+    '
+  rationale: Keeps export parsing deterministic and enables batch symbol export syntax.
+  risk_if_violated: Mixed export forms create ambiguous schema and tooling behavior.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/governance/cases/core/runtime_chain_exports_list_only_required.spec.md
+  - docs/spec/conformance/cases/core/chain_exports.spec.md
+  - spec_runner/components/chain_engine.py
 - id: CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
   introduced_in: v1
   scope: schema
@@ -3065,6 +3082,22 @@ rules:
   risk_if_violated: Minor markdown edits can trigger avoidable false failures.
   references:
   - docs/spec/governance/cases/core/docs_markdown_structured_assertions_required.spec.md
+  - docs/spec/libraries/domain/markdown_core.spec.md
+  - scripts/run_governance_specs.py
+- id: DOCS_MARKDOWN_NAMESPACE_LEGACY_ALIAS_FORBIDDEN
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec_and_book.markdown_symbols
+  norm: MUST_NOT
+  requirement: docs_must_not_use_md_namespace_alias
+  description: 'Governed docs surfaces must not use legacy `md.*` symbols; `domain.markdown.*` is required.
+
+    '
+  rationale: Enforces hard-cut namespace clarity and removes dual naming drift.
+  risk_if_violated: Markdown assertion authorship fragments across legacy and canonical symbols.
+  references:
+  - docs/spec/governance/cases/core/docs_markdown_namespace_legacy_alias_forbidden.spec.md
+  - docs/spec/conformance/cases/core/markdown_namespace.spec.md
   - docs/spec/libraries/domain/markdown_core.spec.md
   - scripts/run_governance_specs.py
 - id: HARNESS_WORKFLOW_COMPONENTS_REQUIRED

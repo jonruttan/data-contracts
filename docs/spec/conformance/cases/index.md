@@ -55,6 +55,7 @@ Case fixtures that portable runner implementations execute.
 - `SRCONF-API-017`
 - `SRCONF-CLI-001`
 - `SRCONF-CLI-002`
+- `SRCONF-CHAIN-EXPORT-001`
 - `SRCONF-DOMAIN-LIB-001`
 - `SRCONF-DOMAIN-LIB-002`
 - `SRCONF-ERR-001`
@@ -104,6 +105,7 @@ Case fixtures that portable runner implementations execute.
 - `SRCONF-SCHEMA-CASE-001`
 - `SRCONF-SCHEMA-CASE-002`
 - `SRCONF-SCHEMA-REG-001`
+- `SRCONF-MARKDOWN-NS-001`
 
 - `SRCONF-STDLIB-001`
 - `SRCONF-STDLIB-002`

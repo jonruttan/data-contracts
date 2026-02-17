@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 217
-- must_count: 199
+- rule_count: 219
+- must_count: 200
 - should_count: 12
-- must_not_count: 6
-- active_count: 217
+- must_not_count: 7
+- active_count: 219
 - deprecated_count: 0
 - removed_count: 0
 
@@ -85,6 +85,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `CHAIN_CYCLE_FORBIDDEN` | `MUST` | `runtime` | `harness.chain.graph` | 3 | `active` |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.exports` | 2 | `active` |
 | `CHAIN_EXPORTS_FROM_KEY_REQUIRED` | `MUST` | `schema` | `harness.chain.steps.exports[*].from` | 4 | `active` |
+| `CHAIN_EXPORTS_LIST_ONLY_REQUIRED` | `MUST` | `schema` | `harness.chain.steps.exports` | 5 | `active` |
 | `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `MUST` | `implementation` | `harness.chain.fail_fast` | 2 | `active` |
 | `CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | `MUST_NOT` | `implementation` | `harness.chain.imports` | 4 | `active` |
 | `CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | `MUST_NOT` | `schema` | `harness.chain.steps.exports[*].from_target` | 3 | `active` |
@@ -134,6 +135,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | `MUST` | `governance` | `docs.reference.instructions` | 2 | `active` |
 | `DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | `MUST` | `governance` | `docs.layout.roots` | 3 | `active` |
 | `DOCS_MAKE_COMMANDS_SYNC` | `MUST` | `governance` | `docs.command.entrypoints` | 2 | `active` |
+| `DOCS_MARKDOWN_NAMESPACE_LEGACY_ALIAS_FORBIDDEN` | `MUST_NOT` | `governance` | `docs.spec_and_book.markdown_symbols` | 4 | `active` |
 | `DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED` | `MUST` | `governance` | `docs.markdown.assertions` | 3 | `active` |
 | `DOCS_META_SCHEMA_VALID` | `MUST` | `governance` | `docs.reference.doc_meta` | 3 | `active` |
 | `DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.metrics_fields` | 3 | `active` |
