@@ -47,15 +47,22 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 ## Generated Runner API Catalog
 
-- command_count: 42
-- python_command_count: 42
-- rust_command_count: 42
-- parity_command_count: 42
-- all_commands_parity: true
-- doc_quality_score: 1.0
+- command_count: 52
+- python_command_count: 43
+- rust_command_count: 52
+- parity_command_count: 43
+- all_commands_parity: false
+- doc_quality_score: 0.9308
 
 | command | group | python | rust | parity |
 |---|---|---|---|---|
+| `--expr-file` | `reporting` | false | true | false |
+| `--expr-json` | `metrics` | false | true | false |
+| `--subject-file` | `reporting` | false | true | false |
+| `--subject-json` | `metrics` | false | true | false |
+| `-v` | `reporting` | false | true | false |
+| `-vv` | `reporting` | false | true | false |
+| `-vvv` | `reporting` | false | true | false |
 | `ci-cleanroom` | `ci` | true | true | true |
 | `ci-gate-summary` | `ci` | true | true | true |
 | `compilecheck` | `reporting` | true | true | true |
@@ -88,19 +95,127 @@ Provide generated command-surface documentation for the canonical runner interfa
 | `schema-docs-check` | `docs` | true | true | true |
 | `schema-registry-build` | `docs` | true | true | true |
 | `schema-registry-check` | `docs` | true | true | true |
+| `spec-eval` | `reporting` | false | true | false |
 | `spec-lang-adoption-json` | `metrics` | true | true | true |
 | `spec-lang-adoption-md` | `metrics` | true | true | true |
 | `spec-lang-stdlib-json` | `metrics` | true | true | true |
 | `spec-lang-stdlib-md` | `metrics` | true | true | true |
 | `spec-portability-json` | `metrics` | true | true | true |
 | `spec-portability-md` | `metrics` | true | true | true |
+| `spec-ref` | `reporting` | false | true | false |
 | `style-check` | `reporting` | true | true | true |
 | `test-core` | `verification` | true | true | true |
 | `test-full` | `verification` | true | true | true |
 | `typecheck` | `verification` | true | true | true |
+| `validate-report` | `reporting` | true | true | true |
 
 
 ### Command Semantics
+
+#### `--expr-file`
+
+- Summary: Runs `--expr-file` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --expr-file`: Execute command with canonical adapter routing.
+
+
+#### `--expr-json`
+
+- Summary: Runs `--expr-json` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --expr-json`: Execute command with canonical adapter routing.
+
+
+#### `--subject-file`
+
+- Summary: Runs `--subject-file` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --subject-file`: Execute command with canonical adapter routing.
+
+
+#### `--subject-json`
+
+- Summary: Runs `--subject-json` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --subject-json`: Execute command with canonical adapter routing.
+
+
+#### `-v`
+
+- Summary: Runs `-v` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh -v`: Execute command with canonical adapter routing.
+
+
+#### `-vv`
+
+- Summary: Runs `-vv` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh -vv`: Execute command with canonical adapter routing.
+
+
+#### `-vvv`
+
+- Summary: Runs `-vvv` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh -vvv`: Execute command with canonical adapter routing.
+
 
 #### `ci-cleanroom`
 
@@ -582,6 +697,21 @@ Provide generated command-surface documentation for the canonical runner interfa
   - `./scripts/runner_adapter.sh schema-registry-check`: Execute command with canonical adapter routing.
 
 
+#### `spec-eval`
+
+- Summary: Runs `spec-eval` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh spec-eval`: Execute command with canonical adapter routing.
+
+
 #### `spec-lang-adoption-json`
 
 - Summary: Runs `spec-lang-adoption-json` through the canonical runner entrypoint.
@@ -672,6 +802,21 @@ Provide generated command-surface documentation for the canonical runner interfa
   - `./scripts/runner_adapter.sh spec-portability-md`: Execute command with canonical adapter routing.
 
 
+#### `spec-ref`
+
+- Summary: Runs `spec-ref` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh spec-ref`: Execute command with canonical adapter routing.
+
+
 #### `style-check`
 
 - Summary: Runs `style-check` through the canonical runner entrypoint.
@@ -730,4 +875,19 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 - Examples:
   - `./scripts/runner_adapter.sh typecheck`: Execute command with canonical adapter routing.
+
+
+#### `validate-report`
+
+- Summary: Runs `validate-report` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh validate-report`: Execute command with canonical adapter routing.
 <!-- GENERATED:END runner_api_catalog -->
