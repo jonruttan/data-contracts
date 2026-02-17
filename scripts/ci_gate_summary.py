@@ -31,6 +31,7 @@ def _runner_command(runner_bin: str, runner_impl: str, subcommand: str) -> list[
 def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[str]]]:
     return [
         ("governance", _runner_command(runner_bin, runner_impl, "governance")),
+        ("governance_heavy", _runner_command(runner_bin, runner_impl, "governance-heavy")),
         ("docs_generate_check", _runner_command(runner_bin, runner_impl, "docs-generate-check")),
         ("perf_smoke", _runner_command(runner_bin, runner_impl, "perf-smoke") + ["--mode", "strict"]),
         ("docs_lint", _runner_command(runner_bin, runner_impl, "docs-lint")),

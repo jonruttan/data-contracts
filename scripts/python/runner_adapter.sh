@@ -18,6 +18,14 @@ case "${subcommand}" in
   governance)
     exec "${PYTHON_BIN}" scripts/run_governance_specs.py "$@"
     ;;
+  governance-heavy)
+    exec "${PYTHON_BIN}" scripts/run_governance_specs.py \
+      --check-prefix runtime.chain \
+      --check-prefix library. \
+      --check-prefix normalization.mapping_ast_only \
+      --check-prefix normalization.virtual_root_paths_only \
+      "$@"
+    ;;
   style-check)
     exec "${PYTHON_BIN}" scripts/evaluate_style.py --check docs/spec "$@"
     ;;

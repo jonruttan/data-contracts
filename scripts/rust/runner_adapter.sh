@@ -21,6 +21,12 @@ case "${subcommand}" in
     fi
     exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
     ;;
+  governance-heavy)
+    if [[ -x "${RUST_CLI_BIN}" ]]; then
+      exec "${RUST_CLI_BIN}" "${subcommand}" "$@"
+    fi
+    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${subcommand}" "$@"
+    ;;
   style-check)
     if [[ -x "${RUST_CLI_BIN}" ]]; then
       exec "${RUST_CLI_BIN}" "${subcommand}" "$@"

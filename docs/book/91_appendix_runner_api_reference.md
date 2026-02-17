@@ -47,10 +47,10 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 ## Generated Runner API Catalog
 
-- command_count: 41
-- python_command_count: 41
-- rust_command_count: 41
-- parity_command_count: 41
+- command_count: 42
+- python_command_count: 42
+- rust_command_count: 42
+- parity_command_count: 42
 - all_commands_parity: true
 - doc_quality_score: 1.0
 
@@ -73,6 +73,7 @@ Provide generated command-surface documentation for the canonical runner interfa
 | `docs-operability-json` | `docs` | true | true | true |
 | `docs-operability-md` | `docs` | true | true | true |
 | `governance` | `verification` | true | true | true |
+| `governance-heavy` | `reporting` | true | true | true |
 | `lint` | `verification` | true | true | true |
 | `normalize-check` | `verification` | true | true | true |
 | `normalize-fix` | `verification` | true | true | true |
@@ -354,6 +355,21 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 - Examples:
   - `./scripts/runner_adapter.sh governance`: Execute command with canonical adapter routing.
+
+
+#### `governance-heavy`
+
+- Summary: Runs `governance-heavy` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh governance-heavy`: Execute command with canonical adapter routing.
 
 
 #### `lint`

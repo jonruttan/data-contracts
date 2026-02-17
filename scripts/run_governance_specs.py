@@ -7968,6 +7968,18 @@ def main(argv: list[str] | None = None) -> int:
         default=SETTINGS.case.default_file_pattern,
         help="Glob pattern for case files when --cases points to a directory",
     )
+    ap.add_argument(
+        "--check-prefix",
+        action="append",
+        default=[],
+        help="Optional governance check id prefix filter; can be passed multiple times",
+    )
+    ap.add_argument(
+        "--exclude-check-prefix",
+        action="append",
+        default=[],
+        help="Optional governance check id exclusion prefix; can be passed multiple times",
+    )
     ap.add_argument("--timing-out", default=".artifacts/governance-timing.json")
     ap.add_argument("--profile", action="store_true", help="Emit per-case harness timing profile JSON")
     ap.add_argument("--profile-out", default=".artifacts/governance-profile.json")
@@ -7986,11 +7998,28 @@ def main(argv: list[str] | None = None) -> int:
 
     failures: list[str] = []
     started = time.perf_counter()
+    include_prefixes = tuple(str(x).strip() for x in (ns.check_prefix or []) if str(x).strip())
+    exclude_prefixes = tuple(str(x).strip() for x in (ns.exclude_check_prefix or []) if str(x).strip())
     governance_cases = [
         case
         for case in iter_cases(cases_path, file_pattern=case_pattern)
         if str(case.test.get("type", "")).strip() == "governance.check"
     ]
+    if include_prefixes:
+        governance_cases = [
+            case
+            for case in governance_cases
+            if any(str(case.test.get("check", "")).strip().startswith(p) for p in include_prefixes)
+        ]
+    if exclude_prefixes:
+        governance_cases = [
+            case
+            for case in governance_cases
+            if not any(str(case.test.get("check", "")).strip().startswith(p) for p in exclude_prefixes)
+        ]
+    if (include_prefixes or exclude_prefixes) and not governance_cases:
+        print("ERROR: governance filter selected zero cases", file=sys.stderr)
+        return 2
     timing_rows: list[dict[str, Any]] = []
     profile_rows: list[dict[str, Any]] = []
     workers_used = 1

@@ -85,6 +85,24 @@ fn main() {
 
     let code = match subcommand.as_str() {
         "governance" => run_cmd(&py, &with_forwarded(vec![script(&root, "run_governance_specs.py")], &forwarded), &root),
+        "governance-heavy" => run_cmd(
+            &py,
+            &with_forwarded(
+                vec![
+                    script(&root, "run_governance_specs.py"),
+                    "--check-prefix".to_string(),
+                    "runtime.chain".to_string(),
+                    "--check-prefix".to_string(),
+                    "library.".to_string(),
+                    "--check-prefix".to_string(),
+                    "normalization.mapping_ast_only".to_string(),
+                    "--check-prefix".to_string(),
+                    "normalization.virtual_root_paths_only".to_string(),
+                ],
+                &forwarded,
+            ),
+            &root,
+        ),
         "style-check" => run_cmd(
             &py,
             &with_forwarded(
