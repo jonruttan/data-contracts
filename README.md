@@ -39,6 +39,12 @@ make core-check
 make check
 ```
 
+Required local pre-push gate:
+
+```sh
+make prepush
+```
+
 Adoption profiles:
 
 - **Core profile**: `make core-check`
@@ -106,4 +112,3 @@ Notes:
 - `scripts/`: runner adapters, gates, and generators
 - `docs/`: book, contract/schema specs, implementation appendices
 - `tests/`: executable and unit-level validation
-

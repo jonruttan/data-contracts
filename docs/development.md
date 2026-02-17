@@ -119,6 +119,12 @@ make ci-smoke
 make ci-cleanroom
 ```
 
+Required local pre-push gate:
+
+```sh
+make prepush
+```
+
 ## CI Triage (Docs Quality)
 
 When CI fails with `SRGOV-DOCS-QUAL-*`:
