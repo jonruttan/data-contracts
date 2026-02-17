@@ -2,20 +2,23 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import json
 import inspect
+import os
 import shlex
 import subprocess
 import sys
 import re
+import threading
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Callable
+from typing import Any, Callable
 
 import yaml
 from spec_runner.assertions import eval_assert_tree, iter_leaf_assertions
-from spec_runner.codecs import load_external_cases
-from spec_runner.dispatcher import SpecRunContext, iter_cases, run_case
+from spec_runner.codecs import load_external_cases as _load_external_cases_uncached
+from spec_runner.dispatcher import SpecRunContext, iter_cases as _iter_cases_uncached, run_case
 from spec_runner.doc_parser import iter_spec_doc_tests
 from spec_runner.purpose_lint import (
     load_purpose_lint_policy,
@@ -218,6 +221,58 @@ _HARNESS_FILES = (
     "spec_runner/harnesses/api_http.py",
 )
 
+_SCAN_CACHE_TOKEN = 0
+_EXTERNAL_CASES_CACHE: dict[tuple[int, str, tuple[str, ...], str | None], list[tuple[Path, dict[str, Any]]]] = {}
+_ITER_CASES_CACHE: dict[tuple[int, str, str | None, tuple[str, ...] | None], list[Any]] = {}
+_ALL_SPEC_CASES_CACHE: dict[tuple[int, str], list[tuple[Path, dict[str, Any]]]] = {}
+_CHAIN_CASES_CACHE: dict[tuple[int, str], list[tuple[Path, dict[str, Any], dict[str, Any], dict[str, Any]]]] = {}
+_CONFORMANCE_IDS_CACHE: dict[tuple[int, str], set[str]] = {}
+_SCAN_CACHE_LOCK = threading.RLock()
+
+
+def _reset_scan_caches() -> None:
+    global _SCAN_CACHE_TOKEN
+    with _SCAN_CACHE_LOCK:
+        _SCAN_CACHE_TOKEN += 1
+        _EXTERNAL_CASES_CACHE.clear()
+        _ITER_CASES_CACHE.clear()
+        _ALL_SPEC_CASES_CACHE.clear()
+        _CHAIN_CASES_CACHE.clear()
+        _CONFORMANCE_IDS_CACHE.clear()
+
+
+def load_external_cases(path: Path, *, formats: set[str] | None = None, md_pattern: str | None = None):
+    normalized_formats = tuple(sorted(str(x) for x in (formats or set())))
+    with _SCAN_CACHE_LOCK:
+        cache_key = (_SCAN_CACHE_TOKEN, str(Path(path).resolve()), normalized_formats, md_pattern)
+        cached = _EXTERNAL_CASES_CACHE.get(cache_key)
+        if cached is not None:
+            return cached
+    loaded = list(_load_external_cases_uncached(path, formats=formats, md_pattern=md_pattern))
+    with _SCAN_CACHE_LOCK:
+        _EXTERNAL_CASES_CACHE[cache_key] = loaded
+    return loaded
+
+
+def iter_cases(
+    spec_dir: Path,
+    *,
+    file_pattern: str | None = None,
+    formats: set[str] | None = None,
+):
+    normalized_formats: tuple[str, ...] | None = None
+    if formats is not None:
+        normalized_formats = tuple(sorted(str(x) for x in formats))
+    with _SCAN_CACHE_LOCK:
+        cache_key = (_SCAN_CACHE_TOKEN, str(spec_dir.resolve()), file_pattern, normalized_formats)
+        cached = _ITER_CASES_CACHE.get(cache_key)
+        if cached is not None:
+            return cached
+    cases = list(_iter_cases_uncached(spec_dir, file_pattern=file_pattern, formats=formats))
+    with _SCAN_CACHE_LOCK:
+        _ITER_CASES_CACHE[cache_key] = cases
+    return cases
+
 
 def _resolve_contract_config_path(root: Path, raw: str, *, field: str) -> Path:
     return resolve_contract_path(root, str(raw), field=field)
@@ -266,11 +321,19 @@ def _iter_path_fields(node: object, *, key_path: str = ""):
 def _iter_all_spec_cases(base: Path):
     if not base.exists():
         return
-    for file_path in sorted(base.rglob(SETTINGS.case.default_file_pattern)):
-        if not file_path.is_file():
-            continue
-        for doc_path, case in load_external_cases(file_path, formats={"md"}):
-            yield doc_path, case
+    with _SCAN_CACHE_LOCK:
+        cache_key = (_SCAN_CACHE_TOKEN, str(base.resolve()))
+        cached = _ALL_SPEC_CASES_CACHE.get(cache_key)
+    if cached is None:
+        cached = []
+        for file_path in sorted(base.rglob(SETTINGS.case.default_file_pattern)):
+            if not file_path.is_file():
+                continue
+            for doc_path, case in load_external_cases(file_path, formats={"md"}):
+                cached.append((doc_path, case))
+        with _SCAN_CACHE_LOCK:
+            _ALL_SPEC_CASES_CACHE[cache_key] = cached
+    yield from cached
 
 
 def _scan_contract_governance_check(root: Path) -> list[str]:
@@ -489,14 +552,21 @@ def _scan_runtime_orchestration_policy_via_spec_lang(root: Path, *, harness: dic
 
 
 def _collect_conformance_fixture_ids(root: Path) -> set[str]:
-    ids: set[str] = set()
     cases_dir = root / "docs/spec/conformance/cases"
     if not cases_dir.exists():
-        return ids
+        return set()
+    with _SCAN_CACHE_LOCK:
+        cache_key = (_SCAN_CACHE_TOKEN, str(cases_dir.resolve()))
+        cached = _CONFORMANCE_IDS_CACHE.get(cache_key)
+    if cached is not None:
+        return set(cached)
+    ids: set[str] = set()
     for spec in iter_cases(cases_dir, file_pattern=SETTINGS.case.default_file_pattern):
         rid = str(spec.test.get("id", "")).strip()
         if rid:
             ids.add(rid)
+    with _SCAN_CACHE_LOCK:
+        _CONFORMANCE_IDS_CACHE[cache_key] = set(ids)
     return ids
 
 
@@ -3046,13 +3116,21 @@ def _scan_docs_api_http_tutorial_sync(root: Path) -> list[str]:
 
 
 def _iter_cases_with_chain(root: Path):
-    for doc_path, case in _iter_all_spec_cases(root):
-        harness = case.get("harness")
-        if not isinstance(harness, dict):
-            continue
-        chain = harness.get("chain")
-        if isinstance(chain, dict):
-            yield doc_path, case, harness, chain
+    with _SCAN_CACHE_LOCK:
+        cache_key = (_SCAN_CACHE_TOKEN, str(root.resolve()))
+        cached = _CHAIN_CASES_CACHE.get(cache_key)
+    if cached is None:
+        cached = []
+        for doc_path, case in _iter_all_spec_cases(root):
+            harness = case.get("harness")
+            if not isinstance(harness, dict):
+                continue
+            chain = harness.get("chain")
+            if isinstance(chain, dict):
+                cached.append((doc_path, case, harness, chain))
+        with _SCAN_CACHE_LOCK:
+            _CHAIN_CASES_CACHE[cache_key] = cached
+    yield from cached
 
 
 def _expand_chain_step_exports(raw_exports: object) -> tuple[dict[str, dict], list[str]]:
@@ -7788,6 +7866,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Glob pattern for case files when --cases points to a directory",
     )
     ns = ap.parse_args(argv)
+    _reset_scan_caches()
 
     case_pattern = str(ns.case_file_pattern).strip()
     if not case_pattern:
@@ -7800,19 +7879,43 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     failures: list[str] = []
+    governance_cases = [
+        case
+        for case in iter_cases(cases_path, file_pattern=case_pattern)
+        if str(case.test.get("type", "")).strip() == "governance.check"
+    ]
     with TemporaryDirectory(prefix="spec-runner-governance-") as td:
-        ctx = SpecRunContext(
-            tmp_path=Path(td),
-            patcher=MiniMonkeyPatch(),
-            capture=MiniCapsys(),
-        )
-        for case in iter_cases(cases_path, file_pattern=case_pattern):
-            if str(case.test.get("type", "")).strip() != "governance.check":
-                continue
+        td_path = Path(td)
+
+        def _run_one(args: tuple[int, Any]) -> tuple[int, str | None]:
+            idx, case = args
+            case_tmp = td_path / f"case_{idx}"
+            case_tmp.mkdir(parents=True, exist_ok=True)
+            ctx = SpecRunContext(
+                tmp_path=case_tmp,
+                patcher=MiniMonkeyPatch(),
+                capture=MiniCapsys(),
+            )
             try:
                 run_case(case, ctx=ctx, type_runners={"governance.check": run_governance_check})
+                return idx, None
             except BaseException as e:  # noqa: BLE001
-                failures.append(f"{case.test.get('id', '<unknown>')}: {e}")
+                return idx, f"{case.test.get('id', '<unknown>')}: {e}"
+
+        if len(governance_cases) <= 1:
+            for idx, case in enumerate(governance_cases):
+                _idx, failure = _run_one((idx, case))
+                if failure:
+                    failures.append(failure)
+        else:
+            max_workers = min(max(1, os.cpu_count() or 1), len(governance_cases))
+            results: list[tuple[int, str | None]] = []
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+                for result in executor.map(_run_one, enumerate(governance_cases)):
+                    results.append(result)
+            for _idx, failure in sorted(results, key=lambda x: x[0]):
+                if failure:
+                    failures.append(failure)
 
     if failures:
         for line in failures:
