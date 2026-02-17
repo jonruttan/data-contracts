@@ -23,7 +23,7 @@ Case fixtures that portable runner implementations execute.
 - `core/codemod_scripts.spec.md`: codemod script check/write behavior coverage
 - `domain_libraries.spec.md`: domain library contract coverage for non-core projection helpers
 - `spec_lang.spec.md`: `evaluate` operator behavior, schema/runtime failures, TCO, and ramda-style utility conformance
-- `spec_lang_library_contract.spec.md`: flat `spec_lang.library` defines contract coverage
+- `spec_lang_library_contract.spec.md`: flat `spec_lang.export` defines contract coverage
 - `subject_profiles.spec.md`: JSON-core subject profile envelope contract coverage
 - `cli-run-entrypoint.spec.md`: entrypoint precedence and capability gating
 - `failure-context.spec.md`: deterministic failure context tokens

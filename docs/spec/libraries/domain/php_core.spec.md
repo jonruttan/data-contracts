@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-DOMAIN-PHP-001
 title: php projection helper functions
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     php.is_assoc_projection:

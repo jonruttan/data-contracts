@@ -19,7 +19,7 @@ def test_migrate_includes_to_chain_symbols(tmp_path: Path) -> None:
         """# Lib
 ```yaml spec-test
 id: LIB-1
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     dom.fn:

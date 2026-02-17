@@ -33,7 +33,7 @@ def _dump_case(case: dict[str, Any]) -> str:
 
 
 def _split_case(case: dict[str, Any]) -> list[dict[str, Any]]:
-    if str(case.get("type", "")).strip() != "spec_lang.library":
+    if str(case.get("type", "")).strip() != "spec_lang.export":
         return [case]
     defines = case.get("defines")
     if not isinstance(defines, dict):
@@ -102,7 +102,7 @@ def _rewrite(text: str) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Split spec_lang.library cases into one-public-symbol-per-case.")
+    ap = argparse.ArgumentParser(description="Split spec_lang.export cases into one-public-symbol-per-case.")
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--write", action="store_true")

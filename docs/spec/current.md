@@ -70,7 +70,7 @@ Notes:
   `harness.spec_lang.imports` (`from`/`names` with optional `as` aliases).
 - Spec-lang mapping-AST authoring now uses explicit subject reference node
   `{var: subject}`.
-- Library function authoring is mapping-AST only (`type: spec_lang.library`
+- Library function authoring is mapping-AST only (`type: spec_lang.export`
   `defines.public.<symbol>` and
   `defines.private.<symbol>` values use canonical expression
   nodes, not list s-expr authoring).

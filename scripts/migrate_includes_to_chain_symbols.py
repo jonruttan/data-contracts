@@ -34,7 +34,7 @@ def _public_symbols_for_library(path: Path) -> list[str]:
     out: list[str] = []
     loaded = load_external_cases(path, formats={"md", "yaml", "json"})
     for _doc_path, case in loaded:
-        if str(case.get("type", "")).strip() != "spec_lang.library":
+        if str(case.get("type", "")).strip() != "spec_lang.export":
             continue
         defines = case.get("defines")
         if not isinstance(defines, dict):
@@ -78,7 +78,7 @@ def _doc_contract_root(doc_path: Path) -> Path:
 
 def _migrate_case(case: dict[str, Any], *, doc_path: Path) -> tuple[dict[str, Any], bool]:
     case_type = str(case.get("type", "")).strip()
-    if case_type == "spec_lang.library":
+    if case_type == "spec_lang.export":
         return case, False
     harness = case.get("harness")
     if not isinstance(harness, dict):

@@ -2046,7 +2046,7 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/spec_lang_libraries.py
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
-  notes: spec_lang.library shape enforcement requires defines.public/defines.private scopes.
+  notes: spec_lang.export shape enforcement requires defines.public/defines.private scopes.
 - rule_id: LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
   contract_refs:

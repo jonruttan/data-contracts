@@ -143,7 +143,7 @@ def codemod_smoke(argv: list[str] | None = None) -> int:
                         "",
                         "```yaml spec-test",
                         "id: LIB-1",
-                        "type: spec_lang.library",
+                        "type: spec_lang.export",
                         "definitions:",
                         "  public:",
                         "    keep:",

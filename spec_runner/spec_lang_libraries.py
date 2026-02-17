@@ -67,15 +67,15 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
         if raw_scope is None:
             return {}
         if not isinstance(raw_scope, dict):
-            raise TypeError(f"spec_lang.library {field_path} must be a mapping when provided")
+            raise TypeError(f"spec_lang.export {field_path} must be a mapping when provided")
         out: dict[str, Any] = {}
         for raw_name, expr in raw_scope.items():
             name = str(raw_name).strip()
             if not name:
-                raise ValueError(f"spec_lang.library {field_path} symbol name must be non-empty")
+                raise ValueError(f"spec_lang.export {field_path} symbol name must be non-empty")
             if name in out:
                 raise ValueError(
-                    "spec_lang.library duplicate symbol inside scope "
+                    "spec_lang.export duplicate symbol inside scope "
                     f"{field_path}: {name}"
                 )
             try:
@@ -89,7 +89,7 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
 
     for _, case in loaded:
         case_type = str(case.get("type", "")).strip()
-        if case_type != "spec_lang.library":
+        if case_type != "spec_lang.export":
             continue
 
         case_imports = _as_non_empty_str_list(case.get("imports"), field="imports")
@@ -97,11 +97,11 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
 
         if "definitions" in case:
             raise TypeError(
-                "spec_lang.library legacy key 'definitions' is not supported; use 'defines'"
+                "spec_lang.export legacy key 'definitions' is not supported; use 'defines'"
             )
         raw_defines = case.get("defines")
         if not isinstance(raw_defines, dict):
-            raise TypeError("spec_lang.library requires defines mapping with public/private scopes")
+            raise TypeError("spec_lang.export requires defines mapping with public/private scopes")
         public_bindings = _compile_definition_scope(
             raw_defines.get("public"), field_path="defines.public"
         )
@@ -110,12 +110,12 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
         )
         if not public_bindings and not private_bindings:
             raise TypeError(
-                "spec_lang.library requires non-empty defines.public or defines.private mapping"
+                "spec_lang.export requires non-empty defines.public or defines.private mapping"
             )
         overlap = sorted(set(public_bindings).intersection(private_bindings))
         if overlap:
             raise ValueError(
-                "spec_lang.library duplicate symbol across defines.public/defines.private: "
+                "spec_lang.export duplicate symbol across defines.public/defines.private: "
                 + ", ".join(overlap)
             )
         for name, expr in {**public_bindings, **private_bindings}.items():
@@ -127,7 +127,7 @@ def _load_library_doc(path: Path) -> _LibraryDoc:
         exports.extend(sorted(public_bindings.keys()))
 
     if not bindings:
-        raise ValueError(f"library file has no spec_lang.library defines: {path}")
+        raise ValueError(f"library file has no spec_lang.export defines: {path}")
 
     return _LibraryDoc(
         path=path,
@@ -144,39 +144,39 @@ def compile_library_case_public_symbols(
     limits: SpecLangLimits,
 ) -> dict[str, Any]:
     case_type = str(raw_case.get("type", "")).strip()
-    if case_type != "spec_lang.library":
-        raise TypeError("library symbol export requires type spec_lang.library case")
+    if case_type != "spec_lang.export":
+        raise TypeError("library symbol export requires type spec_lang.export case")
     if "definitions" in raw_case:
         raise TypeError(
-            "spec_lang.library legacy key 'definitions' is not supported; use 'defines'"
+            "spec_lang.export legacy key 'definitions' is not supported; use 'defines'"
         )
     raw_defines = raw_case.get("defines")
     if not isinstance(raw_defines, dict):
-        raise TypeError("spec_lang.library requires defines mapping with public/private scopes")
+        raise TypeError("spec_lang.export requires defines mapping with public/private scopes")
     raw_public = raw_defines.get("public")
     raw_private = raw_defines.get("private")
     if raw_public is None and raw_private is None:
-        raise TypeError("spec_lang.library requires defines.public or defines.private mapping")
+        raise TypeError("spec_lang.export requires defines.public or defines.private mapping")
     if raw_public is not None and not isinstance(raw_public, dict):
-        raise TypeError("spec_lang.library defines.public must be mapping when provided")
+        raise TypeError("spec_lang.export defines.public must be mapping when provided")
     if raw_private is not None and not isinstance(raw_private, dict):
-        raise TypeError("spec_lang.library defines.private must be mapping when provided")
+        raise TypeError("spec_lang.export defines.private must be mapping when provided")
     public_map = dict(raw_public or {})
     private_map = dict(raw_private or {})
     overlap = sorted(set(public_map).intersection(private_map))
     if overlap:
         raise ValueError(
-            "spec_lang.library duplicate symbol across defines.public/defines.private: "
+            "spec_lang.export duplicate symbol across defines.public/defines.private: "
             + ", ".join(overlap)
         )
     if not public_map and not private_map:
-        raise TypeError("spec_lang.library requires non-empty defines.public or defines.private mapping")
+        raise TypeError("spec_lang.export requires non-empty defines.public or defines.private mapping")
     merged_raw: dict[str, Any] = {}
     for scope_name, scope in (("defines.public", public_map), ("defines.private", private_map)):
         for raw_name, expr in scope.items():
             name = str(raw_name).strip()
             if not name:
-                raise ValueError(f"spec_lang.library {scope_name} symbol name must be non-empty")
+                raise ValueError(f"spec_lang.export {scope_name} symbol name must be non-empty")
             if name in merged_raw:
                 raise ValueError(f"duplicate library symbol in case {source_path}: {name}")
             try:

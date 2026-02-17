@@ -21,7 +21,7 @@ def test_split_library_cases_per_symbol(tmp_path: Path) -> None:
         """# Lib
 ```yaml spec-test
 id: LIB-1
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     a:
@@ -49,7 +49,7 @@ defines:
     )
     assert cp.returncode == 0
     loaded = list(load_external_cases(f, formats={"md"}))
-    libs = [case for _, case in loaded if str(case.get("type", "")).strip() == "spec_lang.library"]
+    libs = [case for _, case in loaded if str(case.get("type", "")).strip() == "spec_lang.export"]
     assert len(libs) == 2
     for case in libs:
         public = ((case.get("defines") or {}).get("public") or {})

@@ -54,7 +54,7 @@ Provide repeatable recipes for common contributor tasks.
 
 ## Add Or Reuse A Library Function
 
-1. Add function in a `type: spec_lang.library` file.
+1. Add function in a `type: spec_lang.export` file.
 2. Keep mapping-AST canonical form.
 3. Export symbol through `defines.public`.
 4. Load reusable symbols via `harness.chain` (`from: assert.function`) and call

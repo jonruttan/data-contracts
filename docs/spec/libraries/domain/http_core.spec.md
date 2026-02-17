@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS
 title: 'http projection helper functions: domain.http.status'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.status:
@@ -121,7 +121,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN
 title: 'http projection helper functions: domain.http.status_in'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.status_in:
@@ -239,7 +239,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS
 title: 'http projection helper functions: domain.http.status_is'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.status_is:
@@ -357,7 +357,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED
 title: 'http projection helper functions: domain.http.status_is_unauthorized'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.status_is_unauthorized:
@@ -472,7 +472,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN
 title: 'http projection helper functions: domain.http.status_is_forbidden'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.status_is_forbidden:
@@ -587,7 +587,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX
 title: 'http projection helper functions: domain.http.ok_2xx'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.ok_2xx:
@@ -713,7 +713,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET
 title: 'http projection helper functions: domain.http.header_get'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.header_get:
@@ -831,7 +831,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS
 title: 'http projection helper functions: domain.http.header_contains'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.header_contains:
@@ -951,7 +951,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT
 title: 'http projection helper functions: domain.http.body_text'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.body_text:
@@ -1067,7 +1067,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON
 title: 'http projection helper functions: domain.http.body_json'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.body_json:
@@ -1183,7 +1183,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS
 title: 'http projection helper functions: domain.http.body_json_type_is'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.body_json_type_is:
@@ -1301,7 +1301,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY
 title: 'http projection helper functions: domain.http.body_json_has_key'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.body_json_has_key:
@@ -1419,7 +1419,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH
 title: 'http projection helper functions: domain.http.auth_is_oauth'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.auth_is_oauth:
@@ -1537,7 +1537,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-HAS-BEARER-HEADER
 title: 'http projection helper functions: domain.http.has_bearer_header'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.has_bearer_header:
@@ -1657,7 +1657,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED
 title: 'http projection helper functions: domain.http.oauth_scope_requested'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.oauth_scope_requested:
@@ -1777,7 +1777,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN
 title: 'http projection helper functions: domain.http.cors_allow_origin'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.cors_allow_origin:
@@ -1895,7 +1895,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD
 title: 'http projection helper functions: domain.http.cors_allows_method'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.cors_allows_method:
@@ -2015,7 +2015,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER
 title: 'http projection helper functions: domain.http.cors_allows_header'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.cors_allows_header:
@@ -2135,7 +2135,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED
 title: 'http projection helper functions: domain.http.cors_credentials_enabled'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.cors_credentials_enabled:
@@ -2255,7 +2255,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE
 title: 'http projection helper functions: domain.http.cors_max_age_gte'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.cors_max_age_gte:
@@ -2375,7 +2375,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP
 title: 'http projection helper functions: domain.http.is_preflight_step'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.is_preflight_step:
@@ -2491,7 +2491,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID
 title: 'http projection helper functions: domain.http.step_by_id'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.step_by_id:
@@ -2611,7 +2611,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS
 title: 'http projection helper functions: domain.http.step_status_is'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.step_status_is:
@@ -2730,7 +2730,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET
 title: 'http projection helper functions: domain.http.step_body_json_get'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.http.step_body_json_get:

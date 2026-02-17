@@ -3,7 +3,7 @@
 ```yaml spec-test
 id: SRGOV-LIB-SINGLE-001
 title: library cases use single public symbol granularity
-purpose: Ensures each spec_lang.library case defines exactly one symbol under defines.public.
+purpose: Ensures each spec_lang.export case defines exactly one symbol under defines.public.
 type: governance.check
 check: library.single_public_symbol_per_case_required
 harness:

@@ -1,7 +1,7 @@
 version: 1
 id: schema.registry.v1.type.spec_lang_library
 type: type
-case_type: spec_lang.library
+case_type: spec_lang.export
 required_top_level:
   - defines
 allowed_top_level_extra:

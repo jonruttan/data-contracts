@@ -44,7 +44,7 @@ def _rewrite_refs(mapping: dict[str, str], *, check_only: bool) -> list[str]:
 def _library_exports_for_file(spec_path: Path) -> list[str]:
     exports: list[str] = []
     for _doc_path, case in load_external_cases(spec_path, formats={"md"}):
-        if str(case.get("type", "")).strip() != "spec_lang.library":
+        if str(case.get("type", "")).strip() != "spec_lang.export":
             continue
         raw_defines = case.get("defines")
         if not isinstance(raw_defines, dict):

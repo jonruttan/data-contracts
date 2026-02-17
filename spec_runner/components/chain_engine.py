@@ -433,7 +433,7 @@ def _compile_assert_function(
 
             return _Closure(params=tuple(producer.params), body=body, env=_Env(vars={}, parent=None))
 
-    if producer_case.type == "spec_lang.library":
+    if producer_case.type == "spec_lang.export":
         limits = limits_from_harness(producer_case.harness or {})
         root = contract_root_for(producer_case.doc_path)
         include_path = "/" + producer_case.doc_path.resolve().relative_to(root).as_posix()
@@ -450,7 +450,7 @@ def _compile_assert_function(
             )
         if producer.params:
             raise ValueError(
-                f"chain step {step.id} import {import_name} params are not allowed when path resolves to spec_lang.library symbol"
+                f"chain step {step.id} import {import_name} params are not allowed when path resolves to spec_lang.export symbol"
             )
         if not isinstance(value, _Closure):
             raise ValueError(

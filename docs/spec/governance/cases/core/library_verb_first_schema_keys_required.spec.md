@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRGOV-LIB-VERB-001
 title: library schema uses verb-first key names
-purpose: Ensures spec_lang.library authoring uses defines.public/defines.private and rejects
+purpose: Ensures spec_lang.export authoring uses defines.public/defines.private and rejects
   legacy definitions keys.
 type: governance.check
 check: library.verb_first_schema_keys_required

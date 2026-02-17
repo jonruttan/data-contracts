@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRGOV-LIB-VERB-002
 title: legacy definitions key is forbidden in library cases
-purpose: Ensures spec_lang.library cases do not use the legacy definitions key.
+purpose: Ensures spec_lang.export cases do not use the legacy definitions key.
 type: governance.check
 check: library.legacy_definitions_key_forbidden
 harness:

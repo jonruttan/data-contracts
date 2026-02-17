@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-POLICY-001
 title: policy-core reusable governance predicates
-type: spec_lang.library
+type: spec_lang.export
 imports:
 - /docs/spec/libraries/path/path_core.spec.md
 defines:

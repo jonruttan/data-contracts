@@ -396,7 +396,7 @@ def _check_executable_spec_lang_includes_forbidden() -> list[str]:
 
 
 def _check_library_single_public_symbol() -> list[str]:
-    # Removed with hard-cut: spec_lang.library is forbidden.
+    # Removed with hard-cut: spec_lang.export is forbidden.
     return []
 
 

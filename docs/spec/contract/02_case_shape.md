@@ -26,7 +26,7 @@ Runner-only setup keys MUST live under `harness`.
   - conformance cases
   - governance cases
   - impl executable cases
-  - `type: spec_lang.library` cases under `docs/spec/libraries`
+  - `type: spec_lang.export` cases under `docs/spec/libraries`
 
 ## Type-Specific Fields
 

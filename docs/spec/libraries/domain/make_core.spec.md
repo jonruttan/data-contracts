@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-DOMAIN-MAKE-001
 title: makefile projection helper functions
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     make.has_target:

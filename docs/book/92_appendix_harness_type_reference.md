@@ -1,5 +1,3 @@
-# Harness Type Reference
-
 ```yaml doc-meta
 doc_id: DOC-REF-092
 title: Appendix Harness Type Reference
@@ -22,6 +20,8 @@ sections_required:
 - '## Outputs'
 - '## Failure Modes'
 ```
+
+# Harness Type Reference
 
 Machine-generated harness type catalog from schema registry profiles.
 
@@ -58,7 +58,7 @@ Provide generated reference for harness-specific type overlays and required fiel
 | `docs.generate` | 8 | - | - |
 | `governance.check` | 1 | `check` | - |
 | `orchestration.run` | 6 | - | - |
-| `spec_lang.library` | 2 | `defines` | `imports` |
+| `spec_lang.export` | 2 | `defines` | `imports` |
 | `text.file` | 1 | - | - |
 
 
@@ -137,7 +137,7 @@ Provide generated reference for harness-specific type overlays and required fiel
   - `type: orchestration.run`
 
 
-#### `spec_lang.library`
+#### `spec_lang.export`
 
 - Summary: Declares reusable spec-lang symbols for evaluate/policy_evaluate expressions.
 - Defaults:
@@ -148,7 +148,7 @@ Provide generated reference for harness-specific type overlays and required fiel
   - invalid definition shape
 
 - Examples:
-  - `type: spec_lang.library`
+  - `type: spec_lang.export`
 
 
 #### `text.file`

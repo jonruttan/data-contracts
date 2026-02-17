@@ -34,7 +34,7 @@ def _rewrite(text: str) -> tuple[str, bool]:
             out.append(block)
             last = m.end(1)
             continue
-        if not isinstance(case, dict) or str(case.get("type", "")).strip() != "spec_lang.library":
+        if not isinstance(case, dict) or str(case.get("type", "")).strip() != "spec_lang.export":
             out.append(block)
             last = m.end(1)
             continue
@@ -83,7 +83,7 @@ def _rewrite(text: str) -> tuple[str, bool]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Ensure spec_lang.library cases declare harness.chain.exports for public symbols.")
+    ap = argparse.ArgumentParser(description="Ensure spec_lang.export cases declare harness.chain.exports for public symbols.")
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--write", action="store_true")

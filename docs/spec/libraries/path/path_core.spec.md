@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES
 title: 'path-core reusable pure path logic helpers: path.normalize_slashes'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     path.normalize_slashes:
@@ -85,7 +85,7 @@ harness:
 ```yaml spec-test
 id: LIB-PATH-001-002-PATH-SEGMENTS
 title: 'path-core reusable pure path logic helpers: path.segments'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     path.segments:
@@ -166,7 +166,7 @@ harness:
 ```yaml spec-test
 id: LIB-PATH-001-003-PATH-BASENAME
 title: 'path-core reusable pure path logic helpers: path.basename'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     path.basename:
@@ -258,7 +258,7 @@ harness:
 ```yaml spec-test
 id: LIB-PATH-001-004-PATH-EXTENSION
 title: 'path-core reusable pure path logic helpers: path.extension'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     path.extension:

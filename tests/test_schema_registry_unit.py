@@ -19,4 +19,4 @@ def test_compile_registry_has_core_fields_and_type_profiles() -> None:
     assert "cli.run" in types
     assert "text.file" in types
     assert "governance.check" in types
-    assert "spec_lang.library" in types
+    assert "spec_lang.export" in types

@@ -2447,16 +2447,16 @@ function loadSpecLangLibraryDoc(string $path): array {
             return [];
         }
         if (!is_array($scope) || (isListArray($scope) && count($scope) > 0)) {
-            throw new SchemaError("spec_lang.library {$fieldPrefix} must be a mapping when provided");
+            throw new SchemaError("spec_lang.export {$fieldPrefix} must be a mapping when provided");
         }
         $out = [];
         foreach ($scope as $rawName => $expr) {
             $name = trim((string)$rawName);
             if ($name === '') {
-                throw new SchemaError("spec_lang.library {$fieldPrefix} symbol name must be non-empty");
+                throw new SchemaError("spec_lang.export {$fieldPrefix} symbol name must be non-empty");
             }
             if (array_key_exists($name, $out)) {
-                throw new SchemaError("spec_lang.library duplicate symbol inside scope {$fieldPrefix}: {$name}");
+                throw new SchemaError("spec_lang.export duplicate symbol inside scope {$fieldPrefix}: {$name}");
             }
             $out[$name] = compileYamlExprToSexpr($expr, "{$path} {$fieldPrefix}.{$name}");
         }
@@ -2464,23 +2464,23 @@ function loadSpecLangLibraryDoc(string $path): array {
     };
     foreach (parseCases($path) as $case) {
         $type = trim((string)($case['type'] ?? ''));
-        if ($type !== 'spec_lang.library') {
+        if ($type !== 'spec_lang.export') {
             continue;
         }
         foreach (asNonEmptyStringList($case['imports'] ?? null, 'imports') as $imp) {
             $imports[] = $imp;
         }
         if (array_key_exists('definitions', $case)) {
-            throw new SchemaError("spec_lang.library legacy key 'definitions' is not supported; use 'defines'");
+            throw new SchemaError("spec_lang.export legacy key 'definitions' is not supported; use 'defines'");
         }
         $defines = $case['defines'] ?? null;
         if (!is_array($defines) || isListArray($defines)) {
-            throw new SchemaError('spec_lang.library requires defines mapping with public/private scopes');
+            throw new SchemaError('spec_lang.export requires defines mapping with public/private scopes');
         }
         $public = $compileDefinitionScope($defines['public'] ?? null, 'defines.public');
         $private = $compileDefinitionScope($defines['private'] ?? null, 'defines.private');
         if (count($public) === 0 && count($private) === 0) {
-            throw new SchemaError('spec_lang.library requires non-empty defines.public or defines.private mapping');
+            throw new SchemaError('spec_lang.export requires non-empty defines.public or defines.private mapping');
         }
         foreach (array_keys($public) as $name) {
             if (array_key_exists($name, $bindings)) {
@@ -2503,7 +2503,7 @@ function loadSpecLangLibraryDoc(string $path): array {
         }
     }
     if (count($bindings) === 0) {
-        throw new SchemaError("library file has no spec_lang.library defines: {$path}");
+        throw new SchemaError("library file has no spec_lang.export defines: {$path}");
     }
     return [
         'path' => $path,

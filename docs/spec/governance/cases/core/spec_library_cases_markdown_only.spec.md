@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: SRGOV-SPEC-MD-003
 title: spec-lang library cases are markdown only
-purpose: Ensures type spec_lang.library cases are authored only in .spec.md files under docs/spec/libraries.
+purpose: Ensures type spec_lang.export cases are authored only in .spec.md files under docs/spec/libraries.
 type: governance.check
 check: spec.library_cases_markdown_only
 harness:

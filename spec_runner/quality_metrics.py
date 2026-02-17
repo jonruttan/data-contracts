@@ -273,7 +273,7 @@ def _library_public_surface_ratio(repo_root: Path) -> tuple[float, int, int]:
         if not lib_file.is_file():
             continue
         for _doc_path, case in load_external_cases(lib_file, formats={"md"}):
-            if str(case.get("type", "")).strip() != "spec_lang.library":
+            if str(case.get("type", "")).strip() != "spec_lang.export":
                 continue
             defines = case.get("defines")
             if not isinstance(defines, dict):

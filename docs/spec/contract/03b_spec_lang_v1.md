@@ -289,7 +289,7 @@ Library contract details:
 - `includes` supports `.spec.md`, `.spec.yaml`, and `.spec.yml` includes
   while executable case discovery remains Markdown-default unless explicitly
   opted in by runner interface flags
-- `functions.<symbol>` in `type: spec_lang.library` cases uses mapping-AST
+- `functions.<symbol>` in `type: spec_lang.export` cases uses mapping-AST
   authoring (list s-expr authoring is invalid)
 
 ## Canonical Authoring Format

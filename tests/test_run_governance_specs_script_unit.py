@@ -725,7 +725,7 @@ def test_script_enforces_conformance_library_policy_usage_required(tmp_path):
 
 ```yaml spec-test
 id: LIB-POLICY-CORE-TEST-001
-type: spec_lang.library
+type: spec_lang.export
 harness:
   chain:
     exports:
@@ -4716,7 +4716,7 @@ assert:
 
 ```yaml spec-test
 id: L1
-type: spec_lang.library
+type: spec_lang.export
 harness:
   chain:
     exports:
@@ -5189,7 +5189,7 @@ def test_script_enforces_normalization_library_mapping_ast_only(tmp_path):
 
 ```yaml spec-test
 id: LIB-PATH
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     ok:
@@ -5210,7 +5210,7 @@ defines:
 
 ```yaml spec-test
 id: LIB-PATH
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     bad: ["fn", ["x"], ["var", "x"]]
@@ -5378,7 +5378,7 @@ def test_scan_spec_no_executable_yaml_json_in_case_trees_detects_json_case_file(
 
 def test_scan_spec_library_cases_markdown_only_detects_non_md_library_file(tmp_path):
     mod = _load_script_module()
-    _write_text(tmp_path / "docs/spec/libraries/domain/bad.spec.yml", "id: BAD\ntype: spec_lang.library\n")
+    _write_text(tmp_path / "docs/spec/libraries/domain/bad.spec.yml", "id: BAD\ntype: spec_lang.export\n")
     out = mod._scan_spec_library_cases_markdown_only(tmp_path)  # noqa: SLF001
     assert out
     assert "spec_lang library cases" in out[0]
@@ -5722,7 +5722,7 @@ def test_docs_markdown_structured_assertions_required_allows_markdown_helpers(tm
 
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.has_heading:

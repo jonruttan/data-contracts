@@ -1983,7 +1983,7 @@ def _scan_schema_type_profiles_complete(root: Path) -> list[str]:
         "cli.run",
         "text.file",
         "governance.check",
-        "spec_lang.library",
+        "spec_lang.export",
         "orchestration.run",
     }
     violations: list[str] = []
@@ -3855,7 +3855,7 @@ def _scan_runtime_executable_spec_lang_includes_forbidden(root: Path, *, harness
     violations: list[str] = []
     for doc_path, case in _iter_all_spec_cases(root):
         case_type = str(case.get("type", "")).strip()
-        if case_type == "spec_lang.library":
+        if case_type == "spec_lang.export":
             continue
         h = case.get("harness")
         if not isinstance(h, dict):
@@ -3905,7 +3905,7 @@ def _scan_library_single_public_symbol_per_case(root: Path, *, harness: dict | N
             violations.append(f"{lib_file.relative_to(root)}: unable to parse library file ({exc})")
             continue
         for _doc_path, case in loaded:
-            if str(case.get("type", "")).strip() != "spec_lang.library":
+            if str(case.get("type", "")).strip() != "spec_lang.export":
                 continue
             case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
             defines = case.get("defines")
@@ -3940,9 +3940,9 @@ def _scan_library_colocated_symbol_tests_required(root: Path, *, harness: dict |
         file_exports: set[str] = set()
         for _doc_path, case in loaded:
             case_type = str(case.get("type", "")).strip()
-            if case_type and case_type != "spec_lang.library":
+            if case_type and case_type != "spec_lang.export":
                 has_executable_test_case = True
-            if case_type == "spec_lang.library":
+            if case_type == "spec_lang.export":
                 defines = case.get("defines")
                 if isinstance(defines, dict):
                     public = defines.get("public")
@@ -6728,7 +6728,7 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
             violations.append(f"{lib_file.relative_to(root)}: unable to parse library file ({exc})")
             continue
         for _doc_path, case in loaded:
-            if str(case.get("type", "")).strip() != "spec_lang.library":
+            if str(case.get("type", "")).strip() != "spec_lang.export":
                 continue
             raw_defines = case.get("defines")
             if not isinstance(raw_defines, dict):
@@ -6797,7 +6797,7 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
             if isinstance(raw_assert, list):
                 for expr in _iter_evaluate_expr_nodes(raw_assert):
                     referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
-            if str(case.get("type", "")).strip() == "spec_lang.library":
+            if str(case.get("type", "")).strip() == "spec_lang.export":
                 raw_defines = case.get("defines")
                 if isinstance(raw_defines, dict):
                     for scope in ("public", "private"):
@@ -6830,19 +6830,19 @@ def _scan_library_public_surface_model(root: Path, *, harness: dict | None = Non
             violations.append(f"{lib_file.relative_to(root)}: unable to parse library file ({exc})")
             continue
         for _doc_path, case in loaded:
-            if str(case.get("type", "")).strip() != "spec_lang.library":
+            if str(case.get("type", "")).strip() != "spec_lang.export":
                 continue
             raw_defines = case.get("defines")
             if not isinstance(raw_defines, dict):
                 violations.append(
-                    f"{lib_file.relative_to(root)}: spec_lang.library requires defines mapping"
+                    f"{lib_file.relative_to(root)}: spec_lang.export requires defines mapping"
                 )
                 continue
             raw_public = raw_defines.get("public")
             raw_private = raw_defines.get("private")
             if not isinstance(raw_public, dict) and not isinstance(raw_private, dict):
                 violations.append(
-                    f"{lib_file.relative_to(root)}: spec_lang.library requires defines.public or defines.private mapping"
+                    f"{lib_file.relative_to(root)}: spec_lang.export requires defines.public or defines.private mapping"
                 )
                 continue
             public_symbols: set[str] = set()
@@ -6877,11 +6877,11 @@ def _scan_library_legacy_definitions_key_forbidden(root: Path, *, harness: dict 
             violations.append(f"{lib_file.relative_to(root)}: unable to parse library file ({exc})")
             continue
         for _doc_path, case in loaded:
-            if str(case.get("type", "")).strip() != "spec_lang.library":
+            if str(case.get("type", "")).strip() != "spec_lang.export":
                 continue
             if "definitions" in case:
                 violations.append(
-                    f"{lib_file.relative_to(root)}: spec_lang.library legacy key 'definitions' is forbidden; use 'defines'"
+                    f"{lib_file.relative_to(root)}: spec_lang.export legacy key 'definitions' is forbidden; use 'defines'"
                 )
     return violations
 
@@ -6940,7 +6940,7 @@ def _scan_reference_private_symbols_forbidden(root: Path, *, harness: dict | Non
             except Exception:
                 continue
             for _doc_path, case in loaded:
-                if str(case.get("type", "")).strip() != "spec_lang.library":
+                if str(case.get("type", "")).strip() != "spec_lang.export":
                     continue
                 raw_defines = case.get("defines")
                 if not isinstance(raw_defines, dict):
@@ -7231,7 +7231,7 @@ def _scan_library_domain_index_sync(root: Path, *, harness: dict | None = None) 
                 continue
             exports: list[str] = []
             for _doc_path, case in loaded:
-                if str(case.get("type", "")).strip() != "spec_lang.library":
+                if str(case.get("type", "")).strip() != "spec_lang.export":
                     continue
                 raw_defines = case.get("defines")
                 if not isinstance(raw_defines, dict):
@@ -7337,7 +7337,7 @@ def _scan_normalization_library_mapping_ast_only(root: Path, *, harness: dict | 
         for spec in specs:
             case = spec.test
             case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
-            if str(case.get("type", "")).strip() != "spec_lang.library":
+            if str(case.get("type", "")).strip() != "spec_lang.export":
                 continue
             defines = case.get("defines")
             if not isinstance(defines, dict) or not defines:

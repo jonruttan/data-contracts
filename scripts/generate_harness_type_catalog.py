@@ -47,7 +47,7 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
             "defaults": ["policy_evaluate required"],
             "failure_modes": ["unknown check id", "scanner mismatch"],
         },
-        "spec_lang.library": {
+        "spec_lang.export": {
             "summary": "Declares reusable spec-lang symbols for evaluate/policy_evaluate expressions.",
             "defaults": ["mapping-AST defines only"],
             "failure_modes": ["duplicate symbol export", "invalid definition shape"],

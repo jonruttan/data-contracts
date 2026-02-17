@@ -35,19 +35,19 @@ Library paths:
 
 ## Library Document Shape
 
-Library files are normal spec docs containing `type: spec_lang.library` cases.
+Library files are normal spec docs containing `type: spec_lang.export` cases.
 
 Required fields for each library case:
 
 - `id`
-- `type: spec_lang.library`
+- `type: spec_lang.export`
 - `defines` (mapping)
   - `public` (mapping: symbol -> expression, optional)
   - `private` (mapping: symbol -> expression, optional)
 
 Hard-cut granularity:
 
-- each `type: spec_lang.library` case MUST define exactly one symbol under
+- each `type: spec_lang.export` case MUST define exactly one symbol under
   `defines.public`.
 
 `defines.public.<symbol>` and

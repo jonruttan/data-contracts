@@ -22,7 +22,7 @@ def _iter_files(path: Path):
 
 
 def _rewrite_block(block: str) -> str:
-    if "type: spec_lang.library" not in block:
+    if "type: spec_lang.export" not in block:
         return block
     updated = _DEFINITIONS_KEY_RE.sub(r"\1defines:", block)
     updated = updated.replace("definitions.public", "defines.public")
@@ -43,7 +43,7 @@ def _rewrite(text: str) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        description="Convert legacy `definitions` key to `defines` in spec_lang.library yaml spec-test blocks."
+        description="Convert legacy `definitions` key to `defines` in spec_lang.export yaml spec-test blocks."
     )
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")

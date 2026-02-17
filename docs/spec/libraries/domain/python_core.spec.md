@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-DOMAIN-PY-001
 title: python projection helper functions
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     py.is_tuple_projection:

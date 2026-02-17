@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     policy.metric_non_decrease:
@@ -32,7 +32,7 @@ harness:
 ```yaml spec-test
 id: LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_increase'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     policy.metric_non_increase:

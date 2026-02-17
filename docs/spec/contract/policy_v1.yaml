@@ -1986,7 +1986,7 @@ rules:
   applies_to: type_spec_lang_library_shape
   norm: MUST
   requirement: libraries_use_defines_public_private_scope_model
-  description: 'spec_lang.library cases must define symbols under defines.public/defines.private scopes and avoid legacy shapes.
+  description: 'spec_lang.export cases must define symbols under defines.public/defines.private scopes and avoid legacy shapes.
 
     '
   rationale: Provides explicit API visibility boundaries and deterministic export derivation.
@@ -1998,10 +1998,10 @@ rules:
 - id: LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
   introduced_in: v1
   scope: schema
-  applies_to: spec_lang.library.defines.public
+  applies_to: spec_lang.export.defines.public
   norm: MUST
   requirement: each_spec_lang_library_case_defines_exactly_one_public_symbol
-  description: 'Each `type: spec_lang.library` case must define exactly one symbol in defines.public.
+  description: 'Each `type: spec_lang.export` case must define exactly one symbol in defines.public.
 
     '
   rationale: Enables function-per-case ownership and deterministic chain import behavior.
@@ -3177,10 +3177,10 @@ rules:
 - id: LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
   introduced_in: v1
   scope: schema
-  applies_to: spec_lang.library.shape
+  applies_to: spec_lang.export.shape
   norm: MUST
   requirement: library_cases_use_defines_public_private_keys
-  description: 'spec_lang.library cases must use defines.public/defines.private and verb-first library key naming.
+  description: 'spec_lang.export cases must use defines.public/defines.private and verb-first library key naming.
 
     '
   rationale: Keeps library authoring consistent with verb-first contract language.
@@ -3191,10 +3191,10 @@ rules:
 - id: LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN
   introduced_in: v1
   scope: schema
-  applies_to: spec_lang.library.shape
+  applies_to: spec_lang.export.shape
   norm: MUST_NOT
   requirement: legacy_definitions_key_is_rejected
-  description: 'spec_lang.library legacy key `definitions` is forbidden; `defines` is the only accepted key.
+  description: 'spec_lang.export legacy key `definitions` is forbidden; `defines` is the only accepted key.
 
     '
   rationale: Enforces immediate hard cut and removes compatibility ambiguity.

@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-CONF-ASSERT-001
 title: reusable conformance assertion helper functions
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     conf.pass_when_text_contains:

@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-IMPL-ASSERT-001-001-IMPL-ASSERT-CONTAINS
 title: 'reusable impl assertion helper functions: impl.assert.contains'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     impl.assert.contains:
@@ -35,7 +35,7 @@ harness:
 ```yaml spec-test
 id: LIB-IMPL-ASSERT-001-002-IMPL-ASSERT-REGEX
 title: 'reusable impl assertion helper functions: impl.assert.regex'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     impl.assert.regex:
@@ -65,7 +65,7 @@ harness:
 ```yaml spec-test
 id: LIB-IMPL-ASSERT-001-003-IMPL-ASSERT-JSON-TYPE
 title: 'reusable impl assertion helper functions: impl.assert.json_type'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     impl.assert.json_type:

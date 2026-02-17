@@ -5,7 +5,7 @@
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING
 title: 'markdown projection helper functions: domain.markdown.has_heading'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.has_heading:
@@ -224,7 +224,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS
 title: 'markdown projection helper functions: domain.markdown.heading_level_exists'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.heading_level_exists:
@@ -431,7 +431,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID
 title: 'markdown projection helper functions: domain.markdown.section_order_valid'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.section_order_valid:
@@ -612,7 +612,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT
 title: 'markdown projection helper functions: domain.markdown.required_sections_present'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.required_sections_present:
@@ -760,7 +760,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE
 title: 'markdown projection helper functions: domain.markdown.link_targets_all_resolve'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.link_targets_all_resolve:
@@ -911,7 +911,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS
 title: 'markdown projection helper functions: domain.markdown.has_broken_links'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.has_broken_links:
@@ -1054,7 +1054,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE
 title: 'markdown projection helper functions: domain.markdown.has_yaml_spec_test_fence'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.has_yaml_spec_test_fence:
@@ -1204,7 +1204,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS
 title: 'markdown projection helper functions: domain.markdown.code_fence_language_exists'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.code_fence_language_exists:
@@ -1364,7 +1364,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT
 title: 'markdown projection helper functions: domain.markdown.token_present'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.token_present:
@@ -1514,7 +1514,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT
 title: 'markdown projection helper functions: domain.markdown.tokens_all_present'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.tokens_all_present:
@@ -1662,7 +1662,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE
 title: 'markdown projection helper functions: domain.markdown.token_ownership_unique'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.token_ownership_unique:
@@ -1813,7 +1813,7 @@ harness:
 ```yaml spec-test
 id: LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED
 title: 'markdown projection helper functions: domain.markdown.token_dependencies_resolved'
-type: spec_lang.library
+type: spec_lang.export
 defines:
   public:
     domain.markdown.token_dependencies_resolved:

@@ -170,7 +170,7 @@ Subject profile envelope contract:
 ## Spec-Lang Reuse
 
 - `harness.spec_lang.includes` MAY provide ordered library docs/files
-  containing `type: spec_lang.library` reusable function definitions.
+  containing `type: spec_lang.export` reusable function definitions.
 - this include surface is for library authoring/composition; executable case
   symbol loading is chain-first.
 - `harness.spec_lang.exports` MAY constrain visible imported symbols to an
