@@ -59,6 +59,22 @@ Adapter semantic contract:
 - universal `evaluate` core and sugar compile-only behavior are runner
   semantics, not adapter-specific policy
 
+Profiling controls (opt-in; all adapters):
+
+- `--profile-level off|basic|detailed|debug` (default `off`)
+- `--profile-out <path>` (default `/.artifacts/run-trace.json`)
+- `--profile-summary-out <path>` (default `/.artifacts/run-trace-summary.md`)
+- `--profile-heartbeat-ms <int>` (default `1000`)
+- `--profile-stall-threshold-ms <int>` (default `10000`)
+
+Environment equivalents:
+
+- `SPEC_RUNNER_PROFILE_LEVEL`
+- `SPEC_RUNNER_PROFILE_OUT`
+- `SPEC_RUNNER_PROFILE_SUMMARY_OUT`
+- `SPEC_RUNNER_PROFILE_HEARTBEAT_MS`
+- `SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS`
+
 Runtime scope note:
 
 - required support targets in v1 remain Python runner and PHP runner

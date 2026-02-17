@@ -3218,3 +3218,41 @@ rules:
   - docs/spec/contract/14_spec_lang_libraries.md
   - docs/spec/current.md
   - docs/spec/governance/cases/core/schema_verb_first_contract_sync.spec.md
+- id: RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.profiling.contract
+  norm: MUST
+  requirement: run_trace_schema_and_contract_artifacts_present
+  description: Runtime profiling schema and contract artifacts must exist and remain linked from the current snapshot.
+  rationale: Keeps profiling behavior deterministic and documented for timeout diagnosis.
+  risk_if_violated: Profiling outputs drift without contract coverage.
+  references:
+  - docs/spec/schema/run_trace_v1.yaml
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  - docs/spec/governance/cases/core/runtime_profiling_contract_artifacts.spec.md
+- id: RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.profiling.redaction
+  norm: MUST
+  requirement: profiling_artifacts_must_not_contain_raw_secrets
+  description: Profiling artifacts must redact secret-like data and avoid raw env value emission.
+  rationale: Profiling diagnostics must remain safe for CI artifact publication.
+  risk_if_violated: Sensitive data leakage in logs and artifacts.
+  references:
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  - docs/spec/governance/cases/core/runtime_profiling_redaction_policy.spec.md
+- id: RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.profiling.span_taxonomy
+  norm: MUST
+  requirement: profiling_traces_include_required_run_case_check_subprocess_spans
+  description: Profiling traces must include required span taxonomy used by timeout diagnostics.
+  rationale: Makes timeout analysis deterministic and runner-agnostic.
+  risk_if_violated: Trace artifacts become incomplete and unactionable.
+  references:
+  - docs/spec/schema/run_trace_v1.yaml
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  - docs/spec/governance/cases/core/runtime_profiling_span_taxonomy.spec.md

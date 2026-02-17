@@ -20,12 +20,14 @@ Related docs/reference schemas:
 - `docs/spec/schema/spec_lang_builtin_catalog_v1.yaml`
 - `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml`
 - `docs/spec/schema/subject_profiles_v1.yaml`
+- `docs/spec/schema/run_trace_v1.yaml`
 - `docs/spec/schema/orchestration_result_v1.yaml`
 - `docs/spec/schema/registry_schema_v1.yaml`
 - `docs/spec/schema/registry/v1/*.yaml`
 - `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`
 - `docs/spec/contract/20_subject_profiles_v1.md`
 - `docs/spec/contract/21_schema_registry_contract.md`
+- `docs/spec/contract/24_runtime_profiling_contract.md`
 ```
 
 ## Common Fields

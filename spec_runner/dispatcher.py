@@ -37,6 +37,7 @@ class SpecRunContext:
     _active_case_keys: set[str] = field(default_factory=set)
     profile_enabled: bool = False
     profile_rows: list[dict[str, Any]] = field(default_factory=list)
+    profiler: Any | None = None
 
     def patch_context(self) -> Any:
         return self.patcher.context()
@@ -140,22 +141,67 @@ def run_case(
     error: str | None = None
     ctx.push_active_case(case_key)
     try:
-        chain_started = time.perf_counter()
-        execute_case_chain(
-            internal_case,
-            ctx=ctx,
-            run_case_fn=lambda chained_case: run_case(chained_case, ctx=ctx, type_runners=type_runners),
+        profiler = getattr(ctx, "profiler", None)
+        case_span_cm = (
+            profiler.span(
+                name="case.run",
+                kind="case",
+                phase="case.run",
+                attrs={
+                    "case_id": internal_case.id,
+                    "case_type": internal_case.type,
+                    "doc_path": internal_case.doc_path.as_posix(),
+                },
+            )
+            if profiler is not None
+            else None
         )
-        chain_elapsed_ms = (time.perf_counter() - chain_started) * 1000.0
-        # Core runner types execute compiled internal cases. External custom runners
-        # keep receiving SpecDocTest for backward compatibility.
-        harness_started = time.perf_counter()
-        if type_ in {"api.http", "cli.run", "docs.generate", "orchestration.run", "text.file"}:
-            fn(internal_case, ctx=ctx)
+        if case_span_cm is None:
+            chain_started = time.perf_counter()
+            execute_case_chain(
+                internal_case,
+                ctx=ctx,
+                run_case_fn=lambda chained_case: run_case(chained_case, ctx=ctx, type_runners=type_runners),
+            )
+            chain_elapsed_ms = (time.perf_counter() - chain_started) * 1000.0
+            harness_started = time.perf_counter()
+            if type_ in {"api.http", "cli.run", "docs.generate", "orchestration.run", "text.file"}:
+                fn(internal_case, ctx=ctx)
+                harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
+                return
+            fn(case, ctx=ctx)
             harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
             return
-        fn(case, ctx=ctx)
-        harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
+
+        with case_span_cm:
+            chain_started = time.perf_counter()
+            chain_span_cm = profiler.span(
+                name="case.chain",
+                kind="chain",
+                phase="case.chain",
+                attrs={"case_id": internal_case.id},
+            )
+            with chain_span_cm:
+                execute_case_chain(
+                    internal_case,
+                    ctx=ctx,
+                    run_case_fn=lambda chained_case: run_case(chained_case, ctx=ctx, type_runners=type_runners),
+                )
+            chain_elapsed_ms = (time.perf_counter() - chain_started) * 1000.0
+            harness_started = time.perf_counter()
+            harness_span_cm = profiler.span(
+                name="case.harness",
+                kind="harness",
+                phase="case.harness",
+                attrs={"case_id": internal_case.id, "case_type": internal_case.type},
+            )
+            with harness_span_cm:
+                if type_ in {"api.http", "cli.run", "docs.generate", "orchestration.run", "text.file"}:
+                    fn(internal_case, ctx=ctx)
+                    harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
+                    return
+                fn(case, ctx=ctx)
+                harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
     except BaseException as exc:  # noqa: BLE001
         status = "fail"
         error = str(exc)

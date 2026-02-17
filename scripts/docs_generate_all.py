@@ -18,6 +18,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--timing-out", default=".artifacts/docs-generate-timing.json")
     ap.add_argument("--profile", action="store_true", help="Emit per-case harness timing profile JSON")
     ap.add_argument("--profile-out", default=".artifacts/docs-generate-profile.json")
+    ap.add_argument("--profile-level", default="", help="off|basic|detailed|debug")
+    ap.add_argument("--profile-summary-out", default="", help="Run trace summary markdown output path")
+    ap.add_argument("--profile-heartbeat-ms", type=int, default=0, help="Profiler heartbeat interval (ms)")
+    ap.add_argument("--profile-stall-threshold-ms", type=int, default=0, help="Profiler stall threshold (ms)")
     ns = ap.parse_args(argv)
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -36,6 +40,14 @@ def main(argv: list[str] | None = None) -> int:
     if bool(ns.profile):
         cmd.append("--profile")
         cmd += ["--profile-out", str(ns.profile_out)]
+    if str(ns.profile_level).strip():
+        cmd += ["--profile-level", str(ns.profile_level).strip()]
+    if str(ns.profile_summary_out).strip():
+        cmd += ["--profile-summary-out", str(ns.profile_summary_out).strip()]
+    if int(ns.profile_heartbeat_ms or 0) > 0:
+        cmd += ["--profile-heartbeat-ms", str(int(ns.profile_heartbeat_ms))]
+    if int(ns.profile_stall_threshold_ms or 0) > 0:
+        cmd += ["--profile-stall-threshold-ms", str(int(ns.profile_stall_threshold_ms))]
     if int(ns.jobs) != 0:
         cmd += ["--jobs", str(int(ns.jobs))]
     if str(ns.surface).strip():

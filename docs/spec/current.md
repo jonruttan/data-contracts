@@ -12,6 +12,10 @@ Notes:
   internal predicates before runtime evaluation.
 - Spec-lang remains pure; adapter layers perform side effects and feed
   normalized subjects into evaluation.
+- Runtime profiling is opt-in and cross-runner via
+  `--profile-level off|basic|detailed|debug`, producing deterministic
+  `run_trace_v1` artifacts at `/.artifacts/run-trace.json` and
+  `/.artifacts/run-trace-summary.md` with span/event timeout diagnostics.
 - Subject projection now follows JSON-core profile envelopes
   (`profile_id`, `profile_version`, `value`, `meta`, optional `context`);
   evaluator subjects are JSON-only.

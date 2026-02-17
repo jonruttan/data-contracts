@@ -157,6 +157,9 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
 - `/docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md`
 - `/docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md`
+- `/docs/spec/governance/cases/core/runtime_profiling_contract_artifacts.spec.md`
+- `/docs/spec/governance/cases/core/runtime_profiling_redaction_policy.spec.md`
+- `/docs/spec/governance/cases/core/runtime_profiling_span_taxonomy.spec.md`
 - `/docs/spec/governance/cases/core/runtime_public_runner_default_rust.spec.md`
 - `/docs/spec/governance/cases/core/runtime_public_runner_entrypoint_single.spec.md`
 - `/docs/spec/governance/cases/core/runtime_python_bin_resolver_sync.spec.md`

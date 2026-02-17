@@ -80,6 +80,26 @@ while [[ $# -gt 0 ]]; do
       export SPEC_RUNNER_DEBUG_LEVEL=3
       shift
       ;;
+    --profile-level)
+      export SPEC_RUNNER_PROFILE_LEVEL="${2:-}"
+      shift 2
+      ;;
+    --profile-out)
+      export SPEC_RUNNER_PROFILE_OUT="${2:-}"
+      shift 2
+      ;;
+    --profile-summary-out)
+      export SPEC_RUNNER_PROFILE_SUMMARY_OUT="${2:-}"
+      shift 2
+      ;;
+    --profile-heartbeat-ms)
+      export SPEC_RUNNER_PROFILE_HEARTBEAT_MS="${2:-}"
+      shift 2
+      ;;
+    --profile-stall-threshold-ms)
+      export SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS="${2:-}"
+      shift 2
+      ;;
     *)
       break
       ;;

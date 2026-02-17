@@ -3303,3 +3303,41 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   notes: Governance enforces defines wording alignment across schema, contract, and current snapshot docs.
+- rule_id: RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED
+  contract_refs:
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  - docs/spec/current.md
+  schema_refs:
+  - docs/spec/schema/run_trace_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - spec_runner/components/profiler.py
+  notes: Ensures runtime profiling contract and schema artifacts remain present and wired into governance.
+- rule_id: RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  schema_refs:
+  - docs/spec/schema/run_trace_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - spec_runner/components/profiler.py
+  notes: Profiling artifacts redact secret-like values and forbid raw env value emission.
+- rule_id: RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  schema_refs:
+  - docs/spec/schema/run_trace_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - spec_runner/components/profiler.py
+  - scripts/rust/spec_runner_cli/src/profiler.rs
+  notes: Runtime profiling traces include required run/case/check/subprocess span taxonomy.

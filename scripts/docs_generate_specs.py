@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import contextlib
 import json
 import os
 import time
@@ -13,6 +14,7 @@ from typing import Any
 from spec_runner.dispatcher import SpecRunContext, iter_cases, run_case
 from spec_runner.runtime_context import MiniCapsys, MiniMonkeyPatch
 from spec_runner.settings import case_file_name
+from spec_runner.components.profiler import RunProfiler, profile_config_from_args
 from spec_runner.virtual_paths import resolve_contract_path
 
 
@@ -72,9 +74,25 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--timing-out", default=".artifacts/docs-generate-timing.json")
     ap.add_argument("--profile", action="store_true", help="Emit per-case harness timing profile JSON")
     ap.add_argument("--profile-out", default=".artifacts/docs-generate-profile.json")
+    ap.add_argument("--profile-level", default="", help="off|basic|detailed|debug (default off)")
+    ap.add_argument("--profile-summary-out", default="", help="Run trace summary markdown output path")
+    ap.add_argument("--profile-heartbeat-ms", type=int, default=0, help="Profiler heartbeat interval (ms)")
+    ap.add_argument("--profile-stall-threshold-ms", type=int, default=0, help="Profiler stall threshold (ms)")
     ns = ap.parse_args(argv)
 
     repo_root = Path(__file__).resolve().parents[1]
+    profiler_cfg = profile_config_from_args(
+        profile_level=str(ns.profile_level).strip() or None,
+        profile_out=None,
+        profile_summary_out=str(ns.profile_summary_out).strip() or None,
+        profile_heartbeat_ms=ns.profile_heartbeat_ms if int(ns.profile_heartbeat_ms or 0) > 0 else None,
+        profile_stall_threshold_ms=ns.profile_stall_threshold_ms if int(ns.profile_stall_threshold_ms or 0) > 0 else None,
+        runner_impl=str(os.environ.get("SPEC_RUNNER_IMPL", "python")),
+        command="docs-generate-specs",
+        args=list(argv or []),
+        env=dict(os.environ),
+    )
+    profiler = RunProfiler(profiler_cfg)
     mode_value = "check" if ns.check else "write"
     case_dir = _resolve_out(repo_root, str(ns.cases), field="docs_generate_specs.cases")
     if not case_dir.exists():
@@ -101,80 +119,109 @@ def main(argv: list[str] | None = None) -> int:
     env = dict(os.environ)
     env["SPEC_DOCS_GENERATE_MODE"] = mode_value
 
-    with TemporaryDirectory(prefix="spec-runner-docs-generate-") as td:
-        td_path = Path(td)
-        workers_used = 1
+    try:
+        with TemporaryDirectory(prefix="spec-runner-docs-generate-") as td:
+            td_path = Path(td)
+            workers_used = 1
 
-        def _run_one(task: tuple[int, Any, str]) -> tuple[int, dict[str, Any], float, str | None, list[dict[str, Any]]]:
-            idx, case, sid = task
-            case_id = str(case.test.get("id", "")).strip() or "<unknown>"
-            case_tmp = td_path / f"case_{idx}"
-            case_tmp.mkdir(parents=True, exist_ok=True)
-            ctx = SpecRunContext(
-                tmp_path=case_tmp,
-                patcher=MiniMonkeyPatch(),
-                capture=MiniCapsys(),
-                env=env,
-                profile_enabled=bool(ns.profile),
-            )
-            case_started = time.perf_counter()
-            try:
-                run_case(case, ctx=ctx)
-                elapsed_ms = (time.perf_counter() - case_started) * 1000.0
-                return idx, {"case_id": case_id, "surface_id": sid, "status": "pass"}, elapsed_ms, None, list(ctx.profile_rows)
-            except BaseException as exc:  # noqa: BLE001
-                elapsed_ms = (time.perf_counter() - case_started) * 1000.0
-                return (
-                    idx,
-                    {"case_id": case_id, "surface_id": sid, "status": "fail"},
-                    elapsed_ms,
-                    f"{case_id}: {exc}",
-                    list(ctx.profile_rows),
+            def _run_one(task: tuple[int, Any, str]) -> tuple[int, dict[str, Any], float, str | None, list[dict[str, Any]]]:
+                idx, case, sid = task
+                case_id = str(case.test.get("id", "")).strip() or "<unknown>"
+                case_tmp = td_path / f"case_{idx}"
+                case_tmp.mkdir(parents=True, exist_ok=True)
+                ctx = SpecRunContext(
+                    tmp_path=case_tmp,
+                    patcher=MiniMonkeyPatch(),
+                    capture=MiniCapsys(),
+                    env=env,
+                    profile_enabled=bool(ns.profile),
+                    profiler=profiler if profiler.cfg.enabled else None,
                 )
+                case_started = time.perf_counter()
+                try:
+                    with (
+                        profiler.span(
+                            name="check.execute",
+                            kind="check",
+                            phase="docs.generate.case",
+                            attrs={"case_id": case_id, "surface_id": sid},
+                        )
+                        if profiler.cfg.enabled
+                        else contextlib.nullcontext()
+                    ):
+                        run_case(case, ctx=ctx)
+                    elapsed_ms = (time.perf_counter() - case_started) * 1000.0
+                    return idx, {"case_id": case_id, "surface_id": sid, "status": "pass"}, elapsed_ms, None, list(ctx.profile_rows)
+                except BaseException as exc:  # noqa: BLE001
+                    elapsed_ms = (time.perf_counter() - case_started) * 1000.0
+                    return (
+                        idx,
+                        {"case_id": case_id, "surface_id": sid, "status": "fail"},
+                        elapsed_ms,
+                        f"{case_id}: {exc}",
+                        list(ctx.profile_rows),
+                    )
 
-        indexed = [(idx, case, sid) for idx, (case, sid) in enumerate(selected)]
-        if len(indexed) <= 1:
-            for task in indexed:
-                _idx, row, elapsed_ms, err, case_profile_rows = _run_one(task)
-                rows.append(row)
-                timing_rows.append(
-                    {
-                        "index": int(_idx),
-                        "case_id": str(row.get("case_id", "")),
-                        "surface_id": str(row.get("surface_id", "")),
-                        "duration_ms": round(float(elapsed_ms), 3),
-                        "status": str(row.get("status", "fail")),
-                    }
-                )
-                profile_rows.extend(case_profile_rows)
-                if err:
-                    errors.append(err)
-        else:
-            auto_workers = max(1, os.cpu_count() or 1)
-            requested = int(ns.jobs)
-            if requested <= 0:
-                max_workers = min(auto_workers, len(indexed))
+            indexed = [(idx, case, sid) for idx, (case, sid) in enumerate(selected)]
+            if len(indexed) <= 1:
+                for task in indexed:
+                    _idx, row, elapsed_ms, err, case_profile_rows = _run_one(task)
+                    rows.append(row)
+                    timing_rows.append(
+                        {
+                            "index": int(_idx),
+                            "case_id": str(row.get("case_id", "")),
+                            "surface_id": str(row.get("surface_id", "")),
+                            "duration_ms": round(float(elapsed_ms), 3),
+                            "status": str(row.get("status", "fail")),
+                        }
+                    )
+                    profile_rows.extend(case_profile_rows)
+                    if err:
+                        errors.append(err)
             else:
-                max_workers = min(max(1, requested), len(indexed))
-            workers_used = max_workers
-            results: list[tuple[int, dict[str, Any], float, str | None, list[dict[str, Any]]]] = []
-            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-                for result in executor.map(_run_one, indexed):
-                    results.append(result)
-            for _idx, row, elapsed_ms, err, case_profile_rows in sorted(results, key=lambda x: x[0]):
-                rows.append(row)
-                timing_rows.append(
-                    {
-                        "index": int(_idx),
-                        "case_id": str(row.get("case_id", "")),
-                        "surface_id": str(row.get("surface_id", "")),
-                        "duration_ms": round(float(elapsed_ms), 3),
-                        "status": str(row.get("status", "fail")),
-                    }
-                )
-                profile_rows.extend(case_profile_rows)
-                if err:
-                    errors.append(err)
+                auto_workers = max(1, os.cpu_count() or 1)
+                requested = int(ns.jobs)
+                if requested <= 0:
+                    max_workers = min(auto_workers, len(indexed))
+                else:
+                    max_workers = min(max(1, requested), len(indexed))
+                workers_used = max_workers
+                results: list[tuple[int, dict[str, Any], float, str | None, list[dict[str, Any]]]] = []
+                with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+                    for result in executor.map(_run_one, indexed):
+                        results.append(result)
+                for _idx, row, elapsed_ms, err, case_profile_rows in sorted(results, key=lambda x: x[0]):
+                    rows.append(row)
+                    timing_rows.append(
+                        {
+                            "index": int(_idx),
+                            "case_id": str(row.get("case_id", "")),
+                            "surface_id": str(row.get("surface_id", "")),
+                            "duration_ms": round(float(elapsed_ms), 3),
+                            "status": str(row.get("status", "fail")),
+                        }
+                    )
+                    profile_rows.extend(case_profile_rows)
+                    if err:
+                        errors.append(err)
+    finally:
+        profile_out_raw = str(os.environ.get("SPEC_RUNNER_PROFILE_OUT", "")).strip() or "/.artifacts/run-trace.json"
+        profile_summary_out_raw = str(ns.profile_summary_out).strip() or str(
+            os.environ.get("SPEC_RUNNER_PROFILE_SUMMARY_OUT", "")
+        ).strip() or "/.artifacts/run-trace-summary.md"
+        profile_out_path = _resolve_out(repo_root, profile_out_raw, field="docs_generate_specs.profile_trace_out")
+        profile_summary_out_path = _resolve_out(
+            repo_root,
+            profile_summary_out_raw,
+            field="docs_generate_specs.profile_trace_summary_out",
+        )
+        profiler.close(
+            status="fail" if errors else "pass",
+            out_path=profile_out_path,
+            summary_out_path=profile_summary_out_path,
+            exit_code=1 if errors else 0,
+        )
 
     passed = sum(1 for x in rows if x["status"] == "pass")
     failed = len(rows) - passed

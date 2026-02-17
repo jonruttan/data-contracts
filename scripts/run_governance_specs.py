@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import contextvars
+import contextlib
 import json
 import inspect
 import os
@@ -71,6 +73,7 @@ from spec_runner.quality_metrics import _load_baseline_json
 from spec_runner.governance_engine import GovernancePolicyResult, normalize_policy_evaluate, run_governance_policy
 from spec_runner.spec_portability import spec_portability_report_jsonable
 from spec_runner.virtual_paths import VirtualPathError, normalize_contract_path, parse_external_ref, resolve_contract_path
+from spec_runner.components.profiler import RunProfiler, profile_config_from_args
 
 
 _SECURITY_WARNING_DOCS = (
@@ -218,6 +221,48 @@ _RAW_HTTP_META_ALLOWED_CASE_FILES = {
     "docs/spec/conformance/cases/core/api_http.spec.md",
 }
 _OPS_FS_SYMBOL_PATTERN = re.compile(r"\bops\.fs\.[a-z0-9_.]+\b")
+_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS = float(
+    os.environ.get("SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS", "120")
+)
+_GOVERNANCE_TRACE = os.environ.get("SPEC_RUNNER_GOVERNANCE_TRACE", "").strip().lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+_ACTIVE_PROFILER: contextvars.ContextVar[RunProfiler | None] = contextvars.ContextVar(
+    "active_governance_profiler",
+    default=None,
+)
+
+
+def _profiled_subprocess_run(
+    cmd: list[str],
+    *,
+    cwd: Path,
+    timeout: float | None = None,
+    phase: str,
+    text: bool = True,
+) -> subprocess.CompletedProcess[str]:
+    profiler = _ACTIVE_PROFILER.get()
+    if profiler is not None:
+        return profiler.subprocess_run(
+            command=cmd,
+            cwd=cwd,
+            timeout=timeout,
+            check=False,
+            capture_output=True,
+            text=text,
+            phase=phase,
+        )
+    return subprocess.run(
+        cmd,
+        cwd=cwd,
+        check=False,
+        capture_output=True,
+        text=text,
+        timeout=timeout,
+    )
 _HARNESS_FILES = (
     "spec_runner/harnesses/text_file.py",
     "spec_runner/harnesses/cli_run.py",
@@ -5162,7 +5207,19 @@ def _scan_docs_generated_files_clean(root: Path, *, harness: dict | None = None)
 def _run_python_script_check(root: Path, args: list[str]) -> list[str]:
     py = root / ".venv/bin/python"
     cmd = [str(py if py.exists() else Path("python3")), *args]
-    cp = subprocess.run(cmd, cwd=root, check=False, capture_output=True, text=True)
+    try:
+        cp = _profiled_subprocess_run(
+            cmd,
+            cwd=root,
+            timeout=_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS,
+            phase="governance.python_script_check",
+        )
+    except subprocess.TimeoutExpired:
+        return [
+            f"{' '.join(args)} timed out after "
+            f"{int(_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS)}s; set "
+            "SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS to override"
+        ]
     if cp.returncode == 0:
         return []
     lines = [x.strip() for x in ((cp.stdout or "") + "\n" + (cp.stderr or "")).splitlines() if x.strip()]
@@ -5542,13 +5599,19 @@ def _scan_docs_docgen_quality_score_threshold(root: Path, *, harness: dict | Non
     py = root / ".venv/bin/python"
     for script_rel, rel in checks:
         # Ensure artifacts exist and are fresh even in cleanroom check-only runs.
-        cp = subprocess.run(
-            [str(py if py.exists() else Path("python3")), script_rel],
-            cwd=root,
-            check=False,
-            capture_output=True,
-            text=True,
-        )
+        try:
+            cp = _profiled_subprocess_run(
+                [str(py if py.exists() else Path("python3")), script_rel],
+                cwd=root,
+                timeout=_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS,
+                phase="governance.docgen_quality",
+            )
+        except subprocess.TimeoutExpired:
+            out.append(
+                f"{script_rel}: timed out after {int(_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS)}s; "
+                "set SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS to override"
+            )
+            continue
         if cp.returncode != 0:
             lines = [x.strip() for x in ((cp.stdout or "") + "\n" + (cp.stderr or "")).splitlines() if x.strip()]
             out.extend(lines or [f"{script_rel}: generation failed"])
@@ -6180,6 +6243,95 @@ def _scan_runtime_scope_sync(root: Path, *, harness: dict | None = None) -> list
         for tok in forbidden_tokens:
             if tok in text:
                 violations.append(f"{rel}:1: forbidden runtime-scope token present {tok}")
+    return violations
+
+
+def _scan_runtime_profiling_contract_artifacts(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    required = [
+        "docs/spec/schema/run_trace_v1.yaml",
+        "docs/spec/contract/24_runtime_profiling_contract.md",
+    ]
+    violations: list[str] = []
+    for rel in required:
+        p = root / rel
+        if not p.exists():
+            violations.append(f"{rel}:1: missing profiling contract artifact")
+    current = root / "docs/spec/current.md"
+    if current.exists():
+        text = current.read_text(encoding="utf-8")
+        if "run_trace_v1" not in text:
+            violations.append("docs/spec/current.md:1: missing run_trace_v1 snapshot note")
+    return violations
+
+
+def _scan_runtime_profiling_redaction_policy(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("profiling_redaction")
+    if not isinstance(cfg, dict):
+        return ["runtime.profiling_redaction_policy requires harness.profiling_redaction mapping in governance spec"]
+    trace_rel = str(cfg.get("trace_path", ".artifacts/run-trace.json")).strip()
+    trace_path = _join_contract_path(root, trace_rel)
+    if not trace_path.exists():
+        return [f"{trace_rel}:1: profiling trace file missing for redaction policy check"]
+    try:
+        payload = json.loads(trace_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [f"{trace_rel}:1: invalid JSON: {exc.msg} at line {exc.lineno} column {exc.colno}"]
+    violations: list[str] = []
+    env_profile = payload.get("env_profile")
+    if not isinstance(env_profile, dict):
+        violations.append(f"{trace_rel}:1: env_profile must be a mapping")
+    else:
+        for key, meta in env_profile.items():
+            if not isinstance(meta, dict):
+                violations.append(f"{trace_rel}:1: env_profile[{key!r}] must be a mapping")
+                continue
+            if "value" in meta:
+                violations.append(f"{trace_rel}:1: env_profile[{key!r}] must not include raw value")
+    text = trace_path.read_text(encoding="utf-8")
+    for token in ("Bearer ", "sk-", "Authorization:"):
+        if token in text:
+            violations.append(f"{trace_rel}:1: forbidden secret-like token present in trace artifact: {token!r}")
+    return violations
+
+
+def _scan_runtime_profiling_span_taxonomy(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("profiling_span_taxonomy")
+    if not isinstance(cfg, dict):
+        return ["runtime.profiling_span_taxonomy requires harness.profiling_span_taxonomy mapping in governance spec"]
+    trace_rel = str(cfg.get("trace_path", ".artifacts/run-trace.json")).strip()
+    trace_path = _join_contract_path(root, trace_rel)
+    if not trace_path.exists():
+        return [f"{trace_rel}:1: profiling trace file missing for span taxonomy check"]
+    try:
+        payload = json.loads(trace_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [f"{trace_rel}:1: invalid JSON: {exc.msg} at line {exc.lineno} column {exc.colno}"]
+    required_spans = cfg.get(
+        "required_spans",
+        [
+            "run.total",
+            "runner.dispatch",
+            "case.run",
+            "case.chain",
+            "case.harness",
+            "check.execute",
+            "subprocess.exec",
+            "subprocess.wait",
+        ],
+    )
+    if not isinstance(required_spans, list) or any(not isinstance(x, str) or not x.strip() for x in required_spans):
+        return ["harness.profiling_span_taxonomy.required_spans must be a non-empty list of strings"]
+    spans = payload.get("spans")
+    if not isinstance(spans, list):
+        return [f"{trace_rel}:1: spans must be a list"]
+    names = {str(x.get("name", "")).strip() for x in spans if isinstance(x, dict)}
+    missing = [x for x in required_spans if str(x).strip() not in names]
+    violations: list[str] = []
+    if missing:
+        violations.append(f"{trace_rel}:1: missing required span names: {', '.join(missing)}")
     return violations
 
 
@@ -7518,10 +7670,25 @@ def _run_normalize_check_cached(root: Path, *, scope: str) -> tuple[int, list[st
     if cached is not None:
         return cached
     cmd = [sys.executable, "scripts/normalize_repo.py", "--check", "--scope", scope]
-    proc = subprocess.run(cmd, cwd=root, capture_output=True, text=True, check=False)
-    out = (proc.stdout or "").splitlines() + (proc.stderr or "").splitlines()
-    violations = [line.strip() for line in out if line.strip()]
-    result = (int(proc.returncode), violations)
+    try:
+        proc = _profiled_subprocess_run(
+            cmd,
+            cwd=root,
+            timeout=_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS,
+            phase="governance.normalize_check",
+        )
+        out = (proc.stdout or "").splitlines() + (proc.stderr or "").splitlines()
+        violations = [line.strip() for line in out if line.strip()]
+        result = (int(proc.returncode), violations)
+    except subprocess.TimeoutExpired:
+        result = (
+            124,
+            [
+                "scripts/normalize_repo.py --check timed out after "
+                f"{int(_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS)}s; set "
+                "SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS to override"
+            ],
+        )
     with _SCAN_CACHE_LOCK:
         _NORMALIZE_CHECK_CACHE[cache_key] = result
     return result
@@ -7963,6 +8130,9 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.history_reviews_namespace": _scan_docs_history_reviews_namespace,
     "docs.no_os_artifact_files": _scan_docs_no_os_artifact_files,
     "runtime.scope_sync": _scan_runtime_scope_sync,
+    "runtime.profiling_contract_artifacts": _scan_runtime_profiling_contract_artifacts,
+    "runtime.profiling_redaction_policy": _scan_runtime_profiling_redaction_policy,
+    "runtime.profiling_span_taxonomy": _scan_runtime_profiling_span_taxonomy,
     "architecture.harness_workflow_components_required": _scan_architecture_harness_workflow_components_required,
     "architecture.harness_local_workflow_duplication_forbidden": _scan_architecture_harness_local_workflow_duplication_forbidden,
     "schema.harness_type_overlay_complete": _scan_schema_harness_type_overlay_complete,
@@ -8159,8 +8329,31 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--timing-out", default=".artifacts/governance-timing.json")
     ap.add_argument("--profile", action="store_true", help="Emit per-case harness timing profile JSON")
     ap.add_argument("--profile-out", default=".artifacts/governance-profile.json")
+    ap.add_argument("--profile-level", default="", help="off|basic|detailed|debug (default off)")
+    ap.add_argument("--profile-summary-out", default="", help="Run trace summary markdown output path")
+    ap.add_argument("--profile-heartbeat-ms", type=int, default=0, help="Profiler heartbeat interval (ms)")
+    ap.add_argument("--profile-stall-threshold-ms", type=int, default=0, help="Profiler stall warning threshold (ms)")
+    ap.add_argument(
+        "--workers",
+        type=int,
+        default=0,
+        help="Worker count override (0=auto, 1=sequential for hang isolation)",
+    )
     ns = ap.parse_args(argv)
     _reset_scan_caches()
+    repo_root = Path(__file__).resolve().parents[1]
+    profiler_cfg = profile_config_from_args(
+        profile_level=str(ns.profile_level).strip() or None,
+        profile_out=None,
+        profile_summary_out=str(ns.profile_summary_out).strip() or None,
+        profile_heartbeat_ms=ns.profile_heartbeat_ms if int(ns.profile_heartbeat_ms or 0) > 0 else None,
+        profile_stall_threshold_ms=ns.profile_stall_threshold_ms if int(ns.profile_stall_threshold_ms or 0) > 0 else None,
+        runner_impl=str(os.environ.get("SPEC_RUNNER_IMPL", "python")),
+        command="governance",
+        args=list(argv or []),
+        env=dict(os.environ),
+    )
+    profiler = RunProfiler(profiler_cfg)
 
     case_pattern = str(ns.case_file_pattern).strip()
     if not case_pattern:
@@ -8199,65 +8392,117 @@ def main(argv: list[str] | None = None) -> int:
     timing_rows: list[dict[str, Any]] = []
     profile_rows: list[dict[str, Any]] = []
     workers_used = 1
-    with TemporaryDirectory(prefix="spec-runner-governance-") as td:
-        td_path = Path(td)
+    try:
+        with TemporaryDirectory(prefix="spec-runner-governance-") as td:
+            td_path = Path(td)
 
-        def _run_one(args: tuple[int, Any]) -> tuple[int, str, str, float, str | None, list[dict[str, Any]]]:
-            idx, case = args
-            case_id = str(case.test.get("id", "<unknown>")).strip() or "<unknown>"
-            check_id = str(case.test.get("check", "")).strip()
-            case_tmp = td_path / f"case_{idx}"
-            case_tmp.mkdir(parents=True, exist_ok=True)
-            ctx = SpecRunContext(
-                tmp_path=case_tmp,
-                patcher=MiniMonkeyPatch(),
-                capture=MiniCapsys(),
-                profile_enabled=bool(ns.profile),
-            )
-            case_started = time.perf_counter()
-            try:
-                run_case(case, ctx=ctx, type_runners={"governance.check": run_governance_check})
-                elapsed_ms = (time.perf_counter() - case_started) * 1000.0
-                return idx, case_id, check_id, elapsed_ms, None, list(ctx.profile_rows)
-            except BaseException as e:  # noqa: BLE001
-                elapsed_ms = (time.perf_counter() - case_started) * 1000.0
-                return idx, case_id, check_id, elapsed_ms, f"{case_id}: {e}", list(ctx.profile_rows)
+            def _run_one(args: tuple[int, Any]) -> tuple[int, str, str, float, str | None, list[dict[str, Any]]]:
+                idx, case = args
+                case_id = str(case.test.get("id", "<unknown>")).strip() or "<unknown>"
+                check_id = str(case.test.get("check", "")).strip()
+                if _GOVERNANCE_TRACE:
+                    print(f"[governance.trace] start idx={idx} check={check_id} case={case_id}", flush=True)
+                case_tmp = td_path / f"case_{idx}"
+                case_tmp.mkdir(parents=True, exist_ok=True)
+                ctx = SpecRunContext(
+                    tmp_path=case_tmp,
+                    patcher=MiniMonkeyPatch(),
+                    capture=MiniCapsys(),
+                    profile_enabled=bool(ns.profile),
+                    profiler=profiler if profiler.cfg.enabled else None,
+                )
+                case_started = time.perf_counter()
+                token = _ACTIVE_PROFILER.set(profiler if profiler.cfg.enabled else None)
+                try:
+                    span_cm = (
+                        profiler.span(
+                            name="check.execute",
+                            kind="check",
+                            phase="governance.check",
+                            attrs={"check_id": check_id, "case_id": case_id},
+                        )
+                        if profiler.cfg.enabled
+                        else contextlib.nullcontext()
+                    )
+                    with span_cm:
+                        run_case(case, ctx=ctx, type_runners={"governance.check": run_governance_check})
+                    elapsed_ms = (time.perf_counter() - case_started) * 1000.0
+                    if _GOVERNANCE_TRACE:
+                        print(
+                            f"[governance.trace] done idx={idx} check={check_id} case={case_id} ms={elapsed_ms:.2f}",
+                            flush=True,
+                        )
+                    return idx, case_id, check_id, elapsed_ms, None, list(ctx.profile_rows)
+                except BaseException as e:  # noqa: BLE001
+                    elapsed_ms = (time.perf_counter() - case_started) * 1000.0
+                    if _GOVERNANCE_TRACE:
+                        print(
+                            f"[governance.trace] fail idx={idx} check={check_id} case={case_id} ms={elapsed_ms:.2f} err={e}",
+                            flush=True,
+                        )
+                    return idx, case_id, check_id, elapsed_ms, f"{case_id}: {e}", list(ctx.profile_rows)
+                finally:
+                    _ACTIVE_PROFILER.reset(token)
 
-        if len(governance_cases) <= 1:
-            for idx, case in enumerate(governance_cases):
-                _idx, case_id, check_id, elapsed_ms, failure, case_profile_rows = _run_one((idx, case))
-                timing_rows.append(
-                    {
-                        "index": int(_idx),
-                        "case_id": case_id,
-                        "check_id": check_id,
-                        "duration_ms": round(float(elapsed_ms), 3),
-                        "status": "fail" if failure else "pass",
-                    }
-                )
-                profile_rows.extend(case_profile_rows)
-                if failure:
-                    failures.append(failure)
-        else:
-            max_workers = min(max(1, os.cpu_count() or 1), len(governance_cases))
-            workers_used = max_workers
-            results: list[tuple[int, str, str, float, str | None, list[dict[str, Any]]]] = []
-            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-                for result in executor.map(_run_one, enumerate(governance_cases)):
-                    results.append(result)
-            for _idx, case_id, check_id, elapsed_ms, failure, case_profile_rows in sorted(results, key=lambda x: x[0]):
-                timing_rows.append(
-                    {
-                        "index": int(_idx),
-                        "case_id": case_id,
-                        "check_id": check_id,
-                        "duration_ms": round(float(elapsed_ms), 3),
-                        "status": "fail" if failure else "pass",
-                    }
-                )
-                profile_rows.extend(case_profile_rows)
-                if failure:
-                    failures.append(failure)
+            requested_workers = int(getattr(ns, "workers", 0) or 0)
+            if requested_workers < 0:
+                print("ERROR: --workers must be >= 0", file=sys.stderr)
+                return 2
+
+            if len(governance_cases) <= 1 or requested_workers == 1:
+                for idx, case in enumerate(governance_cases):
+                    _idx, case_id, check_id, elapsed_ms, failure, case_profile_rows = _run_one((idx, case))
+                    timing_rows.append(
+                        {
+                            "index": int(_idx),
+                            "case_id": case_id,
+                            "check_id": check_id,
+                            "duration_ms": round(float(elapsed_ms), 3),
+                            "status": "fail" if failure else "pass",
+                        }
+                    )
+                    profile_rows.extend(case_profile_rows)
+                    if failure:
+                        failures.append(failure)
+            else:
+                max_workers = min(max(1, os.cpu_count() or 1), len(governance_cases))
+                if requested_workers > 1:
+                    max_workers = min(requested_workers, len(governance_cases))
+                workers_used = max_workers
+                results: list[tuple[int, str, str, float, str | None, list[dict[str, Any]]]] = []
+                with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+                    for result in executor.map(_run_one, enumerate(governance_cases)):
+                        results.append(result)
+                for _idx, case_id, check_id, elapsed_ms, failure, case_profile_rows in sorted(results, key=lambda x: x[0]):
+                    timing_rows.append(
+                        {
+                            "index": int(_idx),
+                            "case_id": case_id,
+                            "check_id": check_id,
+                            "duration_ms": round(float(elapsed_ms), 3),
+                            "status": "fail" if failure else "pass",
+                        }
+                    )
+                    profile_rows.extend(case_profile_rows)
+                    if failure:
+                        failures.append(failure)
+    finally:
+        profile_out_raw = str(os.environ.get("SPEC_RUNNER_PROFILE_OUT", "")).strip() or "/.artifacts/run-trace.json"
+        profile_summary_out_raw = str(ns.profile_summary_out).strip() or str(
+            os.environ.get("SPEC_RUNNER_PROFILE_SUMMARY_OUT", "")
+        ).strip() or "/.artifacts/run-trace-summary.md"
+        profile_out_path = _resolve_contract_config_path(repo_root, profile_out_raw, field="run_governance_specs.profile_out_trace")
+        profile_summary_out_path = _resolve_contract_config_path(
+            repo_root,
+            profile_summary_out_raw,
+            field="run_governance_specs.profile_summary_out_trace",
+        )
+        profiler.close(
+            status="fail" if failures else "pass",
+            out_path=profile_out_path,
+            summary_out_path=profile_summary_out_path,
+            exit_code=1 if failures else 0,
+        )
 
     total_ms = (time.perf_counter() - started) * 1000.0
     timing_payload = {
@@ -8271,7 +8516,6 @@ def main(argv: list[str] | None = None) -> int:
         },
         "cases": timing_rows,
     }
-    repo_root = Path(__file__).resolve().parents[1]
     timing_out = _resolve_contract_config_path(repo_root, str(ns.timing_out), field="run_governance_specs.timing_out")
     timing_out.parent.mkdir(parents=True, exist_ok=True)
     timing_out.write_text(json.dumps(timing_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")

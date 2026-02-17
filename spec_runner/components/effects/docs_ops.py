@@ -63,7 +63,26 @@ def surface_by_id(registry: dict[str, Any], surface_id: str) -> dict[str, Any]:
     raise ValueError(f"unknown docs generator surface_id: {surface_id}")
 
 
-def run_legacy_generator(root: Path, surface: dict[str, Any], *, mode: str) -> None:
+def _subprocess_run(
+    *,
+    command: list[str],
+    root: Path,
+    profiler: object | None = None,
+    phase: str,
+) -> subprocess.CompletedProcess[str]:
+    if profiler is not None and hasattr(profiler, "subprocess_run"):
+        return profiler.subprocess_run(
+            command=command,
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+            phase=phase,
+        )
+    return subprocess.run(command, cwd=root, check=False, capture_output=True, text=True)
+
+
+def run_legacy_generator(root: Path, surface: dict[str, Any], *, mode: str, profiler: object | None = None) -> None:
     generator = str(surface.get("generator", "")).strip()
     cmd = GENERATOR_COMMANDS.get(generator)
     if not cmd:
@@ -72,14 +91,14 @@ def run_legacy_generator(root: Path, surface: dict[str, Any], *, mode: str) -> N
     argv = [str(py if py.exists() else "python3"), *cmd]
     if mode == "check":
         argv.append("--check")
-    cp = subprocess.run(argv, cwd=root, check=False, capture_output=True, text=True)
+    cp = _subprocess_run(command=argv, root=root, profiler=profiler, phase="docs.legacy_generator")
     if cp.returncode != 0:
         out = ((cp.stdout or "") + "\n" + (cp.stderr or "")).strip()
         message = out or f"legacy generator failed: {' '.join(cmd)}"
         raise RuntimeError(message)
 
 
-def load_source(root: Path, raw: dict[str, Any]) -> tuple[str, Any]:
+def load_source(root: Path, raw: dict[str, Any], *, profiler: object | None = None) -> tuple[str, Any]:
     source_id = str(raw.get("id", "")).strip()
     source_type = str(raw.get("source_type", "")).strip()
     if not source_id:
@@ -101,7 +120,12 @@ def load_source(root: Path, raw: dict[str, Any]) -> tuple[str, Any]:
         command = raw.get("command")
         if not isinstance(command, list) or not command or any(not str(x).strip() for x in command):
             raise ValueError(f"docs_generate.data_sources[{source_id}].command must be a non-empty list")
-        cp = subprocess.run([str(x) for x in command], cwd=root, check=False, capture_output=True, text=True)
+        cp = _subprocess_run(
+            command=[str(x) for x in command],
+            root=root,
+            profiler=profiler,
+            phase=f"docs.data_source.{source_id}",
+        )
         if cp.returncode != 0:
             out = ((cp.stdout or "") + "\n" + (cp.stderr or "")).strip()
             raise RuntimeError(out or f"docs_generate command_output failed for source {source_id}")
@@ -218,6 +242,7 @@ def run_docs_generation_op(
     root: Path,
     cfg: dict[str, Any],
     runtime_env: dict[str, str],
+    profiler: object | None = None,
 ) -> dict[str, Any]:
     mode = mode_for_run(cfg, env=runtime_env)
     surface_id = required_non_empty_string(cfg, "surface_id")
@@ -232,7 +257,7 @@ def run_docs_generation_op(
         raise ValueError(message)
     surface = surface_by_id(registry, surface_id)
     if bool(cfg.get("legacy_generator", True)):
-        run_legacy_generator(root, surface, mode=mode)
+        run_legacy_generator(root, surface, mode=mode, profiler=profiler)
 
     template_path = resolve_virtual_path(root, template_path_raw, field="harness.docs_generate.template_path")
     output_path = resolve_virtual_path(root, output_path_raw, field="harness.docs_generate.output_path")
@@ -251,7 +276,7 @@ def run_docs_generation_op(
     for idx, raw in enumerate(data_sources):
         if not isinstance(raw, dict):
             raise TypeError(f"harness.docs_generate.data_sources[{idx}] must be a mapping")
-        sid, payload = load_source(root, raw)
+        sid, payload = load_source(root, raw, profiler=profiler)
         sources[sid] = payload
     context: dict[str, Any] = {"surface_id": surface_id, "mode": mode, "output_mode": output_mode, "sources": sources}
     for sid, payload in sources.items():

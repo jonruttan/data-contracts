@@ -173,6 +173,30 @@ Example:
 SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS=300 ./scripts/runner_adapter.sh governance
 ```
 
+## Enable Runtime Profiling
+
+Use opt-in profiling when diagnosing hangs or long-running checks:
+
+```bash
+./scripts/runner_adapter.sh --profile-level detailed \
+  --profile-out .artifacts/run-trace.json \
+  --profile-summary-out .artifacts/run-trace-summary.md \
+  governance
+```
+
+Optional controls:
+
+- `--profile-heartbeat-ms <int>` (default `1000`)
+- `--profile-stall-threshold-ms <int>` (default `10000`)
+
+Environment equivalents:
+
+- `SPEC_RUNNER_PROFILE_LEVEL`
+- `SPEC_RUNNER_PROFILE_OUT`
+- `SPEC_RUNNER_PROFILE_SUMMARY_OUT`
+- `SPEC_RUNNER_PROFILE_HEARTBEAT_MS`
+- `SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS`
+
 ## Domain-First Decision Flow
 
 1. If a `domain.*` helper exists for your intent, use it.

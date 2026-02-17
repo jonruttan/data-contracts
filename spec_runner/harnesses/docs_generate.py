@@ -15,7 +15,12 @@ def run(case, *, ctx: SpecRunContext) -> None:
 
     cfg = resolve_docs_generate_harness_config(case.harness)
     root = contract_root_for(case.doc_path)
-    op = run_docs_generation_op(root=root, cfg=cfg, runtime_env=runtime_env(ctx))
+    op = run_docs_generation_op(
+        root=root,
+        cfg=cfg,
+        runtime_env=runtime_env(ctx),
+        profiler=getattr(ctx, "profiler", None),
+    )
 
     result_envelope: dict[str, object] = {
         "status": "pass",

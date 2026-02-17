@@ -94,6 +94,31 @@ The adapter enforces timeouts for potentially long commands:
 If timeout triggers during local debugging, increase only the relevant variable
 for that invocation.
 
+## Timeout Profiling
+
+Use profiling for deterministic timeout diagnosis:
+
+```bash
+./scripts/runner_adapter.sh --profile-level detailed \
+  --profile-out .artifacts/run-trace.json \
+  --profile-summary-out .artifacts/run-trace-summary.md \
+  governance
+```
+
+Artifacts:
+
+- `/.artifacts/run-trace.json` (full span/event trace)
+- `/.artifacts/run-trace-summary.md` (hotspots + timeout/stall hints)
+
+For deeper diagnostics:
+
+```bash
+./scripts/runner_adapter.sh --profile-level debug \
+  --profile-heartbeat-ms 250 \
+  --profile-stall-threshold-ms 2000 \
+  governance
+```
+
 ## Fast Recovery Playbook
 
 1. Generate docs and schema surfaces.

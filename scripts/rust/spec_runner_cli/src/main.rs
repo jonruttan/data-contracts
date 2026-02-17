@@ -1,14 +1,55 @@
 mod spec_lang;
+mod profiler;
 
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::{self, Command};
+use std::sync::{Mutex, OnceLock};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 use serde_json::{json, Value};
 use serde_yaml::Value as YamlValue;
 use spec_lang::{eval_mapping_ast, EvalLimits};
+use profiler::{profile_options_from_env, RunProfiler};
+
+static ACTIVE_PROFILER: OnceLock<Mutex<Option<RunProfiler>>> = OnceLock::new();
+
+fn profiler_cell() -> &'static Mutex<Option<RunProfiler>> {
+    ACTIVE_PROFILER.get_or_init(|| Mutex::new(None))
+}
+
+fn profiler_start_span(
+    name: &str,
+    kind: &str,
+    phase: &str,
+    parent_span_id: Option<String>,
+    attrs: Value,
+) -> Option<String> {
+    if let Ok(mut guard) = profiler_cell().lock() {
+        if let Some(prof) = guard.as_mut() {
+            return prof.start_span(name, kind, phase, parent_span_id, attrs);
+        }
+    }
+    None
+}
+
+fn profiler_finish_span(span_id: Option<&str>, status: &str, error: Option<Value>) {
+    let Some(sid) = span_id else { return };
+    if let Ok(mut guard) = profiler_cell().lock() {
+        if let Some(prof) = guard.as_mut() {
+            prof.finish_span(sid, status, error);
+        }
+    }
+}
+
+fn profiler_event(kind: &str, span_id: Option<&str>, attrs: Value) {
+    if let Ok(mut guard) = profiler_cell().lock() {
+        if let Some(prof) = guard.as_mut() {
+            prof.event(kind, span_id, attrs);
+        }
+    }
+}
 
 fn debug_enabled() -> bool {
     matches!(std::env::var("SPEC_RUNNER_DEBUG").ok().as_deref(), Some("1") | Some("true") | Some("yes"))
@@ -63,17 +104,53 @@ fn find_repo_root() -> Result<PathBuf, String> {
 }
 
 fn run_cmd(program: &str, args: &[String], root: &Path) -> i32 {
+    let span_id = profiler_start_span(
+        "subprocess.exec",
+        "subprocess",
+        "subprocess.exec",
+        None,
+        json!({
+            "argv_preview": format!("{} {}", program, args.join(" ")),
+            "cwd": root.display().to_string()
+        }),
+    );
     let mut cmd = Command::new(program);
     cmd.args(args)
         .current_dir(root)
         .stdin(process::Stdio::inherit())
         .stdout(process::Stdio::inherit())
         .stderr(process::Stdio::inherit());
-
-    match cmd.status() {
-        Ok(status) => status.code().unwrap_or(1),
+    match cmd.spawn() {
+        Ok(mut child) => {
+            let pid = child.id();
+            profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"spawned","pid":pid}));
+            let code = match child.wait() {
+                Ok(status) => status.code().unwrap_or(1),
+                Err(e) => {
+                    profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"wait_error","message":e.to_string()}));
+                    eprintln!("ERROR: failed waiting command '{program}': {e}");
+                    1
+                }
+            };
+            profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"exit","pid":pid,"returncode":code}));
+            profiler_finish_span(
+                span_id.as_deref(),
+                if code == 0 { "ok" } else { "error" },
+                if code == 0 {
+                    None
+                } else {
+                    Some(json!({"category":"runtime","message":format!("non-zero exit: {code}")}))
+                },
+            );
+            code
+        }
         Err(e) => {
             eprintln!("ERROR: failed to run command '{program}': {e}");
+            profiler_finish_span(
+                span_id.as_deref(),
+                "error",
+                Some(json!({"category":"runtime","message":e.to_string()})),
+            );
             1
         }
     }
@@ -595,16 +672,53 @@ fn run_command_capture_code(command: &[String], root: &Path) -> i32 {
     if command.is_empty() {
         return 1;
     }
+    let span_id = profiler_start_span(
+        "subprocess.exec",
+        "subprocess",
+        "subprocess.exec",
+        None,
+        json!({
+            "argv_preview": command.join(" "),
+            "cwd": root.display().to_string()
+        }),
+    );
     let mut cmd = Command::new(&command[0]);
     cmd.args(&command[1..])
         .current_dir(root)
         .stdin(process::Stdio::inherit())
         .stdout(process::Stdio::inherit())
         .stderr(process::Stdio::inherit());
-    match cmd.status() {
-        Ok(status) => status.code().unwrap_or(1),
+    match cmd.spawn() {
+        Ok(mut child) => {
+            let pid = child.id();
+            profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"spawned","pid":pid}));
+            let code = match child.wait() {
+                Ok(status) => status.code().unwrap_or(1),
+                Err(e) => {
+                    profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"wait_error","message":e.to_string()}));
+                    eprintln!("ERROR: failed waiting command '{}': {e}", command[0]);
+                    1
+                }
+            };
+            profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"exit","pid":pid,"returncode":code}));
+            profiler_finish_span(
+                span_id.as_deref(),
+                if code == 0 { "ok" } else { "error" },
+                if code == 0 {
+                    None
+                } else {
+                    Some(json!({"category":"runtime","message":format!("non-zero exit: {code}")}))
+                },
+            );
+            code
+        }
         Err(e) => {
             eprintln!("ERROR: failed to run command '{}': {e}", command[0]);
+            profiler_finish_span(
+                span_id.as_deref(),
+                "error",
+                Some(json!({"category":"runtime","message":e.to_string()})),
+            );
             1
         }
     }
@@ -975,16 +1089,64 @@ fn main() {
     let mut arg_index = 1usize;
     while arg_index < args.len() {
         let flag = args[arg_index].as_str();
-        let lvl = match flag {
-            "--verbose" | "-v" => Some(1_u8),
-            "-vv" => Some(2_u8),
-            "-vvv" => Some(3_u8),
-            _ => None,
-        };
-        let Some(level) = lvl else { break };
-        std::env::set_var("SPEC_RUNNER_DEBUG", "1");
-        std::env::set_var("SPEC_RUNNER_DEBUG_LEVEL", level.to_string());
-        arg_index += 1;
+        match flag {
+            "--verbose" | "-v" => {
+                std::env::set_var("SPEC_RUNNER_DEBUG", "1");
+                std::env::set_var("SPEC_RUNNER_DEBUG_LEVEL", "1");
+                arg_index += 1;
+            }
+            "-vv" => {
+                std::env::set_var("SPEC_RUNNER_DEBUG", "1");
+                std::env::set_var("SPEC_RUNNER_DEBUG_LEVEL", "2");
+                arg_index += 1;
+            }
+            "-vvv" => {
+                std::env::set_var("SPEC_RUNNER_DEBUG", "1");
+                std::env::set_var("SPEC_RUNNER_DEBUG_LEVEL", "3");
+                arg_index += 1;
+            }
+            "--profile-level" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --profile-level requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_PROFILE_LEVEL", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
+            "--profile-out" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --profile-out requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_PROFILE_OUT", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
+            "--profile-summary-out" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --profile-summary-out requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_PROFILE_SUMMARY_OUT", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
+            "--profile-heartbeat-ms" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --profile-heartbeat-ms requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_PROFILE_HEARTBEAT_MS", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
+            "--profile-stall-threshold-ms" => {
+                if arg_index + 1 >= args.len() {
+                    eprintln!("ERROR: --profile-stall-threshold-ms requires value");
+                    process::exit(2);
+                }
+                std::env::set_var("SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS", args[arg_index + 1].clone());
+                arg_index += 2;
+            }
+            _ => break,
+        }
     }
     debug_log_at(2, &format!("main:debug-level={}", debug_level()));
     if args.len() <= arg_index {
@@ -1008,6 +1170,17 @@ fn main() {
         }
     };
     debug_log("main:repo_root_resolved");
+    if let Ok(mut guard) = profiler_cell().lock() {
+        let opts = profile_options_from_env(&subcommand, &forwarded);
+        *guard = Some(RunProfiler::from_options(&opts));
+    }
+    let dispatch_span = profiler_start_span(
+        "runner.dispatch",
+        "runner",
+        "runner.dispatch",
+        None,
+        json!({"subcommand": subcommand, "forwarded_count": forwarded.len()}),
+    );
 
     let py = python_path(&root);
     let ruff = tool_path(&root, "ruff");
@@ -1506,6 +1679,103 @@ fn main() {
             2
         }
     };
+    profiler_finish_span(
+        dispatch_span.as_deref(),
+        if code == 0 { "ok" } else { "error" },
+        if code == 0 {
+            None
+        } else {
+            Some(json!({"category":"runtime","message":format!("subcommand {} failed with {}", subcommand, code)}))
+        },
+    );
+    if let Ok(mut guard) = profiler_cell().lock() {
+        if let Some(prof) = guard.as_mut() {
+            let out_path = std::env::var("SPEC_RUNNER_PROFILE_OUT")
+                .unwrap_or_else(|_| "/.artifacts/run-trace.json".to_string());
+            let summary_out = std::env::var("SPEC_RUNNER_PROFILE_SUMMARY_OUT")
+                .unwrap_or_else(|_| "/.artifacts/run-trace-summary.md".to_string());
+            prof.close(
+                if code == 0 { "pass" } else { "fail" },
+                code,
+                &root,
+                &out_path,
+                &summary_out,
+            );
+        }
+    }
 
     process::exit(code);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_spec_ref_accepts_path_and_fragment() {
+        let got = parse_spec_ref("/docs/spec/example.spec.md#CASE-1").expect("parse");
+        assert_eq!(got.0, "/docs/spec/example.spec.md");
+        assert_eq!(got.1.as_deref(), Some("CASE-1"));
+    }
+
+    #[test]
+    fn parse_spec_ref_accepts_path_only() {
+        let got = parse_spec_ref("/docs/spec/example.spec.md").expect("parse");
+        assert_eq!(got.0, "/docs/spec/example.spec.md");
+        assert!(got.1.is_none());
+    }
+
+    #[test]
+    fn parse_spec_ref_rejects_empty_fragment() {
+        let err = parse_spec_ref("/docs/spec/example.spec.md#").expect_err("expected error");
+        assert!(err.contains("empty case id fragment"));
+    }
+
+    #[test]
+    fn parse_spec_ref_rejects_empty_path() {
+        let err = parse_spec_ref("#CASE-1").expect_err("expected error");
+        assert!(err.contains("must include path"));
+    }
+
+    #[test]
+    fn extract_spec_test_blocks_finds_tagged_yaml_blocks() {
+        let md = r#"
+before
+```yaml spec-test
+id: CASE-1
+type: governance.check
+```
+middle
+```yaml
+id: NOT-A-SPEC
+```
+```yaml spec-test
+id: CASE-2
+```
+after
+"#;
+        let blocks = extract_spec_test_blocks(md);
+        assert_eq!(blocks.len(), 2);
+        assert!(blocks[0].contains("id: CASE-1"));
+        assert!(blocks[1].contains("id: CASE-2"));
+    }
+
+    #[test]
+    fn block_id_extracts_id() {
+        let block = "id: SRTEST-001\ncheck: runtime.foo\n";
+        assert_eq!(block_id(block).as_deref(), Some("SRTEST-001"));
+    }
+
+    #[test]
+    fn command_spec_ref_has_validate_report_mapping() {
+        let got = command_spec_ref("validate-report");
+        assert!(got.is_some());
+        assert!(got.expect("mapping").contains("#"));
+    }
+
+    #[test]
+    fn run_spec_ref_print_returns_nonzero_for_unknown() {
+        let code = run_spec_ref_print("unknown-command");
+        assert_ne!(code, 0);
+    }
 }
