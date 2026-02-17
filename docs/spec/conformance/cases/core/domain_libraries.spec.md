@@ -227,54 +227,21 @@ harness:
       class: must
       ref: /docs/spec/libraries/domain/markdown_core.spec.md
       exports:
-      - as: md.has_heading
-        from: library.symbol
+      - from: library.symbol
         required: true
-        path: /md.has_heading
-      - as: md.heading_level_exists
-        from: library.symbol
-        required: true
-        path: /md.heading_level_exists
-      - as: md.section_order_valid
-        from: library.symbol
-        required: true
-        path: /md.section_order_valid
-      - as: md.required_sections_present
-        from: library.symbol
-        required: true
-        path: /md.required_sections_present
-      - as: md.link_targets_all_resolve
-        from: library.symbol
-        required: true
-        path: /md.link_targets_all_resolve
-      - as: md.has_broken_links
-        from: library.symbol
-        required: true
-        path: /md.has_broken_links
-      - as: md.has_yaml_spec_test_fence
-        from: library.symbol
-        required: true
-        path: /md.has_yaml_spec_test_fence
-      - as: md.code_fence_language_exists
-        from: library.symbol
-        required: true
-        path: /md.code_fence_language_exists
-      - as: md.token_present
-        from: library.symbol
-        required: true
-        path: /md.token_present
-      - as: md.tokens_all_present
-        from: library.symbol
-        required: true
-        path: /md.tokens_all_present
-      - as: md.token_ownership_unique
-        from: library.symbol
-        required: true
-        path: /md.token_ownership_unique
-      - as: md.token_dependencies_resolved
-        from: library.symbol
-        required: true
-        path: /md.token_dependencies_resolved
+        symbols:
+        - domain.markdown.has_heading
+        - domain.markdown.heading_level_exists
+        - domain.markdown.section_order_valid
+        - domain.markdown.required_sections_present
+        - domain.markdown.link_targets_all_resolve
+        - domain.markdown.has_broken_links
+        - domain.markdown.has_yaml_spec_test_fence
+        - domain.markdown.code_fence_language_exists
+        - domain.markdown.token_present
+        - domain.markdown.tokens_all_present
+        - domain.markdown.token_ownership_unique
+        - domain.markdown.token_dependencies_resolved
     - id: lib_python_core_spec
       class: must
       ref: /docs/spec/libraries/domain/python_core.spec.md
@@ -297,18 +264,18 @@ harness:
       - make.has_target
     - from: lib_markdown_core_spec
       names:
-      - md.has_heading
-      - md.heading_level_exists
-      - md.section_order_valid
-      - md.required_sections_present
-      - md.link_targets_all_resolve
-      - md.has_broken_links
-      - md.has_yaml_spec_test_fence
-      - md.code_fence_language_exists
-      - md.token_present
-      - md.tokens_all_present
-      - md.token_ownership_unique
-      - md.token_dependencies_resolved
+      - domain.markdown.has_heading
+      - domain.markdown.heading_level_exists
+      - domain.markdown.section_order_valid
+      - domain.markdown.required_sections_present
+      - domain.markdown.link_targets_all_resolve
+      - domain.markdown.has_broken_links
+      - domain.markdown.has_yaml_spec_test_fence
+      - domain.markdown.code_fence_language_exists
+      - domain.markdown.token_present
+      - domain.markdown.tokens_all_present
+      - domain.markdown.token_ownership_unique
+      - domain.markdown.token_dependencies_resolved
     - from: lib_python_core_spec
       names:
       - py.is_tuple_projection

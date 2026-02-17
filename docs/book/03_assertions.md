@@ -199,17 +199,17 @@ assert:
   must:
   - evaluate:
     - call:
-      - {var: md.required_sections_present}
+      - {var: domain.markdown.required_sections_present}
       - {var: subject}
       - lit:
         - Purpose
         - Inputs
         - Outputs
     - call:
-      - {var: md.link_targets_all_resolve}
+      - {var: domain.markdown.link_targets_all_resolve}
       - {var: subject}
     - call:
-      - {var: md.has_yaml_spec_test_fence}
+      - {var: domain.markdown.has_yaml_spec_test_fence}
       - {var: subject}
 ```
 
@@ -227,7 +227,7 @@ assert:
 Anti-pattern:
 
 - broad `std.string.contains` checks for headings/links/tokens when
-  `domain.markdown.*` / `md.*` helpers exist.
+  `domain.markdown.*` / `domain.markdown.*` helpers exist.
 
 ## `stdout_path` / `stdout_path_text`
 

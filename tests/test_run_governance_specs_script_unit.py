@@ -5601,7 +5601,7 @@ id: LIB-DOMAIN-MD-001
 type: spec_lang.library
 defines:
   public:
-    md.has_heading:
+    domain.markdown.has_heading:
       fn:
       - [subject, heading]
       - std.string.contains:
@@ -5625,12 +5625,12 @@ harness:
     includes:
     - /docs/spec/libraries/domain/markdown_core.spec.md
     exports:
-    - md.has_heading
+    - domain.markdown.has_heading
 assert:
 - target: text
   must:
   - call:
-      - {var: md.has_heading}
+      - {var: domain.markdown.has_heading}
       - {var: subject}
       - "Purpose"
 ```

@@ -65,7 +65,7 @@ Provide repeatable recipes for common contributor tasks.
 1. Include markdown helpers:
    - `/docs/spec/libraries/domain/markdown_core.spec.md`
 2. Prefer `target: context_json` for structural checks.
-3. Use `md.*` helpers for heading/link/token checks.
+3. Use `domain.markdown.*` helpers for heading/link/token checks.
 
 Example:
 
@@ -75,21 +75,21 @@ harness:
     includes:
     - /docs/spec/libraries/domain/markdown_core.spec.md
     exports:
-    - md.required_sections_present
-    - md.link_targets_all_resolve
+    - domain.markdown.required_sections_present
+    - domain.markdown.link_targets_all_resolve
 assert:
 - target: context_json
   must:
   - evaluate:
     - call:
-      - {var: md.required_sections_present}
+      - {var: domain.markdown.required_sections_present}
       - {var: subject}
       - lit:
         - Purpose
         - Inputs
         - Outputs
     - call:
-      - {var: md.link_targets_all_resolve}
+      - {var: domain.markdown.link_targets_all_resolve}
       - {var: subject}
 ```
 
