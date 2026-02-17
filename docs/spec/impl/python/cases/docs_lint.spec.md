@@ -9,7 +9,7 @@ type: cli.run
 argv: []
 exit_code: 0
 harness:
-  entrypoint: spec_runner.cli:docs_lint_main
+  entrypoint: spec_runner.spec_lang_commands:docs_lint_main
 assert:
 - id: assert_1
   class: must
@@ -31,7 +31,7 @@ argv:
 - docs/spec/impl/python/fixtures/missing_reference_manifest.yaml
 exit_code: 1
 harness:
-  entrypoint: spec_runner.cli:docs_lint_main
+  entrypoint: spec_runner.spec_lang_commands:docs_lint_main
 assert:
 - id: assert_1
   class: must

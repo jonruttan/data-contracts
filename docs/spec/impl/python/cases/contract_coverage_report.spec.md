@@ -9,7 +9,7 @@ type: cli.run
 argv: []
 exit_code: 0
 harness:
-  entrypoint: spec_runner.cli:contract_coverage_report_main
+  entrypoint: spec_runner.spec_lang_commands:contract_coverage_report_main
 assert:
 - id: assert_1
   class: must
@@ -37,7 +37,7 @@ argv:
 - .artifacts/contract-coverage-impl-case.json
 exit_code: 0
 harness:
-  entrypoint: spec_runner.cli:contract_coverage_report_main
+  entrypoint: spec_runner.spec_lang_commands:contract_coverage_report_main
 assert:
 - id: assert_1
   class: must

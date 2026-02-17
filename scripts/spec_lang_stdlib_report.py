@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-from spec_runner.cli import spec_lang_stdlib_report_main
+from spec_runner.spec_lang_commands import spec_lang_stdlib_report_main
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -9,7 +9,7 @@ type: cli.run
 argv: []
 exit_code: 0
 harness:
-  entrypoint: spec_runner.cli:spec_lang_stdlib_report_main
+  entrypoint: spec_runner.spec_lang_commands:spec_lang_stdlib_report_main
 assert:
 - id: assert_1
   class: must
@@ -34,7 +34,7 @@ argv:
 - md
 exit_code: 0
 harness:
-  entrypoint: spec_runner.cli:spec_lang_stdlib_report_main
+  entrypoint: spec_runner.spec_lang_commands:spec_lang_stdlib_report_main
 assert:
 - id: assert_1
   class: must
