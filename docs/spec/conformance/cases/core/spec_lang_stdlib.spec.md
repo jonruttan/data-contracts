@@ -77,3 +77,102 @@ assert:
       - true
   target: text
 ```
+
+## SRCONF-STDLIB-003
+
+```yaml spec-test
+id: SRCONF-STDLIB-003
+title: ops fs path operators evaluate deterministically
+purpose: Validates pure contract-posix path helpers under ops.fs.path.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: pass
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.path.normalize:
+        - /a//b/./c
+      - /a/b/c
+    - std.logic.eq:
+      - ops.fs.path.normalize:
+        - /a/b/../c
+      - /a/c
+    - std.logic.eq:
+      - ops.fs.path.join:
+        - /a/b
+        - c
+      - /a/b/c
+    - std.logic.eq:
+      - ops.fs.path.extname:
+        - file.tar.gz
+      - .gz
+    - std.logic.eq:
+      - ops.fs.path.stem:
+        - file.tar.gz
+      - file.tar
+    - std.logic.eq:
+      - ops.fs.path.change_ext:
+        - a/b.txt
+        - md
+      - a/b.md
+    - std.logic.eq:
+      - ops.fs.path.change_ext:
+        - a/b.txt
+        - ''
+      - a/b
+  target: text
+```
+
+## SRCONF-STDLIB-004
+
+```yaml spec-test
+id: SRCONF-STDLIB-004
+title: ops fs file metadata helpers evaluate deterministically
+purpose: Validates metadata-only file predicates and getters under ops.fs.file.
+type: text.file
+path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+expect:
+  portable:
+    status: pass
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - must:
+    - std.logic.eq:
+      - ops.fs.file.exists:
+        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md, exists: true, type: file, size_bytes: 12}
+      - true
+    - std.logic.eq:
+      - ops.fs.file.is_file:
+        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md, exists: true, type: file}
+      - true
+    - std.logic.eq:
+      - ops.fs.file.is_dir:
+        - lit: {path: /docs, exists: true, type: dir}
+      - true
+    - std.logic.eq:
+      - ops.fs.file.name:
+        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md}
+      - spec_lang_stdlib.spec.md
+    - std.logic.eq:
+      - ops.fs.file.parent:
+        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md}
+      - /docs/spec/conformance/cases/core
+    - std.logic.eq:
+      - ops.fs.file.ext:
+        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md}
+      - .md
+    - std.logic.eq:
+      - ops.fs.file.get:
+        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md, exists: true}
+        - missing
+        - fallback
+      - fallback
+  target: text
+```

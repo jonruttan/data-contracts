@@ -56,15 +56,15 @@ Provide namespace-level table-of-contents and quality/parity summary for spec-la
 
 ## Generated Spec-Lang Builtin Catalog
 
-- builtin_count: 135
+- builtin_count: 154
 - namespace_count: 9
-- parity_count: 135
+- parity_count: 154
 - all_parity: true
-- doc_quality_score: 0.9926
+- doc_quality_score: 0.9935
 
 | namespace | chapter | symbols |
 |---|---|---|
-| `core` | `/docs/book/93a_std_core.md` | 6 |
+| `core` | `/docs/book/93a_std_core.md` | 25 |
 | `logic` | `/docs/book/93b_std_logic.md` | 13 |
 | `math` | `/docs/book/93c_std_math.md` | 18 |
 | `string` | `/docs/book/93d_std_string.md` | 14 |

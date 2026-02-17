@@ -172,6 +172,619 @@ Provide generated semantic reference for `std.core` and special forms.
   - result: Deterministic result per symbol contract.
 
 
+### `ops.fs.file.exists`
+
+- Signature: `ops.fs.file.exists/1`
+- Summary: Evaluates `exists` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.file.exists(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.file.ext`
+
+- Signature: `ops.fs.file.ext/1`
+- Summary: Evaluates `ext` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.file.ext(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.file.get`
+
+- Signature: `ops.fs.file.get/3`
+- Summary: Evaluates `get` with arity 3.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+| `arg3` | `json` | true | Positional argument 3. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.file.get(arg1, arg2, arg3)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.file.is_dir`
+
+- Signature: `ops.fs.file.is_dir/1`
+- Summary: Evaluates `is_dir` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.file.is_dir(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.file.is_file`
+
+- Signature: `ops.fs.file.is_file/1`
+- Summary: Evaluates `is_file` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.file.is_file(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.file.name`
+
+- Signature: `ops.fs.file.name/1`
+- Summary: Evaluates `name` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.file.name(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.file.parent`
+
+- Signature: `ops.fs.file.parent/1`
+- Summary: Evaluates `parent` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.file.parent(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.file.path`
+
+- Signature: `ops.fs.file.path/1`
+- Summary: Evaluates `path` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.file.path(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.file.size_bytes`
+
+- Signature: `ops.fs.file.size_bytes/1`
+- Summary: Evaluates `size_bytes` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.file.size_bytes(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.basename`
+
+- Signature: `ops.fs.path.basename/1`
+- Summary: Evaluates `basename` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.basename(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.change_ext`
+
+- Signature: `ops.fs.path.change_ext/2`
+- Summary: Evaluates `change_ext` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.change_ext(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.dirname`
+
+- Signature: `ops.fs.path.dirname/1`
+- Summary: Evaluates `dirname` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.dirname(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.extname`
+
+- Signature: `ops.fs.path.extname/1`
+- Summary: Evaluates `extname` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.extname(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.has_ext`
+
+- Signature: `ops.fs.path.has_ext/2`
+- Summary: Evaluates `has_ext` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.has_ext(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.is_abs`
+
+- Signature: `ops.fs.path.is_abs/1`
+- Summary: Evaluates `is_abs` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.is_abs(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.join`
+
+- Signature: `ops.fs.path.join/2`
+- Summary: Evaluates `join` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.join(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.normalize`
+
+- Signature: `ops.fs.path.normalize/1`
+- Summary: Evaluates `normalize` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.normalize(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.split`
+
+- Signature: `ops.fs.path.split/1`
+- Summary: Evaluates `split` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.split(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.fs.path.stem`
+
+- Signature: `ops.fs.path.stem/1`
+- Summary: Evaluates `stem` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=true, both=true
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.fs.path.stem(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
 ### `std.core.subject`
 
 - Signature: `std.core.subject/0`

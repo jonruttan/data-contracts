@@ -404,6 +404,85 @@ def _round_half_away_from_zero(v: int | float) -> int:
     return math.floor(v + 0.5) if v >= 0 else math.ceil(v - 0.5)
 
 
+def _fs_normalize_path(path: str) -> str:
+    raw = path.strip()
+    if raw == "":
+        return "."
+    absolute = raw.startswith("/")
+    segments: list[str] = []
+    for part in raw.split("/"):
+        if part == "" or part == ".":
+            continue
+        if part == "..":
+            if segments and segments[-1] != "..":
+                segments.pop()
+            elif not absolute:
+                segments.append("..")
+            continue
+        segments.append(part)
+    normalized = "/".join(segments)
+    if absolute:
+        return f"/{normalized}" if normalized else "/"
+    return normalized if normalized else "."
+
+
+def _fs_split_segments(path: str) -> list[str]:
+    normalized = _fs_normalize_path(path)
+    if normalized in {".", "/"}:
+        return []
+    return [part for part in normalized.split("/") if part and part != "."]
+
+
+def _fs_basename(path: str) -> str:
+    normalized = _fs_normalize_path(path)
+    if normalized == "/":
+        return ""
+    if normalized == ".":
+        return "."
+    parts = _fs_split_segments(normalized)
+    return parts[-1] if parts else ""
+
+
+def _fs_dirname(path: str) -> str:
+    normalized = _fs_normalize_path(path)
+    if normalized == "/":
+        return "/"
+    absolute = normalized.startswith("/")
+    parts = _fs_split_segments(normalized)
+    if not parts:
+        return "/" if absolute else "."
+    parent = parts[:-1]
+    if not parent:
+        return "/" if absolute else "."
+    joined = "/".join(parent)
+    return f"/{joined}" if absolute else joined
+
+
+def _fs_extname(path: str) -> str:
+    base = _fs_basename(path)
+    if not base or base in {".", ".."}:
+        return ""
+    idx = base.rfind(".")
+    if idx <= 0:
+        return ""
+    return base[idx:]
+
+
+def _fs_stem(path: str) -> str:
+    base = _fs_basename(path)
+    ext = _fs_extname(path)
+    if ext:
+        return base[: -len(ext)]
+    return base
+
+
+def _fs_normalize_ext(ext: str) -> str:
+    token = ext.strip()
+    if token == "":
+        return ""
+    return token if token.startswith(".") else f".{token}"
+
+
 def _builtin_arity_table() -> dict[str, int]:
     # Fixed arity table used by builtin currying.
     flat = {
@@ -534,6 +613,25 @@ def _builtin_arity_table() -> dict[str, int]:
         "json_stringify": 1,
         "schema_match": 2,
         "schema_errors": 2,
+        "ops_fs_path_normalize": 1,
+        "ops_fs_path_join": 2,
+        "ops_fs_path_split": 1,
+        "ops_fs_path_dirname": 1,
+        "ops_fs_path_basename": 1,
+        "ops_fs_path_extname": 1,
+        "ops_fs_path_stem": 1,
+        "ops_fs_path_is_abs": 1,
+        "ops_fs_path_has_ext": 2,
+        "ops_fs_path_change_ext": 2,
+        "ops_fs_file_exists": 1,
+        "ops_fs_file_is_file": 1,
+        "ops_fs_file_is_dir": 1,
+        "ops_fs_file_size_bytes": 1,
+        "ops_fs_file_path": 1,
+        "ops_fs_file_name": 1,
+        "ops_fs_file_parent": 1,
+        "ops_fs_file_ext": 1,
+        "ops_fs_file_get": 3,
         "and": 2,
         "or": 2,
         "not": 1,
@@ -546,6 +644,8 @@ _STD_NAMESPACE_INDEX = namespace_index()
 
 
 def _flat_symbol_for_runtime(symbol: str) -> str:
+    if symbol.startswith("ops."):
+        return symbol
     return STD_TO_FLAT.get(symbol, symbol)
 
 
@@ -1221,6 +1321,121 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         errs = []
         _schema_validate(args[0], args[1], "$", errs)
         return errs
+    if op == "ops.fs.path.normalize":
+        _require_arity(op, args, 1)
+        if not isinstance(args[0], str):
+            raise ValueError("spec_lang ops.fs.path.normalize expects string path")
+        return _fs_normalize_path(args[0])
+    if op == "ops.fs.path.join":
+        _require_arity(op, args, 2)
+        if not isinstance(args[0], str) or not isinstance(args[1], str):
+            raise ValueError("spec_lang ops.fs.path.join expects string args")
+        base = args[0]
+        part = args[1]
+        combined = f"{base.rstrip('/')}/{part}" if base else part
+        return _fs_normalize_path(combined)
+    if op == "ops.fs.path.split":
+        _require_arity(op, args, 1)
+        if not isinstance(args[0], str):
+            raise ValueError("spec_lang ops.fs.path.split expects string path")
+        return _fs_split_segments(args[0])
+    if op == "ops.fs.path.dirname":
+        _require_arity(op, args, 1)
+        if not isinstance(args[0], str):
+            raise ValueError("spec_lang ops.fs.path.dirname expects string path")
+        return _fs_dirname(args[0])
+    if op == "ops.fs.path.basename":
+        _require_arity(op, args, 1)
+        if not isinstance(args[0], str):
+            raise ValueError("spec_lang ops.fs.path.basename expects string path")
+        return _fs_basename(args[0])
+    if op == "ops.fs.path.extname":
+        _require_arity(op, args, 1)
+        if not isinstance(args[0], str):
+            raise ValueError("spec_lang ops.fs.path.extname expects string path")
+        return _fs_extname(args[0])
+    if op == "ops.fs.path.stem":
+        _require_arity(op, args, 1)
+        if not isinstance(args[0], str):
+            raise ValueError("spec_lang ops.fs.path.stem expects string path")
+        return _fs_stem(args[0])
+    if op == "ops.fs.path.is_abs":
+        _require_arity(op, args, 1)
+        if not isinstance(args[0], str):
+            raise ValueError("spec_lang ops.fs.path.is_abs expects string path")
+        return _fs_normalize_path(args[0]).startswith("/")
+    if op == "ops.fs.path.has_ext":
+        _require_arity(op, args, 2)
+        if not isinstance(args[0], str) or not isinstance(args[1], str):
+            raise ValueError("spec_lang ops.fs.path.has_ext expects string args")
+        return _fs_extname(args[0]) == _fs_normalize_ext(args[1])
+    if op == "ops.fs.path.change_ext":
+        _require_arity(op, args, 2)
+        if not isinstance(args[0], str) or not isinstance(args[1], str):
+            raise ValueError("spec_lang ops.fs.path.change_ext expects string args")
+        normalized = _fs_normalize_path(args[0])
+        new_ext = _fs_normalize_ext(args[1])
+        base = _fs_basename(normalized)
+        if base in {"", "."}:
+            return normalized
+        parent = _fs_dirname(normalized)
+        stem = _fs_stem(normalized)
+        next_base = f"{stem}{new_ext}"
+        if parent == "/":
+            return f"/{next_base}"
+        if parent == ".":
+            return next_base
+        return f"{parent}/{next_base}"
+    if op == "ops.fs.file.exists":
+        _require_arity(op, args, 1)
+        meta = _require_dict_arg(op, args[0])
+        return bool(meta.get("exists"))
+    if op == "ops.fs.file.is_file":
+        _require_arity(op, args, 1)
+        meta = _require_dict_arg(op, args[0])
+        return str(meta.get("type", "")).strip() == "file"
+    if op == "ops.fs.file.is_dir":
+        _require_arity(op, args, 1)
+        meta = _require_dict_arg(op, args[0])
+        return str(meta.get("type", "")).strip() == "dir"
+    if op == "ops.fs.file.size_bytes":
+        _require_arity(op, args, 1)
+        meta = _require_dict_arg(op, args[0])
+        size = meta.get("size_bytes")
+        if isinstance(size, int) and not isinstance(size, bool):
+            return size
+        return None
+    if op == "ops.fs.file.path":
+        _require_arity(op, args, 1)
+        meta = _require_dict_arg(op, args[0])
+        raw = meta.get("path")
+        return raw if isinstance(raw, str) else None
+    if op == "ops.fs.file.name":
+        _require_arity(op, args, 1)
+        meta = _require_dict_arg(op, args[0])
+        raw = meta.get("path")
+        if not isinstance(raw, str):
+            return None
+        return _fs_basename(raw)
+    if op == "ops.fs.file.parent":
+        _require_arity(op, args, 1)
+        meta = _require_dict_arg(op, args[0])
+        raw = meta.get("path")
+        if not isinstance(raw, str):
+            return None
+        return _fs_dirname(raw)
+    if op == "ops.fs.file.ext":
+        _require_arity(op, args, 1)
+        meta = _require_dict_arg(op, args[0])
+        raw = meta.get("path")
+        if not isinstance(raw, str):
+            return None
+        return _fs_extname(raw)
+    if op == "ops.fs.file.get":
+        _require_arity(op, args, 3)
+        meta = _require_dict_arg(op, args[0])
+        key = str(args[1])
+        return meta.get(key, args[2])
     if op == "and":
         _require_arity(op, args, 2)
         return _truthy(args[0]) and _truthy(args[1])

@@ -149,6 +149,27 @@ categories:
   schema_shape:
   - std.schema.match
   - std.schema.errors
+  fs_path:
+  - ops.fs.path.normalize
+  - ops.fs.path.join
+  - ops.fs.path.split
+  - ops.fs.path.dirname
+  - ops.fs.path.basename
+  - ops.fs.path.extname
+  - ops.fs.path.stem
+  - ops.fs.path.is_abs
+  - ops.fs.path.has_ext
+  - ops.fs.path.change_ext
+  fs_file:
+  - ops.fs.file.exists
+  - ops.fs.file.is_file
+  - ops.fs.file.is_dir
+  - ops.fs.file.size_bytes
+  - ops.fs.file.path
+  - ops.fs.file.name
+  - ops.fs.file.parent
+  - ops.fs.file.ext
+  - ops.fs.file.get
 symbols:
   std.core.subject:
     category: core_control
@@ -1091,6 +1112,139 @@ symbols:
   std.schema.errors:
     category: schema_shape
     arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.normalize:
+    category: fs_path
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.join:
+    category: fs_path
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.split:
+    category: fs_path
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.dirname:
+    category: fs_path
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.basename:
+    category: fs_path
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.extname:
+    category: fs_path
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.stem:
+    category: fs_path
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.is_abs:
+    category: fs_path
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.has_ext:
+    category: fs_path
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.path.change_ext:
+    category: fs_path
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.file.exists:
+    category: fs_file
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.file.is_file:
+    category: fs_file
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.file.is_dir:
+    category: fs_file
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.file.size_bytes:
+    category: fs_file
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.file.path:
+    category: fs_file
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.file.name:
+    category: fs_file
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.file.parent:
+    category: fs_file
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.file.ext:
+    category: fs_file
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.file.get:
+    category: fs_file
+    arity: 3
     pure: true
     deterministic: true
     error_class: schema

@@ -176,7 +176,8 @@ Subject profile envelope contract:
 - `harness.spec_lang.exports` MAY constrain visible imported symbols to an
   explicit allowlist.
 - `harness.spec_lang.imports` MAY declare case-scoped imports using
-  `from: std.<namespace>` and `names: [...]` with optional `as` aliases.
+  `from: std.<namespace>` or `from: ops.<namespace>` and `names: [...]` with
+  optional `as` aliases.
 
 ## Orchestration Tooling
 

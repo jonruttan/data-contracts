@@ -34,15 +34,15 @@ Purity requirement:
 - Subjects consumed by the evaluator MUST be JSON-core values only; native
   runtime values must be projected into JSON profile envelopes.
 
-Orchestration effect namespace:
+Ops namespace:
 
-- `ops.*` symbols are reserved for orchestration harnesses and are not core
-  pure stdlib builtins.
-- Core spec-lang evaluation remains pure; side-effect operations are adapter
-  concerns exposed through orchestration contracts.
-- canonical effect symbol naming uses deep-dot hierarchy:
+- `ops.*` symbols use deep-dot hierarchy:
   `ops.<segment>(.<segment>)+` (for example `ops.fs.file.read`,
-  `ops.proc.command.exec`).
+  `ops.proc.command.exec`, `ops.fs.path.normalize`).
+- Core spec-lang evaluation remains pure; side-effect operations are still
+  adapter concerns exposed through orchestration contracts.
+- Pure utility functions may exist under `ops.*` (for example
+  `ops.fs.path.*`, `ops.fs.file.*`) and must remain deterministic.
 - underscore shorthand forms are invalid.
 
 ## Core Forms
@@ -176,6 +176,28 @@ Utility:
 - `is_subset`
 - `is_superset`
 - `set_equals`
+
+Filesystem utility (pure, metadata-only):
+
+- `ops.fs.path.normalize`
+- `ops.fs.path.join`
+- `ops.fs.path.split`
+- `ops.fs.path.dirname`
+- `ops.fs.path.basename`
+- `ops.fs.path.extname`
+- `ops.fs.path.stem`
+- `ops.fs.path.is_abs`
+- `ops.fs.path.has_ext`
+- `ops.fs.path.change_ext`
+- `ops.fs.file.exists`
+- `ops.fs.file.is_file`
+- `ops.fs.file.is_dir`
+- `ops.fs.file.size_bytes`
+- `ops.fs.file.path`
+- `ops.fs.file.name`
+- `ops.fs.file.parent`
+- `ops.fs.file.ext`
+- `ops.fs.file.get`
 
 Recursion/control:
 

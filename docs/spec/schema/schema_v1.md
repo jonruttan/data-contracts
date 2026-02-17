@@ -457,6 +457,9 @@ Operator constraints:
 - orchestration effect symbol names use deep-dot `ops.*` hierarchy:
   `ops.<segment>(.<segment>)+` (for example `ops.fs.file.read`,
   `ops.proc.command.exec`)
+- pure spec-lang utility symbols may also use `ops.*` namespaces
+  (for example `ops.fs.path.normalize`, `ops.fs.file.exists`) and MUST remain
+  deterministic with no evaluator side effects
 - underscore shorthand ops symbols are invalid
 - path fields in scoped harness/type config use virtual-root canonical `/...`
   form; `..` contract-root escapes are invalid

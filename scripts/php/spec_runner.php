@@ -1043,6 +1043,111 @@ function specLangRoundHalfAwayFromZero(int|float $v): int {
     return (int)ceil($v - 0.5);
 }
 
+function specLangFsNormalizePath(string $path): string {
+    $raw = trim($path);
+    if ($raw === '') {
+        return '.';
+    }
+    $absolute = str_starts_with($raw, '/');
+    $segments = [];
+    foreach (explode('/', $raw) as $part) {
+        if ($part === '' || $part === '.') {
+            continue;
+        }
+        if ($part === '..') {
+            if (count($segments) > 0 && $segments[count($segments) - 1] !== '..') {
+                array_pop($segments);
+            } elseif (!$absolute) {
+                $segments[] = '..';
+            }
+            continue;
+        }
+        $segments[] = $part;
+    }
+    $normalized = implode('/', $segments);
+    if ($absolute) {
+        return $normalized === '' ? '/' : '/' . $normalized;
+    }
+    return $normalized === '' ? '.' : $normalized;
+}
+
+function specLangFsSplitSegments(string $path): array {
+    $normalized = specLangFsNormalizePath($path);
+    if ($normalized === '.' || $normalized === '/') {
+        return [];
+    }
+    $parts = explode('/', $normalized);
+    $out = [];
+    foreach ($parts as $part) {
+        if ($part !== '' && $part !== '.') {
+            $out[] = $part;
+        }
+    }
+    return $out;
+}
+
+function specLangFsBasename(string $path): string {
+    $normalized = specLangFsNormalizePath($path);
+    if ($normalized === '/') {
+        return '';
+    }
+    if ($normalized === '.') {
+        return '.';
+    }
+    $parts = specLangFsSplitSegments($normalized);
+    if (count($parts) === 0) {
+        return '';
+    }
+    return (string)$parts[count($parts) - 1];
+}
+
+function specLangFsDirname(string $path): string {
+    $normalized = specLangFsNormalizePath($path);
+    if ($normalized === '/') {
+        return '/';
+    }
+    $absolute = str_starts_with($normalized, '/');
+    $parts = specLangFsSplitSegments($normalized);
+    if (count($parts) === 0) {
+        return $absolute ? '/' : '.';
+    }
+    array_pop($parts);
+    if (count($parts) === 0) {
+        return $absolute ? '/' : '.';
+    }
+    $joined = implode('/', $parts);
+    return $absolute ? '/' . $joined : $joined;
+}
+
+function specLangFsExtname(string $path): string {
+    $base = specLangFsBasename($path);
+    if ($base === '' || $base === '.' || $base === '..') {
+        return '';
+    }
+    $idx = strrpos($base, '.');
+    if ($idx === false || $idx <= 0) {
+        return '';
+    }
+    return substr($base, $idx);
+}
+
+function specLangFsStem(string $path): string {
+    $base = specLangFsBasename($path);
+    $ext = specLangFsExtname($path);
+    if ($ext === '') {
+        return $base;
+    }
+    return substr($base, 0, strlen($base) - strlen($ext));
+}
+
+function specLangFsNormalizeExt(string $ext): string {
+    $token = trim($ext);
+    if ($token === '') {
+        return '';
+    }
+    return str_starts_with($token, '.') ? $token : '.' . $token;
+}
+
 function specLangSpecialForms(): array {
     return ['if' => true, 'let' => true, 'fn' => true, 'call' => true, 'var' => true, 'lit' => true];
 }
@@ -1053,6 +1158,25 @@ function specLangFlatBuiltinFromStd(string $symbol): string {
         'std.json.stringify' => 'json_stringify',
         'std.schema.match' => 'schema_match',
         'std.schema.errors' => 'schema_errors',
+        'ops.fs.path.normalize' => 'ops_fs_path_normalize',
+        'ops.fs.path.join' => 'ops_fs_path_join',
+        'ops.fs.path.split' => 'ops_fs_path_split',
+        'ops.fs.path.dirname' => 'ops_fs_path_dirname',
+        'ops.fs.path.basename' => 'ops_fs_path_basename',
+        'ops.fs.path.extname' => 'ops_fs_path_extname',
+        'ops.fs.path.stem' => 'ops_fs_path_stem',
+        'ops.fs.path.is_abs' => 'ops_fs_path_is_abs',
+        'ops.fs.path.has_ext' => 'ops_fs_path_has_ext',
+        'ops.fs.path.change_ext' => 'ops_fs_path_change_ext',
+        'ops.fs.file.exists' => 'ops_fs_file_exists',
+        'ops.fs.file.is_file' => 'ops_fs_file_is_file',
+        'ops.fs.file.is_dir' => 'ops_fs_file_is_dir',
+        'ops.fs.file.size_bytes' => 'ops_fs_file_size_bytes',
+        'ops.fs.file.path' => 'ops_fs_file_path',
+        'ops.fs.file.name' => 'ops_fs_file_name',
+        'ops.fs.file.parent' => 'ops_fs_file_parent',
+        'ops.fs.file.ext' => 'ops_fs_file_ext',
+        'ops.fs.file.get' => 'ops_fs_file_get',
     ];
     if (array_key_exists($symbol, $map)) {
         return $map[$symbol];
@@ -1085,8 +1209,8 @@ function specLangCompileImportsForCase(array $case): array {
             throw new SchemaError("{$field} must be a mapping");
         }
         $from = trim((string)($item['from'] ?? ''));
-        if ($from === '' || !str_starts_with($from, 'std.')) {
-            throw new SchemaError("{$field}.from must be a std.* namespace");
+        if ($from === '' || (!str_starts_with($from, 'std.') && !str_starts_with($from, 'ops.'))) {
+            throw new SchemaError("{$field}.from must be a std.* or ops.* namespace");
         }
         $names = $item['names'] ?? null;
         if (!is_array($names) || !isListArray($names) || count($names) === 0) {
@@ -1122,7 +1246,7 @@ function specLangResolveOpSymbol(string $head, array $imports): string {
     if (array_key_exists($head, specLangSpecialForms())) {
         return $head;
     }
-    if (str_starts_with($head, 'std.')) {
+    if (str_starts_with($head, 'std.') || str_starts_with($head, 'ops.')) {
         return specLangFlatBuiltinFromStd($head);
     }
     if (array_key_exists($head, $imports)) {
@@ -2156,6 +2280,120 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             $out[] = specLangEvalTail($fn['body'], new SpecLangEnv($vars, $fn['env']), $subject, $limits, $state);
         }
         return $out;
+    }
+    if (
+        $op === 'ops_fs_path_normalize'
+        || $op === 'ops_fs_path_split'
+        || $op === 'ops_fs_path_dirname'
+        || $op === 'ops_fs_path_basename'
+        || $op === 'ops_fs_path_extname'
+        || $op === 'ops_fs_path_stem'
+        || $op === 'ops_fs_path_is_abs'
+    ) {
+        specLangRequireArity($op, $args, 1);
+        $path = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!is_string($path)) {
+            throw new SchemaError("spec_lang {$op} expects string path");
+        }
+        if ($op === 'ops_fs_path_normalize') {
+            return specLangFsNormalizePath($path);
+        }
+        if ($op === 'ops_fs_path_split') {
+            return specLangFsSplitSegments($path);
+        }
+        if ($op === 'ops_fs_path_dirname') {
+            return specLangFsDirname($path);
+        }
+        if ($op === 'ops_fs_path_basename') {
+            return specLangFsBasename($path);
+        }
+        if ($op === 'ops_fs_path_extname') {
+            return specLangFsExtname($path);
+        }
+        if ($op === 'ops_fs_path_stem') {
+            return specLangFsStem($path);
+        }
+        return str_starts_with(specLangFsNormalizePath($path), '/');
+    }
+    if ($op === 'ops_fs_path_join' || $op === 'ops_fs_path_has_ext' || $op === 'ops_fs_path_change_ext') {
+        specLangRequireArity($op, $args, 2);
+        $left = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $right = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if (!is_string($left) || !is_string($right)) {
+            throw new SchemaError("spec_lang {$op} expects string args");
+        }
+        if ($op === 'ops_fs_path_join') {
+            $combined = $left === '' ? $right : rtrim($left, '/') . '/' . $right;
+            return specLangFsNormalizePath($combined);
+        }
+        if ($op === 'ops_fs_path_has_ext') {
+            return specLangFsExtname($left) === specLangFsNormalizeExt($right);
+        }
+        $normalized = specLangFsNormalizePath($left);
+        $base = specLangFsBasename($normalized);
+        if ($base === '' || $base === '.') {
+            return $normalized;
+        }
+        $parent = specLangFsDirname($normalized);
+        $stem = specLangFsStem($normalized);
+        $next = $stem . specLangFsNormalizeExt($right);
+        if ($parent === '/') {
+            return '/' . $next;
+        }
+        if ($parent === '.') {
+            return $next;
+        }
+        return $parent . '/' . $next;
+    }
+    if (
+        $op === 'ops_fs_file_exists'
+        || $op === 'ops_fs_file_is_file'
+        || $op === 'ops_fs_file_is_dir'
+        || $op === 'ops_fs_file_size_bytes'
+        || $op === 'ops_fs_file_path'
+        || $op === 'ops_fs_file_name'
+        || $op === 'ops_fs_file_parent'
+        || $op === 'ops_fs_file_ext'
+    ) {
+        specLangRequireArity($op, $args, 1);
+        $meta = specLangRequireDictArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        if ($op === 'ops_fs_file_exists') {
+            return (bool)($meta['exists'] ?? false);
+        }
+        if ($op === 'ops_fs_file_is_file') {
+            return (string)($meta['type'] ?? '') === 'file';
+        }
+        if ($op === 'ops_fs_file_is_dir') {
+            return (string)($meta['type'] ?? '') === 'dir';
+        }
+        if ($op === 'ops_fs_file_size_bytes') {
+            $size = $meta['size_bytes'] ?? null;
+            if (is_int($size)) {
+                return $size;
+            }
+            return null;
+        }
+        $rawPath = $meta['path'] ?? null;
+        if (!is_string($rawPath)) {
+            return null;
+        }
+        if ($op === 'ops_fs_file_path') {
+            return $rawPath;
+        }
+        if ($op === 'ops_fs_file_name') {
+            return specLangFsBasename($rawPath);
+        }
+        if ($op === 'ops_fs_file_parent') {
+            return specLangFsDirname($rawPath);
+        }
+        return specLangFsExtname($rawPath);
+    }
+    if ($op === 'ops_fs_file_get') {
+        specLangRequireArity($op, $args, 3);
+        $meta = specLangRequireDictArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $key = (string)specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        $default = specLangEvalNonTail($args[2], $env, $subject, $limits, $state);
+        return array_key_exists($key, $meta) ? $meta[$key] : $default;
     }
     if ($op === 'schema_match' || $op === 'schema_errors') {
         specLangRequireArity($op, $args, 2);

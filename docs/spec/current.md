@@ -85,6 +85,10 @@ Notes:
 - Spec-lang utility surface now includes collection helpers for governance
   policy authoring (`sum`, `min`, `max`, `sort_by`, `pluck`, `distinct`,
   `is_empty`, `coalesce`, `matches_all`).
+- Spec-lang now includes pure filesystem utility helpers under `ops.*`:
+  `ops.fs.path.*` (normalize/join/split/dirname/basename/ext/stem) and
+  `ops.fs.file.*` metadata predicates/getters (`exists`, `is_file`, `is_dir`,
+  `size_bytes`, `path`, `name`, `parent`, `ext`, `get`).
 - Spec-lang now includes Ramda-style deep equality, set algebra
   (`union`, `intersection`, `difference`, `symmetric_difference`,
   `is_subset`, `is_superset`, `set_equals`), expanded collection transforms

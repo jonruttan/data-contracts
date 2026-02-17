@@ -134,6 +134,25 @@ FLAT_TO_STD: Final[dict[str, str]] = {
     "json_stringify": "std.json.stringify",
     "schema_match": "std.schema.match",
     "schema_errors": "std.schema.errors",
+    "ops_fs_path_normalize": "ops.fs.path.normalize",
+    "ops_fs_path_join": "ops.fs.path.join",
+    "ops_fs_path_split": "ops.fs.path.split",
+    "ops_fs_path_dirname": "ops.fs.path.dirname",
+    "ops_fs_path_basename": "ops.fs.path.basename",
+    "ops_fs_path_extname": "ops.fs.path.extname",
+    "ops_fs_path_stem": "ops.fs.path.stem",
+    "ops_fs_path_is_abs": "ops.fs.path.is_abs",
+    "ops_fs_path_has_ext": "ops.fs.path.has_ext",
+    "ops_fs_path_change_ext": "ops.fs.path.change_ext",
+    "ops_fs_file_exists": "ops.fs.file.exists",
+    "ops_fs_file_is_file": "ops.fs.file.is_file",
+    "ops_fs_file_is_dir": "ops.fs.file.is_dir",
+    "ops_fs_file_size_bytes": "ops.fs.file.size_bytes",
+    "ops_fs_file_path": "ops.fs.file.path",
+    "ops_fs_file_name": "ops.fs.file.name",
+    "ops_fs_file_parent": "ops.fs.file.parent",
+    "ops_fs_file_ext": "ops.fs.file.ext",
+    "ops_fs_file_get": "ops.fs.file.get",
     "and": "std.logic.and",
     "or": "std.logic.or",
     "not": "std.logic.not",
@@ -149,4 +168,3 @@ def namespace_index() -> dict[str, set[str]]:
         ns = ".".join(parts[:-1])
         out.setdefault(ns, set()).add(parts[-1])
     return out
-
