@@ -54,15 +54,16 @@ Provide repeatable recipes for common contributor tasks.
 
 ## Add Or Reuse A Library Function
 
-1. Add function in a `type: spec_lang.export` file.
-2. Keep mapping-AST canonical form.
-3. Export symbol through `defines.public`.
-4. Load reusable symbols via `harness.chain` (`from: assert.function`) and call
-   with `call`.
+1. Add function in a `type: spec.export` case.
+2. Define function logic in an `assert` step (`class: must`) and export from
+   producer `harness.chain.exports` using `from: assert.function`.
+3. Import symbols in consumers through `harness.chain.steps` + `harness.chain.imports`.
+4. Prefer `domain.*` helpers in executable specs; keep raw `ops.*` usage inside
+   domain libraries and stdlib primitive conformance cases.
 
 ## Add Markdown Structure Assertions
 
-1. Include markdown helpers:
+1. Chain-load markdown helpers:
    - `/docs/spec/libraries/domain/markdown_core.spec.md`
 2. Prefer `target: context_json` for structural checks.
 3. Use `domain.markdown.*` helpers for heading/link/token checks.
@@ -71,16 +72,20 @@ Example:
 
 ```yaml
 harness:
-  spec_lang:
-    includes:
-    - /docs/spec/libraries/domain/markdown_core.spec.md
-    exports:
-    - domain.markdown.required_sections_present
-    - domain.markdown.link_targets_all_resolve
+  chain:
+    steps:
+    - id: lib_markdown
+      class: must
+      ref: /docs/spec/libraries/domain/markdown_core.spec.md
+    imports:
+    - from: lib_markdown
+      names:
+      - domain.markdown.required_sections_present
+      - domain.markdown.link_targets_all_resolve
 assert:
 - target: context_json
-  must:
-  - evaluate:
+  checks:
+  - must:
     - call:
       - {var: domain.markdown.required_sections_present}
       - {var: subject}

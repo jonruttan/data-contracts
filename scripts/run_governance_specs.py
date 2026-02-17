@@ -211,6 +211,9 @@ _DOCGEN_QUALITY_MIN_SCORE = 0.95
 _CHAIN_TEMPLATE_PATTERN = re.compile(r"\{\{\s*chain\.([A-Za-z0-9_.-]+)\s*\}\}")
 _CHAIN_REF_CASE_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]+$")
 _MD_NAMESPACE_LEGACY_PATTERN = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
+_RAW_OPS_FS_ALLOWED_CASE_FILES = {
+    "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
+}
 _HARNESS_FILES = (
     "spec_runner/harnesses/text_file.py",
     "spec_runner/harnesses/cli_run.py",
@@ -3896,6 +3899,50 @@ def _scan_runtime_executable_spec_lang_includes_forbidden(root: Path, *, harness
             case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
             violations.append(
                 f"{doc_path.relative_to(root)}: case {case_id} harness.spec_lang.includes is forbidden for executable cases; use harness.chain"
+            )
+    return violations
+
+
+def _collect_operator_keys(node: object, out: set[str]) -> None:
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if isinstance(key, str):
+                op = key.strip()
+                if op:
+                    out.add(op)
+            _collect_operator_keys(value, out)
+        return
+    if isinstance(node, list):
+        for value in node:
+            _collect_operator_keys(value, out)
+
+
+def _scan_runtime_domain_library_preferred_for_fs_ops(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    violations: list[str] = []
+    scan_roots = (
+        root / "docs/spec/conformance/cases",
+        root / "docs/spec/governance/cases",
+        root / "docs/spec/impl",
+    )
+    for base in scan_roots:
+        if not base.exists():
+            continue
+        for doc_path, case in _iter_all_spec_cases(base):
+            rel_doc = _rel_path(root, doc_path)
+            if rel_doc in _RAW_OPS_FS_ALLOWED_CASE_FILES:
+                continue
+            case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+            ops: set[str] = set()
+            _collect_operator_keys(case, ops)
+            raw_fs_ops = sorted(op for op in ops if op.startswith("ops.fs."))
+            if not raw_fs_ops:
+                continue
+            violations.append(
+                f"{rel_doc}: case {case_id} uses raw ops.fs symbols ({', '.join(raw_fs_ops)}); "
+                "prefer domain.path.* / domain.fs.* helpers in executable specs"
             )
     return violations
 
@@ -7668,6 +7715,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.universal_chain_support_required": _scan_runtime_universal_chain_support_required,
     "runtime.chain_shared_context_required": _scan_runtime_chain_shared_context_required,
     "runtime.executable_spec_lang_includes_forbidden": _scan_runtime_executable_spec_lang_includes_forbidden,
+    "runtime.domain_library_preferred_for_fs_ops": _scan_runtime_domain_library_preferred_for_fs_ops,
     "runtime.spec_lang_export_type_forbidden": _scan_runtime_spec_lang_export_type_forbidden,
     "docs.api_http_tutorial_sync": _scan_docs_api_http_tutorial_sync,
     "runtime.runner_interface_subcommands": _scan_runtime_runner_interface_subcommands,

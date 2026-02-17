@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 200
-- checks_with_cases: 194
+- check_count: 201
+- checks_with_cases: 195
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -202,6 +202,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.chain_state_template_resolution` | 1 | true |
 | `runtime.chain_step_class_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
+| `runtime.domain_library_preferred_for_fs_ops` | 1 | true |
 | `runtime.executable_spec_lang_includes_forbidden` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
