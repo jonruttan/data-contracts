@@ -63,6 +63,29 @@ run_with_timeout_env() {
 }
 
 subcommand="${1:-}"
+while [[ $# -gt 0 ]]; do
+  case "${1:-}" in
+    --verbose|-v)
+      export SPEC_RUNNER_DEBUG=1
+      export SPEC_RUNNER_DEBUG_LEVEL=1
+      shift
+      ;;
+    -vv)
+      export SPEC_RUNNER_DEBUG=1
+      export SPEC_RUNNER_DEBUG_LEVEL=2
+      shift
+      ;;
+    -vvv)
+      export SPEC_RUNNER_DEBUG=1
+      export SPEC_RUNNER_DEBUG_LEVEL=3
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+subcommand="${1:-}"
 if [[ -z "${subcommand}" ]]; then
   echo "ERROR: missing runner adapter subcommand" >&2
   exit 2

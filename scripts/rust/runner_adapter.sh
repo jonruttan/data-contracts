@@ -8,6 +8,36 @@ RUST_CLI_MANIFEST="${ROOT_DIR}/scripts/rust/spec_runner_cli/Cargo.toml"
 RUST_CLI_TARGET=""
 RUST_CLI_BIN="${ROOT_DIR}/target/debug/spec_runner_cli"
 
+is_debug_enabled() {
+  local val="${SPEC_RUNNER_DEBUG:-}"
+  [[ "${val}" == "1" || "${val}" == "true" || "${val}" == "yes" ]]
+}
+
+debug_level() {
+  local lvl="${SPEC_RUNNER_DEBUG_LEVEL:-0}"
+  if [[ "${lvl}" =~ ^[0-9]+$ ]]; then
+    echo "${lvl}"
+  elif is_debug_enabled; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
+debug_log() {
+  if [[ "$(debug_level)" -ge 1 ]]; then
+    echo "[runner_adapter debug] $*" >&2
+  fi
+}
+
+debug_log_at() {
+  local level="$1"
+  shift
+  if [[ "$(debug_level)" -ge "${level}" ]]; then
+    echo "[runner_adapter debug:${level}] $*" >&2
+  fi
+}
+
 # Prefer native Apple Silicon binaries when available to avoid Rosetta/runtime hangs.
 if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then
   ARM_TARGET="aarch64-apple-darwin"
@@ -16,10 +46,17 @@ if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then
   RUST_CLI_BIN="${ARM_BIN}"
 fi
 
+debug_log "root=${ROOT_DIR}"
+debug_log_at 2 "manifest=${RUST_CLI_MANIFEST}"
+debug_log "target=${RUST_CLI_TARGET:-default-host}"
+debug_log_at 2 "bin=${RUST_CLI_BIN}"
+
 run_rust_subcommand() {
   local cmd="$1"
   shift
+  debug_log "run_rust_subcommand cmd=${cmd} args=[$*]"
   if [[ -x "${RUST_CLI_BIN}" ]]; then
+    debug_log "using prebuilt binary ${RUST_CLI_BIN}"
     "${RUST_CLI_BIN}" "${cmd}" "$@"
     return
   fi
@@ -28,8 +65,10 @@ run_rust_subcommand() {
     return 2
   fi
   if [[ -n "${RUST_CLI_TARGET}" ]]; then
+    debug_log "using cargo run target=${RUST_CLI_TARGET}"
     cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" --target "${RUST_CLI_TARGET}" -- "${cmd}" "$@"
   else
+    debug_log "using cargo run host-target"
     cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${cmd}" "$@"
   fi
 }
@@ -37,7 +76,9 @@ run_rust_subcommand() {
 exec_rust_subcommand() {
   local cmd="$1"
   shift
+  debug_log "exec_rust_subcommand cmd=${cmd} args=[$*]"
   if [[ -x "${RUST_CLI_BIN}" ]]; then
+    debug_log "exec prebuilt binary ${RUST_CLI_BIN}"
     exec "${RUST_CLI_BIN}" "${cmd}" "$@"
   fi
   if [[ -n "${RUST_CLI_TARGET}" ]] && ! rustup target list --installed 2>/dev/null | grep -qx "${RUST_CLI_TARGET}"; then
@@ -45,8 +86,10 @@ exec_rust_subcommand() {
     exit 2
   fi
   if [[ -n "${RUST_CLI_TARGET}" ]]; then
+    debug_log "exec cargo run target=${RUST_CLI_TARGET}"
     exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" --target "${RUST_CLI_TARGET}" -- "${cmd}" "$@"
   else
+    debug_log "exec cargo run host-target"
     exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${cmd}" "$@"
   fi
 }
@@ -107,11 +150,35 @@ run_with_timeout_env() {
 }
 
 subcommand="${1:-}"
+while [[ $# -gt 0 ]]; do
+  case "${1:-}" in
+    --verbose|-v)
+      export SPEC_RUNNER_DEBUG=1
+      export SPEC_RUNNER_DEBUG_LEVEL=1
+      shift
+      ;;
+    -vv)
+      export SPEC_RUNNER_DEBUG=1
+      export SPEC_RUNNER_DEBUG_LEVEL=2
+      shift
+      ;;
+    -vvv)
+      export SPEC_RUNNER_DEBUG=1
+      export SPEC_RUNNER_DEBUG_LEVEL=3
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+subcommand="${1:-}"
 if [[ -z "${subcommand}" ]]; then
   echo "ERROR: missing runner adapter subcommand" >&2
   exit 2
 fi
 shift
+debug_log "subcommand=${subcommand} forwarded=[$*]"
 
 case "${subcommand}" in
   spec-eval|spec-ref|validate-report|style-check|schema-registry-check|schema-registry-build|schema-docs-check|schema-docs-build|lint|typecheck|compilecheck|conformance-purpose-json|conformance-purpose-md|spec-portability-json|spec-portability-md|spec-lang-adoption-json|spec-lang-adoption-md|runner-independence-json|runner-independence-md|python-dependency-json|python-dependency-md|docs-operability-json|docs-operability-md|contract-assertions-json|contract-assertions-md|objective-scorecard-json|objective-scorecard-md|spec-lang-stdlib-json|spec-lang-stdlib-md|ci-gate-summary|ci-cleanroom|perf-smoke|docs-generate|docs-generate-check|docs-build|docs-build-check|docs-lint|docs-graph|conformance-parity|test-core|test-full)

@@ -13,22 +13,45 @@ fn debug_enabled() -> bool {
     matches!(std::env::var("SPEC_RUNNER_DEBUG").ok().as_deref(), Some("1") | Some("true") | Some("yes"))
 }
 
-fn debug_log(msg: &str) {
+fn debug_level() -> u8 {
+    if let Ok(raw) = std::env::var("SPEC_RUNNER_DEBUG_LEVEL") {
+        if let Ok(parsed) = raw.parse::<u8>() {
+            return parsed;
+        }
+    }
     if debug_enabled() {
+        1
+    } else {
+        0
+    }
+}
+
+fn debug_log(msg: &str) {
+    if debug_level() >= 1 {
         eprintln!("[spec_runner_cli debug] {msg}");
+    }
+}
+
+fn debug_log_at(level: u8, msg: &str) {
+    if debug_level() >= level {
+        eprintln!("[spec_runner_cli debug:{level}] {msg}");
     }
 }
 
 fn find_repo_root() -> Result<PathBuf, String> {
     let mut cur = env::current_dir().map_err(|e| format!("failed to read cwd: {e}"))?;
+    debug_log(&format!("find_repo_root:start cwd={}", cur.display()));
     loop {
+        debug_log_at(3, &format!("find_repo_root:check {}", cur.display()));
         if cur.join(".git").exists() {
+            debug_log(&format!("find_repo_root:found {}", cur.display()));
             return Ok(cur);
         }
         match cur.parent() {
             Some(parent) => {
                 let next = parent.to_path_buf();
                 if next == cur {
+                    debug_log("find_repo_root:stuck-at-root");
                     return Err("unable to find repository root (.git)".to_string());
                 }
                 cur = next;
@@ -263,6 +286,7 @@ fn validate_report_payload(payload: &Value) -> Vec<String> {
 }
 
 fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
+    debug_log("validate-report:start");
     if forwarded.len() != 1 {
         eprintln!("usage: validate-report <report-json-path>");
         return 2;
@@ -285,6 +309,7 @@ fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
             return 1;
         }
     };
+    debug_log(&format!("validate-report:report-bytes={}", report_text.len()));
     let payload: Value = match serde_json::from_str(&report_text) {
         Ok(v) => v,
         Err(e) => {
@@ -299,6 +324,7 @@ fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
             return 1;
         }
     };
+    debug_log(&format!("validate-report:spec-ref={spec_ref}"));
     let case_block = match load_case_block_from_spec_ref(root, spec_ref) {
         Ok(v) => v,
         Err(e) => {
@@ -306,11 +332,16 @@ fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
             return 1;
         }
     };
+    debug_log(&format!(
+        "validate-report:producer-case-bytes={}",
+        case_block.len()
+    ));
     if let Err(e) = ensure_validate_report_export_contract(&case_block, spec_ref) {
         eprintln!("ERROR: {e}");
         return 1;
     }
     let errors = validate_report_payload(&payload);
+    debug_log(&format!("validate-report:error-count={}", errors.len()));
     if errors.is_empty() {
         println!("OK: valid conformance report ({})", report_path.display());
         0
@@ -323,15 +354,22 @@ fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
 }
 
 fn run_spec_ref_print(subcommand: &str) -> i32 {
+    debug_log(&format!("spec-ref:lookup subcommand={subcommand}"));
     let Some(spec_ref) = command_spec_ref(subcommand) else {
         eprintln!("ERROR: no registered spec ref for command: {subcommand}");
         return 1;
     };
+    debug_log(&format!("spec-ref:resolved {spec_ref}"));
     println!("{spec_ref}");
     0
 }
 
 fn run_spec_eval_native(root: &Path, forwarded: &[String]) -> i32 {
+    debug_log(&format!(
+        "spec-eval:start cwd={} args={}",
+        root.display(),
+        forwarded.len()
+    ));
     let mut expr_json: Option<String> = None;
     let mut expr_file: Option<String> = None;
     let mut subject_json: Option<String> = None;
@@ -450,6 +488,7 @@ fn run_spec_eval_native(root: &Path, forwarded: &[String]) -> i32 {
         EvalLimits::default(),
     ) {
         Ok(v) => {
+            debug_log("spec-eval:success");
             println!(
                 "{}",
                 serde_json::to_string_pretty(&v).unwrap_or_else(|_| "null".to_string())
@@ -457,6 +496,7 @@ fn run_spec_eval_native(root: &Path, forwarded: &[String]) -> i32 {
             0
         }
         Err(e) => {
+            debug_log(&format!("spec-eval:error {}", e.message));
             eprintln!("ERROR: {}", e.message);
             1
         }
@@ -863,14 +903,33 @@ fn main() {
     debug_log("main:start");
     let args: Vec<String> = env::args().collect();
     debug_log("main:args_collected");
-    if args.len() < 2 {
+    let mut arg_index = 1usize;
+    while arg_index < args.len() {
+        let flag = args[arg_index].as_str();
+        let lvl = match flag {
+            "--verbose" | "-v" => Some(1_u8),
+            "-vv" => Some(2_u8),
+            "-vvv" => Some(3_u8),
+            _ => None,
+        };
+        let Some(level) = lvl else { break };
+        std::env::set_var("SPEC_RUNNER_DEBUG", "1");
+        std::env::set_var("SPEC_RUNNER_DEBUG_LEVEL", level.to_string());
+        arg_index += 1;
+    }
+    debug_log_at(2, &format!("main:debug-level={}", debug_level()));
+    if args.len() <= arg_index {
         eprintln!("ERROR: missing runner adapter subcommand");
         process::exit(2);
     }
 
-    let subcommand = args[1].clone();
-    let forwarded: Vec<String> = args[2..].to_vec();
-    debug_log("main:subcommand_parsed");
+    let subcommand = args[arg_index].clone();
+    let forwarded: Vec<String> = args[(arg_index + 1)..].to_vec();
+    debug_log(&format!(
+        "main:subcommand_parsed subcommand={} forwarded={}",
+        subcommand,
+        forwarded.len()
+    ));
 
     let root = match find_repo_root() {
         Ok(p) => p,
@@ -885,6 +944,10 @@ fn main() {
     let ruff = tool_path(&root, "ruff");
     let mypy = tool_path(&root, "mypy");
     let pytest = tool_path(&root, "pytest");
+    debug_log_at(2, &format!(
+        "main:tool-paths py={} ruff={} mypy={} pytest={}",
+        py, ruff, mypy, pytest
+    ));
 
     let code = match subcommand.as_str() {
         "spec-eval" => run_spec_eval_native(&root, &forwarded),
