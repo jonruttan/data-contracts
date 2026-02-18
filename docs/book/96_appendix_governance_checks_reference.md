@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 241
-- checks_with_cases: 232
+- check_count: 246
+- checks_with_cases: 237
 - checks_without_cases: 9
 
 | check_id | case_count | has_case |
@@ -186,6 +186,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.api_http_parity_contract_sync` | 1 | true |
 | `runtime.api_http_scenario_roundtrip` | 1 | true |
 | `runtime.api_http_verb_suite` | 1 | true |
+| `runtime.assert_block_decision_authority_required` | 1 | true |
 | `runtime.assertions_via_spec_lang` | 1 | true |
 | `runtime.chain_contract_single_location` | 1 | true |
 | `runtime.chain_cycle_forbidden` | 1 | true |
@@ -231,9 +232,13 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.local_ci_parity_python_lane_forbidden` | 1 | true |
 | `runtime.local_prepush_broad_governance_forbidden` | 1 | true |
 | `runtime.make_python_parity_targets_forbidden` | 1 | true |
+| `runtime.meta_json_target_required` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |
+| `runtime.ops_os_capability_required` | 1 | true |
+| `runtime.ops_os_stdlib_surface_sync` | 1 | true |
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |
+| `runtime.policy_evaluate_forbidden` | 1 | true |
 | `runtime.prepush_parity_default_required` | 0 | false |
 | `runtime.prepush_python_parity_not_optional_by_default` | 0 | false |
 | `runtime.prepush_uses_governance_triage_required` | 1 | true |

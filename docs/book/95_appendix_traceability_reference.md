@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 245
-- rules_with_conformance_cases: 50
+- link_count: 249
+- rules_with_conformance_cases: 54
 - rules_with_unit_tests: 245
-- rules_with_implementation_refs: 243
+- rules_with_implementation_refs: 247
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -66,6 +66,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `API_HTTP_TUTORIAL_COVERAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_TUTORIAL_COVERAGE_REQUIRED` | 2 | 0 | 0 | 1 | 1 |
 | `API_HTTP_VERB_SUITE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_VERB_SUITE_REQUIRED` | 1 | 1 | 7 | 1 | 2 |
 | `ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED` | 1 | 1 | 1 | 1 | 7 |
+| `ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED` | 2 | 1 | 1 | 0 | 1 |
 | `ASSERT_COMPILER_SCHEMA_MATRIX_SYNC` | `docs/spec/contract/policy_v1.yaml#ASSERT_COMPILER_SCHEMA_MATRIX_SYNC` | 3 | 1 | 0 | 2 | 3 |
 | `ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED` | 2 | 2 | 1 | 1 | 5 |
 | `ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED` | `docs/spec/contract/policy_v1.yaml#ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED` | 2 | 1 | 2 | 1 | 7 |
@@ -184,6 +185,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | 2 | 1 | 0 | 2 | 3 |
 | `LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | 1 | 1 | 0 | 3 | 3 |
 | `LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | 1 | 2 | 2 | 1 | 1 |
+| `META_JSON_TARGET_REQUIRED` | `docs/spec/contract/policy_v1.yaml#META_JSON_TARGET_REQUIRED` | 1 | 1 | 1 | 0 | 5 |
 | `NAMING_FILENAME_STRICT_SEPARATORS` | `docs/spec/contract/policy_v1.yaml#NAMING_FILENAME_STRICT_SEPARATORS` | 1 | 0 | 0 | 1 | 2 |
 | `NORMALIZATION_CHECK_GATE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#NORMALIZATION_CHECK_GATE_REQUIRED` | 1 | 1 | 0 | 2 | 4 |
 | `NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC` | `docs/spec/contract/policy_v1.yaml#NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC` | 2 | 2 | 0 | 2 | 3 |
@@ -197,11 +199,13 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
 | `OBJECTIVE_SCORECARD_REPORTED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_REPORTED` | 1 | 1 | 0 | 3 | 5 |
 | `OBJECTIVE_TRIPWIRES_ENFORCED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_TRIPWIRES_ENFORCED` | 1 | 1 | 0 | 1 | 3 |
+| `OPS_OS_CAPABILITY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#OPS_OS_CAPABILITY_REQUIRED` | 1 | 1 | 2 | 0 | 2 |
 | `ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED` | 1 | 1 | 0 | 1 | 4 |
 | `ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN` | 1 | 1 | 0 | 1 | 3 |
 | `ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY` | 1 | 0 | 0 | 2 | 2 |
+| `POLICY_EVALUATE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#POLICY_EVALUATE_FORBIDDEN` | 2 | 1 | 1 | 0 | 1 |
 | `PORTABLE_SPEC_CANONICAL_SINGLE_SET` | `docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_CANONICAL_SINGLE_SET` | 3 | 1 | 0 | 2 | 2 |
 | `PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION` | `docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION` | 2 | 1 | 2 | 1 | 1 |
 | `PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY` | `docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY` | 2 | 1 | 0 | 2 | 1 |

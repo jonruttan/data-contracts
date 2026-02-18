@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 245
-- must_count: 226
+- rule_count: 249
+- must_count: 230
 - should_count: 12
 - must_not_count: 7
-- active_count: 245
+- active_count: 249
 - deprecated_count: 0
 - removed_count: 0
 
@@ -69,6 +69,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `API_HTTP_TUTORIAL_COVERAGE_REQUIRED` | `MUST` | `docs` | `docs.book.rest_and_cors_tutorials` | 3 | `active` |
 | `API_HTTP_VERB_SUITE_REQUIRED` | `MUST` | `implementation` | `api.http.request.method` | 3 | `active` |
 | `ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED` | `MUST` | `governance` | `docs.contract.adapter_projection_sync` | 8 | `active` |
+| `ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED` | `MUST` | `governance` | `governance.check.decision_contract` | 3 | `active` |
 | `ASSERT_COMPILER_SCHEMA_MATRIX_SYNC` | `MUST` | `governance` | `assert.tree.compiler_contract_sync` | 4 | `active` |
 | `ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED` | `MUST` | `governance` | `harness.subject_projection.context_profiles` | 6 | `active` |
 | `ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED` | `MUST` | `governance` | `conformance.domain_assertions.library_usage` | 3 | `active` |
@@ -187,6 +188,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |
 | `LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | `MUST` | `schema` | `spec_lang.export.defines.public` | 3 | `active` |
 | `LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | `MUST` | `schema` | `spec_lang.export.shape` | 2 | `active` |
+| `META_JSON_TARGET_REQUIRED` | `MUST` | `runtime` | `assertion.targets.meta_json` | 6 | `active` |
 | `NAMING_FILENAME_STRICT_SEPARATORS` | `MUST` | `governance` | `docs_and_spec_filenames` | 2 | `active` |
 | `NORMALIZATION_CHECK_GATE_REQUIRED` | `MUST` | `governance` | `scripts.runner_adapter` | 3 | `active` |
 | `NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC` | `MUST` | `governance` | `docs.spec.contract_schema_book_wording` | 2 | `active` |
@@ -200,11 +202,13 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `docs.spec.metrics.objective_scorecard` | 2 | `active` |
 | `OBJECTIVE_SCORECARD_REPORTED` | `MUST` | `governance` | `docs.spec.metrics.objective_scorecard` | 3 | `active` |
 | `OBJECTIVE_TRIPWIRES_ENFORCED` | `MUST` | `governance` | `docs.spec.metrics.objective_tripwires` | 2 | `active` |
+| `OPS_OS_CAPABILITY_REQUIRED` | `MUST` | `runtime` | `spec_lang.ops_os` | 2 | `active` |
 | `ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | `MUST` | `governance` | `orchestration.case.capabilities` | 2 | `active` |
 | `ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | `MUST` | `governance` | `orchestration.ops.symbol_grammar` | 3 | `active` |
 | `ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED` | `MUST` | `governance` | `orchestration.tools.registry` | 4 | `active` |
 | `ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN` | `MUST` | `governance` | `orchestration.ops.legacy_symbols` | 2 | `active` |
 | `ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY` | `MUST` | `governance` | `runtime.gate_orchestration_policy` | 2 | `active` |
+| `POLICY_EVALUATE_FORBIDDEN` | `MUST` | `governance` | `governance.check.harness` | 2 | `active` |
 | `PORTABLE_SPEC_CANONICAL_SINGLE_SET` | `MUST` | `conformance` | `fixtures.portable.canonical_set` | 3 | `active` |
 | `PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION` | `SHOULD` | `conformance` | `fixtures.portable.determinism` | 3 | `active` |
 | `PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY` | `MUST` | `conformance` | `fixtures.expect_shape` | 3 | `active` |

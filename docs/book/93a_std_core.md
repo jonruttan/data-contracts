@@ -1244,6 +1244,262 @@ Provide generated semantic reference for `std.core` and special forms.
   - result: Deterministic result per symbol contract.
 
 
+### `ops.os.cwd`
+
+- Signature: `ops.os.cwd/0`
+- Summary: Evaluates `cwd` with arity 0.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=false, both=false
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.os.cwd()`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.os.env_get`
+
+- Signature: `ops.os.env_get/2`
+- Summary: Evaluates `env_get` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=false, both=false
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.os.env_get(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.os.env_has`
+
+- Signature: `ops.os.env_has/1`
+- Summary: Evaluates `env_has` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=false, both=false
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.os.env_has(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.os.exec`
+
+- Signature: `ops.os.exec/2`
+- Summary: Evaluates `exec` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=false, both=false
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.os.exec(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.os.exec_capture`
+
+- Signature: `ops.os.exec_capture/2`
+- Summary: Evaluates `exec_capture` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=false, both=false
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.os.exec_capture(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.os.exit_code`
+
+- Signature: `ops.os.exit_code/0`
+- Summary: Evaluates `exit_code` with arity 0.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=false, both=false
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.os.exit_code()`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.os.pid`
+
+- Signature: `ops.os.pid/0`
+- Summary: Evaluates `pid` with arity 0.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=false, both=false
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.os.pid()`
+  - result: Deterministic result per symbol contract.
+
+
+### `ops.os.sleep_ms`
+
+- Signature: `ops.os.sleep_ms/1`
+- Summary: Evaluates `sleep_ms` with arity 1.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=true, php=false, both=false
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.os.sleep_ms(arg1)`
+  - result: Deterministic result per symbol contract.
+
+
 ### `std.core.subject`
 
 - Signature: `std.core.subject/0`
