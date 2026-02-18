@@ -1,11 +1,11 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-HOOKS-001
+## SRGOV-RUNTIME-HOOKS-005
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-HOOKS-001
-title: harness.when hooks schema must be valid
-purpose: Enforces harness.when shape and hook expression list requirements.
+id: SRGOV-RUNTIME-HOOKS-005
+title: legacy harness.on key is forbidden
+purpose: Enforces hard-cut lifecycle hook key migration to harness.when.
 type: governance.check
 check: runtime.harness_on_hooks_schema_valid
 harness:

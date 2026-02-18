@@ -19,6 +19,27 @@ harness:
         report_name: conformance-purpose
         format: json
         out: .artifacts/conformance-purpose.json
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-001.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-001.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-001.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-001.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -52,6 +73,27 @@ harness:
         report_name: conformance-purpose
         format: md
         out: .artifacts/conformance-purpose-summary.md
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-002.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-002.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-002.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-002.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -85,6 +127,27 @@ harness:
         report_name: spec-portability
         format: json
         out: .artifacts/spec-portability.json
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-003.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-003.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-003.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-003.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -118,6 +181,27 @@ harness:
         report_name: spec-portability
         format: md
         out: .artifacts/spec-portability-summary.md
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-004.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-004.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-004.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-004.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -151,6 +235,27 @@ harness:
         report_name: contract-assertions
         format: json
         out: .artifacts/contract-assertions.json
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-005.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-005.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-005.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-005.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -184,6 +289,27 @@ harness:
         report_name: contract-assertions
         format: md
         out: .artifacts/contract-assertions-summary.md
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-006.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-006.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-006.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-006.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -217,6 +343,27 @@ harness:
         report_name: spec-lang-adoption
         format: json
         out: .artifacts/spec-lang-adoption.json
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-007.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-007.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-007.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-007.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -250,6 +397,27 @@ harness:
         report_name: spec-lang-adoption
         format: md
         out: .artifacts/spec-lang-adoption-summary.md
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-008.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-008.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-008.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-008.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -283,6 +451,27 @@ harness:
         report_name: runner-independence
         format: json
         out: .artifacts/runner-independence.json
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-009.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-009.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-009.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-009.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -316,6 +505,27 @@ harness:
         report_name: runner-independence
         format: md
         out: .artifacts/runner-independence-summary.md
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-010.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-010.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-010.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-010.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -349,6 +559,27 @@ harness:
         report_name: python-dependency
         format: json
         out: .artifacts/python-dependency.json
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-011.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-011.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-011.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-011.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -382,6 +613,27 @@ harness:
         report_name: python-dependency
         format: md
         out: .artifacts/python-dependency-summary.md
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-012.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-012.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-012.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-012.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -415,6 +667,27 @@ harness:
         report_name: docs-operability
         format: json
         out: .artifacts/docs-operability.json
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-013.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-013.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-013.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-013.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -448,6 +721,27 @@ harness:
         report_name: docs-operability
         format: md
         out: .artifacts/docs-operability-summary.md
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-014.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-014.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-014.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-014.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -481,6 +775,27 @@ harness:
         report_name: objective-scorecard
         format: json
         out: .artifacts/objective-scorecard.json
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-015.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-015.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-015.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-015.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -514,6 +829,27 @@ harness:
         report_name: objective-scorecard
         format: md
         out: .artifacts/objective-scorecard-summary.md
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-016.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-016.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-016.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-016.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -547,6 +883,27 @@ harness:
         report_name: spec-lang-stdlib
         format: json
         out: .artifacts/spec-lang-stdlib.json
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-017.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-017.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-017.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-017.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -580,6 +937,27 @@ harness:
         report_name: spec-lang-stdlib
         format: md
         out: .artifacts/spec-lang-stdlib-summary.md
+    on_fail:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-018.fail.json
+        format: json
+        report_name: SRRUST-JOB-REP-018.fail
+    on_complete:
+      helper: helper.report.emit
+      mode: report
+      inputs:
+        out: .artifacts/job-hooks/SRRUST-JOB-REP-018.complete.json
+        format: json
+        report_name: SRRUST-JOB-REP-018.complete
+  when:
+    fail:
+    - ops.job.dispatch:
+      - on_fail
+    complete:
+    - ops.job.dispatch:
+      - on_complete
 contract:
 - id: assert_1
   class: must

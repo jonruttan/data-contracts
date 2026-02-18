@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 265
-- rules_with_conformance_cases: 50
-- rules_with_unit_tests: 265
-- rules_with_implementation_refs: 263
+- link_count: 266
+- rules_with_conformance_cases: 51
+- rules_with_unit_tests: 266
+- rules_with_implementation_refs: 264
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -108,6 +108,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `CONTRACT_ASSERTIONS_METRIC_REPORTED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_METRIC_REPORTED` | 2 | 1 | 0 | 3 | 3 |
 | `CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
+| `CONTRACT_JOB_FAIL_COMPLETE_HOOK_PATTERN_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_JOB_FAIL_COMPLETE_HOOK_PATTERN_REQUIRED` | 1 | 1 | 1 | 1 | 2 |
 | `CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | `docs/spec/contract/policy_v1.yaml#CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | 2 | 1 | 0 | 2 | 2 |
 | `CONTRACT_SPEC_FENCE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_SPEC_FENCE_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `CONTRACT_STEP_ASSERTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_STEP_ASSERTS_REQUIRED` | 1 | 1 | 0 | 1 | 3 |

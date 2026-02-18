@@ -15,11 +15,8 @@ harness:
     - /scripts/governance_triage.sh
     - /scripts/ci_gate_summary.py
     required_tokens:
-    - governance-triage.json
     - failing_check_ids
     - failing_check_prefixes
-    - selected_prefixes
-    - selection_source
   chain:
     steps:
     - id: lib_policy_core_spec

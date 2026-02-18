@@ -523,9 +523,10 @@ contract:
       - '[]'
 ```
 
-`harness.on` lifecycle hooks (v1):
+`harness.when` lifecycle hooks (v1):
 
-- optional `harness.on` mapping on executable cases
+- optional `harness.when` mapping on executable cases
+- legacy `harness.on` is forbidden (hard cut)
 - allowed keys:
   - `must`
   - `can`
@@ -585,12 +586,12 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `contract` | `list` | `false` | `v1` |
 | `expect` | `mapping` | `false` | `v1` |
 | `harness` | `mapping` | `false` | `v1` |
-| `harness.on` | `mapping` | `false` | `v1` |
-| `harness.on.can` | `list` | `false` | `v1` |
-| `harness.on.cannot` | `list` | `false` | `v1` |
-| `harness.on.complete` | `list` | `false` | `v1` |
-| `harness.on.fail` | `list` | `false` | `v1` |
-| `harness.on.must` | `list` | `false` | `v1` |
+| `harness.when` | `mapping` | `false` | `v1` |
+| `harness.when.can` | `list` | `false` | `v1` |
+| `harness.when.cannot` | `list` | `false` | `v1` |
+| `harness.when.complete` | `list` | `false` | `v1` |
+| `harness.when.fail` | `list` | `false` | `v1` |
+| `harness.when.must` | `list` | `false` | `v1` |
 | `id` | `string` | `true` | `v1` |
 | `path` | `string` | `false` | `v1` |
 | `purpose` | `string` | `false` | `v1` |
@@ -628,12 +629,12 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `contract` | `list` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
-| `harness.on` | `mapping` | false | `v1` |
-| `harness.on.can` | `list` | false | `v1` |
-| `harness.on.cannot` | `list` | false | `v1` |
-| `harness.on.complete` | `list` | false | `v1` |
-| `harness.on.fail` | `list` | false | `v1` |
-| `harness.on.must` | `list` | false | `v1` |
+| `harness.when` | `mapping` | false | `v1` |
+| `harness.when.can` | `list` | false | `v1` |
+| `harness.when.cannot` | `list` | false | `v1` |
+| `harness.when.complete` | `list` | false | `v1` |
+| `harness.when.fail` | `list` | false | `v1` |
+| `harness.when.must` | `list` | false | `v1` |
 | `id` | `string` | true | `v1` |
 | `path` | `string` | false | `v1` |
 | `purpose` | `string` | false | `v1` |

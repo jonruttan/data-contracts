@@ -33,27 +33,29 @@ def parse_on_hooks(*, raw_case: Mapping[str, Any]) -> dict[str, list[Any]]:
     if harness is None:
         return {}
     if not isinstance(harness, Mapping):
-        raise ValueError("harness.on.invalid_shape: harness must be a mapping")
-    raw_on = harness.get("on")
-    if raw_on is None:
+        raise ValueError("harness.when.invalid_shape: harness must be a mapping")
+    if "on" in harness:
+        raise ValueError("harness.when.legacy_on_forbidden: harness.on is forbidden; use harness.when")
+    raw_when = harness.get("when")
+    if raw_when is None:
         return {}
-    if not isinstance(raw_on, Mapping):
-        raise ValueError("harness.on.invalid_shape: harness.on must be a mapping")
+    if not isinstance(raw_when, Mapping):
+        raise ValueError("harness.when.invalid_shape: harness.when must be a mapping")
     out: dict[str, list[Any]] = {}
-    for raw_key, raw_list in raw_on.items():
+    for raw_key, raw_list in raw_when.items():
         key = str(raw_key).strip()
         if key not in _HOOK_KEYS:
-            raise ValueError(f"harness.on.unknown_key: {key}")
+            raise ValueError(f"harness.when.unknown_key: {key}")
         if not isinstance(raw_list, list) or not raw_list:
-            raise ValueError(f"harness.on.invalid_shape: harness.on.{key} must be a non-empty list")
+            raise ValueError(f"harness.when.invalid_shape: harness.when.{key} must be a non-empty list")
         compiled: list[Any] = []
         for idx, expr in enumerate(raw_list):
             if not isinstance(expr, Mapping):
-                raise ValueError(f"harness.on.expr_invalid: harness.on.{key}[{idx}] must be mapping expression")
+                raise ValueError(f"harness.when.expr_invalid: harness.when.{key}[{idx}] must be mapping expression")
             try:
-                compiled.append(compile_yaml_expr_to_sexpr(expr, field_path=f"harness.on.{key}[{idx}]"))
+                compiled.append(compile_yaml_expr_to_sexpr(expr, field_path=f"harness.when.{key}[{idx}]"))
             except SpecLangYamlAstError as exc:
-                raise ValueError(f"harness.on.expr_invalid: {exc}") from exc
+                raise ValueError(f"harness.when.expr_invalid: {exc}") from exc
         out[key] = compiled
     return out
 

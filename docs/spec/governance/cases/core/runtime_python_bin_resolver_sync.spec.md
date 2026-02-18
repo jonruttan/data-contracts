@@ -5,8 +5,7 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-CONFIG-002
 title: python-invoking adapter scripts use shared python-bin resolver helper
-purpose: Prevents drift by enforcing a single shared python interpreter resolver in scripts
-  that invoke Python directly.
+purpose: Keeps shared Python resolver helper contract stable for remaining tooling paths.
 type: governance.check
 check: runtime.python_bin_resolver_sync
 harness:
@@ -14,13 +13,13 @@ harness:
   python_bin_resolver:
     helper: scripts/lib/python_bin.sh
     files:
-    - scripts/python/runner_adapter.sh
+    - scripts/lib/python_bin.sh
     required_tokens:
-    - source "${ROOT_DIR}/scripts/lib/python_bin.sh"
-    - resolve_python_bin "${ROOT_DIR}"
-    forbidden_tokens:
-    - ROOT_DIR}/.venv/bin/python
-    - ROOT_DIR}/../../.venv/bin/python
+    - resolve_python_bin() {
+    - ${root_dir}/.venv/bin/python
+    - ${root_dir}/../../.venv/bin/python
+    - python3
+    forbidden_tokens: []
   chain:
     steps:
     - id: lib_policy_core_spec

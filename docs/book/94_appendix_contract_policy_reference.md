@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 265
-- must_count: 241
+- rule_count: 266
+- must_count: 242
 - should_count: 12
 - must_not_count: 12
-- active_count: 265
+- active_count: 266
 - deprecated_count: 0
 - removed_count: 0
 
@@ -111,6 +111,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `CONTRACT_ASSERTIONS_METRIC_REPORTED` | `MUST` | `governance` | `specs.contract_assertions.metric_report` | 2 | `active` |
 | `CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `specs.contract_assertions.metric_non_regression` | 3 | `active` |
 | `CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED` | `MUST` | `runtime` | `contract.job.contract` | 3 | `active` |
+| `CONTRACT_JOB_FAIL_COMPLETE_HOOK_PATTERN_REQUIRED` | `MUST` | `runtime` | `contract.job.harness.when` | 2 | `active` |
 | `CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | `MUST` | `governance` | `docs.spec.contract.coverage` | 2 | `active` |
 | `CONTRACT_SPEC_FENCE_REQUIRED` | `MUST` | `runtime` | `markdown.fence.discovery` | 2 | `active` |
 | `CONTRACT_STEP_ASSERTS_REQUIRED` | `MUST` | `schema` | `contract.step_shape` | 2 | `active` |
@@ -180,11 +181,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `HARNESS_JOBS_METADATA_MAP_REQUIRED` | `MUST` | `runtime` | `contract.job.harness.jobs` | 2 | `active` |
 | `HARNESS_JOB_LEGACY_FORBIDDEN` | `MUST_NOT` | `runtime` | `contract.job.harness.job` | 2 | `active` |
 | `HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | `MUST_NOT` | `implementation` | `harness.execution.workflow` | 2 | `active` |
-| `HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED` | `MUST` | `runtime` | `harness.on.class_hooks` | 2 | `active` |
-| `HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | `MUST` | `runtime` | `harness.on.complete` | 2 | `active` |
-| `HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED` | `MUST` | `runtime` | `harness.on.fail` | 2 | `active` |
-| `HARNESS_ON_HOOKS_SCHEMA_VALID` | `MUST` | `runtime` | `harness.on` | 3 | `active` |
-| `HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED` | `MUST` | `runtime` | `harness.on` | 2 | `active` |
+| `HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED` | `MUST` | `runtime` | `harness.when.class_hooks` | 2 | `active` |
+| `HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | `MUST` | `runtime` | `harness.when.complete` | 2 | `active` |
+| `HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED` | `MUST` | `runtime` | `harness.when.fail` | 2 | `active` |
+| `HARNESS_ON_HOOKS_SCHEMA_VALID` | `MUST` | `runtime` | `harness.when` | 3 | `active` |
+| `HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED` | `MUST` | `runtime` | `harness.when` | 2 | `active` |
 | `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `MUST` | `implementation` | `harness.assertion.targets` | 2 | `active` |
 | `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `MUST` | `schema` | `schema.registry.v1.types` | 3 | `active` |
 | `HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | `MUST` | `implementation` | `harness.execution.workflow` | 4 | `active` |

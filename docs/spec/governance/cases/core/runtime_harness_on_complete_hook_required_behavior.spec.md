@@ -4,7 +4,7 @@
 
 ```yaml contract-spec
 id: SRGOV-RUNTIME-HOOKS-004
-title: harness.on complete hook must run after successful contract
+title: harness.when complete hook must run after successful contract
 purpose: Ensures complete hook dispatch is explicit and ordered after clause pass handling.
 type: governance.check
 check: runtime.harness_on_complete_hook_required_behavior

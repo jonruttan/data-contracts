@@ -3781,10 +3781,10 @@ rules:
 - id: HARNESS_ON_HOOKS_SCHEMA_VALID
   introduced_in: v1
   scope: runtime
-  applies_to: harness.on
+  applies_to: harness.when
   norm: MUST
   requirement: harness_on_hook_mapping_shape_valid
-  description: harness.on must use only allowed hook keys with non-empty expression lists.
+  description: harness.when must use only allowed hook keys with non-empty expression lists, and legacy harness.on is forbidden.
   rationale: Provides deterministic hook contract surface across harness types.
   risk_if_violated: Hook behavior diverges and invalid hook config is silently ignored.
   references:
@@ -3794,7 +3794,7 @@ rules:
 - id: HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED
   introduced_in: v1
   scope: runtime
-  applies_to: harness.on.class_hooks
+  applies_to: harness.when.class_hooks
   norm: MUST
   requirement: class_hooks_run_after_successful_clause
   description: must/can/cannot hooks run after their successful clause evaluation and before complete.
@@ -3806,7 +3806,7 @@ rules:
 - id: HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED
   introduced_in: v1
   scope: runtime
-  applies_to: harness.on.fail
+  applies_to: harness.when.fail
   norm: MUST
   requirement: fail_hook_runs_once_on_first_failure
   description: fail hook executes once on first clause or class-hook failure.
@@ -3818,7 +3818,7 @@ rules:
 - id: HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED
   introduced_in: v1
   scope: runtime
-  applies_to: harness.on.complete
+  applies_to: harness.when.complete
   norm: MUST
   requirement: complete_hook_runs_after_all_class_hooks
   description: complete hook runs only after all clauses and class hooks have succeeded.
@@ -3830,7 +3830,7 @@ rules:
 - id: HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED
   introduced_in: v1
   scope: runtime
-  applies_to: harness.on
+  applies_to: harness.when
   norm: MUST
   requirement: hook_failures_abort_case
   description: Hook evaluation failures are runtime-fatal and must abort case execution.
@@ -3839,3 +3839,15 @@ rules:
   references:
   - docs/spec/contract/12_runner_interface.md
   - spec_runner/components/assertion_engine.py
+- id: CONTRACT_JOB_FAIL_COMPLETE_HOOK_PATTERN_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: contract.job.harness.when
+  norm: MUST
+  requirement: rust_contract_job_specs_must_define_fail_and_complete_hooks
+  description: Rust contract.job specs must define harness.when.fail and harness.when.complete dispatching to on_fail and on_complete jobs.
+  rationale: Standardizes lifecycle diagnostics for migrated Rust script jobs without changing contract decision criteria.
+  risk_if_violated: Job hook behavior drifts per case and operational diagnostics become inconsistent.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/governance/cases/core/runtime_contract_job_hooks_refactor_applied.spec.md

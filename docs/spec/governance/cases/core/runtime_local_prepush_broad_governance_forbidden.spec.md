@@ -13,8 +13,8 @@ harness:
   local_prepush_broad_forbidden:
     path: /scripts/local_ci_parity.sh
     required_tokens:
-    - SPEC_GOV_TRIAGE_REQUIRE_BROAD=0
-    - governance-triage
+    - skip broad governance (set SPEC_PREPUSH_REQUIRE_BROAD=1 to enable)
+    - SPEC_PREPUSH_REQUIRE_BROAD=1
     forbidden_tokens:
     - run_step governance "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" governance
   chain:

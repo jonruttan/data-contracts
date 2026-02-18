@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 265
-- checks_with_cases: 256
+- check_count: 266
+- checks_with_cases: 257
 - checks_without_cases: 9
 
 | check_id | case_count | has_case |
@@ -215,6 +215,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.cigate_uses_governance_triage_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
 | `runtime.contract_job_dispatch_in_contract_required` | 1 | true |
+| `runtime.contract_job_hooks_refactor_applied` | 1 | true |
 | `runtime.contract_spec_fence_required` | 1 | true |
 | `runtime.contract_step_asserts_required` | 1 | true |
 | `runtime.domain_library_preferred_for_fs_ops` | 1 | true |
@@ -235,7 +236,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.harness_jobs_metadata_map_required` | 1 | true |
 | `runtime.harness_on_complete_hook_required_behavior` | 1 | true |
 | `runtime.harness_on_fail_hook_required_behavior` | 1 | true |
-| `runtime.harness_on_hooks_schema_valid` | 1 | true |
+| `runtime.harness_on_hooks_schema_valid` | 2 | true |
 | `runtime.harness_on_ordering_contract_required` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.legacy_assert_block_forbidden` | 1 | true |
