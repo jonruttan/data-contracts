@@ -1447,36 +1447,22 @@ rules:
   references:
   - scripts/local_ci_parity.sh
   - docs/spec/governance/cases/core/runtime_local_prepush_broad_governance_forbidden.spec.md
-- id: RUNTIME_CI_GATE_BROAD_GOVERNANCE_REQUIRED
+- id: RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.ci_gate.governance_broad_required
+  applies_to: runtime.ci_gate.ownership_contract
   norm: MUST
-  requirement: ci_gate_summary_must_execute_mandatory_broad_governance
-  description: 'CI gate summary flow must execute mandatory broad governance.
+  requirement: ci_gate_must_own_critical_and_ci_gate_summary_must_remain_broad_only
+  description: 'CI gate flow must keep critical execution in ci_gate.sh and keep ci-gate-summary broad-only with no critical toggles.
 
     '
-  rationale: Preserves full safety coverage in merge gating while retaining fast failure-ID feedback.
-  risk_if_violated: CI may miss broad regressions or fail to provide fast targeted context.
+  rationale: Removes split ownership and keeps CI-gate behavior deterministic and fast.
+  risk_if_violated: Duplicate critical execution and ownership drift can reintroduce latency and inconsistency.
   references:
+  - scripts/ci_gate.sh
   - scripts/ci_gate_summary.py
   - scripts/rust/spec_runner_cli/src/main.rs
-  - docs/spec/governance/cases/core/runtime_ci_gate_broad_governance_required.spec.md
-- id: RUNTIME_CI_GATE_SUMMARY_DEFAULT_SKIP_CRITICAL_REQUIRED
-  introduced_in: v1
-  scope: governance
-  applies_to: runtime.ci_gate.summary_default_critical
-  norm: MUST
-  requirement: ci_gate_summary_must_not_define_embedded_critical_step_surface
-  description: 'ci-gate-summary must not define governance_critical steps or critical include/skip toggles.
-
-    '
-  rationale: Prevents duplicate critical runs and keeps critical execution ownership in ci_gate.sh.
-  risk_if_violated: CI gate and local runs incur avoidable duplicate critical latency and split ownership.
-  references:
-  - scripts/ci_gate_summary.py
-  - scripts/rust/spec_runner_cli/src/main.rs
-  - docs/spec/governance/cases/core/runtime_ci_gate_summary_default_skip_critical_required.spec.md
+  - docs/spec/governance/cases/core/runtime_ci_gate_ownership_contract_required.spec.md
 - id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
   introduced_in: v1
   scope: governance

@@ -7288,33 +7288,79 @@ def _scan_runtime_local_prepush_broad_governance_forbidden(
     return violations
 
 
-def _scan_runtime_ci_gate_broad_governance_required(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_runtime_ci_gate_ownership_contract_required(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
-    cfg = h.get("ci_gate_broad_required")
+    cfg = h.get("ci_gate_ownership_contract")
     if not isinstance(cfg, dict):
         return [
-            "runtime.ci_gate_broad_governance_required requires harness.ci_gate_broad_required mapping in governance spec"
+            "runtime.ci_gate_ownership_contract_required requires harness.ci_gate_ownership_contract mapping in governance spec"
         ]
-    files = cfg.get("files", [])
-    required_tokens = cfg.get("required_tokens", [])
+
+    gate_path = str(cfg.get("gate_path", "")).strip()
+    gate_required_tokens = cfg.get("gate_required_tokens", [])
+    gate_ordered_tokens = cfg.get("gate_ordered_tokens", [])
+    summary_files = cfg.get("summary_files", [])
+    summary_required_tokens = cfg.get("summary_required_tokens", [])
+    summary_forbidden_tokens = cfg.get("summary_forbidden_tokens", [])
+
     if (
-        not isinstance(files, list)
-        or not files
-        or any(not isinstance(x, str) or not x.strip() for x in files)
+        not gate_path
+        or not isinstance(gate_required_tokens, list)
+        or not gate_required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in gate_required_tokens)
+        or not isinstance(gate_ordered_tokens, list)
+        or len(gate_ordered_tokens) < 2
+        or any(not isinstance(x, str) or not x.strip() for x in gate_ordered_tokens)
     ):
-        return ["harness.ci_gate_broad_required.files must be a non-empty list of non-empty strings"]
-    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
-        return ["harness.ci_gate_broad_required.required_tokens must be a list of non-empty strings"]
-    for rel in files:
+        return [
+            "harness.ci_gate_ownership_contract gate_path/gate_required_tokens/gate_ordered_tokens are required with non-empty string tokens"
+        ]
+    if (
+        not isinstance(summary_files, list)
+        or not summary_files
+        or any(not isinstance(x, str) or not x.strip() for x in summary_files)
+        or not isinstance(summary_required_tokens, list)
+        or not summary_required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in summary_required_tokens)
+        or not isinstance(summary_forbidden_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in summary_forbidden_tokens)
+    ):
+        return [
+            "harness.ci_gate_ownership_contract summary_files/summary_required_tokens/summary_forbidden_tokens must be valid token lists"
+        ]
+
+    gate_file = _join_contract_path(root, gate_path)
+    if not gate_file.exists():
+        violations.append(f"{gate_path}:1: missing ci gate script for ownership-contract check")
+    else:
+        gate_text = gate_file.read_text(encoding="utf-8")
+        for tok in gate_required_tokens:
+            if tok not in gate_text:
+                violations.append(f"{gate_path}:1: missing required ci gate ownership token {tok}")
+        last_idx = -1
+        for tok in gate_ordered_tokens:
+            idx = gate_text.find(tok)
+            if idx < 0:
+                violations.append(f"{gate_path}:1: missing ordered ci gate ownership token {tok}")
+                break
+            if idx < last_idx:
+                violations.append(f"{gate_path}:1: ordered token violation for ci gate ownership sequence")
+                break
+            last_idx = idx
+
+    for rel in summary_files:
         p = _join_contract_path(root, rel)
         if not p.exists():
-            violations.append(f"{rel}:1: missing CI gate file for broad-governance check")
+            violations.append(f"{rel}:1: missing ci-gate-summary file for ownership-contract check")
             continue
         text = p.read_text(encoding="utf-8")
-        for tok in required_tokens:
+        for tok in summary_required_tokens:
             if tok not in text:
-                violations.append(f"{rel}:1: missing CI gate broad-governance token {tok}")
+                violations.append(f"{rel}:1: missing required ci-gate-summary ownership token {tok}")
+        for tok in summary_forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden ci-gate-summary ownership token present {tok}")
     return violations
 
 
@@ -7491,97 +7537,6 @@ def _scan_runtime_ci_gate_default_report_commands_forbidden(
         for tok in forbidden_tokens:
             if tok in text:
                 violations.append(f"{rel}:1: forbidden default report-command token present {tok}")
-    return violations
-
-
-def _scan_runtime_ci_gate_single_pass_critical_required(
-    root: Path, *, harness: dict | None = None
-) -> list[str]:
-    violations: list[str] = []
-    h = harness or {}
-    cfg = h.get("ci_gate_single_pass_critical")
-    if not isinstance(cfg, dict):
-        return [
-            "runtime.ci_gate_single_pass_critical_required requires harness.ci_gate_single_pass_critical mapping in governance spec"
-        ]
-    path = str(cfg.get("path", "")).strip()
-    required_tokens = cfg.get("required_tokens", [])
-    ordered_tokens = cfg.get("ordered_tokens", [])
-    if not path:
-        return ["harness.ci_gate_single_pass_critical.path must be a non-empty string"]
-    if (
-        not isinstance(required_tokens, list)
-        or not required_tokens
-        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
-    ):
-        return ["harness.ci_gate_single_pass_critical.required_tokens must be a non-empty list of non-empty strings"]
-    if (
-        not isinstance(ordered_tokens, list)
-        or len(ordered_tokens) < 2
-        or any(not isinstance(x, str) or not x.strip() for x in ordered_tokens)
-    ):
-        return ["harness.ci_gate_single_pass_critical.ordered_tokens must be a list of at least two non-empty strings"]
-    p = _join_contract_path(root, path)
-    if not p.exists():
-        return [f"{path}:1: missing ci gate script for single-pass critical check"]
-    text = p.read_text(encoding="utf-8")
-    for tok in required_tokens:
-        if tok not in text:
-            violations.append(f"{path}:1: missing required single-pass token {tok}")
-    last_idx = -1
-    for tok in ordered_tokens:
-        idx = text.find(tok)
-        if idx < 0:
-            violations.append(f"{path}:1: missing ordered single-pass token {tok}")
-            break
-        if idx < last_idx:
-            violations.append(f"{path}:1: ordered token violation for single-pass critical sequence")
-            break
-        last_idx = idx
-    return violations
-
-
-def _scan_runtime_ci_gate_summary_default_skip_critical_required(
-    root: Path, *, harness: dict | None = None
-) -> list[str]:
-    violations: list[str] = []
-    h = harness or {}
-    cfg = h.get("ci_gate_summary_default_skip_critical")
-    if not isinstance(cfg, dict):
-        return [
-            "runtime.ci_gate_summary_default_skip_critical_required requires harness.ci_gate_summary_default_skip_critical mapping in governance spec"
-        ]
-    files = cfg.get("files", [])
-    required_tokens = cfg.get("required_tokens", [])
-    forbidden_tokens = cfg.get("forbidden_tokens", [])
-    if (
-        not isinstance(files, list)
-        or not files
-        or any(not isinstance(x, str) or not x.strip() for x in files)
-    ):
-        return ["harness.ci_gate_summary_default_skip_critical.files must be a non-empty list of non-empty strings"]
-    if (
-        not isinstance(required_tokens, list)
-        or not required_tokens
-        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
-    ):
-        return [
-            "harness.ci_gate_summary_default_skip_critical.required_tokens must be a non-empty list of non-empty strings"
-        ]
-    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
-        return ["harness.ci_gate_summary_default_skip_critical.forbidden_tokens must be a list of non-empty strings"]
-    for rel in files:
-        p = _join_contract_path(root, rel)
-        if not p.exists():
-            violations.append(f"{rel}:1: missing file for ci-gate-summary default skip-critical check")
-            continue
-        text = p.read_text(encoding="utf-8")
-        for tok in required_tokens:
-            if tok not in text:
-                violations.append(f"{rel}:1: missing required default skip-critical token {tok}")
-        for tok in forbidden_tokens:
-            if tok in text:
-                violations.append(f"{rel}:1: forbidden default skip-critical token present {tok}")
     return violations
 
 
@@ -8999,15 +8954,13 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.triage_stall_fallback_required": _scan_runtime_triage_stall_fallback_required,
     "runtime.governance_triage_targeted_first_required": _scan_runtime_governance_triage_targeted_first_required,
     "runtime.local_prepush_broad_governance_forbidden": _scan_runtime_local_prepush_broad_governance_forbidden,
-    "runtime.ci_gate_broad_governance_required": _scan_runtime_ci_gate_broad_governance_required,
+    "runtime.ci_gate_ownership_contract_required": _scan_runtime_ci_gate_ownership_contract_required,
     "runtime.governance_prefix_selection_from_changed_paths": _scan_runtime_governance_prefix_selection_from_changed_paths,
     "runtime.governance_triage_artifact_contains_selection_metadata": _scan_runtime_governance_triage_artifact_contains_selection_metadata,
     "runtime.ci_artifact_upload_paths_valid": _scan_runtime_ci_artifact_upload_paths_valid,
     "runtime.ci_workflow_critical_gate_required": _scan_runtime_ci_workflow_critical_gate_required,
     "runtime.ci_gate_default_no_python_governance_required": _scan_runtime_ci_gate_default_no_python_governance_required,
     "runtime.ci_gate_default_report_commands_forbidden": _scan_runtime_ci_gate_default_report_commands_forbidden,
-    "runtime.ci_gate_single_pass_critical_required": _scan_runtime_ci_gate_single_pass_critical_required,
-    "runtime.ci_gate_summary_default_skip_critical_required": _scan_runtime_ci_gate_summary_default_skip_critical_required,
     "runtime.public_runner_entrypoint_single": _scan_runtime_public_runner_entrypoint_single,
     "runtime.public_runner_default_rust": _scan_runtime_public_runner_default_rust,
     "runtime.python_lane_explicit_opt_in": _scan_runtime_python_lane_explicit_opt_in,

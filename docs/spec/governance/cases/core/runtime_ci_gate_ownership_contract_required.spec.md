@@ -1,23 +1,32 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-018
+## SRGOV-RUNTIME-TRIAGE-019
 
 ```yaml spec-test
-id: SRGOV-RUNTIME-TRIAGE-018
-title: ci gate summary skips critical by default unless explicitly included
-purpose: Ensures ci-gate-summary has no embedded critical step surface and never accepts critical
-  include/skip toggles.
+id: SRGOV-RUNTIME-TRIAGE-019
+title: ci gate ownership contract is single-source and broad-only in summary
+purpose: Ensures ci_gate.sh owns critical execution ordering and ci-gate-summary owns broad
+  governance only.
 type: governance.check
-check: runtime.ci_gate_summary_default_skip_critical_required
+check: runtime.ci_gate_ownership_contract_required
 harness:
   root: .
-  ci_gate_summary_default_skip_critical:
-    files:
+  ci_gate_ownership_contract:
+    gate_path: /scripts/ci_gate.sh
+    gate_required_tokens:
+    - critical-gate
+    - ci-gate-summary
+    gate_ordered_tokens:
+    - critical-gate
+    - ci-gate-summary
+    summary_files:
     - /scripts/ci_gate_summary.py
     - /scripts/rust/spec_runner_cli/src/main.rs
-    required_tokens:
+    summary_required_tokens:
     - governance_broad
-    forbidden_tokens:
+    - triage_phase
+    - broad_required
+    summary_forbidden_tokens:
     - governance_critical
     - SPEC_CI_GATE_INCLUDE_CRITICAL
     - SPEC_CI_GATE_SKIP_CRITICAL

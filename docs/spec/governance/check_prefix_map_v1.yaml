@@ -11,7 +11,7 @@ rules:
   SRGOV-RUNTIME-TRIAGE-007: runtime.triage_stall_fallback_required
   SRGOV-RUNTIME-TRIAGE-008: runtime.governance_triage_targeted_first_required
   SRGOV-RUNTIME-TRIAGE-009: runtime.local_prepush_broad_governance_forbidden
-  SRGOV-RUNTIME-TRIAGE-010: runtime.ci_gate_broad_governance_required
+  SRGOV-RUNTIME-TRIAGE-019: runtime.ci_gate_ownership_contract_required
   SRGOV-RUNTIME-TRIAGE-011: runtime.governance_prefix_selection_from_changed_paths
   SRGOV-RUNTIME-TRIAGE-012: runtime.governance_triage_artifact_contains_selection_metadata
   SRGOV-RUNTIME-TRIAGE-013: runtime.ci_artifact_upload_paths_valid
