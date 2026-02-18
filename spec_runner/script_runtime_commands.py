@@ -37,7 +37,7 @@ def compare_conformance_parity_main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument("--cases", default="docs/spec/conformance/cases")
     ap.add_argument("--php-runner", default="scripts/php/conformance_runner.php")
-    ap.add_argument("--python-runner", default="scripts/python/conformance_runner.py")
+    ap.add_argument("--python-runner", default="spec_runner.python_conformance_runner")
     ap.add_argument("--out", default="")
     ap.add_argument("--case-formats", default="md")
     ap.add_argument("--php-timeout-seconds", type=int, default=30)
@@ -65,7 +65,7 @@ def compare_conformance_parity_main(argv: list[str] | None = None) -> int:
         try:
             python_payload = run_python_report(
                 Path(ns.cases),
-                Path(ns.python_runner),
+                str(ns.python_runner),
                 case_formats=case_formats,
                 timeout_seconds=int(ns.python_timeout_seconds),
             )
@@ -93,7 +93,7 @@ def compare_conformance_parity_main(argv: list[str] | None = None) -> int:
         cfg = ParityConfig(
             cases_dir=Path(ns.cases),
             php_runner=Path(ns.php_runner),
-            python_runner=Path(ns.python_runner),
+            python_runner=str(ns.python_runner),
             case_formats=case_formats,
             python_timeout_seconds=int(ns.python_timeout_seconds),
             php_timeout_seconds=int(ns.php_timeout_seconds),

@@ -22,7 +22,7 @@ from spec_runner.conformance import (
 class ParityConfig:
     cases_dir: Path
     php_runner: Path
-    python_runner: Path = Path("scripts/python/conformance_runner.py")
+    python_runner: str = "spec_runner.python_conformance_runner"
     case_formats: set[str] = field(default_factory=lambda: {"md"})
     python_timeout_seconds: int = 30
     php_timeout_seconds: int = 30
@@ -138,18 +138,27 @@ def _shared_capability_ids(
 
 def run_python_report(
     cases_dir: Path,
-    python_runner: Path,
+    python_runner: str,
     *,
     case_formats: set[str] | None = None,
     timeout_seconds: int = 30,
 ) -> dict[str, Any]:
     with TemporaryDirectory(prefix="spec-runner-parity-") as td:
         out_path = Path(td) / "python-conformance-report.json"
+        runner_raw = str(python_runner).strip()
+        if not runner_raw:
+            raise RuntimeError("python conformance runner is required")
+        runner_path = Path(runner_raw)
+        if runner_raw.endswith(".py") or runner_path.exists():
+            cmd = [sys.executable, runner_raw]
+            runner_desc = f"script={runner_raw}"
+        else:
+            cmd = [sys.executable, "-m", runner_raw]
+            runner_desc = f"module={runner_raw}"
         try:
             cp = subprocess.run(
-                [
-                    sys.executable,
-                    str(python_runner),
+                cmd
+                + [
                     "--cases",
                     str(cases_dir),
                     "--case-formats",
@@ -165,7 +174,7 @@ def run_python_report(
         except subprocess.TimeoutExpired as e:
             raise RuntimeError(
                 f"python conformance runner timed out after {timeout_seconds}s "
-                f"(runner={python_runner}, cases={cases_dir})"
+                f"({runner_desc}, cases={cases_dir})"
             ) from e
         if cp.returncode not in {0, 1}:
             stderr = cp.stderr.strip()

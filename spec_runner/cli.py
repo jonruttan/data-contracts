@@ -90,8 +90,8 @@ def compare_parity_main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--python-runner",
-        default="scripts/python/conformance_runner.py",
-        help="Path to Python conformance runner script",
+        default="spec_runner.python_conformance_runner",
+        help="Python conformance runner module (default) or script path",
     )
     ap.add_argument(
         "--out",
@@ -136,7 +136,7 @@ def compare_parity_main(argv: list[str] | None = None) -> int:
     cfg = ParityConfig(
         cases_dir=Path(ns.cases),
         php_runner=Path(ns.php_runner),
-        python_runner=Path(ns.python_runner),
+        python_runner=str(ns.python_runner),
         case_formats=case_formats,
         python_timeout_seconds=int(ns.python_timeout_seconds),
         php_timeout_seconds=int(ns.php_timeout_seconds),
