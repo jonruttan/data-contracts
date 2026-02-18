@@ -5,7 +5,7 @@
 Enable governance checks to run decision logic in spec-lang by separating:
 
 1. deterministic repository-data extraction (adapter/substrate), and
-2. pure expression evaluation (`evaluate`).
+2. assertion-block expression evaluation (`evaluate`).
 
 ## Model
 
@@ -22,14 +22,14 @@ Subject payload examples:
 
 - Subject extraction MUST be deterministic for the same repository state.
 - Subject extraction MUST avoid network/ambient time/random dependencies.
-- Spec-lang expressions remain pure and side-effect free.
+- Governance decision contracts execute through assertion evaluation.
 
 ## Migration Policy
 
 When migrating a governance check:
 
 - keep extraction in adapter code
-- move pass/fail decision into spec-lang `policy_evaluate`
+- move pass/fail decision into `assert` block `evaluate` checks
 - preserve error category and stable message expectations
 - keep behavior parity with previous scanner logic
 - avoid per-check policy verdict branching text in extractor functions
@@ -37,16 +37,18 @@ When migrating a governance check:
 Naming rule:
 
 - Assertion trees use `evaluate`.
-- Governance/orchestration policy fields use `policy_evaluate`.
+- Governance/orchestration policy fields `policy_evaluate` are forbidden.
 
 Hard requirement:
 
-- Governance decision checks MUST declare and evaluate top-level
-  `harness.policy_evaluate`.
+- Governance decision checks MUST encode contractual obligations in `assert`.
+- `harness.policy_evaluate` and
+  `harness.orchestration_policy.policy_evaluate` are forbidden.
 - Extractor outputs and central policy evaluation contract are defined in:
   `docs/spec/contract/18_governance_subject_extractors.md`.
 - Governance assertion trees SHOULD validate structured result targets
-  (`violation_count`, `summary_json`) rather than relying solely on PASS text.
+  (`violation_count`, `summary_json`, `meta_json`) rather than relying solely
+  on PASS text.
 
 ## Initial Migration Scope
 

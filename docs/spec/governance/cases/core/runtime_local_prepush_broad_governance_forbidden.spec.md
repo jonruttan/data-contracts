@@ -17,10 +17,6 @@ harness:
     - governance-triage
     forbidden_tokens:
     - run_step governance "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" governance
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

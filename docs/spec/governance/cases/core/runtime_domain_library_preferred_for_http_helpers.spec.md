@@ -9,10 +9,6 @@ type: governance.check
 check: runtime.domain_library_preferred_for_http_helpers
 harness:
   root: .
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

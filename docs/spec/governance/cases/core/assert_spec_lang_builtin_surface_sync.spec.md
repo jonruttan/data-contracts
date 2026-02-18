@@ -57,10 +57,6 @@ harness:
     - std.type.is_string
     - std.type.is_list
     - std.type.is_dict
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

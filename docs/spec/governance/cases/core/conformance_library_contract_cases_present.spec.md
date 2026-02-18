@@ -17,10 +17,6 @@ harness:
     - SRCONF-LIB-CONTRACT-001
     - SRCONF-LIB-CONTRACT-002
     - SRCONF-LIB-CONTRACT-003
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

@@ -9,9 +9,6 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 
-from spec_runner.doc_parser import iter_spec_doc_tests
-from spec_runner.governance_engine import normalize_policy_evaluate
-from spec_runner.spec_lang import SpecLangLimits, eval_predicate
 
 
 def _env_bool(name: str, default: bool) -> bool:
@@ -301,33 +298,8 @@ def _collect_unit_test_opt_out(root: Path) -> dict[str, int]:
     }
 
 
-def _load_gate_policy_expr(policy_case: Path) -> list[object]:
-    parent = policy_case.parent
-    pattern = policy_case.name
-    for spec in iter_spec_doc_tests(parent, file_pattern=pattern):
-        if spec.doc_path.resolve() != policy_case.resolve():
-            continue
-        if str(spec.test.get("check", "")).strip() != "runtime.orchestration_policy_via_spec_lang":
-            continue
-        harness = spec.test.get("harness")
-        if not isinstance(harness, dict):
-            continue
-        orch = harness.get("orchestration_policy")
-        if not isinstance(orch, dict):
-            continue
-        expr = orch.get("policy_evaluate")
-        if isinstance(expr, list) and expr:
-            return normalize_policy_evaluate(
-                expr,
-                field="harness.orchestration_policy.policy_evaluate",
-            )
-    raise ValueError(
-        f"missing harness.orchestration_policy.policy_evaluate in {policy_case}"
-    )
-
-
-def _evaluate_gate_policy(*, rows: list[dict[str, object]], policy_evaluate: list[object]) -> bool:
-    return eval_predicate(policy_evaluate, subject=rows, limits=SpecLangLimits())
+def _evaluate_gate_policy(*, rows: list[dict[str, object]]) -> bool:
+    return all(str(row.get("status", "")) == "pass" for row in rows)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -344,11 +316,6 @@ def main(argv: list[str] | None = None) -> int:
         "--runner-impl",
         default=os.environ.get("SPEC_RUNNER_IMPL", "rust"),
         help="Runner implementation mode passed to runner adapter (default: rust).",
-    )
-    ap.add_argument(
-        "--policy-case",
-        default="docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md",
-        help="Governance spec case containing orchestration policy_evaluate policy.",
     )
     ap.add_argument(
         "--trace-out",
@@ -375,8 +342,6 @@ def main(argv: list[str] | None = None) -> int:
 
     out_path = Path(str(ns.out))
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    policy_case = Path(str(ns.policy_case))
-    policy_evaluate = _load_gate_policy_expr(policy_case)
     fail_fast_env_default = _env_bool("SPEC_RUNNER_FAIL_FAST", True)
     fail_fast_enabled = not bool(ns.continue_on_fail)
     if ns.fail_fast:
@@ -391,7 +356,7 @@ def main(argv: list[str] | None = None) -> int:
         _default_steps(str(ns.runner_bin), str(ns.runner_impl)),
         fail_fast=fail_fast_enabled,
     )
-    verdict = _evaluate_gate_policy(rows=steps, policy_evaluate=policy_evaluate)
+    verdict = _evaluate_gate_policy(rows=steps)
     first_failure = next(
         (
             int(step["exit_code"])
@@ -408,8 +373,8 @@ def main(argv: list[str] | None = None) -> int:
         "version": 1,
         "status": "pass" if verdict else "fail",
         "policy_verdict": "pass" if verdict else "fail",
-        "policy_case": str(policy_case),
-        "policy_expr": policy_evaluate,
+        "policy_case": None,
+        "policy_expr": None,
         "started_at": started,
         "finished_at": finished,
         "total_duration_ms": total_duration_ms,

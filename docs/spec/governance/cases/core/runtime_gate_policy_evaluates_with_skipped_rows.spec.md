@@ -16,13 +16,9 @@ harness:
     - /scripts/ci_gate_summary.py
     required_tokens:
     - _evaluate_gate_policy
-    - policy_evaluate
+    - all(str(row.get("status", "")) == "pass"
     - status
     - pass
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

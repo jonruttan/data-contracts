@@ -14,10 +14,6 @@ harness:
     - docs/book/05_howto.md
     - docs/book/07_spec_lang_reference.md
     - docs/spec/contract/04_harness.md
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

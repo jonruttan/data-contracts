@@ -7,8 +7,10 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/libraries/domain/http_core.spec.md`
 - `/docs/spec/libraries/domain/conformance_core.spec.md`
 - `/docs/spec/libraries/domain/fs_core.spec.md`
+- `/docs/spec/libraries/domain/meta_core.spec.md`
 - `/docs/spec/libraries/domain/make_core.spec.md`
 - `/docs/spec/libraries/domain/markdown_core.spec.md`
+- `/docs/spec/libraries/domain/os_core.spec.md`
 - `/docs/spec/libraries/domain/path_core.spec.md`
 - `/docs/spec/libraries/domain/php_core.spec.md`
 - `/docs/spec/libraries/domain/python_core.spec.md`
@@ -54,6 +56,8 @@ Canonical domain index for executable specs in this subtree.
 - `domain.fs.json_has_path_text` (/docs/spec/libraries/domain/fs_core.spec.md)
 - `domain.fs.json_path_eq_text` (/docs/spec/libraries/domain/fs_core.spec.md)
 - `domain.fs.sort_spec_files` (/docs/spec/libraries/domain/fs_core.spec.md)
+- `domain.meta.case_id_eq` (/docs/spec/libraries/domain/meta_core.spec.md)
+- `domain.meta.has_artifact_target` (/docs/spec/libraries/domain/meta_core.spec.md)
 - `domain.markdown.code_fence_language_exists` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `domain.markdown.has_broken_links` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `domain.markdown.has_heading` (/docs/spec/libraries/domain/markdown_core.spec.md)
@@ -67,6 +71,9 @@ Canonical domain index for executable specs in this subtree.
 - `domain.markdown.token_present` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `domain.markdown.tokens_all_present` (/docs/spec/libraries/domain/markdown_core.spec.md)
 - `make.has_target` (/docs/spec/libraries/domain/make_core.spec.md)
+- `domain.os.env_has` (/docs/spec/libraries/domain/os_core.spec.md)
+- `domain.os.exec_capture_code` (/docs/spec/libraries/domain/os_core.spec.md)
+- `domain.os.exec_ok` (/docs/spec/libraries/domain/os_core.spec.md)
 - `domain.file.has_ext` (/docs/spec/libraries/domain/path_core.spec.md)
 - `domain.file.is_existing_dir` (/docs/spec/libraries/domain/path_core.spec.md)
 - `domain.file.is_existing_file` (/docs/spec/libraries/domain/path_core.spec.md)

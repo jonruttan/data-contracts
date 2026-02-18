@@ -23,10 +23,6 @@ harness:
     - unsupported runner adapter subcommand
     - rust runner adapter subcommand not yet implemented
     timeout_seconds: 180
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

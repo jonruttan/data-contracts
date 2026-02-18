@@ -3592,3 +3592,56 @@ rules:
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
   - docs/spec/governance/cases/core/runtime_gate_policy_evaluates_with_skipped_rows.spec.md
+- id: ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.check.decision_contract
+  norm: MUST
+  requirement: governance_decision_obligations_must_be_assert_block_evaluate_checks
+  description: Governance decision obligations must be encoded in assert blocks and not policy_evaluate fields.
+  rationale: Keeps contractual decision authority in specs.
+  risk_if_violated: Decision logic drifts into harness metadata and runner branches.
+  references:
+  - scripts/run_governance_specs.py
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/governance/cases/core/runtime_assert_block_decision_authority_required.spec.md
+- id: POLICY_EVALUATE_FORBIDDEN
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.check.harness
+  norm: MUST
+  requirement: harness_policy_evaluate_and_orchestration_policy_evaluate_are_forbidden
+  description: Top-level harness.policy_evaluate and harness.orchestration_policy.policy_evaluate are forbidden.
+  rationale: Prevents hidden policy decision channels outside assert blocks.
+  risk_if_violated: Contractual obligations become split across metadata and assertions.
+  references:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/runtime_policy_evaluate_forbidden.spec.md
+- id: META_JSON_TARGET_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: assertion.targets.meta_json
+  norm: MUST
+  requirement: executable_harnesses_must_project_meta_json_target
+  description: Core executable harness adapters must expose meta_json assertion target envelopes.
+  rationale: Separates metadata from expression source while keeping it assert-accessible.
+  risk_if_violated: Contracts cannot assert over metadata deterministically.
+  references:
+  - spec_runner/harnesses/text_file.py
+  - spec_runner/harnesses/cli_run.py
+  - spec_runner/harnesses/docs_generate.py
+  - spec_runner/harnesses/orchestration_run.py
+  - spec_runner/harnesses/api_http.py
+  - docs/spec/governance/cases/core/runtime_meta_json_target_required.spec.md
+- id: OPS_OS_CAPABILITY_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: spec_lang.ops_os
+  norm: MUST
+  requirement: ops_os_symbols_require_explicit_ops_os_capability
+  description: ops.os builtins must hard-fail unless harness.spec_lang.capabilities includes ops.os.
+  rationale: Side effects must be explicit and auditable.
+  risk_if_violated: Unbounded process/environment side effects from specs.
+  references:
+  - spec_runner/spec_lang.py
+  - docs/spec/governance/cases/core/runtime_ops_os_capability_required.spec.md

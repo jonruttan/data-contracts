@@ -21,10 +21,6 @@ harness:
     - make prepush-fast
     - make hooks-install
     - SPEC_PREPUSH_BYPASS=1
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

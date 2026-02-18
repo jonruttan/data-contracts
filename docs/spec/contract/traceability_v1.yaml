@@ -3664,3 +3664,59 @@ links:
   - scripts/rust/spec_runner_cli/src/main.rs
   - scripts/run_governance_specs.py
   notes: Policy evaluation considers full rows including skipped statuses to preserve fail-fast correctness.
+- rule_id: ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/15_governance_subject_model.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRGOV-RUNTIME-ASSERT-AUTH-001
+  unit_test_refs: []
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: Governance verdict authority is encoded in assert blocks only.
+- rule_id: POLICY_EVALUATE_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#POLICY_EVALUATE_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  - docs/spec/contract/15_governance_subject_model.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRGOV-RUNTIME-POLICY-FORBID-001
+  unit_test_refs: []
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  notes: governance.check harness policy_evaluate fields are forbidden.
+- rule_id: META_JSON_TARGET_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#META_JSON_TARGET_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRGOV-RUNTIME-META-TARGET-001
+  unit_test_refs: []
+  implementation_refs:
+  - spec_runner/harnesses/text_file.py
+  - spec_runner/harnesses/cli_run.py
+  - spec_runner/harnesses/docs_generate.py
+  - spec_runner/harnesses/orchestration_run.py
+  - spec_runner/harnesses/api_http.py
+  notes: executable harnesses expose meta_json assertion target.
+- rule_id: OPS_OS_CAPABILITY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#OPS_OS_CAPABILITY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  schema_refs:
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  conformance_case_ids:
+  - SRGOV-RUNTIME-OPS-OS-CAP-001
+  - SRGOV-RUNTIME-OPS-OS-SURFACE-001
+  unit_test_refs: []
+  implementation_refs:
+  - spec_runner/spec_lang.py
+  - spec_runner/spec_lang_std_names.py
+  notes: ops.os builtins are capability-gated and declared in stdlib profile.

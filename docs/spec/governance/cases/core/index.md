@@ -181,7 +181,10 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
 - `/docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md`
 - `/docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md`
+- `/docs/spec/governance/cases/core/runtime_ops_os_capability_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_ops_os_stdlib_surface_sync.spec.md`
 - `/docs/spec/governance/cases/core/runtime_prepush_uses_governance_triage_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_policy_evaluate_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_profile_artifacts_on_fail_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_profiling_contract_artifacts.spec.md`
 - `/docs/spec/governance/cases/core/runtime_profiling_redaction_policy.spec.md`
@@ -208,6 +211,8 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_rust_primary_subcommand_parity.spec.md`
 - `/docs/spec/governance/cases/core/runtime_scope_sync.spec.md`
 - `/docs/spec/governance/cases/core/runtime_settings_import_policy.spec.md`
+- `/docs/spec/governance/cases/core/runtime_assert_block_decision_authority_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_meta_json_target_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_spec_lang_export_type_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md`
 - `/docs/spec/governance/cases/core/runtime_triage_artifacts_emitted_required.spec.md`

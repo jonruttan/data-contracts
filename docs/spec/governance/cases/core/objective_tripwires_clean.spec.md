@@ -15,10 +15,6 @@ harness:
     manifest_path: /docs/spec/metrics/objective_manifest.yaml
     cases_path: /docs/spec/governance/cases
     case_file_pattern: '*.spec.md'
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

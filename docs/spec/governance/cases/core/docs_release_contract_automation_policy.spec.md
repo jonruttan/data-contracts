@@ -22,10 +22,6 @@ harness:
     forbidden_patterns:
     - (?m)^##\s+[0-9]+\)
     - (?m)^\s*[0-9]+\.\s+(Run|Then|Check|Inspect)\b
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

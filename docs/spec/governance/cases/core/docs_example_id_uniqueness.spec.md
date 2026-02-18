@@ -12,10 +12,6 @@ harness:
   root: .
   docs_quality:
     manifest: docs/book/reference_manifest.yaml
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

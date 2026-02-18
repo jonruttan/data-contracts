@@ -10,10 +10,6 @@ type: governance.check
 check: docs.docgen_quality_score_threshold
 harness:
   root: .
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

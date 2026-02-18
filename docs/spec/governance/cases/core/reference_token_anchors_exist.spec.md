@@ -15,10 +15,6 @@ harness:
     - path: /docs/spec/contract/03b_spec_lang_v1.md
       tokens:
       - operator-keyed mapping AST
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

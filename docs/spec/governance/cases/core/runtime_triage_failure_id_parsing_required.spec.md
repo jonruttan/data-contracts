@@ -18,10 +18,6 @@ harness:
     - parse_error_ids_from_output
     - build_prefixes_from_ids
     - docs/spec/governance/check_prefix_map_v1.yaml
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

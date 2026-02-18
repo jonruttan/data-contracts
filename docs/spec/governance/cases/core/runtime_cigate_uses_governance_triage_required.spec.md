@@ -23,10 +23,6 @@ harness:
     - failing_check_prefixes
     - stall_detected
     - stall_phase
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

@@ -15,10 +15,6 @@ harness:
     hook_path: /.githooks/pre-push
     install_script: /scripts/install_git_hooks.sh
     makefile_path: /Makefile
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

@@ -50,8 +50,9 @@ Internal execution model:
 ## Naming Contract
 
 - `evaluate` is the assertion leaf operator used under `assert`.
-- `policy_evaluate` is for governance/orchestration policy expressions in
-  harness config.
+- Governance/orchestration decision obligations are encoded in `assert` blocks.
+- `harness.policy_evaluate` and `harness.orchestration_policy.policy_evaluate`
+  are forbidden in executable contracts.
 
 ## Governance Assertion Targets
 
@@ -62,6 +63,7 @@ For `type: governance.check`, assertion targets include:
   mapping with `passed`, `check_id`, `case_id`, `violation_count`)
 - `violation_count`: numeric violation count
 - `context_json`: optional JSON subject profile envelope
+- `meta_json`: runtime metadata envelope
 
 ## Core Surface Rule
 

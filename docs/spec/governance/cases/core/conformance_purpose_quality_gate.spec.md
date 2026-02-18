@@ -16,10 +16,6 @@ harness:
     max_total_warnings: 0
     fail_on_policy_errors: true
     fail_on_severity: warn
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

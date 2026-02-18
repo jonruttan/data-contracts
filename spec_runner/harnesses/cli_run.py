@@ -19,6 +19,7 @@ from spec_runner.assertion_health import (
 from spec_runner.compiler import compile_external_case
 from spec_runner.components.assertion_engine import run_assertions_with_context
 from spec_runner.components.execution_context import build_execution_context
+from spec_runner.components.meta_subject import build_meta_subject
 from spec_runner.components.subject_router import resolve_subject_for_target
 from spec_runner.settings import SETTINGS
 
@@ -322,6 +323,13 @@ def run(case, *, ctx) -> None:
         "context_json": context_profile,
         "chain_json": chain_payload,
     }
+    targets["meta_json"] = build_meta_subject(
+        case=case,
+        ctx=ctx,
+        case_key=case_key,
+        harness={**h, "_chain_imports": chain_imports},
+        artifacts=targets,
+    )
     ctx.set_case_targets(case_key=case_key, targets=targets)
 
     def _subject_for_key(subject_key: str):

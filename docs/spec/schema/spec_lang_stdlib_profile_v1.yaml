@@ -186,6 +186,15 @@ categories:
   - ops.fs.glob.filter
   - ops.fs.glob.any
   - ops.fs.glob.all
+  os_process:
+  - ops.os.exec
+  - ops.os.exec_capture
+  - ops.os.env_get
+  - ops.os.env_has
+  - ops.os.cwd
+  - ops.os.pid
+  - ops.os.sleep_ms
+  - ops.os.exit_code
 symbols:
   std.core.subject:
     category: core_control
@@ -1362,6 +1371,62 @@ symbols:
     pure: true
     deterministic: true
     error_class: schema
+    parity_required: true
+  ops.os.exec:
+    category: os_process
+    arity: 2
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.os.exec_capture:
+    category: os_process
+    arity: 2
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.os.env_get:
+    category: os_process
+    arity: 2
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.os.env_has:
+    category: os_process
+    arity: 1
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.os.cwd:
+    category: os_process
+    arity: 0
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.os.pid:
+    category: os_process
+    arity: 0
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.os.sleep_ms:
+    category: os_process
+    arity: 1
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.os.exit_code:
+    category: os_process
+    arity: 0
+    pure: false
+    deterministic: false
+    error_class: runtime
     parity_required: true
 schema_shape_keys:
 - type

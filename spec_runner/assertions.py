@@ -251,6 +251,7 @@ def evaluate_internal_assert_tree(
     limits: SpecLangLimits,
     symbols: Mapping[str, Any] | None = None,
     imports: Mapping[str, str] | None = None,
+    capabilities: set[str] | frozenset[str] | None = None,
 ) -> None:
     """
     Evaluate compiled internal assertion tree nodes.
@@ -269,6 +270,7 @@ def evaluate_internal_assert_tree(
                     limits=limits,
                     symbols=symbols,
                     imports=imports,
+                    capabilities=capabilities,
                 )
                 assert ok, "evaluate assertion failed"
             except BaseException as e:  # noqa: BLE001

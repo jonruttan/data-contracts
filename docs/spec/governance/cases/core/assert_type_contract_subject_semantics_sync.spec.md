@@ -11,10 +11,6 @@ type: governance.check
 check: assert.type_contract_subject_semantics_sync
 harness:
   root: .
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

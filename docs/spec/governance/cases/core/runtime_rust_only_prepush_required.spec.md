@@ -31,10 +31,6 @@ harness:
       forbidden_tokens:
       - 'python-parity:'
       - SPEC_PREPUSH_MODE=parity ./scripts/local_ci_parity.sh
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

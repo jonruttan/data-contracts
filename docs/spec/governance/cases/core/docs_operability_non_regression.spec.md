@@ -23,10 +23,6 @@ harness:
     epsilon: 1.0e-12
     docs_operability:
       reference_manifest: /docs/book/reference_manifest.yaml
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

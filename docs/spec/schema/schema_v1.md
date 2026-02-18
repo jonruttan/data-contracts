@@ -120,6 +120,7 @@ Assertion targets for `text.file`:
 
 - `text`
 - `context_json`: JSON subject profile envelope
+- `meta_json`: runtime metadata envelope
 
 Markdown library authoring guidance:
 
@@ -135,11 +136,12 @@ Markdown library authoring guidance:
 Runner-only inputs MUST live under `harness:` to preserve separation of
 concerns and keep the spec format portable.
 
-Governance policy contract:
+Governance assertion contract:
 
-- For `type: governance.check` cases, decision contracts MUST include
-  `harness.policy_evaluate`.
-- Final pass/fail decisions are evaluated via spec-lang policy expressions.
+- For `type: governance.check` cases, decision obligations MUST be encoded in
+  `assert` blocks.
+- `harness.policy_evaluate` and
+  `harness.orchestration_policy.policy_evaluate` are forbidden.
 - Extractors may emit candidate violations and subject payloads, but MUST NOT
   be the source of final decision truth.
 
@@ -150,6 +152,7 @@ Assertion targets for `governance.check`:
   with `passed`, `check_id`, `case_id`, `violation_count`
 - `violation_count`: integer violation count target
 - `context_json`: optional JSON subject profile envelope
+- `meta_json`: runtime metadata envelope
 
 Security model:
 
@@ -263,6 +266,8 @@ For `type: docs.generate`, supported `harness` keys include:
   - `mode` (string): `deny` (default) or `allow`
   - `providers` (list[string]): allowlisted provider names
   - `rules` (mapping, optional): provider-specific rule payloads for adapters
+- `capabilities` (list[string], optional): explicit evaluator capabilities
+  (for example `ops.os`).
 
 `harness.spec_lang.includes` format scope:
 
@@ -368,6 +373,7 @@ Assertion targets for `cli.run`:
 - `stdout_path_text`: UTF-8 text from file at `stdout_path`
 - `chain_json`: shared chain state/trace/imports envelope
 - `context_json`: JSON subject profile envelope
+- `meta_json`: runtime metadata envelope
 
 ## Types
 

@@ -34,10 +34,6 @@ harness:
     - spec_lang_stdlib_md
     - conformance_purpose_json
     - conformance_purpose_md
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

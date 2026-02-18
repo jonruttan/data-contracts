@@ -20,10 +20,6 @@ harness:
     - docs.operability_metric policy_evaluate returned false
     - spec.contract_assertions_metric policy_evaluate returned false
     - objective.scorecard_metric policy_evaluate returned false
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

@@ -23,10 +23,6 @@ harness:
     allowlist:
     - /docs/spec/contract/12_runner_interface.md
     - /docs/spec/contract/16_rust_primary_transition.md
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

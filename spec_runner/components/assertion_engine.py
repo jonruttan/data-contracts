@@ -45,5 +45,5 @@ def run_assertions_with_context(
         limits=execution.limits,
         symbols=execution.symbols,
         imports=execution.imports,
+        capabilities=execution.capabilities,
     )
-

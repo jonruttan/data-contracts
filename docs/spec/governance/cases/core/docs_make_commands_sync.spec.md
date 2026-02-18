@@ -23,10 +23,6 @@ harness:
     - make prepush
     - make prepush-fast
     - make ci-cleanroom
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

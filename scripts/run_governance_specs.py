@@ -33,6 +33,7 @@ from spec_runner.settings import SETTINGS, case_file_name, governed_config_liter
 from spec_runner.spec_lang import (
     SpecLangLimits,
     _builtin_arity_table,
+    capabilities_from_harness,
     compile_import_bindings,
     eval_predicate,
 )
@@ -71,6 +72,7 @@ from spec_runner.quality_metrics import spec_lang_adoption_report_jsonable
 from spec_runner.quality_metrics import validate_metric_baseline_notes
 from spec_runner.quality_metrics import _load_baseline_json
 from spec_runner.governance_engine import GovernancePolicyResult, normalize_policy_evaluate, run_governance_policy
+from spec_runner.components.meta_subject import build_meta_subject
 from spec_runner.spec_portability import spec_portability_report_jsonable
 from spec_runner.virtual_paths import VirtualPathError, normalize_contract_path, parse_external_ref, resolve_contract_path
 from spec_runner.components.profiler import RunProfiler, profile_config_from_args
@@ -2253,9 +2255,9 @@ def _scan_current_spec_policy_key_names(root: Path) -> list[str]:
 
 def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
-    cfg = h.get("policy_requirements")
+    cfg = h.get("policy_requirements") or h.get("policy_forbidden")
     if not isinstance(cfg, dict):
-        return ["governance.policy_evaluate_required requires harness.policy_requirements mapping in governance spec"]
+        return ["runtime.policy_evaluate_forbidden requires harness.policy_forbidden mapping in governance spec"]
     cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
     case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
     ignore_checks_raw = cfg.get("ignore_checks", [])
@@ -2280,151 +2282,21 @@ def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | Non
         if not isinstance(harness_map, dict):
             violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
             continue
-        if "policy_evaluate" not in harness_map:
+        if "policy_evaluate" in harness_map:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} missing required policy_evaluate"
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} uses forbidden harness.policy_evaluate"
             )
     return violations
 
 
 def _scan_governance_policy_library_usage_required(root: Path, *, harness: dict | None = None) -> list[str]:
-    h = harness or {}
-    cfg = h.get("policy_library_requirements")
-    if not isinstance(cfg, dict):
-        return [
-            "governance.policy_library_usage_required requires harness.policy_library_requirements mapping in governance spec"
-        ]
-    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
-    case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
-    ignore_checks_raw = cfg.get("ignore_checks", [])
-    if not isinstance(ignore_checks_raw, list) or any(not isinstance(x, str) for x in ignore_checks_raw):
-        return ["harness.policy_library_requirements.ignore_checks must be a list of strings"]
-    ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
-
-    cases_dir = _join_contract_path(root, cases_rel)
-    if not cases_dir.exists():
-        return [f"{cases_rel}:1: governance cases path does not exist"]
-
-    def _policy_uses_library_call(expr: object) -> bool:
-        if isinstance(expr, dict):
-            if "call" in expr:
-                raw = expr.get("call")
-                if isinstance(raw, list) and raw:
-                    fn_node = raw[0]
-                    if (
-                        isinstance(fn_node, dict)
-                        and len(fn_node) == 1
-                        and "var" in fn_node
-                        and isinstance(fn_node.get("var"), str)
-                        and str(fn_node.get("var", "")).strip()
-                    ):
-                        return True
-            return any(_policy_uses_library_call(v) for v in expr.values())
-        if isinstance(expr, list):
-            return any(_policy_uses_library_call(v) for v in expr)
-        return False
-
-    violations: list[str] = []
-    for spec in iter_cases(cases_dir, file_pattern=case_pattern):
-        case = spec.test if isinstance(spec.test, dict) else {}
-        if str(case.get("type", "")).strip() != "governance.check":
-            continue
-        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
-        check_id = str(case.get("check", "")).strip()
-        if check_id in ignore_checks:
-            continue
-        harness_map = case.get("harness")
-        if not isinstance(harness_map, dict):
-            violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
-            continue
-        lib_paths = _collect_chain_library_refs(case)
-        has_library_paths = any(str(x).strip() for x in lib_paths)
-        if not has_library_paths:
-            violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty chain library refs"
-            )
-            continue
-        policy = harness_map.get("policy_evaluate")
-        if not isinstance(policy, list) or not policy:
-            violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.policy_evaluate"
-            )
-            continue
-        if not _policy_uses_library_call(policy):
-            violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} policy_evaluate must call library symbol via call -> var"
-            )
-    return violations
+    del root, harness
+    return []
 
 
 def _scan_conformance_library_policy_usage_required(root: Path, *, harness: dict | None = None) -> list[str]:
-    h = harness or {}
-    cfg = h.get("conformance_policy_library_requirements")
-    if not isinstance(cfg, dict):
-        return [
-            "conformance.library_policy_usage_required requires harness.conformance_policy_library_requirements mapping in governance spec"
-        ]
-    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
-    case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
-    ignore_checks_raw = cfg.get("ignore_checks", [])
-    if not isinstance(ignore_checks_raw, list) or any(not isinstance(x, str) for x in ignore_checks_raw):
-        return ["harness.conformance_policy_library_requirements.ignore_checks must be a list of strings"]
-    ignore_checks = {x.strip() for x in ignore_checks_raw if x.strip()}
-
-    cases_dir = _join_contract_path(root, cases_rel)
-    if not cases_dir.exists():
-        return [f"{cases_rel}:1: governance cases path does not exist"]
-
-    def _policy_uses_library_call(expr: object) -> bool:
-        if isinstance(expr, dict):
-            if "call" in expr:
-                raw = expr.get("call")
-                if isinstance(raw, list) and raw:
-                    fn_node = raw[0]
-                    if (
-                        isinstance(fn_node, dict)
-                        and len(fn_node) == 1
-                        and "var" in fn_node
-                        and isinstance(fn_node.get("var"), str)
-                        and str(fn_node.get("var", "")).strip()
-                    ):
-                        return True
-            return any(_policy_uses_library_call(v) for v in expr.values())
-        if isinstance(expr, list):
-            return any(_policy_uses_library_call(v) for v in expr)
-        return False
-
-    violations: list[str] = []
-    for spec in iter_cases(cases_dir, file_pattern=case_pattern):
-        case = spec.test if isinstance(spec.test, dict) else {}
-        if str(case.get("type", "")).strip() != "governance.check":
-            continue
-        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
-        check_id = str(case.get("check", "")).strip()
-        if not check_id.startswith("conformance.") or check_id in ignore_checks:
-            continue
-        harness_map = case.get("harness")
-        if not isinstance(harness_map, dict):
-            violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
-            continue
-        lib_paths = _collect_chain_library_refs(case)
-        has_library_paths = any(str(x).strip() for x in lib_paths)
-        if not has_library_paths:
-            violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty chain library refs"
-            )
-            continue
-        policy = harness_map.get("policy_evaluate")
-        if not isinstance(policy, list) or not policy:
-            violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} must declare non-empty harness.policy_evaluate"
-            )
-            continue
-        if not _policy_uses_library_call(policy):
-            violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} policy_evaluate must call library symbol via call -> var"
-            )
-    return violations
+    del root, harness
+    return []
 
 
 def _scan_governance_extractor_only_no_verdict_branching(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -6616,6 +6488,134 @@ def _scan_runtime_legacy_timeout_envs_deprecated(root: Path, *, harness: dict | 
     return violations
 
 
+def _scan_runtime_policy_evaluate_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("policy_forbidden")
+    if not isinstance(cfg, dict):
+        return ["runtime.policy_evaluate_forbidden requires harness.policy_forbidden mapping in governance spec"]
+    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
+    case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
+    cases_dir = _join_contract_path(root, cases_rel)
+    if not cases_dir.exists():
+        return [f"{cases_rel}:1: governance cases path does not exist"]
+    violations: list[str] = []
+    for spec in iter_cases(cases_dir, file_pattern=case_pattern):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() != "governance.check":
+            continue
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        check_id = str(case.get("check", "")).strip() or "<unknown>"
+        harness_map = case.get("harness")
+        if not isinstance(harness_map, dict):
+            continue
+        if "policy_evaluate" in harness_map:
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} uses forbidden harness.policy_evaluate"
+            )
+        orchestration = harness_map.get("orchestration_policy")
+        if isinstance(orchestration, dict) and "policy_evaluate" in orchestration:
+            violations.append(
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} uses forbidden harness.orchestration_policy.policy_evaluate"
+            )
+    return violations
+
+
+def _scan_runtime_assert_block_decision_authority_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("assert_decision_authority")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.assert_block_decision_authority_required requires harness.assert_decision_authority mapping in governance spec"
+        ]
+    rel = str(cfg.get("path", "scripts/run_governance_specs.py")).strip() or "scripts/run_governance_specs.py"
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.assert_decision_authority.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.assert_decision_authority.forbidden_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing runtime script for assert decision authority check"]
+    raw = p.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in raw:
+            violations.append(f"{rel}:1: missing required assert decision token: {tok}")
+    for tok in forbidden_tokens:
+        if tok in raw:
+            violations.append(f"{rel}:1: forbidden policy decision token present: {tok}")
+    return violations
+
+
+def _scan_runtime_meta_json_target_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("meta_json_targets")
+    if not isinstance(cfg, dict):
+        return ["runtime.meta_json_target_required requires harness.meta_json_targets mapping in governance spec"]
+    files = cfg.get("files")
+    if not isinstance(files, list) or not files or any(not isinstance(x, str) or not x.strip() for x in files):
+        return ["harness.meta_json_targets.files must be a non-empty list of non-empty strings"]
+    required_tokens = cfg.get("required_tokens", ["meta_json"])
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.meta_json_targets.required_tokens must be a list of non-empty strings"]
+    violations: list[str] = []
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing file for meta_json target check")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in raw:
+                violations.append(f"{rel}:1: missing required meta_json token: {tok}")
+    return violations
+
+
+def _scan_runtime_ops_os_capability_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("ops_os_capability")
+    if not isinstance(cfg, dict):
+        return ["runtime.ops_os_capability_required requires harness.ops_os_capability mapping in governance spec"]
+    rel = str(cfg.get("path", "spec_runner/spec_lang.py")).strip() or "spec_runner/spec_lang.py"
+    required_tokens = cfg.get("required_tokens", [])
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.ops_os_capability.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing spec_lang implementation file"]
+    raw = p.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in raw:
+            violations.append(f"{rel}:1: missing required ops.os capability token: {tok}")
+    return violations
+
+
+def _scan_runtime_ops_os_stdlib_surface_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("ops_os_stdlib_surface")
+    if not isinstance(cfg, dict):
+        return ["runtime.ops_os_stdlib_surface_sync requires harness.ops_os_stdlib_surface mapping in governance spec"]
+    files = cfg.get("files")
+    symbols = cfg.get("required_symbols")
+    if not isinstance(files, list) or not files or any(not isinstance(x, str) or not x.strip() for x in files):
+        return ["harness.ops_os_stdlib_surface.files must be a non-empty list of non-empty strings"]
+    if not isinstance(symbols, list) or not symbols or any(not isinstance(x, str) or not x.strip() for x in symbols):
+        return ["harness.ops_os_stdlib_surface.required_symbols must be a non-empty list of non-empty strings"]
+    violations: list[str] = []
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing stdlib surface file")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for symbol in symbols:
+            if symbol not in raw:
+                violations.append(f"{rel}:1: missing required ops.os symbol token: {symbol}")
+    return violations
+
+
 def _scan_architecture_harness_workflow_components_required(
     root: Path, *, harness: dict | None = None
 ) -> list[str]:
@@ -9351,6 +9351,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.profile_artifacts_on_fail_required": _scan_runtime_profile_artifacts_on_fail_required,
     "runtime.gate_policy_evaluates_with_skipped_rows": _scan_runtime_gate_policy_evaluates_with_skipped_rows,
     "runtime.legacy_timeout_envs_deprecated": _scan_runtime_legacy_timeout_envs_deprecated,
+    "runtime.policy_evaluate_forbidden": _scan_runtime_policy_evaluate_forbidden,
+    "runtime.assert_block_decision_authority_required": _scan_runtime_assert_block_decision_authority_required,
+    "runtime.meta_json_target_required": _scan_runtime_meta_json_target_required,
+    "runtime.ops_os_capability_required": _scan_runtime_ops_os_capability_required,
+    "runtime.ops_os_stdlib_surface_sync": _scan_runtime_ops_os_stdlib_surface_sync,
     "architecture.harness_workflow_components_required": _scan_architecture_harness_workflow_components_required,
     "architecture.harness_local_workflow_duplication_forbidden": _scan_architecture_harness_local_workflow_duplication_forbidden,
     "schema.harness_type_overlay_complete": _scan_schema_harness_type_overlay_complete,
@@ -9418,17 +9423,20 @@ def run_governance_check(case, *, ctx) -> None:
     else:
         raw_outcome = fn(root)
 
+    if "policy_evaluate" in h:
+        raise ValueError("governance.check forbids harness.policy_evaluate; encode obligations in assert blocks")
+    orch = h.get("orchestration_policy")
+    if isinstance(orch, dict) and "policy_evaluate" in orch:
+        raise ValueError(
+            "governance.check forbids harness.orchestration_policy.policy_evaluate; encode obligations in assert blocks"
+        )
+
     subject: object = {}
     symbols: dict[str, object] = {}
-    policy_evaluate: list[object] | None = None
-    policy_path = "harness.policy_evaluate"
     if isinstance(raw_outcome, dict):
         subject = raw_outcome.get("subject")
         symbols_raw = raw_outcome.get("symbols")
         symbols = symbols_raw if isinstance(symbols_raw, dict) else {}
-        policy_raw = raw_outcome.get("policy_evaluate")
-        policy_evaluate = policy_raw if isinstance(policy_raw, list) else None
-        policy_path = str(raw_outcome.get("policy_path", policy_path))
         violations_raw = raw_outcome.get("violations")
         if isinstance(violations_raw, list):
             violations = [str(v) for v in violations_raw if str(v).strip()]
@@ -9440,38 +9448,13 @@ def run_governance_check(case, *, ctx) -> None:
 
     if isinstance(subject, dict) and "violations" not in subject:
         subject = {**subject, "violations": list(violations)}
-    if policy_evaluate is None:
-        raw_case_policy = h.get("policy_evaluate")
-        if raw_case_policy is not None:
-            policy_evaluate = normalize_policy_evaluate(raw_case_policy, field="harness.policy_evaluate")
-            policy_path = "harness.policy_evaluate"
-    if policy_evaluate is None:
-        case_id = str(t.get("id", "<unknown>")).strip() or "<unknown>"
-        raise ValueError(
-            f"governance.check {check_id} case {case_id} requires harness.policy_evaluate"
-        )
 
     case_key = f"{case.doc_path.resolve().as_posix()}::{str(t.get('id', '<unknown>')).strip() or '<unknown>'}"
     chain_symbols = dict(ctx.get_case_chain_imports(case_key=case_key))
     if chain_symbols:
         symbols = {**chain_symbols, **symbols}
     spec_lang_imports = compile_import_bindings((h or {}).get("spec_lang"))
-
-    policy_result: GovernancePolicyResult = run_governance_policy(
-        check_id=check_id,
-        case_id=str(t.get("id", "<unknown>")).strip() or "<unknown>",
-        policy_evaluate=policy_evaluate,
-        subject=subject,
-        symbols=symbols,
-        imports=spec_lang_imports,
-        policy_path=policy_path,
-    )
-    if policy_result.passed:
-        violations = []
-    elif violations:
-        violations = policy_result.diagnostics + violations
-    else:
-        violations = policy_result.diagnostics
+    spec_lang_capabilities = capabilities_from_harness(h)
 
     case_id = str(t.get("id", "<unknown>")).strip() or "<unknown>"
     summary = {
@@ -9485,6 +9468,13 @@ def run_governance_check(case, *, ctx) -> None:
         if not violations
         else f"FAIL: {check_id}\n" + "\n".join(violations)
     )
+    meta_json = build_meta_subject(
+        case=case,
+        ctx=ctx,
+        case_key=case_key,
+        harness=h,
+        artifacts={"text": text, "summary_json": summary, "violation_count": len(violations)},
+    )
 
     assert_spec = t.get("assert", []) or []
     spec_lang_limits = SpecLangLimits()
@@ -9497,6 +9487,8 @@ def run_governance_check(case, *, ctx) -> None:
                 subject_value = summary
             elif target == "violation_count":
                 subject_value = len(violations)
+            elif target == "meta_json":
+                subject_value = meta_json
             else:
                 raise ValueError(f"unknown assert target for governance.check: {target}")
             if op != "evaluate":
@@ -9512,14 +9504,14 @@ def run_governance_check(case, *, ctx) -> None:
                 expr,
                 subject=subject_value,
                 limits=spec_lang_limits,
+                symbols=symbols,
                 imports=spec_lang_imports,
+                capabilities=spec_lang_capabilities,
             )
             if bool(ok) is not bool(is_true):
                 raise AssertionError(f"{op} assertion failed")
 
     eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)
-    if violations:
-        raise AssertionError(text)
 
 
 def main(argv: list[str] | None = None) -> int:

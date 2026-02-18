@@ -15,10 +15,6 @@ harness:
     index_out: /docs/book/reference_index.md
     coverage_out: /docs/book/reference_coverage.md
     graph_out: /docs/book/docs_graph.json
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

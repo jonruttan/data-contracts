@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import re
+import subprocess
 import time
 from fnmatch import fnmatch
 from collections.abc import Mapping
@@ -56,6 +58,8 @@ class _EvalState:
     subject: Any
     limits: SpecLangLimits
     imports: dict[str, str]
+    capabilities: frozenset[str] = frozenset()
+    last_exit_code: int | None = None
     steps: int = 0
     started: float = 0.0
 
@@ -401,6 +405,26 @@ def _require_int_arg(op: str, value: Any) -> int:
     return value
 
 
+def _require_ops_os_capability(op: str, st: _EvalState) -> None:
+    if "ops.os" not in st.capabilities:
+        raise ValueError(f"capability.ops_os.required: {op}")
+
+
+def _coerce_exec_command(op: str, value: Any) -> list[str]:
+    if not isinstance(value, list) or not value:
+        raise ValueError(f"spec_lang {op} expects non-empty list command")
+    out: list[str] = []
+    for item in value:
+        if isinstance(item, str):
+            token = item.strip()
+        else:
+            token = str(item).strip()
+        if not token:
+            raise ValueError(f"spec_lang {op} command entries must be non-empty strings")
+        out.append(token)
+    return out
+
+
 def _round_half_away_from_zero(v: int | float) -> int:
     return math.floor(v + 0.5) if v >= 0 else math.ceil(v - 0.5)
 
@@ -737,6 +761,14 @@ def _builtin_arity_table() -> dict[str, int]:
         "ops_fs_glob_filter": 2,
         "ops_fs_glob_any": 2,
         "ops_fs_glob_all": 2,
+        "ops_os_exec": 2,
+        "ops_os_exec_capture": 2,
+        "ops_os_env_get": 2,
+        "ops_os_env_has": 1,
+        "ops_os_cwd": 0,
+        "ops_os_pid": 0,
+        "ops_os_sleep_ms": 1,
+        "ops_os_exit_code": 0,
         "and": 2,
         "or": 2,
         "not": 1,
@@ -1644,6 +1676,105 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
             if not fnmatch(raw, pattern):
                 return False
         return True
+    if op == "ops.os.exec":
+        _require_arity(op, args, 2)
+        _require_ops_os_capability(op, st)
+        cmd = _coerce_exec_command(op, args[0])
+        timeout_ms = _require_int_arg(op, args[1])
+        if timeout_ms < 0:
+            raise ValueError("spec_lang ops.os.exec expects non-negative timeout_ms")
+        started = time.perf_counter()
+        timed_out = False
+        code = -1
+        try:
+            proc = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=(timeout_ms / 1000.0) if timeout_ms > 0 else None,
+            )
+            code = int(proc.returncode)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            code = -9
+        st.last_exit_code = int(code)
+        _ = int((time.perf_counter() - started) * 1000.0)
+        if timed_out:
+            return code
+        return code
+    if op == "ops.os.exec_capture":
+        _require_arity(op, args, 2)
+        _require_ops_os_capability(op, st)
+        cmd = _coerce_exec_command(op, args[0])
+        timeout_ms = _require_int_arg(op, args[1])
+        if timeout_ms < 0:
+            raise ValueError("spec_lang ops.os.exec_capture expects non-negative timeout_ms")
+        started = time.perf_counter()
+        code = -1
+        stdout = ""
+        stderr = ""
+        timed_out = False
+        try:
+            proc = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=(timeout_ms / 1000.0) if timeout_ms > 0 else None,
+            )
+            code = int(proc.returncode)
+            stdout = str(proc.stdout or "")
+            stderr = str(proc.stderr or "")
+        except subprocess.TimeoutExpired as exc:
+            timed_out = True
+            code = -9
+            stdout = str(exc.stdout or "")
+            stderr = str(exc.stderr or "")
+        duration_ms = int((time.perf_counter() - started) * 1000.0)
+        st.last_exit_code = int(code)
+        return {
+            "code": int(code),
+            "stdout": stdout,
+            "stderr": stderr,
+            "duration_ms": duration_ms,
+            "timed_out": bool(timed_out),
+        }
+    if op == "ops.os.env_get":
+        _require_arity(op, args, 2)
+        _require_ops_os_capability(op, st)
+        key = str(args[0]).strip()
+        if not key:
+            raise ValueError("spec_lang ops.os.env_get expects non-empty env key")
+        default = args[1]
+        return os.environ.get(key, default)
+    if op == "ops.os.env_has":
+        _require_arity(op, args, 1)
+        _require_ops_os_capability(op, st)
+        key = str(args[0]).strip()
+        if not key:
+            raise ValueError("spec_lang ops.os.env_has expects non-empty env key")
+        return key in os.environ
+    if op == "ops.os.cwd":
+        _require_arity(op, args, 0)
+        _require_ops_os_capability(op, st)
+        return os.getcwd()
+    if op == "ops.os.pid":
+        _require_arity(op, args, 0)
+        _require_ops_os_capability(op, st)
+        return int(os.getpid())
+    if op == "ops.os.sleep_ms":
+        _require_arity(op, args, 1)
+        _require_ops_os_capability(op, st)
+        delay_ms = _require_int_arg(op, args[0])
+        if delay_ms < 0:
+            raise ValueError("spec_lang ops.os.sleep_ms expects non-negative delay")
+        time.sleep(delay_ms / 1000.0)
+        return True
+    if op == "ops.os.exit_code":
+        _require_arity(op, args, 0)
+        _require_ops_os_capability(op, st)
+        return st.last_exit_code
     if op == "and":
         _require_arity(op, args, 2)
         return _truthy(args[0]) and _truthy(args[1])
@@ -1955,6 +2086,7 @@ def eval_expr(
     limits: SpecLangLimits | None = None,
     symbols: Mapping[str, Any] | None = None,
     imports: Mapping[str, str] | None = None,
+    capabilities: set[str] | frozenset[str] | None = None,
 ) -> Any:
     cfg = limits or SpecLangLimits()
     validate_expr_shape(expr, limits=cfg)
@@ -1973,7 +2105,13 @@ def eval_expr(
                 raise ValueError(f"spec_lang imports unknown symbol: {symbol}")
             resolved_imports[name] = symbol
 
-    st = _EvalState(subject=subject, limits=cfg, imports=resolved_imports, started=time.perf_counter())
+    st = _EvalState(
+        subject=subject,
+        limits=cfg,
+        imports=resolved_imports,
+        capabilities=frozenset(str(x).strip() for x in (capabilities or set()) if str(x).strip()),
+        started=time.perf_counter(),
+    )
     root_symbols: dict[str, Any] = {}
     if symbols:
         for raw_name, value in symbols.items():
@@ -1995,8 +2133,16 @@ def eval_predicate(
     limits: SpecLangLimits | None = None,
     symbols: Mapping[str, Any] | None = None,
     imports: Mapping[str, str] | None = None,
+    capabilities: set[str] | frozenset[str] | None = None,
 ) -> bool:
-    got = eval_expr(expr, subject=subject, limits=limits, symbols=symbols, imports=imports)
+    got = eval_expr(
+        expr,
+        subject=subject,
+        limits=limits,
+        symbols=symbols,
+        imports=imports,
+        capabilities=capabilities,
+    )
     return bool(got)
 
 
@@ -2023,3 +2169,21 @@ def limits_from_harness(harness: Mapping[str, Any] | None) -> SpecLangLimits:
         max_literal_bytes=_int_field("max_literal_bytes", min_value=1),
         timeout_ms=_int_field("timeout_ms", min_value=0),
     )
+
+
+def capabilities_from_harness(harness: Mapping[str, Any] | None) -> frozenset[str]:
+    raw_spec_lang = (harness or {}).get("spec_lang") or {}
+    if not isinstance(raw_spec_lang, Mapping):
+        raise TypeError("harness.spec_lang must be a mapping")
+    raw_caps = raw_spec_lang.get("capabilities") or []
+    if raw_caps is None:
+        return frozenset()
+    if not isinstance(raw_caps, list):
+        raise TypeError("harness.spec_lang.capabilities must be a list")
+    caps: set[str] = set()
+    for idx, raw in enumerate(raw_caps):
+        cap = str(raw).strip()
+        if not cap:
+            raise ValueError(f"harness.spec_lang.capabilities[{idx}] must be a non-empty string")
+        caps.add(cap)
+    return frozenset(caps)

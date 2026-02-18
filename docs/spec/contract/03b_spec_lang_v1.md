@@ -2,7 +2,7 @@
 
 ## Scope
 
-`spec-lang` is a pure, deterministic expression DSL used only through the
+`spec-lang` is an expression DSL used through the
 assertion leaf operator `evaluate`.
 Assertion group semantics (`must`, `can`, `cannot`) are defined by the
 assertion contract and host this expression language.
@@ -24,13 +24,12 @@ Stdlib completeness source of truth:
 - `/docs/spec/schema/spec_lang_stdlib_profile_v1.yaml`
 - `/docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`
 
-Purity requirement:
+Runtime requirement:
 
-- Evaluation MUST remain pure and deterministic.
-- Evaluation MUST NOT perform filesystem, network, process, clock, random, or
-  environment side effects.
-- Implementations MUST perform side effects in adapters/harnesses and pass
-  normalized subjects into spec-lang.
+- Core stdlib symbols are deterministic/pure unless explicitly marked
+  effectful in the stdlib profile contract.
+- Effectful symbols MUST be capability-gated.
+- `ops.os.*` symbols require explicit `harness.spec_lang.capabilities: [ops.os]`.
 - Subjects consumed by the evaluator MUST be JSON-core values only; native
   runtime values must be projected into JSON profile envelopes.
 
@@ -39,10 +38,8 @@ Ops namespace:
 - `ops.*` symbols use deep-dot hierarchy:
   `ops.<segment>(.<segment>)+` (for example `ops.fs.file.read`,
   `ops.proc.command.exec`, `ops.fs.path.normalize`).
-- Core spec-lang evaluation remains pure; side-effect operations are still
-  adapter concerns exposed through orchestration contracts.
-- Pure utility functions may exist under `ops.*` (for example
-  `ops.fs.path.*`, `ops.fs.file.*`) and must remain deterministic.
+- `ops.fs.*` utilities are pure/deterministic helpers.
+- `ops.os.*` symbols are effectful and capability-gated.
 - underscore shorthand forms are invalid.
 
 ## Core Forms
@@ -212,6 +209,17 @@ Filesystem utility (pure, metadata-only):
 - `ops.fs.glob.filter`
 - `ops.fs.glob.any`
 - `ops.fs.glob.all`
+
+OS/system utility (capability-gated):
+
+- `ops.os.exec`
+- `ops.os.exec_capture`
+- `ops.os.env_get`
+- `ops.os.env_has`
+- `ops.os.cwd`
+- `ops.os.pid`
+- `ops.os.sleep_ms`
+- `ops.os.exit_code`
 
 Recursion/control:
 

@@ -108,12 +108,12 @@ Notes:
 - Canonical reusable libraries now include `path_core`, `policy_core`, and
   `policy_metrics` under `docs/spec/libraries/`, with domain helper libraries
   under `docs/spec/libraries/domain/`.
-- Governance decision checks are now policy-engine first:
+- Governance decision checks are assert-first:
   check extractors emit deterministic subject payloads and
-  `policy_evaluate` drives final verdicts.
-- Governance assertions now validate structured result surfaces
-  (`violation_count`, `summary_json`) so pass/fail contracts are not coupled to
-  PASS text output tokens.
+  `assert` blocks drive final verdicts.
+- Governance assertions validate structured result surfaces
+  (`violation_count`, `summary_json`, `meta_json`) so pass/fail contracts are
+  not coupled to PASS text output tokens.
 - Spec-lang utility surface now includes collection helpers for governance
   policy authoring (`sum`, `min`, `max`, `sort_by`, `pluck`, `distinct`,
   `is_empty`, `coalesce`, `matches_all`).
@@ -126,6 +126,9 @@ Notes:
   `parse`, `get`, `get_or`, and `has_path` for deterministic JSON/path lookup.
 - Spec-lang now includes pure glob helpers under `ops.fs.glob.*`:
   `match`, `filter`, `any`, and `all` for deterministic path pattern checks.
+- Spec-lang now includes capability-gated OS/system helpers under `ops.os.*`:
+  `exec`, `exec_capture`, `env_get`, `env_has`, `cwd`, `pid`, `sleep_ms`, and
+  `exit_code` (requires `harness.spec_lang.capabilities: [ops.os]`).
 - Spec-lang now includes Ramda-style deep equality, set algebra
   (`union`, `intersection`, `difference`, `symmetric_difference`,
   `is_subset`, `is_superset`, `set_equals`), expanded collection transforms

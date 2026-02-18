@@ -17,10 +17,6 @@ harness:
     - Use rust impl instead
     forbidden_tokens:
     - exec "${ROOT_DIR}/scripts/python/runner_adapter.sh" "$@"
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

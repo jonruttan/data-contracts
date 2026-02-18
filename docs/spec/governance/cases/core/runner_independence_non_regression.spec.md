@@ -35,10 +35,6 @@ harness:
       direct_runtime_token_segments:
       - gate_scripts
       - ci_workflows
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

@@ -29,10 +29,6 @@ harness:
     - scripts/evaluate_style.py --check docs/spec
     - scripts/conformance_purpose_report.py
     - scripts/compare_conformance_parity.py
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

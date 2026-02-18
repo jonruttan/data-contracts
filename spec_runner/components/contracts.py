@@ -12,4 +12,4 @@ class HarnessExecutionContext:
     limits: SpecLangLimits
     imports: Mapping[str, str]
     symbols: Mapping[str, Any]
-
+    capabilities: frozenset[str]

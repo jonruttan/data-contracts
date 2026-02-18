@@ -5,8 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-ORCH-001
 title: gate orchestration verdict is policy-driven via spec-lang
-purpose: Ensures CI gate summary determines final verdict using a spec-lang policy expression
-  from governance config.
+purpose: Ensures CI gate summary determines final verdict from assert-derived
+  step statuses without policy_evaluate expressions.
 type: governance.check
 check: runtime.orchestration_policy_via_spec_lang
 harness:
@@ -15,31 +15,14 @@ harness:
     files:
     - path: /scripts/ci_gate_summary.py
       required_tokens:
-      - _load_gate_policy_expr(
-      - eval_predicate(
+      - _evaluate_gate_policy(
+      - all(str(row.get("status", "")) == "pass"
       - policy_verdict
     - path: /docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
       required_tokens:
-      - gate_policy
-      - policy_evaluate
+      - runtime.orchestration_policy_via_spec_lang
+      - _evaluate_gate_policy(
     forbidden_tokens: []
-    policy_evaluate:
-    - std.logic.eq:
-      - std.collection.count:
-        - std.collection.filter:
-          - fn:
-            - [step]
-            - std.logic.neq:
-              - std.object.get:
-                - {var: step}
-                - status
-              - pass
-          - {var: subject}
-      - 0
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from spec_runner.components.contracts import HarnessExecutionContext
-from spec_runner.spec_lang import compile_import_bindings, limits_from_harness
+from spec_runner.spec_lang import capabilities_from_harness, compile_import_bindings, limits_from_harness
 
 
 def build_execution_context(*, case_id: str, harness: dict, doc_path) -> HarnessExecutionContext:
     del doc_path
     limits = limits_from_harness(harness)
     imports = compile_import_bindings((harness or {}).get("spec_lang"))
+    capabilities = capabilities_from_harness(harness)
     spec_lang_cfg = dict((harness or {}).get("spec_lang") or {})
     if spec_lang_cfg.get("includes"):
         raise ValueError(
@@ -28,4 +29,5 @@ def build_execution_context(*, case_id: str, harness: dict, doc_path) -> Harness
         limits=limits,
         imports=imports,
         symbols=symbols,
+        capabilities=capabilities,
     )

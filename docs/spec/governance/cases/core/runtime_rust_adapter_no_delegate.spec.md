@@ -18,10 +18,6 @@ harness:
     - cargo run --quiet
     forbidden_tokens:
     - scripts/runner_adapter.sh
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

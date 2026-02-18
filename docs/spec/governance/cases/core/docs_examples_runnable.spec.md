@@ -21,10 +21,6 @@ harness:
     - docs/book/06_troubleshooting.md
     - docs/book/07_spec_lang_reference.md
     - docs/development.md
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec

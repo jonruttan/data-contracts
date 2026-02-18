@@ -19,10 +19,6 @@ harness:
     - broad-first
     - resolve_targeted_prefixes
     - selection_source
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
   chain:
     steps:
     - id: lib_policy_core_spec
