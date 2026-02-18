@@ -11,6 +11,47 @@ if [[ -z "${SPEC_RUNNER_IMPL:-}" ]]; then
   SPEC_RUNNER_IMPL="rust"
 fi
 
+collect_changed_paths() {
+  local upstream=""
+  local lines=()
+  if upstream="$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null)"; then
+    while IFS= read -r line; do
+      [[ -n "${line}" ]] && lines+=("${line}")
+    done < <(git diff --name-only "${upstream}...HEAD")
+  fi
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && lines+=("${line}")
+  done < <(git diff --name-only)
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && lines+=("${line}")
+  done < <(git diff --name-only --cached)
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && lines+=("${line}")
+  done < <(git ls-files --others --exclude-standard)
+  if [[ "${#lines[@]}" -eq 0 ]]; then
+    return 0
+  fi
+  printf '%s\n' "${lines[@]}" | awk '!seen[$0]++'
+}
+
+only_check_sets_changes() {
+  local changed path
+  changed="$(collect_changed_paths || true)"
+  [[ -n "${changed}" ]] || return 1
+  while IFS= read -r path; do
+    [[ -z "${path}" ]] && continue
+    if [[ "${path}" != "docs/spec/governance/check_sets_v1.yaml" ]]; then
+      return 1
+    fi
+  done <<< "${changed}"
+  return 0
+}
+
+if [[ "${CI:-}" != "true" ]] && [[ "${SPEC_CI_GATE_LOCAL_FAST_PATH:-1}" != "0" ]] && only_check_sets_changes; then
+  echo "[ci-gate] local fast path: check_sets-only change; delegating to local_ci_parity.sh"
+  exec "${ROOT_DIR}/scripts/local_ci_parity.sh"
+fi
+
 "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" critical-gate
 
 "${SPEC_RUNNER_BIN}" ci-gate-summary \
