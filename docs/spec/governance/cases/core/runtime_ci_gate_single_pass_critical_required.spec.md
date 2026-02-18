@@ -5,7 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-TRIAGE-017
 title: ci gate executes critical pass exactly once
-purpose: Ensures ci_gate.sh runs critical-gate once, sets skip-critical guard, then invokes ci-gate-summary.
+purpose: Ensures ci_gate.sh runs critical-gate once, sets skip-critical guard, then invokes
+  ci-gate-summary.
 type: governance.check
 check: runtime.ci_gate_single_pass_critical_required
 harness:

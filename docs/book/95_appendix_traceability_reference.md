@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 243
+- link_count: 244
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 243
-- rules_with_implementation_refs: 241
+- rules_with_unit_tests: 244
+- rules_with_implementation_refs: 242
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -219,6 +219,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | 2 | 0 | 0 | 2 | 3 |
 | `RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID` | `docs/spec/contract/policy_v1.yaml#RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_CI_GATE_BROAD_GOVERNANCE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_CI_GATE_BROAD_GOVERNANCE_REQUIRED` | 1 | 0 | 0 | 2 | 3 |
+| `RUNTIME_CI_GATE_SUMMARY_DEFAULT_SKIP_CRITICAL_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_CI_GATE_SUMMARY_DEFAULT_SKIP_CRITICAL_REQUIRED` | 1 | 0 | 0 | 2 | 3 |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | 2 | 1 | 0 | 2 | 3 |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | 2 | 0 | 0 | 1 | 3 |

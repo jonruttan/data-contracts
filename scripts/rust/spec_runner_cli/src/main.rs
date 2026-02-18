@@ -849,6 +849,7 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut runner_impl = env::var("SPEC_RUNNER_IMPL").unwrap_or_else(|_| "rust".to_string());
     let mut trace_out = env::var("SPEC_RUNNER_TRACE_OUT").unwrap_or_default();
     let mut fail_fast = env_bool("SPEC_RUNNER_FAIL_FAST", true);
+    let mut include_critical = false;
     let mut profile_on_fail = profile_level_or_off(
         env::var("SPEC_RUNNER_PROFILE_ON_FAIL")
             .unwrap_or_else(|_| "basic".to_string())
@@ -922,6 +923,11 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             i += 2;
             continue;
         }
+        if arg == "--include-critical" {
+            include_critical = true;
+            i += 1;
+            continue;
+        }
         eprintln!("ERROR: unsupported ci-gate-summary arg: {arg}");
         return 2;
     }
@@ -934,10 +940,11 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         .unwrap_or_else(|_| "1000".to_string());
     let broad_liveness_hard_cap_ms =
         env::var("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS").unwrap_or_else(|_| "120000".to_string());
-    let skip_critical = env_bool("SPEC_CI_GATE_SKIP_CRITICAL", false);
+    let include_critical = include_critical || env_bool("SPEC_CI_GATE_INCLUDE_CRITICAL", false);
+    let skip_critical = env_bool("SPEC_CI_GATE_SKIP_CRITICAL", !include_critical);
 
     let mut default_steps: Vec<(&str, Vec<String>)> = Vec::new();
-    if !skip_critical {
+    if include_critical && !skip_critical {
         default_steps.push((
             "governance_critical",
             runner_command(&runner_bin, &runner_impl, "critical-gate"),

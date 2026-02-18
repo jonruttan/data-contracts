@@ -1462,6 +1462,21 @@ rules:
   - scripts/ci_gate_summary.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_ci_gate_broad_governance_required.spec.md
+- id: RUNTIME_CI_GATE_SUMMARY_DEFAULT_SKIP_CRITICAL_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.ci_gate.summary_default_critical
+  norm: MUST
+  requirement: ci_gate_summary_defaults_to_broad_only_unless_critical_is_explicitly_enabled
+  description: 'ci-gate-summary must skip governance_critical by default and include it only via explicit opt-in flags/env.
+
+    '
+  rationale: Prevents duplicate critical runs when ci_gate.sh already executes critical-gate directly.
+  risk_if_violated: CI gate and local runs incur avoidable duplicate critical latency.
+  references:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - docs/spec/governance/cases/core/runtime_ci_gate_summary_default_skip_critical_required.spec.md
 - id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
   introduced_in: v1
   scope: governance

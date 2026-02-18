@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 243
-- must_count: 224
+- rule_count: 244
+- must_count: 225
 - should_count: 12
 - must_not_count: 7
-- active_count: 243
+- active_count: 244
 - deprecated_count: 0
 - removed_count: 0
 
@@ -222,6 +222,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.governance_step` | 3 | `active` |
 | `RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID` | `MUST` | `governance` | `runtime.ci.artifact_upload_paths` | 2 | `active` |
 | `RUNTIME_CI_GATE_BROAD_GOVERNANCE_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.governance_broad_required` | 3 | `active` |
+| `RUNTIME_CI_GATE_SUMMARY_DEFAULT_SKIP_CRITICAL_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.summary_default_critical` | 3 | `active` |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `implementation` | `runtime.assertion_decisions` | 2 | `active` |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `MUST` | `governance` | `runtime.default_gate.adapter` | 3 | `active` |
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `MUST` | `governance` | `runtime.gate.fail_fast` | 3 | `active` |

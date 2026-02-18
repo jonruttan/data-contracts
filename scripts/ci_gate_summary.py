@@ -157,7 +157,9 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
     broad_liveness_kill_grace_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_KILL_GRACE_MS", "1000"))
     broad_liveness_hard_cap_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS", "120000"))
     steps: list[tuple[str, list[str]]] = []
-    if not _env_bool("SPEC_CI_GATE_SKIP_CRITICAL", False):
+    include_critical = _env_bool("SPEC_CI_GATE_INCLUDE_CRITICAL", False)
+    skip_critical = _env_bool("SPEC_CI_GATE_SKIP_CRITICAL", not include_critical)
+    if include_critical and not skip_critical:
         steps.append(
             (
                 "governance_critical",
@@ -382,7 +384,16 @@ def main(argv: list[str] | None = None) -> int:
         default=os.environ.get("SPEC_RUNNER_PROFILE_ON_FAIL", "basic"),
         help="off|basic|detailed for fail-fast diagnostics (default: basic).",
     )
+    ap.add_argument(
+        "--include-critical",
+        action="store_true",
+        default=False,
+        help="Include governance_critical step in ci-gate-summary (default: off).",
+    )
     ns = ap.parse_args(argv)
+    if ns.include_critical:
+        os.environ["SPEC_CI_GATE_INCLUDE_CRITICAL"] = "1"
+        os.environ["SPEC_CI_GATE_SKIP_CRITICAL"] = "0"
 
     out_path = Path(str(ns.out))
     out_path.parent.mkdir(parents=True, exist_ok=True)
