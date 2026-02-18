@@ -137,7 +137,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip broad governance (set SPEC_PREPUSH_REQUIRE_BROAD=1 to enable)"
   fi
 
-  if paths_match_prefixes "docs/spec/" "spec_runner/" "scripts/run_governance_specs.py" "scripts/normalize_repo.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "docs/spec/" "spec_runner/" "scripts/run_governance_specs.py" "spec_runner/normalize_repo_runtime.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
     if paths_all_in_list "docs/spec/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip normalize-check (check_sets-only change)"
     elif is_fast_path_script_only_change; then

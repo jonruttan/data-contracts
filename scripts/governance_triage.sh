@@ -199,7 +199,7 @@ select_prefixes_from_changed_paths() {
       docs/spec/governance/*|docs/book/*|docs/spec/contract/*|docs/spec/current.md|README.md)
         if ! add_unique "docs." "${selected[@]-}"; then selected+=("docs."); fi
         ;;
-      docs/spec/schema/*|scripts/normalize_repo.py)
+      docs/spec/schema/*|spec_runner/normalize_repo_runtime.py)
         if ! add_unique "normalization." "${selected[@]-}"; then selected+=("normalization."); fi
         if ! add_unique "schema." "${selected[@]-}"; then selected+=("schema."); fi
         ;;
