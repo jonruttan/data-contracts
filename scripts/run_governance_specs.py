@@ -7537,6 +7537,53 @@ def _scan_runtime_ci_gate_default_report_commands_forbidden(
     return violations
 
 
+def _scan_runtime_ci_gate_single_pass_critical_required(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("ci_gate_single_pass_critical")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.ci_gate_single_pass_critical_required requires harness.ci_gate_single_pass_critical mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    ordered_tokens = cfg.get("ordered_tokens", [])
+    if not path:
+        return ["harness.ci_gate_single_pass_critical.path must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.ci_gate_single_pass_critical.required_tokens must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(ordered_tokens, list)
+        or len(ordered_tokens) < 2
+        or any(not isinstance(x, str) or not x.strip() for x in ordered_tokens)
+    ):
+        return ["harness.ci_gate_single_pass_critical.ordered_tokens must be a list of at least two non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing ci gate script for single-pass critical check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing required single-pass token {tok}")
+    last_idx = -1
+    for tok in ordered_tokens:
+        idx = text.find(tok)
+        if idx < 0:
+            violations.append(f"{path}:1: missing ordered single-pass token {tok}")
+            break
+        if idx < last_idx:
+            violations.append(f"{path}:1: ordered token violation for single-pass critical sequence")
+            break
+        last_idx = idx
+    return violations
+
+
 def _scan_runtime_rust_adapter_no_delegate(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -8959,6 +9006,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.ci_workflow_critical_gate_required": _scan_runtime_ci_workflow_critical_gate_required,
     "runtime.ci_gate_default_no_python_governance_required": _scan_runtime_ci_gate_default_no_python_governance_required,
     "runtime.ci_gate_default_report_commands_forbidden": _scan_runtime_ci_gate_default_report_commands_forbidden,
+    "runtime.ci_gate_single_pass_critical_required": _scan_runtime_ci_gate_single_pass_critical_required,
     "runtime.public_runner_entrypoint_single": _scan_runtime_public_runner_entrypoint_single,
     "runtime.public_runner_default_rust": _scan_runtime_public_runner_default_rust,
     "runtime.python_lane_explicit_opt_in": _scan_runtime_python_lane_explicit_opt_in,
