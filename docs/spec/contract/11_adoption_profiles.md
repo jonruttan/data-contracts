@@ -16,7 +16,7 @@ Goal:
 Minimum checks:
 
 - governance spec checks (`python -m spec_runner.spec_lang_commands run-governance-specs`)
-- evaluate-style lint (`scripts/evaluate_style.py --check docs/spec`)
+- evaluate-style lint (`python -m spec_runner.spec_lang_commands spec-lang-format --check docs/spec`)
 - focused core runner tests (`doc_parser`, `dispatcher`, `assertions`,
   `conformance_runner`)
 

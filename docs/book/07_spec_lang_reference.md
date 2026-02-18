@@ -12,7 +12,7 @@ owns_tokens:
 requires_tokens:
 - minimal_examples
 commands:
-- run: python scripts/evaluate_style.py --check docs/spec
+- run: python -m spec_runner.spec_lang_commands spec-lang-format --check docs/spec
   purpose: Enforce canonical evaluate formatting in specs.
 examples:
 - id: EX-SPECLANG-001
@@ -323,6 +323,6 @@ inside the expression when you need:
 Use the repo tool to keep `evaluate` layout canonical:
 
 ```sh
-python scripts/evaluate_style.py --check docs/spec
-python scripts/evaluate_style.py --write docs/spec
+python -m spec_runner.spec_lang_commands spec-lang-format --check docs/spec
+python -m spec_runner.spec_lang_commands spec-lang-format --write docs/spec
 ```

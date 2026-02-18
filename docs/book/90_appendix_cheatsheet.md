@@ -11,7 +11,7 @@ owns_tokens:
 requires_tokens:
 - first_run_walkthrough
 commands:
-- run: python scripts/evaluate_style.py --check docs/spec
+- run: python -m spec_runner.spec_lang_commands spec-lang-format --check docs/spec
   purpose: Verify canonical evaluate style.
 examples:
 - id: EX-CHEATSHEET-001

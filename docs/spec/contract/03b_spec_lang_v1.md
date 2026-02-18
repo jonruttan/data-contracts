@@ -356,5 +356,5 @@ standardize `evaluate` expression formatting to:
 
 Tooling:
 
-- lint: `python scripts/evaluate_style.py --check docs/spec`
-- format: `python scripts/evaluate_style.py --write docs/spec`
+- lint: `python -m spec_runner.spec_lang_commands spec-lang-format --check docs/spec`
+- format: `python -m spec_runner.spec_lang_commands spec-lang-format --write docs/spec`

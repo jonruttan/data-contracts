@@ -155,7 +155,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/conformance_spec_lang_preferred.spec.md
   notes: Governance enforces evaluate-only assertion authoring in conformance and
     governance case surfaces.
@@ -304,7 +304,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Initial governance checks use subject extraction with spec-lang decision
     expressions.
 - rule_id: DOC_NORMATIVE_PAGE_TRACEABILITY
@@ -451,7 +451,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/conformance_no_ambient_assumptions.spec.md
   notes: Governance enforces ambient env/time/random token bans in portable conformance
     case content.
@@ -467,7 +467,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_conformance_purpose_report_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/conformance_purpose.py
   notes: Governance enforces conformance purpose warning budget and policy integrity.
 - rule_id: SPEC_PORTABILITY_METRIC_REPORTED
@@ -485,7 +485,7 @@ links:
   implementation_refs:
   - spec_runner/spec_portability.py
   - scripts/spec_portability_report.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Portability metric report generation and governance wiring are covered by
     unit and script tests.
 - rule_id: SPEC_PORTABILITY_NON_REGRESSION_REQUIRED
@@ -501,7 +501,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/spec_portability.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/spec_portability_baseline.json
   notes: Governance enforces monotonic non-regression for configured spec-lang self-containment
     metrics.
@@ -520,7 +520,7 @@ links:
   implementation_refs:
   - spec_runner/quality_metrics.py
   - scripts/spec_lang_adoption_report.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Spec-lang adoption metric report and governance wiring are covered by unit/script
     tests.
 - rule_id: SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
@@ -536,7 +536,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Governance enforces non-regression on configured spec-lang adoption metrics.
 - rule_id: GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION
@@ -553,7 +553,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Spec-lang adoption ratchet enforces governance policy symbol resolution ratio
     non-regression.
@@ -570,7 +570,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Spec-lang adoption ratchet enforces library public surface ratio non-regression.
 - rule_id: CONFORMANCE_EVALUATE_FIRST_REQUIRED
@@ -587,7 +587,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Conformance evaluate-only coverage is pinned by baseline-backed non-regression
     checks.
@@ -602,7 +602,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/impl/php/cases/runner_pass.spec.md
   notes: Governance enforces evaluate-first assertion authoring in impl fixture surfaces.
 - rule_id: IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED
@@ -618,7 +618,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Impl evaluate ratio is ratcheted via baseline-backed non-regression checks.
 - rule_id: IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED
@@ -634,7 +634,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Impl library-backed assertion ratio is ratcheted to preserve reusable helper
     adoption.
@@ -649,7 +649,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/libraries/conformance/assertion_core.spec.md
   notes: Governance enforces helper-library reuse in spec_lang conformance fixtures.
 - rule_id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
@@ -665,7 +665,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
   notes: Governance ratchets shared library usage for policy expressions and fails
     regressions.
@@ -683,7 +683,7 @@ links:
   implementation_refs:
   - spec_runner/quality_metrics.py
   - scripts/runner_independence_report.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Runner-independence metric report generation and governance wiring are covered
     by tests.
 - rule_id: RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
@@ -698,7 +698,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/runner_independence_baseline.json
   notes: Governance enforces non-regression on configured runner-independence metrics.
 - rule_id: RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
@@ -715,7 +715,7 @@ links:
   implementation_refs:
   - spec_runner/quality_metrics.py
   - scripts/python_dependency_report.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Python-dependency evidence report is generated and enforced through governance.
 - rule_id: RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED
@@ -729,7 +729,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/python_dependency_baseline.json
   notes: Python-dependency metrics are ratcheted with checked-in baseline values.
 - rule_id: RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
@@ -744,7 +744,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Non-python lane token checks are enforced using python-dependency report
     inputs.
 - rule_id: RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
@@ -757,7 +757,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - scripts/rust/runner_adapter.sh
   notes: Rust adapter shell boundary avoids direct transitive python delegation tokens.
 - rule_id: RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
@@ -805,7 +805,7 @@ links:
   implementation_refs:
   - spec_runner/quality_metrics.py
   - scripts/docs_operability_report.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Docs-operability metric report generation and governance wiring are covered
     by tests.
 - rule_id: DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
@@ -821,7 +821,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/docs_operability_baseline.json
   notes: Governance enforces non-regression on configured docs-operability metrics.
 - rule_id: CONTRACT_ASSERTIONS_METRIC_REPORTED
@@ -839,7 +839,7 @@ links:
   implementation_refs:
   - spec_runner/quality_metrics.py
   - scripts/contract_assertions_report.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Contract-assertions metric report generation and governance wiring are covered
     by tests.
 - rule_id: CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
@@ -855,7 +855,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/metrics/contract_assertions_baseline.json
   notes: Governance enforces non-regression on configured contract-assertions metrics.
 - rule_id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
@@ -871,7 +871,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/spec_portability.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Threshold support is present in config/report model and can be enforced via
     governance config when enabled.
 - rule_id: DOCS_REF_SURFACE_COMPLETE
@@ -886,7 +886,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/contract_governance.py
   notes: Governance enforces required reference surface file presence.
 - rule_id: DOCS_REFERENCE_INDEX_SYNC
@@ -900,7 +900,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/contract_governance.py
   notes: Reference index entries must match actual chapter files and order.
 - rule_id: DOCS_REQUIRED_SECTIONS_PRESENT
@@ -916,7 +916,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/contract_governance.py
   notes: Required section tokens in reference chapters are hard-gated.
 - rule_id: DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT
@@ -930,7 +930,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/contract_governance.py
   notes: Invalid doc examples fail unless an explicit opt-out marker with reason is
     present.
@@ -947,7 +947,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/contract_governance.py
   notes: Public runner flags extracted from script parsers must be documented.
 - rule_id: DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC
@@ -963,7 +963,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/contract_governance.py
   notes: Core assertion token vocabulary remains synchronized across book/contract/schema
     docs.
@@ -982,7 +982,7 @@ links:
   implementation_refs:
   - spec_runner/docs_quality.py
   - spec_runner/spec_lang_commands.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_meta_schema_valid.spec.md
   notes: Reference chapter doc-meta blocks are schema-validated.
 - rule_id: DOCS_REFERENCE_MANIFEST_SYNC
@@ -1000,7 +1000,7 @@ links:
   implementation_refs:
   - spec_runner/docs_quality.py
   - scripts/docs_build_reference.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_reference_manifest_sync.spec.md
   notes: Reference index generation/sync is enforced against manifest source data.
 - rule_id: DOCS_TOKEN_OWNERSHIP_UNIQUE
@@ -1017,7 +1017,7 @@ links:
   implementation_refs:
   - spec_runner/docs_quality.py
   - spec_runner/spec_lang_commands.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_token_ownership_unique.spec.md
   notes: Canonical doc tokens must have exactly one owner page.
 - rule_id: DOCS_TOKEN_DEPENDENCY_RESOLVED
@@ -1034,7 +1034,7 @@ links:
   implementation_refs:
   - spec_runner/docs_quality.py
   - spec_runner/spec_lang_commands.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_token_dependency_resolved.spec.md
   notes: Requires-token dependencies must resolve to owner docs and owner content.
 - rule_id: DOCS_INSTRUCTIONS_REQUIRED_SECTIONS
@@ -1051,7 +1051,7 @@ links:
   implementation_refs:
   - spec_runner/docs_quality.py
   - spec_runner/spec_lang_commands.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_instructions_complete.spec.md
   notes: Instruction docs must retain required operational sections.
 - rule_id: DOCS_COMMAND_EXAMPLES_VERIFIED
@@ -1069,7 +1069,7 @@ links:
   implementation_refs:
   - spec_runner/docs_quality.py
   - spec_runner/spec_lang_commands.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_command_examples_verified.spec.md
   notes: Docs examples are validated or explicitly opted out with reason.
 - rule_id: DOCS_EXAMPLE_IDS_UNIQUE
@@ -1086,7 +1086,7 @@ links:
   implementation_refs:
   - spec_runner/docs_quality.py
   - spec_runner/spec_lang_commands.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_example_id_uniqueness.spec.md
   notes: Example identifiers remain unique across canonical docs metadata.
 - rule_id: DOCS_GENERATED_ARTIFACTS_FRESH
@@ -1104,7 +1104,7 @@ links:
   implementation_refs:
   - spec_runner/docs_quality.py
   - scripts/docs_build_reference.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_generated_files_clean.spec.md
   notes: Generated docs artifacts must stay synchronized with manifest and metadata.
 - rule_id: DOCS_MAKE_COMMANDS_SYNC
@@ -1118,7 +1118,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/contract_governance.py
   notes: Governance enforces canonical make command entrypoints in core contributor
     docs.
@@ -1134,7 +1134,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_adoption_profiles_sync.spec.md
   - spec_runner/contract_governance.py
   notes: Governance enforces synchronized Core/Full adoption profile docs and commands.
@@ -1149,7 +1149,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_release_contract_automation_policy.spec.md
   - spec_runner/contract_governance.py
   notes: Release guidance is automation-first and forbids manual sequential checklist
@@ -1164,11 +1164,11 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_runner_interface_gate_sync.spec.md
   - scripts/ci_gate.sh
   - scripts/runner_adapter.sh
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   notes: Governance enforces runner-interface boundary usage in gate shell scripts.
 - rule_id: RUNTIME_LOCAL_CI_PARITY_PYTHON_LANE_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_CI_PARITY_PYTHON_LANE_FORBIDDEN
@@ -1311,7 +1311,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md
   notes: CI gate summary routes governance through triage and exposes triage metadata.
@@ -1326,7 +1326,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - scripts/governance_triage.sh
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - docs/spec/governance/cases/core/runtime_triage_artifacts_emitted_required.spec.md
   notes: Triage flow emits deterministic machine/human artifacts on failure/stall.
 - rule_id: RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED
@@ -1393,7 +1393,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - scripts/ci_gate.sh
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_ci_gate_ownership_contract_required.spec.md
   notes: CI gate owns critical in ci_gate.sh and keeps ci-gate-summary broad-only
@@ -1448,7 +1448,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_scope_sync.spec.md
   notes: Governance keeps v1 runtime support scope explicitly bounded to declared
     targets.
@@ -1464,7 +1464,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_php_conformance_subset_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - scripts/php/conformance_runner.php
   - scripts/php/spec_runner.php
   - spec_runner/assertions.py
@@ -1486,7 +1486,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/contract_governance.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Governance enforces complete coverage for active MUST contract rules.
 - rule_id: SPEC_LANG_PURE_NO_EFFECT_BUILTINS
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PURE_NO_EFFECT_BUILTINS
@@ -1537,7 +1537,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/compiler.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/assert_universal_core_sync.spec.md
   notes: Universal assertion core is evaluate; sugar operators compile into evaluate-equivalent
     expressions.
@@ -1557,7 +1557,7 @@ links:
   implementation_refs:
   - spec_runner/compiler.py
   - spec_runner/assertions.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/assert_sugar_compile_only_sync.spec.md
   notes: Sugar ops remain authoring convenience only; runtime uses compiled predicates.
 - rule_id: ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN
@@ -1573,7 +1573,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/assert_type_contract_subject_semantics_sync.spec.md
   notes: Type contracts define subject semantics and availability responsibilities.
 - rule_id: ASSERT_COMPILER_SCHEMA_MATRIX_SYNC
@@ -1590,7 +1590,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/compiler.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/assert_compiler_schema_matrix_sync.spec.md
   notes: Governance enforces compiler/schema/contract alignment for universal evaluate
     model.
@@ -1604,7 +1604,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/conformance_spec_lang_preferred.spec.md
   notes: Governance decision expressions are configured as spec-lang data in harness
     config.
@@ -1618,7 +1618,7 @@ links:
   - docs/spec/impl/python/cases/script_ci_and_parity.spec.md
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
   notes: CI gate summary loads a spec-lang decision expression from governance policy
     case.
@@ -1633,7 +1633,7 @@ links:
   - tests/test_ops_namespace_unit.py
   implementation_refs:
   - spec_runner/ops_namespace.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/orchestration_ops_symbol_grammar.spec.md
   notes: Ops effect symbols are validated against deep-dot canonical grammar.
 - rule_id: ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED
@@ -1648,7 +1648,7 @@ links:
   implementation_refs:
   - docs/spec/tools/python/tools_v1.yaml
   - docs/spec/tools/rust/tools_v1.yaml
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/orchestration_ops_registry_sync.spec.md
   notes: Orchestration tools registry must declare effect symbols, capabilities, and
     schema refs.
@@ -1663,7 +1663,7 @@ links:
   - tests/test_harness_orchestration_run_unit.py
   implementation_refs:
   - spec_runner/harnesses/orchestration_run.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/orchestration_ops_capability_bindings.spec.md
   notes: Orchestration cases must bind required capability ids for selected tools.
 - rule_id: RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED
@@ -1675,7 +1675,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - scripts/rust/runner_adapter.sh
   - docs/spec/governance/cases/core/runtime_runner_interface_subcommands.spec.md
   notes: Governance verifies Rust adapter case labels cover required runner-interface
@@ -1690,7 +1690,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - scripts/rust/runner_adapter.sh
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_adapter_no_delegate.spec.md
   notes: Governance prevents regression back to shell adapter delegation in the Rust
     lane.
@@ -1705,7 +1705,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - .github/workflows/ci.yml
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_primary_gate_path.spec.md
   notes: Rust-primary CI lane requirement is enforced through runner-interface CI
     lane checks.
@@ -1722,7 +1722,7 @@ links:
   - scripts/ci_gate.sh
   - scripts/core_gate.sh
   - scripts/docs_doctor.sh
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_primary_no_python_dependency.spec.md
   notes: Gate orchestration remains runner-interface based without direct Python command
     coupling.
@@ -1737,7 +1737,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - scripts/rust/runner_adapter.sh
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_primary_interface_stability.spec.md
   notes: Rust adapter preserves required runner-interface command surface.
 - rule_id: RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
@@ -1753,7 +1753,7 @@ links:
   implementation_refs:
   - scripts/core_gate.sh
   - spec_runner/script_runtime_commands.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_primary_shared_capability_parity.spec.md
   notes: Rust-primary-compatible gate flow retains shared-capability parity step.
 - rule_id: RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED
@@ -1767,7 +1767,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - scripts/rust/runner_adapter.sh
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md
   notes: Rust-primary governance includes an executable smoke check for adapter command
     behavior.
@@ -1783,7 +1783,7 @@ links:
   implementation_refs:
   - scripts/rust/runner_adapter.sh
   - scripts/rust/spec_runner_cli/src/main.rs
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_primary_subcommand_parity.spec.md
   notes: Governance enforces parity between shell adapter and Rust CLI subcommand
     surfaces.
@@ -1799,7 +1799,7 @@ links:
   implementation_refs:
   - README.md
   - docs/development.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_adoption_profiles_sync.spec.md
   notes: Adoption profile docs remain synchronized during Rust-primary transition.
 - rule_id: OBJECTIVE_METRIC_MANIFEST_VALID
@@ -1815,7 +1815,7 @@ links:
   implementation_refs:
   - docs/spec/metrics/objective_manifest.yaml
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/objective_scorecard_metric.spec.md
   notes: Objective manifest remains schema-valid and includes required objective IDs.
 - rule_id: OBJECTIVE_SCORECARD_REPORTED
@@ -1833,7 +1833,7 @@ links:
   - scripts/objective_scorecard_report.py
   - spec_runner/quality_metrics.py
   - scripts/runner_adapter.sh
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - docs/spec/governance/cases/core/objective_scorecard_metric.spec.md
   notes: Objective scorecard is generated as JSON/Markdown artifact.
 - rule_id: OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED
@@ -1848,7 +1848,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - docs/spec/metrics/objective_scorecard_baseline.json
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/objective_scorecard_non_regression.spec.md
   notes: Objective scorecard summary values are ratchet-gated by baseline.
 - rule_id: OBJECTIVE_TRIPWIRES_ENFORCED
@@ -1862,7 +1862,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - docs/spec/metrics/objective_manifest.yaml
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/objective_tripwires_clean.spec.md
   notes: Tripwire check IDs in objective manifest must map to passing governance checks.
 - rule_id: OBJECTIVE_COURSE_CORRECTION_POLICY_DEFINED
@@ -1878,7 +1878,7 @@ links:
   implementation_refs:
   - docs/spec/metrics/baseline_update_notes.yaml
   - spec_runner/quality_metrics.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/objective_scorecard_non_regression.spec.md
   notes: Baseline update metadata notes are hash-pinned and required by governance.
 - rule_id: SPEC_LANG_LIBRARY_INCLUDE_FORMAT_SCOPE
@@ -1906,7 +1906,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/naming_filename_policy.spec.md
   notes: Filename stems are governance-checked for lowercase + underscore word separators
     + hyphen section separators.
@@ -1921,7 +1921,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Per-check policy verdict branching is replaced by extractor output + central
     policy engine.
 - rule_id: GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED
@@ -1935,7 +1935,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/governance_structured_assertions_required.spec.md
   notes: Governance cases use structured result targets for assertion truth instead
     of PASS text coupling.
@@ -1952,7 +1952,7 @@ links:
   implementation_refs:
   - scripts/rust/spec_runner_cli/src/main.rs
   - scripts/rust/runner_adapter.sh
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Rust runner interface source must avoid direct Python execution token coupling.
 - rule_id: NORMALIZATION_PROFILE_DEFINED
   policy_ref: docs/spec/contract/policy_v1.yaml#NORMALIZATION_PROFILE_DEFINED
@@ -1965,7 +1965,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/normalization_profile_sync.spec.md
   notes: Normalization profile structure is governance-enforced.
 - rule_id: NORMALIZATION_CHECK_GATE_REQUIRED
@@ -1981,7 +1981,7 @@ links:
   implementation_refs:
   - scripts/normalize_repo.py
   - scripts/runner_adapter.sh
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - Makefile
   notes: Normalize check is included in smoke/full gate command paths.
 - rule_id: NORMALIZATION_MAPPING_AST_ONLY
@@ -2015,7 +2015,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - scripts/normalize_repo.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/normalization_docs_token_sync.spec.md
   notes: Required/forbidden token rules keep schema/contract/book wording aligned.
 - rule_id: NORMALIZATION_FIX_COMMAND_AVAILABLE
@@ -2057,7 +2057,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/reference_contract_paths_exist.spec.md
   notes: Governance validates referenced in-root paths exist before runtime.
 - rule_id: REFERENCE_SYMBOLS_EXIST
@@ -2071,7 +2071,7 @@ links:
   - tests/test_spec_lang_libraries_unit.py
   implementation_refs:
   - spec_runner/spec_lang_libraries.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/reference_symbols_exist.spec.md
   notes: Library exports/symbol references are validated early.
 - rule_id: REFERENCE_LIBRARY_EXPORTS_USED
@@ -2085,7 +2085,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/reference_library_exports_used.spec.md
   notes: Library defines.public symbols must be referenced by policies/expressions
     or harness exports.
@@ -2100,7 +2100,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md
   notes: defines.private symbols are forbidden from external case policy/assertion
     references.
@@ -2114,7 +2114,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/reference_check_ids_exist.spec.md
   notes: Governance case check ids must map to registered scanner ids.
 - rule_id: REFERENCE_EXTERNAL_REFS_POLICY
@@ -2129,7 +2129,7 @@ links:
   - tests/test_virtual_paths_unit.py
   implementation_refs:
   - spec_runner/external_refs.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/reference_external_refs_policy.spec.md
   notes: External refs are deny-by-default and capability/policy gated.
 - rule_id: REFERENCE_TOKEN_ANCHORS_EXIST
@@ -2142,7 +2142,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/reference_token_anchors_exist.spec.md
   notes: Token anchor references are checked for file existence and token presence.
 - rule_id: SPEC_LAYOUT_DOMAIN_TREES
@@ -2156,7 +2156,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/spec_layout_domain_trees.spec.md
   notes: Domain-tree directories are required for conformance/governance/libraries
     spec surfaces.
@@ -2170,7 +2170,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/spec_domain_index_sync.spec.md
   notes: Domain index files are checked for completeness and stale entries.
 - rule_id: LIBRARY_DOMAIN_OWNERSHIP
@@ -2184,7 +2184,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/library_domain_ownership.spec.md
   notes: Governance enforces domain ownership boundaries for harness.spec_lang.includes.
 - rule_id: LIBRARY_DOMAIN_INDEX_SYNC
@@ -2198,7 +2198,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/library_domain_index_sync.spec.md
   notes: Library domain indexes are checked for complete file and exported symbol
     inventory coverage.
@@ -2213,7 +2213,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_spec_lang_libraries_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/spec_lang_libraries.py
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
   notes: spec_lang.export shape enforcement requires defines.public/defines.private
@@ -2230,7 +2230,7 @@ links:
   - docs/spec/impl/python/cases/script_normalization.spec.md
   - docs/spec/impl/python/cases/script_portability_and_migration.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - scripts/normalize_repo.py
   - scripts/split_library_cases_per_symbol.py
   notes: Library cases are function-granular with one public symbol per case.
@@ -2244,7 +2244,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/library_colocated_symbol_tests_required.spec.md
   notes: Library files must include colocated executable non-library tests.
 - rule_id: SPEC_LANG_STDLIB_PROFILE_DEFINED
@@ -2274,7 +2274,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/spec_lang_stdlib_profile.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md
   notes: Governance fails when any profile symbol is missing in Python or PHP implementations.
 - rule_id: SPEC_LANG_STDLIB_PY_PHP_PARITY_REQUIRED
@@ -2306,7 +2306,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/spec_lang_stdlib_profile.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md
   notes: Core docs must reference the canonical stdlib profile contract artifacts.
 - rule_id: SPEC_LANG_STDLIB_CONFORMANCE_COVERAGE_REQUIRED
@@ -2320,7 +2320,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md
   notes: Required stdlib conformance fixture files must exist and remain in canonical
     paths.
@@ -2337,7 +2337,7 @@ links:
   - scripts/core_gate.sh
   - scripts/ci_gate.sh
   - scripts/docs_doctor.sh
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_public_runner_entrypoint_single.spec.md
   notes: Gate scripts must reference scripts/runner_adapter.sh as the single public
     runner entrypoint.
@@ -2353,7 +2353,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - scripts/runner_adapter.sh
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_public_runner_default_rust.spec.md
   notes: Canonical runner adapter defaults to rust implementation mode.
 - rule_id: RUNTIME_RUNNER_ADAPTER_PYTHON_IMPL_FORBIDDEN
@@ -2367,7 +2367,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - scripts/runner_adapter.sh
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_runner_adapter_python_impl_forbidden.spec.md
   notes: Runtime runner adapter rejects python impl selection with migration guidance.
 - rule_id: RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
@@ -2382,7 +2382,7 @@ links:
   implementation_refs:
   - docs/development.md
   - README.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md
   notes: Public docs avoid directing users to internal rust adapter paths.
 - rule_id: ASSERT_SUBJECT_PROFILE_JSON_CORE_ONLY
@@ -2397,7 +2397,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md
   notes: Enforces JSON-core subject model in profile schema and evaluator subject
     validation.
@@ -2416,7 +2416,7 @@ links:
   - spec_runner/harnesses/text_file.py
   - spec_runner/harnesses/cli_run.py
   - spec_runner/harnesses/api_http.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/assert_adapter_projection_contract_sync.spec.md
   notes: Requires context_json projection targets and profile metadata in core harness
     adapters.
@@ -2436,7 +2436,7 @@ links:
   - docs/spec/libraries/domain/markdown_core.spec.md
   - docs/spec/libraries/domain/php_core.spec.md
   - docs/spec/libraries/domain/python_core.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/assert_domain_library_usage_required.spec.md
   notes: Domain assertion scenarios must be library-backed rather than ad hoc inline-only
     expression patterns.
@@ -2455,7 +2455,7 @@ links:
   - docs/spec/contract/types/http_profile.md
   - docs/spec/contract/types/markdown_profile.md
   - docs/spec/contract/types/makefile_profile.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/assert_domain_profiles_docs_sync.spec.md
   notes: Keeps profile docs and schema declarations synchronized.
 - rule_id: ASSERT_NO_NON_JSON_EVALUATOR_TYPES
@@ -2470,7 +2470,7 @@ links:
   - tests/test_spec_lang_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md
   notes: Evaluator rejects non-JSON subject values; adapters project native values
     to JSON.
@@ -2486,7 +2486,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md
   notes: Enforces .spec.md as the canonical executable authoring surface.
 - rule_id: EXECUTABLE_DISCOVERY_MARKDOWN_ONLY
@@ -2502,7 +2502,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/codecs.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
   notes: Canonical executable trees reject non-markdown format opt-ins.
 - rule_id: DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES
@@ -2515,7 +2515,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md
   notes: Keeps baselines/manifests/schemas as machine data and forbids executable
     fences in those artifacts.
@@ -2531,7 +2531,7 @@ links:
   - tests/test_codecs_unit.py
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
   - docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md
   notes: Forbids runnable yaml/json spec case files in canonical executable trees.
@@ -2602,7 +2602,7 @@ links:
   - tests/test_schema_registry_unit.py
   implementation_refs:
   - spec_runner/schema_registry.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Governance enforces required type-profile coverage for core executable surfaces.
 - rule_id: SCHEMA_PROSE_ONLY_RULES_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_PROSE_ONLY_RULES_FORBIDDEN
@@ -2614,7 +2614,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Schema contract wording must reference registry-backed machine constraints.
 - rule_id: DOCS_GENERATOR_REGISTRY_DEFINED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_REGISTRY_DEFINED
@@ -2772,7 +2772,7 @@ links:
   - docs/spec/impl/python/cases/script_docs_generate.spec.md
   implementation_refs:
   - scripts/docs_generate_all.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md
   notes: Ensures docs generator execution emits deterministic report artifacts.
 - rule_id: DOCS_LAYOUT_CANONICAL_TREES_REQUIRED
@@ -2786,7 +2786,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_layout_canonical_trees.spec.md
   notes: Enforces canonical docs tree roots and forbids non-canonical review root.
 - rule_id: DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED
@@ -2800,7 +2800,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_index_filename_policy.spec.md
   notes: Requires `index.md` for docs directory index files and forbids docs-local
     README index files.
@@ -2815,7 +2815,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_filename_policy.spec.md
   notes: Enforces lowercase/no-space docs filename policy.
 - rule_id: DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED
@@ -2828,7 +2828,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_history_reviews_namespace.spec.md
   notes: Requires `docs/history/reviews` namespace and forbids `docs/history/reviews`.
 - rule_id: DOCS_NO_OS_ARTIFACT_FILES_TRACKED
@@ -2842,7 +2842,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - scripts/normalize_docs_layout.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_no_os_artifact_files.spec.md
   notes: Hard-fails tracked OS/editor artifact files under docs.
 - rule_id: DOCS_BOOK_CHAPTER_ORDER_CANONICAL
@@ -2855,7 +2855,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md
   notes: Enforces canonical Learn -> Do -> Debug chapter order and appendix order.
 - rule_id: DOCS_BOOK_APPENDIX_CATALOG_NAMESPACE_REQUIRED
@@ -2882,7 +2882,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md
   notes: Enforces guide chapter before strict spec-lang reference chapter.
 - rule_id: API_HTTP_OAUTH_HARNESS_PROFILE_SUPPORTED
@@ -2909,7 +2909,7 @@ links:
   - tests/test_harness_api_http_unit.py
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/harnesses/api_http.py
   notes: Enforces env-ref-only OAuth credential fields.
 - rule_id: API_HTTP_OAUTH_SECRET_REDACTION_REQUIRED
@@ -2947,7 +2947,7 @@ links:
   - tests/test_harness_api_http_unit.py
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/harnesses/api_http.py
   notes: Network token/request flows require explicit live-mode opt-in.
 - rule_id: API_HTTP_VERB_SUITE_REQUIRED
@@ -3029,7 +3029,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Docs include contributor tutorials for REST verbs, CORS, and round-trip scenarios.
 - rule_id: DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
@@ -3067,7 +3067,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/book/reference_manifest.yaml
   notes: Governance enforces namespace chapter presence and manifest synchronization.
 - rule_id: DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED
@@ -3104,7 +3104,7 @@ links:
   unit_test_refs:
   - tests/test_docs_docgen_quality_checks_unit.py
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Governance enforces quality score threshold over generated catalog artifacts.
 - rule_id: DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED
@@ -3116,7 +3116,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/libraries/domain/markdown_core.spec.md
   notes: Markdown docs assertions should use structured helper predicates over plain
     contains checks.
@@ -3149,7 +3149,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Governance forbids non-canonical per-harness workflow tokens.
 - rule_id: HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
@@ -3162,7 +3162,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Overlay completeness is hard-failed by governance.
 - rule_id: HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED
@@ -3176,7 +3176,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Contract prose and overlays must remain aligned.
 - rule_id: HARNESS_SUBJECT_TARGET_MAP_DECLARED
   policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_SUBJECT_TARGET_MAP_DECLARED
@@ -3188,7 +3188,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/components/subject_router.py
   notes: Harnesses must declare explicit target mapping for assertions.
 - rule_id: CHAIN_REFERENCE_CONTRACT_REQUIRED
@@ -3230,7 +3230,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/components/chain_engine.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - scripts/normalize_repo.py
   notes: Harness exports must use from key only.
 - rule_id: CHAIN_EXPORTS_LIST_ONLY_REQUIRED
@@ -3245,7 +3245,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/components/chain_engine.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - scripts/normalize_repo.py
   notes: Harness exports are list-only and mapping-form entries are rejected.
 - rule_id: CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
@@ -3263,7 +3263,7 @@ links:
   implementation_refs:
   - spec_runner/components/chain_engine.py
   - spec_runner/spec_lang_libraries.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: from=assert.function harness exports require explicit symbol path, with compile-only
     resolution.
 - rule_id: CHAIN_FAIL_FAST_DEFAULT_REQUIRED
@@ -3288,7 +3288,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/dispatcher.py
   notes: Governance and runtime recursion guards reject direct and indirect cycles.
 - rule_id: CHAIN_SHARED_CONTEXT_REQUIRED
@@ -3316,7 +3316,7 @@ links:
   - tests/test_dispatcher_unit.py
   implementation_refs:
   - spec_runner/dispatcher.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Dispatcher executes chain orchestration before all executable harness dispatch
     paths.
 - rule_id: CHAIN_STEP_CLASS_REQUIRED
@@ -3331,7 +3331,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/components/chain_engine.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Chain step classes are explicit and validated as must/may/must_not.
 - rule_id: CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN
@@ -3345,7 +3345,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/components/chain_engine.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Chain import alias maps are validated for unknown names, collisions, and
     reserved symbol shadowing.
 - rule_id: CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED
@@ -3358,7 +3358,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - scripts/normalize_repo.py
   notes: Chain declarations are constrained to harness.chain and alternate locations
     are rejected.
@@ -3374,7 +3374,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/components/execution_context.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - scripts/normalize_repo.py
   notes: Executable cases must chain-load symbols; includes are library-only.
 - rule_id: LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
@@ -3388,7 +3388,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Library contract and governance enforce verb-first defines.public/private
     schema keys.
 - rule_id: SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED
@@ -3402,7 +3402,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Governance enforces defines wording alignment across schema, contract, and
     current snapshot docs.
 - rule_id: RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED
@@ -3416,7 +3416,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/components/profiler.py
   notes: Ensures runtime profiling contract and schema artifacts remain present and
     wired into governance.
@@ -3430,7 +3430,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/components/profiler.py
   notes: Profiling artifacts redact secret-like values and forbid raw env value emission.
 - rule_id: RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED
@@ -3443,7 +3443,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - spec_runner/components/profiler.py
   - scripts/rust/spec_runner_cli/src/profiler.rs
   notes: Runtime profiling traces include required run/case/check/subprocess span
@@ -3458,9 +3458,9 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Gate orchestration defaults to deterministic fail-fast and emits explicit
     abort markers.
 - rule_id: RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
@@ -3472,9 +3472,9 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Gate summary payload includes deterministic skipped-tail metadata for fail-fast
     runs.
 - rule_id: RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED
@@ -3487,9 +3487,9 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Failing gate runs with profile-on-fail enabled emit diagnostic trace artifacts.
 - rule_id: RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED
@@ -3501,9 +3501,9 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Policy evaluation considers full rows including skipped statuses to preserve
     fail-fast correctness.
 - rule_id: ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
@@ -3517,7 +3517,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Governance verdict authority is encoded in assert blocks only.
 - rule_id: META_JSON_TARGET_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#META_JSON_TARGET_REQUIRED
@@ -3560,7 +3560,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/doc_parser.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Executable markdown discovery requires contract-spec fence token.
 - rule_id: CASE_CONTRACT_BLOCK_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CASE_CONTRACT_BLOCK_REQUIRED
@@ -3573,7 +3573,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/compiler.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Top-level contract block is required for executable cases.
 - rule_id: CONTRACT_STEP_ASSERTS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_STEP_ASSERTS_REQUIRED
@@ -3587,7 +3587,7 @@ links:
   implementation_refs:
   - spec_runner/compiler.py
   - spec_runner/assertions.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: Contract step-form nodes require asserts list.
 - rule_id: CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED
@@ -3652,7 +3652,7 @@ links:
   implementation_refs:
   - spec_runner/components/hook_engine.py
   - scripts/normalize_repo.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: when shape and allowed key contract are validated.
 - rule_id: WHEN_CLASS_HOOK_ORDER_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#WHEN_CLASS_HOOK_ORDER_REQUIRED
@@ -3715,7 +3715,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/refactor_contract_job_hooks.py
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   notes: rust contract.job specs use when fail/complete dispatch hooks with paired
     hook job metadata.
 - rule_id: DOCS_SPEC_IA_CANONICAL_REQUIRED
@@ -3729,7 +3729,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_spec_index_reachability.spec.md
   notes: Governance scanner enforces canonical spec index reachability links.
 - rule_id: GOVERNANCE_CHECK_FAMILY_MAP_REQUIRED
@@ -3743,7 +3743,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - docs/spec/governance/check_catalog_map_v1.yaml
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/docs_governance_check_family_map_complete.spec.md
   notes: Governance checks are mapped to deterministic check-id families.
 - rule_id: DOCS_FRESHNESS_STRICT_REQUIRED
@@ -3757,7 +3757,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_docs_generate.spec.md
   implementation_refs:
-  - scripts/check_docs_freshness.py
+  - spec_runner/script_runtime_commands.py
   - scripts/docs_inventory.py
   - docs/spec/governance/cases/core/docs_canonical_freshness_strict.spec.md
   notes: Strict docs freshness checker is enforced in governance and CI gates.

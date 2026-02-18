@@ -253,7 +253,7 @@ rules:
   references:
   - docs/spec/governance/cases/core/conformance_spec_lang_fixture_library_usage.spec.md
   - docs/spec/libraries/conformance/assertion_core.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: SPEC_LANG_PURE_EVALUATOR
   introduced_in: v1
   scope: implementation
@@ -409,7 +409,7 @@ rules:
     runtimes.
   references:
   - docs/spec/contract/15_governance_subject_model.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: DOC_NORMATIVE_PAGE_TRACEABILITY
   introduced_in: v1
   scope: governance
@@ -1454,7 +1454,7 @@ rules:
     flow.
   risk_if_violated: CI failures lose triage context and are harder to isolate quickly.
   references:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md
 - id: RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
@@ -1471,7 +1471,7 @@ rules:
   risk_if_violated: Repeat triage requires ad-hoc reruns and manual log scraping.
   references:
   - scripts/governance_triage.sh
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - docs/spec/governance/cases/core/runtime_triage_artifacts_emitted_required.spec.md
 - id: RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED
   introduced_in: v1
@@ -1551,7 +1551,7 @@ rules:
     latency and inconsistency.
   references:
   - scripts/ci_gate.sh
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_ci_gate_ownership_contract_required.spec.md
 - id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
@@ -1840,7 +1840,7 @@ rules:
   risk_if_violated: Governance policy drifts into ad-hoc host-language code.
   references:
   - docs/spec/contract/15_governance_subject_model.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY
   introduced_in: v1
   scope: governance
@@ -1854,7 +1854,7 @@ rules:
   rationale: Keeps release policy implementation-independent and auditable.
   risk_if_violated: Gate behavior hardcodes runtime-specific logic in scripts.
   references:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
 - id: ORCHESTRATION_OPS_DEEP_DOT_REQUIRED
   introduced_in: v1
@@ -2117,7 +2117,7 @@ rules:
   references:
   - scripts/normalize_repo.py
   - scripts/runner_adapter.sh
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
 - id: NORMALIZATION_MAPPING_AST_ONLY
   introduced_in: v1
   scope: schema
@@ -2197,7 +2197,7 @@ rules:
   risk_if_violated: Specs become brittle and fail late.
   references:
   - docs/spec/governance/cases/core/reference_contract_paths_exist.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: REFERENCE_SYMBOLS_EXIST
   introduced_in: v1
   scope: governance
@@ -2226,7 +2226,7 @@ rules:
   risk_if_violated: Unused exported symbols create drift and unclear API surfaces.
   references:
   - docs/spec/governance/cases/core/reference_library_exports_used.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
   introduced_in: v1
   scope: governance
@@ -2241,7 +2241,7 @@ rules:
   risk_if_violated: Private implementation details leak into case contracts.
   references:
   - docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: REFERENCE_CHECK_IDS_EXIST
   introduced_in: v1
   scope: governance
@@ -2255,7 +2255,7 @@ rules:
   risk_if_violated: Cases silently stop enforcing intended rules.
   references:
   - docs/spec/governance/cases/core/reference_check_ids_exist.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: REFERENCE_EXTERNAL_REFS_POLICY
   introduced_in: v1
   scope: governance
@@ -2286,7 +2286,7 @@ rules:
   risk_if_violated: Governance checks become stale and misleading.
   references:
   - docs/spec/governance/cases/core/reference_token_anchors_exist.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: SPEC_LAYOUT_DOMAIN_TREES
   introduced_in: v1
   scope: governance
@@ -2301,7 +2301,7 @@ rules:
   risk_if_violated: Flat trees become hard to navigate and references drift.
   references:
   - docs/spec/governance/cases/core/spec_layout_domain_trees.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: SPEC_DOMAIN_INDEX_SYNC
   introduced_in: v1
   scope: governance
@@ -2316,7 +2316,7 @@ rules:
   risk_if_violated: Index drift hides missing or stale references.
   references:
   - docs/spec/governance/cases/core/spec_domain_index_sync.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: LIBRARY_DOMAIN_OWNERSHIP
   introduced_in: v1
   scope: governance
@@ -2331,7 +2331,7 @@ rules:
   risk_if_violated: Cross-domain coupling increases brittleness and review ambiguity.
   references:
   - docs/spec/governance/cases/core/library_domain_ownership.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: LIBRARY_DOMAIN_INDEX_SYNC
   introduced_in: v1
   scope: governance
@@ -2346,7 +2346,7 @@ rules:
   risk_if_violated: Missing or stale symbol references break policy reuse at runtime.
   references:
   - docs/spec/governance/cases/core/library_domain_index_sync.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: LIBRARY_PUBLIC_SURFACE_MODEL
   introduced_in: v1
   scope: governance
@@ -2363,7 +2363,7 @@ rules:
   references:
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
   - docs/spec/contract/14_spec_lang_libraries.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
   introduced_in: v1
   scope: schema
@@ -2379,7 +2379,7 @@ rules:
   references:
   - docs/spec/contract/14_spec_lang_libraries.md
   - docs/spec/governance/cases/core/library_single_public_symbol_per_case_required.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2395,7 +2395,7 @@ rules:
   references:
   - docs/spec/contract/14_spec_lang_libraries.md
   - docs/spec/governance/cases/core/library_colocated_symbol_tests_required.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: SPEC_LANG_STDLIB_PROFILE_DEFINED
   introduced_in: v1
   scope: contract
@@ -2425,7 +2425,7 @@ rules:
   risk_if_violated: Conformance and policy behavior diverge by implementation.
   references:
   - docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: SPEC_LANG_STDLIB_PY_PHP_PARITY_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2440,7 +2440,7 @@ rules:
   risk_if_violated: Cross-runtime policy/assertion behavior drifts.
   references:
   - docs/spec/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: SPEC_LANG_STDLIB_DOCS_SYNC_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2455,7 +2455,7 @@ rules:
   risk_if_violated: Authors follow stale stdlib docs and produce invalid specs.
   references:
   - docs/spec/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: SPEC_LANG_STDLIB_CONFORMANCE_COVERAGE_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2577,7 +2577,7 @@ rules:
     portability guarantees.
   references:
   - docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: EXECUTABLE_DISCOVERY_MARKDOWN_ONLY
   introduced_in: v1
   scope: runtime
@@ -2612,7 +2612,7 @@ rules:
     of governance/report pipelines.
   references:
   - docs/spec/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: NO_EXECUTABLE_YAML_JSON_CASES_IN_CANONICAL_TREES
   introduced_in: v1
   scope: governance
@@ -2630,7 +2630,7 @@ rules:
   references:
   - docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
   - docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: SCHEMA_REGISTRY_SOURCE_OF_TRUTH_REQUIRED
   introduced_in: v1
   scope: governance
@@ -3401,7 +3401,7 @@ rules:
   - docs/spec/schema/schema_v1.md
   - docs/spec/contract/04_harness.md
   - docs/spec/governance/cases/core/runtime_chain_contract_single_location.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN
   introduced_in: v1
   scope: schema
@@ -3509,7 +3509,7 @@ rules:
   risk_if_violated: Generated references degrade into inventory-only output.
   references:
   - docs/spec/governance/cases/core/docs_docgen_quality_score_threshold.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED
   introduced_in: v1
   scope: governance
@@ -3527,7 +3527,7 @@ rules:
   references:
   - docs/spec/governance/cases/core/docs_markdown_structured_assertions_required.spec.md
   - docs/spec/libraries/domain/markdown_core.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: HARNESS_WORKFLOW_COMPONENTS_REQUIRED
   introduced_in: v1
   scope: implementation
@@ -3559,7 +3559,7 @@ rules:
   risk_if_violated: Architecture backslides into per-harness divergence.
   references:
   - docs/spec/governance/cases/core/architecture_harness_local_workflow_duplication_forbidden.spec.md
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
 - id: HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
   introduced_in: v1
   scope: schema
@@ -3692,7 +3692,7 @@ rules:
   risk_if_violated: Gates continue expensive work after known failure and slow feedback
     loops.
   references:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_gate_fail_fast_behavior_required.spec.md
 - id: RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
@@ -3707,7 +3707,7 @@ rules:
     gate.
   risk_if_violated: Diagnostics lose cause-chain detail and become brittle.
   references:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/contract/24_runtime_profiling_contract.md
   - docs/spec/governance/cases/core/runtime_gate_skipped_steps_contract_required.spec.md
@@ -3722,7 +3722,7 @@ rules:
   rationale: Ensures failures are diagnosable without rerunning first.
   risk_if_violated: Hang and failure triage remains slow and manual.
   references:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/contract/24_runtime_profiling_contract.md
   - docs/spec/governance/cases/core/runtime_profile_artifacts_on_fail_required.spec.md
@@ -3737,7 +3737,7 @@ rules:
   rationale: Preserves correctness when fail-fast short-circuits execution.
   risk_if_violated: Fail-fast runs could incorrectly report pass semantics.
   references:
-  - scripts/ci_gate_summary.py
+  - spec_runner/script_runtime_commands.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
 - id: ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
@@ -3751,7 +3751,7 @@ rules:
   rationale: Keeps contractual decision authority in specs.
   risk_if_violated: Decision logic drifts into harness metadata and runner branches.
   references:
-  - scripts/run_governance_specs.py
+  - spec_runner/governance_runtime.py
   - docs/spec/contract/03_assertions.md
   - docs/spec/governance/cases/core/runtime_assert_block_decision_authority_required.spec.md
 - id: META_JSON_TARGET_REQUIRED
@@ -3991,5 +3991,5 @@ rules:
   rationale: Converts documentation drift into fast deterministic failures.
   risk_if_violated: stale and contradictory docs silently accumulate.
   references:
-  - scripts/check_docs_freshness.py
+  - spec_runner/script_runtime_commands.py
   - docs/spec/governance/cases/core/docs_canonical_freshness_strict.spec.md

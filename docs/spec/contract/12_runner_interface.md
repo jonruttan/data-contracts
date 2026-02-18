@@ -174,6 +174,6 @@ Runtime scope note:
 
 ## Docs Freshness Contract
 
-- Canonical docs/spec organization is enforced by `python3 scripts/check_docs_freshness.py --strict`.
+- Canonical docs/spec organization is enforced by `python3 -m spec_runner.spec_lang_commands check-docs-freshness --strict`.
 - Local parity and CI gate must execute this check as a blocking step.
 - Freshness checker output must be written to `.artifacts/docs-freshness-report.json`.

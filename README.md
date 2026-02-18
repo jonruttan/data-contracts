@@ -156,7 +156,7 @@ Notes:
 Use strict docs/spec drift checks before pushing:
 
 ```sh
-python3 scripts/check_docs_freshness.py --strict
+python3 -m spec_runner.spec_lang_commands check-docs-freshness --strict
 ```
 
 This check is blocking in local parity and CI gate lanes.
