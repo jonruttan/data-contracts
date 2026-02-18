@@ -54,6 +54,10 @@ def docs_generate_specs_main(argv: list[str] | None = None) -> int:
     return _run_script_main("scripts/docs_generate_specs.py", argv)
 
 
+def docs_build_reference_main(argv: list[str] | None = None) -> int:
+    return _run_script_main("scripts/docs_build_reference.py", argv)
+
+
 def evaluate_style_main(argv: list[str] | None = None) -> int:
     return _run_script_main("scripts/evaluate_style.py", argv)
 

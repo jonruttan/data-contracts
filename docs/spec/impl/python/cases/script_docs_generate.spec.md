@@ -128,7 +128,7 @@ contract:
 
 ```yaml contract-spec
 id: SRPY-SCRIPT-DOCS-006
-title: evaluate_style rejects missing file path
+title: evaluate_style check defaults to docs spec tree
 type: contract.check
 harness:
   entrypoint: spec_runner.script_entrypoints:evaluate_style_main
@@ -137,13 +137,74 @@ harness:
     config:
       argv:
       - --check
-      exit_code: 1
+      exit_code: 0
+contract:
+- id: assert_1
+  class: MUST
+  target: stdout
+  asserts:
+  - std.string.contains:
+    - {var: subject}
+    - formatting is canonical
+```
+
+## SRPY-SCRIPT-DOCS-007
+
+```yaml contract-spec
+id: SRPY-SCRIPT-DOCS-007
+title: docs_build_reference writes artifacts to explicit outputs
+type: contract.check
+harness:
+  entrypoint: spec_runner.script_entrypoints:docs_build_reference_main
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - --manifest
+      - docs/book/reference_manifest.yaml
+      - --index-out
+      - .artifacts/docs-build-reference-index.md
+      - --coverage-out
+      - .artifacts/docs-build-reference-coverage.md
+      - --graph-out
+      - .artifacts/docs-build-reference-graph.json
+      exit_code: 0
+contract:
+- id: assert_1
+  class: MUST
+  target: stdout
+  asserts:
+  - std.string.contains:
+    - {var: subject}
+    - wrote .artifacts/docs-build-reference-index.md
+  - std.string.contains:
+    - {var: subject}
+    - wrote .artifacts/docs-build-reference-coverage.md
+  - std.string.contains:
+    - {var: subject}
+    - wrote .artifacts/docs-build-reference-graph.json
+```
+
+## SRPY-SCRIPT-DOCS-008
+
+```yaml contract-spec
+id: SRPY-SCRIPT-DOCS-008
+title: docs_build_reference rejects unknown args
+type: contract.check
+harness:
+  entrypoint: spec_runner.script_entrypoints:docs_build_reference_main
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - --bad-flag
+      exit_code: 2
 contract:
 - id: assert_1
   class: MUST
   target: stderr
   asserts:
-  - std.logic.eq:
-    - 1
-    - 1
+  - std.string.contains:
+    - {var: subject}
+    - unrecognized arguments
 ```
