@@ -1286,6 +1286,90 @@ links:
   - docs/book/06_troubleshooting.md
   - docs/spec/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md
   notes: Contributor docs describe parity default prepush, fast mode, hook install, and bypass semantics.
+- rule_id: RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/check_prefix_map_v1.yaml
+  - docs/spec/governance/cases/core/runtime_governance_triage_entrypoint_required.spec.md
+  notes: Canonical governance triage entrypoint surface and modes are enforced.
+- rule_id: RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/local_ci_parity.sh
+  - docs/spec/governance/cases/core/runtime_prepush_uses_governance_triage_required.spec.md
+  notes: Prepush governance step must use triage entrypoint.
+- rule_id: RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - docs/spec/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md
+  notes: CI gate summary routes governance through triage and exposes triage metadata.
+- rule_id: RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
+  contract_refs:
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/governance_triage.sh
+  - scripts/ci_gate_summary.py
+  - docs/spec/governance/cases/core/runtime_triage_artifacts_emitted_required.spec.md
+  notes: Triage flow emits deterministic machine/human artifacts on failure/stall.
+- rule_id: RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/check_prefix_map_v1.yaml
+  - docs/spec/governance/cases/core/runtime_triage_failure_id_parsing_required.spec.md
+  notes: Triage parser extracts error check ids and maps them to targeted prefixes.
+- rule_id: RUNTIME_TRIAGE_BYPASS_LOGGING_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_TRIAGE_BYPASS_LOGGING_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - .githooks/pre-push
+  - docs/spec/governance/cases/core/runtime_triage_bypass_logged_required.spec.md
+  notes: Emergency bypass remains explicit and logged.
 - rule_id: RUNTIME_SCOPE_BOUNDED_FOR_V1
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_SCOPE_BOUNDED_FOR_V1
   contract_refs:

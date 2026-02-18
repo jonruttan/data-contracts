@@ -153,11 +153,13 @@ assert:
 
 - Docs only: `./scripts/runner_adapter.sh docs-generate-check`
 - Governance only: `./scripts/runner_adapter.sh governance`
+- Governance triage (recommended first): `./scripts/governance_triage.sh --mode auto --impl rust`
 - Full local gate: `./scripts/runner_adapter.sh ci-cleanroom`
 - Required parity-default prepush gate: `make prepush`
 - Fast opt-out mode: `make prepush-fast` or `SPEC_PREPUSH_MODE=fast make prepush`
 - Install managed hook enforcement: `make hooks-install`
 - Emergency push bypass: `SPEC_PREPUSH_BYPASS=1 git push`
+- Triage artifacts: `/.artifacts/governance-triage.json`, `/.artifacts/governance-triage-summary.md`
 
 ## Configure Adapter Timeouts
 

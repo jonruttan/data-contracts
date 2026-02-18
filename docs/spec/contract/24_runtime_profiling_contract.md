@@ -65,6 +65,14 @@ Fail-fast gate summary payload contract:
 - `aborted_after_step: string|null`
 - `skipped_step_count: int`
 - step rows MAY include `skip_reason` and `blocked_by` when status is `skipped`.
+- step rows SHOULD include triage metadata for governance step:
+  - `triage_attempted: bool`
+  - `triage_mode: broad|targeted|both|not_run`
+  - `triage_result: pass|fail|stalled|not_run`
+  - `failing_check_ids: list[string]`
+  - `failing_check_prefixes: list[string]`
+  - `stall_detected: bool`
+  - `stall_phase: string|null`
 
 On failing `ci-gate-summary` runs with profile-on-fail enabled:
 

@@ -51,6 +51,8 @@ make prepush
 changes.
 It is Rust-default (`SPEC_RUNNER_IMPL=rust`) and now includes Python parity by
 default.
+Governance in this flow is triage-first (`scripts/governance_triage.sh --mode auto`)
+to avoid broad hanging reruns and to emit deterministic triage artifacts.
 
 Fast local opt-out mode (skips Python parity lane):
 
@@ -58,6 +60,12 @@ Fast local opt-out mode (skips Python parity lane):
 make prepush-fast
 # or
 SPEC_PREPUSH_MODE=fast make prepush
+```
+
+Explicit parity alias:
+
+```sh
+make prepush-parity
 ```
 
 Managed pre-push hook enforcement:
@@ -71,6 +79,10 @@ Emergency bypass (only when absolutely required):
 ```sh
 SPEC_PREPUSH_BYPASS=1 git push
 ```
+
+If governance fails/stalls, inspect:
+
+- `/.artifacts/governance-triage-summary.md`
 
 Clean-checkout CI parity gate (recommended before push):
 

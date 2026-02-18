@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 231
-- must_count: 212
+- rule_count: 237
+- must_count: 218
 - should_count: 12
 - must_not_count: 7
-- active_count: 231
+- active_count: 237
 - deprecated_count: 0
 - removed_count: 0
 
@@ -219,14 +219,17 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNNER_INDEPENDENCE_METRIC_REPORTED` | `MUST` | `governance` | `runtime.runner_independence.metric_report` | 2 | `active` |
 | `RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `runtime.runner_independence.metric_non_regression` | 3 | `active` |
 | `RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | `MUST` | `implementation` | `runtime.assertion_execution` | 2 | `active` |
+| `RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.governance_step` | 3 | `active` |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `implementation` | `runtime.assertion_decisions` | 2 | `active` |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `MUST` | `governance` | `runtime.default_gate.adapter` | 3 | `active` |
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `MUST` | `governance` | `runtime.gate.fail_fast` | 3 | `active` |
 | `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `MUST` | `governance` | `runtime.gate.policy` | 4 | `active` |
 | `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `MUST` | `governance` | `runtime.gate.summary_contract` | 4 | `active` |
 | `RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | `MUST` | `governance` | `runtime.prepush.hook` | 4 | `active` |
+| `RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_entrypoint` | 3 | `active` |
 | `RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | `MUST` | `governance` | `docs.local_ci_parity` | 5 | `active` |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `MUST` | `governance` | `runtime.non_python_lanes.exec_tokens` | 2 | `active` |
+| `RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.prepush.governance_step` | 2 | `active` |
 | `RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | `MUST` | `governance` | `runtime.prepush.default_lane` | 4 | `active` |
 | `RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT` | `MUST` | `governance` | `runtime.prepush.python_parity` | 2 | `active` |
 | `RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | `MUST` | `governance` | `runtime.gate.profile_on_fail` | 4 | `active` |
@@ -248,6 +251,9 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON` | `MUST` | `governance` | `runtime.rust_adapter.transitive_path` | 2 | `active` |
 | `RUNTIME_SCOPE_BOUNDED_FOR_V1` | `SHOULD` | `governance` | `runtime.support.matrix` | 3 | `active` |
 | `RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED` | `MUST` | `governance` | `runtime.runner_interface.public_entrypoint` | 2 | `active` |
+| `RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_artifacts` | 3 | `active` |
+| `RUNTIME_TRIAGE_BYPASS_LOGGING_REQUIRED` | `MUST` | `governance` | `runtime.prepush.bypass` | 2 | `active` |
+| `RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_parsing` | 3 | `active` |
 | `RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED` | `MUST` | `governance` | `runtime.rust_primary.adapter_exec` | 2 | `active` |
 | `RUST_PRIMARY_DOCS_ADOPTION_SYNC` | `SHOULD` | `docs` | `docs.rust_primary.adoption` | 2 | `active` |
 | `RUST_PRIMARY_GATE_PATH_REQUIRED` | `MUST` | `governance` | `runtime.rust_primary.ci_lane` | 2 | `active` |

@@ -149,6 +149,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_chain_shared_context_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_state_template_resolution.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_step_class_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_config_literals.spec.md`
 - `/docs/spec/governance/cases/core/runtime_domain_library_preferred_for_fs_ops.spec.md`
 - `/docs/spec/governance/cases/core/runtime_domain_library_preferred_for_http_helpers.spec.md`
@@ -157,6 +158,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_gate_policy_evaluates_with_skipped_rows.spec.md`
 - `/docs/spec/governance/cases/core/runtime_gate_skipped_steps_contract_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md`
+- `/docs/spec/governance/cases/core/runtime_governance_triage_entrypoint_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
 - `/docs/spec/governance/cases/core/runtime_legacy_timeout_envs_deprecated.spec.md`
 - `/docs/spec/governance/cases/core/runtime_liveness_hard_cap_token_emitted.spec.md`
@@ -168,6 +170,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md`
 - `/docs/spec/governance/cases/core/runtime_prepush_parity_default_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_prepush_python_parity_not_optional_by_default.spec.md`
+- `/docs/spec/governance/cases/core/runtime_prepush_uses_governance_triage_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_profile_artifacts_on_fail_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_profiling_contract_artifacts.spec.md`
 - `/docs/spec/governance/cases/core/runtime_profiling_redaction_policy.spec.md`
@@ -196,6 +199,10 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_settings_import_policy.spec.md`
 - `/docs/spec/governance/cases/core/runtime_spec_lang_export_type_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md`
+- `/docs/spec/governance/cases/core/runtime_triage_artifacts_emitted_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_triage_bypass_logged_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_triage_failure_id_parsing_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_triage_stall_fallback_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_universal_chain_support_required.spec.md`
 - `/docs/spec/governance/cases/core/schema_harness_contract_overlay_sync.spec.md`
 - `/docs/spec/governance/cases/core/schema_harness_type_overlay_complete.spec.md`

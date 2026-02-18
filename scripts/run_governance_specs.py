@@ -7060,6 +7060,176 @@ def _scan_runtime_local_ci_parity_entrypoint_documented(root: Path, *, harness: 
     return violations
 
 
+def _scan_runtime_governance_triage_entrypoint_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("governance_triage")
+    if not isinstance(cfg, dict):
+        return ["runtime.governance_triage_entrypoint_required requires harness.governance_triage mapping in governance spec"]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.governance_triage.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.governance_triage.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing governance triage entrypoint script"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing governance triage token {tok}")
+    return violations
+
+
+def _scan_runtime_prepush_uses_governance_triage_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("prepush_governance_triage")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.prepush_uses_governance_triage_required requires harness.prepush_governance_triage mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not path:
+        return ["harness.prepush_governance_triage.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.prepush_governance_triage.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.prepush_governance_triage.forbidden_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing prepush parity script for governance triage check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing prepush governance triage token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{path}:1: forbidden prepush token present {tok}")
+    return violations
+
+
+def _scan_runtime_cigate_uses_governance_triage_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("cigate_governance_triage")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.cigate_uses_governance_triage_required requires harness.cigate_governance_triage mapping in governance spec"
+        ]
+    files = cfg.get("files", [])
+    required_tokens = cfg.get("required_tokens", [])
+    if not isinstance(files, list) or any(not isinstance(x, str) or not x.strip() for x in files):
+        return ["harness.cigate_governance_triage.files must be a non-empty list of non-empty strings"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.cigate_governance_triage.required_tokens must be a list of non-empty strings"]
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing ci-gate governance triage file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing ci-gate governance triage token {tok}")
+    return violations
+
+
+def _scan_runtime_triage_artifacts_emitted_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("triage_artifacts")
+    if not isinstance(cfg, dict):
+        return ["runtime.triage_artifacts_emitted_required requires harness.triage_artifacts mapping in governance spec"]
+    files = cfg.get("files", [])
+    required_tokens = cfg.get("required_tokens", [])
+    if not isinstance(files, list) or any(not isinstance(x, str) or not x.strip() for x in files):
+        return ["harness.triage_artifacts.files must be a non-empty list of non-empty strings"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.triage_artifacts.required_tokens must be a list of non-empty strings"]
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing file for triage artifact check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing triage artifact token {tok}")
+    return violations
+
+
+def _scan_runtime_triage_failure_id_parsing_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("triage_failure_parser")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.triage_failure_id_parsing_required requires harness.triage_failure_parser mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.triage_failure_parser.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.triage_failure_parser.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing governance triage parser script"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing triage failure-parser token {tok}")
+    return violations
+
+
+def _scan_runtime_triage_bypass_logged_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("triage_bypass_logging")
+    if not isinstance(cfg, dict):
+        return ["runtime.triage_bypass_logged_required requires harness.triage_bypass_logging mapping in governance spec"]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.triage_bypass_logging.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.triage_bypass_logging.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing pre-push hook for bypass logging check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing triage bypass logging token {tok}")
+    return violations
+
+
+def _scan_runtime_triage_stall_fallback_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("triage_stall_fallback")
+    if not isinstance(cfg, dict):
+        return ["runtime.triage_stall_fallback_required requires harness.triage_stall_fallback mapping in governance spec"]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.triage_stall_fallback.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.triage_stall_fallback.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing governance triage script for stall fallback check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing triage stall fallback token {tok}")
+    return violations
+
+
 def _scan_runtime_rust_adapter_no_delegate(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -8465,6 +8635,13 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.git_hook_prepush_enforced": _scan_runtime_git_hook_prepush_enforced,
     "runtime.rust_adapter_target_fallback_defined": _scan_runtime_rust_adapter_target_fallback_defined,
     "runtime.local_ci_parity_entrypoint_documented": _scan_runtime_local_ci_parity_entrypoint_documented,
+    "runtime.governance_triage_entrypoint_required": _scan_runtime_governance_triage_entrypoint_required,
+    "runtime.prepush_uses_governance_triage_required": _scan_runtime_prepush_uses_governance_triage_required,
+    "runtime.cigate_uses_governance_triage_required": _scan_runtime_cigate_uses_governance_triage_required,
+    "runtime.triage_artifacts_emitted_required": _scan_runtime_triage_artifacts_emitted_required,
+    "runtime.triage_failure_id_parsing_required": _scan_runtime_triage_failure_id_parsing_required,
+    "runtime.triage_bypass_logged_required": _scan_runtime_triage_bypass_logged_required,
+    "runtime.triage_stall_fallback_required": _scan_runtime_triage_stall_fallback_required,
     "runtime.public_runner_entrypoint_single": _scan_runtime_public_runner_entrypoint_single,
     "runtime.public_runner_default_rust": _scan_runtime_public_runner_default_rust,
     "runtime.python_lane_explicit_opt_in": _scan_runtime_python_lane_explicit_opt_in,

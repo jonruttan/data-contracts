@@ -121,7 +121,32 @@ def _runner_command(runner_bin: str, runner_impl: str, subcommand: str) -> list[
 
 def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[str]]]:
     return [
-        ("governance", _runner_command(runner_bin, runner_impl, "governance")),
+        (
+            "governance",
+            [
+                "./scripts/governance_triage.sh",
+                "--mode",
+                "auto",
+                "--impl",
+                runner_impl,
+                "--triage-enabled",
+                "1" if _env_bool("SPEC_GOV_TRIAGE_ENABLED", True) else "0",
+                "--triage-max-retries",
+                str(os.environ.get("SPEC_GOV_TRIAGE_MAX_RETRIES", "1")),
+                "--triage-fallback-prefixes",
+                str(os.environ.get("SPEC_GOV_TRIAGE_FALLBACK_PREFIXES", "docs.,normalization.,runtime.")),
+                "--triage-profile-level",
+                str(os.environ.get("SPEC_GOV_TRIAGE_PROFILE_LEVEL", "basic")),
+                "--broad-timeout-seconds",
+                str(os.environ.get("SPEC_GOV_TRIAGE_STALL_TIMEOUT_SECONDS", "30")),
+                "--triage-liveness-level",
+                str(os.environ.get("SPEC_GOV_TRIAGE_LIVENESS_LEVEL", "strict")),
+                "--triage-liveness-stall-ms",
+                str(os.environ.get("SPEC_GOV_TRIAGE_LIVENESS_STALL_MS", "5000")),
+                "--triage-liveness-kill-grace-ms",
+                str(os.environ.get("SPEC_GOV_TRIAGE_LIVENESS_KILL_GRACE_MS", "1000")),
+            ],
+        ),
         ("governance_heavy", _runner_command(runner_bin, runner_impl, "governance-heavy")),
         ("docs_generate_check", _runner_command(runner_bin, runner_impl, "docs-generate-check")),
         ("perf_smoke", _runner_command(runner_bin, runner_impl, "perf-smoke") + ["--mode", "strict"]),
@@ -160,6 +185,32 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
 def _run_command(command: list[str]) -> int:
     proc = subprocess.run(command, check=False)
     return int(proc.returncode)
+
+
+def _read_governance_triage_metadata() -> dict[str, object]:
+    triage_path = Path(".artifacts/governance-triage.json")
+    if not triage_path.exists():
+        return {}
+    try:
+        payload = json.loads(triage_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    if not isinstance(payload, dict):
+        return {}
+    fields = (
+        "triage_attempted",
+        "triage_mode",
+        "triage_result",
+        "failing_check_ids",
+        "failing_check_prefixes",
+        "stall_detected",
+        "stall_phase",
+    )
+    out: dict[str, object] = {}
+    for key in fields:
+        if key in payload:
+            out[key] = payload[key]
+    return out
 
 
 def _run_steps(
@@ -215,6 +266,8 @@ def _run_steps(
                 "duration_ms": duration_ms,
             }
         )
+        if name == "governance":
+            rows[-1].update(_read_governance_triage_metadata())
         events.append(
             {
                 "ts_ns": time.monotonic_ns(),
@@ -393,6 +446,23 @@ def main(argv: list[str] | None = None) -> int:
         "runner_impl": str(ns.runner_impl),
         "unit_test_opt_out": _collect_unit_test_opt_out(Path.cwd()),
     }
+    governance_step = next((s for s in steps if s.get("name") == "governance"), None)
+    if isinstance(governance_step, dict):
+        payload["triage_attempted"] = bool(governance_step.get("triage_attempted", False))
+        payload["triage_mode"] = governance_step.get("triage_mode", "not_run")
+        payload["triage_result"] = governance_step.get("triage_result", "not_run")
+        payload["failing_check_ids"] = governance_step.get("failing_check_ids", [])
+        payload["failing_check_prefixes"] = governance_step.get("failing_check_prefixes", [])
+        payload["stall_detected"] = bool(governance_step.get("stall_detected", False))
+        payload["stall_phase"] = governance_step.get("stall_phase")
+    else:
+        payload["triage_attempted"] = False
+        payload["triage_mode"] = "not_run"
+        payload["triage_result"] = "not_run"
+        payload["failing_check_ids"] = []
+        payload["failing_check_prefixes"] = []
+        payload["stall_detected"] = False
+        payload["stall_phase"] = None
     out_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     trace_out = str(ns.trace_out or "").strip()
     if trace_out:

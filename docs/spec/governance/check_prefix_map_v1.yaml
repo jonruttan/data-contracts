@@ -1,0 +1,11 @@
+version: 1
+rules:
+  SRGOV-DOCS-: docs.
+  SRGOV-NORM-: normalization.
+  SRGOV-RUNTIME-: runtime.
+  SRGOV-CONTRACT-: contract.
+  SRGOV-SCHEMA-: schema.
+  SRGOV-CONFORMANCE-: conformance.
+  SRGOV-LIBRARY-: library.
+  SRGOV-REF-: reference.
+  SRGOV-SPEC-: spec.

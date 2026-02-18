@@ -44,10 +44,10 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 
 ## Triage Flow
 
-1. Run `./scripts/runner_adapter.sh ci-cleanroom`.
-2. Identify first failing surface/check id.
-3. Apply the first-command from the table below.
-4. Re-run check mode, then full gate.
+1. Run `make prepush` (parity-default path includes triage-first governance).
+2. If governance fails/stalls, read `/.artifacts/governance-triage-summary.md`.
+3. Run the suggested targeted command from that summary.
+4. Re-run `make prepush`; only then run full gate if needed.
 
 ## Local Pre-Push Enforcement
 
@@ -67,6 +67,7 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 | `normalization.*` | canonical formatting/path drift | `./scripts/runner_adapter.sh normalize-check` |
 | `runtime.*` | adapter/runner contract drift | `./scripts/runner_adapter.sh governance` |
 | `runtime.api_http_*` | `api.http` verbs/CORS/scenario drift | `./scripts/runner_adapter.sh governance` |
+| `SRGOV-*` mixed failure set | broad run failed/stalled; targeted retry needed | `./scripts/governance_triage.sh --mode auto --impl rust` |
 
 ## API HTTP Troubleshooting
 
@@ -88,6 +89,11 @@ First command for API flow issues:
 
 - `./scripts/runner_adapter.sh governance`
 - `./scripts/runner_adapter.sh normalize-check`
+
+First command for governance hang/long-cycle issues:
+
+- `./scripts/governance_triage.sh --mode auto --impl rust`
+- Review `/.artifacts/governance-triage-summary.md`
 
 ## Liveness Controls
 

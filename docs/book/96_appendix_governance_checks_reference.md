@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 219
-- checks_with_cases: 213
+- check_count: 226
+- checks_with_cases: 220
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -202,6 +202,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.chain_shared_context_required` | 1 | true |
 | `runtime.chain_state_template_resolution` | 1 | true |
 | `runtime.chain_step_class_required` | 1 | true |
+| `runtime.cigate_uses_governance_triage_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
 | `runtime.domain_library_preferred_for_fs_ops` | 1 | true |
 | `runtime.domain_library_preferred_for_http_helpers` | 1 | true |
@@ -210,6 +211,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.gate_policy_evaluates_with_skipped_rows` | 1 | true |
 | `runtime.gate_skipped_steps_contract_required` | 1 | true |
 | `runtime.git_hook_prepush_enforced` | 1 | true |
+| `runtime.governance_triage_entrypoint_required` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.legacy_timeout_envs_deprecated` | 1 | true |
 | `runtime.liveness_hard_cap_token_emitted` | 1 | true |
@@ -221,6 +223,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |
 | `runtime.prepush_parity_default_required` | 1 | true |
 | `runtime.prepush_python_parity_not_optional_by_default` | 1 | true |
+| `runtime.prepush_uses_governance_triage_required` | 1 | true |
 | `runtime.profile_artifacts_on_fail_required` | 1 | true |
 | `runtime.profiling_contract_artifacts` | 1 | true |
 | `runtime.profiling_redaction_policy` | 1 | true |
@@ -246,6 +249,10 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.settings_import_policy` | 1 | true |
 | `runtime.spec_lang_export_type_forbidden` | 1 | true |
 | `runtime.spec_lang_pure_no_effect_builtins` | 1 | true |
+| `runtime.triage_artifacts_emitted_required` | 1 | true |
+| `runtime.triage_bypass_logged_required` | 1 | true |
+| `runtime.triage_failure_id_parsing_required` | 1 | true |
+| `runtime.triage_stall_fallback_required` | 1 | true |
 | `runtime.universal_chain_support_required` | 1 | true |
 | `schema.harness_contract_overlay_sync` | 1 | true |
 | `schema.harness_type_overlay_complete` | 1 | true |

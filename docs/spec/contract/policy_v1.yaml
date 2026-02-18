@@ -1331,6 +1331,94 @@ rules:
   - docs/book/05_howto.md
   - docs/book/06_troubleshooting.md
   - docs/spec/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md
+- id: RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.governance.triage_entrypoint
+  norm: MUST
+  requirement: governance_triage_entrypoint_must_exist_with_required_modes
+  description: 'Canonical governance triage entrypoint must exist with auto/targeted modes and deterministic triage artifact outputs.
+
+    '
+  rationale: Enforces failure-ID-first triage as the canonical debugging path.
+  risk_if_violated: Broad governance reruns become default and debugging cycles regress.
+  references:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/check_prefix_map_v1.yaml
+  - docs/spec/governance/cases/core/runtime_governance_triage_entrypoint_required.spec.md
+- id: RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.prepush.governance_step
+  norm: MUST
+  requirement: prepush_gov_step_must_use_triage_entrypoint
+  description: 'Prepush default lane must call governance triage entrypoint rather than direct broad governance step.
+
+    '
+  rationale: Guarantees local enforcement of failure-ID-first behavior.
+  risk_if_violated: Local checks can re-enter long hanging cycles before targeted isolation.
+  references:
+  - scripts/local_ci_parity.sh
+  - docs/spec/governance/cases/core/runtime_prepush_uses_governance_triage_required.spec.md
+- id: RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.ci_gate.governance_step
+  norm: MUST
+  requirement: ci_gate_gov_step_must_use_triage_entrypoint_and_emit_triage_metadata
+  description: 'ci-gate-summary implementations must invoke governance triage and include triage metadata in step/gate summary rows.
+
+    '
+  rationale: Keeps CI orchestration diagnostics deterministic and aligned with local flow.
+  risk_if_violated: CI failures lose triage context and are harder to isolate quickly.
+  references:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - docs/spec/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md
+- id: RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.governance.triage_artifacts
+  norm: MUST
+  requirement: triage_runs_must_emit_machine_and_human_artifacts
+  description: 'Governance triage must emit JSON and markdown artifacts with failing check ids/prefixes for deterministic follow-up.
+
+    '
+  rationale: Preserves diagnosis state across runs and developers.
+  risk_if_violated: Repeat triage requires ad-hoc reruns and manual log scraping.
+  references:
+  - scripts/governance_triage.sh
+  - scripts/ci_gate_summary.py
+  - docs/spec/governance/cases/core/runtime_triage_artifacts_emitted_required.spec.md
+- id: RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.governance.triage_parsing
+  norm: MUST
+  requirement: triage_parser_must_extract_failure_ids_and_map_to_prefix_retries
+  description: 'Triage parser must extract governance ERROR check ids and map them deterministically to targeted check-prefix retries.
+
+    '
+  rationale: Ensures targeted reruns are machine-derived, not guesswork.
+  risk_if_violated: Targeted retries miss failing checks or become inconsistent.
+  references:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/check_prefix_map_v1.yaml
+  - docs/spec/governance/cases/core/runtime_triage_failure_id_parsing_required.spec.md
+- id: RUNTIME_TRIAGE_BYPASS_LOGGING_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.prepush.bypass
+  norm: MUST
+  requirement: emergency_bypass_must_be_explicit_and_logged
+  description: 'Emergency prepush bypass must remain explicit via env and emit deterministic warning output.
+
+    '
+  rationale: Keeps bypass usage auditable and exceptional.
+  risk_if_violated: Bypass semantics become silent and can hide parity drift.
+  references:
+  - .githooks/pre-push
+  - docs/spec/governance/cases/core/runtime_triage_bypass_logged_required.spec.md
 - id: RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
   introduced_in: v1
   scope: governance

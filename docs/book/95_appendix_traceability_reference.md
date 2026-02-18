@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 231
+- link_count: 237
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 231
-- rules_with_implementation_refs: 229
+- rules_with_unit_tests: 237
+- rules_with_implementation_refs: 235
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -216,14 +216,17 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNNER_INDEPENDENCE_METRIC_REPORTED` | `docs/spec/contract/policy_v1.yaml#RUNNER_INDEPENDENCE_METRIC_REPORTED` | 2 | 0 | 0 | 3 | 3 |
 | `RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED` | 2 | 0 | 0 | 2 | 3 |
 | `RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | `docs/spec/contract/policy_v1.yaml#RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | 2 | 1 | 0 | 2 | 7 |
+| `RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | 2 | 0 | 0 | 2 | 3 |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | 2 | 1 | 0 | 2 | 3 |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | 1 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | 1 | 0 | 0 | 2 | 4 |
+| `RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED` | 2 | 0 | 0 | 2 | 3 |
 | `RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | 2 | 0 | 0 | 2 | 5 |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `docs/spec/contract/policy_v1.yaml#RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | 2 | 0 | 0 | 2 | 2 |
+| `RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | 2 | 0 | 0 | 2 | 4 |
 | `RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
@@ -245,6 +248,9 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON` | `docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON` | 2 | 0 | 0 | 1 | 2 |
 | `RUNTIME_SCOPE_BOUNDED_FOR_V1` | `docs/spec/contract/policy_v1.yaml#RUNTIME_SCOPE_BOUNDED_FOR_V1` | 2 | 0 | 0 | 2 | 2 |
 | `RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED` | 1 | 1 | 0 | 1 | 5 |
+| `RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED` | 1 | 0 | 0 | 2 | 3 |
+| `RUNTIME_TRIAGE_BYPASS_LOGGING_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_TRIAGE_BYPASS_LOGGING_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
+| `RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED` | 1 | 0 | 0 | 2 | 3 |
 | `RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUST_PRIMARY_DOCS_ADOPTION_SYNC` | `docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_DOCS_ADOPTION_SYNC` | 2 | 0 | 0 | 1 | 4 |
 | `RUST_PRIMARY_GATE_PATH_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_GATE_PATH_REQUIRED` | 2 | 0 | 0 | 1 | 3 |

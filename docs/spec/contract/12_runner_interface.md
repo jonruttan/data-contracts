@@ -100,6 +100,19 @@ Environment equivalents:
 - `SPEC_RUNNER_FAIL_FAST`
 - `SPEC_RUNNER_PROFILE_ON_FAIL`
 
+Governance triage controls (prepush + ci-gate-summary governance step):
+
+- `SPEC_GOV_TRIAGE_ENABLED` (`1|0`, default `1`)
+- `SPEC_GOV_TRIAGE_MAX_RETRIES` (default `1`)
+- `SPEC_GOV_TRIAGE_FALLBACK_PREFIXES` (default `docs.,normalization.,runtime.`)
+- `SPEC_GOV_TRIAGE_PROFILE_LEVEL` (default `basic`)
+- `SPEC_GOV_TRIAGE_STALL_TIMEOUT_SECONDS` (default `90`)
+
+Governance triage entrypoint:
+
+- `scripts/governance_triage.sh --mode auto|targeted`
+- targeted selection supports `--check-id`, `--check-prefix`, `--from-failures`
+
 Liveness controls (governance-first):
 
 - `--liveness-level off|basic|strict`

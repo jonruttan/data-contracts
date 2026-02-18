@@ -58,7 +58,7 @@ paths_match_prefixes() {
 
 lane_rust_core() {
   run_step normalize-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" normalize-check
-  run_step governance "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" governance
+  run_step governance-triage ./scripts/governance_triage.sh --mode auto --impl "${SPEC_RUNNER_IMPL}"
 
   CHANGED_PATHS="$(collect_changed_paths || true)"
   if [[ -n "${CHANGED_PATHS}" ]]; then
@@ -86,7 +86,7 @@ lane_rust_core() {
 }
 
 lane_python_parity() {
-  run_step python-governance "${SPEC_RUNNER_BIN}" --impl python governance
+  run_step python-governance-triage ./scripts/governance_triage.sh --mode auto --impl python
   run_step python-conformance-parity "${SPEC_RUNNER_BIN}" --impl python conformance-parity
 }
 

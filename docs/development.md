@@ -128,7 +128,7 @@ make prepush
 The pre-push gate runs the fast CI-critical contract path:
 
 - `normalize-check`
-- `governance`
+- `governance` via `scripts/governance_triage.sh --mode auto`
 - `governance-heavy`
 - `docs-generate-check`
 - `perf-smoke --mode strict --compare-only`
@@ -144,6 +144,12 @@ Fast local opt-out mode:
 make prepush-fast
 # or
 SPEC_PREPUSH_MODE=fast make prepush
+```
+
+Explicit parity alias:
+
+```sh
+make prepush-parity
 ```
 
 Use an explicit runner lane when needed:
@@ -164,6 +170,11 @@ Emergency bypass for blocked pushes (use sparingly and follow with parity run):
 ```sh
 SPEC_PREPUSH_BYPASS=1 git push
 ```
+
+Governance triage artifacts:
+
+- `/.artifacts/governance-triage.json`
+- `/.artifacts/governance-triage-summary.md`
 
 ## CI Triage (Docs Quality)
 
