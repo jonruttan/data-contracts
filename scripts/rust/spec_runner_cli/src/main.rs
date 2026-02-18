@@ -309,7 +309,12 @@ fn run_normalize_mode(root: &Path, py: &str, forwarded: &[String], fix: bool) ->
     }
 
     let mode_flag = if fix { "--write" } else { "--check" };
-    let mut args = vec![script(root, "normalize_repo.py"), mode_flag.to_string()];
+    let mut args = vec![
+        "-m".to_string(),
+        "spec_runner.spec_lang_commands".to_string(),
+        "normalize-repo".to_string(),
+        mode_flag.to_string(),
+    ];
     if !selected_paths.is_empty() {
         args.push("--paths".to_string());
         args.push(selected_paths.join(","));
@@ -2377,7 +2382,9 @@ fn main() {
             &py,
             &with_forwarded(
                 vec![
-                    script(&root, "evaluate_style.py"),
+                    "-m".to_string(),
+                    "spec_runner.spec_lang_commands".to_string(),
+                    "spec-lang-format".to_string(),
                     "--check".to_string(),
                     "docs/spec".to_string(),
                 ],
@@ -2393,7 +2400,8 @@ fn main() {
             &py,
             &with_forwarded(
                 vec![
-                    script(&root, "generate_schema_docs.py"),
+                    "-m".to_string(),
+                    "spec_runner.generate_schema_docs".to_string(),
                     "--check".to_string(),
                 ],
                 &forwarded,
@@ -2402,7 +2410,13 @@ fn main() {
         ),
         "schema-docs-build" => run_cmd(
             &py,
-            &with_forwarded(vec![script(&root, "generate_schema_docs.py")], &forwarded),
+            &with_forwarded(
+                vec![
+                    "-m".to_string(),
+                    "spec_runner.generate_schema_docs".to_string(),
+                ],
+                &forwarded,
+            ),
             &root,
         ),
         "lint" => run_cmd(
