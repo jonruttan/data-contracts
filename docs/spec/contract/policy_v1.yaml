@@ -1452,8 +1452,8 @@ rules:
   scope: governance
   applies_to: runtime.ci_gate.governance_broad_required
   norm: MUST
-  requirement: ci_gate_must_execute_targeted_then_broad_governance
-  description: 'CI gate summary flow must execute targeted governance before mandatory broad governance.
+  requirement: ci_gate_summary_must_execute_mandatory_broad_governance
+  description: 'CI gate summary flow must execute mandatory broad governance.
 
     '
   rationale: Preserves full safety coverage in merge gating while retaining fast failure-ID feedback.
@@ -1467,12 +1467,12 @@ rules:
   scope: governance
   applies_to: runtime.ci_gate.summary_default_critical
   norm: MUST
-  requirement: ci_gate_summary_defaults_to_broad_only_unless_critical_is_explicitly_enabled
-  description: 'ci-gate-summary must skip governance_critical by default and include it only via explicit opt-in flags/env.
+  requirement: ci_gate_summary_must_not_define_embedded_critical_step_surface
+  description: 'ci-gate-summary must not define governance_critical steps or critical include/skip toggles.
 
     '
-  rationale: Prevents duplicate critical runs when ci_gate.sh already executes critical-gate directly.
-  risk_if_violated: CI gate and local runs incur avoidable duplicate critical latency.
+  rationale: Prevents duplicate critical runs and keeps critical execution ownership in ci_gate.sh.
+  risk_if_violated: CI gate and local runs incur avoidable duplicate critical latency and split ownership.
   references:
   - scripts/ci_gate_summary.py
   - scripts/rust/spec_runner_cli/src/main.rs

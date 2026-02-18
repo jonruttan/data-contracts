@@ -156,17 +156,7 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
     broad_liveness_stall_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_STALL_MS", "5000"))
     broad_liveness_kill_grace_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_KILL_GRACE_MS", "1000"))
     broad_liveness_hard_cap_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS", "120000"))
-    steps: list[tuple[str, list[str]]] = []
-    include_critical = _env_bool("SPEC_CI_GATE_INCLUDE_CRITICAL", False)
-    skip_critical = _env_bool("SPEC_CI_GATE_SKIP_CRITICAL", not include_critical)
-    if include_critical and not skip_critical:
-        steps.append(
-            (
-                "governance_critical",
-                _runner_command(runner_bin, runner_impl, "critical-gate"),
-            )
-        )
-    steps.extend([
+    return [
         (
             "governance_broad",
             _runner_command_with_liveness(
@@ -191,8 +181,7 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
         ("compileall", _runner_command(runner_bin, runner_impl, "compilecheck")),
         ("conformance_parity", _runner_command(runner_bin, runner_impl, "conformance-parity")),
         ("pytest", _runner_command(runner_bin, runner_impl, "test-full")),
-    ])
-    return steps
+    ]
 
 
 def _run_command(command: list[str]) -> int:
@@ -253,9 +242,7 @@ def _run_steps(
                 "duration_ms": duration_ms,
             }
         )
-        if name == "governance_critical":
-            rows[-1]["triage_phase"] = "critical"
-        elif name == "governance_broad":
+        if name == "governance_broad":
             rows[-1]["triage_phase"] = "broad"
             rows[-1]["broad_required"] = True
         events.append(
@@ -384,16 +371,7 @@ def main(argv: list[str] | None = None) -> int:
         default=os.environ.get("SPEC_RUNNER_PROFILE_ON_FAIL", "basic"),
         help="off|basic|detailed for fail-fast diagnostics (default: basic).",
     )
-    ap.add_argument(
-        "--include-critical",
-        action="store_true",
-        default=False,
-        help="Include governance_critical step in ci-gate-summary (default: off).",
-    )
     ns = ap.parse_args(argv)
-    if ns.include_critical:
-        os.environ["SPEC_CI_GATE_INCLUDE_CRITICAL"] = "1"
-        os.environ["SPEC_CI_GATE_SKIP_CRITICAL"] = "0"
 
     out_path = Path(str(ns.out))
     out_path.parent.mkdir(parents=True, exist_ok=True)

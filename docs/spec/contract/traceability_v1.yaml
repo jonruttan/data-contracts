@@ -1409,7 +1409,7 @@ links:
   - scripts/ci_gate_summary.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_ci_gate_broad_governance_required.spec.md
-  notes: CI gate runs targeted governance first and mandatory broad governance second.
+  notes: CI gate summary always runs mandatory broad governance.
 - rule_id: RUNTIME_CI_GATE_SUMMARY_DEFAULT_SKIP_CRITICAL_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_CI_GATE_SUMMARY_DEFAULT_SKIP_CRITICAL_REQUIRED
   contract_refs:
@@ -1423,7 +1423,7 @@ links:
   - scripts/ci_gate_summary.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_ci_gate_summary_default_skip_critical_required.spec.md
-  notes: ci-gate-summary defaults to broad-only and requires explicit critical opt-in.
+  notes: ci-gate-summary has no embedded critical step surface or critical include/skip toggles.
 - rule_id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
   contract_refs:

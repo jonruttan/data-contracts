@@ -5,8 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-TRIAGE-018
 title: ci gate summary skips critical by default unless explicitly included
-purpose: Ensures ci-gate-summary defaults to broad-only flow and only includes governance_critical
-  when explicitly opted in.
+purpose: Ensures ci-gate-summary has no embedded critical step surface and never accepts critical
+  include/skip toggles.
 type: governance.check
 check: runtime.ci_gate_summary_default_skip_critical_required
 harness:
@@ -16,11 +16,12 @@ harness:
     - /scripts/ci_gate_summary.py
     - /scripts/rust/spec_runner_cli/src/main.rs
     required_tokens:
+    - governance_broad
+    forbidden_tokens:
+    - governance_critical
     - SPEC_CI_GATE_INCLUDE_CRITICAL
     - SPEC_CI_GATE_SKIP_CRITICAL
     - --include-critical
-    forbidden_tokens:
-    - SPEC_CI_GATE_SKIP_CRITICAL\", false
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}
