@@ -12,7 +12,7 @@ use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 use serde_json::{json, Value};
 use serde_yaml::Value as YamlValue;
-use spec_lang::{eval_mapping_ast, EvalLimits};
+use spec_lang::{eval_mapping_ast, eval_mapping_ast_with_state, EvalLimits};
 use profiler::{profile_options_from_env, RunProfiler};
 use governance::{run_critical_gate_native, run_governance_broad_native};
 
@@ -440,7 +440,6 @@ fn json_truthy(v: &Value) -> bool {
 fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut ref_arg = String::new();
     let mut doc_arg: Option<String> = std::env::var("SPEC_RUNNER_JOB_DOC").ok();
-    let mut mode_arg: Option<String> = None;
     let mut input_pairs = Vec::<(String, String)>::new();
     let mut i = 0usize;
     while i < forwarded.len() {
@@ -459,14 +458,6 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                     return 2;
                 }
                 doc_arg = Some(forwarded[i + 1].clone());
-                i += 2;
-            }
-            "--mode" => {
-                if i + 1 >= forwarded.len() {
-                    eprintln!("ERROR: --mode requires value");
-                    return 2;
-                }
-                mode_arg = Some(forwarded[i + 1].clone());
                 i += 2;
             }
             "--input" => {
@@ -530,60 +521,30 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         .and_then(|v| v.as_mapping())
         .cloned()
         .unwrap_or_default();
-    let job = harness
-        .get(&YamlValue::String("job".to_string()))
-        .and_then(|v| v.as_mapping())
-        .cloned()
-        .unwrap_or_default();
-    let helper_id = job
-        .get(&YamlValue::String("helper".to_string()))
-        .and_then(|v| v.as_str())
-        .unwrap_or("")
-        .trim()
-        .to_string();
-    if helper_id.is_empty() {
-        eprintln!("ERROR: contract.job requires harness.job.helper");
+    if harness.contains_key(&YamlValue::String("job".to_string())) {
+        eprintln!("ERROR: contract.job forbids legacy harness.job; use harness.jobs metadata map");
         return 1;
     }
-    let default_mode = job
-        .get(&YamlValue::String("mode".to_string()))
-        .and_then(|v| v.as_str())
-        .unwrap_or("custom")
-        .to_string();
-    let selected_mode = mode_arg.unwrap_or(default_mode);
-
-    let inputs_json = job
-        .get(&YamlValue::String("inputs".to_string()))
-        .map(yaml_to_json)
-        .unwrap_or(Value::Object(serde_json::Map::new()));
-    let outputs_json = job
-        .get(&YamlValue::String("outputs".to_string()))
-        .map(yaml_to_json)
-        .unwrap_or(Value::Object(serde_json::Map::new()));
+    let jobs_yaml = match harness.get(&YamlValue::String("jobs".to_string())) {
+        Some(v) => v,
+        None => {
+            eprintln!("ERROR: contract.job requires harness.jobs metadata map");
+            return 1;
+        }
+    };
+    let jobs_json = yaml_to_json(jobs_yaml);
+    let jobs_obj = match jobs_json.as_object() {
+        Some(m) if !m.is_empty() => m.clone(),
+        _ => {
+            eprintln!("ERROR: harness.jobs must be a non-empty mapping");
+            return 1;
+        }
+    };
 
     let mut input_override = serde_json::Map::<String, Value>::new();
     for (k, v) in input_pairs {
         input_override.insert(k, Value::String(v));
     }
-
-    let mut merged_payload = match inputs_json {
-        Value::Object(map) => map,
-        _ => serde_json::Map::new(),
-    };
-    for (k, v) in input_override {
-        merged_payload.insert(k, v);
-    }
-    merged_payload.insert("_ref".to_string(), Value::String(resolved_ref.clone()));
-    merged_payload.insert("_mode".to_string(), Value::String(selected_mode.clone()));
-    merged_payload.insert("_outputs".to_string(), outputs_json.clone());
-    let helper_payload = Value::Object(merged_payload);
-    let helper_out = match job_helpers::run_helper(root, &helper_id, &helper_payload) {
-        Ok(v) => v,
-        Err(e) => {
-            eprintln!("ERROR: helper failed `{helper_id}`: {e}");
-            return 1;
-        }
-    };
 
     let mut caps = Vec::<String>::new();
     if let Some(spec_lang) = harness
@@ -605,11 +566,25 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         }
     }
     let prev_caps = std::env::var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES").ok();
+    let prev_jobs = std::env::var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON").ok();
+    let prev_cli_overrides = std::env::var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON").ok();
     if !caps.is_empty() {
         std::env::set_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES", caps.join(","));
     }
+    std::env::set_var(
+        "SPEC_RUNNER_SPEC_LANG_JOBS_JSON",
+        serde_json::to_string(&Value::Object(jobs_obj.clone())).unwrap_or_else(|_| "{}".to_string()),
+    );
+    if !input_override.is_empty() {
+        std::env::set_var(
+            "SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON",
+            serde_json::to_string(&Value::Object(input_override.clone()))
+                .unwrap_or_else(|_| "{}".to_string()),
+        );
+    }
 
     let mut failed = 0_i64;
+    let mut summary_json = Value::Null;
     if let Some(contract_seq) = case_map
         .get(&YamlValue::String("contract".to_string()))
         .and_then(|v| v.as_sequence())
@@ -627,17 +602,6 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                 .get(&YamlValue::String("target".to_string()))
                 .and_then(|v| v.as_str())
                 .unwrap_or("summary_json");
-            let subject = match target {
-                "summary_json" => helper_out.clone(),
-                "meta_json" => json!({
-                    "job_ref": ref_arg,
-                    "resolved_ref": resolved_ref,
-                    "helper": helper_id,
-                    "mode": selected_mode,
-                }),
-                "violation_count" => Value::Number(failed.into()),
-                _ => helper_out.clone(),
-            };
             let asserts = match step_map
                 .get(&YamlValue::String("asserts".to_string()))
                 .and_then(|v| v.as_sequence())
@@ -646,8 +610,18 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                 None => continue,
             };
             for (assert_idx, raw_expr) in asserts.iter().enumerate() {
+                let subject = match target {
+                    "summary_json" => summary_json.clone(),
+                    "meta_json" => json!({
+                        "job_ref": ref_arg,
+                        "resolved_ref": resolved_ref,
+                        "jobs": jobs_obj.clone(),
+                    }),
+                    "violation_count" => Value::Number(failed.into()),
+                    _ => summary_json.clone(),
+                };
                 let expr = yaml_to_json(raw_expr);
-                let result = match eval_mapping_ast(
+                let result = match eval_mapping_ast_with_state(
                     &expr,
                     subject.clone(),
                     std::collections::HashMap::new(),
@@ -659,11 +633,28 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                             "ERROR: contract evaluation failed at step {} assert {}: {}",
                             step_idx, assert_idx, e.message
                         );
-                        failed += 1;
-                        continue;
+                        if let Some(prev) = prev_caps {
+                            std::env::set_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES", prev);
+                        } else {
+                            std::env::remove_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES");
+                        }
+                        if let Some(prev) = prev_jobs {
+                            std::env::set_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON", prev);
+                        } else {
+                            std::env::remove_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON");
+                        }
+                        if let Some(prev) = prev_cli_overrides {
+                            std::env::set_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON", prev);
+                        } else {
+                            std::env::remove_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON");
+                        }
+                        return 1;
                     }
                 };
-                let ok = json_truthy(&result);
+                if let Some(dispatched) = result.last_dispatch_result.clone() {
+                    summary_json = dispatched;
+                }
+                let ok = json_truthy(&result.value);
                 let violated = match class {
                     "must" => !ok,
                     "cannot" => ok,
@@ -680,6 +671,16 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         std::env::set_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES", prev);
     } else {
         std::env::remove_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES");
+    }
+    if let Some(prev) = prev_jobs {
+        std::env::set_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON", prev);
+    } else {
+        std::env::remove_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON");
+    }
+    if let Some(prev) = prev_cli_overrides {
+        std::env::set_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON", prev);
+    } else {
+        std::env::remove_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON");
     }
 
     if failed == 0 {

@@ -3717,3 +3717,64 @@ rules:
   references:
   - spec_runner/compiler.py
   - docs/spec/governance/cases/core/runtime_legacy_checks_key_forbidden.spec.md
+- id: CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: contract.job.contract
+  norm: MUST
+  requirement: contract_job_cases_must_dispatch_via_contract_expression
+  description: contract.job cases must trigger helper execution through ops.job.dispatch in contract assertions.
+  rationale: Keeps dispatch authority in contract obligations rather than harness imperative wiring.
+  risk_if_violated: Job execution semantics drift from contract-first model and reduce auditability.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/12_runner_interface.md
+  - docs/spec/schema/schema_v1.md
+- id: HARNESS_JOBS_METADATA_MAP_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: contract.job.harness.jobs
+  norm: MUST
+  requirement: contract_job_cases_use_harness_jobs_metadata_map
+  description: contract.job cases must declare job metadata under harness.jobs.<name> entries.
+  rationale: Separates execution metadata from contract decision logic.
+  risk_if_violated: Job metadata shape becomes inconsistent across cases and runtimes.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+- id: HARNESS_JOB_LEGACY_FORBIDDEN
+  introduced_in: v1
+  scope: runtime
+  applies_to: contract.job.harness.job
+  norm: MUST_NOT
+  requirement: legacy_singular_harness_job_fields_forbidden
+  description: Legacy singular harness.job fields are forbidden after hard-cut migration to harness.jobs.
+  rationale: Removes ambiguous dual-shape metadata model.
+  risk_if_violated: Runtime compatibility branches and migration drift persist.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+- id: OPS_JOB_CAPABILITY_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: spec_lang.ops.job.dispatch
+  norm: MUST
+  requirement: ops_job_dispatch_requires_capability
+  description: ops.job.dispatch must fail unless harness.spec_lang.capabilities includes ops.job.
+  rationale: Keeps effectful dispatch behavior explicitly capability-gated.
+  risk_if_violated: Specs may dispatch helpers unexpectedly without explicit authorization.
+  references:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+- id: OPS_JOB_NESTED_DISPATCH_FORBIDDEN
+  introduced_in: v1
+  scope: runtime
+  applies_to: spec_lang.ops.job.dispatch
+  norm: MUST_NOT
+  requirement: nested_dispatch_must_fail_with_deterministic_token
+  description: Nested ops.job.dispatch calls are forbidden and must fail with deterministic runtime token.
+  rationale: Prevents recursion hazards and makes dispatch ordering deterministic.
+  risk_if_violated: Job contracts can deadlock, recurse, or become non-deterministic.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - scripts/rust/spec_runner_cli/src/spec_lang.rs

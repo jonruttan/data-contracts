@@ -31,6 +31,9 @@ struct Closure {
 struct RuntimeContext {
     capabilities: std::collections::HashSet<String>,
     last_exit_code: Option<i64>,
+    dispatch_jobs: Map<String, Value>,
+    dispatch_depth: usize,
+    last_dispatch_result: Option<Value>,
 }
 
 #[derive(Clone, Debug, Default)]
@@ -143,8 +146,23 @@ pub fn eval_mapping_ast(
     symbols: HashMap<String, Value>,
     limits: EvalLimits,
 ) -> EvalResult<Value> {
+    Ok(eval_mapping_ast_with_state(node, subject, symbols, limits)?.value)
+}
+
+#[derive(Clone, Debug)]
+pub struct EvalOutcome {
+    pub value: Value,
+    pub last_dispatch_result: Option<Value>,
+}
+
+pub fn eval_mapping_ast_with_state(
+    node: &Value,
+    subject: Value,
+    symbols: HashMap<String, Value>,
+    limits: EvalLimits,
+) -> EvalResult<EvalOutcome> {
     let expr = compile_mapping_ast(node)?;
-    eval_expr(&expr, subject, symbols, limits)
+    eval_expr_with_state(&expr, subject, symbols, limits)
 }
 
 pub fn eval_expr(
@@ -153,6 +171,15 @@ pub fn eval_expr(
     symbols: HashMap<String, Value>,
     limits: EvalLimits,
 ) -> EvalResult<Value> {
+    Ok(eval_expr_with_state(expr, subject, symbols, limits)?.value)
+}
+
+pub fn eval_expr_with_state(
+    expr: &Expr,
+    subject: Value,
+    symbols: HashMap<String, Value>,
+    limits: EvalLimits,
+) -> EvalResult<EvalOutcome> {
     let mut runtime = RuntimeContext::default();
     runtime.capabilities = std_env::var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES")
         .ok()
@@ -163,6 +190,11 @@ pub fn eval_expr(
                 .map(ToOwned::to_owned)
                 .collect()
         })
+        .unwrap_or_default();
+    runtime.dispatch_jobs = std_env::var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON")
+        .ok()
+        .and_then(|raw| serde_json::from_str::<Value>(&raw).ok())
+        .and_then(|v| v.as_object().cloned())
         .unwrap_or_default();
     let mut env = Env::default();
     env.vars
@@ -175,7 +207,11 @@ pub fn eval_expr(
         };
         env.vars.insert(name, rv);
     }
-    eval_runtime(expr, &env, &limits, &mut 0, &mut runtime)
+    let value = eval_runtime(expr, &env, &limits, &mut 0, &mut runtime)?;
+    Ok(EvalOutcome {
+        value,
+        last_dispatch_result: runtime.last_dispatch_result,
+    })
 }
 
 fn eval_runtime(
@@ -497,6 +533,83 @@ fn eval_op(
                 .map_err(|e| EvalError::new(format!("ops.helper.call cwd error: {e}")))?;
             job_helpers::run_helper(&root, id, &payload)
                 .map_err(|e| EvalError::new(format!("ops.helper.call error: {e}")))
+        }
+        "ops.job.dispatch" => {
+            require_capability(runtime, name, "ops.job")?;
+            require_min_arity(name, args, 1)?;
+            if runtime.dispatch_depth > 0 {
+                return Err(EvalError::new("runtime.dispatch.nested_forbidden: ops.job.dispatch"));
+            }
+            let job_name_v = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let Some(job_name) = job_name_v.as_str() else {
+                return Err(EvalError::new("ops.job.dispatch expects job_name to evaluate to string"));
+            };
+            let entry = runtime
+                .dispatch_jobs
+                .get(job_name)
+                .cloned()
+                .ok_or_else(|| EvalError::new(format!("runtime.dispatch.job_not_found: {job_name}")))?;
+            let entry_obj = entry
+                .as_object()
+                .ok_or_else(|| EvalError::new(format!("runtime.dispatch.invalid_job_entry: {job_name}")))?;
+            let helper_id = entry_obj
+                .get("helper")
+                .and_then(|v| v.as_str())
+                .map(str::trim)
+                .filter(|s| !s.is_empty())
+                .ok_or_else(|| EvalError::new(format!("runtime.dispatch.helper_required: {job_name}")))?;
+            let selected_mode = entry_obj
+                .get("mode")
+                .and_then(|v| v.as_str())
+                .unwrap_or("custom")
+                .to_string();
+            let mut merged_payload = match entry_obj.get("inputs").cloned() {
+                Some(Value::Object(m)) => m,
+                Some(_) => {
+                    return Err(EvalError::new(format!(
+                        "runtime.dispatch.inputs_must_be_mapping: {job_name}"
+                    )))
+                }
+                None => Map::new(),
+            };
+            if let Ok(raw) = std_env::var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON") {
+                if let Ok(Value::Object(m)) = serde_json::from_str::<Value>(&raw) {
+                    for (k, v) in m {
+                        merged_payload.insert(k, v);
+                    }
+                }
+            }
+            if args.len() > 1 {
+                let overrides = eval_runtime(&args[1], env, limits, steps, runtime)?;
+                match overrides {
+                    Value::Null => {}
+                    Value::Object(m) => {
+                        for (k, v) in m {
+                            merged_payload.insert(k, v);
+                        }
+                    }
+                    _ => {
+                        return Err(EvalError::new(
+                            "ops.job.dispatch overrides must evaluate to mapping or null",
+                        ))
+                    }
+                }
+            }
+            merged_payload.insert("_job_name".to_string(), Value::String(job_name.to_string()));
+            merged_payload.insert("_mode".to_string(), Value::String(selected_mode));
+            merged_payload.insert(
+                "_outputs".to_string(),
+                entry_obj.get("outputs").cloned().unwrap_or(Value::Object(Map::new())),
+            );
+            let root = std_env::current_dir()
+                .map_err(|e| EvalError::new(format!("ops.job.dispatch cwd error: {e}")))?;
+            runtime.dispatch_depth += 1;
+            let out = job_helpers::run_helper(&root, helper_id, &Value::Object(merged_payload))
+                .map_err(|e| EvalError::new(format!("ops.job.dispatch error: {e}")));
+            runtime.dispatch_depth -= 1;
+            let result = out?;
+            runtime.last_dispatch_result = Some(result.clone());
+            Ok(result)
         }
         other => Err(EvalError::new(format!("unsupported spec op: {other}"))),
     }

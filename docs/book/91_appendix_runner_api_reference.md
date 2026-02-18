@@ -47,9 +47,9 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 ## Generated Runner API Catalog
 
-- command_count: 74
+- command_count: 73
 - python_command_count: 0
-- rust_command_count: 74
+- rust_command_count: 73
 - parity_command_count: 0
 - all_commands_parity: false
 - doc_quality_score: 0.6
@@ -65,7 +65,6 @@ Provide generated command-surface documentation for the canonical runner interfa
 | `--liveness-level` | `reporting` | false | true | false |
 | `--liveness-min-events` | `reporting` | false | true | false |
 | `--liveness-stall-ms` | `reporting` | false | true | false |
-| `--mode` | `reporting` | false | true | false |
 | `--profile-heartbeat-ms` | `reporting` | false | true | false |
 | `--profile-level` | `reporting` | false | true | false |
 | `--profile-out` | `reporting` | false | true | false |
@@ -267,21 +266,6 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 - Examples:
   - `./scripts/runner_adapter.sh --liveness-stall-ms`: Execute command with canonical adapter routing.
-
-
-#### `--mode`
-
-- Summary: Runs `--mode` through the canonical runner entrypoint.
-- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
-- Defaults:
-  - `impl=rust`: Default runner implementation lane.
-
-- Failure Modes:
-  - Unknown subcommand.
-  - Underlying command returns non-zero status.
-
-- Examples:
-  - `./scripts/runner_adapter.sh --mode`: Execute command with canonical adapter routing.
 
 
 #### `--profile-heartbeat-ms`

@@ -86,6 +86,12 @@ Job dispatch contract:
   - `#CASE-ID` (same-document form; requires a document context)
 - `job-run` MUST reject non-scalar or malformed refs with deterministic errors.
 - Referenced case MUST resolve to `type: contract.job`.
+- `contract.job` dispatch MUST be contract-driven via `ops.job.dispatch`.
+- `contract.job` metadata MUST be declared under `harness.jobs.<name>`.
+- legacy singular `harness.job` fields are forbidden.
+- `ops.job.dispatch` MUST fail when capability `ops.job` is not declared.
+- nested dispatch is forbidden and MUST emit deterministic token
+  `runtime.dispatch.nested_forbidden`.
 
 Profiling controls (opt-in; all adapters):
 

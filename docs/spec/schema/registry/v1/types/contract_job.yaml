@@ -11,28 +11,24 @@ fields:
     type: mapping
     required: true
     since: v1
-  harness.job:
+  harness.jobs:
     type: mapping
     required: true
     since: v1
-  harness.job.ref:
+  harness.jobs.<name>.helper:
     type: string
     required: true
     since: v1
-  harness.job.mode:
+  harness.jobs.<name>.mode:
     type: string
     required: false
     since: v1
-  harness.job.inputs:
+  harness.jobs.<name>.inputs:
     type: mapping
     required: false
     since: v1
-  harness.job.outputs:
+  harness.jobs.<name>.outputs:
     type: mapping
-    required: false
-    since: v1
-  harness.job.helper:
-    type: string
     required: false
     since: v1
   contract:

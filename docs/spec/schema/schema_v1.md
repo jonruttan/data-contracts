@@ -527,13 +527,19 @@ contract:
 
 - `type: contract.job`
 - required:
-  - `harness.job.ref` (scalar path#id ref)
+  - `harness.jobs` (metadata map)
   - `contract`
 - optional:
-  - `harness.job.mode`
-  - `harness.job.inputs`
-  - `harness.job.outputs`
-  - `harness.job.helper`
+  - `harness.jobs.<name>.mode`
+  - `harness.jobs.<name>.inputs`
+  - `harness.jobs.<name>.outputs`
+
+Dispatch contract:
+
+- dispatch is contract-driven using `ops.job.dispatch`
+- dispatch metadata is read from `harness.jobs.<name>`
+- `harness.job` legacy singular form is forbidden
+- `ops.job.dispatch` requires `harness.spec_lang.capabilities` to include `ops.job`
 
 Job ref grammar:
 
@@ -587,7 +593,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 - top_level_field_count: 10
 - type_profile_count: 8
-- total_type_field_count: 31
+- total_type_field_count: 30
 
 ### Top-Level Fields
 
@@ -610,7 +616,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 |---|---|---|
 | `api.http` | 3 | - |
 | `cli.run` | 2 | - |
-| `contract.job` | 8 | `harness`, `contract` |
+| `contract.job` | 7 | `harness`, `contract` |
 | `docs.generate` | 8 | - |
 | `governance.check` | 1 | `check` |
 | `orchestration.run` | 6 | - |

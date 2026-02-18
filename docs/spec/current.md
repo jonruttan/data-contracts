@@ -129,6 +129,9 @@ Notes:
 - Spec-lang now includes capability-gated OS/system helpers under `ops.os.*`:
   `exec`, `exec_capture`, `env_get`, `env_has`, `cwd`, `pid`, `sleep_ms`, and
   `exit_code` (requires `harness.spec_lang.capabilities: [ops.os]`).
+- contract.job dispatch is contract-driven:
+  `ops.job.dispatch` executes harness-declared metadata from `harness.jobs`,
+  with explicit capability gate `ops.job`; legacy `harness.job` is forbidden.
 - Spec-lang now includes Ramda-style deep equality, set algebra
   (`union`, `intersection`, `difference`, `symmetric_difference`,
   `is_subset`, `is_superset`, `set_equals`), expanded collection transforms

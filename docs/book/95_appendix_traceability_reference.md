@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 255
+- link_count: 260
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 255
-- rules_with_implementation_refs: 253
+- rules_with_unit_tests: 260
+- rules_with_implementation_refs: 258
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -107,6 +107,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED` | 2 | 1 | 3 | 1 | 2 |
 | `CONTRACT_ASSERTIONS_METRIC_REPORTED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_METRIC_REPORTED` | 2 | 1 | 0 | 3 | 3 |
 | `CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
+| `CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | `docs/spec/contract/policy_v1.yaml#CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | 2 | 1 | 0 | 2 | 2 |
 | `CONTRACT_SPEC_FENCE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_SPEC_FENCE_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `CONTRACT_STEP_ASSERTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_STEP_ASSERTS_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
@@ -173,6 +174,8 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS` | 1 | 1 | 0 | 1 | 1 |
 | `GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION` | 3 | 1 | 0 | 2 | 3 |
 | `HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED` | 2 | 2 | 0 | 1 | 1 |
+| `HARNESS_JOBS_METADATA_MAP_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_JOBS_METADATA_MAP_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `HARNESS_JOB_LEGACY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#HARNESS_JOB_LEGACY_FORBIDDEN` | 1 | 1 | 0 | 1 | 1 |
 | `HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | 1 | 1 | 0 | 1 | 1 |
 | `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `docs/spec/contract/policy_v1.yaml#HARNESS_SUBJECT_TARGET_MAP_DECLARED` | 1 | 1 | 0 | 1 | 2 |
 | `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | 1 | 2 | 0 | 1 | 1 |
@@ -205,6 +208,8 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
 | `OBJECTIVE_SCORECARD_REPORTED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_REPORTED` | 1 | 1 | 0 | 3 | 5 |
 | `OBJECTIVE_TRIPWIRES_ENFORCED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_TRIPWIRES_ENFORCED` | 1 | 1 | 0 | 1 | 3 |
+| `OPS_JOB_CAPABILITY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#OPS_JOB_CAPABILITY_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `OPS_JOB_NESTED_DISPATCH_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#OPS_JOB_NESTED_DISPATCH_FORBIDDEN` | 1 | 1 | 0 | 1 | 1 |
 | `OPS_OS_CAPABILITY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#OPS_OS_CAPABILITY_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | 1 | 1 | 0 | 1 | 3 |

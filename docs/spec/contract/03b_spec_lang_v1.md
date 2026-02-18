@@ -40,6 +40,7 @@ Ops namespace:
   `ops.proc.command.exec`, `ops.fs.path.normalize`).
 - `ops.fs.*` utilities are pure/deterministic helpers.
 - `ops.os.*` symbols are effectful and capability-gated.
+- `ops.job.dispatch` is effectful and capability-gated (`ops.job`).
 - underscore shorthand forms are invalid.
 
 ## Core Forms

@@ -197,6 +197,8 @@ categories:
   - ops.os.exit_code
   helper_ops:
   - ops.helper.call
+  job_ops:
+  - ops.job.dispatch
 symbols:
   std.core.subject:
     category: core_control
@@ -208,6 +210,13 @@ symbols:
   ops.helper.call:
     category: helper_ops
     arity: 2
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: false
+  ops.job.dispatch:
+    category: job_ops
+    arity: null
     pure: false
     deterministic: false
     error_class: runtime

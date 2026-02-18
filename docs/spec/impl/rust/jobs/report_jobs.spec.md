@@ -10,19 +10,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-001'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: conformance-purpose
-      format: json
-      out: .artifacts/conformance-purpose.json
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: conformance-purpose
+        format: json
+        out: .artifacts/conformance-purpose.json
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -40,19 +43,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-002'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: conformance-purpose
-      format: md
-      out: .artifacts/conformance-purpose-summary.md
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: conformance-purpose
+        format: md
+        out: .artifacts/conformance-purpose-summary.md
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -70,19 +76,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-003'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: spec-portability
-      format: json
-      out: .artifacts/spec-portability.json
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: spec-portability
+        format: json
+        out: .artifacts/spec-portability.json
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -100,19 +109,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-004'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: spec-portability
-      format: md
-      out: .artifacts/spec-portability-summary.md
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: spec-portability
+        format: md
+        out: .artifacts/spec-portability-summary.md
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -130,19 +142,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-005'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: contract-assertions
-      format: json
-      out: .artifacts/contract-assertions.json
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: contract-assertions
+        format: json
+        out: .artifacts/contract-assertions.json
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -160,19 +175,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-006'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: contract-assertions
-      format: md
-      out: .artifacts/contract-assertions-summary.md
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: contract-assertions
+        format: md
+        out: .artifacts/contract-assertions-summary.md
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -190,19 +208,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-007'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: spec-lang-adoption
-      format: json
-      out: .artifacts/spec-lang-adoption.json
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: spec-lang-adoption
+        format: json
+        out: .artifacts/spec-lang-adoption.json
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -220,19 +241,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-008'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: spec-lang-adoption
-      format: md
-      out: .artifacts/spec-lang-adoption-summary.md
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: spec-lang-adoption
+        format: md
+        out: .artifacts/spec-lang-adoption-summary.md
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -250,19 +274,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-009'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: runner-independence
-      format: json
-      out: .artifacts/runner-independence.json
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: runner-independence
+        format: json
+        out: .artifacts/runner-independence.json
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -280,19 +307,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-010'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: runner-independence
-      format: md
-      out: .artifacts/runner-independence-summary.md
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: runner-independence
+        format: md
+        out: .artifacts/runner-independence-summary.md
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -310,19 +340,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-011'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: python-dependency
-      format: json
-      out: .artifacts/python-dependency.json
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: python-dependency
+        format: json
+        out: .artifacts/python-dependency.json
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -340,19 +373,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-012'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: python-dependency
-      format: md
-      out: .artifacts/python-dependency-summary.md
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: python-dependency
+        format: md
+        out: .artifacts/python-dependency-summary.md
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -370,19 +406,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-013'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: docs-operability
-      format: json
-      out: .artifacts/docs-operability.json
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: docs-operability
+        format: json
+        out: .artifacts/docs-operability.json
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -400,19 +439,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-014'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: docs-operability
-      format: md
-      out: .artifacts/docs-operability-summary.md
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: docs-operability
+        format: md
+        out: .artifacts/docs-operability-summary.md
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -430,19 +472,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-015'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: objective-scorecard
-      format: json
-      out: .artifacts/objective-scorecard.json
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: objective-scorecard
+        format: json
+        out: .artifacts/objective-scorecard.json
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -460,19 +505,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-016'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: objective-scorecard
-      format: md
-      out: .artifacts/objective-scorecard-summary.md
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: objective-scorecard
+        format: md
+        out: .artifacts/objective-scorecard-summary.md
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -490,19 +538,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-017'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: spec-lang-stdlib
-      format: json
-      out: .artifacts/spec-lang-stdlib.json
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: spec-lang-stdlib
+        format: json
+        out: .artifacts/spec-lang-stdlib.json
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject
@@ -520,19 +571,22 @@ harness:
   spec_lang:
     capabilities:
     - ops.helper
-  job:
-    ref: '#SRRUST-JOB-REP-018'
-    mode: report
-    helper: helper.report.emit
-    inputs:
-      report_name: spec-lang-stdlib
-      format: md
-      out: .artifacts/spec-lang-stdlib-summary.md
+    - ops.job
+  jobs:
+    main:
+      mode: report
+      helper: helper.report.emit
+      inputs:
+        report_name: spec-lang-stdlib
+        format: md
+        out: .artifacts/spec-lang-stdlib-summary.md
 contract:
 - id: assert_1
   class: must
   target: summary_json
   asserts:
+  - ops.job.dispatch:
+    - main
   - std.string.contains:
     - std.object.get:
       - var: subject

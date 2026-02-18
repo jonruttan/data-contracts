@@ -6771,6 +6771,121 @@ def _scan_runtime_legacy_checks_key_forbidden(root: Path, *, harness: dict | Non
     return violations
 
 
+def _scan_runtime_contract_job_dispatch_in_contract_required(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case in _iter_docs_spec_cases(root):
+        if str(case.get("type", "")).strip() != "contract.job":
+            continue
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        raw = yaml.safe_dump(case.get("contract"), sort_keys=False)
+        if "ops.job.dispatch" not in raw:
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} contract.job must dispatch via contract ops.job.dispatch"
+            )
+    return violations
+
+
+def _scan_runtime_harness_jobs_metadata_map_required(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case in _iter_docs_spec_cases(root):
+        if str(case.get("type", "")).strip() != "contract.job":
+            continue
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        harness_map = case.get("harness")
+        if not isinstance(harness_map, dict):
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness must be mapping")
+            continue
+        jobs = harness_map.get("jobs")
+        if not isinstance(jobs, dict) or not jobs:
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} harness.jobs must be non-empty mapping"
+            )
+            continue
+        for name, entry in jobs.items():
+            if not isinstance(entry, dict):
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.jobs.{name} must be mapping"
+                )
+                continue
+            helper = str(entry.get("helper", "")).strip()
+            if not helper:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.jobs.{name}.helper is required"
+                )
+    return violations
+
+
+def _scan_runtime_harness_job_legacy_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case in _iter_docs_spec_cases(root):
+        if str(case.get("type", "")).strip() != "contract.job":
+            continue
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        harness_map = case.get("harness")
+        if isinstance(harness_map, dict) and "job" in harness_map:
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} legacy harness.job is forbidden"
+            )
+        jobs = harness_map.get("jobs") if isinstance(harness_map, dict) else None
+        if isinstance(jobs, dict):
+            for name, entry in jobs.items():
+                if isinstance(entry, dict) and "ref" in entry:
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} harness.jobs.{name}.ref is forbidden"
+                    )
+    return violations
+
+
+def _scan_runtime_ops_job_capability_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case in _iter_docs_spec_cases(root):
+        contract = case.get("contract")
+        raw = yaml.safe_dump(contract, sort_keys=False)
+        if "ops.job.dispatch" not in raw:
+            continue
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        harness_map = case.get("harness")
+        spec_lang = harness_map.get("spec_lang") if isinstance(harness_map, dict) else None
+        caps = spec_lang.get("capabilities") if isinstance(spec_lang, dict) else None
+        if not isinstance(caps, list) or "ops.job" not in caps:
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} ops.job.dispatch requires harness.spec_lang.capabilities to include ops.job"
+            )
+    return violations
+
+
+def _scan_runtime_ops_job_nested_dispatch_forbidden(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    h = harness or {}
+    cfg = h.get("ops_job_nested_dispatch")
+    if not isinstance(cfg, dict):
+        return ["runtime.ops_job_nested_dispatch_forbidden requires harness.ops_job_nested_dispatch mapping in governance spec"]
+    rel = str(cfg.get("path", "scripts/rust/spec_runner_cli/src/spec_lang.rs")).strip()
+    required_tokens = cfg.get("required_tokens", ["runtime.dispatch.nested_forbidden"])
+    if not rel:
+        return ["harness.ops_job_nested_dispatch.path must be non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.ops_job_nested_dispatch.required_tokens must be list of non-empty strings"]
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing file for ops.job nested dispatch check"]
+    raw = p.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in raw:
+            violations.append(f"{rel}:1: missing required nested-dispatch token: {tok}")
+    return violations
+
+
 def _scan_architecture_harness_workflow_components_required(
     root: Path, *, harness: dict | None = None
 ) -> list[str]:
@@ -9521,6 +9636,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.legacy_assert_block_forbidden": _scan_runtime_legacy_assert_block_forbidden,
     "runtime.contract_step_asserts_required": _scan_runtime_contract_step_asserts_required,
     "runtime.legacy_checks_key_forbidden": _scan_runtime_legacy_checks_key_forbidden,
+    "runtime.contract_job_dispatch_in_contract_required": _scan_runtime_contract_job_dispatch_in_contract_required,
+    "runtime.harness_jobs_metadata_map_required": _scan_runtime_harness_jobs_metadata_map_required,
+    "runtime.harness_job_legacy_forbidden": _scan_runtime_harness_job_legacy_forbidden,
+    "runtime.ops_job_capability_required": _scan_runtime_ops_job_capability_required,
+    "runtime.ops_job_nested_dispatch_forbidden": _scan_runtime_ops_job_nested_dispatch_forbidden,
     "architecture.harness_workflow_components_required": _scan_architecture_harness_workflow_components_required,
     "architecture.harness_local_workflow_duplication_forbidden": _scan_architecture_harness_local_workflow_duplication_forbidden,
     "schema.harness_type_overlay_complete": _scan_schema_harness_type_overlay_complete,

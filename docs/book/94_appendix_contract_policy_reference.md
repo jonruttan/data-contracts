@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 255
-- must_count: 233
+- rule_count: 260
+- must_count: 236
 - should_count: 12
-- must_not_count: 10
-- active_count: 255
+- must_not_count: 12
+- active_count: 260
 - deprecated_count: 0
 - removed_count: 0
 
@@ -110,6 +110,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED` | `MUST` | `governance` | `conformance.spec_lang_fixtures.reusable_helpers` | 3 | `active` |
 | `CONTRACT_ASSERTIONS_METRIC_REPORTED` | `MUST` | `governance` | `specs.contract_assertions.metric_report` | 2 | `active` |
 | `CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `specs.contract_assertions.metric_non_regression` | 3 | `active` |
+| `CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED` | `MUST` | `runtime` | `contract.job.contract` | 3 | `active` |
 | `CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | `MUST` | `governance` | `docs.spec.contract.coverage` | 2 | `active` |
 | `CONTRACT_SPEC_FENCE_REQUIRED` | `MUST` | `runtime` | `markdown.fence.discovery` | 2 | `active` |
 | `CONTRACT_STEP_ASSERTS_REQUIRED` | `MUST` | `schema` | `contract.step_shape` | 2 | `active` |
@@ -176,6 +177,8 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS` | `SHOULD` | `governance` | `governance.check.subject_decision_split` | 2 | `active` |
 | `GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |
 | `HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED` | `MUST` | `governance` | `harness.contract.schema_sync` | 3 | `active` |
+| `HARNESS_JOBS_METADATA_MAP_REQUIRED` | `MUST` | `runtime` | `contract.job.harness.jobs` | 2 | `active` |
+| `HARNESS_JOB_LEGACY_FORBIDDEN` | `MUST_NOT` | `runtime` | `contract.job.harness.job` | 2 | `active` |
 | `HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | `MUST_NOT` | `implementation` | `harness.execution.workflow` | 2 | `active` |
 | `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `MUST` | `implementation` | `harness.assertion.targets` | 2 | `active` |
 | `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `MUST` | `schema` | `schema.registry.v1.types` | 3 | `active` |
@@ -208,6 +211,8 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `docs.spec.metrics.objective_scorecard` | 2 | `active` |
 | `OBJECTIVE_SCORECARD_REPORTED` | `MUST` | `governance` | `docs.spec.metrics.objective_scorecard` | 3 | `active` |
 | `OBJECTIVE_TRIPWIRES_ENFORCED` | `MUST` | `governance` | `docs.spec.metrics.objective_tripwires` | 2 | `active` |
+| `OPS_JOB_CAPABILITY_REQUIRED` | `MUST` | `runtime` | `spec_lang.ops.job.dispatch` | 2 | `active` |
+| `OPS_JOB_NESTED_DISPATCH_FORBIDDEN` | `MUST_NOT` | `runtime` | `spec_lang.ops.job.dispatch` | 2 | `active` |
 | `OPS_OS_CAPABILITY_REQUIRED` | `MUST` | `runtime` | `spec_lang.ops_os` | 2 | `active` |
 | `ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | `MUST` | `governance` | `orchestration.case.capabilities` | 2 | `active` |
 | `ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | `MUST` | `governance` | `orchestration.ops.symbol_grammar` | 3 | `active` |

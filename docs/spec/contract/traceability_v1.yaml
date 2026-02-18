@@ -3800,3 +3800,65 @@ links:
   - spec_runner/assertions.py
   - scripts/run_governance_specs.py
   notes: Legacy checks key is forbidden in contract trees.
+- rule_id: CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - scripts/rust/spec_runner_cli/src/spec_lang.rs
+  notes: contract.job helper execution is initiated from contract assertions via ops.job.dispatch.
+- rule_id: HARNESS_JOBS_METADATA_MAP_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_JOBS_METADATA_MAP_REQUIRED
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/rust/spec_runner_cli/src/main.rs
+  notes: contract.job metadata uses harness.jobs.<name> mapping entries.
+- rule_id: HARNESS_JOB_LEGACY_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_JOB_LEGACY_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/rust/spec_runner_cli/src/main.rs
+  notes: legacy singular harness.job form is rejected.
+- rule_id: OPS_JOB_CAPABILITY_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#OPS_JOB_CAPABILITY_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03b_spec_lang_v1.md
+  schema_refs:
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/rust/spec_runner_cli/src/spec_lang.rs
+  notes: ops.job.dispatch requires explicit ops.job capability.
+- rule_id: OPS_JOB_NESTED_DISPATCH_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#OPS_JOB_NESTED_DISPATCH_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/rust/spec_runner_cli/src/spec_lang.rs
+  notes: nested dispatch produces deterministic runtime.dispatch.nested_forbidden token.

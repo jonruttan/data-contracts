@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 256
-- checks_with_cases: 247
+- check_count: 261
+- checks_with_cases: 252
 - checks_without_cases: 9
 
 | check_id | case_count | has_case |
@@ -214,6 +214,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.ci_workflow_critical_gate_required` | 1 | true |
 | `runtime.cigate_uses_governance_triage_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
+| `runtime.contract_job_dispatch_in_contract_required` | 1 | true |
 | `runtime.contract_spec_fence_required` | 1 | true |
 | `runtime.contract_step_asserts_required` | 1 | true |
 | `runtime.domain_library_preferred_for_fs_ops` | 1 | true |
@@ -230,6 +231,8 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.governance_triage_targeted_first_required` | 1 | true |
 | `runtime.harness_exports_location_required` | 1 | true |
 | `runtime.harness_exports_schema_valid` | 1 | true |
+| `runtime.harness_job_legacy_forbidden` | 1 | true |
+| `runtime.harness_jobs_metadata_map_required` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.legacy_assert_block_forbidden` | 1 | true |
 | `runtime.legacy_checks_key_forbidden` | 1 | true |
@@ -245,6 +248,8 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.meta_json_target_required` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |
+| `runtime.ops_job_capability_required` | 1 | true |
+| `runtime.ops_job_nested_dispatch_forbidden` | 1 | true |
 | `runtime.ops_os_capability_required` | 1 | true |
 | `runtime.ops_os_stdlib_surface_sync` | 1 | true |
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |

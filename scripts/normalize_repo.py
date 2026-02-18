@@ -491,6 +491,64 @@ def _check_contract_terminology_hard_cut() -> list[str]:
     return issues
 
 
+def _check_contract_job_dispatch_hard_cut() -> list[str]:
+    issues: list[str] = []
+    for rel, case in _iter_spec_markdown_cases():
+        case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
+        if str(case.get("type", "")).strip() != "contract.job":
+            continue
+        harness = case.get("harness")
+        if not isinstance(harness, dict):
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_JOB_DISPATCH: case {case_id} harness must be mapping"
+            )
+            continue
+        if "job" in harness:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_JOB_DISPATCH: case {case_id} legacy harness.job is forbidden; use harness.jobs"
+            )
+        jobs = harness.get("jobs")
+        if not isinstance(jobs, dict) or not jobs:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_JOB_DISPATCH: case {case_id} harness.jobs must be non-empty mapping"
+            )
+            continue
+        for name, entry in jobs.items():
+            if not isinstance(name, str) or not name.strip():
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_JOB_DISPATCH: case {case_id} harness.jobs keys must be non-empty strings"
+                )
+            if not isinstance(entry, dict):
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_JOB_DISPATCH: case {case_id} harness.jobs.{name} must be mapping"
+                )
+                continue
+            if "ref" in entry:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_JOB_DISPATCH: case {case_id} harness.jobs.{name}.ref is forbidden"
+                )
+            helper = str(entry.get("helper", "")).strip()
+            if not helper:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_JOB_DISPATCH: case {case_id} harness.jobs.{name}.helper is required"
+                )
+
+        contract = case.get("contract")
+        raw = yaml.safe_dump(contract, sort_keys=False)
+        if "ops.job.dispatch" not in raw:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_JOB_DISPATCH: case {case_id} contract must include ops.job.dispatch expression"
+            )
+
+        spec_lang = harness.get("spec_lang")
+        caps = spec_lang.get("capabilities") if isinstance(spec_lang, dict) else None
+        if not isinstance(caps, list) or "ops.job" not in caps:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_JOB_DISPATCH: case {case_id} harness.spec_lang.capabilities must include ops.job"
+            )
+    return issues
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Unified normalization check/fix runner for specs, contracts, and tests.")
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -617,6 +675,7 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_library_single_public_symbol())
     issues.extend(_check_markdown_namespace_legacy_alias_forbidden())
     issues.extend(_check_contract_terminology_hard_cut())
+    issues.extend(_check_contract_job_dispatch_hard_cut())
     if issues:
         for issue in sorted(issues):
             print(issue)
