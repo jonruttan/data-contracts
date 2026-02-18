@@ -20,9 +20,9 @@ Implementation-owned executable cases:
 
 ## Supported Flags
 
-Python conformance runner script:
+Python conformance runner command:
 
-- `scripts/python/conformance_runner.py`
+- `python -m spec_runner.python_conformance_runner`
 - `spec-runner-conformance`
 
 Public flags:
