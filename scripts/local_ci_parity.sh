@@ -125,7 +125,11 @@ lane_rust_core() {
   fi
 
   if paths_match_prefixes "docs/spec/" "spec_runner/" "scripts/run_governance_specs.py" "scripts/normalize_repo.py"; then
-    run_step normalize-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" normalize-check
+    if paths_all_in_list "docs/spec/governance/check_sets_v1.yaml"; then
+      echo "[local-ci-parity] skip normalize-check (check_sets-only change)"
+    else
+      run_step normalize-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" normalize-check
+    fi
   else
     echo "[local-ci-parity] skip normalize-check (no matching changes)"
   fi
