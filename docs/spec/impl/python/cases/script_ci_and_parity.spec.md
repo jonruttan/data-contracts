@@ -181,3 +181,55 @@ contract:
     - {var: subject}
     - --case-file-pattern <glob>
 ```
+
+## SRPY-SCRIPT-CI-008
+
+```yaml contract-spec
+id: SRPY-SCRIPT-CI-008
+title: compare_conformance_parity rejects empty case formats
+type: contract.check
+harness:
+  entrypoint: spec_runner.script_entrypoints:compare_conformance_parity_main
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - --case-formats
+      - ''
+      exit_code: 2
+contract:
+- id: assert_1
+  class: MUST
+  target: stderr
+  asserts:
+  - std.string.contains:
+    - {var: subject}
+    - --case-formats requires at least one format
+```
+
+## SRPY-SCRIPT-CI-009
+
+```yaml contract-spec
+id: SRPY-SCRIPT-CI-009
+title: compare_conformance_parity reports missing php executable
+type: contract.check
+harness:
+  entrypoint: spec_runner.script_entrypoints:compare_conformance_parity_main
+  env:
+    PATH: /nonexistent
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - --cases
+      - docs/spec/conformance/cases
+      exit_code: 2
+contract:
+- id: assert_1
+  class: MUST
+  target: stderr
+  asserts:
+  - std.string.contains:
+    - {var: subject}
+    - php executable not found in PATH
+```
