@@ -48,7 +48,7 @@ id: CHEAT-001
 type: text.file
 contract:
 - target: text
-  must:
+  MUST:
   - contain:
     - hello
 ```
@@ -65,7 +65,7 @@ harness:
   entrypoint: /bin/echo
 contract:
 - target: stdout
-  must:
+  MUST:
   - contain:
     - hello
 ```
@@ -77,7 +77,7 @@ id: CHEAT-003
 type: text.file
 contract:
 - target: text
-  must:
+  MUST:
   - evaluate:
     - std.string.contains:
       - CHEAT-003
@@ -85,9 +85,9 @@ contract:
 
 ## Group Semantics
 
-- `must`: AND
-- `can`: OR
-- `cannot`: NONE
+- `MUST`: AND
+- `MAY`: OR
+- `MUST_NOT`: NONE
 
 ## Frequent Schema Rules
 

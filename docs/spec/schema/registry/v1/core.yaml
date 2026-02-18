@@ -30,11 +30,11 @@ fields:
     type: list
     required: false
     since: v1
-  when.can:
+  when.may:
     type: list
     required: false
     since: v1
-  when.cannot:
+  when.must_not:
     type: list
     required: false
     since: v1

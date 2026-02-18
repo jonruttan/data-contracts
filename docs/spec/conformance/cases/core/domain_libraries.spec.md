@@ -12,7 +12,7 @@ harness:
   chain:
     steps:
     - id: lib_http_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/http_core.spec.md
     imports:
     - from: lib_http_core_spec
@@ -205,22 +205,22 @@ harness:
   chain:
     steps:
     - id: lib_make_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/make_core.spec.md
     - id: lib_markdown_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/markdown_core.spec.md
     - id: lib_fs_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/fs_core.spec.md
     - id: lib_path_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/path_core.spec.md
     - id: lib_python_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/python_core.spec.md
     - id: lib_php_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/php_core.spec.md
     imports:
     - from: lib_make_core_spec

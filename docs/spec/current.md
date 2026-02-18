@@ -7,7 +7,7 @@ Notes:
 
 - The canonical assertion DSL is `MUST` / `MAY` / `MUST_NOT` with `contain`,
   `regex`, and `evaluate` (spec-lang v1 operator-keyed mapping AST).
-- Legacy lowercase contract class/group forms (`must/can/cannot`) are
+- Legacy lowercase contract class/group forms (`must/may/must_not`) are
   forbidden; lifecycle hook keys remain lowercase under `when.*`.
 - `target` is defined on group nodes; leaf assertions are op-only.
 - Execution is internal-IR based: external cases compile to spec-lang-backed

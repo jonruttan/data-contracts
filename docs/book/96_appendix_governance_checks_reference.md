@@ -216,10 +216,6 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.harness_exports_location_required` | 1 | true |
 | `runtime.harness_exports_schema_valid` | 1 | true |
 | `runtime.harness_jobs_metadata_map_required` | 1 | true |
-| `runtime.harness_on_complete_hook_required_behavior` | 1 | true |
-| `runtime.harness_on_fail_hook_required_behavior` | 1 | true |
-| `runtime.harness_on_hooks_schema_valid` | 1 | true |
-| `runtime.harness_on_ordering_contract_required` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.liveness_hard_cap_token_emitted` | 1 | true |
 | `runtime.liveness_stall_token_emitted` | 1 | true |
@@ -267,6 +263,10 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.triage_bypass_logged_required` | 1 | true |
 | `runtime.triage_failure_id_parsing_required` | 1 | true |
 | `runtime.universal_chain_support_required` | 1 | true |
+| `runtime.when_complete_hook_required_behavior` | 1 | true |
+| `runtime.when_fail_hook_required_behavior` | 1 | true |
+| `runtime.when_hooks_schema_valid` | 1 | true |
+| `runtime.when_ordering_contract_required` | 1 | true |
 | `schema.harness_contract_overlay_sync` | 1 | true |
 | `schema.harness_type_overlay_complete` | 1 | true |
 | `schema.no_prose_only_rules` | 1 | true |

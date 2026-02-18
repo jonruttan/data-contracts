@@ -14,7 +14,7 @@ from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_ex
 from spec_runner.virtual_paths import contract_root_for, parse_external_ref, resolve_contract_path
 
 _CASE_ID_PART = re.compile(r"^[A-Za-z0-9._:-]+$")
-_STEP_CLASS_VALUES = {"must", "can", "cannot"}
+_STEP_CLASS_VALUES = {"MUST", "MAY", "MUST_NOT"}
 _RESERVED_IMPORT_NAMES = {"subject", "if", "let", "fn", "call", "var"}
 _CHAIN_PRODUCER_EXPORT_KEYS = {"as", "from", "path", "params", "required"}
 _PRODUCER_EXPORT_CACHE_LOCK = threading.RLock()
@@ -196,7 +196,7 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
         class_name = str(raw.get("class", "")).strip()
         if class_name not in _STEP_CLASS_VALUES:
             raise ValueError(
-                f"harness.chain.steps[{idx}].class must be one of: must, can, cannot"
+                f"harness.chain.steps[{idx}].class must be one of: MUST, MAY, MUST_NOT"
             )
 
         raw_ref = raw.get("ref")
@@ -624,7 +624,7 @@ def execute_chain_plan(
                 compile_success = False
                 failure = exc
 
-            passed = (not compile_success) if step.class_name == "cannot" else compile_success
+            passed = (not compile_success) if step.class_name == "MUST_NOT" else compile_success
             ctx.chain_trace.append(
                 {
                     "step_id": step.id,
@@ -634,12 +634,12 @@ def execute_chain_plan(
                     "status": "pass" if passed else "fail",
                 }
             )
-            if not passed and step.class_name == "must" and failure is not None and fail_fast and not step.allow_continue:
+            if not passed and step.class_name == "MUST" and failure is not None and fail_fast and not step.allow_continue:
                 raise failure
-            if not passed and step.class_name == "cannot" and fail_fast and not step.allow_continue:
-                raise RuntimeError(f"chain step {step.id} with class 'cannot' unexpectedly succeeded")
+            if not passed and step.class_name == "MUST_NOT" and fail_fast and not step.allow_continue:
+                raise RuntimeError(f"chain step {step.id} with class 'MUST_NOT' unexpectedly succeeded")
 
-            if step.class_name != "cannot" and compile_success:
+            if step.class_name != "MUST_NOT" and compile_success:
                 ctx.chain_state[step.id] = dict(step_values)
             else:
                 ctx.chain_state[step.id] = {}
@@ -658,13 +658,13 @@ def execute_chain_plan(
             runtime_failure: Exception | None = None
             try:
                 run_case_fn(ref_case)
-                if step.class_name == "cannot":
+                if step.class_name == "MUST_NOT":
                     passed = False
                 else:
                     passed = True
             except Exception as exc:
                 runtime_failure = exc
-                passed = step.class_name == "cannot"
+                passed = step.class_name == "MUST_NOT"
 
             ctx.chain_trace.append(
                 {
@@ -681,21 +681,21 @@ def execute_chain_plan(
             if runtime_failure is not None:
                 last_failure = runtime_failure
 
-            if step.class_name == "must" and not passed and fail_fast and not step.allow_continue:
+            if step.class_name == "MUST" and not passed and fail_fast and not step.allow_continue:
                 raise runtime_failure if runtime_failure is not None else RuntimeError(f"chain step {step.id} failed")
-            if step.class_name == "can" and passed:
+            if step.class_name == "MAY" and passed:
                 break
-            if step.class_name == "cannot" and not passed and fail_fast and not step.allow_continue:
+            if step.class_name == "MUST_NOT" and not passed and fail_fast and not step.allow_continue:
                 raise RuntimeError(
-                    f"chain step {step.id} with class 'cannot' unexpectedly succeeded"
+                    f"chain step {step.id} with class 'MUST_NOT' unexpectedly succeeded"
                 )
 
-        if step.class_name == "can" and not at_least_one_passed and fail_fast and not step.allow_continue:
+        if step.class_name == "MAY" and not at_least_one_passed and fail_fast and not step.allow_continue:
             if last_failure is not None:
                 raise last_failure
-            raise RuntimeError(f"chain step {step.id} with class 'can' had no successful references")
+            raise RuntimeError(f"chain step {step.id} with class 'MAY' had no successful references")
 
-        if step.class_name == "cannot":
+        if step.class_name == "MUST_NOT":
             ctx.chain_state[step.id] = {}
         else:
             ctx.chain_state[step.id] = dict(step_values)

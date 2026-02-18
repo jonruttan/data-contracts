@@ -16,7 +16,7 @@ harness:
   chain:
     steps:
     - id: lib_policy_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/policy/policy_core.spec.md
     imports:
     - from: lib_policy_core_spec

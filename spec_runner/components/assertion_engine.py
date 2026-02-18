@@ -87,13 +87,13 @@ def run_assertions_with_context(
             passed_clauses=int(payload.get("passed_clauses", 0)),
             failed_clauses=int(payload.get("failed_clauses", 0)),
             must_passed=int(payload.get("MUST_passed", 0)),
-            can_passed=int(payload.get("MAY_passed", 0)),
-            cannot_passed=int(payload.get("MUST_NOT_passed", 0)),
+            may_passed=int(payload.get("MAY_passed", 0)),
+            must_not_passed=int(payload.get("MUST_NOT_passed", 0)),
         )
 
     def _on_clause_pass(clause: dict[str, Any], totals: dict[str, int]) -> None:
         cls = str(clause.get("class", "")).strip()
-        event_map = {"MUST": "must", "MAY": "can", "MUST_NOT": "cannot"}
+        event_map = {"MUST": "must", "MAY": "may", "MUST_NOT": "must_not"}
         event = event_map.get(cls)
         if event is not None:
             _run_event(

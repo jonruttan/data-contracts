@@ -8,10 +8,10 @@ title: when complete hook must run after successful contract
 purpose: Ensures complete hook dispatch is explicit and ordered after clause pass
   handling.
 type: governance.check
-check: runtime.harness_on_complete_hook_required_behavior
+check: runtime.when_complete_hook_required_behavior
 harness:
   root: .
-  harness_on_complete:
+  when_complete:
     path: /spec_runner/components/assertion_engine.py
     required_tokens:
     - def _on_complete

@@ -63,7 +63,7 @@ Example:
 ```yaml
 contract:
 - target: text
-  must:
+  MUST:
   - evaluate:
     - std.string.contains:
       - hello

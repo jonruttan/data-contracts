@@ -452,8 +452,8 @@ fn run_job_hook_event(
     passed_clauses: i64,
     failed_clauses: i64,
     must_passed: i64,
-    can_passed: i64,
-    cannot_passed: i64,
+    may_passed: i64,
+    must_not_passed: i64,
     summary_json: &mut Value,
     case_id: &str,
     case_type: &str,
@@ -492,8 +492,8 @@ fn run_job_hook_event(
             "passed_clauses": passed_clauses,
             "failed_clauses": failed_clauses,
             "must_passed": must_passed,
-            "can_passed": can_passed,
-            "cannot_passed": cannot_passed,
+            "may_passed": may_passed,
+            "must_not_passed": must_not_passed,
         }
     });
     for (hook_idx, expr) in exprs.iter().enumerate() {
@@ -665,7 +665,7 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
 
     let mut hook_exprs: HashMap<String, Vec<Value>> = HashMap::new();
     if harness.contains_key(&YamlValue::String("on".to_string())) {
-        eprintln!("ERROR: when.legacy_harness_on_forbidden: harness.on is forbidden; use case.when");
+        eprintln!("ERROR: when.legacy_when_forbidden: harness.on is forbidden; use case.when");
         return 1;
     }
     if harness.contains_key(&YamlValue::String("when".to_string())) {
@@ -679,7 +679,7 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         };
         for (raw_key, raw_values) in raw_when {
             let key = raw_key.as_str().unwrap_or("").trim().to_string();
-            if !matches!(key.as_str(), "must" | "can" | "cannot" | "fail" | "complete") {
+            if !matches!(key.as_str(), "must" | "may" | "must_not" | "fail" | "complete") {
                 eprintln!("ERROR: when.unknown_key: {key}");
                 return 1;
             }
@@ -726,8 +726,8 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut passed_clauses = 0_i64;
     let mut failed_clauses = 0_i64;
     let mut must_passed = 0_i64;
-    let mut can_passed = 0_i64;
-    let mut cannot_passed = 0_i64;
+    let mut may_passed = 0_i64;
+    let mut must_not_passed = 0_i64;
 
     if let Some(contract_seq) = case_map
         .get(&YamlValue::String("contract".to_string()))
@@ -831,14 +831,14 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                 passed_clauses += 1;
                 match class_name {
                     "MUST" => must_passed += 1,
-                    "MAY" => can_passed += 1,
-                    "MUST_NOT" => cannot_passed += 1,
+                    "MAY" => may_passed += 1,
+                    "MUST_NOT" => must_not_passed += 1,
                     _ => {}
                 }
                 let hook_event = match class_name {
                     "MUST" => "must",
-                    "MAY" => "can",
-                    "MUST_NOT" => "cannot",
+                    "MAY" => "may",
+                    "MUST_NOT" => "must_not",
                     _ => class_name,
                 };
                 if let Err(e) = run_job_hook_event(
@@ -854,8 +854,8 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                     passed_clauses,
                     failed_clauses,
                     must_passed,
-                    can_passed,
-                    cannot_passed,
+                    may_passed,
+                    must_not_passed,
                     &mut summary_json,
                     &case_id,
                     case_type,
@@ -875,8 +875,8 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                         passed_clauses,
                         failed_clauses,
                         must_passed,
-                        can_passed,
-                        cannot_passed,
+                        may_passed,
+                        must_not_passed,
                         &mut summary_json,
                         &case_id,
                         case_type,
@@ -908,8 +908,8 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                 passed_clauses,
                 failed_clauses,
                 must_passed,
-                can_passed,
-                cannot_passed,
+                may_passed,
+                must_not_passed,
                 &mut summary_json,
                 &case_id,
                 case_type,
@@ -939,8 +939,8 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
             passed_clauses,
             failed_clauses,
             must_passed,
-            can_passed,
-            cannot_passed,
+            may_passed,
+            must_not_passed,
             &mut summary_json,
             &case_id,
             case_type,

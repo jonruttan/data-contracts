@@ -462,7 +462,7 @@ harness:
   chain:
     steps:
     - id: lib_path_normalize
-      class: must
+      class: MUST
       ref: '#LIB-PATH-001-001-PATH-NORMALIZE-SLASHES'
     imports:
     - from: lib_path_normalize

@@ -597,11 +597,11 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `title` | `string` | `false` | `v1` |
 | `type` | `string` | `true` | `v1` |
 | `when` | `mapping` | `false` | `v1` |
-| `when.can` | `list` | `false` | `v1` |
-| `when.cannot` | `list` | `false` | `v1` |
 | `when.complete` | `list` | `false` | `v1` |
 | `when.fail` | `list` | `false` | `v1` |
+| `when.may` | `list` | `false` | `v1` |
 | `when.must` | `list` | `false` | `v1` |
+| `when.must_not` | `list` | `false` | `v1` |
 
 ### Type Profiles
 
@@ -640,11 +640,11 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `title` | `string` | false | `v1` |
 | `type` | `string` | true | `v1` |
 | `when` | `mapping` | false | `v1` |
-| `when.can` | `list` | false | `v1` |
-| `when.cannot` | `list` | false | `v1` |
 | `when.complete` | `list` | false | `v1` |
 | `when.fail` | `list` | false | `v1` |
+| `when.may` | `list` | false | `v1` |
 | `when.must` | `list` | false | `v1` |
+| `when.must_not` | `list` | false | `v1` |
 
 ### Type Profiles
 

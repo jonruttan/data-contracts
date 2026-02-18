@@ -75,7 +75,7 @@ harness:
   chain:
     steps:
     - id: lib_markdown
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/markdown_core.spec.md
     imports:
     - from: lib_markdown
@@ -116,7 +116,7 @@ harness:
   chain:
     steps:
     - id: lib_fs
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/fs_core.spec.md
     imports:
     - from: lib_fs
@@ -321,7 +321,7 @@ harness:
   chain:
     steps:
     - id: preload
-      class: must
+      class: MUST
       ref: '#API-GET-PREREQ'
       exports:
         item_id:

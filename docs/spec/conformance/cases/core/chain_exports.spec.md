@@ -13,7 +13,7 @@ harness:
   chain:
     steps:
     - id: bad_export_path_fixture
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-PATH
     imports:
     - from: bad_export_path_fixture
@@ -39,7 +39,7 @@ harness:
   chain:
     steps:
     - id: bad_export_class_fixture
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-CLASS
     imports:
     - from: bad_export_class_fixture

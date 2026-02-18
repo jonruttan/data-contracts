@@ -53,7 +53,7 @@ id: BK-QS-001
 type: text.file
 contract:
 - target: text
-  must:
+  MUST:
   - contain:
     - BK-QS-001
 ```
@@ -85,7 +85,7 @@ harness:
   entrypoint: /bin/echo
 contract:
 - target: stdout
-  must:
+  MUST:
   - contain:
     - hello
 ```
@@ -97,7 +97,7 @@ id: BK-QS-002B
 type: text.file
 contract:
 - target: text
-  must:
+  MUST:
   - evaluate:
     - std.logic.and:
       - std.string.contains:

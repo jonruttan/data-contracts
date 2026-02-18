@@ -3271,7 +3271,7 @@ function evalAssertNode(
     }
 
     if (count($presentGroups) > 1) {
-        throw new SchemaError('contract group must include exactly one key (must/can/cannot)');
+        throw new SchemaError('contract group must include exactly one key (must/may/must_not)');
     }
 
     if (count($presentGroups) === 1) {

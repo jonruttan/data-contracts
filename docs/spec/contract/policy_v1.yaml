@@ -3357,7 +3357,7 @@ rules:
   applies_to: harness.chain.steps.class
   norm: MUST
   requirement: each_chain_step_declares_must_can_cannot_class
-  description: 'Each harness.chain step must declare class as one of must, can, cannot.
+  description: 'Each harness.chain step must declare class as one of must, may, must_not.
 
     '
   rationale: Makes prerequisite intent explicit and deterministic.
@@ -3875,12 +3875,12 @@ rules:
   references:
   - docs/spec/contract/12_runner_interface.md
   - scripts/rust/spec_runner_cli/src/spec_lang.rs
-- id: HARNESS_ON_HOOKS_SCHEMA_VALID
+- id: WHEN_HOOKS_SCHEMA_VALID
   introduced_in: v1
   scope: runtime
   applies_to: when
   norm: MUST
-  requirement: harness_on_hook_mapping_shape_valid
+  requirement: when_hook_mapping_shape_valid
   description: when must use only allowed hook keys with non-empty expression lists,
     and legacy harness.on is forbidden.
   rationale: Provides deterministic hook contract surface across harness types.
@@ -3889,20 +3889,20 @@ rules:
   - docs/spec/contract/04_harness.md
   - docs/spec/schema/schema_v1.md
   - scripts/normalize_repo.py
-- id: HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED
+- id: WHEN_CLASS_HOOK_ORDER_REQUIRED
   introduced_in: v1
   scope: runtime
   applies_to: when.class_hooks
   norm: MUST
   requirement: class_hooks_run_after_successful_clause
-  description: must/can/cannot hooks run after their successful clause evaluation
+  description: must/may/must_not hooks run after their successful clause evaluation
     and before complete.
   rationale: Keeps lifecycle ordering deterministic and auditable.
   risk_if_violated: Hooks can run at wrong lifecycle points and break contract expectations.
   references:
   - docs/spec/contract/03_assertions.md
   - spec_runner/components/assertion_engine.py
-- id: HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED
+- id: WHEN_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED
   introduced_in: v1
   scope: runtime
   applies_to: when.fail
@@ -3915,7 +3915,7 @@ rules:
   references:
   - docs/spec/contract/03_assertions.md
   - spec_runner/components/assertion_engine.py
-- id: HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED
+- id: WHEN_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED
   introduced_in: v1
   scope: runtime
   applies_to: when.complete
@@ -3928,7 +3928,7 @@ rules:
   references:
   - docs/spec/contract/03_assertions.md
   - spec_runner/components/assertion_engine.py
-- id: HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED
+- id: WHEN_HOOK_FAILURE_FAILFAST_REQUIRED
   introduced_in: v1
   scope: runtime
   applies_to: when

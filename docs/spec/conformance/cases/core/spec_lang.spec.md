@@ -18,7 +18,7 @@ harness:
   chain:
     steps:
     - id: lib_assertion_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/conformance/assertion_core.spec.md
     imports:
     - from: lib_assertion_core_spec
@@ -54,7 +54,7 @@ harness:
   chain:
     steps:
     - id: lib_assertion_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/conformance/assertion_core.spec.md
     imports:
     - from: lib_assertion_core_spec
@@ -263,7 +263,7 @@ harness:
   chain:
     steps:
     - id: lib_assertion_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/conformance/assertion_core.spec.md
     imports:
     - from: lib_assertion_core_spec

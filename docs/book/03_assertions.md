@@ -112,7 +112,7 @@ All operator values are lists.
 ```yaml
 contract:
 - target: text
-  must:
+  MUST:
   - evaluate:
     - std.logic.and:
       - std.string.contains:
@@ -132,7 +132,7 @@ Tail-recursive example:
 ```yaml
 contract:
 - target: text
-  must:
+  MUST:
   - evaluate:
     - let:
       - lit:
@@ -172,17 +172,17 @@ contract:
 ```yaml
 contract:
 - target: stderr
-  cannot:
+  must_not:
   - contain:
     - 'ERROR:'
 - target: stdout
-  can:
+  may:
   - json_type:
     - list
   - contain:
     - '[]'
 - target: chain_json
-  must:
+  MUST:
   - evaluate:
     - std.object.has_key:
       - var: subject
@@ -196,7 +196,7 @@ Prefer library-backed markdown predicates over raw token checks.
 ```yaml
 contract:
 - target: context_json
-  must:
+  MUST:
   - evaluate:
     - call:
       - {var: domain.markdown.required_sections_present}
@@ -209,7 +209,7 @@ contract:
       - {var: domain.markdown.link_targets_all_resolve}
       - {var: subject}
     - call:
-      - {var: domain.markdown.has_yaml_spec_test_fence}
+      - {var: domain.markdown.has_yaml_contract_spec_fence}
       - {var: subject}
 ```
 
@@ -219,7 +219,7 @@ goal:
 ```yaml
 contract:
 - target: text
-  must:
+  MUST:
   - contain:
     - "Spec-Version: 1"
 ```
@@ -275,7 +275,7 @@ Symptom: `assert group must include exactly one key`
 
 - Every leaf has an inherited target.
 - Every operator value is a list.
-- Group nodes use exactly one of `must/can/cannot`.
+- Group nodes use exactly one of `must/may/must_not`.
 - Sugar is the default authoring form unless `evaluate` is required.
 - Portable regex subset is used when cross-runtime parity matters.
 

@@ -556,7 +556,7 @@ harness:
   chain:
     steps:
     - id: lib_http_core_spec
-      class: must
+      class: MUST
       ref: /docs/spec/libraries/domain/http_core.spec.md
     imports:
     - from: lib_http_core_spec

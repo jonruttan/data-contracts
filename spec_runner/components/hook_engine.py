@@ -7,7 +7,7 @@ from typing import Any, Mapping
 from spec_runner.spec_lang import eval_expr
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 
-_HOOK_KEYS = ("must", "can", "cannot", "fail", "complete")
+_HOOK_KEYS = ("must", "may", "must_not", "fail", "complete")
 
 
 @dataclass(frozen=True)
@@ -24,15 +24,15 @@ class HookTotals:
     passed_clauses: int
     failed_clauses: int
     must_passed: int
-    can_passed: int
-    cannot_passed: int
+    may_passed: int
+    must_not_passed: int
 
 
 def parse_on_hooks(*, raw_case: Mapping[str, Any]) -> dict[str, list[Any]]:
     harness = raw_case.get("harness")
     if isinstance(harness, Mapping):
         if "on" in harness:
-            raise ValueError("when.legacy_harness_on_forbidden: harness.on is forbidden; use case.when")
+            raise ValueError("when.legacy_when_forbidden: harness.on is forbidden; use case.when")
         if "when" in harness:
             raise ValueError("when.legacy_harness_when_forbidden: harness.when is forbidden; use case.when")
     elif harness is not None:
@@ -103,8 +103,8 @@ def build_hook_event_envelope(
             "passed_clauses": int(totals.passed_clauses),
             "failed_clauses": int(totals.failed_clauses),
             "must_passed": int(totals.must_passed),
-            "can_passed": int(totals.can_passed),
-            "cannot_passed": int(totals.cannot_passed),
+            "may_passed": int(totals.may_passed),
+            "must_not_passed": int(totals.must_not_passed),
         },
     }
     if failure is not None:

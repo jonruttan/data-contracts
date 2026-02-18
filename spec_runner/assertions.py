@@ -199,7 +199,7 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                     raise TypeError("contract.MAY must be a list")
                 if not children:
                     raise ValueError("contract.MAY must not be empty")
-                # can: pass if at least one child passes; if all fail, raise a helpful message.
+                # MAY: pass if at least one child passes; if all fail, raise a helpful message.
                 group_failures: list[BaseException] = []
                 any_passed = False
                 for idx, child in enumerate(children):
@@ -224,7 +224,7 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                     raise TypeError("contract.MUST_NOT must be a list")
                 if not children:
                     raise ValueError("contract.MUST_NOT must not be empty")
-                # cannot: pass only when every child assertion fails.
+                # MUST_NOT: pass only when every child assertion fails.
                 passed = 0
                 for idx, child in enumerate(children):
                     try:

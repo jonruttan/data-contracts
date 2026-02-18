@@ -7,10 +7,10 @@ id: SRGOV-RUNTIME-HOOKS-003
 title: when fail hook must run once on first failure
 purpose: Ensures fail hook guard and fail-handler token behavior are present.
 type: governance.check
-check: runtime.harness_on_fail_hook_required_behavior
+check: runtime.when_fail_hook_required_behavior
 harness:
   root: .
-  harness_on_fail:
+  when_fail:
     path: /spec_runner/components/assertion_engine.py
     required_tokens:
     - fail_hook_ran

@@ -171,11 +171,6 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED` | 2 | 2 | 0 | 1 | 1 |
 | `HARNESS_JOBS_METADATA_MAP_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_JOBS_METADATA_MAP_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | 1 | 1 | 0 | 1 | 1 |
-| `HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
-| `HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
-| `HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
-| `HARNESS_ON_HOOKS_SCHEMA_VALID` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_HOOKS_SCHEMA_VALID` | 1 | 1 | 0 | 1 | 3 |
-| `HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `docs/spec/contract/policy_v1.yaml#HARNESS_SUBJECT_TARGET_MAP_DECLARED` | 1 | 1 | 0 | 1 | 2 |
 | `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | 1 | 2 | 0 | 1 | 1 |
 | `HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | 1 | 1 | 0 | 1 | 8 |
@@ -305,4 +300,9 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `SPEC_PORTABILITY_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#SPEC_PORTABILITY_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `SPEC_PORTABILITY_THRESHOLD_ENFORCED` | `docs/spec/contract/policy_v1.yaml#SPEC_PORTABILITY_THRESHOLD_ENFORCED` | 2 | 1 | 0 | 2 | 2 |
 | `UNIVERSAL_CHAIN_SUPPORT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#UNIVERSAL_CHAIN_SUPPORT_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
+| `WHEN_CLASS_HOOK_ORDER_REQUIRED` | `docs/spec/contract/policy_v1.yaml#WHEN_CLASS_HOOK_ORDER_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
+| `WHEN_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | `docs/spec/contract/policy_v1.yaml#WHEN_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `WHEN_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#WHEN_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `WHEN_HOOKS_SCHEMA_VALID` | `docs/spec/contract/policy_v1.yaml#WHEN_HOOKS_SCHEMA_VALID` | 1 | 1 | 0 | 1 | 3 |
+| `WHEN_HOOK_FAILURE_FAILFAST_REQUIRED` | `docs/spec/contract/policy_v1.yaml#WHEN_HOOK_FAILURE_FAILFAST_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 <!-- GENERATED:END traceability_catalog -->

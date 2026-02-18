@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This script is intentionally minimal and deterministic:
  * - Reads conformance case fixtures from a directory.
  * - Executes a small text.file subset using real YAML parsing.
- * - Supports assertion tree subset: list + must/can/cannot groups + contain/regex leaves.
+ * - Supports assertion tree subset: list + must/may/must_not groups + contain/regex leaves.
  * - Emits JSON report envelope matching report-format.md.
  * - Marks unsupported case types as runtime failures.
  *
@@ -2438,7 +2438,7 @@ function evalTextAssertNode(
     }
 
     if (count($presentGroups) > 1) {
-        throw new SchemaError('contract group must include exactly one key (must/can/cannot)');
+        throw new SchemaError('contract group must include exactly one key (must/may/must_not)');
     }
 
     if (count($presentGroups) === 1) {
@@ -3079,7 +3079,7 @@ function evalApiHttpAssertNode(
         }
     }
     if (count($presentGroups) > 1) {
-        throw new SchemaError('contract group must include exactly one key (must/can/cannot)');
+        throw new SchemaError('contract group must include exactly one key (must/may/must_not)');
     }
     if (count($presentGroups) === 1) {
         $group = $presentGroups[0];

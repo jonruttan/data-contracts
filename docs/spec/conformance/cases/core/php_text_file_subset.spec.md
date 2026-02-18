@@ -165,7 +165,7 @@ contract:
 ```yaml contract-spec
 id: SRCONF-PHP-TEXT-008
 title: nested mixed groups with inherited target passes
-purpose: Covers mixed nested must/can/cannot evaluation with inherited targets.
+purpose: Covers mixed nested must/may/must_not evaluation with inherited targets.
 type: text.file
 expect:
   portable:

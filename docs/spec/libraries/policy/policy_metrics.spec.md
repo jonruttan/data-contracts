@@ -70,10 +70,10 @@ harness:
   chain:
     steps:
     - id: lib_non_decrease
-      class: must
+      class: MUST
       ref: '#LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE'
     - id: lib_non_increase
-      class: must
+      class: MUST
       ref: '#LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE'
     imports:
     - from: lib_non_decrease

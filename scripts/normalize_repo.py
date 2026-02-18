@@ -33,8 +33,9 @@ _HARNESS_FILES = (
     "spec_runner/harnesses/docs_generate.py",
     "spec_runner/harnesses/api_http.py",
 )
-_CHAIN_CLASS_VALUES = {"must", "can", "cannot"}
+_CHAIN_CLASS_VALUES = {"MUST", "MAY", "MUST_NOT"}
 _CONTRACT_CLASS_VALUES = {"MUST", "MAY", "MUST_NOT"}
+_LEGACY_CLASS_VALUES = {"must", "can", "cannot"}
 
 def _load_profile(path: Path) -> dict[str, Any]:
     payload = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -326,7 +327,7 @@ def _check_chain_contract_shape() -> list[str]:
             class_name = str(step.get("class", "")).strip()
             if class_name not in _CHAIN_CLASS_VALUES:
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].class must be one of must, can, cannot"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].class must be one of MUST, MAY, MUST_NOT"
                 )
             ref = step.get("ref")
             if isinstance(ref, dict):
@@ -431,7 +432,7 @@ def _check_contract_terminology_hard_cut() -> list[str]:
             if not isinstance(node, dict):
                 return
             step_class = str(node.get("class", "")).strip() if "class" in node else ""
-            if step_class in _CHAIN_CLASS_VALUES:
+            if step_class in _LEGACY_CLASS_VALUES:
                 issues.append(
                     f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path}.class legacy lowercase class is forbidden; use MUST, MAY, MUST_NOT"
                 )
@@ -538,9 +539,9 @@ def _check_contract_job_dispatch_hard_cut() -> list[str]:
     return issues
 
 
-def _check_harness_on_hooks_shape() -> list[str]:
+def _check_when_hooks_shape() -> list[str]:
     issues: list[str] = []
-    allowed = {"must", "can", "cannot", "fail", "complete"}
+    allowed = {"must", "may", "must_not", "fail", "complete"}
     for rel, case in _iter_spec_markdown_cases():
         case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
         harness = case.get("harness")
@@ -647,7 +648,7 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_library_single_public_symbol())
     issues.extend(_check_contract_terminology_hard_cut())
     issues.extend(_check_contract_job_dispatch_hard_cut())
-    issues.extend(_check_harness_on_hooks_shape())
+    issues.extend(_check_when_hooks_shape())
     if issues:
         for issue in sorted(issues):
             print(issue)

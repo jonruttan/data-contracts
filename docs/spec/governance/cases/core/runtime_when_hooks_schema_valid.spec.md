@@ -7,7 +7,7 @@ id: SRGOV-RUNTIME-HOOKS-001
 title: when hooks schema must be valid
 purpose: Enforces when shape and hook expression list requirements.
 type: governance.check
-check: runtime.harness_on_hooks_schema_valid
+check: runtime.when_hooks_schema_valid
 harness:
   root: .
 contract:
