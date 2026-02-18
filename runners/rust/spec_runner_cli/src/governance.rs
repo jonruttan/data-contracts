@@ -233,12 +233,15 @@ fn run_governance_profile_native(
     forwarded: &[String],
     default_profile: &str,
     default_out_prefix: &str,
+    default_prefixes: &[&str],
 ) -> i32 {
     let mut profile = default_profile.to_string();
     let mut out_path = format!(".artifacts/{default_out_prefix}-summary.json");
     let mut trace_out_path = format!(".artifacts/{default_out_prefix}-trace.json");
     let mut summary_out_path = format!(".artifacts/{default_out_prefix}-summary.md");
     let mut fail_fast = env_bool("SPEC_RUNNER_FAIL_FAST", true);
+    let mut check_ids: Vec<String> = Vec::new();
+    let mut check_prefixes: Vec<String> = default_prefixes.iter().map(|x| x.to_string()).collect();
 
     let mut i = 0usize;
     while i < forwarded.len() {
@@ -284,6 +287,32 @@ fn run_governance_profile_native(
                 fail_fast = false;
                 i += 1;
             }
+            "--check-id" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --check-id requires value");
+                    return 2;
+                }
+                let value = forwarded[i + 1].trim();
+                if value.is_empty() {
+                    eprintln!("ERROR: --check-id requires non-empty value");
+                    return 2;
+                }
+                check_ids.push(value.to_string());
+                i += 2;
+            }
+            "--check-prefix" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --check-prefix requires value");
+                    return 2;
+                }
+                let value = forwarded[i + 1].trim();
+                if value.is_empty() {
+                    eprintln!("ERROR: --check-prefix requires non-empty value");
+                    return 2;
+                }
+                check_prefixes.push(value.to_string());
+                i += 2;
+            }
             _ => {
                 eprintln!("ERROR: unsupported critical-gate arg: {arg}");
                 return 2;
@@ -318,6 +347,16 @@ fn run_governance_profile_native(
             .and_then(|v| v.as_str())
             .unwrap_or("runtime.critical_gate.unknown")
             .to_string();
+        if !check_ids.is_empty() && !check_ids.iter().any(|id| id == &check_id) {
+            continue;
+        }
+        if !check_prefixes.is_empty()
+            && !check_prefixes
+                .iter()
+                .any(|prefix| check_id.starts_with(prefix))
+        {
+            continue;
+        }
         let kind = def
             .get(&YamlValue::String("kind".to_string()))
             .and_then(|v| v.as_str())
@@ -482,13 +521,36 @@ fn run_governance_profile_native(
     println!("wrote {}", trace_abs.display());
     println!("wrote {}", summary_abs.display());
 
-    if status == "pass" { 0 } else { 1 }
+    if status == "pass" {
+        0
+    } else {
+        1
+    }
 }
 
 pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
-    run_governance_profile_native(root, forwarded, "critical", "critical-gate")
+    run_governance_profile_native(root, forwarded, "critical", "critical-gate", &[])
 }
 
 pub fn run_governance_broad_native(root: &Path, forwarded: &[String]) -> i32 {
-    run_governance_profile_native(root, forwarded, "full", "governance-broad-native")
+    run_governance_profile_native(root, forwarded, "full", "governance-broad-native", &[])
+}
+
+pub fn run_governance_native(root: &Path, forwarded: &[String]) -> i32 {
+    run_governance_profile_native(root, forwarded, "full", "governance", &[])
+}
+
+pub fn run_governance_heavy_native(root: &Path, forwarded: &[String]) -> i32 {
+    run_governance_profile_native(
+        root,
+        forwarded,
+        "full",
+        "governance-heavy",
+        &[
+            "runtime.chain",
+            "library.",
+            "normalization.mapping_ast_only",
+            "normalization.virtual_root_paths_only",
+        ],
+    )
 }

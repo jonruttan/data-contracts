@@ -278,7 +278,9 @@ fn eval_op(
             let target = eval_callable(&args[0], env, limits, steps, runtime)?;
             let mut values = Vec::<RuntimeValue>::new();
             for arg in &args[1..] {
-                values.push(RuntimeValue::Json(eval_runtime(arg, env, limits, steps, runtime)?));
+                values.push(RuntimeValue::Json(eval_runtime(
+                    arg, env, limits, steps, runtime,
+                )?));
             }
             apply_callable(target, values, limits, steps, runtime)
         }
@@ -423,9 +425,13 @@ fn eval_op(
             }
             Ok(Value::Array(out))
         }
-        "std.math.add" | "add" => numeric_fold(name, args, env, limits, steps, runtime, 0.0, |a, b| a + b),
+        "std.math.add" | "add" => {
+            numeric_fold(name, args, env, limits, steps, runtime, 0.0, |a, b| a + b)
+        }
         "std.math.sub" | "sub" => numeric_sub(name, args, env, limits, steps, runtime),
-        "std.math.mul" | "mul" => numeric_fold(name, args, env, limits, steps, runtime, 1.0, |a, b| a * b),
+        "std.math.mul" | "mul" => {
+            numeric_fold(name, args, env, limits, steps, runtime, 1.0, |a, b| a * b)
+        }
         "std.math.div" | "div" => numeric_div(name, args, env, limits, steps, runtime),
         "ops.fs.walk" => {
             require_arity(name, args, 2)?;
@@ -435,7 +441,9 @@ fn eval_op(
                 .as_str()
                 .map(str::trim)
                 .filter(|s| !s.is_empty())
-                .ok_or_else(|| EvalError::new("spec_lang ops.fs.walk expects non-empty root path"))?;
+                .ok_or_else(|| {
+                    EvalError::new("spec_lang ops.fs.walk expects non-empty root path")
+                })?;
             let opts = opts_v
                 .as_object()
                 .ok_or_else(|| EvalError::new("spec_lang ops.fs.walk expects options mapping"))?;
@@ -444,8 +452,14 @@ fn eval_op(
                 .and_then(|v| v.as_str())
                 .unwrap_or("*")
                 .to_string();
-            let include_dirs = opts.get("include_dirs").and_then(|v| v.as_bool()).unwrap_or(false);
-            let relative = opts.get("relative").and_then(|v| v.as_bool()).unwrap_or(true);
+            let include_dirs = opts
+                .get("include_dirs")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false);
+            let relative = opts
+                .get("relative")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(true);
             let base = PathBuf::from(root);
             if !base.exists() {
                 return Ok(Value::Array(vec![]));
@@ -507,14 +521,17 @@ fn eval_op(
                 .as_str()
                 .map(str::trim)
                 .filter(|s| !s.is_empty())
-                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.set expects non-empty path"))?;
-            let body = body_v
-                .as_str()
-                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.set expects string content"))?;
+                .ok_or_else(|| {
+                    EvalError::new("spec_lang ops.fs.file.set expects non-empty path")
+                })?;
+            let body = body_v.as_str().ok_or_else(|| {
+                EvalError::new("spec_lang ops.fs.file.set expects string content")
+            })?;
             if let Some(parent) = Path::new(path).parent() {
                 let _ = fs::create_dir_all(parent);
             }
-            fs::write(path, body).map_err(|e| EvalError::new(format!("ops.fs.file.set error: {e}")))?;
+            fs::write(path, body)
+                .map_err(|e| EvalError::new(format!("ops.fs.file.set error: {e}")))?;
             Ok(Value::Bool(true))
         }
         "ops.fs.file.append" => {
@@ -525,10 +542,12 @@ fn eval_op(
                 .as_str()
                 .map(str::trim)
                 .filter(|s| !s.is_empty())
-                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.append expects non-empty path"))?;
-            let body = body_v
-                .as_str()
-                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.append expects string content"))?;
+                .ok_or_else(|| {
+                    EvalError::new("spec_lang ops.fs.file.append expects non-empty path")
+                })?;
+            let body = body_v.as_str().ok_or_else(|| {
+                EvalError::new("spec_lang ops.fs.file.append expects string content")
+            })?;
             if let Some(parent) = Path::new(path).parent() {
                 let _ = fs::create_dir_all(parent);
             }
@@ -537,7 +556,8 @@ fn eval_op(
                 existing = raw;
             }
             existing.push_str(body);
-            fs::write(path, existing).map_err(|e| EvalError::new(format!("ops.fs.file.append error: {e}")))?;
+            fs::write(path, existing)
+                .map_err(|e| EvalError::new(format!("ops.fs.file.append error: {e}")))?;
             Ok(Value::Bool(true))
         }
         "ops.fs.file.mkdir_p" => {
@@ -547,7 +567,9 @@ fn eval_op(
                 .as_str()
                 .map(str::trim)
                 .filter(|s| !s.is_empty())
-                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.mkdir_p expects non-empty path"))?;
+                .ok_or_else(|| {
+                    EvalError::new("spec_lang ops.fs.file.mkdir_p expects non-empty path")
+                })?;
             fs::create_dir_all(path)
                 .map_err(|e| EvalError::new(format!("ops.fs.file.mkdir_p error: {e}")))?;
             Ok(Value::Bool(true))
@@ -559,7 +581,9 @@ fn eval_op(
                 .as_str()
                 .map(str::trim)
                 .filter(|s| !s.is_empty())
-                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.remove expects non-empty path"))?;
+                .ok_or_else(|| {
+                    EvalError::new("spec_lang ops.fs.file.remove expects non-empty path")
+                })?;
             let p = Path::new(path);
             if !p.exists() {
                 return Ok(Value::Bool(false));
@@ -569,17 +593,19 @@ fn eval_op(
                     "spec_lang ops.fs.file.remove expects file path, got directory",
                 ));
             }
-            fs::remove_file(p).map_err(|e| EvalError::new(format!("ops.fs.file.remove error: {e}")))?;
+            fs::remove_file(p)
+                .map_err(|e| EvalError::new(format!("ops.fs.file.remove error: {e}")))?;
             Ok(Value::Bool(true))
         }
         "ops.fs.yaml.parse" => {
             require_arity(name, args, 1)?;
             let raw_v = eval_runtime(&args[0], env, limits, steps, runtime)?;
-            let raw = raw_v
-                .as_str()
-                .ok_or_else(|| EvalError::new("spec_lang ops.fs.yaml.parse expects string input"))?;
-            let parsed: YamlValue = serde_yaml::from_str(raw)
-                .map_err(|e| EvalError::new(format!("spec_lang ops.fs.yaml.parse invalid YAML: {e}")))?;
+            let raw = raw_v.as_str().ok_or_else(|| {
+                EvalError::new("spec_lang ops.fs.yaml.parse expects string input")
+            })?;
+            let parsed: YamlValue = serde_yaml::from_str(raw).map_err(|e| {
+                EvalError::new(format!("spec_lang ops.fs.yaml.parse invalid YAML: {e}"))
+            })?;
             Ok(yaml_to_json_value(&parsed))
         }
         "ops.fs.yaml.stringify" => {
@@ -594,7 +620,9 @@ fn eval_op(
             let obj = eval_runtime(&args[0], env, limits, steps, runtime)?;
             let path = eval_runtime(&args[1], env, limits, steps, runtime)?;
             let path_segments = value_to_path_segments(&path, name)?;
-            Ok(get_in_path(&obj, &path_segments).cloned().unwrap_or(Value::Null))
+            Ok(get_in_path(&obj, &path_segments)
+                .cloned()
+                .unwrap_or(Value::Null))
         }
         "ops.fs.yaml.get_or" => {
             require_arity(name, args, 3)?;
@@ -602,7 +630,9 @@ fn eval_op(
             let path = eval_runtime(&args[1], env, limits, steps, runtime)?;
             let fallback = eval_runtime(&args[2], env, limits, steps, runtime)?;
             let path_segments = value_to_path_segments(&path, name)?;
-            Ok(get_in_path(&obj, &path_segments).cloned().unwrap_or(fallback))
+            Ok(get_in_path(&obj, &path_segments)
+                .cloned()
+                .unwrap_or(fallback))
         }
         "ops.fs.yaml.has_path" => {
             require_arity(name, args, 2)?;
@@ -617,17 +647,21 @@ fn eval_op(
             let cmd = eval_runtime(&args[0], env, limits, steps, runtime)?;
             let timeout_ms = eval_runtime(&args[1], env, limits, steps, runtime)?;
             let command = coerce_command(name, &cmd)?;
-            let timeout = timeout_ms
-                .as_i64()
-                .ok_or_else(|| EvalError::new("spec_lang ops.os.exec expects integer timeout_ms"))?;
+            let timeout = timeout_ms.as_i64().ok_or_else(|| {
+                EvalError::new("spec_lang ops.os.exec expects integer timeout_ms")
+            })?;
             if timeout < 0 {
-                return Err(EvalError::new("spec_lang ops.os.exec expects non-negative timeout_ms"));
+                return Err(EvalError::new(
+                    "spec_lang ops.os.exec expects non-negative timeout_ms",
+                ));
             }
             let mut proc = Command::new(&command[0]);
             if command.len() > 1 {
                 proc.args(&command[1..]);
             }
-            let status = proc.status().map_err(|e| EvalError::new(format!("ops.os.exec error: {e}")))?;
+            let status = proc
+                .status()
+                .map_err(|e| EvalError::new(format!("ops.os.exec error: {e}")))?;
             let code = status.code().unwrap_or(-1) as i64;
             runtime.last_exit_code = Some(code);
             Ok(Value::Number(Number::from(code)))
@@ -642,7 +676,9 @@ fn eval_op(
             if command.len() > 1 {
                 proc.args(&command[1..]);
             }
-            let out = proc.output().map_err(|e| EvalError::new(format!("ops.os.exec_capture error: {e}")))?;
+            let out = proc
+                .output()
+                .map_err(|e| EvalError::new(format!("ops.os.exec_capture error: {e}")))?;
             let code = out.status.code().unwrap_or(-1) as i64;
             runtime.last_exit_code = Some(code);
             let mut obj = Map::new();
@@ -665,9 +701,9 @@ fn eval_op(
             let cmd = eval_runtime(&args[0], env, limits, steps, runtime)?;
             let opts = eval_runtime(&args[1], env, limits, steps, runtime)?;
             let command = coerce_command(name, &cmd)?;
-            let opts_obj = opts
-                .as_object()
-                .ok_or_else(|| EvalError::new("spec_lang ops.os.exec_capture_ex expects options mapping"))?;
+            let opts_obj = opts.as_object().ok_or_else(|| {
+                EvalError::new("spec_lang ops.os.exec_capture_ex expects options mapping")
+            })?;
             let timeout = opts_obj
                 .get("timeout_ms")
                 .and_then(|v| v.as_i64())
@@ -677,7 +713,10 @@ fn eval_op(
                     "spec_lang ops.os.exec_capture_ex expects non-negative timeout_ms",
                 ));
             }
-            let cwd = opts_obj.get("cwd").and_then(|v| v.as_str()).map(|s| s.to_string());
+            let cwd = opts_obj
+                .get("cwd")
+                .and_then(|v| v.as_str())
+                .map(|s| s.to_string());
             let stdin_text = opts_obj
                 .get("stdin_text")
                 .and_then(|v| v.as_str())
@@ -754,7 +793,9 @@ fn eval_op(
             let key = eval_runtime(&args[0], env, limits, steps, runtime)?;
             let fallback = eval_runtime(&args[1], env, limits, steps, runtime)?;
             let Some(k) = key.as_str() else {
-                return Err(EvalError::new("spec_lang ops.os.env_get expects string key"));
+                return Err(EvalError::new(
+                    "spec_lang ops.os.env_get expects string key",
+                ));
             };
             Ok(std_env::var(k).map(Value::String).unwrap_or(fallback))
         }
@@ -763,14 +804,17 @@ fn eval_op(
             require_ops_os(runtime, name)?;
             let key = eval_runtime(&args[0], env, limits, steps, runtime)?;
             let Some(k) = key.as_str() else {
-                return Err(EvalError::new("spec_lang ops.os.env_has expects string key"));
+                return Err(EvalError::new(
+                    "spec_lang ops.os.env_has expects string key",
+                ));
             };
             Ok(Value::Bool(std_env::var(k).is_ok()))
         }
         "ops.os.cwd" => {
             require_arity(name, args, 0)?;
             require_ops_os(runtime, name)?;
-            let cwd = std_env::current_dir().map_err(|e| EvalError::new(format!("ops.os.cwd error: {e}")))?;
+            let cwd = std_env::current_dir()
+                .map_err(|e| EvalError::new(format!("ops.os.cwd error: {e}")))?;
             Ok(Value::String(cwd.to_string_lossy().to_string()))
         }
         "ops.os.pid" => {
@@ -785,7 +829,9 @@ fn eval_op(
                 .as_i64()
                 .ok_or_else(|| EvalError::new("spec_lang ops.os.sleep_ms expects integer delay"))?;
             if ms < 0 {
-                return Err(EvalError::new("spec_lang ops.os.sleep_ms expects non-negative delay"));
+                return Err(EvalError::new(
+                    "spec_lang ops.os.sleep_ms expects non-negative delay",
+                ));
             }
             thread::sleep(Duration::from_millis(ms as u64));
             Ok(Value::Bool(true))
@@ -815,26 +861,34 @@ fn eval_op(
             require_capability(runtime, name, "ops.job")?;
             require_min_arity(name, args, 1)?;
             if runtime.dispatch_depth > 0 {
-                return Err(EvalError::new("runtime.dispatch.nested_forbidden: ops.job.dispatch"));
+                return Err(EvalError::new(
+                    "runtime.dispatch.nested_forbidden: ops.job.dispatch",
+                ));
             }
             let job_name_v = eval_runtime(&args[0], env, limits, steps, runtime)?;
             let Some(job_name) = job_name_v.as_str() else {
-                return Err(EvalError::new("ops.job.dispatch expects job_name to evaluate to string"));
+                return Err(EvalError::new(
+                    "ops.job.dispatch expects job_name to evaluate to string",
+                ));
             };
             let entry = runtime
                 .dispatch_jobs
                 .get(job_name)
                 .cloned()
-                .ok_or_else(|| EvalError::new(format!("runtime.dispatch.job_not_found: {job_name}")))?;
-            let entry_obj = entry
-                .as_object()
-                .ok_or_else(|| EvalError::new(format!("runtime.dispatch.invalid_job_entry: {job_name}")))?;
+                .ok_or_else(|| {
+                    EvalError::new(format!("runtime.dispatch.job_not_found: {job_name}"))
+                })?;
+            let entry_obj = entry.as_object().ok_or_else(|| {
+                EvalError::new(format!("runtime.dispatch.invalid_job_entry: {job_name}"))
+            })?;
             let helper_id = entry_obj
                 .get("helper")
                 .and_then(|v| v.as_str())
                 .map(str::trim)
                 .filter(|s| !s.is_empty())
-                .ok_or_else(|| EvalError::new(format!("runtime.dispatch.helper_required: {job_name}")))?;
+                .ok_or_else(|| {
+                    EvalError::new(format!("runtime.dispatch.helper_required: {job_name}"))
+                })?;
             let selected_mode = entry_obj
                 .get("mode")
                 .and_then(|v| v.as_str())
@@ -876,7 +930,10 @@ fn eval_op(
             merged_payload.insert("_mode".to_string(), Value::String(selected_mode));
             merged_payload.insert(
                 "_outputs".to_string(),
-                entry_obj.get("outputs").cloned().unwrap_or(Value::Object(Map::new())),
+                entry_obj
+                    .get("outputs")
+                    .cloned()
+                    .unwrap_or(Value::Object(Map::new())),
             );
             let root = std_env::current_dir()
                 .map_err(|e| EvalError::new(format!("ops.job.dispatch cwd error: {e}")))?;
@@ -1237,19 +1294,27 @@ fn require_capability(runtime: &RuntimeContext, op: &str, capability: &str) -> E
 
 fn coerce_command(op: &str, value: &Value) -> EvalResult<Vec<String>> {
     let Value::Array(items) = value else {
-        return Err(EvalError::new(format!("spec_lang {op} expects non-empty list command")));
+        return Err(EvalError::new(format!(
+            "spec_lang {op} expects non-empty list command"
+        )));
     };
     if items.is_empty() {
-        return Err(EvalError::new(format!("spec_lang {op} expects non-empty list command")));
+        return Err(EvalError::new(format!(
+            "spec_lang {op} expects non-empty list command"
+        )));
     }
     let mut out = Vec::<String>::with_capacity(items.len());
     for item in items {
         let Some(token) = item.as_str() else {
-            return Err(EvalError::new(format!("spec_lang {op} command entries must be strings")));
+            return Err(EvalError::new(format!(
+                "spec_lang {op} command entries must be strings"
+            )));
         };
         let t = token.trim();
         if t.is_empty() {
-            return Err(EvalError::new(format!("spec_lang {op} command entries must be non-empty strings")));
+            return Err(EvalError::new(format!(
+                "spec_lang {op} command entries must be non-empty strings"
+            )));
         }
         out.push(t.to_string());
     }

@@ -87,7 +87,13 @@ impl RunProfiler {
             run_span_id: None,
         };
         if enabled {
-            let sid = profiler.start_span("run.total", "run", "run.total", None, json!({"runner_impl": opts.runner_impl}));
+            let sid = profiler.start_span(
+                "run.total",
+                "run",
+                "run.total",
+                None,
+                json!({"runner_impl": opts.runner_impl}),
+            );
             profiler.run_span_id = sid;
         }
         profiler
@@ -146,9 +152,15 @@ impl RunProfiler {
             let duration_ms = ((end_ns - start_ns) as f64) / 1_000_000.0;
             if let Some(obj) = item.as_object_mut() {
                 obj.insert("end_ns".to_string(), json!(end_ns));
-                obj.insert("duration_ms".to_string(), json!((duration_ms * 1000.0).round() / 1000.0));
+                obj.insert(
+                    "duration_ms".to_string(),
+                    json!((duration_ms * 1000.0).round() / 1000.0),
+                );
                 obj.insert("status".to_string(), json!(status));
-                obj.insert("error".to_string(), sanitize_attrs(error.unwrap_or(Value::Null)));
+                obj.insert(
+                    "error".to_string(),
+                    sanitize_attrs(error.unwrap_or(Value::Null)),
+                );
             }
             return;
         }
@@ -258,7 +270,9 @@ impl RunProfiler {
                 row.get("name").and_then(Value::as_str).unwrap_or(""),
                 row.get("phase").and_then(Value::as_str).unwrap_or(""),
                 row.get("status").and_then(Value::as_str).unwrap_or(""),
-                row.get("duration_ms").map(|v| v.to_string()).unwrap_or_default()
+                row.get("duration_ms")
+                    .map(|v| v.to_string())
+                    .unwrap_or_default()
             ));
         }
         md.push_str("\n## Suggested Next Command\n\n");
@@ -290,7 +304,13 @@ mod tests {
         };
         let mut p = RunProfiler::from_options(&opts);
         let sid = p
-            .start_span("runner.dispatch", "runner", "runner.dispatch", None, json!({}))
+            .start_span(
+                "runner.dispatch",
+                "runner",
+                "runner.dispatch",
+                None,
+                json!({}),
+            )
             .expect("span");
         p.event("checkpoint", Some(&sid), json!({"ok":true}));
         p.finish_span(&sid, "ok", None);
@@ -313,7 +333,13 @@ mod tests {
             args: vec![],
         };
         let mut p = RunProfiler::from_options(&opts);
-        p.close("pass", 0, &root, "/.artifacts/run-trace.json", "/.artifacts/run-trace-summary.md");
+        p.close(
+            "pass",
+            0,
+            &root,
+            "/.artifacts/run-trace.json",
+            "/.artifacts/run-trace-summary.md",
+        );
         assert!(root.join(".artifacts/run-trace.json").exists());
         assert!(root.join(".artifacts/run-trace-summary.md").exists());
     }

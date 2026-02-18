@@ -13,6 +13,9 @@ harness:
   rust_no_python_exec:
     path: /runners/rust/spec_runner_cli/src/main.rs
     forbidden_tokens:
+    - spec_runner.spec_lang_commands
+    - PYTHONPATH
+    - python
     - python3
     - PYTHON_BIN
     - resolve_python_bin

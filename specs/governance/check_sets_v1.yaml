@@ -79,6 +79,9 @@ profiles:
           - governance_broad
         must_not_contain:
           - governance_critical
+          - spec_runner.spec_lang_commands
+          - PYTHONPATH
+          - python3
       - id: runtime.full_ci_gate_broad_is_native_python
         kind: file_tokens
         path: /runners/python/spec_runner/script_runtime_commands.py

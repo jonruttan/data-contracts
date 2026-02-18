@@ -16,6 +16,9 @@ harness:
     - runners/rust/spec_runner_cli/src/main.rs
     forbidden_tokens:
     - runners/public/runner_adapter.sh
+    - spec_runner.spec_lang_commands
+    - PYTHONPATH
+    - python
     - scripts/run_governance_specs.py
   chain:
     steps:

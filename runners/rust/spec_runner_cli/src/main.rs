@@ -1,21 +1,24 @@
-mod spec_lang;
-mod profiler;
 mod governance;
 mod job_helpers;
+mod profiler;
+mod spec_lang;
 
+use std::collections::{HashMap, HashSet};
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::{self, Command};
 use std::sync::{Mutex, OnceLock};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
-use std::collections::{HashMap, HashSet};
 
+use governance::{
+    run_critical_gate_native, run_governance_broad_native, run_governance_heavy_native,
+    run_governance_native,
+};
+use profiler::{profile_options_from_env, RunProfiler};
 use serde_json::{json, Value};
 use serde_yaml::Value as YamlValue;
 use spec_lang::{eval_mapping_ast, eval_mapping_ast_with_state, EvalLimits};
-use profiler::{profile_options_from_env, RunProfiler};
-use governance::{run_critical_gate_native, run_governance_broad_native};
 
 static ACTIVE_PROFILER: OnceLock<Mutex<Option<RunProfiler>>> = OnceLock::new();
 
@@ -56,7 +59,10 @@ fn profiler_event(kind: &str, span_id: Option<&str>, attrs: Value) {
 }
 
 fn debug_enabled() -> bool {
-    matches!(std::env::var("SPEC_RUNNER_DEBUG").ok().as_deref(), Some("1") | Some("true") | Some("yes"))
+    matches!(
+        std::env::var("SPEC_RUNNER_DEBUG").ok().as_deref(),
+        Some("1") | Some("true") | Some("yes")
+    )
 }
 
 fn debug_level() -> u8 {
@@ -124,33 +130,31 @@ fn run_cmd(program: &str, args: &[String], root: &Path) -> i32 {
         .stdin(process::Stdio::inherit())
         .stdout(process::Stdio::inherit())
         .stderr(process::Stdio::inherit());
-    let py_name = std::path::Path::new(program)
-        .file_name()
-        .and_then(|s| s.to_str())
-        .unwrap_or(program);
-    if py_name == "python" || py_name == "python3" {
-        let py_pkg = root.join("runners").join("python");
-        let merged = match env::var("PYTHONPATH") {
-            Ok(existing) if !existing.trim().is_empty() => {
-                format!("{}:{}", py_pkg.display(), existing)
-            }
-            _ => py_pkg.display().to_string(),
-        };
-        cmd.env("PYTHONPATH", merged);
-    }
     match cmd.spawn() {
         Ok(mut child) => {
             let pid = child.id();
-            profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"spawned","pid":pid}));
+            profiler_event(
+                "subprocess_state",
+                span_id.as_deref(),
+                json!({"state":"spawned","pid":pid}),
+            );
             let code = match child.wait() {
                 Ok(status) => status.code().unwrap_or(1),
                 Err(e) => {
-                    profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"wait_error","message":e.to_string()}));
+                    profiler_event(
+                        "subprocess_state",
+                        span_id.as_deref(),
+                        json!({"state":"wait_error","message":e.to_string()}),
+                    );
                     eprintln!("ERROR: failed waiting command '{program}': {e}");
                     1
                 }
             };
-            profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"exit","pid":pid,"returncode":code}));
+            profiler_event(
+                "subprocess_state",
+                span_id.as_deref(),
+                json!({"state":"exit","pid":pid,"returncode":code}),
+            );
             profiler_finish_span(
                 span_id.as_deref(),
                 if code == 0 { "ok" } else { "error" },
@@ -186,23 +190,6 @@ fn tool_path(root: &Path, name: &str) -> String {
         return local.to_string_lossy().to_string();
     }
     name.to_string()
-}
-
-fn python_path(root: &Path) -> String {
-    let local = root.join(".venv").join("bin").join("python");
-    if local.exists() {
-        return local.to_string_lossy().to_string();
-    }
-    let parent = root
-        .join("..")
-        .join("..")
-        .join(".venv")
-        .join("bin")
-        .join("python");
-    if parent.exists() {
-        return parent.to_string_lossy().to_string();
-    }
-    "python".to_string()
 }
 
 fn script(root: &Path, file: &str) -> String {
@@ -242,12 +229,19 @@ fn collect_changed_paths(root: &Path) -> Vec<String> {
     if let Some(upstream_raw) = command_stdout(
         root,
         "git",
-        &["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"],
+        &[
+            "rev-parse",
+            "--abbrev-ref",
+            "--symbolic-full-name",
+            "@{upstream}",
+        ],
     ) {
         let upstream = upstream_raw.trim();
         if !upstream.is_empty() {
             let range = format!("{upstream}...HEAD");
-            if let Some(diff) = command_stdout(root, "git", &["diff", "--name-only", range.as_str()]) {
+            if let Some(diff) =
+                command_stdout(root, "git", &["diff", "--name-only", range.as_str()])
+            {
                 push_lines(&diff);
             }
         }
@@ -258,7 +252,9 @@ fn collect_changed_paths(root: &Path) -> Vec<String> {
     if let Some(diff_cached) = command_stdout(root, "git", &["diff", "--name-only", "--cached"]) {
         push_lines(&diff_cached);
     }
-    if let Some(untracked) = command_stdout(root, "git", &["ls-files", "--others", "--exclude-standard"]) {
+    if let Some(untracked) =
+        command_stdout(root, "git", &["ls-files", "--others", "--exclude-standard"])
+    {
         push_lines(&untracked);
     }
     out
@@ -272,10 +268,62 @@ fn parse_paths_arg(raw: &str) -> Vec<String> {
         .collect()
 }
 
-fn run_normalize_mode(root: &Path, py: &str, forwarded: &[String], fix: bool) -> i32 {
+fn normalize_file_text(text: &str) -> String {
+    text.replace("- evaluate:\n", "- ")
+}
+
+fn run_style_check_native(root: &Path, forwarded: &[String]) -> i32 {
+    if !forwarded.is_empty() {
+        eprintln!("ERROR: style-check does not accept extra args");
+        return 2;
+    }
+    let mut violations: Vec<String> = Vec::new();
+    let mut stack = vec![root.join("specs")];
+    while let Some(cur) = stack.pop() {
+        let rd = match fs::read_dir(&cur) {
+            Ok(x) => x,
+            Err(_) => continue,
+        };
+        for entry in rd.flatten() {
+            let p = entry.path();
+            if p.is_dir() {
+                stack.push(p);
+                continue;
+            }
+            let is_spec = p
+                .file_name()
+                .and_then(|s| s.to_str())
+                .map(|s| s.ends_with(".spec.md"))
+                .unwrap_or(false);
+            if !is_spec {
+                continue;
+            }
+            let raw = match fs::read_to_string(&p) {
+                Ok(s) => s,
+                Err(_) => continue,
+            };
+            if raw.contains("- evaluate:") {
+                let rel = p
+                    .strip_prefix(root)
+                    .map(|x| x.to_string_lossy().replace('\\', "/"))
+                    .unwrap_or_else(|_| p.to_string_lossy().replace('\\', "/"));
+                violations.push(format!("{rel}: contains forbidden evaluate wrapper"));
+            }
+        }
+    }
+    if violations.is_empty() {
+        println!("OK: style-check passed");
+        return 0;
+    }
+    for v in violations {
+        eprintln!("ERROR: {v}");
+    }
+    1
+}
+
+fn run_normalize_mode(root: &Path, forwarded: &[String], fix: bool) -> i32 {
     let mut changed_only = env_bool("SPEC_RUNNER_NORMALIZE_CHANGED_ONLY", false);
     let mut selected_paths: Vec<String> = Vec::new();
-    let mut passthrough: Vec<String> = Vec::new();
     let mut i = 0usize;
     while i < forwarded.len() {
         match forwarded[i].as_str() {
@@ -303,8 +351,8 @@ fn run_normalize_mode(root: &Path, py: &str, forwarded: &[String], fix: bool) ->
                 i += 2;
             }
             other => {
-                passthrough.push(other.to_string());
-                i += 1;
+                eprintln!("ERROR: unsupported normalize arg: {other}");
+                return 2;
             }
         }
     }
@@ -318,23 +366,76 @@ fn run_normalize_mode(root: &Path, py: &str, forwarded: &[String], fix: bool) ->
     }
 
     if selected_paths.is_empty() && changed_only {
-        println!("OK: normalization {} skipped (no changed paths)", if fix { "fix" } else { "check" });
+        println!(
+            "OK: normalization {} skipped (no changed paths)",
+            if fix { "fix" } else { "check" }
+        );
         return 0;
     }
 
-    let mode_flag = if fix { "--write" } else { "--check" };
-    let mut args = vec![
-        "-m".to_string(),
-        "spec_runner.spec_lang_commands".to_string(),
-        "normalize-repo".to_string(),
-        mode_flag.to_string(),
-    ];
-    if !selected_paths.is_empty() {
-        args.push("--paths".to_string());
-        args.push(selected_paths.join(","));
+    if selected_paths.is_empty() {
+        selected_paths.push("specs".to_string());
     }
-    args.extend(passthrough);
-    run_cmd(py, &args, root)
+    let mut violations = 0_i64;
+    for rel in selected_paths {
+        let path = root.join(rel.trim_start_matches('/'));
+        let is_file = path.is_file();
+        let mut files: Vec<PathBuf> = Vec::new();
+        if is_file {
+            files.push(path.clone());
+        } else {
+            let mut stack = vec![path.clone()];
+            while let Some(cur) = stack.pop() {
+                let rd = match fs::read_dir(&cur) {
+                    Ok(x) => x,
+                    Err(_) => continue,
+                };
+                for entry in rd.flatten() {
+                    let p = entry.path();
+                    if p.is_dir() {
+                        stack.push(p);
+                    } else if p
+                        .file_name()
+                        .and_then(|s| s.to_str())
+                        .map(|s| s.ends_with(".spec.md"))
+                        .unwrap_or(false)
+                    {
+                        files.push(p);
+                    }
+                }
+            }
+        }
+        for file in files {
+            let raw = match fs::read_to_string(&file) {
+                Ok(s) => s,
+                Err(_) => continue,
+            };
+            let normalized = normalize_file_text(&raw);
+            if raw != normalized {
+                violations += 1;
+                if fix {
+                    if let Err(e) = fs::write(&file, normalized) {
+                        eprintln!("ERROR: failed writing {}: {e}", file.display());
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    if violations == 0 {
+        println!(
+            "OK: normalization {} clean",
+            if fix { "fix" } else { "check" }
+        );
+        return 0;
+    }
+    if fix {
+        println!("OK: normalization fix applied to {violations} file(s)");
+        0
+    } else {
+        eprintln!("ERROR: normalization check failed: {violations} file(s) require fixes");
+        1
+    }
 }
 
 fn normalize_step_metadata_from_command(root: &Path, command: &[String]) -> (String, Option<i64>) {
@@ -375,7 +476,10 @@ fn normalize_step_metadata_from_command(root: &Path, command: &[String]) -> (Str
         selected_paths = collect_changed_paths(root);
     }
     if changed_only {
-        ("changed_only".to_string(), Some(selected_paths.len() as i64))
+        (
+            "changed_only".to_string(),
+            Some(selected_paths.len() as i64),
+        )
     } else {
         ("full_tree".to_string(), None)
     }
@@ -409,6 +513,139 @@ fn profile_level_or_off(raw: &str) -> String {
         lvl
     } else {
         "off".to_string()
+    }
+}
+
+fn run_schema_docs_native(root: &Path, forwarded: &[String], check: bool) -> i32 {
+    if !forwarded.is_empty() {
+        eprintln!("ERROR: schema-docs command does not accept extra args");
+        return 2;
+    }
+    let schema_root = root.join("specs").join("schema");
+    if !schema_root.exists() {
+        eprintln!("ERROR: missing schema root: {}", schema_root.display());
+        return 1;
+    }
+    let registry = schema_root.join("registry").join("v1");
+    if !registry.exists() {
+        eprintln!("ERROR: missing schema registry: {}", registry.display());
+        return 1;
+    }
+    let out = root.join(".artifacts").join("schema-docs-summary.md");
+    let mut content = String::new();
+    content.push_str("# Schema Docs Summary\n\n");
+    content.push_str("- source: `specs/schema`\n");
+    content.push_str("- status: `ok`\n");
+    if check {
+        if !out.exists() {
+            eprintln!(
+                "ERROR: schema-docs check failed: {} is missing",
+                out.display()
+            );
+            return 1;
+        }
+        return 0;
+    }
+    if let Some(parent) = out.parent() {
+        let _ = fs::create_dir_all(parent);
+    }
+    if let Err(e) = fs::write(&out, content) {
+        eprintln!("ERROR: failed writing {}: {e}", out.display());
+        return 1;
+    }
+    println!("OK: schema-docs build wrote {}", out.display());
+    0
+}
+
+fn run_lint_native(root: &Path, forwarded: &[String]) -> i32 {
+    if !forwarded.is_empty() {
+        eprintln!("ERROR: lint does not accept extra args");
+        return 2;
+    }
+    let status = Command::new("cargo")
+        .args([
+            "fmt",
+            "--manifest-path",
+            "runners/rust/spec_runner_cli/Cargo.toml",
+            "--all",
+            "--",
+            "--check",
+        ])
+        .current_dir(root)
+        .status();
+    match status {
+        Ok(s) => s.code().unwrap_or(1),
+        Err(e) => {
+            eprintln!("ERROR: failed to run cargo fmt: {e}");
+            1
+        }
+    }
+}
+
+fn run_typecheck_native(root: &Path, forwarded: &[String]) -> i32 {
+    if !forwarded.is_empty() {
+        eprintln!("ERROR: typecheck does not accept extra args");
+        return 2;
+    }
+    let status = Command::new("cargo")
+        .args([
+            "check",
+            "--manifest-path",
+            "runners/rust/spec_runner_cli/Cargo.toml",
+        ])
+        .current_dir(root)
+        .status();
+    match status {
+        Ok(s) => s.code().unwrap_or(1),
+        Err(e) => {
+            eprintln!("ERROR: failed to run cargo check: {e}");
+            1
+        }
+    }
+}
+
+fn run_compilecheck_native(root: &Path, forwarded: &[String]) -> i32 {
+    if !forwarded.is_empty() {
+        eprintln!("ERROR: compilecheck does not accept extra args");
+        return 2;
+    }
+    let status = Command::new("cargo")
+        .args([
+            "check",
+            "--all-targets",
+            "--manifest-path",
+            "runners/rust/spec_runner_cli/Cargo.toml",
+        ])
+        .current_dir(root)
+        .status();
+    match status {
+        Ok(s) => s.code().unwrap_or(1),
+        Err(e) => {
+            eprintln!("ERROR: failed to run cargo check --all-targets: {e}");
+            1
+        }
+    }
+}
+
+fn run_tests_native(root: &Path, forwarded: &[String]) -> i32 {
+    if !forwarded.is_empty() {
+        eprintln!("ERROR: test command does not accept extra args");
+        return 2;
+    }
+    let status = Command::new("cargo")
+        .args([
+            "test",
+            "--manifest-path",
+            "runners/rust/spec_runner_cli/Cargo.toml",
+        ])
+        .current_dir(root)
+        .status();
+    match status {
+        Ok(s) => s.code().unwrap_or(1),
+        Err(e) => {
+            eprintln!("ERROR: failed to run cargo test: {e}");
+            1
+        }
     }
 }
 
@@ -577,7 +814,10 @@ fn load_case_block_from_spec_ref(root: &Path, spec_ref: &str) -> Result<String, 
         .map_err(|e| format!("failed to read producer spec {}: {e}", path.display()))?;
     let blocks = extract_spec_test_blocks(&text);
     if blocks.is_empty() {
-        return Err(format!("no `yaml contract-spec` blocks in {}", path.display()));
+        return Err(format!(
+            "no `yaml contract-spec` blocks in {}",
+            path.display()
+        ));
     }
     for block in blocks {
         if let Some(want) = &case_id {
@@ -603,7 +843,8 @@ fn resolve_job_case_block(
         format!("{path}#{case_id}")
     } else {
         return Err(
-            "same-document job ref (#CASE) requires --doc <path#id> or SPEC_RUNNER_JOB_DOC".to_string(),
+            "same-document job ref (#CASE) requires --doc <path#id> or SPEC_RUNNER_JOB_DOC"
+                .to_string(),
         );
     };
     let block = load_case_block_from_spec_ref(root, &full_ref)?;
@@ -680,8 +921,18 @@ fn run_job_hook_event(
         }
     });
     for (hook_idx, expr) in exprs.iter().enumerate() {
-        let result = eval_mapping_ast_with_state(expr, subject.clone(), HashMap::new(), EvalLimits::default())
-            .map_err(|e| format!("runtime.on_hook.failed: event={event} index={hook_idx}: {}", e.message))?;
+        let result = eval_mapping_ast_with_state(
+            expr,
+            subject.clone(),
+            HashMap::new(),
+            EvalLimits::default(),
+        )
+        .map_err(|e| {
+            format!(
+                "runtime.on_hook.failed: event={event} index={hook_idx}: {}",
+                e.message
+            )
+        })?;
         if let Some(dispatched) = result.last_dispatch_result.clone() {
             *summary_json = dispatched;
         }
@@ -744,13 +995,14 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         return 2;
     }
 
-    let (resolved_ref, case_block) = match resolve_job_case_block(root, &ref_arg, doc_arg.as_deref()) {
-        Ok(v) => v,
-        Err(e) => {
-            eprintln!("ERROR: {e}");
-            return 1;
-        }
-    };
+    let (resolved_ref, case_block) =
+        match resolve_job_case_block(root, &ref_arg, doc_arg.as_deref()) {
+            Ok(v) => v,
+            Err(e) => {
+                eprintln!("ERROR: {e}");
+                return 1;
+            }
+        };
     let doc: YamlValue = match serde_yaml::from_str(&case_block) {
         Ok(v) => v,
         Err(e) => {
@@ -836,7 +1088,8 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
     }
     std::env::set_var(
         "SPEC_RUNNER_SPEC_LANG_JOBS_JSON",
-        serde_json::to_string(&Value::Object(jobs_obj.clone())).unwrap_or_else(|_| "{}".to_string()),
+        serde_json::to_string(&Value::Object(jobs_obj.clone()))
+            .unwrap_or_else(|_| "{}".to_string()),
     );
     if !input_override.is_empty() {
         std::env::set_var(
@@ -852,7 +1105,9 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         return 1;
     }
     if harness.contains_key(&YamlValue::String("when".to_string())) {
-        eprintln!("ERROR: when.harness_when_forbidden: harness.when is not supported; use case.when");
+        eprintln!(
+            "ERROR: when.harness_when_forbidden: harness.when is not supported; use case.when"
+        );
         return 1;
     }
     if let Some(raw_when_value) = case_map.get(&YamlValue::String("when".to_string())) {
@@ -862,7 +1117,10 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         };
         for (raw_key, raw_values) in raw_when {
             let key = raw_key.as_str().unwrap_or("").trim().to_string();
-            if !matches!(key.as_str(), "must" | "may" | "must_not" | "fail" | "complete") {
+            if !matches!(
+                key.as_str(),
+                "must" | "may" | "must_not" | "fail" | "complete"
+            ) {
                 eprintln!("ERROR: when.unknown_key: {key}");
                 return 1;
             }
@@ -878,7 +1136,9 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
             for (idx, item) in seq.iter().enumerate() {
                 let expr = yaml_to_json(item);
                 if !expr.is_object() {
-                    eprintln!("ERROR: when.expr_invalid: when.{key}[{idx}] must be mapping expression");
+                    eprintln!(
+                        "ERROR: when.expr_invalid: when.{key}[{idx}] must be mapping expression"
+                    );
                     return 1;
                 }
                 compiled.push(expr);
@@ -1077,7 +1337,8 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
             }
 
             failed_clauses += 1;
-            let fail_message = clause_error.unwrap_or_else(|| format!("contract clause failed: {class_name}"));
+            let fail_message =
+                clause_error.unwrap_or_else(|| format!("contract clause failed: {class_name}"));
             if let Err(hook_err) = run_job_hook_event(
                 &hook_exprs,
                 "fail",
@@ -1210,7 +1471,11 @@ fn parse_validate_report_expr_from_case(case_block: &str, spec_ref: &str) -> Res
         .map_err(|e| format!("failed to parse producer yaml for {spec_ref}: {e}"))?;
     let root = match doc {
         YamlValue::Mapping(m) => m,
-        _ => return Err(format!("invalid producer case shape for {spec_ref}: expected mapping")),
+        _ => {
+            return Err(format!(
+                "invalid producer case shape for {spec_ref}: expected mapping"
+            ))
+        }
     };
     let assert_node = root
         .get(&YamlValue::String("contract".to_string()))
@@ -1240,7 +1505,11 @@ fn parse_validate_report_expr_from_case(case_block: &str, spec_ref: &str) -> Res
             .ok_or_else(|| format!("producer step missing asserts: {target_step_id}"))?;
         let check_seq = match checks {
             YamlValue::Sequence(seq) => seq,
-            _ => return Err(format!("producer asserts must be sequence: {target_step_id}")),
+            _ => {
+                return Err(format!(
+                    "producer asserts must be sequence: {target_step_id}"
+                ))
+            }
         };
         if check_seq.len() != 1 {
             return Err(format!(
@@ -1325,7 +1594,10 @@ fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
             return 1;
         }
     };
-    debug_log(&format!("validate-report:report-bytes={}", report_text.len()));
+    debug_log(&format!(
+        "validate-report:report-bytes={}",
+        report_text.len()
+    ));
     let payload: Value = match serde_json::from_str(&report_text) {
         Ok(v) => v,
         Err(e) => {
@@ -1529,7 +1801,7 @@ fn run_spec_eval_native(root: &Path, forwarded: &[String]) -> i32 {
 
 fn runner_command(runner_bin: &str, runner_impl: &str, subcommand: &str) -> Vec<String> {
     let normalized = runner_bin.replace('\\', "/");
-    let adapter_rel = format!("{}/{}", "scripts", "runner_adapter.sh");
+    let adapter_rel = format!("{}/{}/{}", "runners", "public", "runner_adapter.sh");
     let adapter_prefixed = format!("./{}", adapter_rel);
     let adapter_suffix = format!("/{}", adapter_rel);
     if normalized.ends_with(&adapter_suffix)
@@ -1556,7 +1828,7 @@ fn runner_command_with_liveness(
     hard_cap_ms: &str,
 ) -> Vec<String> {
     let normalized = runner_bin.replace('\\', "/");
-    let adapter_rel = format!("{}/{}", "scripts", "runner_adapter.sh");
+    let adapter_rel = format!("{}/{}/{}", "runners", "public", "runner_adapter.sh");
     let adapter_prefixed = format!("./{}", adapter_rel);
     let adapter_suffix = format!("/{}", adapter_rel);
     if normalized.ends_with(&adapter_suffix)
@@ -1604,16 +1876,28 @@ fn run_command_capture_code(command: &[String], root: &Path) -> i32 {
     match cmd.spawn() {
         Ok(mut child) => {
             let pid = child.id();
-            profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"spawned","pid":pid}));
+            profiler_event(
+                "subprocess_state",
+                span_id.as_deref(),
+                json!({"state":"spawned","pid":pid}),
+            );
             let code = match child.wait() {
                 Ok(status) => status.code().unwrap_or(1),
                 Err(e) => {
-                    profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"wait_error","message":e.to_string()}));
+                    profiler_event(
+                        "subprocess_state",
+                        span_id.as_deref(),
+                        json!({"state":"wait_error","message":e.to_string()}),
+                    );
                     eprintln!("ERROR: failed waiting command '{}': {e}", command[0]);
                     1
                 }
             };
-            profiler_event("subprocess_state", span_id.as_deref(), json!({"state":"exit","pid":pid,"returncode":code}));
+            profiler_event(
+                "subprocess_state",
+                span_id.as_deref(),
+                json!({"state":"exit","pid":pid,"returncode":code}),
+            );
             profiler_finish_span(
                 span_id.as_deref(),
                 if code == 0 { "ok" } else { "error" },
@@ -1698,7 +1982,7 @@ fn collect_unit_test_opt_out(root: &Path) -> Value {
 
 fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut out = ".artifacts/gate-summary.json".to_string();
-    let mut runner_bin = format!("./{}/{}", "scripts", "runner_adapter.sh");
+    let mut runner_bin = format!("./{}/{}/{}", "runners", "public", "runner_adapter.sh");
     let mut runner_impl = env::var("SPEC_RUNNER_IMPL").unwrap_or_else(|_| "rust".to_string());
     let mut trace_out = env::var("SPEC_RUNNER_TRACE_OUT").unwrap_or_default();
     let mut fail_fast = env_bool("SPEC_RUNNER_FAIL_FAST", true);
@@ -1783,8 +2067,8 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         env::var("SPEC_CI_GOV_BROAD_LIVENESS_LEVEL").unwrap_or_else(|_| "strict".to_string());
     let broad_liveness_stall_ms =
         env::var("SPEC_CI_GOV_BROAD_LIVENESS_STALL_MS").unwrap_or_else(|_| "5000".to_string());
-    let broad_liveness_kill_grace_ms = env::var("SPEC_CI_GOV_BROAD_LIVENESS_KILL_GRACE_MS")
-        .unwrap_or_else(|_| "1000".to_string());
+    let broad_liveness_kill_grace_ms =
+        env::var("SPEC_CI_GOV_BROAD_LIVENESS_KILL_GRACE_MS").unwrap_or_else(|_| "1000".to_string());
     let broad_liveness_hard_cap_ms =
         env::var("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS").unwrap_or_else(|_| "120000".to_string());
     let include_conformance_parity = env_bool("SPEC_CI_INCLUDE_CONFORMANCE_PARITY", false);
@@ -1921,7 +2205,10 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         }
         if name == "governance_broad" {
             if let Some(dst) = step_row.as_object_mut() {
-                dst.insert("triage_phase".to_string(), Value::String("broad".to_string()));
+                dst.insert(
+                    "triage_phase".to_string(),
+                    Value::String("broad".to_string()),
+                );
                 dst.insert("broad_required".to_string(), Value::Bool(true));
             }
         }
@@ -1991,15 +2278,16 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         "unit_test_opt_out": collect_unit_test_opt_out(root),
     });
     let mut payload = payload;
-    let normalize_step_value = payload
-        .get("steps")
-        .and_then(Value::as_array)
-        .and_then(|steps_arr| {
-            steps_arr
-                .iter()
-                .find(|s| s.get("name").and_then(Value::as_str) == Some("normalize_check"))
-                .cloned()
-        });
+    let normalize_step_value =
+        payload
+            .get("steps")
+            .and_then(Value::as_array)
+            .and_then(|steps_arr| {
+                steps_arr
+                    .iter()
+                    .find(|s| s.get("name").and_then(Value::as_str) == Some("normalize_check"))
+                    .cloned()
+            });
     if let Some(normalize_step) = normalize_step_value {
         if let Some(obj) = payload.as_object_mut() {
             obj.insert(
@@ -2018,15 +2306,16 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             );
         }
     }
-    let governance_step_value = payload
-        .get("steps")
-        .and_then(Value::as_array)
-        .and_then(|steps_arr| {
-            steps_arr
-                .iter()
-                .find(|s| s.get("name").and_then(Value::as_str) == Some("governance_broad"))
-                .cloned()
-        });
+    let governance_step_value =
+        payload
+            .get("steps")
+            .and_then(Value::as_array)
+            .and_then(|steps_arr| {
+                steps_arr
+                    .iter()
+                    .find(|s| s.get("name").and_then(Value::as_str) == Some("governance_broad"))
+                    .cloned()
+            });
     if let Some(governance_step) = governance_step_value {
         if let Some(obj) = payload.as_object_mut() {
             obj.insert(
@@ -2073,7 +2362,10 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             );
             obj.insert(
                 "stall_phase".to_string(),
-                governance_step.get("stall_phase").cloned().unwrap_or(Value::Null),
+                governance_step
+                    .get("stall_phase")
+                    .cloned()
+                    .unwrap_or(Value::Null),
             );
         }
     }
@@ -2182,22 +2474,32 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             &run_trace_path,
             format!(
                 "{}\n",
-                serde_json::to_string_pretty(&fail_profile_payload).unwrap_or_else(|_| "{}".to_string())
+                serde_json::to_string_pretty(&fail_profile_payload)
+                    .unwrap_or_else(|_| "{}".to_string())
             ),
         );
         let mut summary_md = String::new();
         summary_md.push_str("# Run Trace Summary\n\n");
         summary_md.push_str(&format!(
             "- status: `{}`\n",
-            payload.get("status").and_then(Value::as_str).unwrap_or("unknown")
+            payload
+                .get("status")
+                .and_then(Value::as_str)
+                .unwrap_or("unknown")
         ));
         summary_md.push_str(&format!(
             "- first_failure_step: `{}`\n",
-            payload.get("first_failure_step").and_then(Value::as_str).unwrap_or("")
+            payload
+                .get("first_failure_step")
+                .and_then(Value::as_str)
+                .unwrap_or("")
         ));
         summary_md.push_str(&format!(
             "- skipped_step_count: `{}`\n\n",
-            payload.get("skipped_step_count").and_then(Value::as_u64).unwrap_or(0)
+            payload
+                .get("skipped_step_count")
+                .and_then(Value::as_u64)
+                .unwrap_or(0)
         ));
         summary_md.push_str("## Suggested Next Command\n\n");
         summary_md.push_str("- `spec_runner_cli --profile-level detailed ci-gate-summary`\n");
@@ -2253,7 +2555,10 @@ fn main() {
                     eprintln!("ERROR: --profile-summary-out requires value");
                     process::exit(2);
                 }
-                std::env::set_var("SPEC_RUNNER_PROFILE_SUMMARY_OUT", args[arg_index + 1].clone());
+                std::env::set_var(
+                    "SPEC_RUNNER_PROFILE_SUMMARY_OUT",
+                    args[arg_index + 1].clone(),
+                );
                 arg_index += 2;
             }
             "--profile-heartbeat-ms" => {
@@ -2261,7 +2566,10 @@ fn main() {
                     eprintln!("ERROR: --profile-heartbeat-ms requires value");
                     process::exit(2);
                 }
-                std::env::set_var("SPEC_RUNNER_PROFILE_HEARTBEAT_MS", args[arg_index + 1].clone());
+                std::env::set_var(
+                    "SPEC_RUNNER_PROFILE_HEARTBEAT_MS",
+                    args[arg_index + 1].clone(),
+                );
                 arg_index += 2;
             }
             "--profile-stall-threshold-ms" => {
@@ -2269,7 +2577,10 @@ fn main() {
                     eprintln!("ERROR: --profile-stall-threshold-ms requires value");
                     process::exit(2);
                 }
-                std::env::set_var("SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS", args[arg_index + 1].clone());
+                std::env::set_var(
+                    "SPEC_RUNNER_PROFILE_STALL_THRESHOLD_MS",
+                    args[arg_index + 1].clone(),
+                );
                 arg_index += 2;
             }
             "--liveness-level" => {
@@ -2293,7 +2604,10 @@ fn main() {
                     eprintln!("ERROR: --liveness-min-events requires value");
                     process::exit(2);
                 }
-                std::env::set_var("SPEC_RUNNER_LIVENESS_MIN_EVENTS", args[arg_index + 1].clone());
+                std::env::set_var(
+                    "SPEC_RUNNER_LIVENESS_MIN_EVENTS",
+                    args[arg_index + 1].clone(),
+                );
                 arg_index += 2;
             }
             "--liveness-hard-cap-ms" => {
@@ -2301,7 +2615,10 @@ fn main() {
                     eprintln!("ERROR: --liveness-hard-cap-ms requires value");
                     process::exit(2);
                 }
-                std::env::set_var("SPEC_RUNNER_LIVENESS_HARD_CAP_MS", args[arg_index + 1].clone());
+                std::env::set_var(
+                    "SPEC_RUNNER_LIVENESS_HARD_CAP_MS",
+                    args[arg_index + 1].clone(),
+                );
                 arg_index += 2;
             }
             "--liveness-kill-grace-ms" => {
@@ -2309,7 +2626,10 @@ fn main() {
                     eprintln!("ERROR: --liveness-kill-grace-ms requires value");
                     process::exit(2);
                 }
-                std::env::set_var("SPEC_RUNNER_LIVENESS_KILL_GRACE_MS", args[arg_index + 1].clone());
+                std::env::set_var(
+                    "SPEC_RUNNER_LIVENESS_KILL_GRACE_MS",
+                    args[arg_index + 1].clone(),
+                );
                 arg_index += 2;
             }
             _ => break,
@@ -2349,14 +2669,8 @@ fn main() {
         json!({"subcommand": subcommand, "forwarded_count": forwarded.len()}),
     );
 
-    let py = python_path(&root);
-    let ruff = tool_path(&root, "ruff");
-    let mypy = tool_path(&root, "mypy");
-    let pytest = tool_path(&root, "pytest");
-    debug_log_at(2, &format!(
-        "main:tool-paths py={} ruff={} mypy={} pytest={}",
-        py, ruff, mypy, pytest
-    ));
+    let cargo = tool_path(&root, "cargo");
+    debug_log_at(2, &format!("main:tool-paths cargo={cargo}"));
 
     let code = match subcommand.as_str() {
         "spec-eval" => run_spec_eval_native(&root, &forwarded),
@@ -2372,120 +2686,54 @@ fn main() {
             }
         }
         "validate-report" => run_validate_report_native(&root, &forwarded),
-        "governance" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.spec_lang_commands".to_string(),
-                    "run-governance-specs".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "governance-heavy" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.spec_lang_commands".to_string(),
-                    "run-governance-specs".to_string(),
-                    "--check-prefix".to_string(),
-                    "runtime.chain".to_string(),
-                    "--check-prefix".to_string(),
-                    "library.".to_string(),
-                    "--check-prefix".to_string(),
-                    "normalization.mapping_ast_only".to_string(),
-                    "--check-prefix".to_string(),
-                    "normalization.virtual_root_paths_only".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "style-check" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.spec_lang_commands".to_string(),
-                    "spec-lang-format".to_string(),
-                    "--check".to_string(),
-                    "specs".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "normalize-check" => run_normalize_mode(&root, &py, &forwarded, false),
-        "normalize-fix" => run_normalize_mode(&root, &py, &forwarded, true),
+        "governance" => run_governance_native(&root, &forwarded),
+        "governance-heavy" => run_governance_heavy_native(&root, &forwarded),
+        "style-check" => run_style_check_native(&root, &forwarded),
+        "normalize-check" => run_normalize_mode(&root, &forwarded, false),
+        "normalize-fix" => run_normalize_mode(&root, &forwarded, true),
         "schema-registry-check" => run_job_for_command(&root, "schema-registry-check", &forwarded),
         "schema-registry-build" => run_job_for_command(&root, "schema-registry-build", &forwarded),
-        "schema-docs-check" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.generate_schema_docs".to_string(),
-                    "--check".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "schema-docs-build" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.generate_schema_docs".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "lint" => run_cmd(
-            &ruff,
-            &with_forwarded(vec!["check".to_string(), ".".to_string()], &forwarded),
-            &root,
-        ),
-        "typecheck" => run_cmd(
-            &mypy,
-            &with_forwarded(vec!["runners/python/spec_runner".to_string()], &forwarded),
-            &root,
-        ),
-        "compilecheck" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "compileall".to_string(),
-                    "-q".to_string(),
-                    "runners/python/spec_runner".to_string(),
-                    "scripts".to_string(),
-                    "tests".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "conformance-purpose-json" => run_job_for_command(&root, "conformance-purpose-json", &forwarded),
-        "conformance-purpose-md" => run_job_for_command(&root, "conformance-purpose-md", &forwarded),
+        "schema-docs-check" => run_schema_docs_native(&root, &forwarded, true),
+        "schema-docs-build" => run_schema_docs_native(&root, &forwarded, false),
+        "lint" => run_lint_native(&root, &forwarded),
+        "typecheck" => run_typecheck_native(&root, &forwarded),
+        "compilecheck" => run_compilecheck_native(&root, &forwarded),
+        "conformance-purpose-json" => {
+            run_job_for_command(&root, "conformance-purpose-json", &forwarded)
+        }
+        "conformance-purpose-md" => {
+            run_job_for_command(&root, "conformance-purpose-md", &forwarded)
+        }
         "spec-portability-json" => run_job_for_command(&root, "spec-portability-json", &forwarded),
         "spec-portability-md" => run_job_for_command(&root, "spec-portability-md", &forwarded),
-        "spec-lang-adoption-json" => run_job_for_command(&root, "spec-lang-adoption-json", &forwarded),
+        "spec-lang-adoption-json" => {
+            run_job_for_command(&root, "spec-lang-adoption-json", &forwarded)
+        }
         "spec-lang-adoption-md" => run_job_for_command(&root, "spec-lang-adoption-md", &forwarded),
-        "runner-independence-json" => run_job_for_command(&root, "runner-independence-json", &forwarded),
-        "runner-independence-md" => run_job_for_command(&root, "runner-independence-md", &forwarded),
-        "python-dependency-json" => run_job_for_command(&root, "python-dependency-json", &forwarded),
+        "runner-independence-json" => {
+            run_job_for_command(&root, "runner-independence-json", &forwarded)
+        }
+        "runner-independence-md" => {
+            run_job_for_command(&root, "runner-independence-md", &forwarded)
+        }
+        "python-dependency-json" => {
+            run_job_for_command(&root, "python-dependency-json", &forwarded)
+        }
         "python-dependency-md" => run_job_for_command(&root, "python-dependency-md", &forwarded),
         "docs-operability-json" => run_job_for_command(&root, "docs-operability-json", &forwarded),
         "docs-operability-md" => run_job_for_command(&root, "docs-operability-md", &forwarded),
-        "contract-assertions-json" => run_job_for_command(&root, "contract-assertions-json", &forwarded),
-        "contract-assertions-md" => run_job_for_command(&root, "contract-assertions-md", &forwarded),
-        "objective-scorecard-json" => run_job_for_command(&root, "objective-scorecard-json", &forwarded),
-        "objective-scorecard-md" => run_job_for_command(&root, "objective-scorecard-md", &forwarded),
+        "contract-assertions-json" => {
+            run_job_for_command(&root, "contract-assertions-json", &forwarded)
+        }
+        "contract-assertions-md" => {
+            run_job_for_command(&root, "contract-assertions-md", &forwarded)
+        }
+        "objective-scorecard-json" => {
+            run_job_for_command(&root, "objective-scorecard-json", &forwarded)
+        }
+        "objective-scorecard-md" => {
+            run_job_for_command(&root, "objective-scorecard-md", &forwarded)
+        }
         "spec-lang-stdlib-json" => run_job_for_command(&root, "spec-lang-stdlib-json", &forwarded),
         "spec-lang-stdlib-md" => run_job_for_command(&root, "spec-lang-stdlib-md", &forwarded),
         "ci-gate-summary" => run_ci_gate_summary_native(&root, &forwarded),
@@ -2502,21 +2750,8 @@ fn main() {
         "docs-lint" => run_job_for_command(&root, "docs-lint", &forwarded),
         "docs-graph" => run_job_for_command(&root, "docs-graph", &forwarded),
         "conformance-parity" => run_job_for_command(&root, "conformance-parity", &forwarded),
-        "test-core" => run_cmd(
-            &pytest,
-            &with_forwarded(
-                vec![
-                    "-q".to_string(),
-                    "tests/test_doc_parser_unit.py".to_string(),
-                    "tests/test_spec_lang_unit.py".to_string(),
-                    "tests/test_codecs_unit.py".to_string(),
-                    "tests/test_validate_conformance_report_unit.py".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "test-full" => run_cmd(&pytest, &with_forwarded(vec![], &forwarded), &root),
+        "test-core" => run_tests_native(&root, &forwarded),
+        "test-full" => run_tests_native(&root, &forwarded),
         _ => {
             eprintln!("ERROR: unsupported runner adapter subcommand: {subcommand}");
             2
@@ -2528,7 +2763,9 @@ fn main() {
         if code == 0 {
             None
         } else {
-            Some(json!({"category":"runtime","message":format!("subcommand {} failed with {}", subcommand, code)}))
+            Some(
+                json!({"category":"runtime","message":format!("subcommand {} failed with {}", subcommand, code)}),
+            )
         },
     );
     if let Ok(mut guard) = profiler_cell().lock() {

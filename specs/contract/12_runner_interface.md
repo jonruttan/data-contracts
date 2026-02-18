@@ -6,8 +6,8 @@ Execution classes:
 
 - `default lane`: canonical adapter with rust mode
   (`runners/public/runner_adapter.sh` with `SPEC_RUNNER_IMPL=rust` default)
-- `python parity telemetry lane`: CI-only optional lane that runs Python scripts
-  directly and is non-blocking
+- `rust standalone lane`: Rust runner MUST execute on hosts without Python
+  installed.
 
 ## Required Interface
 
@@ -55,7 +55,8 @@ Repository adapters:
 - `runners/python/runner_adapter.sh` (internal adapter path)
 - `runners/rust/spec_runner_cli` (Rust runner-interface CLI crate)
 
-Adapters may call implementation-specific scripts/tools internally.
+Rust adapters MUST NOT require Python process delegation for supported
+subcommands.
 Alternative implementations can replace the adapter by setting `SPEC_RUNNER_BIN`
 to a different compatible command.
 
