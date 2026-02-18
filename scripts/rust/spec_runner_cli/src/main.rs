@@ -981,70 +981,6 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             runner_command(&runner_bin, &runner_impl, "schema-docs-check"),
         ),
         (
-            "spec_portability_json",
-            runner_command(&runner_bin, &runner_impl, "spec-portability-json"),
-        ),
-        (
-            "spec_portability_md",
-            runner_command(&runner_bin, &runner_impl, "spec-portability-md"),
-        ),
-        (
-            "spec_lang_adoption_json",
-            runner_command(&runner_bin, &runner_impl, "spec-lang-adoption-json"),
-        ),
-        (
-            "spec_lang_adoption_md",
-            runner_command(&runner_bin, &runner_impl, "spec-lang-adoption-md"),
-        ),
-        (
-            "runner_independence_json",
-            runner_command(&runner_bin, &runner_impl, "runner-independence-json"),
-        ),
-        (
-            "runner_independence_md",
-            runner_command(&runner_bin, &runner_impl, "runner-independence-md"),
-        ),
-        (
-            "python_dependency_json",
-            runner_command(&runner_bin, &runner_impl, "python-dependency-json"),
-        ),
-        (
-            "python_dependency_md",
-            runner_command(&runner_bin, &runner_impl, "python-dependency-md"),
-        ),
-        (
-            "docs_operability_json",
-            runner_command(&runner_bin, &runner_impl, "docs-operability-json"),
-        ),
-        (
-            "docs_operability_md",
-            runner_command(&runner_bin, &runner_impl, "docs-operability-md"),
-        ),
-        (
-            "contract_assertions_json",
-            runner_command(&runner_bin, &runner_impl, "contract-assertions-json"),
-        ),
-        (
-            "contract_assertions_md",
-            runner_command(&runner_bin, &runner_impl, "contract-assertions-md"),
-        ),
-        (
-            "objective_scorecard_json",
-            runner_command(&runner_bin, &runner_impl, "objective-scorecard-json"),
-        ),
-        (
-            "objective_scorecard_md",
-            runner_command(&runner_bin, &runner_impl, "objective-scorecard-md"),
-        ),
-        (
-            "spec_lang_stdlib_json",
-            runner_command(&runner_bin, &runner_impl, "spec-lang-stdlib-json"),
-        ),
-        (
-            "spec_lang_stdlib_md",
-            runner_command(&runner_bin, &runner_impl, "spec-lang-stdlib-md"),
-        ),
-        (
             "evaluate_style",
             runner_command(&runner_bin, &runner_impl, "style-check"),
         ),
@@ -1056,14 +992,6 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         (
             "compileall",
             runner_command(&runner_bin, &runner_impl, "compilecheck"),
-        ),
-        (
-            "conformance_purpose_json",
-            runner_command(&runner_bin, &runner_impl, "conformance-purpose-json"),
-        ),
-        (
-            "conformance_purpose_md",
-            runner_command(&runner_bin, &runner_impl, "conformance-purpose-md"),
         ),
         (
             "conformance_parity",

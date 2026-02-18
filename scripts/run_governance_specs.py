@@ -7501,6 +7501,42 @@ def _scan_runtime_ci_gate_default_no_python_governance_required(
     return violations
 
 
+def _scan_runtime_ci_gate_default_report_commands_forbidden(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("ci_gate_default_reports_forbidden")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.ci_gate_default_report_commands_forbidden requires harness.ci_gate_default_reports_forbidden mapping in governance spec"
+        ]
+    files = cfg.get("files", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.ci_gate_default_reports_forbidden.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(forbidden_tokens, list)
+        or not forbidden_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+    ):
+        return ["harness.ci_gate_default_reports_forbidden.forbidden_tokens must be a non-empty list of non-empty strings"]
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing file for default report-command check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden default report-command token present {tok}")
+    return violations
+
+
 def _scan_runtime_rust_adapter_no_delegate(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -8922,6 +8958,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.ci_artifact_upload_paths_valid": _scan_runtime_ci_artifact_upload_paths_valid,
     "runtime.ci_workflow_critical_gate_required": _scan_runtime_ci_workflow_critical_gate_required,
     "runtime.ci_gate_default_no_python_governance_required": _scan_runtime_ci_gate_default_no_python_governance_required,
+    "runtime.ci_gate_default_report_commands_forbidden": _scan_runtime_ci_gate_default_report_commands_forbidden,
     "runtime.public_runner_entrypoint_single": _scan_runtime_public_runner_entrypoint_single,
     "runtime.public_runner_default_rust": _scan_runtime_public_runner_default_rust,
     "runtime.python_lane_explicit_opt_in": _scan_runtime_python_lane_explicit_opt_in,
