@@ -10299,7 +10299,7 @@ def main(argv: list[str] | None = None) -> int:
                 print("ERROR: --workers must be >= 0", file=sys.stderr)
                 return 2
 
-            if len(governance_cases) <= 1 or requested_workers == 1:
+            if len(governance_cases) <= 1:
                 for idx, case in enumerate(governance_cases):
                     _idx, case_id, check_id, elapsed_ms, failure, case_profile_rows = _run_one((idx, case))
                     timing_rows.append(
@@ -10326,6 +10326,14 @@ def main(argv: list[str] | None = None) -> int:
                 )
                 heartbeat_seconds = max(float(heartbeat_ms) / 1000.0, 0.25)
                 stalled = False
+                running_case_hard_cap_ms = max(int(stall_ms * 6), 30_000) if stall_ms > 0 else 0
+                progress_log_every_seconds = max(
+                    float(
+                        str(os.environ.get("SPEC_RUNNER_GOVERNANCE_PROGRESS_LOG_INTERVAL_SECONDS", "5")).strip() or "5"
+                    ),
+                    1.0,
+                )
+                last_progress_log_ts = 0.0
                 with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
                     pending: set[concurrent.futures.Future[tuple[int, str, str, float, str | None, list[dict[str, Any]]]]] = {
                         executor.submit(_run_one, (idx, case))
@@ -10352,6 +10360,26 @@ def main(argv: list[str] | None = None) -> int:
                                 }
                                 for idx, rec in sorted(active_cases.items(), key=lambda x: x[0])
                             ]
+                        longest_running_ms = max(
+                            (float(x.get("running_ms", 0.0)) for x in running_snapshot),
+                            default=0.0,
+                        )
+                        now_ts = time.monotonic()
+                        if not _GOVERNANCE_TRACE and (now_ts - last_progress_log_ts) >= progress_log_every_seconds:
+                            completed = len(results)
+                            total = len(governance_cases)
+                            running_hint = ""
+                            if running_snapshot and len(running_snapshot) <= 3:
+                                running_hint = f" running_cases={json.dumps(running_snapshot, sort_keys=True)}"
+                            print(
+                                "[governance.progress] "
+                                f"completed={completed}/{total} pending={len(pending)} "
+                                f"running={len(running_snapshot)} inactive_ms={int(inactive_for_ms)} "
+                                f"longest_running_ms={int(longest_running_ms)}{running_hint}",
+                                file=sys.stderr,
+                                flush=True,
+                            )
+                            last_progress_log_ts = now_ts
                         if profiler.cfg.enabled:
                             profiler.event(
                                 kind="heartbeat",
@@ -10360,13 +10388,23 @@ def main(argv: list[str] | None = None) -> int:
                                     "pending_futures": len(pending),
                                     "running_cases": running_snapshot,
                                     "inactive_for_ms": round(inactive_for_ms, 1),
+                                    "longest_running_ms": round(longest_running_ms, 1),
                                 },
                             )
+                        should_stall = False
+                        stall_reason = "stall.runner.no_progress"
                         if stall_ms > 0 and inactive_for_ms >= float(stall_ms):
+                            if not running_snapshot:
+                                should_stall = True
+                            elif running_case_hard_cap_ms > 0 and longest_running_ms >= float(running_case_hard_cap_ms):
+                                should_stall = True
+                                stall_reason = "stall.runner.case_no_completion"
+                        if should_stall:
                             stalled = True
                             msg = (
-                                f"stall.runner.no_progress after {int(inactive_for_ms)}ms "
-                                f"(pending={len(pending)} running={json.dumps(running_snapshot, sort_keys=True)})"
+                                f"{stall_reason} after {int(inactive_for_ms)}ms "
+                                f"(pending={len(pending)} longest_running_ms={int(longest_running_ms)} "
+                                f"running={json.dumps(running_snapshot, sort_keys=True)})"
                             )
                             failures.append(msg)
                             if profiler.cfg.enabled:
@@ -10374,8 +10412,10 @@ def main(argv: list[str] | None = None) -> int:
                                     kind="stall_warning",
                                     attrs={
                                         "phase": "governance.case_pool.wait",
-                                        "reason_token": "stall.runner.no_progress",
+                                        "reason_token": stall_reason,
                                         "inactive_for_ms": round(inactive_for_ms, 1),
+                                        "longest_running_ms": round(longest_running_ms, 1),
+                                        "running_case_hard_cap_ms": int(running_case_hard_cap_ms),
                                         "pending_futures": len(pending),
                                         "running_cases": running_snapshot,
                                     },

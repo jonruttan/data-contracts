@@ -13,12 +13,13 @@ harness:
   rust_adapter_exec_smoke:
     command:
     - scripts/rust/runner_adapter.sh
-    - normalize-check
+    - critical-gate
     expected_exit_codes:
     - 0
-    required_output_tokens: []
+    required_output_tokens:
+    - critical-gate-summary.json
     forbidden_output_tokens: []
-    timeout_seconds: 180
+    timeout_seconds: 30
   chain:
     steps:
     - id: lib_policy_core_spec
