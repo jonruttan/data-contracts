@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import json
 from pathlib import Path
 from typing import Any
 
 from spec_runner.doc_parser import iter_spec_doc_tests
+from spec_runner.governance_runtime import _CHECKS
 from spec_runner.settings import case_file_name
 from spec_runner.docs_generators import parse_generated_block, replace_generated_block, write_json
 
@@ -17,16 +17,6 @@ def _resolve_cli_path(repo_root: Path, raw: str) -> Path:
     if path.is_absolute():
         return path
     return repo_root / str(raw).lstrip("/")
-
-
-def _load_governance_module(repo_root: Path):
-    script_path = repo_root / "scripts/run_governance_specs.py"
-    spec = importlib.util.spec_from_file_location("run_governance_specs_script", script_path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError("failed to load scripts/run_governance_specs.py")
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
 
 
 def _cases_by_check(cases_root: Path) -> dict[str, list[str]]:
@@ -46,10 +36,9 @@ def _cases_by_check(cases_root: Path) -> dict[str, list[str]]:
 
 
 def _build_payload(repo_root: Path) -> dict[str, Any]:
-    mod = _load_governance_module(repo_root)
-    checks = getattr(mod, "_CHECKS", {})
+    checks = _CHECKS
     if not isinstance(checks, dict):
-        raise ValueError("scripts/run_governance_specs.py: _CHECKS must be a mapping")
+        raise ValueError("spec_runner.governance_runtime._CHECKS must be a mapping")
     case_map = _cases_by_check(repo_root / "docs/spec/governance/cases/core")
 
     rows: list[dict[str, Any]] = []
