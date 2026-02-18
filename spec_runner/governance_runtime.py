@@ -2320,10 +2320,10 @@ def _scan_governance_extractor_only_no_verdict_branching(root: Path, *, harness:
     cfg = h.get("extractor_policy")
     if not isinstance(cfg, dict):
         return ["governance.extractor_only_no_verdict_branching requires harness.extractor_policy mapping in governance spec"]
-    rel = str(cfg.get("path", "scripts/run_governance_specs.py")).strip() or "scripts/run_governance_specs.py"
+    rel = str(cfg.get("path", "spec_runner/governance_runtime.py")).strip() or "spec_runner/governance_runtime.py"
     p = _join_contract_path(root, rel)
     if not p.exists():
-        return [f"{rel}:1: missing governance runner script"]
+        return [f"{rel}:1: missing governance runtime module"]
     forbidden_tokens = cfg.get("forbidden_tokens", [])
     if (
         not isinstance(forbidden_tokens, list)
@@ -6580,12 +6580,12 @@ def _scan_runtime_legacy_timeout_envs_deprecated(root: Path, *, harness: dict | 
         for token in required_tokens:
             if token.lower() not in text:
                 violations.append(f"{rel}:1: missing timeout deprecation token {token}")
-    src = _join_contract_path(root, "scripts/run_governance_specs.py")
+    src = _join_contract_path(root, "spec_runner/governance_runtime.py")
     if src.exists():
         text = src.read_text(encoding="utf-8")
         if "is deprecated; use SPEC_RUNNER_LIVENESS_HARD_CAP_MS" not in text:
             violations.append(
-                "scripts/run_governance_specs.py:1: missing legacy-timeout deprecation remediation message"
+                "spec_runner/governance_runtime.py:1: missing legacy-timeout deprecation remediation message"
             )
     return violations
 
@@ -6629,7 +6629,7 @@ def _scan_runtime_assert_block_decision_authority_required(root: Path, *, harnes
         return [
             "runtime.assert_block_decision_authority_required requires harness.assert_decision_authority mapping in governance spec"
         ]
-    rel = str(cfg.get("path", "scripts/run_governance_specs.py")).strip() or "scripts/run_governance_specs.py"
+    rel = str(cfg.get("path", "spec_runner/governance_runtime.py")).strip() or "spec_runner/governance_runtime.py"
     required_tokens = cfg.get("required_tokens", [])
     forbidden_tokens = cfg.get("forbidden_tokens", [])
     if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
@@ -6638,7 +6638,7 @@ def _scan_runtime_assert_block_decision_authority_required(root: Path, *, harnes
         return ["harness.assert_decision_authority.forbidden_tokens must be a list of non-empty strings"]
     p = _join_contract_path(root, rel)
     if not p.exists():
-        return [f"{rel}:1: missing runtime script for assert decision authority check"]
+        return [f"{rel}:1: missing runtime module for assert decision authority check"]
     raw = p.read_text(encoding="utf-8")
     violations: list[str] = []
     for tok in required_tokens:
@@ -9523,7 +9523,7 @@ def _scan_normalization_spec_style_sync(root: Path, *, harness: dict | None = No
     violations: list[str] = []
     if _CONFORMANCE_MAX_BLOCK_LINES != max_lines:
         violations.append(
-            "scripts/run_governance_specs.py:1: NORMALIZATION_SPEC_STYLE_SYNC: "
+            "spec_runner/governance_runtime.py:1: NORMALIZATION_SPEC_STYLE_SYNC: "
             f"_CONFORMANCE_MAX_BLOCK_LINES={_CONFORMANCE_MAX_BLOCK_LINES} must match profile value {max_lines}"
         )
 

@@ -13,7 +13,7 @@ Executable governance checks for canonical contract enforcement.
 ## Execution
 
 ```sh
-python scripts/run_governance_specs.py
+python -m spec_runner.spec_lang_commands run-governance-specs
 ```
 
 ## Canonical Checks

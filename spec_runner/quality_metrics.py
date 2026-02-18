@@ -264,7 +264,7 @@ def _count_python_decision_branches(repo_root: Path) -> int:
     Counts explicit check-level policy verdict branches in governance script.
     This tracks migration progress toward centralized policy evaluation.
     """
-    p = repo_root / "scripts/run_governance_specs.py"
+    p = repo_root / "spec_runner/governance_runtime.py"
     if not p.exists():
         return 0
     raw = p.read_text(encoding="utf-8")

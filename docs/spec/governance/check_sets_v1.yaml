@@ -47,7 +47,7 @@ profiles:
           - governance_critical
       - id: runtime.critical_governance_check_registered
         kind: file_tokens
-        path: /scripts/run_governance_specs.py
+        path: /spec_runner/governance_runtime.py
         must_contain:
           - runtime.ci_gate_ownership_contract_required
       - id: runtime.critical_governance_case_indexed

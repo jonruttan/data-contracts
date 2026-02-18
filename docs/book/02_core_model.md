@@ -12,7 +12,7 @@ owns_tokens:
 requires_tokens:
 - must
 commands:
-- run: python scripts/run_governance_specs.py
+- run: python -m spec_runner.spec_lang_commands run-governance-specs
   purpose: Validate core contract and governance assumptions.
 examples:
 - id: EX-COREMODEL-001

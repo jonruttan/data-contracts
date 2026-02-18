@@ -2357,14 +2357,23 @@ fn main() {
         "validate-report" => run_validate_report_native(&root, &forwarded),
         "governance" => run_cmd(
             &py,
-            &with_forwarded(vec![script(&root, "run_governance_specs.py")], &forwarded),
+            &with_forwarded(
+                vec![
+                    "-m".to_string(),
+                    "spec_runner.spec_lang_commands".to_string(),
+                    "run-governance-specs".to_string(),
+                ],
+                &forwarded,
+            ),
             &root,
         ),
         "governance-heavy" => run_cmd(
             &py,
             &with_forwarded(
                 vec![
-                    script(&root, "run_governance_specs.py"),
+                    "-m".to_string(),
+                    "spec_runner.spec_lang_commands".to_string(),
+                    "run-governance-specs".to_string(),
                     "--check-prefix".to_string(),
                     "runtime.chain".to_string(),
                     "--check-prefix".to_string(),
