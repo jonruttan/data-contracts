@@ -57,6 +57,26 @@ paths_match_prefixes() {
   return 1
 }
 
+paths_all_in_list() {
+  local path
+  local seen=0
+  while IFS= read -r path; do
+    [[ -z "${path}" ]] && continue
+    seen=1
+    local allowed=0
+    for exact in "$@"; do
+      if [[ "${path}" == "${exact}" ]]; then
+        allowed=1
+        break
+      fi
+    done
+    if [[ "${allowed}" -ne 1 ]]; then
+      return 1
+    fi
+  done <<< "${CHANGED_PATHS}"
+  [[ "${seen}" -eq 1 ]]
+}
+
 print_critical_summary() {
   local summary_file="${ROOT_DIR}/.artifacts/critical-gate-summary.json"
   if [[ ! -f "${summary_file}" ]]; then
@@ -111,7 +131,11 @@ lane_rust_core() {
   fi
 
   if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "docs/spec/schema/" "docs/spec/metrics/" "spec_runner/docs_" "spec_runner/docs_generators.py"; then
-    run_step docs-generate-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" docs-generate-check
+    if paths_all_in_list "docs/spec/governance/check_sets_v1.yaml"; then
+      echo "[local-ci-parity] skip docs-generate-check (check_sets-only change)"
+    else
+      run_step docs-generate-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" docs-generate-check
+    fi
   else
     echo "[local-ci-parity] skip docs-generate-check (no matching changes)"
   fi
