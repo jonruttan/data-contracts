@@ -77,6 +77,10 @@ paths_all_in_list() {
   [[ "${seen}" -eq 1 ]]
 }
 
+is_fast_path_script_only_change() {
+  paths_all_in_list "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"
+}
+
 print_critical_summary() {
   local summary_file="${ROOT_DIR}/.artifacts/critical-gate-summary.json"
   if [[ ! -f "${summary_file}" ]]; then
@@ -124,9 +128,11 @@ lane_rust_core() {
     echo "[local-ci-parity] skip broad governance (set SPEC_PREPUSH_REQUIRE_BROAD=1 to enable)"
   fi
 
-  if paths_match_prefixes "docs/spec/" "spec_runner/" "scripts/run_governance_specs.py" "scripts/normalize_repo.py"; then
+  if paths_match_prefixes "docs/spec/" "spec_runner/" "scripts/run_governance_specs.py" "scripts/normalize_repo.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
     if paths_all_in_list "docs/spec/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip normalize-check (check_sets-only change)"
+    elif is_fast_path_script_only_change; then
+      echo "[local-ci-parity] skip normalize-check (gate-script-only change)"
     else
       run_step normalize-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" normalize-check
     fi
@@ -134,9 +140,11 @@ lane_rust_core() {
     echo "[local-ci-parity] skip normalize-check (no matching changes)"
   fi
 
-  if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "docs/spec/schema/" "docs/spec/metrics/" "spec_runner/docs_" "spec_runner/docs_generators.py"; then
+  if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "docs/spec/schema/" "docs/spec/metrics/" "spec_runner/docs_" "spec_runner/docs_generators.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
     if paths_all_in_list "docs/spec/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip docs-generate-check (check_sets-only change)"
+    elif is_fast_path_script_only_change; then
+      echo "[local-ci-parity] skip docs-generate-check (gate-script-only change)"
     else
       run_step docs-generate-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" docs-generate-check
     fi

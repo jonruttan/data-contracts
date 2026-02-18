@@ -47,9 +47,28 @@ only_check_sets_changes() {
   return 0
 }
 
-if [[ "${CI:-}" != "true" ]] && [[ "${SPEC_CI_GATE_LOCAL_FAST_PATH:-1}" != "0" ]] && only_check_sets_changes; then
-  echo "[ci-gate] local fast path: check_sets-only change; delegating to local_ci_parity.sh"
-  exec "${ROOT_DIR}/scripts/local_ci_parity.sh"
+only_gate_script_changes() {
+  local changed path
+  changed="$(collect_changed_paths || true)"
+  [[ -n "${changed}" ]] || return 1
+  while IFS= read -r path; do
+    [[ -z "${path}" ]] && continue
+    if [[ "${path}" != "scripts/local_ci_parity.sh" && "${path}" != "scripts/ci_gate.sh" ]]; then
+      return 1
+    fi
+  done <<< "${changed}"
+  return 0
+}
+
+if [[ "${CI:-}" != "true" ]] && [[ "${SPEC_CI_GATE_LOCAL_FAST_PATH:-1}" != "0" ]]; then
+  if only_check_sets_changes; then
+    echo "[ci-gate] local fast path: check_sets-only change; delegating to local_ci_parity.sh"
+    exec "${ROOT_DIR}/scripts/local_ci_parity.sh"
+  fi
+  if only_gate_script_changes; then
+    echo "[ci-gate] local fast path: gate-script-only change; delegating to local_ci_parity.sh"
+    exec "${ROOT_DIR}/scripts/local_ci_parity.sh"
+  fi
 fi
 
 "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" critical-gate
