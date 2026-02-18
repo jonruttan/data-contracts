@@ -35,12 +35,8 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - {var: subject}
-            - 0
+  - std.logic.eq:
+    - {var: subject}
+    - 0
   target: violation_count
 ```

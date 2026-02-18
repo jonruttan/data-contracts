@@ -19,13 +19,9 @@ contract:
   class: MUST
   target: stdout
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - 'OK: valid conformance report'
+  - std.string.contains:
+    - {var: subject}
+    - 'OK: valid conformance report'
 ```
 
 ## SRPY-VALREP-002
@@ -47,11 +43,7 @@ contract:
   class: MUST
   target: stderr
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - 'ERROR: report.version must equal 1'
+  - std.string.contains:
+    - {var: subject}
+    - 'ERROR: report.version must equal 1'
 ```

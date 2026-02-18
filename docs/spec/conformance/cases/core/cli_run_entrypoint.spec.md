@@ -12,8 +12,7 @@ Coverage focus:
 ```yaml contract-spec
 id: SRCONF-CLI-001
 title: conformance fixture sets explicit cli.run harness.entrypoint
-purpose: Defines portable behavior for explicit cli.run entrypoint when capability
-  is present.
+purpose: Defines portable behavior for explicit cli.run entrypoint when capability is present.
 type: contract.check
 requires:
   capabilities:
@@ -71,12 +70,8 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '"ok": true'
+  - std.string.contains:
+    - {var: subject}
+    - '"ok": true'
   target: stdout
 ```

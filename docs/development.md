@@ -23,7 +23,8 @@ Installable CLI entrypoints exposed by packaging metadata:
 python -m ruff check .
 python -m mypy spec_runner
 python -m compileall -q spec_runner scripts tests
-python scripts/evaluate_style.py --check docs/spec
+python scripts/spec_lang_lint.py --cases docs/spec
+python scripts/spec_lang_format.py --check docs/spec
 python scripts/docs_generate_all.py --check
 python -m spec_runner.spec_lang_commands docs-lint
 ```
@@ -38,7 +39,7 @@ Use one of these lanes depending on depth needed:
 Core profile runs:
 
 - governance specs
-- evaluate-style checks
+- spec-lang lint + format checks
 - focused core runner unit tests (`doc_parser`, `dispatcher`, `assertions`, `conformance_runner`)
 
 Full profile runs the complete CI-equivalent gate including parity and full test suite.
@@ -234,7 +235,8 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 
 - contract governance check
 - governance spec-runner checks
-- evaluate-expression style lint (`scripts/evaluate_style.py --check`)
+- pedantic spec-lang lint (`scripts/spec_lang_lint.py --cases docs/spec`)
+- pedantic spec-lang format check (`scripts/spec_lang_format.py --check docs/spec`)
 - ruff lint check (`F` + `E9` rules)
 - mypy type check (`spec_runner` package)
 - Python bytecode compile pass (`compileall`)
@@ -268,7 +270,8 @@ python scripts/run_governance_specs.py
 
 ```sh
 python -m ruff check .
-python scripts/evaluate_style.py --check docs/spec
+python scripts/spec_lang_lint.py --cases docs/spec
+python scripts/spec_lang_format.py --check docs/spec
 ```
 
 ## Type Check

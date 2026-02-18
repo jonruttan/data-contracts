@@ -10,15 +10,11 @@ contract:
 - id: __export__make.has_target
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - std.object.get:
-              - {var: subject}
-              - value
-            - {var: target}
+  - std.string.contains:
+    - std.object.get:
+      - {var: subject}
+      - value
+    - {var: target}
 harness:
   exports:
   - as: make.has_target

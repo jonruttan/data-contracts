@@ -39,31 +39,22 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - {var: subject}
-            - 0
+  - std.logic.eq:
+    - {var: subject}
+    - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            MUST:
-            - std.logic.eq:
-              - std.object.get:
-                - {var: subject}
-                - passed
-              - true
-            - std.logic.eq:
-              - std.object.get:
-                - {var: subject}
-                - check_id
-              - runtime.orchestration_policy_via_spec_lang
+  - std.logic.eq:
+    - std.object.get:
+      - {var: subject}
+      - passed
+    - true
+  - std.logic.eq:
+    - std.object.get:
+      - {var: subject}
+      - check_id
+    - runtime.orchestration_policy_via_spec_lang
   target: summary_json
 ```

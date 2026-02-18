@@ -18,13 +18,9 @@ contract:
   class: MUST
   target: stdout
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - 'OK: docs lint passed'
+  - std.string.contains:
+    - {var: subject}
+    - 'OK: docs lint passed'
 ```
 
 ## SRPY-DOCSLINT-002
@@ -47,11 +43,7 @@ contract:
   class: MUST
   target: stdout
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - missing reference manifest
+  - std.string.contains:
+    - {var: subject}
+    - missing reference manifest
 ```

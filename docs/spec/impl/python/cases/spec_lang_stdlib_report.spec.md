@@ -18,20 +18,12 @@ contract:
   class: MUST
   target: stdout
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '"version": 1'
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '"summary"'
+  - std.string.contains:
+    - {var: subject}
+    - '"version": 1'
+  - std.string.contains:
+    - {var: subject}
+    - '"summary"'
 ```
 
 ## SRPY-STDLIB-REP-002
@@ -54,18 +46,10 @@ contract:
   class: MUST
   target: stdout
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '# Spec-Lang Stdlib Profile Report'
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '- profile symbols:'
+  - std.string.contains:
+    - {var: subject}
+    - '# Spec-Lang Stdlib Profile Report'
+  - std.string.contains:
+    - {var: subject}
+    - '- profile symbols:'
 ```

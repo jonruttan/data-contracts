@@ -43,160 +43,155 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
+  - std.logic.eq:
+    - call:
+      - {var: domain.http.status}
+      - lit:
+          value:
+            status: 200
+            headers:
+              Authorization: Bearer abc
+              content-type: application/json
+            body_text: ok
+            body_json:
+              ok: true
+          meta:
+            auth_mode: oauth
+          context:
+            oauth:
+              scope_requested: read:items
+    - 200
+  - call:
+    - {var: domain.http.status_is}
     - lit:
-        lit:
-          lit:
-            MUST:
-            - std.logic.eq:
-              - call:
-                - {var: domain.http.status}
-                - lit:
-                    value:
-                      status: 200
-                      headers:
-                        Authorization: Bearer abc
-                        content-type: application/json
-                      body_text: ok
-                      body_json:
-                        ok: true
-                    meta:
-                      auth_mode: oauth
-                    context:
-                      oauth:
-                        scope_requested: read:items
-              - 200
-            - call:
-              - {var: domain.http.status_is}
-              - lit:
-                  value:
-                    status: 200
-                  meta: {}
-              - 200
-            - call:
-              - {var: domain.http.status_is_unauthorized}
-              - lit:
-                  value:
-                    status: 401
-                  meta: {}
-            - call:
-              - {var: domain.http.status_is_forbidden}
-              - lit:
-                  value:
-                    status: 403
-                  meta: {}
-            - call:
-              - {var: domain.http.ok_2xx}
-              - lit:
-                  value:
-                    status: 204
-                  meta: {}
-            - call:
-              - {var: domain.http.status_in}
-              - lit:
-                  value:
-                    status: 200
-                    headers:
-                      Authorization: Bearer abc
-                      content-type: application/json
-                    body_text: ok
-                    body_json:
-                      ok: true
-                  meta:
-                    auth_mode: oauth
-                  context:
-                    oauth:
-                      scope_requested: read:items
-              - lit:
-                - 200
-                - 201
-            - std.logic.eq:
-              - call:
-                - {var: domain.http.header_get}
-                - lit:
-                    value:
-                      headers:
-                        Authorization: Bearer abc
-                    meta: {}
-                - Authorization
-              - Bearer abc
-            - call:
-              - {var: domain.http.header_contains}
-              - lit:
-                  value:
-                    headers:
-                      Authorization: Bearer abc
-                  meta: {}
-              - Authorization
-              - Bearer
-            - std.logic.eq:
-              - call:
-                - {var: domain.http.body_text}
-                - lit:
-                    value:
-                      body_text: ok
-                    meta: {}
-              - ok
-            - call:
-              - {var: domain.http.body_json}
-              - lit:
-                  value:
-                    body_json:
-                      ok: true
-                  meta: {}
-            - call:
-              - {var: domain.http.body_json_type_is}
-              - lit:
-                  value:
-                    body_json:
-                      ok: true
-                  meta: {}
-              - object
-            - call:
-              - {var: domain.http.body_json_has_key}
-              - lit:
-                  value:
-                    body_json:
-                      ok: true
-                  meta: {}
-              - ok
-            - call:
-              - {var: domain.http.auth_is_oauth}
-              - lit:
-                  value: {}
-                  meta:
-                    auth_mode: oauth
-            - call:
-              - {var: domain.http.has_bearer_header}
-              - lit:
-                  value:
-                    headers:
-                      Authorization: Bearer abc
-                  meta: {}
-            - call:
-              - {var: domain.http.oauth_scope_requested}
-              - lit:
-                  value: {}
-                  meta: {}
-                  context:
-                    oauth:
-                      scope_requested: read:items
-            - call:
-              - {var: domain.http.oauth_token_source_is}
-              - lit:
-                  value: {}
-                  meta:
-                    oauth_token_source: env_ref
-              - env_ref
-            - std.string.contains:
-              - {var: subject}
-              - domain.http.status_in
-            - std.string.contains:
-              - {var: subject}
-              - domain.http.auth_is_oauth
-            - std.string.contains:
-              - {var: subject}
-              - 'type: spec.export'
+        value:
+          status: 200
+        meta: {}
+    - 200
+  - call:
+    - {var: domain.http.status_is_unauthorized}
+    - lit:
+        value:
+          status: 401
+        meta: {}
+  - call:
+    - {var: domain.http.status_is_forbidden}
+    - lit:
+        value:
+          status: 403
+        meta: {}
+  - call:
+    - {var: domain.http.ok_2xx}
+    - lit:
+        value:
+          status: 204
+        meta: {}
+  - call:
+    - {var: domain.http.status_in}
+    - lit:
+        value:
+          status: 200
+          headers:
+            Authorization: Bearer abc
+            content-type: application/json
+          body_text: ok
+          body_json:
+            ok: true
+        meta:
+          auth_mode: oauth
+        context:
+          oauth:
+            scope_requested: read:items
+    - lit:
+      - 200
+      - 201
+  - std.logic.eq:
+    - call:
+      - {var: domain.http.header_get}
+      - lit:
+          value:
+            headers:
+              Authorization: Bearer abc
+          meta: {}
+      - Authorization
+    - Bearer abc
+  - call:
+    - {var: domain.http.header_contains}
+    - lit:
+        value:
+          headers:
+            Authorization: Bearer abc
+        meta: {}
+    - Authorization
+    - Bearer
+  - std.logic.eq:
+    - call:
+      - {var: domain.http.body_text}
+      - lit:
+          value:
+            body_text: ok
+          meta: {}
+    - ok
+  - call:
+    - {var: domain.http.body_json}
+    - lit:
+        value:
+          body_json:
+            ok: true
+        meta: {}
+  - call:
+    - {var: domain.http.body_json_type_is}
+    - lit:
+        value:
+          body_json:
+            ok: true
+        meta: {}
+    - object
+  - call:
+    - {var: domain.http.body_json_has_key}
+    - lit:
+        value:
+          body_json:
+            ok: true
+        meta: {}
+    - ok
+  - call:
+    - {var: domain.http.auth_is_oauth}
+    - lit:
+        value: {}
+        meta:
+          auth_mode: oauth
+  - call:
+    - {var: domain.http.has_bearer_header}
+    - lit:
+        value:
+          headers:
+            Authorization: Bearer abc
+        meta: {}
+  - call:
+    - {var: domain.http.oauth_scope_requested}
+    - lit:
+        value: {}
+        meta: {}
+        context:
+          oauth:
+            scope_requested: read:items
+  - call:
+    - {var: domain.http.oauth_token_source_is}
+    - lit:
+        value: {}
+        meta:
+          oauth_token_source: env_ref
+    - env_ref
+  - std.string.contains:
+    - {var: subject}
+    - domain.http.status_in
+  - std.string.contains:
+    - {var: subject}
+    - domain.http.auth_is_oauth
+  - std.string.contains:
+    - {var: subject}
+    - 'type: spec.export'
   target: text
 ```
 
@@ -286,170 +281,165 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
+  - call:
+    - {var: make.has_target}
     - lit:
-        lit:
-          lit:
-            MUST:
-            - call:
-              - {var: make.has_target}
-              - lit:
-                  value: "ci-gate:\n\t@echo ok\n"
-                  meta: {}
-              - ci-gate
-            - call:
-              - {var: py.is_tuple_projection}
-              - lit:
-                  value:
-                  - 1
-                  - 2
-                  meta:
-                    native_kind: python.tuple
-            - call:
-              - {var: php.is_assoc_projection}
-              - lit:
-                  value:
-                    k: v
-                  meta:
-                    php_array_kind: assoc
-            - std.logic.eq:
-              - call:
-                - {var: domain.path.normalize}
-                - /docs//spec/./libraries/domain/http_core.spec.md
-              - /docs/spec/libraries/domain/http_core.spec.md
-            - call:
-              - {var: domain.path.eq}
-              - /docs/spec/libraries/domain/http_core.spec.md
-              - /docs/spec/libraries/domain//http_core.spec.md
-            - call:
-              - {var: domain.path.is_spec_md}
-              - /docs/spec/libraries/domain/http_core.spec.md
-            - call:
-              - {var: domain.path.is_in_docs}
-              - /docs/spec/libraries/domain/http_core.spec.md
-            - std.logic.eq:
-              - call:
-                - {var: domain.path.sorted}
-                - lit:
-                  - /docs/b
-                  - /docs/a
-              - lit:
-                - /docs/a
-                - /docs/b
-            - call:
-              - {var: domain.fs.is_docs_spec_file}
-              - /docs/spec/conformance/cases/core/domain_libraries.spec.md
-            - std.logic.eq:
-              - call:
-                - {var: domain.fs.sort_spec_files}
-                - lit:
-                  - /docs/b.md
-                  - /docs/a.spec.md
-                  - /docs/a.md
-                  - /docs/b.spec.md
-              - lit:
-                - /docs/a.spec.md
-                - /docs/b.spec.md
-            - call:
-              - {var: domain.fs.glob_any_spec_files}
-              - lit:
-                - /docs/a.md
-                - /docs/a.spec.md
-            - std.logic.eq:
-              - call:
-                - {var: domain.fs.glob_filter}
-                - lit:
-                  - /docs/a.md
-                  - /docs/a.spec.md
-                  - /docs/b.spec.md
-                - '*.spec.md'
-              - lit:
-                - /docs/a.spec.md
-                - /docs/b.spec.md
-            - call:
-              - {var: domain.fs.glob_all}
-              - lit:
-                - /docs/a.spec.md
-                - /docs/b.spec.md
-              - '*.spec.md'
-            - std.logic.eq:
-              - call:
-                - {var: domain.fs.json_get_text}
-                - '{"a":{"b":7}}'
-                - lit:
-                  - a
-                  - b
-              - 7
-            - std.logic.eq:
-              - call:
-                - {var: domain.fs.json_get_or_text}
-                - '{"a":{"b":7}}'
-                - lit:
-                  - a
-                  - b
-                - 0
-              - 7
-            - call:
-              - {var: domain.fs.json_has_path_text}
-              - '{"a":{"b":7}}'
-              - lit:
-                - a
-                - b
-            - call:
-              - {var: domain.fs.json_path_eq_text}
-              - '{"a":{"b":7}}'
-              - lit:
-                - a
-                - b
-              - 7
-            - call:
-              - {var: domain.fs.file_ext_eq}
-              - lit:
-                  path: /docs/spec/libraries/domain/http_core.spec.md
-              - md
-            - call:
-              - {var: domain.file.is_existing_file}
-              - lit:
-                  path: /docs/spec/libraries/domain/http_core.spec.md
-                  exists: true
-                  type: file
-            - call:
-              - {var: domain.file.is_existing_dir}
-              - lit:
-                  path: /docs/spec/libraries/domain
-                  exists: true
-                  type: dir
-            - call:
-              - {var: domain.file.has_ext}
-              - lit:
-                  path: /docs/spec/libraries/domain/http_core.spec.md
-              - .md
-            - std.logic.eq:
-              - call:
-                - {var: domain.file.name}
-                - lit:
-                    path: /docs/spec/libraries/domain/http_core.spec.md
-              - http_core.spec.md
-            - std.string.contains:
-              - {var: subject}
-              - /docs/spec/libraries/domain/http_core.spec.md
-            - std.string.contains:
-              - {var: subject}
-              - /docs/spec/libraries/domain/fs_core.spec.md
-            - std.string.contains:
-              - {var: subject}
-              - /docs/spec/libraries/domain/make_core.spec.md
-            - std.string.contains:
-              - {var: subject}
-              - /docs/spec/libraries/domain/markdown_core.spec.md
-            - std.string.contains:
-              - {var: subject}
-              - /docs/spec/libraries/domain/path_core.spec.md
-            - std.string.contains:
-              - {var: subject}
-              - /docs/spec/libraries/domain/php_core.spec.md
-            - std.string.contains:
-              - {var: subject}
-              - /docs/spec/libraries/domain/python_core.spec.md
+        value: "ci-gate:\n\t@echo ok\n"
+        meta: {}
+    - ci-gate
+  - call:
+    - {var: py.is_tuple_projection}
+    - lit:
+        value:
+        - 1
+        - 2
+        meta:
+          native_kind: python.tuple
+  - call:
+    - {var: php.is_assoc_projection}
+    - lit:
+        value:
+          k: v
+        meta:
+          php_array_kind: assoc
+  - std.logic.eq:
+    - call:
+      - {var: domain.path.normalize}
+      - /docs//spec/./libraries/domain/http_core.spec.md
+    - /docs/spec/libraries/domain/http_core.spec.md
+  - call:
+    - {var: domain.path.eq}
+    - /docs/spec/libraries/domain/http_core.spec.md
+    - /docs/spec/libraries/domain//http_core.spec.md
+  - call:
+    - {var: domain.path.is_spec_md}
+    - /docs/spec/libraries/domain/http_core.spec.md
+  - call:
+    - {var: domain.path.is_in_docs}
+    - /docs/spec/libraries/domain/http_core.spec.md
+  - std.logic.eq:
+    - call:
+      - {var: domain.path.sorted}
+      - lit:
+        - /docs/b
+        - /docs/a
+    - lit:
+      - /docs/a
+      - /docs/b
+  - call:
+    - {var: domain.fs.is_docs_spec_file}
+    - /docs/spec/conformance/cases/core/domain_libraries.spec.md
+  - std.logic.eq:
+    - call:
+      - {var: domain.fs.sort_spec_files}
+      - lit:
+        - /docs/b.md
+        - /docs/a.spec.md
+        - /docs/a.md
+        - /docs/b.spec.md
+    - lit:
+      - /docs/a.spec.md
+      - /docs/b.spec.md
+  - call:
+    - {var: domain.fs.glob_any_spec_files}
+    - lit:
+      - /docs/a.md
+      - /docs/a.spec.md
+  - std.logic.eq:
+    - call:
+      - {var: domain.fs.glob_filter}
+      - lit:
+        - /docs/a.md
+        - /docs/a.spec.md
+        - /docs/b.spec.md
+      - '*.spec.md'
+    - lit:
+      - /docs/a.spec.md
+      - /docs/b.spec.md
+  - call:
+    - {var: domain.fs.glob_all}
+    - lit:
+      - /docs/a.spec.md
+      - /docs/b.spec.md
+    - '*.spec.md'
+  - std.logic.eq:
+    - call:
+      - {var: domain.fs.json_get_text}
+      - '{"a":{"b":7}}'
+      - lit:
+        - a
+        - b
+    - 7
+  - std.logic.eq:
+    - call:
+      - {var: domain.fs.json_get_or_text}
+      - '{"a":{"b":7}}'
+      - lit:
+        - a
+        - b
+      - 0
+    - 7
+  - call:
+    - {var: domain.fs.json_has_path_text}
+    - '{"a":{"b":7}}'
+    - lit:
+      - a
+      - b
+  - call:
+    - {var: domain.fs.json_path_eq_text}
+    - '{"a":{"b":7}}'
+    - lit:
+      - a
+      - b
+    - 7
+  - call:
+    - {var: domain.fs.file_ext_eq}
+    - lit:
+        path: /docs/spec/libraries/domain/http_core.spec.md
+    - md
+  - call:
+    - {var: domain.file.is_existing_file}
+    - lit:
+        path: /docs/spec/libraries/domain/http_core.spec.md
+        exists: true
+        type: file
+  - call:
+    - {var: domain.file.is_existing_dir}
+    - lit:
+        path: /docs/spec/libraries/domain
+        exists: true
+        type: dir
+  - call:
+    - {var: domain.file.has_ext}
+    - lit:
+        path: /docs/spec/libraries/domain/http_core.spec.md
+    - .md
+  - std.logic.eq:
+    - call:
+      - {var: domain.file.name}
+      - lit:
+          path: /docs/spec/libraries/domain/http_core.spec.md
+    - http_core.spec.md
+  - std.string.contains:
+    - {var: subject}
+    - /docs/spec/libraries/domain/http_core.spec.md
+  - std.string.contains:
+    - {var: subject}
+    - /docs/spec/libraries/domain/fs_core.spec.md
+  - std.string.contains:
+    - {var: subject}
+    - /docs/spec/libraries/domain/make_core.spec.md
+  - std.string.contains:
+    - {var: subject}
+    - /docs/spec/libraries/domain/markdown_core.spec.md
+  - std.string.contains:
+    - {var: subject}
+    - /docs/spec/libraries/domain/path_core.spec.md
+  - std.string.contains:
+    - {var: subject}
+    - /docs/spec/libraries/domain/php_core.spec.md
+  - std.string.contains:
+    - {var: subject}
+    - /docs/spec/libraries/domain/python_core.spec.md
   target: text
 ```

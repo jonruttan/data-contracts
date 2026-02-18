@@ -26,7 +26,6 @@ from spec_runner.script_entrypoints import (
     conformance_purpose_report_main,
     docs_generate_all_main,
     docs_generate_specs_main,
-    evaluate_style_main,
     impl_evaluate_migration_report_main,
     normalize_docs_layout_main,
     normalize_repo_main,
@@ -38,6 +37,7 @@ from spec_runner.script_entrypoints import (
     split_library_cases_per_symbol_main,
 )
 from spec_runner.spec_lang import SpecLangLimits, eval_expr
+from spec_runner.spec_lang_format import main as spec_lang_format_main
 from spec_runner.spec_lang_lint import main as spec_lang_lint_main
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
@@ -332,6 +332,7 @@ def main(argv: list[str] | None = None) -> int:
             "spec-lang-stdlib-report",
             "contract-coverage-report",
             "schema-registry-report",
+            "spec-lang-format",
             "spec-lang-lint",
             "docs-lint",
             "ci-gate-summary",
@@ -363,6 +364,8 @@ def main(argv: list[str] | None = None) -> int:
         return contract_coverage_report_main(forwarded)
     if ns.command == "schema-registry-report":
         return schema_registry_report_main(forwarded)
+    if ns.command == "spec-lang-format":
+        return spec_lang_format_main(forwarded)
     if ns.command == "spec-lang-lint":
         return spec_lang_lint_main(forwarded)
     if ns.command == "docs-lint":
@@ -378,7 +381,7 @@ def main(argv: list[str] | None = None) -> int:
     if ns.command == "docs-generate-specs":
         return docs_generate_specs_main(forwarded)
     if ns.command == "evaluate-style":
-        return evaluate_style_main(forwarded)
+        return spec_lang_format_main(forwarded)
     if ns.command == "impl-evaluate-migration-report":
         return impl_evaluate_migration_report_main(forwarded)
     if ns.command == "normalize-docs-layout":

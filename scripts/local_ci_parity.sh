@@ -10,6 +10,15 @@ fi
 if [[ -z "${SPEC_RUNNER_IMPL:-}" ]]; then
   SPEC_RUNNER_IMPL="rust"
 fi
+if [[ -z "${SPEC_CI_PYTHON:-}" ]]; then
+  if [[ -n "${VIRTUAL_ENV:-}" && -x "${VIRTUAL_ENV}/bin/python" ]]; then
+    SPEC_CI_PYTHON="${VIRTUAL_ENV}/bin/python"
+  elif [[ -x "${ROOT_DIR}/.venv/bin/python" ]]; then
+    SPEC_CI_PYTHON="${ROOT_DIR}/.venv/bin/python"
+  else
+    SPEC_CI_PYTHON="python3"
+  fi
+fi
 
 MODE="${SPEC_PREPUSH_MODE:-critical}"
 PARITY_T0="$(date +%s)"
@@ -138,6 +147,19 @@ lane_rust_core() {
     fi
   else
     echo "[local-ci-parity] skip normalize-check (no matching changes)"
+  fi
+
+  if paths_match_prefixes "docs/spec/" "spec_runner/spec_lang_lint.py" "spec_runner/spec_lang_hygiene.py" "spec_runner/spec_lang_format.py" "scripts/spec_lang_lint.py" "scripts/spec_lang_format.py" "scripts/evaluate_style.py" "spec_runner/spec_lang_commands.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+    if paths_all_in_list "docs/spec/governance/check_sets_v1.yaml"; then
+      echo "[local-ci-parity] skip spec-lang-lint (check_sets-only change)"
+    elif is_fast_path_script_only_change; then
+      echo "[local-ci-parity] skip spec-lang-lint (gate-script-only change)"
+    else
+      run_step spec-lang-lint-full "${SPEC_CI_PYTHON}" scripts/spec_lang_lint.py --cases docs/spec
+      run_step spec-lang-format-check-full "${SPEC_CI_PYTHON}" scripts/spec_lang_format.py --check docs/spec
+    fi
+  else
+    echo "[local-ci-parity] skip spec-lang-lint (no matching changes)"
   fi
 
   if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "docs/spec/schema/" "docs/spec/metrics/" "spec_runner/docs_" "spec_runner/docs_generators.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then

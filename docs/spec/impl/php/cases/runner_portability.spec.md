@@ -23,13 +23,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - port-shell-ok
+  - std.string.contains:
+    - {var: subject}
+    - port-shell-ok
   target: stdout
 ```
 
@@ -59,13 +55,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - x:true y:7
+  - std.string.contains:
+    - {var: subject}
+    - x:true y:7
   target: stdout
 ```
 
@@ -92,12 +84,8 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - path_target.txt
+  - std.string.contains:
+    - {var: subject}
+    - path_target.txt
   target: stdout_path
 ```

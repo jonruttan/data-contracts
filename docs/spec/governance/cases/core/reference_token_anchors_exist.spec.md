@@ -31,14 +31,10 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - std.object.get:
-              - {var: subject}
-              - check_id
-            - reference.token_anchors_exist
+  - std.logic.eq:
+    - std.object.get:
+      - {var: subject}
+      - check_id
+    - reference.token_anchors_exist
   target: summary_json
 ```

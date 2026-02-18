@@ -22,13 +22,9 @@ contract:
   class: MUST
   target: stdout
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - wrote .artifacts/schema-registry-impl-case.json
+  - std.string.contains:
+    - {var: subject}
+    - wrote .artifacts/schema-registry-impl-case.json
 ```
 
 ## SRPY-SCHEMA-REG-002
@@ -54,11 +50,7 @@ contract:
   class: MUST
   target: stdout
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - stale report artifact
+  - std.string.contains:
+    - {var: subject}
+    - stale report artifact
 ```

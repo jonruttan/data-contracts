@@ -24,13 +24,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.regex_match:
-            - {var: subject}
-            - \A\Z
+  - std.string.regex_match:
+    - {var: subject}
+    - \A\Z
   target: text
 harness:
   check:

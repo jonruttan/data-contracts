@@ -30,12 +30,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-002
@@ -68,12 +64,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-003
@@ -108,12 +100,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-004
@@ -146,12 +134,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-005
@@ -185,12 +169,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-006
@@ -224,12 +204,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-007
@@ -263,12 +239,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-008
@@ -302,12 +274,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-009
@@ -341,12 +309,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-010
@@ -380,12 +344,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-011
@@ -419,12 +379,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-012
@@ -457,12 +413,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-013
@@ -495,12 +447,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-014
@@ -534,12 +482,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-015
@@ -573,12 +517,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-016
@@ -612,12 +552,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-017
@@ -651,12 +587,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-018
@@ -690,12 +622,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-019
@@ -729,12 +657,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-020
@@ -768,12 +692,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-021
@@ -807,12 +727,8 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```
 
 ## SRDOCGEN-022
@@ -846,10 +762,6 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            ops.job.dispatch:
-            - main
+  - ops.job.dispatch:
+    - main
 ```

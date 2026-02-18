@@ -12,7 +12,7 @@ Style rules:
 - each case must include a non-empty `purpose` field describing the intent
 - `purpose` should add context beyond `title` (not a copy)
 - `purpose` should be at least 8 words and avoid placeholders (`todo`, `tbd`, `fixme`, `xxx`)
-- use `evaluate` assertions only for conformance decision semantics
+- use direct operator-mapping assertions only for conformance decision semantics (`evaluate` wrapper forbidden)
 - sugar assertion operators (`contain`, `regex`, `json_type`, `exists`) are
   not allowed in conformance/governance case assertion trees
 
@@ -21,18 +21,19 @@ Purpose lint policy:
 - defaults and runtime profiles are configured in `docs/spec/conformance/purpose_lint_v1.yaml`
 - per-case override is optional via `purpose_lint` mapping:
 
-## `evaluate` Expression Layout
+## Spec-Lang Expression Layout
 
-Conformance cases using `evaluate` MUST keep spec-lang expressions in
+Conformance cases MUST keep spec-lang expressions in
 operator-keyed mapping AST form for readability and deterministic review diffs.
 Use block-first multiline expression formatting for operator trees.
 Flow style is reserved for trivial atoms only (for example `{var: subject}`
 and short scalar `lit` nodes). Nested operator arguments MUST remain multiline.
+Nested `lit` wrappers are forbidden.
 
 Use tooling to enforce/normalize:
 
-- lint: `python scripts/evaluate_style.py --check docs/spec`
-- format: `python scripts/evaluate_style.py --write docs/spec`
+- lint: `python scripts/spec_lang_lint.py --cases docs/spec`
+- format: `python scripts/spec_lang_format.py --write docs/spec`
   - `runtime`: runtime profile name from policy (for example `php`)
   - `min_words`: integer override
   - `placeholders`: list override
@@ -43,6 +44,28 @@ Use tooling to enforce/normalize:
 Warning code contract:
 
 - canonical warning code definitions live in `docs/spec/conformance/purpose_warning_codes.md`
+
+Spec-lang lint code contract:
+
+- `SLINT001` evaluate wrapper forbidden (autofixable)
+- `SLINT002` nested `lit` wrapper forbidden (autofixable)
+- `SLINT003` assertion group key found inside expression context
+- `SLINT004` expression leaf must be non-empty operator mapping
+- `SLINT005` invalid spec-lang mapping AST expression
+- `SLINT006` assert node must be mapping/list
+- `SLINT007` contract step `asserts` must be non-empty list
+- `SLINT008` legacy lowercase group key forbidden (`must`/`can`/`cannot`)
+- `SLINT009` assert group must include exactly one group key
+- `SLINT010` assert group children must be non-empty list
+- `SLINT011` `when` must be mapping
+- `SLINT012` unknown `when` hook key
+- `SLINT013` `when` hook value must be non-empty list
+- `SLINT014` `defines` must be mapping
+- `SLINT015` `defines.<scope>` must be mapping
+- `SLINT016` `defines` symbol name must be non-empty
+- `SLINT017` operator-shaped `lit` wrapper forbidden (autofixable)
+- `SLINT018` redundant nested group matches step class (autofixable)
+- `SLINT019` nested assert groups forbidden inside step `asserts`
 
 Rationale:
 

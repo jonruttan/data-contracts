@@ -9,91 +9,68 @@ contract:
 - id: __export__path.normalize_slashes
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.replace:
-            - {var: path}
-            - \
-            - /
+  - std.string.replace:
+    - {var: path}
+    - \
+    - /
 - id: __export__path.trim_dot
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.replace:
-            - {var: path}
-            - ./
-            - ''
+  - std.string.replace:
+    - {var: path}
+    - ./
+    - ''
 - id: __export__path.dirname
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            let:
-            - lit:
-              - - segs
-                - call:
-                  - {var: path.segments}
-                  - {var: path}
-            - if:
-              - std.logic.lte:
-                - std.collection.len:
-                  - {var: segs}
-                - 1
-              - ''
-              - std.string.join:
-                - std.collection.slice:
-                  - 0
-                  - std.math.sub:
-                    - std.collection.len:
-                      - {var: segs}
-                    - 1
-                  - {var: segs}
-                - /
+  - lit:
+      let:
+      - lit:
+        - - segs
+          - call:
+            - var: path.segments
+            - var: path
+      - if:
+        - std.logic.lte:
+          - std.collection.len:
+            - var: segs
+          - 1
+        - ''
+        - std.string.join:
+          - std.collection.slice:
+            - 0
+            - std.math.sub:
+              - std.collection.len:
+                - var: segs
+              - 1
+            - var: segs
+          - /
 - id: __export__path.has_extension
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - call:
-              - {var: path.extension}
-              - {var: path}
-            - {var: ext}
+  - std.logic.eq:
+    - call:
+      - {var: path.extension}
+      - {var: path}
+    - {var: ext}
 - id: __export__path.is_under
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.starts_with:
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: path}
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: prefix}
+  - std.string.starts_with:
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: path}
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: prefix}
 - id: __export__path.matches
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.regex_match:
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: path}
-            - {var: pattern}
+  - std.string.regex_match:
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: path}
+    - {var: pattern}
 harness:
   exports:
   - as: path.normalize_slashes
@@ -138,92 +115,69 @@ contract:
 - id: __export__path.segments
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.split:
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: path}
-            - /
+  - std.string.split:
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: path}
+    - /
 - id: __export__path.trim_dot
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.replace:
-            - {var: path}
-            - ./
-            - ''
+  - std.string.replace:
+    - {var: path}
+    - ./
+    - ''
 - id: __export__path.dirname
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            let:
-            - lit:
-              - - segs
-                - call:
-                  - {var: path.segments}
-                  - {var: path}
-            - if:
-              - std.logic.lte:
-                - std.collection.len:
-                  - {var: segs}
-                - 1
-              - ''
-              - std.string.join:
-                - std.collection.slice:
-                  - 0
-                  - std.math.sub:
-                    - std.collection.len:
-                      - {var: segs}
-                    - 1
-                  - {var: segs}
-                - /
+  - lit:
+      let:
+      - lit:
+        - - segs
+          - call:
+            - var: path.segments
+            - var: path
+      - if:
+        - std.logic.lte:
+          - std.collection.len:
+            - var: segs
+          - 1
+        - ''
+        - std.string.join:
+          - std.collection.slice:
+            - 0
+            - std.math.sub:
+              - std.collection.len:
+                - var: segs
+              - 1
+            - var: segs
+          - /
 - id: __export__path.has_extension
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - call:
-              - {var: path.extension}
-              - {var: path}
-            - {var: ext}
+  - std.logic.eq:
+    - call:
+      - {var: path.extension}
+      - {var: path}
+    - {var: ext}
 - id: __export__path.is_under
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.starts_with:
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: path}
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: prefix}
+  - std.string.starts_with:
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: path}
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: prefix}
 - id: __export__path.matches
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.regex_match:
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: path}
-            - {var: pattern}
+  - std.string.regex_match:
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: path}
+    - {var: pattern}
 harness:
   exports:
   - as: path.segments
@@ -268,103 +222,81 @@ contract:
 - id: __export__path.basename
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            let:
-            - lit:
-              - - segs
-                - call:
-                  - {var: path.segments}
-                  - {var: path}
-            - if:
-              - std.collection.is_empty:
-                - {var: segs}
-              - ''
-              - std.object.get:
-                - {var: segs}
-                - std.math.sub:
-                  - std.collection.len:
-                    - {var: segs}
-                  - 1
+  - lit:
+      let:
+      - lit:
+        - - segs
+          - call:
+            - var: path.segments
+            - var: path
+      - if:
+        - std.collection.is_empty:
+          - var: segs
+        - ''
+        - std.object.get:
+          - var: segs
+          - std.math.sub:
+            - std.collection.len:
+              - var: segs
+            - 1
 - id: __export__path.trim_dot
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.replace:
-            - {var: path}
-            - ./
-            - ''
+  - std.string.replace:
+    - {var: path}
+    - ./
+    - ''
 - id: __export__path.dirname
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            let:
-            - lit:
-              - - segs
-                - call:
-                  - {var: path.segments}
-                  - {var: path}
-            - if:
-              - std.logic.lte:
-                - std.collection.len:
-                  - {var: segs}
-                - 1
-              - ''
-              - std.string.join:
-                - std.collection.slice:
-                  - 0
-                  - std.math.sub:
-                    - std.collection.len:
-                      - {var: segs}
-                    - 1
-                  - {var: segs}
-                - /
+  - lit:
+      let:
+      - lit:
+        - - segs
+          - call:
+            - var: path.segments
+            - var: path
+      - if:
+        - std.logic.lte:
+          - std.collection.len:
+            - var: segs
+          - 1
+        - ''
+        - std.string.join:
+          - std.collection.slice:
+            - 0
+            - std.math.sub:
+              - std.collection.len:
+                - var: segs
+              - 1
+            - var: segs
+          - /
 - id: __export__path.has_extension
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - call:
-              - {var: path.extension}
-              - {var: path}
-            - {var: ext}
+  - std.logic.eq:
+    - call:
+      - {var: path.extension}
+      - {var: path}
+    - {var: ext}
 - id: __export__path.is_under
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.starts_with:
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: path}
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: prefix}
+  - std.string.starts_with:
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: path}
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: prefix}
 - id: __export__path.matches
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.regex_match:
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: path}
-            - {var: pattern}
+  - std.string.regex_match:
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: path}
+    - {var: pattern}
 harness:
   exports:
   - as: path.basename
@@ -409,111 +341,89 @@ contract:
 - id: __export__path.extension
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            let:
-            - lit:
-              - - base
-                - call:
-                  - {var: path.basename}
-                  - {var: path}
-            - let:
-              - lit:
-                - - parts
-                  - split:
-                    - {var: base}
-                    - .
-              - if:
-                - std.logic.lte:
-                  - std.collection.len:
-                    - {var: parts}
-                  - 1
-                - ''
-                - std.object.get:
-                  - {var: parts}
-                  - std.math.sub:
-                    - std.collection.len:
-                      - {var: parts}
-                    - 1
+  - lit:
+      let:
+      - lit:
+        - - base
+          - call:
+            - var: path.basename
+            - var: path
+      - let:
+        - lit:
+          - - parts
+            - split:
+              - var: base
+              - .
+        - if:
+          - std.logic.lte:
+            - std.collection.len:
+              - var: parts
+            - 1
+          - ''
+          - std.object.get:
+            - var: parts
+            - std.math.sub:
+              - std.collection.len:
+                - var: parts
+              - 1
 - id: __export__path.trim_dot
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.replace:
-            - {var: path}
-            - ./
-            - ''
+  - std.string.replace:
+    - {var: path}
+    - ./
+    - ''
 - id: __export__path.dirname
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            let:
-            - lit:
-              - - segs
-                - call:
-                  - {var: path.segments}
-                  - {var: path}
-            - if:
-              - std.logic.lte:
-                - std.collection.len:
-                  - {var: segs}
-                - 1
-              - ''
-              - std.string.join:
-                - std.collection.slice:
-                  - 0
-                  - std.math.sub:
-                    - std.collection.len:
-                      - {var: segs}
-                    - 1
-                  - {var: segs}
-                - /
+  - lit:
+      let:
+      - lit:
+        - - segs
+          - call:
+            - var: path.segments
+            - var: path
+      - if:
+        - std.logic.lte:
+          - std.collection.len:
+            - var: segs
+          - 1
+        - ''
+        - std.string.join:
+          - std.collection.slice:
+            - 0
+            - std.math.sub:
+              - std.collection.len:
+                - var: segs
+              - 1
+            - var: segs
+          - /
 - id: __export__path.has_extension
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - call:
-              - {var: path.extension}
-              - {var: path}
-            - {var: ext}
+  - std.logic.eq:
+    - call:
+      - {var: path.extension}
+      - {var: path}
+    - {var: ext}
 - id: __export__path.is_under
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.starts_with:
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: path}
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: prefix}
+  - std.string.starts_with:
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: path}
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: prefix}
 - id: __export__path.matches
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.regex_match:
-            - call:
-              - {var: path.normalize_slashes}
-              - {var: path}
-            - {var: pattern}
+  - std.string.regex_match:
+    - call:
+      - {var: path.normalize_slashes}
+      - {var: path}
+    - {var: pattern}
 harness:
   exports:
   - as: path.extension
@@ -571,14 +481,10 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - call:
-              - {var: path.normalize_slashes}
-              - a\\b\\c.txt
-            - a/b/c.txt
+  - std.logic.eq:
+    - call:
+      - {var: path.normalize_slashes}
+      - a\\b\\c.txt
+    - a/b/c.txt
   target: text
 ```

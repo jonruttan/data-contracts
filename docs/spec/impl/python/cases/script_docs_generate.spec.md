@@ -20,8 +20,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --surface
+    - {var: subject}
+    - --surface
 ```
 
 ## SRPY-SCRIPT-DOCS-002
@@ -46,8 +46,8 @@ contract:
   target: stdout
   asserts:
   - std.logic.eq:
-        - 1
-        - 1
+    - 1
+    - 1
 ```
 
 ## SRPY-SCRIPT-DOCS-003
@@ -70,8 +70,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --cases
+    - {var: subject}
+    - --cases
 ```
 
 ## SRPY-SCRIPT-DOCS-004
@@ -96,8 +96,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - unknown surface_id
+    - {var: subject}
+    - unknown surface_id
 ```
 
 ## SRPY-SCRIPT-DOCS-005
@@ -120,8 +120,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --write
+    - {var: subject}
+    - --write
 ```
 
 ## SRPY-SCRIPT-DOCS-006
@@ -144,6 +144,6 @@ contract:
   target: stderr
   asserts:
   - std.logic.eq:
-        - 1
-        - 1
+    - 1
+    - 1
 ```

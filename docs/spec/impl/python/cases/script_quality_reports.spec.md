@@ -21,8 +21,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - wrote .artifacts/objective-scorecard-script-case.json
+    - {var: subject}
+    - wrote .artifacts/objective-scorecard-script-case.json
 ```
 
 ## SRPY-SCRIPT-QUALITY-002
@@ -46,8 +46,8 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - invalid choice
+    - {var: subject}
+    - invalid choice
 ```
 
 ## SRPY-SCRIPT-QUALITY-003
@@ -72,8 +72,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - wrote .artifacts/spec-lang-adoption-script-case.json
+    - {var: subject}
+    - wrote .artifacts/spec-lang-adoption-script-case.json
 ```
 
 ## SRPY-SCRIPT-QUALITY-004
@@ -98,8 +98,8 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - unsupported quality report
+    - {var: subject}
+    - unsupported quality report
 ```
 
 ## SRPY-SCRIPT-QUALITY-005
@@ -125,8 +125,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - wrote .artifacts/schema-registry-script-case.json
+    - {var: subject}
+    - wrote .artifacts/schema-registry-script-case.json
 ```
 
 ## SRPY-SCRIPT-QUALITY-006
@@ -150,6 +150,6 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - invalid choice
+    - {var: subject}
+    - invalid choice
 ```

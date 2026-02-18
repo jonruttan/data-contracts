@@ -19,24 +19,16 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 - id: assert_2
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.type.json_type:
-            - {var: subject}
-            - dict
+  - std.type.json_type:
+    - {var: subject}
+    - dict
   target: body_json
 harness:
   check:
@@ -68,13 +60,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 harness:
   check:
@@ -105,13 +93,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 harness:
   check:
@@ -141,13 +125,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.object.has_key:
-            - {var: subject}
-            - id
+  - std.object.has_key:
+    - {var: subject}
+    - id
   target: body_json
 harness:
   check:
@@ -178,13 +158,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 harness:
   check:
@@ -213,13 +189,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - abc-123
+  - std.string.contains:
+    - {var: subject}
+    - abc-123
   target: body_text
 harness:
   check:
@@ -248,15 +220,11 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - std.object.get:
-              - {var: subject}
-              - deleted
-            - true
+  - std.logic.eq:
+    - std.object.get:
+      - {var: subject}
+      - deleted
+    - true
   target: body_json
 harness:
   check:
@@ -285,13 +253,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 harness:
   check:
@@ -320,13 +284,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 harness:
   check:
@@ -357,13 +317,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 harness:
   check:
@@ -394,13 +350,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 harness:
   check:
@@ -450,25 +402,17 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 - id: assert_2
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - std.collection.len:
-              - {var: subject}
-            - 3
+  - std.logic.eq:
+    - std.collection.len:
+      - {var: subject}
+    - 3
   target: steps_json
 ```
 
@@ -507,25 +451,20 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            MUST:
-            - std.logic.eq:
-              - std.object.get:
-                - std.object.get:
-                  - {var: subject}
-                  - meta
-                - auth_mode
-              - oauth
-            - std.logic.eq:
-              - std.object.get:
-                - std.object.get:
-                  - {var: subject}
-                  - meta
-                - oauth_token_source
-              - env_ref
+  - std.logic.eq:
+    - std.object.get:
+      - std.object.get:
+        - {var: subject}
+        - meta
+      - auth_mode
+    - oauth
+  - std.logic.eq:
+    - std.object.get:
+      - std.object.get:
+        - {var: subject}
+        - meta
+      - oauth_token_source
+    - env_ref
   target: context_json
 ```
 
@@ -563,13 +502,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 ```
 
@@ -608,13 +543,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 ```
 
@@ -654,13 +585,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 ```
 
@@ -708,12 +635,8 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - '200'
+  - std.string.contains:
+    - {var: subject}
+    - '200'
   target: status
 ```

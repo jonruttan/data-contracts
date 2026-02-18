@@ -10,19 +10,15 @@ contract:
 - id: __export__policy.metric_non_decrease
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.gte:
-            - std.math.add:
-              - std.object.get:
-                - {var: subject}
-                - {var: field}
-              - {var: epsilon}
-            - std.object.get:
-              - {var: subject}
-              - {var: baseline_field}
+  - std.logic.gte:
+    - std.math.add:
+      - std.object.get:
+        - {var: subject}
+        - {var: field}
+      - {var: epsilon}
+    - std.object.get:
+      - {var: subject}
+      - {var: baseline_field}
 harness:
   exports:
   - as: policy.metric_non_decrease
@@ -44,19 +40,15 @@ contract:
 - id: __export__policy.metric_non_increase
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.lte:
-            - std.math.sub:
-              - std.object.get:
-                - {var: subject}
-                - {var: field}
-              - {var: epsilon}
-            - std.object.get:
-              - {var: subject}
-              - {var: baseline_field}
+  - std.logic.lte:
+    - std.math.sub:
+      - std.object.get:
+        - {var: subject}
+        - {var: field}
+      - {var: epsilon}
+    - std.object.get:
+      - {var: subject}
+      - {var: baseline_field}
 harness:
   exports:
   - as: policy.metric_non_increase
@@ -97,26 +89,21 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
+  - call:
+    - {var: policy.metric_non_decrease}
     - lit:
-        lit:
-          lit:
-            MUST:
-            - call:
-              - {var: policy.metric_non_decrease}
-              - lit:
-                  current: 10
-                  baseline: 9
-              - current
-              - baseline
-              - 0
-            - call:
-              - {var: policy.metric_non_increase}
-              - lit:
-                  current: 8
-                  baseline: 9
-              - current
-              - baseline
-              - 0
+        current: 10
+        baseline: 9
+    - current
+    - baseline
+    - 0
+  - call:
+    - {var: policy.metric_non_increase}
+    - lit:
+        current: 8
+        baseline: 9
+    - current
+    - baseline
+    - 0
   target: text
 ```

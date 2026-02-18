@@ -27,14 +27,10 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - std.object.get:
-              - {var: subject}
-              - check_id
-            - schema.verb_first_contract_sync
+  - std.logic.eq:
+    - std.object.get:
+      - {var: subject}
+      - check_id
+    - schema.verb_first_contract_sync
   target: summary_json
 ```

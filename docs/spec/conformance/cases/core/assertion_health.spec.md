@@ -26,13 +26,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - ''
+  - std.string.contains:
+    - {var: subject}
+    - ''
   target: text
 harness:
   check:
@@ -58,13 +54,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - ''
+  - std.string.contains:
+    - {var: subject}
+    - ''
   target: text
 harness:
   check:
@@ -89,13 +81,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - contract-spec
+  - std.string.contains:
+    - {var: subject}
+    - contract-spec
   target: text
 harness:
   check:
@@ -120,13 +108,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - ''
+  - std.string.contains:
+    - {var: subject}
+    - ''
   target: text
 harness:
   check:
@@ -152,20 +136,12 @@ contract:
 - id: assert_1
   class: MAY
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - 'version: 1'
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - 'version: 2'
+  - std.string.contains:
+    - {var: subject}
+    - 'version: 1'
+  - std.string.contains:
+    - {var: subject}
+    - 'version: 2'
   target: text
 harness:
   check:
@@ -191,13 +167,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.regex_match:
-            - {var: subject}
-            - '(?<=version: )1'
+  - std.string.regex_match:
+    - {var: subject}
+    - '(?<=version: )1'
   target: text
 harness:
   check:

@@ -27,14 +27,10 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - std.object.get:
-              - {var: subject}
-              - check_id
-            - reference.private_symbols_forbidden
+  - std.logic.eq:
+    - std.object.get:
+      - {var: subject}
+      - check_id
+    - reference.private_symbols_forbidden
   target: summary_json
 ```

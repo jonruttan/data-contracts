@@ -21,8 +21,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - wrote .artifacts/spec-portability-script-case.json
+    - {var: subject}
+    - wrote .artifacts/spec-portability-script-case.json
 ```
 
 ## SRPY-SCRIPT-PORT-002
@@ -46,8 +46,8 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - invalid choice
+    - {var: subject}
+    - invalid choice
 ```
 
 ## SRPY-SCRIPT-PORT-003
@@ -70,8 +70,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --cases
+    - {var: subject}
+    - --cases
 ```
 
 ## SRPY-SCRIPT-PORT-004
@@ -94,8 +94,8 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - unrecognized arguments
+    - {var: subject}
+    - unrecognized arguments
 ```
 
 ## SRPY-SCRIPT-PORT-005
@@ -118,8 +118,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --write
+    - {var: subject}
+    - --write
 ```
 
 ## SRPY-SCRIPT-PORT-006
@@ -141,8 +141,8 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - paths
+    - {var: subject}
+    - paths
 ```
 
 ## SRPY-SCRIPT-PORT-007
@@ -166,8 +166,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - wrote .artifacts/conformance-purpose-script-case.json
+    - {var: subject}
+    - wrote .artifacts/conformance-purpose-script-case.json
 ```
 
 ## SRPY-SCRIPT-PORT-008
@@ -191,6 +191,6 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - invalid choice
+    - {var: subject}
+    - invalid choice
 ```

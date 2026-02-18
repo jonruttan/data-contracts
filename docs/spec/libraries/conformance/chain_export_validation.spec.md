@@ -12,13 +12,9 @@ contract:
 - id: valid_step
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - {var: subject}
-            - {var: subject}
+  - std.logic.eq:
+    - {var: subject}
+    - {var: subject}
 harness:
   exports:
   - as: bad.path.symbol
@@ -38,13 +34,9 @@ contract:
 - id: non_must_step
   class: MAY
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - {var: subject}
-            - {var: subject}
+  - std.logic.eq:
+    - {var: subject}
+    - {var: subject}
 harness:
   exports:
   - as: bad.class.symbol

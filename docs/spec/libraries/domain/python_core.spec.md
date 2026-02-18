@@ -10,17 +10,13 @@ contract:
 - id: __export__py.is_tuple_projection
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.logic.eq:
-            - std.object.get:
-              - std.object.get:
-                - {var: subject}
-                - meta
-              - native_kind
-            - python.tuple
+  - std.logic.eq:
+    - std.object.get:
+      - std.object.get:
+        - {var: subject}
+        - meta
+      - native_kind
+    - python.tuple
 harness:
   exports:
   - as: py.is_tuple_projection

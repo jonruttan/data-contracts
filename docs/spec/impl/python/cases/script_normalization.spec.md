@@ -20,8 +20,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --profile
+    - {var: subject}
+    - --profile
 ```
 
 ## SRPY-SCRIPT-NORM-002
@@ -45,8 +45,8 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - not allowed with argument
+    - {var: subject}
+    - not allowed with argument
 ```
 
 ## SRPY-SCRIPT-NORM-003
@@ -69,8 +69,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --scope
+    - {var: subject}
+    - --scope
 ```
 
 ## SRPY-SCRIPT-NORM-004
@@ -95,6 +95,6 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - invalid choice
+    - {var: subject}
+    - invalid choice
 ```

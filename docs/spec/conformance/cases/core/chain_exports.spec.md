@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRCONF-CHAIN-EXPORT-002
 title: producer export path must resolve to producer assert step id
-purpose: Ensures from=assert.function exports fail with schema category when export
-  path does not resolve to a producer assert step.
+purpose: Ensures from=assert.function exports fail with schema category when export path does
+  not resolve to a producer assert step.
 type: contract.check
 harness:
   chain:
@@ -34,8 +34,8 @@ contract: []
 ```yaml contract-spec
 id: SRCONF-CHAIN-EXPORT-003
 title: producer export source assert step must use class must
-purpose: Ensures from=assert.function exports fail with schema category when source
-  step class is not must.
+purpose: Ensures from=assert.function exports fail with schema category when source step class
+  is not must.
 type: contract.check
 harness:
   chain:

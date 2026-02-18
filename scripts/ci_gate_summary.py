@@ -5,6 +5,7 @@ import argparse
 import os
 import json
 import subprocess
+import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
@@ -122,6 +123,21 @@ def _runner_command(runner_bin: str, runner_impl: str, subcommand: str) -> list[
     return [runner_bin, subcommand]
 
 
+def _python_command() -> list[str]:
+    override = str(os.environ.get("SPEC_CI_PYTHON", "")).strip()
+    if override:
+        return [override]
+    venv = str(os.environ.get("VIRTUAL_ENV", "")).strip()
+    if venv:
+        p = Path(venv) / "bin" / "python"
+        if p.exists():
+            return [p.as_posix()]
+    local = Path(".venv/bin/python")
+    if local.exists():
+        return [local.as_posix()]
+    return [sys.executable or "python3"]
+
+
 def _runner_command_with_liveness(
     runner_bin: str,
     runner_impl: str,
@@ -236,6 +252,7 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
     broad_liveness_stall_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_STALL_MS", "5000"))
     broad_liveness_kill_grace_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_KILL_GRACE_MS", "1000"))
     broad_liveness_hard_cap_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS", "120000"))
+    py = _python_command()
     return [
         (
             "governance_broad",
@@ -255,7 +272,8 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
         ("schema_registry_build", _runner_command(runner_bin, runner_impl, "schema-registry-build")),
         ("schema_registry_check", _runner_command(runner_bin, runner_impl, "schema-registry-check")),
         ("schema_docs_check", _runner_command(runner_bin, runner_impl, "schema-docs-check")),
-        ("evaluate_style", _runner_command(runner_bin, runner_impl, "style-check")),
+        ("spec_lang_lint_full", [*py, "scripts/spec_lang_lint.py", "--cases", "docs/spec"]),
+        ("spec_lang_format_check_full", [*py, "scripts/spec_lang_format.py", "--check", "docs/spec"]),
         ("ruff", _runner_command(runner_bin, runner_impl, "lint")),
         ("mypy", _runner_command(runner_bin, runner_impl, "typecheck")),
         ("compileall", _runner_command(runner_bin, runner_impl, "compilecheck")),

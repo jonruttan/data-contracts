@@ -20,8 +20,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --runner-bin
+    - {var: subject}
+    - --runner-bin
 ```
 
 ## SRPY-SCRIPT-CI-002
@@ -43,8 +43,8 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --runner-bin
+    - {var: subject}
+    - --runner-bin
 ```
 
 ## SRPY-SCRIPT-CI-003
@@ -67,8 +67,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --cases
+    - {var: subject}
+    - --cases
 ```
 
 ## SRPY-SCRIPT-CI-004
@@ -92,8 +92,8 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - 'invalid int value'
+    - {var: subject}
+    - invalid int value
 ```
 
 ## SRPY-SCRIPT-CI-005
@@ -116,8 +116,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --case-file-pattern
+    - {var: subject}
+    - --case-file-pattern
 ```
 
 ## SRPY-SCRIPT-CI-006
@@ -145,6 +145,6 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - case-file-pattern
+    - {var: subject}
+    - case-file-pattern
 ```

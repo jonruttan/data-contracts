@@ -18,13 +18,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - x
+  - std.string.contains:
+    - {var: subject}
+    - x
   target: text
 harness:
   check:
@@ -50,13 +46,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - outside
+  - std.string.contains:
+    - {var: subject}
+    - outside
   target: text
 harness:
   check:
@@ -89,13 +81,9 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            std.string.contains:
-            - {var: subject}
-            - x
+  - std.string.contains:
+    - {var: subject}
+    - x
   target: stdout
 ```
 
@@ -124,12 +112,8 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            not.a.real.symbol:
-            - {var: subject}
+  - not.a.real.symbol:
+    - {var: subject}
   target: stdout
 ```
 
@@ -138,8 +122,7 @@ contract:
 ```yaml contract-spec
 id: SRPHP-RUN-F005
 title: cli.run exit_code mismatch is assertion failure
-purpose: Verifies cli.run reports assertion failure when observed exit code differs
-  from expected.
+purpose: Verifies cli.run reports assertion failure when observed exit code differs from expected.
 type: contract.check
 harness:
   entrypoint: /bin/sh -c
@@ -216,13 +199,10 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-    - lit:
-        lit:
-          lit:
-            target: text
-            contain:
-            - fixture-content
+  - lit:
+      target: text
+      contain:
+      - fixture-content
   target: text
 harness:
   check:

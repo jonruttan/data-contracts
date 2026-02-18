@@ -20,8 +20,8 @@ contract:
   target: stdout
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - --check-prefix
+    - {var: subject}
+    - --check-prefix
 ```
 
 ## SRPY-SCRIPT-GOV-002
@@ -47,8 +47,8 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - case-file-pattern
+    - {var: subject}
+    - case-file-pattern
 ```
 
 ## SRPY-SCRIPT-GOV-003
@@ -74,6 +74,6 @@ contract:
   target: stderr
   asserts:
   - std.string.contains:
-        - {var: subject}
-        - selected zero cases
+    - {var: subject}
+    - selected zero cases
 ```
