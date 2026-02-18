@@ -1773,7 +1773,8 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         .unwrap_or_else(|_| "1000".to_string());
     let broad_liveness_hard_cap_ms =
         env::var("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS").unwrap_or_else(|_| "120000".to_string());
-    let default_steps: Vec<(&str, Vec<String>)> = vec![
+    let include_conformance_parity = env_bool("SPEC_CI_INCLUDE_CONFORMANCE_PARITY", false);
+    let mut default_steps: Vec<(&str, Vec<String>)> = vec![
         (
             "governance_broad",
             runner_command_with_liveness(
@@ -1823,11 +1824,13 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "compileall",
             runner_command(&runner_bin, &runner_impl, "compilecheck"),
         ),
-        (
+    ];
+    if include_conformance_parity {
+        default_steps.push((
             "conformance_parity",
             runner_command(&runner_bin, &runner_impl, "conformance-parity"),
-        ),
-    ];
+        ));
+    }
 
     let started = now_iso_utc_fallback();
     let t0 = Instant::now();

@@ -66,7 +66,7 @@ def _python_surface() -> dict[str, int | None]:
 
 
 def _php_surface(repo_root: Path) -> dict[str, int | None]:
-    php_file = repo_root / "scripts/php/spec_runner.php"
+    php_file = repo_root / "runners/php/spec_runner.php"
     if not php_file.exists():
         return {}
     raw = php_file.read_text(encoding="utf-8")

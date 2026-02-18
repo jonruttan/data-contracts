@@ -66,9 +66,9 @@ surfaces:
 - surface_id: runner_api_catalog
   source_type: code_scan
   inputs:
-  - /scripts/runner_adapter.sh
-  - /scripts/python/runner_adapter.sh
-  - /scripts/rust/spec_runner_cli/src/main.rs
+  - /runners/public/runner_adapter.sh
+  - /runners/python/runner_adapter.sh
+  - /runners/rust/spec_runner_cli/src/main.rs
   outputs:
   - /.artifacts/runner-api-catalog.json
   - /docs/book/91_appendix_runner_api_reference.md
@@ -118,7 +118,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /.artifacts/spec-lang-builtin-catalog.json
@@ -152,7 +152,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93a_std_core.md
@@ -175,7 +175,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93b_std_logic.md
@@ -198,7 +198,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93c_std_math.md
@@ -221,7 +221,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93d_std_string.md
@@ -244,7 +244,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93e_std_collection.md
@@ -267,7 +267,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93f_std_object.md
@@ -290,7 +290,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93g_std_type.md
@@ -313,7 +313,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93h_std_set.md
@@ -336,7 +336,7 @@ surfaces:
   source_type: code_scan
   inputs:
   - /spec_runner/spec_lang.py
-  - /scripts/php/spec_runner.php
+  - /runners/php/spec_runner.php
   - /docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
   - /docs/book/93i_std_json_schema_fn_null.md

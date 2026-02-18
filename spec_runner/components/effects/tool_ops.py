@@ -43,7 +43,7 @@ def resolve_tool(tools: list[dict[str, Any]], tool_id: str) -> dict[str, Any]:
 
 
 def run_tool_op(*, root: Path, impl: str, subcommand: str, args: list[str]) -> dict[str, Any]:
-    adapter = root / "scripts/runner_adapter.sh"
+    adapter = root / "runners/public/runner_adapter.sh"
     started_at = _now_iso()
     cp = subprocess.run(
         [str(adapter), "--impl", impl, subcommand, *args],

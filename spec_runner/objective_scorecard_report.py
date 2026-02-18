@@ -4,13 +4,15 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from typing import Any
 
 import yaml
 from spec_runner.quality_metrics import objective_scorecard_report_jsonable
 
 
-def _to_markdown(payload: dict) -> str:
-    summary = payload.get("summary") or {}
+def _to_markdown(payload: dict[str, Any]) -> str:
+    summary_raw = payload.get("summary")
+    summary: dict[str, Any] = summary_raw if isinstance(summary_raw, dict) else {}
     lines = [
         "# Objective Scorecard Report",
         "",
@@ -25,16 +27,19 @@ def _to_markdown(payload: dict) -> str:
         "| id | status | score | primary value |",
         "| --- | --- | ---: | --- |",
     ]
-    for row in payload.get("objectives") or []:
+    objectives = payload.get("objectives")
+    for row in objectives if isinstance(objectives, list) else []:
         if not isinstance(row, dict):
             continue
-        primary = row.get("primary") if isinstance(row.get("primary"), dict) else {}
+        primary_raw = row.get("primary")
+        primary: dict[str, Any] = primary_raw if isinstance(primary_raw, dict) else {}
         lines.append(
             f"| {row.get('id', '')} | {row.get('status', '')} | "
             f"{float(row.get('score', 0.0)):.4f} | {primary.get('value_rendered', 'missing')} |"
         )
 
-    tripwires = payload.get("tripwire_hits") or []
+    tripwires_raw = payload.get("tripwire_hits")
+    tripwires = tripwires_raw if isinstance(tripwires_raw, list) else []
     lines.extend(["", "## Tripwire Hits", ""])
     if tripwires:
         lines.extend([
@@ -50,7 +55,8 @@ def _to_markdown(payload: dict) -> str:
     else:
         lines.append("- none")
 
-    recos = payload.get("course_correction_recommendations") or []
+    recos_raw = payload.get("course_correction_recommendations")
+    recos = recos_raw if isinstance(recos_raw, list) else []
     lines.extend(["", "## Course Correction", ""])
     if recos:
         for rec in recos:

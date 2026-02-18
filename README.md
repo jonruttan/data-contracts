@@ -94,19 +94,19 @@ Adoption profiles:
 Single public entrypoint:
 
 ```sh
-./scripts/runner_adapter.sh
+./runners/public/runner_adapter.sh
 ```
 
 Default lane (rust):
 
 ```sh
-./scripts/runner_adapter.sh governance
+./runners/public/runner_adapter.sh governance
 ```
 
 Python impl in runtime adapter is forbidden (hard cut):
 
 ```sh
-./scripts/runner_adapter.sh --impl python governance
+./runners/public/runner_adapter.sh --impl python governance
 # => exits with migration guidance to --impl rust
 ```
 

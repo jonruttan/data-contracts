@@ -165,7 +165,7 @@ harness:
   check:
     profile: text.file
     config:
-      path: /scripts/php/conformance_runner.php
+      path: /runners/php/conformance_runner.php
 contract:
 - id: assert_1
   class: MUST

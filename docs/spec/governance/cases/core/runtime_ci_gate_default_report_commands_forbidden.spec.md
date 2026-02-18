@@ -13,7 +13,7 @@ harness:
   ci_gate_default_reports_forbidden:
     files:
     - /spec_runner/script_runtime_commands.py
-    - /scripts/rust/spec_runner_cli/src/main.rs
+    - /runners/rust/spec_runner_cli/src/main.rs
     forbidden_tokens:
     - spec_portability_json
     - spec_portability_md

@@ -12,7 +12,7 @@ harness:
   root: .
   assert_engine:
     files:
-    - path: /scripts/php/conformance_runner.php
+    - path: /runners/php/conformance_runner.php
       required_tokens:
       - compileAssertionLeafExpr(
       - assertLeafPredicate(
@@ -20,7 +20,7 @@ harness:
       forbidden_tokens:
       - strpos($subject, $v)
       - preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject)
-    - path: /scripts/php/spec_runner.php
+    - path: /runners/php/spec_runner.php
       required_tokens:
       - compileAssertionLeafExpr(
       - assertLeafPredicate(

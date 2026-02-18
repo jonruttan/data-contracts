@@ -36,7 +36,7 @@ links:
   unit_test_refs:
   - tests/test_php_spec_runner_unit.py
   implementation_refs:
-  - scripts/php/spec_runner.php
+  - runners/php/spec_runner.php
   notes: PHP runner supports allowlisting ambient env for cli.run subprocesses.
 - rule_id: CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
   policy_ref: docs/spec/contract/policy_v1.yaml#CLI_RUN_CONFORMANCE_EXPLICIT_ENTRYPOINT
@@ -140,8 +140,8 @@ links:
   implementation_refs:
   - spec_runner/assertions.py
   - spec_runner/spec_lang.py
-  - scripts/php/spec_runner.php
-  - scripts/php/conformance_runner.php
+  - runners/php/spec_runner.php
+  - runners/php/conformance_runner.php
   notes: Evaluate leaves accept mapping-AST expression nodes and reject malformed/non-canonical
     forms.
 - rule_id: SPEC_LANG_PREFERRED_AUTHORING
@@ -171,8 +171,8 @@ links:
   - tests/test_spec_lang_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/php/spec_runner.php
-  - scripts/php/conformance_runner.php
+  - runners/php/spec_runner.php
+  - runners/php/conformance_runner.php
   notes: Evaluator core is deterministic and pure for supported forms.
 - rule_id: SPEC_LANG_PROPER_TCO_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PROPER_TCO_REQUIRED
@@ -185,8 +185,8 @@ links:
   - tests/test_spec_lang_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/php/spec_runner.php
-  - scripts/php/conformance_runner.php
+  - runners/php/spec_runner.php
+  - runners/php/conformance_runner.php
   notes: Tail-position call is implemented via iterative trampoline loops.
 - rule_id: SPEC_LANG_EVAL_BUDGETS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_EVAL_BUDGETS_REQUIRED
@@ -200,8 +200,8 @@ links:
   - tests/test_harness_cli_run_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/php/spec_runner.php
-  - scripts/php/conformance_runner.php
+  - runners/php/spec_runner.php
+  - runners/php/conformance_runner.php
   notes: Steps/nodes/literal/timeout budgets are enforced with deterministic failure
     reasons.
 - rule_id: SPEC_LANG_ERROR_CLASSIFICATION
@@ -218,7 +218,7 @@ links:
   implementation_refs:
   - spec_runner/spec_lang.py
   - spec_runner/conformance.py
-  - scripts/php/conformance_runner.php
+  - runners/php/conformance_runner.php
   notes: Conformance maps evaluate failures to schema/assertion/runtime categories.
 - rule_id: SPEC_LANG_CURRY_ALL_BUILTINS
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_CURRY_ALL_BUILTINS
@@ -231,8 +231,8 @@ links:
   - tests/test_spec_lang_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/php/spec_runner.php
-  - scripts/php/conformance_runner.php
+  - runners/php/spec_runner.php
+  - runners/php/conformance_runner.php
   notes: Builtins support deterministic currying and over-application diagnostics.
 - rule_id: SPEC_LANG_SET_ALGEBRA_PARITY
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_SET_ALGEBRA_PARITY
@@ -246,8 +246,8 @@ links:
   - tests/test_conformance_parity_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/php/spec_runner.php
-  - scripts/php/conformance_runner.php
+  - runners/php/spec_runner.php
+  - runners/php/conformance_runner.php
   notes: Set algebra semantics are parity-tested and deterministic.
 - rule_id: SPEC_LANG_DEEP_EQUALITY_DETERMINISTIC
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_DEEP_EQUALITY_DETERMINISTIC
@@ -260,7 +260,7 @@ links:
   - tests/test_spec_lang_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/php/spec_runner.php
+  - runners/php/spec_runner.php
   notes: Deep structural equality drives set/membership deterministically.
 - rule_id: SPEC_LANG_COLLECTION_FORMS_CONTRACTED
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_COLLECTION_FORMS_CONTRACTED
@@ -273,7 +273,7 @@ links:
   - tests/test_spec_lang_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/php/spec_runner.php
+  - runners/php/spec_runner.php
   notes: Collection transforms remain contracted and conformance-covered.
 - rule_id: SPEC_LANG_LIBRARY_REUSE_MODEL
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_LIBRARY_REUSE_MODEL
@@ -758,7 +758,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/governance_runtime.py
-  - scripts/rust/runner_adapter.sh
+  - runners/rust/runner_adapter.sh
   notes: Rust adapter shell boundary avoids direct transitive python delegation tokens.
 - rule_id: RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
@@ -1167,7 +1167,7 @@ links:
   - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_runner_interface_gate_sync.spec.md
   - scripts/ci_gate.sh
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - spec_runner/script_runtime_commands.py
   notes: Governance enforces runner-interface boundary usage in gate shell scripts.
 - rule_id: RUNTIME_LOCAL_CI_PARITY_PYTHON_LANE_FORBIDDEN
@@ -1252,7 +1252,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   - tests/test_contract_governance_unit.py
   implementation_refs:
-  - scripts/rust/runner_adapter.sh
+  - runners/rust/runner_adapter.sh
   notes: Rust adapter provides host-target fallback and strict-mode override.
 - rule_id: RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED
@@ -1312,7 +1312,7 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md
   notes: CI gate summary routes governance through triage and exposes triage metadata.
 - rule_id: RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
@@ -1394,7 +1394,7 @@ links:
   implementation_refs:
   - scripts/ci_gate.sh
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_ci_gate_ownership_contract_required.spec.md
   notes: CI gate owns critical in ci_gate.sh and keeps ci-gate-summary broad-only
     without critical toggles.
@@ -1465,8 +1465,8 @@ links:
   - tests/test_php_conformance_subset_unit.py
   implementation_refs:
   - spec_runner/governance_runtime.py
-  - scripts/php/conformance_runner.php
-  - scripts/php/spec_runner.php
+  - runners/php/conformance_runner.php
+  - runners/php/spec_runner.php
   - spec_runner/assertions.py
   - spec_runner/harnesses/text_file.py
   - spec_runner/harnesses/cli_run.py
@@ -1501,8 +1501,8 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/spec_lang.py
-  - scripts/php/spec_runner.php
-  - scripts/php/conformance_runner.php
+  - runners/php/spec_runner.php
+  - runners/php/conformance_runner.php
   - docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md
   notes: Spec-lang core forbids side-effect builtins; adapters provide normalized
     effect results.
@@ -1676,7 +1676,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/governance_runtime.py
-  - scripts/rust/runner_adapter.sh
+  - runners/rust/runner_adapter.sh
   - docs/spec/governance/cases/core/runtime_runner_interface_subcommands.spec.md
   notes: Governance verifies Rust adapter case labels cover required runner-interface
     subcommands.
@@ -1689,7 +1689,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/rust/runner_adapter.sh
+  - runners/rust/runner_adapter.sh
   - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_adapter_no_delegate.spec.md
   notes: Governance prevents regression back to shell adapter delegation in the Rust
@@ -1736,7 +1736,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/rust/runner_adapter.sh
+  - runners/rust/runner_adapter.sh
   - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_primary_interface_stability.spec.md
   notes: Rust adapter preserves required runner-interface command surface.
@@ -1766,7 +1766,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/rust/runner_adapter.sh
+  - runners/rust/runner_adapter.sh
   - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md
   notes: Rust-primary governance includes an executable smoke check for adapter command
@@ -1781,8 +1781,8 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/rust/runner_adapter.sh
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/runner_adapter.sh
+  - runners/rust/spec_runner_cli/src/main.rs
   - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_rust_primary_subcommand_parity.spec.md
   notes: Governance enforces parity between shell adapter and Rust CLI subcommand
@@ -1832,7 +1832,7 @@ links:
   implementation_refs:
   - scripts/objective_scorecard_report.py
   - spec_runner/quality_metrics.py
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - spec_runner/script_runtime_commands.py
   - docs/spec/governance/cases/core/objective_scorecard_metric.spec.md
   notes: Objective scorecard is generated as JSON/Markdown artifact.
@@ -1950,8 +1950,8 @@ links:
   unit_test_refs:
   - tests/test_rust_runner_interface_unit.py
   implementation_refs:
-  - scripts/rust/spec_runner_cli/src/main.rs
-  - scripts/rust/runner_adapter.sh
+  - runners/rust/spec_runner_cli/src/main.rs
+  - runners/rust/runner_adapter.sh
   - spec_runner/governance_runtime.py
   notes: Rust runner interface source must avoid direct Python execution token coupling.
 - rule_id: NORMALIZATION_PROFILE_DEFINED
@@ -1980,7 +1980,7 @@ links:
   - docs/spec/impl/python/cases/script_normalization.spec.md
   implementation_refs:
   - scripts/normalize_repo.py
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - spec_runner/script_runtime_commands.py
   - Makefile
   notes: Normalize check is included in smoke/full gate command paths.
@@ -2029,7 +2029,7 @@ links:
   - docs/spec/impl/python/cases/script_normalization.spec.md
   implementation_refs:
   - scripts/normalize_repo.py
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - Makefile
   - docs/spec/governance/cases/core/normalization_spec_style_sync.spec.md
   notes: Explicit normalize-fix path is available for local authoring.
@@ -2289,7 +2289,7 @@ links:
   - tests/test_conformance_parity_unit.py
   implementation_refs:
   - spec_runner/spec_lang_stdlib_profile.py
-  - scripts/php/spec_runner.php
+  - runners/php/spec_runner.php
   - spec_runner/spec_lang.py
   - docs/spec/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md
   notes: Python and PHP symbol surfaces must remain parity-clean against profile symbols.
@@ -2339,7 +2339,7 @@ links:
   - scripts/docs_doctor.sh
   - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_public_runner_entrypoint_single.spec.md
-  notes: Gate scripts must reference scripts/runner_adapter.sh as the single public
+  notes: Gate scripts must reference runners/public/runner_adapter.sh as the single public
     runner entrypoint.
 - rule_id: RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
@@ -2352,7 +2352,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_public_runner_default_rust.spec.md
   notes: Canonical runner adapter defaults to rust implementation mode.
@@ -2366,7 +2366,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - spec_runner/governance_runtime.py
   - docs/spec/governance/cases/core/runtime_runner_adapter_python_impl_forbidden.spec.md
   notes: Runtime runner adapter rejects python impl selection with migration guidance.
@@ -2641,9 +2641,9 @@ links:
   - docs/spec/impl/python/cases/script_docs_generate.spec.md
   implementation_refs:
   - scripts/docs_generate_all.py
-  - scripts/runner_adapter.sh
-  - scripts/python/runner_adapter.sh
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/public/runner_adapter.sh
+  - runners/python/runner_adapter.sh
+  - runners/rust/spec_runner_cli/src/main.rs
   notes: Ensures a single docs generation orchestrator command path.
 - rule_id: DOCS_GENERATED_SURFACES_SYNC_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_SURFACES_SYNC_REQUIRED
@@ -2961,7 +2961,7 @@ links:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
   - spec_runner/harnesses/api_http.py
-  - scripts/php/conformance_runner.php
+  - runners/php/conformance_runner.php
   notes: Practical REST verb suite is validated and rejects unsupported methods.
 - rule_id: API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED
   policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED
@@ -2989,7 +2989,7 @@ links:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
   - spec_runner/harnesses/api_http.py
-  - scripts/php/conformance_runner.php
+  - runners/php/conformance_runner.php
   notes: Scenario requests execute ordered round-trip flow with step interpolation.
 - rule_id: API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED
@@ -3016,7 +3016,7 @@ links:
   - tests/test_php_spec_runner_unit.py
   implementation_refs:
   - spec_runner/conformance_parity.py
-  - scripts/php/conformance_runner.php
+  - runners/php/conformance_runner.php
   notes: Shared api.http fixture outcomes stay parity-consistent across python/php
     lanes.
 - rule_id: API_HTTP_TUTORIAL_COVERAGE_REQUIRED
@@ -3445,7 +3445,7 @@ links:
   implementation_refs:
   - spec_runner/governance_runtime.py
   - spec_runner/components/profiler.py
-  - scripts/rust/spec_runner_cli/src/profiler.rs
+  - runners/rust/spec_runner_cli/src/profiler.rs
   notes: Runtime profiling traces include required run/case/check/subprocess span
     taxonomy.
 - rule_id: RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED
@@ -3459,7 +3459,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - spec_runner/governance_runtime.py
   notes: Gate orchestration defaults to deterministic fail-fast and emits explicit
     abort markers.
@@ -3473,7 +3473,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - spec_runner/governance_runtime.py
   notes: Gate summary payload includes deterministic skipped-tail metadata for fail-fast
     runs.
@@ -3488,7 +3488,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - spec_runner/governance_runtime.py
   notes: Failing gate runs with profile-on-fail enabled emit diagnostic trace artifacts.
 - rule_id: RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED
@@ -3502,7 +3502,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - spec_runner/governance_runtime.py
   notes: Policy evaluation considers full rows including skipped statuses to preserve
     fail-fast correctness.
@@ -3600,8 +3600,8 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/rust/spec_runner_cli/src/main.rs
-  - scripts/rust/spec_runner_cli/src/spec_lang.rs
+  - runners/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/spec_lang.rs
   notes: contract.job helper execution is initiated from contract assertions via ops.job.dispatch.
 - rule_id: HARNESS_JOBS_METADATA_MAP_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_JOBS_METADATA_MAP_REQUIRED
@@ -3613,7 +3613,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   notes: contract.job metadata uses harness.jobs.<name> mapping entries.
 - rule_id: OPS_JOB_CAPABILITY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#OPS_JOB_CAPABILITY_REQUIRED
@@ -3625,7 +3625,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/rust/spec_runner_cli/src/spec_lang.rs
+  - runners/rust/spec_runner_cli/src/spec_lang.rs
   notes: ops.job.dispatch requires explicit ops.job capability.
 - rule_id: OPS_JOB_NESTED_DISPATCH_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#OPS_JOB_NESTED_DISPATCH_FORBIDDEN
@@ -3637,7 +3637,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/rust/spec_runner_cli/src/spec_lang.rs
+  - runners/rust/spec_runner_cli/src/spec_lang.rs
   notes: nested dispatch produces deterministic runtime.dispatch.nested_forbidden
     token.
 - rule_id: WHEN_HOOKS_SCHEMA_VALID
@@ -3702,7 +3702,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - spec_runner/components/assertion_engine.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   notes: hook evaluation failures are runtime-fatal and abort execution.
 - rule_id: CONTRACT_JOB_FAIL_COMPLETE_HOOK_PATTERN_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_JOB_FAIL_COMPLETE_HOOK_PATTERN_REQUIRED

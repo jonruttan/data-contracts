@@ -14,8 +14,8 @@ harness:
     python_scripts:
     - spec_runner/python_conformance_runner.py
     php_scripts:
-    - scripts/php/conformance_runner.php
-    - scripts/php/spec_runner.php
+    - runners/php/conformance_runner.php
+    - runners/php/spec_runner.php
     python_docs:
     - docs/development.md
     - docs/spec/impl/python.md

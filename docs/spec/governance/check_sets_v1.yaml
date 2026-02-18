@@ -9,18 +9,18 @@ profiles:
         key: checks
       - id: runtime.critical_gate_rust_native_only_required
         kind: file_tokens
-        path: /scripts/rust/spec_runner_cli/src/main.rs
+        path: /runners/rust/spec_runner_cli/src/main.rs
         must_contain:
           - '"critical-gate" => run_critical_gate_native'
       - id: runtime.critical_gate_python_exec_forbidden
         kind: file_tokens
-        path: /scripts/rust/spec_runner_cli/src/governance.rs
+        path: /runners/rust/spec_runner_cli/src/governance.rs
         must_not_contain:
           - run_cmd(
           - run_governance_specs.py
       - id: runtime.critical_gate_artifacts_required
         kind: file_tokens
-        path: /scripts/rust/spec_runner_cli/src/governance.rs
+        path: /runners/rust/spec_runner_cli/src/governance.rs
         must_contain:
           - '{default_out_prefix}-summary.json'
           - '{default_out_prefix}-trace.json'
@@ -40,7 +40,7 @@ profiles:
           - governance_critical
       - id: runtime.critical_ci_gate_ownership_contract_rust
         kind: file_tokens
-        path: /scripts/rust/spec_runner_cli/src/main.rs
+        path: /runners/rust/spec_runner_cli/src/main.rs
         must_contain:
           - governance_broad
         must_not_contain:
@@ -74,7 +74,7 @@ profiles:
           - governance_critical
       - id: runtime.full_ci_gate_step_tokens_rust
         kind: file_tokens
-        path: /scripts/rust/spec_runner_cli/src/main.rs
+        path: /runners/rust/spec_runner_cli/src/main.rs
         must_contain:
           - governance_broad
         must_not_contain:
@@ -88,7 +88,7 @@ profiles:
           - '"governance"),'
       - id: runtime.full_ci_gate_broad_is_native_rust
         kind: file_tokens
-        path: /scripts/rust/spec_runner_cli/src/main.rs
+        path: /runners/rust/spec_runner_cli/src/main.rs
         must_contain:
           - governance-broad-native
           - '"governance-broad-native" => run_governance_broad_native'

@@ -21,8 +21,8 @@ def _classify(*, eval_count: int, total_count: int, has_library_paths: bool) -> 
 
 def report(cases_dir: Path) -> dict[str, Any]:
     rows: list[dict[str, Any]] = []
-    classes = Counter()
-    op_totals = Counter()
+    classes: Counter[str] = Counter()
+    op_totals: Counter[str] = Counter()
 
     case_pairs: list[Any] = []
     if cases_dir.is_file():

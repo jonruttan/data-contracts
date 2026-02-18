@@ -203,7 +203,7 @@ select_prefixes_from_changed_paths() {
         if ! add_unique "normalization." "${selected[@]-}"; then selected+=("normalization."); fi
         if ! add_unique "schema." "${selected[@]-}"; then selected+=("schema."); fi
         ;;
-      spec_runner/*|scripts/runner_adapter.sh|scripts/python/runner_adapter.sh|scripts/rust/runner_adapter.sh|scripts/governance_triage.sh|scripts/ci_gate.sh)
+      spec_runner/*|runners/public/runner_adapter.sh|runners/python/runner_adapter.sh|runners/rust/runner_adapter.sh|scripts/governance_triage.sh|scripts/ci_gate.sh)
         if ! add_unique "runtime." "${selected[@]-}"; then selected+=("runtime."); fi
         ;;
       docs/spec/libraries/*)
@@ -319,7 +319,7 @@ run_governance() {
   shift
   local timeout_seconds="${1:-0}"
   shift || true
-  local -a cmd=(./scripts/runner_adapter.sh --impl "${IMPL}" governance)
+  local -a cmd=(./runners/public/runner_adapter.sh --impl "${IMPL}" governance)
   if [[ "${PROFILE_LEVEL}" != "off" && -n "${PROFILE_LEVEL}" ]]; then
     cmd+=(--profile-level "${PROFILE_LEVEL}")
   fi
@@ -581,10 +581,10 @@ else:
     summary.append("- none")
 summary += ["", "## Suggested Targeted Re-run", ""]
 if targeted_parts:
-    cmd = "./scripts/runner_adapter.sh --impl " + impl + " governance " + " ".join(targeted_parts)
+    cmd = "./runners/public/runner_adapter.sh --impl " + impl + " governance " + " ".join(targeted_parts)
     summary.append(f"- `{cmd}`")
 else:
-    summary.append("- `./scripts/runner_adapter.sh --impl " + impl + " governance`")
+    summary.append("- `./runners/public/runner_adapter.sh --impl " + impl + " governance`")
 md_path.parent.mkdir(parents=True, exist_ok=True)
 md_path.write_text("\n".join(summary) + "\n", encoding="utf-8")
 PY

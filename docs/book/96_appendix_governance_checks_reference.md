@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - governance_workflow_quickpath
 commands:
-- run: ./scripts/runner_adapter.sh docs-generate-check
+- run: ./runners/public/runner_adapter.sh docs-generate-check
   purpose: Verify generated governance check catalog remains synchronized.
 examples:
 - id: EX-APP-GOVCHECK-001

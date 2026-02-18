@@ -51,7 +51,7 @@ def _default_semantics(command: str) -> dict[str, Any]:
     return {
         "group": group,
         "summary": f"Runs `{command}` through the canonical runner entrypoint.",
-        "details": "Deterministic command dispatch through scripts/runner_adapter.sh.",
+        "details": "Deterministic command dispatch through runners/public/runner_adapter.sh.",
         "defaults": [
             {"name": "impl", "value": "rust", "description": "Default runner implementation lane."},
         ],
@@ -62,7 +62,7 @@ def _default_semantics(command: str) -> dict[str, Any]:
         "examples": [
             {
                 "title": "Direct invocation",
-                "command": f"./scripts/runner_adapter.sh {command}",
+                "command": f"./runners/public/runner_adapter.sh {command}",
                 "description": "Execute command with canonical adapter routing.",
             }
         ],
@@ -70,9 +70,9 @@ def _default_semantics(command: str) -> dict[str, Any]:
 
 
 def _build_payload(repo_root: Path) -> dict[str, Any]:
-    python_text = (repo_root / "scripts/python/runner_adapter.sh").read_text(encoding="utf-8")
-    rust_text = (repo_root / "scripts/rust/spec_runner_cli/src/main.rs").read_text(encoding="utf-8")
-    public_text = (repo_root / "scripts/runner_adapter.sh").read_text(encoding="utf-8")
+    python_text = (repo_root / "runners/python/runner_adapter.sh").read_text(encoding="utf-8")
+    rust_text = (repo_root / "runners/rust/spec_runner_cli/src/main.rs").read_text(encoding="utf-8")
+    public_text = (repo_root / "runners/public/runner_adapter.sh").read_text(encoding="utf-8")
 
     python_cmds = _parse_shell_case_labels(python_text)
     rust_cmds = _parse_rust_subcommands(rust_text)

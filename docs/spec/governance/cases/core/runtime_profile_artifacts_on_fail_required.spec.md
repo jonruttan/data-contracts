@@ -12,7 +12,7 @@ harness:
   profile_on_fail:
     files:
     - /spec_runner/script_runtime_commands.py
-    - /scripts/rust/spec_runner_cli/src/main.rs
+    - /runners/rust/spec_runner_cli/src/main.rs
     required_tokens:
     - profile-on-fail
     - .artifacts/run-trace.json

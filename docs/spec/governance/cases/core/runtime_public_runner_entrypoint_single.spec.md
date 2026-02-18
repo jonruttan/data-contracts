@@ -10,14 +10,44 @@ type: contract.check
 harness:
   root: .
   public_runner_entrypoint:
-    required_entrypoint: scripts/runner_adapter.sh
+    required_entrypoint: runners/public/runner_adapter.sh
     gate_files:
     - scripts/ci_gate.sh
     - scripts/core_gate.sh
     - scripts/docs_doctor.sh
     forbidden_tokens:
-    - scripts/rust/runner_adapter.sh
-    - scripts/python/runner_adapter.sh
+    - runners/rust/runner_adapter.sh
+    - runners/python/runner_adapter.sh
+    legacy_wrappers:
+    - path: scripts/runner_adapter.sh
+      required_tokens:
+      - runners/public/runner_adapter.sh
+      forbidden_tokens:
+      - case "${impl}" in
+      - cargo build
+    - path: scripts/rust/runner_adapter.sh
+      required_tokens:
+      - runners/rust/runner_adapter.sh
+      forbidden_tokens:
+      - cargo build
+      - spec_runner_cli
+    - path: scripts/python/runner_adapter.sh
+      required_tokens:
+      - runners/python/runner_adapter.sh
+      forbidden_tokens:
+      - python runner adapter is retired
+    - path: scripts/php/conformance_runner.php
+      required_tokens:
+      - /runners/php/conformance_runner.php
+      forbidden_tokens:
+      - function parseArgs
+      - function listCaseFiles
+    - path: scripts/php/spec_runner.php
+      required_tokens:
+      - /runners/php/spec_runner.php
+      forbidden_tokens:
+      - function parseArgs
+      - function listCaseFiles
   chain:
     steps:
     - id: lib_policy_core_spec

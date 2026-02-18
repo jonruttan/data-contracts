@@ -52,6 +52,7 @@ def _scope_paths(profile: dict[str, Any], scope: str) -> list[str]:
     paths = profile.get("paths")
     if not isinstance(paths, dict):
         raise ValueError("profile.paths must be a mapping")
+    keys: tuple[str, ...]
     if scope == "all":
         keys = ("specs", "contracts", "tests")
     else:

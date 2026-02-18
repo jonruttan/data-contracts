@@ -1696,40 +1696,40 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         return meta.get(key, args[2])
     if op == "ops.fs.walk":
         _require_arity(op, args, 2)
-        root = args[0]
+        root_path = args[0]
         options = _require_dict_arg(op, args[1])
-        if not isinstance(root, str) or not root.strip():
+        if not isinstance(root_path, str) or not root_path.strip():
             raise ValueError("spec_lang ops.fs.walk expects non-empty root path")
         pattern = str(options.get("pattern", "*"))
         include_dirs = bool(options.get("include_dirs", False))
         relative = bool(options.get("relative", True))
-        base = Path(root)
-        if not base.exists():
+        walk_root = Path(root_path)
+        if not walk_root.exists():
             return []
-        out: list[dict[str, Any]] = []
-        for dirpath, dirnames, filenames in os.walk(base):
+        walk_rows: list[dict[str, Any]] = []
+        for dirpath, dirnames, filenames in os.walk(walk_root):
             current = Path(dirpath)
             if include_dirs:
                 for name in sorted(dirnames):
-                    candidate = current / name
-                    rel = str(candidate.relative_to(base)) if relative else str(candidate)
+                    walk_candidate = current / name
+                    rel = str(walk_candidate.relative_to(walk_root)) if relative else str(walk_candidate)
                     if fnmatch(rel, pattern):
-                        out.append({"path": rel, "type": "dir", "exists": True})
+                        walk_rows.append({"path": rel, "type": "dir", "exists": True})
             for name in sorted(filenames):
-                candidate = current / name
-                rel = str(candidate.relative_to(base)) if relative else str(candidate)
+                walk_candidate = current / name
+                rel = str(walk_candidate.relative_to(walk_root)) if relative else str(walk_candidate)
                 if not fnmatch(rel, pattern):
                     continue
-                size = candidate.stat().st_size if candidate.exists() else None
-                out.append(
+                size = walk_candidate.stat().st_size if walk_candidate.exists() else None
+                walk_rows.append(
                     {
                         "path": rel,
                         "type": "file",
-                        "exists": candidate.exists(),
+                        "exists": walk_candidate.exists(),
                         "size_bytes": int(size) if isinstance(size, int) else None,
                     }
                 )
-        return out
+        return walk_rows
     if op == "ops.fs.file.set":
         _require_arity(op, args, 2)
         path, content = args

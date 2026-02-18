@@ -86,9 +86,9 @@ assert:
 
 
 def test_runner_independence_report_basic_shape(tmp_path: Path) -> None:
-    _write(tmp_path / "scripts/gate.sh", "SPEC_RUNNER_BIN=./scripts/runner_adapter.sh\n")
-    _write(tmp_path / ".github/workflows/ci.yml", "core-gate-rust-adapter:\n  env:\n    SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh\n  run: ./scripts/core_gate.sh\n")
-    _write(tmp_path / "scripts/rust/runner_adapter.sh", "#!/usr/bin/env bash\n")
+    _write(tmp_path / "scripts/gate.sh", "SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh\n")
+    _write(tmp_path / ".github/workflows/ci.yml", "core-gate-rust-adapter:\n  env:\n    SPEC_RUNNER_BIN: ./runners/rust/runner_adapter.sh\n  run: ./scripts/core_gate.sh\n")
+    _write(tmp_path / "runners/rust/runner_adapter.sh", "#!/usr/bin/env bash\n")
     payload = runner_independence_report_jsonable(tmp_path)
     assert payload["errors"] == []
     assert "overall_runner_independence_ratio" in payload["summary"]
@@ -96,11 +96,11 @@ def test_runner_independence_report_basic_shape(tmp_path: Path) -> None:
 
 
 def test_python_dependency_report_basic_shape(tmp_path: Path) -> None:
-    _write(tmp_path / "scripts/ci_gate.sh", "SPEC_RUNNER_BIN=\"${ROOT_DIR}/scripts/rust/runner_adapter.sh\"\n")
-    _write(tmp_path / "scripts/core_gate.sh", "SPEC_RUNNER_BIN=\"${ROOT_DIR}/scripts/rust/runner_adapter.sh\"\n")
-    _write(tmp_path / "scripts/docs_doctor.sh", "SPEC_RUNNER_BIN=\"${ROOT_DIR}/scripts/rust/runner_adapter.sh\"\n")
-    _write(tmp_path / "scripts/rust/runner_adapter.sh", "#!/usr/bin/env bash\n")
-    _write(tmp_path / "scripts/rust/spec_runner_cli/src/main.rs", "fn main() {}\n")
+    _write(tmp_path / "scripts/ci_gate.sh", "SPEC_RUNNER_BIN=\"${ROOT_DIR}/runners/rust/runner_adapter.sh\"\n")
+    _write(tmp_path / "scripts/core_gate.sh", "SPEC_RUNNER_BIN=\"${ROOT_DIR}/runners/rust/runner_adapter.sh\"\n")
+    _write(tmp_path / "scripts/docs_doctor.sh", "SPEC_RUNNER_BIN=\"${ROOT_DIR}/runners/rust/runner_adapter.sh\"\n")
+    _write(tmp_path / "runners/rust/runner_adapter.sh", "#!/usr/bin/env bash\n")
+    _write(tmp_path / "runners/rust/spec_runner_cli/src/main.rs", "fn main() {}\n")
     payload = python_dependency_report_jsonable(tmp_path)
     assert payload["errors"] == []
     assert "default_lane_python_free_ratio" in payload["summary"]

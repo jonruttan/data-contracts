@@ -12,8 +12,8 @@ harness:
   root: .
   runner_interface:
     required_paths:
-    - /scripts/runner_adapter.sh
-    - /scripts/rust/runner_adapter.sh
+    - /runners/public/runner_adapter.sh
+    - /runners/rust/runner_adapter.sh
     files:
     - spec_runner/script_runtime_commands.py
     required_tokens:

@@ -13,14 +13,14 @@ path while preserving schema/contract behavior guarantees.
 
 1. CI Rust-primary gate path
 - CI MUST exercise core gate commands through the public runner entrypoint
-  (`SPEC_RUNNER_BIN=./scripts/runner_adapter.sh`) with explicit rust mode
+  (`SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh`) with explicit rust mode
   (`SPEC_RUNNER_IMPL=rust`).
 
 2. No Python-hardcoded gate dependency
 - Gate scripts MUST use runner-interface boundaries instead of direct Python
   script entrypoints, including `ci-gate-summary` orchestration.
 - Rust adapter/CLI paths MUST avoid transitive delegation through
-  `scripts/python/runner_adapter.sh` and Python entrypoints.
+  `runners/python/runner_adapter.sh` and Python entrypoints.
 
 3. Runner-interface stability under Rust primary
 - Required runner-interface subcommands and exit-code contracts MUST remain
@@ -43,7 +43,7 @@ path while preserving schema/contract behavior guarantees.
 - Contributor docs SHOULD describe Rust-primary operation as the default
   interface path while preserving compatibility notes for Python/PHP lanes.
 - Runtime adapter Python impl selection is hard-forbidden on
-  `scripts/runner_adapter.sh`; Python parity telemetry, when needed, runs
+  `runners/public/runner_adapter.sh`; Python parity telemetry, when needed, runs
   direct Python scripts in non-blocking CI lanes.
 - Adding/removing required runtime support targets is governed by:
   - `docs/spec/contract/08_v1_scope.md`

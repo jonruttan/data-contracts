@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-cd "${ROOT_DIR}"
-
-subcommand="${1:-<subcommand>}"
-echo "ERROR: python runner adapter is retired from runtime gate execution (SRRUN-IMPL-002)." >&2
-echo "Use rust impl instead: ./scripts/runner_adapter.sh --impl rust ${subcommand}" >&2
-exit 2
+exec "${ROOT_DIR}/runners/python/runner_adapter.sh" "$@"

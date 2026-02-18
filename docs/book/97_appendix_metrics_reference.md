@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - quickstart_minimal_case
 commands:
-- run: ./scripts/runner_adapter.sh docs-generate-check
+- run: ./runners/public/runner_adapter.sh docs-generate-check
   purpose: Verify generated metrics field catalog remains synchronized.
 examples:
 - id: EX-APP-METRICS-001

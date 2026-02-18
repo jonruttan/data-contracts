@@ -5,17 +5,18 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-ENTRY-003
 title: runner adapter hard-fails python impl selection
-purpose: Ensures `scripts/runner_adapter.sh` rejects `--impl python` with migration guidance.
+purpose: Ensures `runners/public/runner_adapter.sh` rejects `--impl python` with migration
+  guidance.
 type: contract.check
 harness:
   root: .
   runner_adapter_python_impl:
-    path: /scripts/runner_adapter.sh
+    path: /runners/public/runner_adapter.sh
     required_tokens:
     - python runner impl is no longer supported on the runtime path
     - Use rust impl instead
     forbidden_tokens:
-    - exec "${ROOT_DIR}/scripts/python/runner_adapter.sh" "$@"
+    - exec "${ROOT_DIR}/runners/python/runner_adapter.sh" "$@"
   chain:
     steps:
     - id: lib_policy_core_spec

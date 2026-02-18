@@ -790,14 +790,14 @@ rules:
   risk_if_violated: Rust path can mask python dependency through transitive delegation.
   references:
   - docs/spec/governance/cases/core/runtime_rust_adapter_transitive_no_python.spec.md
-  - scripts/rust/runner_adapter.sh
+  - runners/rust/runner_adapter.sh
 - id: RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
   introduced_in: v1
   scope: governance
   applies_to: runtime.default_gate.adapter
   norm: MUST
   requirement: default_gate_scripts_set_public_runner_adapter_as_default_runner_bin
-  description: 'Default gate scripts must set SPEC_RUNNER_BIN to scripts/runner_adapter.sh
+  description: 'Default gate scripts must set SPEC_RUNNER_BIN to runners/public/runner_adapter.sh
     when not explicitly overridden.
 
     '
@@ -1179,7 +1179,7 @@ rules:
   risk_if_violated: Removing Python requires rewriting gate orchestration logic.
   references:
   - docs/spec/contract/12_runner_interface.md
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - scripts/ci_gate.sh
   - scripts/core_gate.sh
   - scripts/docs_doctor.sh
@@ -1205,7 +1205,7 @@ rules:
   norm: MUST
   requirement: rust_adapter_invokes_rust_cli_without_delegating_to_shell_python_adapter
   description: 'The Rust adapter script must invoke the Rust runner-interface CLI
-    directly and must not delegate to scripts/runner_adapter.sh.
+    directly and must not delegate to runners/public/runner_adapter.sh.
 
     '
   rationale: Ensures the Rust lane validates real adapter behavior instead of shell
@@ -1220,7 +1220,7 @@ rules:
   applies_to: runtime.rust_primary.ci_lane
   norm: MUST
   requirement: rust_primary_ci_lane_executes_core_gate_via_runner_interface
-  description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN=./scripts/runner_adapter.sh
+  description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh
     and SPEC_RUNNER_IMPL=rust.
 
     '
@@ -1250,7 +1250,7 @@ rules:
   applies_to: runtime.runner_interface.public_entrypoint
   norm: MUST
   requirement: gate_scripts_use_single_public_runner_entrypoint
-  description: 'Gate shell scripts must reference scripts/runner_adapter.sh as the
+  description: 'Gate shell scripts must reference runners/public/runner_adapter.sh as the
     single public runner entrypoint.
 
     '
@@ -1265,7 +1265,7 @@ rules:
   applies_to: runtime.runner_interface.default_mode
   norm: MUST
   requirement: public_runner_entrypoint_defaults_to_rust
-  description: 'scripts/runner_adapter.sh must default to rust mode unless impl is
+  description: 'runners/public/runner_adapter.sh must default to rust mode unless impl is
     explicitly selected.
 
     '
@@ -1389,7 +1389,7 @@ rules:
     target setup.
   risk_if_violated: Rust lane becomes unusable locally and parity drift increases.
   references:
-  - scripts/rust/runner_adapter.sh
+  - runners/rust/runner_adapter.sh
 - id: RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED
   introduced_in: v1
   scope: governance
@@ -1455,7 +1455,7 @@ rules:
   risk_if_violated: CI failures lose triage context and are harder to isolate quickly.
   references:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md
 - id: RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
   introduced_in: v1
@@ -1552,7 +1552,7 @@ rules:
   references:
   - scripts/ci_gate.sh
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_ci_gate_ownership_contract_required.spec.md
 - id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
   introduced_in: v1
@@ -1606,10 +1606,10 @@ rules:
   applies_to: docs.runner_interface.public_usage
   norm: MUST
   requirement: public_docs_do_not_instruct_direct_internal_rust_adapter_invocation
-  description: 'Public docs must not instruct direct invocation of scripts/rust/runner_adapter.sh.
+  description: 'Public docs must not instruct direct invocation of runners/rust/runner_adapter.sh.
 
     '
-  rationale: Keeps scripts/rust/runner_adapter.sh an internal implementation detail.
+  rationale: Keeps runners/rust/runner_adapter.sh an internal implementation detail.
   risk_if_violated: Users bypass canonical interface and couple workflows to internals.
   references:
   - docs/spec/contract/12_runner_interface.md
@@ -1667,7 +1667,7 @@ rules:
   norm: MUST
   requirement: rust_adapter_shell_and_rust_cli_subcommand_sets_must_match
   description: 'Rust-primary governance must enforce parity between subcommands exposed
-    by scripts/rust/runner_adapter.sh and scripts/rust/spec_runner_cli/src/main.rs.
+    by runners/rust/runner_adapter.sh and runners/rust/spec_runner_cli/src/main.rs.
 
     '
   rationale: Prevents runner-interface drift between adapter surface and Rust CLI
@@ -2116,7 +2116,7 @@ rules:
     checks.
   references:
   - scripts/normalize_repo.py
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - spec_runner/script_runtime_commands.py
 - id: NORMALIZATION_MAPPING_AST_ONLY
   introduced_in: v1
@@ -2165,7 +2165,7 @@ rules:
   risk_if_violated: Teams rely on manual ad-hoc rewrites and drift accumulates.
   references:
   - Makefile
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - scripts/normalize_repo.py
   - docs/spec/governance/cases/core/normalization_spec_style_sync.spec.md
 - id: NORMALIZATION_VIRTUAL_ROOT_PATHS_ONLY
@@ -2756,7 +2756,7 @@ rules:
   risk_if_violated: Divergent command paths produce inconsistent artifacts.
   references:
   - scripts/docs_generate_all.py
-  - scripts/runner_adapter.sh
+  - runners/public/runner_adapter.sh
   - docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md
 - id: DOCS_GENERATED_SURFACES_SYNC_REQUIRED
   introduced_in: v1
@@ -3186,7 +3186,7 @@ rules:
   rationale: Keeps extension behavior portable across declared implementations.
   risk_if_violated: Multi-implementation conformance guarantees drift.
   references:
-  - scripts/php/conformance_runner.php
+  - runners/php/conformance_runner.php
   - spec_runner/harnesses/api_http.py
   - tests/test_conformance_parity_unit.py
 - id: API_HTTP_TUTORIAL_COVERAGE_REQUIRED
@@ -3693,7 +3693,7 @@ rules:
     loops.
   references:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_gate_fail_fast_behavior_required.spec.md
 - id: RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
   introduced_in: v1
@@ -3708,7 +3708,7 @@ rules:
   risk_if_violated: Diagnostics lose cause-chain detail and become brittle.
   references:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - docs/spec/contract/24_runtime_profiling_contract.md
   - docs/spec/governance/cases/core/runtime_gate_skipped_steps_contract_required.spec.md
 - id: RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED
@@ -3723,7 +3723,7 @@ rules:
   risk_if_violated: Hang and failure triage remains slow and manual.
   references:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - docs/spec/contract/24_runtime_profiling_contract.md
   - docs/spec/governance/cases/core/runtime_profile_artifacts_on_fail_required.spec.md
 - id: RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED
@@ -3738,7 +3738,7 @@ rules:
   risk_if_violated: Fail-fast runs could incorrectly report pass semantics.
   references:
   - spec_runner/script_runtime_commands.py
-  - scripts/rust/spec_runner_cli/src/main.rs
+  - runners/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
 - id: ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
   introduced_in: v1
@@ -3874,7 +3874,7 @@ rules:
   risk_if_violated: Job contracts can deadlock, recurse, or become non-deterministic.
   references:
   - docs/spec/contract/12_runner_interface.md
-  - scripts/rust/spec_runner_cli/src/spec_lang.rs
+  - runners/rust/spec_runner_cli/src/spec_lang.rs
 - id: WHEN_HOOKS_SCHEMA_VALID
   introduced_in: v1
   scope: runtime

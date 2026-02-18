@@ -138,7 +138,7 @@
     {
       "from": "/docs/book/04_spec_lang_guide.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh normalize-check"
+      "to": "./runners/public/runner_adapter.sh normalize-check"
     },
     {
       "from": "/docs/book/04_spec_lang_guide.md",
@@ -163,7 +163,7 @@
     {
       "from": "/docs/book/05_howto.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh governance"
+      "to": "./runners/public/runner_adapter.sh governance"
     },
     {
       "from": "/docs/book/05_howto.md",
@@ -188,7 +188,7 @@
     {
       "from": "/docs/book/06_troubleshooting.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh ci-cleanroom"
+      "to": "./runners/public/runner_adapter.sh ci-cleanroom"
     },
     {
       "from": "/docs/book/06_troubleshooting.md",
@@ -263,7 +263,7 @@
     {
       "from": "/docs/book/91_appendix_runner_api_reference.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/91_appendix_runner_api_reference.md",
@@ -283,7 +283,7 @@
     {
       "from": "/docs/book/92_appendix_harness_type_reference.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/92_appendix_harness_type_reference.md",
@@ -303,7 +303,7 @@
     {
       "from": "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
@@ -323,7 +323,7 @@
     {
       "from": "/docs/book/93a_std_core.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93a_std_core.md",
@@ -343,7 +343,7 @@
     {
       "from": "/docs/book/93b_std_logic.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93b_std_logic.md",
@@ -363,7 +363,7 @@
     {
       "from": "/docs/book/93c_std_math.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93c_std_math.md",
@@ -383,7 +383,7 @@
     {
       "from": "/docs/book/93d_std_string.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93d_std_string.md",
@@ -403,7 +403,7 @@
     {
       "from": "/docs/book/93e_std_collection.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93e_std_collection.md",
@@ -423,7 +423,7 @@
     {
       "from": "/docs/book/93f_std_object.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93f_std_object.md",
@@ -443,7 +443,7 @@
     {
       "from": "/docs/book/93g_std_type.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93g_std_type.md",
@@ -463,7 +463,7 @@
     {
       "from": "/docs/book/93h_std_set.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93h_std_set.md",
@@ -483,7 +483,7 @@
     {
       "from": "/docs/book/93i_std_json_schema_fn_null.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/93i_std_json_schema_fn_null.md",
@@ -503,7 +503,7 @@
     {
       "from": "/docs/book/94_appendix_contract_policy_reference.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/94_appendix_contract_policy_reference.md",
@@ -523,7 +523,7 @@
     {
       "from": "/docs/book/95_appendix_traceability_reference.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/95_appendix_traceability_reference.md",
@@ -543,7 +543,7 @@
     {
       "from": "/docs/book/96_appendix_governance_checks_reference.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/96_appendix_governance_checks_reference.md",
@@ -563,7 +563,7 @@
     {
       "from": "/docs/book/97_appendix_metrics_reference.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/97_appendix_metrics_reference.md",
@@ -583,7 +583,7 @@
     {
       "from": "/docs/book/98_appendix_spec_case_shape_reference.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/98_appendix_spec_case_shape_reference.md",
@@ -603,7 +603,7 @@
     {
       "from": "/docs/book/99_appendix_reference_index.md",
       "kind": "command",
-      "to": "./scripts/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh docs-generate-check"
     },
     {
       "from": "/docs/book/99_appendix_reference_index.md",

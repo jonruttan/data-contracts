@@ -19,55 +19,55 @@ verify-docs: ## Alias for docs-doctor
 	@$(MAKE) docs-doctor
 
 docs-build: ## Generate reference docs artifacts (index, coverage, graph)
-	@./scripts/runner_adapter.sh docs-build
+	@./runners/public/runner_adapter.sh docs-build
 
 docs-generate: ## Generate all registry-backed docs surfaces
-	@./scripts/runner_adapter.sh docs-generate
+	@./runners/public/runner_adapter.sh docs-generate
 
 docs-generate-check: ## Verify all registry-backed docs surfaces are up-to-date
-	@./scripts/runner_adapter.sh docs-generate-check
+	@./runners/public/runner_adapter.sh docs-generate-check
 
 docs-lint: ## Run docs metadata/schema and quality lint checks
-	@./scripts/runner_adapter.sh docs-lint
+	@./runners/public/runner_adapter.sh docs-lint
 
 docs-check: ## Verify generated docs artifacts are up-to-date and lint passes
-	@./scripts/runner_adapter.sh docs-build-check
-	@./scripts/runner_adapter.sh docs-lint
+	@./runners/public/runner_adapter.sh docs-build-check
+	@./runners/public/runner_adapter.sh docs-lint
 
 normalize-check: ## Verify normalization across specs/contracts/tests
-	@./scripts/runner_adapter.sh normalize-check
+	@./runners/public/runner_adapter.sh normalize-check
 
 normalize-fix: ## Apply normalization rewrites across specs/contracts/tests
-	@./scripts/runner_adapter.sh normalize-fix
+	@./runners/public/runner_adapter.sh normalize-fix
 
 schema-registry-check: ## Verify schema registry artifacts and docs are up-to-date
-	@./scripts/runner_adapter.sh schema-registry-check
-	@./scripts/runner_adapter.sh schema-docs-check
+	@./runners/public/runner_adapter.sh schema-registry-check
+	@./runners/public/runner_adapter.sh schema-docs-check
 
 schema-registry-build: ## Build schema registry artifacts and generated schema docs
-	@./scripts/runner_adapter.sh schema-registry-build
-	@./scripts/runner_adapter.sh schema-docs-build
+	@./runners/public/runner_adapter.sh schema-registry-build
+	@./runners/public/runner_adapter.sh schema-docs-build
 
 schema-docs-check: ## Verify generated schema docs snapshot is up-to-date
-	@./scripts/runner_adapter.sh schema-docs-check
+	@./runners/public/runner_adapter.sh schema-docs-check
 
 schema-docs-build: ## Regenerate schema docs snapshot from registry
-	@./scripts/runner_adapter.sh schema-docs-build
+	@./runners/public/runner_adapter.sh schema-docs-build
 
 ci-smoke: ## Fast CI preflight (governance + docs + style)
-	@./scripts/runner_adapter.sh governance
-	@./scripts/runner_adapter.sh docs-generate-check
-	@./scripts/runner_adapter.sh docs-lint
-	@./scripts/runner_adapter.sh normalize-check
-	@./scripts/runner_adapter.sh schema-registry-check
-	@./scripts/runner_adapter.sh schema-docs-check
-	@./scripts/runner_adapter.sh style-check
+	@./runners/public/runner_adapter.sh governance
+	@./runners/public/runner_adapter.sh docs-generate-check
+	@./runners/public/runner_adapter.sh docs-lint
+	@./runners/public/runner_adapter.sh normalize-check
+	@./runners/public/runner_adapter.sh schema-registry-check
+	@./runners/public/runner_adapter.sh schema-docs-check
+	@./runners/public/runner_adapter.sh style-check
 
 ci-cleanroom: ## Run full CI gate in a fresh git worktree (clean-checkout parity)
-	@./scripts/runner_adapter.sh ci-cleanroom
+	@./runners/public/runner_adapter.sh ci-cleanroom
 
 perf-smoke: ## Run governance/docs timing checks against perf baselines (warn mode)
-	@./scripts/runner_adapter.sh perf-smoke --mode warn
+	@./runners/public/runner_adapter.sh perf-smoke --mode warn
 
 prepush: ## Required local pre-push gate (default rust critical-gate path)
 	@SPEC_PREPUSH_MODE=critical ./scripts/local_ci_parity.sh

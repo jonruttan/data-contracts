@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from typing import Any
 
 import yaml
 from spec_runner.spec_portability import spec_portability_report_jsonable
@@ -101,14 +102,14 @@ def main(argv: list[str] | None = None) -> int:
 
     repo_root = Path(__file__).resolve().parents[1]
 
-    config: dict | None = None
+    config: dict[str, Any] | None = None
     if str(ns.config).strip():
         config = _load_config(Path(str(ns.config)))
     if ns.top_n > 0:
         if config is None:
             config = {}
-        report = config.get("report") if isinstance(config.get("report"), dict) else {}
-        report = dict(report)
+        report_raw = config.get("report")
+        report = dict(report_raw) if isinstance(report_raw, dict) else {}
         report["top_n"] = int(ns.top_n)
         config["report"] = report
 

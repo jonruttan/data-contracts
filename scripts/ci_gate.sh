@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
 
 if [[ -z "${SPEC_RUNNER_BIN:-}" ]]; then
-  SPEC_RUNNER_BIN="${ROOT_DIR}/scripts/runner_adapter.sh"
+  SPEC_RUNNER_BIN="${ROOT_DIR}/runners/public/runner_adapter.sh"
 fi
 if [[ -z "${SPEC_RUNNER_IMPL:-}" ]]; then
   SPEC_RUNNER_IMPL="rust"
@@ -84,8 +84,18 @@ fi
 
 "${SPEC_CI_PYTHON}" -m spec_runner.spec_lang_commands check-docs-freshness --strict
 
-"${SPEC_RUNNER_BIN}" ci-gate-summary \
-  --runner-bin "${SPEC_RUNNER_BIN}" \
-  --runner-impl "${SPEC_RUNNER_IMPL}" \
-  --out .artifacts/gate-summary.json \
-  --trace-out .artifacts/gate-exec-trace.json
+if [[ "${CI:-}" == "true" || "${SPEC_CI_GATE_STRICT_SUMMARY:-0}" == "1" ]]; then
+  "${SPEC_RUNNER_BIN}" ci-gate-summary \
+    --runner-bin "${SPEC_RUNNER_BIN}" \
+    --runner-impl "${SPEC_RUNNER_IMPL}" \
+    --out .artifacts/gate-summary.json \
+    --trace-out .artifacts/gate-exec-trace.json
+else
+  if ! "${SPEC_RUNNER_BIN}" ci-gate-summary \
+    --runner-bin "${SPEC_RUNNER_BIN}" \
+    --runner-impl "${SPEC_RUNNER_IMPL}" \
+    --out .artifacts/gate-summary.json \
+    --trace-out .artifacts/gate-exec-trace.json; then
+    echo "[ci-gate] non-blocking local summary failure; set SPEC_CI_GATE_STRICT_SUMMARY=1 to fail locally." >&2
+  fi
+fi

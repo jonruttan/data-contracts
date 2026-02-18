@@ -10,7 +10,7 @@ type: contract.check
 harness:
   root: .
   runner_interface_subcommands:
-    path: /scripts/rust/runner_adapter.sh
+    path: /runners/rust/runner_adapter.sh
     required_subcommands:
     - governance
     - style-check

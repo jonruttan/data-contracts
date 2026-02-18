@@ -11,7 +11,7 @@ owns_tokens:
 requires_tokens:
 - spec_lang_guide_patterns
 commands:
-- run: ./scripts/runner_adapter.sh governance
+- run: ./runners/public/runner_adapter.sh governance
   purpose: Validate governance checks after workflow changes.
 examples:
 - id: EX-HOWTO-001
@@ -49,8 +49,8 @@ Provide repeatable recipes for common contributor tasks.
 2. Add `yaml contract-spec` case with `id`, `type`, `contract`.
 3. Prefer `evaluate` for policy logic.
 4. Run:
-   - `./scripts/runner_adapter.sh normalize-check`
-   - `./scripts/runner_adapter.sh governance`
+   - `./runners/public/runner_adapter.sh normalize-check`
+   - `./runners/public/runner_adapter.sh governance`
 
 ## Add Or Reuse A Library Function
 
@@ -155,10 +155,10 @@ contract:
 
 ## Run Local Gate Subsets
 
-- Docs only: `./scripts/runner_adapter.sh docs-generate-check`
-- Governance only: `./scripts/runner_adapter.sh governance`
+- Docs only: `./runners/public/runner_adapter.sh docs-generate-check`
+- Governance only: `./runners/public/runner_adapter.sh governance`
 - Governance triage (recommended first): `./scripts/governance_triage.sh --mode auto --impl rust`
-- Full local gate: `./scripts/runner_adapter.sh ci-cleanroom`
+- Full local gate: `./runners/public/runner_adapter.sh ci-cleanroom`
 - Required parity-default prepush gate: `make prepush`
 - Fast opt-out mode: `make prepush-fast` or `SPEC_PREPUSH_MODE=fast make prepush`
 - Install managed hook enforcement: `make hooks-install`
@@ -180,7 +180,7 @@ workers.
 Example:
 
 ```bash
-SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS=300 ./scripts/runner_adapter.sh governance
+SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS=300 ./runners/public/runner_adapter.sh governance
 ```
 
 ## Enable Runtime Profiling
@@ -188,7 +188,7 @@ SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS=300 ./scripts/runner_adapter.sh governanc
 Use opt-in profiling when diagnosing hangs or long-running checks:
 
 ```bash
-./scripts/runner_adapter.sh --profile-level detailed \
+./runners/public/runner_adapter.sh --profile-level detailed \
   --profile-out .artifacts/run-trace.json \
   --profile-summary-out .artifacts/run-trace-summary.md \
   governance

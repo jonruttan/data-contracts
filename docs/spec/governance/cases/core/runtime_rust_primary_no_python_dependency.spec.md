@@ -12,16 +12,16 @@ harness:
   root: .
   runner_interface:
     required_paths:
-    - /scripts/runner_adapter.sh
-    - /scripts/python/runner_adapter.sh
-    - /scripts/rust/runner_adapter.sh
+    - /runners/public/runner_adapter.sh
+    - /runners/python/runner_adapter.sh
+    - /runners/rust/runner_adapter.sh
     files:
     - scripts/ci_gate.sh
     - scripts/docs_doctor.sh
     - scripts/core_gate.sh
     required_tokens:
     - SPEC_RUNNER_BIN
-    - scripts/runner_adapter.sh
+    - runners/public/runner_adapter.sh
     forbidden_tokens:
     - spec_lang_commands run-governance-specs
     - spec_runner/script_runtime_commands.py

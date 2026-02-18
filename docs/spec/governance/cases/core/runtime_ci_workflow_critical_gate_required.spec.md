@@ -15,7 +15,7 @@ harness:
     required_tokens:
     - 'rust-critical-gate:'
     - Run rust critical gate
-    - ./scripts/runner_adapter.sh --impl rust critical-gate
+    - ./runners/public/runner_adapter.sh --impl rust critical-gate
     - 'needs: rust-critical-gate'
     - 'continue-on-error: true'
   chain:

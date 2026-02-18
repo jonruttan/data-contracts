@@ -13,7 +13,7 @@ harness:
   gate_fail_fast:
     files:
     - /spec_runner/script_runtime_commands.py
-    - /scripts/rust/spec_runner_cli/src/main.rs
+    - /runners/rust/spec_runner_cli/src/main.rs
     required_tokens:
     - fail_fast
     - gate.fail_fast.abort

@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - appendix_spec_lang_builtin_catalog
 commands:
-- run: ./scripts/runner_adapter.sh docs-generate-check
+- run: ./runners/public/runner_adapter.sh docs-generate-check
   purpose: Verify generated std logic reference content stays synchronized.
 examples:
 - id: EX-APP-STD-LOGIC-001

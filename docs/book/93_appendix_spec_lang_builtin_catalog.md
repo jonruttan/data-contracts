@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - spec-lang
 commands:
-- run: ./scripts/runner_adapter.sh docs-generate-check
+- run: ./runners/public/runner_adapter.sh docs-generate-check
   purpose: Verify generated builtin catalog remains synchronized.
 examples:
 - id: EX-APP-BUILTIN-001

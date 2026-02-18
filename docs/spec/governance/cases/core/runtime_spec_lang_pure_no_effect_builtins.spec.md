@@ -13,8 +13,8 @@ harness:
   spec_lang_purity:
     files:
     - spec_runner/spec_lang.py
-    - scripts/php/spec_runner.php
-    - scripts/php/conformance_runner.php
+    - runners/php/spec_runner.php
+    - runners/php/conformance_runner.php
     forbidden_tokens:
     - path_exists
   chain:

@@ -181,7 +181,7 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
         raise ValueError("spec_lang_stdlib_profile_v1.yaml: symbols must be a mapping")
 
     py_syms = _python_symbols()
-    php_text = (repo_root / "scripts/php/spec_runner.php").read_text(encoding="utf-8")
+    php_text = (repo_root / "runners/php/spec_runner.php").read_text(encoding="utf-8")
     php_syms = _php_builtin_symbols(php_text)
 
     builtins: list[dict[str, Any]] = []
@@ -193,12 +193,14 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
         summary = str(meta.get("summary", "")).strip() or _default_summary(symbol, arity)
         details = str(meta.get("details", "")).strip()
         params = _clean_params(meta.get("params"), arity)
-        returns = meta.get("returns") if isinstance(meta.get("returns"), dict) else _default_returns(symbol)
+        returns_raw = meta.get("returns")
+        returns_map: dict[str, Any] = returns_raw if isinstance(returns_raw, dict) else _default_returns(symbol)
         returns = {
-            "type": str(returns.get("type", "json")).strip() or "json",
-            "description": str(returns.get("description", "")).strip() or "Deterministic pure return value.",
+            "type": str(returns_map.get("type", "json")).strip() or "json",
+            "description": str(returns_map.get("description", "")).strip() or "Deterministic pure return value.",
         }
-        errors = meta.get("errors") if isinstance(meta.get("errors"), list) else _default_errors()
+        errors_raw = meta.get("errors")
+        errors: list[dict[str, Any]] = errors_raw if isinstance(errors_raw, list) else _default_errors()
         cleaned_errors: list[dict[str, str]] = []
         for e in errors:
             if isinstance(e, dict):
@@ -211,7 +213,8 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
         if not cleaned_errors:
             cleaned_errors = _default_errors()
         examples = _clean_examples(meta.get("examples"), symbol, arity)
-        tags = meta.get("tags") if isinstance(meta.get("tags"), list) else ["pure", "deterministic"]
+        tags_raw = meta.get("tags")
+        tags: list[Any] = tags_raw if isinstance(tags_raw, list) else ["pure", "deterministic"]
         tags = [str(x).strip() for x in tags if str(x).strip()]
         since = str(meta.get("since", "v1")).strip() or "v1"
         deprecated = meta.get("deprecated") if isinstance(meta.get("deprecated"), dict) else None
@@ -283,7 +286,7 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
         "coverage_ratio": 0.0 if not builtins else (len(builtins) - missing_docs) / len(builtins),
     }
 
-    payload = {
+    payload: dict[str, Any] = {
         "version": 2,
         "summary": {
             "builtin_count": len(builtins),
@@ -299,8 +302,8 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
         "namespaces": namespaces,
         "builtins": builtins,
     }
-    score = quality["coverage_ratio"]
-    payload["quality"]["score"] = round(score, 4)
+    score = float(quality["coverage_ratio"])
+    quality["score"] = round(score, 4)
     return payload
 
 

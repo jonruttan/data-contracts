@@ -11,7 +11,7 @@ owns_tokens:
 requires_tokens:
 - must
 commands:
-- run: ./scripts/runner_adapter.sh normalize-check
+- run: ./runners/public/runner_adapter.sh normalize-check
   purpose: Validate canonical spec-lang formatting and normalization.
 examples:
 - id: EX-SPECLANG-GUIDE-001

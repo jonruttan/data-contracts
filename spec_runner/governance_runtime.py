@@ -16,7 +16,7 @@ import threading
 import time
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Callable
+from typing import Any, Callable, cast
 
 import yaml
 from spec_runner.assertions import eval_assert_tree, iter_leaf_assertions
@@ -136,8 +136,8 @@ _CURRENT_SPEC_ONLY_DOCS = (
 )
 _CURRENT_SPEC_ONLY_CODE_FILES = (
     "spec_runner/doc_parser.py",
-    "scripts/php/spec_runner.php",
-    "scripts/php/conformance_runner.php",
+    "runners/php/spec_runner.php",
+    "runners/php/conformance_runner.php",
 )
 _CURRENT_SPEC_FORBIDDEN_PATTERNS = (
     r"previous\s+spec",
@@ -393,6 +393,13 @@ def _line_for(text: str, token: str) -> int:
     if idx < 0:
         return 1
     return text[:idx].count("\n") + 1
+
+
+def _safe_float(value: object, default: float = 0.0) -> float:
+    try:
+        return float(cast(Any, value))
+    except (TypeError, ValueError):
+        return default
 
 
 def _iter_path_fields(node: object, *, key_path: str = ""):
@@ -775,7 +782,7 @@ def _scan_contract_coverage_threshold(root: Path, *, harness: dict | None = None
     return violations
 
 
-def _scan_spec_portability_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_spec_portability_metric(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     h = harness or {}
     cfg = h.get("portability_metric")
     if not isinstance(cfg, dict):
@@ -899,7 +906,7 @@ def _scan_spec_portability_non_regression(root: Path, *, harness: dict | None = 
     return violations
 
 
-def _scan_spec_lang_adoption_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_spec_lang_adoption_metric(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     h = harness or {}
     cfg = h.get("spec_lang_adoption")
     if not isinstance(cfg, dict):
@@ -1048,7 +1055,7 @@ def _scan_policy_library_usage_non_regression(root: Path, *, harness: dict | Non
     )
 
 
-def _scan_runner_independence_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_runner_independence_metric(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     h = harness or {}
     cfg = h.get("runner_independence")
     if not isinstance(cfg, dict):
@@ -1111,7 +1118,7 @@ def _scan_runner_independence_non_regression(root: Path, *, harness: dict | None
     )
 
 
-def _scan_python_dependency_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_python_dependency_metric(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     h = harness or {}
     cfg = h.get("python_dependency")
     if not isinstance(cfg, dict):
@@ -1174,7 +1181,7 @@ def _scan_python_dependency_non_regression(root: Path, *, harness: dict | None =
     )
 
 
-def _scan_docs_operability_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_docs_operability_metric(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     h = harness or {}
     cfg = h.get("docs_operability")
     if not isinstance(cfg, dict):
@@ -1235,7 +1242,7 @@ def _scan_docs_operability_non_regression(root: Path, *, harness: dict | None = 
     )
 
 
-def _scan_contract_assertions_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_contract_assertions_metric(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     h = harness or {}
     cfg = h.get("contract_assertions")
     if not isinstance(cfg, dict):
@@ -1298,7 +1305,7 @@ def _scan_contract_assertions_non_regression(root: Path, *, harness: dict | None
     )
 
 
-def _scan_objective_scorecard_metric(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_objective_scorecard_metric(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     h = harness or {}
     cfg = h.get("objective_scorecard")
     if not isinstance(cfg, dict):
@@ -1454,8 +1461,8 @@ def _scan_objective_tripwires_clean(root: Path, *, harness: dict | None = None) 
             continue
         matched = False
         for case in cases:
-            harness_case = case.get("harness") if isinstance(case.get("harness"), dict) else {}
-            local_harness = dict(harness_case)
+            harness_case_raw = case.get("harness")
+            local_harness = dict(harness_case_raw) if isinstance(harness_case_raw, dict) else {}
             local_harness["root"] = str(root)
             params = inspect.signature(fn).parameters
             outcome = fn(root, harness=local_harness) if "harness" in params else fn(root)
@@ -1822,13 +1829,13 @@ def _scan_assert_spec_lang_builtin_surface_sync(root: Path, *, harness: dict | N
         if str(x).strip()
     }
     if not php_ops:
-        php_impl = root / "scripts/php/spec_runner.php"
+        php_impl = root / "runners/php/spec_runner.php"
         if php_impl.exists():
             php_raw = php_impl.read_text(encoding="utf-8")
             php_ops = {op for op in required if f"'{op}'" in php_raw}
     php_missing = sorted(required - php_ops)
     for op in php_missing:
-        violations.append(f"scripts/php/spec_runner.php:1: missing builtin documented in contract: {op}")
+        violations.append(f"runners/php/spec_runner.php:1: missing builtin documented in contract: {op}")
 
     return violations
 
@@ -2403,7 +2410,7 @@ def _scan_runtime_rust_adapter_no_python_exec(root: Path, *, harness: dict | Non
     cfg = h.get("rust_no_python_exec")
     if not isinstance(cfg, dict):
         return ["runtime.rust_adapter_no_python_exec requires harness.rust_no_python_exec mapping in governance spec"]
-    rel = str(cfg.get("path", "scripts/rust/spec_runner_cli/src/main.rs")).strip() or "scripts/rust/spec_runner_cli/src/main.rs"
+    rel = str(cfg.get("path", "runners/rust/spec_runner_cli/src/main.rs")).strip() or "runners/rust/spec_runner_cli/src/main.rs"
     p = _join_contract_path(root, rel)
     if not p.exists():
         return [f"{rel}:1: missing rust runner interface implementation"]
@@ -2491,6 +2498,7 @@ def _scan_runtime_public_runner_entrypoint_single(root: Path, *, harness: dict |
     required_entrypoint = str(cfg.get("required_entrypoint", "")).strip()
     gate_files = cfg.get("gate_files")
     forbidden_tokens = cfg.get("forbidden_tokens", [])
+    legacy_wrappers = cfg.get("legacy_wrappers", [])
     if not required_entrypoint:
         return ["harness.public_runner_entrypoint.required_entrypoint must be a non-empty string"]
     if (
@@ -2501,6 +2509,8 @@ def _scan_runtime_public_runner_entrypoint_single(root: Path, *, harness: dict |
         return ["harness.public_runner_entrypoint.gate_files must be a non-empty list of non-empty strings"]
     if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
         return ["harness.public_runner_entrypoint.forbidden_tokens must be a list of non-empty strings"]
+    if legacy_wrappers is not None and not isinstance(legacy_wrappers, list):
+        return ["harness.public_runner_entrypoint.legacy_wrappers must be a list when provided"]
 
     violations: list[str] = []
     for rel in gate_files:
@@ -2514,6 +2524,50 @@ def _scan_runtime_public_runner_entrypoint_single(root: Path, *, harness: dict |
         for tok in forbidden_tokens:
             if tok in text:
                 violations.append(f"{rel}:1: forbidden direct runner token {tok}")
+
+    wrapper_entries: list[object] = legacy_wrappers if isinstance(legacy_wrappers, list) else []
+    for item in wrapper_entries:
+        if not isinstance(item, dict):
+            violations.append(
+                "harness.public_runner_entrypoint.legacy_wrappers entries must be mappings with path/required_tokens/forbidden_tokens"
+            )
+            continue
+        wrapper_path = str(item.get("path", "")).strip()
+        required_wrapper_tokens = item.get("required_tokens", [])
+        forbidden_wrapper_tokens = item.get("forbidden_tokens", [])
+        if not wrapper_path:
+            violations.append(
+                "harness.public_runner_entrypoint.legacy_wrappers.path must be a non-empty string"
+            )
+            continue
+        if (
+            not isinstance(required_wrapper_tokens, list)
+            or not required_wrapper_tokens
+            or any(not isinstance(x, str) or not x.strip() for x in required_wrapper_tokens)
+        ):
+            violations.append(
+                f"{wrapper_path}:1: legacy wrapper required_tokens must be a non-empty list of non-empty strings"
+            )
+            continue
+        if not isinstance(forbidden_wrapper_tokens, list) or any(
+            not isinstance(x, str) or not x.strip() for x in forbidden_wrapper_tokens
+        ):
+            violations.append(
+                f"{wrapper_path}:1: legacy wrapper forbidden_tokens must be a list of non-empty strings"
+            )
+            continue
+
+        p = _join_contract_path(root, wrapper_path)
+        if not p.exists():
+            violations.append(f"{wrapper_path}:1: missing legacy wrapper file")
+            continue
+        raw = p.read_text(encoding="utf-8")
+        for tok in required_wrapper_tokens:
+            if tok not in raw:
+                violations.append(f"{wrapper_path}:1: missing legacy wrapper forwarding token: {tok}")
+        for tok in forbidden_wrapper_tokens:
+            if tok in raw:
+                violations.append(f"{wrapper_path}:1: forbidden legacy wrapper runtime logic token: {tok}")
     return violations
 
 
@@ -3060,7 +3114,7 @@ def _scan_runtime_api_http_parity_contract_sync(root: Path) -> list[str]:
     violations: list[str] = []
     checks: dict[str, tuple[str, ...]] = {
         "spec_runner/harnesses/api_http.py": ("_SUPPORTED_METHODS", "cors_json", "steps_json"),
-        "scripts/php/conformance_runner.php": ("api.http", "request.method", "context_json"),
+        "runners/php/conformance_runner.php": ("api.http", "request.method", "context_json"),
         "docs/spec/contract/types/api_http.md": ("GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS", "steps_json", "cors_json"),
     }
     for rel, tokens in checks.items():
@@ -3566,7 +3620,7 @@ def _resolve_chain_step_cases(
     try:
         ref_path, ref_case_id = _parse_chain_ref_value(ref_text)
     except ValueError as exc:
-        result = ([], [str(exc)])
+        result: tuple[list[tuple[Path, dict[str, Any]]], list[str]] = ([], [str(exc)])
         with _SCAN_CACHE_LOCK:
             _CHAIN_REF_CASES_CACHE[cache_key] = result
         return result
@@ -4273,7 +4327,7 @@ def _scan_conformance_no_runner_logic_outside_harness(root: Path) -> list[str]:
     return violations
 
 
-def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     violations: list[str] = []
     h = harness or {}
     determinism = h.get("determinism")
@@ -4343,7 +4397,7 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
     )
 
 
-def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     violations: list[str] = []
     h = harness or {}
     ambient = h.get("ambient_assumptions")
@@ -4489,7 +4543,7 @@ def _scan_conformance_type_contract_field_sync(root: Path) -> list[str]:
     return violations
 
 
-def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     violations: list[str] = []
     h = harness or {}
     cfg = h.get("spec_lang_preferred")
@@ -4593,7 +4647,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     )
 
 
-def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = None) -> GovernanceCheckOutcome:
     violations: list[str] = []
     h = harness or {}
     cfg = h.get("impl_evaluate_first")
@@ -5456,7 +5510,7 @@ def _scan_docs_spec_schema_field_catalog_sync(root: Path, *, harness: dict | Non
     return _run_python_module_check(root, "spec_runner.generate_spec_schema_field_catalog", ["--check"])
 
 
-def _read_json_artifact(root: Path, rel: str) -> tuple[dict | None, list[str]]:
+def _read_json_artifact(root: Path, rel: str) -> tuple[dict[str, Any] | None, list[str]]:
     path = _join_contract_path(root, rel)
     if not path.exists():
         return None, [f"{rel}:1: missing generated artifact"]
@@ -5474,6 +5528,8 @@ def _scan_docs_stdlib_symbol_docs_complete(root: Path, *, harness: dict | None =
     payload, errs = _read_json_artifact(root, ".artifacts/spec-lang-builtin-catalog.json")
     if errs:
         return errs
+    if payload is None:
+        return [".artifacts/spec-lang-builtin-catalog.json:1: missing generated artifact payload"]
     violations: list[str] = []
     for row in payload.get("builtins") or []:
         if not isinstance(row, dict):
@@ -5500,6 +5556,8 @@ def _scan_docs_stdlib_examples_complete(root: Path, *, harness: dict | None = No
     payload, errs = _read_json_artifact(root, ".artifacts/spec-lang-builtin-catalog.json")
     if errs:
         return errs
+    if payload is None:
+        return [".artifacts/spec-lang-builtin-catalog.json:1: missing generated artifact payload"]
     violations: list[str] = []
     for row in payload.get("builtins") or []:
         if not isinstance(row, dict):
@@ -5520,6 +5578,8 @@ def _scan_docs_harness_reference_semantics_complete(root: Path, *, harness: dict
     payload, errs = _read_json_artifact(root, ".artifacts/harness-type-catalog.json")
     if errs:
         return errs
+    if payload is None:
+        return [".artifacts/harness-type-catalog.json:1: missing generated artifact payload"]
     violations: list[str] = []
     for row in payload.get("type_profiles") or []:
         if not isinstance(row, dict):
@@ -5541,6 +5601,8 @@ def _scan_docs_runner_reference_semantics_complete(root: Path, *, harness: dict 
     payload, errs = _read_json_artifact(root, ".artifacts/runner-api-catalog.json")
     if errs:
         return errs
+    if payload is None:
+        return [".artifacts/runner-api-catalog.json:1: missing generated artifact payload"]
     violations: list[str] = []
     for row in payload.get("commands") or []:
         if not isinstance(row, dict):
@@ -5697,11 +5759,12 @@ def _scan_docs_markdown_structured_assertions_required(root: Path, *, harness: d
         raw_path = str(case.get("path", "")).strip()
         if not raw_path.endswith(".md"):
             continue
-        harness_map = case.get("harness") if isinstance(case.get("harness"), dict) else {}
-        spec_lang_cfg = (
-            harness_map.get("spec_lang") if isinstance(harness_map.get("spec_lang"), dict) else {}
-        )
-        includes = spec_lang_cfg.get("includes") if isinstance(spec_lang_cfg.get("includes"), list) else []
+        harness_value = case.get("harness")
+        harness_map: dict[str, Any] = harness_value if isinstance(harness_value, dict) else {}
+        spec_lang_raw = harness_map.get("spec_lang")
+        spec_lang_cfg: dict[str, Any] = spec_lang_raw if isinstance(spec_lang_raw, dict) else {}
+        includes_raw = spec_lang_cfg.get("includes")
+        includes: list[Any] = includes_raw if isinstance(includes_raw, list) else []
         has_markdown_include = any(
             isinstance(item, str) and item.strip().endswith(markdown_library_path)
             for item in includes
@@ -6110,7 +6173,7 @@ def _scan_docs_release_contract_automation_policy(root: Path, *, harness: dict |
     return violations
 
 
-def _load_docs_layout_profile(root: Path) -> tuple[dict[str, object] | None, list[str]]:
+def _load_docs_layout_profile(root: Path) -> tuple[dict[str, Any] | None, list[str]]:
     p = root / _DOCS_LAYOUT_PROFILE_PATH
     if not p.exists():
         return None, [f"{_DOCS_LAYOUT_PROFILE_PATH}:1: missing docs layout profile"]
@@ -6129,7 +6192,9 @@ def _scan_docs_layout_canonical_trees(root: Path, *, harness: dict | None = None
         return errs
     assert profile is not None
     violations: list[str] = []
-    for raw in profile.get("canonical_roots", []):
+    canonical_roots = profile.get("canonical_roots")
+    roots = canonical_roots if isinstance(canonical_roots, list) else []
+    for raw in roots:
         rel = str(raw).strip()
         if not rel:
             continue
@@ -6146,7 +6211,9 @@ def _scan_docs_index_filename_policy(root: Path, *, harness: dict | None = None)
     assert profile is not None
     violations: list[str] = []
     index_name = str(profile.get("index_filename", "index.md")).strip() or "index.md"
-    for raw in profile.get("required_index_dirs", []):
+    required_index_dirs = profile.get("required_index_dirs")
+    dirs = required_index_dirs if isinstance(required_index_dirs, list) else []
+    for raw in dirs:
         rel = str(raw).strip()
         if not rel:
             continue
@@ -6933,7 +7000,7 @@ def _scan_runtime_ops_job_nested_dispatch_forbidden(
     cfg = h.get("ops_job_nested_dispatch")
     if not isinstance(cfg, dict):
         return ["runtime.ops_job_nested_dispatch_forbidden requires harness.ops_job_nested_dispatch mapping in governance spec"]
-    rel = str(cfg.get("path", "scripts/rust/spec_runner_cli/src/spec_lang.rs")).strip()
+    rel = str(cfg.get("path", "runners/rust/spec_runner_cli/src/spec_lang.rs")).strip()
     required_tokens = cfg.get("required_tokens", ["runtime.dispatch.nested_forbidden"])
     if not rel:
         return ["harness.ops_job_nested_dispatch.path must be non-empty string"]
@@ -10114,6 +10181,7 @@ def run_governance_check(case, *, ctx) -> None:
 
     def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
         for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
+            subject_value: object
             if target == "text":
                 subject_value = text
             elif target == "summary_json":
@@ -10494,7 +10562,7 @@ def main(argv: list[str] | None = None) -> int:
                                 for idx, rec in sorted(active_cases.items(), key=lambda x: x[0])
                             ]
                         longest_running_ms = max(
-                            (float(x.get("running_ms", 0.0)) for x in running_snapshot),
+                            (_safe_float(x.get("running_ms", 0.0), 0.0) for x in running_snapshot),
                             default=0.0,
                         )
                         now_ts = time.monotonic()
@@ -10608,13 +10676,15 @@ def main(argv: list[str] | None = None) -> int:
     print(f"wrote {ns.timing_out}")
     if ns.profile:
         sorted_profile = sorted(profile_rows, key=lambda row: float(row.get("duration_ms", 0.0)), reverse=True)
+        timing_summary_raw = timing_payload.get("summary")
+        timing_summary = timing_summary_raw if isinstance(timing_summary_raw, dict) else {}
         profile_payload = {
             "version": 1,
             "status": timing_payload["status"],
             "summary": {
                 "case_count": len(governance_cases),
                 "record_count": len(sorted_profile),
-                "total_duration_ms": timing_payload["summary"]["total_duration_ms"],
+                "total_duration_ms": timing_summary.get("total_duration_ms"),
             },
             "top_slowest": sorted_profile[:20],
             "records": sorted_profile,

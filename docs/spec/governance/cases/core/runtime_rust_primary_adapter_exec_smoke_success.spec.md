@@ -12,7 +12,7 @@ harness:
   root: .
   rust_adapter_exec_smoke:
     command:
-    - scripts/rust/spec_runner_cli/target/debug/spec_runner_cli
+    - runners/rust/spec_runner_cli/target/debug/spec_runner_cli
     - style-check
     expected_exit_codes:
     - 0

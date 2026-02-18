@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - core_case_model
 commands:
-- run: ./scripts/runner_adapter.sh docs-generate-check
+- run: ./runners/public/runner_adapter.sh docs-generate-check
   purpose: Verify generated schema field catalog remains synchronized.
 examples:
 - id: EX-APP-SCHEMA-001

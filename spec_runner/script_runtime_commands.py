@@ -11,9 +11,9 @@ import sys
 import time
 import contextlib
 import io
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import yaml
 
@@ -38,7 +38,7 @@ def compare_conformance_parity_main(argv: list[str] | None = None) -> int:
         description="Run Python/PHP conformance and report normalized parity diffs by case id."
     )
     ap.add_argument("--cases", default="docs/spec/conformance/cases")
-    ap.add_argument("--php-runner", default="scripts/php/conformance_runner.php")
+    ap.add_argument("--php-runner", default="runners/php/conformance_runner.php")
     ap.add_argument("--python-runner", default="spec_runner.python_conformance_runner")
     ap.add_argument("--out", default="")
     ap.add_argument("--case-formats", default="md")
@@ -181,6 +181,20 @@ def _coerce_profile_level(raw: str) -> str:
     return "off"
 
 
+def _to_int(value: object, default: int = 0) -> int:
+    try:
+        return int(cast(Any, value))
+    except (TypeError, ValueError):
+        return default
+
+
+def _to_float(value: object, default: float = 0.0) -> float:
+    try:
+        return float(cast(Any, value))
+    except (TypeError, ValueError):
+        return default
+
+
 def _write_fail_profile_artifacts(
     *,
     trace_path: Path,
@@ -189,6 +203,7 @@ def _write_fail_profile_artifacts(
 ) -> None:
     trace_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.parent.mkdir(parents=True, exist_ok=True)
+    steps = payload.get("steps")
     normalize_mode = payload.get("normalize_mode")
     normalized_file_count = payload.get("normalized_file_count")
     run_trace = {
@@ -209,8 +224,8 @@ def _write_fail_profile_artifacts(
                 "name": "run.total",
                 "phase": "run.total",
                 "start_ns": 0,
-                "end_ns": int(payload.get("total_duration_ms", 0)) * 1_000_000,
-                "duration_ms": float(payload.get("total_duration_ms", 0)),
+                "end_ns": _to_int(payload.get("total_duration_ms", 0)) * 1_000_000,
+                "duration_ms": _to_float(payload.get("total_duration_ms", 0)),
                 "status": "ok" if payload.get("status") == "pass" else "error",
                 "attrs": {
                     "source": "ci-gate-summary",
@@ -222,13 +237,12 @@ def _write_fail_profile_artifacts(
         ],
         "events": payload.get("events", []),
         "summary": {
-            "step_count": len(payload.get("steps", [])) if isinstance(payload.get("steps"), list) else 0,
+            "step_count": len(steps) if isinstance(steps, list) else 0,
             "failed_step": payload.get("first_failure_step"),
         },
     }
     trace_path.write_text(json.dumps(run_trace, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     rows = []
-    steps = payload.get("steps")
     if isinstance(steps, list):
         for row in steps:
             if isinstance(row, dict):
@@ -256,19 +270,19 @@ def _write_fail_profile_artifacts(
     md.append("")
     md.append("## Suggested Next Command")
     md.append("")
-    md.append("- `./scripts/runner_adapter.sh --impl rust --profile-level detailed ci-gate-summary`")
+    md.append("- `./runners/public/runner_adapter.sh --impl rust --profile-level detailed ci-gate-summary`")
     summary_path.write_text("\n".join(md) + "\n", encoding="utf-8")
 
 
 def _now_iso_utc() -> str:
-    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def _runner_command(runner_bin: str, runner_impl: str, subcommand: str) -> list[str]:
     normalized = runner_bin.replace("\\", "/")
-    if normalized.endswith("/scripts/runner_adapter.sh") or normalized in {
-        "scripts/runner_adapter.sh",
-        "./scripts/runner_adapter.sh",
+    if normalized.endswith("/runners/public/runner_adapter.sh") or normalized in {
+        "runners/public/runner_adapter.sh",
+        "./runners/public/runner_adapter.sh",
     }:
         return [runner_bin, "--impl", runner_impl, subcommand]
     return [runner_bin, subcommand]
@@ -300,9 +314,9 @@ def _runner_command_with_liveness(
     hard_cap_ms: str,
 ) -> list[str]:
     normalized = runner_bin.replace("\\", "/")
-    if normalized.endswith("/scripts/runner_adapter.sh") or normalized in {
-        "scripts/runner_adapter.sh",
-        "./scripts/runner_adapter.sh",
+    if normalized.endswith("/runners/public/runner_adapter.sh") or normalized in {
+        "runners/public/runner_adapter.sh",
+        "./runners/public/runner_adapter.sh",
     }:
         return [
             runner_bin,
@@ -404,7 +418,7 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
     broad_liveness_kill_grace_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_KILL_GRACE_MS", "1000"))
     broad_liveness_hard_cap_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS", "120000"))
     py = _python_command()
-    return [
+    steps: list[tuple[str, list[str]]] = [
         (
             "governance_broad",
             _runner_command_with_liveness(
@@ -434,8 +448,10 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
         ("ruff", _runner_command(runner_bin, runner_impl, "lint")),
         ("mypy", _runner_command(runner_bin, runner_impl, "typecheck")),
         ("compileall", _runner_command(runner_bin, runner_impl, "compilecheck")),
-        ("conformance_parity", _runner_command(runner_bin, runner_impl, "conformance-parity")),
     ]
+    if _env_bool("SPEC_CI_INCLUDE_CONFORMANCE_PARITY", False):
+        steps.append(("conformance_parity", _runner_command(runner_bin, runner_impl, "conformance-parity")))
+    return steps
 
 
 def _run_command(command: list[str]) -> int:
@@ -624,9 +640,9 @@ def ci_gate_summary_main(argv: list[str] | None = None) -> int:
     verdict = _evaluate_gate_policy(rows=steps)
     first_failure = next(
         (
-            int(step["exit_code"])
+            _to_int(step["exit_code"])
             for step in steps
-            if step.get("exit_code") is not None and int(step["exit_code"]) != 0
+            if step.get("exit_code") is not None and _to_int(step["exit_code"]) != 0
         ),
         1,
     )

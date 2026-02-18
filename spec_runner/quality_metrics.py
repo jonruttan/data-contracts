@@ -515,10 +515,10 @@ def default_runner_independence_config() -> dict[str, Any]:
             "gate_scripts": ["scripts/ci_gate.sh", "scripts/core_gate.sh", "scripts/docs_doctor.sh"],
             "ci_workflows": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
             "adapter_interfaces": [
-                "scripts/runner_adapter.sh",
-                "scripts/python/runner_adapter.sh",
-                "scripts/rust/runner_adapter.sh",
-                "scripts/rust/spec_runner_cli/src/main.rs",
+                "runners/public/runner_adapter.sh",
+                "runners/python/runner_adapter.sh",
+                "runners/rust/runner_adapter.sh",
+                "runners/rust/spec_runner_cli/src/main.rs",
             ],
         },
         "direct_runtime_tokens": [
@@ -526,13 +526,13 @@ def default_runner_independence_config() -> dict[str, Any]:
             "spec_lang_commands spec-lang-format --check docs/spec",
             "scripts/spec_portability_report.py",
             "python -m pytest",
-            "php scripts/php/spec_runner.php",
+            "php runners/php/spec_runner.php",
         ],
         "direct_runtime_token_segments": ["gate_scripts", "ci_workflows"],
-        "gate_required_tokens": ["SPEC_RUNNER_BIN", "scripts/runner_adapter.sh"],
+        "gate_required_tokens": ["SPEC_RUNNER_BIN", "runners/public/runner_adapter.sh"],
         "rust_ci_required_tokens": [
             "core-gate-rust-adapter:",
-            "SPEC_RUNNER_BIN: ./scripts/runner_adapter.sh",
+            "SPEC_RUNNER_BIN: ./runners/public/runner_adapter.sh",
             "SPEC_RUNNER_IMPL: rust",
             "run: ./scripts/core_gate.sh",
         ],
@@ -552,8 +552,8 @@ def default_python_dependency_config() -> dict[str, Any]:
     return {
         "segment_files": {
             "default_gate": ["scripts/ci_gate.sh", "scripts/core_gate.sh", "scripts/docs_doctor.sh"],
-            "public_adapter": ["scripts/runner_adapter.sh"],
-            "rust_adapter": ["scripts/rust/runner_adapter.sh", "scripts/rust/spec_runner_cli/src/main.rs"],
+            "public_adapter": ["runners/public/runner_adapter.sh"],
+            "rust_adapter": ["runners/rust/runner_adapter.sh", "runners/rust/spec_runner_cli/src/main.rs"],
             "ci_workflows": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
             "python_surfaces": ["scripts/python/*.sh", "scripts/python/*.py"],
         },
@@ -577,15 +577,15 @@ def default_python_dependency_config() -> dict[str, Any]:
             "python -m pytest",
         ],
         "rust_transitive_forbidden_tokens": [
-            "scripts/runner_adapter.sh",
-            "scripts/python/runner_adapter.sh",
+            "runners/public/runner_adapter.sh",
+            "runners/python/runner_adapter.sh",
             "spec_lang_commands run-governance-specs",
             "scripts/ci_gate_summary.py",
             "python -m ",
             "python3 ",
         ],
         "default_gate_required_tokens": [
-            'SPEC_RUNNER_BIN="${ROOT_DIR}/scripts/runner_adapter.sh"',
+            'SPEC_RUNNER_BIN="${ROOT_DIR}/runners/public/runner_adapter.sh"',
         ],
         "runtime_trace_path": ".artifacts/gate-exec-trace.json",
     }

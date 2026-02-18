@@ -5,18 +5,18 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-CONFIG-006
 title: rust adapter does not delegate to python shell adapter
-purpose: Ensures scripts/rust/runner_adapter.sh invokes the Rust CLI directly and does not
-  call scripts/runner_adapter.sh.
+purpose: Ensures runners/rust/runner_adapter.sh invokes the Rust CLI directly and does not
+  call runners/public/runner_adapter.sh.
 type: contract.check
 harness:
   root: .
   rust_adapter:
-    path: /scripts/rust/runner_adapter.sh
+    path: /runners/rust/runner_adapter.sh
     required_tokens:
     - spec_runner_cli
     - cargo run --quiet
     forbidden_tokens:
-    - scripts/runner_adapter.sh
+    - runners/public/runner_adapter.sh
   chain:
     steps:
     - id: lib_policy_core_spec

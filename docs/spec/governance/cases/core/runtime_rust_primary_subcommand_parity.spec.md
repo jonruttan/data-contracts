@@ -11,8 +11,8 @@ type: contract.check
 harness:
   root: .
   rust_subcommand_parity:
-    adapter_path: /scripts/rust/runner_adapter.sh
-    cli_main_path: /scripts/rust/spec_runner_cli/src/main.rs
+    adapter_path: /runners/rust/runner_adapter.sh
+    cli_main_path: /runners/rust/spec_runner_cli/src/main.rs
   chain:
     steps:
     - id: lib_policy_core_spec

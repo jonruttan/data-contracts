@@ -1,14 +1,14 @@
 {
   "config": {
     "default_gate_required_tokens": [
-      "SPEC_RUNNER_BIN=\"${ROOT_DIR}/scripts/rust/runner_adapter.sh\""
+      "SPEC_RUNNER_BIN=\"${ROOT_DIR}/runners/rust/runner_adapter.sh\""
     ],
     "non_python_segments": [
       "default_gate",
       "rust_adapter"
     ],
     "python_allowed_globs": [
-      "scripts/runner_adapter.sh",
+      "runners/public/runner_adapter.sh",
       "scripts/python/*.py",
       ".github/workflows/*.yml",
       ".github/workflows/*.yaml"
@@ -27,7 +27,7 @@
     ],
     "runtime_trace_path": ".artifacts/gate-exec-trace.json",
     "rust_transitive_forbidden_tokens": [
-      "scripts/runner_adapter.sh",
+      "runners/public/runner_adapter.sh",
       "scripts/run_governance_specs.py",
       "scripts/ci_gate_summary.py",
       "python -m ",
@@ -44,12 +44,12 @@
         "scripts/docs_doctor.sh"
       ],
       "python_surfaces": [
-        "scripts/runner_adapter.sh",
+        "runners/public/runner_adapter.sh",
         "scripts/python/*.py"
       ],
       "rust_adapter": [
-        "scripts/rust/runner_adapter.sh",
-        "scripts/rust/spec_runner_cli/src/main.rs"
+        "runners/rust/runner_adapter.sh",
+        "runners/rust/spec_runner_cli/src/main.rs"
       ]
     }
   },
@@ -58,10 +58,10 @@
     "runtime_trace": [],
     "static_hits": [
       {
-        "file": "scripts/rust/spec_runner_cli/src/main.rs",
+        "file": "runners/rust/spec_runner_cli/src/main.rs",
         "kind": "rust_transitive_token",
         "segment": "rust_adapter",
-        "token": "scripts/runner_adapter.sh"
+        "token": "runners/public/runner_adapter.sh"
       }
     ]
   },
@@ -103,21 +103,21 @@
     },
     {
       "allowed_python_surface": 1.0,
-      "file": "scripts/runner_adapter.sh",
+      "file": "runners/public/runner_adapter.sh",
       "python_token_count": 6.0,
       "segment": "python_surfaces",
       "transitive_token_count": 0.0
     },
     {
       "allowed_python_surface": 0.0,
-      "file": "scripts/rust/runner_adapter.sh",
+      "file": "runners/rust/runner_adapter.sh",
       "python_token_count": 0.0,
       "segment": "rust_adapter",
       "transitive_token_count": 0.0
     },
     {
       "allowed_python_surface": 0.0,
-      "file": "scripts/rust/spec_runner_cli/src/main.rs",
+      "file": "runners/rust/spec_runner_cli/src/main.rs",
       "python_token_count": 0.0,
       "segment": "rust_adapter",
       "transitive_token_count": 1.0

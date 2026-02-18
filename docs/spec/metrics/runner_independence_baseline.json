@@ -5,22 +5,22 @@
       "scripts/evaluate_style.py --check docs/spec",
       "scripts/spec_portability_report.py",
       "python -m pytest",
-      "php scripts/php/spec_runner.php"
+      "php runners/php/spec_runner.php"
     ],
     "gate_required_tokens": [
       "SPEC_RUNNER_BIN",
-      "scripts/runner_adapter.sh"
+      "runners/public/runner_adapter.sh"
     ],
     "rust_ci_required_tokens": [
       "core-gate-rust-adapter:",
-      "SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh",
+      "SPEC_RUNNER_BIN: ./runners/rust/runner_adapter.sh",
       "run: ./scripts/core_gate.sh"
     ],
     "segment_files": {
       "adapter_interfaces": [
-        "scripts/runner_adapter.sh",
-        "scripts/rust/runner_adapter.sh",
-        "scripts/rust/spec_runner_cli/src/main.rs"
+        "runners/public/runner_adapter.sh",
+        "runners/rust/runner_adapter.sh",
+        "runners/rust/spec_runner_cli/src/main.rs"
       ],
       "ci_workflows": [
         ".github/workflows/*.yml",
@@ -35,7 +35,7 @@
   "files": [
     {
       "direct_runtime_invocation_count": 4.0,
-      "file": "scripts/runner_adapter.sh",
+      "file": "runners/public/runner_adapter.sh",
       "runner_independence_ratio": 0.6666666666666666,
       "runner_interface_usage_ratio": 1.0,
       "rust_primary_path_coverage_ratio": 1.0,
@@ -43,7 +43,7 @@
     },
     {
       "direct_runtime_invocation_count": 0.0,
-      "file": "scripts/rust/runner_adapter.sh",
+      "file": "runners/rust/runner_adapter.sh",
       "runner_independence_ratio": 1.0,
       "runner_interface_usage_ratio": 1.0,
       "rust_primary_path_coverage_ratio": 1.0,
@@ -51,7 +51,7 @@
     },
     {
       "direct_runtime_invocation_count": 1.0,
-      "file": "scripts/rust/spec_runner_cli/src/main.rs",
+      "file": "runners/rust/spec_runner_cli/src/main.rs",
       "runner_independence_ratio": 0.6666666666666666,
       "runner_interface_usage_ratio": 1.0,
       "rust_primary_path_coverage_ratio": 1.0,
@@ -91,7 +91,7 @@
     },
     {
       "direct_runtime_invocation_count": 4.0,
-      "file": "scripts/runner_adapter.sh",
+      "file": "runners/public/runner_adapter.sh",
       "runner_independence_ratio": 0.3333333333333333,
       "runner_interface_usage_ratio": 0.0,
       "rust_primary_path_coverage_ratio": 1.0,

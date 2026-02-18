@@ -340,7 +340,7 @@ fn helper_parity_run_conformance(root: &Path, payload: &Value) -> Result<Value, 
     let php_runner = payload
         .get("php_runner")
         .and_then(|v| v.as_str())
-        .unwrap_or("scripts/php/conformance_runner.php")
+        .unwrap_or("runners/php/conformance_runner.php")
         .to_string();
     let out = payload
         .get("out")

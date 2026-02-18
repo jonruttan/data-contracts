@@ -11,7 +11,7 @@ owns_tokens:
 requires_tokens:
 - governance_workflow_quickpath
 commands:
-- run: ./scripts/runner_adapter.sh ci-cleanroom
+- run: ./runners/public/runner_adapter.sh ci-cleanroom
   purpose: Reproduce CI-equivalent failures in a clean local pass.
 examples:
 - id: EX-TROUBLE-001
@@ -55,18 +55,18 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 - Fast opt-out gate: `make prepush-fast` (or `SPEC_PREPUSH_MODE=fast make prepush`)
 - Install managed hook: `make hooks-install`
 - Emergency bypass: `SPEC_PREPUSH_BYPASS=1 git push` (run `make prepush` immediately after)
-- Rust target strict mode: `SPEC_RUNNER_RUST_TARGET_STRICT=1 ./scripts/runner_adapter.sh --impl rust governance`
+- Rust target strict mode: `SPEC_RUNNER_RUST_TARGET_STRICT=1 ./runners/public/runner_adapter.sh --impl rust governance`
 
 ## Check-ID To Cause Mapping
 
 | Check ID / Surface | Likely Cause | First Command |
 |---|---|---|
-| `docs.*_sync` | generated docs drift | `./scripts/runner_adapter.sh docs-generate` |
+| `docs.*_sync` | generated docs drift | `./runners/public/runner_adapter.sh docs-generate` |
 | `docs.markdown_structured_assertions_required` | markdown checks use brittle plain contains assertions | migrate assertions to `md.*` / `domain.markdown.*` helpers |
-| `schema.registry_*` | registry/docs mismatch | `./scripts/runner_adapter.sh schema-registry-build` |
-| `normalization.*` | canonical formatting/path drift | `./scripts/runner_adapter.sh normalize-check` |
-| `runtime.*` | adapter/runner contract drift | `./scripts/runner_adapter.sh governance` |
-| `runtime.api_http_*` | `api.http` verbs/CORS/scenario drift | `./scripts/runner_adapter.sh governance` |
+| `schema.registry_*` | registry/docs mismatch | `./runners/public/runner_adapter.sh schema-registry-build` |
+| `normalization.*` | canonical formatting/path drift | `./runners/public/runner_adapter.sh normalize-check` |
+| `runtime.*` | adapter/runner contract drift | `./runners/public/runner_adapter.sh governance` |
+| `runtime.api_http_*` | `api.http` verbs/CORS/scenario drift | `./runners/public/runner_adapter.sh governance` |
 | `SRGOV-*` mixed failure set | targeted run failed; inspect selected prefixes and retry | `./scripts/governance_triage.sh --mode auto --impl rust` |
 
 ## API HTTP Troubleshooting
@@ -87,8 +87,8 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 
 First command for API flow issues:
 
-- `./scripts/runner_adapter.sh governance`
-- `./scripts/runner_adapter.sh normalize-check`
+- `./runners/public/runner_adapter.sh governance`
+- `./runners/public/runner_adapter.sh normalize-check`
 
 First command for governance hang/long-cycle issues:
 
@@ -115,7 +115,7 @@ emergency hard-cap behavior.
 Use profiling for deterministic timeout diagnosis:
 
 ```bash
-./scripts/runner_adapter.sh --profile-level detailed \
+./runners/public/runner_adapter.sh --profile-level detailed \
   --profile-out .artifacts/run-trace.json \
   --profile-summary-out .artifacts/run-trace-summary.md \
   governance
@@ -129,7 +129,7 @@ Artifacts:
 For deeper diagnostics:
 
 ```bash
-./scripts/runner_adapter.sh --profile-level debug \
+./runners/public/runner_adapter.sh --profile-level debug \
   --profile-heartbeat-ms 250 \
   --profile-stall-threshold-ms 2000 \
   governance

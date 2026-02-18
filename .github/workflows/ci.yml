@@ -35,7 +35,7 @@ jobs:
           python -m pip install -e '.[dev]'
 
       - name: Run rust critical gate
-        run: ./scripts/runner_adapter.sh --impl rust critical-gate
+        run: ./runners/public/runner_adapter.sh --impl rust critical-gate
 
       - name: Upload rust critical gate artifacts
         if: always()
@@ -122,8 +122,8 @@ jobs:
 
       - name: Run heavy rust follow-up checks (non-blocking)
         run: |
-          ./scripts/runner_adapter.sh --impl rust governance-heavy || true
-          ./scripts/runner_adapter.sh --impl rust perf-smoke --mode strict || true
+          ./runners/public/runner_adapter.sh --impl rust governance-heavy || true
+          ./runners/public/runner_adapter.sh --impl rust perf-smoke --mode strict || true
 
       - name: Upload heavy follow-up artifacts
         if: always()
@@ -212,23 +212,23 @@ jobs:
           python -m pip install -e '.[dev]'
 
       - name: Build Rust runner interface CLI
-        run: cargo build --manifest-path scripts/rust/spec_runner_cli/Cargo.toml
+        run: cargo build --manifest-path runners/rust/spec_runner_cli/Cargo.toml
 
       - name: Run core gate with Rust adapter interface
         id: rust_core_gate
         env:
-          SPEC_RUNNER_BIN: ./scripts/runner_adapter.sh
+          SPEC_RUNNER_BIN: ./runners/public/runner_adapter.sh
           SPEC_RUNNER_IMPL: rust
         run: ./scripts/core_gate.sh
 
       - name: Diagnostic rerun with detailed profiling (rust core gate)
         if: steps.rust_core_gate.outcome == 'failure'
         env:
-          SPEC_RUNNER_BIN: ./scripts/runner_adapter.sh
+          SPEC_RUNNER_BIN: ./runners/public/runner_adapter.sh
           SPEC_RUNNER_IMPL: rust
         run: |
-          ./scripts/runner_adapter.sh --impl rust --liveness-level strict --profile-level detailed --profile-out .artifacts/rust-governance-run-trace.json --profile-summary-out .artifacts/rust-governance-run-trace-summary.md governance || true
-          ./scripts/runner_adapter.sh --impl rust --profile-level detailed --profile-out .artifacts/rust-ci-cleanroom-run-trace.json --profile-summary-out .artifacts/rust-ci-cleanroom-run-trace-summary.md ci-cleanroom || true
+          ./runners/public/runner_adapter.sh --impl rust --liveness-level strict --profile-level detailed --profile-out .artifacts/rust-governance-run-trace.json --profile-summary-out .artifacts/rust-governance-run-trace-summary.md governance || true
+          ./runners/public/runner_adapter.sh --impl rust --profile-level detailed --profile-out .artifacts/rust-ci-cleanroom-run-trace.json --profile-summary-out .artifacts/rust-ci-cleanroom-run-trace-summary.md ci-cleanroom || true
 
       - name: Enforce Rust core gate result
         if: steps.rust_core_gate.outcome == 'failure'

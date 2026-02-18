@@ -5,7 +5,7 @@ Defines the language-neutral command boundary used by local gate scripts.
 Execution classes:
 
 - `default lane`: canonical adapter with rust mode
-  (`scripts/runner_adapter.sh` with `SPEC_RUNNER_IMPL=rust` default)
+  (`runners/public/runner_adapter.sh` with `SPEC_RUNNER_IMPL=rust` default)
 - `python parity telemetry lane`: CI-only optional lane that runs Python scripts
   directly and is non-blocking
 
@@ -37,7 +37,7 @@ Required subcommands:
 
 CI expectation:
 
-- CI default lane MUST run core gate through `scripts/runner_adapter.sh`
+- CI default lane MUST run core gate through `runners/public/runner_adapter.sh`
   in rust mode.
 - Local pre-push gate is Rust-only by default
   (`make prepush` / `scripts/local_ci_parity.sh`).
@@ -50,10 +50,10 @@ CI expectation:
 
 Repository adapters:
 
-- `scripts/runner_adapter.sh` (single public entrypoint; rust default router)
-- `scripts/rust/runner_adapter.sh` (internal rust adapter; invokes Rust CLI)
-- `scripts/python/runner_adapter.sh` (deprecated runtime adapter stub; returns migration error)
-- `scripts/rust/spec_runner_cli` (Rust runner-interface CLI crate)
+- `runners/public/runner_adapter.sh` (single public entrypoint; rust default router)
+- `runners/rust/runner_adapter.sh` (internal rust adapter; invokes Rust CLI)
+- `runners/python/runner_adapter.sh` (deprecated runtime adapter stub; returns migration error)
+- `runners/rust/spec_runner_cli` (Rust runner-interface CLI crate)
 
 Adapters may call implementation-specific scripts/tools internally.
 Alternative implementations can replace the adapter by setting `SPEC_RUNNER_BIN`
@@ -61,7 +61,7 @@ to a different compatible command.
 
 Runtime hard-cut:
 
-- `scripts/runner_adapter.sh --impl python ...` is forbidden and must hard-fail
+- `runners/public/runner_adapter.sh --impl python ...` is forbidden and must hard-fail
   with migration guidance to Rust commands.
 
 Rust adapter target behavior:

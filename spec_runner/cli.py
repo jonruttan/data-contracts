@@ -85,7 +85,7 @@ def compare_parity_main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--php-runner",
-        default="scripts/php/conformance_runner.php",
+        default="runners/php/conformance_runner.php",
         help="Path to PHP conformance runner script",
     )
     ap.add_argument(

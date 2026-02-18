@@ -7,13 +7,13 @@ from pathlib import Path
 
 def test_rust_cli_lists_unsupported_subcommand_as_error() -> None:
     root = Path(__file__).resolve().parents[1]
-    cli = root / "scripts/rust/spec_runner_cli/src/main.rs"
+    cli = root / "runners/rust/spec_runner_cli/src/main.rs"
     assert cli.exists()
 
 
 def test_rust_adapter_reports_error_for_missing_subcommand() -> None:
     root = Path(__file__).resolve().parents[1]
-    adapter = root / "scripts/rust/runner_adapter.sh"
+    adapter = root / "runners/rust/runner_adapter.sh"
     cp = subprocess.run([str(adapter)], cwd=root, capture_output=True, text=True, check=False)
     assert cp.returncode == 2
     assert "missing runner adapter subcommand" in (cp.stderr or "")

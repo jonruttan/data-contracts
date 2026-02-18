@@ -11,15 +11,15 @@ type: contract.check
 harness:
   root: .
   public_runner_default:
-    path: /scripts/runner_adapter.sh
+    path: /runners/public/runner_adapter.sh
     required_tokens:
     - impl="${SPEC_RUNNER_IMPL:-rust}"
-    - scripts/rust/runner_adapter.sh
+    - runners/rust/runner_adapter.sh
     - python runner impl is no longer supported on the runtime path
     - --impl
     forbidden_tokens:
     - SPEC_RUNNER_IMPL:-python
-    - exec "${ROOT_DIR}/scripts/python/runner_adapter.sh"
+    - exec "${ROOT_DIR}/runners/python/runner_adapter.sh"
   chain:
     steps:
     - id: lib_policy_core_spec

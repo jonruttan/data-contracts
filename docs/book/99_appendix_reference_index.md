@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - quickstart_minimal_case
 commands:
-- run: ./scripts/runner_adapter.sh docs-generate-check
+- run: ./runners/public/runner_adapter.sh docs-generate-check
   purpose: Verify generated reference index and coverage surfaces are synchronized.
 examples:
 - id: EX-APP-REFIDX-001

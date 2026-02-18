@@ -12,10 +12,10 @@ harness:
   root: .
   rust_transitive_no_python:
     files:
-    - scripts/rust/runner_adapter.sh
-    - scripts/rust/spec_runner_cli/src/main.rs
+    - runners/rust/runner_adapter.sh
+    - runners/rust/spec_runner_cli/src/main.rs
     forbidden_tokens:
-    - scripts/runner_adapter.sh
+    - runners/public/runner_adapter.sh
     - scripts/run_governance_specs.py
   chain:
     steps:

@@ -12,7 +12,7 @@ harness:
   gate_skipped_contract:
     files:
     - /spec_runner/script_runtime_commands.py
-    - /scripts/rust/spec_runner_cli/src/main.rs
+    - /runners/rust/spec_runner_cli/src/main.rs
     required_tokens:
     - skipped_step_count
     - first_failure_step
