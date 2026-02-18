@@ -380,11 +380,114 @@ fn helper_perf_run_smoke(root: &Path, payload: &Value) -> Result<Value, String> 
     Ok(res)
 }
 
+fn helper_schema_registry_report(root: &Path, payload: &Value) -> Result<Value, String> {
+    let format = payload
+        .get("format")
+        .and_then(|v| v.as_str())
+        .unwrap_or("json")
+        .to_string();
+    let out = payload
+        .get("out")
+        .and_then(|v| v.as_str())
+        .unwrap_or(".artifacts/schema_registry_report.json")
+        .to_string();
+    let check = payload
+        .get("check")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(false);
+    let mut args = vec![
+        "-m".to_string(),
+        "spec_runner.spec_lang_commands".to_string(),
+        "schema-registry-report".to_string(),
+        "--format".to_string(),
+        format.clone(),
+        "--out".to_string(),
+        out.clone(),
+    ];
+    if check {
+        args.push("--check".to_string());
+    }
+    let py = python_bin(root);
+    let mut cmd = Command::new(&py);
+    cmd.arg(args[0].clone())
+        .args(args[1..].iter())
+        .current_dir(root)
+        .stdin(Stdio::inherit())
+        .stdout(Stdio::inherit())
+        .stderr(Stdio::inherit());
+    let status = cmd
+        .status()
+        .map_err(|e| format!("failed to run {} -m spec_runner.spec_lang_commands: {e}", py))?;
+    let code = status.code().unwrap_or(1);
+    if code != 0 {
+        return Err(format!(
+            "schema-registry-report failed (exit={code})"
+        ));
+    }
+    Ok(json!({
+        "ok": true,
+        "format": format,
+        "out": out,
+        "check": check,
+        "exit_code": code,
+    }))
+}
+
+fn helper_docs_lint(root: &Path, _payload: &Value) -> Result<Value, String> {
+    let py = python_bin(root);
+    let mut cmd = Command::new(&py);
+    cmd.args([
+        "-m",
+        "spec_runner.spec_lang_commands",
+        "docs-lint",
+    ])
+    .current_dir(root)
+    .stdin(Stdio::inherit())
+    .stdout(Stdio::inherit())
+    .stderr(Stdio::inherit());
+    let status = cmd
+        .status()
+        .map_err(|e| format!("failed to run {} -m spec_runner.spec_lang_commands docs-lint: {e}", py))?;
+    let code = status.code().unwrap_or(1);
+    if code != 0 {
+        return Err(format!("docs-lint failed (exit={code})"));
+    }
+    Ok(json!({"ok": true, "exit_code": code}))
+}
+
+fn helper_docs_generate_all(root: &Path, payload: &Value) -> Result<Value, String> {
+    let action = payload
+        .get("action")
+        .and_then(|v| v.as_str())
+        .unwrap_or("build")
+        .to_string();
+    let surface = payload
+        .get("surface")
+        .and_then(|v| v.as_str())
+        .map(|s| s.to_string());
+    let mut args = vec![format!("--{action}")];
+    if let Some(s) = surface.as_deref() {
+        args.push("--surface".to_string());
+        args.push(s.to_string());
+    }
+    let mut res = helper_exec_python_script(root, "/scripts/docs_generate_all.py", &args)?;
+    if let Some(map) = res.as_object_mut() {
+        map.insert("action".to_string(), Value::String(action));
+        if let Some(s) = surface {
+            map.insert("surface".to_string(), Value::String(s));
+        }
+    }
+    Ok(res)
+}
+
 pub fn run_helper(root: &Path, helper_id: &str, payload: &Value) -> Result<Value, String> {
     match helper_id {
         "helper.docs.render_template" => helper_docs_render_template(payload),
         "helper.docs.catalog_generate" => helper_docs_catalog_generate(payload),
         "helper.schema.compile_registry" => helper_schema_compile_registry(root, payload),
+        "helper.schema.registry_report" => helper_schema_registry_report(root, payload),
+        "helper.docs.lint" => helper_docs_lint(root, payload),
+        "helper.docs.generate_all" => helper_docs_generate_all(root, payload),
         "helper.parity.compare_conformance" => helper_parity_compare_conformance(root, payload),
         "helper.normalize.apply_edits" => helper_normalize_apply_edits(root, payload),
         "helper.governance.scan_bundle" => helper_governance_scan_bundle(root, payload),

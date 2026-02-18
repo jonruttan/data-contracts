@@ -233,13 +233,18 @@ fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
         "validate-report" => Some(
             "/docs/spec/libraries/domain/conformance_core.spec.md#LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS",
         ),
-        "docs-lint" => Some("/docs/spec/impl/python/cases/docs_lint.spec.md#SRPY-DOCSLINT-001"),
         "schema-registry-build" => Some(
-            "/docs/spec/impl/python/cases/schema_registry_report.spec.md#SRPY-SCHEMA-REG-001",
+            "/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-004",
         ),
         "schema-registry-check" => Some(
-            "/docs/spec/impl/python/cases/schema_registry_report.spec.md#SRPY-SCHEMA-REG-002",
+            "/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-005",
         ),
+        "docs-lint" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-006"),
+        "docs-generate" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-007"),
+        "docs-generate-check" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-008"),
+        "docs-build" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-009"),
+        "docs-build-check" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-010"),
+        "docs-graph" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-011"),
         "spec-lang-stdlib-json" => Some(
             "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-017",
         ),
@@ -1873,39 +1878,8 @@ fn main() {
             ),
             &root,
         ),
-        "schema-registry-check" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.spec_lang_commands".to_string(),
-                    "schema-registry-report".to_string(),
-                    "--format".to_string(),
-                    "json".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/schema_registry_report.json".to_string(),
-                    "--check".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "schema-registry-build" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.spec_lang_commands".to_string(),
-                    "schema-registry-report".to_string(),
-                    "--format".to_string(),
-                    "json".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/schema_registry_report.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
+        "schema-registry-check" => run_job_for_command(&root, "schema-registry-check", &forwarded),
+        "schema-registry-build" => run_job_for_command(&root, "schema-registry-build", &forwarded),
         "schema-docs-check" => run_cmd(
             &py,
             &with_forwarded(
@@ -1972,73 +1946,12 @@ fn main() {
             &root,
         ),
         "perf-smoke" => run_job_for_command(&root, "perf-smoke", &forwarded),
-        "docs-generate" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![script(&root, "docs_generate_all.py"), "--build".to_string()],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "docs-generate-check" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![script(&root, "docs_generate_all.py"), "--check".to_string()],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "docs-build" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "docs_generate_all.py"),
-                    "--build".to_string(),
-                    "--surface".to_string(),
-                    "reference_book".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "docs-build-check" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "docs_generate_all.py"),
-                    "--check".to_string(),
-                    "--surface".to_string(),
-                    "reference_book".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "docs-lint" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.spec_lang_commands".to_string(),
-                    "docs-lint".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "docs-graph" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "docs_generate_all.py"),
-                    "--build".to_string(),
-                    "--surface".to_string(),
-                    "docs_graph".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
+        "docs-generate" => run_job_for_command(&root, "docs-generate", &forwarded),
+        "docs-generate-check" => run_job_for_command(&root, "docs-generate-check", &forwarded),
+        "docs-build" => run_job_for_command(&root, "docs-build", &forwarded),
+        "docs-build-check" => run_job_for_command(&root, "docs-build-check", &forwarded),
+        "docs-lint" => run_job_for_command(&root, "docs-lint", &forwarded),
+        "docs-graph" => run_job_for_command(&root, "docs-graph", &forwarded),
         "conformance-parity" => run_job_for_command(&root, "conformance-parity", &forwarded),
         "test-core" => run_cmd(
             &pytest,
