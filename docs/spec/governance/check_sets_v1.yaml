@@ -1,7 +1,7 @@
 version: 1
 profiles:
   critical:
-    asserts:
+    checks:
       - id: runtime.critical_check_set_manifest_required
         kind: manifest_non_empty
         path: /docs/spec/governance/check_sets_v1.yaml
@@ -59,7 +59,7 @@ profiles:
         kind: slo_budget
         max_ms: 10000
   full:
-    asserts:
+    checks:
       - id: runtime.full_check_set_manifest_required
         kind: manifest_non_empty
         path: /docs/spec/governance/check_sets_v1.yaml
