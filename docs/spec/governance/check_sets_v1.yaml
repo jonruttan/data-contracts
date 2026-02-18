@@ -33,7 +33,7 @@ profiles:
           - ci-gate-summary
       - id: runtime.critical_ci_gate_ownership_contract_python
         kind: file_tokens
-        path: /scripts/ci_gate_summary.py
+        path: /spec_runner/script_runtime_commands.py
         must_contain:
           - governance_broad
         must_not_contain:
@@ -67,7 +67,7 @@ profiles:
         key: checks
       - id: runtime.full_ci_gate_step_order_python
         kind: file_tokens
-        path: /scripts/ci_gate_summary.py
+        path: /spec_runner/script_runtime_commands.py
         must_contain:
           - governance_broad
         must_not_contain:
@@ -81,7 +81,7 @@ profiles:
           - governance_critical
       - id: runtime.full_ci_gate_broad_is_native_python
         kind: file_tokens
-        path: /scripts/ci_gate_summary.py
+        path: /spec_runner/script_runtime_commands.py
         must_contain:
           - governance-broad-native
         must_not_contain:
