@@ -294,6 +294,12 @@ fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
         "objective-scorecard-md" => Some(
             "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-016",
         ),
+        "conformance-parity" => Some(
+            "/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-002",
+        ),
+        "perf-smoke" => Some(
+            "/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-003",
+        ),
         _ => None,
     }
 }
@@ -1993,11 +1999,7 @@ fn main() {
             &with_forwarded(vec![], &forwarded),
             &root,
         ),
-        "perf-smoke" => run_cmd(
-            &py,
-            &with_forwarded(vec![script(&root, "perf_smoke.py")], &forwarded),
-            &root,
-        ),
+        "perf-smoke" => run_job_for_command(&root, "perf-smoke", &forwarded),
         "docs-generate" => run_cmd(
             &py,
             &with_forwarded(
@@ -2065,22 +2067,7 @@ fn main() {
             ),
             &root,
         ),
-        "conformance-parity" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "compare_conformance_parity.py"),
-                    "--cases".to_string(),
-                    "docs/spec/conformance/cases".to_string(),
-                    "--php-runner".to_string(),
-                    "scripts/php/conformance_runner.php".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/conformance-parity.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
+        "conformance-parity" => run_job_for_command(&root, "conformance-parity", &forwarded),
         "test-core" => run_cmd(
             &pytest,
             &with_forwarded(

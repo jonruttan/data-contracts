@@ -1,6 +1,7 @@
 use serde_json::{json, Map, Value};
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::process::{Command, Stdio};
 
 fn as_str<'a>(v: &'a Value, key: &str) -> Result<&'a str, String> {
     v.get(key)
@@ -287,6 +288,98 @@ fn helper_report_emit(root: &Path, payload: &Value) -> Result<Value, String> {
     }))
 }
 
+fn python_bin(root: &Path) -> String {
+    let local = root.join(".venv").join("bin").join("python");
+    if local.exists() {
+        return local.to_string_lossy().to_string();
+    }
+    "python3".to_string()
+}
+
+fn helper_exec_python_script(root: &Path, script_rel: &str, extra: &[String]) -> Result<Value, String> {
+    let py = python_bin(root);
+    let script_path = resolve(root, script_rel);
+    let mut cmd = Command::new(&py);
+    cmd.arg(script_path.to_string_lossy().to_string())
+        .args(extra.iter())
+        .current_dir(root)
+        .stdin(Stdio::inherit())
+        .stdout(Stdio::inherit())
+        .stderr(Stdio::inherit());
+    let status = cmd
+        .status()
+        .map_err(|e| format!("failed to run {} {}: {e}", py, script_path.display()))?;
+    let code = status.code().unwrap_or(1);
+    if code != 0 {
+        return Err(format!(
+            "script command failed (exit={code}): {} {}",
+            py,
+            script_path.display()
+        ));
+    }
+    Ok(json!({
+        "ok": true,
+        "script": script_path.to_string_lossy().to_string(),
+        "exit_code": code,
+    }))
+}
+
+fn helper_parity_run_conformance(root: &Path, payload: &Value) -> Result<Value, String> {
+    let cases = payload
+        .get("cases")
+        .and_then(|v| v.as_str())
+        .unwrap_or("docs/spec/conformance/cases")
+        .to_string();
+    let php_runner = payload
+        .get("php_runner")
+        .and_then(|v| v.as_str())
+        .unwrap_or("scripts/php/conformance_runner.php")
+        .to_string();
+    let out = payload
+        .get("out")
+        .and_then(|v| v.as_str())
+        .unwrap_or(".artifacts/conformance-parity.json")
+        .to_string();
+    let args = vec![
+        "--cases".to_string(),
+        cases,
+        "--php-runner".to_string(),
+        php_runner,
+        "--out".to_string(),
+        out.clone(),
+    ];
+    let mut res = helper_exec_python_script(root, "/scripts/compare_conformance_parity.py", &args)?;
+    if let Some(map) = res.as_object_mut() {
+        map.insert("out".to_string(), Value::String(out));
+    }
+    Ok(res)
+}
+
+fn helper_perf_run_smoke(root: &Path, payload: &Value) -> Result<Value, String> {
+    let selected_mode = payload
+        .get("_mode")
+        .and_then(|v| v.as_str())
+        .unwrap_or("warn")
+        .to_string();
+    let report_out = payload
+        .get("report_out")
+        .and_then(|v| v.as_str())
+        .unwrap_or(".artifacts/perf-smoke-report.json")
+        .to_string();
+    let args = vec![
+        "--mode".to_string(),
+        selected_mode.clone(),
+        "--report-out".to_string(),
+        report_out.clone(),
+    ];
+    let mut res = helper_exec_python_script(root, "/scripts/perf_smoke.py", &args)?;
+    if let Some(map) = res.as_object_mut() {
+        map.insert("mode".to_string(), Value::String(selected_mode));
+        map.insert("report_out".to_string(), Value::String(report_out));
+    }
+    Ok(res)
+}
+
 pub fn run_helper(root: &Path, helper_id: &str, payload: &Value) -> Result<Value, String> {
     match helper_id {
         "helper.docs.render_template" => helper_docs_render_template(payload),
@@ -296,6 +389,8 @@ pub fn run_helper(root: &Path, helper_id: &str, payload: &Value) -> Result<Value
         "helper.normalize.apply_edits" => helper_normalize_apply_edits(root, payload),
         "helper.governance.scan_bundle" => helper_governance_scan_bundle(root, payload),
         "helper.report.emit" => helper_report_emit(root, payload),
+        "helper.parity.run_conformance" => helper_parity_run_conformance(root, payload),
+        "helper.perf.run_smoke" => helper_perf_run_smoke(root, payload),
         _ => Err(format!("unsupported helper id: {helper_id}")),
     }
 }
