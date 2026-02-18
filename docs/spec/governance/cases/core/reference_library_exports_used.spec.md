@@ -2,7 +2,7 @@
 
 ## SRGOV-REF-SYMBOLS-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-REF-SYMBOLS-003
 title: library exports are referenced
 purpose: Ensures exported library symbols are referenced by case policies/expressions or harness
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

@@ -19,7 +19,7 @@ def test_convert_md_to_json(tmp_path: Path) -> None:
     mod = _load_module()
     src = tmp_path / "a.spec.md"
     src.write_text(
-        """```yaml spec-test
+        """```yaml contract-spec
 id: C1
 type: text.file
 assert:
@@ -45,5 +45,5 @@ def test_convert_yaml_to_md(tmp_path: Path) -> None:
     code = mod.main(["--in", str(src), "--out", str(out), "--out-format", "md", "--formats", "yaml"])
     assert code == 0
     text = out.read_text(encoding="utf-8")
-    assert "```yaml spec-test" in text
+    assert "```yaml contract-spec" in text
     assert "id: C2" in text

@@ -7,7 +7,7 @@ Case fixtures that portable runner implementations execute.
 - Keep case ids stable.
 - Prefer small, focused cases per behavior.
 - Include both pass and fail cases.
-- Use Markdown `.spec.md` files with fenced `yaml spec-test` blocks.
+- Use Markdown `.spec.md` files with fenced `yaml contract-spec` blocks.
 - Prefer inline expectations via:
   - `expect.portable`
   - optional `expect.impl.<runtime>` overrides

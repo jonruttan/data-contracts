@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-TRIAGE-015
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-015
 title: ci gate default broad governance path is rust-native
 purpose: Ensures ci-gate-summary defaults to governance-broad-native and does not route broad
@@ -28,10 +28,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

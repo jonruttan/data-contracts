@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-REF-018
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-REF-018
 title: docs book chapter order is canonical
 purpose: Enforces the hard-cut Learn -> Do -> Debug chapter order and appendix namespace ordering
@@ -20,17 +20,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

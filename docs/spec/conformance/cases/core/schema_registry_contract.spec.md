@@ -2,7 +2,7 @@
 
 ## SRCONF-SCHEMA-REG-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-SCHEMA-REG-001
 title: schema docs include generated registry snapshot markers
 purpose: Ensures generated schema registry snapshot markers and section header are
@@ -13,10 +13,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.string.contains:
       - var: subject

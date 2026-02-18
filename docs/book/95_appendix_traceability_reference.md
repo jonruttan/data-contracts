@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 249
-- rules_with_conformance_cases: 54
+- link_count: 255
+- rules_with_conformance_cases: 60
 - rules_with_unit_tests: 245
-- rules_with_implementation_refs: 247
+- rules_with_implementation_refs: 253
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -79,6 +79,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `ASSERT_SUGAR_OPERATORS_COMPILE_ONLY` | `docs/spec/contract/policy_v1.yaml#ASSERT_SUGAR_OPERATORS_COMPILE_ONLY` | 3 | 1 | 1 | 3 | 4 |
 | `ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN` | `docs/spec/contract/policy_v1.yaml#ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN` | 4 | 1 | 0 | 1 | 2 |
 | `ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY` | `docs/spec/contract/policy_v1.yaml#ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY` | 3 | 1 | 1 | 2 | 3 |
+| `CASE_CONTRACT_BLOCK_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CASE_CONTRACT_BLOCK_REQUIRED` | 1 | 1 | 1 | 0 | 2 |
 | `CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_CYCLE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_CYCLE_FORBIDDEN` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_EXPLICIT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
@@ -107,6 +108,8 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `CONTRACT_ASSERTIONS_METRIC_REPORTED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_METRIC_REPORTED` | 2 | 1 | 0 | 3 | 3 |
 | `CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | `docs/spec/contract/policy_v1.yaml#CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | 2 | 1 | 0 | 2 | 2 |
+| `CONTRACT_SPEC_FENCE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_SPEC_FENCE_REQUIRED` | 2 | 1 | 1 | 0 | 2 |
+| `CONTRACT_STEP_ASSERTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_STEP_ASSERTS_REQUIRED` | 1 | 1 | 1 | 0 | 3 |
 | `CURRENT_SPEC_POLICY_KEY_NAMES` | `docs/spec/contract/policy_v1.yaml#CURRENT_SPEC_POLICY_KEY_NAMES` | 2 | 1 | 0 | 1 | 2 |
 | `DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES` | `docs/spec/contract/policy_v1.yaml#DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_ADOPTION_PROFILES_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_ADOPTION_PROFILES_SYNC` | 3 | 0 | 0 | 2 | 3 |
@@ -177,6 +180,9 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `IMPL_EVALUATE_FIRST_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_FIRST_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
+| `LEGACY_ASSERT_BLOCK_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LEGACY_ASSERT_BLOCK_FORBIDDEN` | 1 | 1 | 1 | 0 | 2 |
+| `LEGACY_CHECKS_KEY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LEGACY_CHECKS_KEY_FORBIDDEN` | 1 | 1 | 1 | 0 | 3 |
+| `LEGACY_SPEC_TEST_FENCE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LEGACY_SPEC_TEST_FENCE_FORBIDDEN` | 1 | 1 | 1 | 0 | 2 |
 | `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `LIBRARY_DOMAIN_INDEX_SYNC` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_INDEX_SYNC` | 2 | 1 | 0 | 1 | 3 |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_OWNERSHIP` | 2 | 1 | 0 | 1 | 2 |

@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-CONFIG-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-CONFIG-001
 title: runtime python code does not duplicate governed config literals
 purpose: Enforces centralized configuration by rejecting duplicated governed literals in runtime
@@ -20,17 +20,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

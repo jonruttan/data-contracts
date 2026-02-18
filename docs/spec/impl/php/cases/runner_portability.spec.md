@@ -2,7 +2,7 @@
 
 ## SRPHP-PORT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-PORT-001
 title: shell command via sh -c works when shell exists
 purpose: Captures a shell-based cli.run case to detect environments where sh is unavailable.
@@ -16,10 +16,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - port-shell-ok
@@ -28,7 +28,7 @@ assert:
 
 ## SRPHP-PORT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-PORT-002
 title: process env passthrough remains stringly typed
 purpose: Verifies env values passed through cli.run are observed as strings by child
@@ -46,10 +46,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - x:true y:7
@@ -58,7 +58,7 @@ assert:
 
 ## SRPHP-PORT-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-PORT-003
 title: relative stdout path resolves from runner cwd
 purpose: Detects portability differences in cwd/path handling for stdout_path assertions.
@@ -72,10 +72,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - path_target.txt

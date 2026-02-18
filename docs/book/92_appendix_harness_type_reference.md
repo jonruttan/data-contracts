@@ -58,7 +58,7 @@ Provide generated reference for harness-specific type overlays and required fiel
 | `docs.generate` | 8 | - | - |
 | `governance.check` | 1 | `check` | - |
 | `orchestration.run` | 6 | - | - |
-| `spec.export` | 2 | `assert`, `harness` | `imports` |
+| `spec.export` | 2 | `contract`, `harness` | `imports` |
 | `text.file` | 1 | - | - |
 
 

@@ -2,7 +2,7 @@
 
 ## SRCONF-DOMAIN-LIB-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-DOMAIN-LIB-001
 title: domain http library defines status helper
 purpose: Ensures domain HTTP library exports reusable status-based assertion helper.
@@ -36,10 +36,10 @@ harness:
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - call:
@@ -195,7 +195,7 @@ assert:
 
 ## SRCONF-DOMAIN-LIB-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-DOMAIN-LIB-002
 title: domain library index references all domain library files
 purpose: Ensures domain index remains synchronized with all domain library spec files.
@@ -272,10 +272,10 @@ harness:
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - call:
       - var: make.has_target

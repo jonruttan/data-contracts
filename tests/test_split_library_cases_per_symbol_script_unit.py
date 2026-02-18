@@ -19,7 +19,7 @@ def test_split_library_cases_per_symbol(tmp_path: Path) -> None:
     _write(
         f,
         """# Lib
-```yaml spec-test
+```yaml contract-spec
 id: LIB-1
 type: spec_lang.export
 defines:

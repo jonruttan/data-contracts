@@ -1,6 +1,6 @@
 # docs.examples_prefer_domain_fs_helpers
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-FS-EXAMPLES-001
 title: docs yaml examples prefer domain fs/path helpers over raw ops fs
 purpose: Keeps contributor-facing docs examples aligned with the domain-library-first authoring
@@ -23,10 +23,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

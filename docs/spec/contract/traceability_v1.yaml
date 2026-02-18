@@ -3720,3 +3720,84 @@ links:
   - spec_runner/spec_lang.py
   - spec_runner/spec_lang_std_names.py
   notes: ops.os builtins are capability-gated and declared in stdlib profile.
+- rule_id: CONTRACT_SPEC_FENCE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_SPEC_FENCE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/02_case_shape.md
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRGOV-RUNTIME-CONTRACT-SPEC-001
+  unit_test_refs: []
+  implementation_refs:
+  - spec_runner/doc_parser.py
+  - scripts/run_governance_specs.py
+  notes: Executable markdown discovery requires contract-spec fence token.
+- rule_id: LEGACY_SPEC_TEST_FENCE_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#LEGACY_SPEC_TEST_FENCE_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/02_case_shape.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRGOV-RUNTIME-CONTRACT-SPEC-002
+  unit_test_refs: []
+  implementation_refs:
+  - spec_runner/doc_parser.py
+  - scripts/run_governance_specs.py
+  notes: Legacy spec-test token is rejected on canonical surfaces.
+- rule_id: CASE_CONTRACT_BLOCK_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CASE_CONTRACT_BLOCK_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRGOV-RUNTIME-CONTRACT-BLOCK-001
+  unit_test_refs: []
+  implementation_refs:
+  - spec_runner/compiler.py
+  - scripts/run_governance_specs.py
+  notes: Top-level contract block is required for executable cases.
+- rule_id: LEGACY_ASSERT_BLOCK_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#LEGACY_ASSERT_BLOCK_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRGOV-RUNTIME-CONTRACT-BLOCK-002
+  unit_test_refs: []
+  implementation_refs:
+  - spec_runner/compiler.py
+  - scripts/run_governance_specs.py
+  notes: Legacy assert block is forbidden after hard cut.
+- rule_id: CONTRACT_STEP_ASSERTS_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_STEP_ASSERTS_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRGOV-RUNTIME-CONTRACT-STEP-001
+  unit_test_refs: []
+  implementation_refs:
+  - spec_runner/compiler.py
+  - spec_runner/assertions.py
+  - scripts/run_governance_specs.py
+  notes: Contract step-form nodes require asserts list.
+- rule_id: LEGACY_CHECKS_KEY_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#LEGACY_CHECKS_KEY_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids:
+  - SRGOV-RUNTIME-CONTRACT-STEP-002
+  unit_test_refs: []
+  implementation_refs:
+  - spec_runner/compiler.py
+  - spec_runner/assertions.py
+  - scripts/run_governance_specs.py
+  notes: Legacy checks key is forbidden in contract trees.

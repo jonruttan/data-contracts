@@ -1,11 +1,11 @@
 # Conformance Case Authoring Style
 
 Conformance case docs are authored as Markdown `*.spec.md` files with fenced
-`yaml spec-test` blocks.
+`yaml contract-spec` blocks.
 
 Style rules:
 
-- one case per fenced `spec-test` block
+- one case per fenced `contract-spec` block
 - each block must be immediately preceded by `## <case-id>`
 - case ids must be sorted ascending within each file
 - each fenced block should stay small (120 lines max) for readability

@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-REF-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-REF-007
 title: docs use canonical make command entrypoints
 purpose: Keeps contributor docs aligned on the canonical make-based command entrypoints for
@@ -32,17 +32,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

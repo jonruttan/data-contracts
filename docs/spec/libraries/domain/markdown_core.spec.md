@@ -2,14 +2,14 @@
 
 ## LIB-DOMAIN-MD-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING
 title: 'markdown projection helper functions: domain.markdown.has_heading'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.has_heading
   class: must
-  checks:
+  asserts:
   - std.logic.or:
     - std.collection.any:
       - std.collection.map:
@@ -92,7 +92,7 @@ assert:
                   - ''
 - id: __export__markdown._text
   class: must
-  checks:
+  asserts:
   - if:
     - std.type.is_string:
       - var: subject
@@ -104,7 +104,7 @@ assert:
         - value
 - id: __export__markdown._context
   class: must
-  checks:
+  asserts:
   - if:
     - std.type.is_dict:
       - var: subject
@@ -116,7 +116,7 @@ assert:
     - lit: {}
 - id: __export__markdown._headings
   class: must
-  checks:
+  asserts:
   - std.null.default_to:
     - lit: []
     - std.object.get:
@@ -126,7 +126,7 @@ assert:
       - headings
 - id: __export__markdown._links
   class: must
-  checks:
+  asserts:
   - std.null.default_to:
     - lit: []
     - std.object.get:
@@ -136,7 +136,7 @@ assert:
       - links
 - id: __export__markdown._tokens_map
   class: must
-  checks:
+  asserts:
   - std.null.default_to:
     - lit: {}
     - std.object.get:
@@ -146,7 +146,7 @@ assert:
       - tokens
 - id: __export__markdown._token_owners
   class: must
-  checks:
+  asserts:
   - std.null.default_to:
     - lit: {}
     - std.object.get:
@@ -156,7 +156,7 @@ assert:
       - token_owners
 - id: __export__markdown._token_dependencies
   class: must
-  checks:
+  asserts:
   - std.null.default_to:
     - lit: []
     - std.object.get:
@@ -220,14 +220,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS
 title: 'markdown projection helper functions: domain.markdown.heading_level_exists'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.heading_level_exists
   class: must
-  checks:
+  asserts:
   - std.logic.or:
     - std.collection.any:
       - std.collection.map:
@@ -310,14 +310,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID
 title: 'markdown projection helper functions: domain.markdown.section_order_valid'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.section_order_valid
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - call:
       - var: domain.markdown.required_sections_present
@@ -374,14 +374,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT
 title: 'markdown projection helper functions: domain.markdown.required_sections_present'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.required_sections_present
   class: must
-  checks:
+  asserts:
   - std.collection.all:
     - std.collection.map:
       - fn:
@@ -405,14 +405,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE
 title: 'markdown projection helper functions: domain.markdown.link_targets_all_resolve'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.link_targets_all_resolve
   class: must
-  checks:
+  asserts:
   - std.collection.all:
     - std.collection.map:
       - fn:
@@ -438,14 +438,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS
 title: 'markdown projection helper functions: domain.markdown.has_broken_links'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.has_broken_links
   class: must
-  checks:
+  asserts:
   - std.logic.not:
     - call:
       - var: domain.markdown.link_targets_all_resolve
@@ -463,25 +463,25 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE
 title: 'markdown projection helper functions: domain.markdown.has_yaml_spec_test_fence'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.has_yaml_spec_test_fence
   class: must
-  checks:
+  asserts:
   - std.logic.or:
     - std.string.contains:
       - call:
         - var: markdown._text
         - var: subject
-      - '```yaml spec-test'
+      - '```yaml contract-spec'
     - std.string.contains:
       - call:
         - var: markdown._text
         - var: subject
-      - ~~~yaml spec-test
+      - ~~~yaml contract-spec
 harness:
   chain:
     exports:
@@ -495,14 +495,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS
 title: 'markdown projection helper functions: domain.markdown.code_fence_language_exists'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.code_fence_language_exists
   class: must
-  checks:
+  asserts:
   - std.logic.or:
     - std.string.contains:
       - call:
@@ -538,14 +538,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT
 title: 'markdown projection helper functions: domain.markdown.token_present'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.token_present
   class: must
-  checks:
+  asserts:
   - std.logic.or:
     - std.object.has_key:
       - call:
@@ -571,14 +571,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT
 title: 'markdown projection helper functions: domain.markdown.tokens_all_present'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.tokens_all_present
   class: must
-  checks:
+  asserts:
   - std.collection.all:
     - std.collection.map:
       - fn:
@@ -602,14 +602,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE
 title: 'markdown projection helper functions: domain.markdown.token_ownership_unique'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.token_ownership_unique
   class: must
-  checks:
+  asserts:
   - std.collection.all:
     - std.collection.map:
       - fn:
@@ -635,14 +635,14 @@ harness:
 
 
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED
 title: 'markdown projection helper functions: domain.markdown.token_dependencies_resolved'
 type: spec.export
-assert:
+contract:
 - id: __export__domain.markdown.token_dependencies_resolved
   class: must
-  checks:
+  asserts:
   - std.collection.all:
     - std.collection.map:
       - fn:

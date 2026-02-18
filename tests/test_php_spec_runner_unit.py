@@ -260,7 +260,7 @@ def test_php_spec_runner_env_allowlist_filters_ambient_env(tmp_path):
     cases_dir.joinpath(case_file_name("env-allowlist")).write_text(
         f"""# Env allowlist
 
-```yaml spec-test
+```yaml contract-spec
 id: SR-PHP-ENV-ALLOWLIST-001
 type: cli.run
 argv: []

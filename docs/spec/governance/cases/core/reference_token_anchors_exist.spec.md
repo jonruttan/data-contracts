@@ -2,7 +2,7 @@
 
 ## SRGOV-REF-TOKENS-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-REF-TOKENS-001
 title: configured token anchors exist
 purpose: Ensures configured token anchors resolve to existing files and token matches.
@@ -24,10 +24,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

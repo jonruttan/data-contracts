@@ -2,13 +2,13 @@
 
 ## LIB-DOMAIN-PATH-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-001-DOMAIN-PATH-NORMALIZE
 type: spec.export
-assert:
+contract:
 - id: __export__domain.path.normalize
   class: must
-  checks:
+  asserts:
   - ops.fs.path.normalize:
     - var: path
 harness:
@@ -22,13 +22,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-002-DOMAIN-PATH-EQ
 type: spec.export
-assert:
+contract:
 - id: __export__domain.path.eq
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - ops.fs.path.normalize:
       - var: left
@@ -46,13 +46,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-003-DOMAIN-PATH-IS-SPEC-MD
 type: spec.export
-assert:
+contract:
 - id: __export__domain.path.is_spec_md
   class: must
-  checks:
+  asserts:
   - std.string.ends_with:
     - ops.fs.path.normalize:
       - var: path
@@ -68,13 +68,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-004-DOMAIN-PATH-IS-IN-DOCS
 type: spec.export
-assert:
+contract:
 - id: __export__domain.path.is_in_docs
   class: must
-  checks:
+  asserts:
   - ops.fs.path.within:
     - /docs
     - ops.fs.path.normalize:
@@ -90,13 +90,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-005-DOMAIN-PATH-SORTED
 type: spec.export
-assert:
+contract:
 - id: __export__domain.path.sorted
   class: must
-  checks:
+  asserts:
   - ops.fs.path.sort:
     - var: paths
 harness:
@@ -110,13 +110,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-006-DOMAIN-FILE-IS-EXISTING-FILE
 type: spec.export
-assert:
+contract:
 - id: __export__domain.file.is_existing_file
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - ops.fs.file.exists:
       - var: meta
@@ -133,13 +133,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-007-DOMAIN-FILE-IS-EXISTING-DIR
 type: spec.export
-assert:
+contract:
 - id: __export__domain.file.is_existing_dir
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - ops.fs.file.exists:
       - var: meta
@@ -156,13 +156,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-008-DOMAIN-FILE-HAS-EXT
 type: spec.export
-assert:
+contract:
 - id: __export__domain.file.has_ext
   class: must
-  checks:
+  asserts:
   - ops.fs.path.has_ext:
     - ops.fs.file.path:
       - var: meta
@@ -179,13 +179,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-009-DOMAIN-FILE-NAME
 type: spec.export
-assert:
+contract:
 - id: __export__domain.file.name
   class: must
-  checks:
+  asserts:
   - ops.fs.file.name:
     - var: meta
 harness:

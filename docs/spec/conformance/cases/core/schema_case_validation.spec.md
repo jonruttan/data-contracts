@@ -2,7 +2,7 @@
 
 ## SRCONF-SCHEMA-CASE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-SCHEMA-CASE-001
 title: valid core shape compiles and runs
 purpose: Ensures standard top-level keys accepted by registry validation continue
@@ -12,10 +12,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - Spec-Test Schema (v1)
@@ -24,7 +24,7 @@ assert:
 
 ## SRCONF-SCHEMA-CASE-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-SCHEMA-CASE-002
 title: unknown evaluate symbol is rejected as schema
 purpose: Ensures unknown spec-lang symbols fail as schema in both runtimes.
@@ -33,10 +33,10 @@ expect:
   portable:
     status: fail
     category: schema
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - unknown_symbol_for_schema_case:
     - var: subject
   target: text

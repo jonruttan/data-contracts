@@ -2,14 +2,14 @@
 
 ## LIB-DOMAIN-MAKE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MAKE-001
 title: makefile projection helper functions
 type: spec.export
-assert:
+contract:
 - id: __export__make.has_target
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - std.object.get:
       - var: subject

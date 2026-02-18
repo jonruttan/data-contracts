@@ -1,7 +1,7 @@
 # Spec Runner
 
-`spec_runner` is an executable-spec runner for Markdown-authored cases.
-It discovers `yaml spec-test` blocks in `*.spec.md` files, validates case shape
+`spec_runner` is a data contract spec format and runner for Markdown-authored cases.
+It discovers `yaml contract-spec` blocks in `*.spec.md` files, validates case shape
 against contract/schema rules, and executes typed harnesses through a stable
 runner interface.
 
@@ -122,7 +122,7 @@ Runner interface contract:
 
 ## Minimal `.spec.md` Example
 
-```yaml spec-test
+```yaml contract-spec
 id: EX-TEXT-001
 type: text.file
 path: /README.md

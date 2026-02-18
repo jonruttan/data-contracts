@@ -1,6 +1,6 @@
 # library.colocated_symbol_tests_required
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-LIB-SINGLE-002
 title: library exports are referenced by executable tests
 purpose: Ensures library exported symbols are exercised by colocated or downstream executable
@@ -18,10 +18,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

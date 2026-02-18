@@ -46,7 +46,7 @@ Provide repeatable recipes for common contributor tasks.
 ## Add A New Spec Case
 
 1. Create `*.spec.md` in the correct domain tree.
-2. Add `yaml spec-test` case with `id`, `type`, `assert`.
+2. Add `yaml contract-spec` case with `id`, `type`, `assert`.
 3. Prefer `evaluate` for policy logic.
 4. Run:
    - `./scripts/runner_adapter.sh normalize-check`
@@ -82,9 +82,9 @@ harness:
       names:
       - domain.markdown.required_sections_present
       - domain.markdown.link_targets_all_resolve
-assert:
+contract:
 - target: context_json
-  checks:
+  asserts:
   - must:
     - call:
       - {var: domain.markdown.required_sections_present}
@@ -123,10 +123,10 @@ harness:
       names:
       - domain.fs.json_path_eq_text
       - domain.fs.glob_filter
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - call:
       - {var: domain.fs.json_path_eq_text}

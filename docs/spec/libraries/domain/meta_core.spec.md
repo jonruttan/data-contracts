@@ -2,13 +2,13 @@
 
 ## LIB-DOMAIN-META-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ
 type: spec.export
-assert:
+contract:
 - id: __export__domain.meta.case_id_eq
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - std.object.get:
@@ -28,13 +28,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET
 type: spec.export
-assert:
+contract:
 - id: __export__domain.meta.has_artifact_target
   class: must
-  checks:
+  asserts:
   - std.collection.includes:
     - std.object.get:
       - std.object.get:

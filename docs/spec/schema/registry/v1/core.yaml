@@ -22,7 +22,7 @@ fields:
     type: mapping
     required: false
     since: v1
-  assert:
+  contract:
     type: list
     required: false
     since: v1

@@ -1029,7 +1029,7 @@ rules:
   applies_to: docs.reference.examples_v2
   norm: MUST
   requirement: docs_examples_validate_or_explicitly_opt_out_with_reason
-  description: 'Shell/python/spec-test examples in canonical reference chapters must pass static validation unless explicitly opted out with a reason marker.
+  description: 'Shell/python/contract-spec examples in canonical reference chapters must pass static validation unless explicitly opted out with a reason marker.
 
     '
   rationale: Keeps copy/paste docs trustworthy for users.
@@ -2467,7 +2467,7 @@ rules:
   applies_to: docs.spec.executable_surfaces
   norm: MUST
   requirement: canonical_executable_spec_surfaces_are_markdown_only
-  description: 'Canonical executable contract/spec surfaces must be authored as markdown .spec.md files with yaml spec-test blocks.
+  description: 'Canonical executable contract/spec surfaces must be authored as markdown .spec.md files with yaml contract-spec blocks.
 
     '
   rationale: Keeps executable contract authoring uniform and directly dogfooded by the markdown parser path.
@@ -2495,7 +2495,7 @@ rules:
   applies_to: docs.spec.data_artifacts
   norm: MUST
   requirement: machine_data_artifacts_remain_yaml_or_json_and_non_executable
-  description: 'Baselines, manifests, generated reports, and schema/profile registries must remain machine-native yaml/json artifacts and must not embed executable spec-test blocks.
+  description: 'Baselines, manifests, generated reports, and schema/profile registries must remain machine-native yaml/json artifacts and must not embed executable contract-spec blocks.
 
     '
   rationale: Preserves deterministic machine parsing surfaces and avoids brittle markdown-embedded data payloads.
@@ -3645,3 +3645,75 @@ rules:
   references:
   - spec_runner/spec_lang.py
   - docs/spec/governance/cases/core/runtime_ops_os_capability_required.spec.md
+- id: CONTRACT_SPEC_FENCE_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: markdown.fence.discovery
+  norm: MUST
+  requirement: executable_cases_use_contract_spec_fence
+  description: Executable markdown cases must use yaml contract-spec fences.
+  rationale: Hard-cut terminology keeps parser and docs aligned.
+  risk_if_violated: Case discovery becomes ambiguous across legacy/new formats.
+  references:
+  - spec_runner/doc_parser.py
+  - docs/spec/governance/cases/core/runtime_contract_spec_fence_required.spec.md
+- id: LEGACY_SPEC_TEST_FENCE_FORBIDDEN
+  introduced_in: v1
+  scope: runtime
+  applies_to: markdown.fence.discovery
+  norm: MUST_NOT
+  requirement: legacy_spec_test_token_is_forbidden
+  description: Legacy spec-test fence token is forbidden on canonical executable surfaces.
+  rationale: Enforces immediate hard cut without compatibility aliasing.
+  risk_if_violated: Legacy syntax drifts back into active contracts.
+  references:
+  - spec_runner/doc_parser.py
+  - docs/spec/governance/cases/core/runtime_legacy_spec_test_fence_forbidden.spec.md
+- id: CASE_CONTRACT_BLOCK_REQUIRED
+  introduced_in: v1
+  scope: schema
+  applies_to: case.top_level.contract
+  norm: MUST
+  requirement: executable_cases_define_contract_block
+  description: Executable cases must define contract as the assertion root.
+  rationale: Keeps decision obligations explicit and uniform.
+  risk_if_violated: Contract execution semantics diverge per case type.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/governance/cases/core/runtime_case_contract_block_required.spec.md
+- id: LEGACY_ASSERT_BLOCK_FORBIDDEN
+  introduced_in: v1
+  scope: schema
+  applies_to: case.top_level.assert
+  norm: MUST_NOT
+  requirement: legacy_assert_key_is_forbidden
+  description: Legacy top-level assert block is forbidden.
+  rationale: Prevents dual-surface ambiguity after hard cut.
+  risk_if_violated: Parser and schema mismatch on case obligations.
+  references:
+  - docs/spec/schema/schema_v1.md
+  - docs/spec/governance/cases/core/runtime_legacy_assert_block_forbidden.spec.md
+- id: CONTRACT_STEP_ASSERTS_REQUIRED
+  introduced_in: v1
+  scope: schema
+  applies_to: contract.step_shape
+  norm: MUST
+  requirement: contract_steps_use_asserts_list
+  description: Contract step-form entries must use non-empty asserts lists.
+  rationale: Maintains deterministic step-tree structure.
+  risk_if_violated: Step-form nodes fail compilation/evaluation parity.
+  references:
+  - spec_runner/compiler.py
+  - docs/spec/governance/cases/core/runtime_contract_step_asserts_required.spec.md
+- id: LEGACY_CHECKS_KEY_FORBIDDEN
+  introduced_in: v1
+  scope: schema
+  applies_to: contract.step_shape
+  norm: MUST_NOT
+  requirement: legacy_checks_key_forbidden_in_contract_steps
+  description: Legacy checks key is forbidden in contract trees.
+  rationale: Hard-cut rename to asserts must be enforced consistently.
+  risk_if_violated: Old fixtures bypass new contract semantics.
+  references:
+  - spec_runner/compiler.py
+  - docs/spec/governance/cases/core/runtime_legacy_checks_key_forbidden.spec.md

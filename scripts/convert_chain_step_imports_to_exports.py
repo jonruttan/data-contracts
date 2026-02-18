@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 
-_FENCE_RE = re.compile(r"```yaml spec-test\n(.*?)\n```", re.DOTALL)
+_FENCE_RE = re.compile(r"```yaml contract-spec\n(.*?)\n```", re.DOTALL)
 
 
 def _iter_files(path: Path):
@@ -36,7 +36,7 @@ def _rewrite(text: str) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Rename harness.chain.steps[*].imports to .exports in yaml spec-test blocks.")
+    ap = argparse.ArgumentParser(description="Rename harness.chain.steps[*].imports to .exports in yaml contract-spec blocks.")
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--write", action="store_true")

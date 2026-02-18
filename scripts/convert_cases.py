@@ -17,7 +17,7 @@ def _render_markdown(cases: list[dict[str, Any]]) -> str:
     for case in cases:
         cid = str(case.get("id", "")).strip() or "CASE"
         parts.append(f"## {cid}\n")
-        parts.append("```yaml spec-test\n")
+        parts.append("```yaml contract-spec\n")
         parts.append(yaml.safe_dump(case, sort_keys=False, allow_unicode=False))
         parts.append("```\n")
     return "\n".join(parts)

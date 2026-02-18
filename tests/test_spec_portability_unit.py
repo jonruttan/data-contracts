@@ -37,7 +37,7 @@ def test_evaluate_only_case_scores_one(tmp_path: Path) -> None:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 assert:
@@ -65,7 +65,7 @@ def test_mixed_leaf_formula_matches_weights(tmp_path: Path) -> None:
 
 ## C2
 
-```yaml spec-test
+```yaml contract-spec
 id: C2
 type: text.file
 assert:
@@ -93,7 +93,7 @@ def test_impl_overlay_non_core_and_runtime_capability_penalties_apply(tmp_path: 
 
 ## C3
 
-```yaml spec-test
+```yaml contract-spec
 id: C3
 type: api.http
 requires:
@@ -123,7 +123,7 @@ def test_no_leaf_assertions_are_neutral(tmp_path: Path) -> None:
 
 ## C4
 
-```yaml spec-test
+```yaml contract-spec
 id: C4
 type: text.file
 assert: []
@@ -144,7 +144,7 @@ def test_segmented_and_overall_summary_are_reported(tmp_path: Path) -> None:
 
 ## C5
 
-```yaml spec-test
+```yaml contract-spec
 id: C5
 type: text.file
 assert:
@@ -162,7 +162,7 @@ assert:
 
 ## C6
 
-```yaml spec-test
+```yaml contract-spec
 id: C6
 type: governance.check
 assert:

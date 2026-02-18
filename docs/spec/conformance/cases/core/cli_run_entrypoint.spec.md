@@ -9,7 +9,7 @@ Coverage focus:
 
 ## SRCONF-CLI-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-CLI-001
 title: conformance fixture sets explicit cli.run harness.entrypoint
 purpose: Defines portable behavior for explicit cli.run entrypoint when capability
@@ -33,12 +33,12 @@ argv:
 exit_code: 0
 harness:
   entrypoint: spec_runner.conformance_fixtures:main
-assert: []
+contract: []
 ```
 
 ## SRCONF-CLI-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-CLI-002
 title: explicit entrypoint drives cli.run behavior deterministically
 purpose: Pins deterministic behavior for explicit harness entrypoint execution.
@@ -61,10 +61,10 @@ argv:
 exit_code: 0
 harness:
   entrypoint: spec_runner.conformance_fixtures:main
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - '"ok": true'

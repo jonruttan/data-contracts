@@ -2,7 +2,7 @@
 
 ## SRGOV-SCHEMA-REG-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-SCHEMA-REG-005
 title: required schema type profiles exist
 purpose: Ensures required type profiles are defined in registry for core runtime case types.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

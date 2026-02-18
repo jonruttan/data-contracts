@@ -2,38 +2,38 @@
 
 ## LIB-CONF-ASSERT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-CONF-ASSERT-001
 title: reusable conformance assertion helper functions
 type: spec.export
-assert:
+contract:
 - id: __export__conf.pass_when_text_contains
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - var: token
 - id: __export__conf.pass_when_text_regex
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - var: pattern
 - id: __export__conf.eq
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - var: value
 - id: __export__conf.has_error_category
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - var: category
 - id: __export__conf.json_type_is
   class: must
-  checks:
+  asserts:
   - std.type.json_type:
     - var: subject
     - var: type_name

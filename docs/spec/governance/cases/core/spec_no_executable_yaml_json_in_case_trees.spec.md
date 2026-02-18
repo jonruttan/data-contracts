@@ -2,7 +2,7 @@
 
 ## SRGOV-SPEC-MD-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-SPEC-MD-002
 title: canonical executable trees forbid yaml and json case files
 purpose: Ensures no runnable .spec.yaml, .spec.yml, or .spec.json files exist under canonical
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

@@ -57,7 +57,7 @@ def test_spec_lang_adoption_report_basic_shape(tmp_path: Path) -> None:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 assert:

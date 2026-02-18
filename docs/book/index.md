@@ -1,10 +1,10 @@
-# YAML `spec-test` Book
+# YAML `contract-spec` Book
 
 Practical guide for authoring and running executable spec tests in this repo.
 
 ## Who This Is For
 
-- Engineers writing new `yaml spec-test` cases.
+- Engineers writing new `yaml contract-spec` cases.
 - Reviewers validating schema/assertion correctness.
 - Port maintainers comparing behavior across Python and PHP runners.
 

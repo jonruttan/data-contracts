@@ -2,7 +2,7 @@
 
 ## SRGOV-REF-SYMBOLS-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-REF-SYMBOLS-002
 title: governance policy symbols resolve through declared libraries
 purpose: Ensures every dotted var reference used in policy_evaluate resolves from declared
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

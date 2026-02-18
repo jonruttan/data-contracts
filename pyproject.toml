@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "spec-runner"
 version = "0.1.0"
-description = "Executable spec runner for yaml spec-test blocks in Markdown."
+description = "Executable spec runner for yaml contract-spec blocks in Markdown."
 readme = "README.md"
 requires-python = ">=3.10"
 # Keep this as a string for compatibility with setuptools' PEP 621 validation.

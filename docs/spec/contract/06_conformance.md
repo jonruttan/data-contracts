@@ -61,7 +61,7 @@ case.
 - Behavior tests SHOULD be represented as executable `.spec.md` fixtures.
 - Direct unit tests (`tests/test_*_unit.py`) are disallowed by default.
 - A direct unit test MAY be used only when the behavior cannot be expressed
-  safely or clearly in the `yaml spec-test` DSL/harness contract.
+  safely or clearly in the `yaml contract-spec` DSL/harness contract.
 - Any unit test file MUST declare an explicit opt-out reason at the top of the
   file using:
   - `# SPEC-OPT-OUT: <specific reason>`

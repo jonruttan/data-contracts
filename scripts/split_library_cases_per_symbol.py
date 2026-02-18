@@ -9,7 +9,7 @@ from typing import Any
 import yaml
 
 
-_FENCE = re.compile(r"```yaml spec-test\n(.*?)\n```", re.DOTALL)
+_FENCE = re.compile(r"```yaml contract-spec\n(.*?)\n```", re.DOTALL)
 
 
 def _iter_files(path: Path):
@@ -94,7 +94,7 @@ def _rewrite(text: str) -> str:
             continue
         rendered = []
         for c in split:
-            rendered.append("```yaml spec-test\n" + _dump_case(c) + "\n```")
+            rendered.append("```yaml contract-spec\n" + _dump_case(c) + "\n```")
         out.append("\n\n".join(rendered))
         cursor = m.end()
     out.append(text[cursor:])

@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-LAYOUT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-LAYOUT-002
 title: docs use index.md as canonical directory index filename
 purpose: Enforces index.md-only docs directory index policy.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

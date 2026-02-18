@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-PREPUSH-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-PREPUSH-006
 title: prepush path is rust-only
 purpose: Ensures prepush entrypoints and hook routing remain rust-only.
@@ -40,10 +40,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

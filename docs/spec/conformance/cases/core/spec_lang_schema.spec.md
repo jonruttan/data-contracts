@@ -2,7 +2,7 @@
 
 ## SRCONF-STDLIB-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-003
 title: json parsing and type predicates stay deterministic
 purpose: Ensures parsed JSON shapes can be validated with deterministic type predicates.
@@ -11,10 +11,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_schema.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.type.json_type:
@@ -35,7 +35,7 @@ assert:
 
 ## SRCONF-STDLIB-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-004
 title: parsed payload predicates support deterministic error-shape checks
 purpose: Ensures JSON payload predicate composition remains deterministic for invalid-value
@@ -45,10 +45,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_schema.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.type.json_type:

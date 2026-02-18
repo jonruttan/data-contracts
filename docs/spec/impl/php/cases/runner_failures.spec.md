@@ -2,7 +2,7 @@
 
 ## SRPHP-RUN-F001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-F001
 title: text.file virtual absolute path missing file fails runtime
 purpose: Verifies virtual-root absolute paths resolve under contract root and fail
@@ -15,10 +15,10 @@ expect:
     category: runtime
     message_tokens:
     - cannot read fixture file
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - x
@@ -27,7 +27,7 @@ assert:
 
 ## SRPHP-RUN-F002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-F002
 title: text.file path escape is rejected
 purpose: Verifies text.file rejects relative paths that escape the contract root boundary.
@@ -39,10 +39,10 @@ expect:
     category: schema
     message_tokens:
     - text.file path escapes contract root
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - outside
@@ -51,7 +51,7 @@ assert:
 
 ## SRPHP-RUN-F003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-F003
 title: cli.run without entrypoint fails
 purpose: Verifies cli.run reports runtime failure when no entrypoint source is available.
@@ -66,10 +66,10 @@ expect:
     category: runtime
     message_tokens:
     - requires explicit harness.entrypoint
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - x
@@ -78,7 +78,7 @@ assert:
 
 ## SRPHP-RUN-F004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-F004
 title: cli.run rejects unknown spec-lang symbol usage
 purpose: Verifies unknown expression symbols are rejected as schema failures.
@@ -94,10 +94,10 @@ expect:
     category: schema
     message_tokens:
     - unsupported spec_lang symbol
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - not.a.real.symbol:
     - var: subject
   target: stdout
@@ -105,7 +105,7 @@ assert:
 
 ## SRPHP-RUN-F005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-F005
 title: cli.run exit_code mismatch is assertion failure
 purpose: Verifies cli.run reports assertion failure when observed exit code differs from expected.
@@ -121,28 +121,28 @@ expect:
     category: assertion
     message_tokens:
     - exit_code expected=0 actual=2
-assert: []
+contract: []
 ```
 
 ## SRPHP-RUN-F006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-F006
 title: unknown type reports runtime failure
-purpose: Verifies unknown spec-test types are reported as runtime failures.
+purpose: Verifies unknown contract-spec types are reported as runtime failures.
 type: nope.type
 expect:
   portable:
     status: fail
     category: runtime
     message_tokens:
-    - unknown spec-test type
-assert: []
+    - unknown contract-spec type
+contract: []
 ```
 
 ## SRPHP-RUN-F007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-F007
 title: cli.run rejects unsupported harness keys
 purpose: Verifies cli.run validates supported harness keys and rejects unknown ones.
@@ -159,12 +159,12 @@ expect:
     category: schema
     message_tokens:
     - unsupported harness key(s)
-assert: []
+contract: []
 ```
 
 ## SRPHP-RUN-F008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-F008
 title: leaf target key is rejected
 purpose: Verifies leaf assertions including target key are rejected as schema violations.
@@ -176,10 +176,10 @@ expect:
     category: schema
     message_tokens:
     - 'leaf assertion must not include key: target'
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - target: text
     contain:
     - fixture-content

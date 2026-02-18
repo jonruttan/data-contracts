@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-GEN-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-GEN-006
 title: spec lang builtin catalog artifacts are synchronized
 purpose: Ensures generated spec-lang builtin JSON and markdown artifacts are up-to-date.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

@@ -1,6 +1,6 @@
 # runtime.domain_library_preferred_for_fs_ops
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOMAIN-LIB-OPS-FS-001
 title: executable specs prefer domain library helpers over raw ops fs symbols
 purpose: Enforces domain.path/domain.fs usage in executable specs and allows raw ops.fs usage
@@ -18,10 +18,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

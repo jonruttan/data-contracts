@@ -2,7 +2,7 @@
 
 ## SRPHP-RUN-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-001
 title: text.file default target uses containing spec file
 purpose: Verifies text.file reads the containing spec document when path is omitted.
@@ -11,10 +11,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - '# PHP Spec Runner Pass Cases'
@@ -23,7 +23,7 @@ assert:
 
 ## SRPHP-RUN-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-002
 title: text.file supports relative path
 purpose: Verifies text.file can read a relative path under the same repository root.
@@ -33,10 +33,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - fixture-content
@@ -45,7 +45,7 @@ assert:
 
 ## SRPHP-RUN-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-003
 title: text.file can group succeeds with one passing branch
 purpose: Ensures can group semantics pass when at least one branch evaluates true.
@@ -55,10 +55,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: can
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - no-match-token
@@ -70,7 +70,7 @@ assert:
 
 ## SRPHP-RUN-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-004
 title: cli.run explicit entrypoint executes argv
 purpose: Verifies cli.run executes explicit harness entrypoint with argv arguments.
@@ -84,10 +84,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - hello-runner
@@ -96,7 +96,7 @@ assert:
 
 ## SRPHP-RUN-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-005
 title: cli.run applies harness env mapping
 purpose: Verifies cli.run applies harness env values to the subprocess environment.
@@ -112,10 +112,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - 'on'
@@ -124,7 +124,7 @@ assert:
 
 ## SRPHP-RUN-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-006
 title: cli.run requires explicit harness entrypoint
 purpose: Verifies cli.run executes when harness entrypoint is explicitly provided.
@@ -138,10 +138,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - fallback-ok
@@ -150,7 +150,7 @@ assert:
 
 ## SRPHP-RUN-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-007
 title: cli.run json_type list assertion passes
 purpose: Verifies json parsing and type checks can be expressed via std.* mapping-AST.
@@ -164,10 +164,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.type.json_type:
     - std.json.parse:
       - var: subject
@@ -177,7 +177,7 @@ assert:
 
 ## SRPHP-RUN-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-008
 title: cli.run can assert stderr output
 purpose: Verifies stderr target assertions using a command that writes to stderr.
@@ -191,10 +191,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - runner-err
@@ -203,7 +203,7 @@ assert:
 
 ## SRPHP-RUN-009
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-009
 title: cli.run supports stdout_path and stdout_path_text targets
 purpose: Verifies path-based assertions for stdout_path existence and stdout_path_text
@@ -218,17 +218,17 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - path_target.txt
   target: stdout_path
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - path target file content

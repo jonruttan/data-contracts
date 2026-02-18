@@ -2,7 +2,7 @@
 
 ## SRGOV-CHAIN-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-008
 title: chain import alias collisions are forbidden
 purpose: Ensures harness.chain.imports bindings are valid and do not collide or shadow reserved
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

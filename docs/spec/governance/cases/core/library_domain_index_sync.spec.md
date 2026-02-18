@@ -2,7 +2,7 @@
 
 ## SRGOV-LIB-INDEX-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-LIB-INDEX-001
 title: library domain indexes are synchronized
 purpose: Ensures each library domain index lists all library files and exported symbols without
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

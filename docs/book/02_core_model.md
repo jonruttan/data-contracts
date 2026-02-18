@@ -24,7 +24,7 @@ sections_required:
 - '## Failure Modes'
 ```
 
-The `yaml spec-test` syntax is a case model with strict structure.
+The `yaml contract-spec` syntax is a case model with strict structure.
 
 ## Purpose
 
@@ -32,7 +32,7 @@ Define the stable structural model for executable spec cases.
 
 ## Inputs
 
-- markdown docs containing `yaml spec-test` fenced blocks
+- markdown docs containing `yaml contract-spec` fenced blocks
 
 ## Outputs
 
@@ -62,7 +62,7 @@ Typical optional keys:
 
 - Runners scan Markdown files matching case-file pattern (default `*.spec.md`).
 - They parse fenced blocks tagged with both:
-  - `spec-test`
+  - `contract-spec`
   - `yaml` or `yml`
 - Discovery is non-recursive for the provided directory.
 - `type` is required.

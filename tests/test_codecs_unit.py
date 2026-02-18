@@ -16,7 +16,7 @@ def _write(path: Path, text: str) -> None:
 def test_load_external_cases_defaults_to_md_only(tmp_path: Path) -> None:
     _write(
         tmp_path / "a.spec.md",
-        """```yaml spec-test
+        """```yaml contract-spec
 id: A
  type: text.file
 ```
@@ -31,7 +31,7 @@ id: A
 def test_load_external_cases_can_opt_in_yaml_and_json(tmp_path: Path) -> None:
     _write(
         tmp_path / "a.spec.md",
-        """```yaml spec-test
+        """```yaml contract-spec
 id: A
 type: text.file
 ```

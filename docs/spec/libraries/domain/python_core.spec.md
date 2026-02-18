@@ -2,14 +2,14 @@
 
 ## LIB-DOMAIN-PY-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PY-001
 title: python projection helper functions
 type: spec.export
-assert:
+contract:
 - id: __export__py.is_tuple_projection
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - std.object.get:

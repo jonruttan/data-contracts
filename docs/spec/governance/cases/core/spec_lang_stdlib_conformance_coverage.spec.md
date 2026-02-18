@@ -2,7 +2,7 @@
 
 ## SRGOV-STDLIB-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-STDLIB-004
 title: stdlib conformance coverage files are present
 purpose: Ensures canonical stdlib conformance fixtures are present and discoverable.
@@ -23,10 +23,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

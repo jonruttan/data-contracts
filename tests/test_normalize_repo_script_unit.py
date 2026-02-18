@@ -101,7 +101,7 @@ def test_normalize_check_rejects_legacy_md_namespace_symbols(tmp_path, monkeypat
         tmp_path / "docs/spec/conformance/cases/core/sample.spec.md",
         """# Sample
 
-```yaml spec-test
+```yaml contract-spec
 id: SAMPLE-001
 type: text.file
 path: /README.md

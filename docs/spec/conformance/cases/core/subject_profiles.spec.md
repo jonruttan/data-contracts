@@ -2,7 +2,7 @@
 
 ## SRCONF-PROFILE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PROFILE-001
 title: subject profile schema defines canonical envelope fields
 purpose: Ensures subject profile schema defines JSON-core envelope and deterministic
@@ -12,10 +12,10 @@ path: /docs/spec/schema/subject_profiles_v1.yaml
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.string.contains:
       - var: subject
@@ -34,7 +34,7 @@ assert:
 
 ## SRCONF-PROFILE-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PROFILE-002
 title: text.file exposes context_json subject profile envelope
 purpose: Ensures text.file harness provides context_json target with profile metadata
@@ -44,10 +44,10 @@ path: /docs/spec/contract/20_subject_profiles_v1.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

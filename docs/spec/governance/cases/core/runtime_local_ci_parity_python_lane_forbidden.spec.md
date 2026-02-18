@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-PREPUSH-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-PREPUSH-001
 title: local ci parity script is rust-only
 purpose: Ensures local prepush parity flow contains no python parity lane hooks.
@@ -30,10 +30,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

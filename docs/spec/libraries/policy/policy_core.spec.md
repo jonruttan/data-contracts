@@ -2,28 +2,28 @@
 
 ## LIB-POLICY-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-POLICY-001
 title: policy-core reusable governance predicates
 type: spec.export
-assert:
+contract:
 - id: __export__policy.pass_when_no_violations
   class: must
-  checks:
+  asserts:
   - std.collection.is_empty:
     - std.object.get:
       - var: subject
       - violations
 - id: __export__policy.fail_when_has_violations
   class: must
-  checks:
+  asserts:
   - std.logic.not:
     - call:
       - var: policy.pass_when_no_violations
       - var: subject
 - id: __export__policy.check_id_is
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject
@@ -31,7 +31,7 @@ assert:
     - var: expected
 - id: __export__policy.violation_count_is
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

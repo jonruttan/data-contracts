@@ -2,7 +2,7 @@
 
 ## SRGOV-SPECLAYOUT-INDEX-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-SPECLAYOUT-INDEX-001
 title: spec domain indexes are synchronized
 purpose: Ensures each domain index tracks all spec files in its subtree and has no stale paths.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

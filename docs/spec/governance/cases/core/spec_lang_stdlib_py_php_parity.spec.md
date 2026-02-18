@@ -2,7 +2,7 @@
 
 ## SRGOV-STDLIB-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-STDLIB-002
 title: spec-lang stdlib symbols are parity-clean across python and php
 purpose: Ensures no profile symbol is missing in either runtime implementation.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

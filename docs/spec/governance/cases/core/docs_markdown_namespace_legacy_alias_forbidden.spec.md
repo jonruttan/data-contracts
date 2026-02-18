@@ -1,6 +1,6 @@
 # docs.markdown_namespace_legacy_alias_forbidden
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-MD-002
 title: docs forbid legacy markdown alias namespace
 purpose: Ensures documentation surfaces use domain.markdown.* and reject legacy md.* references.
@@ -17,10 +17,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-TRIAGE-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-007
 title: triage enforces stall fallback to targeted retries
 purpose: Ensures broad governance stall/failure path falls back to targeted retries with explicit
@@ -29,10 +29,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

@@ -411,7 +411,7 @@ def _compile_assert_function(
         raise ValueError(
             f"chain step {step.id} import {import_name} requires non-empty path for from=assert.function"
         )
-    raw_assert = producer_case.raw_case.get("assert")
+    raw_assert = producer_case.raw_case.get("contract")
     if isinstance(raw_assert, list):
         source_step: dict[str, Any] | None = None
         for item in raw_assert:
@@ -423,13 +423,13 @@ def _compile_assert_function(
         if source_step is not None:
             if str(source_step.get("class", "")).strip() != "must":
                 raise ValueError(
-                    f"chain step {step.id} import {import_name} requires producer assert step class=must"
+                    f"chain step {step.id} import {import_name} requires producer contract step class=must"
                 )
 
-            checks = source_step.get("checks")
+            checks = source_step.get("asserts")
             if not isinstance(checks, list) or not checks:
                 raise ValueError(
-                    f"chain step {step.id} import {import_name} producer step {producer_key} requires non-empty checks"
+                    f"chain step {step.id} import {import_name} producer step {producer_key} requires non-empty asserts"
                 )
 
             exprs: list[Any] = []
@@ -481,19 +481,19 @@ def _producer_cache_key(producer_case: InternalSpecCase) -> tuple[str, str]:
     resolved = producer_case.doc_path.resolve().as_posix()
     raw = producer_case.raw_case
     try:
-        # Stable per-case signature covering assert and chain export declarations.
+        # Stable per-case signature covering contract and chain export declarations.
         import json
 
         signature = json.dumps(
             {
-                "assert": raw.get("assert"),
+                "contract": raw.get("contract"),
                 "chain": (raw.get("harness") or {}).get("chain") if isinstance(raw.get("harness"), dict) else None,
             },
             sort_keys=True,
             separators=(",", ":"),
         )
     except Exception:
-        signature = repr(raw.get("assert")) + "|" + repr((raw.get("harness") or {}).get("chain"))
+        signature = repr(raw.get("contract")) + "|" + repr((raw.get("harness") or {}).get("chain"))
     return (f"{resolved}::{producer_case.id}", signature)
 
 

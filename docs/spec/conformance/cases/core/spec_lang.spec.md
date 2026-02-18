@@ -2,7 +2,7 @@
 
 ## SRCONF-EXPR-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-001
 title: evaluate simple predicate passes
 purpose: Verifies evaluate runs a basic true predicate against the target subject.
@@ -24,10 +24,10 @@ harness:
     - from: lib_assertion_core_spec
       names:
       - conf.pass_when_text_contains
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - call:
     - var: conf.pass_when_text_contains
     - var: subject
@@ -37,7 +37,7 @@ assert:
 
 ## SRCONF-EXPR-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-002
 title: evaluate composed boolean passes
 purpose: Verifies composed boolean expressions evaluate correctly across both runner
@@ -60,10 +60,10 @@ harness:
     - from: lib_assertion_core_spec
       names:
       - conf.pass_when_text_contains
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - call:
       - var: conf.pass_when_text_contains
@@ -77,7 +77,7 @@ assert:
 
 ## SRCONF-EXPR-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-003
 title: evaluate tail recursion is stack safe
 purpose: Verifies unsupported mixed literal-expression recursive forms fail deterministically
@@ -92,10 +92,10 @@ expect:
     category: schema
     message_tokens:
     - spec_lang let binding must be [name, expr]
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - let:
     - lit:
       - - loop
@@ -126,7 +126,7 @@ assert:
 
 ## SRCONF-EXPR-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-004
 title: evaluate false predicate fails assertion
 purpose: Verifies evaluate false result is categorized as assertion failure.
@@ -140,10 +140,10 @@ expect:
     category: assertion
     message_tokens:
     - op=evaluate
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.starts_with:
     - var: subject
     - NOPE_PREFIX
@@ -152,7 +152,7 @@ assert:
 
 ## SRCONF-EXPR-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-005
 title: evaluate malformed form fails schema
 purpose: Verifies malformed evaluate forms fail with schema classification.
@@ -166,17 +166,17 @@ expect:
     category: schema
     message_tokens:
     - operator args must be a list
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - bad: shape
   target: text
 ```
 
 ## SRCONF-EXPR-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-006
 title: evaluate unknown symbol fails schema
 purpose: Verifies unknown symbols are rejected as schema violations.
@@ -190,10 +190,10 @@ expect:
     category: schema
     message_tokens:
     - unsupported spec_lang symbol
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - unknown_symbol:
     - 1
   target: text
@@ -201,7 +201,7 @@ assert:
 
 ## SRCONF-EXPR-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-007
 title: evaluate recursive literal-expression shape fails schema
 purpose: Verifies unsupported recursive literal-expression authoring shape fails deterministically
@@ -219,10 +219,10 @@ expect:
 harness:
   spec_lang:
     max_steps: 20
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - let:
     - lit:
       - - loop
@@ -246,7 +246,7 @@ assert:
 
 ## SRCONF-EXPR-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-008
 title: evaluate contains supports explicit subject form
 purpose: Verifies evaluate contains succeeds with explicit subject arguments for the
@@ -269,10 +269,10 @@ harness:
     - from: lib_assertion_core_spec
       names:
       - conf.pass_when_text_contains
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - call:
     - var: conf.pass_when_text_contains
     - var: subject
@@ -286,7 +286,7 @@ assert:
 
 ## SRCONF-EXPR-009
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-009
 title: evaluate set intersection supports deep structural equality
 purpose: Verifies intersection deduplicates and compares nested values structurally
@@ -304,10 +304,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.set.intersection:
       - std.json.parse:
@@ -321,7 +321,7 @@ assert:
 
 ## SRCONF-EXPR-010
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-010
 title: evaluate set union keeps stable left-first unique ordering
 purpose: Verifies union preserves first-seen ordering while removing deep-equal duplicates.
@@ -338,10 +338,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.set.union:
       - std.json.parse:
@@ -355,7 +355,7 @@ assert:
 
 ## SRCONF-EXPR-011
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-011
 title: evaluate difference and symmetric_difference are deterministic
 purpose: Verifies set difference semantics and deterministic ordering for symmetric_difference.
@@ -372,10 +372,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.set.difference:
@@ -398,7 +398,7 @@ assert:
 
 ## SRCONF-EXPR-012
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-012
 title: evaluate set predicates compare by deep equality
 purpose: Verifies set_equals, is_subset, is_superset, and includes use deep structural
@@ -416,10 +416,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.set.set_equals:
       - std.json.parse:
@@ -446,7 +446,7 @@ assert:
 
 ## SRCONF-EXPR-013
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-013
 title: evaluate map and filter support curried builtins
 purpose: Verifies builtin partial application works with map/filter collection transforms.
@@ -463,10 +463,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.collection.map:
@@ -491,7 +491,7 @@ assert:
 
 ## SRCONF-EXPR-014
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-014
 title: evaluate reduce and collection helpers are deterministic
 purpose: Verifies reduce, reject, find, partition, group_by, and uniq_by behavior
@@ -509,10 +509,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.collection.reduce:
@@ -577,7 +577,7 @@ assert:
 
 ## SRCONF-EXPR-015
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-015
 title: evaluate flatten and list composition helpers
 purpose: Verifies flatten, concat, append, prepend, take, and drop operations.
@@ -594,10 +594,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.collection.flatten:
@@ -646,7 +646,7 @@ assert:
 
 ## SRCONF-EXPR-016
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-016
 title: evaluate currying chain with nested call succeeds
 purpose: Verifies repeated partial application resolves deterministically to a final
@@ -664,10 +664,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - call:
       - call:
@@ -680,7 +680,7 @@ assert:
 
 ## SRCONF-EXPR-017
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-017
 title: evaluate over-application of non-callable result is schema failure
 purpose: Verifies deterministic schema failure when extra call arguments remain after
@@ -700,10 +700,10 @@ expect:
       category: schema
       message_tokens:
       - over-application error
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - call:
     - call:
       - var: std.math.add
@@ -715,7 +715,7 @@ assert:
 
 ## SRCONF-EXPR-018
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-018
 title: evaluate set ops enforce list inputs
 purpose: Verifies set algebra operators reject non-list inputs with schema errors.
@@ -734,10 +734,10 @@ expect:
       category: schema
       message_tokens:
       - expects list
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.set.intersection:
     - not-a-list
     - std.json.parse:
@@ -747,7 +747,7 @@ assert:
 
 ## SRCONF-EXPR-019
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-019
 title: evaluate ramda v2 arithmetic and list utilities behave deterministically
 purpose: Verifies expanded numeric and list utility forms remain pure, strict-typed,
@@ -765,10 +765,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.math.mul:
@@ -862,7 +862,7 @@ assert:
 
 ## SRCONF-EXPR-020
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-020
 title: evaluate ramda v2 object utilities
 purpose: Verifies expanded object helpers keep deterministic dictionary semantics.
@@ -879,10 +879,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.object.keys:
@@ -956,7 +956,7 @@ assert:
 
 ## SRCONF-EXPR-021
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-021
 title: evaluate ramda v2 combinators and string helpers
 purpose: Verifies compose/pipe, constant-function behavior, and string transforms
@@ -974,10 +974,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.fn.compose:
@@ -1029,7 +1029,7 @@ assert:
 
 ## SRCONF-EXPR-022
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-022
 title: evaluate ramda v2 unary numeric and compare helpers
 purpose: Verifies unary numeric helpers and comparison helpers produce deterministic
@@ -1047,10 +1047,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.math.abs:
@@ -1107,7 +1107,7 @@ assert:
 
 ## SRCONF-EXPR-023
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-023
 title: evaluate ramda v2 utility and predicate helpers
 purpose: Verifies utility and predicate helpers used by governance logic are deterministic
@@ -1125,10 +1125,10 @@ expect:
     python:
       status: pass
       category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - std.logic.eq:
       - std.collection.count:
@@ -1280,7 +1280,7 @@ assert:
 
 ## SRCONF-EXPR-024
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-024
 title: evaluate ramda v2 schema failures are deterministic
 purpose: Verifies representative arity and type failures stay in schema category for
@@ -1300,10 +1300,10 @@ expect:
       category: schema
       message_tokens:
       - arity error
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.compare:
     - 1
   target: text

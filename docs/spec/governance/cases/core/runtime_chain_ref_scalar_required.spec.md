@@ -2,7 +2,7 @@
 
 ## SRGOV-CHAIN-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-006
 title: chain refs use canonical scalar format
 purpose: Ensures harness.chain step refs are scalar [path][#case_id] values and reject legacy
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

@@ -11,7 +11,7 @@ from spec_runner.dispatcher import SpecRunContext
 def _write_spec(path: Path, case_id: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
-        """# Fixtures\n\n## {case_id}\n\n```yaml spec-test\nid: {case_id}\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    exports:\n    - as: dep_id\n      from: assert.function\n      path: exported_step\n      params: [subject]\nassert:\n- id: exported_step\n  class: must\n  target: body_json\n  checks:\n  - std.object.get:\n    - {{var: subject}}\n    - id\n```\n""".format(case_id=case_id),
+        """# Fixtures\n\n## {case_id}\n\n```yaml contract-spec\nid: {case_id}\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    exports:\n    - as: dep_id\n      from: assert.function\n      path: exported_step\n      params: [subject]\nassert:\n- id: exported_step\n  class: must\n  target: body_json\n  checks:\n  - std.object.get:\n    - {{var: subject}}\n    - id\n```\n""".format(case_id=case_id),
         encoding="utf-8",
     )
 
@@ -210,7 +210,7 @@ def test_execute_chain_plan_hash_only_local_case_id_resolution(tmp_path, monkeyp
     doc = tmp_path / "docs/spec/mixed.spec.md"
     doc.parent.mkdir(parents=True, exist_ok=True)
     doc.write_text(
-        """# Mixed\n\n## CASE-ONE\n\n```yaml spec-test\nid: CASE-ONE\ntype: text.file\npath: /README.md\nassert: []\n```\n\n## CASE-TWO\n\n```yaml spec-test\nid: CASE-TWO\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    steps:\n    - id: local\n      class: must\n      ref: "#CASE-ONE"\nassert: []\n```\n""",
+        """# Mixed\n\n## CASE-ONE\n\n```yaml contract-spec\nid: CASE-ONE\ntype: text.file\npath: /README.md\nassert: []\n```\n\n## CASE-TWO\n\n```yaml contract-spec\nid: CASE-TWO\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    steps:\n    - id: local\n      class: must\n      ref: "#CASE-ONE"\nassert: []\n```\n""",
         encoding="utf-8",
     )
 

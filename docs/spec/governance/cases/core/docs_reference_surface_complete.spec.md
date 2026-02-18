@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-REF-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-REF-001
 title: docs reference surface files exist
 purpose: Enforces that the canonical docs reference surface remains complete and cannot silently
@@ -43,17 +43,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

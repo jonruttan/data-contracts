@@ -2,7 +2,7 @@
 
 ## SRGOV-POLICY-REQ-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-POLICY-REQ-002
 title: governance checks require structured assertion targets
 purpose: Ensures governance cases validate deterministic structured result targets instead
@@ -25,17 +25,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

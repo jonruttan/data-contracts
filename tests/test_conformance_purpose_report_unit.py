@@ -13,7 +13,7 @@ def test_conformance_purpose_report_schema_and_fields(tmp_path):
 
 ## SRCONF-PURPOSE-REPORT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-REPORT-001
 title: report row contains purpose metadata
 purpose: Ensures purpose report exposes machine-readable case intent metadata.
@@ -65,7 +65,7 @@ def test_conformance_purpose_report_rows_are_sorted_by_id(tmp_path):
     (cases_dir / case_file_name("b")).write_text(
         """# B
 ## SRCONF-PURPOSE-REPORT-200
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-REPORT-200
 title: b title
 purpose: Valid purpose text with enough words for sorted report output.
@@ -79,7 +79,7 @@ expect:
     (cases_dir / case_file_name("a")).write_text(
         """# A
 ## SRCONF-PURPOSE-REPORT-100
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-REPORT-100
 title: a title
 purpose: Valid purpose text with enough words for sorted report output.
@@ -116,7 +116,7 @@ runtime:
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-300
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-REPORT-300
 title: sample
 purpose: tiny words pass here
@@ -144,7 +144,7 @@ def test_conformance_purpose_report_includes_warnings_even_when_case_lint_disabl
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-400
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-REPORT-400
 title: same text
 purpose: same text
@@ -178,7 +178,7 @@ def test_conformance_purpose_report_warning_codes_are_grouped(tmp_path):
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-500
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-REPORT-500
 title: TODO
 purpose: TODO
@@ -206,7 +206,7 @@ def test_conformance_purpose_report_uses_safe_default_hint_for_unknown_warning(m
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-600
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-REPORT-600
 title: sample title
 purpose: Purpose text with enough words to avoid quality warnings.
@@ -251,7 +251,7 @@ runtime: {}
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 ## SRCONF-PURPOSE-REPORT-700
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-REPORT-700
 title: short purpose case
 purpose: tiny purpose

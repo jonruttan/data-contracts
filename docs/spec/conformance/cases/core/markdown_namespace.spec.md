@@ -2,7 +2,7 @@
 
 ## SRCONF-MARKDOWN-NS-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-MARKDOWN-NS-001
 title: markdown namespace negative fixture file is present
 purpose: Ensures the legacy markdown namespace fixture is available for script-level
@@ -13,11 +13,11 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
   target: text
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - legacy markdown alias tokens

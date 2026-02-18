@@ -2,7 +2,7 @@
 
 ## SRPY-SCHEMA-REG-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPY-SCHEMA-REG-001
 title: schema_registry_report_main writes report file
 type: cli.run
@@ -14,11 +14,11 @@ argv:
 exit_code: 0
 harness:
   entrypoint: spec_runner.spec_lang_commands:schema_registry_report_main
-assert:
+contract:
 - id: assert_1
   class: must
   target: stdout
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - 'wrote .artifacts/schema-registry-impl-case.json'
@@ -26,7 +26,7 @@ assert:
 
 ## SRPY-SCHEMA-REG-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPY-SCHEMA-REG-002
 title: schema_registry_report_main check mode fails on stale artifact
 type: cli.run
@@ -39,11 +39,11 @@ argv:
 exit_code: 1
 harness:
   entrypoint: spec_runner.spec_lang_commands:schema_registry_report_main
-assert:
+contract:
 - id: assert_1
   class: must
   target: stdout
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - 'stale report artifact'

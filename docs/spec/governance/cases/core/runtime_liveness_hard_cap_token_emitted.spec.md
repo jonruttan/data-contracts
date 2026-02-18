@@ -2,7 +2,7 @@
 
 ## SRGOV-LIVENESS-HARDCAP-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-LIVENESS-HARDCAP-001
 title: run trace includes hard-cap and kill escalation reason tokens
 purpose: Ensures emergency hard-cap watchdog behavior is represented in trace token taxonomy.
@@ -21,10 +21,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

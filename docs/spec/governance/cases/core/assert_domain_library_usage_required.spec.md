@@ -2,7 +2,7 @@
 
 ## SRGOV-ASSERT-PROFILE-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-ASSERT-PROFILE-004
 title: domain conformance checks are library-backed
 purpose: Ensures domain conformance checks use harness.spec_lang domain libraries rather than
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

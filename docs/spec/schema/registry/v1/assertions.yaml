@@ -2,7 +2,7 @@ version: 1
 id: schema.registry.v1.assertions
 type: assertions
 fields:
-  assert:
+  contract:
     type: list
     required: false
     since: v1

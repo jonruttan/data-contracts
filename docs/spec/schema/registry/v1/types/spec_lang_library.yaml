@@ -3,12 +3,12 @@ id: schema.registry.v1.type.spec_lang_library
 type: type
 case_type: spec.export
 required_top_level:
-  - assert
+  - contract
   - harness
 allowed_top_level_extra:
   - imports
 fields:
-  assert:
+  contract:
     type: list
     required: true
     since: v1

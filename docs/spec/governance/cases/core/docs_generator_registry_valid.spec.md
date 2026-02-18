@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-GEN-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-GEN-001
 title: docs generator registry is valid and complete
 purpose: Ensures docs generator registry exists, validates, and includes required surfaces.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

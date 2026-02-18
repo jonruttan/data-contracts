@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-PREPUSH-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-PREPUSH-004
 title: rust adapter defines preferred-target fallback and strict mode
 purpose: Ensures local rust adapter can fallback to host target while supporting strict target
@@ -26,10 +26,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

@@ -2,7 +2,7 @@
 
 ## SRCONF-PHP-TEXT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-001
 title: text.file contain assertion passes in php bootstrap
 purpose: Baseline positive contain check for the php text.file subset.
@@ -11,10 +11,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - 'version: 1'
@@ -23,7 +23,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-002
 title: text.file regex assertion can fail in php bootstrap
 purpose: Baseline failing regex check for the php text.file subset.
@@ -32,10 +32,10 @@ expect:
   portable:
     status: fail
     category: assertion
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - \A\Z
@@ -44,7 +44,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-003
 title: nested must group with inherited target passes
 purpose: Verifies nested must groups inherit target from parent nodes.
@@ -53,10 +53,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.string.contains:
       - var: subject
@@ -66,7 +66,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-004
 title: can passes when at least one branch passes
 purpose: Verifies can succeeds when at least one branch succeeds.
@@ -75,10 +75,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: can
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - (?!)
@@ -90,7 +90,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-005
 title: can fails when all branches fail
 purpose: Verifies can fails when every branch assertion fails.
@@ -99,10 +99,10 @@ expect:
   portable:
     status: fail
     category: assertion
-assert:
+contract:
 - id: assert_1
   class: can
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - \A\Z
@@ -114,7 +114,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-006
 title: cannot passes when all branches fail
 purpose: Verifies cannot succeeds when every branch assertion fails.
@@ -123,10 +123,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: cannot
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - \A\Z
@@ -138,7 +138,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-007
 title: cannot fails when any branch passes
 purpose: Verifies cannot fails when at least one branch succeeds.
@@ -147,10 +147,10 @@ expect:
   portable:
     status: fail
     category: assertion
-assert:
+contract:
 - id: assert_1
   class: cannot
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - 'version: 1'
@@ -162,7 +162,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-008
 title: nested mixed groups with inherited target passes
 purpose: Covers mixed nested must/can/cannot evaluation with inherited targets.
@@ -171,10 +171,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - can:
     - std.string.regex_match:
       - var: subject
@@ -191,7 +191,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-009
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-009
 title: evaluate regex remains pass under assert_health error mode
 purpose: Confirms evaluate regex assertions bypass sugar diagnostics and can pass
@@ -203,10 +203,10 @@ expect:
     category: null
 assert_health:
   mode: error
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - '(?<=version: )1'
@@ -215,7 +215,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-010
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-010
 title: evaluate empty contains remains pass under assert_health error mode
 purpose: Confirms evaluate contains with empty string does not trigger sugar diagnostic
@@ -227,10 +227,10 @@ expect:
     category: null
 assert_health:
   mode: error
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - ''
@@ -239,7 +239,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-011
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-011
 title: evaluate always-true regex remains pass under assert_health error mode
 purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level
@@ -251,10 +251,10 @@ expect:
     category: null
 assert_health:
   mode: error
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - .*
@@ -263,7 +263,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-012
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-012
 title: evaluate duplicate contains remain pass under assert_health error mode
 purpose: Confirms evaluate duplicate contains expressions do not trigger sugar-level
@@ -275,13 +275,13 @@ expect:
     category: assertion
     message_tokens:
     - AH004
-    - assert[0].checks[0].must
+    - contract[0].asserts[0].must
 assert_health:
   mode: error
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.string.contains:
       - var: subject
@@ -294,7 +294,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-013
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-013
 title: evaluate sibling branches remain pass under assert_health error mode
 purpose: Confirms evaluate-only non-redundant sibling branches in can groups remain
@@ -306,10 +306,10 @@ expect:
     category: null
 assert_health:
   mode: error
-assert:
+contract:
 - id: assert_1
   class: can
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - 'version: 1'
@@ -321,7 +321,7 @@ assert:
 
 ## SRCONF-PHP-TEXT-014
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-TEXT-014
 title: warn mode emits diagnostics without failing the case
 purpose: Checks warn mode emits diagnostics without converting the case to failure.
@@ -332,10 +332,10 @@ expect:
     category: null
 assert_health:
   mode: warn
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - ''

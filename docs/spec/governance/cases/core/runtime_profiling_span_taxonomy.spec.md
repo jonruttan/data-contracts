@@ -2,7 +2,7 @@
 
 ## SRGOV-PROFILE-SPANS-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-PROFILE-SPANS-001
 title: run trace records required span taxonomy for timeout diagnosis
 purpose: Ensures the canonical run trace includes required run, case, check, and subprocess
@@ -31,10 +31,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

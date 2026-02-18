@@ -208,7 +208,7 @@ def run(case, *, ctx) -> None:
                 fake = _FakeStdin("" if stdin_text is None else str(stdin_text), bool(stdin_isatty))
                 mp.setattr(sys, "stdin", fake)
 
-            # Test-only affordance: allow docs-embedded spec-tests to simulate missing
+            # Test-only affordance: allow docs-embedded contract-specs to simulate missing
             # optional dependencies in a deterministic way.
             block_imports = h.get("block_imports") or []
             if isinstance(block_imports, str):
@@ -301,7 +301,7 @@ def run(case, *, ctx) -> None:
         except (OSError, ValueError):
             stdout_path_exists = False
     mode = resolve_assert_health_mode(t, env=runtime_env)
-    diags = lint_assert_tree(t.get("assert", []) or [])
+    diags = lint_assert_tree(t.get("contract", []) or [])
     warning_lines: list[str] = []
     if diags and mode == "error":
         raise AssertionError(format_assertion_health_error(diags))

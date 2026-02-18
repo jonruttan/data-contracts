@@ -24,7 +24,7 @@ def test_load_spec_lang_symbols_from_library_paths(tmp_path: Path) -> None:
 
 ## LIB-1
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-1
 type: spec_lang.export
 defines:
@@ -63,7 +63,7 @@ def test_library_import_cycle_is_rejected(tmp_path: Path) -> None:
     _write(case_doc, "# Case\n")
     _write(
         tmp_path / "libs" / "a.spec.md",
-        """```yaml spec-test
+        """```yaml contract-spec
 id: LIB-A
 type: spec_lang.export
 imports: ["/libs/b.spec.md"]
@@ -78,7 +78,7 @@ defines:
     )
     _write(
         tmp_path / "libs" / "b.spec.md",
-        """```yaml spec-test
+        """```yaml contract-spec
 id: LIB-B
 type: spec_lang.export
 imports: ["/libs/a.spec.md"]
@@ -105,7 +105,7 @@ def test_duplicate_library_symbol_is_rejected(tmp_path: Path) -> None:
     _write(case_doc, "# Case\n")
     _write(
         tmp_path / "libs" / "a.spec.md",
-        """```yaml spec-test
+        """```yaml contract-spec
 id: LIB-A
 type: spec_lang.export
 defines:
@@ -119,7 +119,7 @@ defines:
     )
     _write(
         tmp_path / "libs" / "b.spec.md",
-        """```yaml spec-test
+        """```yaml contract-spec
 id: LIB-B
 type: spec_lang.export
 defines:
@@ -145,7 +145,7 @@ def test_harness_exports_filters_symbols(tmp_path: Path) -> None:
     _write(case_doc, "# Case\n")
     _write(
         tmp_path / "libs" / "a.spec.md",
-        """```yaml spec-test
+        """```yaml contract-spec
 id: LIB-A
 type: spec_lang.export
 defines:
@@ -177,7 +177,7 @@ def test_harness_exports_keeps_private_dependencies(tmp_path: Path) -> None:
     _write(case_doc, "# Case\n")
     _write(
         tmp_path / "libs" / "a.spec.md",
-        """```yaml spec-test
+        """```yaml contract-spec
 id: LIB-A
 type: spec_lang.export
 defines:
@@ -213,7 +213,7 @@ def test_library_function_rejects_list_s_expr_authoring(tmp_path: Path) -> None:
     _write(case_doc, "# Case\n")
     _write(
         tmp_path / "libs" / "bad.spec.md",
-        """```yaml spec-test
+        """```yaml contract-spec
 id: LIB-BAD
 type: spec_lang.export
 defines:

@@ -2,7 +2,7 @@
 
 ## SRGOV-CHAIN-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-002
 title: chain cycles are forbidden
 purpose: Ensures direct and indirect harness.chain dependency cycles are rejected.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

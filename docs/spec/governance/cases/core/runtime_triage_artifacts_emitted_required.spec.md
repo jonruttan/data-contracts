@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-TRIAGE-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-004
 title: triage artifacts are emitted by triage and gate flows
 purpose: Ensures triage artifacts are produced and referenced by governance-triage and ci-gate-summary.
@@ -29,10 +29,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

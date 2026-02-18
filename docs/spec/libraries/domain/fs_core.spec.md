@@ -2,13 +2,13 @@
 
 ## LIB-DOMAIN-FS-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.is_docs_spec_file
   class: must
-  checks:
+  asserts:
   - std.logic.and:
     - ops.fs.path.within:
       - /docs
@@ -29,13 +29,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.sort_spec_files
   class: must
-  checks:
+  asserts:
   - ops.fs.path.sort:
     - ops.fs.glob.filter:
       - var: paths
@@ -51,13 +51,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.json_get_or_text
   class: must
-  checks:
+  asserts:
   - ops.fs.json.get_or:
     - ops.fs.json.parse:
       - var: json_text
@@ -76,13 +76,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.json_has_path_text
   class: must
-  checks:
+  asserts:
   - ops.fs.json.has_path:
     - ops.fs.json.parse:
       - var: json_text
@@ -99,13 +99,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.glob_any_spec_files
   class: must
-  checks:
+  asserts:
   - ops.fs.glob.any:
     - var: paths
     - '*.spec.md'
@@ -120,13 +120,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.file_ext_eq
   class: must
-  checks:
+  asserts:
   - ops.fs.path.has_ext:
     - ops.fs.file.path:
       - var: meta
@@ -143,13 +143,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.json_get_text
   class: must
-  checks:
+  asserts:
   - ops.fs.json.get:
     - ops.fs.json.parse:
       - var: json_text
@@ -166,13 +166,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.json_path_eq_text
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - call:
       - var: domain.fs.json_get_or_text
@@ -193,13 +193,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.glob_filter
   class: must
-  checks:
+  asserts:
   - ops.fs.glob.filter:
     - var: paths
     - var: pattern
@@ -215,13 +215,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
 type: spec.export
-assert:
+contract:
 - id: __export__domain.fs.glob_all
   class: must
-  checks:
+  asserts:
   - ops.fs.glob.all:
     - var: paths
     - var: pattern

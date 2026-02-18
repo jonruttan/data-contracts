@@ -21,7 +21,7 @@ Runner-only setup keys MUST live under `harness`.
 ## Executable Authoring Surface
 
 - Executable contract/spec behavior MUST be authored in `.spec.md` with
-  fenced `yaml spec-test` blocks.
+  fenced `yaml contract-spec` blocks.
 - This requirement applies to:
   - conformance cases
   - governance cases

@@ -17,7 +17,7 @@ def test_migrate_includes_to_chain_symbols(tmp_path: Path) -> None:
     _write(
         tmp_path / "docs/spec/libraries/domain/lib.spec.md",
         """# Lib
-```yaml spec-test
+```yaml contract-spec
 id: LIB-1
 type: spec_lang.export
 defines:
@@ -33,7 +33,7 @@ defines:
     _write(
         f,
         """# Case
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 harness:

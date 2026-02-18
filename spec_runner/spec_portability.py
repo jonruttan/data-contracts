@@ -196,9 +196,9 @@ def _collect_leaf_ops(node: object, *, inherited_target: str | None = None) -> l
     if not isinstance(node, dict):
         return ops
     step_class = str(node.get("class", "")).strip() if "class" in node else ""
-    if step_class in {"must", "can", "cannot"} and "checks" in node:
+    if step_class in {"must", "can", "cannot"} and "asserts" in node:
         node_target = str(node.get("target", "")).strip() or inherited_target
-        checks = node.get("checks")
+        checks = node.get("asserts")
         if isinstance(checks, list):
             for child in checks:
                 ops.extend(_collect_leaf_ops(child, inherited_target=node_target))
@@ -326,7 +326,7 @@ def spec_portability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
             segment = _match_segment(rel_path, cfg["segment_rules"])
 
             try:
-                ops = _collect_leaf_ops(case.get("assert", []) or [])
+                ops = _collect_leaf_ops(case.get("contract", []) or [])
             except BaseException as exc:  # noqa: BLE001
                 scan_errors.append(f"{rel_path}: case {case_id}: failed to inspect assert tree ({exc})")
                 continue

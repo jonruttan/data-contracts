@@ -2,7 +2,7 @@
 
 ## SRGOV-STDLIB-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-STDLIB-001
 title: spec-lang stdlib profile is complete
 purpose: Ensures the declared stdlib profile symbols are implemented in Python and PHP.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

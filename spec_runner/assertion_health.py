@@ -54,11 +54,11 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
             return
 
         step_class = str(node.get("class", "")).strip() if "class" in node else ""
-        if step_class in {"must", "can", "cannot"} and "checks" in node:
-            checks = node.get("checks")
-            if isinstance(checks, list):
+        if step_class in {"must", "can", "cannot"} and "asserts" in node:
+            asserts = node.get("asserts")
+            if isinstance(asserts, list):
                 step_seen: set[str] = set()
-                for child in checks:
+                for child in asserts:
                     try:
                         import json
 
@@ -70,12 +70,12 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                             AssertionHealthDiagnostic(
                                 code="AH004",
                                 message=f"redundant sibling assertion branch in '{step_class}'",
-                                path=f"{path}.checks",
+                                path=f"{path}.asserts",
                             )
                         )
                         break
                     step_seen.add(key)
-            _walk(checks, path=f"{path}.checks", group_ctx=step_class)
+            _walk(asserts, path=f"{path}.asserts", group_ctx=step_class)
             return
 
         group_key = None
@@ -147,7 +147,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                             )
                             break
 
-    _walk(assert_spec, path="assert", group_ctx=None)
+    _walk(assert_spec, path="contract", group_ctx=None)
     return out
 
 

@@ -4,7 +4,7 @@ This schema defines the stable shape of executable spec tests embedded in
 Markdown files selected by case-file pattern (default `*.spec.md`) as fenced blocks:
 
 ```text
-```yaml spec-test
+```yaml contract-spec
 ...
 ```
 
@@ -54,7 +54,7 @@ Parser behavior:
   `docs/spec/governance/cases`, `docs/spec/impl`) are markdown-only and must
   not include runnable `.spec.yaml`/`.spec.yml`/`.spec.json` files
 - fence extraction accepts Markdown fences using either backticks or tildes
-  (3+), with info tokens including `spec-test` and `yaml`/`yml`
+  (3+), with info tokens including `contract-spec` and `yaml`/`yml`
 - closing fences must use the same fence character and at least the opener
   length
 - `type` is required
@@ -105,7 +105,7 @@ Normative contract details:
 `text.file` asserts against file content.
 
 - If `path` is omitted, the runner asserts against the spec document that
-  contains the `yaml spec-test` block.
+  contains the `yaml contract-spec` block.
 - If `path` is provided, it MUST be a relative path and is resolved relative to
   contract root (virtual `/`) and normalized to canonical `/...`.
 - Resolved `path` MUST remain within the implementation's configured contract
@@ -139,7 +139,7 @@ concerns and keep the spec format portable.
 Governance assertion contract:
 
 - For `type: governance.check` cases, decision obligations MUST be encoded in
-  `assert` blocks.
+  `contract` blocks.
 - `harness.policy_evaluate` and
   `harness.orchestration_policy.policy_evaluate` are forbidden.
 - Extractors may emit candidate violations and subject payloads, but MUST NOT
@@ -279,7 +279,7 @@ For `type: docs.generate`, supported `harness` keys include:
   unless capability and harness policy explicitly allow provider access
 - `type: spec.export` producer cases define reusable symbols through
   `harness.chain.exports` entries using `from: assert.function`; function
-  bodies are sourced from producer assert-step `checks` expression mappings
+  bodies are sourced from producer contract-step `asserts` expression mappings
 - Canonical export source marker is ``assert.function``.
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
   explicit format opt-in is provided by the runner interface
@@ -405,14 +405,14 @@ Universal core operator:
 
 ## Assertion Step Shape
 
-`assert` is a list of assertion step mappings.
+`contract` is a list of assertion step mappings.
 
 Each step requires:
 
 - `id` (string, unique per case)
 - `class` (`must` | `can` | `cannot`)
-- `checks` (non-empty list of assertion nodes)
-- `target` (optional; inherited by checks when provided)
+- `asserts` (non-empty list of assertion nodes)
+- `target` (optional; inherited by asserts when provided)
 
 Checks are legacy assertion nodes:
 
@@ -486,7 +486,7 @@ Group constraints:
 Canonical negation uses `cannot`:
 
 ```yaml
-assert:
+contract:
 - target: stderr
   cannot:
   - evaluate:
@@ -504,7 +504,7 @@ Author in canonical form:
 Example with target inheritance:
 
 ```yaml
-assert:
+contract:
 - target: stderr
   must:
   - evaluate:
@@ -544,8 +544,8 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 | key | type | required | since |
 |---|---|---|---|
-| `assert` | `list` | `false` | `v1` |
 | `assert_health` | `mapping` | `false` | `v1` |
+| `contract` | `list` | `false` | `v1` |
 | `expect` | `mapping` | `false` | `v1` |
 | `harness` | `mapping` | `false` | `v1` |
 | `id` | `string` | `true` | `v1` |
@@ -564,7 +564,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `docs.generate` | - | - |
 | `governance.check` | `check` | - |
 | `orchestration.run` | - | - |
-| `spec.export` | `assert`, `harness` | `imports` |
+| `spec.export` | `contract`, `harness` | `imports` |
 | `text.file` | - | - |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V1 -->
@@ -580,8 +580,8 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 | key | type | required | since |
 |---|---|---|---|
-| `assert` | `list` | false | `v1` |
 | `assert_health` | `mapping` | false | `v1` |
+| `contract` | `list` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
 | `id` | `string` | true | `v1` |
@@ -600,6 +600,6 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `docs.generate` | 8 | - |
 | `governance.check` | 1 | `check` |
 | `orchestration.run` | 6 | - |
-| `spec.export` | 2 | `assert`, `harness` |
+| `spec.export` | 2 | `contract`, `harness` |
 | `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->

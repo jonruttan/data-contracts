@@ -2,14 +2,14 @@
 
 ## LIB-IMPL-ASSERT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-IMPL-ASSERT-001-001-IMPL-ASSERT-CONTAINS
 title: 'reusable impl assertion helper functions: impl.assert.contains'
 type: spec.export
-assert:
+contract:
 - id: __export__impl.assert.contains
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - var: token
@@ -25,14 +25,14 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-IMPL-ASSERT-001-002-IMPL-ASSERT-REGEX
 title: 'reusable impl assertion helper functions: impl.assert.regex'
 type: spec.export
-assert:
+contract:
 - id: __export__impl.assert.regex
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - var: pattern
@@ -48,14 +48,14 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-IMPL-ASSERT-001-003-IMPL-ASSERT-JSON-TYPE
 title: 'reusable impl assertion helper functions: impl.assert.json_type'
 type: spec.export
-assert:
+contract:
 - id: __export__impl.assert.json_type
   class: must
-  checks:
+  asserts:
   - std.type.json_type:
     - var: subject
     - var: type_name

@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-APIHTTP-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-APIHTTP-006
 title: api.http CORS support surfaces remain synchronized
 purpose: Ensures CORS preflight and normalized cors_json projection are documented and implemented.
@@ -19,17 +19,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

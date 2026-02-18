@@ -55,8 +55,8 @@ Provide generated case-shape field reference derived from schema registry profil
 
 | key | type | required | since |
 |---|---|---|---|
-| `assert` | `list` | false | `v1` |
 | `assert_health` | `mapping` | false | `v1` |
+| `contract` | `list` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
 | `id` | `string` | true | `v1` |
@@ -75,6 +75,6 @@ Provide generated case-shape field reference derived from schema registry profil
 | `docs.generate` | 8 | - |
 | `governance.check` | 1 | `check` |
 | `orchestration.run` | 6 | - |
-| `spec.export` | 2 | `assert`, `harness` |
+| `spec.export` | 2 | `contract`, `harness` |
 | `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->

@@ -1,6 +1,6 @@
 # runtime.chain_legacy_from_forbidden
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-FROM-002
 title: chain exports forbid legacy from_target key
 purpose: Ensures harness.chain step exports reject from_target and require from.
@@ -17,10 +17,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

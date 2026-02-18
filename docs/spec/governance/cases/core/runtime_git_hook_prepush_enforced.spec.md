@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-PREPUSH-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-PREPUSH-003
 title: managed pre-push hook enforces local parity gate
 purpose: Ensures repository-managed pre-push hook exists and is installable via canonical
@@ -24,10 +24,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

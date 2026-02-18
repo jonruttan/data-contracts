@@ -61,7 +61,7 @@ The expression must be operator-keyed mapping AST form.
 Example:
 
 ```yaml
-assert:
+contract:
 - target: text
   must:
   - evaluate:

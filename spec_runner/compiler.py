@@ -14,7 +14,7 @@ def _require_group_key(node: dict[str, Any]) -> str | None:
         return None
     if len(keys) > 1:
         got = ", ".join(keys)
-        raise ValueError(f"assert group must include exactly one key (must/can/cannot), got: {got}")
+        raise ValueError(f"contract group must include exactly one key (must/can/cannot), got: {got}")
     return keys[0]
 
 
@@ -40,7 +40,7 @@ def _compile_legacy_assert_node(
     *,
     type_name: str,
     inherited_target: str | None = None,
-    assert_path: str = "assert",
+    assert_path: str = "contract",
 ) -> InternalAssertNode:
     if raw_assert is None:
         return GroupNode(op="must", target=inherited_target, children=[], assert_path=assert_path)
@@ -62,7 +62,7 @@ def _compile_legacy_assert_node(
         )
 
     if not isinstance(raw_assert, dict):
-        raise TypeError("assert node must be a mapping or a list")
+        raise TypeError("contract node must be a mapping or a list")
 
     group_key = _require_group_key(raw_assert)
     if group_key is not None:
@@ -70,12 +70,12 @@ def _compile_legacy_assert_node(
         extra = [k for k in raw_assert.keys() if k not in (group_key, "target")]
         if extra:
             bad = sorted(str(k) for k in extra)[0]
-            raise ValueError(f"unknown key in assert group: {bad}")
+            raise ValueError(f"unknown key in contract group: {bad}")
         children = raw_assert.get(group_key)
         if not isinstance(children, list):
-            raise TypeError(f"assert.{group_key} must be a list")
+            raise TypeError(f"contract.{group_key} must be a list")
         if not children:
-            raise ValueError(f"assert.{group_key} must not be empty")
+            raise ValueError(f"contract.{group_key} must not be empty")
         group_op = cast(Literal["must", "can", "cannot"], group_key)
         return GroupNode(
             op=group_op,
@@ -93,13 +93,13 @@ def _compile_legacy_assert_node(
         )
 
     if "target" in raw_assert:
-        raise ValueError("leaf assertion must not include key: target; move target to a parent group")
+        raise ValueError("leaf contract predicate must not include key: target; move target to a parent group")
     if any(k in raw_assert for k in ("must", "can", "cannot")):
-        raise ValueError("leaf assertion must not include group keys")
+        raise ValueError("leaf contract predicate must not include group keys")
 
     target = str(inherited_target or "").strip()
     if not target:
-        raise ValueError("assertion leaf requires inherited target from a parent group")
+        raise ValueError("contract leaf requires inherited target from a parent group")
 
     if "evaluate" in raw_assert:
         raise ValueError("explicit evaluate leaf is not supported; use expression mapping directly")
@@ -117,7 +117,7 @@ def _compile_legacy_assert_node(
 
 
 def _looks_like_assert_step(item: Any) -> bool:
-    return isinstance(item, dict) and "id" in item and "class" in item and "checks" in item
+    return isinstance(item, dict) and "id" in item and "class" in item and "asserts" in item
 
 
 def compile_assert_tree(
@@ -125,14 +125,14 @@ def compile_assert_tree(
     *,
     type_name: str,
     inherited_target: str | None = None,
-    assert_path: str = "assert",
+    assert_path: str = "contract",
     strict_steps: bool = False,
 ) -> InternalAssertNode:
     if raw_assert is None:
         return GroupNode(op="must", target=inherited_target, children=[], assert_path=assert_path)
     if not isinstance(raw_assert, list):
         if strict_steps:
-            raise TypeError("assert must be a list of step mappings")
+            raise TypeError("contract must be a list of step mappings")
         return _compile_legacy_assert_node(
             raw_assert,
             type_name=type_name,
@@ -145,7 +145,7 @@ def compile_assert_tree(
 
     is_step_form = all(_looks_like_assert_step(x) for x in raw_assert)
     if strict_steps and not is_step_form:
-        raise ValueError("assert must use step form entries with id/class/checks")
+        raise ValueError("contract must use step form entries with id/class/asserts")
     if not is_step_form:
         return _compile_legacy_assert_node(
             raw_assert,
@@ -168,15 +168,15 @@ def compile_assert_tree(
         if class_name not in {"must", "can", "cannot"}:
             raise ValueError(f"{assert_path}[{idx}].class must be one of: must, can, cannot")
         step_target = str(raw_step.get("target", "")).strip() or inherited_target
-        raw_checks = raw_step.get("checks")
+        raw_checks = raw_step.get("asserts")
         if not isinstance(raw_checks, list) or not raw_checks:
-            raise TypeError(f"{assert_path}[{idx}].checks must be a non-empty list")
+            raise TypeError(f"{assert_path}[{idx}].asserts must be a non-empty list")
         children = [
             _compile_legacy_assert_node(
                 check,
                 type_name=type_name,
                 inherited_target=step_target,
-                assert_path=f"{assert_path}[{idx}].checks[{cidx}]",
+                assert_path=f"{assert_path}[{idx}].asserts[{cidx}]",
             )
             for cidx, check in enumerate(raw_checks)
         ]
@@ -222,11 +222,11 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
     producer_export_type = type_name in {"spec.export"}
     if producer_export_type:
         # Producer-only case type: exported callables are compiled from raw
-        # assert step checks via chain_engine, not from runtime assertion targets.
-        assert_tree = GroupNode(op="must", target=None, children=[], assert_path="assert")
+        # contract step asserts via chain_engine, not from runtime assertion targets.
+        assert_tree = GroupNode(op="must", target=None, children=[], assert_path="contract")
     else:
         assert_tree = compile_assert_tree(
-            raw_case.get("assert", []) or [],
+            raw_case.get("contract", []) or [],
             type_name=type_name,
             strict_steps=is_canonical_spec,
         )

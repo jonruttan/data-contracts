@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-PYDEP-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-PYDEP-004
 title: rust adapter boundary avoids transitive python delegation tokens
 purpose: Ensures rust adapter boundary files do not delegate to python adapter entrypoints
@@ -27,17 +27,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

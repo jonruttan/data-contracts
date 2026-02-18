@@ -2,7 +2,7 @@
 
 ## SRGOV-CHAIN-011
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-011
 title: chain shared context is declared in dispatcher
 purpose: Ensures chain state, trace, imports, and chain payload surfaces are carried in shared
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

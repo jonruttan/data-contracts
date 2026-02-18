@@ -2,7 +2,7 @@
 
 ## SRGOV-REF-SYMBOLS-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-REF-SYMBOLS-004
 title: private library symbols are not referenced externally
 purpose: Ensures conformance/governance/impl cases do not reference defines.private symbols
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

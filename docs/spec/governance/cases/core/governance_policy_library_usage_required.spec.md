@@ -2,7 +2,7 @@
 
 ## SRGOV-POLICY-LIB-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-POLICY-LIB-002
 title: governance policy expressions require shared library wiring
 purpose: Ensures governance decision policies use shared spec-lang libraries and call exported
@@ -25,17 +25,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

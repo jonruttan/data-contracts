@@ -2,7 +2,7 @@
 
 ## SRGOV-ASSERT-CORE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-ASSERT-CORE-001
 title: assertion docs define universal evaluate core
 purpose: Ensures schema and contract docs consistently define evaluate as the universal assertion
@@ -20,17 +20,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

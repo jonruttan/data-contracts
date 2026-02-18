@@ -2,7 +2,7 @@
 
 ## SRGOV-CHAIN-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-007
 title: chain steps declare must can cannot class
 purpose: Ensures harness.chain.steps[*].class is explicit and valid for all chained cases.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

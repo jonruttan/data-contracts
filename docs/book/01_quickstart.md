@@ -46,12 +46,12 @@ Provide the shortest path from no case to passing case execution.
 
 ## 1) Write A Minimal Case
 
-Create a Markdown file with a fenced `yaml spec-test` block:
+Create a Markdown file with a fenced `yaml contract-spec` block:
 
 ```yaml
 id: BK-QS-001
 type: text.file
-assert:
+contract:
 - target: text
   must:
   - contain:
@@ -83,7 +83,7 @@ argv:
 exit_code: 0
 harness:
   entrypoint: /bin/echo
-assert:
+contract:
 - target: stdout
   must:
   - contain:
@@ -95,7 +95,7 @@ assert:
 ```yaml
 id: BK-QS-002B
 type: text.file
-assert:
+contract:
 - target: text
   must:
   - evaluate:

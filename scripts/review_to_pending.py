@@ -153,7 +153,7 @@ def _infer_implicit(md: str, *, limit: int = 10) -> list[dict[str, str]]:
                 "priority": "P1",
                 "statement": f"SHOULD {b[0].lower() + b[1:]}" if b and b[0].isupper() else f"SHOULD {b}",
                 "rationale": "Inferred from repeated narrative concerns in the review output; requires human triage.",
-                "verification": "Define as yaml spec-test where possible; otherwise add a governance check with deterministic output.",
+                "verification": "Define as yaml contract-spec where possible; otherwise add a governance check with deterministic output.",
             }
         )
     return out

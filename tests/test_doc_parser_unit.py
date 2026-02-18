@@ -18,7 +18,7 @@ def test_iter_spec_doc_tests_parses_single_mapping(tmp_path):
         tmp_path / case_file,
         """# Doc
 
-```yaml spec-test
+```yaml contract-spec
 id: CK-CLI-001
 title: Example
 type: cli.example
@@ -39,7 +39,7 @@ def test_iter_spec_doc_tests_parses_list_of_mappings(tmp_path):
         tmp_path / case_file,
         """# Doc
 
-```yaml spec-test
+```yaml contract-spec
 - id: CK-CLI-001
   title: One
   type: cli.one
@@ -58,7 +58,7 @@ def test_iter_spec_doc_tests_requires_id_and_type(tmp_path):
     case_file = case_file_name("a")
     _write(
         tmp_path / case_file,
-        """```yaml spec-test
+        """```yaml contract-spec
 title: Missing type
 id: CK-CLI-001
 ```
@@ -73,7 +73,7 @@ def test_iter_spec_doc_tests_rejects_non_mapping_payload(tmp_path):
     case_file = case_file_name("a")
     _write(
         tmp_path / case_file,
-        """```yaml spec-test
+        """```yaml contract-spec
 42
 ```
 """,
@@ -87,7 +87,7 @@ def test_iter_spec_doc_tests_rejects_non_mapping_in_list(tmp_path):
     case_file = case_file_name("a")
     _write(
         tmp_path / case_file,
-        """```yaml spec-test
+        """```yaml contract-spec
 - id: CK-CLI-001
   title: ok
   type: cli.ok
@@ -106,7 +106,7 @@ def test_iter_spec_doc_tests_supports_tilde_fence_and_yml_token(tmp_path):
         tmp_path / case_file,
         """# Doc
 
-~~~spec-test yml
+~~~contract-spec yml
 id: CK-CLI-010
 type: cli.example
 ~~~
@@ -124,7 +124,7 @@ def test_iter_spec_doc_tests_accepts_info_tokens_in_any_order(tmp_path):
         tmp_path / case_file,
         """# Doc
 
-```spec-test yaml
+```contract-spec yaml
 id: CK-CLI-011
 type: cli.example
 ```
@@ -142,7 +142,7 @@ def test_iter_spec_doc_tests_requires_matching_closing_fence_length(tmp_path):
         tmp_path / case_file,
         """# Doc
 
-````yaml spec-test
+````yaml contract-spec
 id: CK-CLI-012
 type: cli.example
 note: |
@@ -178,7 +178,7 @@ def test_iter_spec_doc_tests_ignores_non_spec_md_files(tmp_path):
         tmp_path / "note.md",
         """# Doc
 
-```yaml spec-test
+```yaml contract-spec
 id: CK-CLI-014
 type: cli.example
 ```
@@ -194,7 +194,7 @@ def test_iter_spec_doc_tests_accepts_custom_file_pattern(tmp_path):
         tmp_path / "note.md",
         """# Doc
 
-```yaml spec-test
+```yaml contract-spec
 id: CK-CLI-015
 type: cli.example
 ```

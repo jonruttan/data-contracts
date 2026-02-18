@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-GEN-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-GEN-003
 title: generated markdown sections are read-only blocks
 purpose: Ensures configured generated markdown outputs contain valid generated section markers.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

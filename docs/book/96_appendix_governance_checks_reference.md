@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 246
-- checks_with_cases: 237
+- check_count: 252
+- checks_with_cases: 243
 - checks_without_cases: 9
 
 | check_id | case_count | has_case |
@@ -188,6 +188,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.api_http_verb_suite` | 1 | true |
 | `runtime.assert_block_decision_authority_required` | 1 | true |
 | `runtime.assertions_via_spec_lang` | 1 | true |
+| `runtime.case_contract_block_required` | 1 | true |
 | `runtime.chain_contract_single_location` | 1 | true |
 | `runtime.chain_cycle_forbidden` | 1 | true |
 | `runtime.chain_exports_explicit_only` | 1 | true |
@@ -211,6 +212,8 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.ci_workflow_critical_gate_required` | 1 | true |
 | `runtime.cigate_uses_governance_triage_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
+| `runtime.contract_spec_fence_required` | 1 | true |
+| `runtime.contract_step_asserts_required` | 1 | true |
 | `runtime.domain_library_preferred_for_fs_ops` | 1 | true |
 | `runtime.domain_library_preferred_for_http_helpers` | 1 | true |
 | `runtime.executable_spec_lang_includes_forbidden` | 1 | true |
@@ -224,6 +227,9 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.governance_triage_entrypoint_required` | 1 | true |
 | `runtime.governance_triage_targeted_first_required` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
+| `runtime.legacy_assert_block_forbidden` | 1 | true |
+| `runtime.legacy_checks_key_forbidden` | 1 | true |
+| `runtime.legacy_spec_test_fence_forbidden` | 1 | true |
 | `runtime.legacy_timeout_envs_deprecated` | 1 | true |
 | `runtime.liveness_hard_cap_token_emitted` | 1 | true |
 | `runtime.liveness_stall_token_emitted` | 1 | true |

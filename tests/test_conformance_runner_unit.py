@@ -48,7 +48,7 @@ def test_conformance_per_case_override_beats_global_assert_health_env(tmp_path, 
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("override")).write_text(
-        """```yaml spec-test
+        """```yaml contract-spec
 id: SRCONF-TMP-OVERRIDE
 type: text.file
 expect:
@@ -98,7 +98,7 @@ def test_conformance_inline_expect_merges_portable_and_impl_override(tmp_path, m
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("inline")).write_text(
-        """```yaml spec-test
+        """```yaml contract-spec
 id: SRCONF-TMP-INLINE
 type: text.file
 expect:
@@ -134,7 +134,7 @@ def test_conformance_inline_expect_requires_portable_status(tmp_path):
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("bad")).write_text(
-        """```yaml spec-test
+        """```yaml contract-spec
 id: SRCONF-TMP-BAD
 type: text.file
 expect:
@@ -152,7 +152,7 @@ def test_conformance_requires_capabilities_skip_when_missing(tmp_path, monkeypat
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("requires")).write_text(
-        """```yaml spec-test
+        """```yaml contract-spec
 id: SRCONF-TMP-REQ-SKIP
 type: text.file
 requires:
@@ -186,7 +186,7 @@ def test_conformance_requires_capabilities_fail_when_missing(tmp_path, monkeypat
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("requires-fail")).write_text(
-        """```yaml spec-test
+        """```yaml contract-spec
 id: SRCONF-TMP-REQ-FAIL
 type: text.file
 requires:
@@ -221,7 +221,7 @@ def test_conformance_requires_rejects_invalid_when_missing(tmp_path, monkeypatch
     cases_dir = tmp_path / "cases"
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("requires-invalid")).write_text(
-        """```yaml spec-test
+        """```yaml contract-spec
 id: SRCONF-TMP-REQ-BAD
 type: text.file
 requires:

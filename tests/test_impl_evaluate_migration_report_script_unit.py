@@ -30,7 +30,7 @@ def test_report_impl_evaluate_migration_outputs_expected_summary(tmp_path: Path)
 
 ## CASE-1
 
-```yaml spec-test
+```yaml contract-spec
 id: CASE-1
 type: text.file
 assert:
@@ -47,7 +47,7 @@ assert:
 
 ## CASE-2
 
-```yaml spec-test
+```yaml contract-spec
 id: CASE-2
 type: text.file
 assert:

@@ -17,7 +17,7 @@ Repo revision: 678376d
 ## Raw Output
 
 `spec_runner` is trying to be a language-neutral executable-spec contract
-system: author behavior once in Markdown (`yaml spec-test`), execute it in
+system: author behavior once in Markdown (`yaml contract-spec`), execute it in
 multiple runtimes, and keep implementations honest via conformance/parity
 gates.
 

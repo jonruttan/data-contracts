@@ -41,12 +41,12 @@ class MarkdownYamlSpecCodec:
             elif isinstance(payload, list):
                 tests = payload
             else:
-                raise TypeError(f"spec-test block in {path} must be a mapping or a list of mappings")
+                raise TypeError(f"contract-spec block in {path} must be a mapping or a list of mappings")
             for t in tests:
                 if not isinstance(t, dict):
-                    raise TypeError(f"spec-test block in {path} contains a non-mapping test")
+                    raise TypeError(f"contract-spec block in {path} contains a non-mapping test")
                 if "id" not in t or "type" not in t:
-                    raise ValueError(f"spec-test in {path} must include 'id' and 'type'")
+                    raise ValueError(f"contract-spec in {path} must include 'id' and 'type'")
                 out.append(t)
         return out
 

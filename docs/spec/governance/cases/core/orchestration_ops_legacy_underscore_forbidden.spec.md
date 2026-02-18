@@ -2,7 +2,7 @@
 
 ## SRGOV-OPS-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-OPS-002
 title: orchestration ops legacy underscore forms are forbidden
 purpose: Ensures underscore shorthand ops symbols are rejected.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

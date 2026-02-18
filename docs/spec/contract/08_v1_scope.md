@@ -5,7 +5,7 @@ maintenance decisions stay predictable.
 
 ## V1 In Scope
 
-- Execute Markdown-embedded `yaml spec-test` blocks for core types:
+- Execute Markdown-embedded `yaml contract-spec` blocks for core types:
   - `text.file`
   - `cli.run`
 - Enforce stable case shape and assertion DSL from:
@@ -46,7 +46,7 @@ maintenance decisions stay predictable.
   - update schema/contract docs and traceability in the same change slice
   - include conformance or unit evidence for changed `MUST` behavior
 - Portable conformance case format remains Markdown `*.spec.md` with fenced
-  `yaml spec-test` blocks.
+  `yaml contract-spec` blocks.
 - Canonical executable surfaces are markdown-only:
   - conformance cases (`docs/spec/conformance/cases`)
   - governance cases (`docs/spec/governance/cases`)

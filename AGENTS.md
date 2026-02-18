@@ -5,19 +5,19 @@ Project-specific instructions for AI agents working in `tools/spec_runner/`.
 ## What This Subproject Is
 
 - `spec_runner` is a small Python library for running executable spec tests
-  embedded in Markdown documents as fenced blocks tagged `yaml spec-test`.
-- It parses spec-test blocks and dispatches each case to a harness based on
+  embedded in Markdown documents as fenced blocks tagged `yaml contract-spec`.
+- It parses contract-spec blocks and dispatches each case to a harness based on
   `type`.
 - The core library is intended to be reusable and publishable. Project-specific
   harnesses/adapters should live with the system under test.
 
 ## Configuration / Schema
 
-- The spec-test schema is documented in `docs/spec/schema/schema_v1.md`.
+- The contract-spec schema is documented in `docs/spec/schema/schema_v1.md`.
 - Runner-only setup inputs MUST live under `harness:` (never as arbitrary
   top-level keys).
 - Executable spec cases MUST live in Markdown files (`*.spec.md`) with fenced
-  `yaml spec-test` blocks.
+  `yaml contract-spec` blocks.
 
 ## Local Commands
 

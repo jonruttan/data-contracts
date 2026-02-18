@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-TRIAGE-014
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-014
 title: ci workflow defines rust critical gate as first-class lane
 purpose: Ensures CI has a dedicated rust critical gate job and diagnostic ci-gate depends
@@ -28,10 +28,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

@@ -2,7 +2,7 @@
 
 ## SRGOV-CHAIN-009
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-009
 title: chain contract uses harness.chain only
 purpose: Ensures chain declarations appear only at harness.chain and not in alternate top-level
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

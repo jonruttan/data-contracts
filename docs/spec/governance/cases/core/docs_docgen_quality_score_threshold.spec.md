@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-GEN-026
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-GEN-026
 title: docgen quality score meets minimum threshold
 purpose: Ensures generated runner/harness/stdlib catalogs meet minimum semantic quality score.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

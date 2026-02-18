@@ -1,6 +1,6 @@
 # library.single_public_symbol_per_case_required
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-LIB-SINGLE-001
 title: library cases use single public symbol granularity
 purpose: Ensures each spec_lang.export case defines exactly one symbol under defines.public.
@@ -17,10 +17,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

@@ -1,6 +1,6 @@
 # runtime.domain_library_preferred_for_http_helpers
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOMAIN-LIB-HTTP-001
 title: api.http context assertions prefer domain http helpers
 purpose: Enforces `domain.http.*` helper usage for oauth meta assertions in api.http cases
@@ -18,10 +18,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

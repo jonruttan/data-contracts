@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-FAILFAST-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-FAILFAST-004
 title: gate policy evaluation treats skipped rows as non-pass
 purpose: Ensures fail-fast skipped rows stay in policy subject and preserve failing verdict
@@ -28,10 +28,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

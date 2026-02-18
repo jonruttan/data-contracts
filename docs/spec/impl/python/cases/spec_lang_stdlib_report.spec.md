@@ -2,7 +2,7 @@
 
 ## SRPY-STDLIB-REP-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPY-STDLIB-REP-001
 title: spec_lang_stdlib_report_main emits json by default
 type: cli.run
@@ -10,11 +10,11 @@ argv: []
 exit_code: 0
 harness:
   entrypoint: spec_runner.spec_lang_commands:spec_lang_stdlib_report_main
-assert:
+contract:
 - id: assert_1
   class: must
   target: stdout
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - '"version": 1'
@@ -25,7 +25,7 @@ assert:
 
 ## SRPY-STDLIB-REP-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPY-STDLIB-REP-002
 title: spec_lang_stdlib_report_main emits markdown with format md
 type: cli.run
@@ -35,11 +35,11 @@ argv:
 exit_code: 0
 harness:
   entrypoint: spec_runner.spec_lang_commands:spec_lang_stdlib_report_main
-assert:
+contract:
 - id: assert_1
   class: must
   target: stdout
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - '# Spec-Lang Stdlib Profile Report'

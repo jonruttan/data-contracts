@@ -61,7 +61,7 @@ MUST:
 
 MUST:
 
-- `yaml spec-test` fenced examples in reference docs MUST parse as YAML.
+- `yaml contract-spec` fenced examples in reference docs MUST parse as YAML.
 - shell/python code examples in the reference surface MUST pass lightweight
   static validation.
 - invalid examples MUST fail unless explicitly opted out.

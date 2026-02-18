@@ -2,7 +2,7 @@
 
 ## SRGOV-REF-SYMBOLS-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-REF-SYMBOLS-001
 title: referenced library symbols resolve
 purpose: Ensures harness.spec_lang exports and library symbols resolve deterministically.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

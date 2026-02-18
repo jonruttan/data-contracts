@@ -86,7 +86,7 @@ def test_php_bootstrap_runner_can_parse_markdown_spec_test_blocks(tmp_path):
     (cases_dir / case_file_name("sample")).write_text(
         """# Example
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-MD-001
 type: text.file
 assert:
@@ -131,7 +131,7 @@ def test_php_bootstrap_runner_ignores_plain_md_case_file(tmp_path):
     (cases_dir / "sample.md").write_text(
         """# Example
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-MD-002
 type: text.file
 assert:
@@ -174,7 +174,7 @@ def test_php_bootstrap_runner_allows_pattern_override(tmp_path):
     (cases_dir / "sample.md").write_text(
         """# Example
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-MD-003
 type: text.file
 assert:
@@ -251,7 +251,7 @@ def test_default_case_pattern_parity_between_python_and_php(tmp_path):
     (cases_dir / case_file_name("match")).write_text(
         """# Match
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PATTERN-PARITY-001
 type: text.file
 assert:
@@ -265,7 +265,7 @@ assert:
     (cases_dir / "plain.md").write_text(
         """# Plain
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PATTERN-PARITY-002
 type: text.file
 assert:
@@ -316,7 +316,7 @@ def test_php_bootstrap_runner_resolves_virtual_root_with_worktree_git_file(tmp_p
     case_file.write_text(
         """# Worktree Root Test
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-WORKTREE-ROOT-001
 type: text.file
 path: /docs/spec/conformance/cases/core/worktree_virtual_root.spec.md
@@ -419,7 +419,7 @@ def test_php_bootstrap_runner_honors_global_assert_health_env_warn(tmp_path):
     (cases_dir / case_file_name("warn")).write_text(
         """# Example
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-AH-ENV-001
 type: text.file
 assert:
@@ -465,7 +465,7 @@ def test_php_bootstrap_runner_per_case_ignore_overrides_global_error_env(tmp_pat
     (cases_dir / case_file_name("override")).write_text(
         """# Example
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-AH-ENV-002
 type: text.file
 assert_health:
@@ -516,7 +516,7 @@ def test_php_bootstrap_runner_honors_requires_capabilities_skip(tmp_path):
 
 ## SRCONF-PHP-MD-REQ-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-MD-REQ-001
 type: text.file
 requires:
@@ -567,7 +567,7 @@ def test_php_bootstrap_runner_applies_requires_before_type_support_check(tmp_pat
     (cases_dir / case_file_name("requires-cli")).write_text(
         """# Example
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-MD-REQ-CLI
 type: cli.run
 requires:
@@ -620,7 +620,7 @@ def test_php_bootstrap_runner_supports_text_file_relative_path_and_escape_guard(
 
 ## SRCONF-PHP-MD-PATH-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-MD-PATH-001
 type: text.file
 path: ../data/target.txt
@@ -632,7 +632,7 @@ assert:
 
 ## SRCONF-PHP-MD-PATH-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PHP-MD-PATH-002
 type: text.file
 path: ../../outside.txt

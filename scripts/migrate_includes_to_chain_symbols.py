@@ -12,7 +12,7 @@ from spec_runner.codecs import load_external_cases
 from spec_runner.virtual_paths import contract_root_for, resolve_contract_path
 
 
-_FENCE = re.compile(r"```yaml spec-test\n(.*?)\n```", re.DOTALL)
+_FENCE = re.compile(r"```yaml contract-spec\n(.*?)\n```", re.DOTALL)
 
 
 def _iter_files(path: Path):
@@ -189,7 +189,7 @@ def _rewrite(text: str, *, doc_path: Path) -> tuple[str, bool]:
         updated_case, did_change = _migrate_case(case, doc_path=doc_path)
         if did_change:
             changed = True
-            out.append("```yaml spec-test\n" + _dump_case(updated_case) + "\n```")
+            out.append("```yaml contract-spec\n" + _dump_case(updated_case) + "\n```")
         else:
             out.append(m.group(0))
         cursor = m.end()

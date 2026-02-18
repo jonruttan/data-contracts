@@ -2,14 +2,14 @@
 
 ## LIB-DOMAIN-PHP-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-PHP-001
 title: php projection helper functions
 type: spec.export
-assert:
+contract:
 - id: __export__php.is_assoc_projection
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - std.object.get:

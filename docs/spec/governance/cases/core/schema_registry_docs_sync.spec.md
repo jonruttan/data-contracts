@@ -2,7 +2,7 @@
 
 ## SRGOV-SCHEMA-REG-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-SCHEMA-REG-002
 title: schema registry docs snapshot is synchronized
 purpose: Ensures schema_v1 markdown contains synchronized generated registry snapshot markers
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-FAILFAST-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-FAILFAST-002
 title: gate summary payload includes skipped step contract
 purpose: Ensures gate summary output includes skipped-step and abort metadata fields.
@@ -29,10 +29,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

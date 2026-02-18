@@ -2,7 +2,7 @@
 
 ## SRGOV-TEST-UNIT-OPT-OUT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-UNIT-OPT-OUT-001
 title: unit test opt-out usage is measured and non-regressing
 purpose: Tracks unit-test opt-out usage and enforces a non-regression baseline so opt-out
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

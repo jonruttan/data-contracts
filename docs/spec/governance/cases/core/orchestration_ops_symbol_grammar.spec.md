@@ -2,7 +2,7 @@
 
 ## SRGOV-OPS-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-OPS-001
 title: orchestration ops symbols follow deep-dot grammar
 purpose: Ensures effect symbols use canonical deep-dot ops names.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

@@ -2,7 +2,7 @@
 
 ## SRGOV-PROFILE-REDACT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-PROFILE-REDACT-001
 title: run trace redaction policy prevents secret leakage
 purpose: Ensures profiling env metadata does not store raw values and trace payloads do not
@@ -22,10 +22,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

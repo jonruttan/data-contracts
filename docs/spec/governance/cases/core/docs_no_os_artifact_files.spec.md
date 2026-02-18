@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-LAYOUT-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-LAYOUT-005
 title: docs tree excludes OS/editor artifact files
 purpose: Prevents tracked filesystem artifacts (for example .DS_Store) in docs surfaces.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

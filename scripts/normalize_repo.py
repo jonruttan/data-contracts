@@ -210,12 +210,12 @@ def _check_dogfood_executable_surface() -> list[str]:
             if not p.is_file():
                 continue
             raw = p.read_text(encoding="utf-8")
-            token = "```yaml spec-test"
+            token = "```yaml contract-spec"
             if token in raw:
                 line = _line_for(raw, token)
                 rel = p.relative_to(ROOT).as_posix()
                 issues.append(
-                    f"{rel}:{line}: NORMALIZATION_DATA_ARTIFACT_NON_EXECUTABLE: data artifacts must not embed yaml spec-test fences"
+                    f"{rel}:{line}: NORMALIZATION_DATA_ARTIFACT_NON_EXECUTABLE: data artifacts must not embed yaml contract-spec fences"
                 )
     return issues
 
@@ -424,6 +424,69 @@ def _check_markdown_namespace_legacy_alias_forbidden() -> list[str]:
     return issues
 
 
+def _check_contract_terminology_hard_cut() -> list[str]:
+    issues: list[str] = []
+    for rel, case in _iter_spec_markdown_cases():
+        case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
+        if "assert" in case:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} legacy top-level assert key is forbidden; use contract"
+            )
+        contract = case.get("contract")
+        if contract is None:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} missing required contract key"
+            )
+            continue
+
+        def _walk(node: Any, path: str) -> None:
+            if isinstance(node, list):
+                for i, child in enumerate(node):
+                    _walk(child, f"{path}[{i}]")
+                return
+            if not isinstance(node, dict):
+                return
+            step_class = str(node.get("class", "")).strip() if "class" in node else ""
+            if step_class in _CHAIN_CLASS_VALUES:
+                if "checks" in node:
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path} legacy checks key is forbidden; use asserts"
+                    )
+                raw_asserts = node.get("asserts")
+                if not isinstance(raw_asserts, list) or not raw_asserts:
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path}.asserts must be non-empty list"
+                    )
+                else:
+                    for i, child in enumerate(raw_asserts):
+                        _walk(child, f"{path}.asserts[{i}]")
+                return
+            for key in ("must", "can", "cannot"):
+                raw_children = node.get(key)
+                if isinstance(raw_children, list):
+                    for i, child in enumerate(raw_children):
+                        _walk(child, f"{path}.{key}[{i}]")
+
+        _walk(contract, "contract")
+
+    spec_root = ROOT / "docs/spec"
+    if spec_root.exists():
+        for p in sorted(spec_root.rglob("*.spec.md")):
+            if not p.is_file():
+                continue
+            rel = p.relative_to(ROOT).as_posix()
+            raw = p.read_text(encoding="utf-8")
+            if "spec-test" in raw:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: legacy spec-test token is forbidden; use contract-spec"
+                )
+            if "```yaml contract-spec" not in raw:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: missing required contract-spec fence token"
+                )
+    return issues
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Unified normalization check/fix runner for specs, contracts, and tests.")
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -549,6 +612,7 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_executable_spec_lang_includes_forbidden())
     issues.extend(_check_library_single_public_symbol())
     issues.extend(_check_markdown_namespace_legacy_alias_forbidden())
+    issues.extend(_check_contract_terminology_hard_cut())
     if issues:
         for issue in sorted(issues):
             print(issue)

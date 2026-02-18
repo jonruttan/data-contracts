@@ -29,7 +29,7 @@ def report(cases_dir: Path) -> dict[str, Any]:
         t = case.test
         case_id = str(t.get("id", "")).strip()
         case_type = str(t.get("type", "")).strip()
-        ops = _collect_leaf_ops(t.get("assert", []) or [])
+        ops = _collect_leaf_ops(t.get("contract", []) or [])
         counts = Counter(ops)
         total = len(ops)
         eval_count = counts.get("evaluate", 0)

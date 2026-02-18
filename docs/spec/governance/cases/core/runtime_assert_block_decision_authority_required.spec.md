@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-ASSERT-AUTH-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-ASSERT-AUTH-001
 title: governance verdict authority lives in assert blocks
 purpose: Ensures governance runtime no longer uses policy_evaluate verdict
@@ -18,10 +18,10 @@ harness:
     - eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)
     forbidden_tokens:
     - run_governance_policy(
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

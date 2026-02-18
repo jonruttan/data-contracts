@@ -1,6 +1,6 @@
 # runtime.chain_library_symbol_exports_valid
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-FROM-003
 title: chain assert function imports are valid
 purpose: Ensures from=assert.function step imports include valid symbol path and contract
@@ -18,10 +18,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

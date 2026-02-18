@@ -2,7 +2,7 @@
 
 ## SRGOV-ARCH-COMPONENTS-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-ARCH-COMPONENTS-002
 title: legacy harness workflow duplication is forbidden
 purpose: Prevents harness modules from reintroducing local spec-lang setup and direct assertion-evaluation
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

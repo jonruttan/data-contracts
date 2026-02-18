@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 
-_FENCE_RE = re.compile(r"```yaml spec-test\n(.*?)\n```", re.DOTALL)
+_FENCE_RE = re.compile(r"```yaml contract-spec\n(.*?)\n```", re.DOTALL)
 _DEFINITIONS_KEY_RE = re.compile(r"^(\s*)definitions:\s*$", re.MULTILINE)
 
 
@@ -43,7 +43,7 @@ def _rewrite(text: str) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        description="Convert legacy `definitions` key to `defines` in spec_lang.export yaml spec-test blocks."
+        description="Convert legacy `definitions` key to `defines` in spec_lang.export yaml contract-spec blocks."
     )
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")

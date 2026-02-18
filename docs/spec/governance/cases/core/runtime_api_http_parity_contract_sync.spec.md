@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-APIHTTP-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-APIHTTP-008
 title: api.http python/php parity contract surfaces remain synchronized
 purpose: Ensures python/php api.http implementations and contracts expose shared v2 tokens.
@@ -19,17 +19,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

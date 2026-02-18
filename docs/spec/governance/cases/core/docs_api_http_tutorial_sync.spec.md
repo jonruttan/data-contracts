@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-APIHTTP-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-APIHTTP-001
 title: api.http tutorials remain present in howto and troubleshooting docs
 purpose: Ensures contributor docs cover practical REST verbs, CORS preflight, and round-trip
@@ -20,17 +20,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

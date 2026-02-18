@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 
 
-_FENCE_RE = re.compile(r"```yaml spec-test\n(.*?)\n```", re.DOTALL)
+_FENCE_RE = re.compile(r"```yaml contract-spec\n(.*?)\n```", re.DOTALL)
 
 
 def _iter_files(path: Path):

@@ -11,7 +11,7 @@ def run(case, *, ctx) -> None:
         case = compile_external_case(case.test, doc_path=case.doc_path)
     t = case.raw_case
     case_id = case.id
-    # By default, assert against the spec doc that contains the spec-test.
+    # By default, assert against the spec doc that contains the contract-spec.
     # If `path` is provided, assert against that file (relative to the spec doc).
     p = case.doc_path
     rel = t.get("path")
@@ -60,7 +60,7 @@ def run(case, *, ctx) -> None:
     ctx.set_case_targets(case_key=case_key, targets=targets)
     run_assertions_with_context(
         assert_tree=case.assert_tree,
-        raw_assert_spec=t.get("assert", []) or [],
+        raw_assert_spec=t.get("contract", []) or [],
         raw_case=t,
         ctx=ctx,
         execution=execution,

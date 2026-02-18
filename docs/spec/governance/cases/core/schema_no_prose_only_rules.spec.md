@@ -2,7 +2,7 @@
 
 ## SRGOV-SCHEMA-REG-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-SCHEMA-REG-004
 title: schema contract avoids prose-only rules
 purpose: Ensures schema contract docs explicitly tie behavior to registry source-of-truth
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

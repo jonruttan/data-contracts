@@ -2,7 +2,7 @@
 
 ## SRGOV-ASSERT-PROFILE-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-ASSERT-PROFILE-003
 title: domain profile docs synchronize with profile schema ids
 purpose: Ensures python/php/http/markdown/makefile profile docs and subject profile schema
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

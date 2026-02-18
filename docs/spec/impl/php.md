@@ -72,7 +72,7 @@ Current bootstrap behavior:
 
 - Reads case inputs from Markdown spec docs matching the default
   case-file pattern
-- For Markdown docs, parses fenced `spec-test` YAML blocks
+- For Markdown docs, parses fenced `contract-spec` YAML blocks
   (backticks or tildes, matching Python fence/token rules)
 - Executes `text.file` cases with:
   - default subject from the containing spec document

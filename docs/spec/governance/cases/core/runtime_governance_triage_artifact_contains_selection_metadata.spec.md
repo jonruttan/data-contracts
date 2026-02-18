@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-TRIAGE-012
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-012
 title: triage artifact includes selection metadata
 type: governance.check
@@ -27,10 +27,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

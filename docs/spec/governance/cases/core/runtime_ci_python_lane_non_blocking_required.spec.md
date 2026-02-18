@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-CONFIG-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-CONFIG-005
 title: ci python parity lane is non-blocking telemetry
 purpose: Ensures CI keeps Python parity visible without blocking merge lanes.
@@ -30,10 +30,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

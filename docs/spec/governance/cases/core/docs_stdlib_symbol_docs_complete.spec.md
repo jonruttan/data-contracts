@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-GEN-021
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-GEN-021
 title: stdlib symbols include semantic docs payload
 purpose: Ensures every stdlib symbol has summary, params, returns, errors, and examples in
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

@@ -16,7 +16,7 @@ This folder contains the normative and working specification docs for
 ## Folder Layout
 
 - `docs/spec/contract/`: versioned portable rules and policy files
-- `docs/spec/schema/`: schema docs for executable `spec-test` case shape
+- `docs/spec/schema/`: schema docs for executable `contract-spec` case shape
 - `docs/spec/conformance/`: cross-runtime conformance rules and fixtures
 - `docs/spec/governance/`: executable governance checks run via `spec_runner`
 - `docs/spec/impl/`: executable implementation fixture suites
@@ -28,7 +28,7 @@ This folder contains the normative and working specification docs for
 - Keep docs focused on `spec_runner` behavior and public contract semantics.
 - Put runner-only setup under `harness:` in case examples (never as arbitrary
   top-level case keys).
-- Keep examples executable when possible using fenced `yaml spec-test` blocks.
+- Keep examples executable when possible using fenced `yaml contract-spec` blocks.
 - Keep traceability current in `docs/spec/contract/traceability_v1.yaml`.
 - `docs/spec/pending/` is draft-only: completed/resolved items MUST be removed
   from pending files instead of marked in place.

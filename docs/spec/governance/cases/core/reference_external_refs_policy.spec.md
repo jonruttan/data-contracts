@@ -2,7 +2,7 @@
 
 ## SRGOV-REF-EXTERNAL-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-REF-EXTERNAL-001
 title: external refs require explicit policy and capability
 purpose: Ensures external:// references are deny-by-default and must declare allow policy.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

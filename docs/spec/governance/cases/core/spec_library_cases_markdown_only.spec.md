@@ -2,7 +2,7 @@
 
 ## SRGOV-SPEC-MD-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-SPEC-MD-003
 title: spec-lang library cases are markdown only
 purpose: Ensures type spec_lang.export cases are authored only in .spec.md files under docs/spec/libraries.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

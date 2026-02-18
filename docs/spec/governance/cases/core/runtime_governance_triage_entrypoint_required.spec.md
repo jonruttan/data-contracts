@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-TRIAGE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-001
 title: governance triage entrypoint exists with required surface
 purpose: Ensures canonical governance triage script exists and exposes required flags.
@@ -29,10 +29,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

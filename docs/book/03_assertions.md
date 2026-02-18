@@ -69,11 +69,11 @@ Target is set on an assertion step and inherited by checks/leaves.
 Valid:
 
 ```yaml
-assert:
+contract:
 - id: assert_1
   class: must
   target: stdout
-  checks:
+  asserts:
   - evaluate:
     - std.string.contains:
       - var: subject
@@ -83,10 +83,10 @@ assert:
 Invalid:
 
 ```yaml
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - target: stdout
     evaluate:
     - std.string.contains:
@@ -110,7 +110,7 @@ All operator values are lists.
 `evaluate` uses spec-lang v1 operator-keyed mapping AST nodes:
 
 ```yaml
-assert:
+contract:
 - target: text
   must:
   - evaluate:
@@ -130,7 +130,7 @@ Reference:
 Tail-recursive example:
 
 ```yaml
-assert:
+contract:
 - target: text
   must:
   - evaluate:
@@ -170,7 +170,7 @@ assert:
 ## Example: Mixed Assertions
 
 ```yaml
-assert:
+contract:
 - target: stderr
   cannot:
   - contain:
@@ -194,7 +194,7 @@ assert:
 Prefer library-backed markdown predicates over raw token checks.
 
 ```yaml
-assert:
+contract:
 - target: context_json
   must:
   - evaluate:
@@ -217,7 +217,7 @@ Use `target: text` only for literal obligations where structure is not the
 goal:
 
 ```yaml
-assert:
+contract:
 - target: text
   must:
   - contain:

@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-PYDEP-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-PYDEP-001
 title: python dependency metric report generation is valid
 purpose: Ensures python dependency metric report is generated with required summary fields
@@ -46,17 +46,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

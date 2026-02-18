@@ -2,7 +2,7 @@
 
 ## SRGOV-RUST-PRIMARY-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUST-PRIMARY-003
 title: rust-primary adapter keeps required runner-interface subcommands
 purpose: Ensures Rust-primary operation preserves required runner-interface subcommand compatibility.
@@ -49,17 +49,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

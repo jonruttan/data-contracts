@@ -7,7 +7,7 @@ The goal is not praise. The goal is to expose what blocks real-world use.
 
 ```text
 You are reviewing a repo called “spec_runner”, a Python library for executing Markdown-embedded
-`yaml spec-test` blocks and validating behavior across implementations (Python and PHP).
+`yaml contract-spec` blocks and validating behavior across implementations (Python and PHP).
 
 Your goal is NOT to praise it. Your goal is to expose:
 - the real problems it solves (if any)
@@ -44,7 +44,7 @@ Operate as 7 distinct personas. Keep them clearly separated and consistent:
 - cares about machine-readable output, composability, and no interactive surprises
 
 Context you should assume about this repo:
-- Markdown docs can contain executable `yaml spec-test` blocks.
+- Markdown docs can contain executable `yaml contract-spec` blocks.
 - The canonical assertion DSL is `must` / `can` / `cannot`.
 - Leaf operators are list-valued and include `contain`, `regex`, plus harness-specific ops (`json_type`, `exists`).
 - Core types currently include `text.file` and `cli.run`.

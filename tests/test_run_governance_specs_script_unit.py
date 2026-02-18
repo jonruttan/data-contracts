@@ -43,7 +43,7 @@ def _governance_case(root: Path) -> str:
 
 ## SRGOV-TEST-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-001
 type: governance.check
 check: pending.no_resolved_markers
@@ -64,7 +64,7 @@ def _case_for_check(case_id: str, check: str, root: Path) -> str:
 
 ## {case_id}
 
-```yaml spec-test
+```yaml contract-spec
 id: {case_id}
 type: governance.check
 check: {check}
@@ -186,7 +186,7 @@ def test_script_supports_governance_structured_assertion_targets(tmp_path):
 
 ## SRGOV-TEST-STRUCTURED-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-STRUCTURED-001
 type: governance.check
 check: pending.no_resolved_markers
@@ -362,7 +362,7 @@ def test_script_enforces_runtime_python_bin_resolver_sync(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-CONFIG-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-CONFIG-002
 type: governance.check
 check: runtime.python_bin_resolver_sync
@@ -422,7 +422,7 @@ def test_script_enforces_runtime_runner_interface_gate_sync(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-CONFIG-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-CONFIG-003
 type: governance.check
 check: runtime.runner_interface_gate_sync
@@ -480,7 +480,7 @@ def test_script_fails_when_governance_case_missing_policy_evaluate(tmp_path):
 
 ## SRGOV-TEST-POLICY-REQ-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-POLICY-REQ-001
 type: governance.check
 check: governance.policy_evaluate_required
@@ -515,7 +515,7 @@ assert:
 
 ## SRGOV-TEST-POLICY-REQ-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-POLICY-REQ-002
 type: governance.check
 check: pending.no_resolved_markers
@@ -543,7 +543,7 @@ def test_script_enforces_governance_structured_assertions_required(tmp_path):
 
 ## SRGOV-TEST-POLICY-REQ-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-POLICY-REQ-003
 type: governance.check
 check: governance.structured_assertions_required
@@ -574,7 +574,7 @@ assert:
 
 ## SRGOV-TEST-POLICY-REQ-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-POLICY-REQ-004
 type: governance.check
 check: pending.no_resolved_markers
@@ -606,7 +606,7 @@ def test_script_enforces_governance_policy_library_usage_required(tmp_path):
 
 ## SRGOV-TEST-POLICY-LIB-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-POLICY-LIB-001
 type: governance.check
 check: governance.policy_library_usage_required
@@ -644,7 +644,7 @@ assert:
 
 ## SRGOV-TEST-POLICY-LIB-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-POLICY-LIB-002
 type: governance.check
 check: pending.no_resolved_markers
@@ -679,7 +679,7 @@ assert:
 
 ## SRGOV-TEST-POLICY-LIB-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-POLICY-LIB-002
 type: governance.check
 check: pending.no_resolved_markers
@@ -723,7 +723,7 @@ def test_script_enforces_conformance_library_policy_usage_required(tmp_path):
 
 ## LIB-POLICY-CORE-TEST-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-POLICY-CORE-TEST-001
 type: spec.export
 harness:
@@ -751,7 +751,7 @@ assert:
 
 ## SRGOV-TEST-CONF-LIB-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-LIB-001
 type: governance.check
 check: conformance.library_policy_usage_required
@@ -789,7 +789,7 @@ assert:
 
 ## SRGOV-TEST-CONF-LIB-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-LIB-002
 type: governance.check
 check: conformance.case_index_sync
@@ -828,7 +828,7 @@ assert:
 
 ## SRGOV-TEST-CONF-LIB-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-LIB-002
 type: governance.check
 check: conformance.case_index_sync
@@ -871,7 +871,7 @@ def test_script_enforces_runtime_scope_sync(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-SCOPE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-SCOPE-001
 type: governance.check
 check: runtime.scope_sync
@@ -936,7 +936,7 @@ def test_script_enforces_conformance_case_index_sync(tmp_path):
 
 ## SRCONF-IDX-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-IDX-001
 type: text.file
 assert:
@@ -968,7 +968,7 @@ def test_script_enforces_conformance_type_contract_docs(tmp_path):
 
 ## SRCONF-TYPE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-TYPE-001
 type: text.file
 assert:
@@ -1002,7 +1002,7 @@ def test_script_enforces_conformance_api_http_portable_shape(tmp_path):
 
 ## SRGOV-TEST-CONF-API-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-API-001
 type: governance.check
 check: conformance.api_http_portable_shape
@@ -1034,7 +1034,7 @@ assert:
 
 ## SRCONF-API-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-001
 type: api.http
 request:
@@ -1056,7 +1056,7 @@ assert:
 
 ## SRCONF-API-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-002
 type: api.http
 method: GET
@@ -1098,7 +1098,7 @@ def test_script_enforces_runtime_api_http_oauth_env_only(tmp_path):
 
 ## SRCONF-API-OAUTH-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-OAUTH-001
 type: api.http
 harness:
@@ -1129,7 +1129,7 @@ assert:
 
 ## SRCONF-API-OAUTH-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-OAUTH-001
 type: api.http
 harness:
@@ -1169,7 +1169,7 @@ def test_script_enforces_runtime_api_http_oauth_no_secret_literals(tmp_path):
 
 ## SRCONF-API-OAUTH-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-OAUTH-002
 type: api.http
 request:
@@ -1192,7 +1192,7 @@ assert:
 
 ## SRCONF-API-OAUTH-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-OAUTH-002
 type: api.http
 request:
@@ -1226,7 +1226,7 @@ def test_script_enforces_runtime_api_http_live_mode_explicit(tmp_path):
 
 ## SRCONF-API-OAUTH-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-OAUTH-003
 type: api.http
 request:
@@ -1249,7 +1249,7 @@ assert:
 
 ## SRCONF-API-OAUTH-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-OAUTH-003
 type: api.http
 harness:
@@ -1319,7 +1319,7 @@ def test_script_enforces_runtime_api_http_verb_suite(tmp_path):
 
 ## SRCONF-API-GET
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-GET
 type: api.http
 request:
@@ -1330,7 +1330,7 @@ assert: []
 
 ## SRCONF-API-POST
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-POST
 type: api.http
 request:
@@ -1341,7 +1341,7 @@ assert: []
 
 ## SRCONF-API-PUT
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-PUT
 type: api.http
 request:
@@ -1352,7 +1352,7 @@ assert: []
 
 ## SRCONF-API-PATCH
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-PATCH
 type: api.http
 request:
@@ -1363,7 +1363,7 @@ assert: []
 
 ## SRCONF-API-DELETE
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-DELETE
 type: api.http
 request:
@@ -1374,7 +1374,7 @@ assert: []
 
 ## SRCONF-API-HEAD
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-HEAD
 type: api.http
 request:
@@ -1385,7 +1385,7 @@ assert: []
 
 ## SRCONF-API-OPTIONS
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-OPTIONS
 type: api.http
 request:
@@ -1404,7 +1404,7 @@ assert: []
 
 ## SRCONF-API-GET
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-GET
 type: api.http
 request:
@@ -1431,7 +1431,7 @@ def test_script_enforces_runtime_api_http_scenario_roundtrip(tmp_path):
 
 ## SRCONF-API-SCENARIO
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-API-SCENARIO
 type: api.http
 requests:
@@ -1493,7 +1493,7 @@ def test_script_enforces_conformance_no_runner_logic_outside_harness(tmp_path):
 
 ## SRCONF-PORT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-001
 type: cli.run
 argv: ["--help"]
@@ -1516,7 +1516,7 @@ assert:
 
 ## SRCONF-PORT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-002
 type: cli.run
 argv: ["--help"]
@@ -1542,7 +1542,7 @@ def test_script_enforces_conformance_portable_determinism_guard(tmp_path):
 
 ## SRGOV-TEST-CONF-PORT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-PORT-002
 type: governance.check
 check: conformance.portable_determinism_guard
@@ -1587,7 +1587,7 @@ assert:
 
 ## SRCONF-PORT-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-003
 type: text.file
 assert:
@@ -1606,7 +1606,7 @@ assert:
 
 ## SRCONF-PORT-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-004
 type: text.file
 assert:
@@ -1629,7 +1629,7 @@ def test_script_requires_determinism_patterns_in_governance_spec(tmp_path):
 
 ## SRGOV-TEST-CONF-PORT-002-MISS
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-PORT-002-MISS
 type: governance.check
 check: conformance.portable_determinism_guard
@@ -1664,7 +1664,7 @@ def test_script_enforces_conformance_no_ambient_assumptions(tmp_path):
 
 ## SRGOV-TEST-CONF-PORT-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-PORT-003
 type: governance.check
 check: conformance.no_ambient_assumptions
@@ -1702,7 +1702,7 @@ assert:
 
 ## SRCONF-PORT-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-005
 type: text.file
 assert:
@@ -1721,7 +1721,7 @@ assert:
 
 ## SRCONF-PORT-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-006
 type: text.file
 assert:
@@ -1744,7 +1744,7 @@ def test_script_requires_ambient_assumption_patterns_in_governance_spec(tmp_path
 
 ## SRGOV-TEST-CONF-PORT-003-MISS
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-PORT-003-MISS
 type: governance.check
 check: conformance.no_ambient_assumptions
@@ -1783,7 +1783,7 @@ def test_script_enforces_conformance_extension_requires_capabilities(tmp_path):
 
 ## SRCONF-PORT-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-005
 type: api.http
 request:
@@ -1807,7 +1807,7 @@ assert:
 
 ## SRCONF-PORT-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-006
 type: api.http
 request:
@@ -1852,7 +1852,7 @@ def test_script_enforces_conformance_type_contract_field_sync(tmp_path):
 
 ## SRCONF-PORT-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-007
 type: text.file
 path: fixtures/a.txt
@@ -1872,7 +1872,7 @@ assert:
 
 ## SRCONF-PORT-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PORT-008
 type: text.file
 path: fixtures/a.txt
@@ -1897,7 +1897,7 @@ def test_script_enforces_conformance_spec_lang_preferred(tmp_path):
 
 ## SRGOV-TEST-CONF-SPECLANG-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-SPECLANG-001
 type: governance.check
 check: conformance.spec_lang_preferred
@@ -1942,7 +1942,7 @@ assert:
 
 ## SRCONF-SPECLANG-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-SPECLANG-001
 type: text.file
 path: fixtures/a.txt
@@ -1964,7 +1964,7 @@ assert:
 
 ## SRCONF-SPECLANG-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-SPECLANG-002
 type: text.file
 path: fixtures/a.txt
@@ -1988,7 +1988,7 @@ def test_script_enforces_conformance_spec_lang_fixture_library_usage(tmp_path):
 
 ## SRGOV-TEST-CONF-LIB-FIXTURE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-LIB-FIXTURE-001
 type: governance.check
 check: conformance.spec_lang_fixture_library_usage
@@ -2024,7 +2024,7 @@ assert:
 
 ## SRCONF-EXPR-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-001
 type: text.file
 assert:
@@ -2036,7 +2036,7 @@ assert:
 
 ## SRCONF-EXPR-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-002
 type: text.file
 harness:
@@ -2072,7 +2072,7 @@ assert:
 
 ## SRCONF-EXPR-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-001
 type: text.file
 harness:
@@ -2100,7 +2100,7 @@ assert:
 
 ## SRCONF-EXPR-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-EXPR-002
 type: text.file
 harness:
@@ -2170,7 +2170,7 @@ def test_script_enforces_conformance_case_doc_style_guard(tmp_path):
 
 ## SRCONF-STYLE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STYLE-001
 title: good style case
 purpose: Purpose text with enough words to satisfy quality checks here.
@@ -2192,7 +2192,7 @@ expect:
 
 ## SRCONF-STYLE-002
 
-```yaml spec-test
+```yaml contract-spec
 - id: SRCONF-STYLE-002
   type: text.file
   expect:
@@ -2240,7 +2240,7 @@ def test_script_enforces_docs_reference_surface_complete(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-001
 type: governance.check
 check: docs.reference_surface_complete
@@ -2288,7 +2288,7 @@ def test_script_enforces_docs_reference_index_sync(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-002
 type: governance.check
 check: docs.reference_index_sync
@@ -2337,7 +2337,7 @@ def test_script_enforces_docs_examples_runnable(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-004
 type: governance.check
 check: docs.examples_runnable
@@ -2365,7 +2365,7 @@ assert:
         tmp_path / "docs/book/03_assertions.md",
         """# Assertions
 
-```yaml spec-test
+```yaml contract-spec
 id: T-1
 type: text.file
 assert:
@@ -2422,7 +2422,7 @@ def test_script_enforces_docs_required_sections(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-003
 type: governance.check
 check: docs.required_sections
@@ -2464,7 +2464,7 @@ def test_script_enforces_docs_cli_flags_documented(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-005
 type: governance.check
 check: docs.cli_flags_documented
@@ -2519,7 +2519,7 @@ def test_script_enforces_docs_contract_schema_book_sync(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-006
 type: governance.check
 check: docs.contract_schema_book_sync
@@ -2567,7 +2567,7 @@ def test_script_docs_examples_opt_out_requires_non_empty_reason(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-007
 type: governance.check
 check: docs.examples_runnable
@@ -2615,7 +2615,7 @@ def test_script_docs_examples_shell_prompt_marker_fails_without_opt_out(tmp_path
 
 ## SRGOV-TEST-DOCS-REF-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-008
 type: governance.check
 check: docs.examples_runnable
@@ -2661,7 +2661,7 @@ def test_script_docs_reference_index_detects_duplicate_entries(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-009
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-009
 type: governance.check
 check: docs.reference_index_sync
@@ -2706,7 +2706,7 @@ def test_script_enforces_runtime_assertions_via_spec_lang(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-ASSERT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-ASSERT-001
 type: governance.check
 check: runtime.assertions_via_spec_lang
@@ -2782,7 +2782,7 @@ def test_script_can_run_contract_governance_check(tmp_path):
 
 ## SRGOV-TEST-CONTRACT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONTRACT-001
 type: governance.check
 check: contract.governance_check
@@ -2817,7 +2817,7 @@ def test_script_enforces_conformance_purpose_quality_gate(tmp_path):
 
 ## SRGOV-TEST-CONF-PURPOSE-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-PURPOSE-002
 type: governance.check
 check: conformance.purpose_quality_gate
@@ -2850,7 +2850,7 @@ assert:
 
 ## SRCONF-PURPOSE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-001
 title: stable purpose sentence for quality checks
 purpose: This purpose sentence provides concrete deterministic intent for this case.
@@ -2871,7 +2871,7 @@ assert:
 
 ## SRCONF-PURPOSE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-001
 title: stable purpose sentence for quality checks
 purpose: short words only
@@ -2896,7 +2896,7 @@ def test_script_enforces_conformance_purpose_quality_gate_severity_threshold(tmp
 
 ## SRGOV-TEST-CONF-PURPOSE-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-PURPOSE-003
 type: governance.check
 check: conformance.purpose_quality_gate
@@ -2929,7 +2929,7 @@ assert:
 
 ## SRCONF-PURPOSE-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-PURPOSE-002
 title: short purpose title
 purpose: too short
@@ -2954,7 +2954,7 @@ def test_script_enforces_contract_coverage_threshold(tmp_path):
 
 ## SRGOV-TEST-CONTRACT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONTRACT-002
 type: governance.check
 check: contract.coverage_threshold
@@ -3045,7 +3045,7 @@ def test_script_enforces_docs_make_commands_sync(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-007
 type: governance.check
 check: docs.make_commands_sync
@@ -3107,7 +3107,7 @@ def test_script_enforces_docs_adoption_profiles_sync(tmp_path):
 
 ## SRGOV-TEST-DOCS-REF-009
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-REF-009
 type: governance.check
 check: docs.adoption_profiles_sync
@@ -3163,7 +3163,7 @@ def test_script_enforces_naming_filename_policy(tmp_path):
 
 ## SRGOV-TEST-DOCS-NAME-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-NAME-001
 type: governance.check
 check: naming.filename_policy
@@ -3212,7 +3212,7 @@ def test_script_enforces_spec_portability_metric(tmp_path):
 
 ## SRGOV-TEST-SPEC-PORT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-SPEC-PORT-001
 type: governance.check
 check: spec.portability_metric
@@ -3255,7 +3255,7 @@ assert:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 assert:
@@ -3280,7 +3280,7 @@ def test_script_rejects_invalid_spec_portability_metric_config(tmp_path):
 
 ## SRGOV-TEST-SPEC-PORT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-SPEC-PORT-002
 type: governance.check
 check: spec.portability_metric
@@ -3323,7 +3323,7 @@ assert:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 assert: []
@@ -3344,7 +3344,7 @@ def test_script_rejects_false_spec_portability_metric_policy(tmp_path):
 
 ## SRGOV-TEST-SPEC-PORT-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-SPEC-PORT-004
 type: governance.check
 check: spec.portability_metric
@@ -3389,7 +3389,7 @@ assert:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 assert: []
@@ -3409,7 +3409,7 @@ def test_script_enforces_spec_portability_non_regression(tmp_path):
 
 ## SRGOV-TEST-SPEC-PORT-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-SPEC-PORT-003
 type: governance.check
 check: spec.portability_non_regression
@@ -3472,7 +3472,7 @@ assert:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 assert:
@@ -3556,7 +3556,7 @@ def test_script_enforces_docs_meta_schema_valid(tmp_path):
 
 ## SRGOV-TEST-DOCS-QUAL-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-QUAL-001
 type: governance.check
 check: docs.meta_schema_valid
@@ -3598,7 +3598,7 @@ def test_script_enforces_docs_generated_files_clean(tmp_path):
 
 ## SRGOV-TEST-DOCS-QUAL-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-QUAL-002
 type: governance.check
 check: docs.generated_files_clean
@@ -3704,7 +3704,7 @@ def test_script_enforces_docs_release_contract_automation_policy(tmp_path):
 
 ## SRGOV-TEST-DOCS-QUAL-009
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DOCS-QUAL-009
 type: governance.check
 check: docs.release_contract_automation_policy
@@ -3771,7 +3771,7 @@ def test_script_enforces_runtime_spec_lang_pure_no_effect_builtins(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-PURE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-PURE-001
 type: governance.check
 check: runtime.spec_lang_pure_no_effect_builtins
@@ -3816,7 +3816,7 @@ def test_script_enforces_runtime_orchestration_policy_via_spec_lang(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-ORCH-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-ORCH-001
 type: governance.check
 check: runtime.orchestration_policy_via_spec_lang
@@ -3883,7 +3883,7 @@ def test_script_enforces_current_spec_policy_key_names(tmp_path):
 
 ## SRGOV-GOOD-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-GOOD-001
 type: governance.check
 check: conformance.spec_lang_preferred
@@ -3914,7 +3914,7 @@ assert:
 
 ## SRGOV-BAD-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-BAD-001
 type: governance.check
 check: conformance.spec_lang_preferred
@@ -3949,7 +3949,7 @@ def test_script_enforces_runtime_runner_interface_subcommands(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-CONFIG-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-CONFIG-004
 type: governance.check
 check: runtime.runner_interface_subcommands
@@ -4001,7 +4001,7 @@ def test_script_enforces_runtime_runner_interface_ci_lane(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-CONFIG-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-CONFIG-005
 type: governance.check
 check: runtime.runner_interface_ci_lane
@@ -4050,7 +4050,7 @@ def test_script_enforces_runtime_rust_adapter_no_delegate(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-CONFIG-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-CONFIG-006
 type: governance.check
 check: runtime.rust_adapter_no_delegate
@@ -4103,7 +4103,7 @@ def test_script_enforces_runtime_rust_adapter_exec_smoke(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-CONFIG-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-CONFIG-007
 type: governance.check
 check: runtime.rust_adapter_exec_smoke
@@ -4162,7 +4162,7 @@ def test_script_enforces_runtime_rust_adapter_subcommand_parity(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-CONFIG-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-CONFIG-008
 type: governance.check
 check: runtime.rust_adapter_subcommand_parity
@@ -4345,7 +4345,7 @@ def test_script_enforces_assert_spec_lang_builtin_surface_sync(tmp_path):
 
 ## SRGOV-TEST-ASSERT-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-ASSERT-005
 type: governance.check
 check: assert.spec_lang_builtin_surface_sync
@@ -4409,7 +4409,7 @@ def test_script_enforces_spec_lang_adoption_metric(tmp_path):
 
 ## SRGOV-TEST-SLA-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-SLA-001
 type: governance.check
 check: spec.spec_lang_adoption_metric
@@ -4446,7 +4446,7 @@ assert:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 assert:
@@ -4471,7 +4471,7 @@ def test_script_enforces_spec_lang_adoption_non_regression(tmp_path):
 
 ## SRGOV-TEST-SLA-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-SLA-002
 type: governance.check
 check: spec.spec_lang_adoption_non_regression
@@ -4508,7 +4508,7 @@ assert:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 assert:
@@ -4543,7 +4543,7 @@ def test_script_enforces_conformance_evaluate_first_ratio_non_regression(tmp_pat
 
 ## SRGOV-TEST-CONF-SPECLANG-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CONF-SPECLANG-003
 type: governance.check
 check: conformance.evaluate_first_ratio_non_regression
@@ -4586,7 +4586,7 @@ assert:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: text.file
 assert:
@@ -4622,7 +4622,7 @@ def test_script_enforces_policy_library_usage_non_regression(tmp_path):
 
 ## SRGOV-TEST-POLLIB-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-POLLIB-001
 type: governance.check
 check: governance.policy_library_usage_non_regression
@@ -4668,7 +4668,7 @@ assert:
 
 ## C1
 
-```yaml spec-test
+```yaml contract-spec
 id: C1
 type: governance.check
 check: docs.reference_surface_complete
@@ -4711,7 +4711,7 @@ assert:
 
 ## L1
 
-```yaml spec-test
+```yaml contract-spec
 id: L1
 type: spec.export
 harness:
@@ -4756,7 +4756,7 @@ def test_script_enforces_runner_independence_metric(tmp_path):
 
 ## SRGOV-TEST-RI-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RI-001
 type: governance.check
 check: runtime.runner_independence_metric
@@ -4803,7 +4803,7 @@ def test_script_enforces_runtime_chain_exports_list_only_required(tmp_path):
 
 ## SAMPLE-CHAIN-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SAMPLE-CHAIN-001
 type: text.file
 path: /README.md
@@ -4830,7 +4830,7 @@ assert: []
 
 ## SAMPLE-CHAIN-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SAMPLE-CHAIN-001
 type: text.file
 path: /README.md
@@ -4917,7 +4917,7 @@ def test_script_enforces_docs_operability_metric(tmp_path):
 
 ## SRGOV-TEST-DO-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-DO-001
 type: governance.check
 check: docs.operability_metric
@@ -4988,7 +4988,7 @@ def test_script_enforces_contract_assertions_metric(tmp_path):
 
 ## SRGOV-TEST-CA-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-CA-001
 type: governance.check
 check: spec.contract_assertions_metric
@@ -5185,7 +5185,7 @@ def test_script_enforces_normalization_library_mapping_ast_only(tmp_path):
 
 ## LIB-PATH
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-PATH
 type: spec_lang.export
 defines:
@@ -5206,7 +5206,7 @@ defines:
 
 ## LIB-PATH
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-PATH
 type: spec_lang.export
 defines:
@@ -5228,7 +5228,7 @@ def test_script_enforces_runtime_python_dependency_metric(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-PYDEP-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-PYDEP-001
 type: governance.check
 check: runtime.python_dependency_metric
@@ -5302,7 +5302,7 @@ def test_script_enforces_runtime_python_dependency_non_regression(tmp_path):
 
 ## SRGOV-TEST-RUNTIME-PYDEP-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-RUNTIME-PYDEP-002
 type: governance.check
 check: runtime.python_dependency_non_regression
@@ -5386,11 +5386,11 @@ def test_scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks_detects_
     mod = _load_script_module()
     _write_text(
         tmp_path / "docs/spec/metrics/spec_portability_baseline.json",
-        '{\n  "x": 1,\n  "note": "```yaml spec-test"\n}\n',
+        '{\n  "x": 1,\n  "note": "```yaml contract-spec"\n}\n',
     )
     out = mod._scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks(tmp_path)  # noqa: SLF001
     assert out
-    assert "must not embed executable spec-test blocks" in out[0]
+    assert "must not embed executable contract-spec blocks" in out[0]
 
 
 def test_script_enforces_impl_evaluate_first_required(tmp_path):
@@ -5402,7 +5402,7 @@ def test_script_enforces_impl_evaluate_first_required(tmp_path):
 
 ## SRGOV-TEST-IMPL-SPECLANG-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-IMPL-SPECLANG-001
 type: governance.check
 check: impl.evaluate_first_required
@@ -5443,7 +5443,7 @@ assert:
 
 ## IMP-1
 
-```yaml spec-test
+```yaml contract-spec
 id: IMP-1
 type: text.file
 assert:
@@ -5472,7 +5472,7 @@ def test_script_enforces_impl_evaluate_ratio_non_regression(tmp_path):
 
 ## SRGOV-TEST-IMPL-SPECLANG-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-IMPL-SPECLANG-002
 type: governance.check
 check: impl.evaluate_ratio_non_regression
@@ -5506,7 +5506,7 @@ assert:
 
 ## IMP-2
 
-```yaml spec-test
+```yaml contract-spec
 id: IMP-2
 type: text.file
 assert:
@@ -5535,7 +5535,7 @@ def test_script_enforces_impl_library_usage_non_regression(tmp_path):
 
 ## SRGOV-TEST-IMPL-SPECLANG-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-TEST-IMPL-SPECLANG-003
 type: governance.check
 check: impl.library_usage_non_regression
@@ -5571,7 +5571,7 @@ assert:
 
 ## IMP-3
 
-```yaml spec-test
+```yaml contract-spec
 id: IMP-3
 type: text.file
 harness:
@@ -5604,7 +5604,7 @@ def test_script_accepts_scalar_chain_ref_format(tmp_path):
 
 ## DEP-1
 
-```yaml spec-test
+```yaml contract-spec
 id: DEP-1
 type: text.file
 path: /README.md
@@ -5618,7 +5618,7 @@ assert: []
 
 ## HOST-1
 
-```yaml spec-test
+```yaml contract-spec
 id: HOST-1
 type: text.file
 path: /README.md
@@ -5650,7 +5650,7 @@ def test_script_rejects_legacy_chain_ref_mapping(tmp_path):
 
 ## HOST-1
 
-```yaml spec-test
+```yaml contract-spec
 id: HOST-1
 type: text.file
 path: /README.md
@@ -5685,7 +5685,7 @@ def test_docs_markdown_structured_assertions_required_flags_plain_contains(tmp_p
 
 ## SAMPLE-1
 
-```yaml spec-test
+```yaml contract-spec
 id: SAMPLE-1
 type: text.file
 path: /docs/book/03_assertions.md
@@ -5718,7 +5718,7 @@ def test_docs_markdown_structured_assertions_required_allows_markdown_helpers(tm
 
 ## LIB-DOMAIN-MD-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-MD-001
 type: spec_lang.export
 defines:
@@ -5738,7 +5738,7 @@ defines:
 
 ## SAMPLE-1
 
-```yaml spec-test
+```yaml contract-spec
 id: SAMPLE-1
 type: text.file
 path: /docs/book/03_assertions.md

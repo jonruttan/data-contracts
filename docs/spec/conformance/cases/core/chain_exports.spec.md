@@ -2,7 +2,7 @@
 
 ## SRCONF-CHAIN-EXPORT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-CHAIN-EXPORT-001
 title: chain exports negative fixture file is present
 purpose: Ensures the legacy chain exports fixture is available for script-level
@@ -13,11 +13,11 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
   target: text
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - non-executable
@@ -25,7 +25,7 @@ assert:
 
 ## SRCONF-CHAIN-EXPORT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-CHAIN-EXPORT-002
 title: producer export path must resolve to producer assert step id
 purpose: Ensures from=assert.function exports fail with schema category when export path
@@ -46,11 +46,12 @@ expect:
   portable:
     status: fail
     category: schema
+contract: []
 ```
 
 ## SRCONF-CHAIN-EXPORT-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-CHAIN-EXPORT-003
 title: producer export source assert step must use class must
 purpose: Ensures from=assert.function exports fail with schema category when source step class
@@ -71,4 +72,5 @@ expect:
   portable:
     status: fail
     category: schema
+contract: []
 ```

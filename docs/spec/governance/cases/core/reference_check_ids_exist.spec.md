@@ -2,7 +2,7 @@
 
 ## SRGOV-REF-CHECKS-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-REF-CHECKS-001
 title: governance check ids exist
 purpose: Ensures governance cases only reference registered check ids.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

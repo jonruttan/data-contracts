@@ -194,9 +194,9 @@ def _collect_leaf_ops(node: object, *, inherited_target: str | None = None) -> l
     if not isinstance(node, dict):
         return ops
     step_class = str(node.get("class", "")).strip() if "class" in node else ""
-    if step_class in {"must", "can", "cannot"} and "checks" in node:
+    if step_class in {"must", "can", "cannot"} and "asserts" in node:
         node_target = str(node.get("target", "")).strip() or inherited_target
-        checks = node.get("checks")
+        checks = node.get("asserts")
         if isinstance(checks, list):
             for child in checks:
                 ops.extend(_collect_leaf_ops(child, inherited_target=node_target))
@@ -345,7 +345,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             except ValueError:
                 rel_path = str(doc_path)
             segment = _match_segment(rel_path, rules)
-            ops = _collect_leaf_ops(case.get("assert", []) or [])
+            ops = _collect_leaf_ops(case.get("contract", []) or [])
             total_leaf = len(ops)
             eval_leaf = sum(1 for op in ops if op == "evaluate")
             logic_ratio = 1.0 if total_leaf == 0 else _safe_ratio(eval_leaf, total_leaf, default=1.0)

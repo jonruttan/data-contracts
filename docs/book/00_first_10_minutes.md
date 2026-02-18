@@ -45,7 +45,7 @@ Establish a deterministic first successful run from a clean clone.
 ## Failure Modes
 
 - missing virtualenv/python tooling
-- invalid fenced `yaml spec-test` syntax
+- invalid fenced `yaml contract-spec` syntax
 - failing local gate checks
 
 ## Safety First (Required)
@@ -75,10 +75,10 @@ mkdir -p .artifacts/first10
 cat > .artifacts/first10/hello.spec.md <<'MD'
 # First 10 Minutes Example
 
-```yaml spec-test
+```yaml contract-spec
 id: FIRST10-001
 type: text.file
-assert:
+contract:
 - target: text
   must:
   - contain:
@@ -90,7 +90,7 @@ MD
 Expected result:
 
 - File `.artifacts/first10/hello.spec.md` exists.
-- It contains one `yaml spec-test` case with `id` and `type`.
+- It contains one `yaml contract-spec` case with `id` and `type`.
 
 ## 3) Execute The Case Through The Library API
 
@@ -141,4 +141,4 @@ Expected result:
 - `ModuleNotFoundError: spec_runner`:
   rerun `python -m pip install -e '.[dev]'` in the active venv.
 - `PASS cases=0`:
-  confirm the file is named `*.spec.md` and fence tag is `yaml spec-test`.
+  confirm the file is named `*.spec.md` and fence tag is `yaml contract-spec`.

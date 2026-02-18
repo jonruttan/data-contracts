@@ -1,6 +1,6 @@
 # runtime.executable_spec_lang_includes_forbidden
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-FROM-004
 title: executable cases forbid spec_lang includes
 purpose: Ensures executable case types do not use harness.spec_lang.includes and load symbols
@@ -18,10 +18,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

@@ -5,13 +5,13 @@ It provides producer cases referenced by conformance negative tests.
 
 ## BAD-EXPORT-PATH
 
-```yaml spec-test
+```yaml contract-spec
 id: BAD-EXPORT-PATH
 type: spec.export
-assert:
+contract:
 - id: valid_step
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - var: subject
@@ -28,13 +28,13 @@ harness:
 
 ## BAD-EXPORT-CLASS
 
-```yaml spec-test
+```yaml contract-spec
 id: BAD-EXPORT-CLASS
 type: spec.export
-assert:
+contract:
 - id: non_must_step
   class: can
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - var: subject

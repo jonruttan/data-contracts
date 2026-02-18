@@ -29,7 +29,7 @@ Provide a compact, copyable set of minimal valid case patterns.
 
 ## Inputs
 
-- an author creating or reviewing new `yaml spec-test` cases
+- an author creating or reviewing new `yaml contract-spec` cases
 
 ## Outputs
 
@@ -46,7 +46,7 @@ Provide a compact, copyable set of minimal valid case patterns.
 ```yaml
 id: CHEAT-001
 type: text.file
-assert:
+contract:
 - target: text
   must:
   - contain:
@@ -63,7 +63,7 @@ argv:
 exit_code: 0
 harness:
   entrypoint: /bin/echo
-assert:
+contract:
 - target: stdout
   must:
   - contain:
@@ -75,7 +75,7 @@ assert:
 ```yaml
 id: CHEAT-003
 type: text.file
-assert:
+contract:
 - target: text
   must:
   - evaluate:

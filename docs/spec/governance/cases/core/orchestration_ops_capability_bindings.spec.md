@@ -2,7 +2,7 @@
 
 ## SRGOV-OPS-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-OPS-004
 title: orchestration ops capability bindings are enforced
 purpose: Ensures orchestration tools and case capability bindings remain synchronized.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-TRIAGE-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-005
 title: triage parser derives failing check ids and prefixes
 purpose: Ensures triage script parses governance ERROR lines and maps check ids to check-prefix
@@ -27,10 +27,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

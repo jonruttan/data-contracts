@@ -5,7 +5,7 @@ debugging and parity checks remain deterministic.
 
 ## SRCONF-ERR-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-ERR-001
 title: failing assertion includes context tokens in message
 purpose: Guarantees failure messages carry deterministic context tokens for debugging
@@ -17,13 +17,13 @@ expect:
     category: assertion
     message_tokens:
     - case_id=SRCONF-ERR-001
-    - assert_path=assert[0]
+    - contract_path=contract[0]
     - target=text
     - op=evaluate
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - \A\Z

@@ -2,27 +2,27 @@
 
 ## LIB-PATH-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES
 type: spec.export
-assert:
+contract:
 - id: __export__path.normalize_slashes
   class: must
-  checks:
+  asserts:
   - std.string.replace:
     - var: path
     - \
     - /
 - id: __export__path.trim_dot
   class: must
-  checks:
+  asserts:
   - std.string.replace:
     - var: path
     - ./
     - ''
 - id: __export__path.dirname
   class: must
-  checks:
+  asserts:
   - let:
     - lit:
       - - segs
@@ -46,7 +46,7 @@ assert:
         - /
 - id: __export__path.has_extension
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - call:
       - var: path.extension
@@ -54,7 +54,7 @@ assert:
     - var: ext
 - id: __export__path.is_under
   class: must
-  checks:
+  asserts:
   - std.string.starts_with:
     - call:
       - var: path.normalize_slashes
@@ -64,7 +64,7 @@ assert:
       - var: prefix
 - id: __export__path.matches
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - call:
       - var: path.normalize_slashes
@@ -108,13 +108,13 @@ harness:
       - pattern
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-PATH-001-002-PATH-SEGMENTS
 type: spec.export
-assert:
+contract:
 - id: __export__path.segments
   class: must
-  checks:
+  asserts:
   - std.string.split:
     - call:
       - var: path.normalize_slashes
@@ -122,14 +122,14 @@ assert:
     - /
 - id: __export__path.trim_dot
   class: must
-  checks:
+  asserts:
   - std.string.replace:
     - var: path
     - ./
     - ''
 - id: __export__path.dirname
   class: must
-  checks:
+  asserts:
   - let:
     - lit:
       - - segs
@@ -153,7 +153,7 @@ assert:
         - /
 - id: __export__path.has_extension
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - call:
       - var: path.extension
@@ -161,7 +161,7 @@ assert:
     - var: ext
 - id: __export__path.is_under
   class: must
-  checks:
+  asserts:
   - std.string.starts_with:
     - call:
       - var: path.normalize_slashes
@@ -171,7 +171,7 @@ assert:
       - var: prefix
 - id: __export__path.matches
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - call:
       - var: path.normalize_slashes
@@ -215,13 +215,13 @@ harness:
       - pattern
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-PATH-001-003-PATH-BASENAME
 type: spec.export
-assert:
+contract:
 - id: __export__path.basename
   class: must
-  checks:
+  asserts:
   - let:
     - lit:
       - - segs
@@ -240,14 +240,14 @@ assert:
           - 1
 - id: __export__path.trim_dot
   class: must
-  checks:
+  asserts:
   - std.string.replace:
     - var: path
     - ./
     - ''
 - id: __export__path.dirname
   class: must
-  checks:
+  asserts:
   - let:
     - lit:
       - - segs
@@ -271,7 +271,7 @@ assert:
         - /
 - id: __export__path.has_extension
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - call:
       - var: path.extension
@@ -279,7 +279,7 @@ assert:
     - var: ext
 - id: __export__path.is_under
   class: must
-  checks:
+  asserts:
   - std.string.starts_with:
     - call:
       - var: path.normalize_slashes
@@ -289,7 +289,7 @@ assert:
       - var: prefix
 - id: __export__path.matches
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - call:
       - var: path.normalize_slashes
@@ -333,13 +333,13 @@ harness:
       - pattern
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-PATH-001-004-PATH-EXTENSION
 type: spec.export
-assert:
+contract:
 - id: __export__path.extension
   class: must
-  checks:
+  asserts:
   - let:
     - lit:
       - - base
@@ -366,14 +366,14 @@ assert:
             - 1
 - id: __export__path.trim_dot
   class: must
-  checks:
+  asserts:
   - std.string.replace:
     - var: path
     - ./
     - ''
 - id: __export__path.dirname
   class: must
-  checks:
+  asserts:
   - let:
     - lit:
       - - segs
@@ -397,7 +397,7 @@ assert:
         - /
 - id: __export__path.has_extension
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - call:
       - var: path.extension
@@ -405,7 +405,7 @@ assert:
     - var: ext
 - id: __export__path.is_under
   class: must
-  checks:
+  asserts:
   - std.string.starts_with:
     - call:
       - var: path.normalize_slashes
@@ -415,7 +415,7 @@ assert:
       - var: prefix
 - id: __export__path.matches
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - call:
       - var: path.normalize_slashes
@@ -459,7 +459,7 @@ harness:
       - pattern
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-PATH-001-900-PATH-SMOKE
 type: text.file
 harness:
@@ -472,10 +472,10 @@ harness:
     - from: lib_path_normalize
       names:
       - path.normalize_slashes
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - call:
       - var: path.normalize_slashes

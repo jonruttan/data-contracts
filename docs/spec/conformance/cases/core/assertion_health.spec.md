@@ -11,7 +11,7 @@ Coverage focus:
 
 ## SRCONF-AH-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-AH-001
 title: assert_health warn emits diagnostics but case still passes
 purpose: Covers warn mode behavior where diagnostics are emitted but verdict remains
@@ -23,10 +23,10 @@ expect:
     category: null
 assert_health:
   mode: warn
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - ''
@@ -35,7 +35,7 @@ assert:
 
 ## SRCONF-AH-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-AH-002
 title: assert_health error mode can pass for evaluate-only assertions
 purpose: Confirms error mode does not fail evaluate-only assertions when no assertion-health
@@ -47,10 +47,10 @@ expect:
     category: null
 assert_health:
   mode: error
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - ''
@@ -59,7 +59,7 @@ assert:
 
 ## SRCONF-AH-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-AH-003
 title: invalid assert_health.mode is a schema error
 purpose: Ensures unsupported assert_health modes are rejected as schema violations.
@@ -70,19 +70,19 @@ expect:
     category: schema
 assert_health:
   mode: nope
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
-    - spec-test
+    - contract-spec
   target: text
 ```
 
 ## SRCONF-AH-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-AH-004
 title: per-case ignore override can neutralize global strict mode
 purpose: Verifies local mode override can disable stricter global assertion-health
@@ -94,10 +94,10 @@ expect:
     category: null
 assert_health:
   mode: ignore
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - ''
@@ -106,7 +106,7 @@ assert:
 
 ## SRCONF-AH-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-AH-005
 title: evaluate-only sibling branches remain valid under assert_health error
 purpose: Confirms evaluate-only non-redundant sibling branches do not trigger AH004
@@ -118,10 +118,10 @@ expect:
     category: null
 assert_health:
   mode: error
-assert:
+contract:
 - id: assert_1
   class: can
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - 'version: 1'
@@ -133,7 +133,7 @@ assert:
 
 ## SRCONF-AH-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-AH-006
 title: evaluate regex portability is handled without sugar diagnostics
 purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level
@@ -145,10 +145,10 @@ expect:
     category: null
 assert_health:
   mode: error
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.regex_match:
     - var: subject
     - '(?<=version: )1'

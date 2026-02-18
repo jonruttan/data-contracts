@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-PREPUSH-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-PREPUSH-005
 title: local ci parity entrypoint is documented for contributors
 purpose: Ensures contributor docs cover parity-default prepush, fast opt-out, and hook installation.
@@ -30,10 +30,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

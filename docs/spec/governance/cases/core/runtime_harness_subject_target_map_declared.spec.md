@@ -2,7 +2,7 @@
 
 ## SRGOV-ARCH-COMPONENTS-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-ARCH-COMPONENTS-005
 title: harnesses declare target subject maps
 purpose: Enforces explicit target-to-subject mapping declarations so assertion targets remain
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

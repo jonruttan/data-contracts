@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-META-TARGET-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-META-TARGET-001
 title: executable harnesses expose meta_json assertion target
 purpose: Ensures all core executable harness adapters project meta_json.
@@ -19,10 +19,10 @@ harness:
     - /spec_runner/harnesses/api_http.py
     required_tokens:
     - meta_json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

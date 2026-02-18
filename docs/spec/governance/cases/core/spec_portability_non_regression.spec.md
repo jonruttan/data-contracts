@@ -2,7 +2,7 @@
 
 ## SRGOV-SPEC-PORT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-SPEC-PORT-002
 title: spec-lang self-containment metric is non-regressing
 purpose: Enforces a monotonic ratchet so configured spec-lang self-containment metrics cannot
@@ -62,17 +62,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

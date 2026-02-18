@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-OPS-OS-CAP-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-OPS-OS-CAP-001
 title: ops.os usage requires explicit capability gate
 purpose: Ensures spec-lang enforces capability.ops_os.required and harness
@@ -17,10 +17,10 @@ harness:
     - capability.ops_os.required
     - def capabilities_from_harness
     - ops.os.exec
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

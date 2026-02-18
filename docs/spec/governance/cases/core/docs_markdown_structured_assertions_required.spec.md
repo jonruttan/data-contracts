@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-MD-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-MD-001
 title: markdown checks use structured markdown helper library
 purpose: Prevent brittle plain string-contains markdown assertions in governed docs cases.
@@ -19,17 +19,17 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

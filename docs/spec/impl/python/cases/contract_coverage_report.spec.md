@@ -2,7 +2,7 @@
 
 ## SRPY-CONTRACT-REP-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPY-CONTRACT-REP-001
 title: contract_coverage_report_main emits json payload to stdout
 type: cli.run
@@ -10,11 +10,11 @@ argv: []
 exit_code: 0
 harness:
   entrypoint: spec_runner.spec_lang_commands:contract_coverage_report_main
-assert:
+contract:
 - id: assert_1
   class: must
   target: stdout
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - '"version": 1'
@@ -28,7 +28,7 @@ assert:
 
 ## SRPY-CONTRACT-REP-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPY-CONTRACT-REP-002
 title: contract_coverage_report_main writes output file with --out
 type: cli.run
@@ -38,11 +38,11 @@ argv:
 exit_code: 0
 harness:
   entrypoint: spec_runner.spec_lang_commands:contract_coverage_report_main
-assert:
+contract:
 - id: assert_1
   class: must
   target: stdout
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - 'wrote .artifacts/contract-coverage-impl-case.json'

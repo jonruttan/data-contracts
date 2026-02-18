@@ -387,11 +387,11 @@ def check_command_examples_verified(repo_root: Path, rel_paths: list[str]) -> li
         blocks = _iter_fenced_blocks(text)
         for start, end, info, block_lines in blocks:
             err: str | None = None
-            if "spec-test" in info and ("yaml" in info or "yml" in info):
+            if "contract-spec" in info and ("yaml" in info or "yml" in info):
                 try:
                     payload = yaml.safe_load("\n".join(block_lines))
                     if payload is None:
-                        err = "empty spec-test block"
+                        err = "empty contract-spec block"
                 except Exception as exc:  # noqa: BLE001
                     err = f"yaml parse error: {exc}"
             elif info and info[0] in {"sh", "bash", "shell", "zsh"}:

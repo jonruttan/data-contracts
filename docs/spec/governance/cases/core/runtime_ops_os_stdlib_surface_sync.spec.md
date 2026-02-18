@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-OPS-OS-SURFACE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-OPS-OS-SURFACE-001
 title: ops.os stdlib symbols are declared in profile and symbol maps
 purpose: Ensures ops.os builtins are synchronized across stdlib mapping and
@@ -24,10 +24,10 @@ harness:
     - ops.os.pid
     - ops.os.sleep_ms
     - ops.os.exit_code
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

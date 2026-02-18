@@ -20,7 +20,7 @@ def test_evaluate_style_check_and_write(tmp_path):
     mod = _load_script_module()
     case = tmp_path / "sample.spec.md"
     case.write_text(
-        """# Case\n\n```yaml spec-test\nid: EVAL-FMT-001\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - [\"let\", [[\"loop\", [\"fn\", [\"n\", \"acc\"], [\"if\", [\"eq\", [\"var\", \"n\"], 0], [\"var\", \"acc\"], [\"call\", [\"var\", \"loop\"], [\"sub\", [\"var\", \"n\"], 1], [\"add\", [\"var\", \"acc\"], 1]]]]]], [\"eq\", [\"call\", [\"var\", \"loop\"], 1000, 0], 1000]]\n```\n""",
+        """# Case\n\n```yaml contract-spec\nid: EVAL-FMT-001\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - [\"let\", [[\"loop\", [\"fn\", [\"n\", \"acc\"], [\"if\", [\"eq\", [\"var\", \"n\"], 0], [\"var\", \"acc\"], [\"call\", [\"var\", \"loop\"], [\"sub\", [\"var\", \"n\"], 1], [\"add\", [\"var\", \"acc\"], 1]]]]]], [\"eq\", [\"call\", [\"var\", \"loop\"], 1000, 0], 1000]]\n```\n""",
         encoding="utf-8",
     )
 
@@ -43,7 +43,7 @@ def test_evaluate_style_formats_nested_mapping_ast_args_block_first(tmp_path):
     mod = _load_script_module()
     case = tmp_path / "compact.spec.md"
     case.write_text(
-        """# Compact\n\n```yaml spec-test\nid: EVAL-FMT-002\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - eq:\n              - add:\n                  - 1\n                  - 2\n              - 3\n```\n""",
+        """# Compact\n\n```yaml contract-spec\nid: EVAL-FMT-002\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - eq:\n              - add:\n                  - 1\n                  - 2\n              - 3\n```\n""",
         encoding="utf-8",
     )
     code = mod.main(["--write", str(case)])
@@ -60,7 +60,7 @@ def test_evaluate_style_canonicalizes_ref_node_layout(tmp_path):
     mod = _load_script_module()
     case = tmp_path / "subject.spec.md"
     case.write_text(
-        """# Subject\n\n```yaml spec-test\nid: EVAL-FMT-003\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - contains:\n              - var: subject\n              - ok\n```\n""",
+        """# Subject\n\n```yaml contract-spec\nid: EVAL-FMT-003\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - contains:\n              - var: subject\n              - ok\n```\n""",
         encoding="utf-8",
     )
 
@@ -76,7 +76,7 @@ def test_evaluate_style_write_is_idempotent(tmp_path):
     mod = _load_script_module()
     case = tmp_path / "idempotent.spec.md"
     case.write_text(
-        """# Idempotent\n\n```yaml spec-test\nid: EVAL-FMT-004\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - eq:\n              - add:\n                  - 1\n                  - 2\n              - 3\n```\n""",
+        """# Idempotent\n\n```yaml contract-spec\nid: EVAL-FMT-004\ntype: text.file\nassert:\n  - target: text\n    must:\n      - evaluate:\n          - eq:\n              - add:\n                  - 1\n                  - 2\n              - 3\n```\n""",
         encoding="utf-8",
     )
     code = mod.main(["--write", str(case)])
@@ -105,7 +105,7 @@ def test_evaluate_style_does_not_reformat_blocks_without_evaluate(tmp_path):
     case = tmp_path / "plain.spec.md"
     original = (
         "# Plain\\n\\n"
-        "```yaml spec-test\\n"
+        "```yaml contract-spec\\n"
         "id: EVAL-FMT-PLAIN-001\\n"
         "type: text.file\\n"
         "assert:\\n"

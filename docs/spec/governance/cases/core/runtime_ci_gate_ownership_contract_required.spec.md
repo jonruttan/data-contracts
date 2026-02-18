@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-TRIAGE-019
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-019
 title: ci gate ownership contract is single-source and broad-only in summary
 purpose: Ensures ci_gate.sh owns critical execution ordering and ci-gate-summary owns broad
@@ -40,10 +40,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

@@ -280,7 +280,7 @@ fn extract_spec_test_blocks(markdown: &str) -> Vec<String> {
     let mut cur = String::new();
     for line in markdown.lines() {
         let trimmed = line.trim_end();
-        if !in_block && trimmed == "```yaml spec-test" {
+        if !in_block && trimmed == "```yaml contract-spec" {
             in_block = true;
             cur.clear();
             continue;
@@ -320,7 +320,7 @@ fn load_case_block_from_spec_ref(root: &Path, spec_ref: &str) -> Result<String, 
         .map_err(|e| format!("failed to read producer spec {}: {e}", path.display()))?;
     let blocks = extract_spec_test_blocks(&text);
     if blocks.is_empty() {
-        return Err(format!("no `yaml spec-test` blocks in {}", path.display()));
+        return Err(format!("no `yaml contract-spec` blocks in {}", path.display()));
     }
     for block in blocks {
         if let Some(want) = &case_id {
@@ -391,11 +391,11 @@ fn parse_validate_report_expr_from_case(case_block: &str, spec_ref: &str) -> Res
         _ => return Err(format!("invalid producer case shape for {spec_ref}: expected mapping")),
     };
     let assert_node = root
-        .get(&YamlValue::String("assert".to_string()))
-        .ok_or_else(|| format!("missing assert in producer case: {spec_ref}"))?;
+        .get(&YamlValue::String("contract".to_string()))
+        .ok_or_else(|| format!("missing contract in producer case: {spec_ref}"))?;
     let assert_seq = match assert_node {
         YamlValue::Sequence(seq) => seq,
-        _ => return Err(format!("producer assert must be sequence: {spec_ref}")),
+        _ => return Err(format!("producer contract must be sequence: {spec_ref}")),
     };
     let target_step_id = "__export__domain.conformance.validate_report_errors";
     for step in assert_seq {
@@ -414,15 +414,15 @@ fn parse_validate_report_expr_from_case(case_block: &str, spec_ref: &str) -> Res
             continue;
         }
         let checks = step_map
-            .get(&YamlValue::String("checks".to_string()))
-            .ok_or_else(|| format!("producer step missing checks: {target_step_id}"))?;
+            .get(&YamlValue::String("asserts".to_string()))
+            .ok_or_else(|| format!("producer step missing asserts: {target_step_id}"))?;
         let check_seq = match checks {
             YamlValue::Sequence(seq) => seq,
-            _ => return Err(format!("producer checks must be sequence: {target_step_id}")),
+            _ => return Err(format!("producer asserts must be sequence: {target_step_id}")),
         };
         if check_seq.len() != 1 {
             return Err(format!(
-                "producer checks must contain exactly one expression: {target_step_id}"
+                "producer asserts must contain exactly one expression: {target_step_id}"
             ));
         }
         return Ok(yaml_to_json(&check_seq[0]));
@@ -1997,7 +1997,7 @@ mod tests {
     fn extract_spec_test_blocks_finds_tagged_yaml_blocks() {
         let md = r#"
 before
-```yaml spec-test
+```yaml contract-spec
 id: CASE-1
 type: governance.check
 ```
@@ -2005,7 +2005,7 @@ middle
 ```yaml
 id: NOT-A-SPEC
 ```
-```yaml spec-test
+```yaml contract-spec
 id: CASE-2
 ```
 after

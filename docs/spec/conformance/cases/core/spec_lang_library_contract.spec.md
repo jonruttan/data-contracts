@@ -2,7 +2,7 @@
 
 ## SRCONF-LIB-CONTRACT-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-LIB-CONTRACT-001
 title: policy library uses producer chain exports
 purpose: Ensures policy library authoring uses producer-owned harness.chain.exports with
@@ -12,10 +12,10 @@ path: /docs/spec/libraries/policy/policy_core.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.string.contains:
       - var: subject
@@ -41,7 +41,7 @@ assert:
 
 ## SRCONF-LIB-CONTRACT-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-LIB-CONTRACT-002
 title: path library uses producer chain exports
 purpose: Ensures path library authoring uses producer-owned harness.chain.exports with
@@ -51,10 +51,10 @@ path: /docs/spec/libraries/path/path_core.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.string.contains:
       - var: subject
@@ -80,7 +80,7 @@ assert:
 
 ## SRCONF-LIB-CONTRACT-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-LIB-CONTRACT-003
 title: policy library index tracks canonical files
 purpose: Ensures generated policy library index includes canonical file references.
@@ -89,10 +89,10 @@ path: /docs/spec/libraries/policy/index.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.string.contains:
       - var: subject

@@ -55,7 +55,7 @@ def _is_yaml_opening_fence(line: str) -> tuple[str, int] | None:
     info = stripped[i:].strip().lower().split()
     if "yaml" not in info and "yml" not in info:
         return None
-    if "spec-test" not in info:
+    if "contract-spec" not in info:
         return None
     return ch, i
 
@@ -285,7 +285,7 @@ def _iter_case_files(paths: list[Path], *, pattern: str) -> list[Path]:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        description="Lint/format evaluate expression layout inside yaml spec-test blocks.",
+        description="Lint/format evaluate expression layout inside yaml contract-spec blocks.",
     )
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true", help="fail if files need formatting")

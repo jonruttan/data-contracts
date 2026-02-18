@@ -2,7 +2,7 @@
 
 ## SRDOCGEN-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-001
 type: docs.generate
 title: reference index surface generation
@@ -17,10 +17,10 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/book/reference_index.md
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -29,7 +29,7 @@ assert:
 
 ## SRDOCGEN-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-002
 type: docs.generate
 title: reference coverage surface generation
@@ -44,10 +44,10 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/book/reference_coverage.md
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -56,7 +56,7 @@ assert:
 
 ## SRDOCGEN-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-003
 type: docs.generate
 title: docs graph surface generation
@@ -73,10 +73,10 @@ harness:
       command:
       - cat
       - docs/book/docs_graph.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -85,7 +85,7 @@ assert:
 
 ## SRDOCGEN-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-004
 type: docs.generate
 title: schema docs surface generation
@@ -100,10 +100,10 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/spec/schema/schema_v1.md
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -112,7 +112,7 @@ assert:
 
 ## SRDOCGEN-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-005
 type: docs.generate
 title: runner api catalog surface generation
@@ -128,10 +128,10 @@ harness:
     - id: runner
       source_type: generated_artifact
       path: /.artifacts/runner-api-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -140,7 +140,7 @@ assert:
 
 ## SRDOCGEN-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-006
 type: docs.generate
 title: harness type catalog surface generation
@@ -156,10 +156,10 @@ harness:
     - id: harness
       source_type: generated_artifact
       path: /.artifacts/harness-type-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -168,7 +168,7 @@ assert:
 
 ## SRDOCGEN-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-007
 type: docs.generate
 title: spec lang builtin catalog surface generation
@@ -184,10 +184,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -196,7 +196,7 @@ assert:
 
 ## SRDOCGEN-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-008
 type: docs.generate
 title: policy rule catalog surface generation
@@ -212,10 +212,10 @@ harness:
     - id: policy
       source_type: generated_artifact
       path: /.artifacts/policy-rule-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -224,7 +224,7 @@ assert:
 
 ## SRDOCGEN-009
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-009
 type: docs.generate
 title: traceability catalog surface generation
@@ -240,10 +240,10 @@ harness:
     - id: trace
       source_type: generated_artifact
       path: /.artifacts/traceability-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -252,7 +252,7 @@ assert:
 
 ## SRDOCGEN-010
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-010
 type: docs.generate
 title: governance check catalog surface generation
@@ -268,10 +268,10 @@ harness:
     - id: checks
       source_type: generated_artifact
       path: /.artifacts/governance-check-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -280,7 +280,7 @@ assert:
 
 ## SRDOCGEN-011
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-011
 type: docs.generate
 title: metrics field catalog surface generation
@@ -296,10 +296,10 @@ harness:
     - id: metrics
       source_type: generated_artifact
       path: /.artifacts/metrics-field-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -308,7 +308,7 @@ assert:
 
 ## SRDOCGEN-012
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-012
 type: docs.generate
 title: spec schema field catalog surface generation for appendix
@@ -323,10 +323,10 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/book/98_appendix_spec_case_shape_reference.md
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -335,7 +335,7 @@ assert:
 
 ## SRDOCGEN-013
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-013
 type: docs.generate
 title: spec schema field catalog surface generation for schema docs
@@ -350,10 +350,10 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/spec/schema/schema_v1.md
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -362,7 +362,7 @@ assert:
 
 ## SRDOCGEN-014
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-014
 type: docs.generate
 title: spec lang core namespace chapter generation
@@ -378,10 +378,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -390,7 +390,7 @@ assert:
 
 ## SRDOCGEN-015
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-015
 type: docs.generate
 title: spec lang logic namespace chapter generation
@@ -406,10 +406,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -418,7 +418,7 @@ assert:
 
 ## SRDOCGEN-016
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-016
 type: docs.generate
 title: spec lang math namespace chapter generation
@@ -434,10 +434,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -446,7 +446,7 @@ assert:
 
 ## SRDOCGEN-017
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-017
 type: docs.generate
 title: spec lang string namespace chapter generation
@@ -462,10 +462,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -474,7 +474,7 @@ assert:
 
 ## SRDOCGEN-018
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-018
 type: docs.generate
 title: spec lang collection namespace chapter generation
@@ -490,10 +490,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -502,7 +502,7 @@ assert:
 
 ## SRDOCGEN-019
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-019
 type: docs.generate
 title: spec lang object namespace chapter generation
@@ -518,10 +518,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -530,7 +530,7 @@ assert:
 
 ## SRDOCGEN-020
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-020
 type: docs.generate
 title: spec lang type namespace chapter generation
@@ -546,10 +546,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -558,7 +558,7 @@ assert:
 
 ## SRDOCGEN-021
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-021
 type: docs.generate
 title: spec lang set namespace chapter generation
@@ -574,10 +574,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true
@@ -586,7 +586,7 @@ assert:
 
 ## SRDOCGEN-022
 
-```yaml spec-test
+```yaml contract-spec
 id: SRDOCGEN-022
 type: docs.generate
 title: spec lang json schema fn null namespace chapter generation
@@ -602,10 +602,10 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - true
     - true

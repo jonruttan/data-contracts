@@ -2,8 +2,8 @@
 A staged sequence for the `spec_runner` Python library (`tools/spec_runner/`) that discovers issues, applies safe fixes, and escalates risk before merge.
 
 ## Repository Context (Hard Requirements)
-- Project: small reusable Python library that runs executable spec tests from Markdown fenced blocks tagged `yaml spec-test`.
-- Core behavior: parse spec-test blocks and dispatch by `type` to harnesses.
+- Project: small reusable Python library that runs executable spec tests from Markdown fenced blocks tagged `yaml contract-spec`.
+- Core behavior: parse contract-spec blocks and dispatch by `type` to harnesses.
 - Schema reference: `docs/spec/schema/schema_v1.md`.
 - Runner-only setup inputs must be under `harness:` (never arbitrary top-level keys).
 - Keep dependencies minimal: stdlib preferred, small stable deps only if justified (for example `PyYAML`).
@@ -211,7 +211,7 @@ Find and heal:
 Allowed:
 - minimal targeted regression tests
 - isolation improvements
-- clearer fixtures for spec-test markdown cases
+- clearer fixtures for contract-spec markdown cases
 
 Output:
 - `Severity | File:Line | Gap | Risk | Required Test`

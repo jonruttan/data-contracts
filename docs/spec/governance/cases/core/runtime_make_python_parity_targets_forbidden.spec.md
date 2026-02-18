@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-PREPUSH-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-PREPUSH-002
 title: makefile contains no python parity prepush targets
 purpose: Ensures contributor-facing make targets do not expose python runner lane execution.
@@ -29,10 +29,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

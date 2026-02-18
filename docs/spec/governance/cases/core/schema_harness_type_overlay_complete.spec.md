@@ -2,7 +2,7 @@
 
 ## SRGOV-ARCH-COMPONENTS-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-ARCH-COMPONENTS-003
 title: harness type overlays are complete
 purpose: Ensures behavior-heavy harness types publish non-empty schema overlays for machine
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

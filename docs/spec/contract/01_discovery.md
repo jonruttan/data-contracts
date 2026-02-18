@@ -20,7 +20,7 @@
   - backticks: ```` ``` ```` (3+), or
   - tildes: `~~~` (3+).
 - Opening fence info string MUST include:
-  - `spec-test`
+  - `contract-spec`
   - and one of: `yaml`, `yml`
 - Info-string token order is not significant.
 - Closing fence MUST use the same fence character as the opener and a fence

@@ -132,7 +132,7 @@ def run_case(
     fn = runners.get(type_)
     if not fn:
         doc_path = case.doc_path if isinstance(case, SpecDocTest) else case.doc_path
-        raise RuntimeError(f"unknown spec-test type: {type_} (from {doc_path})")
+        raise RuntimeError(f"unknown contract-spec type: {type_} (from {doc_path})")
 
     internal_case = _to_internal_case(case)
     case_key = f"{internal_case.doc_path.resolve().as_posix()}::{internal_case.id}"

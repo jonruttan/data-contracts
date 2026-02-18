@@ -2,7 +2,7 @@
 
 ## SRPHP-RUN-LIB-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRPHP-RUN-LIB-001
 title: impl assertion library exports are referenced by impl fixtures
 purpose: References impl assertion library exports for governance usage tracking.
@@ -23,10 +23,10 @@ expect:
   portable:
     status: pass
     category: null
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.string.contains:
     - var: subject
     - '# PHP Spec Runner Library Export References'

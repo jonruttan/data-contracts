@@ -1,6 +1,6 @@
 # Governance Spec Cases
 
-Governance checks expressed as executable `yaml spec-test` cases.
+Governance checks expressed as executable `yaml contract-spec` cases.
 
 Run:
 

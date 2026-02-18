@@ -13,7 +13,7 @@ def test_unknown_type_raises_clear_error(tmp_path, monkeypatch, capsys):
         test={"id": "CK-CLI-999", "type": "unknown.type", "title": "Unknown type"},
     )
 
-    with pytest.raises(RuntimeError, match=r"unknown spec-test type: unknown\.type"):
+    with pytest.raises(RuntimeError, match=r"unknown contract-spec type: unknown\.type"):
         run_case(
             case,
             ctx=SpecRunContext(tmp_path=tmp_path, patcher=monkeypatch, capture=capsys),
@@ -49,7 +49,7 @@ def test_run_case_rejects_recursive_chain_reentry(tmp_path, monkeypatch, capsys)
 
 ## CASE-RECUR
 
-```yaml spec-test
+```yaml contract-spec
 id: CASE-RECUR
 type: text.file
 path: /README.md

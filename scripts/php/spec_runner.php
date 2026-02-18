@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * PHP spec runner.
  *
- * Executes Markdown-embedded `yaml spec-test` cases and emits a normalized
+ * Executes Markdown-embedded `yaml contract-spec` cases and emits a normalized
  * JSON report.
  *
  * Usage:
@@ -212,7 +212,7 @@ function isSpecTestOpeningFence(string $line): ?array {
     }
     $tokens = preg_split('/\s+/', strtolower($info)) ?: [];
     $set = array_fill_keys($tokens, true);
-    if (!isset($set['spec-test']) || (!isset($set['yaml']) && !isset($set['yml']))) {
+    if (!isset($set['contract-spec']) || (!isset($set['yaml']) && !isset($set['yml']))) {
         return null;
     }
     return [$first, $i];
@@ -262,20 +262,20 @@ function parseMarkdownCases(string $path): array {
         if (is_array($payload) && isListArray($payload)) {
             foreach ($payload as $test) {
                 if (!is_array($test)) {
-                    throw new RuntimeException("spec-test block in {$path} contains a non-mapping test");
+                    throw new RuntimeException("contract-spec block in {$path} contains a non-mapping test");
                 }
                 if (!array_key_exists('id', $test) || !array_key_exists('type', $test)) {
-                    throw new RuntimeException("spec-test in {$path} must include 'id' and 'type'");
+                    throw new RuntimeException("contract-spec in {$path} must include 'id' and 'type'");
                 }
                 $cases[] = $test;
             }
         } elseif (is_array($payload)) {
             if (!array_key_exists('id', $payload) || !array_key_exists('type', $payload)) {
-                throw new RuntimeException("spec-test in {$path} must include 'id' and 'type'");
+                throw new RuntimeException("contract-spec in {$path} must include 'id' and 'type'");
             }
             $cases[] = $payload;
         } else {
-            throw new RuntimeException("spec-test block in {$path} must be a mapping or a list of mappings");
+            throw new RuntimeException("contract-spec block in {$path} must be a mapping or a list of mappings");
         }
         $i++;
     }
@@ -435,7 +435,7 @@ function resolveTextFilePath(string $fixturePath, array $case): string {
     return resolveContractPath($docAbs, (string)$case['path'], 'text.file path');
 }
 
-function lintAssertionHealth(mixed $node, string $path = 'assert', ?string $groupCtx = null): array {
+function lintAssertionHealth(mixed $node, string $path = 'contract', ?string $groupCtx = null): array {
     $diags = [];
     if (is_array($node) && isListArray($node)) {
         foreach ($node as $i => $child) {
@@ -447,8 +447,8 @@ function lintAssertionHealth(mixed $node, string $path = 'assert', ?string $grou
         return $diags;
     }
     $stepClass = trim((string)($node['class'] ?? ''));
-    if (in_array($stepClass, ['must', 'can', 'cannot'], true) && array_key_exists('checks', $node)) {
-        $checks = $node['checks'];
+    if (in_array($stepClass, ['must', 'can', 'cannot'], true) && array_key_exists('asserts', $node)) {
+        $checks = $node['asserts'];
         if (is_array($checks) && isListArray($checks)) {
             $seen = [];
             foreach ($checks as $child) {
@@ -459,7 +459,7 @@ function lintAssertionHealth(mixed $node, string $path = 'assert', ?string $grou
                 if (array_key_exists($key, $seen)) {
                     $diags[] = [
                         'code' => 'AH004',
-                        'path' => "{$path}.checks",
+                        'path' => "{$path}.asserts",
                         'message' => "redundant sibling assertion branch in '{$stepClass}'",
                     ];
                     break;
@@ -467,7 +467,7 @@ function lintAssertionHealth(mixed $node, string $path = 'assert', ?string $grou
                 $seen[$key] = true;
             }
         }
-        return array_merge($diags, lintAssertionHealth($checks, "{$path}.checks", $stepClass));
+        return array_merge($diags, lintAssertionHealth($checks, "{$path}.asserts", $stepClass));
     }
     foreach (['must', 'can', 'cannot'] as $group) {
         if (array_key_exists($group, $node)) {
@@ -2952,7 +2952,7 @@ function loadSpecLangLibraryDoc(string $path): array {
         foreach (asNonEmptyStringList($case['imports'] ?? null, 'imports') as $imp) {
             $imports[] = $imp;
         }
-        $rawAssert = $case['assert'] ?? null;
+        $rawAssert = $case['contract'] ?? null;
         $assertSteps = [];
         if (is_array($rawAssert) && isListArray($rawAssert)) {
             foreach ($rawAssert as $step) {
@@ -2997,9 +2997,9 @@ function loadSpecLangLibraryDoc(string $path): array {
             if (trim((string)($srcStep['class'] ?? '')) !== 'must') {
                 throw new SchemaError("harness.chain.exports[{$entryIdx}] source assert step must use class=must");
             }
-            $checks = $srcStep['checks'] ?? null;
+            $checks = $srcStep['asserts'] ?? null;
             if (!is_array($checks) || !isListArray($checks) || count($checks) === 0) {
-                throw new SchemaError("harness.chain.exports[{$entryIdx}] source assert step requires non-empty checks");
+                throw new SchemaError("harness.chain.exports[{$entryIdx}] source assert step requires non-empty asserts");
             }
             $paramsRaw = $entryRaw['params'] ?? null;
             if (!is_array($paramsRaw) || !isListArray($paramsRaw)) {
@@ -3014,7 +3014,7 @@ function loadSpecLangLibraryDoc(string $path): array {
             }
             $exprs = [];
             foreach ($checks as $cIdx => $rawCheck) {
-                $exprs[] = compileYamlExprToSexpr($rawCheck, "{$path} harness.chain.exports[{$entryIdx}].checks[{$cIdx}]");
+                $exprs[] = compileYamlExprToSexpr($rawCheck, "{$path} harness.chain.exports[{$entryIdx}].asserts[{$cIdx}]");
             }
             $body = $exprs[count($exprs) - 1];
             for ($i = count($exprs) - 2; $i >= 0; $i -= 1) {
@@ -3176,7 +3176,7 @@ function assertLeafPredicate(
     if (!specLangEvalPredicate($expr, $subject, $specLangLimits, $specLangSymbols, $specLangImports)) {
         $msg = $op === 'evaluate' ? 'evaluate assertion failed' : "{$op} assertion failed";
         throw new AssertionFailure(
-            "[case_id={$caseId} assert_path={$path} target={$target} op={$op}] {$msg}"
+            "[case_id={$caseId} contract_path={$path} target={$target} op={$op}] {$msg}"
         );
     }
 }
@@ -3195,33 +3195,33 @@ function evalAssertNode(
         return;
     }
     if (!is_array($node)) {
-        throw new SchemaError('assert node must be a mapping or list');
+        throw new SchemaError('contract node must be a mapping or list');
     }
     $stepClass = trim((string)($node['class'] ?? ''));
-    if (in_array($stepClass, ['must', 'can', 'cannot'], true) && array_key_exists('checks', $node)) {
+    if (in_array($stepClass, ['must', 'can', 'cannot'], true) && array_key_exists('asserts', $node)) {
         $stepId = trim((string)($node['id'] ?? ''));
         if ($stepId === '') {
             throw new SchemaError("{$path}.id must be a non-empty string");
         }
-        $extra = array_diff(array_keys($node), ['id', 'class', 'target', 'checks']);
+        $extra = array_diff(array_keys($node), ['id', 'class', 'target', 'asserts']);
         if (count($extra) > 0) {
-            throw new SchemaError('unknown key in assert step: ' . (string)array_values($extra)[0]);
+            throw new SchemaError('unknown key in contract step: ' . (string)array_values($extra)[0]);
         }
         $target = trim((string)($node['target'] ?? ''));
         if ($target === '') {
             $target = $inheritedTarget ?? '';
         }
-        $children = $node['checks'];
+        $children = $node['asserts'];
         if (!is_array($children) || !isListArray($children)) {
-            throw new SchemaError('assert step checks must be a list');
+            throw new SchemaError('contract step asserts must be a list');
         }
         if (count($children) === 0) {
-            throw new SchemaError('assert step checks must not be empty');
+            throw new SchemaError('contract step asserts must not be empty');
         }
         $stepPath = $path;
         if ($stepClass === 'must') {
             foreach ($children as $i => $child) {
-                evalAssertNode($child, $target, $caseId, "{$stepPath}.checks[{$i}]", $evalLeaf);
+                evalAssertNode($child, $target, $caseId, "{$stepPath}.asserts[{$i}]", $evalLeaf);
             }
             return;
         }
@@ -3229,7 +3229,7 @@ function evalAssertNode(
             $anyPassed = false;
             foreach ($children as $i => $child) {
                 try {
-                    evalAssertNode($child, $target, $caseId, "{$stepPath}.checks[{$i}]", $evalLeaf);
+                    evalAssertNode($child, $target, $caseId, "{$stepPath}.asserts[{$i}]", $evalLeaf);
                     $anyPassed = true;
                     break;
                 } catch (AssertionFailure $e) {
@@ -3244,7 +3244,7 @@ function evalAssertNode(
         $passed = 0;
         foreach ($children as $i => $child) {
             try {
-                evalAssertNode($child, $target, $caseId, "{$stepPath}.checks[{$i}]", $evalLeaf);
+                evalAssertNode($child, $target, $caseId, "{$stepPath}.asserts[{$i}]", $evalLeaf);
                 $passed += 1;
             } catch (AssertionFailure $e) {
                 // Expected failing branch for cannot.
@@ -3272,7 +3272,7 @@ function evalAssertNode(
     }
 
     if (count($presentGroups) > 1) {
-        throw new SchemaError('assert group must include exactly one key (must/can/cannot)');
+        throw new SchemaError('contract group must include exactly one key (must/can/cannot)');
     }
 
     if (count($presentGroups) === 1) {
@@ -3283,7 +3283,7 @@ function evalAssertNode(
         }
         $extra = array_diff(array_keys($node), [$group, 'target']);
         if (count($extra) > 0) {
-            throw new SchemaError('unknown key in assert group: ' . (string)array_values($extra)[0]);
+            throw new SchemaError('unknown key in contract group: ' . (string)array_values($extra)[0]);
         }
 
         if ($group === 'must') {
@@ -3388,13 +3388,13 @@ function evalCliLeaf(
         $line = firstNonEmptyLine((string)$captured['stdout']);
         if ($line === null) {
             throw new AssertionFailure(
-                "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] expected stdout to contain a path"
+                "[case_id={$caseId} contract_path={$path} target={$target} op=evaluate] expected stdout to contain a path"
             );
         }
         $loaded = file_get_contents($line);
         if ($loaded === false) {
             throw new AssertionFailure(
-                "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] cannot read stdout path"
+                "[case_id={$caseId} contract_path={$path} target={$target} op=evaluate] cannot read stdout path"
             );
         }
         assertLeafPredicate($caseId, $path, $target, 'evaluate', $expr, $loaded, $specLangLimits, $specLangSymbols, $specLangImports);
@@ -3405,7 +3405,7 @@ function evalCliLeaf(
 
 function evaluateTextFileCase(string $fixturePath, array $case): array {
     $mode = resolveAssertHealthMode($case);
-    $diags = lintAssertionHealth($case['assert'] ?? []);
+    $diags = lintAssertionHealth($case['contract'] ?? []);
     if (count($diags) > 0 && $mode === 'error') {
         return [
             'status' => 'fail',
@@ -3424,7 +3424,7 @@ function evaluateTextFileCase(string $fixturePath, array $case): array {
     if ($subject === false) {
         throw new RuntimeException("cannot read fixture file: {$subjectPath}");
     }
-    $assertSpec = $case['assert'] ?? [];
+    $assertSpec = $case['contract'] ?? [];
     $specLangLimits = specLangLimitsFromHarness($case);
     $specLangImports = specLangCompileImportsForCase($case);
     $specLangSymbols = loadSpecLangSymbolsForCase($fixturePath, $case, $specLangLimits);
@@ -3432,7 +3432,7 @@ function evaluateTextFileCase(string $fixturePath, array $case): array {
         $assertSpec,
         null,
         (string)$case['id'],
-        'assert',
+        'contract',
         static fn(array $leaf, string $target, string $caseId, string $path) => evalTextLeaf(
             $leaf,
             $subject,
@@ -3489,7 +3489,7 @@ function applyEnvAllowlist(array $env): array {
 
 function evaluateCliRunCase(string $fixturePath, array $case): array {
     $mode = resolveAssertHealthMode($case);
-    $diags = lintAssertionHealth($case['assert'] ?? []);
+    $diags = lintAssertionHealth($case['contract'] ?? []);
     if (count($diags) > 0 && $mode === 'error') {
         return [
             'status' => 'fail',
@@ -3575,7 +3575,7 @@ function evaluateCliRunCase(string $fixturePath, array $case): array {
     }
 
     $captured = ['stdout' => (string)$stdout, 'stderr' => (string)$stderr];
-    $assertSpec = $case['assert'] ?? [];
+    $assertSpec = $case['contract'] ?? [];
     $specLangLimits = specLangLimitsFromHarness($case);
     $specLangImports = specLangCompileImportsForCase($case);
     $specLangSymbols = loadSpecLangSymbolsForCase($fixturePath, $case, $specLangLimits);
@@ -3583,7 +3583,7 @@ function evaluateCliRunCase(string $fixturePath, array $case): array {
         $assertSpec,
         null,
         (string)$case['id'],
-        'assert',
+        'contract',
         static fn(array $leaf, string $target, string $caseId, string $path) => evalCliLeaf(
             $leaf,
             $captured,
@@ -3798,7 +3798,7 @@ function evalApiHttpLeaf(
         $parsed = json_decode((string)$resp['body_text'], true);
         if ($parsed === null && trim((string)$resp['body_text']) !== 'null') {
             throw new AssertionFailure(
-                "[case_id={$caseId} assert_path={$path} target={$target} op=evaluate] body_json parse failed"
+                "[case_id={$caseId} contract_path={$path} target={$target} op=evaluate] body_json parse failed"
             );
         }
         assertLeafPredicate($caseId, $path, $target, 'evaluate', $expr, $parsed, $specLangLimits, $specLangSymbols, $specLangImports);
@@ -3925,7 +3925,7 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
         }
     }
 
-    $assertSpec = $case['assert'] ?? [];
+    $assertSpec = $case['contract'] ?? [];
     $specLangLimits = specLangLimitsFromHarness($case);
     $specLangImports = specLangCompileImportsForCase($case);
     $specLangSymbols = loadSpecLangSymbolsForCase($fixturePath, $case, $specLangLimits);
@@ -3933,7 +3933,7 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
         $assertSpec,
         null,
         (string)$case['id'],
-        'assert',
+        'contract',
         static fn(array $leaf, string $target, string $caseId, string $path) => evalApiHttpLeaf(
             $leaf,
             [
@@ -4006,7 +4006,7 @@ function evaluateCase(string $fixturePath, mixed $case): array {
                 'id' => $id,
                 'status' => 'fail',
                 'category' => 'runtime',
-                'message' => "unknown spec-test type: {$type}",
+                'message' => "unknown contract-spec type: {$type}",
             ];
         }
     } catch (SchemaError $e) {

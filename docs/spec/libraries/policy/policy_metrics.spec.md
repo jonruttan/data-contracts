@@ -2,14 +2,14 @@
 
 ## LIB-POLICY-002
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
 type: spec.export
-assert:
+contract:
 - id: __export__policy.metric_non_decrease
   class: must
-  checks:
+  asserts:
   - std.logic.gte:
     - std.math.add:
       - std.object.get:
@@ -33,14 +33,14 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_increase'
 type: spec.export
-assert:
+contract:
 - id: __export__policy.metric_non_increase
   class: must
-  checks:
+  asserts:
   - std.logic.lte:
     - std.math.sub:
       - std.object.get:
@@ -64,7 +64,7 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-POLICY-002-900-POLICY-METRIC-SMOKE
 title: policy metric helpers execute as colocated executable checks
 type: text.file
@@ -84,10 +84,10 @@ harness:
     - from: lib_non_increase
       names:
       - policy.metric_non_increase
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - call:
       - var: policy.metric_non_decrease

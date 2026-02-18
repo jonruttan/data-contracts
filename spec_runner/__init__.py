@@ -1,6 +1,6 @@
 """
-Spec-test runner tooling.
+Data contract spec runner tooling.
 
-This package executes executable specs embedded in Markdown (`yaml spec-test`
-fences) via pluggable harnesses keyed by `type`.
+This package executes data contract specs embedded in Markdown
+(`yaml contract-spec` fences) via pluggable harnesses keyed by `type`.
 """

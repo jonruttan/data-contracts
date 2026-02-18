@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 249
-- must_count: 230
+- rule_count: 255
+- must_count: 233
 - should_count: 12
-- must_not_count: 7
-- active_count: 249
+- must_not_count: 10
+- active_count: 255
 - deprecated_count: 0
 - removed_count: 0
 
@@ -82,6 +82,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `ASSERT_SUGAR_OPERATORS_COMPILE_ONLY` | `MUST` | `implementation` | `assert.tree.operator_surface` | 4 | `active` |
 | `ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN` | `MUST` | `contract` | `assert.tree.target_applicability` | 4 | `active` |
 | `ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY` | `MUST` | `contract` | `assert.tree.operator_model` | 3 | `active` |
+| `CASE_CONTRACT_BLOCK_REQUIRED` | `MUST` | `schema` | `case.top_level.contract` | 2 | `active` |
 | `CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | `MUST` | `schema` | `harness.chain` | 4 | `active` |
 | `CHAIN_CYCLE_FORBIDDEN` | `MUST` | `runtime` | `harness.chain.graph` | 3 | `active` |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.imports` | 2 | `active` |
@@ -110,6 +111,8 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `CONTRACT_ASSERTIONS_METRIC_REPORTED` | `MUST` | `governance` | `specs.contract_assertions.metric_report` | 2 | `active` |
 | `CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `specs.contract_assertions.metric_non_regression` | 3 | `active` |
 | `CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | `MUST` | `governance` | `docs.spec.contract.coverage` | 2 | `active` |
+| `CONTRACT_SPEC_FENCE_REQUIRED` | `MUST` | `runtime` | `markdown.fence.discovery` | 2 | `active` |
+| `CONTRACT_STEP_ASSERTS_REQUIRED` | `MUST` | `schema` | `contract.step_shape` | 2 | `active` |
 | `CURRENT_SPEC_POLICY_KEY_NAMES` | `MUST` | `governance` | `docs.spec.case_key_names` | 3 | `active` |
 | `DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES` | `MUST` | `governance` | `docs.spec.data_artifacts` | 2 | `active` |
 | `DOCS_ADOPTION_PROFILES_SYNC` | `MUST` | `governance` | `docs.adoption.profiles` | 3 | `active` |
@@ -180,6 +183,9 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `IMPL_EVALUATE_FIRST_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.surface` | 3 | `active` |
 | `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.metric_ratchet` | 3 | `active` |
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.library_usage` | 3 | `active` |
+| `LEGACY_ASSERT_BLOCK_FORBIDDEN` | `MUST_NOT` | `schema` | `case.top_level.assert` | 2 | `active` |
+| `LEGACY_CHECKS_KEY_FORBIDDEN` | `MUST_NOT` | `schema` | `contract.step_shape` | 2 | `active` |
+| `LEGACY_SPEC_TEST_FENCE_FORBIDDEN` | `MUST_NOT` | `runtime` | `markdown.fence.discovery` | 2 | `active` |
 | `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `MUST` | `governance` | `docs/spec/libraries/**/*.spec.md` | 3 | `active` |
 | `LIBRARY_DOMAIN_INDEX_SYNC` | `MUST` | `governance` | `docs/spec/libraries/*/index.md` | 3 | `active` |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `MUST` | `governance` | `governance_and_conformance_library_paths` | 2 | `active` |

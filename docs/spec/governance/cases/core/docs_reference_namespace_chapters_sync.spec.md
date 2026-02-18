@@ -2,7 +2,7 @@
 
 ## SRGOV-DOCS-GEN-025
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-DOCS-GEN-025
 title: spec lang namespace chapters are present and manifest-synced
 purpose: Ensures generated namespace chapter files exist and are listed in the book manifest.
@@ -19,10 +19,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.object.get:

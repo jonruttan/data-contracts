@@ -2,7 +2,7 @@
 
 ## SRCONF-STDLIB-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-001
 title: core numeric and set operators evaluate deterministically
 purpose: Validates representative numeric operators in the stdlib profile.
@@ -11,10 +11,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.math.add:
@@ -41,7 +41,7 @@ assert:
 
 ## SRCONF-STDLIB-002
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-002
 title: core collection and object operators evaluate deterministically
 purpose: Validates representative object and json operators in the stdlib profile.
@@ -50,10 +50,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - std.type.json_type:
@@ -80,7 +80,7 @@ assert:
 
 ## SRCONF-STDLIB-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-003
 title: ops fs path operators evaluate deterministically
 purpose: Validates pure contract-posix path helpers under ops.fs.path.
@@ -89,10 +89,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.path.normalize:
@@ -130,7 +130,7 @@ assert:
 
 ## SRCONF-STDLIB-004
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-004
 title: ops fs file metadata helpers evaluate deterministically
 purpose: Validates metadata-only file predicates and getters under ops.fs.file.
@@ -139,10 +139,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.file.exists:
@@ -179,7 +179,7 @@ assert:
 
 ## SRCONF-STDLIB-005
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-005
 title: ops fs json helpers evaluate deterministically
 purpose: Validates pure json parse/path helpers under ops.fs.json.
@@ -188,10 +188,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.json.parse:
@@ -218,7 +218,7 @@ assert:
 
 ## SRCONF-STDLIB-006
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-006
 title: ops fs json helpers fail schema for bad argument shapes
 purpose: Ensures ops.fs.json path utilities reject invalid path shapes.
@@ -228,10 +228,10 @@ expect:
   portable:
     status: fail
     category: schema
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.json.get:
@@ -243,7 +243,7 @@ assert:
 
 ## SRCONF-STDLIB-007
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-007
 title: ops fs glob helpers evaluate deterministically
 purpose: Validates pure glob matching/filter helpers under ops.fs.glob.
@@ -252,10 +252,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.glob.match:
@@ -282,7 +282,7 @@ assert:
 
 ## SRCONF-STDLIB-008
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-008
 title: ops fs glob helpers fail schema for bad argument shapes
 purpose: Ensures ops.fs.glob helpers reject invalid list element types.
@@ -292,10 +292,10 @@ expect:
   portable:
     status: fail
     category: schema
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.glob.any:
@@ -307,7 +307,7 @@ assert:
 
 ## SRCONF-STDLIB-009
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-009
 title: ops fs path relativize and common_prefix evaluate deterministically
 purpose: Validates pure relative-path and common-prefix helpers.
@@ -316,10 +316,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.path.relativize:
@@ -344,7 +344,7 @@ assert:
 
 ## SRCONF-STDLIB-010
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-010
 title: ops fs path common_prefix fails schema for non-string entries
 purpose: Ensures common_prefix rejects list entries that are not strings.
@@ -354,10 +354,10 @@ expect:
   portable:
     status: fail
     category: schema
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.path.common_prefix:
@@ -368,7 +368,7 @@ assert:
 
 ## SRCONF-STDLIB-011
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-011
 title: ops fs path parents and within evaluate deterministically
 purpose: Validates pure parent chain and containment helpers.
@@ -377,10 +377,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.path.parents:
@@ -410,7 +410,7 @@ assert:
 
 ## SRCONF-STDLIB-012
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-012
 title: ops fs path parents fails schema for non-string argument
 purpose: Ensures parents rejects non-string input.
@@ -420,10 +420,10 @@ expect:
   portable:
     status: fail
     category: schema
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.path.parents:
@@ -434,7 +434,7 @@ assert:
 
 ## SRCONF-STDLIB-013
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-013
 title: ops fs path compare and sort evaluate deterministically
 purpose: Validates pure normalized path compare and sort helpers.
@@ -443,10 +443,10 @@ path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
 expect:
   portable:
     status: pass
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.path.compare:
@@ -467,7 +467,7 @@ assert:
 
 ## SRCONF-STDLIB-014
 
-```yaml spec-test
+```yaml contract-spec
 id: SRCONF-STDLIB-014
 title: ops fs path sort fails schema for non-string entries
 purpose: Ensures sort rejects list entries that are not strings.
@@ -477,10 +477,10 @@ expect:
   portable:
     status: fail
     category: schema
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - must:
     - std.logic.eq:
       - ops.fs.path.sort:

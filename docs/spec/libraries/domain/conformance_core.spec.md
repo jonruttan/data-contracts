@@ -2,13 +2,13 @@
 
 ## LIB-DOMAIN-CONFORMANCE-001
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-CONFORMANCE-001-000-DOMAIN-CONFORMANCE-ERROR-WHEN-FALSE
 type: spec.export
-assert:
+contract:
 - id: __export__domain.conformance.error_when_false
   class: must
-  checks:
+  asserts:
   - if:
     - var: condition
     - lit: []
@@ -26,13 +26,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-CONFORMANCE-001-000A-DOMAIN-CONFORMANCE-REPORT-VERSION-IS-V1
 type: spec.export
-assert:
+contract:
 - id: __export__domain.conformance.report_version_is_v1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: report
@@ -49,13 +49,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-CONFORMANCE-001-000B-DOMAIN-CONFORMANCE-REPORT-RESULTS-IS-LIST
 type: spec.export
-assert:
+contract:
 - id: __export__domain.conformance.report_results_is_list
   class: must
-  checks:
+  asserts:
   - std.type.is_list:
     - std.object.get:
       - var: report
@@ -71,13 +71,13 @@ harness:
       required: true
 ```
 
-```yaml spec-test
+```yaml contract-spec
 id: LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS
 type: spec.export
-assert:
+contract:
 - id: __export__domain.conformance.validate_report_errors
   class: must
-  checks:
+  asserts:
   - std.collection.concat:
     - if:
       - std.logic.eq:

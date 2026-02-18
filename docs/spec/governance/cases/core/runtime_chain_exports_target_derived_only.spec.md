@@ -2,7 +2,7 @@
 
 ## SRGOV-CHAIN-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-003
 title: chain exports remain target-derived only
 purpose: Ensures harness.chain step exports declare only explicit target-derived extraction
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

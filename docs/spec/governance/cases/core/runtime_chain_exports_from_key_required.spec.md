@@ -1,6 +1,6 @@
 # runtime.chain_exports_from_key_required
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-FROM-001
 title: chain exports use canonical from key
 purpose: Ensures harness.chain step exports declare the required from field and do not rely
@@ -18,10 +18,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

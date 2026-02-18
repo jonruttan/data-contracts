@@ -71,7 +71,7 @@ from spec_runner.quality_metrics import runner_independence_report_jsonable
 from spec_runner.quality_metrics import spec_lang_adoption_report_jsonable
 from spec_runner.quality_metrics import validate_metric_baseline_notes
 from spec_runner.quality_metrics import _load_baseline_json
-from spec_runner.governance_engine import GovernancePolicyResult, normalize_policy_evaluate, run_governance_policy
+from spec_runner.governance_engine import normalize_policy_evaluate
 from spec_runner.components.meta_subject import build_meta_subject
 from spec_runner.spec_portability import spec_portability_report_jsonable
 from spec_runner.virtual_paths import VirtualPathError, normalize_contract_path, parse_external_ref, resolve_contract_path
@@ -1469,7 +1469,7 @@ def _is_spec_opening_fence(line: str) -> tuple[str, int] | None:
     if i < 3:
         return None
     info = stripped[i:].strip().lower().split()
-    if "spec-test" not in info:
+    if "contract-spec" not in info:
         return None
     if "yaml" not in info and "yml" not in info:
         return None
@@ -1533,7 +1533,7 @@ def _scan_conformance_case_doc_style_guard(root: Path) -> list[str]:
                 )
             payload = yaml.safe_load("\n".join(block_lines)) if block_lines else None
             if isinstance(payload, list):
-                violations.append(f"{p.relative_to(root)}:{start + 1}: one case per spec-test block required")
+                violations.append(f"{p.relative_to(root)}:{start + 1}: one case per contract-spec block required")
             if isinstance(payload, dict):
                 rid = str(payload.get("id", "")).strip()
                 purpose = str(payload.get("purpose", "")).strip()
@@ -2239,7 +2239,7 @@ def _scan_current_spec_policy_key_names(root: Path) -> list[str]:
             tests = list(iter_spec_doc_tests(p.parent, file_pattern=p.name))
         except Exception as exc:  # noqa: BLE001
             rel = p.relative_to(root)
-            violations.append(f"{rel}:1: unable to parse spec-test blocks: {exc}")
+            violations.append(f"{rel}:1: unable to parse contract-spec blocks: {exc}")
             continue
         for spec in tests:
             case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
@@ -2348,7 +2348,7 @@ def _scan_governance_structured_assertions_required(root: Path, *, harness: dict
         check_id = str(case.get("check", "")).strip()
         if check_id in ignore_checks:
             continue
-        assert_tree = case.get("assert", []) or []
+        assert_tree = case.get("contract", []) or []
         has_structured_target = False
         text_pass_only = True
 
@@ -2748,7 +2748,7 @@ def _scan_conformance_api_http_portable_shape(root: Path, *, harness: dict | Non
         else:
             violations.append(f"{case_id}: api.http requires request mapping or requests list")
 
-        targets = _collect_assert_targets(case.get("assert", []))
+        targets = _collect_assert_targets(case.get("contract", []))
         for t in targets:
             if t not in allowed_assert_targets:
                 violations.append(
@@ -3943,7 +3943,7 @@ def _scan_runtime_domain_library_preferred_for_http_helpers(
             rel_doc = _rel_path(root, doc_path)
             if rel_doc in _RAW_HTTP_META_ALLOWED_CASE_FILES:
                 continue
-            assert_tree = case.get("assert", []) or []
+            assert_tree = case.get("contract", []) or []
             leaf_rows: list[tuple[str, str, object, bool]] = []
             def _collect_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
                 del assert_path
@@ -4461,9 +4461,9 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 if not isinstance(node, dict):
                     return
                 step_class = str(node.get("class", "")).strip() if "class" in node else ""
-                if step_class in {"must", "can", "cannot"} and "checks" in node:
+                if step_class in {"must", "can", "cannot"} and "asserts" in node:
                     node_target = str(node.get("target", "")).strip() or inherited_target
-                    raw_checks = node.get("checks")
+                    raw_checks = node.get("asserts")
                     if isinstance(raw_checks, list):
                         for child in raw_checks:
                             _collect_ops(child, inherited_target=node_target)
@@ -4491,7 +4491,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                     if op != "evaluate":
                         non_evaluate_ops.add(op)
 
-            _collect_ops(spec.test.get("assert", []) or [])
+            _collect_ops(spec.test.get("contract", []) or [])
             case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
             all_rows.append(
                 {
@@ -4556,8 +4556,8 @@ def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = Non
         if not isinstance(node, dict):
             return
         step_class = str(node.get("class", "")).strip() if "class" in node else ""
-        if step_class in {"must", "can", "cannot"} and "checks" in node:
-            raw_checks = node.get("checks")
+        if step_class in {"must", "can", "cannot"} and "asserts" in node:
+            raw_checks = node.get("asserts")
             if isinstance(raw_checks, list):
                 for child in raw_checks:
                     _collect_non_eval_ops(child, out)
@@ -4599,7 +4599,7 @@ def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = Non
                 except ValueError:
                     rel = str(spec.doc_path)
                 non_evaluate_ops: set[str] = set()
-                _collect_non_eval_ops(spec.test.get("assert", []) or [], non_evaluate_ops)
+                _collect_non_eval_ops(spec.test.get("contract", []) or [], non_evaluate_ops)
                 case_id = str(spec.test.get("id", "<unknown>")).strip() or "<unknown>"
                 is_allowlisted = case_id in allow_case_ids
                 all_rows.append(
@@ -4764,7 +4764,7 @@ def _scan_conformance_spec_lang_fixture_library_usage(root: Path, *, harness: di
         if str(case.get("type", "")).strip() != "text.file":
             continue
         lib_ok = any(str(x).strip() == required_library_path for x in _collect_chain_library_refs(case))
-        calls = _count_helper_calls(case.get("assert"))
+        calls = _count_helper_calls(case.get("contract"))
         total_calls += calls
         if case_id in required_case_ids:
             seen_required.add(case_id)
@@ -4818,7 +4818,7 @@ def _scan_conformance_library_contract_cases_present(
         case = spec.test if isinstance(spec.test, dict) else {}
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
         found_case_ids.add(case_id)
-        raw_assert = case.get("assert")
+        raw_assert = case.get("contract")
         if isinstance(raw_assert, list) and any(True for _ in _iter_evaluate_expr_nodes(raw_assert)):
             evaluate_case_ids.add(case_id)
 
@@ -5612,7 +5612,7 @@ def _scan_docs_markdown_structured_assertions_required(root: Path, *, harness: d
             for row in iter_leaf_assertions(leaf, target_override=inherited_target):
                 leaf_rows.append(row)
 
-        assert_tree = case.get("assert", []) or []
+        assert_tree = case.get("contract", []) or []
         try:
             eval_assert_tree(assert_tree, eval_leaf=_collect_leaf)
         except Exception as exc:  # noqa: BLE001
@@ -5770,11 +5770,11 @@ def _scan_docs_examples_runnable(root: Path, *, harness: dict | None = None) -> 
                 i += 1
             end = i
             err: str | None = None
-            if "spec-test" in info_tokens and ("yaml" in info_tokens or "yml" in info_tokens):
+            if "contract-spec" in info_tokens and ("yaml" in info_tokens or "yml" in info_tokens):
                 try:
                     payload = yaml.safe_load("\n".join(block_lines))
                     if payload is None:
-                        err = "empty spec-test block"
+                        err = "empty contract-spec block"
                 except Exception as e:  # noqa: BLE001
                     err = f"yaml parse error: {e}"
             elif info_tokens and info_tokens[0] in {"sh", "bash", "shell", "zsh"}:
@@ -6613,6 +6613,123 @@ def _scan_runtime_ops_os_stdlib_surface_sync(root: Path, *, harness: dict | None
         for symbol in symbols:
             if symbol not in raw:
                 violations.append(f"{rel}:1: missing required ops.os symbol token: {symbol}")
+    return violations
+
+
+def _iter_docs_spec_cases(root: Path) -> list[tuple[Path, dict[str, Any]]]:
+    out: list[tuple[Path, dict[str, Any]]] = []
+    cases_root = _join_contract_path(root, "docs/spec")
+    if not cases_root.exists():
+        return out
+    for spec in iter_cases(cases_root, file_pattern="**/*.spec.md"):
+        if isinstance(spec.test, dict):
+            out.append((spec.doc_path, spec.test))
+    return out
+
+
+def _scan_runtime_contract_spec_fence_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    cases_root = _join_contract_path(root, "docs/spec")
+    if not cases_root.exists():
+        return ["docs/spec:1: missing docs/spec tree"]
+    for p in sorted(cases_root.rglob("*.spec.md")):
+        if not p.is_file():
+            continue
+        raw = p.read_text(encoding="utf-8")
+        if "```yaml contract-spec" not in raw:
+            violations.append(f"{p.relative_to(root)}:1: missing required executable fence token ```yaml contract-spec")
+    return violations
+
+
+def _scan_runtime_legacy_spec_test_fence_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    cases_root = _join_contract_path(root, "docs/spec")
+    if not cases_root.exists():
+        return ["docs/spec:1: missing docs/spec tree"]
+    for p in sorted(cases_root.rglob("*.spec.md")):
+        if not p.is_file():
+            continue
+        raw = p.read_text(encoding="utf-8")
+        if "spec-test" in raw:
+            violations.append(f"{p.relative_to(root)}:1: legacy spec-test token is forbidden")
+    return violations
+
+
+def _scan_runtime_case_contract_block_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case in _iter_docs_spec_cases(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        if "contract" not in case:
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} missing required contract block")
+    return violations
+
+
+def _scan_runtime_legacy_assert_block_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case in _iter_docs_spec_cases(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        if "assert" in case:
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} legacy assert block is forbidden")
+    return violations
+
+
+def _scan_runtime_contract_step_asserts_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+
+    def _walk(node: Any, *, rel: str, case_id: str, path: str) -> None:
+        if isinstance(node, list):
+            for i, child in enumerate(node):
+                _walk(child, rel=rel, case_id=case_id, path=f"{path}[{i}]")
+            return
+        if not isinstance(node, dict):
+            return
+        step_class = str(node.get("class", "")).strip() if "class" in node else ""
+        if step_class in {"must", "can", "cannot"}:
+            if "asserts" not in node:
+                violations.append(f"{rel}: case {case_id} {path} step requires asserts list")
+            raw_asserts = node.get("asserts")
+            if not isinstance(raw_asserts, list) or not raw_asserts:
+                violations.append(f"{rel}: case {case_id} {path}.asserts must be non-empty list")
+            else:
+                for i, child in enumerate(raw_asserts):
+                    _walk(child, rel=rel, case_id=case_id, path=f"{path}.asserts[{i}]")
+            return
+        for key in ("must", "can", "cannot"):
+            raw_children = node.get(key)
+            if isinstance(raw_children, list):
+                for i, child in enumerate(raw_children):
+                    _walk(child, rel=rel, case_id=case_id, path=f"{path}.{key}[{i}]")
+
+    for doc_path, case in _iter_docs_spec_cases(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        _walk(case.get("contract"), rel=doc_path.relative_to(root).as_posix(), case_id=case_id, path="contract")
+    return violations
+
+
+def _scan_runtime_legacy_checks_key_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+
+    def _walk(node: Any, *, rel: str, case_id: str, path: str) -> None:
+        if isinstance(node, list):
+            for i, child in enumerate(node):
+                _walk(child, rel=rel, case_id=case_id, path=f"{path}[{i}]")
+            return
+        if not isinstance(node, dict):
+            return
+        if "checks" in node:
+            violations.append(f"{rel}: case {case_id} {path} uses forbidden legacy key checks")
+        for key, value in node.items():
+            _walk(value, rel=rel, case_id=case_id, path=f"{path}.{key}")
+
+    for doc_path, case in _iter_docs_spec_cases(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        _walk(case.get("contract"), rel=doc_path.relative_to(root).as_posix(), case_id=case_id, path="contract")
     return violations
 
 
@@ -8161,8 +8278,8 @@ def _iter_evaluate_expr_nodes(assert_node: object) -> list[object]:
     if not isinstance(assert_node, dict):
         return out
     step_class = str(assert_node.get("class", "")).strip() if "class" in assert_node else ""
-    if step_class in {"must", "can", "cannot"} and "checks" in assert_node:
-        raw_checks = assert_node.get("checks")
+    if step_class in {"must", "can", "cannot"} and "asserts" in assert_node:
+        raw_checks = assert_node.get("asserts")
         if isinstance(raw_checks, list):
             for child in raw_checks:
                 out.extend(_iter_evaluate_expr_nodes(child))
@@ -8233,7 +8350,7 @@ def _collect_global_symbol_references(root: Path) -> set[str]:
                 policy = h.get("policy_evaluate")
                 if isinstance(policy, list):
                     referenced.update(sym for sym in _collect_var_symbols(policy) if "." in sym)
-            raw_assert = case.get("assert")
+            raw_assert = case.get("contract")
             if isinstance(raw_assert, list):
                 for expr in _iter_evaluate_expr_nodes(raw_assert):
                     referenced.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
@@ -8519,7 +8636,7 @@ def _scan_reference_private_symbols_forbidden(root: Path, *, harness: dict | Non
                             sym = str(raw).strip()
                             if sym and "." in sym:
                                 refs.add(sym)
-            raw_assert = case.get("assert")
+            raw_assert = case.get("contract")
             if isinstance(raw_assert, list):
                 for expr in _iter_evaluate_expr_nodes(raw_assert):
                     refs.update(sym for sym in _collect_var_symbols(expr) if "." in sym)
@@ -9080,11 +9197,11 @@ def _scan_spec_generated_data_artifacts_not_embedded_in_spec_blocks(
             if not p.is_file():
                 continue
             text = p.read_text(encoding="utf-8")
-            if "```yaml spec-test" in text:
+            if "```yaml contract-spec" in text:
                 rel = p.relative_to(root).as_posix()
-                line = text[: text.find("```yaml spec-test")].count("\n") + 1
+                line = text[: text.find("```yaml contract-spec")].count("\n") + 1
                 violations.append(
-                    f"{rel}:{line}: data artifact surfaces must not embed executable spec-test blocks"
+                    f"{rel}:{line}: data artifact surfaces must not embed executable contract-spec blocks"
                 )
     return violations
 
@@ -9356,6 +9473,12 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.meta_json_target_required": _scan_runtime_meta_json_target_required,
     "runtime.ops_os_capability_required": _scan_runtime_ops_os_capability_required,
     "runtime.ops_os_stdlib_surface_sync": _scan_runtime_ops_os_stdlib_surface_sync,
+    "runtime.contract_spec_fence_required": _scan_runtime_contract_spec_fence_required,
+    "runtime.legacy_spec_test_fence_forbidden": _scan_runtime_legacy_spec_test_fence_forbidden,
+    "runtime.case_contract_block_required": _scan_runtime_case_contract_block_required,
+    "runtime.legacy_assert_block_forbidden": _scan_runtime_legacy_assert_block_forbidden,
+    "runtime.contract_step_asserts_required": _scan_runtime_contract_step_asserts_required,
+    "runtime.legacy_checks_key_forbidden": _scan_runtime_legacy_checks_key_forbidden,
     "architecture.harness_workflow_components_required": _scan_architecture_harness_workflow_components_required,
     "architecture.harness_local_workflow_duplication_forbidden": _scan_architecture_harness_local_workflow_duplication_forbidden,
     "schema.harness_type_overlay_complete": _scan_schema_harness_type_overlay_complete,
@@ -9476,7 +9599,7 @@ def run_governance_check(case, *, ctx) -> None:
         artifacts={"text": text, "summary_json": summary, "violation_count": len(violations)},
     )
 
-    assert_spec = t.get("assert", []) or []
+    assert_spec = t.get("contract", []) or []
     spec_lang_limits = SpecLangLimits()
 
     def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:

@@ -30,7 +30,7 @@ def _is_spec_test_opening_fence(line: str) -> tuple[str, int] | None:
     if not info:
         return None
     tokens = {tok.lower() for tok in info.split()}
-    if "spec-test" not in tokens:
+    if "contract-spec" not in tokens:
         return None
     if "yaml" not in tokens and "yml" not in tokens:
         return None
@@ -80,11 +80,11 @@ def iter_spec_doc_tests(spec_dir: Path, *, file_pattern: str | None = None) -> I
             elif isinstance(payload, list):
                 tests = payload
             else:
-                raise TypeError(f"spec-test block in {p} must be a mapping or a list of mappings")
+                raise TypeError(f"contract-spec block in {p} must be a mapping or a list of mappings")
 
             for t in tests:
                 if not isinstance(t, dict):
-                    raise TypeError(f"spec-test block in {p} contains a non-mapping test")
+                    raise TypeError(f"contract-spec block in {p} contains a non-mapping test")
                 if "id" not in t or "type" not in t:
-                    raise ValueError(f"spec-test in {p} must include 'id' and 'type'")
+                    raise ValueError(f"contract-spec in {p} must include 'id' and 'type'")
                 yield SpecDocTest(doc_path=p, test=t)

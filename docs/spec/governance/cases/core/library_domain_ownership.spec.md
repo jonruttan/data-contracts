@@ -2,7 +2,7 @@
 
 ## SRGOV-LIB-DOMAIN-001
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-LIB-DOMAIN-001
 title: library paths obey domain ownership
 purpose: Ensures conformance cases use conformance libraries and governance cases use policy/path
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - std.object.get:
       - var: subject

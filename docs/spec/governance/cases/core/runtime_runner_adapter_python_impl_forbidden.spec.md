@@ -2,7 +2,7 @@
 
 ## SRGOV-RUNTIME-ENTRY-003
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-RUNTIME-ENTRY-003
 title: runner adapter hard-fails python impl selection
 purpose: Ensures `scripts/runner_adapter.sh` rejects `--impl python` with migration guidance.
@@ -26,10 +26,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0

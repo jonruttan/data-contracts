@@ -2,7 +2,7 @@
 
 ## SRGOV-CHAIN-010
 
-```yaml spec-test
+```yaml contract-spec
 id: SRGOV-CHAIN-010
 title: universal chain support is present in dispatcher
 purpose: Ensures all executable task types execute through shared harness.chain orchestration
@@ -20,10 +20,10 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
-assert:
+contract:
 - id: assert_1
   class: must
-  checks:
+  asserts:
   - std.logic.eq:
     - var: subject
     - 0
