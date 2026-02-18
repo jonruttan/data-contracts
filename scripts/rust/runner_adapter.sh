@@ -8,6 +8,8 @@ RUST_CLI_MANIFEST="${ROOT_DIR}/scripts/rust/spec_runner_cli/Cargo.toml"
 RUST_CLI_TARGET=""
 RUST_CLI_BIN=""
 RUST_PREFERRED_TARGET=""
+HOST_BIN_LOCAL="${ROOT_DIR}/scripts/rust/spec_runner_cli/target/debug/spec_runner_cli"
+HOST_BIN_ROOT="${ROOT_DIR}/target/debug/spec_runner_cli"
 
 is_debug_enabled() {
   local val="${SPEC_RUNNER_DEBUG:-}"
@@ -57,8 +59,6 @@ fi
 
 # Default host-target binary resolution for non-ARM or when target-specific binary is unset.
 if [[ -z "${RUST_CLI_BIN}" ]]; then
-  HOST_BIN_LOCAL="${ROOT_DIR}/scripts/rust/spec_runner_cli/target/debug/spec_runner_cli"
-  HOST_BIN_ROOT="${ROOT_DIR}/target/debug/spec_runner_cli"
   if [[ -x "${HOST_BIN_LOCAL}" ]]; then
     RUST_CLI_BIN="${HOST_BIN_LOCAL}"
   elif [[ -x "${HOST_BIN_ROOT}" ]]; then
@@ -97,47 +97,64 @@ resolve_rust_target_mode() {
   fi
   echo "[runner_adapter] preferred target missing; using host target (${RUST_CLI_TARGET} unavailable)." >&2
   RUST_CLI_TARGET=""
+  if [[ -x "${HOST_BIN_LOCAL}" ]]; then
+    RUST_CLI_BIN="${HOST_BIN_LOCAL}"
+  elif [[ -x "${HOST_BIN_ROOT}" ]]; then
+    RUST_CLI_BIN="${HOST_BIN_ROOT}"
+  else
+    RUST_CLI_BIN="${HOST_BIN_LOCAL}"
+  fi
+}
+
+ensure_rust_cli_bin() {
+  if [[ -x "${RUST_CLI_BIN}" ]]; then
+    return 0
+  fi
+  if ! resolve_rust_target_mode; then
+    return 2
+  fi
+  if [[ -n "${RUST_CLI_TARGET}" ]]; then
+    debug_log "building rust cli target=${RUST_CLI_TARGET}"
+    cargo build --quiet --manifest-path "${RUST_CLI_MANIFEST}" --target "${RUST_CLI_TARGET}" || return 1
+    RUST_CLI_BIN="${ROOT_DIR}/scripts/rust/spec_runner_cli/target/${RUST_CLI_TARGET}/debug/spec_runner_cli"
+  else
+    debug_log "building rust cli host-target"
+    cargo build --quiet --manifest-path "${RUST_CLI_MANIFEST}" || return 1
+    if [[ -x "${HOST_BIN_LOCAL}" ]]; then
+      RUST_CLI_BIN="${HOST_BIN_LOCAL}"
+    elif [[ -x "${HOST_BIN_ROOT}" ]]; then
+      RUST_CLI_BIN="${HOST_BIN_ROOT}"
+    else
+      echo "ERROR: rust cli build completed but binary not found at expected host paths." >&2
+      return 1
+    fi
+  fi
+  if [[ ! -x "${RUST_CLI_BIN}" ]]; then
+    echo "ERROR: rust cli binary missing or not executable: ${RUST_CLI_BIN}" >&2
+    return 1
+  fi
 }
 
 run_rust_subcommand() {
   local cmd="$1"
   shift
   debug_log "run_rust_subcommand cmd=${cmd} args=[$*]"
-  if [[ -x "${RUST_CLI_BIN}" ]]; then
-    debug_log "using prebuilt binary ${RUST_CLI_BIN}"
-    "${RUST_CLI_BIN}" "${cmd}" "$@"
-    return
-  fi
-  if ! resolve_rust_target_mode; then
+  if ! ensure_rust_cli_bin; then
     return 2
   fi
-  if [[ -n "${RUST_CLI_TARGET}" ]]; then
-    debug_log "using cargo run target=${RUST_CLI_TARGET}"
-    cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" --target "${RUST_CLI_TARGET}" -- "${cmd}" "$@"
-  else
-    debug_log "using cargo run host-target"
-    cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${cmd}" "$@"
-  fi
+  debug_log "using binary ${RUST_CLI_BIN}"
+  "${RUST_CLI_BIN}" "${cmd}" "$@"
 }
 
 exec_rust_subcommand() {
   local cmd="$1"
   shift
   debug_log "exec_rust_subcommand cmd=${cmd} args=[$*]"
-  if [[ -x "${RUST_CLI_BIN}" ]]; then
-    debug_log "exec prebuilt binary ${RUST_CLI_BIN}"
-    exec "${RUST_CLI_BIN}" "${cmd}" "$@"
-  fi
-  if ! resolve_rust_target_mode; then
+  if ! ensure_rust_cli_bin; then
     exit 2
   fi
-  if [[ -n "${RUST_CLI_TARGET}" ]]; then
-    debug_log "exec cargo run target=${RUST_CLI_TARGET}"
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" --target "${RUST_CLI_TARGET}" -- "${cmd}" "$@"
-  else
-    debug_log "exec cargo run host-target"
-    exec cargo run --quiet --manifest-path "${RUST_CLI_MANIFEST}" -- "${cmd}" "$@"
-  fi
+  debug_log "exec binary ${RUST_CLI_BIN}"
+  exec "${RUST_CLI_BIN}" "${cmd}" "$@"
 }
 
 run_with_timeout() {
