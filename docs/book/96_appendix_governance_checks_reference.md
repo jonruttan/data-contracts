@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 232
-- checks_with_cases: 226
+- check_count: 233
+- checks_with_cases: 227
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -204,6 +204,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.chain_step_class_required` | 1 | true |
 | `runtime.ci_artifact_upload_paths_valid` | 1 | true |
 | `runtime.ci_gate_broad_governance_required` | 1 | true |
+| `runtime.ci_gate_critical_first_required` | 1 | true |
 | `runtime.cigate_uses_governance_triage_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
 | `runtime.domain_library_preferred_for_fs_ops` | 1 | true |

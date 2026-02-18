@@ -693,6 +693,41 @@ fn runner_command(runner_bin: &str, runner_impl: &str, subcommand: &str) -> Vec<
     vec![runner_bin.to_string(), subcommand.to_string()]
 }
 
+fn runner_command_with_liveness(
+    runner_bin: &str,
+    runner_impl: &str,
+    subcommand: &str,
+    level: &str,
+    stall_ms: &str,
+    kill_grace_ms: &str,
+    hard_cap_ms: &str,
+) -> Vec<String> {
+    let normalized = runner_bin.replace('\\', "/");
+    let adapter_rel = format!("{}/{}", "scripts", "runner_adapter.sh");
+    let adapter_prefixed = format!("./{}", adapter_rel);
+    let adapter_suffix = format!("/{}", adapter_rel);
+    if normalized.ends_with(&adapter_suffix)
+        || normalized == adapter_rel
+        || normalized == adapter_prefixed
+    {
+        return vec![
+            runner_bin.to_string(),
+            "--impl".to_string(),
+            runner_impl.to_string(),
+            "--liveness-level".to_string(),
+            level.to_string(),
+            "--liveness-stall-ms".to_string(),
+            stall_ms.to_string(),
+            "--liveness-kill-grace-ms".to_string(),
+            kill_grace_ms.to_string(),
+            "--liveness-hard-cap-ms".to_string(),
+            hard_cap_ms.to_string(),
+            subcommand.to_string(),
+        ];
+    }
+    vec![runner_bin.to_string(), subcommand.to_string()]
+}
+
 fn run_command_capture_code(command: &[String], root: &Path) -> i32 {
     if command.is_empty() {
         return 1;
@@ -891,6 +926,15 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         return 2;
     }
 
+    let broad_liveness_level =
+        env::var("SPEC_CI_GOV_BROAD_LIVENESS_LEVEL").unwrap_or_else(|_| "strict".to_string());
+    let broad_liveness_stall_ms =
+        env::var("SPEC_CI_GOV_BROAD_LIVENESS_STALL_MS").unwrap_or_else(|_| "5000".to_string());
+    let broad_liveness_kill_grace_ms = env::var("SPEC_CI_GOV_BROAD_LIVENESS_KILL_GRACE_MS")
+        .unwrap_or_else(|_| "1000".to_string());
+    let broad_liveness_hard_cap_ms =
+        env::var("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS").unwrap_or_else(|_| "120000".to_string());
+
     let default_steps = vec![
         (
             "governance_critical",
@@ -898,7 +942,15 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         ),
         (
             "governance_broad",
-            runner_command(&runner_bin, &runner_impl, "governance"),
+            runner_command_with_liveness(
+                &runner_bin,
+                &runner_impl,
+                "governance",
+                &broad_liveness_level,
+                &broad_liveness_stall_ms,
+                &broad_liveness_kill_grace_ms,
+                &broad_liveness_hard_cap_ms,
+            ),
         ),
         (
             "governance_heavy",

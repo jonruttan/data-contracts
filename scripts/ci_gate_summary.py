@@ -119,7 +119,43 @@ def _runner_command(runner_bin: str, runner_impl: str, subcommand: str) -> list[
     return [runner_bin, subcommand]
 
 
+def _runner_command_with_liveness(
+    runner_bin: str,
+    runner_impl: str,
+    subcommand: str,
+    *,
+    level: str,
+    stall_ms: str,
+    kill_grace_ms: str,
+    hard_cap_ms: str,
+) -> list[str]:
+    normalized = runner_bin.replace("\\", "/")
+    if normalized.endswith("/scripts/runner_adapter.sh") or normalized in {
+        "scripts/runner_adapter.sh",
+        "./scripts/runner_adapter.sh",
+    }:
+        return [
+            runner_bin,
+            "--impl",
+            runner_impl,
+            "--liveness-level",
+            level,
+            "--liveness-stall-ms",
+            stall_ms,
+            "--liveness-kill-grace-ms",
+            kill_grace_ms,
+            "--liveness-hard-cap-ms",
+            hard_cap_ms,
+            subcommand,
+        ]
+    return [runner_bin, subcommand]
+
+
 def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[str]]]:
+    broad_liveness_level = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_LEVEL", "strict"))
+    broad_liveness_stall_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_STALL_MS", "5000"))
+    broad_liveness_kill_grace_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_KILL_GRACE_MS", "1000"))
+    broad_liveness_hard_cap_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS", "120000"))
     return [
         (
             "governance_critical",
@@ -127,7 +163,15 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
         ),
         (
             "governance_broad",
-            _runner_command(runner_bin, runner_impl, "governance"),
+            _runner_command_with_liveness(
+                runner_bin,
+                runner_impl,
+                "governance",
+                level=broad_liveness_level,
+                stall_ms=broad_liveness_stall_ms,
+                kill_grace_ms=broad_liveness_kill_grace_ms,
+                hard_cap_ms=broad_liveness_hard_cap_ms,
+            ),
         ),
         ("governance_heavy", _runner_command(runner_bin, runner_impl, "governance-heavy")),
         ("docs_generate_check", _runner_command(runner_bin, runner_impl, "docs-generate-check")),
