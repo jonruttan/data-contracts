@@ -60,7 +60,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--check", action="store_true")
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     compiled, errs = compile_registry(repo_root)
     if compiled is None:
         for err in errs:

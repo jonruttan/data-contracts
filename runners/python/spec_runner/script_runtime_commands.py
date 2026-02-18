@@ -842,7 +842,7 @@ def check_docs_freshness_main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", default=".artifacts/docs-freshness-report.json", help="report output path")
     args = parser.parse_args(argv)
 
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[3]
     inventory = _build_docs_inventory(root)
     violations: list[str] = []
 
@@ -1008,7 +1008,7 @@ def perf_smoke_main(argv: list[str] | None = None) -> int:
     ap.add_argument("--compare-only", action="store_true", help="Skip command execution and compare existing timing files")
     ns = ap.parse_args(argv)
 
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[3]
     py = root / ".venv/bin/python"
     py_bin = str(py) if py.exists() else "python3"
 

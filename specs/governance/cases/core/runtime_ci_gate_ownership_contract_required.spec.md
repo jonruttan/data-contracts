@@ -19,7 +19,7 @@ harness:
     - critical-gate
     - ci-gate-summary
     summary_files:
-    - /spec_runner/script_runtime_commands.py
+    - /runners/python/spec_runner/script_runtime_commands.py
     - /runners/rust/spec_runner_cli/src/main.rs
     summary_required_tokens:
     - governance_broad

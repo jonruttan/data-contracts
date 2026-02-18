@@ -100,7 +100,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--check", action="store_true")
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     payload = _build_payload(repo_root)
     out_path = _resolve_cli_path(repo_root, str(ns.out))
     doc_path = _resolve_cli_path(repo_root, str(ns.doc_out))

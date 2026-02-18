@@ -50,7 +50,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--config", default="", help="Optional YAML/JSON config file path.")
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     config: dict | None = None
     if str(ns.config).strip():
         config = _load_config(Path(str(ns.config)))

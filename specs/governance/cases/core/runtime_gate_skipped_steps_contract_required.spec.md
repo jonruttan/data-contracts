@@ -11,7 +11,7 @@ harness:
   root: .
   gate_skipped_contract:
     files:
-    - /spec_runner/script_runtime_commands.py
+    - /runners/python/spec_runner/script_runtime_commands.py
     - /runners/rust/spec_runner_cli/src/main.rs
     required_tokens:
     - skipped_step_count

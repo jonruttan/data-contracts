@@ -24,7 +24,7 @@ harness:
     - runners/public/runner_adapter.sh
     forbidden_tokens:
     - spec_lang_commands run-governance-specs
-    - spec_runner/script_runtime_commands.py
+    - runners/python/spec_runner/script_runtime_commands.py
     - spec_lang_commands spec-lang-format --check specs
     - scripts/conformance_purpose_report.py
     - spec_lang_commands compare-conformance-parity

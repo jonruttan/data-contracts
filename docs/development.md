@@ -21,7 +21,7 @@ Installable CLI entrypoints exposed by packaging metadata:
 
 ```sh
 python -m ruff check .
-python -m mypy spec_runner
+python -m mypy runners/python/spec_runner
 python -m compileall -q spec_runner scripts tests
 python scripts/spec_lang_lint.py --cases specs
 python scripts/spec_lang_format.py --check specs
@@ -238,7 +238,7 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 - pedantic spec-lang lint (`scripts/spec_lang_lint.py --cases specs`)
 - pedantic spec-lang format check (`scripts/spec_lang_format.py --check specs`)
 - ruff lint check (`F` + `E9` rules)
-- mypy type check (`spec_runner` package)
+- mypy type check (`runners/python/spec_runner` package)
 - Python bytecode compile pass (`compileall`)
 - conformance purpose report generation
 - conformance purpose markdown summary generation
@@ -277,7 +277,7 @@ python scripts/spec_lang_format.py --check specs
 ## Type Check
 
 ```sh
-python -m mypy spec_runner
+python -m mypy runners/python/spec_runner
 ```
 
 ## Static Analysis (Syntax/Import-Time Parse)

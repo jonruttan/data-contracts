@@ -111,7 +111,7 @@ def main() -> int:
     parser.add_argument("--out", default=".artifacts/docs-inventory.json", help="output JSON path")
     args = parser.parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[3]
     payload = build_inventory(root)
 
     out_path = root / args.out

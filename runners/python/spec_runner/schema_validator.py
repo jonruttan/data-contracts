@@ -45,7 +45,7 @@ def _resolve_field(case: dict[str, Any], field_path: str) -> tuple[bool, Any]:
 
 
 def validate_case_shape(case: dict[str, Any], case_type: str, source_path: str) -> list[SchemaDiagnostic]:
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     compiled, errs = compile_registry(repo_root)
     if compiled is None:
         return [SchemaDiagnostic(path=source_path, message=e) for e in errs]

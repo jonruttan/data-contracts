@@ -8,7 +8,7 @@ import re
 import yaml
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 PROFILE_PATH = ROOT / "specs/schema/docs_layout_profile_v1.yaml"
 
 

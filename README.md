@@ -146,7 +146,7 @@ Notes:
 
 ## Repo Layout
 
-- `spec_runner/`: core runtime and harness code
+- `runners/python/spec_runner/`: core runtime and harness code
 - `scripts/`: runner adapters, gates, and generators
 - `docs/`: book, contract/schema specs, implementation appendices
 - `tests/`: executable and unit-level validation

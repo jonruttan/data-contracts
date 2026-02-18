@@ -12,7 +12,7 @@ harness:
   root: .
   orchestration_policy:
     files:
-    - path: /spec_runner/script_runtime_commands.py
+    - path: /runners/python/spec_runner/script_runtime_commands.py
       required_tokens:
       - _evaluate_gate_policy(
       - all(str(row.get("status", "")) == "pass"

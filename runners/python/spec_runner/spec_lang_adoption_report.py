@@ -6,31 +6,31 @@ import json
 from pathlib import Path
 
 import yaml
-from spec_runner.quality_metrics import docs_operability_report_jsonable
+from spec_runner.quality_metrics import spec_lang_adoption_report_jsonable
 
 
 def _to_markdown(payload: dict) -> str:
     summary = payload.get("summary") or {}
     lines = [
-        "# Docs Operability Report",
+        "# Spec-Lang Adoption Report",
         "",
-        f"- total docs: {int(summary.get('total_docs', 0))}",
-        f"- overall docs operability ratio: {float(summary.get('overall_docs_operability_ratio', 0.0)):.4f}",
+        f"- total cases: {int(summary.get('total_cases', 0))}",
+        f"- overall logic self-contained ratio: {float(summary.get('overall_logic_self_contained_ratio', 0.0)):.4f}",
+        f"- native logic escape case ratio: {float(summary.get('native_logic_escape_case_ratio', 0.0)):.4f}",
+        f"- governance symbol resolution ratio: {float(summary.get('governance_symbol_resolution_ratio', 0.0)):.4f}",
+        f"- library public surface ratio: {float(summary.get('library_public_surface_ratio', 0.0)):.4f}",
+        f"- unit opt-out count: {int(summary.get('unit_opt_out_count', 0))}",
         "",
         "## Segment Summary",
         "",
-        "| segment | case_count | docs_operability_ratio | runnable_example_coverage_ratio | command_doc_validation_ratio | required_sections_compliance_ratio | token_sync_compliance_ratio | opt_out_density_ratio |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "| segment | case_count | logic_self_contained_ratio | native_logic_escape_case_ratio |",
+        "| --- | ---: | ---: | ---: |",
     ]
     for seg, row in sorted((payload.get("segments") or {}).items()):
         lines.append(
             f"| {seg} | {int(row.get('case_count', 0))} | "
-            f"{float(row.get('mean_docs_operability_ratio', 0.0)):.4f} | "
-            f"{float(row.get('mean_runnable_example_coverage_ratio', 0.0)):.4f} | "
-            f"{float(row.get('mean_command_doc_validation_ratio', 0.0)):.4f} | "
-            f"{float(row.get('mean_required_sections_compliance_ratio', 0.0)):.4f} | "
-            f"{float(row.get('mean_token_sync_compliance_ratio', 0.0)):.4f} | "
-            f"{float(row.get('mean_opt_out_density_ratio', 0.0)):.4f} |"
+            f"{float(row.get('mean_logic_self_contained_ratio', 0.0)):.4f} | "
+            f"{float(row.get('native_logic_escape_case_ratio', 0.0)):.4f} |"
         )
     return "\n".join(lines) + "\n"
 
@@ -45,18 +45,18 @@ def _load_config(path: Path) -> dict:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Emit docs operability metric report as JSON or Markdown.")
+    ap = argparse.ArgumentParser(description="Emit spec-lang adoption metric report as JSON or Markdown.")
     ap.add_argument("--out", help="Optional output path for report.")
     ap.add_argument("--format", choices=("json", "md"), default="json", help="Output format.")
     ap.add_argument("--config", default="", help="Optional YAML/JSON config file path.")
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     config: dict | None = None
     if str(ns.config).strip():
         config = _load_config(Path(str(ns.config)))
 
-    payload = docs_operability_report_jsonable(repo_root, config=config)
+    payload = spec_lang_adoption_report_jsonable(repo_root, config=config)
     raw = _to_markdown(payload) if ns.format == "md" else json.dumps(payload, indent=2, sort_keys=True) + "\n"
 
     if ns.out:

@@ -10,7 +10,7 @@ type: contract.check
 harness:
   root: .
   ops_os_capability:
-    path: /spec_runner/spec_lang.py
+    path: /runners/python/spec_runner/spec_lang.py
     required_tokens:
     - capability.ops_os.required
     - def capabilities_from_harness

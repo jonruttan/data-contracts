@@ -16,7 +16,7 @@ from spec_runner.spec_lang_format import main as spec_lang_format_main
 from spec_runner.split_library_cases_per_symbol import main as split_library_cases_per_symbol_main
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 PROFILE_PATH = ROOT / "specs/schema/normalization_profile_v1.yaml"
 _EXECUTABLE_CASE_TREE_ROOTS = (
     "specs/conformance/cases",
@@ -31,11 +31,11 @@ _DATA_ARTIFACT_GLOBS = (
     "specs/schema/*.yaml",
 )
 _HARNESS_FILES = (
-    "spec_runner/harnesses/text_file.py",
-    "spec_runner/harnesses/cli_run.py",
-    "spec_runner/harnesses/orchestration_run.py",
-    "spec_runner/harnesses/docs_generate.py",
-    "spec_runner/harnesses/api_http.py",
+    "runners/python/spec_runner/harnesses/text_file.py",
+    "runners/python/spec_runner/harnesses/cli_run.py",
+    "runners/python/spec_runner/harnesses/orchestration_run.py",
+    "runners/python/spec_runner/harnesses/docs_generate.py",
+    "runners/python/spec_runner/harnesses/api_http.py",
 )
 _CHAIN_CLASS_VALUES = {"MUST", "MAY", "MUST_NOT"}
 _CONTRACT_CLASS_VALUES = {"MUST", "MAY", "MUST_NOT"}

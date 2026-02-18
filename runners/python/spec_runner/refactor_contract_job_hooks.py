@@ -8,7 +8,7 @@ from typing import Any
 
 import yaml
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_FILES = [
     "specs/impl/rust/jobs/script_jobs.spec.md",
     "specs/impl/rust/jobs/report_jobs.spec.md",

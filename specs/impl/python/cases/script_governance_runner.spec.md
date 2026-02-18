@@ -88,7 +88,7 @@ harness:
   check:
     profile: text.file
     config:
-      path: /spec_runner/governance_runtime.py
+      path: /runners/python/spec_runner/governance_runtime.py
 contract:
 - id: assert_1
   class: MUST

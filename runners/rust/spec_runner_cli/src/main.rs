@@ -2438,7 +2438,7 @@ fn main() {
         ),
         "typecheck" => run_cmd(
             &mypy,
-            &with_forwarded(vec!["spec_runner".to_string()], &forwarded),
+            &with_forwarded(vec!["runners/python/spec_runner".to_string()], &forwarded),
             &root,
         ),
         "compilecheck" => run_cmd(
@@ -2448,6 +2448,7 @@ fn main() {
                     "-m".to_string(),
                     "compileall".to_string(),
                     "-q".to_string(),
+                    "runners/python/spec_runner".to_string(),
                     "spec_runner".to_string(),
                     "scripts".to_string(),
                     "tests".to_string(),

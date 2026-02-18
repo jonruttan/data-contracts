@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   extractor_policy:
-    path: /spec_runner/governance_runtime.py
+    path: /runners/python/spec_runner/governance_runtime.py
     forbidden_tokens:
     - spec.portability_metric evaluate returned false
     - spec.spec_lang_adoption_metric evaluate returned false

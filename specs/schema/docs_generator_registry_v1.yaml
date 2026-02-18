@@ -117,7 +117,7 @@ surfaces:
 - surface_id: spec_lang_builtin_catalog
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -151,7 +151,7 @@ surfaces:
 - surface_id: spec_lang_namespace_core
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -174,7 +174,7 @@ surfaces:
 - surface_id: spec_lang_namespace_logic
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -197,7 +197,7 @@ surfaces:
 - surface_id: spec_lang_namespace_math
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -220,7 +220,7 @@ surfaces:
 - surface_id: spec_lang_namespace_string
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -243,7 +243,7 @@ surfaces:
 - surface_id: spec_lang_namespace_collection
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -266,7 +266,7 @@ surfaces:
 - surface_id: spec_lang_namespace_object
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -289,7 +289,7 @@ surfaces:
 - surface_id: spec_lang_namespace_type
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -312,7 +312,7 @@ surfaces:
 - surface_id: spec_lang_namespace_set
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -335,7 +335,7 @@ surfaces:
 - surface_id: spec_lang_namespace_json_schema_fn_null
   source_type: code_scan
   inputs:
-  - /spec_runner/spec_lang.py
+  - /runners/python/spec_runner/spec_lang.py
   - /runners/php/spec_runner.php
   - /specs/schema/spec_lang_stdlib_profile_v1.yaml
   outputs:
@@ -406,7 +406,7 @@ surfaces:
 - surface_id: governance_check_catalog
   source_type: code_scan
   inputs:
-  - /spec_runner/governance_runtime.py
+  - /runners/python/spec_runner/governance_runtime.py
   - /specs/governance/cases/core
   outputs:
   - /.artifacts/governance-check-catalog.json
@@ -431,7 +431,7 @@ surfaces:
 - surface_id: metrics_field_catalog
   source_type: code_scan
   inputs:
-  - /spec_runner/quality_metrics.py
+  - /runners/python/spec_runner/quality_metrics.py
   - /specs/metrics
   outputs:
   - /.artifacts/metrics-field-catalog.json

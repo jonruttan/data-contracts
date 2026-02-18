@@ -28,28 +28,28 @@ harness:
       forbidden_tokens:
       - strpos($subject, $v)
       - preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject)
-    - path: /spec_runner/governance_runtime.py
+    - path: /runners/python/spec_runner/governance_runtime.py
       required_tokens:
       - eval_predicate(
       forbidden_tokens:
       - assert_text_op(
-    - path: /spec_runner/assertions.py
+    - path: /runners/python/spec_runner/assertions.py
       required_tokens:
       - evaluate_internal_assert_tree(
       - eval_predicate(
       forbidden_tokens:
       - def assert_text_op(
-    - path: /spec_runner/harnesses/text_file.py
+    - path: /runners/python/spec_runner/harnesses/text_file.py
       required_tokens:
       - run_assertions_with_context(
       forbidden_tokens:
       - contain assertion failed
-    - path: /spec_runner/harnesses/cli_run.py
+    - path: /runners/python/spec_runner/harnesses/cli_run.py
       required_tokens:
       - run_assertions_with_context(
       forbidden_tokens:
       - contain assertion failed
-    - path: /spec_runner/harnesses/api_http.py
+    - path: /runners/python/spec_runner/harnesses/api_http.py
       required_tokens:
       - run_assertions_with_context(
       forbidden_tokens:

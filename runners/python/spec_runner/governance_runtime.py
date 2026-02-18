@@ -114,7 +114,7 @@ _V1_SCOPE_REQUIRED_TOKENS = (
     "compatibility commitments",
     "current-spec-only rule",
 )
-_PYTHON_RUNTIME_ROOTS = ("spec_runner", "scripts/python")
+_PYTHON_RUNTIME_ROOTS = ("runners/python/spec_runner", "scripts/python")
 _CONFORMANCE_CASE_ID_PATTERN = r"\bSRCONF-[A-Z0-9-]+\b"
 _CONFORMANCE_MAX_BLOCK_LINES = 120
 _REGEX_PROFILE_DOC = "specs/contract/03a_regex_portability_v1.md"
@@ -135,7 +135,7 @@ _CURRENT_SPEC_ONLY_DOCS = (
     "specs/contract/08_v1_scope.md",
 )
 _CURRENT_SPEC_ONLY_CODE_FILES = (
-    "spec_runner/doc_parser.py",
+    "runners/python/spec_runner/doc_parser.py",
     "runners/php/spec_runner.php",
     "runners/php/conformance_runner.php",
 )
@@ -179,6 +179,24 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
 }
 _NORMALIZATION_PROFILE_PATH = "specs/schema/normalization_profile_v1.yaml"
 _DOCS_LAYOUT_PROFILE_PATH = "specs/schema/docs_layout_profile_v1.yaml"
+_TOP_LEVEL_DIR_ALLOWLIST = {
+    ".artifacts",
+    ".git",
+    ".github",
+    ".githooks",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "dist",
+    "docs",
+    "fixtures",
+    "runners",
+    "scripts",
+    "spec_runner",
+    "specs",
+    "tests",
+}
 _PATH_LIKE_KEYS = {
     "path",
     "cases_path",
@@ -309,11 +327,11 @@ def _profiled_subprocess_run(
         cfg=cfg,
     )
 _HARNESS_FILES = (
-    "spec_runner/harnesses/text_file.py",
-    "spec_runner/harnesses/cli_run.py",
-    "spec_runner/harnesses/orchestration_run.py",
-    "spec_runner/harnesses/docs_generate.py",
-    "spec_runner/harnesses/api_http.py",
+    "runners/python/spec_runner/harnesses/text_file.py",
+    "runners/python/spec_runner/harnesses/cli_run.py",
+    "runners/python/spec_runner/harnesses/orchestration_run.py",
+    "runners/python/spec_runner/harnesses/docs_generate.py",
+    "runners/python/spec_runner/harnesses/api_http.py",
 )
 _UNIT_TEST_OPT_OUT_BASELINE_PATH = "specs/metrics/unit_test_opt_out_baseline.json"
 _UNIT_TEST_OPT_OUT_PREFIX = "# SPEC-OPT-OUT:"
@@ -1675,13 +1693,13 @@ def _scan_assert_universal_core_sync(root: Path) -> list[str]:
 
 def _scan_assert_sugar_compile_only_sync(root: Path) -> list[str]:
     violations: list[str] = []
-    compiler_path = root / "spec_runner/compiler.py"
-    assertions_path = root / "spec_runner/assertions.py"
+    compiler_path = root / "runners/python/spec_runner/compiler.py"
+    assertions_path = root / "runners/python/spec_runner/assertions.py"
     if not compiler_path.exists():
-        violations.append("spec_runner/compiler.py:1: missing compiler implementation")
+        violations.append("runners/python/spec_runner/compiler.py:1: missing compiler implementation")
         return violations
     if not assertions_path.exists():
-        violations.append("spec_runner/assertions.py:1: missing assertions implementation")
+        violations.append("runners/python/spec_runner/assertions.py:1: missing assertions implementation")
         return violations
 
     compiler_raw = compiler_path.read_text(encoding="utf-8")
@@ -1694,7 +1712,7 @@ def _scan_assert_sugar_compile_only_sync(root: Path) -> list[str]:
     for tok in compiler_required:
         if tok not in compiler_raw:
             violations.append(
-                f"spec_runner/compiler.py:1: missing compile-only sugar mapping token {tok}"
+                f"runners/python/spec_runner/compiler.py:1: missing compile-only sugar mapping token {tok}"
             )
 
     compiler_forbidden = (
@@ -1708,12 +1726,12 @@ def _scan_assert_sugar_compile_only_sync(root: Path) -> list[str]:
     for tok in compiler_forbidden:
         if tok in compiler_raw:
             violations.append(
-                f"spec_runner/compiler.py:1: forbidden per-type operator allowlist token {tok}"
+                f"runners/python/spec_runner/compiler.py:1: forbidden per-type operator allowlist token {tok}"
             )
 
     if "eval_predicate(" not in assertions_raw:
         violations.append(
-            "spec_runner/assertions.py:1: missing spec-lang predicate evaluation call"
+            "runners/python/spec_runner/assertions.py:1: missing spec-lang predicate evaluation call"
         )
     return violations
 
@@ -1752,7 +1770,7 @@ def _scan_assert_type_contract_subject_semantics_sync(root: Path) -> list[str]:
 
 def _scan_assert_compiler_schema_matrix_sync(root: Path) -> list[str]:
     violations: list[str] = []
-    compiler = root / "spec_runner/compiler.py"
+    compiler = root / "runners/python/spec_runner/compiler.py"
     schema = root / "specs/schema/schema_v1.md"
     assertions_doc = root / "specs/contract/03_assertions.md"
     if not compiler.exists() or not schema.exists() or not assertions_doc.exists():
@@ -1766,9 +1784,9 @@ def _scan_assert_compiler_schema_matrix_sync(root: Path) -> list[str]:
     if "only universal assertion operator contract" not in assertions_lower:
         violations.append("specs/contract/03_assertions.md:1: missing universal evaluate-only contract text")
     if 'supported = {"evaluate"}' not in compiler_raw:
-        violations.append("spec_runner/compiler.py:1: compiler operator matrix does not match universal-core contract")
+        violations.append("runners/python/spec_runner/compiler.py:1: compiler operator matrix does not match universal-core contract")
     if "if type_name == " in compiler_raw:
-        violations.append("spec_runner/compiler.py:1: forbidden per-type operator matrix branching present")
+        violations.append("runners/python/spec_runner/compiler.py:1: forbidden per-type operator matrix branching present")
     return violations
 
 
@@ -1822,7 +1840,7 @@ def _scan_assert_spec_lang_builtin_surface_sync(root: Path, *, harness: dict | N
     py_ops = set(_builtin_arity_table().keys())
     py_missing = sorted(required - py_ops)
     for op in py_missing:
-        violations.append(f"spec_runner/spec_lang.py:1: missing builtin documented in contract: {op}")
+        violations.append(f"runners/python/spec_runner/spec_lang.py:1: missing builtin documented in contract: {op}")
     php_ops = {
         str(x).strip()
         for x in (stdlib_report.get("php_symbols") or [])
@@ -1917,11 +1935,11 @@ def _scan_assert_subject_profiles_declared(root: Path, *, harness: dict | None =
 def _scan_assert_subject_profiles_json_only(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     schema = _join_contract_path(root, _SUBJECT_PROFILE_SCHEMA_DOC)
-    evaluator = _join_contract_path(root, "spec_runner/spec_lang.py")
+    evaluator = _join_contract_path(root, "runners/python/spec_runner/spec_lang.py")
     if not schema.exists():
         return [f"{_SUBJECT_PROFILE_SCHEMA_DOC}:1: missing subject profile schema"]
     if not evaluator.exists():
-        return ["spec_runner/spec_lang.py:1: missing evaluator implementation"]
+        return ["runners/python/spec_runner/spec_lang.py:1: missing evaluator implementation"]
     schema_raw = schema.read_text(encoding="utf-8")
     eval_raw = evaluator.read_text(encoding="utf-8")
     required_schema_tokens = ("json_core_only: true", "non_json_native_values_must_be_projected: true")
@@ -1934,7 +1952,7 @@ def _scan_assert_subject_profiles_json_only(root: Path, *, harness: dict | None 
     )
     for tok in required_eval_tokens:
         if tok not in eval_raw:
-            violations.append(f"spec_runner/spec_lang.py:1: missing JSON-core evaluator token {tok}")
+            violations.append(f"runners/python/spec_runner/spec_lang.py:1: missing JSON-core evaluator token {tok}")
     return violations
 
 
@@ -1996,9 +2014,9 @@ def _scan_assert_domain_library_usage_required(root: Path, *, harness: dict | No
 def _scan_assert_adapter_projection_contract_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     required = {
-        "spec_runner/harnesses/text_file.py": ("context_json", "profile_id", "profile_version"),
-        "spec_runner/harnesses/cli_run.py": ("context_json", "profile_id", "profile_version"),
-        "spec_runner/harnesses/api_http.py": ("context_json", "profile_id", "profile_version"),
+        "runners/python/spec_runner/harnesses/text_file.py": ("context_json", "profile_id", "profile_version"),
+        "runners/python/spec_runner/harnesses/cli_run.py": ("context_json", "profile_id", "profile_version"),
+        "runners/python/spec_runner/harnesses/api_http.py": ("context_json", "profile_id", "profile_version"),
     }
     for rel, tokens in required.items():
         p = _join_contract_path(root, rel)
@@ -2327,7 +2345,7 @@ def _scan_governance_extractor_only_no_verdict_branching(root: Path, *, harness:
     cfg = h.get("extractor_policy")
     if not isinstance(cfg, dict):
         return ["governance.extractor_only_no_verdict_branching requires harness.extractor_policy mapping in governance spec"]
-    rel = str(cfg.get("path", "spec_runner/governance_runtime.py")).strip() or "spec_runner/governance_runtime.py"
+    rel = str(cfg.get("path", "runners/python/spec_runner/governance_runtime.py")).strip() or "runners/python/spec_runner/governance_runtime.py"
     p = _join_contract_path(root, rel)
     if not p.exists():
         return [f"{rel}:1: missing governance runtime module"]
@@ -3033,7 +3051,7 @@ def _scan_runtime_api_http_verb_suite(root: Path) -> list[str]:
 
 def _scan_runtime_api_http_cors_support(root: Path) -> list[str]:
     required_tokens: dict[str, tuple[str, ...]] = {
-        "spec_runner/harnesses/api_http.py": (
+        "runners/python/spec_runner/harnesses/api_http.py": (
             "request.cors",
             "preflight",
             "Access-Control-Request-Method",
@@ -3095,7 +3113,7 @@ def _scan_runtime_api_http_scenario_roundtrip(root: Path) -> list[str]:
     if not has_requests_case:
         violations.append("api.http roundtrip conformance requires at least one case using requests list")
     for rel, tokens in {
-        "spec_runner/harnesses/api_http.py": ("harness.api_http.scenario", "steps_json", "steps."),
+        "runners/python/spec_runner/harnesses/api_http.py": ("harness.api_http.scenario", "steps_json", "steps."),
         "specs/contract/types/api_http.md": ("harness.api_http.scenario", "requests", "steps_json"),
         "specs/conformance/cases/core/api_http.spec.md": ("requests:", "{{steps.", "steps_json"),
     }.items():
@@ -3113,7 +3131,7 @@ def _scan_runtime_api_http_scenario_roundtrip(root: Path) -> list[str]:
 def _scan_runtime_api_http_parity_contract_sync(root: Path) -> list[str]:
     violations: list[str] = []
     checks: dict[str, tuple[str, ...]] = {
-        "spec_runner/harnesses/api_http.py": ("_SUPPORTED_METHODS", "cors_json", "steps_json"),
+        "runners/python/spec_runner/harnesses/api_http.py": ("_SUPPORTED_METHODS", "cors_json", "steps_json"),
         "runners/php/conformance_runner.php": ("api.http", "request.method", "context_json"),
         "specs/contract/types/api_http.md": ("GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS", "steps_json", "cors_json"),
     }
@@ -3527,7 +3545,7 @@ def _scan_runtime_chain_contract_single_location(root: Path, *, harness: dict | 
 
 def _scan_runtime_universal_chain_support_required(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    rel = "spec_runner/dispatcher.py"
+    rel = "runners/python/spec_runner/dispatcher.py"
     p = _join_contract_path(root, rel)
     if not p.exists():
         return [f"{rel}:1: missing dispatcher module"]
@@ -3549,7 +3567,7 @@ def _scan_runtime_universal_chain_support_required(root: Path, *, harness: dict 
 
 def _scan_runtime_chain_shared_context_required(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    rel = "spec_runner/dispatcher.py"
+    rel = "runners/python/spec_runner/dispatcher.py"
     p = _join_contract_path(root, rel)
     if not p.exists():
         return [f"{rel}:1: missing dispatcher module"]
@@ -6201,6 +6219,22 @@ def _scan_docs_layout_canonical_trees(root: Path, *, harness: dict | None = None
         p = _join_contract_path(root, rel)
         if not p.exists() or not p.is_dir():
             violations.append(f"{rel.lstrip('/')}:1: missing canonical docs root")
+    for child in sorted(p for p in root.iterdir() if p.is_dir()):
+        name = child.name
+        if name in _TOP_LEVEL_DIR_ALLOWLIST:
+            continue
+        violations.append(
+            f"{name}:1: forbidden top-level directory (allowed: {', '.join(sorted(_TOP_LEVEL_DIR_ALLOWLIST))})"
+        )
+    shim_dir = root / "spec_runner"
+    if shim_dir.exists():
+        allowed_shim = {"__init__.py", "__pycache__"}
+        for nested in shim_dir.iterdir():
+            if nested.name in allowed_shim:
+                continue
+            violations.append(
+                f"spec_runner/{nested.name}:1: top-level spec_runner shim may only contain __init__.py"
+            )
     return violations
 
 
@@ -6647,12 +6681,12 @@ def _scan_runtime_legacy_timeout_envs_deprecated(root: Path, *, harness: dict | 
         for token in required_tokens:
             if token.lower() not in text:
                 violations.append(f"{rel}:1: missing timeout deprecation token {token}")
-    src = _join_contract_path(root, "spec_runner/governance_runtime.py")
+    src = _join_contract_path(root, "runners/python/spec_runner/governance_runtime.py")
     if src.exists():
         text = src.read_text(encoding="utf-8")
         if "is deprecated; use SPEC_RUNNER_LIVENESS_HARD_CAP_MS" not in text:
             violations.append(
-                "spec_runner/governance_runtime.py:1: missing legacy-timeout deprecation remediation message"
+                "runners/python/spec_runner/governance_runtime.py:1: missing legacy-timeout deprecation remediation message"
             )
     return violations
 
@@ -6696,7 +6730,7 @@ def _scan_runtime_assert_block_decision_authority_required(root: Path, *, harnes
         return [
             "runtime.assert_block_decision_authority_required requires harness.assert_decision_authority mapping in governance spec"
         ]
-    rel = str(cfg.get("path", "spec_runner/governance_runtime.py")).strip() or "spec_runner/governance_runtime.py"
+    rel = str(cfg.get("path", "runners/python/spec_runner/governance_runtime.py")).strip() or "runners/python/spec_runner/governance_runtime.py"
     required_tokens = cfg.get("required_tokens", [])
     forbidden_tokens = cfg.get("forbidden_tokens", [])
     if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
@@ -6746,7 +6780,7 @@ def _scan_runtime_ops_os_capability_required(root: Path, *, harness: dict | None
     cfg = h.get("ops_os_capability")
     if not isinstance(cfg, dict):
         return ["runtime.ops_os_capability_required requires harness.ops_os_capability mapping in governance spec"]
-    rel = str(cfg.get("path", "spec_runner/spec_lang.py")).strip() or "spec_runner/spec_lang.py"
+    rel = str(cfg.get("path", "runners/python/spec_runner/spec_lang.py")).strip() or "runners/python/spec_runner/spec_lang.py"
     required_tokens = cfg.get("required_tokens", [])
     if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
         return ["harness.ops_os_capability.required_tokens must be a list of non-empty strings"]
@@ -7069,7 +7103,7 @@ def _scan_runtime_when_ordering_contract_required(
     cfg = h.get("when_ordering")
     if not isinstance(cfg, dict):
         return ["runtime.when_ordering_contract_required requires harness.when_ordering mapping in governance spec"]
-    rel = str(cfg.get("path", "spec_runner/components/assertion_engine.py")).strip()
+    rel = str(cfg.get("path", "runners/python/spec_runner/components/assertion_engine.py")).strip()
     required_tokens = cfg.get("required_tokens", [])
     if not rel:
         return ["harness.when_ordering.path must be non-empty string"]
@@ -7093,7 +7127,7 @@ def _scan_runtime_when_fail_hook_required_behavior(
     cfg = h.get("when_fail")
     if not isinstance(cfg, dict):
         return ["runtime.when_fail_hook_required_behavior requires harness.when_fail mapping in governance spec"]
-    rel = str(cfg.get("path", "spec_runner/components/assertion_engine.py")).strip()
+    rel = str(cfg.get("path", "runners/python/spec_runner/components/assertion_engine.py")).strip()
     required_tokens = cfg.get("required_tokens", [])
     if not rel:
         return ["harness.when_fail.path must be non-empty string"]
@@ -7117,7 +7151,7 @@ def _scan_runtime_when_complete_hook_required_behavior(
     cfg = h.get("when_complete")
     if not isinstance(cfg, dict):
         return ["runtime.when_complete_hook_required_behavior requires harness.when_complete mapping in governance spec"]
-    rel = str(cfg.get("path", "spec_runner/components/assertion_engine.py")).strip()
+    rel = str(cfg.get("path", "runners/python/spec_runner/components/assertion_engine.py")).strip()
     required_tokens = cfg.get("required_tokens", [])
     if not rel:
         return ["harness.when_complete.path must be non-empty string"]
@@ -9590,7 +9624,7 @@ def _scan_normalization_spec_style_sync(root: Path, *, harness: dict | None = No
     violations: list[str] = []
     if _CONFORMANCE_MAX_BLOCK_LINES != max_lines:
         violations.append(
-            "spec_runner/governance_runtime.py:1: NORMALIZATION_SPEC_STYLE_SYNC: "
+            "runners/python/spec_runner/governance_runtime.py:1: NORMALIZATION_SPEC_STYLE_SYNC: "
             f"_CONFORMANCE_MAX_BLOCK_LINES={_CONFORMANCE_MAX_BLOCK_LINES} must match profile value {max_lines}"
         )
 
@@ -10272,7 +10306,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"WARN: {warning}", file=sys.stderr)
 
     _reset_scan_caches()
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     profiler_cfg = profile_config_from_args(
         profile_level=str(ns.profile_level).strip() or None,
         profile_out=None,

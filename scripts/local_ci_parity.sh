@@ -137,7 +137,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip broad governance (set SPEC_PREPUSH_REQUIRE_BROAD=1 to enable)"
   fi
 
-  if paths_match_prefixes "specs/" "spec_runner/" "spec_runner/normalize_repo_runtime.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "specs/" "runners/python/spec_runner/" "runners/python/spec_runner/normalize_repo_runtime.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
     if paths_all_in_list "specs/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip normalize-check (check_sets-only change)"
     elif is_fast_path_script_only_change; then
@@ -149,7 +149,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip normalize-check (no matching changes)"
   fi
 
-  if paths_match_prefixes "specs/" "spec_runner/spec_lang_lint.py" "spec_runner/spec_lang_hygiene.py" "spec_runner/spec_lang_format.py" "spec_runner/spec_lang_commands.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "specs/" "runners/python/spec_runner/spec_lang_lint.py" "runners/python/spec_runner/spec_lang_hygiene.py" "runners/python/spec_runner/spec_lang_format.py" "runners/python/spec_runner/spec_lang_commands.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
     if paths_all_in_list "specs/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip spec-lang-lint (check_sets-only change)"
     elif is_fast_path_script_only_change; then
@@ -162,7 +162,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip spec-lang-lint (no matching changes)"
   fi
 
-  if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "specs/schema/" "specs/metrics/" "spec_runner/docs_" "spec_runner/docs_generators.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "specs/schema/" "specs/metrics/" "runners/python/spec_runner/docs_" "runners/python/spec_runner/docs_generators.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
     if paths_all_in_list "specs/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip docs-generate-check (check_sets-only change)"
     elif is_fast_path_script_only_change; then
@@ -174,7 +174,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip docs-generate-check (no matching changes)"
   fi
 
-  if paths_match_prefixes "docs/" "spec_runner/script_runtime_commands.py" "spec_runner/docs_inventory.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "docs/" "runners/python/spec_runner/script_runtime_commands.py" "runners/python/spec_runner/docs_inventory.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
     if paths_all_in_list "specs/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip docs-freshness-check (check_sets-only change)"
     elif is_fast_path_script_only_change; then

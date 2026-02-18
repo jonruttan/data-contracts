@@ -64,7 +64,7 @@ def validate_report_main(argv: list[str] | None = None) -> int:
 
 @lru_cache(maxsize=1)
 def _load_conformance_export_functions() -> dict[str, list[object]]:
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     lib_path = repo_root / "specs/libraries/domain/conformance_core.spec.md"
     if not lib_path.exists():
         raise RuntimeError(f"missing spec library file: {lib_path}")
@@ -173,7 +173,7 @@ def spec_lang_stdlib_report_main(argv: list[str] | None = None) -> int:
     ap.add_argument("--format", choices=("json", "md"), default="json")
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     payload = spec_lang_stdlib_report_jsonable(repo_root)
     raw = (
         _spec_lang_stdlib_to_markdown(payload)
@@ -201,7 +201,7 @@ def contract_coverage_report_main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", help="Optional output path for JSON report.")
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     payload = contract_coverage_jsonable(repo_root)
     raw = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if ns.out:
@@ -243,7 +243,7 @@ def schema_registry_report_main(argv: list[str] | None = None) -> int:
     ap.add_argument("--check", action="store_true")
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
     compiled, errs = compile_registry(repo_root)
     payload: dict[str, object] = {
         "version": 1,
