@@ -16,11 +16,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - '# PHP Spec Runner Pass Cases'
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - '# PHP Spec Runner Pass Cases'
   target: text
 harness:
   check:
@@ -44,11 +45,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - fixture-content
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - fixture-content
   target: text
 harness:
   check:
@@ -73,17 +75,19 @@ contract:
   class: MAY
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - no-match-token
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - no-match-token
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - fixture-content
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - fixture-content
   target: text
 harness:
   check:
@@ -116,11 +120,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - hello-runner
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - hello-runner
   target: stdout
 ```
 
@@ -150,11 +155,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - 'on'
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - 'on'
   target: stdout
 ```
 
@@ -182,11 +188,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - fallback-ok
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - fallback-ok
   target: stdout
 ```
 
@@ -214,12 +221,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.type.json_type:
-          - std.json.parse:
-            - {var: subject}
-          - list
+          lit:
+            std.type.json_type:
+            - std.json.parse:
+              - {var: subject}
+            - list
   target: stdout
 ```
 
@@ -247,11 +255,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - runner-err
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - runner-err
   target: stderr
 ```
 
@@ -279,20 +288,22 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - path_target.txt
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - path_target.txt
   target: stdout_path
 - id: assert_2
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - path target file content
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - path target file content
   target: stdout_path_text
 ```

@@ -19,23 +19,26 @@ contract:
   target: stdout
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - '"version": 1'
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - '"version": 1'
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - '"summary"'
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - '"summary"'
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - '"rules"'
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - '"rules"'
 ```
 
 ## SRPY-CONTRACT-REP-002
@@ -59,9 +62,10 @@ contract:
   target: stdout
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - wrote .artifacts/contract-coverage-impl-case.json
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - wrote .artifacts/contract-coverage-impl-case.json
 ```

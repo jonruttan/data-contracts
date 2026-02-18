@@ -11,34 +11,24 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.or:
-          - std.collection.any:
-            - std.collection.map:
-              - fn:
-                - [row]
-                - std.logic.eq:
-                  - std.string.lower:
-                    - std.object.get:
-                      - {var: row}
-                      - text
-                  - std.string.lower:
-                    - {var: heading}
-              - call:
-                - {var: markdown._headings}
-                - {var: subject}
-          - std.logic.or:
-            - std.string.contains:
-              - call:
-                - {var: markdown._text}
-                - {var: subject}
-              - std.string.join:
-                - std.collection.append:
-                  - {var: heading}
-                  - lit:
-                    - '# '
-                - ''
+          lit:
+            std.logic.or:
+            - std.collection.any:
+              - std.collection.map:
+                - fn:
+                  - [row]
+                  - std.logic.eq:
+                    - std.string.lower:
+                      - std.object.get:
+                        - {var: row}
+                        - text
+                    - std.string.lower:
+                      - {var: heading}
+                - call:
+                  - {var: markdown._headings}
+                  - {var: subject}
             - std.logic.or:
               - std.string.contains:
                 - call:
@@ -48,7 +38,7 @@ contract:
                   - std.collection.append:
                     - {var: heading}
                     - lit:
-                      - '## '
+                      - '# '
                   - ''
               - std.logic.or:
                 - std.string.contains:
@@ -59,7 +49,7 @@ contract:
                     - std.collection.append:
                       - {var: heading}
                       - lit:
-                        - '### '
+                        - '## '
                     - ''
                 - std.logic.or:
                   - std.string.contains:
@@ -70,7 +60,7 @@ contract:
                       - std.collection.append:
                         - {var: heading}
                         - lit:
-                          - '#### '
+                          - '### '
                       - ''
                   - std.logic.or:
                     - std.string.contains:
@@ -81,113 +71,131 @@ contract:
                         - std.collection.append:
                           - {var: heading}
                           - lit:
-                            - '##### '
+                            - '#### '
                         - ''
-                    - std.string.contains:
-                      - call:
-                        - {var: markdown._text}
-                        - {var: subject}
-                      - std.string.join:
-                        - std.collection.append:
-                          - {var: heading}
-                          - lit:
-                            - '###### '
-                        - ''
+                    - std.logic.or:
+                      - std.string.contains:
+                        - call:
+                          - {var: markdown._text}
+                          - {var: subject}
+                        - std.string.join:
+                          - std.collection.append:
+                            - {var: heading}
+                            - lit:
+                              - '##### '
+                          - ''
+                      - std.string.contains:
+                        - call:
+                          - {var: markdown._text}
+                          - {var: subject}
+                        - std.string.join:
+                          - std.collection.append:
+                            - {var: heading}
+                            - lit:
+                              - '###### '
+                          - ''
 - id: __export__markdown._text
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          if:
-          - std.type.is_string:
-            - {var: subject}
-          - {var: subject}
-          - std.null.default_to:
-            - ''
-            - std.object.get:
+          lit:
+            if:
+            - std.type.is_string:
               - {var: subject}
-              - value
+            - {var: subject}
+            - std.null.default_to:
+              - ''
+              - std.object.get:
+                - {var: subject}
+                - value
 - id: __export__markdown._context
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          if:
-          - std.type.is_dict:
-            - {var: subject}
-          - std.null.default_to:
-            - lit: {}
-            - std.object.get:
+          lit:
+            if:
+            - std.type.is_dict:
               - {var: subject}
-              - context
-          - lit: {}
+            - std.null.default_to:
+              - lit: {}
+              - std.object.get:
+                - {var: subject}
+                - context
+            - lit: {}
 - id: __export__markdown._headings
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.null.default_to:
-          - lit: []
-          - std.object.get:
-            - call:
-              - {var: markdown._context}
-              - {var: subject}
-            - headings
+          lit:
+            std.null.default_to:
+            - lit: []
+            - std.object.get:
+              - call:
+                - {var: markdown._context}
+                - {var: subject}
+              - headings
 - id: __export__markdown._links
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.null.default_to:
-          - lit: []
-          - std.object.get:
-            - call:
-              - {var: markdown._context}
-              - {var: subject}
-            - links
+          lit:
+            std.null.default_to:
+            - lit: []
+            - std.object.get:
+              - call:
+                - {var: markdown._context}
+                - {var: subject}
+              - links
 - id: __export__markdown._tokens_map
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.null.default_to:
-          - lit: {}
-          - std.object.get:
-            - call:
-              - {var: markdown._context}
-              - {var: subject}
-            - tokens
+          lit:
+            std.null.default_to:
+            - lit: {}
+            - std.object.get:
+              - call:
+                - {var: markdown._context}
+                - {var: subject}
+              - tokens
 - id: __export__markdown._token_owners
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.null.default_to:
-          - lit: {}
-          - std.object.get:
-            - call:
-              - {var: markdown._context}
-              - {var: subject}
-            - token_owners
+          lit:
+            std.null.default_to:
+            - lit: {}
+            - std.object.get:
+              - call:
+                - {var: markdown._context}
+                - {var: subject}
+              - token_owners
 - id: __export__markdown._token_dependencies
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.null.default_to:
-          - lit: []
-          - std.object.get:
-            - call:
-              - {var: markdown._context}
-              - {var: subject}
-            - token_dependencies
+          lit:
+            std.null.default_to:
+            - lit: []
+            - std.object.get:
+              - call:
+                - {var: markdown._context}
+                - {var: subject}
+              - token_dependencies
 harness:
   exports:
   - as: domain.markdown.has_heading
@@ -252,76 +260,77 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.or:
-          - std.collection.any:
-            - std.collection.map:
-              - fn:
-                - [row]
-                - std.logic.eq:
-                  - std.object.get:
-                    - {var: row}
-                    - level
-                  - {var: level}
-              - call:
-                - {var: markdown._headings}
-                - {var: subject}
-          - if:
-            - std.logic.eq:
-              - {var: level}
-              - 1
-            - std.string.regex_match:
-              - call:
-                - {var: markdown._text}
-                - {var: subject}
-              - (?m)^#\s+
+          lit:
+            std.logic.or:
+            - std.collection.any:
+              - std.collection.map:
+                - fn:
+                  - [row]
+                  - std.logic.eq:
+                    - std.object.get:
+                      - {var: row}
+                      - level
+                    - {var: level}
+                - call:
+                  - {var: markdown._headings}
+                  - {var: subject}
             - if:
               - std.logic.eq:
                 - {var: level}
-                - 2
+                - 1
               - std.string.regex_match:
                 - call:
                   - {var: markdown._text}
                   - {var: subject}
-                - (?m)^##\s+
+                - (?m)^#\s+
               - if:
                 - std.logic.eq:
                   - {var: level}
-                  - 3
+                  - 2
                 - std.string.regex_match:
                   - call:
                     - {var: markdown._text}
                     - {var: subject}
-                  - (?m)^###\s+
+                  - (?m)^##\s+
                 - if:
                   - std.logic.eq:
                     - {var: level}
-                    - 4
+                    - 3
                   - std.string.regex_match:
                     - call:
                       - {var: markdown._text}
                       - {var: subject}
-                    - (?m)^####\s+
+                    - (?m)^###\s+
                   - if:
                     - std.logic.eq:
                       - {var: level}
-                      - 5
+                      - 4
                     - std.string.regex_match:
                       - call:
                         - {var: markdown._text}
                         - {var: subject}
-                      - (?m)^#####\s+
+                      - (?m)^####\s+
                     - if:
                       - std.logic.eq:
                         - {var: level}
-                        - 6
+                        - 5
                       - std.string.regex_match:
                         - call:
                           - {var: markdown._text}
                           - {var: subject}
-                        - (?m)^######\s+
-                      - false
+                        - (?m)^#####\s+
+                      - if:
+                        - std.logic.eq:
+                          - {var: level}
+                          - 6
+                        - std.string.regex_match:
+                          - call:
+                            - {var: markdown._text}
+                            - {var: subject}
+                          - (?m)^######\s+
+                        - false
 harness:
   exports:
   - as: domain.markdown.heading_level_exists
@@ -344,50 +353,51 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.and:
-          - call:
-            - {var: domain.markdown.required_sections_present}
-            - {var: subject}
-            - {var: headings}
-          - if:
-            - std.logic.lte:
-              - std.collection.len:
-                - {var: headings}
-              - 1
-            - true
-            - std.logic.and:
-              - std.logic.neq:
-                - std.object.get:
+          lit:
+            std.logic.and:
+            - call:
+              - {var: domain.markdown.required_sections_present}
+              - {var: subject}
+              - {var: headings}
+            - if:
+              - std.logic.lte:
+                - std.collection.len:
+                  - {var: headings}
+                - 1
+              - true
+              - std.logic.and:
+                - std.logic.neq:
                   - std.object.get:
-                    - call:
-                      - {var: markdown._context}
-                      - {var: subject}
-                    - heading_positions
+                    - std.object.get:
+                      - call:
+                        - {var: markdown._context}
+                        - {var: subject}
+                      - heading_positions
+                    - std.object.get:
+                      - {var: headings}
+                      - 0
+                  - null
+                - std.logic.gt:
                   - std.object.get:
-                    - {var: headings}
-                    - 0
-                - null
-              - std.logic.gt:
-                - std.object.get:
+                    - std.object.get:
+                      - call:
+                        - {var: markdown._context}
+                        - {var: subject}
+                      - heading_positions
+                    - std.object.get:
+                      - {var: headings}
+                      - 1
                   - std.object.get:
-                    - call:
-                      - {var: markdown._context}
-                      - {var: subject}
-                    - heading_positions
-                  - std.object.get:
-                    - {var: headings}
-                    - 1
-                - std.object.get:
-                  - std.object.get:
-                    - call:
-                      - {var: markdown._context}
-                      - {var: subject}
-                    - heading_positions
-                  - std.object.get:
-                    - {var: headings}
-                    - 0
+                    - std.object.get:
+                      - call:
+                        - {var: markdown._context}
+                        - {var: subject}
+                      - heading_positions
+                    - std.object.get:
+                      - {var: headings}
+                      - 0
 harness:
   exports:
   - as: domain.markdown.section_order_valid
@@ -410,17 +420,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.all:
-          - std.collection.map:
-            - fn:
-              - [heading]
-              - call:
-                - {var: domain.markdown.has_heading}
-                - {var: subject}
-                - {var: heading}
-            - {var: headings}
+          lit:
+            std.collection.all:
+            - std.collection.map:
+              - fn:
+                - [heading]
+                - call:
+                  - {var: domain.markdown.has_heading}
+                  - {var: subject}
+                  - {var: heading}
+              - {var: headings}
 harness:
   exports:
   - as: domain.markdown.required_sections_present
@@ -443,20 +454,21 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.all:
-          - std.collection.map:
-            - fn:
-              - [row]
-              - std.logic.eq:
-                - std.object.get:
-                  - {var: row}
-                  - resolved
-                - true
-            - call:
-              - {var: markdown._links}
-              - {var: subject}
+          lit:
+            std.collection.all:
+            - std.collection.map:
+              - fn:
+                - [row]
+                - std.logic.eq:
+                  - std.object.get:
+                    - {var: row}
+                    - resolved
+                  - true
+              - call:
+                - {var: markdown._links}
+                - {var: subject}
 harness:
   exports:
   - as: domain.markdown.link_targets_all_resolve
@@ -478,12 +490,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.not:
-          - call:
-            - {var: domain.markdown.link_targets_all_resolve}
-            - {var: subject}
+          lit:
+            std.logic.not:
+            - call:
+              - {var: domain.markdown.link_targets_all_resolve}
+              - {var: subject}
 harness:
   exports:
   - as: domain.markdown.has_broken_links
@@ -505,19 +518,20 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.or:
-          - std.string.contains:
-            - call:
-              - {var: markdown._text}
-              - {var: subject}
-            - '```yaml contract-spec'
-          - std.string.contains:
-            - call:
-              - {var: markdown._text}
-              - {var: subject}
-            - ~~~yaml contract-spec
+          lit:
+            std.logic.or:
+            - std.string.contains:
+              - call:
+                - {var: markdown._text}
+                - {var: subject}
+              - '```yaml contract-spec'
+            - std.string.contains:
+              - call:
+                - {var: markdown._text}
+                - {var: subject}
+              - ~~~yaml contract-spec
 harness:
   exports:
   - as: domain.markdown.has_yaml_spec_test_fence
@@ -539,29 +553,30 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.or:
-          - std.string.contains:
-            - call:
-              - {var: markdown._text}
-              - {var: subject}
-            - std.string.join:
-              - std.collection.append:
-                - {var: language}
-                - lit:
-                  - '```'
-              - ''
-          - std.string.contains:
-            - call:
-              - {var: markdown._text}
-              - {var: subject}
-            - std.string.join:
-              - std.collection.append:
-                - {var: language}
-                - lit:
-                  - ~~~
-              - ''
+          lit:
+            std.logic.or:
+            - std.string.contains:
+              - call:
+                - {var: markdown._text}
+                - {var: subject}
+              - std.string.join:
+                - std.collection.append:
+                  - {var: language}
+                  - lit:
+                    - '```'
+                - ''
+            - std.string.contains:
+              - call:
+                - {var: markdown._text}
+                - {var: subject}
+              - std.string.join:
+                - std.collection.append:
+                  - {var: language}
+                  - lit:
+                    - ~~~
+                - ''
 harness:
   exports:
   - as: domain.markdown.code_fence_language_exists
@@ -584,19 +599,20 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.or:
-          - std.object.has_key:
-            - call:
-              - {var: markdown._tokens_map}
-              - {var: subject}
-            - {var: token}
-          - std.string.contains:
-            - call:
-              - {var: markdown._text}
-              - {var: subject}
-            - {var: token}
+          lit:
+            std.logic.or:
+            - std.object.has_key:
+              - call:
+                - {var: markdown._tokens_map}
+                - {var: subject}
+              - {var: token}
+            - std.string.contains:
+              - call:
+                - {var: markdown._text}
+                - {var: subject}
+              - {var: token}
 harness:
   exports:
   - as: domain.markdown.token_present
@@ -619,17 +635,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.all:
-          - std.collection.map:
-            - fn:
-              - [token]
-              - call:
-                - {var: domain.markdown.token_present}
-                - {var: subject}
-                - {var: token}
-            - {var: tokens}
+          lit:
+            std.collection.all:
+            - std.collection.map:
+              - fn:
+                - [token]
+                - call:
+                  - {var: domain.markdown.token_present}
+                  - {var: subject}
+                  - {var: token}
+              - {var: tokens}
 harness:
   exports:
   - as: domain.markdown.tokens_all_present
@@ -652,20 +669,21 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.all:
-          - std.collection.map:
-            - fn:
-              - [owners]
-              - std.logic.eq:
-                - std.collection.len:
-                  - {var: owners}
-                - 1
-            - std.object.values:
-              - call:
-                - {var: markdown._token_owners}
-                - {var: subject}
+          lit:
+            std.collection.all:
+            - std.collection.map:
+              - fn:
+                - [owners]
+                - std.logic.eq:
+                  - std.collection.len:
+                    - {var: owners}
+                  - 1
+              - std.object.values:
+                - call:
+                  - {var: markdown._token_owners}
+                  - {var: subject}
 harness:
   exports:
   - as: domain.markdown.token_ownership_unique
@@ -687,20 +705,21 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.all:
-          - std.collection.map:
-            - fn:
-              - [dep]
-              - std.logic.eq:
-                - std.object.get:
-                  - {var: dep}
-                  - resolved
-                - true
-            - call:
-              - {var: markdown._token_dependencies}
-              - {var: subject}
+          lit:
+            std.collection.all:
+            - std.collection.map:
+              - fn:
+                - [dep]
+                - std.logic.eq:
+                  - std.object.get:
+                    - {var: dep}
+                    - resolved
+                  - true
+              - call:
+                - {var: markdown._token_dependencies}
+                - {var: subject}
 harness:
   exports:
   - as: domain.markdown.token_dependencies_resolved

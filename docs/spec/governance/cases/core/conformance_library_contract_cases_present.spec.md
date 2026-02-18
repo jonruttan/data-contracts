@@ -34,12 +34,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
-            - {var: subject}
-            - check_id
-          - conformance.library_contract_cases_present
+          lit:
+            std.logic.eq:
+            - std.object.get:
+              - {var: subject}
+              - check_id
+            - conformance.library_contract_cases_present
   target: summary_json
 ```

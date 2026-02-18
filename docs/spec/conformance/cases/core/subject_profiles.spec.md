@@ -16,21 +16,22 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.string.contains:
-            - {var: subject}
-            - profile_id
-          - std.string.contains:
-            - {var: subject}
-            - profile_version
-          - std.string.contains:
-            - {var: subject}
-            - json_core_only
-          - std.string.contains:
-            - {var: subject}
-            - deterministic_projection
+          lit:
+            MUST:
+            - std.string.contains:
+              - {var: subject}
+              - profile_id
+            - std.string.contains:
+              - {var: subject}
+              - profile_version
+            - std.string.contains:
+              - {var: subject}
+              - json_core_only
+            - std.string.contains:
+              - {var: subject}
+              - deterministic_projection
   target: text
 harness:
   check:
@@ -55,25 +56,26 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.logic.eq:
-            - std.object.get:
+          lit:
+            MUST:
+            - std.logic.eq:
+              - std.object.get:
+                - {var: subject}
+                - profile_id
+              - text.file/v1
+            - std.logic.eq:
+              - std.object.get:
+                - {var: subject}
+                - profile_version
+              - 1
+            - std.object.has_key:
               - {var: subject}
-              - profile_id
-            - text.file/v1
-          - std.logic.eq:
-            - std.object.get:
+              - value
+            - std.object.has_key:
               - {var: subject}
-              - profile_version
-            - 1
-          - std.object.has_key:
-            - {var: subject}
-            - value
-          - std.object.has_key:
-            - {var: subject}
-            - meta
+              - meta
   target: context_json
 harness:
   check:

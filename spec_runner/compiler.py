@@ -65,7 +65,7 @@ def compile_assert_tree(
         raw_checks = raw_step.get("asserts")
         if not isinstance(raw_checks, list) or not raw_checks:
             raise TypeError(f"{assert_path}[{idx}].asserts must be a non-empty list")
-        children = [
+        children: list[InternalAssertNode] = [
             _compile_assert_expr_leaf(
                 check,
                 target=str(step_target or "").strip(),

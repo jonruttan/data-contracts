@@ -28,22 +28,24 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - {var: subject}
-          - 0
+          lit:
+            std.logic.eq:
+            - {var: subject}
+            - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
-            - {var: subject}
-            - check_id
-          - runtime.api_http_verb_suite
+          lit:
+            std.logic.eq:
+            - std.object.get:
+              - {var: subject}
+              - check_id
+            - runtime.api_http_verb_suite
   target: summary_json
 ```

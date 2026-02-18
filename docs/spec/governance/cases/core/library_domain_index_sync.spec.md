@@ -28,12 +28,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
-            - {var: subject}
-            - check_id
-          - library.domain_index_sync
+          lit:
+            std.logic.eq:
+            - std.object.get:
+              - {var: subject}
+              - check_id
+            - library.domain_index_sync
   target: summary_json
 ```

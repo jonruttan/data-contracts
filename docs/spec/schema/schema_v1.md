@@ -578,9 +578,9 @@ Job ref grammar:
 
 This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
-- profile_count: 12
+- profile_count: 7
 - top_level_fields: 16
-- type_profiles: 8
+- type_profiles: 3
 
 ### Top-Level Keys
 
@@ -607,14 +607,9 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 | type | required keys | extra keys |
 |---|---|---|
-| `api.http` | - | - |
-| `cli.run` | - | - |
+| `contract.check` | `harness`, `contract` | - |
+| `contract.export` | `contract`, `harness` | `imports` |
 | `contract.job` | `harness`, `contract` | - |
-| `docs.generate` | - | - |
-| `governance.check` | `check` | - |
-| `orchestration.run` | - | - |
-| `spec.export` | `contract`, `harness` | `imports` |
-| `text.file` | - | - |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V1 -->
 <!-- GENERATED:START spec_schema_field_catalog -->

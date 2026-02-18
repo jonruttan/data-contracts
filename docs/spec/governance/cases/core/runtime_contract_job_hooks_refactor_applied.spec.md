@@ -20,9 +20,10 @@ contract:
   target: violation_count
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - {var: subject}
-          - 0
+          lit:
+            std.logic.eq:
+            - {var: subject}
+            - 0
 ```

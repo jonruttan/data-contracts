@@ -10,13 +10,14 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.object.get:
-          - std.object.get:
-            - {var: subject}
-            - value
-          - status
+          lit:
+            std.object.get:
+            - std.object.get:
+              - {var: subject}
+              - value
+            - status
 harness:
   exports:
   - as: domain.http.status
@@ -34,15 +35,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.in:
-          - std.object.get:
+          lit:
+            std.collection.in:
             - std.object.get:
-              - {var: subject}
-              - value
-            - status
-          - {var: allowed}
+              - std.object.get:
+                - {var: subject}
+                - value
+              - status
+            - {var: allowed}
 harness:
   exports:
   - as: domain.http.status_in
@@ -61,15 +63,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
+          lit:
+            std.logic.eq:
             - std.object.get:
-              - {var: subject}
-              - value
-            - status
-          - {var: expected}
+              - std.object.get:
+                - {var: subject}
+                - value
+              - status
+            - {var: expected}
 harness:
   exports:
   - as: domain.http.status_is
@@ -88,12 +91,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          call:
-          - {var: domain.http.status_is}
-          - {var: subject}
-          - 401
+          lit:
+            call:
+            - {var: domain.http.status_is}
+            - {var: subject}
+            - 401
 harness:
   exports:
   - as: domain.http.status_is_unauthorized
@@ -111,12 +115,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          call:
-          - {var: domain.http.status_is}
-          - {var: subject}
-          - 403
+          lit:
+            call:
+            - {var: domain.http.status_is}
+            - {var: subject}
+            - 403
 harness:
   exports:
   - as: domain.http.status_is_forbidden
@@ -134,23 +139,24 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.and:
-          - std.logic.gte:
-            - std.object.get:
+          lit:
+            std.logic.and:
+            - std.logic.gte:
               - std.object.get:
-                - {var: subject}
-                - value
-              - status
-            - 200
-          - std.logic.lt:
-            - std.object.get:
+                - std.object.get:
+                  - {var: subject}
+                  - value
+                - status
+              - 200
+            - std.logic.lt:
               - std.object.get:
-                - {var: subject}
-                - value
-              - status
-            - 300
+                - std.object.get:
+                  - {var: subject}
+                  - value
+                - status
+              - 300
 harness:
   exports:
   - as: domain.http.ok_2xx
@@ -168,15 +174,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.object.get:
-          - std.object.get:
+          lit:
+            std.object.get:
             - std.object.get:
-              - {var: subject}
-              - value
-            - headers
-          - {var: key}
+              - std.object.get:
+                - {var: subject}
+                - value
+              - headers
+            - {var: key}
 harness:
   exports:
   - as: domain.http.header_get
@@ -195,17 +202,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - std.object.get:
+          lit:
+            std.string.contains:
             - std.object.get:
               - std.object.get:
-                - {var: subject}
-                - value
-              - headers
-            - {var: key}
-          - {var: token}
+                - std.object.get:
+                  - {var: subject}
+                  - value
+                - headers
+              - {var: key}
+            - {var: token}
 harness:
   exports:
   - as: domain.http.header_contains
@@ -225,13 +233,14 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.object.get:
-          - std.object.get:
-            - {var: subject}
-            - value
-          - body_text
+          lit:
+            std.object.get:
+            - std.object.get:
+              - {var: subject}
+              - value
+            - body_text
 harness:
   exports:
   - as: domain.http.body_text
@@ -249,13 +258,14 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.object.get:
-          - std.object.get:
-            - {var: subject}
-            - value
-          - body_json
+          lit:
+            std.object.get:
+            - std.object.get:
+              - {var: subject}
+              - value
+            - body_json
 harness:
   exports:
   - as: domain.http.body_json
@@ -273,15 +283,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.type.json_type:
-          - std.object.get:
+          lit:
+            std.type.json_type:
             - std.object.get:
-              - {var: subject}
-              - value
-            - body_json
-          - {var: expected_type}
+              - std.object.get:
+                - {var: subject}
+                - value
+              - body_json
+            - {var: expected_type}
 harness:
   exports:
   - as: domain.http.body_json_type_is
@@ -300,15 +311,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.object.has_key:
-          - std.object.get:
+          lit:
+            std.object.has_key:
             - std.object.get:
-              - {var: subject}
-              - value
-            - body_json
-          - {var: key}
+              - std.object.get:
+                - {var: subject}
+                - value
+              - body_json
+            - {var: key}
 harness:
   exports:
   - as: domain.http.body_json_has_key
@@ -327,15 +339,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
+          lit:
+            std.logic.eq:
             - std.object.get:
-              - {var: subject}
-              - meta
-            - auth_mode
-          - oauth
+              - std.object.get:
+                - {var: subject}
+                - meta
+              - auth_mode
+            - oauth
 harness:
   exports:
   - as: domain.http.auth_is_oauth
@@ -353,15 +366,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
+          lit:
+            std.logic.eq:
             - std.object.get:
-              - {var: subject}
-              - meta
-            - oauth_token_source
-          - {var: expected}
+              - std.object.get:
+                - {var: subject}
+                - meta
+              - oauth_token_source
+            - {var: expected}
 harness:
   exports:
   - as: domain.http.oauth_token_source_is
@@ -380,17 +394,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.starts_with:
-          - std.object.get:
+          lit:
+            std.string.starts_with:
             - std.object.get:
               - std.object.get:
-                - {var: subject}
-                - value
-              - headers
-            - Authorization
-          - 'Bearer '
+                - std.object.get:
+                  - {var: subject}
+                  - value
+                - headers
+              - Authorization
+            - 'Bearer '
 harness:
   exports:
   - as: domain.http.has_bearer_header
@@ -408,17 +423,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.neq:
-          - std.object.get:
+          lit:
+            std.logic.neq:
             - std.object.get:
               - std.object.get:
-                - {var: subject}
-                - context
-              - oauth
-            - scope_requested
-          - null
+                - std.object.get:
+                  - {var: subject}
+                  - context
+                - oauth
+              - scope_requested
+            - null
 harness:
   exports:
   - as: domain.http.oauth_scope_requested
@@ -436,15 +452,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.object.get:
-          - std.object.get:
+          lit:
+            std.object.get:
             - std.object.get:
-              - {var: subject}
-              - value
-            - cors
-          - allow_origin
+              - std.object.get:
+                - {var: subject}
+                - value
+              - cors
+            - allow_origin
 harness:
   exports:
   - as: domain.http.cors_allow_origin
@@ -462,17 +479,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.includes:
-          - std.object.get:
+          lit:
+            std.collection.includes:
             - std.object.get:
               - std.object.get:
-                - {var: subject}
-                - value
-              - cors
-            - allow_methods
-          - {var: method_name}
+                - std.object.get:
+                  - {var: subject}
+                  - value
+                - cors
+              - allow_methods
+            - {var: method_name}
 harness:
   exports:
   - as: domain.http.cors_allows_method
@@ -491,17 +509,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.includes:
-          - std.object.get:
+          lit:
+            std.collection.includes:
             - std.object.get:
               - std.object.get:
-                - {var: subject}
-                - value
-              - cors
-            - allow_headers
-          - {var: header_name}
+                - std.object.get:
+                  - {var: subject}
+                  - value
+                - cors
+              - allow_headers
+            - {var: header_name}
 harness:
   exports:
   - as: domain.http.cors_allows_header
@@ -520,17 +539,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
+          lit:
+            std.logic.eq:
             - std.object.get:
               - std.object.get:
-                - {var: subject}
-                - value
-              - cors
-            - allow_credentials
-          - true
+                - std.object.get:
+                  - {var: subject}
+                  - value
+                - cors
+              - allow_credentials
+            - true
 harness:
   exports:
   - as: domain.http.cors_credentials_enabled
@@ -548,17 +568,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.gte:
-          - std.object.get:
+          lit:
+            std.logic.gte:
             - std.object.get:
               - std.object.get:
-                - {var: subject}
-                - value
-              - cors
-            - max_age
-          - {var: min_age}
+                - std.object.get:
+                  - {var: subject}
+                  - value
+                - cors
+              - max_age
+            - {var: min_age}
 harness:
   exports:
   - as: domain.http.cors_max_age_gte
@@ -577,13 +598,14 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
-            - {var: step}
-            - method
-          - OPTIONS
+          lit:
+            std.logic.eq:
+            - std.object.get:
+              - {var: step}
+              - method
+            - OPTIONS
 harness:
   exports:
   - as: domain.http.is_preflight_step
@@ -601,17 +623,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.find:
-          - fn:
-            - [row]
-            - std.logic.eq:
-              - std.object.get:
-                - {var: row}
-                - id
-              - {var: step_id}
-          - {var: steps}
+          lit:
+            std.collection.find:
+            - fn:
+              - [row]
+              - std.logic.eq:
+                - std.object.get:
+                  - {var: row}
+                  - id
+                - {var: step_id}
+            - {var: steps}
 harness:
   exports:
   - as: domain.http.step_by_id
@@ -630,16 +653,17 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
-            - call:
-              - {var: domain.http.step_by_id}
-              - {var: steps}
-              - {var: step_id}
-            - status
-          - {var: expected}
+          lit:
+            std.logic.eq:
+            - std.object.get:
+              - call:
+                - {var: domain.http.step_by_id}
+                - {var: steps}
+                - {var: step_id}
+              - status
+            - {var: expected}
 harness:
   exports:
   - as: domain.http.step_status_is
@@ -659,16 +683,17 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.object.get:
-          - std.object.get:
-            - call:
-              - {var: domain.http.step_by_id}
-              - {var: steps}
-              - {var: step_id}
-            - body_json
-          - {var: field}
+          lit:
+            std.object.get:
+            - std.object.get:
+              - call:
+                - {var: domain.http.step_by_id}
+                - {var: steps}
+                - {var: step_id}
+              - body_json
+            - {var: field}
 harness:
   exports:
   - as: domain.http.step_body_json_get

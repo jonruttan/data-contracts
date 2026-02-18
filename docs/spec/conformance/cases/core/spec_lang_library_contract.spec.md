@@ -16,25 +16,26 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.string.contains:
-            - {var: subject}
-            - 'type: spec.export'
-          - std.string.contains:
-            - {var: subject}
-            - 'harness:'
-          - std.string.contains:
-            - {var: subject}
-            - 'exports:'
-          - std.string.contains:
-            - {var: subject}
-            - 'from: assert.function'
-          - std.logic.not:
+          lit:
+            MUST:
             - std.string.contains:
               - {var: subject}
-              - 'defines:'
+              - 'type: spec.export'
+            - std.string.contains:
+              - {var: subject}
+              - 'harness:'
+            - std.string.contains:
+              - {var: subject}
+              - 'exports:'
+            - std.string.contains:
+              - {var: subject}
+              - 'from: assert.function'
+            - std.logic.not:
+              - std.string.contains:
+                - {var: subject}
+                - 'defines:'
   target: text
 harness:
   check:
@@ -59,25 +60,26 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.string.contains:
-            - {var: subject}
-            - 'type: spec.export'
-          - std.string.contains:
-            - {var: subject}
-            - 'harness:'
-          - std.string.contains:
-            - {var: subject}
-            - 'exports:'
-          - std.string.contains:
-            - {var: subject}
-            - 'from: assert.function'
-          - std.logic.not:
+          lit:
+            MUST:
             - std.string.contains:
               - {var: subject}
-              - 'defines:'
+              - 'type: spec.export'
+            - std.string.contains:
+              - {var: subject}
+              - 'harness:'
+            - std.string.contains:
+              - {var: subject}
+              - 'exports:'
+            - std.string.contains:
+              - {var: subject}
+              - 'from: assert.function'
+            - std.logic.not:
+              - std.string.contains:
+                - {var: subject}
+                - 'defines:'
   target: text
 harness:
   check:
@@ -101,15 +103,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.string.contains:
-            - {var: subject}
-            - /docs/spec/libraries/policy/policy_core.spec.md
-          - std.string.contains:
-            - {var: subject}
-            - /docs/spec/libraries/policy/policy_metrics.spec.md
+          lit:
+            MUST:
+            - std.string.contains:
+              - {var: subject}
+              - /docs/spec/libraries/policy/policy_core.spec.md
+            - std.string.contains:
+              - {var: subject}
+              - /docs/spec/libraries/policy/policy_metrics.spec.md
   target: text
 harness:
   check:

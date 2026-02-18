@@ -223,3 +223,6 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/spec_portability_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/tests_unit_opt_out_non_regression.spec.md`
 - `/docs/spec/governance/cases/core/v1_scope_doc.spec.md`
+- `/docs/spec/governance/cases/core/docs_spec_index_reachability.spec.md`
+- `/docs/spec/governance/cases/core/docs_governance_check_family_map_complete.spec.md`
+- `/docs/spec/governance/cases/core/docs_canonical_freshness_strict.spec.md`

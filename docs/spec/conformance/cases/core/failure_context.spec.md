@@ -25,11 +25,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.regex_match:
-          - {var: subject}
-          - \A\Z
+          lit:
+            std.string.regex_match:
+            - {var: subject}
+            - \A\Z
   target: text
 harness:
   check:

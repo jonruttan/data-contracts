@@ -780,7 +780,7 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                     "violation_count" => Value::Number(failed_clauses.into()),
                     _ => summary_json.clone(),
                 };
-                let expr = yaml_to_json(&unwrap_evaluate_yaml_expr(raw_expr));
+                let expr = yaml_to_json(&normalize_evaluate_yaml_expr(raw_expr));
                 let result = match eval_mapping_ast_with_state(
                     &expr,
                     subject.clone(),
@@ -1064,7 +1064,7 @@ fn parse_validate_report_expr_from_case(case_block: &str, spec_ref: &str) -> Res
                 "producer asserts must contain exactly one expression: {target_step_id}"
             ));
         }
-        return Ok(yaml_to_json(&unwrap_evaluate_yaml_expr(&check_seq[0])));
+        return Ok(yaml_to_json(&normalize_evaluate_yaml_expr(&check_seq[0])));
     }
     Err(format!(
         "producer step not found in {spec_ref}: {target_step_id}"
@@ -1087,15 +1087,35 @@ fn validate_report_payload(payload: &Value, expr: &Value) -> Vec<String> {
     }
 }
 
-fn unwrap_evaluate_yaml_expr(raw_expr: &YamlValue) -> YamlValue {
-    if let YamlValue::Mapping(map) = raw_expr {
+fn normalize_evaluate_yaml_expr(raw_expr: &YamlValue) -> YamlValue {
+    let inner = if let YamlValue::Mapping(map) = raw_expr {
         if map.len() == 1 {
-            if let Some(inner) = map.get(&YamlValue::String("evaluate".to_string())) {
-                return inner.clone();
+            if let Some(v) = map.get(&YamlValue::String("evaluate".to_string())) {
+                v.clone()
+            } else {
+                raw_expr.clone()
+            }
+        } else {
+            raw_expr.clone()
+        }
+    } else {
+        raw_expr.clone()
+    };
+    match inner {
+        YamlValue::Sequence(seq) => {
+            if seq.len() == 1 {
+                seq[0].clone()
+            } else {
+                let mut wrapped = serde_yaml::Mapping::new();
+                wrapped.insert(
+                    YamlValue::String("std.logic.and".to_string()),
+                    YamlValue::Sequence(seq),
+                );
+                YamlValue::Mapping(wrapped)
             }
         }
+        other => other,
     }
-    raw_expr.clone()
 }
 
 fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {

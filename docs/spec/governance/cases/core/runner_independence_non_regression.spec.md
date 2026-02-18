@@ -52,28 +52,30 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - {var: subject}
-          - 0
+          lit:
+            std.logic.eq:
+            - {var: subject}
+            - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.logic.eq:
-            - std.object.get:
-              - {var: subject}
-              - passed
-            - true
-          - std.logic.eq:
-            - std.object.get:
-              - {var: subject}
-              - check_id
-            - runtime.runner_independence_non_regression
+          lit:
+            MUST:
+            - std.logic.eq:
+              - std.object.get:
+                - {var: subject}
+                - passed
+              - true
+            - std.logic.eq:
+              - std.object.get:
+                - {var: subject}
+                - check_id
+              - runtime.runner_independence_non_regression
   target: summary_json
 ```

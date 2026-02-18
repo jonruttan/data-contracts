@@ -27,18 +27,19 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.logic.eq:
-            - std.object.get:
-              - {var: subject}
-              - check_id
-            - orchestration.ops_symbol_grammar
-          - std.logic.eq:
-            - std.object.get:
-              - {var: subject}
-              - passed
-            - true
+          lit:
+            MUST:
+            - std.logic.eq:
+              - std.object.get:
+                - {var: subject}
+                - check_id
+              - orchestration.ops_symbol_grammar
+            - std.logic.eq:
+              - std.object.get:
+                - {var: subject}
+                - passed
+              - true
   target: summary_json
 ```

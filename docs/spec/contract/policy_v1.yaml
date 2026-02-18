@@ -3956,3 +3956,40 @@ rules:
   references:
   - docs/spec/contract/04_harness.md
   - docs/spec/governance/cases/core/runtime_contract_job_hooks_refactor_applied.spec.md
+- id: DOCS_SPEC_IA_CANONICAL_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.spec.information_architecture
+  norm: MUST
+  requirement: docs_spec_root_links_canonical_subtree_indexes
+  description: Canonical spec index must link current snapshot and all canonical subtree indexes.
+  rationale: Prevents docs/spec navigation drift and ownership ambiguity.
+  risk_if_violated: Contributors miss canonical sources and duplicate definitions.
+  references:
+  - docs/spec/index.md
+  - docs/spec/contract/01_docs_architecture.md
+  - docs/spec/governance/cases/core/docs_spec_index_reachability.spec.md
+- id: GOVERNANCE_CHECK_FAMILY_MAP_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: governance.check_catalog_map
+  norm: MUST
+  requirement: all_registered_governance_checks_have_family_mapping
+  description: Governance check catalog map must include family prefixes covering every registered governance check id.
+  rationale: Keeps governance/conformance case organization deterministic by check-id family.
+  risk_if_violated: New checks become orphaned from canonical case taxonomy.
+  references:
+  - docs/spec/governance/check_catalog_map_v1.yaml
+  - docs/spec/governance/cases/core/docs_governance_check_family_map_complete.spec.md
+- id: DOCS_FRESHNESS_STRICT_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.freshness.strict
+  norm: MUST
+  requirement: strict_freshness_checker_passes_with_no_violations
+  description: Active docs surfaces must pass strict freshness checks including link validity, stale terminology checks, generated drift checks, and source-of-truth marker uniqueness.
+  rationale: Converts documentation drift into fast deterministic failures.
+  risk_if_violated: stale and contradictory docs silently accumulate.
+  references:
+  - scripts/check_docs_freshness.py
+  - docs/spec/governance/cases/core/docs_canonical_freshness_strict.spec.md

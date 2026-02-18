@@ -10,13 +10,14 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - ops.os.exec:
-            - {var: command}
-            - {var: timeout_ms}
-          - 0
+          lit:
+            std.logic.eq:
+            - ops.os.exec:
+              - {var: command}
+              - {var: timeout_ms}
+            - 0
 harness:
   exports:
   - as: domain.os.exec_ok
@@ -36,15 +37,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
-            - ops.os.exec_capture:
-              - {var: command}
-              - {var: timeout_ms}
-            - code
-          - {var: expected_code}
+          lit:
+            std.logic.eq:
+            - std.object.get:
+              - ops.os.exec_capture:
+                - {var: command}
+                - {var: timeout_ms}
+              - code
+            - {var: expected_code}
 harness:
   exports:
   - as: domain.os.exec_capture_code
@@ -65,10 +67,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          ops.os.env_has:
-          - {var: key}
+          lit:
+            ops.os.env_has:
+            - {var: key}
 harness:
   exports:
   - as: domain.os.env_has

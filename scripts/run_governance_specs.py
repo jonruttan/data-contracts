@@ -211,6 +211,7 @@ _DATA_ARTIFACT_GLOBS = (
     "docs/book/reference_manifest.yaml",
     "docs/spec/schema/*.yaml",
 )
+_GOVERNANCE_CHECK_CATALOG_MAP = "docs/spec/governance/check_catalog_map_v1.yaml"
 _SUBJECT_PROFILE_CONTRACT_DOC = "docs/spec/contract/20_subject_profiles_v1.md"
 _SUBJECT_PROFILE_SCHEMA_DOC = "docs/spec/schema/subject_profiles_v1.yaml"
 _SUBJECT_PROFILE_TYPE_DOCS = (
@@ -9614,6 +9615,79 @@ def _scan_tests_unit_opt_out_non_regression(root: Path, *, harness: dict | None 
     return violations
 
 
+def _scan_docs_spec_index_reachability(root: Path, *, harness: dict | None = None) -> list[str]:
+    expected = {
+        "/docs/spec/current.md",
+        "/docs/spec/schema/index.md",
+        "/docs/spec/contract/index.md",
+        "/docs/spec/governance/index.md",
+        "/docs/spec/libraries/index.md",
+        "/docs/spec/impl/index.md",
+    }
+    path = root / "docs/spec/index.md"
+    if not path.exists():
+        return ["docs/spec/index.md:1: missing canonical spec index"]
+    text = path.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for rel in sorted(expected):
+        if rel not in text:
+            violations.append(f"docs/spec/index.md:1: missing canonical link {rel}")
+    return violations
+
+
+def _scan_docs_governance_check_family_map_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    path = root / _GOVERNANCE_CHECK_CATALOG_MAP
+    if not path.exists():
+        return [f"{_GOVERNANCE_CHECK_CATALOG_MAP}:1: missing governance check family map"]
+    try:
+        raw = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        return [f"{_GOVERNANCE_CHECK_CATALOG_MAP}:1: invalid YAML ({exc})"]
+    if not isinstance(raw, dict):
+        return [f"{_GOVERNANCE_CHECK_CATALOG_MAP}:1: expected mapping root"]
+    families = raw.get("families")
+    if not isinstance(families, list) or not families:
+        return [f"{_GOVERNANCE_CHECK_CATALOG_MAP}:1: families must be a non-empty list"]
+    prefixes: set[str] = set()
+    violations: list[str] = []
+    for idx, item in enumerate(families, start=1):
+        if not isinstance(item, dict):
+            violations.append(f"{_GOVERNANCE_CHECK_CATALOG_MAP}:1: families[{idx}] must be a mapping")
+            continue
+        prefix = str(item.get("check_prefix", "")).strip()
+        if not prefix:
+            violations.append(f"{_GOVERNANCE_CHECK_CATALOG_MAP}:1: families[{idx}].check_prefix required")
+            continue
+        prefixes.add(prefix)
+    if violations:
+        return violations
+    for cid in sorted(_CHECKS):
+        family_prefix = cid.split(".", 1)[0] + "."
+        if family_prefix not in prefixes:
+            violations.append(
+                f"{_GOVERNANCE_CHECK_CATALOG_MAP}:1: missing mapping for check family prefix {family_prefix!r} (check {cid})"
+            )
+    return violations
+
+
+def _scan_docs_canonical_freshness_strict(root: Path, *, harness: dict | None = None) -> list[str]:
+    report_path = root / ".artifacts/docs-freshness-report.json"
+    cmd = [
+        sys.executable,
+        "scripts/check_docs_freshness.py",
+        "--strict",
+        "--out",
+        report_path.relative_to(root).as_posix(),
+    ]
+    cp = subprocess.run(cmd, cwd=root, capture_output=True, text=True, check=False)
+    if cp.returncode == 0:
+        return []
+    out = (cp.stdout + cp.stderr).strip()
+    if not out:
+        return ["scripts/check_docs_freshness.py --strict failed with no output"]
+    return [line for line in out.splitlines() if line.strip()]
+
+
 GovernanceCheckOutcome = list[str] | dict[str, object]
 GovernanceCheck = Callable[..., GovernanceCheckOutcome]
 
@@ -9639,6 +9713,9 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "pending.no_resolved_markers": _scan_pending_no_resolved_markers,
     "docs.security_warning_contract": _scan_security_warning_docs,
     "docs.v1_scope_contract": _scan_v1_scope_doc,
+    "docs.spec_index_reachability": _scan_docs_spec_index_reachability,
+    "docs.governance_check_family_map_complete": _scan_docs_governance_check_family_map_complete,
+    "docs.canonical_freshness_strict": _scan_docs_canonical_freshness_strict,
     "runtime.config_literals": _scan_runtime_config_literals,
     "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
     "runtime.python_bin_resolver_sync": _scan_runtime_python_bin_resolver_sync,
@@ -9719,6 +9796,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.runner_independence_non_regression": _scan_runner_independence_non_regression,
     "runtime.python_dependency_metric": _scan_python_dependency_metric,
     "runtime.python_dependency_non_regression": _scan_python_dependency_non_regression,
+    "docs.operability_non_regression": _scan_docs_operability_non_regression,
+    "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
+    "spec.portability_non_regression": _scan_spec_portability_non_regression,
+    "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,
     "runtime.non_python_lane_no_python_exec": _scan_runtime_non_python_lane_no_python_exec,
     "runtime.rust_adapter_transitive_no_python": _scan_runtime_rust_adapter_transitive_no_python,
     "objective.scorecard_non_regression": _scan_objective_scorecard_non_regression,
@@ -9740,7 +9821,9 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "spec_lang.stdlib_docs_sync": _scan_spec_lang_stdlib_docs_sync,
     "spec_lang.stdlib_conformance_coverage": _scan_spec_lang_stdlib_conformance_coverage,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
+    "docs.current_spec_policy_key_names": _scan_current_spec_policy_key_names,
     "governance.policy_library_usage_required": _scan_governance_policy_library_usage_required,
+    "governance.policy_library_usage_non_regression": _scan_policy_library_usage_non_regression,
     "conformance.library_policy_usage_required": _scan_conformance_library_policy_usage_required,
     "governance.extractor_only_no_verdict_branching": _scan_governance_extractor_only_no_verdict_branching,
     "governance.structured_assertions_required": _scan_governance_structured_assertions_required,

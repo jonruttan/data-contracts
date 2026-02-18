@@ -97,8 +97,6 @@ def default_type_runners() -> dict[str, TypeRunner]:
     # Lazy import to avoid circular imports during collection.
     from spec_runner.harnesses.api_http import run as run_api_http
     from spec_runner.harnesses.cli_run import run as run_cli
-    from spec_runner.harnesses.docs_generate import run as run_docs_generate
-    from spec_runner.harnesses.orchestration_run import run as run_orchestration
     from spec_runner.harnesses.text_file import run as run_text_file
 
     def run_contract_check(case: InternalSpecCase, *, ctx: SpecRunContext) -> None:
@@ -145,10 +143,6 @@ def default_type_runners() -> dict[str, TypeRunner]:
         raise RuntimeError(f"unsupported contract.check profile: {profile}")
 
     def run_contract_export(_: InternalSpecCase, *, ctx: SpecRunContext) -> None:
-        del ctx
-        return
-
-    def run_contract_job(_: InternalSpecCase, *, ctx: SpecRunContext) -> None:
         del ctx
         return
 

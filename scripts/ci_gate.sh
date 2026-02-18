@@ -73,6 +73,8 @@ fi
 
 "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" critical-gate
 
+python3 scripts/check_docs_freshness.py --strict
+
 "${SPEC_RUNNER_BIN}" ci-gate-summary \
   --runner-bin "${SPEC_RUNNER_BIN}" \
   --runner-impl "${SPEC_RUNNER_IMPL}" \

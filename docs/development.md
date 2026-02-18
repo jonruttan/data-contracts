@@ -390,3 +390,13 @@ python -m pip install -U build twine
 python -m build
 python -m twine check dist/*
 ```
+
+## Canonical Docs/Spec Checks
+
+Run this before `make prepush` when touching docs or governance:
+
+```sh
+python3 scripts/check_docs_freshness.py --strict
+```
+
+The checker validates canonical index ownership, link integrity, stale-term drift, governance family-map coverage, and generated docs sync.

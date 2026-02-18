@@ -15,23 +15,24 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.logic.eq:
-            - std.type.json_type:
-              - std.json.parse:
-                - '{"id":1,"tags":["alpha","beta"]}'
-              - dict
-            - true
-          - std.logic.eq:
-            - std.type.json_type:
-              - std.object.get:
+          lit:
+            MUST:
+            - std.logic.eq:
+              - std.type.json_type:
                 - std.json.parse:
                   - '{"id":1,"tags":["alpha","beta"]}'
-                - tags
-              - list
-            - true
+                - dict
+              - true
+            - std.logic.eq:
+              - std.type.json_type:
+                - std.object.get:
+                  - std.json.parse:
+                    - '{"id":1,"tags":["alpha","beta"]}'
+                  - tags
+                - list
+              - true
   target: text
 harness:
   check:
@@ -56,24 +57,25 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.and:
-          - std.logic.eq:
-            - std.type.json_type:
-              - std.object.get:
-                - std.json.parse:
-                  - '{"id":"x"}'
-                - id
-              - string
-            - true
-          - std.logic.not:
+          lit:
+            std.logic.and:
             - std.logic.eq:
-              - std.object.get:
-                - std.json.parse:
-                  - '{"id":"x"}'
-                - id
-              - 1
+              - std.type.json_type:
+                - std.object.get:
+                  - std.json.parse:
+                    - '{"id":"x"}'
+                  - id
+                - string
+              - true
+            - std.logic.not:
+              - std.logic.eq:
+                - std.object.get:
+                  - std.json.parse:
+                    - '{"id":"x"}'
+                  - id
+                - 1
   target: text
 harness:
   check:

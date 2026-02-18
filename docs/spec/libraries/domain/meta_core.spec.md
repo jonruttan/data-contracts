@@ -10,15 +10,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.eq:
-          - std.object.get:
+          lit:
+            std.logic.eq:
             - std.object.get:
-              - {var: meta}
-              - case
-            - id
-          - {var: case_id}
+              - std.object.get:
+                - {var: meta}
+                - case
+              - id
+            - {var: case_id}
 harness:
   exports:
   - as: domain.meta.case_id_eq
@@ -38,15 +39,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.collection.includes:
-          - std.object.get:
+          lit:
+            std.collection.includes:
             - std.object.get:
-              - {var: meta}
-              - artifacts
-            - target_keys
-          - {var: target_name}
+              - std.object.get:
+                - {var: meta}
+                - artifacts
+              - target_keys
+            - {var: target_name}
 harness:
   exports:
   - as: domain.meta.has_artifact_target

@@ -150,3 +150,13 @@ Notes:
 - `scripts/`: runner adapters, gates, and generators
 - `docs/`: book, contract/schema specs, implementation appendices
 - `tests/`: executable and unit-level validation
+
+## Documentation Health
+
+Use strict docs/spec drift checks before pushing:
+
+```sh
+python3 scripts/check_docs_freshness.py --strict
+```
+
+This check is blocking in local parity and CI gate lanes.

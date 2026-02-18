@@ -3718,3 +3718,46 @@ links:
   - scripts/run_governance_specs.py
   notes: rust contract.job specs use when fail/complete dispatch hooks with paired
     hook job metadata.
+- rule_id: DOCS_SPEC_IA_CANONICAL_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_SPEC_IA_CANONICAL_REQUIRED
+  contract_refs:
+  - docs/spec/contract/01_docs_architecture.md
+  - docs/spec/contract/02_docs_style.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_spec_index_reachability.spec.md
+  notes: Governance scanner enforces canonical spec index reachability links.
+- rule_id: GOVERNANCE_CHECK_FAMILY_MAP_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_CHECK_FAMILY_MAP_REQUIRED
+  contract_refs:
+  - docs/spec/contract/15_governance_subject_model.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - docs/spec/governance/check_catalog_map_v1.yaml
+  - scripts/run_governance_specs.py
+  - docs/spec/governance/cases/core/docs_governance_check_family_map_complete.spec.md
+  notes: Governance checks are mapped to deterministic check-id families.
+- rule_id: DOCS_FRESHNESS_STRICT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_FRESHNESS_STRICT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/01_docs_architecture.md
+  - docs/spec/contract/02_docs_style.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_docs_generate_specs_script_unit.py
+  implementation_refs:
+  - scripts/check_docs_freshness.py
+  - scripts/docs_inventory.py
+  - docs/spec/governance/cases/core/docs_canonical_freshness_strict.spec.md
+  notes: Strict docs freshness checker is enforced in governance and CI gates.

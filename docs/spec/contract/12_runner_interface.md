@@ -171,3 +171,9 @@ Runtime scope note:
 - Runner interface subcommand names are contributor-facing operational contract.
 - Gate scripts (`ci_gate.sh`, `core_gate.sh`, `docs_doctor.sh`) MUST remain
   implementation-neutral and call the runner interface boundary.
+
+## Docs Freshness Contract
+
+- Canonical docs/spec organization is enforced by `python3 scripts/check_docs_freshness.py --strict`.
+- Local parity and CI gate must execute this check as a blocking step.
+- Freshness checker output must be written to `.artifacts/docs-freshness-report.json`.

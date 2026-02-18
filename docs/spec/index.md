@@ -1,37 +1,20 @@
-# Spec Docs
+# Spec Index
 
-This folder contains the normative and working specification docs for
-`spec_runner`.
+Source of truth: spec.root.index
 
-## How To Navigate
+Canonical specification root for `spec_runner`.
 
-- Start with design intent: `docs/design_philosophy.md`
-- Start with guided authoring: `docs/book/index.md`
-- Use stable schema shape: `docs/spec/schema/schema_v1.md`
-- Use portable behavior contract: `docs/spec/contract/`
-- Use spec-lang/evaluate contract: `docs/spec/contract/03b_spec_lang_v1.md`
-- Use explicit v1 scope/non-goals: `docs/spec/contract/08_v1_scope.md`
-- Check open gaps: `docs/spec/backlog.md`
+## Start Here
 
-## Folder Layout
+- Active model snapshot: `/docs/spec/current.md`
+- Schema contracts: `/docs/spec/schema/index.md`
+- Normative contracts: `/docs/spec/contract/index.md`
+- Governance checks: `/docs/spec/governance/index.md`
+- Reusable libraries: `/docs/spec/libraries/index.md`
+- Implementation suites: `/docs/spec/impl/index.md`
 
-- `docs/spec/contract/`: versioned portable rules and policy files
-- `docs/spec/schema/`: schema docs for executable `contract-spec` case shape
-- `docs/spec/conformance/`: cross-runtime conformance rules and fixtures
-- `docs/spec/governance/`: executable governance checks run via `spec_runner`
-- `docs/spec/impl/`: executable implementation fixture suites
-- `docs/impl/`: implementation-specific appendices (Python/PHP)
-- `docs/spec/pending/`: draft proposals not yet adopted
+## Ownership Model
 
-## Authoring Rules
-
-- Keep docs focused on `spec_runner` behavior and public contract semantics.
-- Put runner-only setup under `harness:` in case examples (never as arbitrary
-  top-level case keys).
-- Keep examples executable when possible using fenced `yaml contract-spec` blocks.
-- Keep traceability current in `docs/spec/contract/traceability_v1.yaml`.
-- `docs/spec/pending/` is draft-only: completed/resolved items MUST be removed
-  from pending files instead of marked in place.
-- Runtime config literals MUST be defined in `spec_runner/settings.py` and
-  referenced from runtime Python code via `SETTINGS`; duplicated literals in
-  `spec_runner/` and `scripts/python/` fail governance checks.
+- `docs/spec/**` is canonical.
+- `docs/book/**` is reader-facing and includes generated references.
+- `docs/history/**` is archival and non-canonical.

@@ -27,15 +27,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.string.contains:
-            - {var: subject}
-            - ok
-          - std.string.contains:
-            - {var: subject}
-            - ok
+          lit:
+            MUST:
+            - std.string.contains:
+              - {var: subject}
+              - ok
+            - std.string.contains:
+              - {var: subject}
+              - ok
   target: stdout
 ```
 
@@ -68,15 +69,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.string.contains:
-            - {var: subject}
-            - ok
-          - std.string.contains:
-            - {var: subject}
-            - ok
+          lit:
+            MUST:
+            - std.string.contains:
+              - {var: subject}
+              - ok
+            - std.string.contains:
+              - {var: subject}
+              - ok
   target: stdout
 ```
 
@@ -108,11 +110,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.string.contains:
-          - {var: subject}
-          - ok
+          lit:
+            std.string.contains:
+            - {var: subject}
+            - ok
   target: stdout
 ```
 
@@ -141,15 +144,16 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.string.contains:
-            - {var: subject}
-            - ok
-          - std.string.contains:
-            - {var: subject}
-            - ok
+          lit:
+            MUST:
+            - std.string.contains:
+              - {var: subject}
+              - ok
+            - std.string.contains:
+              - {var: subject}
+              - ok
   target: stdout
 ```
 
@@ -180,14 +184,15 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          MUST:
-          - std.string.contains:
-            - {var: subject}
-            - ok
-          - std.string.contains:
-            - {var: subject}
-            - ok
+          lit:
+            MUST:
+            - std.string.contains:
+              - {var: subject}
+              - ok
+            - std.string.contains:
+              - {var: subject}
+              - ok
   target: stdout
 ```

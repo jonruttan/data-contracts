@@ -24,17 +24,18 @@ contract:
   target: subject
   asserts:
   - evaluate:
-      lit:
+    - lit:
         lit:
-          std.logic.neq:
-          - std.object.get:
-            - ops.helper.call:
-              - {lit: helper.governance.scan_bundle}
-              - lit:
-                  path: {var: scan_path}
-                  patterns:
-                  - {var: pattern}
-            - scanned_files
-          - null
+          lit:
+            std.logic.neq:
+            - std.object.get:
+              - ops.helper.call:
+                - {lit: helper.governance.scan_bundle}
+                - lit:
+                    path: {var: scan_path}
+                    patterns:
+                    - {var: pattern}
+              - scanned_files
+            - null
 ```
 
