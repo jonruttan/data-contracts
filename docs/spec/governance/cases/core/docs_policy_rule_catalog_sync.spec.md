@@ -6,8 +6,7 @@
 id: SRGOV-DOCS-GEN-007
 title: policy rule catalog artifacts are synchronized
 purpose: Ensures generated policy rule JSON and markdown artifacts are up-to-date.
-type: governance.check
-check: docs.policy_rule_catalog_sync
+type: contract.check
 harness:
   root: .
   chain:
@@ -19,20 +18,26 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: docs.policy_rule_catalog_sync
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - docs.policy_rule_catalog_sync
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - docs.policy_rule_catalog_sync
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
   target: summary_json
 ```

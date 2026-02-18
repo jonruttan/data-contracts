@@ -6,8 +6,7 @@
 id: SRGOV-CHAIN-002
 title: chain cycles are forbidden
 purpose: Ensures direct and indirect harness.chain dependency cycles are rejected.
-type: governance.check
-check: runtime.chain_cycle_forbidden
+type: contract.check
 harness:
   root: .
   chain:
@@ -19,12 +18,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.chain_cycle_forbidden
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

@@ -20,7 +20,7 @@ Notes:
   `/.artifacts/run-trace-summary.md` with span/event timeout diagnostics.
 - Governance hang handling is liveness-first: no-progress stall detection
   (`--liveness-*` / `SPEC_RUNNER_LIVENESS_*`) is primary with emergency
-  hard-cap fallback; legacy governance timeout env vars are deprecated and
+  hard-cap fallback; non-canonical governance timeout env vars are deprecated and
   mapped to hard-cap behavior.
 - Gate orchestration now defaults to fail-fast in `ci-gate-summary` with
   deterministic skipped-tail rows (`skip_reason: fail_fast.after_failure`)
@@ -56,10 +56,10 @@ Notes:
   CORS preflight/actual projection via `cors_json`, and scenario round-trip
   execution (`requests` + `harness.api_http.scenario`) with `steps_json`.
 - Cross-spec chaining is universal across executable case types via
-  `harness.chain` with required step classes (`must|can|cannot`), explicit
+  `harness.chain` with required step classes (`MUST|MAY|MUST_NOT`), explicit
   target-derived exports/imports, and scalar refs (`[path][#case_id]`).
 - Chain export shape is hard-cut to list-only entries under
-  `harness.chain.steps[*].exports`; legacy mapping-form exports are rejected.
+  `harness.chain.steps[*].exports`; non-canonical mapping-form exports are rejected.
 - Executable symbol loading is chain-first: `harness.chain` library-symbol
   exports/imports replace `harness.spec_lang.includes` in executable cases.
 - `api.http` request templating supports chain state lookups in `url`, header
@@ -70,7 +70,7 @@ Notes:
   `domain.markdown.*` with dual-input semantics (raw markdown text or markdown
   profile envelope with structured `context`).
 - Hard-cut markdown namespace enforcement is active for governed surfaces:
-  legacy `md.*` usage is rejected by governance and conformance fixtures.
+  non-canonical `md.*` usage is rejected by governance and conformance fixtures.
 - Spec-lang stdlib completeness and parity are contract-defined by
   `docs/spec/schema/spec_lang_stdlib_profile_v1.yaml` and
   `docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`.
@@ -133,9 +133,9 @@ Notes:
   `exit_code` (requires `harness.spec_lang.capabilities: [ops.os]`).
 - contract.job dispatch is contract-driven:
   `ops.job.dispatch` executes harness-declared metadata from `harness.jobs`,
-  with explicit capability gate `ops.job`; legacy `harness.job` is forbidden.
+  with explicit capability gate `ops.job`; non-canonical `harness.job` is forbidden.
 - Harness lifecycle hooks are supported at `when`:
-  `must|can|cannot` run after successful clauses of `MUST|MAY|MUST_NOT`
+  `must|may|must_not` run after successful clauses of `MUST|MAY|MUST_NOT`
   respectively, `fail` runs
   once on first failure, and `complete` runs after all clauses and class hooks
   pass; hook failures are runtime-fatal. Legacy `harness.on` is forbidden.
@@ -191,7 +191,7 @@ Notes:
   CI runs `normalize-check` and local workflow uses `normalize-fix`.
 - Docs layout now enforces canonical roots (`docs/book`, `docs/spec`,
   `docs/impl`, `docs/history/reviews`) with `index.md` as the only directory
-  index filename under `docs/**`; legacy `docs/history/reviews` and docs-local
+  index filename under `docs/**`; non-canonical `docs/history/reviews` and docs-local
   `README.md` filenames are forbidden.
 - Gate scripts now invoke CI summary orchestration through runner-interface
   subcommand `ci-gate-summary` (no direct gate-script Python summary call).

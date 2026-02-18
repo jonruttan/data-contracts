@@ -6,14 +6,20 @@
 id: SRGOV-RUNTIME-CONTRACT-BLOCK-001
 title: cases must use contract block
 purpose: Enforces top-level contract block requirement for executable cases.
-type: governance.check
-check: runtime.case_contract_block_required
+type: contract.check
 contract:
 - id: assert_1
   class: MUST
   target: violation_count
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
+harness:
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.case_contract_block_required
 ```

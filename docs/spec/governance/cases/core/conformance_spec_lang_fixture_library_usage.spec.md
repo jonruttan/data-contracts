@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-CONF-LIB-EXPR-001
 title: spec_lang conformance fixture uses shared helper library calls
-purpose: Ensures spec_lang conformance fixtures reuse shared conformance helper library
-  functions for repeated expression patterns.
-type: governance.check
-check: conformance.spec_lang_fixture_library_usage
+purpose: Ensures spec_lang conformance fixtures reuse shared conformance helper library functions
+  for repeated expression patterns.
+type: contract.check
 harness:
   root: .
   spec_lang_fixture_library_usage:
@@ -29,27 +28,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: conformance.spec_lang_fixture_library_usage
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - conformance.spec_lang_fixture_library_usage
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - conformance.spec_lang_fixture_library_usage
   target: summary_json
 ```

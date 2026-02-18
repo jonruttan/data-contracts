@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-014
 title: ci workflow defines rust critical gate as first-class lane
-purpose: Ensures CI has a dedicated rust critical gate job and diagnostic ci-gate
-  depends on it.
-type: governance.check
-check: runtime.ci_workflow_critical_gate_required
+purpose: Ensures CI has a dedicated rust critical gate job and diagnostic ci-gate depends
+  on it.
+type: contract.check
 harness:
   root: .
   ci_workflow_critical_gate:
@@ -28,12 +27,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.ci_workflow_critical_gate_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

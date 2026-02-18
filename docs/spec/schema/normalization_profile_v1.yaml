@@ -53,7 +53,7 @@ expression:
   zero_arg_requires_list: true
   expression_fields:
   - evaluate
-  - policy_evaluate
+  - evaluate
 spec_style:
   conformance_max_block_lines: 120
   expression_layout:

@@ -6,8 +6,7 @@
 id: SRGOV-STDLIB-004
 title: stdlib conformance coverage files are present
 purpose: Ensures canonical stdlib conformance fixtures are present and discoverable.
-type: governance.check
-check: spec_lang.stdlib_conformance_coverage
+type: contract.check
 harness:
   root: .
   stdlib_conformance:
@@ -23,12 +22,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: spec_lang.stdlib_conformance_coverage
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

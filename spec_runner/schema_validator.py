@@ -32,6 +32,18 @@ def _type_ok(value: Any, field_type: str) -> bool:
     return False
 
 
+def _resolve_field(case: dict[str, Any], field_path: str) -> tuple[bool, Any]:
+    if "<" in field_path and ">" in field_path:
+        return False, None
+    parts = [p for p in str(field_path).split(".") if p]
+    cur: Any = case
+    for part in parts:
+        if not isinstance(cur, dict) or part not in cur:
+            return False, None
+        cur = cur.get(part)
+    return True, cur
+
+
 def validate_case_shape(case: dict[str, Any], case_type: str, source_path: str) -> list[SchemaDiagnostic]:
     repo_root = Path(__file__).resolve().parents[1]
     compiled, errs = compile_registry(repo_root)
@@ -58,13 +70,13 @@ def validate_case_shape(case: dict[str, Any], case_type: str, source_path: str) 
 
     for fname, meta in {**base_fields, **profile_fields}.items():
         required = bool(meta.get("required", False))
-        if required and fname not in case:
+        present, value = _resolve_field(case, fname)
+        if required and not present:
             diagnostics.append(SchemaDiagnostic(path=source_path, message=f"missing required top-level key: {fname}"))
             continue
-        if fname not in case:
+        if not present:
             continue
         field_type = str(meta.get("type", "any"))
-        value = case.get(fname)
         if not _type_ok(value, field_type):
             diagnostics.append(
                 SchemaDiagnostic(path=source_path, message=f"invalid type for key {fname}: expected {field_type}")
@@ -78,7 +90,8 @@ def validate_case_shape(case: dict[str, Any], case_type: str, source_path: str) 
                 )
 
     for fname in tp.get("required_top_level") or []:
-        if fname not in case:
+        present, _ = _resolve_field(case, str(fname))
+        if not present:
             diagnostics.append(SchemaDiagnostic(path=source_path, message=f"missing required key for type {case_type}: {fname}"))
 
     return diagnostics

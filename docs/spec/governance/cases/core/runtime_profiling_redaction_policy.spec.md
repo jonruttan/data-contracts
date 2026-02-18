@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-PROFILE-REDACT-001
 title: run trace redaction policy prevents secret leakage
-purpose: Ensures profiling env metadata does not store raw values and trace payloads
-  do not include common secret-like tokens.
-type: governance.check
-check: runtime.profiling_redaction_policy
+purpose: Ensures profiling env metadata does not store raw values and trace payloads do not
+  include common secret-like tokens.
+type: contract.check
 harness:
   root: .
   profiling_redaction:
@@ -22,13 +21,19 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.profiling_redaction_policy
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 import time
 from typing import Any, Callable, Mapping, Protocol, cast
@@ -101,12 +101,69 @@ def default_type_runners() -> dict[str, TypeRunner]:
     from spec_runner.harnesses.orchestration_run import run as run_orchestration
     from spec_runner.harnesses.text_file import run as run_text_file
 
+    def run_contract_check(case: InternalSpecCase, *, ctx: SpecRunContext) -> None:
+        harness = case.harness or {}
+        check_cfg = harness.get("check")
+        if not isinstance(check_cfg, dict):
+            raise RuntimeError("contract.check requires harness.check mapping")
+        profile = str(check_cfg.get("profile", "")).strip()
+        if profile not in {"text.file", "cli.run", "api.http", "governance.scan"}:
+            raise RuntimeError("contract.check harness.check.profile must be one of: text.file, cli.run, api.http, governance.scan")
+        if profile == "governance.scan":
+            raise RuntimeError("contract.check profile governance.scan is owned by governance runner")
+        config = check_cfg.get("config")
+        if config is None:
+            config_map: dict[str, Any] = {}
+        elif isinstance(config, dict):
+            config_map = dict(config)
+        else:
+            raise RuntimeError("contract.check harness.check.config must be a mapping")
+        raw = dict(case.raw_case)
+        raw["type"] = profile
+        merged_harness = dict(harness)
+        merged_harness.pop("check", None)
+        raw["harness"] = merged_harness
+        for k, v in config_map.items():
+            if k in {"id", "type", "title", "purpose", "contract", "when", "harness", "requires", "expect", "assert_health"}:
+                continue
+            raw[k] = v
+        adapted_case = replace(
+            case,
+            type=profile,
+            raw_case=raw,
+            harness=merged_harness,
+        )
+        if profile == "text.file":
+            run_text_file(adapted_case, ctx=ctx)
+            return
+        if profile == "cli.run":
+            run_cli(adapted_case, ctx=ctx)
+            return
+        if profile == "api.http":
+            run_api_http(adapted_case, ctx=ctx)
+            return
+        raise RuntimeError(f"unsupported contract.check profile: {profile}")
+
+    def run_contract_export(_: InternalSpecCase, *, ctx: SpecRunContext) -> None:
+        del ctx
+        return
+
+    def run_contract_job(_: InternalSpecCase, *, ctx: SpecRunContext) -> None:
+        del ctx
+        return
+
+    def run_contract_job(case: InternalSpecCase, *, ctx: SpecRunContext) -> None:
+        harness = case.harness or {}
+        jobs = harness.get("jobs")
+        if not isinstance(jobs, dict):
+            raise RuntimeError("contract.job requires harness.jobs mapping")
+        del ctx
+        return
+
     return {
-        "api.http": run_api_http,
-        "cli.run": run_cli,
-        "docs.generate": run_docs_generate,
-        "orchestration.run": run_orchestration,
-        "text.file": run_text_file,
+        "contract.check": run_contract_check,
+        "contract.export": run_contract_export,
+        "contract.job": run_contract_job,
     }
 
 
@@ -170,7 +227,7 @@ def run_case(
             )
             chain_elapsed_ms = (time.perf_counter() - chain_started) * 1000.0
             harness_started = time.perf_counter()
-            if type_ in {"api.http", "cli.run", "docs.generate", "orchestration.run", "text.file"}:
+            if type_ in {"contract.check", "contract.export", "contract.job"}:
                 fn(internal_case, ctx=ctx)
                 harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
                 return
@@ -202,7 +259,7 @@ def run_case(
                 attrs={"case_id": internal_case.id, "case_type": internal_case.type},
             )
             with harness_span_cm:
-                if type_ in {"api.http", "cli.run", "docs.generate", "orchestration.run", "text.file"}:
+                if type_ in {"contract.check", "contract.export", "contract.job"}:
                     fn(internal_case, ctx=ctx)
                     harness_elapsed_ms = (time.perf_counter() - harness_started) * 1000.0
                     return

@@ -3,10 +3,9 @@
 ```yaml contract-spec
 id: SRGOV-DOMAIN-LIB-HTTP-001
 title: api.http context assertions prefer domain http helpers
-purpose: Enforces `domain.http.*` helper usage for oauth meta assertions in api.http
-  cases instead of raw std.object.get projection chains.
-type: governance.check
-check: runtime.domain_library_preferred_for_http_helpers
+purpose: Enforces `domain.http.*` helper usage for oauth meta assertions in api.http cases
+  instead of raw std.object.get projection chains.
+type: contract.check
 harness:
   root: .
   chain:
@@ -18,14 +17,20 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.domain_library_preferred_for_http_helpers
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - passed
-    - true
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - passed
+        - true
   target: summary_json
 ```

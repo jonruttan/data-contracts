@@ -2121,10 +2121,10 @@ rules:
 - id: NORMALIZATION_MAPPING_AST_ONLY
   introduced_in: v1
   scope: schema
-  applies_to: evaluate_and_policy_evaluate_yaml_authoring
+  applies_to: evaluate_and_evaluate_yaml_authoring
   norm: MUST
   requirement: expression_authoring_must_use_mapping_ast_only
-  description: 'YAML-authored expression fields (`evaluate`, `policy_evaluate`) must
+  description: 'YAML-authored expression fields (`evaluate`, `evaluate`) must
     use operator-keyed mapping AST form only.
 
     '
@@ -2354,7 +2354,7 @@ rules:
   norm: MUST
   requirement: libraries_use_defines_public_private_scope_model
   description: 'spec_lang.export cases must define symbols under defines.public/defines.private
-    scopes and avoid legacy shapes.
+    scopes and avoid non-canonical shapes.
 
     '
   rationale: Provides explicit API visibility boundaries and deterministic export
@@ -2913,7 +2913,7 @@ rules:
   norm: MUST
   requirement: docs_tree_roots_must_match_canonical_layout_profile
   description: 'Docs roots must match canonical layout contract (`book`, `spec`, `impl`,
-    `history/reviews`) and exclude legacy review root.
+    `history/reviews`) and exclude non-canonical review root.
 
     '
   rationale: Keeps docs discoverable and prevents namespace drift.
@@ -2959,7 +2959,7 @@ rules:
   norm: MUST
   requirement: reviews_artifacts_must_live_under_docs_history_reviews
   description: 'Historical review artifacts must live under `docs/history/reviews`;
-    legacy `docs/history/reviews` is forbidden.
+    non-canonical `docs/history/reviews` is forbidden.
 
     '
   rationale: Separates historical artifacts from canonical product docs.
@@ -3628,7 +3628,7 @@ rules:
   norm: MUST
   requirement: schema_contract_current_docs_use_defines_wording
   description: 'schema_v1, library contract, and current snapshot docs must consistently
-    use defines wording and reject legacy definitions wording.
+    use defines wording and reject non-canonical definitions wording.
 
     '
   rationale: Keeps contract, schema, and snapshot docs synchronized for contributors
@@ -3747,7 +3747,7 @@ rules:
   norm: MUST
   requirement: governance_decision_obligations_must_be_assert_block_evaluate_checks
   description: Governance decision obligations must be encoded in assert blocks and
-    not policy_evaluate fields.
+    not evaluate fields.
   rationale: Keeps contractual decision authority in specs.
   risk_if_violated: Decision logic drifts into harness metadata and runner branches.
   references:
@@ -3792,7 +3792,7 @@ rules:
   requirement: executable_cases_use_contract_spec_fence
   description: Executable markdown cases must use yaml contract-spec fences.
   rationale: Hard-cut terminology keeps parser and docs aligned.
-  risk_if_violated: Case discovery becomes ambiguous across legacy/new formats.
+  risk_if_violated: Case discovery becomes ambiguous across non-canonical/new formats.
   references:
   - spec_runner/doc_parser.py
   - docs/spec/governance/cases/core/runtime_contract_spec_fence_required.spec.md
@@ -3882,7 +3882,7 @@ rules:
   norm: MUST
   requirement: when_hook_mapping_shape_valid
   description: when must use only allowed hook keys with non-empty expression lists,
-    and legacy harness.on is forbidden.
+    and non-canonical harness.on is forbidden.
   rationale: Provides deterministic hook contract surface across harness types.
   risk_if_violated: Hook behavior diverges and invalid hook config is silently ignored.
   references:

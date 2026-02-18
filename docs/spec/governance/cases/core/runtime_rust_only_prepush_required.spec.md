@@ -6,8 +6,7 @@
 id: SRGOV-RUNTIME-PREPUSH-006
 title: prepush path is rust-only
 purpose: Ensures prepush entrypoints and hook routing remain rust-only.
-type: governance.check
-check: runtime.rust_only_prepush_required
+type: contract.check
 harness:
   root: .
   rust_only_prepush:
@@ -40,12 +39,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.rust_only_prepush_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

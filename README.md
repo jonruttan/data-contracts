@@ -62,12 +62,6 @@ make prepush-fast
 SPEC_PREPUSH_MODE=fast make prepush
 ```
 
-Compatibility alias:
-
-```sh
-make prepush-parity
-```
-
 Managed pre-push hook enforcement:
 
 ```sh

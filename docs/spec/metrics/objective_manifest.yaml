@@ -88,9 +88,9 @@ objectives:
     mode: direct
     scale: 1.0
   counters:
-  - id: governance_policy_evaluate_coverage_ratio
+  - id: governance_evaluate_coverage_ratio
     source: derived
-    field: governance_policy_evaluate_coverage_ratio
+    field: governance_evaluate_coverage_ratio
     mode: direct
     scale: 1.0
   tripwires:

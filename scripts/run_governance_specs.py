@@ -83,7 +83,7 @@ from spec_runner.components.liveness import (
 )
 
 
-def normalize_policy_evaluate(raw: object, *, field: str) -> list[object]:
+def normalize_evaluate(raw: object, *, field: str) -> list[object]:
     if not isinstance(raw, list):
         raise ValueError(f"{field} must be a non-empty list of mapping-ast expressions")
     if not raw:
@@ -779,11 +779,11 @@ def _scan_spec_portability_metric(root: Path, *, harness: dict | None = None) ->
     cfg = h.get("portability_metric")
     if not isinstance(cfg, dict):
         return ["spec.portability_metric requires harness.portability_metric mapping in governance spec"]
-    policy_evaluate = None
-    if "policy_evaluate" in cfg:
+    evaluate = None
+    if "evaluate" in cfg:
         try:
-            policy_evaluate = normalize_policy_evaluate(
-                cfg.get("policy_evaluate"), field="harness.portability_metric.policy_evaluate"
+            evaluate = normalize_evaluate(
+                cfg.get("evaluate"), field="harness.portability_metric.evaluate"
             )
         except ValueError as exc:
             return [str(exc)]
@@ -794,8 +794,8 @@ def _scan_spec_portability_metric(root: Path, *, harness: dict | None = None) ->
     violations = [str(e) for e in errs if str(e).strip()]
     return _policy_outcome(
         subject=payload,
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.portability_metric.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.portability_metric.evaluate",
         violations=violations,
     )
 
@@ -903,11 +903,11 @@ def _scan_spec_lang_adoption_metric(root: Path, *, harness: dict | None = None) 
     cfg = h.get("spec_lang_adoption")
     if not isinstance(cfg, dict):
         return ["spec.spec_lang_adoption_metric requires harness.spec_lang_adoption mapping in governance spec"]
-    policy_evaluate = None
-    if "policy_evaluate" in cfg:
+    evaluate = None
+    if "evaluate" in cfg:
         try:
-            policy_evaluate = normalize_policy_evaluate(
-                cfg.get("policy_evaluate"), field="harness.spec_lang_adoption.policy_evaluate"
+            evaluate = normalize_evaluate(
+                cfg.get("evaluate"), field="harness.spec_lang_adoption.evaluate"
             )
         except ValueError as exc:
             return [str(exc)]
@@ -918,8 +918,8 @@ def _scan_spec_lang_adoption_metric(root: Path, *, harness: dict | None = None) 
     violations = [str(e) for e in errs if str(e).strip()]
     return _policy_outcome(
         subject=payload,
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.spec_lang_adoption.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.spec_lang_adoption.evaluate",
         violations=violations,
     )
 
@@ -1052,11 +1052,11 @@ def _scan_runner_independence_metric(root: Path, *, harness: dict | None = None)
     cfg = h.get("runner_independence")
     if not isinstance(cfg, dict):
         return ["runtime.runner_independence_metric requires harness.runner_independence mapping in governance spec"]
-    policy_evaluate = None
-    if "policy_evaluate" in cfg:
+    evaluate = None
+    if "evaluate" in cfg:
         try:
-            policy_evaluate = normalize_policy_evaluate(
-                cfg.get("policy_evaluate"), field="harness.runner_independence.policy_evaluate"
+            evaluate = normalize_evaluate(
+                cfg.get("evaluate"), field="harness.runner_independence.evaluate"
             )
         except ValueError as exc:
             return [str(exc)]
@@ -1067,8 +1067,8 @@ def _scan_runner_independence_metric(root: Path, *, harness: dict | None = None)
     violations = [str(e) for e in errs if str(e).strip()]
     return _policy_outcome(
         subject=payload,
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.runner_independence.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.runner_independence.evaluate",
         violations=violations,
     )
 
@@ -1115,11 +1115,11 @@ def _scan_python_dependency_metric(root: Path, *, harness: dict | None = None) -
     cfg = h.get("python_dependency")
     if not isinstance(cfg, dict):
         return ["runtime.python_dependency_metric requires harness.python_dependency mapping in governance spec"]
-    policy_evaluate = None
-    if "policy_evaluate" in cfg:
+    evaluate = None
+    if "evaluate" in cfg:
         try:
-            policy_evaluate = normalize_policy_evaluate(
-                cfg.get("policy_evaluate"), field="harness.python_dependency.policy_evaluate"
+            evaluate = normalize_evaluate(
+                cfg.get("evaluate"), field="harness.python_dependency.evaluate"
             )
         except ValueError as exc:
             return [str(exc)]
@@ -1130,8 +1130,8 @@ def _scan_python_dependency_metric(root: Path, *, harness: dict | None = None) -
     violations = [str(e) for e in errs if str(e).strip()]
     return _policy_outcome(
         subject=payload,
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.python_dependency.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.python_dependency.evaluate",
         violations=violations,
     )
 
@@ -1178,11 +1178,11 @@ def _scan_docs_operability_metric(root: Path, *, harness: dict | None = None) ->
     cfg = h.get("docs_operability")
     if not isinstance(cfg, dict):
         return ["docs.operability_metric requires harness.docs_operability mapping in governance spec"]
-    policy_evaluate = None
-    if "policy_evaluate" in cfg:
+    evaluate = None
+    if "evaluate" in cfg:
         try:
-            policy_evaluate = normalize_policy_evaluate(
-                cfg.get("policy_evaluate"), field="harness.docs_operability.policy_evaluate"
+            evaluate = normalize_evaluate(
+                cfg.get("evaluate"), field="harness.docs_operability.evaluate"
             )
         except ValueError as exc:
             return [str(exc)]
@@ -1193,8 +1193,8 @@ def _scan_docs_operability_metric(root: Path, *, harness: dict | None = None) ->
     violations = [str(e) for e in errs if str(e).strip()]
     return _policy_outcome(
         subject=payload,
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.docs_operability.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.docs_operability.evaluate",
         violations=violations,
     )
 
@@ -1239,11 +1239,11 @@ def _scan_contract_assertions_metric(root: Path, *, harness: dict | None = None)
     cfg = h.get("contract_assertions")
     if not isinstance(cfg, dict):
         return ["spec.contract_assertions_metric requires harness.contract_assertions mapping in governance spec"]
-    policy_evaluate = None
-    if "policy_evaluate" in cfg:
+    evaluate = None
+    if "evaluate" in cfg:
         try:
-            policy_evaluate = normalize_policy_evaluate(
-                cfg.get("policy_evaluate"), field="harness.contract_assertions.policy_evaluate"
+            evaluate = normalize_evaluate(
+                cfg.get("evaluate"), field="harness.contract_assertions.evaluate"
             )
         except ValueError as exc:
             return [str(exc)]
@@ -1254,8 +1254,8 @@ def _scan_contract_assertions_metric(root: Path, *, harness: dict | None = None)
     violations = [str(e) for e in errs if str(e).strip()]
     return _policy_outcome(
         subject=payload,
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.contract_assertions.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.contract_assertions.evaluate",
         violations=violations,
     )
 
@@ -1302,11 +1302,11 @@ def _scan_objective_scorecard_metric(root: Path, *, harness: dict | None = None)
     cfg = h.get("objective_scorecard")
     if not isinstance(cfg, dict):
         return ["objective.scorecard_metric requires harness.objective_scorecard mapping in governance spec"]
-    policy_evaluate = None
-    if "policy_evaluate" in cfg:
+    evaluate = None
+    if "evaluate" in cfg:
         try:
-            policy_evaluate = normalize_policy_evaluate(
-                cfg.get("policy_evaluate"), field="harness.objective_scorecard.policy_evaluate"
+            evaluate = normalize_evaluate(
+                cfg.get("evaluate"), field="harness.objective_scorecard.evaluate"
             )
         except ValueError as exc:
             return [str(exc)]
@@ -1317,8 +1317,8 @@ def _scan_objective_scorecard_metric(root: Path, *, harness: dict | None = None)
     violations = [str(e) for e in errs if str(e).strip()]
     return _policy_outcome(
         subject=payload,
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.objective_scorecard.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.objective_scorecard.evaluate",
         violations=violations,
     )
 
@@ -2263,16 +2263,16 @@ def _scan_current_spec_policy_key_names(root: Path) -> list[str]:
                     rel = p.relative_to(root)
                     violations.append(
                         f"{rel}: case {case_id} uses unsupported policy-expression key at {key_path}; "
-                        "use 'policy_evaluate'"
+                        "use 'evaluate'"
                     )
     return violations
 
 
-def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_governance_evaluate_required(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
     cfg = h.get("policy_requirements") or h.get("policy_forbidden")
     if not isinstance(cfg, dict):
-        return ["runtime.policy_evaluate_forbidden requires harness.policy_forbidden mapping in governance spec"]
+        return ["runtime.evaluate_forbidden requires harness.policy_forbidden mapping in governance spec"]
     cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
     case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
     ignore_checks_raw = cfg.get("ignore_checks", [])
@@ -2297,9 +2297,9 @@ def _scan_governance_policy_evaluate_required(root: Path, *, harness: dict | Non
         if not isinstance(harness_map, dict):
             violations.append(f"{spec.doc_path.relative_to(root)}: case {case_id} missing harness mapping")
             continue
-        if "policy_evaluate" in harness_map:
+        if "evaluate" in harness_map:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} uses forbidden harness.policy_evaluate"
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} uses forbidden harness.evaluate"
             )
     return violations
 
@@ -4260,8 +4260,8 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
     if not isinstance(determinism, dict):
         return ["conformance.portable_determinism_guard requires harness.determinism mapping in governance spec"]
     try:
-        policy_evaluate = normalize_policy_evaluate(
-            determinism.get("policy_evaluate"), field="harness.determinism.policy_evaluate"
+        evaluate = normalize_evaluate(
+            determinism.get("evaluate"), field="harness.determinism.evaluate"
         )
     except ValueError as exc:
         return [str(exc)]
@@ -4316,8 +4316,8 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
             )
     return _policy_outcome(
         subject={"rows": rows, "violations": list(violations)},
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.determinism.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.determinism.evaluate",
         symbols={"patterns": pattern_values},
         violations=violations,
     )
@@ -4330,8 +4330,8 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
     if not isinstance(ambient, dict):
         return ["conformance.no_ambient_assumptions requires harness.ambient_assumptions mapping in governance spec"]
     try:
-        policy_evaluate = normalize_policy_evaluate(
-            ambient.get("policy_evaluate"), field="harness.ambient_assumptions.policy_evaluate"
+        evaluate = normalize_evaluate(
+            ambient.get("evaluate"), field="harness.ambient_assumptions.evaluate"
         )
     except ValueError as exc:
         return [str(exc)]
@@ -4382,8 +4382,8 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
             )
     return _policy_outcome(
         subject={"rows": rows, "violations": violations},
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.ambient_assumptions.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.ambient_assumptions.evaluate",
         symbols={"patterns": pattern_values},
         violations=violations,
     )
@@ -4485,8 +4485,8 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
     if "allow_sugar_files" in cfg:
         return ["harness.spec_lang_preferred.allow_sugar_files is not supported; assertions are evaluate-only in this surface"]
     try:
-        policy_evaluate = normalize_policy_evaluate(
-            cfg.get("policy_evaluate"), field="harness.spec_lang_preferred.policy_evaluate"
+        evaluate = normalize_evaluate(
+            cfg.get("evaluate"), field="harness.spec_lang_preferred.evaluate"
         )
     except ValueError as exc:
         return [str(exc)]
@@ -4567,8 +4567,8 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
         )
     return _policy_outcome(
         subject=all_rows,
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.spec_lang_preferred.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.spec_lang_preferred.evaluate",
         violations=violations,
     )
 
@@ -4593,8 +4593,8 @@ def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = Non
         return ["harness.impl_evaluate_first.allow_sugar_case_ids must be a list of strings"]
     allow_case_ids = {x.strip() for x in allow_case_ids_raw if x.strip()}
     try:
-        policy_evaluate = normalize_policy_evaluate(
-            cfg.get("policy_evaluate"), field="harness.impl_evaluate_first.policy_evaluate"
+        evaluate = normalize_evaluate(
+            cfg.get("evaluate"), field="harness.impl_evaluate_first.evaluate"
         )
     except ValueError as exc:
         return [str(exc)]
@@ -4673,8 +4673,8 @@ def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = Non
 
     return _policy_outcome(
         subject=all_rows,
-        policy_evaluate=policy_evaluate,
-        policy_path="harness.impl_evaluate_first.policy_evaluate",
+        evaluate=evaluate,
+        policy_path="harness.impl_evaluate_first.evaluate",
         violations=violations,
     )
 
@@ -6476,12 +6476,12 @@ def _scan_runtime_profile_artifacts_on_fail_required(root: Path, *, harness: dic
     return violations
 
 
-def _scan_runtime_gate_policy_evaluates_with_skipped_rows(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_runtime_gate_evaluates_with_skipped_rows(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
     cfg = h.get("gate_policy_skipped_rows")
     if not isinstance(cfg, dict):
         return [
-            "runtime.gate_policy_evaluates_with_skipped_rows requires harness.gate_policy_skipped_rows mapping in governance spec"
+            "runtime.gate_evaluates_with_skipped_rows requires harness.gate_policy_skipped_rows mapping in governance spec"
         ]
     files = cfg.get("files")
     required_tokens = cfg.get("required_tokens")
@@ -6541,11 +6541,11 @@ def _scan_runtime_legacy_timeout_envs_deprecated(root: Path, *, harness: dict | 
     return violations
 
 
-def _scan_runtime_policy_evaluate_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_runtime_evaluate_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
     cfg = h.get("policy_forbidden")
     if not isinstance(cfg, dict):
-        return ["runtime.policy_evaluate_forbidden requires harness.policy_forbidden mapping in governance spec"]
+        return ["runtime.evaluate_forbidden requires harness.policy_forbidden mapping in governance spec"]
     cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
     case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
     cases_dir = _join_contract_path(root, cases_rel)
@@ -6561,14 +6561,14 @@ def _scan_runtime_policy_evaluate_forbidden(root: Path, *, harness: dict | None 
         harness_map = case.get("harness")
         if not isinstance(harness_map, dict):
             continue
-        if "policy_evaluate" in harness_map:
+        if "evaluate" in harness_map:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} uses forbidden harness.policy_evaluate"
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} uses forbidden harness.evaluate"
             )
         orchestration = harness_map.get("orchestration_policy")
-        if isinstance(orchestration, dict) and "policy_evaluate" in orchestration:
+        if isinstance(orchestration, dict) and "evaluate" in orchestration:
             violations.append(
-                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} uses forbidden harness.orchestration_policy.policy_evaluate"
+                f"{spec.doc_path.relative_to(root)}: case {case_id} check {check_id} uses forbidden harness.orchestration_policy.evaluate"
             )
     return violations
 
@@ -8711,7 +8711,7 @@ def _collect_global_symbol_references(root: Path) -> set[str]:
                                     sym = str(raw_alias).strip()
                                     if sym and "." in sym:
                                         referenced.add(sym)
-                policy = h.get("policy_evaluate")
+                policy = h.get("evaluate")
                 if isinstance(policy, list):
                     referenced.update(sym for sym in _collect_var_symbols(policy) if "." in sym)
             raw_assert = case.get("contract")
@@ -8745,7 +8745,7 @@ def _scan_reference_policy_symbols_resolve(root: Path, *, harness: dict | None =
         harness_map = case.get("harness")
         if not isinstance(harness_map, dict):
             continue
-        policy = harness_map.get("policy_evaluate")
+        policy = harness_map.get("evaluate")
         if not isinstance(policy, list) or not policy:
             continue
         policy_refs = {sym for sym in _collect_var_symbols(policy) if "." in sym}
@@ -8989,7 +8989,7 @@ def _scan_reference_private_symbols_forbidden(root: Path, *, harness: dict | Non
             refs: set[str] = set()
             h = case.get("harness")
             if isinstance(h, dict):
-                policy = h.get("policy_evaluate")
+                policy = h.get("evaluate")
                 if isinstance(policy, list):
                     refs.update(sym for sym in _collect_var_symbols(policy) if "." in sym)
                 spec_lang = h.get("spec_lang")
@@ -9322,9 +9322,9 @@ def _scan_normalization_profile_sync(root: Path, *, harness: dict | None = None)
         violations.append(f"{_NORMALIZATION_PROFILE_PATH}:1: expression must be a mapping")
     else:
         fields = expr.get("expression_fields")
-        if not isinstance(fields, list) or "evaluate" not in fields or "policy_evaluate" not in fields:
+        if not isinstance(fields, list) or "evaluate" not in fields or "evaluate" not in fields:
             violations.append(
-                f"{_NORMALIZATION_PROFILE_PATH}:1: expression.expression_fields must include evaluate and policy_evaluate"
+                f"{_NORMALIZATION_PROFILE_PATH}:1: expression.expression_fields must include evaluate and evaluate"
             )
     return violations
 
@@ -9621,14 +9621,14 @@ GovernanceCheck = Callable[..., GovernanceCheckOutcome]
 def _policy_outcome(
     *,
     subject: object,
-    policy_evaluate: list[object] | None = None,
-    policy_path: str = "harness.policy_evaluate",
+    evaluate: list[object] | None = None,
+    policy_path: str = "harness.evaluate",
     symbols: dict[str, object] | None = None,
     violations: list[str] | None = None,
 ) -> dict[str, object]:
     return {
         "subject": subject,
-        "policy_evaluate": policy_evaluate,
+        "evaluate": evaluate,
         "policy_path": policy_path,
         "symbols": symbols or {},
         "violations": list(violations or []),
@@ -9871,11 +9871,39 @@ _CHECKS: dict[str, GovernanceCheck] = {
 }
 
 
+def _is_governance_case_payload(case_payload: dict[str, Any]) -> bool:
+    if str(case_payload.get("type", "")).strip() != "contract.check":
+        return False
+    harness = case_payload.get("harness")
+    if not isinstance(harness, dict):
+        return False
+    check_cfg = harness.get("check")
+    if not isinstance(check_cfg, dict):
+        return False
+    return str(check_cfg.get("profile", "")).strip() == "governance.scan"
+
+
+def _governance_check_id(case_payload: dict[str, Any]) -> str:
+    harness = case_payload.get("harness")
+    if not isinstance(harness, dict):
+        return ""
+    check_cfg = harness.get("check")
+    if not isinstance(check_cfg, dict):
+        return ""
+    config = check_cfg.get("config")
+    if not isinstance(config, dict):
+        return ""
+    return str(config.get("check", "")).strip()
+
+
 def run_governance_check(case, *, ctx) -> None:
-    t = case.test
-    check_id = str(t.get("check", "")).strip()
+    if hasattr(case, "raw_case"):
+        t = dict(getattr(case, "raw_case") or {})
+    else:
+        t = dict(getattr(case, "test") or {})
+    check_id = _governance_check_id(t)
     if not check_id:
-        raise ValueError("governance.check requires 'check'")
+        raise ValueError("contract.check profile governance.scan requires harness.check.config.check")
     fn = _CHECKS.get(check_id)
     if fn is None:
         supported = ", ".join(sorted(_CHECKS))
@@ -9891,12 +9919,14 @@ def run_governance_check(case, *, ctx) -> None:
     else:
         raw_outcome = fn(root)
 
-    if "policy_evaluate" in h:
-        raise ValueError("governance.check forbids harness.policy_evaluate; encode obligations in assert blocks")
-    orch = h.get("orchestration_policy")
-    if isinstance(orch, dict) and "policy_evaluate" in orch:
+    if "evaluate" in h:
         raise ValueError(
-            "governance.check forbids harness.orchestration_policy.policy_evaluate; encode obligations in assert blocks"
+            "contract.check profile governance.scan forbids harness.evaluate; encode obligations in assert blocks"
+        )
+    orch = h.get("orchestration_policy")
+    if isinstance(orch, dict) and "evaluate" in orch:
+        raise ValueError(
+            "contract.check profile governance.scan forbids harness.orchestration_policy.evaluate; encode obligations in assert blocks"
         )
 
     subject: object = {}
@@ -9958,7 +9988,7 @@ def run_governance_check(case, *, ctx) -> None:
             elif target == "meta_json":
                 subject_value = meta_json
             else:
-                raise ValueError(f"unknown assert target for governance.check: {target}")
+                raise ValueError(f"unknown assert target for contract.check governance.scan: {target}")
             if op != "evaluate":
                 raise ValueError(f"unsupported governance assertion op: {op}")
             if isinstance(value, list):
@@ -9967,7 +9997,7 @@ def run_governance_check(case, *, ctx) -> None:
                 raw_expr_list = [value]
             else:
                 raise TypeError("evaluate assertion op value must be a list or mapping AST expression")
-            expr = normalize_policy_evaluate(raw_expr_list, field=f"{assert_path}.{target}.evaluate")
+            expr = normalize_evaluate(raw_expr_list, field=f"{assert_path}.{target}.evaluate")
             ok = eval_predicate(
                 expr,
                 subject=subject_value,
@@ -9984,7 +10014,7 @@ def run_governance_check(case, *, ctx) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        description="Run governance spec cases with project-owned governance.check harness."
+        description="Run governance spec cases with project-owned contract.check governance.scan harness."
     )
     ap.add_argument("--cases", default="docs/spec/governance/cases", help="Path to governance case docs directory")
     ap.add_argument(
@@ -10082,7 +10112,7 @@ def main(argv: list[str] | None = None) -> int:
     governance_cases = [
         case
         for case in iter_cases(cases_path, file_pattern=case_pattern)
-        if str(case.test.get("type", "")).strip() == "governance.check"
+        if _is_governance_case_payload(case.test)
     ]
     if profiler.cfg.enabled:
         profiler.event(
@@ -10093,13 +10123,13 @@ def main(argv: list[str] | None = None) -> int:
         governance_cases = [
             case
             for case in governance_cases
-            if any(str(case.test.get("check", "")).strip().startswith(p) for p in include_prefixes)
+            if any(_governance_check_id(case.test).startswith(p) for p in include_prefixes)
         ]
     if exclude_prefixes:
         governance_cases = [
             case
             for case in governance_cases
-            if not any(str(case.test.get("check", "")).strip().startswith(p) for p in exclude_prefixes)
+            if not any(_governance_check_id(case.test).startswith(p) for p in exclude_prefixes)
         ]
     if (include_prefixes or exclude_prefixes) and not governance_cases:
         print("ERROR: governance filter selected zero cases", file=sys.stderr)
@@ -10114,7 +10144,7 @@ def main(argv: list[str] | None = None) -> int:
             def _run_one(args: tuple[int, Any]) -> tuple[int, str, str, float, str | None, list[dict[str, Any]]]:
                 idx, case = args
                 case_id = str(case.test.get("id", "<unknown>")).strip() or "<unknown>"
-                check_id = str(case.test.get("check", "")).strip()
+                check_id = _governance_check_id(case.test)
                 if _GOVERNANCE_TRACE:
                     print(f"[governance.trace] start idx={idx} check={check_id} case={case_id}", flush=True)
                 case_tmp = td_path / f"case_{idx}"
@@ -10158,7 +10188,7 @@ def main(argv: list[str] | None = None) -> int:
                                     "check_id": check_id,
                                 },
                             )
-                        run_case(case, ctx=ctx, type_runners={"governance.check": run_governance_check})
+                        run_case(case, ctx=ctx, type_runners={"contract.check": run_governance_check})
                         if profiler.cfg.enabled:
                             profiler.event(
                                 kind="checkpoint",

@@ -7,8 +7,7 @@ id: SRGOV-DOCS-GEN-023
 title: harness reference includes semantic sections
 purpose: Ensures generated harness reference includes summary/defaults/failure modes/examples
   per case type.
-type: governance.check
-check: docs.harness_reference_semantics_complete
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,20 +19,26 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: docs.harness_reference_semantics_complete
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - docs.harness_reference_semantics_complete
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - docs.harness_reference_semantics_complete
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
   target: summary_json
 ```

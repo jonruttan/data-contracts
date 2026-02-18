@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-ASSERT-PROFILE-005
 title: harness adapters expose context profile projections
-type: governance.check
-check: assert.adapter_projection_contract_sync
-purpose: Ensures core harness adapters expose context_json subject profile targets
-  with profile metadata fields.
+type: contract.check
+purpose: Ensures core harness adapters expose context_json subject profile targets with profile
+  metadata fields.
 harness:
   root: .
   chain:
@@ -20,12 +19,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: assert.adapter_projection_contract_sync
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

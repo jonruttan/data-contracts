@@ -6,8 +6,7 @@
 id: SRGOV-REF-CHECKS-001
 title: governance check ids exist
 purpose: Ensures governance cases only reference registered check ids.
-type: governance.check
-check: reference.check_ids_exist
+type: contract.check
 harness:
   root: .
   chain:
@@ -19,14 +18,20 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: reference.check_ids_exist
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - check_id
-    - reference.check_ids_exist
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - check_id
+        - reference.check_ids_exist
   target: summary_json
 ```

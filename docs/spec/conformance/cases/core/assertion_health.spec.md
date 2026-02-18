@@ -14,9 +14,8 @@ Coverage focus:
 ```yaml contract-spec
 id: SRCONF-AH-001
 title: assert_health warn emits diagnostics but case still passes
-purpose: Covers warn mode behavior where diagnostics are emitted but verdict remains
-  pass.
-type: text.file
+purpose: Covers warn mode behavior where diagnostics are emitted but verdict remains pass.
+type: contract.check
 expect:
   portable:
     status: pass
@@ -27,10 +26,16 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - ''
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - ''
   target: text
+harness:
+  check:
+    profile: text.file
+    config: {}
 ```
 
 ## SRCONF-AH-002
@@ -40,7 +45,7 @@ id: SRCONF-AH-002
 title: assert_health error mode can pass for evaluate-only assertions
 purpose: Confirms error mode does not fail evaluate-only assertions when no assertion-health
   diagnostics are emitted.
-type: text.file
+type: contract.check
 expect:
   portable:
     status: pass
@@ -51,10 +56,16 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - ''
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - ''
   target: text
+harness:
+  check:
+    profile: text.file
+    config: {}
 ```
 
 ## SRCONF-AH-003
@@ -63,7 +74,7 @@ contract:
 id: SRCONF-AH-003
 title: invalid assert_health.mode is a schema error
 purpose: Ensures unsupported assert_health modes are rejected as schema violations.
-type: text.file
+type: contract.check
 expect:
   portable:
     status: fail
@@ -74,10 +85,16 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - contract-spec
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - contract-spec
   target: text
+harness:
+  check:
+    profile: text.file
+    config: {}
 ```
 
 ## SRCONF-AH-004
@@ -85,9 +102,8 @@ contract:
 ```yaml contract-spec
 id: SRCONF-AH-004
 title: per-case ignore override can neutralize global strict mode
-purpose: Verifies local mode override can disable stricter global assertion-health
-  settings.
-type: text.file
+purpose: Verifies local mode override can disable stricter global assertion-health settings.
+type: contract.check
 expect:
   portable:
     status: pass
@@ -98,10 +114,16 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - ''
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - ''
   target: text
+harness:
+  check:
+    profile: text.file
+    config: {}
 ```
 
 ## SRCONF-AH-005
@@ -109,9 +131,9 @@ contract:
 ```yaml contract-spec
 id: SRCONF-AH-005
 title: evaluate-only sibling branches remain valid under assert_health error
-purpose: Confirms evaluate-only non-redundant sibling branches do not trigger AH004
-  under assert_health error mode.
-type: text.file
+purpose: Confirms evaluate-only non-redundant sibling branches do not trigger AH004 under
+  assert_health error mode.
+type: contract.check
 expect:
   portable:
     status: pass
@@ -122,13 +144,21 @@ contract:
 - id: assert_1
   class: MAY
   asserts:
-  - std.string.contains:
-    - var: subject
-    - 'version: 1'
-  - std.string.contains:
-    - var: subject
-    - 'version: 2'
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - 'version: 1'
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - 'version: 2'
   target: text
+harness:
+  check:
+    profile: text.file
+    config: {}
 ```
 
 ## SRCONF-AH-006
@@ -136,9 +166,9 @@ contract:
 ```yaml contract-spec
 id: SRCONF-AH-006
 title: evaluate regex portability is handled without sugar diagnostics
-purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level
-  portability diagnostics.
-type: text.file
+purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level portability
+  diagnostics.
+type: contract.check
 expect:
   portable:
     status: pass
@@ -149,8 +179,14 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.regex_match:
-    - var: subject
-    - '(?<=version: )1'
+  - evaluate:
+    - lit:
+        std.string.regex_match:
+        - {var: subject}
+        - '(?<=version: )1'
   target: text
+harness:
+  check:
+    profile: text.file
+    config: {}
 ```

@@ -6,8 +6,7 @@
 id: SRGOV-REF-PATHS-001
 title: contract paths referenced by specs exist
 purpose: Ensures referenced contract-root paths fail fast when missing.
-type: governance.check
-check: reference.contract_paths_exist
+type: contract.check
 harness:
   root: .
   chain:
@@ -19,14 +18,20 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: reference.contract_paths_exist
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - check_id
-    - reference.contract_paths_exist
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - check_id
+        - reference.contract_paths_exist
   target: summary_json
 ```

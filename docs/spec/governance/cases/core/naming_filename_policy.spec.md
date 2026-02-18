@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-NAME-001
 title: docs filenames follow lowercase separator policy
-purpose: Enforces deterministic docs filename shape using underscores for words and
-  hyphens for section separators.
-type: governance.check
-check: naming.filename_policy
+purpose: Enforces deterministic docs filename shape using underscores for words and hyphens
+  for section separators.
+type: contract.check
 harness:
   root: .
   filename_policy:
@@ -31,27 +30,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: naming.filename_policy
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - naming.filename_policy
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - naming.filename_policy
   target: summary_json
 ```

@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-REF-SYMBOLS-002
 title: governance policy symbols resolve through declared libraries
-purpose: Ensures every dotted var reference used in policy_evaluate resolves from
-  declared library symbols.
-type: governance.check
-check: reference.policy_symbols_resolve
+purpose: Ensures every dotted var reference used in evaluate resolves from declared library
+  symbols.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,14 +19,20 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: reference.policy_symbols_resolve
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - check_id
-    - reference.policy_symbols_resolve
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - check_id
+        - reference.policy_symbols_resolve
   target: summary_json
 ```

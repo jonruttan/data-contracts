@@ -6,14 +6,20 @@
 id: SRGOV-RUNTIME-CONTRACT-STEP-001
 title: contract steps must declare asserts
 purpose: Enforces step-form contract nodes to use asserts list and non-empty children.
-type: governance.check
-check: runtime.contract_step_asserts_required
+type: contract.check
 contract:
 - id: assert_1
   class: MUST
   target: violation_count
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
+harness:
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.contract_step_asserts_required
 ```

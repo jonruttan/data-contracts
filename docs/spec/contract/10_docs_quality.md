@@ -11,7 +11,7 @@ MUST:
   - `docs/spec`
   - `docs/impl`
   - `docs/history/reviews`
-- `docs/history/reviews` is a forbidden legacy namespace.
+- `docs/history/reviews` is a forbidden non-canonical namespace.
 - directory index files under `docs/**` MUST be named `index.md`.
 - `README.md` under `docs/**` is forbidden.
 - `.DS_Store` and similar OS/editor artifact files are forbidden in tracked

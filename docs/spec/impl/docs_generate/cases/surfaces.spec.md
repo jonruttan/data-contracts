@@ -4,7 +4,7 @@
 
 ```yaml contract-spec
 id: SRDOCGEN-001
-type: docs.generate
+type: contract.job
 title: reference index surface generation
 harness:
   docs_generate:
@@ -17,21 +17,30 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/book/reference_index.md
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-002
 
 ```yaml contract-spec
 id: SRDOCGEN-002
-type: docs.generate
+type: contract.job
 title: reference coverage surface generation
 harness:
   docs_generate:
@@ -44,21 +53,30 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/book/reference_coverage.md
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-003
 
 ```yaml contract-spec
 id: SRDOCGEN-003
-type: docs.generate
+type: contract.job
 title: docs graph surface generation
 harness:
   docs_generate:
@@ -73,21 +91,30 @@ harness:
       command:
       - cat
       - docs/book/docs_graph.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-004
 
 ```yaml contract-spec
 id: SRDOCGEN-004
-type: docs.generate
+type: contract.job
 title: schema docs surface generation
 harness:
   docs_generate:
@@ -100,21 +127,30 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/spec/schema/schema_v1.md
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-005
 
 ```yaml contract-spec
 id: SRDOCGEN-005
-type: docs.generate
+type: contract.job
 title: runner api catalog surface generation
 harness:
   docs_generate:
@@ -128,21 +164,30 @@ harness:
     - id: runner
       source_type: generated_artifact
       path: /.artifacts/runner-api-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-006
 
 ```yaml contract-spec
 id: SRDOCGEN-006
-type: docs.generate
+type: contract.job
 title: harness type catalog surface generation
 harness:
   docs_generate:
@@ -156,21 +201,30 @@ harness:
     - id: harness
       source_type: generated_artifact
       path: /.artifacts/harness-type-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-007
 
 ```yaml contract-spec
 id: SRDOCGEN-007
-type: docs.generate
+type: contract.job
 title: spec lang builtin catalog surface generation
 harness:
   docs_generate:
@@ -184,21 +238,30 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-008
 
 ```yaml contract-spec
 id: SRDOCGEN-008
-type: docs.generate
+type: contract.job
 title: policy rule catalog surface generation
 harness:
   docs_generate:
@@ -212,21 +275,30 @@ harness:
     - id: policy
       source_type: generated_artifact
       path: /.artifacts/policy-rule-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-009
 
 ```yaml contract-spec
 id: SRDOCGEN-009
-type: docs.generate
+type: contract.job
 title: traceability catalog surface generation
 harness:
   docs_generate:
@@ -240,21 +312,30 @@ harness:
     - id: trace
       source_type: generated_artifact
       path: /.artifacts/traceability-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-010
 
 ```yaml contract-spec
 id: SRDOCGEN-010
-type: docs.generate
+type: contract.job
 title: governance check catalog surface generation
 harness:
   docs_generate:
@@ -268,21 +349,30 @@ harness:
     - id: checks
       source_type: generated_artifact
       path: /.artifacts/governance-check-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-011
 
 ```yaml contract-spec
 id: SRDOCGEN-011
-type: docs.generate
+type: contract.job
 title: metrics field catalog surface generation
 harness:
   docs_generate:
@@ -296,21 +386,30 @@ harness:
     - id: metrics
       source_type: generated_artifact
       path: /.artifacts/metrics-field-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-012
 
 ```yaml contract-spec
 id: SRDOCGEN-012
-type: docs.generate
+type: contract.job
 title: spec schema field catalog surface generation for appendix
 harness:
   docs_generate:
@@ -323,21 +422,30 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/book/98_appendix_spec_case_shape_reference.md
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-013
 
 ```yaml contract-spec
 id: SRDOCGEN-013
-type: docs.generate
+type: contract.job
 title: spec schema field catalog surface generation for schema docs
 harness:
   docs_generate:
@@ -350,21 +458,30 @@ harness:
     - id: content
       source_type: generated_artifact
       path: /docs/spec/schema/schema_v1.md
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-014
 
 ```yaml contract-spec
 id: SRDOCGEN-014
-type: docs.generate
+type: contract.job
 title: spec lang core namespace chapter generation
 harness:
   docs_generate:
@@ -378,21 +495,30 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-015
 
 ```yaml contract-spec
 id: SRDOCGEN-015
-type: docs.generate
+type: contract.job
 title: spec lang logic namespace chapter generation
 harness:
   docs_generate:
@@ -406,21 +532,30 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-016
 
 ```yaml contract-spec
 id: SRDOCGEN-016
-type: docs.generate
+type: contract.job
 title: spec lang math namespace chapter generation
 harness:
   docs_generate:
@@ -434,21 +569,30 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-017
 
 ```yaml contract-spec
 id: SRDOCGEN-017
-type: docs.generate
+type: contract.job
 title: spec lang string namespace chapter generation
 harness:
   docs_generate:
@@ -462,21 +606,30 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-018
 
 ```yaml contract-spec
 id: SRDOCGEN-018
-type: docs.generate
+type: contract.job
 title: spec lang collection namespace chapter generation
 harness:
   docs_generate:
@@ -490,21 +643,30 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-019
 
 ```yaml contract-spec
 id: SRDOCGEN-019
-type: docs.generate
+type: contract.job
 title: spec lang object namespace chapter generation
 harness:
   docs_generate:
@@ -518,21 +680,30 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-020
 
 ```yaml contract-spec
 id: SRDOCGEN-020
-type: docs.generate
+type: contract.job
 title: spec lang type namespace chapter generation
 harness:
   docs_generate:
@@ -546,21 +717,30 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-021
 
 ```yaml contract-spec
 id: SRDOCGEN-021
-type: docs.generate
+type: contract.job
 title: spec lang set namespace chapter generation
 harness:
   docs_generate:
@@ -574,21 +754,30 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```
 
 ## SRDOCGEN-022
 
 ```yaml contract-spec
 id: SRDOCGEN-022
-type: docs.generate
+type: contract.job
 title: spec lang json schema fn null namespace chapter generation
 harness:
   docs_generate:
@@ -602,12 +791,21 @@ harness:
     - id: stdlib
       source_type: generated_artifact
       path: /.artifacts/spec-lang-builtin-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
 contract:
-- id: assert_1
+- id: dispatch_main
   class: MUST
+  target: summary_json
   asserts:
-  - std.logic.eq:
-    - true
-    - true
-  target: context_json
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
 ```

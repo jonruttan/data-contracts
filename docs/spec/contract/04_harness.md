@@ -96,7 +96,7 @@ Cross-spec chaining profile:
   - `ref` string in format `[path][#case_id]`
 - producer symbol declarations are canonical at `harness.exports`.
 - `harness.chain.steps[*].imports` and `harness.chain.steps[*].exports` are
-  forbidden legacy locations.
+  forbidden non-canonical locations.
 - `allow_continue` is optional and defaults to `false`.
 - `harness.chain.imports` is optional and declares explicit state imports:
   - `from` (required)
@@ -173,7 +173,7 @@ Subject profile envelope contract:
   optional `as` aliases.
 - `when` MAY declare lifecycle hooks as non-empty expression lists:
   - `must`, `can`, `cannot`, `fail`, `complete`
-  - legacy `harness.on` is forbidden
+  - non-canonical `harness.on` is forbidden
   - class hooks run after successful clause pass
   - `fail` runs once on first failure
   - `complete` runs after all clauses and class hooks pass
@@ -185,7 +185,7 @@ Subject profile envelope contract:
 - Rust job spec pattern standardizes lifecycle diagnostics with hook jobs:
   - `harness.jobs.on_fail` + `when.fail -> ops.job.dispatch(on_fail)`
   - `harness.jobs.on_complete` + `when.complete -> ops.job.dispatch(on_complete)`
-- legacy `harness.job` singular shape is forbidden.
+- non-canonical `harness.job` singular shape is forbidden.
 - job execution is dispatched from `contract` expressions via
   `ops.job.dispatch`.
 
@@ -200,7 +200,7 @@ Subject profile envelope contract:
   `ops.<segment>(.<segment>)+`
   (for example `ops.fs.file.read`, `ops.time.clock.now_utc`,
   `ops.proc.command.exec`).
-- legacy underscore forms are forbidden.
+- non-canonical underscore forms are forbidden.
 
 ## Docs Generation Harness
 

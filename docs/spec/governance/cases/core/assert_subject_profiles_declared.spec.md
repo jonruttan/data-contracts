@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-ASSERT-PROFILE-001
 title: subject profile contract artifacts are declared
-purpose: Ensures subject profile contract/schema/type docs and domain libraries are
-  present as required artifacts.
-type: governance.check
-check: assert.subject_profiles_declared
+purpose: Ensures subject profile contract/schema/type docs and domain libraries are present
+  as required artifacts.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,12 +19,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: assert.subject_profiles_declared
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

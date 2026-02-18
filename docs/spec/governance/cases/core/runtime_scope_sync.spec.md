@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-SCOPE-001
 title: runtime support scope remains bounded for v1
-purpose: Prevents uncontrolled cross-runtime expansion by enforcing explicit v1 runtime
-  scope tokens in contract docs.
-type: governance.check
-check: runtime.scope_sync
+purpose: Prevents uncontrolled cross-runtime expansion by enforcing explicit v1 runtime scope
+  tokens in contract docs.
+type: contract.check
 harness:
   root: .
   runtime_scope:
@@ -34,27 +33,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.scope_sync
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - runtime.scope_sync
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - runtime.scope_sync
   target: summary_json
 ```

@@ -5,8 +5,7 @@
 ```yaml contract-spec
 id: SRRUST-JOB-001
 title: governance scan bundle helper smoke
-purpose: Contract job entrypoint for Rust-native helper dispatch and scalar path#id
-  job refs.
+purpose: Contract job entrypoint for Rust-native helper dispatch and scalar path#id job refs.
 type: contract.job
 harness:
   spec_lang:
@@ -42,13 +41,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.neq:
-    - std.object.get:
-      - var: subject
-      - scanned_files
-    - null
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.neq:
+        - std.object.get:
+          - {var: subject}
+          - scanned_files
+        - null
 when:
   fail:
   - ops.job.dispatch:
@@ -96,13 +99,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:
@@ -148,13 +155,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:
@@ -202,13 +213,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:
@@ -256,13 +271,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:
@@ -287,6 +306,7 @@ harness:
     main:
       mode: lint
       helper: helper.docs.lint
+      inputs: {}
     on_fail:
       helper: helper.report.emit
       mode: report
@@ -306,13 +326,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:
@@ -358,13 +382,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:
@@ -410,13 +438,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:
@@ -463,13 +495,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:
@@ -516,13 +552,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:
@@ -569,13 +609,17 @@ contract:
   class: MUST
   target: summary_json
   asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - ok
-    - true
+  - evaluate:
+    - lit:
+        ops.job.dispatch:
+        - main
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - ok
+        - true
 when:
   fail:
   - ops.job.dispatch:

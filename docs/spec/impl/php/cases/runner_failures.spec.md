@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRPHP-RUN-F001
 title: text.file virtual absolute path missing file fails runtime
-purpose: Verifies virtual-root absolute paths resolve under contract root and fail
-  at runtime when the file is missing.
-type: text.file
-path: /tmp/not-allowed.txt
+purpose: Verifies virtual-root absolute paths resolve under contract root and fail at runtime
+  when the file is missing.
+type: contract.check
 expect:
   portable:
     status: fail
@@ -19,10 +18,17 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - x
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - x
   target: text
+harness:
+  check:
+    profile: text.file
+    config:
+      path: /tmp/not-allowed.txt
 ```
 
 ## SRPHP-RUN-F002
@@ -31,8 +37,7 @@ contract:
 id: SRPHP-RUN-F002
 title: text.file path escape is rejected
 purpose: Verifies text.file rejects relative paths that escape the contract root boundary.
-type: text.file
-path: ../../../../../../outside.txt
+type: contract.check
 expect:
   portable:
     status: fail
@@ -43,10 +48,17 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - outside
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - outside
   target: text
+harness:
+  check:
+    profile: text.file
+    config:
+      path: ../../../../../../outside.txt
 ```
 
 ## SRPHP-RUN-F003
@@ -55,11 +67,14 @@ contract:
 id: SRPHP-RUN-F003
 title: cli.run without entrypoint fails
 purpose: Verifies cli.run reports runtime failure when no entrypoint source is available.
-type: cli.run
-argv:
-- x
-exit_code: 0
-harness: {}
+type: contract.check
+harness:
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - x
+      exit_code: 0
 expect:
   portable:
     status: fail
@@ -70,9 +85,11 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - x
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - x
   target: stdout
 ```
 
@@ -82,12 +99,15 @@ contract:
 id: SRPHP-RUN-F004
 title: cli.run rejects unknown spec-lang symbol usage
 purpose: Verifies unknown expression symbols are rejected as schema failures.
-type: cli.run
-argv:
-- '{}'
-exit_code: 0
+type: contract.check
 harness:
   entrypoint: /bin/echo
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - '{}'
+      exit_code: 0
 expect:
   portable:
     status: fail
@@ -98,8 +118,10 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - not.a.real.symbol:
-    - var: subject
+  - evaluate:
+    - lit:
+        not.a.real.symbol:
+        - {var: subject}
   target: stdout
 ```
 
@@ -108,13 +130,17 @@ contract:
 ```yaml contract-spec
 id: SRPHP-RUN-F005
 title: cli.run exit_code mismatch is assertion failure
-purpose: Verifies cli.run reports assertion failure when observed exit code differs from expected.
-type: cli.run
-argv:
-- exit 2
-exit_code: 0
+purpose: Verifies cli.run reports assertion failure when observed exit code differs
+  from expected.
+type: contract.check
 harness:
   entrypoint: /bin/sh -c
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - exit 2
+      exit_code: 0
 expect:
   portable:
     status: fail
@@ -146,13 +172,16 @@ contract: []
 id: SRPHP-RUN-F007
 title: cli.run rejects unsupported harness keys
 purpose: Verifies cli.run validates supported harness keys and rejects unknown ones.
-type: cli.run
-argv:
-- x
-exit_code: 0
+type: contract.check
 harness:
   entrypoint: /bin/echo
   stdin_text: nope
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - x
+      exit_code: 0
 expect:
   portable:
     status: fail
@@ -168,8 +197,7 @@ contract: []
 id: SRPHP-RUN-F008
 title: leaf target key is rejected
 purpose: Verifies leaf assertions including target key are rejected as schema violations.
-type: text.file
-path: /fixtures/sample.txt
+type: contract.check
 expect:
   portable:
     status: fail
@@ -180,8 +208,15 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - target: text
-    contain:
-    - fixture-content
+  - evaluate:
+    - lit:
+        target: text
+        contain:
+        - fixture-content
   target: text
+harness:
+  check:
+    profile: text.file
+    config:
+      path: /fixtures/sample.txt
 ```

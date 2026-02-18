@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-CONTRACT-001
 title: contract governance rules pass via governance harness
-purpose: Ensures contract policy and traceability integrity checks are enforced through
-  the governance spec pipeline.
-type: governance.check
-check: contract.governance_check
+purpose: Ensures contract policy and traceability integrity checks are enforced through the
+  governance spec pipeline.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,27 +19,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: contract.governance_check
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - contract.governance_check
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - contract.governance_check
   target: summary_json
 ```

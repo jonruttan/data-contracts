@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-SPEC-LANG-002
 title: spec-lang adoption metric is non-regressing
-purpose: Enforces monotonic non-regression for spec-lang adoption metrics against
-  checked-in baseline.
-type: governance.check
-check: spec.spec_lang_adoption_non_regression
+purpose: Enforces monotonic non-regression for spec-lang adoption metrics against checked-in
+  baseline.
+type: contract.check
 harness:
   root: .
   spec_lang_adoption_non_regression:
@@ -49,27 +48,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: spec.spec_lang_adoption_non_regression
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - spec.spec_lang_adoption_non_regression
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - spec.spec_lang_adoption_non_regression
   target: summary_json
 ```

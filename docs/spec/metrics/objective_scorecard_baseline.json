@@ -72,8 +72,8 @@
     {
       "counters": [
         {
-          "field": "governance_policy_evaluate_coverage_ratio",
-          "id": "governance_policy_evaluate_coverage_ratio",
+          "field": "governance_evaluate_coverage_ratio",
+          "id": "governance_evaluate_coverage_ratio",
           "score": 1.0,
           "source": "derived",
           "value": 1.0,

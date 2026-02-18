@@ -90,7 +90,7 @@ harness:
     - /docs/spec/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
-policy_evaluate:
+evaluate:
 - call:
   - var: policy.pass_when_no_violations
   - var: subject

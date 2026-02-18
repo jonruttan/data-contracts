@@ -8,103 +8,11 @@ from spec_runner.schema_validator import validate_case_shape
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 
 
-def _require_group_key(node: dict[str, Any]) -> str | None:
-    keys = [k for k in ("MUST", "MAY", "MUST_NOT") if k in node]
-    if not keys:
-        return None
-    if len(keys) > 1:
-        got = ", ".join(keys)
-        raise ValueError(f"contract group must include exactly one key (MUST/MAY/MUST_NOT), got: {got}")
-    return keys[0]
-
-
-def _compile_leaf_op(*, op: str, value: Any, target: str, type_name: str, assert_path: str) -> PredicateLeaf:
-    supported = {"evaluate"}
-    if op not in supported:
-        raise ValueError(f"unsupported op for {type_name}.{target}: {op}")
-
-    if op == "evaluate":
-        try:
-            expr = compile_yaml_expr_to_sexpr(value, field_path=f"{assert_path}.evaluate")
-        except SpecLangYamlAstError as exc:
-            raise ValueError(str(exc)) from exc
-        subject_key = target
-    else:
-        raise ValueError(f"unsupported op: {op}")
-
-    return PredicateLeaf(target=target, subject_key=subject_key, op=op, expr=expr, assert_path=assert_path)
-
-
-def _compile_legacy_assert_node(
-    raw_assert: Any,
-    *,
-    type_name: str,
-    inherited_target: str | None = None,
-    assert_path: str = "contract",
-) -> InternalAssertNode:
-    if raw_assert is None:
-        return GroupNode(op="MUST", target=inherited_target, children=[], assert_path=assert_path)
-
-    if isinstance(raw_assert, list):
-        return GroupNode(
-            op="MUST",
-            target=inherited_target,
-            children=[
-                _compile_legacy_assert_node(
-                    child,
-                    type_name=type_name,
-                    inherited_target=inherited_target,
-                    assert_path=f"{assert_path}[{idx}]",
-                )
-                for idx, child in enumerate(raw_assert)
-            ],
-            assert_path=assert_path,
-        )
-
-    if not isinstance(raw_assert, dict):
-        raise TypeError("contract node must be a mapping or a list")
-
-    group_key = _require_group_key(raw_assert)
-    if group_key is not None:
-        group_target = str(raw_assert.get("target", "")).strip() or inherited_target
-        extra = [k for k in raw_assert.keys() if k not in (group_key, "target")]
-        if extra:
-            bad = sorted(str(k) for k in extra)[0]
-            raise ValueError(f"unknown key in contract group: {bad}")
-        children = raw_assert.get(group_key)
-        if not isinstance(children, list):
-            raise TypeError(f"contract.{group_key} must be a list")
-        if not children:
-            raise ValueError(f"contract.{group_key} must not be empty")
-        group_op = cast(Literal["MUST", "MAY", "MUST_NOT"], group_key)
-        return GroupNode(
-            op=group_op,
-            target=group_target,
-            children=[
-                _compile_legacy_assert_node(
-                    child,
-                    type_name=type_name,
-                    inherited_target=group_target,
-                    assert_path=f"{assert_path}.{group_key}[{idx}]",
-                )
-                for idx, child in enumerate(children)
-            ],
-            assert_path=assert_path,
-        )
-
-    if "target" in raw_assert:
-        raise ValueError("leaf contract predicate must not include key: target; move target to a parent group")
-    if any(k in raw_assert for k in ("MUST", "MAY", "MUST_NOT")):
-        raise ValueError("leaf contract predicate must not include group keys")
-
-    target = str(inherited_target or "").strip()
-    if not target:
-        raise ValueError("contract leaf requires inherited target from a parent group")
-
-    if "evaluate" in raw_assert:
-        raise ValueError("explicit evaluate leaf is not supported; use expression mapping directly")
+def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -> PredicateLeaf:
+    if not isinstance(raw_expr, dict) or set(raw_expr.keys()) != {"evaluate"}:
+        raise ValueError(f"{assert_path} must be an evaluate leaf mapping")
     try:
-        expr = compile_yaml_expr_to_sexpr(raw_assert, field_path=assert_path)
+        expr = compile_yaml_expr_to_sexpr(raw_expr.get("evaluate"), field_path=f"{assert_path}.evaluate")
     except SpecLangYamlAstError as exc:
         raise ValueError(str(exc)) from exc
     return PredicateLeaf(
@@ -126,33 +34,19 @@ def compile_assert_tree(
     type_name: str,
     inherited_target: str | None = None,
     assert_path: str = "contract",
-    strict_steps: bool = False,
+    strict_steps: bool = True,
 ) -> InternalAssertNode:
     if raw_assert is None:
         return GroupNode(op="MUST", target=inherited_target, children=[], assert_path=assert_path)
     if not isinstance(raw_assert, list):
-        if strict_steps:
-            raise TypeError("contract must be a list of step mappings")
-        return _compile_legacy_assert_node(
-            raw_assert,
-            type_name=type_name,
-            inherited_target=inherited_target,
-            assert_path=assert_path,
-        )
+        raise TypeError("contract must be a list of step mappings")
 
     if not raw_assert:
         return GroupNode(op="MUST", target=inherited_target, children=[], assert_path=assert_path)
 
     is_step_form = all(_looks_like_assert_step(x) for x in raw_assert)
-    if strict_steps and not is_step_form:
-        raise ValueError("contract must use step form entries with id/class/asserts")
     if not is_step_form:
-        return _compile_legacy_assert_node(
-            raw_assert,
-            type_name=type_name,
-            inherited_target=inherited_target,
-            assert_path=assert_path,
-        )
+        raise ValueError("contract must use step form entries with id/class/asserts")
 
     seen_ids: set[str] = set()
     step_nodes: list[InternalAssertNode] = []
@@ -172,10 +66,9 @@ def compile_assert_tree(
         if not isinstance(raw_checks, list) or not raw_checks:
             raise TypeError(f"{assert_path}[{idx}].asserts must be a non-empty list")
         children = [
-            _compile_legacy_assert_node(
+            _compile_assert_expr_leaf(
                 check,
-                type_name=type_name,
-                inherited_target=step_target,
+                target=str(step_target or "").strip(),
                 assert_path=f"{assert_path}[{idx}].asserts[{cidx}]",
             )
             for cidx, check in enumerate(raw_checks)
@@ -213,13 +106,8 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
     else:
         raise TypeError("harness must be a mapping")
 
-    repo_docs_spec = (Path(__file__).resolve().parents[1] / "docs/spec").resolve()
-    try:
-        is_canonical_spec = doc_path.resolve().is_relative_to(repo_docs_spec)
-    except Exception:
-        is_canonical_spec = False
     assert_tree: InternalAssertNode
-    producer_export_type = type_name in {"spec.export"}
+    producer_export_type = type_name in {"contract.export"}
     if producer_export_type:
         # Producer-only case type: exported callables are compiled from raw
         # contract step asserts via chain_engine, not from runtime assertion targets.
@@ -228,7 +116,7 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
         assert_tree = compile_assert_tree(
             raw_case.get("contract", []) or [],
             type_name=type_name,
-            strict_steps=is_canonical_spec,
+            strict_steps=True,
         )
 
     metadata = {

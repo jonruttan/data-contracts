@@ -6,8 +6,7 @@
 id: SRGOV-DOCS-QUAL-006
 title: docs command and example blocks are validated
 purpose: Ensures runnable example blocks parse/validate unless explicitly opted out.
-type: governance.check
-check: docs.command_examples_verified
+type: contract.check
 harness:
   root: .
   docs_quality:
@@ -21,27 +20,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: docs.command_examples_verified
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - docs.command_examples_verified
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - docs.command_examples_verified
   target: summary_json
 ```

@@ -1,7 +1,7 @@
 version: 1
-id: schema.registry.v1.type.contract_job
+id: schema.registry.v1.type.contract_check
 type: type
-case_type: contract.job
+case_type: contract.check
 required_top_level:
   - harness
   - contract
@@ -11,23 +11,20 @@ fields:
     type: mapping
     required: true
     since: v1
-  harness.jobs:
+  harness.check:
     type: mapping
     required: false
     since: v1
-  harness.jobs.<name>.helper:
+  harness.check.profile:
     type: string
     required: false
     since: v1
-  harness.jobs.<name>.mode:
-    type: string
-    required: false
-    since: v1
-  harness.jobs.<name>.inputs:
-    type: mapping
-    required: false
-    since: v1
-  harness.jobs.<name>.outputs:
+    enum:
+      - text.file
+      - cli.run
+      - api.http
+      - governance.scan
+  harness.check.config:
     type: mapping
     required: false
     since: v1

@@ -5,9 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-009
 title: local prepush does not require broad governance
-type: governance.check
+type: contract.check
 purpose: Ensures local parity flow keeps broad governance out of default prepush path.
-check: runtime.local_prepush_broad_governance_forbidden
 harness:
   root: .
   local_prepush_broad_forbidden:
@@ -26,12 +25,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.local_prepush_broad_governance_forbidden
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

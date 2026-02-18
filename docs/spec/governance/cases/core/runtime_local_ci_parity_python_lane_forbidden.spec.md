@@ -6,8 +6,7 @@
 id: SRGOV-RUNTIME-PREPUSH-001
 title: local ci parity script is rust-only
 purpose: Ensures local prepush parity flow contains no python parity lane hooks.
-type: governance.check
-check: runtime.local_ci_parity_python_lane_forbidden
+type: contract.check
 harness:
   root: .
   local_ci_parity_python_lane:
@@ -30,12 +29,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.local_ci_parity_python_lane_forbidden
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

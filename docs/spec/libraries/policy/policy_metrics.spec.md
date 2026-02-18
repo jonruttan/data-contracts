@@ -5,20 +5,22 @@
 ```yaml contract-spec
 id: LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
-type: spec.export
+type: contract.export
 contract:
 - id: __export__policy.metric_non_decrease
   class: MUST
   asserts:
-  - std.logic.gte:
-    - std.math.add:
-      - std.object.get:
-        - var: subject
-        - var: field
-      - var: epsilon
-    - std.object.get:
-      - var: subject
-      - var: baseline_field
+  - evaluate:
+    - lit:
+        std.logic.gte:
+        - std.math.add:
+          - std.object.get:
+            - {var: subject}
+            - {var: field}
+          - {var: epsilon}
+        - std.object.get:
+          - {var: subject}
+          - {var: baseline_field}
 harness:
   exports:
   - as: policy.metric_non_decrease
@@ -35,20 +37,22 @@ harness:
 ```yaml contract-spec
 id: LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_increase'
-type: spec.export
+type: contract.export
 contract:
 - id: __export__policy.metric_non_increase
   class: MUST
   asserts:
-  - std.logic.lte:
-    - std.math.sub:
-      - std.object.get:
-        - var: subject
-        - var: field
-      - var: epsilon
-    - std.object.get:
-      - var: subject
-      - var: baseline_field
+  - evaluate:
+    - lit:
+        std.logic.lte:
+        - std.math.sub:
+          - std.object.get:
+            - {var: subject}
+            - {var: field}
+          - {var: epsilon}
+        - std.object.get:
+          - {var: subject}
+          - {var: baseline_field}
 harness:
   exports:
   - as: policy.metric_non_increase
@@ -65,7 +69,7 @@ harness:
 ```yaml contract-spec
 id: LIB-POLICY-002-900-POLICY-METRIC-SMOKE
 title: policy metric helpers execute as colocated executable checks
-type: text.file
+type: contract.check
 harness:
   chain:
     steps:
@@ -82,26 +86,31 @@ harness:
     - from: lib_non_increase
       names:
       - policy.metric_non_increase
+  check:
+    profile: text.file
+    config: {}
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - MUST:
-    - call:
-      - var: policy.metric_non_decrease
-      - lit:
-          current: 10
-          baseline: 9
-      - current
-      - baseline
-      - 0
-    - call:
-      - var: policy.metric_non_increase
-      - lit:
-          current: 8
-          baseline: 9
-      - current
-      - baseline
-      - 0
+  - evaluate:
+    - lit:
+        MUST:
+        - call:
+          - {var: policy.metric_non_decrease}
+          - lit:
+              current: 10
+              baseline: 9
+          - current
+          - baseline
+          - 0
+        - call:
+          - {var: policy.metric_non_increase}
+          - lit:
+              current: 8
+              baseline: 9
+          - current
+          - baseline
+          - 0
   target: text
 ```

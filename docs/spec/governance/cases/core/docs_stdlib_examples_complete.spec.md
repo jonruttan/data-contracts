@@ -5,10 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-GEN-022
 title: stdlib symbols include examples
-purpose: Ensures generated stdlib reference includes at least one complete example
-  per symbol.
-type: governance.check
-check: docs.stdlib_examples_complete
+purpose: Ensures generated stdlib reference includes at least one complete example per symbol.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,20 +18,26 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: docs.stdlib_examples_complete
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - docs.stdlib_examples_complete
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - docs.stdlib_examples_complete
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
   target: summary_json
 ```

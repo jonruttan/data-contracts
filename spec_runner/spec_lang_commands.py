@@ -50,7 +50,7 @@ def _load_conformance_export_functions() -> dict[str, list[object]]:
         raise RuntimeError(f"missing spec library file: {lib_path}")
     out: dict[str, list[object]] = {}
     for _doc_path, raw_case in load_external_cases(lib_path, formats={"md"}):
-        if str(raw_case.get("type", "")).strip() != "spec.export":
+        if str(raw_case.get("type", "")).strip() != "contract.export":
             continue
         chain = dict((dict(raw_case.get("harness") or {})).get("chain") or {})
         exports = chain.get("exports") or []

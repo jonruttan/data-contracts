@@ -3,7 +3,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -15,7 +15,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -27,7 +27,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -39,7 +39,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -51,7 +51,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-005",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -63,7 +63,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-006",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -75,7 +75,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-007",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -87,7 +87,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-008",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -99,7 +99,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-009",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -111,7 +111,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-010",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -123,7 +123,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-011",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -135,7 +135,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-012",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -147,7 +147,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-013",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -159,7 +159,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-014",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -171,7 +171,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-015",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -183,7 +183,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-016",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -195,7 +195,7 @@
     {
       "file": "docs/spec/conformance/cases/core/api_http.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-API-017",
       "library_backed_case": 1.0,
       "library_backed_policy": 0.0,
@@ -207,7 +207,7 @@
     {
       "file": "docs/spec/conformance/cases/core/assertion_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-AH-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -219,7 +219,7 @@
     {
       "file": "docs/spec/conformance/cases/core/assertion_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-AH-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -231,7 +231,7 @@
     {
       "file": "docs/spec/conformance/cases/core/assertion_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-AH-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -243,7 +243,7 @@
     {
       "file": "docs/spec/conformance/cases/core/assertion_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-AH-004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -255,7 +255,7 @@
     {
       "file": "docs/spec/conformance/cases/core/assertion_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-AH-005",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -267,7 +267,7 @@
     {
       "file": "docs/spec/conformance/cases/core/assertion_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-AH-006",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -279,7 +279,7 @@
     {
       "file": "docs/spec/conformance/cases/core/chain_exports.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-CHAIN-EXPORT-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -291,7 +291,7 @@
     {
       "file": "docs/spec/conformance/cases/core/chain_exports.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-CHAIN-EXPORT-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 0.0,
@@ -303,7 +303,7 @@
     {
       "file": "docs/spec/conformance/cases/core/chain_exports.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-CHAIN-EXPORT-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 0.0,
@@ -315,7 +315,7 @@
     {
       "file": "docs/spec/conformance/cases/core/cli_run_entrypoint.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-CLI-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -327,7 +327,7 @@
     {
       "file": "docs/spec/conformance/cases/core/cli_run_entrypoint.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-CLI-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -339,7 +339,7 @@
     {
       "file": "docs/spec/conformance/cases/core/codemod_scripts.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-CODEMOD-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -351,7 +351,7 @@
     {
       "file": "docs/spec/conformance/cases/core/codemod_scripts.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-CODEMOD-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -363,7 +363,7 @@
     {
       "file": "docs/spec/conformance/cases/core/codemod_scripts.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-CODEMOD-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -375,7 +375,7 @@
     {
       "file": "docs/spec/conformance/cases/core/domain_libraries.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-DOMAIN-LIB-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 0.0,
@@ -387,7 +387,7 @@
     {
       "file": "docs/spec/conformance/cases/core/domain_libraries.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-DOMAIN-LIB-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 0.0,
@@ -399,7 +399,7 @@
     {
       "file": "docs/spec/conformance/cases/core/failure_context.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-ERR-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -411,7 +411,7 @@
     {
       "file": "docs/spec/conformance/cases/core/markdown_namespace.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-MARKDOWN-NS-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -423,7 +423,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -435,7 +435,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -447,7 +447,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -459,7 +459,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -471,7 +471,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-005",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -483,7 +483,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-006",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -495,7 +495,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-007",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -507,7 +507,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-008",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -519,7 +519,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-009",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -531,7 +531,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-010",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -543,7 +543,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-011",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -555,7 +555,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-012",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -567,7 +567,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-013",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -579,7 +579,7 @@
     {
       "file": "docs/spec/conformance/cases/core/php_text_file_subset.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PHP-TEXT-014",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -591,7 +591,7 @@
     {
       "file": "docs/spec/conformance/cases/core/schema_case_validation.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-SCHEMA-CASE-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -603,7 +603,7 @@
     {
       "file": "docs/spec/conformance/cases/core/schema_case_validation.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-SCHEMA-CASE-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -615,7 +615,7 @@
     {
       "file": "docs/spec/conformance/cases/core/schema_registry_contract.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-SCHEMA-REG-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -627,7 +627,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 0.0,
@@ -639,7 +639,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 0.0,
@@ -651,7 +651,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -663,7 +663,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -675,7 +675,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-005",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -687,7 +687,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-006",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -699,7 +699,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-007",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -711,7 +711,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-008",
       "library_backed_case": 1.0,
       "library_backed_policy": 0.0,
@@ -723,7 +723,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-009",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -735,7 +735,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-010",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -747,7 +747,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-011",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -759,7 +759,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-012",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -771,7 +771,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-013",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -783,7 +783,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-014",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -795,7 +795,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-015",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -807,7 +807,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-016",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -819,7 +819,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-017",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -831,7 +831,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-018",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -843,7 +843,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-019",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -855,7 +855,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-020",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -867,7 +867,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-021",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -879,7 +879,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-022",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -891,7 +891,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-023",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -903,7 +903,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-EXPR-024",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -915,7 +915,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_library_contract.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-LIB-CONTRACT-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -927,7 +927,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_library_contract.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-LIB-CONTRACT-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -939,7 +939,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_library_contract.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-LIB-CONTRACT-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -951,7 +951,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_schema.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -963,7 +963,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_schema.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -975,7 +975,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -987,7 +987,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -999,7 +999,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1011,7 +1011,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1023,7 +1023,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-005",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1035,7 +1035,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-006",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1047,7 +1047,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-007",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1059,7 +1059,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-008",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1071,7 +1071,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-009",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1083,7 +1083,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-010",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1095,7 +1095,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-011",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1107,7 +1107,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-012",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1119,7 +1119,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-013",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1131,7 +1131,7 @@
     {
       "file": "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-STDLIB-014",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1143,7 +1143,7 @@
     {
       "file": "docs/spec/conformance/cases/core/subject_profiles.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PROFILE-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1155,7 +1155,7 @@
     {
       "file": "docs/spec/conformance/cases/core/subject_profiles.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRCONF-PROFILE-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -1167,7 +1167,7 @@
     {
       "file": "docs/spec/governance/cases/core/architecture_harness_local_workflow_duplication_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ARCH-COMPONENTS-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1179,7 +1179,7 @@
     {
       "file": "docs/spec/governance/cases/core/architecture_harness_workflow_components_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ARCH-COMPONENTS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1191,7 +1191,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_adapter_projection_contract_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-PROFILE-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1203,7 +1203,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_compiler_schema_matrix_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-SYNC-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1215,7 +1215,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_domain_library_usage_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-PROFILE-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1227,7 +1227,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_domain_profiles_docs_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-PROFILE-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1239,7 +1239,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_spec_lang_builtin_surface_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-SYNC-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1251,7 +1251,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_subject_profiles_declared.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-PROFILE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1263,7 +1263,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-PROFILE-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1275,7 +1275,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_sugar_compile_only_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-COMPILE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1287,7 +1287,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_type_contract_subject_semantics_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-SUBJECT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1299,7 +1299,7 @@
     {
       "file": "docs/spec/governance/cases/core/assert_universal_core_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ASSERT-CORE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1311,7 +1311,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_api_http_portable_shape.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-API-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1323,7 +1323,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_case_doc_style_guard.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-STYLE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1335,7 +1335,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_case_index_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-INDEX-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1347,7 +1347,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_evaluate_first_ratio_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-SPECLANG-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1359,7 +1359,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_extension_requires_capabilities.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-PORT-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1371,7 +1371,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_library_contract_cases_present.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-LIB-CONTRACT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1383,7 +1383,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_library_policy_usage_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-POLICY-LIB-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1395,7 +1395,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_no_ambient_assumptions.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-PORT-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1407,7 +1407,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_no_runner_logic_outside_harness.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-PORT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1419,7 +1419,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_portable_determinism_guard.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-PORT-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1431,7 +1431,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_purpose_quality_gate.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-PURPOSE-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1443,7 +1443,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_purpose_warning_codes_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-PURPOSE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1455,7 +1455,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_spec_lang_fixture_library_usage.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-LIB-EXPR-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1467,7 +1467,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_spec_lang_preferred.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-SPECLANG-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1479,7 +1479,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_type_contract_docs.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-TYPE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1491,7 +1491,7 @@
     {
       "file": "docs/spec/governance/cases/core/conformance_type_contract_field_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONF-PORT-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1503,7 +1503,7 @@
     {
       "file": "docs/spec/governance/cases/core/contract_assertions_metric.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONTRACT-ASSERT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1515,7 +1515,7 @@
     {
       "file": "docs/spec/governance/cases/core/contract_assertions_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONTRACT-ASSERT-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1527,7 +1527,7 @@
     {
       "file": "docs/spec/governance/cases/core/contract_coverage_threshold.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONTRACT-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1539,7 +1539,7 @@
     {
       "file": "docs/spec/governance/cases/core/contract_governance_check.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CONTRACT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1551,7 +1551,7 @@
     {
       "file": "docs/spec/governance/cases/core/current_spec_only_contract.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOC-CURRENT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1563,7 +1563,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_adoption_profiles_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-REF-009",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1575,7 +1575,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_api_http_tutorial_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-APIHTTP-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1587,7 +1587,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_book_chapter_order_canonical.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-REF-018",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1599,7 +1599,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_cli_flags_documented.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-REF-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1611,7 +1611,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_command_examples_verified.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-QUAL-006",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1623,7 +1623,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_contract_schema_book_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-REF-006",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1635,7 +1635,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_current_spec_policy_key_names.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-CURRENT-KEYS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1647,7 +1647,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_docgen_quality_score_threshold.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-026",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1659,7 +1659,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_example_id_uniqueness.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-QUAL-007",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1671,7 +1671,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_examples_prefer_domain_fs_helpers.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-FS-EXAMPLES-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1683,7 +1683,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_examples_runnable.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-REF-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1695,7 +1695,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_filename_policy.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-LAYOUT-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1707,7 +1707,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_generated_files_clean.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-QUAL-008",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1719,7 +1719,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_generated_sections_read_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1731,7 +1731,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_generator_outputs_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1743,7 +1743,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_generator_registry_valid.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1755,7 +1755,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_governance_check_catalog_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-009",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1767,7 +1767,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_harness_reference_semantics_complete.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-023",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1779,7 +1779,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_harness_type_catalog_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1791,7 +1791,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_history_reviews_namespace.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-LAYOUT-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1803,7 +1803,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_index_filename_policy.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-LAYOUT-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1815,7 +1815,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_instructions_complete.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-QUAL-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1827,7 +1827,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_layout_canonical_trees.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-LAYOUT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1839,7 +1839,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_make_commands_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-REF-007",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1851,7 +1851,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_markdown_namespace_legacy_alias_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-MD-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1863,7 +1863,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_markdown_structured_assertions_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-MD-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1875,7 +1875,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_meta_schema_valid.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-QUAL-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1887,7 +1887,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_metrics_field_catalog_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-010",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1899,7 +1899,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_no_os_artifact_files.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-LAYOUT-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1911,7 +1911,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_operability_metric.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-OPER-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1923,7 +1923,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_operability_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-OPER-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1935,7 +1935,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_policy_rule_catalog_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-007",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1947,7 +1947,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_reference_index_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-REF-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1959,7 +1959,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_reference_manifest_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-QUAL-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1971,7 +1971,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_reference_namespace_chapters_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-025",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1983,7 +1983,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_reference_surface_complete.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-REF-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -1995,7 +1995,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_release_contract_automation_policy.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-QUAL-009",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2007,7 +2007,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_required_sections.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-REF-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2019,7 +2019,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_runner_api_catalog_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2031,7 +2031,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_runner_reference_semantics_complete.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-024",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2043,7 +2043,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_spec_lang_builtin_catalog_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-006",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2055,7 +2055,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_spec_schema_field_catalog_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-011",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2067,7 +2067,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_stdlib_examples_complete.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-022",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2079,7 +2079,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_stdlib_symbol_docs_complete.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-021",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2091,7 +2091,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_token_dependency_resolved.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-QUAL-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2103,7 +2103,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_token_ownership_unique.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-QUAL-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2115,7 +2115,7 @@
     {
       "file": "docs/spec/governance/cases/core/docs_traceability_catalog_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-GEN-008",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2127,7 +2127,7 @@
     {
       "file": "docs/spec/governance/cases/core/governance_extractor_only_no_verdict_branching.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-POLICY-REQ-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2137,9 +2137,9 @@
       "type": "governance.check"
     },
     {
-      "file": "docs/spec/governance/cases/core/governance_policy_evaluate_required.spec.md",
+      "file": "docs/spec/governance/cases/core/governance_evaluate_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-POLICY-REQ-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2151,7 +2151,7 @@
     {
       "file": "docs/spec/governance/cases/core/governance_policy_library_usage_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-POLICY-LIB-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2163,7 +2163,7 @@
     {
       "file": "docs/spec/governance/cases/core/governance_policy_library_usage_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-POLICY-LIB-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2175,7 +2175,7 @@
     {
       "file": "docs/spec/governance/cases/core/governance_structured_assertions_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-POLICY-REQ-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2187,7 +2187,7 @@
     {
       "file": "docs/spec/governance/cases/core/impl_evaluate_first_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-IMPL-SPECLANG-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2199,7 +2199,7 @@
     {
       "file": "docs/spec/governance/cases/core/impl_evaluate_ratio_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-IMPL-SPECLANG-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2211,7 +2211,7 @@
     {
       "file": "docs/spec/governance/cases/core/impl_library_usage_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-IMPL-SPECLANG-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2223,7 +2223,7 @@
     {
       "file": "docs/spec/governance/cases/core/library_colocated_symbol_tests_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIB-SINGLE-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2235,7 +2235,7 @@
     {
       "file": "docs/spec/governance/cases/core/library_domain_index_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIB-INDEX-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2247,7 +2247,7 @@
     {
       "file": "docs/spec/governance/cases/core/library_domain_ownership.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIB-DOMAIN-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2259,7 +2259,7 @@
     {
       "file": "docs/spec/governance/cases/core/library_legacy_definitions_key_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIB-VERB-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2271,7 +2271,7 @@
     {
       "file": "docs/spec/governance/cases/core/library_public_surface_model.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIB-SURFACE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2283,7 +2283,7 @@
     {
       "file": "docs/spec/governance/cases/core/library_single_public_symbol_per_case_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIB-SINGLE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2295,7 +2295,7 @@
     {
       "file": "docs/spec/governance/cases/core/library_verb_first_schema_keys_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIB-VERB-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2307,7 +2307,7 @@
     {
       "file": "docs/spec/governance/cases/core/naming_filename_policy.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOCS-NAME-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2319,7 +2319,7 @@
     {
       "file": "docs/spec/governance/cases/core/normalization_docs_token_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-NORM-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2331,7 +2331,7 @@
     {
       "file": "docs/spec/governance/cases/core/normalization_library_mapping_ast_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-NORM-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2343,7 +2343,7 @@
     {
       "file": "docs/spec/governance/cases/core/normalization_mapping_ast_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-NORM-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2355,7 +2355,7 @@
     {
       "file": "docs/spec/governance/cases/core/normalization_profile_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-NORM-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2367,7 +2367,7 @@
     {
       "file": "docs/spec/governance/cases/core/normalization_spec_style_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-NORM-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2379,7 +2379,7 @@
     {
       "file": "docs/spec/governance/cases/core/normalization_virtual_root_paths_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-NORM-PATHS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2391,7 +2391,7 @@
     {
       "file": "docs/spec/governance/cases/core/objective_scorecard_metric.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-OBJECTIVE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2403,7 +2403,7 @@
     {
       "file": "docs/spec/governance/cases/core/objective_scorecard_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-OBJECTIVE-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2415,7 +2415,7 @@
     {
       "file": "docs/spec/governance/cases/core/objective_tripwires_clean.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-OBJECTIVE-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2427,7 +2427,7 @@
     {
       "file": "docs/spec/governance/cases/core/orchestration_ops_capability_bindings.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-OPS-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2439,7 +2439,7 @@
     {
       "file": "docs/spec/governance/cases/core/orchestration_ops_legacy_underscore_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-OPS-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2451,7 +2451,7 @@
     {
       "file": "docs/spec/governance/cases/core/orchestration_ops_registry_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-OPS-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2463,7 +2463,7 @@
     {
       "file": "docs/spec/governance/cases/core/orchestration_ops_symbol_grammar.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-OPS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2475,7 +2475,7 @@
     {
       "file": "docs/spec/governance/cases/core/pending_status_markers.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-PENDING-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2487,7 +2487,7 @@
     {
       "file": "docs/spec/governance/cases/core/reference_check_ids_exist.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-REF-CHECKS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2499,7 +2499,7 @@
     {
       "file": "docs/spec/governance/cases/core/reference_contract_paths_exist.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-REF-PATHS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2511,7 +2511,7 @@
     {
       "file": "docs/spec/governance/cases/core/reference_external_refs_policy.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-REF-EXTERNAL-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2523,7 +2523,7 @@
     {
       "file": "docs/spec/governance/cases/core/reference_library_exports_used.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-REF-SYMBOLS-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2535,7 +2535,7 @@
     {
       "file": "docs/spec/governance/cases/core/reference_policy_symbols_resolve.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-REF-SYMBOLS-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2547,7 +2547,7 @@
     {
       "file": "docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-REF-SYMBOLS-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2559,7 +2559,7 @@
     {
       "file": "docs/spec/governance/cases/core/reference_symbols_exist.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-REF-SYMBOLS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2571,7 +2571,7 @@
     {
       "file": "docs/spec/governance/cases/core/reference_token_anchors_exist.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-REF-TOKENS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2583,7 +2583,7 @@
     {
       "file": "docs/spec/governance/cases/core/regex_doc_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOC-REGEX-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2595,7 +2595,7 @@
     {
       "file": "docs/spec/governance/cases/core/runner_independence_metric.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-INDEP-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2607,7 +2607,7 @@
     {
       "file": "docs/spec/governance/cases/core/runner_independence_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-INDEP-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2619,7 +2619,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_api_http_cors_support.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-APIHTTP-006",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2631,7 +2631,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_api_http_live_mode_explicit.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-APIHTTP-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2643,7 +2643,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_api_http_oauth_docs_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-APIHTTP-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2655,7 +2655,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_api_http_oauth_env_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-APIHTTP-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2667,7 +2667,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_api_http_oauth_no_secret_literals.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-APIHTTP-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2679,7 +2679,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_api_http_parity_contract_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-APIHTTP-008",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2691,7 +2691,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_api_http_scenario_roundtrip.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-APIHTTP-007",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2703,7 +2703,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_api_http_verb_suite.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-APIHTTP-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2715,7 +2715,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_assertions_via_spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-ASSERT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2727,7 +2727,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_contract_single_location.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-009",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2739,7 +2739,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_cycle_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2751,7 +2751,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_exports_explicit_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-012",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2763,7 +2763,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_exports_from_key_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-FROM-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2775,7 +2775,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_exports_list_only_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-FORM-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2787,7 +2787,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_exports_target_derived_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2799,7 +2799,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_fail_fast_default.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2811,7 +2811,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_import_alias_collision_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-008",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2823,7 +2823,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_legacy_from_target_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-FROM-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2835,7 +2835,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_library_symbol_exports_valid.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-FROM-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2847,7 +2847,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_ref_scalar_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-006",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2859,7 +2859,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_reference_resolution.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2871,7 +2871,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_shared_context_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-011",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2883,7 +2883,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_state_template_resolution.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2895,7 +2895,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_chain_step_class_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-007",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2907,7 +2907,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_config_literals.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-CONFIG-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2919,7 +2919,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_domain_library_preferred_for_fs_ops.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOMAIN-LIB-OPS-FS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2931,7 +2931,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_domain_library_preferred_for_http_helpers.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOMAIN-LIB-HTTP-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2943,7 +2943,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_executable_spec_lang_includes_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-FROM-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2955,7 +2955,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ARCH-COMPONENTS-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2967,7 +2967,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_legacy_timeout_envs_deprecated.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIVENESS-DEPRECATION-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2979,7 +2979,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_liveness_hard_cap_token_emitted.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIVENESS-HARDCAP-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -2991,7 +2991,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_liveness_stall_token_emitted.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIVENESS-STALL-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3003,7 +3003,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_liveness_watchdog_contract_valid.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-LIVENESS-CONTRACT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3015,7 +3015,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-ENTRY-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3027,7 +3027,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-PYDEP-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3039,7 +3039,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-ORCH-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3051,7 +3051,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_profiling_contract_artifacts.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-PROFILE-CONTRACT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3063,7 +3063,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_profiling_redaction_policy.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-PROFILE-REDACT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3075,7 +3075,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_profiling_span_taxonomy.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-PROFILE-SPANS-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3087,7 +3087,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_public_runner_default_rust.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-ENTRY-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3099,7 +3099,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_public_runner_entrypoint_single.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-ENTRY-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3111,7 +3111,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_python_bin_resolver_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-CONFIG-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3123,7 +3123,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_python_dependency_metric.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-PYDEP-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3135,7 +3135,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_python_dependency_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-PYDEP-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3147,7 +3147,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_python_lane_explicit_opt_in.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-ENTRY-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3159,7 +3159,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_runner_interface_ci_lane.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-CONFIG-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3171,7 +3171,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_runner_interface_gate_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-CONFIG-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3183,7 +3183,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_runner_interface_subcommands.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-CONFIG-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3195,7 +3195,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_adapter_no_delegate.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-CONFIG-006",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3207,7 +3207,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_adapter_no_python_exec.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUST-PRIMARY-008",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3219,7 +3219,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_adapter_transitive_no_python.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-PYDEP-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3231,7 +3231,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUST-PRIMARY-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3243,7 +3243,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_primary_adapter_exec_smoke_success.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUST-PRIMARY-006",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3255,7 +3255,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_primary_gate_path.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUST-PRIMARY-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3267,7 +3267,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_primary_interface_stability.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUST-PRIMARY-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3279,7 +3279,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_primary_no_python_dependency.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUST-PRIMARY-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3291,7 +3291,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_primary_shared_capability_parity.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUST-PRIMARY-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3303,7 +3303,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_rust_primary_subcommand_parity.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUST-PRIMARY-007",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3315,7 +3315,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_scope_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-SCOPE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3327,7 +3327,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_settings_import_policy.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-IMPORT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3339,7 +3339,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_spec_lang_export_type_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-SPECLANG-EXPORT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3351,7 +3351,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-RUNTIME-SPECLANG-PURE-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3363,7 +3363,7 @@
     {
       "file": "docs/spec/governance/cases/core/runtime_universal_chain_support_required.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-CHAIN-010",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3375,7 +3375,7 @@
     {
       "file": "docs/spec/governance/cases/core/schema_harness_contract_overlay_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ARCH-COMPONENTS-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3387,7 +3387,7 @@
     {
       "file": "docs/spec/governance/cases/core/schema_harness_type_overlay_complete.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-ARCH-COMPONENTS-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3399,7 +3399,7 @@
     {
       "file": "docs/spec/governance/cases/core/schema_no_prose_only_rules.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SCHEMA-REG-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3411,7 +3411,7 @@
     {
       "file": "docs/spec/governance/cases/core/schema_registry_compiled_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SCHEMA-REG-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3423,7 +3423,7 @@
     {
       "file": "docs/spec/governance/cases/core/schema_registry_docs_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SCHEMA-REG-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3435,7 +3435,7 @@
     {
       "file": "docs/spec/governance/cases/core/schema_registry_valid.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SCHEMA-REG-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3447,7 +3447,7 @@
     {
       "file": "docs/spec/governance/cases/core/schema_type_profiles_complete.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SCHEMA-REG-005",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3459,7 +3459,7 @@
     {
       "file": "docs/spec/governance/cases/core/schema_verb_first_contract_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SCHEMA-VERB-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3471,7 +3471,7 @@
     {
       "file": "docs/spec/governance/cases/core/security_warning_docs.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOC-SEC-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3483,7 +3483,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_domain_index_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPECLAYOUT-INDEX-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3495,7 +3495,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_executable_surface_markdown_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPEC-MD-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3507,7 +3507,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPEC-MD-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3519,7 +3519,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_lang_adoption_metric.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPEC-LANG-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3531,7 +3531,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_lang_adoption_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPEC-LANG-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3543,7 +3543,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-STDLIB-004",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3555,7 +3555,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-STDLIB-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3567,7 +3567,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-STDLIB-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3579,7 +3579,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-STDLIB-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3591,7 +3591,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_layout_domain_trees.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPECLAYOUT-DOMAIN-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3603,7 +3603,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_library_cases_markdown_only.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPEC-MD-003",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3615,7 +3615,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPEC-MD-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3627,7 +3627,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_portability_metric.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPEC-PORT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3639,7 +3639,7 @@
     {
       "file": "docs/spec/governance/cases/core/spec_portability_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-SPEC-PORT-002",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3651,7 +3651,7 @@
     {
       "file": "docs/spec/governance/cases/core/tests_unit_opt_out_non_regression.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-TEST-UNIT-OPT-OUT-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3663,7 +3663,7 @@
     {
       "file": "docs/spec/governance/cases/core/v1_scope_doc.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 1.0,
+      "has_evaluate": 1.0,
       "id": "SRGOV-DOC-V1-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 1.0,
@@ -3675,7 +3675,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3687,7 +3687,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3699,7 +3699,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3711,7 +3711,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3723,7 +3723,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-005",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3735,7 +3735,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-006",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3747,7 +3747,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-007",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3759,7 +3759,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-008",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3771,7 +3771,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-009",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3783,7 +3783,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-010",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3795,7 +3795,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-011",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3807,7 +3807,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-012",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3819,7 +3819,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-013",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3831,7 +3831,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-014",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3843,7 +3843,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-015",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3855,7 +3855,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-016",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3867,7 +3867,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-017",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3879,7 +3879,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-018",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3891,7 +3891,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-019",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3903,7 +3903,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-020",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3915,7 +3915,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-021",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3927,7 +3927,7 @@
     {
       "file": "docs/spec/impl/docs_generate/cases/surfaces.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRDOCGEN-022",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3939,7 +3939,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_assert_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-AH-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3951,7 +3951,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_assert_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-AH-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3963,7 +3963,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_assert_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-AH-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3975,7 +3975,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_assert_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-AH-004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3987,7 +3987,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_assert_health.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-AH-005",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -3999,7 +3999,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_failures.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-F001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4011,7 +4011,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_failures.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-F002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4023,7 +4023,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_failures.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-F003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4035,7 +4035,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_failures.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-F004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4047,7 +4047,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_failures.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-F005",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4059,7 +4059,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_failures.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-F006",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4071,7 +4071,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_failures.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-F007",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4083,7 +4083,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_failures.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-F008",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4095,7 +4095,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_library_exports.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-LIB-001",
       "library_backed_case": 1.0,
       "library_backed_policy": 0.0,
@@ -4107,7 +4107,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_pass.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4119,7 +4119,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_pass.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4131,7 +4131,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_pass.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4143,7 +4143,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_pass.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-004",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4155,7 +4155,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_pass.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-005",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4167,7 +4167,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_pass.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-006",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4179,7 +4179,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_pass.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-007",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4191,7 +4191,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_pass.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-008",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4203,7 +4203,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_pass.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-RUN-009",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4215,7 +4215,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_portability.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-PORT-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4227,7 +4227,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_portability.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-PORT-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4239,7 +4239,7 @@
     {
       "file": "docs/spec/impl/php/cases/runner_portability.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPHP-PORT-003",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4251,7 +4251,7 @@
     {
       "file": "docs/spec/impl/python/cases/contract_coverage_report.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-CONTRACT-REP-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4263,7 +4263,7 @@
     {
       "file": "docs/spec/impl/python/cases/contract_coverage_report.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-CONTRACT-REP-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4275,7 +4275,7 @@
     {
       "file": "docs/spec/impl/python/cases/docs_lint.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-DOCSLINT-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4287,7 +4287,7 @@
     {
       "file": "docs/spec/impl/python/cases/docs_lint.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-DOCSLINT-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4299,7 +4299,7 @@
     {
       "file": "docs/spec/impl/python/cases/schema_registry_report.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-SCHEMA-REG-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4311,7 +4311,7 @@
     {
       "file": "docs/spec/impl/python/cases/schema_registry_report.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-SCHEMA-REG-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4323,7 +4323,7 @@
     {
       "file": "docs/spec/impl/python/cases/spec_lang_stdlib_report.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-STDLIB-REP-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4335,7 +4335,7 @@
     {
       "file": "docs/spec/impl/python/cases/spec_lang_stdlib_report.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-STDLIB-REP-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4347,7 +4347,7 @@
     {
       "file": "docs/spec/impl/python/cases/validate_conformance_report.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-VALREP-001",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,
@@ -4359,7 +4359,7 @@
     {
       "file": "docs/spec/impl/python/cases/validate_conformance_report.spec.md",
       "governance_symbol_resolution": 1.0,
-      "has_policy_evaluate": 0.0,
+      "has_evaluate": 0.0,
       "id": "SRPY-VALREP-002",
       "library_backed_case": 0.0,
       "library_backed_policy": 0.0,

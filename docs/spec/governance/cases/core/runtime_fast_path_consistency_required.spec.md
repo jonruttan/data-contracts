@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-023
 title: fast-path consistency is enforced across pre-push and gate scripts
-type: governance.check
-purpose: Ensures fast-path routing tokens remain aligned across local parity, ci gate,
-  and managed pre-push hook.
-check: runtime.fast_path_consistency_required
+type: contract.check
+purpose: Ensures fast-path routing tokens remain aligned across local parity, ci gate, and
+  managed pre-push hook.
 harness:
   root: .
   fast_path_consistency:
@@ -50,12 +49,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.fast_path_consistency_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

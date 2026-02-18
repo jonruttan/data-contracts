@@ -76,7 +76,7 @@ SETTINGS = RunnerSettings(
             "docs/spec/governance/cases",
             "docs/spec/impl",
         ),
-        core_types=("text.file", "cli.run"),
+        core_types=("contract.check", "contract.export", "contract.job"),
         segment_rules=(
             SpecPortabilitySegmentRuleSettings(
                 prefix="docs/spec/conformance/cases",
@@ -91,7 +91,7 @@ SETTINGS = RunnerSettings(
                 segment="impl",
             ),
         ),
-        runtime_capability_tokens=("api.http", "governance.check"),
+        runtime_capability_tokens=("api.http", "governance.scan"),
         runtime_capability_prefixes=("runtime.", "php.", "python."),
         weights=SpecPortabilityWeightsSettings(
             non_evaluate_leaf_share=0.45,

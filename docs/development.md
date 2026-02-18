@@ -147,12 +147,6 @@ make prepush-fast
 SPEC_PREPUSH_MODE=fast make prepush
 ```
 
-Compatibility alias:
-
-```sh
-make prepush-parity
-```
-
 Runtime impl is rust-only; `SPEC_RUNNER_IMPL=python` is rejected by
 `scripts/runner_adapter.sh` with migration guidance.
 

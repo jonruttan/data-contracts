@@ -14,7 +14,7 @@ id: SRCONF-CLI-001
 title: conformance fixture sets explicit cli.run harness.entrypoint
 purpose: Defines portable behavior for explicit cli.run entrypoint when capability
   is present.
-type: cli.run
+type: contract.check
 requires:
   capabilities:
   - cli.run
@@ -28,11 +28,14 @@ expect:
     php:
       status: skip
       category: null
-argv:
-- --help
-exit_code: 0
 harness:
   entrypoint: spec_runner.conformance_fixtures:main
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - --help
+      exit_code: 0
 contract: []
 ```
 
@@ -42,7 +45,7 @@ contract: []
 id: SRCONF-CLI-002
 title: explicit entrypoint drives cli.run behavior deterministically
 purpose: Pins deterministic behavior for explicit harness entrypoint execution.
-type: cli.run
+type: contract.check
 requires:
   capabilities:
   - cli.run
@@ -56,17 +59,22 @@ expect:
     php:
       status: skip
       category: null
-argv:
-- --json
-exit_code: 0
 harness:
   entrypoint: spec_runner.conformance_fixtures:main
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - --json
+      exit_code: 0
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - '"ok": true'
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - '"ok": true'
   target: stdout
 ```

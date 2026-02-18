@@ -37,13 +37,13 @@ When migrating a governance check:
 Naming rule:
 
 - Assertion trees use `evaluate`.
-- Governance/orchestration policy fields `policy_evaluate` are forbidden.
+- Governance/orchestration policy fields `evaluate` are forbidden.
 
 Hard requirement:
 
 - Governance decision checks MUST encode contractual obligations in `assert`.
-- `harness.policy_evaluate` and
-  `harness.orchestration_policy.policy_evaluate` are forbidden.
+- `harness.evaluate` and
+  `harness.orchestration_policy.evaluate` are forbidden.
 - Extractor outputs and central policy evaluation contract are defined in:
   `docs/spec/contract/18_governance_subject_extractors.md`.
 - Governance assertion trees SHOULD validate structured result targets

@@ -142,7 +142,7 @@ links:
   - spec_runner/spec_lang.py
   - scripts/php/spec_runner.php
   - scripts/php/conformance_runner.php
-  notes: Evaluate leaves accept mapping-AST expression nodes and reject malformed/legacy
+  notes: Evaluate leaves accept mapping-AST expression nodes and reject malformed/non-canonical
     forms.
 - rule_id: SPEC_LANG_PREFERRED_AUTHORING
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PREFERRED_AUTHORING
@@ -2788,7 +2788,7 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_layout_canonical_trees.spec.md
-  notes: Enforces canonical docs tree roots and forbids legacy review root.
+  notes: Enforces canonical docs tree roots and forbids non-canonical review root.
 - rule_id: DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_INDEX_FILENAME_INDEX_MD_REQUIRED
   contract_refs:
@@ -3150,7 +3150,7 @@ links:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
-  notes: Governance forbids legacy per-harness workflow tokens.
+  notes: Governance forbids non-canonical per-harness workflow tokens.
 - rule_id: HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
   contract_refs:

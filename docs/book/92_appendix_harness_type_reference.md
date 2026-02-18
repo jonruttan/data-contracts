@@ -47,133 +47,59 @@ Provide generated reference for harness-specific type overlays and required fiel
 
 ## Generated Harness Type Catalog
 
-- type_profile_count: 8
-- total_type_field_count: 30
+- type_profile_count: 3
+- total_type_field_count: 15
 - doc_quality_score: 1.0
 
 | case_type | field_count | required_top_level | allowed_top_level_extra |
 |---|---|---|---|
-| `api.http` | 3 | - | - |
-| `cli.run` | 2 | - | - |
+| `contract.check` | 5 | `harness`, `contract` | - |
+| `contract.export` | 3 | `contract`, `harness` | `imports` |
 | `contract.job` | 7 | `harness`, `contract` | - |
-| `docs.generate` | 8 | - | - |
-| `governance.check` | 1 | `check` | - |
-| `orchestration.run` | 6 | - | - |
-| `spec.export` | 2 | `contract`, `harness` | `imports` |
-| `text.file` | 1 | - | - |
 
 
 ### Type Semantics
 
-#### `api.http`
+#### `contract.check`
 
-- Summary: Performs HTTP requests with deterministic mode and optional live mode.
+- Summary: Runs canonical contract checks using harness.check profiles.
 - Defaults:
-  - mode=deterministic
-  - auth=none
+  - evaluate-only assertions
+  - MUST/MAY/MUST_NOT class semantics
 
 - Failure Modes:
-  - request transport failure
-  - oauth config mismatch
+  - unknown check profile
+  - invalid check config
 
 - Examples:
-  - `type: api.http`
+  - `type: contract.check`
 
 
-#### `cli.run`
+#### `contract.export`
 
-- Summary: Executes command processes and asserts over output/exit context.
+- Summary: Declares reusable contract symbol exports for chain imports.
 - Defaults:
-  - stdout/stderr capture enabled
+  - harness.exports with from=assert.function
 
 - Failure Modes:
-  - non-zero exit
-  - timeout
-  - entrypoint missing
+  - invalid export shape
+  - unresolvable export path
 
 - Examples:
-  - `type: cli.run`
+  - `type: contract.export`
 
 
 #### `contract.job`
 
-- Summary: Harness type profile declared in schema registry.
+- Summary: Executes harness.jobs metadata through contract-driven ops.job.dispatch.
 - Defaults:
-  - -
+  - dispatch from contract assertions
+  - summary_json output target
 
 - Failure Modes:
-  - schema validation failure
+  - missing job metadata
+  - dispatch helper error
 
 - Examples:
   - `type: contract.job`
-
-
-#### `docs.generate`
-
-- Summary: Generates docs surfaces from declared registry templates and data sources.
-- Defaults:
-  - strict template render
-  - mode=write/check
-
-- Failure Modes:
-  - template key missing
-  - generated drift in check mode
-
-- Examples:
-  - `type: docs.generate`
-
-
-#### `governance.check`
-
-- Summary: Runs governance scanner checks and exposes structured summary/violations.
-- Defaults:
-  - policy_evaluate required
-
-- Failure Modes:
-  - unknown check id
-  - scanner mismatch
-
-- Examples:
-  - `type: governance.check`
-
-
-#### `orchestration.run`
-
-- Summary: Orchestrates implementation effect ops via ops.* registry dispatch.
-- Defaults:
-  - ops capability checks required
-
-- Failure Modes:
-  - undeclared ops symbol
-  - capability denied
-
-- Examples:
-  - `type: orchestration.run`
-
-
-#### `spec.export`
-
-- Summary: Harness type profile declared in schema registry.
-- Defaults:
-  - -
-
-- Failure Modes:
-  - schema validation failure
-
-- Examples:
-  - `type: spec.export`
-
-
-#### `text.file`
-
-- Summary: Evaluates file text subjects using filesystem-backed harness extraction.
-- Defaults:
-  - path resolved from virtual-root model
-
-- Failure Modes:
-  - path missing
-  - decode failure
-
-- Examples:
-  - `type: text.file`
 <!-- GENERATED:END harness_type_catalog -->

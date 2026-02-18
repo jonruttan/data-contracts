@@ -5,10 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-013
 title: ci workflow uploads artifacts from canonical .artifacts path
-purpose: Ensures CI uploads gate and triage artifacts using a recursive .artifacts
-  path.
-type: governance.check
-check: runtime.ci_artifact_upload_paths_valid
+purpose: Ensures CI uploads gate and triage artifacts using a recursive .artifacts path.
+type: contract.check
 harness:
   root: .
   ci_artifact_upload:
@@ -26,12 +24,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.ci_artifact_upload_paths_valid
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

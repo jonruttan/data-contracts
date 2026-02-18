@@ -14,19 +14,6 @@ from spec_runner.docs_generators import (
 )
 from spec_runner.docs_template_engine import render_moustache
 
-GENERATOR_COMMANDS: dict[str, list[str]] = {
-    "docs_build_reference": ["scripts/docs_build_reference.py"],
-    "generate_schema_docs": ["scripts/generate_schema_docs.py"],
-    "generate_runner_api_catalog": ["scripts/generate_runner_api_catalog.py"],
-    "generate_harness_type_catalog": ["scripts/generate_harness_type_catalog.py"],
-    "generate_spec_lang_builtin_catalog": ["scripts/generate_spec_lang_builtin_catalog.py"],
-    "generate_policy_rule_catalog": ["scripts/generate_policy_rule_catalog.py"],
-    "generate_traceability_catalog": ["scripts/generate_traceability_catalog.py"],
-    "generate_governance_check_catalog": ["scripts/generate_governance_check_catalog.py"],
-    "generate_metrics_field_catalog": ["scripts/generate_metrics_field_catalog.py"],
-    "generate_spec_schema_field_catalog": ["scripts/generate_spec_schema_field_catalog.py"],
-}
-
 
 def resolve_docs_generate_harness_config(case_harness: dict[str, Any]) -> dict[str, Any]:
     cfg = case_harness.get("docs_generate")
@@ -80,22 +67,6 @@ def _subprocess_run(
             phase=phase,
         )
     return subprocess.run(command, cwd=root, check=False, capture_output=True, text=True)
-
-
-def run_legacy_generator(root: Path, surface: dict[str, Any], *, mode: str, profiler: object | None = None) -> None:
-    generator = str(surface.get("generator", "")).strip()
-    cmd = GENERATOR_COMMANDS.get(generator)
-    if not cmd:
-        return
-    py = root / ".venv/bin/python"
-    argv = [str(py if py.exists() else "python3"), *cmd]
-    if mode == "check":
-        argv.append("--check")
-    cp = _subprocess_run(command=argv, root=root, profiler=profiler, phase="docs.legacy_generator")
-    if cp.returncode != 0:
-        out = ((cp.stdout or "") + "\n" + (cp.stderr or "")).strip()
-        message = out or f"legacy generator failed: {' '.join(cmd)}"
-        raise RuntimeError(message)
 
 
 def load_source(root: Path, raw: dict[str, Any], *, profiler: object | None = None) -> tuple[str, Any]:
@@ -255,9 +226,7 @@ def run_docs_generation_op(
     if registry is None:
         message = "; ".join(x.render() for x in issues) if issues else "docs generator registry invalid"
         raise ValueError(message)
-    surface = surface_by_id(registry, surface_id)
-    if bool(cfg.get("legacy_generator", True)):
-        run_legacy_generator(root, surface, mode=mode, profiler=profiler)
+    _ = surface_by_id(registry, surface_id)
 
     template_path = resolve_virtual_path(root, template_path_raw, field="harness.docs_generate.template_path")
     output_path = resolve_virtual_path(root, output_path_raw, field="harness.docs_generate.output_path")
@@ -268,10 +237,6 @@ def run_docs_generation_op(
     data_sources = cfg.get("data_sources")
     if not isinstance(data_sources, list) or not data_sources:
         raise ValueError("harness.docs_generate.data_sources must be a non-empty list")
-    if mode == "check":
-        missing_artifacts = _missing_generated_artifact_paths(root, [x for x in data_sources if isinstance(x, dict)])
-        if missing_artifacts:
-            run_legacy_generator(root, surface, mode="write")
     sources: dict[str, Any] = {}
     for idx, raw in enumerate(data_sources):
         if not isinstance(raw, dict):

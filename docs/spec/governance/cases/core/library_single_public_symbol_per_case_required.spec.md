@@ -4,8 +4,7 @@
 id: SRGOV-LIB-SINGLE-001
 title: library cases use single public symbol granularity
 purpose: Ensures each spec_lang.export case defines exactly one symbol under defines.public.
-type: governance.check
-check: library.single_public_symbol_per_case_required
+type: contract.check
 harness:
   root: .
   chain:
@@ -17,14 +16,20 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: library.single_public_symbol_per_case_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - passed
-    - true
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - passed
+        - true
   target: summary_json
 ```

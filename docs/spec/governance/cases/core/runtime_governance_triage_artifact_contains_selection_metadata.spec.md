@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-012
 title: triage artifact includes selection metadata
-type: governance.check
+type: contract.check
 purpose: Ensures governance triage artifacts include selection_source and selected_prefixes
   metadata.
-check: runtime.governance_triage_artifact_contains_selection_metadata
 harness:
   root: .
   triage_artifact_selection_metadata:
@@ -27,12 +26,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.governance_triage_artifact_contains_selection_metadata
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

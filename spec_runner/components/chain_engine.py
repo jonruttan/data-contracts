@@ -437,9 +437,13 @@ def _compile_assert_function(
                     raise ValueError(
                         f"chain step {step.id} import {import_name} producer check {idx} must be expression mapping"
                     )
+                if set(raw_check.keys()) == {"evaluate"}:
+                    expr_raw = raw_check.get("evaluate")
+                else:
+                    expr_raw = raw_check
                 try:
                     expr = compile_yaml_expr_to_sexpr(
-                        raw_check,
+                        expr_raw,
                         field_path=f"harness.chain.steps[{step.id}].imports.{import_name}.producer_checks[{idx}]",
                     )
                 except SpecLangYamlAstError as exc:

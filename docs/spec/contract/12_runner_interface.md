@@ -88,13 +88,13 @@ Job dispatch contract:
 - Referenced case MUST resolve to `type: contract.job`.
 - `contract.job` dispatch MUST be contract-driven via `ops.job.dispatch`.
 - `contract.job` metadata MUST be declared under `harness.jobs.<name>`.
-- legacy singular `harness.job` fields are forbidden.
+- non-canonical singular `harness.job` fields are forbidden.
 - `ops.job.dispatch` MUST fail when capability `ops.job` is not declared.
 - nested dispatch is forbidden and MUST emit deterministic token
   `runtime.dispatch.nested_forbidden`.
-- `when` lifecycle hooks (`must|can|cannot|fail|complete`) are part of
+- `when` lifecycle hooks (`must|may|must_not|fail|complete`) are part of
   contract runtime semantics and MUST be honored in native evaluators.
-- legacy `harness.on` is forbidden.
+- non-canonical `harness.on` is forbidden.
 - class hooks run only after successful clause pass for matching class.
 - `fail` runs once on first failure; `complete` runs after all clauses and
   class hooks pass.

@@ -5,10 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-003
 title: ci gate summary uses governance triage and emits triage metadata
-purpose: Ensures both Python and Rust ci-gate-summary paths reference governance triage
-  flow.
-type: governance.check
-check: runtime.cigate_uses_governance_triage_required
+purpose: Ensures both Python and Rust ci-gate-summary paths reference governance triage flow.
+type: contract.check
 harness:
   root: .
   cigate_governance_triage:
@@ -33,12 +31,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.cigate_uses_governance_triage_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

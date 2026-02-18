@@ -1,7 +1,7 @@
 version: 1
-id: schema.registry.v1.type.spec_lang_library
+id: schema.registry.v1.type.contract_export
 type: type
-case_type: spec.export
+case_type: contract.export
 required_top_level:
   - contract
   - harness
@@ -14,5 +14,9 @@ fields:
     since: v1
   harness:
     type: mapping
+    required: false
+    since: v1
+  harness.exports:
+    type: list
     required: false
     since: v1

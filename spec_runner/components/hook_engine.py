@@ -32,9 +32,9 @@ def parse_on_hooks(*, raw_case: Mapping[str, Any]) -> dict[str, list[Any]]:
     harness = raw_case.get("harness")
     if isinstance(harness, Mapping):
         if "on" in harness:
-            raise ValueError("when.legacy_when_forbidden: harness.on is forbidden; use case.when")
+            raise ValueError("when.harness_on_forbidden: harness.on is not supported; use case.when")
         if "when" in harness:
-            raise ValueError("when.legacy_harness_when_forbidden: harness.when is forbidden; use case.when")
+            raise ValueError("when.harness_when_forbidden: harness.when is not supported; use case.when")
     elif harness is not None:
         raise ValueError("when.invalid_shape: harness must be a mapping when present")
     raw_when = raw_case.get("when")

@@ -5,7 +5,7 @@ import fnmatch
 import json
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 import yaml
 from spec_runner.codecs import load_external_cases
@@ -52,6 +52,19 @@ def _safe_ratio(num: float, den: float, *, default: float = 0.0) -> float:
     if den <= 0:
         return default
     return num / den
+
+
+def _is_governance_case(case: Mapping[str, Any]) -> bool:
+    case_type = str(case.get("type", "")).strip()
+    if case_type != "contract.check":
+        return False
+    harness = case.get("harness")
+    if not isinstance(harness, dict):
+        return False
+    check_cfg = harness.get("check")
+    if not isinstance(check_cfg, dict):
+        return False
+    return str(check_cfg.get("profile", "")).strip() == "governance.scan"
 
 
 def _summarize_segment(rows: list[dict[str, Any]], fields: list[str]) -> dict[str, Any]:
@@ -255,11 +268,7 @@ def _count_python_decision_branches(repo_root: Path) -> int:
     if not p.exists():
         return 0
     raw = p.read_text(encoding="utf-8")
-    patterns = (
-        "policy_evaluate returned false",
-        "ok = eval_predicate(policy_evaluate",
-        "if not ok:",
-    )
+    patterns = ("if not ok:",)
     return sum(raw.count(tok) for tok in patterns)
 
 
@@ -273,7 +282,7 @@ def _library_public_surface_ratio(repo_root: Path) -> tuple[float, int, int]:
         if not lib_file.is_file():
             continue
         for _doc_path, case in load_external_cases(lib_file, formats={"md"}):
-            if str(case.get("type", "")).strip() != "spec_lang.export":
+            if str(case.get("type", "")).strip() != "contract.export":
                 continue
             defines = case.get("defines")
             if not isinstance(defines, dict):
@@ -350,7 +359,6 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
             eval_leaf = sum(1 for op in ops if op == "evaluate")
             logic_ratio = 1.0 if total_leaf == 0 else _safe_ratio(eval_leaf, total_leaf, default=1.0)
             native_hint = False
-            has_policy_evaluate = _contains_key_recursive(case.get("harness"), "policy_evaluate")
             harness = case.get("harness")
             has_library_paths = False
             governance_symbol_resolution = 1.0
@@ -374,55 +382,22 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                             ):
                                 has_library_paths = True
                                 break
-                if case_type == "governance.check":
-                    raw_policy = harness.get("policy_evaluate")
-                    if isinstance(raw_policy, list):
-                        refs = {sym for sym in _collect_var_symbols(raw_policy) if "." in sym}
-                        if refs:
-                            available_symbols: set[str] = set()
-                            chain_cfg = harness.get("chain")
-                            if isinstance(chain_cfg, dict):
-                                imports_cfg = chain_cfg.get("imports")
-                                if isinstance(imports_cfg, list):
-                                    for item in imports_cfg:
-                                        if not isinstance(item, dict):
-                                            continue
-                                        names = item.get("names")
-                                        if isinstance(names, list):
-                                            for name in names:
-                                                s = str(name).strip()
-                                                if s:
-                                                    available_symbols.add(s)
-                                        alias_map = item.get("as")
-                                        if isinstance(alias_map, dict):
-                                            for dst in alias_map.values():
-                                                s = str(dst).strip()
-                                                if s:
-                                                    available_symbols.add(s)
-                            try:
-                                symbols = load_spec_lang_symbols_for_case(
-                                    doc_path=doc_path,
-                                    harness=harness,
-                                    limits=SpecLangLimits(),
-                                )
-                                available_symbols.update(symbols.keys())
-                            except Exception as exc:  # noqa: BLE001
-                                if not available_symbols:
-                                    governance_symbol_resolution = 0.0
-                                    errs.append(
-                                        f"{rel_path}: case {case_id} unable to load policy symbols ({exc})"
-                                    )
-                            else:
-                                pass
-                            unresolved = sorted(sym for sym in refs if sym not in available_symbols)
-                            if unresolved:
-                                governance_symbol_resolution = 0.0
-                                errs.append(
-                                    f"{rel_path}: case {case_id} unresolved policy symbols: "
-                                    + ", ".join(unresolved)
-                                )
-            if case_type == "governance.check":
-                native_hint = not has_policy_evaluate
+                if _is_governance_case(case):
+                    try:
+                        symbols = load_spec_lang_symbols_for_case(
+                            doc_path=doc_path,
+                            harness=harness,
+                            limits=SpecLangLimits(),
+                        )
+                        if not symbols:
+                            governance_symbol_resolution = 0.0
+                    except Exception as exc:  # noqa: BLE001
+                        governance_symbol_resolution = 0.0
+                        errs.append(
+                            f"{rel_path}: case {case_id} unable to load governance symbols ({exc})"
+                        )
+            if _is_governance_case(case):
+                native_hint = False
             rows.append(
                 {
                     "id": case_id,
@@ -431,11 +406,10 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
                     "segment": segment,
                     "logic_self_contained_ratio": logic_ratio,
                     "native_logic_escape_hint": 1.0 if native_hint else 0.0,
-                    "has_policy_evaluate": 1.0 if has_policy_evaluate else 0.0,
-                    "library_backed_policy": 1.0 if (case_type == "governance.check" and has_library_paths) else 0.0,
+                    "library_backed_policy": 1.0 if (_is_governance_case(case) and has_library_paths) else 0.0,
                     "library_backed_case": 1.0 if has_library_paths else 0.0,
                     "governance_symbol_resolution": governance_symbol_resolution
-                    if case_type == "governance.check"
+                    if _is_governance_case(case)
                     else 1.0,
                 }
             )
@@ -478,7 +452,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
     total = len(rows)
     overall_logic = _safe_ratio(sum(float(r["logic_self_contained_ratio"]) for r in rows), float(total), default=0.0)
     native_ratio = _safe_ratio(sum(float(r["native_logic_escape_hint"]) for r in rows), float(total), default=0.0)
-    gov_rows = [r for r in rows if str(r.get("type", "")).strip() == "governance.check"]
+    gov_rows = [r for r in rows if _is_governance_case(r)]
     gov_total = len(gov_rows)
     gov_library_ratio = _safe_ratio(
         sum(float(r.get("library_backed_policy", 0.0)) for r in gov_rows),
@@ -502,7 +476,7 @@ def spec_lang_adoption_report_jsonable(repo_root: Path, config: dict[str, Any] |
         seg_gov_rows = [
             r
             for r in rows
-            if str(r.get("segment", "")) == seg and str(r.get("type", "")).strip() == "governance.check"
+            if str(r.get("segment", "")) == seg and _is_governance_case(r)
         ]
         if not seg_gov_rows:
             summary["governance_symbol_resolution_ratio"] = 1.0
@@ -1205,17 +1179,6 @@ def _collect_portability_counter_shares(payload: dict[str, Any]) -> dict[str, fl
     }
 
 
-def _governance_policy_evaluate_coverage(payload: dict[str, Any]) -> float:
-    rows = payload.get("cases")
-    if not isinstance(rows, list):
-        return 0.0
-    gov_rows = [r for r in rows if isinstance(r, dict) and str(r.get("type", "")).strip() == "governance.check"]
-    if not gov_rows:
-        return 1.0
-    with_policy = sum(1 for r in gov_rows if float(r.get("has_policy_evaluate", 0.0)) > 0.0)
-    return float(with_policy) / float(len(gov_rows))
-
-
 def _sha256_file(path: Path) -> str:
     h = hashlib.sha256()
     h.update(path.read_bytes())
@@ -1340,7 +1303,6 @@ def objective_scorecard_report_jsonable(repo_root: Path, config: dict[str, Any] 
         "contract_assertions": contract_assertions,
         "derived": {
             **portability_counters,
-            "governance_policy_evaluate_coverage_ratio": _governance_policy_evaluate_coverage(spec_lang),
         },
     }
     report_errors: list[str] = [*manifest_errs]

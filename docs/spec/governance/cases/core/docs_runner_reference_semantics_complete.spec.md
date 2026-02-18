@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-GEN-024
 title: runner reference includes semantic sections
-purpose: Ensures generated runner API reference includes summary/defaults/failure
-  modes/examples per command.
-type: governance.check
-check: docs.runner_reference_semantics_complete
+purpose: Ensures generated runner API reference includes summary/defaults/failure modes/examples
+  per command.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,20 +19,26 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: docs.runner_reference_semantics_complete
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - docs.runner_reference_semantics_complete
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - docs.runner_reference_semantics_complete
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
   target: summary_json
 ```

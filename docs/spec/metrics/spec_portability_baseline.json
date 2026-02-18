@@ -2014,7 +2014,7 @@
     {
       "execution_coupling_ratio": 0.15000000000000002,
       "execution_portability_ratio": 0.85,
-      "file": "docs/spec/governance/cases/core/governance_policy_evaluate_required.spec.md",
+      "file": "docs/spec/governance/cases/core/governance_evaluate_required.spec.md",
       "id": "SRGOV-POLICY-REQ-001",
       "implementation_reliance_ratio": 0.6,
       "leaf_counts": {

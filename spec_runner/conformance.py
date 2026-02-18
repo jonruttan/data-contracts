@@ -33,8 +33,6 @@ _DEFAULT_CAPABILITIES: dict[str, set[str]] = {
     "python": {
         "api.http",
         "cli.run",
-        "assert.op.contain",
-        "assert.op.regex",
         "assert.op.evaluate",
         "evaluate.spec_lang.v1",
         "evaluate.spec_lang.ramda.v1",
@@ -51,8 +49,6 @@ _DEFAULT_CAPABILITIES: dict[str, set[str]] = {
     },
     "php": {
         "api.http",
-        "assert.op.contain",
-        "assert.op.regex",
         "assert.op.evaluate",
         "evaluate.spec_lang.v1",
         "assert.group.must",

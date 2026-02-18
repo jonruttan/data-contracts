@@ -5,10 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-GEN-002
 title: docs generator outputs are synchronized
-purpose: Ensures all registry-backed docs generator outputs are up-to-date in check
-  mode.
-type: governance.check
-check: docs.generator_outputs_sync
+purpose: Ensures all registry-backed docs generator outputs are up-to-date in check mode.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,20 +18,26 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: docs.generator_outputs_sync
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - docs.generator_outputs_sync
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - docs.generator_outputs_sync
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
   target: summary_json
 ```

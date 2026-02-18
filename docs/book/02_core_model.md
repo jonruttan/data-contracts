@@ -97,16 +97,20 @@ Good:
 
 ```yaml
 id: BK-CM-001
-type: cli.run
+type: contract.check
 harness:
-  entrypoint: /bin/echo
+  check:
+    profile: cli.run
+    config:
+      harness:
+        entrypoint: /bin/echo
 ```
 
 Bad:
 
 ```yaml
 id: BK-CM-002
-type: cli.run
+type: contract.check
 entrypoint: /bin/echo
 ```
 
@@ -115,7 +119,7 @@ entrypoint: /bin/echo
 Use `harness.chain` to declare prerequisite execution for any executable case
 type.
 
-- `steps[*].class` is required: `must`, `can`, `cannot`
+- `steps[*].class` is required: `MUST`, `MAY`, `MUST_NOT`
 - `steps[*].ref` uses scalar format `[path][#case_id]` or `#case_id`
 - `imports` can rename exported values for local use
 - chain assertions can target `chain_json`

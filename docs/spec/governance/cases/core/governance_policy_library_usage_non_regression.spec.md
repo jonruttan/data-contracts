@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-POLICY-LIB-001
 title: governance library-backed policy usage is non-regressing
-purpose: Enforces monotonic non-regression for governance policy expressions that
-  use shared spec-lang libraries.
-type: governance.check
-check: governance.policy_library_usage_non_regression
+purpose: Enforces monotonic non-regression for governance policy expressions that use shared
+  spec-lang libraries.
+type: contract.check
 harness:
   root: .
   policy_library_usage_non_regression:
@@ -41,27 +40,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: governance.policy_library_usage_non_regression
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - governance.policy_library_usage_non_regression
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - governance.policy_library_usage_non_regression
   target: summary_json
 ```

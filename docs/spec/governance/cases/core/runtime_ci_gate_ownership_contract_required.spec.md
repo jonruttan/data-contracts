@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-019
 title: ci gate ownership contract is single-source and broad-only in summary
-purpose: Ensures ci_gate.sh owns critical execution ordering and ci-gate-summary owns
-  broad governance only.
-type: governance.check
-check: runtime.ci_gate_ownership_contract_required
+purpose: Ensures ci_gate.sh owns critical execution ordering and ci-gate-summary owns broad
+  governance only.
+type: contract.check
 harness:
   root: .
   ci_gate_ownership_contract:
@@ -40,12 +39,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.ci_gate_ownership_contract_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

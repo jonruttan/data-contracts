@@ -137,7 +137,7 @@ def _walk_convert(node: Any, *, path: str = "") -> tuple[Any, bool]:
         out: dict[str, Any] = {}
         for k, v in node.items():
             key = str(k)
-            if key in {"evaluate", "policy_evaluate"}:
+            if key in {"evaluate"}:
                 converted = _convert_expr_list_value(v)
                 out_items: list[Any] = []
                 for idx, expr in enumerate(converted):
@@ -184,7 +184,7 @@ def _validate_expr_fields(node: Any, *, path: str = "") -> None:
         for k, v in node.items():
             key = str(k)
             current = f"{path}.{key}" if path else key
-            if key in {"evaluate", "policy_evaluate"}:
+            if key in {"evaluate"}:
                 if not isinstance(v, list) or not v:
                     raise SpecLangYamlAstError(f"{current}: expression list must be a non-empty list")
                 compile_yaml_expr_list(v, field_path=current)
@@ -212,7 +212,7 @@ def _contains_expr_fields(node: Any) -> bool:
     if isinstance(node, dict):
         for k, v in node.items():
             key = str(k)
-            if key in {"evaluate", "policy_evaluate", "defines"}:
+            if key in {"evaluate", "defines"}:
                 return True
             if _contains_expr_fields(v):
                 return True

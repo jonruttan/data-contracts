@@ -18,7 +18,7 @@ Governance policy reuse:
 
 - `type: governance.check` cases MUST load library symbols through
   `harness.chain` library-symbol exports/imports and MUST call exported
-  library symbols from `policy_evaluate`.
+  library symbols from `evaluate`.
 
 Library paths:
 

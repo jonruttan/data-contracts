@@ -211,7 +211,6 @@ jobs:
 
       - name: Run core gate with Rust adapter interface
         id: rust_core_gate
-        continue-on-error: true
         env:
           SPEC_RUNNER_BIN: ./scripts/runner_adapter.sh
           SPEC_RUNNER_IMPL: rust

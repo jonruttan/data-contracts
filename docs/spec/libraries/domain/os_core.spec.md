@@ -4,16 +4,18 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-OS-001-001-DOMAIN-OS-EXEC-OK
-type: spec.export
+type: contract.export
 contract:
 - id: __export__domain.os.exec_ok
   class: MUST
   asserts:
-  - std.logic.eq:
-    - ops.os.exec:
-      - var: command
-      - var: timeout_ms
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - ops.os.exec:
+          - {var: command}
+          - {var: timeout_ms}
+        - 0
 harness:
   exports:
   - as: domain.os.exec_ok
@@ -27,18 +29,20 @@ harness:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE
-type: spec.export
+type: contract.export
 contract:
 - id: __export__domain.os.exec_capture_code
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - ops.os.exec_capture:
-        - var: command
-        - var: timeout_ms
-      - code
-    - var: expected_code
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - ops.os.exec_capture:
+            - {var: command}
+            - {var: timeout_ms}
+          - code
+        - {var: expected_code}
 harness:
   exports:
   - as: domain.os.exec_capture_code
@@ -53,13 +57,15 @@ harness:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS
-type: spec.export
+type: contract.export
 contract:
 - id: __export__domain.os.env_has
   class: MUST
   asserts:
-  - ops.os.env_has:
-    - var: key
+  - evaluate:
+    - lit:
+        ops.os.env_has:
+        - {var: key}
 harness:
   exports:
   - as: domain.os.env_has

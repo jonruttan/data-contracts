@@ -5,18 +5,20 @@
 ```yaml contract-spec
 id: LIB-DOMAIN-PY-001
 title: python projection helper functions
-type: spec.export
+type: contract.export
 contract:
 - id: __export__py.is_tuple_projection
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - std.object.get:
-        - var: subject
-        - meta
-      - native_kind
-    - python.tuple
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - std.object.get:
+            - {var: subject}
+            - meta
+          - native_kind
+        - python.tuple
 harness:
   exports:
   - as: py.is_tuple_projection

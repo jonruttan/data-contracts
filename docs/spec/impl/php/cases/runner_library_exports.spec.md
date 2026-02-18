@@ -6,7 +6,7 @@
 id: SRPHP-RUN-LIB-001
 title: impl assertion library exports are referenced by impl fixtures
 purpose: References impl assertion library exports for governance usage tracking.
-type: text.file
+type: contract.check
 harness:
   chain:
     steps:
@@ -19,6 +19,9 @@ harness:
       - impl.assert.contains
       - impl.assert.json_type
       - impl.assert.regex
+  check:
+    profile: text.file
+    config: {}
 expect:
   portable:
     status: pass
@@ -27,8 +30,10 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - '# PHP Spec Runner Library Export References'
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - '# PHP Spec Runner Library Export References'
   target: text
 ```

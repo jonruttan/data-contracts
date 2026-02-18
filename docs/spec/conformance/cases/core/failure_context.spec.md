@@ -8,9 +8,9 @@ debugging and parity checks remain deterministic.
 ```yaml contract-spec
 id: SRCONF-ERR-001
 title: failing assertion includes context tokens in message
-purpose: Guarantees failure messages carry deterministic context tokens for debugging
-  and parity.
-type: text.file
+purpose: Guarantees failure messages carry deterministic context tokens for debugging and
+  parity.
+type: contract.check
 expect:
   portable:
     status: fail
@@ -24,8 +24,14 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.regex_match:
-    - var: subject
-    - \A\Z
+  - evaluate:
+    - lit:
+        std.string.regex_match:
+        - {var: subject}
+        - \A\Z
   target: text
+harness:
+  check:
+    profile: text.file
+    config: {}
 ```

@@ -4,11 +4,10 @@
 
 ```yaml contract-spec
 id: SRGOV-ARCH-COMPONENTS-002
-title: legacy harness workflow duplication is forbidden
-purpose: Prevents harness modules from reintroducing local spec-lang setup and direct
-  assertion-evaluation glue after component hard cut.
-type: governance.check
-check: architecture.harness_local_workflow_duplication_forbidden
+title: non-canonical harness workflow duplication is forbidden
+purpose: Prevents harness modules from reintroducing local spec-lang setup and direct assertion-evaluation
+  glue after component hard cut.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,13 +19,19 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: architecture.harness_local_workflow_duplication_forbidden
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```
 

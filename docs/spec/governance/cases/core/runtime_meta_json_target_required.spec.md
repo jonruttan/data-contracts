@@ -6,8 +6,7 @@
 id: SRGOV-RUNTIME-META-TARGET-001
 title: executable harnesses expose meta_json assertion target
 purpose: Ensures all core executable harness adapters project meta_json.
-type: governance.check
-check: runtime.meta_json_target_required
+type: contract.check
 harness:
   root: .
   meta_json_targets:
@@ -19,12 +18,18 @@ harness:
     - /spec_runner/harnesses/api_http.py
     required_tokens:
     - meta_json
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.meta_json_target_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

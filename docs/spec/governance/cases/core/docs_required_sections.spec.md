@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-REF-003
 title: key reference chapters include required sections
-purpose: Keeps the core reference pages structurally complete by requiring stable
-  section tokens for author and implementer workflows.
-type: governance.check
-check: docs.required_sections
+purpose: Keeps the core reference pages structurally complete by requiring stable section
+  tokens for author and implementer workflows.
+type: contract.check
 harness:
   root: .
   required_sections:
@@ -59,27 +58,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: docs.required_sections
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - docs.required_sections
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - docs.required_sections
   target: summary_json
 ```

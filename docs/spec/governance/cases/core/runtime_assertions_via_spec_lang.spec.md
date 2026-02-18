@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-ASSERT-001
 title: runtime assertion paths compile and evaluate through spec-lang
-purpose: Enforces that runner assertion semantics route through spec-lang expression
-  evaluation and avoid direct ad-hoc contain or regex execution paths.
-type: governance.check
-check: runtime.assertions_via_spec_lang
+purpose: Enforces that runner assertion semantics route through spec-lang expression evaluation
+  and avoid direct ad-hoc contain or regex execution paths.
+type: contract.check
 harness:
   root: .
   assert_engine:
@@ -64,27 +63,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.assertions_via_spec_lang
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - runtime.assertions_via_spec_lang
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - runtime.assertions_via_spec_lang
   target: summary_json
 ```

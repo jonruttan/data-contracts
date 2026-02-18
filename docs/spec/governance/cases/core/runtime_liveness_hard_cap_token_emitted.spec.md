@@ -5,10 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-LIVENESS-HARDCAP-001
 title: run trace includes hard-cap and kill escalation reason tokens
-purpose: Ensures emergency hard-cap watchdog behavior is represented in trace token
-  taxonomy.
-type: governance.check
-check: runtime.liveness_hard_cap_token_emitted
+purpose: Ensures emergency hard-cap watchdog behavior is represented in trace token taxonomy.
+type: contract.check
 harness:
   root: .
   liveness_trace_tokens:
@@ -22,12 +20,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.liveness_hard_cap_token_emitted
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

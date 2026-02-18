@@ -6,8 +6,7 @@
 id: SRGOV-RUNTIME-HOOKS-003
 title: when fail hook must run once on first failure
 purpose: Ensures fail hook guard and fail-handler token behavior are present.
-type: governance.check
-check: runtime.when_fail_hook_required_behavior
+type: contract.check
 harness:
   root: .
   when_fail:
@@ -17,12 +16,18 @@ harness:
     - if fail_hook_ran
     - runtime.on_hook.fail_handler_failed
     - '"fail"'
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.when_fail_hook_required_behavior
 contract:
 - id: assert_1
   class: MUST
   target: violation_count
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
 ```

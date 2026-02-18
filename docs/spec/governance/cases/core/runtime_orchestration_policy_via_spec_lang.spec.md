@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-ORCH-001
 title: gate orchestration verdict is policy-driven via spec-lang
-purpose: Ensures CI gate summary determines final verdict from assert-derived step
-  statuses without policy_evaluate expressions.
-type: governance.check
-check: runtime.orchestration_policy_via_spec_lang
+purpose: Ensures CI gate summary determines final verdict from assert-derived step statuses
+  without evaluate expressions.
+type: contract.check
 harness:
   root: .
   orchestration_policy:
@@ -32,27 +31,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.orchestration_policy_via_spec_lang
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - runtime.orchestration_policy_via_spec_lang
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - runtime.orchestration_policy_via_spec_lang
   target: summary_json
 ```

@@ -7,8 +7,7 @@ id: SRGOV-RUNTIME-PREPUSH-003
 title: managed pre-push hook enforces local parity gate
 purpose: Ensures repository-managed pre-push hook exists and is installable via canonical
   script.
-type: governance.check
-check: runtime.git_hook_prepush_enforced
+type: contract.check
 harness:
   root: .
   git_hook_prepush:
@@ -24,12 +23,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.git_hook_prepush_enforced
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

@@ -5,10 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-004
 title: triage artifacts are emitted by triage and gate flows
-purpose: Ensures triage artifacts are produced and referenced by governance-triage
-  and ci-gate-summary.
-type: governance.check
-check: runtime.triage_artifacts_emitted_required
+purpose: Ensures triage artifacts are produced and referenced by governance-triage and ci-gate-summary.
+type: contract.check
 harness:
   root: .
   triage_artifacts:
@@ -27,12 +25,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.triage_artifacts_emitted_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

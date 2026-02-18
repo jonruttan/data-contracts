@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-REF-004
 title: reference examples parse or are explicitly opted out
-purpose: Ensures reference examples are trustworthy by requiring parseable or statically
-  valid fenced examples unless explicitly opted out.
-type: governance.check
-check: docs.examples_runnable
+purpose: Ensures reference examples are trustworthy by requiring parseable or statically valid
+  fenced examples unless explicitly opted out.
+type: contract.check
 harness:
   root: .
   docs_examples:
@@ -30,27 +29,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: docs.examples_runnable
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - docs.examples_runnable
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - docs.examples_runnable
   target: summary_json
 ```

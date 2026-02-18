@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-APIHTTP-007
 title: api.http scenario roundtrip support remains present
-purpose: Ensures requests-list roundtrip support, step templating, and steps_json
-  targeting remain implemented.
-type: governance.check
-check: runtime.api_http_scenario_roundtrip
+purpose: Ensures requests-list roundtrip support, step templating, and steps_json targeting
+  remain implemented.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,21 +19,29 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.api_http_scenario_roundtrip
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - check_id
-    - runtime.api_http_scenario_roundtrip
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - check_id
+        - runtime.api_http_scenario_roundtrip
   target: summary_json
 ```

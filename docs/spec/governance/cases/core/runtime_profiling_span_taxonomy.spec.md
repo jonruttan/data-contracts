@@ -7,8 +7,7 @@ id: SRGOV-PROFILE-SPANS-001
 title: run trace records required span taxonomy for timeout diagnosis
 purpose: Ensures the canonical run trace includes required run, case, check, and subprocess
   spans used by timeout diagnostics.
-type: governance.check
-check: runtime.profiling_span_taxonomy
+type: contract.check
 harness:
   root: .
   profiling_span_taxonomy:
@@ -31,13 +30,19 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.profiling_span_taxonomy
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```
 

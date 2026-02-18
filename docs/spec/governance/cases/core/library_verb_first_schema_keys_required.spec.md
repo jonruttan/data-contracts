@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-LIB-VERB-001
 title: library schema uses verb-first key names
-purpose: Ensures spec_lang.export authoring uses defines.public/defines.private and
-  rejects legacy definitions keys.
-type: governance.check
-check: library.verb_first_schema_keys_required
+purpose: Ensures spec_lang.export authoring uses defines.public/defines.private and rejects
+  non-canonical definitions keys.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,14 +19,20 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: library.verb_first_schema_keys_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - check_id
-    - library.verb_first_schema_keys_required
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - check_id
+        - library.verb_first_schema_keys_required
   target: summary_json
 ```

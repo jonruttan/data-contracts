@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUST-PRIMARY-006
 title: rust-primary adapter executes success-path smoke command deterministically
-purpose: Ensures the Rust adapter can execute a supported success-path command with
-  deterministic success output and exit-code behavior.
-type: governance.check
-check: runtime.rust_adapter_exec_smoke
+purpose: Ensures the Rust adapter can execute a supported success-path command with deterministic
+  success output and exit-code behavior.
+type: contract.check
 harness:
   root: .
   rust_adapter_exec_smoke:
@@ -32,27 +31,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.rust_adapter_exec_smoke
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - runtime.rust_adapter_exec_smoke
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - runtime.rust_adapter_exec_smoke
   target: summary_json
 ```

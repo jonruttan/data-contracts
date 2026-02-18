@@ -5,10 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-002
 title: prepush lane uses governance triage entrypoint
-purpose: Ensures prepush parity lane calls governance triage instead of direct broad
-  governance.
-type: governance.check
-check: runtime.prepush_uses_governance_triage_required
+purpose: Ensures prepush parity lane calls governance triage instead of direct broad governance.
+type: contract.check
 harness:
   root: .
   prepush_governance_triage:
@@ -27,12 +25,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.prepush_uses_governance_triage_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

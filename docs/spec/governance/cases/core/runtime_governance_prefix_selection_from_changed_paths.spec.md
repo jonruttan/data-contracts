@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-011
 title: governance triage selects prefixes from changed paths
-type: governance.check
-purpose: Ensures triage auto mode derives targeted check prefixes from changed paths
-  before fallback prefixes.
-check: runtime.governance_prefix_selection_from_changed_paths
+type: contract.check
+purpose: Ensures triage auto mode derives targeted check prefixes from changed paths before
+  fallback prefixes.
 harness:
   root: .
   triage_prefix_selection:
@@ -27,12 +26,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.governance_prefix_selection_from_changed_paths
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-005
 title: triage parser derives failing check ids and prefixes
-purpose: Ensures triage script parses governance ERROR lines and maps check ids to
-  check-prefix retries.
-type: governance.check
-check: runtime.triage_failure_id_parsing_required
+purpose: Ensures triage script parses governance ERROR lines and maps check ids to check-prefix
+  retries.
+type: contract.check
 harness:
   root: .
   triage_failure_parser:
@@ -27,12 +26,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.triage_failure_id_parsing_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-LIVENESS-STALL-001
 title: run trace contains liveness stall reason tokens
-purpose: Ensures watchdog reason tokens for runner/subprocess stall semantics are
-  observable in run trace artifacts.
-type: governance.check
-check: runtime.liveness_stall_token_emitted
+purpose: Ensures watchdog reason tokens for runner/subprocess stall semantics are observable
+  in run trace artifacts.
+type: contract.check
 harness:
   root: .
   liveness_trace_tokens:
@@ -25,12 +24,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.liveness_stall_token_emitted
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

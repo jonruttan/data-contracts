@@ -6,8 +6,7 @@
 id: SRGOV-REF-TOKENS-001
 title: configured token anchors exist
 purpose: Ensures configured token anchors resolve to existing files and token matches.
-type: governance.check
-check: reference.token_anchors_exist
+type: contract.check
 harness:
   root: .
   token_anchors:
@@ -24,14 +23,20 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: reference.token_anchors_exist
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - check_id
-    - reference.token_anchors_exist
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - check_id
+        - reference.token_anchors_exist
   target: summary_json
 ```

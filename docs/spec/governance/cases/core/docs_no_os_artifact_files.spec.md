@@ -6,8 +6,7 @@
 id: SRGOV-DOCS-LAYOUT-005
 title: docs tree excludes OS/editor artifact files
 purpose: Prevents tracked filesystem artifacts (for example .DS_Store) in docs surfaces.
-type: governance.check
-check: docs.no_os_artifact_files
+type: contract.check
 harness:
   root: .
   chain:
@@ -19,20 +18,26 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: docs.no_os_artifact_files
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - docs.no_os_artifact_files
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - docs.no_os_artifact_files
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
   target: summary_json
 ```

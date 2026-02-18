@@ -6,8 +6,7 @@
 id: SRGOV-NORM-PATHS-001
 title: scoped spec paths use canonical virtual-root form
 purpose: Ensures path-bearing spec fields use canonical virtual-root `/...` form.
-type: governance.check
-check: normalization.virtual_root_paths_only
+type: contract.check
 harness:
   root: .
   chain:
@@ -19,14 +18,20 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: normalization.virtual_root_paths_only
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - check_id
-    - normalization.virtual_root_paths_only
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - check_id
+        - normalization.virtual_root_paths_only
   target: summary_json
 ```

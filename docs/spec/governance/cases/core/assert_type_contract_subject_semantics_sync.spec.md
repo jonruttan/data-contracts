@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-ASSERT-SUBJECT-001
 title: type contracts define subject semantics
-purpose: Ensures harness and type contracts define target subject semantics and avoid
-  per-type operator allowlists.
-type: governance.check
-check: assert.type_contract_subject_semantics_sync
+purpose: Ensures harness and type contracts define target subject semantics and avoid per-type
+  operator allowlists.
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,27 +19,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: assert.type_contract_subject_semantics_sync
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - assert.type_contract_subject_semantics_sync
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - assert.type_contract_subject_semantics_sync
   target: summary_json
 ```

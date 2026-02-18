@@ -54,7 +54,7 @@ Internal execution model:
 
 - `evaluate` is the assertion leaf operator used under `contract`.
 - Governance/orchestration decision obligations are encoded in `contract` blocks.
-- `harness.policy_evaluate` and `harness.orchestration_policy.policy_evaluate`
+- `harness.evaluate` and `harness.orchestration_policy.evaluate`
   are forbidden in executable contracts.
 
 ## Governance Assertion Targets

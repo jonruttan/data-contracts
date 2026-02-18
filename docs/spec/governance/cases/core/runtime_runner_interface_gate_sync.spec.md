@@ -5,10 +5,9 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-CONFIG-003
 title: gate scripts call runner interface boundary
-purpose: Ensures gate scripts call a runner command boundary instead of hardcoding
-  Python implementation entrypoints.
-type: governance.check
-check: runtime.runner_interface_gate_sync
+purpose: Ensures gate scripts call a runner command boundary instead of hardcoding Python
+  implementation entrypoints.
+type: contract.check
 harness:
   root: .
   runner_interface:
@@ -38,27 +37,35 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.runner_interface_gate_sync
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
-  - MUST:
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - passed
-      - true
-    - std.logic.eq:
-      - std.object.get:
-        - var: subject
-        - check_id
-      - runtime.runner_interface_gate_sync
+  - evaluate:
+    - lit:
+        MUST:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
+        - std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - runtime.runner_interface_gate_sync
   target: summary_json
 ```

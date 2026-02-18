@@ -5,38 +5,46 @@
 ```yaml contract-spec
 id: LIB-POLICY-001
 title: policy-core reusable governance predicates
-type: spec.export
+type: contract.export
 contract:
 - id: __export__policy.pass_when_no_violations
   class: MUST
   asserts:
-  - std.collection.is_empty:
-    - std.object.get:
-      - var: subject
-      - violations
+  - evaluate:
+    - lit:
+        std.collection.is_empty:
+        - std.object.get:
+          - {var: subject}
+          - violations
 - id: __export__policy.fail_when_has_violations
   class: MUST
   asserts:
-  - std.logic.not:
-    - call:
-      - var: policy.pass_when_no_violations
-      - var: subject
+  - evaluate:
+    - lit:
+        std.logic.not:
+        - call:
+          - {var: policy.pass_when_no_violations}
+          - {var: subject}
 - id: __export__policy.check_id_is
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - check_id
-    - var: expected
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - check_id
+        - {var: expected}
 - id: __export__policy.violation_count_is
   class: MUST
   asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - var: subject
-      - violation_count
-    - var: expected
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - std.object.get:
+          - {var: subject}
+          - violation_count
+        - {var: expected}
 harness:
   exports:
   - as: policy.pass_when_no_violations

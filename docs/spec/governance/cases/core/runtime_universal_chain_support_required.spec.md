@@ -7,8 +7,7 @@ id: SRGOV-CHAIN-010
 title: universal chain support is present in dispatcher
 purpose: Ensures all executable task types execute through shared harness.chain orchestration
   in dispatcher.
-type: governance.check
-check: runtime.universal_chain_support_required
+type: contract.check
 harness:
   root: .
   chain:
@@ -20,12 +19,18 @@ harness:
     - from: lib_policy_core_spec
       names:
       - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.universal_chain_support_required
 contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - 0
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - 0
   target: violation_count
 ```

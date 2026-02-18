@@ -6,12 +6,15 @@
 id: SRPHP-PORT-001
 title: shell command via sh -c works when shell exists
 purpose: Captures a shell-based cli.run case to detect environments where sh is unavailable.
-type: cli.run
-argv:
-- echo port-shell-ok
-exit_code: 0
+type: contract.check
 harness:
   entrypoint: /bin/sh -c
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - echo port-shell-ok
+      exit_code: 0
 expect:
   portable:
     status: pass
@@ -20,9 +23,11 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - port-shell-ok
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - port-shell-ok
   target: stdout
 ```
 
@@ -31,17 +36,19 @@ contract:
 ```yaml contract-spec
 id: SRPHP-PORT-002
 title: process env passthrough remains stringly typed
-purpose: Verifies env values passed through cli.run are observed as strings by child
-  processes.
-type: cli.run
-argv:
-- echo x:$X_PORT_BOOL y:$X_PORT_NUM
-exit_code: 0
+purpose: Verifies env values passed through cli.run are observed as strings by child processes.
+type: contract.check
 harness:
   entrypoint: /bin/sh -c
   env:
     X_PORT_BOOL: 'true'
     X_PORT_NUM: '7'
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - echo x:$X_PORT_BOOL y:$X_PORT_NUM
+      exit_code: 0
 expect:
   portable:
     status: pass
@@ -50,9 +57,11 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - x:true y:7
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - x:true y:7
   target: stdout
 ```
 
@@ -62,12 +71,15 @@ contract:
 id: SRPHP-PORT-003
 title: relative stdout path resolves from runner cwd
 purpose: Detects portability differences in cwd/path handling for stdout_path assertions.
-type: cli.run
-argv:
-- docs/spec/impl/php/cases/fixtures/path_target.txt
-exit_code: 0
+type: contract.check
 harness:
   entrypoint: /bin/echo
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - docs/spec/impl/php/cases/fixtures/path_target.txt
+      exit_code: 0
 expect:
   portable:
     status: pass
@@ -76,8 +88,10 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - std.string.contains:
-    - var: subject
-    - path_target.txt
+  - evaluate:
+    - lit:
+        std.string.contains:
+        - {var: subject}
+        - path_target.txt
   target: stdout_path
 ```

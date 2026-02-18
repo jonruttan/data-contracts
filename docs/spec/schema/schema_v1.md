@@ -140,8 +140,8 @@ Governance assertion contract:
 
 - For `type: governance.check` cases, decision obligations MUST be encoded in
   `contract` blocks.
-- `harness.policy_evaluate` and
-  `harness.orchestration_policy.policy_evaluate` are forbidden.
+- `harness.evaluate` and
+  `harness.orchestration_policy.evaluate` are forbidden.
 - Extractors may emit candidate violations and subject payloads, but MUST NOT
   be the source of final decision truth.
 
@@ -299,8 +299,8 @@ For `type: docs.generate`, supported `harness` keys include:
       - `#case_id` with no preceding path is valid and resolves in current doc
       - case id fragment must match `[A-Za-z0-9._:-]+` when present
       - YAML authors should quote hash-only refs (for example `ref: "#CASE-1"`)
-    - `imports` (forbidden legacy location)
-    - `exports` (forbidden legacy location)
+    - `imports` (forbidden non-canonical location)
+    - `exports` (forbidden non-canonical location)
     - `allow_continue` (bool, optional, default `false`)
 - `exports` (list, optional): producer-owned export declarations
   - each entry:
@@ -309,7 +309,7 @@ For `type: docs.generate`, supported `harness` keys include:
     - `path` (string, required for `from: assert.function`)
     - `params` (list[string], optional; non-empty when provided)
     - `required` (bool, optional; default `true`)
-  - legacy key `from_target` is forbidden
+  - non-canonical key `from_target` is forbidden
 - `imports` (list[mapping], optional)
   - each import:
     - `from` (string, required): source step id
@@ -331,7 +331,7 @@ Chain execution model:
 - all executable case types may declare `harness.chain`.
 - chain state sharing is explicit via step-level `imports` + `harness.chain.imports`.
 - top-level `chain` and type-specific `*.chain` aliases are forbidden.
-- scalar `ref` is the only supported reference format; legacy mapping refs are
+- scalar `ref` is the only supported reference format; non-canonical mapping refs are
   invalid.
 
 Chain template interpolation:
@@ -410,7 +410,7 @@ Each step requires:
 Legacy lowercase contract class/group forms (`must`, `can`, `cannot`) are
 forbidden.
 
-Checks are legacy assertion nodes:
+Checks are non-canonical assertion nodes:
 
 - group mapping with exactly one of `MUST` / `MAY` / `MUST_NOT`
 - leaf mapping with operator keys and list values
@@ -529,7 +529,7 @@ contract:
 `when` lifecycle hooks (v1):
 
 - optional `when` mapping on executable cases
-- legacy `harness.on` is forbidden (hard cut)
+- non-canonical `harness.on` is forbidden (hard cut)
 - allowed keys:
   - `must`
   - `can`
@@ -562,7 +562,7 @@ Dispatch contract:
 
 - dispatch is contract-driven using `ops.job.dispatch`
 - dispatch metadata is read from `harness.jobs.<name>`
-- `harness.job` legacy singular form is forbidden
+- `harness.job` non-canonical singular form is forbidden
 - `ops.job.dispatch` requires `harness.spec_lang.capabilities` to include `ops.job`
 
 Job ref grammar:

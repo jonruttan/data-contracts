@@ -7,14 +7,16 @@ It provides producer cases referenced by conformance negative tests.
 
 ```yaml contract-spec
 id: BAD-EXPORT-PATH
-type: spec.export
+type: contract.export
 contract:
 - id: valid_step
   class: MUST
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - var: subject
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - {var: subject}
 harness:
   exports:
   - as: bad.path.symbol
@@ -29,14 +31,16 @@ harness:
 
 ```yaml contract-spec
 id: BAD-EXPORT-CLASS
-type: spec.export
+type: contract.export
 contract:
 - id: non_must_step
   class: MAY
   asserts:
-  - std.logic.eq:
-    - var: subject
-    - var: subject
+  - evaluate:
+    - lit:
+        std.logic.eq:
+        - {var: subject}
+        - {var: subject}
 harness:
   exports:
   - as: bad.class.symbol

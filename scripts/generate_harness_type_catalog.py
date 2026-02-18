@@ -27,40 +27,20 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
         raise ValueError("; ".join(errs))
     profiles = dict(compiled.get("type_profiles") or {})
     semantics: dict[str, dict[str, Any]] = {
-        "text.file": {
-            "summary": "Evaluates file text subjects using filesystem-backed harness extraction.",
-            "defaults": ["path resolved from virtual-root model"],
-            "failure_modes": ["path missing", "decode failure"],
+        "contract.check": {
+            "summary": "Runs canonical contract checks using harness.check profiles.",
+            "defaults": ["evaluate-only assertions", "MUST/MAY/MUST_NOT class semantics"],
+            "failure_modes": ["unknown check profile", "invalid check config"],
         },
-        "cli.run": {
-            "summary": "Executes command processes and asserts over output/exit context.",
-            "defaults": ["stdout/stderr capture enabled"],
-            "failure_modes": ["non-zero exit", "timeout", "entrypoint missing"],
+        "contract.export": {
+            "summary": "Declares reusable contract symbol exports for chain imports.",
+            "defaults": ["harness.exports with from=assert.function"],
+            "failure_modes": ["invalid export shape", "unresolvable export path"],
         },
-        "api.http": {
-            "summary": "Performs HTTP requests with deterministic mode and optional live mode.",
-            "defaults": ["mode=deterministic", "auth=none"],
-            "failure_modes": ["request transport failure", "oauth config mismatch"],
-        },
-        "governance.check": {
-            "summary": "Runs governance scanner checks and exposes structured summary/violations.",
-            "defaults": ["policy_evaluate required"],
-            "failure_modes": ["unknown check id", "scanner mismatch"],
-        },
-        "spec_lang.export": {
-            "summary": "Declares reusable spec-lang symbols for evaluate/policy_evaluate expressions.",
-            "defaults": ["mapping-AST defines only"],
-            "failure_modes": ["duplicate symbol export", "invalid definition shape"],
-        },
-        "orchestration.run": {
-            "summary": "Orchestrates implementation effect ops via ops.* registry dispatch.",
-            "defaults": ["ops capability checks required"],
-            "failure_modes": ["undeclared ops symbol", "capability denied"],
-        },
-        "docs.generate": {
-            "summary": "Generates docs surfaces from declared registry templates and data sources.",
-            "defaults": ["strict template render", "mode=write/check"],
-            "failure_modes": ["template key missing", "generated drift in check mode"],
+        "contract.job": {
+            "summary": "Executes harness.jobs metadata through contract-driven ops.job.dispatch.",
+            "defaults": ["dispatch from contract assertions", "summary_json output target"],
+            "failure_modes": ["missing job metadata", "dispatch helper error"],
         },
     }
 

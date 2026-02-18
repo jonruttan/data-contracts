@@ -602,7 +602,7 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         .cloned()
         .unwrap_or_default();
     if harness.contains_key(&YamlValue::String("job".to_string())) {
-        eprintln!("ERROR: contract.job forbids legacy harness.job; use harness.jobs metadata map");
+        eprintln!("ERROR: contract.job requires harness.jobs metadata map");
         return 1;
     }
     let jobs_yaml = match harness.get(&YamlValue::String("jobs".to_string())) {
@@ -665,11 +665,11 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
 
     let mut hook_exprs: HashMap<String, Vec<Value>> = HashMap::new();
     if harness.contains_key(&YamlValue::String("on".to_string())) {
-        eprintln!("ERROR: when.legacy_when_forbidden: harness.on is forbidden; use case.when");
+        eprintln!("ERROR: when.harness_on_forbidden: harness.on is not supported; use case.when");
         return 1;
     }
     if harness.contains_key(&YamlValue::String("when".to_string())) {
-        eprintln!("ERROR: when.legacy_harness_when_forbidden: harness.when is forbidden; use case.when");
+        eprintln!("ERROR: when.harness_when_forbidden: harness.when is not supported; use case.when");
         return 1;
     }
     if let Some(raw_when_value) = case_map.get(&YamlValue::String("when".to_string())) {
@@ -780,7 +780,7 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                     "violation_count" => Value::Number(failed_clauses.into()),
                     _ => summary_json.clone(),
                 };
-                let expr = yaml_to_json(raw_expr);
+                let expr = yaml_to_json(&unwrap_evaluate_yaml_expr(raw_expr));
                 let result = match eval_mapping_ast_with_state(
                     &expr,
                     subject.clone(),
@@ -974,7 +974,7 @@ fn run_job_for_command(root: &Path, subcommand: &str, forwarded: &[String]) -> i
 
 fn ensure_validate_report_export_contract(case_block: &str, spec_ref: &str) -> Result<(), String> {
     let required_tokens = [
-        "type: spec.export",
+        "type: contract.export",
         "as: domain.conformance.validate_report_errors",
         "from: assert.function",
         "path: /__export__domain.conformance.validate_report_errors",
@@ -1064,7 +1064,7 @@ fn parse_validate_report_expr_from_case(case_block: &str, spec_ref: &str) -> Res
                 "producer asserts must contain exactly one expression: {target_step_id}"
             ));
         }
-        return Ok(yaml_to_json(&check_seq[0]));
+        return Ok(yaml_to_json(&unwrap_evaluate_yaml_expr(&check_seq[0])));
     }
     Err(format!(
         "producer step not found in {spec_ref}: {target_step_id}"
@@ -1085,6 +1085,17 @@ fn validate_report_payload(payload: &Value, expr: &Value) -> Vec<String> {
         Ok(_) => vec!["validate_report expression must return list".to_string()],
         Err(e) => vec![format!("spec_lang error: {}", e.message)],
     }
+}
+
+fn unwrap_evaluate_yaml_expr(raw_expr: &YamlValue) -> YamlValue {
+    if let YamlValue::Mapping(map) = raw_expr {
+        if map.len() == 1 {
+            if let Some(inner) = map.get(&YamlValue::String("evaluate".to_string())) {
+                return inner.clone();
+            }
+        }
+    }
+    raw_expr.clone()
 }
 
 fn run_validate_report_native(root: &Path, forwarded: &[String]) -> i32 {
@@ -2322,7 +2333,7 @@ mod tests {
 before
 ```yaml contract-spec
 id: CASE-1
-type: governance.check
+type: contract.check
 ```
 middle
 ```yaml
