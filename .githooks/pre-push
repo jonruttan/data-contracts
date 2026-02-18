@@ -13,5 +13,64 @@ if [[ "${CI:-}" == "true" ]]; then
   exit 0
 fi
 
+collect_changed_paths() {
+  local upstream=""
+  local lines=()
+  if upstream="$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null)"; then
+    while IFS= read -r line; do
+      [[ -n "${line}" ]] && lines+=("${line}")
+    done < <(git diff --name-only "${upstream}...HEAD")
+  fi
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && lines+=("${line}")
+  done < <(git diff --name-only)
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && lines+=("${line}")
+  done < <(git diff --name-only --cached)
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && lines+=("${line}")
+  done < <(git ls-files --others --exclude-standard)
+  if [[ "${#lines[@]}" -eq 0 ]]; then
+    return 0
+  fi
+  printf '%s\n' "${lines[@]}" | awk '!seen[$0]++'
+}
+
+is_check_sets_only_change() {
+  local changed path
+  changed="$(collect_changed_paths || true)"
+  [[ -n "${changed}" ]] || return 1
+  while IFS= read -r path; do
+    [[ -z "${path}" ]] && continue
+    if [[ "${path}" != "docs/spec/governance/check_sets_v1.yaml" ]]; then
+      return 1
+    fi
+  done <<< "${changed}"
+  return 0
+}
+
+is_gate_script_only_change() {
+  local changed path
+  changed="$(collect_changed_paths || true)"
+  [[ -n "${changed}" ]] || return 1
+  while IFS= read -r path; do
+    [[ -z "${path}" ]] && continue
+    if [[ "${path}" != "scripts/local_ci_parity.sh" && "${path}" != "scripts/ci_gate.sh" ]]; then
+      return 1
+    fi
+  done <<< "${changed}"
+  return 0
+}
+
+if is_check_sets_only_change; then
+  echo "[pre-push] fast path: check_sets-only change"
+  exec SPEC_PREPUSH_MODE=critical ./scripts/local_ci_parity.sh
+fi
+
+if is_gate_script_only_change; then
+  echo "[pre-push] fast path: gate-script-only change"
+  exec SPEC_PREPUSH_MODE=critical ./scripts/local_ci_parity.sh
+fi
+
 echo "[pre-push] running local CI parity gate"
-make prepush
+exec make prepush
