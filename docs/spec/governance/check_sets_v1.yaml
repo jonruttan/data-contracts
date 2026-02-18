@@ -31,14 +31,14 @@ profiles:
         ordered_tokens:
           - critical-gate
           - ci-gate-summary
-      - id: runtime.critical_ci_gate_step_order_python
+      - id: runtime.critical_ci_gate_ownership_contract_python
         kind: file_tokens
         path: /scripts/ci_gate_summary.py
         must_contain:
           - governance_broad
         must_not_contain:
           - governance_critical
-      - id: runtime.critical_ci_gate_step_order_rust
+      - id: runtime.critical_ci_gate_ownership_contract_rust
         kind: file_tokens
         path: /scripts/rust/spec_runner_cli/src/main.rs
         must_contain:
