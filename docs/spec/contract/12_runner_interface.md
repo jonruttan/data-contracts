@@ -38,7 +38,12 @@ CI expectation:
 
 - CI default lane MUST run core gate through `scripts/runner_adapter.sh`
   in rust mode.
-- Python lane is explicit opt-in and is not required in every merge-gate run.
+- Local pre-push parity gate MUST run rust core lane plus python parity lane
+  by default (`make prepush` / `scripts/local_ci_parity.sh`).
+- Fast opt-out mode is explicit only (`SPEC_PREPUSH_MODE=fast` or
+  `make prepush-fast`).
+- Repository-managed pre-push hook MUST invoke `make prepush` and block push
+  on failure unless explicit emergency bypass is set (`SPEC_PREPUSH_BYPASS=1`).
 
 ## Default Adapter
 
@@ -52,6 +57,15 @@ Repository adapters:
 Adapters may call implementation-specific scripts/tools internally.
 Alternative implementations can replace the adapter by setting `SPEC_RUNNER_BIN`
 to a different compatible command.
+
+Rust adapter target behavior:
+
+- preferred target may be selected by platform (for example
+  `aarch64-apple-darwin` on Apple Silicon)
+- when preferred target is unavailable locally, adapter MUST fallback to host
+  target cargo execution by default
+- strict mode is opt-in via `SPEC_RUNNER_RUST_TARGET_STRICT=1` and MUST hard-fail
+  on missing preferred target
 
 Adapter semantic contract:
 

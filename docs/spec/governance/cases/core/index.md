@@ -156,14 +156,18 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_gate_fail_fast_behavior_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_gate_policy_evaluates_with_skipped_rows.spec.md`
 - `/docs/spec/governance/cases/core/runtime_gate_skipped_steps_contract_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md`
 - `/docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
 - `/docs/spec/governance/cases/core/runtime_legacy_timeout_envs_deprecated.spec.md`
 - `/docs/spec/governance/cases/core/runtime_liveness_hard_cap_token_emitted.spec.md`
 - `/docs/spec/governance/cases/core/runtime_liveness_stall_token_emitted.spec.md`
 - `/docs/spec/governance/cases/core/runtime_liveness_watchdog_contract_valid.spec.md`
+- `/docs/spec/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md`
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
 - `/docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md`
 - `/docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md`
+- `/docs/spec/governance/cases/core/runtime_prepush_parity_default_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_prepush_python_parity_not_optional_by_default.spec.md`
 - `/docs/spec/governance/cases/core/runtime_profile_artifacts_on_fail_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_profiling_contract_artifacts.spec.md`
 - `/docs/spec/governance/cases/core/runtime_profiling_redaction_policy.spec.md`
@@ -179,6 +183,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_runner_interface_subcommands.spec.md`
 - `/docs/spec/governance/cases/core/runtime_rust_adapter_no_delegate.spec.md`
 - `/docs/spec/governance/cases/core/runtime_rust_adapter_no_python_exec.spec.md`
+- `/docs/spec/governance/cases/core/runtime_rust_adapter_target_fallback_defined.spec.md`
 - `/docs/spec/governance/cases/core/runtime_rust_adapter_transitive_no_python.spec.md`
 - `/docs/spec/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md`
 - `/docs/spec/governance/cases/core/runtime_rust_primary_adapter_exec_smoke_success.spec.md`

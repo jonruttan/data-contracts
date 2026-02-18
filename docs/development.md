@@ -136,14 +136,14 @@ The pre-push gate runs the fast CI-critical contract path:
 `governance-heavy` and `docs-generate-check` are path-scoped and only run when
 relevant files changed.
 
-`make prepush` is Rust-default. Optional Python parity lane:
+`make prepush` is Rust-default and includes Python parity by default.
+
+Fast local opt-out mode:
 
 ```sh
-make python-parity
-# or include it in prepush
-SPEC_PREPUSH_PYTHON_PARITY=1 make prepush
-# or run the parity-enabled prepush target directly
-make prepush-parity
+make prepush-fast
+# or
+SPEC_PREPUSH_MODE=fast make prepush
 ```
 
 Use an explicit runner lane when needed:
@@ -151,6 +151,18 @@ Use an explicit runner lane when needed:
 ```sh
 SPEC_RUNNER_IMPL=python make prepush
 SPEC_RUNNER_IMPL=rust make prepush
+```
+
+Install managed git hooks to enforce local pre-push parity gate:
+
+```sh
+make hooks-install
+```
+
+Emergency bypass for blocked pushes (use sparingly and follow with parity run):
+
+```sh
+SPEC_PREPUSH_BYPASS=1 git push
 ```
 
 ## CI Triage (Docs Quality)

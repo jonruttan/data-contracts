@@ -49,9 +49,28 @@ make prepush
 `governance-heavy`, `docs-generate-check`, and strict perf-smoke compare).
 `governance-heavy` and `docs-generate-check` are path-scoped to relevant
 changes.
-It is Rust-default (`SPEC_RUNNER_IMPL=rust`) with optional Python parity:
-`make python-parity`, `SPEC_PREPUSH_PYTHON_PARITY=1 make prepush`, or
-`make prepush-parity`.
+It is Rust-default (`SPEC_RUNNER_IMPL=rust`) and now includes Python parity by
+default.
+
+Fast local opt-out mode (skips Python parity lane):
+
+```sh
+make prepush-fast
+# or
+SPEC_PREPUSH_MODE=fast make prepush
+```
+
+Managed pre-push hook enforcement:
+
+```sh
+make hooks-install
+```
+
+Emergency bypass (only when absolutely required):
+
+```sh
+SPEC_PREPUSH_BYPASS=1 git push
+```
 
 Clean-checkout CI parity gate (recommended before push):
 

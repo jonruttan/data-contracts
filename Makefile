@@ -1,4 +1,4 @@
-.PHONY: help setup docs-doctor verify-docs docs-build docs-lint docs-check docs-generate docs-generate-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke ci-cleanroom perf-smoke prepush prepush-parity python-parity core-check check ci-gate test
+.PHONY: help setup hooks-install docs-doctor verify-docs docs-build docs-lint docs-check docs-generate docs-generate-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke ci-cleanroom perf-smoke prepush prepush-fast prepush-parity python-parity core-check check ci-gate test
 .DEFAULT_GOAL := help
 
 help: ## Display this help section
@@ -8,6 +8,9 @@ setup: ## Create .venv and install editable package with dev deps
 	@python3 -m venv .venv
 	@.venv/bin/python -m pip install -U pip
 	@.venv/bin/python -m pip install -e '.[dev]'
+
+hooks-install: ## Install managed git hooks (enforces local pre-push parity gate)
+	@./scripts/install_git_hooks.sh
 
 docs-doctor: ## Run fast docs quality checks
 	@./scripts/docs_doctor.sh
@@ -66,11 +69,14 @@ ci-cleanroom: ## Run full CI gate in a fresh git worktree (clean-checkout parity
 perf-smoke: ## Run governance/docs timing checks against perf baselines (warn mode)
 	@./scripts/runner_adapter.sh perf-smoke --mode warn
 
-prepush: ## Required local pre-push gate (Rust-default normalize + governance + heavy + docs + perf)
-	@./scripts/prepush_gate.sh
+prepush: ## Required local pre-push gate (default parity: rust core path + python parity lane)
+	@SPEC_PREPUSH_MODE=parity ./scripts/local_ci_parity.sh
 
-prepush-parity: ## Required local pre-push gate with Python parity lane enabled
-	@SPEC_PREPUSH_PYTHON_PARITY=1 ./scripts/prepush_gate.sh
+prepush-fast: ## Fast opt-out pre-push mode (skips python parity lane)
+	@SPEC_PREPUSH_MODE=fast ./scripts/local_ci_parity.sh
+
+prepush-parity: ## Alias for parity-default pre-push gate
+	@$(MAKE) prepush
 
 python-parity: ## Optional Python validation lane (governance + conformance parity)
 	@./scripts/runner_adapter.sh --impl python governance

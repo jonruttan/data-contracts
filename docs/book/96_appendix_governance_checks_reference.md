@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 214
-- checks_with_cases: 208
+- check_count: 219
+- checks_with_cases: 213
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -209,14 +209,18 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.gate_fail_fast_behavior_required` | 1 | true |
 | `runtime.gate_policy_evaluates_with_skipped_rows` | 1 | true |
 | `runtime.gate_skipped_steps_contract_required` | 1 | true |
+| `runtime.git_hook_prepush_enforced` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.legacy_timeout_envs_deprecated` | 1 | true |
 | `runtime.liveness_hard_cap_token_emitted` | 1 | true |
 | `runtime.liveness_stall_token_emitted` | 1 | true |
 | `runtime.liveness_watchdog_contract_valid` | 1 | true |
+| `runtime.local_ci_parity_entrypoint_documented` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |
+| `runtime.prepush_parity_default_required` | 1 | true |
+| `runtime.prepush_python_parity_not_optional_by_default` | 1 | true |
 | `runtime.profile_artifacts_on_fail_required` | 1 | true |
 | `runtime.profiling_contract_artifacts` | 1 | true |
 | `runtime.profiling_redaction_policy` | 1 | true |
@@ -236,6 +240,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.rust_adapter_no_delegate` | 1 | true |
 | `runtime.rust_adapter_no_python_exec` | 1 | true |
 | `runtime.rust_adapter_subcommand_parity` | 1 | true |
+| `runtime.rust_adapter_target_fallback_defined` | 1 | true |
 | `runtime.rust_adapter_transitive_no_python` | 1 | true |
 | `runtime.scope_sync` | 1 | true |
 | `runtime.settings_import_policy` | 1 | true |

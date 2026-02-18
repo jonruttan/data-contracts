@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 226
+- link_count: 231
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 226
-- rules_with_implementation_refs: 224
+- rules_with_unit_tests: 231
+- rules_with_implementation_refs: 229
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -221,7 +221,11 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | 1 | 0 | 0 | 1 | 3 |
+| `RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | 1 | 0 | 0 | 2 | 4 |
+| `RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | 2 | 0 | 0 | 2 | 5 |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `docs/spec/contract/policy_v1.yaml#RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | 2 | 0 | 0 | 2 | 2 |
+| `RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | 2 | 0 | 0 | 2 | 4 |
+| `RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
@@ -237,6 +241,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED` | 1 | 0 | 0 | 1 | 3 |
 | `RUNTIME_RUST_ADAPTER_NO_DELEGATION` | `docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_DELEGATION` | 1 | 0 | 0 | 1 | 3 |
 | `RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC` | `docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC` | 2 | 1 | 0 | 1 | 3 |
+| `RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON` | `docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON` | 2 | 0 | 0 | 1 | 2 |
 | `RUNTIME_SCOPE_BOUNDED_FOR_V1` | `docs/spec/contract/policy_v1.yaml#RUNTIME_SCOPE_BOUNDED_FOR_V1` | 2 | 0 | 0 | 2 | 2 |
 | `RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED` | 1 | 1 | 0 | 1 | 5 |

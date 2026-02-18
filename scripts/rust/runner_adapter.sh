@@ -7,6 +7,7 @@ cd "${ROOT_DIR}"
 RUST_CLI_MANIFEST="${ROOT_DIR}/scripts/rust/spec_runner_cli/Cargo.toml"
 RUST_CLI_TARGET=""
 RUST_CLI_BIN=""
+RUST_PREFERRED_TARGET=""
 
 is_debug_enabled() {
   local val="${SPEC_RUNNER_DEBUG:-}"
@@ -44,6 +45,7 @@ if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then
   ARM_BIN_LOCAL="${ROOT_DIR}/scripts/rust/spec_runner_cli/target/${ARM_TARGET}/debug/spec_runner_cli"
   ARM_BIN_ROOT="${ROOT_DIR}/target/${ARM_TARGET}/debug/spec_runner_cli"
   RUST_CLI_TARGET="${ARM_TARGET}"
+  RUST_PREFERRED_TARGET="${ARM_TARGET}"
   if [[ -x "${ARM_BIN_LOCAL}" ]]; then
     RUST_CLI_BIN="${ARM_BIN_LOCAL}"
   elif [[ -x "${ARM_BIN_ROOT}" ]]; then
@@ -71,6 +73,32 @@ debug_log_at 2 "manifest=${RUST_CLI_MANIFEST}"
 debug_log "target=${RUST_CLI_TARGET:-default-host}"
 debug_log_at 2 "bin=${RUST_CLI_BIN}"
 
+has_rust_target_installed() {
+  local target="$1"
+  [[ -n "${target}" ]] || return 1
+  rustup target list --installed 2>/dev/null | grep -qx "${target}"
+}
+
+strict_rust_target_mode() {
+  local raw="${SPEC_RUNNER_RUST_TARGET_STRICT:-0}"
+  [[ "${raw}" == "1" || "${raw}" == "true" || "${raw}" == "yes" ]]
+}
+
+resolve_rust_target_mode() {
+  if [[ -z "${RUST_CLI_TARGET}" ]]; then
+    return 0
+  fi
+  if has_rust_target_installed "${RUST_CLI_TARGET}"; then
+    return 0
+  fi
+  if strict_rust_target_mode; then
+    echo "ERROR: missing Rust target '${RUST_CLI_TARGET}'. Install with: rustup target add ${RUST_CLI_TARGET}" >&2
+    return 2
+  fi
+  echo "[runner_adapter] preferred target missing; using host target (${RUST_CLI_TARGET} unavailable)." >&2
+  RUST_CLI_TARGET=""
+}
+
 run_rust_subcommand() {
   local cmd="$1"
   shift
@@ -80,8 +108,7 @@ run_rust_subcommand() {
     "${RUST_CLI_BIN}" "${cmd}" "$@"
     return
   fi
-  if [[ -n "${RUST_CLI_TARGET}" ]] && ! rustup target list --installed 2>/dev/null | grep -qx "${RUST_CLI_TARGET}"; then
-    echo "ERROR: missing Rust target '${RUST_CLI_TARGET}'. Install with: rustup target add ${RUST_CLI_TARGET}" >&2
+  if ! resolve_rust_target_mode; then
     return 2
   fi
   if [[ -n "${RUST_CLI_TARGET}" ]]; then
@@ -101,8 +128,7 @@ exec_rust_subcommand() {
     debug_log "exec prebuilt binary ${RUST_CLI_BIN}"
     exec "${RUST_CLI_BIN}" "${cmd}" "$@"
   fi
-  if [[ -n "${RUST_CLI_TARGET}" ]] && ! rustup target list --installed 2>/dev/null | grep -qx "${RUST_CLI_TARGET}"; then
-    echo "ERROR: missing Rust target '${RUST_CLI_TARGET}'. Install with: rustup target add ${RUST_CLI_TARGET}" >&2
+  if ! resolve_rust_target_mode; then
     exit 2
   fi
   if [[ -n "${RUST_CLI_TARGET}" ]]; then

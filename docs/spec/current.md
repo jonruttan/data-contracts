@@ -25,6 +25,16 @@ Notes:
   and profile-on-fail diagnostics (`--profile-on-fail`,
   `SPEC_RUNNER_PROFILE_ON_FAIL`) that emit `/.artifacts/run-trace.json` and
   `/.artifacts/run-trace-summary.md` for failing runs.
+- Local drift prevention is parity-default: `make prepush` routes to
+  `scripts/local_ci_parity.sh` and runs rust core plus python parity lanes by
+  default; explicit fast mode uses `SPEC_PREPUSH_MODE=fast` (`make prepush-fast`).
+- Repository-managed git hook enforcement is canonical via
+  `.githooks/pre-push` and installer `make hooks-install`
+  (`scripts/install_git_hooks.sh`), with emergency bypass only through
+  `SPEC_PREPUSH_BYPASS=1`.
+- Rust local adapter target selection now supports preferred-target fallback to
+  host cargo execution when platform target is unavailable; strict hard-fail
+  remains opt-in through `SPEC_RUNNER_RUST_TARGET_STRICT=1`.
 - Subject projection now follows JSON-core profile envelopes
   (`profile_id`, `profile_version`, `value`, `meta`, optional `context`);
   evaluator subjects are JSON-only.

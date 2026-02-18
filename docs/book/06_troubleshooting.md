@@ -49,6 +49,14 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 3. Apply the first-command from the table below.
 4. Re-run check mode, then full gate.
 
+## Local Pre-Push Enforcement
+
+- Parity-default gate: `make prepush`
+- Fast opt-out gate: `make prepush-fast` (or `SPEC_PREPUSH_MODE=fast make prepush`)
+- Install managed hook: `make hooks-install`
+- Emergency bypass: `SPEC_PREPUSH_BYPASS=1 git push` (run `make prepush` immediately after)
+- Rust target strict mode: `SPEC_RUNNER_RUST_TARGET_STRICT=1 ./scripts/runner_adapter.sh --impl rust governance`
+
 ## Check-ID To Cause Mapping
 
 | Check ID / Surface | Likely Cause | First Command |

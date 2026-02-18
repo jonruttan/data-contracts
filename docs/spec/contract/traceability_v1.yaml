@@ -1212,6 +1212,80 @@ links:
   - scripts/runner_adapter.sh
   - scripts/ci_gate_summary.py
   notes: Governance enforces runner-interface boundary usage in gate shell scripts.
+- rule_id: RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/development.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/local_ci_parity.sh
+  - scripts/prepush_gate.sh
+  - Makefile
+  - docs/spec/governance/cases/core/runtime_prepush_parity_default_required.spec.md
+  notes: Local prepush defaults to parity lane execution for rust core path and python parity.
+- rule_id: RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/local_ci_parity.sh
+  - docs/spec/governance/cases/core/runtime_prepush_python_parity_not_optional_by_default.spec.md
+  notes: Governance forbids optional-only python parity defaults in prepush flow.
+- rule_id: RUNTIME_GIT_HOOK_PREPUSH_ENFORCED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GIT_HOOK_PREPUSH_ENFORCED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - .githooks/pre-push
+  - scripts/install_git_hooks.sh
+  - Makefile
+  - docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md
+  notes: Managed pre-push hook and installer enforce local parity checks before push.
+- rule_id: RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/rust/runner_adapter.sh
+  - docs/spec/governance/cases/core/runtime_rust_adapter_target_fallback_defined.spec.md
+  notes: Rust adapter provides host-target fallback and strict-mode override.
+- rule_id: RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  - docs/development.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - README.md
+  - docs/development.md
+  - docs/book/05_howto.md
+  - docs/book/06_troubleshooting.md
+  - docs/spec/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md
+  notes: Contributor docs describe parity default prepush, fast mode, hook install, and bypass semantics.
 - rule_id: RUNTIME_SCOPE_BOUNDED_FOR_V1
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_SCOPE_BOUNDED_FOR_V1
   contract_refs:

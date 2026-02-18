@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 226
-- must_count: 207
+- rule_count: 231
+- must_count: 212
 - should_count: 12
 - must_not_count: 7
-- active_count: 226
+- active_count: 231
 - deprecated_count: 0
 - removed_count: 0
 
@@ -224,7 +224,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `MUST` | `governance` | `runtime.gate.fail_fast` | 3 | `active` |
 | `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `MUST` | `governance` | `runtime.gate.policy` | 4 | `active` |
 | `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `MUST` | `governance` | `runtime.gate.summary_contract` | 4 | `active` |
+| `RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | `MUST` | `governance` | `runtime.prepush.hook` | 4 | `active` |
+| `RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | `MUST` | `governance` | `docs.local_ci_parity` | 5 | `active` |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `MUST` | `governance` | `runtime.non_python_lanes.exec_tokens` | 2 | `active` |
+| `RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | `MUST` | `governance` | `runtime.prepush.default_lane` | 4 | `active` |
+| `RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT` | `MUST` | `governance` | `runtime.prepush.python_parity` | 2 | `active` |
 | `RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | `MUST` | `governance` | `runtime.gate.profile_on_fail` | 4 | `active` |
 | `RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | `MUST` | `governance` | `runtime.profiling.contract` | 3 | `active` |
 | `RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | `MUST` | `governance` | `runtime.profiling.redaction` | 2 | `active` |
@@ -240,6 +244,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED` | `MUST` | `governance` | `runtime.runner_interface.subcommands` | 2 | `active` |
 | `RUNTIME_RUST_ADAPTER_NO_DELEGATION` | `MUST` | `governance` | `runtime.runner_interface.rust_adapter` | 2 | `active` |
 | `RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC` | `MUST` | `runtime` | `scripts.rust.spec_runner_cli` | 3 | `active` |
+| `RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED` | `MUST` | `governance` | `runtime.rust_adapter.target_selection` | 2 | `active` |
 | `RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON` | `MUST` | `governance` | `runtime.rust_adapter.transitive_path` | 2 | `active` |
 | `RUNTIME_SCOPE_BOUNDED_FOR_V1` | `SHOULD` | `governance` | `runtime.support.matrix` | 3 | `active` |
 | `RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED` | `MUST` | `governance` | `runtime.runner_interface.public_entrypoint` | 2 | `active` |

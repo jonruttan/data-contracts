@@ -6906,6 +6906,160 @@ def _scan_runtime_runner_interface_ci_lane(root: Path, *, harness: dict | None =
     return violations
 
 
+def _scan_runtime_prepush_parity_default_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("prepush_parity_default")
+    if not isinstance(cfg, dict):
+        return ["runtime.prepush_parity_default_required requires harness.prepush_parity_default mapping in governance spec"]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.prepush_parity_default.files must be a non-empty list of non-empty strings"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.prepush_parity_default.required_tokens must be a list of non-empty strings"]
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing prepush parity file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing prepush parity default token {tok}")
+    return violations
+
+
+def _scan_runtime_prepush_python_parity_not_optional_by_default(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("prepush_python_parity")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.prepush_python_parity_not_optional_by_default requires harness.prepush_python_parity mapping in governance spec"
+        ]
+    file_rel = str(cfg.get("path", "")).strip()
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    required_tokens = cfg.get("required_tokens", [])
+    if not file_rel:
+        return ["harness.prepush_python_parity.path must be a non-empty string"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.prepush_python_parity.forbidden_tokens must be a list of non-empty strings"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.prepush_python_parity.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, file_rel)
+    if not p.exists():
+        return [f"{file_rel}:1: missing prepush script"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{file_rel}:1: missing required python parity token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{file_rel}:1: forbidden optional parity token present {tok}")
+    return violations
+
+
+def _scan_runtime_git_hook_prepush_enforced(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("git_hook_prepush")
+    if not isinstance(cfg, dict):
+        return ["runtime.git_hook_prepush_enforced requires harness.git_hook_prepush mapping in governance spec"]
+    hook_path = str(cfg.get("hook_path", "")).strip()
+    install_script = str(cfg.get("install_script", "")).strip()
+    makefile_path = str(cfg.get("makefile_path", "Makefile")).strip() or "Makefile"
+    if not hook_path or not install_script:
+        return ["harness.git_hook_prepush.hook_path and install_script must be non-empty strings"]
+    hook = _join_contract_path(root, hook_path)
+    installer = _join_contract_path(root, install_script)
+    makefile = _join_contract_path(root, makefile_path)
+    if not hook.exists():
+        violations.append(f"{hook_path}:1: missing managed pre-push hook")
+    else:
+        text = hook.read_text(encoding="utf-8")
+        for tok in ("SPEC_PREPUSH_BYPASS", "make prepush"):
+            if tok not in text:
+                violations.append(f"{hook_path}:1: missing pre-push hook token {tok}")
+    if not installer.exists():
+        violations.append(f"{install_script}:1: missing git-hook installer script")
+    else:
+        text = installer.read_text(encoding="utf-8")
+        if "core.hooksPath .githooks" not in text:
+            violations.append(f"{install_script}:1: missing core.hooksPath installation token")
+    if not makefile.exists():
+        violations.append(f"{makefile_path}:1: missing Makefile for hook target")
+    else:
+        text = makefile.read_text(encoding="utf-8")
+        if "hooks-install:" not in text:
+            violations.append(f"{makefile_path}:1: missing hooks-install target")
+    return violations
+
+
+def _scan_runtime_rust_adapter_target_fallback_defined(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("rust_target_fallback")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.rust_adapter_target_fallback_defined requires harness.rust_target_fallback mapping in governance spec"
+        ]
+    rel = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not rel:
+        return ["harness.rust_target_fallback.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.rust_target_fallback.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing rust adapter script"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{rel}:1: missing rust target fallback token {tok}")
+    return violations
+
+
+def _scan_runtime_local_ci_parity_entrypoint_documented(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("local_ci_parity_docs")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.local_ci_parity_entrypoint_documented requires harness.local_ci_parity_docs mapping in governance spec"
+        ]
+    files = cfg.get("files")
+    required_tokens = cfg.get("required_tokens")
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.local_ci_parity_docs.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.local_ci_parity_docs.required_tokens must be a non-empty list of non-empty strings"]
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing local-ci parity doc file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing local-ci parity doc token {tok}")
+    return violations
+
+
 def _scan_runtime_rust_adapter_no_delegate(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -8306,6 +8460,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
     "runtime.python_bin_resolver_sync": _scan_runtime_python_bin_resolver_sync,
     "runtime.runner_interface_gate_sync": _scan_runtime_runner_interface_gate_sync,
+    "runtime.prepush_parity_default_required": _scan_runtime_prepush_parity_default_required,
+    "runtime.prepush_python_parity_not_optional_by_default": _scan_runtime_prepush_python_parity_not_optional_by_default,
+    "runtime.git_hook_prepush_enforced": _scan_runtime_git_hook_prepush_enforced,
+    "runtime.rust_adapter_target_fallback_defined": _scan_runtime_rust_adapter_target_fallback_defined,
+    "runtime.local_ci_parity_entrypoint_documented": _scan_runtime_local_ci_parity_entrypoint_documented,
     "runtime.public_runner_entrypoint_single": _scan_runtime_public_runner_entrypoint_single,
     "runtime.public_runner_default_rust": _scan_runtime_public_runner_default_rust,
     "runtime.python_lane_explicit_opt_in": _scan_runtime_python_lane_explicit_opt_in,

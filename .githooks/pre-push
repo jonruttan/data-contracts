@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "${ROOT_DIR}"
+
+if [[ "${SPEC_PREPUSH_BYPASS:-0}" == "1" ]]; then
+  echo "[pre-push] WARNING: bypass enabled via SPEC_PREPUSH_BYPASS=1" >&2
+  exit 0
+fi
+
+if [[ "${CI:-}" == "true" ]]; then
+  exit 0
+fi
+
+echo "[pre-push] running local CI parity gate"
+make prepush

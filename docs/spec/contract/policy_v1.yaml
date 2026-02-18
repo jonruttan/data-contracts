@@ -1254,6 +1254,83 @@ rules:
   references:
   - docs/spec/contract/12_runner_interface.md
   - docs/spec/governance/cases/core/runtime_python_lane_explicit_opt_in.spec.md
+- id: RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.prepush.default_lane
+  norm: MUST
+  requirement: local_prepush_defaults_to_rust_core_plus_python_parity
+  description: 'Default local prepush workflow must execute rust-core checks and python parity checks without extra opt-in toggles.
+
+    '
+  rationale: Prevents CI-only failures caused by local lane drift.
+  risk_if_violated: Contributors can pass local checks while parity failures still reach CI.
+  references:
+  - README.md
+  - Makefile
+  - scripts/local_ci_parity.sh
+  - docs/spec/governance/cases/core/runtime_prepush_parity_default_required.spec.md
+- id: RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.prepush.python_parity
+  norm: MUST
+  requirement: prepush_script_must_not_require_optional_toggle_for_python_parity_in_default_mode
+  description: 'Python parity checks in local prepush must not depend on legacy optional toggle variables for default behavior.
+
+    '
+  rationale: Keeps default local verification aligned with CI parity lanes.
+  risk_if_violated: Local default behavior under-validates changes.
+  references:
+  - scripts/local_ci_parity.sh
+  - docs/spec/governance/cases/core/runtime_prepush_python_parity_not_optional_by_default.spec.md
+- id: RUNTIME_GIT_HOOK_PREPUSH_ENFORCED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.prepush.hook
+  norm: MUST
+  requirement: managed_prepush_hook_and_installer_must_exist
+  description: 'Repository-managed pre-push hook and installer must exist and invoke canonical prepush gate.
+
+    '
+  rationale: Enforces parity checks consistently before push.
+  risk_if_violated: Local workflows remain advisory and drift from CI expectations.
+  references:
+  - .githooks/pre-push
+  - scripts/install_git_hooks.sh
+  - Makefile
+  - docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md
+- id: RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.rust_adapter.target_selection
+  norm: MUST
+  requirement: rust_adapter_must_support_host_target_fallback_with_strict_mode_override
+  description: 'Rust adapter must fallback to host target when preferred target is unavailable, with strict-mode hard-fail override.
+
+    '
+  rationale: Keeps local rust lane executable on developer machines without manual target setup.
+  risk_if_violated: Rust lane becomes unusable locally and parity drift increases.
+  references:
+  - scripts/rust/runner_adapter.sh
+  - docs/spec/governance/cases/core/runtime_rust_adapter_target_fallback_defined.spec.md
+- id: RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.local_ci_parity
+  norm: MUST
+  requirement: contributor_docs_must_document_local_ci_parity_entrypoint_hook_install_and_bypass
+  description: 'Contributor docs must describe parity-default prepush flow, hook installation, fast mode, and emergency bypass semantics.
+
+    '
+  rationale: Ensures contributors can reliably run required local parity checks.
+  risk_if_violated: Adoption and enforcement of local parity checks is inconsistent.
+  references:
+  - README.md
+  - docs/development.md
+  - docs/book/05_howto.md
+  - docs/book/06_troubleshooting.md
+  - docs/spec/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md
 - id: RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
   introduced_in: v1
   scope: governance
