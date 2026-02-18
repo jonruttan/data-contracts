@@ -1475,6 +1475,21 @@ rules:
   references:
   - scripts/ci_gate.sh
   - docs/spec/governance/cases/core/runtime_ci_gate_check_sets_fast_path_required.spec.md
+- id: RUNTIME_GATE_SCRIPT_ONLY_FAST_PATH_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.gate.script_only_fast_path
+  norm: MUST
+  requirement: local_gate_scripts_must_fast_path_script_only_edits
+  description: 'Local gate scripts must detect gate-script-only edits and apply fast-path skip/delegation behavior.
+
+    '
+  rationale: Preserves rapid feedback while iterating on local gate orchestration scripts.
+  risk_if_violated: Gate-script tuning regresses into unnecessary normalize/docs checks and slows iteration.
+  references:
+  - scripts/local_ci_parity.sh
+  - scripts/ci_gate.sh
+  - docs/spec/governance/cases/core/runtime_gate_script_only_fast_path_required.spec.md
 - id: RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED
   introduced_in: v1
   scope: governance

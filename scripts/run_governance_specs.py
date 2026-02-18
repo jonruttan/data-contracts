@@ -7348,6 +7348,66 @@ def _scan_runtime_ci_gate_check_sets_fast_path_required(
     return violations
 
 
+def _scan_runtime_gate_script_only_fast_path_required(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("gate_script_only_fast_path")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.gate_script_only_fast_path_required requires harness.gate_script_only_fast_path mapping in governance spec"
+        ]
+    file_token_sets = cfg.get("file_token_sets", [])
+    if (
+        isinstance(file_token_sets, list)
+        and file_token_sets
+        and all(isinstance(x, dict) for x in file_token_sets)
+    ):
+        entries: list[tuple[str, list[str]]] = []
+        for item in file_token_sets:
+            rel = str(item.get("path", "")).strip()
+            req = item.get("required_tokens", [])
+            if not rel:
+                return ["harness.gate_script_only_fast_path.file_token_sets[*].path must be non-empty"]
+            if (
+                not isinstance(req, list)
+                or not req
+                or any(not isinstance(x, str) or not x.strip() for x in req)
+            ):
+                return [
+                    "harness.gate_script_only_fast_path.file_token_sets[*].required_tokens must be a non-empty list of non-empty strings"
+                ]
+            entries.append((rel, [str(x) for x in req]))
+    else:
+        files = cfg.get("files", [])
+        required_tokens = cfg.get("required_tokens", [])
+        if (
+            not isinstance(files, list)
+            or not files
+            or any(not isinstance(x, str) or not x.strip() for x in files)
+        ):
+            return ["harness.gate_script_only_fast_path.files must be a non-empty list of non-empty strings"]
+        if (
+            not isinstance(required_tokens, list)
+            or not required_tokens
+            or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+        ):
+            return ["harness.gate_script_only_fast_path.required_tokens must be a non-empty list of non-empty strings"]
+        entries = [(str(rel), [str(x) for x in required_tokens]) for rel in files]
+
+    for rel, required_tokens in entries:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing gate script for gate-script-only fast-path check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing gate-script-only fast-path token {tok}")
+    return violations
+
+
 def _scan_runtime_ci_gate_ownership_contract_required(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -9016,6 +9076,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.local_prepush_broad_governance_forbidden": _scan_runtime_local_prepush_broad_governance_forbidden,
     "runtime.local_prepush_check_sets_fast_path_required": _scan_runtime_local_prepush_check_sets_fast_path_required,
     "runtime.ci_gate_check_sets_fast_path_required": _scan_runtime_ci_gate_check_sets_fast_path_required,
+    "runtime.gate_script_only_fast_path_required": _scan_runtime_gate_script_only_fast_path_required,
     "runtime.ci_gate_ownership_contract_required": _scan_runtime_ci_gate_ownership_contract_required,
     "runtime.governance_prefix_selection_from_changed_paths": _scan_runtime_governance_prefix_selection_from_changed_paths,
     "runtime.governance_triage_artifact_contains_selection_metadata": _scan_runtime_governance_triage_artifact_contains_selection_metadata,

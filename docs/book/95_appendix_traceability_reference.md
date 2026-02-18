@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 245
+- link_count: 246
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 245
-- rules_with_implementation_refs: 243
+- rules_with_unit_tests: 246
+- rules_with_implementation_refs: 244
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -224,6 +224,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
+| `RUNTIME_GATE_SCRIPT_ONLY_FAST_PATH_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_SCRIPT_ONLY_FAST_PATH_REQUIRED` | 1 | 0 | 0 | 2 | 3 |
 | `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | 1 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | 1 | 0 | 0 | 2 | 4 |
 | `RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS` | 1 | 0 | 0 | 2 | 2 |

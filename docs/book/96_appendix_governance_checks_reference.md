@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 237
-- checks_with_cases: 231
+- check_count: 238
+- checks_with_cases: 232
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -215,6 +215,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.executable_spec_lang_includes_forbidden` | 1 | true |
 | `runtime.gate_fail_fast_behavior_required` | 1 | true |
 | `runtime.gate_policy_evaluates_with_skipped_rows` | 1 | true |
+| `runtime.gate_script_only_fast_path_required` | 1 | true |
 | `runtime.gate_skipped_steps_contract_required` | 1 | true |
 | `runtime.git_hook_prepush_enforced` | 1 | true |
 | `runtime.governance_prefix_selection_from_changed_paths` | 1 | true |
