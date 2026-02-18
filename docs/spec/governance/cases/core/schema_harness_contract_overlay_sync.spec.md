@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-ARCH-COMPONENTS-004
 title: harness contract and overlays remain synchronized
-purpose: Verifies contract/current docs and harness type overlays describe the same orchestration.run
-  and docs.generate architecture.
+purpose: Verifies contract/current docs and harness type overlays describe the same
+  orchestration.run and docs.generate architecture.
 type: governance.check
 check: schema.harness_contract_overlay_sync
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

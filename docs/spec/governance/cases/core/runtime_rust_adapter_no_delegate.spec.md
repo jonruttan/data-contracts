@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-CONFIG-006
 title: rust adapter does not delegate to python shell adapter
-purpose: Ensures scripts/rust/runner_adapter.sh invokes the Rust CLI directly and does not
-  call scripts/runner_adapter.sh.
+purpose: Ensures scripts/rust/runner_adapter.sh invokes the Rust CLI directly and
+  does not call scripts/runner_adapter.sh.
 type: governance.check
 check: runtime.rust_adapter_no_delegate
 harness:
@@ -29,16 +29,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

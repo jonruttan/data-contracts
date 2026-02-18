@@ -14,9 +14,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - profile_id
@@ -46,9 +46,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

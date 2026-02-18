@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-GEN-025
 title: spec lang namespace chapters are present and manifest-synced
-purpose: Ensures generated namespace chapter files exist and are listed in the book manifest.
+purpose: Ensures generated namespace chapter files exist and are listed in the book
+  manifest.
 type: governance.check
 check: docs.reference_namespace_chapters_sync
 harness:
@@ -21,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

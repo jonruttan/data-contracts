@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-ARCH-COMPONENTS-001
 title: harnesses must use shared workflow components
-purpose: Enforces hard-cut architecture by requiring shared execution context, assertion engine,
-  and subject router wiring in all harnesses.
+purpose: Enforces hard-cut architecture by requiring shared execution context, assertion
+  engine, and subject router wiring in all harnesses.
 type: governance.check
 check: architecture.harness_workflow_components_required
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

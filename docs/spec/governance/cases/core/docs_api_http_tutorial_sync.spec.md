@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-APIHTTP-001
 title: api.http tutorials remain present in howto and troubleshooting docs
-purpose: Ensures contributor docs cover practical REST verbs, CORS preflight, and round-trip
-  scenario guidance.
+purpose: Ensures contributor docs cover practical REST verbs, CORS preflight, and
+  round-trip scenario guidance.
 type: governance.check
 check: docs.api_http_tutorial_sync
 harness:
@@ -22,14 +22,14 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

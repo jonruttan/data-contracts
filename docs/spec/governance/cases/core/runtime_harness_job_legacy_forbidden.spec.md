@@ -12,7 +12,7 @@ harness:
   root: .
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: violation_count
   asserts:
   - std.logic.eq:

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-ARCH-COMPONENTS-003
 title: harness type overlays are complete
-purpose: Ensures behavior-heavy harness types publish non-empty schema overlays for machine
-  validation and drift prevention.
+purpose: Ensures behavior-heavy harness types publish non-empty schema overlays for
+  machine validation and drift prevention.
 type: governance.check
 check: schema.harness_type_overlay_complete
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

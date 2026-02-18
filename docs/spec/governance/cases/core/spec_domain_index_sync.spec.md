@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SPECLAYOUT-INDEX-001
 title: spec domain indexes are synchronized
-purpose: Ensures each domain index tracks all spec files in its subtree and has no stale paths.
+purpose: Ensures each domain index tracks all spec files in its subtree and has no
+  stale paths.
 type: governance.check
 check: spec.domain_index_sync
 harness:
@@ -21,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

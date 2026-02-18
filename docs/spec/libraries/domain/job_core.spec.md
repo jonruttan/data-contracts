@@ -21,7 +21,7 @@ harness:
     - pattern
 contract:
 - id: __export__domain.job.scan_bundle_has_result
-  class: must
+  class: MUST
   target: subject
   asserts:
   - std.logic.neq:

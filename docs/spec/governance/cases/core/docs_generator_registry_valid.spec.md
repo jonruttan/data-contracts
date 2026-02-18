@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-GEN-001
 title: docs generator registry is valid and complete
-purpose: Ensures docs generator registry exists, validates, and includes required surfaces.
+purpose: Ensures docs generator registry exists, validates, and includes required
+  surfaces.
 type: governance.check
 check: docs.generator_registry_valid
 harness:
@@ -21,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

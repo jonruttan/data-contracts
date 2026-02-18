@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-GEN-011
 title: spec schema field catalog artifacts are synchronized
-purpose: Ensures generated spec schema field catalog JSON and markdown artifacts are up-to-date.
+purpose: Ensures generated spec schema field catalog JSON and markdown artifacts are
+  up-to-date.
 type: governance.check
 check: docs.spec_schema_field_catalog_sync
 harness:
@@ -21,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

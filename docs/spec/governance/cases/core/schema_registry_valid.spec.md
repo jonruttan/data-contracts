@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SCHEMA-REG-001
 title: schema registry model is present and valid
-purpose: Ensures schema registry source files and contract docs are present and compile without
-  registry errors.
+purpose: Ensures schema registry source files and contract docs are present and compile
+  without registry errors.
 type: governance.check
 check: schema.registry_valid
 harness:
@@ -22,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

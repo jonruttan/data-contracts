@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-OPS-003
 title: orchestration ops registries are synchronized and complete
-purpose: Ensures runner tool registries include required fields and declared tool ids.
+purpose: Ensures runner tool registries include required fields and declared tool
+  ids.
 type: governance.check
 check: orchestration.ops_registry_sync
 harness:
@@ -21,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

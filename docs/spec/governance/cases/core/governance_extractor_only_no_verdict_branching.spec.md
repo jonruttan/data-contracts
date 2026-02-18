@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-POLICY-REQ-002
 title: governance checks avoid check-level policy verdict branching
-purpose: Ensures check functions do not embed per-check policy verdict strings and rely on
-  central governance policy evaluation.
+purpose: Ensures check functions do not embed per-check policy verdict strings and
+  rely on central governance policy evaluation.
 type: governance.check
 check: governance.extractor_only_no_verdict_branching
 harness:
@@ -31,16 +31,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

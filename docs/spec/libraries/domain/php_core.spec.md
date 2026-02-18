@@ -8,7 +8,7 @@ title: php projection helper functions
 type: spec.export
 contract:
 - id: __export__php.is_assoc_projection
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

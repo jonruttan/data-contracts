@@ -63,7 +63,7 @@ harness:
   entrypoint: spec_runner.conformance_fixtures:main
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject

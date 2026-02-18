@@ -196,14 +196,14 @@ def _collect_leaf_ops(node: object, *, inherited_target: str | None = None) -> l
     if not isinstance(node, dict):
         return ops
     step_class = str(node.get("class", "")).strip() if "class" in node else ""
-    if step_class in {"must", "can", "cannot"} and "asserts" in node:
+    if step_class in {"MUST", "MAY", "MUST_NOT"} and "asserts" in node:
         node_target = str(node.get("target", "")).strip() or inherited_target
         checks = node.get("asserts")
         if isinstance(checks, list):
             for child in checks:
                 ops.extend(_collect_leaf_ops(child, inherited_target=node_target))
         return ops
-    present_groups = [k for k in ("must", "can", "cannot") if k in node]
+    present_groups = [k for k in ("MUST", "MAY", "MUST_NOT") if k in node]
     if present_groups:
         node_target = str(node.get("target", "")).strip() or inherited_target
         for key in present_groups:

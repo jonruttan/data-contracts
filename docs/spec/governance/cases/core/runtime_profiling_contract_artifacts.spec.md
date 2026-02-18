@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-PROFILE-CONTRACT-001
 title: runtime profiling contract artifacts exist and are discoverable
-purpose: Ensures run trace schema and profiling contract docs are present and linked in current
-  snapshot notes.
+purpose: Ensures run trace schema and profiling contract docs are present and linked
+  in current snapshot notes.
 type: governance.check
 check: runtime.profiling_contract_artifacts
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

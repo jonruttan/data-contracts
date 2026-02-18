@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-APIHTTP-004
 title: api.http oauth contract docs remain synchronized
-purpose: Ensures schema and contract docs contain the required api.http OAuth profile tokens.
+purpose: Ensures schema and contract docs contain the required api.http OAuth profile
+  tokens.
 type: governance.check
 check: runtime.api_http_oauth_docs_sync
 harness:
@@ -21,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

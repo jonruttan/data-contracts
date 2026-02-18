@@ -8,7 +8,7 @@ title: 'markdown projection helper functions: domain.markdown.has_heading'
 type: spec.export
 contract:
 - id: __export__domain.markdown.has_heading
-  class: must
+  class: MUST
   asserts:
   - std.logic.or:
     - std.collection.any:
@@ -91,7 +91,7 @@ contract:
                       - '###### '
                   - ''
 - id: __export__markdown._text
-  class: must
+  class: MUST
   asserts:
   - if:
     - std.type.is_string:
@@ -103,7 +103,7 @@ contract:
         - var: subject
         - value
 - id: __export__markdown._context
-  class: must
+  class: MUST
   asserts:
   - if:
     - std.type.is_dict:
@@ -115,7 +115,7 @@ contract:
         - context
     - lit: {}
 - id: __export__markdown._headings
-  class: must
+  class: MUST
   asserts:
   - std.null.default_to:
     - lit: []
@@ -125,7 +125,7 @@ contract:
         - var: subject
       - headings
 - id: __export__markdown._links
-  class: must
+  class: MUST
   asserts:
   - std.null.default_to:
     - lit: []
@@ -135,7 +135,7 @@ contract:
         - var: subject
       - links
 - id: __export__markdown._tokens_map
-  class: must
+  class: MUST
   asserts:
   - std.null.default_to:
     - lit: {}
@@ -145,7 +145,7 @@ contract:
         - var: subject
       - tokens
 - id: __export__markdown._token_owners
-  class: must
+  class: MUST
   asserts:
   - std.null.default_to:
     - lit: {}
@@ -155,7 +155,7 @@ contract:
         - var: subject
       - token_owners
 - id: __export__markdown._token_dependencies
-  class: must
+  class: MUST
   asserts:
   - std.null.default_to:
     - lit: []
@@ -225,7 +225,7 @@ title: 'markdown projection helper functions: domain.markdown.heading_level_exis
 type: spec.export
 contract:
 - id: __export__domain.markdown.heading_level_exists
-  class: must
+  class: MUST
   asserts:
   - std.logic.or:
     - std.collection.any:
@@ -314,7 +314,7 @@ title: 'markdown projection helper functions: domain.markdown.section_order_vali
 type: spec.export
 contract:
 - id: __export__domain.markdown.section_order_valid
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - call:
@@ -377,7 +377,7 @@ title: 'markdown projection helper functions: domain.markdown.required_sections_
 type: spec.export
 contract:
 - id: __export__domain.markdown.required_sections_present
-  class: must
+  class: MUST
   asserts:
   - std.collection.all:
     - std.collection.map:
@@ -407,7 +407,7 @@ title: 'markdown projection helper functions: domain.markdown.link_targets_all_r
 type: spec.export
 contract:
 - id: __export__domain.markdown.link_targets_all_resolve
-  class: must
+  class: MUST
   asserts:
   - std.collection.all:
     - std.collection.map:
@@ -439,7 +439,7 @@ title: 'markdown projection helper functions: domain.markdown.has_broken_links'
 type: spec.export
 contract:
 - id: __export__domain.markdown.has_broken_links
-  class: must
+  class: MUST
   asserts:
   - std.logic.not:
     - call:
@@ -463,7 +463,7 @@ title: 'markdown projection helper functions: domain.markdown.has_yaml_spec_test
 type: spec.export
 contract:
 - id: __export__domain.markdown.has_yaml_spec_test_fence
-  class: must
+  class: MUST
   asserts:
   - std.logic.or:
     - std.string.contains:
@@ -494,7 +494,7 @@ title: 'markdown projection helper functions: domain.markdown.code_fence_languag
 type: spec.export
 contract:
 - id: __export__domain.markdown.code_fence_language_exists
-  class: must
+  class: MUST
   asserts:
   - std.logic.or:
     - std.string.contains:
@@ -536,7 +536,7 @@ title: 'markdown projection helper functions: domain.markdown.token_present'
 type: spec.export
 contract:
 - id: __export__domain.markdown.token_present
-  class: must
+  class: MUST
   asserts:
   - std.logic.or:
     - std.object.has_key:
@@ -568,7 +568,7 @@ title: 'markdown projection helper functions: domain.markdown.tokens_all_present
 type: spec.export
 contract:
 - id: __export__domain.markdown.tokens_all_present
-  class: must
+  class: MUST
   asserts:
   - std.collection.all:
     - std.collection.map:
@@ -598,7 +598,7 @@ title: 'markdown projection helper functions: domain.markdown.token_ownership_un
 type: spec.export
 contract:
 - id: __export__domain.markdown.token_ownership_unique
-  class: must
+  class: MUST
   asserts:
   - std.collection.all:
     - std.collection.map:
@@ -630,7 +630,7 @@ title: 'markdown projection helper functions: domain.markdown.token_dependencies
 type: spec.export
 contract:
 - id: __export__domain.markdown.token_dependencies_resolved
-  class: must
+  class: MUST
   asserts:
   - std.collection.all:
     - std.collection.map:

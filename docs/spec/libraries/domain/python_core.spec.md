@@ -8,7 +8,7 @@ title: python projection helper functions
 type: spec.export
 contract:
 - id: __export__py.is_tuple_projection
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-ENTRY-004
 title: public docs do not instruct direct rust adapter invocation
-purpose: Ensures public docs point to the canonical adapter entrypoint rather than internal
-  rust adapter paths.
+purpose: Ensures public docs point to the canonical adapter entrypoint rather than
+  internal rust adapter paths.
 type: governance.check
 check: runtime.no_public_direct_rust_adapter_docs
 harness:
@@ -34,16 +34,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

@@ -8,7 +8,7 @@ title: makefile projection helper functions
 type: spec.export
 contract:
 - id: __export__make.has_target
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - std.object.get:

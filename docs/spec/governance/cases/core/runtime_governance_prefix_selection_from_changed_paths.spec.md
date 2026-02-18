@@ -6,8 +6,8 @@
 id: SRGOV-RUNTIME-TRIAGE-011
 title: governance triage selects prefixes from changed paths
 type: governance.check
-purpose: Ensures triage auto mode derives targeted check prefixes from changed paths before
-  fallback prefixes.
+purpose: Ensures triage auto mode derives targeted check prefixes from changed paths
+  before fallback prefixes.
 check: runtime.governance_prefix_selection_from_changed_paths
 harness:
   root: .
@@ -29,7 +29,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

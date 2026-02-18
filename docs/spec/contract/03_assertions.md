@@ -7,17 +7,20 @@
 Each assertion step has:
 
 - `id`
-- `class` (`must` | `can` | `cannot`)
+- `class` (`MUST` | `MAY` | `MUST_NOT`)
 - optional `target`
 - `asserts` (non-empty list)
 
 `asserts` entries are assertion-tree nodes (group or leaf mappings).
 
+Legacy lowercase contract class/group forms (`must`, `can`, `cannot`) are
+forbidden.
+
 ## Group Semantics
 
-- `must`: all `asserts` must pass
-- `can`: at least one assert must pass
-- `cannot`: no assert may pass
+- `MUST`: all `asserts` must pass
+- `MAY`: at least one assert must pass
+- `MUST_NOT`: no assert may pass
 - check lists must be non-empty
 
 ## Target Rules
@@ -87,7 +90,7 @@ For `type: governance.check`, assertion targets include:
 
 ## Assertion Health Note
 
-Redundant sibling branches within a group (for example duplicate `can` branch
+Redundant sibling branches within a group (for example duplicate `MAY` branch
 expressions) are considered assertion-health diagnostics and may be surfaced as
 warnings/errors depending on policy mode.
 
@@ -95,7 +98,8 @@ warnings/errors depending on policy mode.
 
 Executable cases may declare optional lifecycle hooks in `when`:
 
-- `must`, `can`, `cannot`: run after each successful clause of the same class
+- `must`, `can`, `cannot`: run after each successful clause of class
+  `MUST`, `MAY`, `MUST_NOT` respectively
 - `fail`: runs once on first clause or class-hook failure
 - `complete`: runs after all clauses and class hooks pass
 

@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-GEN-003
 title: generated markdown sections are read-only blocks
-purpose: Ensures configured generated markdown outputs contain valid generated section markers.
+purpose: Ensures configured generated markdown outputs contain valid generated section
+  markers.
 type: governance.check
 check: docs.generated_sections_read_only
 harness:
@@ -21,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-ENTRY-002
 title: public runner defaults to rust mode
-purpose: Ensures the canonical public adapter defaults to rust and forbids python impl runtime
-  dispatch.
+purpose: Ensures the canonical public adapter defaults to rust and forbids python
+  impl runtime dispatch.
 type: governance.check
 check: runtime.public_runner_default_rust
 harness:
@@ -32,16 +32,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

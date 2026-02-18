@@ -25,7 +25,7 @@ assert_health:
   mode: warn
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -49,7 +49,7 @@ assert_health:
   mode: error
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -72,7 +72,7 @@ assert_health:
   mode: nope
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -96,7 +96,7 @@ assert_health:
   mode: ignore
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -120,7 +120,7 @@ assert_health:
   mode: error
 contract:
 - id: assert_1
-  class: can
+  class: MAY
   asserts:
   - std.string.contains:
     - var: subject
@@ -147,7 +147,7 @@ assert_health:
   mode: error
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - var: subject

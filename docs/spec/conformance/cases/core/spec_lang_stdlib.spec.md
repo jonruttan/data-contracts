@@ -13,9 +13,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.math.add:
         - 2
@@ -52,9 +52,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.type.json_type:
         - std.json.parse:
@@ -91,9 +91,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.path.normalize:
         - /a//b/./c
@@ -141,36 +141,51 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.file.exists:
-        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md, exists: true, type: file, size_bytes: 12}
+        - lit:
+            path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+            exists: true
+            type: file
+            size_bytes: 12
       - true
     - std.logic.eq:
       - ops.fs.file.is_file:
-        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md, exists: true, type: file}
+        - lit:
+            path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+            exists: true
+            type: file
       - true
     - std.logic.eq:
       - ops.fs.file.is_dir:
-        - lit: {path: /docs, exists: true, type: dir}
+        - lit:
+            path: /docs
+            exists: true
+            type: dir
       - true
     - std.logic.eq:
       - ops.fs.file.name:
-        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md}
+        - lit:
+            path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
       - spec_lang_stdlib.spec.md
     - std.logic.eq:
       - ops.fs.file.parent:
-        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md}
+        - lit:
+            path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
       - /docs/spec/conformance/cases/core
     - std.logic.eq:
       - ops.fs.file.ext:
-        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md}
+        - lit:
+            path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
       - .md
     - std.logic.eq:
       - ops.fs.file.get:
-        - lit: {path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md, exists: true}
+        - lit:
+            path: /docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md
+            exists: true
         - missing
         - fallback
       - fallback
@@ -190,28 +205,56 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.json.parse:
         - '{"a":{"b":[1,2,3]}}'
-      - lit: {a: {b: [1, 2, 3]}}
+      - lit:
+          a:
+            b:
+            - 1
+            - 2
+            - 3
     - std.logic.eq:
       - ops.fs.json.get:
-        - lit: {a: {b: [1, 2, 3]}}
-        - lit: [a, b, 1]
+        - lit:
+            a:
+              b:
+              - 1
+              - 2
+              - 3
+        - lit:
+          - a
+          - b
+          - 1
       - 2
     - std.logic.eq:
       - ops.fs.json.get_or:
-        - lit: {a: {b: [1, 2, 3]}}
-        - lit: [a, c]
+        - lit:
+            a:
+              b:
+              - 1
+              - 2
+              - 3
+        - lit:
+          - a
+          - c
         - fallback
       - fallback
     - std.logic.eq:
       - ops.fs.json.has_path:
-        - lit: {a: {b: [1, 2, 3]}}
-        - lit: [a, b, 0]
+        - lit:
+            a:
+              b:
+              - 1
+              - 2
+              - 3
+        - lit:
+          - a
+          - b
+          - 0
       - true
   target: text
 ```
@@ -230,12 +273,13 @@ expect:
     category: schema
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.json.get:
-        - lit: {a: 1}
+        - lit:
+            a: 1
         - a
       - 1
   target: text
@@ -254,9 +298,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.glob.match:
         - docs/spec/current.md
@@ -264,17 +308,24 @@ contract:
       - true
     - std.logic.eq:
       - ops.fs.glob.filter:
-        - lit: [docs/spec/current.md, docs/book/index.md, README.md]
+        - lit:
+          - docs/spec/current.md
+          - docs/book/index.md
+          - README.md
         - docs/spec/*.md
-      - lit: [docs/spec/current.md]
+      - lit:
+        - docs/spec/current.md
     - std.logic.eq:
       - ops.fs.glob.any:
-        - lit: [docs/spec/current.md, docs/book/index.md]
+        - lit:
+          - docs/spec/current.md
+          - docs/book/index.md
         - docs/spec/*.md
       - true
     - std.logic.eq:
       - ops.fs.glob.all:
-        - lit: [docs/spec/current.md]
+        - lit:
+          - docs/spec/current.md
         - docs/spec/*.md
       - true
   target: text
@@ -294,12 +345,14 @@ expect:
     category: schema
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.glob.any:
-        - lit: [7, docs/spec/current.md]
+        - lit:
+          - 7
+          - docs/spec/current.md
         - docs/spec/*.md
       - true
   target: text
@@ -318,9 +371,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.path.relativize:
         - /a/b/c
@@ -333,11 +386,15 @@ contract:
       - c/d
     - std.logic.eq:
       - ops.fs.path.common_prefix:
-        - lit: [/a/b/c.md, /a/b/d.md]
+        - lit:
+          - /a/b/c.md
+          - /a/b/d.md
       - /a/b
     - std.logic.eq:
       - ops.fs.path.common_prefix:
-        - lit: [docs/spec/current.md, docs/spec/schema/schema_v1.md]
+        - lit:
+          - docs/spec/current.md
+          - docs/spec/schema/schema_v1.md
       - docs/spec
   target: text
 ```
@@ -356,12 +413,14 @@ expect:
     category: schema
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.path.common_prefix:
-        - lit: [/a/b, 7]
+        - lit:
+          - /a/b
+          - 7
       - /a
   target: text
 ```
@@ -379,17 +438,23 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.path.parents:
         - /a/b/c
-      - lit: [/a/b, /a, /]
+      - lit:
+        - /a/b
+        - /a
+        - /
     - std.logic.eq:
       - ops.fs.path.parents:
         - a/b/c
-      - lit: [a/b, a, .]
+      - lit:
+        - a/b
+        - a
+        - .
     - std.logic.eq:
       - ops.fs.path.within:
         - /a/b
@@ -422,9 +487,9 @@ expect:
     category: schema
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.path.parents:
         - 7
@@ -445,9 +510,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.path.compare:
         - /a//b
@@ -460,8 +525,14 @@ contract:
       - -1
     - std.logic.eq:
       - ops.fs.path.sort:
-        - lit: [/b/z, /a//c, /a/b]
-      - lit: [/a/b, /a/c, /b/z]
+        - lit:
+          - /b/z
+          - /a//c
+          - /a/b
+      - lit:
+        - /a/b
+        - /a/c
+        - /b/z
   target: text
 ```
 
@@ -479,12 +550,15 @@ expect:
     category: schema
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - ops.fs.path.sort:
-        - lit: [/a/b, 7]
-      - lit: [/a/b]
+        - lit:
+          - /a/b
+          - 7
+      - lit:
+        - /a/b
   target: text
 ```

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-015
 title: ci gate default broad governance path is rust-native
-purpose: Ensures ci-gate-summary defaults to governance-broad-native and does not route broad
-  through Python governance scripts.
+purpose: Ensures ci-gate-summary defaults to governance-broad-native and does not
+  route broad through Python governance scripts.
 type: governance.check
 check: runtime.ci_gate_default_no_python_governance_required
 harness:
@@ -30,7 +30,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

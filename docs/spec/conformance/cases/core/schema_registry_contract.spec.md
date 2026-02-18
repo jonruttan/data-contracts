@@ -15,9 +15,9 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'

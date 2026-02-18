@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-LIB-INDEX-001
 title: library domain indexes are synchronized
-purpose: Ensures each library domain index lists all library files and exported symbols without
-  stale entries.
+purpose: Ensures each library domain index lists all library files and exported symbols
+  without stale entries.
 type: governance.check
 check: library.domain_index_sync
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

@@ -12,7 +12,7 @@ harness:
   entrypoint: spec_runner.spec_lang_commands:contract_coverage_report_main
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: stdout
   asserts:
   - std.string.contains:
@@ -40,10 +40,10 @@ harness:
   entrypoint: spec_runner.spec_lang_commands:contract_coverage_report_main
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: stdout
   asserts:
   - std.string.contains:
     - var: subject
-    - 'wrote .artifacts/contract-coverage-impl-case.json'
+    - wrote .artifacts/contract-coverage-impl-case.json
 ```

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CONF-PURPOSE-002
 title: conformance purpose quality remains warning free
-purpose: Ensures conformance purpose lint policy and case purpose text stay clean with no
-  accumulated warning debt.
+purpose: Ensures conformance purpose lint policy and case purpose text stay clean
+  with no accumulated warning debt.
 type: governance.check
 check: conformance.purpose_quality_gate
 harness:
@@ -27,16 +27,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

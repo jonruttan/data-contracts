@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SPECLAYOUT-DOMAIN-001
 title: spec layout uses domain tree directories
-purpose: Ensures conformance, governance, and library specs are organized under domain subdirectories
-  with index files.
+purpose: Ensures conformance, governance, and library specs are organized under domain
+  subdirectories with index files.
 type: governance.check
 check: spec.layout_domain_trees
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

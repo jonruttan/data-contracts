@@ -7,7 +7,7 @@ id: LIB-DOMAIN-CONFORMANCE-001-000-DOMAIN-CONFORMANCE-ERROR-WHEN-FALSE
 type: spec.export
 contract:
 - id: __export__domain.conformance.error_when_false
-  class: must
+  class: MUST
   asserts:
   - if:
     - var: condition
@@ -30,7 +30,7 @@ id: LIB-DOMAIN-CONFORMANCE-001-000A-DOMAIN-CONFORMANCE-REPORT-VERSION-IS-V1
 type: spec.export
 contract:
 - id: __export__domain.conformance.report_version_is_v1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -52,7 +52,7 @@ id: LIB-DOMAIN-CONFORMANCE-001-000B-DOMAIN-CONFORMANCE-REPORT-RESULTS-IS-LIST
 type: spec.export
 contract:
 - id: __export__domain.conformance.report_results_is_list
-  class: must
+  class: MUST
   asserts:
   - std.type.is_list:
     - std.object.get:
@@ -73,7 +73,7 @@ id: LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS
 type: spec.export
 contract:
 - id: __export__domain.conformance.validate_report_errors
-  class: must
+  class: MUST
   asserts:
   - std.collection.concat:
     - if:

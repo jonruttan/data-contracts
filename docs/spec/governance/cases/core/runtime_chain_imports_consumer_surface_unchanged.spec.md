@@ -10,7 +10,7 @@ harness:
   root: .
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - std.logic.eq:

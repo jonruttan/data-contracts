@@ -26,7 +26,7 @@ harness:
       - conf.pass_when_text_contains
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - call:
     - var: conf.pass_when_text_contains
@@ -62,7 +62,7 @@ harness:
       - conf.pass_when_text_contains
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - call:
@@ -94,7 +94,7 @@ expect:
     - spec_lang let binding must be [name, expr]
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - let:
     - lit:
@@ -142,7 +142,7 @@ expect:
     - op=evaluate
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.starts_with:
     - var: subject
@@ -168,7 +168,7 @@ expect:
     - operator args must be a list
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - bad: shape
   target: text
@@ -192,7 +192,7 @@ expect:
     - unsupported spec_lang symbol
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - unknown_symbol:
     - 1
@@ -221,7 +221,7 @@ harness:
     max_steps: 20
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - let:
     - lit:
@@ -271,7 +271,7 @@ harness:
       - conf.pass_when_text_contains
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - call:
     - var: conf.pass_when_text_contains
@@ -306,7 +306,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.set.intersection:
@@ -340,7 +340,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.set.union:
@@ -374,7 +374,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:
@@ -418,7 +418,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.set.set_equals:
@@ -465,7 +465,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:
@@ -511,7 +511,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:
@@ -596,7 +596,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:
@@ -666,7 +666,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - call:
@@ -702,7 +702,7 @@ expect:
       - over-application error
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - call:
     - call:
@@ -736,7 +736,7 @@ expect:
       - expects list
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.set.intersection:
     - not-a-list
@@ -767,7 +767,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:
@@ -881,7 +881,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:
@@ -976,7 +976,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:
@@ -1049,7 +1049,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:
@@ -1127,7 +1127,7 @@ expect:
       category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:
@@ -1302,7 +1302,7 @@ expect:
       - arity error
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.compare:
     - 1

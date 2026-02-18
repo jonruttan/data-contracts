@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOC-SEC-001
 title: required trust-model docs declare non-sandboxed trusted-input contract
-purpose: Ensures required docs state that spec execution is not sandboxed and untrusted specs
-  are unsafe.
+purpose: Ensures required docs state that spec execution is not sandboxed and untrusted
+  specs are unsafe.
 type: governance.check
 check: docs.security_warning_contract
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

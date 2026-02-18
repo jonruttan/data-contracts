@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CONF-PURPOSE-001
 title: purpose warning code doc stays in sync with implementation codes
-purpose: Ensures docs for purpose warning codes include all implementation codes and no stale
-  entries.
+purpose: Ensures docs for purpose warning codes include all implementation codes and
+  no stale entries.
 type: governance.check
 check: conformance.purpose_warning_codes_sync
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

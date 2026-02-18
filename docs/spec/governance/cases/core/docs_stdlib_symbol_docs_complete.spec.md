@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-GEN-021
 title: stdlib symbols include semantic docs payload
-purpose: Ensures every stdlib symbol has summary, params, returns, errors, and examples in
-  generated catalogs.
+purpose: Ensures every stdlib symbol has summary, params, returns, errors, and examples
+  in generated catalogs.
 type: governance.check
 check: docs.stdlib_symbol_docs_complete
 harness:
@@ -22,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

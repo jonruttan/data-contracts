@@ -3,8 +3,8 @@
 ```yaml contract-spec
 id: SRGOV-CHAIN-FORM-001
 title: chain exports use list-only canonical form
-purpose: Ensures harness.chain step exports reject legacy mapping form and require list-form
-  entries.
+purpose: Ensures harness.chain step exports reject legacy mapping form and require
+  list-form entries.
 type: governance.check
 check: runtime.chain_exports_list_only_required
 harness:
@@ -20,7 +20,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

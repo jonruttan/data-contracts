@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CONTRACT-002
 title: contract must-rule coverage stays complete
-purpose: Ensures all MUST policy rules remain covered by traceability evidence and keeps overall
-  contract coverage above a minimum baseline.
+purpose: Ensures all MUST policy rules remain covered by traceability evidence and
+  keeps overall contract coverage above a minimum baseline.
 type: governance.check
 check: contract.coverage_threshold
 harness:
@@ -25,16 +25,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

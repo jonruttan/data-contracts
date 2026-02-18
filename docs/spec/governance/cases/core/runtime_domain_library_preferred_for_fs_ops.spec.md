@@ -3,8 +3,8 @@
 ```yaml contract-spec
 id: SRGOV-DOMAIN-LIB-OPS-FS-001
 title: executable specs prefer domain library helpers over raw ops fs symbols
-purpose: Enforces domain.path/domain.fs usage in executable specs and allows raw ops.fs usage
-  only in stdlib primitive conformance coverage.
+purpose: Enforces domain.path/domain.fs usage in executable specs and allows raw ops.fs
+  usage only in stdlib primitive conformance coverage.
 type: governance.check
 check: runtime.domain_library_preferred_for_fs_ops
 harness:
@@ -20,7 +20,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

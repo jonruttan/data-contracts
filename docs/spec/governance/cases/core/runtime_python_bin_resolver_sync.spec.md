@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-CONFIG-002
 title: python-invoking adapter scripts use shared python-bin resolver helper
-purpose: Keeps shared Python resolver helper contract stable for remaining tooling paths.
+purpose: Keeps shared Python resolver helper contract stable for remaining tooling
+  paths.
 type: governance.check
 check: runtime.python_bin_resolver_sync
 harness:
@@ -31,16 +32,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

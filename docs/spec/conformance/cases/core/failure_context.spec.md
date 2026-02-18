@@ -22,7 +22,7 @@ expect:
     - op=evaluate
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - var: subject

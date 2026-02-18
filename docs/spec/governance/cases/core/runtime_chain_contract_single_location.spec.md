@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CHAIN-009
 title: chain contract uses harness.chain only
-purpose: Ensures chain declarations appear only at harness.chain and not in alternate top-level
-  or type-specific locations.
+purpose: Ensures chain declarations appear only at harness.chain and not in alternate
+  top-level or type-specific locations.
 type: governance.check
 check: runtime.chain_contract_single_location
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

@@ -10,7 +10,7 @@ type: governance.check
 check: runtime.case_contract_block_required
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: violation_count
   asserts:
   - std.logic.eq:

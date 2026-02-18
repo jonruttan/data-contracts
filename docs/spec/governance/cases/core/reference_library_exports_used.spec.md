@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-REF-SYMBOLS-003
 title: library exports are referenced
-purpose: Ensures exported library symbols are referenced by case policies/expressions or harness
-  exports.
+purpose: Ensures exported library symbols are referenced by case policies/expressions
+  or harness exports.
 type: governance.check
 check: reference.library_exports_used
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

@@ -13,15 +13,15 @@ harness:
   harness_on_ordering:
     path: /spec_runner/components/assertion_engine.py
     required_tokens:
-    - "def _on_clause_pass"
-    - "_run_event("
-    - "cls,"
-    - "if cls in {\"must\", \"can\", \"cannot\"}"
-    - "def _on_complete"
-    - "\"complete\""
+    - def _on_clause_pass
+    - 'event_map = {"MUST": "must", "MAY": "can", "MUST_NOT": "cannot"}'
+    - event = event_map.get(cls)
+    - _run_event(
+    - def _on_complete
+    - '"complete"'
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: violation_count
   asserts:
   - std.logic.eq:

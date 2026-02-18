@@ -8,7 +8,7 @@ title: 'reusable impl assertion helper functions: impl.assert.contains'
 type: spec.export
 contract:
 - id: __export__impl.assert.contains
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -30,7 +30,7 @@ title: 'reusable impl assertion helper functions: impl.assert.regex'
 type: spec.export
 contract:
 - id: __export__impl.assert.regex
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - var: subject
@@ -52,7 +52,7 @@ title: 'reusable impl assertion helper functions: impl.assert.json_type'
 type: spec.export
 contract:
 - id: __export__impl.assert.json_type
-  class: must
+  class: MUST
   asserts:
   - std.type.json_type:
     - var: subject

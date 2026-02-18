@@ -741,8 +741,8 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
             let class_name = step_map
                 .get(&YamlValue::String("class".to_string()))
                 .and_then(|v| v.as_str())
-                .unwrap_or("must");
-            if !matches!(class_name, "must" | "can" | "cannot") {
+                .unwrap_or("MUST");
+            if !matches!(class_name, "MUST" | "MAY" | "MUST_NOT") {
                 continue;
             }
             let step_id = step_map
@@ -766,7 +766,7 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                 Some(v) => v,
                 None => continue,
             };
-            let mut clause_pass = matches!(class_name, "must" | "cannot");
+            let mut clause_pass = matches!(class_name, "MUST" | "MUST_NOT");
             let mut clause_error: Option<String> = None;
             let mut any_passed = false;
             for (assert_idx, raw_expr) in asserts.iter().enumerate() {
@@ -802,19 +802,19 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                 }
                 let ok = json_truthy(&result.value);
                 match class_name {
-                    "must" => {
+                    "MUST" => {
                         if !ok {
                             clause_pass = false;
                             break;
                         }
                     }
-                    "can" => {
+                    "MAY" => {
                         if ok {
                             any_passed = true;
                             break;
                         }
                     }
-                    "cannot" => {
+                    "MUST_NOT" => {
                         if ok {
                             clause_pass = false;
                             break;
@@ -823,21 +823,27 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                     _ => {}
                 }
             }
-            if class_name == "can" {
+            if class_name == "MAY" {
                 clause_pass = any_passed && clause_error.is_none();
             }
 
             if clause_pass {
                 passed_clauses += 1;
                 match class_name {
-                    "must" => must_passed += 1,
-                    "can" => can_passed += 1,
-                    "cannot" => cannot_passed += 1,
+                    "MUST" => must_passed += 1,
+                    "MAY" => can_passed += 1,
+                    "MUST_NOT" => cannot_passed += 1,
                     _ => {}
                 }
+                let hook_event = match class_name {
+                    "MUST" => "must",
+                    "MAY" => "can",
+                    "MUST_NOT" => "cannot",
+                    _ => class_name,
+                };
                 if let Err(e) = run_job_hook_event(
                     &hook_exprs,
-                    class_name,
+                    hook_event,
                     step_idx,
                     step_id,
                     class_name,
@@ -888,7 +894,7 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
             }
 
             failed_clauses += 1;
-            let fail_message = clause_error.unwrap_or_else(|| format!("contract clause failed: {}", class_name));
+            let fail_message = clause_error.unwrap_or_else(|| format!("contract clause failed: {class_name}"));
             if let Err(hook_err) = run_job_hook_event(
                 &hook_exprs,
                 "fail",
@@ -925,7 +931,7 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
             "complete",
             passed_clauses.saturating_sub(1) as usize,
             None,
-            "must",
+            "MUST",
             "contract",
             None,
             "pass",

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-IMPL-SPECLANG-002
 title: impl evaluate-first ratio is non-regressing
-purpose: Enforces ratchet-style non-regression for impl evaluate coverage against the checked-in
-  spec-lang adoption baseline.
+purpose: Enforces ratchet-style non-regression for impl evaluate coverage against
+  the checked-in spec-lang adoption baseline.
 type: governance.check
 check: impl.evaluate_ratio_non_regression
 harness:
@@ -43,16 +43,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

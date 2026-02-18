@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-ASSERT-CORE-001
 title: assertion docs define universal evaluate core
-purpose: Ensures schema and contract docs consistently define evaluate as the universal assertion
-  core and classify other operators as authoring sugar.
+purpose: Ensures schema and contract docs consistently define evaluate as the universal
+  assertion core and classify other operators as authoring sugar.
 type: governance.check
 check: assert.universal_core_sync
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

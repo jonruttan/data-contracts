@@ -14,9 +14,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - 'type: spec.export'
@@ -41,8 +41,8 @@ contract:
 ```yaml contract-spec
 id: SRCONF-LIB-CONTRACT-002
 title: path library uses producer harness exports
-purpose: Ensures path library authoring uses producer-owned harness.exports with
-  assert.function source mappings.
+purpose: Ensures path library authoring uses producer-owned harness.exports with assert.function
+  source mappings.
 type: text.file
 path: /docs/spec/libraries/path/path_core.spec.md
 expect:
@@ -50,9 +50,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - 'type: spec.export'
@@ -85,9 +85,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - /docs/spec/libraries/policy/policy_core.spec.md

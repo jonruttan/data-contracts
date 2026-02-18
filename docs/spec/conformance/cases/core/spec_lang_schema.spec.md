@@ -13,9 +13,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.type.json_type:
         - std.json.parse:
@@ -47,7 +47,7 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.eq:

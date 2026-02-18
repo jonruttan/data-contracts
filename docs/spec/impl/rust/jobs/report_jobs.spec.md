@@ -35,7 +35,7 @@ harness:
         report_name: SRRUST-JOB-REP-001.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -89,7 +89,7 @@ harness:
         report_name: SRRUST-JOB-REP-002.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -143,7 +143,7 @@ harness:
         report_name: SRRUST-JOB-REP-003.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -197,7 +197,7 @@ harness:
         report_name: SRRUST-JOB-REP-004.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -251,7 +251,7 @@ harness:
         report_name: SRRUST-JOB-REP-005.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -305,7 +305,7 @@ harness:
         report_name: SRRUST-JOB-REP-006.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -359,7 +359,7 @@ harness:
         report_name: SRRUST-JOB-REP-007.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -413,7 +413,7 @@ harness:
         report_name: SRRUST-JOB-REP-008.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -467,7 +467,7 @@ harness:
         report_name: SRRUST-JOB-REP-009.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -521,7 +521,7 @@ harness:
         report_name: SRRUST-JOB-REP-010.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -575,7 +575,7 @@ harness:
         report_name: SRRUST-JOB-REP-011.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -629,7 +629,7 @@ harness:
         report_name: SRRUST-JOB-REP-012.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -683,7 +683,7 @@ harness:
         report_name: SRRUST-JOB-REP-013.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -737,7 +737,7 @@ harness:
         report_name: SRRUST-JOB-REP-014.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -791,7 +791,7 @@ harness:
         report_name: SRRUST-JOB-REP-015.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -845,7 +845,7 @@ harness:
         report_name: SRRUST-JOB-REP-016.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -899,7 +899,7 @@ harness:
         report_name: SRRUST-JOB-REP-017.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:
@@ -953,7 +953,7 @@ harness:
         report_name: SRRUST-JOB-REP-018.complete
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: summary_json
   asserts:
   - ops.job.dispatch:

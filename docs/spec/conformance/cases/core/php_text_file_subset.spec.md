@@ -13,7 +13,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -34,7 +34,7 @@ expect:
     category: assertion
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - var: subject
@@ -55,9 +55,9 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - 'version: 1'
@@ -77,7 +77,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: can
+  class: MAY
   asserts:
   - std.string.regex_match:
     - var: subject
@@ -101,7 +101,7 @@ expect:
     category: assertion
 contract:
 - id: assert_1
-  class: can
+  class: MAY
   asserts:
   - std.string.regex_match:
     - var: subject
@@ -125,7 +125,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: cannot
+  class: MUST_NOT
   asserts:
   - std.string.regex_match:
     - var: subject
@@ -149,7 +149,7 @@ expect:
     category: assertion
 contract:
 - id: assert_1
-  class: cannot
+  class: MUST_NOT
   asserts:
   - std.string.contains:
     - var: subject
@@ -173,16 +173,16 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - can:
+  - MAY:
     - std.string.regex_match:
       - var: subject
       - \A\Z
     - std.string.contains:
       - var: subject
       - 'version: 1'
-  - cannot:
+  - MUST_NOT:
     - std.string.regex_match:
       - var: subject
       - \A\Z
@@ -205,7 +205,7 @@ assert_health:
   mode: error
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - var: subject
@@ -229,7 +229,7 @@ assert_health:
   mode: error
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -253,7 +253,7 @@ assert_health:
   mode: error
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - var: subject
@@ -280,9 +280,9 @@ assert_health:
   mode: error
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - 'version: 1'
@@ -308,7 +308,7 @@ assert_health:
   mode: error
 contract:
 - id: assert_1
-  class: can
+  class: MAY
   asserts:
   - std.string.contains:
     - var: subject
@@ -334,7 +334,7 @@ assert_health:
   mode: warn
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject

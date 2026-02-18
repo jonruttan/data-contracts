@@ -35,6 +35,7 @@ _HARNESS_FILES = (
     "spec_runner/harnesses/api_http.py",
 )
 _CHAIN_CLASS_VALUES = {"must", "can", "cannot"}
+_CONTRACT_CLASS_VALUES = {"MUST", "MAY", "MUST_NOT"}
 _MD_SYMBOL_RE = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
 
 
@@ -452,6 +453,10 @@ def _check_contract_terminology_hard_cut() -> list[str]:
                 return
             step_class = str(node.get("class", "")).strip() if "class" in node else ""
             if step_class in _CHAIN_CLASS_VALUES:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path}.class legacy lowercase class is forbidden; use MUST, MAY, MUST_NOT"
+                )
+            if step_class in _CONTRACT_CLASS_VALUES:
                 if "checks" in node:
                     issues.append(
                         f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path} legacy checks key is forbidden; use asserts"
@@ -466,6 +471,11 @@ def _check_contract_terminology_hard_cut() -> list[str]:
                         _walk(child, f"{path}.asserts[{i}]")
                 return
             for key in ("must", "can", "cannot"):
+                if key in node:
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path}.{key} legacy lowercase group key is forbidden; use MUST, MAY, MUST_NOT"
+                    )
+            for key in ("MUST", "MAY", "MUST_NOT"):
                 raw_children = node.get(key)
                 if isinstance(raw_children, list):
                     for i, child in enumerate(raw_children):

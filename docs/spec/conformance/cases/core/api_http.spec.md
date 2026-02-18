@@ -20,14 +20,14 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
     - '200'
   target: status
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
   - std.type.json_type:
     - var: subject
@@ -56,7 +56,7 @@ request:
   method: GET
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -86,7 +86,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -116,7 +116,7 @@ request:
     name: sample
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.object.has_key:
     - var: subject
@@ -143,7 +143,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -170,7 +170,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -197,7 +197,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -226,7 +226,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -253,7 +253,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -282,7 +282,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -315,7 +315,7 @@ request:
     request_method: POST
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -354,14 +354,14 @@ requests:
   url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
     - '200'
   target: status
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.collection.len:
@@ -400,9 +400,9 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - std.object.get:
@@ -450,7 +450,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -488,7 +488,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -527,7 +527,7 @@ request:
   url: https://api.example.invalid/items
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -575,7 +575,7 @@ request:
   url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject

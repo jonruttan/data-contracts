@@ -58,9 +58,9 @@ Define assertion-step semantics and canonical evaluate usage.
 
 ## Group Semantics
 
-- `must`: all children must pass
-- `can`: at least one child must pass
-- `cannot`: no child may pass
+- `MUST`: all children must pass
+- `MAY`: at least one child must pass
+- `MUST_NOT`: no child may pass
 
 ## Targets
 
@@ -71,7 +71,7 @@ Valid:
 ```yaml
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: stdout
   asserts:
   - evaluate:
@@ -85,7 +85,7 @@ Invalid:
 ```yaml
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - target: stdout
     evaluate:

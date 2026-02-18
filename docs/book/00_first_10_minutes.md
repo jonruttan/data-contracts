@@ -80,7 +80,7 @@ id: FIRST10-001
 type: text.file
 contract:
 - target: text
-  must:
+  MUST:
   - contain:
     - FIRST10-001
 ```

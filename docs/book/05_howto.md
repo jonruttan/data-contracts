@@ -55,7 +55,7 @@ Provide repeatable recipes for common contributor tasks.
 ## Add Or Reuse A Library Function
 
 1. Add function in a `type: spec.export` case.
-2. Define function logic in an `assert` step (`class: must`) and export from
+2. Define function logic in a `contract` step (`class: MUST`) and export from
    producer `harness.exports` using `from: assert.function`.
 3. Import symbols in consumers through `harness.chain.steps` + `harness.chain.imports`.
 4. Prefer `domain.*` helpers in executable specs; keep raw `ops.*` usage inside
@@ -85,7 +85,7 @@ harness:
 contract:
 - target: context_json
   asserts:
-  - must:
+  - MUST:
     - call:
       - {var: domain.markdown.required_sections_present}
       - {var: subject}
@@ -125,9 +125,9 @@ harness:
       - domain.fs.glob_filter
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - call:
       - {var: domain.fs.json_path_eq_text}
       - '{"meta":{"ok":true}}'

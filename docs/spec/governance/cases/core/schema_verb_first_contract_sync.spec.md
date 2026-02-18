@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SCHEMA-VERB-001
 title: verb-first contract wording remains synchronized
-purpose: Ensures schema/contract/current docs use defines wording and reject legacy definitions
-  wording.
+purpose: Ensures schema/contract/current docs use defines wording and reject legacy
+  definitions wording.
 type: governance.check
 check: schema.verb_first_contract_sync
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

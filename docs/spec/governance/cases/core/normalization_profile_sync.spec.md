@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-NORM-001
 title: normalization profile defines required source-of-truth fields
-purpose: Ensures normalization profile exists and includes all required top-level keys and
-  path scopes.
+purpose: Ensures normalization profile exists and includes all required top-level
+  keys and path scopes.
 type: governance.check
 check: normalization.profile_sync
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

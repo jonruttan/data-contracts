@@ -12,7 +12,7 @@ harness:
   entrypoint: spec_runner.spec_lang_commands:spec_lang_stdlib_report_main
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: stdout
   asserts:
   - std.string.contains:
@@ -37,7 +37,7 @@ harness:
   entrypoint: spec_runner.spec_lang_commands:spec_lang_stdlib_report_main
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: stdout
   asserts:
   - std.string.contains:

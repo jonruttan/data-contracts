@@ -7,7 +7,7 @@ id: LIB-DOMAIN-OS-001-001-DOMAIN-OS-EXEC-OK
 type: spec.export
 contract:
 - id: __export__domain.os.exec_ok
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - ops.os.exec:
@@ -30,7 +30,7 @@ id: LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE
 type: spec.export
 contract:
 - id: __export__domain.os.exec_capture_code
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -56,7 +56,7 @@ id: LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS
 type: spec.export
 contract:
 - id: __export__domain.os.env_has
-  class: must
+  class: MUST
   asserts:
   - ops.os.env_has:
     - var: key

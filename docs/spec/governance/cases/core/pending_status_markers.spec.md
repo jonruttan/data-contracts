@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-PENDING-001
 title: pending specs remain draft-only and must not include resolved/completed markers
-purpose: Ensures pending-spec files do not retain completed markers and keeps completed work
-  out of pending.
+purpose: Ensures pending-spec files do not retain completed markers and keeps completed
+  work out of pending.
 type: governance.check
 check: pending.no_resolved_markers
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

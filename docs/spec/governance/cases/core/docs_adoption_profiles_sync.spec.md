@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-REF-009
 title: core and full adoption profile docs stay synchronized
-purpose: Keeps contributor-facing docs aligned on core-check and full-check adoption profile
-  wording.
+purpose: Keeps contributor-facing docs aligned on core-check and full-check adoption
+  profile wording.
 type: governance.check
 check: docs.adoption_profiles_sync
 harness:
@@ -31,16 +31,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

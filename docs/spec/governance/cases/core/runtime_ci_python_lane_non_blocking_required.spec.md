@@ -16,8 +16,8 @@ harness:
     - 'python-parity-lane:'
     - 'continue-on-error: true'
     - python scripts/run_governance_specs.py --liveness-level basic
-    - python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases --out
-      .artifacts/conformance-parity-python.json
+    - python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases
+      --out .artifacts/conformance-parity-python.json
     forbidden_tokens:
     - ./scripts/runner_adapter.sh --impl python
     - Enforce Python parity lane result
@@ -32,7 +32,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

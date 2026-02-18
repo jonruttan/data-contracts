@@ -3,8 +3,8 @@
 ```yaml contract-spec
 id: SRGOV-LIB-SINGLE-002
 title: library exports are referenced by executable tests
-purpose: Ensures library exported symbols are exercised by colocated or downstream executable
-  assertion/policy usage.
+purpose: Ensures library exported symbols are exercised by colocated or downstream
+  executable assertion/policy usage.
 type: governance.check
 check: library.colocated_symbol_tests_required
 harness:
@@ -20,7 +20,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

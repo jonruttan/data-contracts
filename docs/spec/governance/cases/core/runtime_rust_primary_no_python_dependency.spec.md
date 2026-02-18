@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUST-PRIMARY-002
 title: rust-primary gate scripts avoid direct python runner entrypoints
-purpose: Ensures gate scripts stay runner-interface based and do not hardcode Python runner
-  commands.
+purpose: Ensures gate scripts stay runner-interface based and do not hardcode Python
+  runner commands.
 type: governance.check
 check: runtime.runner_interface_gate_sync
 harness:
@@ -40,16 +40,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

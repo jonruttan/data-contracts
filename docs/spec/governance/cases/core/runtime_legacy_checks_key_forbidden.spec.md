@@ -10,7 +10,7 @@ type: governance.check
 check: runtime.legacy_checks_key_forbidden
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: violation_count
   asserts:
   - std.logic.eq:

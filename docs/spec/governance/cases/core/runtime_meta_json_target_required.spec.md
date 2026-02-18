@@ -21,7 +21,7 @@ harness:
     - meta_json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

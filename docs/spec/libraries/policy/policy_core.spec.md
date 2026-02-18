@@ -8,21 +8,21 @@ title: policy-core reusable governance predicates
 type: spec.export
 contract:
 - id: __export__policy.pass_when_no_violations
-  class: must
+  class: MUST
   asserts:
   - std.collection.is_empty:
     - std.object.get:
       - var: subject
       - violations
 - id: __export__policy.fail_when_has_violations
-  class: must
+  class: MUST
   asserts:
   - std.logic.not:
     - call:
       - var: policy.pass_when_no_violations
       - var: subject
 - id: __export__policy.check_id_is
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -30,7 +30,7 @@ contract:
       - check_id
     - var: expected
 - id: __export__policy.violation_count_is
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

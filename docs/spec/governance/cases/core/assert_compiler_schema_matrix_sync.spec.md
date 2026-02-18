@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-ASSERT-SYNC-001
 title: compiler behavior stays aligned with universal assertion contract
-purpose: Ensures compiler operator handling, schema wording, and assertion contract wording
-  stay synchronized for universal evaluate core semantics.
+purpose: Ensures compiler operator handling, schema wording, and assertion contract
+  wording stay synchronized for universal evaluate core semantics.
 type: governance.check
 check: assert.compiler_schema_matrix_sync
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

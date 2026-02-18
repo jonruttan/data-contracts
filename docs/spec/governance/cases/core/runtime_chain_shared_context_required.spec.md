@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CHAIN-011
 title: chain shared context is declared in dispatcher
-purpose: Ensures chain state, trace, imports, and chain payload surfaces are carried in shared
-  runtime context.
+purpose: Ensures chain state, trace, imports, and chain payload surfaces are carried
+  in shared runtime context.
 type: governance.check
 check: runtime.chain_shared_context_required
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

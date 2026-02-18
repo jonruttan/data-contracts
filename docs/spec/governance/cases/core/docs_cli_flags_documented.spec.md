@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-REF-005
 title: runner cli flags are documented in development and impl docs
-purpose: Prevents CLI contract drift by requiring script flags to be documented in the development
-  guide and implementation reference pages.
+purpose: Prevents CLI contract drift by requiring script flags to be documented in
+  the development guide and implementation reference pages.
 type: governance.check
 check: docs.cli_flags_documented
 harness:
@@ -34,16 +34,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

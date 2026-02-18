@@ -5,8 +5,10 @@ Date: 2026-02-12
 
 Notes:
 
-- The canonical assertion DSL is `must` / `can` / `cannot` with `contain`,
+- The canonical assertion DSL is `MUST` / `MAY` / `MUST_NOT` with `contain`,
   `regex`, and `evaluate` (spec-lang v1 operator-keyed mapping AST).
+- Legacy lowercase contract class/group forms (`must/can/cannot`) are
+  forbidden; lifecycle hook keys remain lowercase under `when.*`.
 - `target` is defined on group nodes; leaf assertions are op-only.
 - Execution is internal-IR based: external cases compile to spec-lang-backed
   internal predicates before runtime evaluation.
@@ -133,7 +135,8 @@ Notes:
   `ops.job.dispatch` executes harness-declared metadata from `harness.jobs`,
   with explicit capability gate `ops.job`; legacy `harness.job` is forbidden.
 - Harness lifecycle hooks are supported at `when`:
-  `must|can|cannot` run after successful clauses of their class, `fail` runs
+  `must|can|cannot` run after successful clauses of `MUST|MAY|MUST_NOT`
+  respectively, `fail` runs
   once on first failure, and `complete` runs after all clauses and class hooks
   pass; hook failures are runtime-fatal. Legacy `harness.on` is forbidden.
 - Rust `contract.job` spec suites now use a consistent lifecycle pattern:

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-FAILFAST-004
 title: gate policy evaluation treats skipped rows as non-pass
-purpose: Ensures fail-fast skipped rows stay in policy subject and preserve failing verdict
-  semantics.
+purpose: Ensures fail-fast skipped rows stay in policy subject and preserve failing
+  verdict semantics.
 type: governance.check
 check: runtime.gate_policy_evaluates_with_skipped_rows
 harness:
@@ -30,7 +30,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

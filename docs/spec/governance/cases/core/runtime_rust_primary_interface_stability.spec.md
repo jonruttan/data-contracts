@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUST-PRIMARY-003
 title: rust-primary adapter keeps required runner-interface subcommands
-purpose: Ensures Rust-primary operation preserves required runner-interface subcommand compatibility.
+purpose: Ensures Rust-primary operation preserves required runner-interface subcommand
+  compatibility.
 type: governance.check
 check: runtime.runner_interface_subcommands
 harness:
@@ -51,16 +52,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

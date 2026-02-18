@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SPEC-MD-001
 title: executable spec surfaces are markdown only
-purpose: Ensures all canonical executable case trees are authored as .spec.md and do not use
-  runnable yaml/json case files.
+purpose: Ensures all canonical executable case trees are authored as .spec.md and
+  do not use runnable yaml/json case files.
 type: governance.check
 check: spec.executable_surface_markdown_only
 harness:
@@ -22,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

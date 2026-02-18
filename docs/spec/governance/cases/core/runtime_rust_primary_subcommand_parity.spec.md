@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUST-PRIMARY-007
 title: rust adapter and rust cli expose the same runner subcommand set
-purpose: Ensures the shell adapter and Rust CLI subcommand surfaces stay synchronized to prevent
-  runtime interface drift.
+purpose: Ensures the shell adapter and Rust CLI subcommand surfaces stay synchronized
+  to prevent runtime interface drift.
 type: governance.check
 check: runtime.rust_adapter_subcommand_parity
 harness:
@@ -25,16 +25,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

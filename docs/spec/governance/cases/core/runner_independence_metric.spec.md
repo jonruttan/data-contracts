@@ -29,14 +29,14 @@ harness:
     policy_evaluate:
     - std.logic.and:
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - summary
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - segments
       - std.object.has_key:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - summary
         - overall_runner_independence_ratio
   chain:
@@ -50,16 +50,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

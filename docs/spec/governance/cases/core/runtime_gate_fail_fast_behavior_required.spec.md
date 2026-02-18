@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-FAILFAST-001
 title: gate summary enforces fail-fast orchestration semantics
-purpose: Ensures CI gate orchestration supports deterministic fail-fast with explicit abort
-  markers.
+purpose: Ensures CI gate orchestration supports deterministic fail-fast with explicit
+  abort markers.
 type: governance.check
 check: runtime.gate_fail_fast_behavior_required
 harness:
@@ -30,7 +30,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

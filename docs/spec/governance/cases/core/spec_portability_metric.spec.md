@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SPEC-PORT-001
 title: spec self-containment metric computes with configured segmented policy
-purpose: Ensures portability metric configuration is schema-valid and report generation succeeds
-  for all canonical spec roots.
+purpose: Ensures portability metric configuration is schema-valid and report generation
+  succeeds for all canonical spec roots.
 type: governance.check
 check: spec.portability_metric
 harness:
@@ -44,20 +44,20 @@ harness:
     policy_evaluate:
     - std.logic.and:
       - std.type.json_type:
-        - {var: subject}
+        - var: subject
         - dict
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - summary
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - segments
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - worst_cases
       - std.type.json_type:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - summary
         - dict
   chain:
@@ -71,16 +71,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

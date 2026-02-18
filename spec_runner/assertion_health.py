@@ -54,7 +54,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
             return
 
         step_class = str(node.get("class", "")).strip() if "class" in node else ""
-        if step_class in {"must", "can", "cannot"} and "asserts" in node:
+        if step_class in {"MUST", "MAY", "MUST_NOT"} and "asserts" in node:
             asserts = node.get("asserts")
             if isinstance(asserts, list):
                 step_seen: set[str] = set()
@@ -79,7 +79,7 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
             return
 
         group_key = None
-        for k in ("must", "can", "cannot"):
+        for k in ("MUST", "MAY", "MUST_NOT"):
             if k in node:
                 group_key = k
                 break
@@ -125,16 +125,16 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
             if op == "contain" and "" in vals:
                 code = "AH001"
                 msg = "contain with empty string is always true"
-                if group_ctx == "cannot":
-                    msg = "cannot(contain:'') is always false"
+                if group_ctx == "MUST_NOT":
+                    msg = "MUST_NOT(contain:'') is always false"
                 out.append(AssertionHealthDiagnostic(code=code, message=msg, path=f"{path}.contain"))
             if op == "regex":
                 for v in vals:
                     if v in _ALWAYS_TRUE_REGEX:
                         code = "AH002"
                         msg = "regex pattern is trivially always true"
-                        if group_ctx == "cannot":
-                            msg = "cannot(regex always-true) is always false"
+                        if group_ctx == "MUST_NOT":
+                            msg = "MUST_NOT(regex always-true) is always false"
                         out.append(AssertionHealthDiagnostic(code=code, message=msg, path=f"{path}.regex"))
                     for pattern, reason in _NON_PORTABLE_REGEX_TOKENS:
                         if re.search(pattern, v):

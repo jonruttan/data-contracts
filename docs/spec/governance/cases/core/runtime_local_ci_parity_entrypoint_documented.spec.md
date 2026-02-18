@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-PREPUSH-005
 title: local ci parity entrypoint is documented for contributors
-purpose: Ensures contributor docs cover parity-default prepush, fast opt-out, and hook installation.
+purpose: Ensures contributor docs cover parity-default prepush, fast opt-out, and
+  hook installation.
 type: governance.check
 check: runtime.local_ci_parity_entrypoint_documented
 harness:
@@ -32,7 +33,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SCHEMA-REG-002
 title: schema registry docs snapshot is synchronized
-purpose: Ensures schema_v1 markdown contains synchronized generated registry snapshot markers
-  and tokens.
+purpose: Ensures schema_v1 markdown contains synchronized generated registry snapshot
+  markers and tokens.
 type: governance.check
 check: schema.registry_docs_sync
 harness:
@@ -22,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

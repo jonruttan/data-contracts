@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUST-PRIMARY-008
 title: rust runner interface avoids direct python execution tokens
-purpose: Ensures the Rust runner interface implementation does not hardcode direct python
-  executable invocation.
+purpose: Ensures the Rust runner interface implementation does not hardcode direct
+  python executable invocation.
 type: governance.check
 check: runtime.rust_adapter_no_python_exec
 harness:
@@ -29,16 +29,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

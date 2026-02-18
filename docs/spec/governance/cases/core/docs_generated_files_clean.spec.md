@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-QUAL-008
 title: generated docs artifacts are up-to-date
-purpose: Ensures generated reference index, coverage, and docs graph artifacts are kept fresh.
+purpose: Ensures generated reference index, coverage, and docs graph artifacts are
+  kept fresh.
 type: governance.check
 check: docs.generated_files_clean
 harness:
@@ -26,16 +27,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

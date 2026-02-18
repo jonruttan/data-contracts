@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-QUAL-001
 title: docs metadata schema is valid for canonical reference chapters
-purpose: Ensures each canonical reference chapter contains valid machine-checkable doc metadata.
+purpose: Ensures each canonical reference chapter contains valid machine-checkable
+  doc metadata.
 type: governance.check
 check: docs.meta_schema_valid
 harness:
@@ -23,16 +24,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

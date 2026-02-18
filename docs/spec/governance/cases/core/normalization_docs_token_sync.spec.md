@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-NORM-003
 title: normalization docs token sync is enforced
-purpose: Ensures schema contract and book docs maintain required mapping-AST wording and forbid
-  stale expression-shape tokens.
+purpose: Ensures schema contract and book docs maintain required mapping-AST wording
+  and forbid stale expression-shape tokens.
 type: governance.check
 check: normalization.docs_token_sync
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

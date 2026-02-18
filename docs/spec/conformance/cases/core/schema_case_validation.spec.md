@@ -14,7 +14,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -35,7 +35,7 @@ expect:
     category: schema
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - unknown_symbol_for_schema_case:
     - var: subject

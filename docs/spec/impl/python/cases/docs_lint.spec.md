@@ -12,7 +12,7 @@ harness:
   entrypoint: spec_runner.spec_lang_commands:docs_lint_main
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: stdout
   asserts:
   - std.string.contains:
@@ -34,10 +34,10 @@ harness:
   entrypoint: spec_runner.spec_lang_commands:docs_lint_main
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: stdout
   asserts:
   - std.string.contains:
     - var: subject
-    - 'missing reference manifest'
+    - missing reference manifest
 ```

@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CHAIN-012
 title: chain state sharing uses explicit exports only
-purpose: Ensures chain state propagation is declared through explicit target-derived exports.
+purpose: Ensures chain state propagation is declared through explicit target-derived
+  exports.
 type: governance.check
 check: runtime.chain_exports_explicit_only
 harness:
@@ -21,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

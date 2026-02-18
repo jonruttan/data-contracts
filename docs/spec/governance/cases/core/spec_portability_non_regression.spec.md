@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SPEC-PORT-002
 title: spec-lang self-containment metric is non-regressing
-purpose: Enforces a monotonic ratchet so configured spec-lang self-containment metrics cannot
-  decrease from baseline.
+purpose: Enforces a monotonic ratchet so configured spec-lang self-containment metrics
+  cannot decrease from baseline.
 type: governance.check
 check: spec.portability_non_regression
 harness:
@@ -64,16 +64,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

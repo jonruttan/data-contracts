@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-APIHTTP-003
 title: api.http network oauth/request flows require explicit live mode
-purpose: Ensures network token/request URLs are only used when harness.api_http.mode is explicitly
-  live.
+purpose: Ensures network token/request URLs are only used when harness.api_http.mode
+  is explicitly live.
 type: governance.check
 check: runtime.api_http_live_mode_explicit
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

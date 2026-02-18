@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-QUAL-005
 title: instruction pages contain required operational sections
-purpose: Ensures docs metadata required sections are present in canonical chapter content.
+purpose: Ensures docs metadata required sections are present in canonical chapter
+  content.
 type: governance.check
 check: docs.instructions_complete
 harness:
@@ -23,16 +24,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

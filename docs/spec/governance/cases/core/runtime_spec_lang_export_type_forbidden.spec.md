@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-SPECLANG-EXPORT-001
 title: legacy spec_lang.export type is forbidden after hard cut
-purpose: Ensures executable spec surfaces reject type spec_lang.export and require spec.export
-  producer cases.
+purpose: Ensures executable spec surfaces reject type spec_lang.export and require
+  spec.export producer cases.
 type: governance.check
 check: runtime.spec_lang_export_type_forbidden
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

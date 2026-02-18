@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-SPECLANG-PURE-001
 title: spec-lang evaluators avoid side-effectful builtins
-purpose: Enforces pure evaluation semantics by forbidding side-effectful probes in spec-lang
-  implementations.
+purpose: Enforces pure evaluation semantics by forbidding side-effectful probes in
+  spec-lang implementations.
 type: governance.check
 check: runtime.spec_lang_pure_no_effect_builtins
 harness:
@@ -29,16 +29,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

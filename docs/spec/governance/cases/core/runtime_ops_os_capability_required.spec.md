@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-OPS-OS-CAP-001
 title: ops.os usage requires explicit capability gate
-purpose: Ensures spec-lang enforces capability.ops_os.required and harness
-  capability parsing.
+purpose: Ensures spec-lang enforces capability.ops_os.required and harness capability
+  parsing.
 type: governance.check
 check: runtime.ops_os_capability_required
 harness:
@@ -19,7 +19,7 @@ harness:
     - ops.os.exec
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

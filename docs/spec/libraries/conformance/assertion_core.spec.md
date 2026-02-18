@@ -8,31 +8,31 @@ title: reusable conformance assertion helper functions
 type: spec.export
 contract:
 - id: __export__conf.pass_when_text_contains
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
     - var: token
 - id: __export__conf.pass_when_text_regex
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - var: subject
     - var: pattern
 - id: __export__conf.eq
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - var: value
 - id: __export__conf.has_error_category
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
     - var: category
 - id: __export__conf.json_type_is
-  class: must
+  class: MUST
   asserts:
   - std.type.json_type:
     - var: subject

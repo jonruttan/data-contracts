@@ -7,7 +7,7 @@ id: LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS
 type: spec.export
 contract:
 - id: __export__domain.http.status
-  class: must
+  class: MUST
   asserts:
   - std.object.get:
     - std.object.get:
@@ -28,7 +28,7 @@ id: LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN
 type: spec.export
 contract:
 - id: __export__domain.http.status_in
-  class: must
+  class: MUST
   asserts:
   - std.collection.in:
     - std.object.get:
@@ -52,7 +52,7 @@ id: LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS
 type: spec.export
 contract:
 - id: __export__domain.http.status_is
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -76,7 +76,7 @@ id: LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED
 type: spec.export
 contract:
 - id: __export__domain.http.status_is_unauthorized
-  class: must
+  class: MUST
   asserts:
   - call:
     - var: domain.http.status_is
@@ -96,7 +96,7 @@ id: LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN
 type: spec.export
 contract:
 - id: __export__domain.http.status_is_forbidden
-  class: must
+  class: MUST
   asserts:
   - call:
     - var: domain.http.status_is
@@ -116,7 +116,7 @@ id: LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX
 type: spec.export
 contract:
 - id: __export__domain.http.ok_2xx
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - std.logic.gte:
@@ -147,7 +147,7 @@ id: LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET
 type: spec.export
 contract:
 - id: __export__domain.http.header_get
-  class: must
+  class: MUST
   asserts:
   - std.object.get:
     - std.object.get:
@@ -171,7 +171,7 @@ id: LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS
 type: spec.export
 contract:
 - id: __export__domain.http.header_contains
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - std.object.get:
@@ -198,7 +198,7 @@ id: LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT
 type: spec.export
 contract:
 - id: __export__domain.http.body_text
-  class: must
+  class: MUST
   asserts:
   - std.object.get:
     - std.object.get:
@@ -219,7 +219,7 @@ id: LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON
 type: spec.export
 contract:
 - id: __export__domain.http.body_json
-  class: must
+  class: MUST
   asserts:
   - std.object.get:
     - std.object.get:
@@ -240,7 +240,7 @@ id: LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS
 type: spec.export
 contract:
 - id: __export__domain.http.body_json_type_is
-  class: must
+  class: MUST
   asserts:
   - std.type.json_type:
     - std.object.get:
@@ -264,7 +264,7 @@ id: LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY
 type: spec.export
 contract:
 - id: __export__domain.http.body_json_has_key
-  class: must
+  class: MUST
   asserts:
   - std.object.has_key:
     - std.object.get:
@@ -288,7 +288,7 @@ id: LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH
 type: spec.export
 contract:
 - id: __export__domain.http.auth_is_oauth
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -311,7 +311,7 @@ id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-OAUTH-TOKEN-SOURCE-IS
 type: spec.export
 contract:
 - id: __export__domain.http.oauth_token_source_is
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -335,7 +335,7 @@ id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-HAS-BEARER-HEADER
 type: spec.export
 contract:
 - id: __export__domain.http.has_bearer_header
-  class: must
+  class: MUST
   asserts:
   - std.string.starts_with:
     - std.object.get:
@@ -360,7 +360,7 @@ id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED
 type: spec.export
 contract:
 - id: __export__domain.http.oauth_scope_requested
-  class: must
+  class: MUST
   asserts:
   - std.logic.neq:
     - std.object.get:
@@ -385,7 +385,7 @@ id: LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN
 type: spec.export
 contract:
 - id: __export__domain.http.cors_allow_origin
-  class: must
+  class: MUST
   asserts:
   - std.object.get:
     - std.object.get:
@@ -408,7 +408,7 @@ id: LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD
 type: spec.export
 contract:
 - id: __export__domain.http.cors_allows_method
-  class: must
+  class: MUST
   asserts:
   - std.collection.includes:
     - std.object.get:
@@ -434,7 +434,7 @@ id: LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER
 type: spec.export
 contract:
 - id: __export__domain.http.cors_allows_header
-  class: must
+  class: MUST
   asserts:
   - std.collection.includes:
     - std.object.get:
@@ -460,7 +460,7 @@ id: LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED
 type: spec.export
 contract:
 - id: __export__domain.http.cors_credentials_enabled
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -485,7 +485,7 @@ id: LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE
 type: spec.export
 contract:
 - id: __export__domain.http.cors_max_age_gte
-  class: must
+  class: MUST
   asserts:
   - std.logic.gte:
     - std.object.get:
@@ -511,7 +511,7 @@ id: LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP
 type: spec.export
 contract:
 - id: __export__domain.http.is_preflight_step
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -532,7 +532,7 @@ id: LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID
 type: spec.export
 contract:
 - id: __export__domain.http.step_by_id
-  class: must
+  class: MUST
   asserts:
   - std.collection.find:
     - fn:
@@ -558,7 +558,7 @@ id: LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS
 type: spec.export
 contract:
 - id: __export__domain.http.step_status_is
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -584,7 +584,7 @@ id: LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET
 type: spec.export
 contract:
 - id: __export__domain.http.step_body_json_get
-  class: must
+  class: MUST
   asserts:
   - std.object.get:
     - std.object.get:

@@ -10,7 +10,7 @@ id: BAD-EXPORT-PATH
 type: spec.export
 contract:
 - id: valid_step
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
@@ -32,7 +32,7 @@ id: BAD-EXPORT-CLASS
 type: spec.export
 contract:
 - id: non_must_step
-  class: can
+  class: MAY
   asserts:
   - std.logic.eq:
     - var: subject

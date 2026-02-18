@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CONF-SPECLANG-001
 title: conformance and governance fixtures require evaluate-only assertions
-purpose: Enforces evaluate-only assertion authoring in conformance and governance case surfaces.
+purpose: Enforces evaluate-only assertion authoring in conformance and governance
+  case surfaces.
 type: governance.check
 check: conformance.spec_lang_preferred
 harness:
@@ -19,14 +20,14 @@ harness:
       - std.collection.count:
         - std.collection.filter:
           - fn:
-            - [row]
+            - - row
             - std.logic.gt:
               - std.collection.count:
                 - std.object.get:
-                  - {var: row}
+                  - var: row
                   - non_evaluate_ops
               - 0
-          - {var: subject}
+          - var: subject
       - 0
   chain:
     steps:
@@ -39,16 +40,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

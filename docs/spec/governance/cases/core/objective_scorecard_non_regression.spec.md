@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-OBJECTIVE-002
 title: objective scorecard is non-regressing
-purpose: Enforces ratchet non-regression for objective scorecard summary metrics and baseline-note
-  integrity.
+purpose: Enforces ratchet non-regression for objective scorecard summary metrics and
+  baseline-note integrity.
 type: governance.check
 check: objective.scorecard_non_regression
 harness:
@@ -40,16 +40,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

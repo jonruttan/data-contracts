@@ -2655,7 +2655,7 @@ def _collect_assert_targets(node: object) -> list[str]:
     target = node.get("target")
     if isinstance(target, str) and target.strip():
         targets.append(target.strip())
-    for key in ("must", "can", "cannot"):
+    for key in ("MUST", "MAY", "MUST_NOT"):
         child = node.get(key)
         if child is not None:
             targets.extend(_collect_assert_targets(child))
@@ -4501,14 +4501,14 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 if not isinstance(node, dict):
                     return
                 step_class = str(node.get("class", "")).strip() if "class" in node else ""
-                if step_class in {"must", "can", "cannot"} and "asserts" in node:
+                if step_class in {"MUST", "MAY", "MUST_NOT"} and "asserts" in node:
                     node_target = str(node.get("target", "")).strip() or inherited_target
                     raw_checks = node.get("asserts")
                     if isinstance(raw_checks, list):
                         for child in raw_checks:
                             _collect_ops(child, inherited_target=node_target)
                     return
-                present_groups = [k for k in ("must", "can", "cannot") if k in node]
+                present_groups = [k for k in ("MUST", "MAY", "MUST_NOT") if k in node]
                 if present_groups:
                     node_target = str(node.get("target", "")).strip() or inherited_target
                     for key in present_groups:
@@ -4526,7 +4526,7 @@ def _scan_conformance_spec_lang_preferred(root: Path, *, harness: dict | None = 
                 return
                 for key in node.keys():
                     op = str(key).strip()
-                    if not op or op in {"target", "must", "can", "cannot"}:
+                    if not op or op in {"target", "MUST", "MAY", "MUST_NOT"}:
                         continue
                     if op != "evaluate":
                         non_evaluate_ops.add(op)
@@ -4596,13 +4596,13 @@ def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = Non
         if not isinstance(node, dict):
             return
         step_class = str(node.get("class", "")).strip() if "class" in node else ""
-        if step_class in {"must", "can", "cannot"} and "asserts" in node:
+        if step_class in {"MUST", "MAY", "MUST_NOT"} and "asserts" in node:
             raw_checks = node.get("asserts")
             if isinstance(raw_checks, list):
                 for child in raw_checks:
                     _collect_non_eval_ops(child, out)
             return
-        present_groups = [k for k in ("must", "can", "cannot") if k in node]
+        present_groups = [k for k in ("MUST", "MAY", "MUST_NOT") if k in node]
         if present_groups:
             for key in present_groups:
                 children = node.get(key, [])
@@ -4619,7 +4619,7 @@ def _scan_impl_evaluate_first_required(root: Path, *, harness: dict | None = Non
         return
         for key in node.keys():
             op = str(key).strip()
-            if not op or op in {"target", "must", "can", "cannot"}:
+            if not op or op in {"target", "MUST", "MAY", "MUST_NOT"}:
                 continue
             if op != "evaluate":
                 out.add(op)
@@ -6729,7 +6729,7 @@ def _scan_runtime_contract_step_asserts_required(root: Path, *, harness: dict | 
         if not isinstance(node, dict):
             return
         step_class = str(node.get("class", "")).strip() if "class" in node else ""
-        if step_class in {"must", "can", "cannot"}:
+        if step_class in {"MUST", "MAY", "MUST_NOT"}:
             if "asserts" not in node:
                 violations.append(f"{rel}: case {case_id} {path} step requires asserts list")
             raw_asserts = node.get("asserts")
@@ -6739,7 +6739,7 @@ def _scan_runtime_contract_step_asserts_required(root: Path, *, harness: dict | 
                 for i, child in enumerate(raw_asserts):
                     _walk(child, rel=rel, case_id=case_id, path=f"{path}.asserts[{i}]")
             return
-        for key in ("must", "can", "cannot"):
+        for key in ("MUST", "MAY", "MUST_NOT"):
             raw_children = node.get(key)
             if isinstance(raw_children, list):
                 for i, child in enumerate(raw_children):
@@ -8629,13 +8629,13 @@ def _iter_evaluate_expr_nodes(assert_node: object) -> list[object]:
     if not isinstance(assert_node, dict):
         return out
     step_class = str(assert_node.get("class", "")).strip() if "class" in assert_node else ""
-    if step_class in {"must", "can", "cannot"} and "asserts" in assert_node:
+    if step_class in {"MUST", "MAY", "MUST_NOT"} and "asserts" in assert_node:
         raw_checks = assert_node.get("asserts")
         if isinstance(raw_checks, list):
             for child in raw_checks:
                 out.extend(_iter_evaluate_expr_nodes(child))
         return out
-    for key in ("must", "can", "cannot"):
+    for key in ("MUST", "MAY", "MUST_NOT"):
         raw_children = assert_node.get(key)
         if isinstance(raw_children, list):
             for child in raw_children:

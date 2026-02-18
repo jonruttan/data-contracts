@@ -15,7 +15,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: text
   asserts:
   - std.string.contains:

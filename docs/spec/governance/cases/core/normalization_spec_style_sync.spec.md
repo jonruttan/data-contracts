@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-NORM-004
 title: normalization spec style policy stays profile-driven
-purpose: Ensures conformance style limits and wording remain synchronized with the normalization
-  profile and governance scanner constants.
+purpose: Ensures conformance style limits and wording remain synchronized with the
+  normalization profile and governance scanner constants.
 type: governance.check
 check: normalization.spec_style_sync
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

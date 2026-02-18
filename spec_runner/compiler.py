@@ -9,12 +9,12 @@ from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_ex
 
 
 def _require_group_key(node: dict[str, Any]) -> str | None:
-    keys = [k for k in ("must", "can", "cannot") if k in node]
+    keys = [k for k in ("MUST", "MAY", "MUST_NOT") if k in node]
     if not keys:
         return None
     if len(keys) > 1:
         got = ", ".join(keys)
-        raise ValueError(f"contract group must include exactly one key (must/can/cannot), got: {got}")
+        raise ValueError(f"contract group must include exactly one key (MUST/MAY/MUST_NOT), got: {got}")
     return keys[0]
 
 
@@ -43,11 +43,11 @@ def _compile_legacy_assert_node(
     assert_path: str = "contract",
 ) -> InternalAssertNode:
     if raw_assert is None:
-        return GroupNode(op="must", target=inherited_target, children=[], assert_path=assert_path)
+        return GroupNode(op="MUST", target=inherited_target, children=[], assert_path=assert_path)
 
     if isinstance(raw_assert, list):
         return GroupNode(
-            op="must",
+            op="MUST",
             target=inherited_target,
             children=[
                 _compile_legacy_assert_node(
@@ -76,7 +76,7 @@ def _compile_legacy_assert_node(
             raise TypeError(f"contract.{group_key} must be a list")
         if not children:
             raise ValueError(f"contract.{group_key} must not be empty")
-        group_op = cast(Literal["must", "can", "cannot"], group_key)
+        group_op = cast(Literal["MUST", "MAY", "MUST_NOT"], group_key)
         return GroupNode(
             op=group_op,
             target=group_target,
@@ -94,7 +94,7 @@ def _compile_legacy_assert_node(
 
     if "target" in raw_assert:
         raise ValueError("leaf contract predicate must not include key: target; move target to a parent group")
-    if any(k in raw_assert for k in ("must", "can", "cannot")):
+    if any(k in raw_assert for k in ("MUST", "MAY", "MUST_NOT")):
         raise ValueError("leaf contract predicate must not include group keys")
 
     target = str(inherited_target or "").strip()
@@ -129,7 +129,7 @@ def compile_assert_tree(
     strict_steps: bool = False,
 ) -> InternalAssertNode:
     if raw_assert is None:
-        return GroupNode(op="must", target=inherited_target, children=[], assert_path=assert_path)
+        return GroupNode(op="MUST", target=inherited_target, children=[], assert_path=assert_path)
     if not isinstance(raw_assert, list):
         if strict_steps:
             raise TypeError("contract must be a list of step mappings")
@@ -141,7 +141,7 @@ def compile_assert_tree(
         )
 
     if not raw_assert:
-        return GroupNode(op="must", target=inherited_target, children=[], assert_path=assert_path)
+        return GroupNode(op="MUST", target=inherited_target, children=[], assert_path=assert_path)
 
     is_step_form = all(_looks_like_assert_step(x) for x in raw_assert)
     if strict_steps and not is_step_form:
@@ -165,8 +165,8 @@ def compile_assert_tree(
             raise ValueError(f"{assert_path} has duplicate step id: {step_id}")
         seen_ids.add(step_id)
         class_name = str(raw_step.get("class", "")).strip()
-        if class_name not in {"must", "can", "cannot"}:
-            raise ValueError(f"{assert_path}[{idx}].class must be one of: must, can, cannot")
+        if class_name not in {"MUST", "MAY", "MUST_NOT"}:
+            raise ValueError(f"{assert_path}[{idx}].class must be one of: MUST, MAY, MUST_NOT")
         step_target = str(raw_step.get("target", "")).strip() or inherited_target
         raw_checks = raw_step.get("asserts")
         if not isinstance(raw_checks, list) or not raw_checks:
@@ -182,13 +182,13 @@ def compile_assert_tree(
         ]
         step_nodes.append(
             GroupNode(
-                op=cast(Literal["must", "can", "cannot"], class_name),
+                op=cast(Literal["MUST", "MAY", "MUST_NOT"], class_name),
                 target=step_target,
                 children=children,
                 assert_path=f"{assert_path}[{idx}]<{step_id}>",
             )
         )
-    return GroupNode(op="must", target=inherited_target, children=step_nodes, assert_path=assert_path)
+    return GroupNode(op="MUST", target=inherited_target, children=step_nodes, assert_path=assert_path)
 
 
 def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> InternalSpecCase:
@@ -223,7 +223,7 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
     if producer_export_type:
         # Producer-only case type: exported callables are compiled from raw
         # contract step asserts via chain_engine, not from runtime assertion targets.
-        assert_tree = GroupNode(op="must", target=None, children=[], assert_path="contract")
+        assert_tree = GroupNode(op="MUST", target=None, children=[], assert_path="contract")
     else:
         assert_tree = compile_assert_tree(
             raw_case.get("contract", []) or [],

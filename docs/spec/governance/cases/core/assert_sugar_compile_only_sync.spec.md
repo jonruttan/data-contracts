@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-ASSERT-COMPILE-001
 title: compiler keeps sugar operators compile-only
-purpose: Ensures compiler and runtime assertion path keep non-evaluate operators as compile-only
-  sugar with spec-lang execution.
+purpose: Ensures compiler and runtime assertion path keep non-evaluate operators as
+  compile-only sugar with spec-lang execution.
 type: governance.check
 check: assert.sugar_compile_only_sync
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

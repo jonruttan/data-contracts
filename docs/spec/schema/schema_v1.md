@@ -403,13 +403,16 @@ Universal core operator:
 Each step requires:
 
 - `id` (string, unique per case)
-- `class` (`must` | `can` | `cannot`)
+- `class` (`MUST` | `MAY` | `MUST_NOT`)
 - `asserts` (non-empty list of assertion nodes)
 - `target` (optional; inherited by asserts when provided)
 
+Legacy lowercase contract class/group forms (`must`, `can`, `cannot`) are
+forbidden.
+
 Checks are legacy assertion nodes:
 
-- group mapping with exactly one of `must` / `can` / `cannot`
+- group mapping with exactly one of `MUST` / `MAY` / `MUST_NOT`
 - leaf mapping with operator keys and list values
 
 Leaf constraints:
@@ -473,15 +476,15 @@ Operator constraints:
 
 Group constraints:
 
-- `must`, `can`, and `cannot` values MUST be lists
-- `must`, `can`, and `cannot` lists MUST NOT be empty
+- `MUST`, `MAY`, and `MUST_NOT` values MUST be lists
+- `MUST`, `MAY`, and `MUST_NOT` lists MUST NOT be empty
 
-Canonical negation uses `cannot`:
+Canonical negation uses `MUST_NOT`:
 
 ```yaml
 contract:
 - target: stderr
-  cannot:
+  MUST_NOT:
   - evaluate:
     - std.string.contains:
       - var: subject
@@ -490,7 +493,7 @@ contract:
 
 Author in canonical form:
 
-- use `must` / `can` / `cannot` for boolean groups
+- use `MUST` / `MAY` / `MUST_NOT` for boolean groups
 - use `evaluate` for conformance/governance case assertions
 - put every operator value in a list
 
@@ -499,19 +502,19 @@ Example with target inheritance:
 ```yaml
 contract:
 - target: stderr
-  must:
+  MUST:
   - evaluate:
     - std.string.contains:
       - var: subject
       - 'WARN:'
 - target: stderr
-  cannot:
+  MUST_NOT:
   - evaluate:
     - std.string.contains:
       - var: subject
       - 'ERROR:'
 - target: stdout
-  can:
+  MAY:
   - evaluate:
     - std.type.json_type:
       - std.json.parse:
@@ -539,7 +542,8 @@ contract:
 
 Lifecycle order:
 
-- class hooks (`must`/`can`/`cannot`) run after successful clause of same class
+- class hooks (`must`/`can`/`cannot`) run after successful clause of
+  `MUST`/`MAY`/`MUST_NOT` respectively
 - `fail` runs once on first clause or class-hook failure
 - `complete` runs only after all clauses and class hooks pass
 

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CONF-TYPE-001
 title: conformance case types have matching type contract docs
-purpose: Ensures each type used by portable conformance fixtures is documented under the type-contract
-  index.
+purpose: Ensures each type used by portable conformance fixtures is documented under
+  the type-contract index.
 type: governance.check
 check: conformance.type_contract_docs
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

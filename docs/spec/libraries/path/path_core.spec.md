@@ -7,21 +7,21 @@ id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES
 type: spec.export
 contract:
 - id: __export__path.normalize_slashes
-  class: must
+  class: MUST
   asserts:
   - std.string.replace:
     - var: path
     - \
     - /
 - id: __export__path.trim_dot
-  class: must
+  class: MUST
   asserts:
   - std.string.replace:
     - var: path
     - ./
     - ''
 - id: __export__path.dirname
-  class: must
+  class: MUST
   asserts:
   - let:
     - lit:
@@ -45,7 +45,7 @@ contract:
           - var: segs
         - /
 - id: __export__path.has_extension
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - call:
@@ -53,7 +53,7 @@ contract:
       - var: path
     - var: ext
 - id: __export__path.is_under
-  class: must
+  class: MUST
   asserts:
   - std.string.starts_with:
     - call:
@@ -63,7 +63,7 @@ contract:
       - var: path.normalize_slashes
       - var: prefix
 - id: __export__path.matches
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - call:
@@ -112,7 +112,7 @@ id: LIB-PATH-001-002-PATH-SEGMENTS
 type: spec.export
 contract:
 - id: __export__path.segments
-  class: must
+  class: MUST
   asserts:
   - std.string.split:
     - call:
@@ -120,14 +120,14 @@ contract:
       - var: path
     - /
 - id: __export__path.trim_dot
-  class: must
+  class: MUST
   asserts:
   - std.string.replace:
     - var: path
     - ./
     - ''
 - id: __export__path.dirname
-  class: must
+  class: MUST
   asserts:
   - let:
     - lit:
@@ -151,7 +151,7 @@ contract:
           - var: segs
         - /
 - id: __export__path.has_extension
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - call:
@@ -159,7 +159,7 @@ contract:
       - var: path
     - var: ext
 - id: __export__path.is_under
-  class: must
+  class: MUST
   asserts:
   - std.string.starts_with:
     - call:
@@ -169,7 +169,7 @@ contract:
       - var: path.normalize_slashes
       - var: prefix
 - id: __export__path.matches
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - call:
@@ -218,7 +218,7 @@ id: LIB-PATH-001-003-PATH-BASENAME
 type: spec.export
 contract:
 - id: __export__path.basename
-  class: must
+  class: MUST
   asserts:
   - let:
     - lit:
@@ -237,14 +237,14 @@ contract:
             - var: segs
           - 1
 - id: __export__path.trim_dot
-  class: must
+  class: MUST
   asserts:
   - std.string.replace:
     - var: path
     - ./
     - ''
 - id: __export__path.dirname
-  class: must
+  class: MUST
   asserts:
   - let:
     - lit:
@@ -268,7 +268,7 @@ contract:
           - var: segs
         - /
 - id: __export__path.has_extension
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - call:
@@ -276,7 +276,7 @@ contract:
       - var: path
     - var: ext
 - id: __export__path.is_under
-  class: must
+  class: MUST
   asserts:
   - std.string.starts_with:
     - call:
@@ -286,7 +286,7 @@ contract:
       - var: path.normalize_slashes
       - var: prefix
 - id: __export__path.matches
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - call:
@@ -335,7 +335,7 @@ id: LIB-PATH-001-004-PATH-EXTENSION
 type: spec.export
 contract:
 - id: __export__path.extension
-  class: must
+  class: MUST
   asserts:
   - let:
     - lit:
@@ -362,14 +362,14 @@ contract:
               - var: parts
             - 1
 - id: __export__path.trim_dot
-  class: must
+  class: MUST
   asserts:
   - std.string.replace:
     - var: path
     - ./
     - ''
 - id: __export__path.dirname
-  class: must
+  class: MUST
   asserts:
   - let:
     - lit:
@@ -393,7 +393,7 @@ contract:
           - var: segs
         - /
 - id: __export__path.has_extension
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - call:
@@ -401,7 +401,7 @@ contract:
       - var: path
     - var: ext
 - id: __export__path.is_under
-  class: must
+  class: MUST
   asserts:
   - std.string.starts_with:
     - call:
@@ -411,7 +411,7 @@ contract:
       - var: path.normalize_slashes
       - var: prefix
 - id: __export__path.matches
-  class: must
+  class: MUST
   asserts:
   - std.string.regex_match:
     - call:
@@ -470,7 +470,7 @@ harness:
       - path.normalize_slashes
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - call:

@@ -21,9 +21,9 @@ assert_health:
   mode: warn
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - ok
@@ -56,9 +56,9 @@ assert_health:
   mode: error
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - ok
@@ -90,7 +90,7 @@ assert_health:
   mode: nope
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -117,9 +117,9 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - ok
@@ -150,9 +150,9 @@ assert_health:
   mode: ignore
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.string.contains:
       - var: subject
       - ok

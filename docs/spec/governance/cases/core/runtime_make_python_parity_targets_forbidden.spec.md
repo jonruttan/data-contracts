@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-PREPUSH-002
 title: makefile contains no python parity prepush targets
-purpose: Ensures contributor-facing make targets do not expose python runner lane execution.
+purpose: Ensures contributor-facing make targets do not expose python runner lane
+  execution.
 type: governance.check
 check: runtime.make_python_parity_targets_forbidden
 harness:
@@ -31,7 +32,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

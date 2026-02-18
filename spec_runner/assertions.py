@@ -64,7 +64,7 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
 
     Rules:
     - leaf assertions MUST NOT define `target`; target is inherited from a
-      parent group (`must` / `can` / `cannot`).
+      parent group (`MUST` / `MAY` / `MUST_NOT`).
     - Each op key's value MUST be a list.
     - Duplicate keys are not allowed by YAML; multi-checks use lists.
     """
@@ -75,7 +75,7 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
     target = str(target_override or "").strip()
     if not target:
         raise ValueError("contract leaf requires inherited target from a parent group")
-    if any(k in leaf for k in ("must", "can", "cannot")):
+    if any(k in leaf for k in ("MUST", "MAY", "MUST_NOT")):
         raise ValueError("leaf contract predicate must not include group keys")
     if "evaluate" in leaf:
         raise ValueError("explicit evaluate leaf is not supported; use expression mapping directly")
@@ -91,9 +91,9 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
     Supported shapes:
     - list: implicit AND across items (top-level `contract:` is typically a list)
     - mapping with exactly one group key:
-      - `must:`: AND across child nodes
-      - `can:`: OR across child nodes (at least one must pass)
-      - `cannot:`: NONE across child nodes (no child may pass)
+      - `MUST:`: AND across child nodes
+      - `MAY:`: OR across child nodes (at least one must pass)
+      - `MUST_NOT:`: NONE across child nodes (no child may pass)
     - group nodes may include `target:`; child leaves inherit that target
     - leaf mapping with op keys (target inherited from parent group)
     """
@@ -124,7 +124,7 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
         if not isinstance(node, dict):
             raise TypeError("contract node must be a mapping or a list")
         step_class = str(node.get("class", "")).strip() if "class" in node else ""
-        if step_class in {"must", "can", "cannot"} and "asserts" in node:
+        if step_class in {"MUST", "MAY", "MUST_NOT"} and "asserts" in node:
             step_id = str(node.get("id", "")).strip()
             if not step_id:
                 raise ValueError(f"{path}.id must be a non-empty string")
@@ -139,11 +139,11 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
             if not children:
                 raise ValueError("contract step asserts must not be empty")
             step_path = path
-            if step_class == "must":
+            if step_class == "MUST":
                 for idx, child in enumerate(children):
                     _eval_node(child, inherited_target=node_target, path=f"{step_path}.asserts[{idx}]")
                 return
-            if step_class == "can":
+            if step_class == "MAY":
                 failures: list[BaseException] = []
                 any_passed = False
                 for idx, child in enumerate(children):
@@ -154,13 +154,13 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                     except AssertionError as e:
                         failures.append(e)
                 if not any_passed:
-                    msg = "all 'can' branches failed"
+                    msg = "all 'MAY' branches failed"
                     if failures:
                         details = "\n".join(f"- {str(e) or e.__class__.__name__}" for e in failures[:5])
                         msg = f"{msg}:\n{details}"
                     raise AssertionError(msg)
                 return
-            if step_class == "cannot":
+            if step_class == "MUST_NOT":
                 passed = 0
                 for idx, child in enumerate(children):
                     try:
@@ -169,14 +169,14 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                     except AssertionError:
                         continue
                 if passed:
-                    raise AssertionError(f"'cannot' failed: {passed} branch(es) passed")
+                    raise AssertionError(f"'MUST_NOT' failed: {passed} branch(es) passed")
                 return
 
-        present_groups = [k for k in ("must", "can", "cannot") if k in node]
+        present_groups = [k for k in ("MUST", "MAY", "MUST_NOT") if k in node]
         if present_groups:
             if len(present_groups) > 1:
                 keys = ", ".join(present_groups)
-                raise ValueError(f"contract group must include exactly one key (must/can/cannot), got: {keys}")
+                raise ValueError(f"contract group must include exactly one key (MUST/MAY/MUST_NOT), got: {keys}")
             node_target = str(node.get("target", "")).strip() or inherited_target
             group_key = present_groups[0]
             extra = [k for k in node.keys() if k not in (group_key, "target")]
@@ -184,33 +184,33 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                 bad = sorted(str(k) for k in extra)[0]
                 raise ValueError(f"unknown key in contract group: {bad}")
 
-            if group_key == "must":
-                children = node.get("must")
+            if group_key == "MUST":
+                children = node.get("MUST")
                 if not isinstance(children, list):
-                    raise TypeError("contract.must must be a list")
+                    raise TypeError("contract.MUST must be a list")
                 if not children:
-                    raise ValueError("contract.must must not be empty")
+                    raise ValueError("contract.MUST must not be empty")
                 for idx, child in enumerate(children):
-                    _eval_node(child, inherited_target=node_target, path=f"{path}.must[{idx}]")
+                    _eval_node(child, inherited_target=node_target, path=f"{path}.MUST[{idx}]")
 
-            if group_key == "can":
-                children = node.get("can")
+            if group_key == "MAY":
+                children = node.get("MAY")
                 if not isinstance(children, list):
-                    raise TypeError("contract.can must be a list")
+                    raise TypeError("contract.MAY must be a list")
                 if not children:
-                    raise ValueError("contract.can must not be empty")
+                    raise ValueError("contract.MAY must not be empty")
                 # can: pass if at least one child passes; if all fail, raise a helpful message.
                 group_failures: list[BaseException] = []
                 any_passed = False
                 for idx, child in enumerate(children):
                     try:
-                        _eval_node(child, inherited_target=node_target, path=f"{path}.can[{idx}]")
+                        _eval_node(child, inherited_target=node_target, path=f"{path}.MAY[{idx}]")
                         any_passed = True
                         break
                     except AssertionError as e:
                         group_failures.append(e)
                 if not any_passed:
-                    msg = "all 'can' branches failed"
+                    msg = "all 'MAY' branches failed"
                     if group_failures:
                         details = "\n".join(
                             f"- {str(e) or e.__class__.__name__}" for e in group_failures[:5]
@@ -218,22 +218,22 @@ def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:
                         msg = f"{msg}:\n{details}"
                     raise AssertionError(msg)
 
-            if group_key == "cannot":
-                children = node.get("cannot")
+            if group_key == "MUST_NOT":
+                children = node.get("MUST_NOT")
                 if not isinstance(children, list):
-                    raise TypeError("contract.cannot must be a list")
+                    raise TypeError("contract.MUST_NOT must be a list")
                 if not children:
-                    raise ValueError("contract.cannot must not be empty")
+                    raise ValueError("contract.MUST_NOT must not be empty")
                 # cannot: pass only when every child assertion fails.
                 passed = 0
                 for idx, child in enumerate(children):
                     try:
-                        _eval_node(child, inherited_target=node_target, path=f"{path}.cannot[{idx}]")
+                        _eval_node(child, inherited_target=node_target, path=f"{path}.MUST_NOT[{idx}]")
                         passed += 1
                     except AssertionError:
                         continue
                 if passed:
-                    raise AssertionError(f"'cannot' failed: {passed} branch(es) passed")
+                    raise AssertionError(f"'MUST_NOT' failed: {passed} branch(es) passed")
 
             return
 
@@ -289,12 +289,12 @@ def evaluate_internal_assert_tree(
         if not isinstance(node, GroupNode):
             raise TypeError("internal contract node must be GroupNode or PredicateLeaf")
 
-        if node.op == "must":
+        if node.op == "MUST":
             for child in node.children:
                 _eval_node(child)
             return
 
-        if node.op == "can":
+        if node.op == "MAY":
             failures: list[BaseException] = []
             for child in node.children:
                 try:
@@ -302,13 +302,13 @@ def evaluate_internal_assert_tree(
                     return
                 except AssertionError as e:
                     failures.append(e)
-            msg = "all 'can' branches failed"
+            msg = "all 'MAY' branches failed"
             if failures:
                 details = "\n".join(f"- {str(e) or e.__class__.__name__}" for e in failures[:5])
                 msg = f"{msg}:\n{details}"
             raise AssertionError(msg)
 
-        if node.op == "cannot":
+        if node.op == "MUST_NOT":
             passed = 0
             for child in node.children:
                 try:
@@ -317,7 +317,7 @@ def evaluate_internal_assert_tree(
                 except AssertionError:
                     continue
             if passed:
-                raise AssertionError(f"'cannot' failed: {passed} branch(es) passed")
+                raise AssertionError(f"'MUST_NOT' failed: {passed} branch(es) passed")
             return
 
         raise ValueError(f"unknown internal contract group op: {node.op}")
@@ -328,7 +328,7 @@ def evaluate_internal_assert_tree(
             target = node.target
             assert_path = node.assert_path
         else:
-            class_name = "must"
+            class_name = "MUST"
             target = node.target
             assert_path = node.assert_path
         clause_id: str | None = None
@@ -345,11 +345,11 @@ def evaluate_internal_assert_tree(
     totals: dict[str, int] = {
         "passed_clauses": 0,
         "failed_clauses": 0,
-        "must_passed": 0,
-        "can_passed": 0,
-        "cannot_passed": 0,
+        "MUST_passed": 0,
+        "MAY_passed": 0,
+        "MUST_NOT_passed": 0,
     }
-    if isinstance(assert_tree, GroupNode) and assert_tree.op == "must":
+    if isinstance(assert_tree, GroupNode) and assert_tree.op == "MUST":
         clauses: list[InternalAssertNode] = list(assert_tree.children)
     else:
         clauses = [assert_tree]

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOC-CURRENT-001
 title: current-spec-only contract forbids prior-schema references and shims
-purpose: Ensures pre-v1 docs and parser paths stay focused on current schema only, without
-  prior-spec wording or compatibility rewrites.
+purpose: Ensures pre-v1 docs and parser paths stay focused on current schema only,
+  without prior-spec wording or compatibility rewrites.
 type: governance.check
 check: docs.current_spec_only_contract
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

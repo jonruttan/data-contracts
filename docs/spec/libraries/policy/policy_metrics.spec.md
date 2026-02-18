@@ -8,7 +8,7 @@ title: 'policy-metrics reusable non-regression predicates: policy.metric_non_dec
 type: spec.export
 contract:
 - id: __export__policy.metric_non_decrease
-  class: must
+  class: MUST
   asserts:
   - std.logic.gte:
     - std.math.add:
@@ -38,7 +38,7 @@ title: 'policy-metrics reusable non-regression predicates: policy.metric_non_inc
 type: spec.export
 contract:
 - id: __export__policy.metric_non_increase
-  class: must
+  class: MUST
   asserts:
   - std.logic.lte:
     - std.math.sub:
@@ -84,9 +84,9 @@ harness:
       - policy.metric_non_increase
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - call:
       - var: policy.metric_non_decrease
       - lit:

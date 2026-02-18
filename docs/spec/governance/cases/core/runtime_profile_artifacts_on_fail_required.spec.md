@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-FAILFAST-003
 title: gate failures emit profile artifacts when profile-on-fail is enabled
-purpose: Ensures failure paths generate deterministic run-trace and run-trace-summary artifacts.
+purpose: Ensures failure paths generate deterministic run-trace and run-trace-summary
+  artifacts.
 type: governance.check
 check: runtime.profile_artifacts_on_fail_required
 harness:
@@ -29,7 +30,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

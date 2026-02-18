@@ -420,9 +420,9 @@ def _compile_assert_function(
                 source_step = item
                 break
         if source_step is not None:
-            if str(source_step.get("class", "")).strip() != "must":
+            if str(source_step.get("class", "")).strip() != "MUST":
                 raise ValueError(
-                    f"chain step {step.id} import {import_name} requires producer contract step class=must"
+                    f"chain step {step.id} import {import_name} requires producer contract step class=MUST"
                 )
 
             checks = source_step.get("asserts")

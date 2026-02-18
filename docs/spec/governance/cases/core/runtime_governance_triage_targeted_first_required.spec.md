@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-008
 title: governance triage auto mode is targeted-first by default
-purpose: Ensures triage auto mode resolves to targeted-first and exposes broad-first as an
-  explicit mode.
+purpose: Ensures triage auto mode resolves to targeted-first and exposes broad-first
+  as an explicit mode.
 type: governance.check
 check: runtime.governance_triage_targeted_first_required
 harness:
@@ -30,7 +30,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CONF-PORT-003
 title: extension type conformance cases declare requires.capabilities
-purpose: Ensures non-core type fixtures explicitly declare required capabilities for portable
-  parity.
+purpose: Ensures non-core type fixtures explicitly declare required capabilities for
+  portable parity.
 type: governance.check
 check: conformance.extension_requires_capabilities
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

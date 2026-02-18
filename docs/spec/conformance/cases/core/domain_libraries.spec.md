@@ -38,9 +38,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - call:
         - var: domain.http.status
@@ -274,9 +274,9 @@ expect:
     status: pass
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - call:
       - var: make.has_target
       - lit:

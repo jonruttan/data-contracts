@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-LIB-DOMAIN-001
 title: library paths obey domain ownership
-purpose: Ensures conformance cases use conformance libraries and governance cases use policy/path
-  libraries.
+purpose: Ensures conformance cases use conformance libraries and governance cases
+  use policy/path libraries.
 type: governance.check
 check: library.domain_ownership
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

@@ -77,7 +77,7 @@ def run_assertions_with_context(
         return HookClauseContext(
             index=int(payload.get("index", 0)),
             id=payload.get("id"),
-            class_name=str(payload.get("class", "must")),
+            class_name=str(payload.get("class", "MUST")),
             assert_path=str(payload.get("assert_path", "contract")),
             target=payload.get("target"),
         )
@@ -86,16 +86,18 @@ def run_assertions_with_context(
         return HookTotals(
             passed_clauses=int(payload.get("passed_clauses", 0)),
             failed_clauses=int(payload.get("failed_clauses", 0)),
-            must_passed=int(payload.get("must_passed", 0)),
-            can_passed=int(payload.get("can_passed", 0)),
-            cannot_passed=int(payload.get("cannot_passed", 0)),
+            must_passed=int(payload.get("MUST_passed", 0)),
+            can_passed=int(payload.get("MAY_passed", 0)),
+            cannot_passed=int(payload.get("MUST_NOT_passed", 0)),
         )
 
     def _on_clause_pass(clause: dict[str, Any], totals: dict[str, int]) -> None:
         cls = str(clause.get("class", "")).strip()
-        if cls in {"must", "can", "cannot"}:
+        event_map = {"MUST": "must", "MAY": "can", "MUST_NOT": "cannot"}
+        event = event_map.get(cls)
+        if event is not None:
             _run_event(
-                cls,
+                event,
                 clause=_to_clause(clause),
                 status="pass",
                 totals=_to_totals(totals),
@@ -123,7 +125,7 @@ def run_assertions_with_context(
             clause=HookClauseContext(
                 index=max(int(totals.get("passed_clauses", 0)) - 1, 0),
                 id=None,
-                class_name="must",
+                class_name="MUST",
                 assert_path="contract",
                 target=None,
             ),

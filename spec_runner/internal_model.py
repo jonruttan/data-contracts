@@ -16,7 +16,7 @@ class PredicateLeaf:
 
 @dataclass(frozen=True)
 class GroupNode:
-    op: Literal["must", "can", "cannot"]
+    op: Literal["MUST", "MAY", "MUST_NOT"]
     target: str | None
     children: list["InternalAssertNode"]
     assert_path: str

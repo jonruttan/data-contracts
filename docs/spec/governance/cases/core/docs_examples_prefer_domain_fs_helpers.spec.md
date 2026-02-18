@@ -3,8 +3,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-FS-EXAMPLES-001
 title: docs yaml examples prefer domain fs/path helpers over raw ops fs
-purpose: Keeps contributor-facing docs examples aligned with the domain-library-first authoring
-  model for filesystem/json/glob/path flows.
+purpose: Keeps contributor-facing docs examples aligned with the domain-library-first
+  authoring model for filesystem/json/glob/path flows.
 type: governance.check
 check: docs.examples_prefer_domain_fs_helpers
 harness:
@@ -25,7 +25,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

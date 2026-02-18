@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CHAIN-007
 title: chain steps declare must can cannot class
-purpose: Ensures harness.chain.steps[*].class is explicit and valid for all chained cases.
+purpose: Ensures harness.chain.steps[*].class is explicit and valid for all chained
+  cases.
 type: governance.check
 check: runtime.chain_step_class_required
 harness:
@@ -21,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

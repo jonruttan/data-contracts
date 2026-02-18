@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CONTRACT-ASSERT-002
 title: contract assertions metric is non-regressing
-purpose: Enforces monotonic non-regression for contract assertions metrics against checked-in
-  baseline.
+purpose: Enforces monotonic non-regression for contract assertions metrics against
+  checked-in baseline.
 type: governance.check
 check: spec.contract_assertions_non_regression
 harness:
@@ -36,16 +36,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

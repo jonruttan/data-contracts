@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-REF-018
 title: docs book chapter order is canonical
-purpose: Enforces the hard-cut Learn -> Do -> Debug chapter order and appendix namespace ordering
-  in the reference manifest.
+purpose: Enforces the hard-cut Learn -> Do -> Debug chapter order and appendix namespace
+  ordering in the reference manifest.
 type: governance.check
 check: docs.book_chapter_order_canonical
 harness:
@@ -22,16 +22,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

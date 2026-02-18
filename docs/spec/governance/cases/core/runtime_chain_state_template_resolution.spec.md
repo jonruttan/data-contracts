@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CHAIN-005
 title: chain template references resolve against explicit exports
-purpose: Ensures api.http chain templates use declared step export names and fail on unresolved
-  references.
+purpose: Ensures api.http chain templates use declared step export names and fail
+  on unresolved references.
 type: governance.check
 check: runtime.chain_state_template_resolution
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

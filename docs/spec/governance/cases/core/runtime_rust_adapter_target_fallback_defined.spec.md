@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-PREPUSH-004
 title: rust adapter defines preferred-target fallback and strict mode
-purpose: Ensures local rust adapter can fallback to host target while supporting strict target
-  enforcement.
+purpose: Ensures local rust adapter can fallback to host target while supporting strict
+  target enforcement.
 type: governance.check
 check: runtime.rust_adapter_target_fallback_defined
 harness:
@@ -28,7 +28,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

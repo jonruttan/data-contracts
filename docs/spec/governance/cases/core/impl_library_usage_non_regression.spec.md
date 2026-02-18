@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-IMPL-SPECLANG-003
 title: impl library-backed assertion usage is non-regressing
-purpose: Enforces monotonic non-regression for impl case wiring to shared spec-lang helper
-  libraries.
+purpose: Enforces monotonic non-regression for impl case wiring to shared spec-lang
+  helper libraries.
 type: governance.check
 check: impl.library_usage_non_regression
 harness:
@@ -37,16 +37,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

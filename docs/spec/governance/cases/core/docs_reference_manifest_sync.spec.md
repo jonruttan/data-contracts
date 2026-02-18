@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-QUAL-002
 title: reference index is generated from manifest
-purpose: Ensures reference index markdown remains synchronized with the manifest source of
-  truth.
+purpose: Ensures reference index markdown remains synchronized with the manifest source
+  of truth.
 type: governance.check
 check: docs.reference_manifest_sync
 harness:
@@ -25,16 +25,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

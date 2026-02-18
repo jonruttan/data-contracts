@@ -17,7 +17,7 @@ expect:
     - cannot read fixture file
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -41,7 +41,7 @@ expect:
     - text.file path escapes contract root
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -68,7 +68,7 @@ expect:
     - requires explicit harness.entrypoint
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -96,7 +96,7 @@ expect:
     - unsupported spec_lang symbol
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - not.a.real.symbol:
     - var: subject
@@ -178,7 +178,7 @@ expect:
     - 'leaf assertion must not include key: target'
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - target: text
     contain:

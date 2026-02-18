@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CONF-PORT-003
 title: conformance cases avoid ambient env/time/random assumptions
-purpose: Ensures portable conformance fixtures do not embed ambient environment, clock, or
-  random-source assumptions.
+purpose: Ensures portable conformance fixtures do not embed ambient environment, clock,
+  or random-source assumptions.
 type: governance.check
 check: conformance.no_ambient_assumptions
 harness:
@@ -38,7 +38,7 @@ harness:
     policy_evaluate:
     - std.collection.is_empty:
       - std.object.get:
-        - {var: subject}
+        - var: subject
         - violations
   chain:
     steps:
@@ -51,16 +51,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

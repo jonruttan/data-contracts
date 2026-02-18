@@ -7,7 +7,7 @@ id: LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ
 type: spec.export
 contract:
 - id: __export__domain.meta.case_id_eq
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:
@@ -32,7 +32,7 @@ id: LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET
 type: spec.export
 contract:
 - id: __export__domain.meta.has_artifact_target
-  class: must
+  class: MUST
   asserts:
   - std.collection.includes:
     - std.object.get:

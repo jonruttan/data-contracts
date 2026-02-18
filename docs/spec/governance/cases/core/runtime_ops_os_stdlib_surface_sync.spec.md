@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-OPS-OS-SURFACE-001
 title: ops.os stdlib symbols are declared in profile and symbol maps
-purpose: Ensures ops.os builtins are synchronized across stdlib mapping and
-  stdlib profile contract surfaces.
+purpose: Ensures ops.os builtins are synchronized across stdlib mapping and stdlib
+  profile contract surfaces.
 type: governance.check
 check: runtime.ops_os_stdlib_surface_sync
 harness:
@@ -26,7 +26,7 @@ harness:
     - ops.os.exit_code
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

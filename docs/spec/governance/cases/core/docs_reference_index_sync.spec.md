@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-REF-002
 title: reference index stays synced with chapter files
-purpose: Ensures the machine-checked reference index entries stay aligned with the actual
-  chapter set and order.
+purpose: Ensures the machine-checked reference index entries stay aligned with the
+  actual chapter set and order.
 type: governance.check
 check: docs.reference_index_sync
 harness:
@@ -29,16 +29,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-ARCH-COMPONENTS-005
 title: harnesses declare target subject maps
-purpose: Enforces explicit target-to-subject mapping declarations so assertion targets remain
-  deterministic and reviewable.
+purpose: Enforces explicit target-to-subject mapping declarations so assertion targets
+  remain deterministic and reviewable.
 type: governance.check
 check: runtime.harness_subject_target_map_declared
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

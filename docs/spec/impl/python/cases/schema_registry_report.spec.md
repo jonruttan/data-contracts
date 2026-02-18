@@ -16,12 +16,12 @@ harness:
   entrypoint: spec_runner.spec_lang_commands:schema_registry_report_main
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: stdout
   asserts:
   - std.string.contains:
     - var: subject
-    - 'wrote .artifacts/schema-registry-impl-case.json'
+    - wrote .artifacts/schema-registry-impl-case.json
 ```
 
 ## SRPY-SCHEMA-REG-002
@@ -41,10 +41,10 @@ harness:
   entrypoint: spec_runner.spec_lang_commands:schema_registry_report_main
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: stdout
   asserts:
   - std.string.contains:
     - var: subject
-    - 'stale report artifact'
+    - stale report artifact
 ```

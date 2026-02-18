@@ -7,7 +7,7 @@ id: LIB-DOMAIN-PATH-001-001-DOMAIN-PATH-NORMALIZE
 type: spec.export
 contract:
 - id: __export__domain.path.normalize
-  class: must
+  class: MUST
   asserts:
   - ops.fs.path.normalize:
     - var: path
@@ -26,7 +26,7 @@ id: LIB-DOMAIN-PATH-001-002-DOMAIN-PATH-EQ
 type: spec.export
 contract:
 - id: __export__domain.path.eq
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - ops.fs.path.normalize:
@@ -49,7 +49,7 @@ id: LIB-DOMAIN-PATH-001-003-DOMAIN-PATH-IS-SPEC-MD
 type: spec.export
 contract:
 - id: __export__domain.path.is_spec_md
-  class: must
+  class: MUST
   asserts:
   - std.string.ends_with:
     - ops.fs.path.normalize:
@@ -70,7 +70,7 @@ id: LIB-DOMAIN-PATH-001-004-DOMAIN-PATH-IS-IN-DOCS
 type: spec.export
 contract:
 - id: __export__domain.path.is_in_docs
-  class: must
+  class: MUST
   asserts:
   - ops.fs.path.within:
     - /docs
@@ -91,7 +91,7 @@ id: LIB-DOMAIN-PATH-001-005-DOMAIN-PATH-SORTED
 type: spec.export
 contract:
 - id: __export__domain.path.sorted
-  class: must
+  class: MUST
   asserts:
   - ops.fs.path.sort:
     - var: paths
@@ -110,7 +110,7 @@ id: LIB-DOMAIN-PATH-001-006-DOMAIN-FILE-IS-EXISTING-FILE
 type: spec.export
 contract:
 - id: __export__domain.file.is_existing_file
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - ops.fs.file.exists:
@@ -132,7 +132,7 @@ id: LIB-DOMAIN-PATH-001-007-DOMAIN-FILE-IS-EXISTING-DIR
 type: spec.export
 contract:
 - id: __export__domain.file.is_existing_dir
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - ops.fs.file.exists:
@@ -154,7 +154,7 @@ id: LIB-DOMAIN-PATH-001-008-DOMAIN-FILE-HAS-EXT
 type: spec.export
 contract:
 - id: __export__domain.file.has_ext
-  class: must
+  class: MUST
   asserts:
   - ops.fs.path.has_ext:
     - ops.fs.file.path:
@@ -176,7 +176,7 @@ id: LIB-DOMAIN-PATH-001-009-DOMAIN-FILE-NAME
 type: spec.export
 contract:
 - id: __export__domain.file.name
-  class: must
+  class: MUST
   asserts:
   - ops.fs.file.name:
     - var: meta

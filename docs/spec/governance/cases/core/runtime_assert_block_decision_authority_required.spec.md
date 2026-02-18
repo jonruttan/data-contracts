@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-ASSERT-AUTH-001
 title: governance verdict authority lives in assert blocks
-purpose: Ensures governance runtime no longer uses policy_evaluate verdict
-  branching and enforces assert-driven obligations.
+purpose: Ensures governance runtime no longer uses policy_evaluate verdict branching
+  and enforces assert-driven obligations.
 type: governance.check
 check: runtime.assert_block_decision_authority_required
 harness:
@@ -20,7 +20,7 @@ harness:
     - run_governance_policy(
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

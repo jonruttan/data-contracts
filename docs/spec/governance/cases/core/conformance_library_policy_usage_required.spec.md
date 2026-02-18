@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CONF-POLICY-LIB-001
 title: conformance governance checks require library-backed policy calls
-purpose: Ensures conformance-prefixed governance checks use shared spec-lang library wiring
-  and policy_evaluate library calls.
+purpose: Ensures conformance-prefixed governance checks use shared spec-lang library
+  wiring and policy_evaluate library calls.
 type: governance.check
 check: conformance.library_policy_usage_required
 harness:
@@ -27,16 +27,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

@@ -13,7 +13,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -35,7 +35,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -57,7 +57,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: can
+  class: MAY
   asserts:
   - std.string.contains:
     - var: subject
@@ -86,7 +86,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -114,7 +114,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -140,7 +140,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -166,7 +166,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.type.json_type:
     - std.json.parse:
@@ -193,7 +193,7 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
@@ -220,14 +220,14 @@ expect:
     category: null
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject
     - path_target.txt
   target: stdout_path
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
   - std.string.contains:
     - var: subject

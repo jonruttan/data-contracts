@@ -6,8 +6,8 @@
 id: SRGOV-RUNTIME-TRIAGE-023
 title: fast-path consistency is enforced across pre-push and gate scripts
 type: governance.check
-purpose: Ensures fast-path routing tokens remain aligned across local parity, ci gate, and
-  managed pre-push hook.
+purpose: Ensures fast-path routing tokens remain aligned across local parity, ci gate,
+  and managed pre-push hook.
 check: runtime.fast_path_consistency_required
 harness:
   root: .
@@ -52,7 +52,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

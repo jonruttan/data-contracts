@@ -7,7 +7,7 @@ id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE
 type: spec.export
 contract:
 - id: __export__domain.fs.is_docs_spec_file
-  class: must
+  class: MUST
   asserts:
   - std.logic.and:
     - ops.fs.path.within:
@@ -33,7 +33,7 @@ id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES
 type: spec.export
 contract:
 - id: __export__domain.fs.sort_spec_files
-  class: must
+  class: MUST
   asserts:
   - ops.fs.path.sort:
     - ops.fs.glob.filter:
@@ -54,7 +54,7 @@ id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT
 type: spec.export
 contract:
 - id: __export__domain.fs.json_get_or_text
-  class: must
+  class: MUST
   asserts:
   - ops.fs.json.get_or:
     - ops.fs.json.parse:
@@ -78,7 +78,7 @@ id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT
 type: spec.export
 contract:
 - id: __export__domain.fs.json_has_path_text
-  class: must
+  class: MUST
   asserts:
   - ops.fs.json.has_path:
     - ops.fs.json.parse:
@@ -100,7 +100,7 @@ id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES
 type: spec.export
 contract:
 - id: __export__domain.fs.glob_any_spec_files
-  class: must
+  class: MUST
   asserts:
   - ops.fs.glob.any:
     - var: paths
@@ -120,7 +120,7 @@ id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ
 type: spec.export
 contract:
 - id: __export__domain.fs.file_ext_eq
-  class: must
+  class: MUST
   asserts:
   - ops.fs.path.has_ext:
     - ops.fs.file.path:
@@ -142,7 +142,7 @@ id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
 type: spec.export
 contract:
 - id: __export__domain.fs.json_get_text
-  class: must
+  class: MUST
   asserts:
   - ops.fs.json.get:
     - ops.fs.json.parse:
@@ -164,7 +164,7 @@ id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
 type: spec.export
 contract:
 - id: __export__domain.fs.json_path_eq_text
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - call:
@@ -190,7 +190,7 @@ id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
 type: spec.export
 contract:
 - id: __export__domain.fs.glob_filter
-  class: must
+  class: MUST
   asserts:
   - ops.fs.glob.filter:
     - var: paths
@@ -211,7 +211,7 @@ id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
 type: spec.export
 contract:
 - id: __export__domain.fs.glob_all
-  class: must
+  class: MUST
   asserts:
   - ops.fs.glob.all:
     - var: paths

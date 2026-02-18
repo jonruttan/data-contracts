@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUST-PRIMARY-005
 title: rust-primary adapter executes and returns deterministic smoke output
-purpose: Ensures the Rust adapter is executable in governance and emits deterministic output/exit-code
-  behavior for a smoke command.
+purpose: Ensures the Rust adapter is executable in governance and emits deterministic
+  output/exit-code behavior for a smoke command.
 type: governance.check
 check: runtime.rust_adapter_exec_smoke
 harness:
@@ -31,16 +31,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

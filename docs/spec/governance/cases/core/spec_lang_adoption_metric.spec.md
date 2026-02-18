@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SPEC-LANG-001
 title: spec-lang adoption metric report generation is valid
-purpose: Ensures the spec-lang adoption metric report generates with valid shape and segment
-  summary data.
+purpose: Ensures the spec-lang adoption metric report generates with valid shape and
+  segment summary data.
 type: governance.check
 check: spec.spec_lang_adoption_metric
 harness:
@@ -27,14 +27,14 @@ harness:
     policy_evaluate:
     - std.logic.and:
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - summary
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - segments
       - std.object.has_key:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - summary
         - overall_logic_self_contained_ratio
   chain:
@@ -48,16 +48,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

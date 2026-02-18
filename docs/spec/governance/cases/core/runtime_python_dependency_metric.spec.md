@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-PYDEP-001
 title: python dependency metric report generation is valid
-purpose: Ensures python dependency metric report is generated with required summary fields
-  and deterministic structure.
+purpose: Ensures python dependency metric report is generated with required summary
+  fields and deterministic structure.
 type: governance.check
 check: runtime.python_dependency_metric
 harness:
@@ -15,26 +15,26 @@ harness:
     policy_evaluate:
     - std.logic.and:
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - summary
       - std.object.has_key:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - summary
         - non_python_lane_python_exec_count
       - std.object.has_key:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - summary
         - transitive_adapter_python_exec_count
       - std.object.has_key:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - summary
         - default_lane_python_free_ratio
       - std.object.has_key:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - summary
         - python_usage_scope_violation_count
   chain:
@@ -48,16 +48,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

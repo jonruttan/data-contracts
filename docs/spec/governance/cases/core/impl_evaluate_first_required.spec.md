@@ -27,19 +27,19 @@ harness:
       - std.collection.count:
         - std.collection.filter:
           - fn:
-            - [row]
+            - - row
             - std.logic.and:
               - std.logic.gt:
                 - std.collection.count:
                   - std.object.get:
-                    - {var: row}
+                    - var: row
                     - non_evaluate_ops
                 - 0
               - std.logic.not:
                 - std.object.get:
-                  - {var: row}
+                  - var: row
                   - allowlisted
-          - {var: subject}
+          - var: subject
       - 0
   chain:
     steps:
@@ -52,16 +52,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

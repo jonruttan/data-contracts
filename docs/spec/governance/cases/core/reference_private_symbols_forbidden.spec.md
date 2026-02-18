@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-REF-SYMBOLS-004
 title: private library symbols are not referenced externally
-purpose: Ensures conformance/governance/impl cases do not reference defines.private symbols
-  from library docs.
+purpose: Ensures conformance/governance/impl cases do not reference defines.private
+  symbols from library docs.
 type: governance.check
 check: reference.private_symbols_forbidden
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

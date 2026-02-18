@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SCHEMA-REG-003
 title: schema registry compiled artifact is synchronized
-purpose: Ensures checked-in schema registry compiled artifact matches current registry source
-  files.
+purpose: Ensures checked-in schema registry compiled artifact matches current registry
+  source files.
 type: governance.check
 check: schema.registry_compiled_sync
 harness:
@@ -22,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

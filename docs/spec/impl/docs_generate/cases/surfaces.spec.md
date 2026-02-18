@@ -19,7 +19,7 @@ harness:
       path: /docs/book/reference_index.md
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -46,7 +46,7 @@ harness:
       path: /docs/book/reference_coverage.md
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -75,7 +75,7 @@ harness:
       - docs/book/docs_graph.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -102,7 +102,7 @@ harness:
       path: /docs/spec/schema/schema_v1.md
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -130,7 +130,7 @@ harness:
       path: /.artifacts/runner-api-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -158,7 +158,7 @@ harness:
       path: /.artifacts/harness-type-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -186,7 +186,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -214,7 +214,7 @@ harness:
       path: /.artifacts/policy-rule-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -242,7 +242,7 @@ harness:
       path: /.artifacts/traceability-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -270,7 +270,7 @@ harness:
       path: /.artifacts/governance-check-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -298,7 +298,7 @@ harness:
       path: /.artifacts/metrics-field-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -325,7 +325,7 @@ harness:
       path: /docs/book/98_appendix_spec_case_shape_reference.md
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -352,7 +352,7 @@ harness:
       path: /docs/spec/schema/schema_v1.md
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -380,7 +380,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -408,7 +408,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -436,7 +436,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -464,7 +464,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -492,7 +492,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -520,7 +520,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -548,7 +548,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -576,7 +576,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true
@@ -604,7 +604,7 @@ harness:
       path: /.artifacts/spec-lang-builtin-catalog.json
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - true

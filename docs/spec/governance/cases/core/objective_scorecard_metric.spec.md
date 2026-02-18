@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-OBJECTIVE-001
 title: objective scorecard metric report generation is valid
-purpose: Ensures objective scorecard generation is deterministic and includes required summary/objective/tripwire
-  fields.
+purpose: Ensures objective scorecard generation is deterministic and includes required
+  summary/objective/tripwire fields.
 type: governance.check
 check: objective.scorecard_metric
 harness:
@@ -16,17 +16,17 @@ harness:
     policy_evaluate:
     - std.logic.and:
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - summary
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - objectives
       - std.object.has_key:
-        - {var: subject}
+        - var: subject
         - tripwire_hits
       - std.object.has_key:
         - std.object.get:
-          - {var: subject}
+          - var: subject
           - summary
         - overall_min_score
   chain:
@@ -40,16 +40,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

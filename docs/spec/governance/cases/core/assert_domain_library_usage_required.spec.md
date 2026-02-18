@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-ASSERT-PROFILE-004
 title: domain conformance checks are library-backed
-purpose: Ensures domain conformance checks use harness.spec_lang domain libraries rather than
-  ad hoc inline-only policy.
+purpose: Ensures domain conformance checks use harness.spec_lang domain libraries
+  rather than ad hoc inline-only policy.
 type: governance.check
 check: assert.domain_library_usage_required
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

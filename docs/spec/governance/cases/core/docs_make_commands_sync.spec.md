@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-REF-007
 title: docs use canonical make command entrypoints
-purpose: Keeps contributor docs aligned on the canonical make-based command entrypoints for
-  verification and gate execution.
+purpose: Keeps contributor docs aligned on the canonical make-based command entrypoints
+  for verification and gate execution.
 type: governance.check
 check: docs.make_commands_sync
 harness:
@@ -34,16 +34,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

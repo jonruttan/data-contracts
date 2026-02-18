@@ -13,13 +13,13 @@ harness:
   harness_on_fail:
     path: /spec_runner/components/assertion_engine.py
     required_tokens:
-    - "fail_hook_ran"
-    - "if fail_hook_ran"
-    - "runtime.on_hook.fail_handler_failed"
-    - "\"fail\""
+    - fail_hook_ran
+    - if fail_hook_ran
+    - runtime.on_hook.fail_handler_failed
+    - '"fail"'
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   target: violation_count
   asserts:
   - std.logic.eq:

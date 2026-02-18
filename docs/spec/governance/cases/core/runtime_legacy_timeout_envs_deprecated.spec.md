@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-LIVENESS-DEPRECATION-001
 title: governance legacy timeout envs are marked deprecated
-purpose: Ensures legacy governance timeout environment variables remain documented as deprecated
-  and mapped to liveness hard-cap behavior.
+purpose: Ensures legacy governance timeout environment variables remain documented
+  as deprecated and mapped to liveness hard-cap behavior.
 type: governance.check
 check: runtime.legacy_timeout_envs_deprecated
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

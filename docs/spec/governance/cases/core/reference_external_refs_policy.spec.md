@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-REF-EXTERNAL-001
 title: external refs require explicit policy and capability
-purpose: Ensures external:// references are deny-by-default and must declare allow policy.
+purpose: Ensures external:// references are deny-by-default and must declare allow
+  policy.
 type: governance.check
 check: reference.external_refs_policy
 harness:
@@ -21,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

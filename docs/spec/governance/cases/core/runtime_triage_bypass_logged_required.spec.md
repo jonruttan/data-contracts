@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-TRIAGE-006
 title: emergency bypass remains explicit and logged
-purpose: Ensures pre-push bypass remains explicit and emits deterministic warning output.
+purpose: Ensures pre-push bypass remains explicit and emits deterministic warning
+  output.
 type: governance.check
 check: runtime.triage_bypass_logged_required
 harness:
@@ -26,7 +27,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

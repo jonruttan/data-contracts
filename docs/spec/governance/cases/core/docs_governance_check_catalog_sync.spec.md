@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-GEN-009
 title: governance check catalog artifacts are synchronized
-purpose: Ensures generated governance check catalog JSON and markdown artifacts are up-to-date.
+purpose: Ensures generated governance check catalog JSON and markdown artifacts are
+  up-to-date.
 type: governance.check
 check: docs.governance_check_catalog_sync
 harness:
@@ -21,9 +22,9 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

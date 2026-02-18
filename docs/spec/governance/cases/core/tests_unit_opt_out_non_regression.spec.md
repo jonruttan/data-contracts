@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-TEST-UNIT-OPT-OUT-001
 title: unit test opt-out usage is measured and non-regressing
-purpose: Tracks unit-test opt-out usage and enforces a non-regression baseline so opt-out
-  coverage is reduced over time.
+purpose: Tracks unit-test opt-out usage and enforces a non-regression baseline so
+  opt-out coverage is reduced over time.
 type: governance.check
 check: tests.unit_opt_out_non_regression
 harness:
@@ -22,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - std.object.get:

@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-CHAIN-004
 title: chain fail_fast defaults stay canonical
-purpose: Ensures harness.chain fail_fast and allow_continue fields preserve bool/default contracts.
+purpose: Ensures harness.chain fail_fast and allow_continue fields preserve bool/default
+  contracts.
 type: governance.check
 check: runtime.chain_fail_fast_default
 harness:
@@ -21,7 +22,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject

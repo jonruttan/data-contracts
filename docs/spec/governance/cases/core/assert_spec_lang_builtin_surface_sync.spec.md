@@ -5,8 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-ASSERT-SYNC-005
 title: spec-lang builtin surface remains synced across contract and runners
-purpose: Ensures builtin operators documented in the spec-lang contract are implemented in
-  both Python and PHP runner evaluators.
+purpose: Ensures builtin operators documented in the spec-lang contract are implemented
+  in both Python and PHP runner evaluators.
 type: governance.check
 check: assert.spec_lang_builtin_surface_sync
 harness:
@@ -68,16 +68,16 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
     - 0
   target: violation_count
 - id: assert_2
-  class: must
+  class: MUST
   asserts:
-  - must:
+  - MUST:
     - std.logic.eq:
       - std.object.get:
         - var: subject

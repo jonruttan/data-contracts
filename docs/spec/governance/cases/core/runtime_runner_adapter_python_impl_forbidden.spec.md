@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-ENTRY-003
 title: runner adapter hard-fails python impl selection
-purpose: Ensures `scripts/runner_adapter.sh` rejects `--impl python` with migration guidance.
+purpose: Ensures `scripts/runner_adapter.sh` rejects `--impl python` with migration
+  guidance.
 type: governance.check
 check: runtime.runner_adapter_python_impl_forbidden
 harness:
@@ -28,7 +29,7 @@ harness:
       - policy.pass_when_no_violations
 contract:
 - id: assert_1
-  class: must
+  class: MUST
   asserts:
   - std.logic.eq:
     - var: subject
