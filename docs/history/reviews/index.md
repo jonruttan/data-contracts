@@ -21,7 +21,7 @@ This folder holds review assets with clear lifecycle separation.
 1. Run either `adoption_7_personas.md` (critique) or `self_healing.md` (staged hardening) from `docs/history/reviews/prompts/`.
 2. Save raw output under `docs/history/reviews/snapshots/` using a dated filename.
 3. Convert snapshot output into pending specs with:
-   - `python scripts/review_to_pending.py docs/history/reviews/snapshots/<file>.md`
+   - `python -m spec_runner.review_to_pending docs/history/reviews/snapshots/<file>.md`
 4. Triage resulting pending items and promote selected candidates into
    `docs/spec/backlog.md` or directly into `docs/spec/*.md`.
 5. Record `Prompt revision` and `Repo revision` in each snapshot.
@@ -31,13 +31,13 @@ This folder holds review assets with clear lifecycle separation.
 Create a dated snapshot stub with revisions prefilled:
 
 ```sh
-python scripts/new_review_snapshot.py --label persona_review
+python -m spec_runner.new_review_snapshot --label persona_review
 ```
 
 Extract explicit YAML spec candidates and infer implicit suggestions:
 
 ```sh
-python scripts/review_to_pending.py docs/history/reviews/snapshots/<snapshot>.md
+python -m spec_runner.review_to_pending docs/history/reviews/snapshots/<snapshot>.md
 ```
 
 ## Recommended Cadence

@@ -3714,7 +3714,7 @@ links:
   unit_test_refs:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - scripts/refactor_contract_job_hooks.py
+  - spec_runner/refactor_contract_job_hooks.py
   - scripts/run_governance_specs.py
   notes: rust contract.job specs use when fail/complete dispatch hooks with paired
     hook job metadata.
