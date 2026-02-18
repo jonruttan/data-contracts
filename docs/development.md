@@ -399,7 +399,7 @@ python -m twine check dist/*
 Run this before `make prepush` when touching docs or governance:
 
 ```sh
-python3 scripts/check_docs_freshness.py --strict
+python3 -m spec_runner.spec_lang_commands check-docs-freshness --strict
 ```
 
 The checker validates canonical index ownership, link integrity, stale-term drift, governance family-map coverage, and generated docs sync.
