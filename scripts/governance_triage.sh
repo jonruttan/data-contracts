@@ -13,6 +13,7 @@ TRIAGE_LIVENESS_LEVEL="${SPEC_GOV_TRIAGE_LIVENESS_LEVEL:-strict}"
 TRIAGE_LIVENESS_STALL_MS="${SPEC_GOV_TRIAGE_LIVENESS_STALL_MS:-5000}"
 TRIAGE_LIVENESS_KILL_GRACE_MS="${SPEC_GOV_TRIAGE_LIVENESS_KILL_GRACE_MS:-1000}"
 TARGETED_TIMEOUT_SECONDS="${SPEC_GOV_TRIAGE_TARGETED_TIMEOUT_SECONDS:-15}"
+TIMEOUT_BIN="${SPEC_GOV_TRIAGE_TIMEOUT_BIN:-}"
 
 MODE="auto"
 IMPL="${SPEC_RUNNER_IMPL:-rust}"
@@ -115,6 +116,16 @@ done
 
 if [[ -z "${PROFILE_LEVEL}" ]]; then
   PROFILE_LEVEL="${TRIAGE_PROFILE_LEVEL}"
+fi
+
+if [[ -z "${TIMEOUT_BIN}" ]]; then
+  if command -v timeout >/dev/null 2>&1; then
+    TIMEOUT_BIN="$(command -v timeout)"
+  elif command -v gtimeout >/dev/null 2>&1; then
+    TIMEOUT_BIN="$(command -v gtimeout)"
+  else
+    TIMEOUT_BIN=""
+  fi
 fi
 
 case "${MODE}" in
@@ -256,7 +267,11 @@ run_governance() {
   cmd+=("$@")
   echo "[governance-triage] ${label}: ${cmd[*]}"
   if [[ "${timeout_seconds}" =~ ^[0-9]+$ ]] && [[ "${timeout_seconds}" -gt 0 ]]; then
-    /opt/homebrew/bin/timeout "${timeout_seconds}" "${cmd[@]}" >"${TMP_OUT}" 2>&1 || return $?
+    if [[ -n "${TIMEOUT_BIN}" ]]; then
+      "${TIMEOUT_BIN}" "${timeout_seconds}" "${cmd[@]}" >"${TMP_OUT}" 2>&1 || return $?
+    else
+      "${cmd[@]}" >"${TMP_OUT}" 2>&1 || return $?
+    fi
   else
     "${cmd[@]}" >"${TMP_OUT}" 2>&1 || return $?
   fi
