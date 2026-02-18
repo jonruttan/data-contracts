@@ -1,24 +1,24 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-014
+## SRGOV-RUNTIME-TRIAGE-015
 
 ```yaml spec-test
-id: SRGOV-RUNTIME-TRIAGE-014
-title: ci workflow defines rust critical gate as first-class lane
-purpose: Ensures CI has a dedicated rust critical gate job and diagnostic ci-gate depends
-  on it.
+id: SRGOV-RUNTIME-TRIAGE-015
+title: ci gate default broad governance path is rust-native
+purpose: Ensures ci-gate-summary defaults to governance-broad-native and does not route broad
+  through Python governance scripts.
 type: governance.check
-check: runtime.ci_workflow_critical_gate_required
+check: runtime.ci_gate_default_no_python_governance_required
 harness:
   root: .
-  ci_workflow_critical_gate:
-    path: /.github/workflows/ci.yml
+  ci_gate_default_no_python_governance:
+    files:
+    - /scripts/ci_gate_summary.py
     required_tokens:
-    - 'rust-critical-gate:'
-    - Run rust critical gate
-    - ./scripts/runner_adapter.sh --impl rust critical-gate
-    - 'needs: rust-critical-gate'
-    - 'continue-on-error: true'
+    - governance-broad-native
+    - governance_broad
+    forbidden_tokens:
+    - run_governance_specs.py
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

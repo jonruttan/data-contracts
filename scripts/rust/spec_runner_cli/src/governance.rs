@@ -50,7 +50,7 @@ fn yaml_str_list(map: &serde_yaml::Mapping, key: &str) -> Vec<String> {
         .unwrap_or_default()
 }
 
-fn parse_manifest(path: &Path) -> Result<Vec<serde_yaml::Mapping>, String> {
+fn parse_manifest(path: &Path, profile_name: &str) -> Result<Vec<serde_yaml::Mapping>, String> {
     let raw = fs::read_to_string(path)
         .map_err(|e| format!("failed to read manifest {}: {e}", path.display()))?;
     let doc: YamlValue = serde_yaml::from_str(&raw)
@@ -62,16 +62,18 @@ fn parse_manifest(path: &Path) -> Result<Vec<serde_yaml::Mapping>, String> {
         .get(&YamlValue::String("profiles".to_string()))
         .and_then(|v| v.as_mapping())
         .ok_or_else(|| "critical manifest missing profiles mapping".to_string())?;
-    let critical = profiles
-        .get(&YamlValue::String("critical".to_string()))
+    let profile = profiles
+        .get(&YamlValue::String(profile_name.to_string()))
         .and_then(|v| v.as_mapping())
-        .ok_or_else(|| "critical manifest missing profiles.critical".to_string())?;
-    let checks = critical
+        .ok_or_else(|| format!("critical manifest missing profiles.{profile_name}"))?;
+    let checks = profile
         .get(&YamlValue::String("checks".to_string()))
         .and_then(|v| v.as_sequence())
-        .ok_or_else(|| "critical manifest missing profiles.critical.checks".to_string())?;
+        .ok_or_else(|| format!("critical manifest missing profiles.{profile_name}.checks"))?;
     if checks.is_empty() {
-        return Err("critical manifest profiles.critical.checks must be non-empty".to_string());
+        return Err(format!(
+            "critical manifest profiles.{profile_name}.checks must be non-empty"
+        ));
     }
     let mut out = Vec::<serde_yaml::Mapping>::new();
     for item in checks {
@@ -226,10 +228,16 @@ fn run_slo(total_ms: i64, cfg: &serde_yaml::Mapping) -> (bool, Vec<String>) {
     }
 }
 
-pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
-    let mut out_path = ".artifacts/critical-gate-summary.json".to_string();
-    let mut trace_out_path = ".artifacts/critical-gate-trace.json".to_string();
-    let mut summary_out_path = ".artifacts/critical-gate-summary.md".to_string();
+fn run_governance_profile_native(
+    root: &Path,
+    forwarded: &[String],
+    default_profile: &str,
+    default_out_prefix: &str,
+) -> i32 {
+    let mut profile = default_profile.to_string();
+    let mut out_path = format!(".artifacts/{default_out_prefix}-summary.json");
+    let mut trace_out_path = format!(".artifacts/{default_out_prefix}-trace.json");
+    let mut summary_out_path = format!(".artifacts/{default_out_prefix}-summary.md");
     let mut fail_fast = env_bool("SPEC_RUNNER_FAIL_FAST", true);
 
     let mut i = 0usize;
@@ -260,6 +268,14 @@ pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
                 summary_out_path = forwarded[i + 1].clone();
                 i += 2;
             }
+            "--profile" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --profile requires value");
+                    return 2;
+                }
+                profile = forwarded[i + 1].clone();
+                i += 2;
+            }
             "--fail-fast" => {
                 fail_fast = true;
                 i += 1;
@@ -282,7 +298,7 @@ pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut checks = Vec::<CriticalCheckResult>::new();
     let mut traces = Vec::<Value>::new();
 
-    let defs = match parse_manifest(&manifest_path) {
+    let defs = match parse_manifest(&manifest_path, &profile) {
         Ok(v) => v,
         Err(e) => {
             checks.push(CriticalCheckResult {
@@ -353,7 +369,7 @@ pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
 
     // run SLO checks at end (from manifest)
     let total_ms = t0.elapsed().as_millis() as i64;
-    for def in parse_manifest(&manifest_path).unwrap_or_default() {
+    for def in parse_manifest(&manifest_path, &profile).unwrap_or_default() {
         let kind = def
             .get(&YamlValue::String("kind".to_string()))
             .and_then(|v| v.as_str())
@@ -390,7 +406,7 @@ pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
         "version": 1,
         "status": status,
         "runner_impl": "rust",
-        "profile": "governance.profile.critical",
+        "profile": format!("governance.profile.{}", profile),
         "started_at": started,
         "finished_at": finished,
         "total_duration_ms": total_ms,
@@ -467,4 +483,12 @@ pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
     println!("wrote {}", summary_abs.display());
 
     if status == "pass" { 0 } else { 1 }
+}
+
+pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
+    run_governance_profile_native(root, forwarded, "critical", "critical-gate")
+}
+
+pub fn run_governance_broad_native(root: &Path, forwarded: &[String]) -> i32 {
+    run_governance_profile_native(root, forwarded, "full", "governance-broad-native")
 }

@@ -47,12 +47,12 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 ## Generated Runner API Catalog
 
-- command_count: 63
+- command_count: 64
 - python_command_count: 43
-- rust_command_count: 63
+- rust_command_count: 64
 - parity_command_count: 43
 - all_commands_parity: false
-- doc_quality_score: 0.873
+- doc_quality_score: 0.8687
 
 | command | group | python | rust | parity |
 |---|---|---|---|---|
@@ -91,6 +91,7 @@ Provide generated command-surface documentation for the canonical runner interfa
 | `docs-operability-json` | `docs` | true | true | true |
 | `docs-operability-md` | `docs` | true | true | true |
 | `governance` | `verification` | true | true | true |
+| `governance-broad-native` | `reporting` | false | true | false |
 | `governance-heavy` | `reporting` | true | true | true |
 | `lint` | `verification` | true | true | true |
 | `normalize-check` | `verification` | true | true | true |
@@ -646,6 +647,21 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 - Examples:
   - `./scripts/runner_adapter.sh governance`: Execute command with canonical adapter routing.
+
+
+#### `governance-broad-native`
+
+- Summary: Runs `governance-broad-native` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh governance-broad-native`: Execute command with canonical adapter routing.
 
 
 #### `governance-heavy`

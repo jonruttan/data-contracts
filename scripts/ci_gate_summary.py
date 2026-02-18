@@ -170,7 +170,7 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
             _runner_command_with_liveness(
                 runner_bin,
                 runner_impl,
-                "governance",
+                "governance-broad-native",
                 level=broad_liveness_level,
                 stall_ms=broad_liveness_stall_ms,
                 kill_grace_ms=broad_liveness_kill_grace_ms,

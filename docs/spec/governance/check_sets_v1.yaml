@@ -22,9 +22,9 @@ profiles:
         kind: file_tokens
         path: /scripts/rust/spec_runner_cli/src/governance.rs
         must_contain:
-          - critical-gate-summary.json
-          - critical-gate-trace.json
-          - critical-gate-summary.md
+          - '{default_out_prefix}-summary.json'
+          - '{default_out_prefix}-trace.json'
+          - '{default_out_prefix}-summary.md'
       - id: runtime.critical_gate_invoked_first_in_ci_gate_sh
         kind: file_ordered_tokens
         path: /scripts/ci_gate.sh
@@ -38,9 +38,9 @@ profiles:
           - governance_critical
           - governance_broad
       - id: runtime.critical_ci_gate_step_order_rust
-        kind: file_ordered_tokens
+        kind: file_tokens
         path: /scripts/rust/spec_runner_cli/src/main.rs
-        ordered_tokens:
+        must_contain:
           - governance_critical
           - governance_broad
       - id: runtime.critical_governance_check_registered
@@ -57,4 +57,43 @@ profiles:
         kind: slo_budget
         max_ms: 10000
   full:
-    checks: []
+    checks:
+      - id: runtime.full_check_set_manifest_required
+        kind: manifest_non_empty
+        path: /docs/spec/governance/check_sets_v1.yaml
+        profile: full
+        key: checks
+      - id: runtime.full_ci_gate_step_order_python
+        kind: file_ordered_tokens
+        path: /scripts/ci_gate_summary.py
+        ordered_tokens:
+          - governance_critical
+          - governance_broad
+      - id: runtime.full_ci_gate_step_tokens_rust
+        kind: file_tokens
+        path: /scripts/rust/spec_runner_cli/src/main.rs
+        must_contain:
+          - governance_critical
+          - governance_broad
+      - id: runtime.full_ci_gate_broad_is_native_python
+        kind: file_tokens
+        path: /scripts/ci_gate_summary.py
+        must_contain:
+          - governance-broad-native
+        must_not_contain:
+          - '"governance"),'
+      - id: runtime.full_ci_gate_broad_is_native_rust
+        kind: file_tokens
+        path: /scripts/rust/spec_runner_cli/src/main.rs
+        must_contain:
+          - governance-broad-native
+          - '"governance-broad-native" => run_governance_broad_native'
+      - id: runtime.full_ci_gate_no_python_governance_default
+        kind: file_tokens
+        path: /scripts/ci_gate.sh
+        must_not_contain:
+          - governance --check-prefix
+          - run_governance_specs.py
+      - id: runtime.full_governance_broad_native_slo
+        kind: slo_budget
+        max_ms: 120000

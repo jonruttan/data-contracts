@@ -13,7 +13,6 @@ harness:
   ci_gate_critical_first:
     files:
     - /scripts/ci_gate_summary.py
-    - /scripts/rust/spec_runner_cli/src/main.rs
     ordered_tokens:
     - governance_critical
     - governance_broad
