@@ -27,7 +27,7 @@ harness:
     - scripts/ci_gate_summary.py
     - scripts/evaluate_style.py --check docs/spec
     - scripts/conformance_purpose_report.py
-    - scripts/compare_conformance_parity.py
+    - spec_lang_commands compare-conformance-parity
   chain:
     steps:
     - id: lib_policy_core_spec

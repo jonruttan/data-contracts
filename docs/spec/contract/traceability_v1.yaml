@@ -1752,7 +1752,7 @@ links:
   - docs/spec/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - scripts/core_gate.sh
-  - scripts/compare_conformance_parity.py
+  - spec_runner/script_runtime_commands.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_rust_primary_shared_capability_parity.spec.md
   notes: Rust-primary-compatible gate flow retains shared-capability parity step.
