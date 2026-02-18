@@ -241,10 +241,10 @@ fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
             "/docs/spec/impl/python/cases/schema_registry_report.spec.md#SRPY-SCHEMA-REG-002",
         ),
         "spec-lang-stdlib-json" => Some(
-            "/docs/spec/impl/python/cases/spec_lang_stdlib_report.spec.md#SRPY-STDLIB-REP-001",
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-017",
         ),
         "spec-lang-stdlib-md" => Some(
-            "/docs/spec/impl/python/cases/spec_lang_stdlib_report.spec.md#SRPY-STDLIB-REP-002",
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-018",
         ),
         "contract-assertions-json" => Some(
             "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-005",
@@ -1963,36 +1963,8 @@ fn main() {
         "contract-assertions-md" => run_job_for_command(&root, "contract-assertions-md", &forwarded),
         "objective-scorecard-json" => run_job_for_command(&root, "objective-scorecard-json", &forwarded),
         "objective-scorecard-md" => run_job_for_command(&root, "objective-scorecard-md", &forwarded),
-        "spec-lang-stdlib-json" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.spec_lang_commands".to_string(),
-                    "spec-lang-stdlib-report".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/spec-lang-stdlib.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "spec-lang-stdlib-md" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    "-m".to_string(),
-                    "spec_runner.spec_lang_commands".to_string(),
-                    "spec-lang-stdlib-report".to_string(),
-                    "--format".to_string(),
-                    "md".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/spec-lang-stdlib-summary.md".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
+        "spec-lang-stdlib-json" => run_job_for_command(&root, "spec-lang-stdlib-json", &forwarded),
+        "spec-lang-stdlib-md" => run_job_for_command(&root, "spec-lang-stdlib-md", &forwarded),
         "ci-gate-summary" => run_ci_gate_summary_native(&root, &forwarded),
         "ci-cleanroom" => run_cmd(
             &script(&root, "ci_cleanroom.sh"),

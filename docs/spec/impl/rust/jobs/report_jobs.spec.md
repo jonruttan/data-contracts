@@ -479,3 +479,63 @@ contract:
       - written_path
     - .artifacts/objective-scorecard-summary.md
 ```
+
+## SRRUST-JOB-REP-017
+
+```yaml contract-spec
+id: SRRUST-JOB-REP-017
+title: spec lang stdlib json report
+type: contract.job
+harness:
+  spec_lang:
+    capabilities:
+    - ops.helper
+  job:
+    ref: '#SRRUST-JOB-REP-017'
+    mode: report
+    helper: helper.report.emit
+    inputs:
+      report_name: spec-lang-stdlib
+      format: json
+      out: .artifacts/spec-lang-stdlib.json
+contract:
+- id: assert_1
+  class: must
+  target: summary_json
+  asserts:
+  - std.string.contains:
+    - std.object.get:
+      - var: subject
+      - written_path
+    - .artifacts/spec-lang-stdlib.json
+```
+
+## SRRUST-JOB-REP-018
+
+```yaml contract-spec
+id: SRRUST-JOB-REP-018
+title: spec lang stdlib markdown report
+type: contract.job
+harness:
+  spec_lang:
+    capabilities:
+    - ops.helper
+  job:
+    ref: '#SRRUST-JOB-REP-018'
+    mode: report
+    helper: helper.report.emit
+    inputs:
+      report_name: spec-lang-stdlib
+      format: md
+      out: .artifacts/spec-lang-stdlib-summary.md
+contract:
+- id: assert_1
+  class: must
+  target: summary_json
+  asserts:
+  - std.string.contains:
+    - std.object.get:
+      - var: subject
+      - written_path
+    - .artifacts/spec-lang-stdlib-summary.md
+```
