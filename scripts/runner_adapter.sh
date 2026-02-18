@@ -151,10 +151,12 @@ case "${impl}" in
     exec "${ROOT_DIR}/scripts/rust/runner_adapter.sh" "$@"
     ;;
   python)
-    exec "${ROOT_DIR}/scripts/python/runner_adapter.sh" "$@"
+    echo "ERROR: python runner impl is no longer supported on the runtime path (SRRUN-IMPL-001)." >&2
+    echo "Use rust impl instead: ./scripts/runner_adapter.sh --impl rust ${subcommand}" >&2
+    exit 2
     ;;
   *)
-    echo "ERROR: unsupported runner implementation: ${impl} (expected rust|python)" >&2
+    echo "ERROR: unsupported runner implementation: ${impl} (expected rust only)" >&2
     exit 2
     ;;
 esac

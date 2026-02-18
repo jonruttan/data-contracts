@@ -34,9 +34,9 @@ Notes:
   governance for full safety.
 - Triage fallback uses check-id parsing plus deterministic check-prefix mapping from
   `/docs/spec/governance/check_prefix_map_v1.yaml`.
-- Local drift prevention is parity-default: `make prepush` routes to
-  `scripts/local_ci_parity.sh` and runs rust core plus python parity lanes by
-  default; explicit fast mode uses `SPEC_PREPUSH_MODE=fast` (`make prepush-fast`).
+- Local drift prevention is Rust-only by default: `make prepush` routes to
+  `scripts/local_ci_parity.sh` and runs Rust critical path only; explicit fast
+  mode remains Rust-only (`SPEC_PREPUSH_MODE=fast`, `make prepush-fast`).
 - Repository-managed git hook enforcement is canonical via
   `.githooks/pre-push` and installer `make hooks-install`
   (`scripts/install_git_hooks.sh`), with emergency bypass only through
@@ -182,8 +182,8 @@ Notes:
   `ops.fs.file.read`, `ops.proc.command.exec`) with underscore shorthand forms
   forbidden by governance.
 - Gate scripts default to canonical adapter (`scripts/runner_adapter.sh`)
-  in rust mode; Python runner lane remains explicit opt-in via
-  `SPEC_RUNNER_IMPL=python` (or `--impl python`).
+  in rust mode; runtime selection of Python impl is hard-forbidden and returns
+  migration guidance to Rust commands.
 - Contract path model now uses virtual-root semantics (`/` = contract root)
   with canonical `/...` normalization and explicit deny-by-default
   `external://provider/id` references.

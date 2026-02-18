@@ -64,10 +64,11 @@ Rust-default lane (canonical):
 SPEC_RUNNER_BIN=./scripts/runner_adapter.sh ./scripts/core_gate.sh
 ```
 
-Explicit Python runner lane:
+Runtime Python impl selection (forbidden):
 
 ```sh
 SPEC_RUNNER_BIN=./scripts/runner_adapter.sh SPEC_RUNNER_IMPL=python ./scripts/core_gate.sh
+# exits non-zero with rust migration guidance
 ```
 
 Optional local prebuild for Rust lane:
@@ -136,7 +137,7 @@ The pre-push gate runs the fast CI-critical contract path:
 `governance-heavy` and `docs-generate-check` are path-scoped and only run when
 relevant files changed.
 
-`make prepush` is Rust-default and includes Python parity by default.
+`make prepush` is Rust-only on the runtime path.
 
 Fast local opt-out mode:
 
@@ -146,18 +147,14 @@ make prepush-fast
 SPEC_PREPUSH_MODE=fast make prepush
 ```
 
-Explicit parity alias:
+Compatibility alias:
 
 ```sh
 make prepush-parity
 ```
 
-Use an explicit runner lane when needed:
-
-```sh
-SPEC_RUNNER_IMPL=python make prepush
-SPEC_RUNNER_IMPL=rust make prepush
-```
+Runtime impl is rust-only; `SPEC_RUNNER_IMPL=python` is rejected by
+`scripts/runner_adapter.sh` with migration guidance.
 
 Install managed git hooks to enforce local pre-push parity gate:
 

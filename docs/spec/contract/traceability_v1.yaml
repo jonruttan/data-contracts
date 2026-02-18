@@ -1212,11 +1212,10 @@ links:
   - scripts/runner_adapter.sh
   - scripts/ci_gate_summary.py
   notes: Governance enforces runner-interface boundary usage in gate shell scripts.
-- rule_id: RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED
-  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED
+- rule_id: RUNTIME_LOCAL_CI_PARITY_PYTHON_LANE_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_CI_PARITY_PYTHON_LANE_FORBIDDEN
   contract_refs:
   - docs/spec/contract/12_runner_interface.md
-  - docs/development.md
   schema_refs: []
   conformance_case_ids: []
   unit_test_refs:
@@ -1224,12 +1223,23 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - scripts/local_ci_parity.sh
-  - scripts/prepush_gate.sh
+  - docs/spec/governance/cases/core/runtime_local_ci_parity_python_lane_forbidden.spec.md
+  notes: Local ci parity path is rust-only and forbids python lane execution.
+- rule_id: RUNTIME_MAKE_PYTHON_PARITY_TARGETS_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_MAKE_PYTHON_PARITY_TARGETS_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
   - Makefile
-  - docs/spec/governance/cases/core/runtime_prepush_parity_default_required.spec.md
-  notes: Local prepush defaults to parity lane execution for rust core path and python parity.
-- rule_id: RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT
-  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT
+  - docs/spec/governance/cases/core/runtime_make_python_parity_targets_forbidden.spec.md
+  notes: Contributor make targets avoid python parity runtime lanes.
+- rule_id: RUNTIME_RUST_ONLY_PREPUSH_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ONLY_PREPUSH_REQUIRED
   contract_refs:
   - docs/spec/contract/12_runner_interface.md
   schema_refs: []
@@ -1239,8 +1249,10 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - scripts/local_ci_parity.sh
-  - docs/spec/governance/cases/core/runtime_prepush_python_parity_not_optional_by_default.spec.md
-  notes: Governance forbids optional-only python parity defaults in prepush flow.
+  - .githooks/pre-push
+  - Makefile
+  - docs/spec/governance/cases/core/runtime_rust_only_prepush_required.spec.md
+  notes: End-to-end prepush entrypoints stay rust-only.
 - rule_id: RUNTIME_GIT_HOOK_PREPUSH_ENFORCED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GIT_HOOK_PREPUSH_ENFORCED
   contract_refs:
@@ -1728,8 +1740,8 @@ links:
   - scripts/rust/runner_adapter.sh
   - docs/spec/governance/cases/core/runtime_runner_interface_subcommands.spec.md
   notes: Governance verifies Rust adapter case labels cover required runner-interface subcommands.
-- rule_id: RUNTIME_RUNNER_INTERFACE_CI_LANE_REQUIRED
-  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUNNER_INTERFACE_CI_LANE_REQUIRED
+- rule_id: RUNTIME_CI_PYTHON_LANE_NON_BLOCKING_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_CI_PYTHON_LANE_NON_BLOCKING_REQUIRED
   contract_refs:
   - docs/spec/contract/12_runner_interface.md
   schema_refs: []
@@ -1739,8 +1751,8 @@ links:
   implementation_refs:
   - .github/workflows/ci.yml
   - scripts/run_governance_specs.py
-  - docs/spec/governance/cases/core/runtime_runner_interface_ci_lane.spec.md
-  notes: Governance verifies CI includes a rust core-gate lane and a python governance+parity lane.
+  - docs/spec/governance/cases/core/runtime_ci_python_lane_non_blocking_required.spec.md
+  notes: Governance verifies python parity lane remains visible but non-blocking in CI.
 - rule_id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_DELEGATION
   contract_refs:
@@ -2439,8 +2451,8 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_public_runner_default_rust.spec.md
   notes: Canonical runner adapter defaults to rust implementation mode.
-- rule_id: RUNTIME_PYTHON_LANE_EXPLICIT_OPT_IN_ONLY
-  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PYTHON_LANE_EXPLICIT_OPT_IN_ONLY
+- rule_id: RUNTIME_RUNNER_ADAPTER_PYTHON_IMPL_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUNNER_ADAPTER_PYTHON_IMPL_FORBIDDEN
   contract_refs:
   - docs/spec/contract/12_runner_interface.md
   schema_refs:
@@ -2451,8 +2463,8 @@ links:
   implementation_refs:
   - scripts/runner_adapter.sh
   - scripts/run_governance_specs.py
-  - docs/spec/governance/cases/core/runtime_python_lane_explicit_opt_in.spec.md
-  notes: Python lane must be selected explicitly via --impl python or SPEC_RUNNER_IMPL=python.
+  - docs/spec/governance/cases/core/runtime_runner_adapter_python_impl_forbidden.spec.md
+  notes: Runtime runner adapter rejects python impl selection with migration guidance.
 - rule_id: RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
   contract_refs:

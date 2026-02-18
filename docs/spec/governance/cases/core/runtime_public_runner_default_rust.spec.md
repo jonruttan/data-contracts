@@ -5,8 +5,8 @@
 ```yaml spec-test
 id: SRGOV-RUNTIME-ENTRY-002
 title: public runner defaults to rust mode
-purpose: Ensures the canonical public adapter defaults to rust and dispatches both supported
-  impl modes.
+purpose: Ensures the canonical public adapter defaults to rust and forbids python impl runtime
+  dispatch.
 type: governance.check
 check: runtime.public_runner_default_rust
 harness:
@@ -16,10 +16,11 @@ harness:
     required_tokens:
     - impl="${SPEC_RUNNER_IMPL:-rust}"
     - scripts/rust/runner_adapter.sh
-    - scripts/python/runner_adapter.sh
+    - python runner impl is no longer supported on the runtime path
     - --impl
     forbidden_tokens:
     - SPEC_RUNNER_IMPL:-python
+    - exec "${ROOT_DIR}/scripts/python/runner_adapter.sh"
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

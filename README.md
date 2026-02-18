@@ -49,13 +49,12 @@ make prepush
 governance triage, `governance-heavy`, `docs-generate-check`, and strict perf-smoke compare).
 `governance-heavy` and `docs-generate-check` are path-scoped to relevant
 changes.
-It is Rust-default (`SPEC_RUNNER_IMPL=rust`) and now includes Python parity by
-default.
+It is Rust-only on the runtime path.
 Governance in this flow is targeted-first triage (`scripts/governance_triage.sh --mode auto`)
 to avoid broad-first latency and to emit deterministic triage artifacts.
 Broad governance remains mandatory in CI merge-gate (`ci-gate-summary`).
 
-Fast local opt-out mode (skips Python parity lane):
+Fast local mode:
 
 ```sh
 make prepush-fast
@@ -63,7 +62,7 @@ make prepush-fast
 SPEC_PREPUSH_MODE=fast make prepush
 ```
 
-Explicit parity alias:
+Compatibility alias:
 
 ```sh
 make prepush-parity
@@ -110,12 +109,11 @@ Default lane (rust):
 ./scripts/runner_adapter.sh governance
 ```
 
-Explicit Python lane (opt-in):
+Python impl in runtime adapter is forbidden (hard cut):
 
 ```sh
 ./scripts/runner_adapter.sh --impl python governance
-# or
-SPEC_RUNNER_IMPL=python ./scripts/runner_adapter.sh governance
+# => exits with migration guidance to --impl rust
 ```
 
 Runner interface contract:

@@ -22,7 +22,6 @@ harness:
     - make check
     - make prepush
     - make prepush-fast
-    - make prepush-parity
     - make ci-cleanroom
   policy_evaluate:
   - call:

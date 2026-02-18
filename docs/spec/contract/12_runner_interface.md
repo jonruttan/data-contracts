@@ -6,8 +6,8 @@ Execution classes:
 
 - `default lane`: canonical adapter with rust mode
   (`scripts/runner_adapter.sh` with `SPEC_RUNNER_IMPL=rust` default)
-- `python runner lane`: explicit opt-in mode through the same adapter
-  (`scripts/runner_adapter.sh --impl python` or `SPEC_RUNNER_IMPL=python`)
+- `python parity telemetry lane`: CI-only optional lane that runs Python scripts
+  directly and is non-blocking
 
 ## Required Interface
 
@@ -38,9 +38,9 @@ CI expectation:
 
 - CI default lane MUST run core gate through `scripts/runner_adapter.sh`
   in rust mode.
-- Local pre-push parity gate MUST run rust core lane plus python parity lane
-  by default (`make prepush` / `scripts/local_ci_parity.sh`).
-- Fast opt-out mode is explicit only (`SPEC_PREPUSH_MODE=fast` or
+- Local pre-push gate is Rust-only by default
+  (`make prepush` / `scripts/local_ci_parity.sh`).
+- Fast mode is Rust-only as well (`SPEC_PREPUSH_MODE=fast` or
   `make prepush-fast`).
 - Repository-managed pre-push hook MUST invoke `make prepush` and block push
   on failure unless explicit emergency bypass is set (`SPEC_PREPUSH_BYPASS=1`).
@@ -51,12 +51,17 @@ Repository adapters:
 
 - `scripts/runner_adapter.sh` (single public entrypoint; rust default router)
 - `scripts/rust/runner_adapter.sh` (internal rust adapter; invokes Rust CLI)
-- `scripts/python/runner_adapter.sh` (internal python adapter)
+- `scripts/python/runner_adapter.sh` (deprecated runtime adapter stub; returns migration error)
 - `scripts/rust/spec_runner_cli` (Rust runner-interface CLI crate)
 
 Adapters may call implementation-specific scripts/tools internally.
 Alternative implementations can replace the adapter by setting `SPEC_RUNNER_BIN`
 to a different compatible command.
+
+Runtime hard-cut:
+
+- `scripts/runner_adapter.sh --impl python ...` is forbidden and must hard-fail
+  with migration guidance to Rust commands.
 
 Rust adapter target behavior:
 

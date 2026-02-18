@@ -1,22 +1,22 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-PREPUSH-002
+## SRGOV-RUNTIME-ENTRY-003
 
 ```yaml spec-test
-id: SRGOV-RUNTIME-PREPUSH-002
-title: python parity lane is not optional by default in prepush
-purpose: Ensures local parity script does not use optional parity env toggles as default behavior.
+id: SRGOV-RUNTIME-ENTRY-003
+title: runner adapter hard-fails python impl selection
+purpose: Ensures `scripts/runner_adapter.sh` rejects `--impl python` with migration guidance.
 type: governance.check
-check: runtime.prepush_python_parity_not_optional_by_default
+check: runtime.runner_adapter_python_impl_forbidden
 harness:
   root: .
-  prepush_python_parity:
-    path: /scripts/local_ci_parity.sh
+  runner_adapter_python_impl:
+    path: /scripts/runner_adapter.sh
     required_tokens:
-    - lane_python_parity
-    - MODE="${SPEC_PREPUSH_MODE:-parity}"
+    - python runner impl is no longer supported on the runtime path
+    - Use rust impl instead
     forbidden_tokens:
-    - SPEC_PREPUSH_PYTHON_PARITY
+    - exec "${ROOT_DIR}/scripts/python/runner_adapter.sh" "$@"
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

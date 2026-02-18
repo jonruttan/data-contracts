@@ -133,6 +133,7 @@ jobs:
   python-parity-lane:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    continue-on-error: true
 
     steps:
       - name: Checkout
@@ -159,20 +160,15 @@ jobs:
 
       - name: Run Python parity lane (governance + conformance parity)
         id: python_parity
-        continue-on-error: true
         run: |
-          ./scripts/runner_adapter.sh --impl python --liveness-level basic governance
-          ./scripts/runner_adapter.sh --impl python conformance-parity
+          python scripts/run_governance_specs.py --liveness-level basic
+          python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases --out .artifacts/conformance-parity-python.json
 
       - name: Diagnostic rerun with detailed profiling (python parity)
         if: steps.python_parity.outcome == 'failure'
         run: |
-          ./scripts/runner_adapter.sh --impl python --liveness-level strict --profile-level detailed --profile-out .artifacts/python-parity-run-trace.json --profile-summary-out .artifacts/python-parity-run-trace-summary.md governance || true
-          ./scripts/runner_adapter.sh --impl python --profile-level detailed --profile-out .artifacts/python-conformance-parity-run-trace.json --profile-summary-out .artifacts/python-conformance-parity-run-trace-summary.md conformance-parity || true
-
-      - name: Enforce Python parity lane result
-        if: steps.python_parity.outcome == 'failure'
-        run: exit 1
+          python scripts/run_governance_specs.py --liveness-level strict --profile-level detailed --profile-out .artifacts/python-parity-run-trace.json --profile-summary-out .artifacts/python-parity-run-trace-summary.md || true
+          python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases --out .artifacts/conformance-parity-python-diagnostic.json || true
 
       - name: Upload parity artifacts
         if: always()

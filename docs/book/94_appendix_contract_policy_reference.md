@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 244
-- must_count: 225
+- rule_count: 245
+- must_count: 226
 - should_count: 12
 - must_not_count: 7
-- active_count: 244
+- active_count: 245
 - deprecated_count: 0
 - removed_count: 0
 
@@ -222,6 +222,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.governance_step` | 3 | `active` |
 | `RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID` | `MUST` | `governance` | `runtime.ci.artifact_upload_paths` | 2 | `active` |
 | `RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.ownership_contract` | 4 | `active` |
+| `RUNTIME_CI_PYTHON_LANE_NON_BLOCKING_REQUIRED` | `MUST` | `governance` | `runtime.runner_interface.ci_lane` | 2 | `active` |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `implementation` | `runtime.assertion_decisions` | 2 | `active` |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `MUST` | `governance` | `runtime.default_gate.adapter` | 3 | `active` |
 | `RUNTIME_FAST_PATH_CONSISTENCY_REQUIRED` | `MUST` | `governance` | `runtime.fast_path.consistency` | 4 | `active` |
@@ -234,11 +235,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_entrypoint` | 3 | `active` |
 | `RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_mode_default` | 2 | `active` |
 | `RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | `MUST` | `governance` | `docs.local_ci_parity` | 5 | `active` |
+| `RUNTIME_LOCAL_CI_PARITY_PYTHON_LANE_FORBIDDEN` | `MUST` | `governance` | `runtime.prepush.local_ci_parity` | 2 | `active` |
 | `RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN` | `MUST` | `governance` | `runtime.prepush.governance_broad_default` | 2 | `active` |
+| `RUNTIME_MAKE_PYTHON_PARITY_TARGETS_FORBIDDEN` | `MUST` | `governance` | `runtime.prepush.make_targets` | 2 | `active` |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `MUST` | `governance` | `runtime.non_python_lanes.exec_tokens` | 2 | `active` |
 | `RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.prepush.governance_step` | 2 | `active` |
-| `RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | `MUST` | `governance` | `runtime.prepush.default_lane` | 4 | `active` |
-| `RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT` | `MUST` | `governance` | `runtime.prepush.python_parity` | 2 | `active` |
 | `RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED` | `MUST` | `governance` | `runtime.gate.profile_on_fail` | 4 | `active` |
 | `RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED` | `MUST` | `governance` | `runtime.profiling.contract` | 3 | `active` |
 | `RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED` | `MUST` | `governance` | `runtime.profiling.redaction` | 2 | `active` |
@@ -247,15 +248,15 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED` | `MUST` | `governance` | `runtime.runner_interface.default_mode` | 2 | `active` |
 | `RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED` | `MUST` | `governance` | `runtime.python_dependency.metric_report` | 2 | `active` |
 | `RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `runtime.python_dependency.metric_non_regression` | 3 | `active` |
-| `RUNTIME_PYTHON_LANE_EXPLICIT_OPT_IN_ONLY` | `MUST` | `governance` | `runtime.runner_interface.python_lane` | 2 | `active` |
 | `RUNTIME_PYTHON_USAGE_SCOPED_TO_PYTHON_RUNNER` | `MUST` | `governance` | `runtime.python_usage.scope` | 3 | `active` |
-| `RUNTIME_RUNNER_INTERFACE_CI_LANE_REQUIRED` | `MUST` | `governance` | `runtime.runner_interface.ci_lane` | 2 | `active` |
+| `RUNTIME_RUNNER_ADAPTER_PYTHON_IMPL_FORBIDDEN` | `MUST` | `governance` | `runtime.runner_interface.impl_selection` | 2 | `active` |
 | `RUNTIME_RUNNER_INTERFACE_GATE_SYNC` | `MUST` | `governance` | `runtime.gate_orchestration` | 5 | `active` |
 | `RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED` | `MUST` | `governance` | `runtime.runner_interface.subcommands` | 2 | `active` |
 | `RUNTIME_RUST_ADAPTER_NO_DELEGATION` | `MUST` | `governance` | `runtime.runner_interface.rust_adapter` | 2 | `active` |
 | `RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC` | `MUST` | `runtime` | `scripts.rust.spec_runner_cli` | 3 | `active` |
 | `RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED` | `MUST` | `governance` | `runtime.rust_adapter.target_selection` | 2 | `active` |
 | `RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON` | `MUST` | `governance` | `runtime.rust_adapter.transitive_path` | 2 | `active` |
+| `RUNTIME_RUST_ONLY_PREPUSH_REQUIRED` | `MUST` | `governance` | `runtime.prepush.end_to_end` | 4 | `active` |
 | `RUNTIME_SCOPE_BOUNDED_FOR_V1` | `SHOULD` | `governance` | `runtime.support.matrix` | 3 | `active` |
 | `RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED` | `MUST` | `governance` | `runtime.runner_interface.public_entrypoint` | 2 | `active` |
 | `RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_artifacts` | 3 | `active` |

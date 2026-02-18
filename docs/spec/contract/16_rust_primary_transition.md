@@ -42,9 +42,9 @@ path while preserving schema/contract behavior guarantees.
 
 - Contributor docs SHOULD describe Rust-primary operation as the default
   interface path while preserving compatibility notes for Python/PHP lanes.
-- Python runner lane remains explicit opt-in by setting
-  `SPEC_RUNNER_IMPL=python` (or `--impl python`) on
-  `scripts/runner_adapter.sh`.
+- Runtime adapter Python impl selection is hard-forbidden on
+  `scripts/runner_adapter.sh`; Python parity telemetry, when needed, runs
+  direct Python scripts in non-blocking CI lanes.
 - Adding/removing required runtime support targets is governed by:
   - `docs/spec/contract/08_v1_scope.md`
   - `docs/spec/contract/13_runtime_scope.md`

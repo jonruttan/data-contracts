@@ -1156,20 +1156,20 @@ rules:
   references:
   - docs/spec/contract/12_runner_interface.md
   - docs/spec/governance/cases/core/runtime_runner_interface_subcommands.spec.md
-- id: RUNTIME_RUNNER_INTERFACE_CI_LANE_REQUIRED
+- id: RUNTIME_CI_PYTHON_LANE_NON_BLOCKING_REQUIRED
   introduced_in: v1
   scope: governance
   applies_to: runtime.runner_interface.ci_lane
   norm: MUST
-  requirement: ci_includes_public_runner_lane_and_python_parity_lane
-  description: 'CI must include a lane that runs core gate with SPEC_RUNNER_BIN set to scripts/runner_adapter.sh and a dedicated python parity lane that runs governance and conformance-parity.
+  requirement: ci_python_parity_lane_must_be_non_blocking_telemetry
+  description: 'CI must keep a dedicated python parity lane, but it must remain non-blocking and must not use the runtime runner adapter `--impl python` path.
 
     '
-  rationale: Ensures the public runner interface contract is continuously exercised in automation.
-  risk_if_violated: The public entrypoint or python parity path can drift without CI visibility.
+  rationale: Preserves Python parity visibility without coupling merge decisions to a deprecated runtime path.
+  risk_if_violated: Python lane can block merges or silently drift to unsupported runtime invocation paths.
   references:
   - docs/spec/contract/12_runner_interface.md
-  - docs/spec/governance/cases/core/runtime_runner_interface_ci_lane.spec.md
+  - docs/spec/governance/cases/core/runtime_ci_python_lane_non_blocking_required.spec.md
 - id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
   introduced_in: v1
   scope: governance
@@ -1240,50 +1240,64 @@ rules:
   references:
   - docs/spec/contract/12_runner_interface.md
   - docs/spec/governance/cases/core/runtime_public_runner_default_rust.spec.md
-- id: RUNTIME_PYTHON_LANE_EXPLICIT_OPT_IN_ONLY
+- id: RUNTIME_RUNNER_ADAPTER_PYTHON_IMPL_FORBIDDEN
   introduced_in: v1
   scope: governance
-  applies_to: runtime.runner_interface.python_lane
+  applies_to: runtime.runner_interface.impl_selection
   norm: MUST
-  requirement: python_lane_must_be_explicit_opt_in
-  description: 'Python runner lane must require explicit impl selection (`SPEC_RUNNER_IMPL=python` or `--impl python`).
+  requirement: runtime_runner_adapter_must_reject_python_impl
+  description: 'The public runtime runner adapter must reject python impl selection and provide rust migration guidance.
 
     '
-  rationale: Prevents accidental python execution in default non-python lanes.
-  risk_if_violated: Python dependency can re-enter default workflows silently.
+  rationale: Enforces Rust-only runtime execution for local and CI critical paths.
+  risk_if_violated: Deprecated python runtime execution can re-enter gate paths and increase drift.
   references:
   - docs/spec/contract/12_runner_interface.md
-  - docs/spec/governance/cases/core/runtime_python_lane_explicit_opt_in.spec.md
-- id: RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED
+  - docs/spec/governance/cases/core/runtime_runner_adapter_python_impl_forbidden.spec.md
+- id: RUNTIME_LOCAL_CI_PARITY_PYTHON_LANE_FORBIDDEN
   introduced_in: v1
   scope: governance
-  applies_to: runtime.prepush.default_lane
+  applies_to: runtime.prepush.local_ci_parity
   norm: MUST
-  requirement: local_prepush_defaults_to_rust_core_plus_python_parity
-  description: 'Default local prepush workflow must execute rust-core checks and python parity checks without extra opt-in toggles.
+  requirement: local_ci_parity_script_must_not_define_python_lane
+  description: 'Local prepush parity script must be rust-only and must not define or invoke python parity lanes.
 
     '
-  rationale: Prevents CI-only failures caused by local lane drift.
-  risk_if_violated: Contributors can pass local checks while parity failures still reach CI.
+  rationale: Keeps prepush turnaround fast and aligned with Rust-only runtime policy.
+  risk_if_violated: Python runtime dependencies can reappear in local critical gate loops.
   references:
-  - README.md
+  - scripts/local_ci_parity.sh
+  - docs/spec/governance/cases/core/runtime_local_ci_parity_python_lane_forbidden.spec.md
+- id: RUNTIME_MAKE_PYTHON_PARITY_TARGETS_FORBIDDEN
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.prepush.make_targets
+  norm: MUST
+  requirement: makefile_must_not_expose_python_parity_targets
+  description: 'Contributor-facing Make targets must not expose python parity prepush commands.
+
+    '
+  rationale: Prevents accidental invocation of deprecated python runtime lanes.
+  risk_if_violated: Legacy commands persist and confuse runtime expectations.
+  references:
   - Makefile
-  - scripts/local_ci_parity.sh
-  - docs/spec/governance/cases/core/runtime_prepush_parity_default_required.spec.md
-- id: RUNTIME_PREPUSH_PYTHON_PARITY_NOT_OPTIONAL_BY_DEFAULT
+  - docs/spec/governance/cases/core/runtime_make_python_parity_targets_forbidden.spec.md
+- id: RUNTIME_RUST_ONLY_PREPUSH_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.prepush.python_parity
+  applies_to: runtime.prepush.end_to_end
   norm: MUST
-  requirement: prepush_script_must_not_require_optional_toggle_for_python_parity_in_default_mode
-  description: 'Python parity checks in local prepush must not depend on legacy optional toggle variables for default behavior.
+  requirement: prepush_and_hook_paths_must_remain_rust_only
+  description: 'Prepush entrypoints (local parity script, managed pre-push hook, and Make targets) must remain Rust-only.
 
     '
-  rationale: Keeps default local verification aligned with CI parity lanes.
-  risk_if_violated: Local default behavior under-validates changes.
+  rationale: Ensures no Python runtime path exists in local critical-gate execution.
+  risk_if_violated: Deprecated Python execution can re-enter prepush and slow or destabilize iteration.
   references:
   - scripts/local_ci_parity.sh
-  - docs/spec/governance/cases/core/runtime_prepush_python_parity_not_optional_by_default.spec.md
+  - .githooks/pre-push
+  - Makefile
+  - docs/spec/governance/cases/core/runtime_rust_only_prepush_required.spec.md
 - id: RUNTIME_GIT_HOOK_PREPUSH_ENFORCED
   introduced_in: v1
   scope: governance

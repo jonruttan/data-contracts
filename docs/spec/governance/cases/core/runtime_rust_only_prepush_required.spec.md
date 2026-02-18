@@ -1,0 +1,55 @@
+# Governance Cases
+
+## SRGOV-RUNTIME-PREPUSH-006
+
+```yaml spec-test
+id: SRGOV-RUNTIME-PREPUSH-006
+title: prepush path is rust-only
+purpose: Ensures prepush entrypoints and hook routing remain rust-only.
+type: governance.check
+check: runtime.rust_only_prepush_required
+harness:
+  root: .
+  rust_only_prepush:
+    file_token_sets:
+    - path: /scripts/local_ci_parity.sh
+      required_tokens:
+      - 'mode=critical: rust-only critical path'
+      forbidden_tokens:
+      - lane_python_parity
+      - --impl python
+      - expected critical|parity|fast
+    - path: /.githooks/pre-push
+      required_tokens:
+      - make prepush
+      forbidden_tokens:
+      - --impl python
+      - SPEC_PREPUSH_MODE=parity
+    - path: /Makefile
+      required_tokens:
+      - SPEC_PREPUSH_MODE=critical ./scripts/local_ci_parity.sh
+      forbidden_tokens:
+      - 'python-parity:'
+      - SPEC_PREPUSH_MODE=parity ./scripts/local_ci_parity.sh
+  policy_evaluate:
+  - call:
+    - {var: policy.pass_when_no_violations}
+    - {var: subject}
+  chain:
+    steps:
+    - id: lib_policy_core_spec
+      class: must
+      ref: /docs/spec/libraries/policy/policy_core.spec.md
+    imports:
+    - from: lib_policy_core_spec
+      names:
+      - policy.pass_when_no_violations
+assert:
+- id: assert_1
+  class: must
+  checks:
+  - std.logic.eq:
+    - var: subject
+    - 0
+  target: violation_count
+```

@@ -6906,6 +6906,187 @@ def _scan_runtime_runner_interface_ci_lane(root: Path, *, harness: dict | None =
     return violations
 
 
+def _scan_runtime_runner_adapter_python_impl_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("runner_adapter_python_impl")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.runner_adapter_python_impl_forbidden requires harness.runner_adapter_python_impl mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not path:
+        return ["harness.runner_adapter_python_impl.path must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.runner_adapter_python_impl.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.runner_adapter_python_impl.forbidden_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing runner adapter script"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing runner adapter token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{path}:1: forbidden python impl token present {tok}")
+    return violations
+
+
+def _scan_runtime_local_ci_parity_python_lane_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("local_ci_parity_python_lane")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.local_ci_parity_python_lane_forbidden requires harness.local_ci_parity_python_lane mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not path:
+        return ["harness.local_ci_parity_python_lane.path must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.local_ci_parity_python_lane.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.local_ci_parity_python_lane.forbidden_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing local ci parity script"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing rust-only parity token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{path}:1: forbidden python lane token present {tok}")
+    return violations
+
+
+def _scan_runtime_make_python_parity_targets_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("make_python_parity")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.make_python_parity_targets_forbidden requires harness.make_python_parity mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not path:
+        return ["harness.make_python_parity.path must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.make_python_parity.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.make_python_parity.forbidden_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing Makefile"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing Makefile token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{path}:1: forbidden python Make target token present {tok}")
+    return violations
+
+
+def _scan_runtime_ci_python_lane_non_blocking_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("ci_python_lane_non_blocking")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.ci_python_lane_non_blocking_required requires harness.ci_python_lane_non_blocking mapping in governance spec"
+        ]
+    workflow = str(cfg.get("workflow", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not workflow:
+        return ["harness.ci_python_lane_non_blocking.workflow must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.ci_python_lane_non_blocking.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.ci_python_lane_non_blocking.forbidden_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, workflow)
+    if not p.exists():
+        return [f"{workflow}:1: missing CI workflow file"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{workflow}:1: missing python lane non-blocking token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{workflow}:1: forbidden blocking token present {tok}")
+    return violations
+
+
+def _scan_runtime_rust_only_prepush_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("rust_only_prepush")
+    if not isinstance(cfg, dict):
+        return ["runtime.rust_only_prepush_required requires harness.rust_only_prepush mapping in governance spec"]
+    file_token_sets = cfg.get("file_token_sets", [])
+    if (
+        not isinstance(file_token_sets, list)
+        or not file_token_sets
+        or any(not isinstance(x, dict) for x in file_token_sets)
+    ):
+        return [
+            "harness.rust_only_prepush.file_token_sets must be a non-empty list of mappings with path, required_tokens, and forbidden_tokens"
+        ]
+    for item in file_token_sets:
+        rel = str(item.get("path", "")).strip()
+        required_tokens = item.get("required_tokens", [])
+        forbidden_tokens = item.get("forbidden_tokens", [])
+        if not rel:
+            return ["harness.rust_only_prepush.file_token_sets[*].path must be non-empty"]
+        if (
+            not isinstance(required_tokens, list)
+            or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+        ):
+            return [
+                "harness.rust_only_prepush.file_token_sets[*].required_tokens must be a list of non-empty strings"
+            ]
+        if (
+            not isinstance(forbidden_tokens, list)
+            or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+        ):
+            return [
+                "harness.rust_only_prepush.file_token_sets[*].forbidden_tokens must be a list of non-empty strings"
+            ]
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing file for rust-only prepush check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing rust-only prepush token {tok}")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden non-rust prepush token present {tok}")
+    return violations
+
+
 def _scan_runtime_prepush_parity_default_required(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -8981,6 +9162,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.settings_import_policy": _scan_runtime_settings_import_policy,
     "runtime.python_bin_resolver_sync": _scan_runtime_python_bin_resolver_sync,
     "runtime.runner_interface_gate_sync": _scan_runtime_runner_interface_gate_sync,
+    "runtime.runner_adapter_python_impl_forbidden": _scan_runtime_runner_adapter_python_impl_forbidden,
+    "runtime.local_ci_parity_python_lane_forbidden": _scan_runtime_local_ci_parity_python_lane_forbidden,
+    "runtime.make_python_parity_targets_forbidden": _scan_runtime_make_python_parity_targets_forbidden,
+    "runtime.ci_python_lane_non_blocking_required": _scan_runtime_ci_python_lane_non_blocking_required,
+    "runtime.rust_only_prepush_required": _scan_runtime_rust_only_prepush_required,
     "runtime.prepush_parity_default_required": _scan_runtime_prepush_parity_default_required,
     "runtime.prepush_python_parity_not_optional_by_default": _scan_runtime_prepush_python_parity_not_optional_by_default,
     "runtime.git_hook_prepush_enforced": _scan_runtime_git_hook_prepush_enforced,

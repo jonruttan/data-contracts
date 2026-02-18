@@ -48,11 +48,11 @@ Provide generated command-surface documentation for the canonical runner interfa
 ## Generated Runner API Catalog
 
 - command_count: 64
-- python_command_count: 43
+- python_command_count: 0
 - rust_command_count: 64
-- parity_command_count: 43
+- parity_command_count: 0
 - all_commands_parity: false
-- doc_quality_score: 0.8687
+- doc_quality_score: 0.6
 
 | command | group | python | rust | parity |
 |---|---|---|---|---|
@@ -73,53 +73,53 @@ Provide generated command-surface documentation for the canonical runner interfa
 | `-v` | `reporting` | false | true | false |
 | `-vv` | `reporting` | false | true | false |
 | `-vvv` | `reporting` | false | true | false |
-| `ci-cleanroom` | `ci` | true | true | true |
-| `ci-gate-summary` | `ci` | true | true | true |
-| `compilecheck` | `reporting` | true | true | true |
-| `conformance-parity` | `reporting` | true | true | true |
-| `conformance-purpose-json` | `metrics` | true | true | true |
-| `conformance-purpose-md` | `metrics` | true | true | true |
-| `contract-assertions-json` | `metrics` | true | true | true |
-| `contract-assertions-md` | `metrics` | true | true | true |
+| `ci-cleanroom` | `ci` | false | true | false |
+| `ci-gate-summary` | `ci` | false | true | false |
+| `compilecheck` | `reporting` | false | true | false |
+| `conformance-parity` | `reporting` | false | true | false |
+| `conformance-purpose-json` | `metrics` | false | true | false |
+| `conformance-purpose-md` | `metrics` | false | true | false |
+| `contract-assertions-json` | `metrics` | false | true | false |
+| `contract-assertions-md` | `metrics` | false | true | false |
 | `critical-gate` | `reporting` | false | true | false |
-| `docs-build` | `docs` | true | true | true |
-| `docs-build-check` | `docs` | true | true | true |
-| `docs-generate` | `docs` | true | true | true |
-| `docs-generate-check` | `docs` | true | true | true |
-| `docs-graph` | `docs` | true | true | true |
-| `docs-lint` | `docs` | true | true | true |
-| `docs-operability-json` | `docs` | true | true | true |
-| `docs-operability-md` | `docs` | true | true | true |
-| `governance` | `verification` | true | true | true |
+| `docs-build` | `docs` | false | true | false |
+| `docs-build-check` | `docs` | false | true | false |
+| `docs-generate` | `docs` | false | true | false |
+| `docs-generate-check` | `docs` | false | true | false |
+| `docs-graph` | `docs` | false | true | false |
+| `docs-lint` | `docs` | false | true | false |
+| `docs-operability-json` | `docs` | false | true | false |
+| `docs-operability-md` | `docs` | false | true | false |
+| `governance` | `verification` | false | true | false |
 | `governance-broad-native` | `reporting` | false | true | false |
-| `governance-heavy` | `reporting` | true | true | true |
-| `lint` | `verification` | true | true | true |
-| `normalize-check` | `verification` | true | true | true |
-| `normalize-fix` | `verification` | true | true | true |
-| `objective-scorecard-json` | `metrics` | true | true | true |
-| `objective-scorecard-md` | `metrics` | true | true | true |
-| `perf-smoke` | `reporting` | true | true | true |
-| `python-dependency-json` | `metrics` | true | true | true |
-| `python-dependency-md` | `metrics` | true | true | true |
-| `runner-independence-json` | `metrics` | true | true | true |
-| `runner-independence-md` | `metrics` | true | true | true |
-| `schema-docs-build` | `docs` | true | true | true |
-| `schema-docs-check` | `docs` | true | true | true |
-| `schema-registry-build` | `docs` | true | true | true |
-| `schema-registry-check` | `docs` | true | true | true |
+| `governance-heavy` | `reporting` | false | true | false |
+| `lint` | `verification` | false | true | false |
+| `normalize-check` | `verification` | false | true | false |
+| `normalize-fix` | `verification` | false | true | false |
+| `objective-scorecard-json` | `metrics` | false | true | false |
+| `objective-scorecard-md` | `metrics` | false | true | false |
+| `perf-smoke` | `reporting` | false | true | false |
+| `python-dependency-json` | `metrics` | false | true | false |
+| `python-dependency-md` | `metrics` | false | true | false |
+| `runner-independence-json` | `metrics` | false | true | false |
+| `runner-independence-md` | `metrics` | false | true | false |
+| `schema-docs-build` | `docs` | false | true | false |
+| `schema-docs-check` | `docs` | false | true | false |
+| `schema-registry-build` | `docs` | false | true | false |
+| `schema-registry-check` | `docs` | false | true | false |
 | `spec-eval` | `reporting` | false | true | false |
-| `spec-lang-adoption-json` | `metrics` | true | true | true |
-| `spec-lang-adoption-md` | `metrics` | true | true | true |
-| `spec-lang-stdlib-json` | `metrics` | true | true | true |
-| `spec-lang-stdlib-md` | `metrics` | true | true | true |
-| `spec-portability-json` | `metrics` | true | true | true |
-| `spec-portability-md` | `metrics` | true | true | true |
+| `spec-lang-adoption-json` | `metrics` | false | true | false |
+| `spec-lang-adoption-md` | `metrics` | false | true | false |
+| `spec-lang-stdlib-json` | `metrics` | false | true | false |
+| `spec-lang-stdlib-md` | `metrics` | false | true | false |
+| `spec-portability-json` | `metrics` | false | true | false |
+| `spec-portability-md` | `metrics` | false | true | false |
 | `spec-ref` | `reporting` | false | true | false |
-| `style-check` | `reporting` | true | true | true |
-| `test-core` | `verification` | true | true | true |
-| `test-full` | `verification` | true | true | true |
-| `typecheck` | `verification` | true | true | true |
-| `validate-report` | `reporting` | true | true | true |
+| `style-check` | `reporting` | false | true | false |
+| `test-core` | `verification` | false | true | false |
+| `test-full` | `verification` | false | true | false |
+| `typecheck` | `verification` | false | true | false |
+| `validate-report` | `reporting` | false | true | false |
 
 
 ### Command Semantics

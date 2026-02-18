@@ -159,28 +159,17 @@ lane_rust_core() {
   fi
 }
 
-lane_python_parity() {
-  export SPEC_GOV_TRIAGE_REQUIRE_BROAD=0
-  export SPEC_GOV_TRIAGE_MODE_DEFAULT="${SPEC_GOV_TRIAGE_MODE_DEFAULT:-targeted-first}"
-  run_step python-governance-triage ./scripts/governance_triage.sh --mode auto --impl python
-  run_step python-conformance-parity "${SPEC_RUNNER_BIN}" --impl python conformance-parity
-}
-
 case "${MODE}" in
   critical)
     lane_rust_core
     echo "[local-ci-parity] mode=critical: rust-only critical path"
     ;;
-  parity)
-    lane_rust_core
-    lane_python_parity
-    ;;
   fast)
     lane_rust_core
-    echo "[local-ci-parity] mode=fast: skip python parity lane"
+    echo "[local-ci-parity] mode=fast: rust-only critical path"
     ;;
   *)
-    echo "ERROR: unsupported SPEC_PREPUSH_MODE '${MODE}' (expected critical|parity|fast)" >&2
+    echo "ERROR: unsupported SPEC_PREPUSH_MODE '${MODE}' (expected critical|fast)" >&2
     exit 2
     ;;
 esac

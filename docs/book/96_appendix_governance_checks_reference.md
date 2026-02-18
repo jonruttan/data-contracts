@@ -47,9 +47,9 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 236
-- checks_with_cases: 230
-- checks_without_cases: 6
+- check_count: 241
+- checks_with_cases: 232
+- checks_without_cases: 9
 
 | check_id | case_count | has_case |
 |---|---|---|
@@ -206,6 +206,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.ci_gate_default_no_python_governance_required` | 1 | true |
 | `runtime.ci_gate_default_report_commands_forbidden` | 1 | true |
 | `runtime.ci_gate_ownership_contract_required` | 1 | true |
+| `runtime.ci_python_lane_non_blocking_required` | 1 | true |
 | `runtime.ci_workflow_critical_gate_required` | 1 | true |
 | `runtime.cigate_uses_governance_triage_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
@@ -227,12 +228,14 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.liveness_stall_token_emitted` | 1 | true |
 | `runtime.liveness_watchdog_contract_valid` | 1 | true |
 | `runtime.local_ci_parity_entrypoint_documented` | 1 | true |
+| `runtime.local_ci_parity_python_lane_forbidden` | 1 | true |
 | `runtime.local_prepush_broad_governance_forbidden` | 1 | true |
+| `runtime.make_python_parity_targets_forbidden` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |
-| `runtime.prepush_parity_default_required` | 1 | true |
-| `runtime.prepush_python_parity_not_optional_by_default` | 1 | true |
+| `runtime.prepush_parity_default_required` | 0 | false |
+| `runtime.prepush_python_parity_not_optional_by_default` | 0 | false |
 | `runtime.prepush_uses_governance_triage_required` | 1 | true |
 | `runtime.profile_artifacts_on_fail_required` | 1 | true |
 | `runtime.profiling_contract_artifacts` | 1 | true |
@@ -243,10 +246,11 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.python_bin_resolver_sync` | 1 | true |
 | `runtime.python_dependency_metric` | 1 | true |
 | `runtime.python_dependency_non_regression` | 1 | true |
-| `runtime.python_lane_explicit_opt_in` | 1 | true |
+| `runtime.python_lane_explicit_opt_in` | 0 | false |
+| `runtime.runner_adapter_python_impl_forbidden` | 1 | true |
 | `runtime.runner_independence_metric` | 1 | true |
 | `runtime.runner_independence_non_regression` | 1 | true |
-| `runtime.runner_interface_ci_lane` | 2 | true |
+| `runtime.runner_interface_ci_lane` | 1 | true |
 | `runtime.runner_interface_gate_sync` | 3 | true |
 | `runtime.runner_interface_subcommands` | 2 | true |
 | `runtime.rust_adapter_exec_smoke` | 2 | true |
@@ -255,6 +259,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.rust_adapter_subcommand_parity` | 1 | true |
 | `runtime.rust_adapter_target_fallback_defined` | 1 | true |
 | `runtime.rust_adapter_transitive_no_python` | 1 | true |
+| `runtime.rust_only_prepush_required` | 1 | true |
 | `runtime.scope_sync` | 1 | true |
 | `runtime.settings_import_policy` | 1 | true |
 | `runtime.spec_lang_export_type_forbidden` | 1 | true |

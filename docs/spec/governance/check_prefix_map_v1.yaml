@@ -16,6 +16,11 @@ rules:
   SRGOV-RUNTIME-TRIAGE-012: runtime.governance_triage_artifact_contains_selection_metadata
   SRGOV-RUNTIME-TRIAGE-013: runtime.ci_artifact_upload_paths_valid
   SRGOV-RUNTIME-TRIAGE-023: runtime.fast_path_consistency_required
+  SRGOV-RUNTIME-ENTRY-003: runtime.runner_adapter_python_impl_forbidden
+  SRGOV-RUNTIME-PREPUSH-001: runtime.local_ci_parity_python_lane_forbidden
+  SRGOV-RUNTIME-PREPUSH-002: runtime.make_python_parity_targets_forbidden
+  SRGOV-RUNTIME-PREPUSH-006: runtime.rust_only_prepush_required
+  SRGOV-RUNTIME-CONFIG-005: runtime.ci_python_lane_non_blocking_required
   SRGOV-DOCS-: docs.
   SRGOV-NORM-: normalization.
   SRGOV-RUNTIME-: runtime.

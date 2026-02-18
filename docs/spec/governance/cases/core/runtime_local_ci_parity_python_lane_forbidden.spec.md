@@ -4,19 +4,23 @@
 
 ```yaml spec-test
 id: SRGOV-RUNTIME-PREPUSH-001
-title: prepush defaults to parity lane execution
-purpose: Ensures prepush default route runs both rust-core and python parity lanes.
+title: local ci parity script is rust-only
+purpose: Ensures local prepush parity flow contains no python parity lane hooks.
 type: governance.check
-check: runtime.prepush_parity_default_required
+check: runtime.local_ci_parity_python_lane_forbidden
 harness:
   root: .
-  prepush_parity_default:
-    files:
-    - /scripts/local_ci_parity.sh
+  local_ci_parity_python_lane:
+    path: /scripts/local_ci_parity.sh
     required_tokens:
-    - MODE="${SPEC_PREPUSH_MODE:-parity}"
-    - lane_rust_core
+    - MODE="${SPEC_PREPUSH_MODE:-critical}"
+    - 'mode=critical: rust-only critical path'
+    - expected critical|fast
+    forbidden_tokens:
     - lane_python_parity
+    - --impl python
+    - SPEC_PREPUSH_MODE:-parity
+    - python-governance-triage
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}
