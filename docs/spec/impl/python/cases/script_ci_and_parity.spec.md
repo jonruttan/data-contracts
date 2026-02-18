@@ -117,6 +117,12 @@ contract:
   asserts:
   - std.string.contains:
     - {var: subject}
+    - --cases
+  - std.string.contains:
+    - {var: subject}
+    - --out
+  - std.string.contains:
+    - {var: subject}
     - --case-file-pattern
 ```
 
@@ -147,4 +153,31 @@ contract:
   - std.string.contains:
     - {var: subject}
     - case-file-pattern
+```
+
+## SRPY-SCRIPT-CI-007
+
+```yaml contract-spec
+id: SRPY-SCRIPT-CI-007
+title: php conformance runner usage includes required flags
+type: contract.check
+harness:
+  check:
+    profile: text.file
+    config:
+      path: /scripts/php/conformance_runner.php
+contract:
+- id: assert_1
+  class: MUST
+  target: text
+  asserts:
+  - std.string.contains:
+    - {var: subject}
+    - --cases <dir-or-file>
+  - std.string.contains:
+    - {var: subject}
+    - --out <file>
+  - std.string.contains:
+    - {var: subject}
+    - --case-file-pattern <glob>
 ```
