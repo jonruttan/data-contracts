@@ -92,6 +92,12 @@ Job dispatch contract:
 - `ops.job.dispatch` MUST fail when capability `ops.job` is not declared.
 - nested dispatch is forbidden and MUST emit deterministic token
   `runtime.dispatch.nested_forbidden`.
+- `harness.on` lifecycle hooks (`must|can|cannot|fail|complete`) are part of
+  contract runtime semantics and MUST be honored in native evaluators.
+- class hooks run only after successful clause pass for matching class.
+- `fail` runs once on first failure; `complete` runs after all clauses and
+  class hooks pass.
+- hook evaluation failures are fail-fast runtime errors.
 
 Profiling controls (opt-in; all adapters):
 

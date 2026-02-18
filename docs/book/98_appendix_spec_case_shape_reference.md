@@ -47,7 +47,7 @@ Provide generated case-shape field reference derived from schema registry profil
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 10
+- top_level_field_count: 16
 - type_profile_count: 8
 - total_type_field_count: 30
 
@@ -59,6 +59,12 @@ Provide generated case-shape field reference derived from schema registry profil
 | `contract` | `list` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
+| `harness.on` | `mapping` | false | `v1` |
+| `harness.on.can` | `list` | false | `v1` |
+| `harness.on.cannot` | `list` | false | `v1` |
+| `harness.on.complete` | `list` | false | `v1` |
+| `harness.on.fail` | `list` | false | `v1` |
+| `harness.on.must` | `list` | false | `v1` |
 | `id` | `string` | true | `v1` |
 | `path` | `string` | false | `v1` |
 | `purpose` | `string` | false | `v1` |

@@ -549,6 +549,44 @@ def _check_contract_job_dispatch_hard_cut() -> list[str]:
     return issues
 
 
+def _check_harness_on_hooks_shape() -> list[str]:
+    issues: list[str] = []
+    allowed = {"must", "can", "cannot", "fail", "complete"}
+    for rel, case in _iter_spec_markdown_cases():
+        case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
+        harness = case.get("harness")
+        if harness is None:
+            continue
+        if not isinstance(harness, dict):
+            continue
+        hooks = harness.get("on")
+        if hooks is None:
+            continue
+        if not isinstance(hooks, dict):
+            issues.append(
+                f"{rel}:1: NORMALIZATION_HARNESS_ON_HOOKS: case {case_id} harness.on must be a mapping"
+            )
+            continue
+        for key, exprs in hooks.items():
+            key_name = str(key).strip()
+            if key_name not in allowed:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_HARNESS_ON_HOOKS: case {case_id} harness.on contains unknown key {key_name}"
+                )
+                continue
+            if not isinstance(exprs, list) or not exprs:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_HARNESS_ON_HOOKS: case {case_id} harness.on.{key_name} must be non-empty list"
+                )
+                continue
+            for idx, expr in enumerate(exprs):
+                if not isinstance(expr, dict):
+                    issues.append(
+                        f"{rel}:1: NORMALIZATION_HARNESS_ON_HOOKS: case {case_id} harness.on.{key_name}[{idx}] must be mapping expression"
+                    )
+    return issues
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Unified normalization check/fix runner for specs, contracts, and tests.")
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -676,6 +714,7 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_markdown_namespace_legacy_alias_forbidden())
     issues.extend(_check_contract_terminology_hard_cut())
     issues.extend(_check_contract_job_dispatch_hard_cut())
+    issues.extend(_check_harness_on_hooks_shape())
     if issues:
         for issue in sorted(issues):
             print(issue)

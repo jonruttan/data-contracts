@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from spec_runner.components.contracts import HarnessExecutionContext
 from spec_runner.spec_lang import capabilities_from_harness, compile_import_bindings, limits_from_harness
 
 
-def build_execution_context(*, case_id: str, harness: dict, doc_path) -> HarnessExecutionContext:
-    del doc_path
+def build_execution_context(*, case_id: str, case_type: str, harness: dict, doc_path) -> HarnessExecutionContext:
     limits = limits_from_harness(harness)
     imports = compile_import_bindings((harness or {}).get("spec_lang"))
     capabilities = capabilities_from_harness(harness)
@@ -26,6 +27,8 @@ def build_execution_context(*, case_id: str, harness: dict, doc_path) -> Harness
         symbols = {**symbols, **{str(k): v for k, v in chain_bindings.items()}}
     return HarnessExecutionContext(
         case_id=case_id,
+        case_type=case_type,
+        doc_path=Path(doc_path).as_posix(),
         limits=limits,
         imports=imports,
         symbols=symbols,

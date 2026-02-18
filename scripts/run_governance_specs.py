@@ -6886,6 +6886,115 @@ def _scan_runtime_ops_job_nested_dispatch_forbidden(
     return violations
 
 
+def _scan_runtime_harness_on_hooks_schema_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    allowed = {"must", "can", "cannot", "fail", "complete"}
+    for doc_path, case in _iter_docs_spec_cases(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        harness_map = case.get("harness")
+        if harness_map is None:
+            continue
+        if not isinstance(harness_map, dict):
+            continue
+        hooks = harness_map.get("on")
+        if hooks is None:
+            continue
+        if not isinstance(hooks, dict):
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness.on must be mapping")
+            continue
+        for key, exprs in hooks.items():
+            key_name = str(key).strip()
+            if key_name not in allowed:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.on contains unknown key {key_name}"
+                )
+                continue
+            if not isinstance(exprs, list) or not exprs:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} harness.on.{key_name} must be non-empty list"
+                )
+                continue
+            for idx, expr in enumerate(exprs):
+                if not isinstance(expr, dict):
+                    violations.append(
+                        f"{doc_path.relative_to(root)}: case {case_id} harness.on.{key_name}[{idx}] must be mapping expression"
+                    )
+    return violations
+
+
+def _scan_runtime_harness_on_ordering_contract_required(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    h = harness or {}
+    cfg = h.get("harness_on_ordering")
+    if not isinstance(cfg, dict):
+        return ["runtime.harness_on_ordering_contract_required requires harness.harness_on_ordering mapping in governance spec"]
+    rel = str(cfg.get("path", "spec_runner/components/assertion_engine.py")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not rel:
+        return ["harness.harness_on_ordering.path must be non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.harness_on_ordering.required_tokens must be list of non-empty strings"]
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing file for harness.on ordering check"]
+    raw = p.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in raw:
+            violations.append(f"{rel}:1: missing required harness.on ordering token: {tok}")
+    return violations
+
+
+def _scan_runtime_harness_on_fail_hook_required_behavior(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    h = harness or {}
+    cfg = h.get("harness_on_fail")
+    if not isinstance(cfg, dict):
+        return ["runtime.harness_on_fail_hook_required_behavior requires harness.harness_on_fail mapping in governance spec"]
+    rel = str(cfg.get("path", "spec_runner/components/assertion_engine.py")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not rel:
+        return ["harness.harness_on_fail.path must be non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.harness_on_fail.required_tokens must be list of non-empty strings"]
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing file for harness.on fail hook check"]
+    raw = p.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in raw:
+            violations.append(f"{rel}:1: missing required harness.on fail token: {tok}")
+    return violations
+
+
+def _scan_runtime_harness_on_complete_hook_required_behavior(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    h = harness or {}
+    cfg = h.get("harness_on_complete")
+    if not isinstance(cfg, dict):
+        return ["runtime.harness_on_complete_hook_required_behavior requires harness.harness_on_complete mapping in governance spec"]
+    rel = str(cfg.get("path", "spec_runner/components/assertion_engine.py")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not rel:
+        return ["harness.harness_on_complete.path must be non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.harness_on_complete.required_tokens must be list of non-empty strings"]
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing file for harness.on complete hook check"]
+    raw = p.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for tok in required_tokens:
+        if tok not in raw:
+            violations.append(f"{rel}:1: missing required harness.on complete token: {tok}")
+    return violations
+
+
 def _scan_architecture_harness_workflow_components_required(
     root: Path, *, harness: dict | None = None
 ) -> list[str]:
@@ -9641,6 +9750,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.harness_job_legacy_forbidden": _scan_runtime_harness_job_legacy_forbidden,
     "runtime.ops_job_capability_required": _scan_runtime_ops_job_capability_required,
     "runtime.ops_job_nested_dispatch_forbidden": _scan_runtime_ops_job_nested_dispatch_forbidden,
+    "runtime.harness_on_hooks_schema_valid": _scan_runtime_harness_on_hooks_schema_valid,
+    "runtime.harness_on_ordering_contract_required": _scan_runtime_harness_on_ordering_contract_required,
+    "runtime.harness_on_fail_hook_required_behavior": _scan_runtime_harness_on_fail_hook_required_behavior,
+    "runtime.harness_on_complete_hook_required_behavior": _scan_runtime_harness_on_complete_hook_required_behavior,
     "architecture.harness_workflow_components_required": _scan_architecture_harness_workflow_components_required,
     "architecture.harness_local_workflow_duplication_forbidden": _scan_architecture_harness_local_workflow_duplication_forbidden,
     "schema.harness_type_overlay_complete": _scan_schema_harness_type_overlay_complete,

@@ -3862,3 +3862,67 @@ links:
   implementation_refs:
   - scripts/rust/spec_runner_cli/src/spec_lang.rs
   notes: nested dispatch produces deterministic runtime.dispatch.nested_forbidden token.
+- rule_id: HARNESS_ON_HOOKS_SCHEMA_VALID
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_ON_HOOKS_SCHEMA_VALID
+  contract_refs:
+  - docs/spec/contract/04_harness.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/hook_engine.py
+  - scripts/normalize_repo.py
+  - scripts/run_governance_specs.py
+  notes: harness.on shape and allowed key contract are validated.
+- rule_id: HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/assertions.py
+  - spec_runner/components/assertion_engine.py
+  notes: class hooks execute after successful clause pass and before complete.
+- rule_id: HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/assertion_engine.py
+  notes: fail hook is guarded to run only once on first failure.
+- rule_id: HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED
+  contract_refs:
+  - docs/spec/contract/03_assertions.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/assertion_engine.py
+  notes: complete hook executes after full successful clause lifecycle.
+- rule_id: HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs:
+  - docs/spec/schema/schema_v1.md
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  implementation_refs:
+  - spec_runner/components/assertion_engine.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  notes: hook evaluation failures are runtime-fatal and abort execution.

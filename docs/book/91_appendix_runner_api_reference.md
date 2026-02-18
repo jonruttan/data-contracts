@@ -47,9 +47,9 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 ## Generated Runner API Catalog
 
-- command_count: 73
+- command_count: 74
 - python_command_count: 0
-- rust_command_count: 73
+- rust_command_count: 74
 - parity_command_count: 0
 - all_commands_parity: false
 - doc_quality_score: 0.6
@@ -76,6 +76,7 @@ Provide generated command-surface documentation for the canonical runner interfa
 | `-v` | `reporting` | false | true | false |
 | `-vv` | `reporting` | false | true | false |
 | `-vvv` | `reporting` | false | true | false |
+| `can` | `reporting` | false | true | false |
 | `cannot` | `reporting` | false | true | false |
 | `ci-cleanroom` | `ci` | false | true | false |
 | `ci-gate-summary` | `ci` | false | true | false |
@@ -431,6 +432,21 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 - Examples:
   - `./scripts/runner_adapter.sh -vvv`: Execute command with canonical adapter routing.
+
+
+#### `can`
+
+- Summary: Runs `can` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh can`: Execute command with canonical adapter routing.
 
 
 #### `cannot`

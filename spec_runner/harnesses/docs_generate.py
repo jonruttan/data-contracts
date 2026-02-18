@@ -55,6 +55,7 @@ def run(case, *, ctx: SpecRunContext) -> None:
     chain_payload = dict(ctx.get_case_chain_payload(case_key=case_key))
     execution = build_execution_context(
         case_id=case.id,
+        case_type=case.type,
         harness={**case.harness, "_chain_imports": chain_imports},
         doc_path=case.doc_path,
     )

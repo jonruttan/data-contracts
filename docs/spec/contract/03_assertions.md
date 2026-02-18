@@ -2,22 +2,22 @@
 
 ## Tree Model
 
-`assert` is a list of assertion steps.
+`contract` is a list of assertion steps.
 
 Each assertion step has:
 
 - `id`
 - `class` (`must` | `can` | `cannot`)
 - optional `target`
-- `checks` (non-empty list)
+- `asserts` (non-empty list)
 
-`checks` entries are assertion-tree nodes (group or leaf mappings).
+`asserts` entries are assertion-tree nodes (group or leaf mappings).
 
 ## Group Semantics
 
-- `must`: all `checks` must pass
-- `can`: at least one check must pass
-- `cannot`: no check may pass
+- `must`: all `asserts` must pass
+- `can`: at least one assert must pass
+- `cannot`: no assert may pass
 - check lists must be non-empty
 
 ## Target Rules
@@ -49,8 +49,8 @@ Internal execution model:
 
 ## Naming Contract
 
-- `evaluate` is the assertion leaf operator used under `assert`.
-- Governance/orchestration decision obligations are encoded in `assert` blocks.
+- `evaluate` is the assertion leaf operator used under `contract`.
+- Governance/orchestration decision obligations are encoded in `contract` blocks.
 - `harness.policy_evaluate` and `harness.orchestration_policy.policy_evaluate`
   are forbidden in executable contracts.
 
@@ -90,3 +90,15 @@ For `type: governance.check`, assertion targets include:
 Redundant sibling branches within a group (for example duplicate `can` branch
 expressions) are considered assertion-health diagnostics and may be surfaced as
 warnings/errors depending on policy mode.
+
+## Harness Lifecycle Hooks
+
+Executable cases may declare optional lifecycle hooks in `harness.on`:
+
+- `must`, `can`, `cannot`: run after each successful clause of the same class
+- `fail`: runs once on first clause or class-hook failure
+- `complete`: runs after all clauses and class hooks pass
+
+Hook entries are non-empty mapping-AST expression lists, evaluate through the
+same spec-lang limits/imports/capabilities context, and are runtime-fatal when
+they fail.

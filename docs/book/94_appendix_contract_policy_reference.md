@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 260
-- must_count: 236
+- rule_count: 265
+- must_count: 241
 - should_count: 12
 - must_not_count: 12
-- active_count: 260
+- active_count: 265
 - deprecated_count: 0
 - removed_count: 0
 
@@ -180,6 +180,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `HARNESS_JOBS_METADATA_MAP_REQUIRED` | `MUST` | `runtime` | `contract.job.harness.jobs` | 2 | `active` |
 | `HARNESS_JOB_LEGACY_FORBIDDEN` | `MUST_NOT` | `runtime` | `contract.job.harness.job` | 2 | `active` |
 | `HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | `MUST_NOT` | `implementation` | `harness.execution.workflow` | 2 | `active` |
+| `HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED` | `MUST` | `runtime` | `harness.on.class_hooks` | 2 | `active` |
+| `HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | `MUST` | `runtime` | `harness.on.complete` | 2 | `active` |
+| `HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED` | `MUST` | `runtime` | `harness.on.fail` | 2 | `active` |
+| `HARNESS_ON_HOOKS_SCHEMA_VALID` | `MUST` | `runtime` | `harness.on` | 3 | `active` |
+| `HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED` | `MUST` | `runtime` | `harness.on` | 2 | `active` |
 | `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `MUST` | `implementation` | `harness.assertion.targets` | 2 | `active` |
 | `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `MUST` | `schema` | `schema.registry.v1.types` | 3 | `active` |
 | `HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | `MUST` | `implementation` | `harness.execution.workflow` | 4 | `active` |

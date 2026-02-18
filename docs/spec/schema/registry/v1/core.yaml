@@ -22,6 +22,30 @@ fields:
     type: mapping
     required: false
     since: v1
+  harness.on:
+    type: mapping
+    required: false
+    since: v1
+  harness.on.must:
+    type: list
+    required: false
+    since: v1
+  harness.on.can:
+    type: list
+    required: false
+    since: v1
+  harness.on.cannot:
+    type: list
+    required: false
+    since: v1
+  harness.on.fail:
+    type: list
+    required: false
+    since: v1
+  harness.on.complete:
+    type: list
+    required: false
+    since: v1
   contract:
     type: list
     required: false

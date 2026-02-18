@@ -132,6 +132,10 @@ Notes:
 - contract.job dispatch is contract-driven:
   `ops.job.dispatch` executes harness-declared metadata from `harness.jobs`,
   with explicit capability gate `ops.job`; legacy `harness.job` is forbidden.
+- Harness lifecycle hooks are supported at `harness.on`:
+  `must|can|cannot` run after successful clauses of their class, `fail` runs
+  once on first failure, and `complete` runs after all clauses and class hooks
+  pass; hook failures are runtime-fatal.
 - Spec-lang now includes Ramda-style deep equality, set algebra
   (`union`, `intersection`, `difference`, `symmetric_difference`,
   `is_subset`, `is_superset`, `set_equals`), expanded collection transforms

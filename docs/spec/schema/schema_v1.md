@@ -523,6 +523,25 @@ contract:
       - '[]'
 ```
 
+`harness.on` lifecycle hooks (v1):
+
+- optional `harness.on` mapping on executable cases
+- allowed keys:
+  - `must`
+  - `can`
+  - `cannot`
+  - `fail`
+  - `complete`
+- each hook key, when present, must be a non-empty list of mapping-AST expressions
+- hook expressions evaluate with existing case spec-lang limits/imports/symbols/capabilities
+- hook failures are runtime-fatal
+
+Lifecycle order:
+
+- class hooks (`must`/`can`/`cannot`) run after successful clause of same class
+- `fail` runs once on first clause or class-hook failure
+- `complete` runs only after all clauses and class hooks pass
+
 `contract.job` executable type (v1):
 
 - `type: contract.job`
@@ -555,7 +574,7 @@ Job ref grammar:
 This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 - profile_count: 12
-- top_level_fields: 10
+- top_level_fields: 16
 - type_profiles: 8
 
 ### Top-Level Keys
@@ -566,6 +585,12 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `contract` | `list` | `false` | `v1` |
 | `expect` | `mapping` | `false` | `v1` |
 | `harness` | `mapping` | `false` | `v1` |
+| `harness.on` | `mapping` | `false` | `v1` |
+| `harness.on.can` | `list` | `false` | `v1` |
+| `harness.on.cannot` | `list` | `false` | `v1` |
+| `harness.on.complete` | `list` | `false` | `v1` |
+| `harness.on.fail` | `list` | `false` | `v1` |
+| `harness.on.must` | `list` | `false` | `v1` |
 | `id` | `string` | `true` | `v1` |
 | `path` | `string` | `false` | `v1` |
 | `purpose` | `string` | `false` | `v1` |
@@ -591,7 +616,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 10
+- top_level_field_count: 16
 - type_profile_count: 8
 - total_type_field_count: 30
 
@@ -603,6 +628,12 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `contract` | `list` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
+| `harness.on` | `mapping` | false | `v1` |
+| `harness.on.can` | `list` | false | `v1` |
+| `harness.on.cannot` | `list` | false | `v1` |
+| `harness.on.complete` | `list` | false | `v1` |
+| `harness.on.fail` | `list` | false | `v1` |
+| `harness.on.must` | `list` | false | `v1` |
 | `id` | `string` | true | `v1` |
 | `path` | `string` | false | `v1` |
 | `purpose` | `string` | false | `v1` |

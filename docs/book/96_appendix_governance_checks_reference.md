@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 261
-- checks_with_cases: 252
+- check_count: 265
+- checks_with_cases: 256
 - checks_without_cases: 9
 
 | check_id | case_count | has_case |
@@ -233,6 +233,10 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.harness_exports_schema_valid` | 1 | true |
 | `runtime.harness_job_legacy_forbidden` | 1 | true |
 | `runtime.harness_jobs_metadata_map_required` | 1 | true |
+| `runtime.harness_on_complete_hook_required_behavior` | 1 | true |
+| `runtime.harness_on_fail_hook_required_behavior` | 1 | true |
+| `runtime.harness_on_hooks_schema_valid` | 1 | true |
+| `runtime.harness_on_ordering_contract_required` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.legacy_assert_block_forbidden` | 1 | true |
 | `runtime.legacy_checks_key_forbidden` | 1 | true |

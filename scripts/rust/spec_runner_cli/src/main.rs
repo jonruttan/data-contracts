@@ -9,6 +9,7 @@ use std::path::{Path, PathBuf};
 use std::process::{self, Command};
 use std::sync::{Mutex, OnceLock};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
+use std::collections::HashMap;
 
 use serde_json::{json, Value};
 use serde_yaml::Value as YamlValue;
@@ -437,6 +438,79 @@ fn json_truthy(v: &Value) -> bool {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
+fn run_job_hook_event(
+    hook_exprs: &HashMap<String, Vec<Value>>,
+    event: &str,
+    step_idx: usize,
+    step_id: Option<&str>,
+    class_name: &str,
+    assert_path: &str,
+    target: Option<&str>,
+    status: &str,
+    failure_message: Option<&str>,
+    passed_clauses: i64,
+    failed_clauses: i64,
+    must_passed: i64,
+    can_passed: i64,
+    cannot_passed: i64,
+    summary_json: &mut Value,
+    case_id: &str,
+    case_type: &str,
+    case_doc_path: &str,
+) -> Result<(), String> {
+    let Some(exprs) = hook_exprs.get(event) else {
+        return Ok(());
+    };
+    let subject = json!({
+        "event": event,
+        "case": {
+            "id": case_id,
+            "type": case_type,
+            "doc_path": case_doc_path,
+        },
+        "clause": {
+            "index": step_idx,
+            "id": step_id,
+            "class": class_name,
+            "assert_path": assert_path,
+            "target": target,
+        },
+        "runtime": {
+            "impl": std::env::var("SPEC_RUNNER_IMPL").unwrap_or_else(|_| "unknown".to_string()),
+            "profile_enabled": false,
+        },
+        "status": status,
+        "failure": {
+            "message": failure_message,
+            "token": failure_message
+                .and_then(|m| m.split(':').next())
+                .map(|x| x.trim().to_string())
+                .filter(|x| x.contains('.')),
+        },
+        "totals": {
+            "passed_clauses": passed_clauses,
+            "failed_clauses": failed_clauses,
+            "must_passed": must_passed,
+            "can_passed": can_passed,
+            "cannot_passed": cannot_passed,
+        }
+    });
+    for (hook_idx, expr) in exprs.iter().enumerate() {
+        let result = eval_mapping_ast_with_state(expr, subject.clone(), HashMap::new(), EvalLimits::default())
+            .map_err(|e| format!("runtime.on_hook.failed: event={event} index={hook_idx}: {}", e.message))?;
+        if let Some(dispatched) = result.last_dispatch_result.clone() {
+            *summary_json = dispatched;
+        }
+        if !json_truthy(&result.value) {
+            return Err(format!(
+                "runtime.on_hook.failed: event={event} index={hook_idx}: expression returned falsy"
+            ));
+        }
+    }
+    Ok(())
+}
+
 fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut ref_arg = String::new();
     let mut doc_arg: Option<String> = std::env::var("SPEC_RUNNER_JOB_DOC").ok();
@@ -516,6 +590,12 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         eprintln!("ERROR: referenced case is not type contract.job: {resolved_ref}");
         return 1;
     }
+    let case_id = case_map
+        .get(&YamlValue::String("id".to_string()))
+        .and_then(|v| v.as_str())
+        .unwrap_or("<unknown>")
+        .to_string();
+    let case_doc_path = resolved_ref.split('#').next().unwrap_or("").to_string();
     let harness = case_map
         .get(&YamlValue::String("harness".to_string()))
         .and_then(|v| v.as_mapping())
@@ -583,8 +663,64 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         );
     }
 
-    let mut failed = 0_i64;
+    let mut hook_exprs: HashMap<String, Vec<Value>> = HashMap::new();
+    if let Some(raw_on_value) = harness.get(&YamlValue::String("on".to_string())) {
+        let Some(raw_on) = raw_on_value.as_mapping() else {
+            eprintln!("ERROR: harness.on.invalid_shape: harness.on must be a mapping");
+            return 1;
+        };
+        for (raw_key, raw_values) in raw_on {
+            let key = raw_key.as_str().unwrap_or("").trim().to_string();
+            if !matches!(key.as_str(), "must" | "can" | "cannot" | "fail" | "complete") {
+                eprintln!("ERROR: harness.on.unknown_key: {key}");
+                return 1;
+            }
+            let Some(seq) = raw_values.as_sequence() else {
+                eprintln!("ERROR: harness.on.invalid_shape: harness.on.{key} must be non-empty list");
+                return 1;
+            };
+            if seq.is_empty() {
+                eprintln!("ERROR: harness.on.invalid_shape: harness.on.{key} must be non-empty list");
+                return 1;
+            }
+            let mut compiled = Vec::<Value>::new();
+            for (idx, item) in seq.iter().enumerate() {
+                let expr = yaml_to_json(item);
+                if !expr.is_object() {
+                    eprintln!("ERROR: harness.on.expr_invalid: harness.on.{key}[{idx}] must be mapping expression");
+                    return 1;
+                }
+                compiled.push(expr);
+            }
+            hook_exprs.insert(key, compiled);
+        }
+    }
+
+    let restore_env = || {
+        if let Some(prev) = prev_caps.clone() {
+            std::env::set_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES", prev);
+        } else {
+            std::env::remove_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES");
+        }
+        if let Some(prev) = prev_jobs.clone() {
+            std::env::set_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON", prev);
+        } else {
+            std::env::remove_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON");
+        }
+        if let Some(prev) = prev_cli_overrides.clone() {
+            std::env::set_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON", prev);
+        } else {
+            std::env::remove_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON");
+        }
+    };
+
     let mut summary_json = Value::Null;
+    let mut passed_clauses = 0_i64;
+    let mut failed_clauses = 0_i64;
+    let mut must_passed = 0_i64;
+    let mut can_passed = 0_i64;
+    let mut cannot_passed = 0_i64;
+
     if let Some(contract_seq) = case_map
         .get(&YamlValue::String("contract".to_string()))
         .and_then(|v| v.as_sequence())
@@ -594,14 +730,27 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                 Some(m) => m,
                 None => continue,
             };
-            let class = step_map
+            let class_name = step_map
                 .get(&YamlValue::String("class".to_string()))
                 .and_then(|v| v.as_str())
                 .unwrap_or("must");
+            if !matches!(class_name, "must" | "can" | "cannot") {
+                continue;
+            }
+            let step_id = step_map
+                .get(&YamlValue::String("id".to_string()))
+                .and_then(|v| v.as_str())
+                .map(str::trim)
+                .filter(|s| !s.is_empty());
             let target = step_map
                 .get(&YamlValue::String("target".to_string()))
                 .and_then(|v| v.as_str())
                 .unwrap_or("summary_json");
+            let assert_path = if let Some(id) = step_id {
+                format!("contract[{step_idx}]<{id}>")
+            } else {
+                format!("contract[{step_idx}]")
+            };
             let asserts = match step_map
                 .get(&YamlValue::String("asserts".to_string()))
                 .and_then(|v| v.as_sequence())
@@ -609,6 +758,9 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                 Some(v) => v,
                 None => continue,
             };
+            let mut clause_pass = matches!(class_name, "must" | "cannot");
+            let mut clause_error: Option<String> = None;
+            let mut any_passed = false;
             for (assert_idx, raw_expr) in asserts.iter().enumerate() {
                 let subject = match target {
                     "summary_json" => summary_json.clone(),
@@ -617,77 +769,181 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                         "resolved_ref": resolved_ref,
                         "jobs": jobs_obj.clone(),
                     }),
-                    "violation_count" => Value::Number(failed.into()),
+                    "violation_count" => Value::Number(failed_clauses.into()),
                     _ => summary_json.clone(),
                 };
                 let expr = yaml_to_json(raw_expr);
                 let result = match eval_mapping_ast_with_state(
                     &expr,
                     subject.clone(),
-                    std::collections::HashMap::new(),
+                    HashMap::new(),
                     EvalLimits::default(),
                 ) {
                     Ok(v) => v,
                     Err(e) => {
-                        eprintln!(
-                            "ERROR: contract evaluation failed at step {} assert {}: {}",
+                        clause_pass = false;
+                        clause_error = Some(format!(
+                            "contract evaluation failed at step {} assert {}: {}",
                             step_idx, assert_idx, e.message
-                        );
-                        if let Some(prev) = prev_caps {
-                            std::env::set_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES", prev);
-                        } else {
-                            std::env::remove_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES");
-                        }
-                        if let Some(prev) = prev_jobs {
-                            std::env::set_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON", prev);
-                        } else {
-                            std::env::remove_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON");
-                        }
-                        if let Some(prev) = prev_cli_overrides {
-                            std::env::set_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON", prev);
-                        } else {
-                            std::env::remove_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON");
-                        }
-                        return 1;
+                        ));
+                        break;
                     }
                 };
                 if let Some(dispatched) = result.last_dispatch_result.clone() {
                     summary_json = dispatched;
                 }
                 let ok = json_truthy(&result.value);
-                let violated = match class {
-                    "must" => !ok,
-                    "cannot" => ok,
-                    _ => false,
-                };
-                if violated {
-                    failed += 1;
+                match class_name {
+                    "must" => {
+                        if !ok {
+                            clause_pass = false;
+                            break;
+                        }
+                    }
+                    "can" => {
+                        if ok {
+                            any_passed = true;
+                            break;
+                        }
+                    }
+                    "cannot" => {
+                        if ok {
+                            clause_pass = false;
+                            break;
+                        }
+                    }
+                    _ => {}
                 }
             }
+            if class_name == "can" {
+                clause_pass = any_passed && clause_error.is_none();
+            }
+
+            if clause_pass {
+                passed_clauses += 1;
+                match class_name {
+                    "must" => must_passed += 1,
+                    "can" => can_passed += 1,
+                    "cannot" => cannot_passed += 1,
+                    _ => {}
+                }
+                if let Err(e) = run_job_hook_event(
+                    &hook_exprs,
+                    class_name,
+                    step_idx,
+                    step_id,
+                    class_name,
+                    &assert_path,
+                    Some(target),
+                    "pass",
+                    None,
+                    passed_clauses,
+                    failed_clauses,
+                    must_passed,
+                    can_passed,
+                    cannot_passed,
+                    &mut summary_json,
+                    &case_id,
+                    case_type,
+                    &case_doc_path,
+                ) {
+                    failed_clauses += 1;
+                    if let Err(hook_err) = run_job_hook_event(
+                        &hook_exprs,
+                        "fail",
+                        step_idx,
+                        step_id,
+                        class_name,
+                        &assert_path,
+                        Some(target),
+                        "fail",
+                        Some(&e),
+                        passed_clauses,
+                        failed_clauses,
+                        must_passed,
+                        can_passed,
+                        cannot_passed,
+                        &mut summary_json,
+                        &case_id,
+                        case_type,
+                        &case_doc_path,
+                    ) {
+                        restore_env();
+                        eprintln!("ERROR: runtime.on_hook.fail_handler_failed: {hook_err}");
+                        return 1;
+                    }
+                    restore_env();
+                    eprintln!("ERROR: {e}");
+                    return 1;
+                }
+                continue;
+            }
+
+            failed_clauses += 1;
+            let fail_message = clause_error.unwrap_or_else(|| format!("contract clause failed: {}", class_name));
+            if let Err(hook_err) = run_job_hook_event(
+                &hook_exprs,
+                "fail",
+                step_idx,
+                step_id,
+                class_name,
+                &assert_path,
+                Some(target),
+                "fail",
+                Some(&fail_message),
+                passed_clauses,
+                failed_clauses,
+                must_passed,
+                can_passed,
+                cannot_passed,
+                &mut summary_json,
+                &case_id,
+                case_type,
+                &case_doc_path,
+            ) {
+                restore_env();
+                eprintln!("ERROR: runtime.on_hook.fail_handler_failed: {hook_err}");
+                return 1;
+            }
+            restore_env();
+            eprintln!("ERROR: {fail_message}");
+            return 1;
         }
     }
 
-    if let Some(prev) = prev_caps {
-        std::env::set_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES", prev);
-    } else {
-        std::env::remove_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES");
+    if failed_clauses == 0 {
+        if let Err(e) = run_job_hook_event(
+            &hook_exprs,
+            "complete",
+            passed_clauses.saturating_sub(1) as usize,
+            None,
+            "must",
+            "contract",
+            None,
+            "pass",
+            None,
+            passed_clauses,
+            failed_clauses,
+            must_passed,
+            can_passed,
+            cannot_passed,
+            &mut summary_json,
+            &case_id,
+            case_type,
+            &case_doc_path,
+        ) {
+            restore_env();
+            eprintln!("ERROR: {e}");
+            return 1;
+        }
     }
-    if let Some(prev) = prev_jobs {
-        std::env::set_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON", prev);
-    } else {
-        std::env::remove_var("SPEC_RUNNER_SPEC_LANG_JOBS_JSON");
-    }
-    if let Some(prev) = prev_cli_overrides {
-        std::env::set_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON", prev);
-    } else {
-        std::env::remove_var("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON");
-    }
+    restore_env();
 
-    if failed == 0 {
+    if failed_clauses == 0 {
         println!("OK: job-run passed ({resolved_ref})");
         0
     } else {
-        eprintln!("ERROR: job-run contract failures ({resolved_ref}): {failed}");
+        eprintln!("ERROR: job-run contract failures ({resolved_ref}): {failed_clauses}");
         1
     }
 }

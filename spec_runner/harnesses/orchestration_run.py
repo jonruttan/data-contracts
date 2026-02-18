@@ -81,7 +81,8 @@ def run(case, *, ctx) -> None:
     chain_imports = dict(ctx.get_case_chain_imports(case_key=case_key))
     chain_payload = dict(ctx.get_case_chain_payload(case_key=case_key))
     execution = build_execution_context(
-        case_id=case_id,
+        case_id=case.id,
+        case_type=case.type,
         harness={**harness, "_chain_imports": chain_imports},
         doc_path=case.doc_path,
     )

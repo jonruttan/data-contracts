@@ -12,6 +12,13 @@ from spec_runner.assertion_health import (
 )
 from spec_runner.assertions import evaluate_internal_assert_tree
 from spec_runner.components.contracts import HarnessExecutionContext
+from spec_runner.components.hook_engine import (
+    HookClauseContext,
+    HookTotals,
+    build_hook_event_envelope,
+    execute_hook_list,
+    parse_on_hooks,
+)
 
 
 def runtime_env(ctx) -> dict[str, str]:
@@ -38,6 +45,92 @@ def run_assertions_with_context(
         for d in diags:
             print(format_assertion_health_warning(d), file=sys.stderr)
 
+    hooks = parse_on_hooks(raw_case=raw_case)
+    fail_hook_ran = False
+
+    def _run_event(event: str, *, clause: HookClauseContext, status: str, totals: HookTotals, failure: BaseException | None = None) -> None:
+        exprs = hooks.get(event) or []
+        if not exprs:
+            return
+        subject = build_hook_event_envelope(
+            event=event,
+            case_id=execution.case_id,
+            case_type=execution.case_type,
+            doc_path=execution.doc_path,
+            clause=clause,
+            status=status,
+            totals=totals,
+            profile_enabled=bool(getattr(ctx, "profile_enabled", False)),
+            failure=failure,
+        )
+        execute_hook_list(
+            event=event,
+            hook_exprs=exprs,
+            subject=subject,
+            limits=execution.limits,
+            symbols=execution.symbols,
+            imports=execution.imports,
+            capabilities=execution.capabilities,
+        )
+
+    def _to_clause(payload: dict[str, Any]) -> HookClauseContext:
+        return HookClauseContext(
+            index=int(payload.get("index", 0)),
+            id=payload.get("id"),
+            class_name=str(payload.get("class", "must")),
+            assert_path=str(payload.get("assert_path", "contract")),
+            target=payload.get("target"),
+        )
+
+    def _to_totals(payload: dict[str, int]) -> HookTotals:
+        return HookTotals(
+            passed_clauses=int(payload.get("passed_clauses", 0)),
+            failed_clauses=int(payload.get("failed_clauses", 0)),
+            must_passed=int(payload.get("must_passed", 0)),
+            can_passed=int(payload.get("can_passed", 0)),
+            cannot_passed=int(payload.get("cannot_passed", 0)),
+        )
+
+    def _on_clause_pass(clause: dict[str, Any], totals: dict[str, int]) -> None:
+        cls = str(clause.get("class", "")).strip()
+        if cls in {"must", "can", "cannot"}:
+            _run_event(
+                cls,
+                clause=_to_clause(clause),
+                status="pass",
+                totals=_to_totals(totals),
+            )
+
+    def _on_clause_fail(clause: dict[str, Any], exc: BaseException, totals: dict[str, int]) -> None:
+        nonlocal fail_hook_ran
+        if fail_hook_ran:
+            return
+        fail_hook_ran = True
+        try:
+            _run_event(
+                "fail",
+                clause=_to_clause(clause),
+                status="fail",
+                totals=_to_totals(totals),
+                failure=exc,
+            )
+        except Exception as hook_exc:  # noqa: BLE001
+            raise RuntimeError(f"runtime.on_hook.fail_handler_failed: {hook_exc}") from hook_exc
+
+    def _on_complete(totals: dict[str, int]) -> None:
+        _run_event(
+            "complete",
+            clause=HookClauseContext(
+                index=max(int(totals.get("passed_clauses", 0)) - 1, 0),
+                id=None,
+                class_name="must",
+                assert_path="contract",
+                target=None,
+            ),
+            status="pass",
+            totals=_to_totals(totals),
+        )
+
     evaluate_internal_assert_tree(
         assert_tree,
         case_id=execution.case_id,
@@ -46,4 +139,7 @@ def run_assertions_with_context(
         symbols=execution.symbols,
         imports=execution.imports,
         capabilities=execution.capabilities,
+        on_clause_pass=_on_clause_pass,
+        on_clause_fail=_on_clause_fail,
+        on_complete=_on_complete,
     )

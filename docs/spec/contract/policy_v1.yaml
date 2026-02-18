@@ -3778,3 +3778,64 @@ rules:
   references:
   - docs/spec/contract/12_runner_interface.md
   - scripts/rust/spec_runner_cli/src/spec_lang.rs
+- id: HARNESS_ON_HOOKS_SCHEMA_VALID
+  introduced_in: v1
+  scope: runtime
+  applies_to: harness.on
+  norm: MUST
+  requirement: harness_on_hook_mapping_shape_valid
+  description: harness.on must use only allowed hook keys with non-empty expression lists.
+  rationale: Provides deterministic hook contract surface across harness types.
+  risk_if_violated: Hook behavior diverges and invalid hook config is silently ignored.
+  references:
+  - docs/spec/contract/04_harness.md
+  - docs/spec/schema/schema_v1.md
+  - scripts/normalize_repo.py
+- id: HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: harness.on.class_hooks
+  norm: MUST
+  requirement: class_hooks_run_after_successful_clause
+  description: must/can/cannot hooks run after their successful clause evaluation and before complete.
+  rationale: Keeps lifecycle ordering deterministic and auditable.
+  risk_if_violated: Hooks can run at wrong lifecycle points and break contract expectations.
+  references:
+  - docs/spec/contract/03_assertions.md
+  - spec_runner/components/assertion_engine.py
+- id: HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: harness.on.fail
+  norm: MUST
+  requirement: fail_hook_runs_once_on_first_failure
+  description: fail hook executes once on first clause or class-hook failure.
+  rationale: Ensures deterministic failure handling without repeated side effects.
+  risk_if_violated: Repeated fail hooks can duplicate side effects and obscure root cause.
+  references:
+  - docs/spec/contract/03_assertions.md
+  - spec_runner/components/assertion_engine.py
+- id: HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: harness.on.complete
+  norm: MUST
+  requirement: complete_hook_runs_after_all_class_hooks
+  description: complete hook runs only after all clauses and class hooks have succeeded.
+  rationale: Preserves finalization semantics and prevents premature completion side effects.
+  risk_if_violated: Completion logic can run before lifecycle work is actually done.
+  references:
+  - docs/spec/contract/03_assertions.md
+  - spec_runner/components/assertion_engine.py
+- id: HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED
+  introduced_in: v1
+  scope: runtime
+  applies_to: harness.on
+  norm: MUST
+  requirement: hook_failures_abort_case
+  description: Hook evaluation failures are runtime-fatal and must abort case execution.
+  rationale: Hook results are part of lifecycle contract guarantees and cannot be best-effort.
+  risk_if_violated: Silent hook failures undermine contract determinism.
+  references:
+  - docs/spec/contract/12_runner_interface.md
+  - spec_runner/components/assertion_engine.py

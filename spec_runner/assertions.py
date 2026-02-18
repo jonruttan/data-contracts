@@ -252,6 +252,9 @@ def evaluate_internal_assert_tree(
     symbols: Mapping[str, Any] | None = None,
     imports: Mapping[str, str] | None = None,
     capabilities: set[str] | frozenset[str] | None = None,
+    on_clause_pass: Callable[[dict[str, Any], dict[str, int]], None] | None = None,
+    on_clause_fail: Callable[[dict[str, Any], BaseException, dict[str, int]], None] | None = None,
+    on_complete: Callable[[dict[str, int]], None] | None = None,
 ) -> None:
     """
     Evaluate compiled internal contract tree nodes.
@@ -319,4 +322,53 @@ def evaluate_internal_assert_tree(
 
         raise ValueError(f"unknown internal contract group op: {node.op}")
 
-    _eval_node(assert_tree)
+    def _clause_from_node(node: InternalAssertNode, *, index: int) -> dict[str, Any]:
+        if isinstance(node, GroupNode):
+            class_name = node.op
+            target = node.target
+            assert_path = node.assert_path
+        else:
+            class_name = "must"
+            target = node.target
+            assert_path = node.assert_path
+        clause_id: str | None = None
+        if "<" in assert_path and assert_path.endswith(">"):
+            clause_id = assert_path.rsplit("<", 1)[-1].rstrip(">").strip() or None
+        return {
+            "index": int(index),
+            "id": clause_id,
+            "class": class_name,
+            "assert_path": assert_path,
+            "target": target,
+        }
+
+    totals: dict[str, int] = {
+        "passed_clauses": 0,
+        "failed_clauses": 0,
+        "must_passed": 0,
+        "can_passed": 0,
+        "cannot_passed": 0,
+    }
+    if isinstance(assert_tree, GroupNode) and assert_tree.op == "must":
+        clauses: list[InternalAssertNode] = list(assert_tree.children)
+    else:
+        clauses = [assert_tree]
+
+    for idx, clause in enumerate(clauses):
+        clause_ctx = _clause_from_node(clause, index=idx)
+        try:
+            _eval_node(clause)
+            totals["passed_clauses"] += 1
+            class_key = f"{clause_ctx['class']}_passed"
+            if class_key in totals:
+                totals[class_key] += 1
+            if on_clause_pass is not None:
+                on_clause_pass(clause_ctx, dict(totals))
+        except BaseException as exc:  # noqa: BLE001
+            totals["failed_clauses"] += 1
+            if on_clause_fail is not None:
+                on_clause_fail(clause_ctx, exc, dict(totals))
+            raise
+
+    if on_complete is not None:
+        on_complete(dict(totals))

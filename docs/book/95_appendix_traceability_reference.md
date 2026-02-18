@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 260
+- link_count: 265
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 260
-- rules_with_implementation_refs: 258
+- rules_with_unit_tests: 265
+- rules_with_implementation_refs: 263
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -177,6 +177,11 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `HARNESS_JOBS_METADATA_MAP_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_JOBS_METADATA_MAP_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
 | `HARNESS_JOB_LEGACY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#HARNESS_JOB_LEGACY_FORBIDDEN` | 1 | 1 | 0 | 1 | 1 |
 | `HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | 1 | 1 | 0 | 1 | 1 |
+| `HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
+| `HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `HARNESS_ON_HOOKS_SCHEMA_VALID` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_HOOKS_SCHEMA_VALID` | 1 | 1 | 0 | 1 | 3 |
+| `HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_ON_HOOK_FAILURE_FAILFAST_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `docs/spec/contract/policy_v1.yaml#HARNESS_SUBJECT_TARGET_MAP_DECLARED` | 1 | 1 | 0 | 1 | 2 |
 | `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | 1 | 2 | 0 | 1 | 1 |
 | `HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | 1 | 1 | 0 | 1 | 8 |

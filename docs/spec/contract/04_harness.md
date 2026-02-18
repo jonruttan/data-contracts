@@ -171,6 +171,12 @@ Subject profile envelope contract:
 - `harness.spec_lang.imports` MAY declare case-scoped imports using
   `from: std.<namespace>` or `from: ops.<namespace>` and `names: [...]` with
   optional `as` aliases.
+- `harness.on` MAY declare lifecycle hooks as non-empty expression lists:
+  - `must`, `can`, `cannot`, `fail`, `complete`
+  - class hooks run after successful clause pass
+  - `fail` runs once on first failure
+  - `complete` runs after all clauses and class hooks pass
+  - hook failures are runtime-fatal
 - for `type: contract.job`, harness stores job metadata at `harness.jobs`:
   - `harness.jobs.<name>.helper` (required)
   - `harness.jobs.<name>.mode` (optional)
