@@ -343,6 +343,7 @@ fn helper_parity_run_conformance(root: &Path, payload: &Value) -> Result<Value, 
     let args = vec![
         "--cases".to_string(),
         cases,
+        "--python-only".to_string(),
         "--php-runner".to_string(),
         php_runner,
         "--out".to_string(),

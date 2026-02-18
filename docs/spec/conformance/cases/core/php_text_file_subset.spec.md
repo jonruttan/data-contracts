@@ -275,7 +275,7 @@ expect:
     category: assertion
     message_tokens:
     - AH004
-    - contract[0].asserts[0].must
+    - contract[0].asserts[0].MUST
 assert_health:
   mode: error
 contract:

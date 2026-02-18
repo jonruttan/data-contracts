@@ -1,4 +1,4 @@
-.PHONY: help setup hooks-install docs-doctor verify-docs docs-build docs-lint docs-check docs-generate docs-generate-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke ci-cleanroom perf-smoke prepush prepush-fast prepush-parity core-check check ci-gate test
+.PHONY: help setup hooks-install docs-doctor verify-docs docs-build docs-lint docs-check docs-generate docs-generate-check normalize-check normalize-fix schema-registry-check schema-registry-build schema-docs-check schema-docs-build ci-smoke ci-cleanroom perf-smoke prepush prepush-fast core-check check ci-gate test
 .DEFAULT_GOAL := help
 
 help: ## Display this help section
@@ -74,9 +74,6 @@ prepush: ## Required local pre-push gate (default rust critical-gate path)
 
 prepush-fast: ## Rust-only critical pre-push mode
 	@SPEC_PREPUSH_MODE=fast ./scripts/local_ci_parity.sh
-
-prepush-parity: ## Compatibility alias for rust-only pre-push gate
-	@SPEC_PREPUSH_MODE=critical ./scripts/local_ci_parity.sh
 
 check: ## Alias for ci-gate
 	@$(MAKE) ci-gate

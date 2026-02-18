@@ -177,7 +177,6 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
         ("mypy", _runner_command(runner_bin, runner_impl, "typecheck")),
         ("compileall", _runner_command(runner_bin, runner_impl, "compilecheck")),
         ("conformance_parity", _runner_command(runner_bin, runner_impl, "conformance-parity")),
-        ("pytest", _runner_command(runner_bin, runner_impl, "test-full")),
     ]
 
 

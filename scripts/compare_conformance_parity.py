@@ -7,7 +7,13 @@ import shutil
 import sys
 from pathlib import Path
 
-from spec_runner.conformance_parity import ParityConfig, build_parity_artifact, run_parity_check
+from spec_runner.conformance import ConformanceResult, compare_conformance_results, load_expected_results
+from spec_runner.conformance_parity import (
+    ParityConfig,
+    build_parity_artifact,
+    run_parity_check,
+    run_python_report,
+)
 
 
 def _write_artifact(path: Path, artifact: dict) -> None:
@@ -56,10 +62,15 @@ def main(argv: list[str] | None = None) -> int:
         default=30,
         help="Timeout in seconds for the Python parity runner subprocess (default: 30)",
     )
+    ap.add_argument(
+        "--python-only",
+        action="store_true",
+        help="Validate only Python conformance against expected results (skip PHP parity).",
+    )
     ns = ap.parse_args(argv)
     out_path = Path(str(ns.out)).resolve() if str(ns.out).strip() else None
 
-    if shutil.which("php") is None:
+    if not ns.python_only and shutil.which("php") is None:
         msg = "php executable not found in PATH"
         if out_path is not None:
             _write_artifact(out_path, build_parity_artifact([msg]))
@@ -74,21 +85,50 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: {msg}", file=sys.stderr)
         return 2
 
-    cfg = ParityConfig(
-        cases_dir=Path(ns.cases),
-        php_runner=Path(ns.php_runner),
-        python_runner=Path(ns.python_runner),
-        case_formats=case_formats,
-        python_timeout_seconds=int(ns.python_timeout_seconds),
-        php_timeout_seconds=int(ns.php_timeout_seconds),
-    )
-    try:
-        errs = run_parity_check(cfg)
-    except RuntimeError as e:
-        if out_path is not None:
-            _write_artifact(out_path, build_parity_artifact([str(e)]))
-        print(f"ERROR: {e}", file=sys.stderr)
-        return 1
+    if ns.python_only:
+        try:
+            python_payload = run_python_report(
+                Path(ns.cases),
+                Path(ns.python_runner),
+                case_formats=case_formats,
+                timeout_seconds=int(ns.python_timeout_seconds),
+            )
+            expected = load_expected_results(
+                Path(ns.cases),
+                implementation="python",
+                case_formats=case_formats,
+            )
+            python_actual = [
+                ConformanceResult(
+                    id=str(r.get("id", "")),
+                    status=str(r.get("status", "")),
+                    category=None if r.get("category") is None else str(r.get("category")),
+                    message=None if r.get("message") is None else str(r.get("message")),
+                )
+                for r in python_payload.get("results", [])
+            ]
+            errs = [f"python vs expected: {e}" for e in compare_conformance_results(expected, python_actual)]
+        except RuntimeError as e:
+            if out_path is not None:
+                _write_artifact(out_path, build_parity_artifact([str(e)]))
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 1
+    else:
+        cfg = ParityConfig(
+            cases_dir=Path(ns.cases),
+            php_runner=Path(ns.php_runner),
+            python_runner=Path(ns.python_runner),
+            case_formats=case_formats,
+            python_timeout_seconds=int(ns.python_timeout_seconds),
+            php_timeout_seconds=int(ns.php_timeout_seconds),
+        )
+        try:
+            errs = run_parity_check(cfg)
+        except RuntimeError as e:
+            if out_path is not None:
+                _write_artifact(out_path, build_parity_artifact([str(e)]))
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 1
     if out_path is not None:
         _write_artifact(out_path, build_parity_artifact(errs))
     if errs:
@@ -97,7 +137,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"- {e}", file=sys.stderr)
         return 1
 
-    print(f"OK: conformance parity matched for {cfg.cases_dir}")
+    print(f"OK: conformance parity matched for {Path(ns.cases)}")
     return 0
 
 

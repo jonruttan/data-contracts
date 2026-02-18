@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 266
-- must_count: 242
+- rule_count: 251
+- must_count: 234
 - should_count: 12
-- must_not_count: 12
-- active_count: 266
+- must_not_count: 5
+- active_count: 251
 - deprecated_count: 0
 - removed_count: 0
 
@@ -90,7 +90,6 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `CHAIN_EXPORTS_LIST_ONLY_REQUIRED` | `MUST` | `schema` | `harness.exports` | 5 | `active` |
 | `CHAIN_FAIL_FAST_DEFAULT_REQUIRED` | `MUST` | `implementation` | `harness.chain.fail_fast` | 2 | `active` |
 | `CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN` | `MUST_NOT` | `implementation` | `harness.chain.imports` | 4 | `active` |
-| `CHAIN_LEGACY_FROM_TARGET_FORBIDDEN` | `MUST_NOT` | `schema` | `harness.exports[*].from_target` | 3 | `active` |
 | `CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID` | `MUST` | `implementation` | `harness.exports[*]` | 4 | `active` |
 | `CHAIN_REFERENCE_CONTRACT_REQUIRED` | `MUST` | `implementation` | `harness.chain.steps.ref` | 3 | `active` |
 | `CHAIN_SHARED_CONTEXT_REQUIRED` | `MUST` | `runtime` | `harness.chain.state` | 3 | `active` |
@@ -103,19 +102,17 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `CONFORMANCE_CASE_STYLE_GUARD` | `MUST` | `governance` | `fixtures.conformance.cases_style` | 2 | `active` |
 | `CONFORMANCE_EVALUATE_FIRST_REQUIRED` | `MUST` | `governance` | `conformance.assertion_authoring.metric_ratchet` | 3 | `active` |
 | `CONFORMANCE_EXPECT_OVERLAY_RESOLUTION` | `MUST` | `conformance` | `fixtures.expect` | 2 | `active` |
-| `CONFORMANCE_LIBRARY_POLICY_USAGE_REQUIRED` | `MUST` | `governance` | `conformance.governance.policy_authoring` | 4 | `active` |
-| `CONFORMANCE_NO_AMBIENT_ASSUMPTIONS_GUARD` | `MUST` | `governance` | `fixtures.portable.ambient_assumptions` | 3 | `active` |
+| `CONFORMANCE_NO_AMBIENT_ASSUMPTIONS_GUARD` | `MUST` | `governance` | `fixtures.portable.ambient_assumptions` | 2 | `active` |
 | `CONFORMANCE_PURPOSE_QUALITY_GATE` | `MUST` | `governance` | `fixtures.conformance.purpose_quality` | 2 | `active` |
 | `CONFORMANCE_REQUIRES_CAPABILITIES_POLICY` | `MUST` | `conformance` | `fixtures.requires.capabilities` | 3 | `active` |
 | `CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED` | `MUST` | `governance` | `conformance.spec_lang_fixtures.reusable_helpers` | 3 | `active` |
-| `CONTRACT_ASSERTIONS_METRIC_REPORTED` | `MUST` | `governance` | `specs.contract_assertions.metric_report` | 2 | `active` |
+| `CONTRACT_ASSERTIONS_METRIC_REPORTED` | `MUST` | `governance` | `specs.contract_assertions.metric_report` | 1 | `active` |
 | `CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `specs.contract_assertions.metric_non_regression` | 3 | `active` |
 | `CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED` | `MUST` | `runtime` | `contract.job.contract` | 3 | `active` |
 | `CONTRACT_JOB_FAIL_COMPLETE_HOOK_PATTERN_REQUIRED` | `MUST` | `runtime` | `contract.job.when` | 2 | `active` |
 | `CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | `MUST` | `governance` | `docs.spec.contract.coverage` | 2 | `active` |
 | `CONTRACT_SPEC_FENCE_REQUIRED` | `MUST` | `runtime` | `markdown.fence.discovery` | 2 | `active` |
 | `CONTRACT_STEP_ASSERTS_REQUIRED` | `MUST` | `schema` | `contract.step_shape` | 2 | `active` |
-| `CURRENT_SPEC_POLICY_KEY_NAMES` | `MUST` | `governance` | `docs.spec.case_key_names` | 3 | `active` |
 | `DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES` | `MUST` | `governance` | `docs.spec.data_artifacts` | 2 | `active` |
 | `DOCS_ADOPTION_PROFILES_SYNC` | `MUST` | `governance` | `docs.adoption.profiles` | 3 | `active` |
 | `DOCS_API_CATALOGS_GENERATED_AND_SYNCED` | `MUST` | `governance` | `docs.generator.api_catalogs` | 6 | `active` |
@@ -141,12 +138,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `DOCS_INSTRUCTIONS_REQUIRED_SECTIONS` | `MUST` | `governance` | `docs.reference.instructions` | 2 | `active` |
 | `DOCS_LAYOUT_CANONICAL_TREES_REQUIRED` | `MUST` | `governance` | `docs.layout.roots` | 3 | `active` |
 | `DOCS_MAKE_COMMANDS_SYNC` | `MUST` | `governance` | `docs.command.entrypoints` | 2 | `active` |
-| `DOCS_MARKDOWN_NAMESPACE_LEGACY_ALIAS_FORBIDDEN` | `MUST_NOT` | `governance` | `docs.spec_and_book.markdown_symbols` | 4 | `active` |
 | `DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED` | `MUST` | `governance` | `docs.markdown.assertions` | 3 | `active` |
 | `DOCS_META_SCHEMA_VALID` | `MUST` | `governance` | `docs.reference.doc_meta` | 3 | `active` |
 | `DOCS_METRICS_FIELD_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.metrics_fields` | 3 | `active` |
 | `DOCS_NO_OS_ARTIFACT_FILES_TRACKED` | `MUST` | `governance` | `docs.layout.artifact_files` | 2 | `active` |
-| `DOCS_OPERABILITY_METRIC_REPORTED` | `MUST` | `governance` | `docs.operability.metric_report` | 2 | `active` |
+| `DOCS_OPERABILITY_METRIC_REPORTED` | `MUST` | `governance` | `docs.operability.metric_report` | 1 | `active` |
 | `DOCS_OPERABILITY_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `docs.operability.metric_non_regression` | 3 | `active` |
 | `DOCS_POLICY_RULE_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.policy_rules` | 3 | `active` |
 | `DOCS_REFERENCE_INDEX_SYNC` | `MUST` | `governance` | `docs.reference.index` | 2 | `active` |
@@ -171,15 +167,12 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `EXECUTABLE_SURFACES_MUST_BE_SPEC_MD` | `MUST` | `governance` | `docs.spec.executable_surfaces` | 2 | `active` |
 | `GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `governance` | `governance.check_decisions` | 2 | `active` |
 | `GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING` | `MUST` | `governance` | `scripts.run_governance_specs` | 3 | `active` |
-| `GOVERNANCE_POLICY_EVALUATE_REQUIRED` | `MUST` | `governance` | `governance.check.harness.policy_evaluate` | 3 | `active` |
 | `GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION` | `MUST` | `governance` | `governance.policy_libraries.metric_non_regression` | 3 | `active` |
-| `GOVERNANCE_POLICY_LIBRARY_USAGE_REQUIRED` | `MUST` | `governance` | `governance.check.policy_authoring` | 4 | `active` |
 | `GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED` | `SHOULD` | `governance` | `governance.check.assertions` | 3 | `active` |
 | `GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS` | `SHOULD` | `governance` | `governance.check.subject_decision_split` | 2 | `active` |
 | `GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |
 | `HARNESS_CONTRACT_OVERLAY_SYNC_REQUIRED` | `MUST` | `governance` | `harness.contract.schema_sync` | 3 | `active` |
 | `HARNESS_JOBS_METADATA_MAP_REQUIRED` | `MUST` | `runtime` | `contract.job.harness.jobs` | 2 | `active` |
-| `HARNESS_JOB_LEGACY_FORBIDDEN` | `MUST_NOT` | `runtime` | `contract.job.harness.job` | 2 | `active` |
 | `HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN` | `MUST_NOT` | `implementation` | `harness.execution.workflow` | 2 | `active` |
 | `HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED` | `MUST` | `runtime` | `when.class_hooks` | 2 | `active` |
 | `HARNESS_ON_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED` | `MUST` | `runtime` | `when.complete` | 2 | `active` |
@@ -189,16 +182,12 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `MUST` | `implementation` | `harness.assertion.targets` | 2 | `active` |
 | `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `MUST` | `schema` | `schema.registry.v1.types` | 3 | `active` |
 | `HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | `MUST` | `implementation` | `harness.execution.workflow` | 4 | `active` |
-| `IMPL_EVALUATE_FIRST_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.surface` | 3 | `active` |
+| `IMPL_EVALUATE_FIRST_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.surface` | 2 | `active` |
 | `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.metric_ratchet` | 3 | `active` |
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.library_usage` | 3 | `active` |
-| `LEGACY_ASSERT_BLOCK_FORBIDDEN` | `MUST_NOT` | `schema` | `case.top_level.assert` | 2 | `active` |
-| `LEGACY_CHECKS_KEY_FORBIDDEN` | `MUST_NOT` | `schema` | `contract.step_shape` | 2 | `active` |
-| `LEGACY_SPEC_TEST_FENCE_FORBIDDEN` | `MUST_NOT` | `runtime` | `markdown.fence.discovery` | 2 | `active` |
 | `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `MUST` | `governance` | `docs/spec/libraries/**/*.spec.md` | 3 | `active` |
-| `LIBRARY_DOMAIN_INDEX_SYNC` | `MUST` | `governance` | `docs/spec/libraries/*/index.md` | 3 | `active` |
+| `LIBRARY_DOMAIN_INDEX_SYNC` | `MUST` | `governance` | `docs/spec/libraries/*/index.md` | 2 | `active` |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `MUST` | `governance` | `governance_and_conformance_library_paths` | 2 | `active` |
-| `LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN` | `MUST_NOT` | `schema` | `spec_lang.export.shape` | 2 | `active` |
 | `LIBRARY_PUBLIC_SURFACE_MODEL` | `MUST` | `governance` | `type_spec_lang_library_shape` | 3 | `active` |
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |
 | `LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | `MUST` | `schema` | `spec_lang.export.defines.public` | 3 | `active` |
@@ -213,9 +202,9 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `NORMALIZATION_VIRTUAL_ROOT_PATHS_ONLY` | `MUST` | `governance` | `path_authoring.virtual_root` | 3 | `active` |
 | `NO_EXECUTABLE_YAML_JSON_CASES_IN_CANONICAL_TREES` | `MUST` | `governance` | `docs.spec.canonical_executable_case_trees` | 3 | `active` |
 | `OBJECTIVE_COURSE_CORRECTION_POLICY_DEFINED` | `MUST` | `governance` | `docs.spec.metrics.objective_baseline_updates` | 3 | `active` |
-| `OBJECTIVE_METRIC_MANIFEST_VALID` | `MUST` | `governance` | `docs.spec.metrics.objective_manifest` | 4 | `active` |
+| `OBJECTIVE_METRIC_MANIFEST_VALID` | `MUST` | `governance` | `docs.spec.metrics.objective_manifest` | 3 | `active` |
 | `OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `docs.spec.metrics.objective_scorecard` | 2 | `active` |
-| `OBJECTIVE_SCORECARD_REPORTED` | `MUST` | `governance` | `docs.spec.metrics.objective_scorecard` | 3 | `active` |
+| `OBJECTIVE_SCORECARD_REPORTED` | `MUST` | `governance` | `docs.spec.metrics.objective_scorecard` | 2 | `active` |
 | `OBJECTIVE_TRIPWIRES_ENFORCED` | `MUST` | `governance` | `docs.spec.metrics.objective_tripwires` | 2 | `active` |
 | `OPS_JOB_CAPABILITY_REQUIRED` | `MUST` | `runtime` | `spec_lang.ops.job.dispatch` | 2 | `active` |
 | `OPS_JOB_NESTED_DISPATCH_FORBIDDEN` | `MUST_NOT` | `runtime` | `spec_lang.ops.job.dispatch` | 2 | `active` |
@@ -223,9 +212,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | `MUST` | `governance` | `orchestration.case.capabilities` | 2 | `active` |
 | `ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | `MUST` | `governance` | `orchestration.ops.symbol_grammar` | 3 | `active` |
 | `ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED` | `MUST` | `governance` | `orchestration.tools.registry` | 4 | `active` |
-| `ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN` | `MUST` | `governance` | `orchestration.ops.legacy_symbols` | 2 | `active` |
 | `ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY` | `MUST` | `governance` | `runtime.gate_orchestration_policy` | 2 | `active` |
-| `POLICY_EVALUATE_FORBIDDEN` | `MUST` | `governance` | `governance.check.harness` | 2 | `active` |
 | `PORTABLE_SPEC_CANONICAL_SINGLE_SET` | `MUST` | `conformance` | `fixtures.portable.canonical_set` | 3 | `active` |
 | `PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION` | `SHOULD` | `conformance` | `fixtures.portable.determinism` | 3 | `active` |
 | `PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY` | `MUST` | `conformance` | `fixtures.expect_shape` | 3 | `active` |
@@ -233,22 +220,20 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `REFERENCE_CONTRACT_PATHS_EXIST` | `MUST` | `governance` | `referenced_contract_paths` | 2 | `active` |
 | `REFERENCE_EXTERNAL_REFS_POLICY` | `MUST` | `governance` | `external_references.policy` | 2 | `active` |
 | `REFERENCE_LIBRARY_EXPORTS_USED` | `MUST` | `governance` | `docs/spec/libraries/* exports` | 2 | `active` |
-| `REFERENCE_POLICY_SYMBOLS_RESOLVE` | `MUST` | `governance` | `governance.check.harness.policy_evaluate.var_symbols` | 2 | `active` |
 | `REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN` | `MUST` | `governance` | `cross_case_library_symbol_references` | 2 | `active` |
 | `REFERENCE_SYMBOLS_EXIST` | `MUST` | `governance` | `harness.spec_lang.symbol_references` | 2 | `active` |
 | `REFERENCE_TOKEN_ANCHORS_EXIST` | `MUST` | `governance` | `token_anchor_references` | 2 | `active` |
-| `RUNNER_INDEPENDENCE_METRIC_REPORTED` | `MUST` | `governance` | `runtime.runner_independence.metric_report` | 2 | `active` |
+| `RUNNER_INDEPENDENCE_METRIC_REPORTED` | `MUST` | `governance` | `runtime.runner_independence.metric_report` | 1 | `active` |
 | `RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `runtime.runner_independence.metric_non_regression` | 3 | `active` |
 | `RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | `MUST` | `implementation` | `runtime.assertion_execution` | 2 | `active` |
 | `RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.governance_step` | 3 | `active` |
 | `RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID` | `MUST` | `governance` | `runtime.ci.artifact_upload_paths` | 2 | `active` |
 | `RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.ownership_contract` | 4 | `active` |
-| `RUNTIME_CI_PYTHON_LANE_NON_BLOCKING_REQUIRED` | `MUST` | `governance` | `runtime.runner_interface.ci_lane` | 2 | `active` |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `implementation` | `runtime.assertion_decisions` | 2 | `active` |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `MUST` | `governance` | `runtime.default_gate.adapter` | 3 | `active` |
 | `RUNTIME_FAST_PATH_CONSISTENCY_REQUIRED` | `MUST` | `governance` | `runtime.fast_path.consistency` | 4 | `active` |
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `MUST` | `governance` | `runtime.gate.fail_fast` | 3 | `active` |
-| `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `MUST` | `governance` | `runtime.gate.policy` | 4 | `active` |
+| `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `MUST` | `governance` | `runtime.gate.policy` | 3 | `active` |
 | `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `MUST` | `governance` | `runtime.gate.summary_contract` | 4 | `active` |
 | `RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | `MUST` | `governance` | `runtime.prepush.hook` | 4 | `active` |
 | `RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS` | `MUST` | `governance` | `runtime.governance.triage_prefix_selection` | 2 | `active` |
@@ -267,15 +252,15 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_PROFILING_SPAN_TAXONOMY_REQUIRED` | `MUST` | `governance` | `runtime.profiling.span_taxonomy` | 3 | `active` |
 | `RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION` | `MUST` | `governance` | `docs.runner_interface.public_usage` | 2 | `active` |
 | `RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED` | `MUST` | `governance` | `runtime.runner_interface.default_mode` | 2 | `active` |
-| `RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED` | `MUST` | `governance` | `runtime.python_dependency.metric_report` | 2 | `active` |
+| `RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED` | `MUST` | `governance` | `runtime.python_dependency.metric_report` | 1 | `active` |
 | `RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `runtime.python_dependency.metric_non_regression` | 3 | `active` |
-| `RUNTIME_PYTHON_USAGE_SCOPED_TO_PYTHON_RUNNER` | `MUST` | `governance` | `runtime.python_usage.scope` | 3 | `active` |
+| `RUNTIME_PYTHON_USAGE_SCOPED_TO_PYTHON_RUNNER` | `MUST` | `governance` | `runtime.python_usage.scope` | 2 | `active` |
 | `RUNTIME_RUNNER_ADAPTER_PYTHON_IMPL_FORBIDDEN` | `MUST` | `governance` | `runtime.runner_interface.impl_selection` | 2 | `active` |
 | `RUNTIME_RUNNER_INTERFACE_GATE_SYNC` | `MUST` | `governance` | `runtime.gate_orchestration` | 5 | `active` |
 | `RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED` | `MUST` | `governance` | `runtime.runner_interface.subcommands` | 2 | `active` |
 | `RUNTIME_RUST_ADAPTER_NO_DELEGATION` | `MUST` | `governance` | `runtime.runner_interface.rust_adapter` | 2 | `active` |
 | `RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC` | `MUST` | `runtime` | `scripts.rust.spec_runner_cli` | 3 | `active` |
-| `RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED` | `MUST` | `governance` | `runtime.rust_adapter.target_selection` | 2 | `active` |
+| `RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED` | `MUST` | `governance` | `runtime.rust_adapter.target_selection` | 1 | `active` |
 | `RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON` | `MUST` | `governance` | `runtime.rust_adapter.transitive_path` | 2 | `active` |
 | `RUNTIME_RUST_ONLY_PREPUSH_REQUIRED` | `MUST` | `governance` | `runtime.prepush.end_to_end` | 4 | `active` |
 | `RUNTIME_SCOPE_BOUNDED_FOR_V1` | `SHOULD` | `governance` | `runtime.support.matrix` | 3 | `active` |
@@ -298,7 +283,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `SCHEMA_UNKNOWN_KEYS_HARD_FAIL` | `MUST` | `runtime` | `case.top_level_keys` | 2 | `active` |
 | `SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED` | `MUST` | `governance` | `schema.contract.sync` | 4 | `active` |
 | `SPEC_DOMAIN_INDEX_SYNC` | `MUST` | `governance` | `domain index files` | 2 | `active` |
-| `SPEC_LANG_ADOPTION_METRIC_REPORTED` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_report` | 2 | `active` |
+| `SPEC_LANG_ADOPTION_METRIC_REPORTED` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_report` | 1 | `active` |
 | `SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |
 | `SPEC_LANG_COLLECTION_FORMS_CONTRACTED` | `MUST` | `implementation` | `assert.tree.evaluate.collection_forms` | 3 | `active` |
 | `SPEC_LANG_CURRY_ALL_BUILTINS` | `MUST` | `implementation` | `assert.tree.evaluate.currying` | 2 | `active` |
@@ -319,8 +304,8 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `SPEC_LANG_STDLIB_PROFILE_DEFINED` | `MUST` | `contract` | `spec_lang.stdlib.profile` | 2 | `active` |
 | `SPEC_LANG_STDLIB_PY_PHP_PARITY_REQUIRED` | `MUST` | `governance` | `spec_lang.stdlib.parity` | 2 | `active` |
 | `SPEC_LAYOUT_DOMAIN_TREES` | `MUST` | `governance` | `docs/spec tree layout` | 2 | `active` |
-| `SPEC_PORTABILITY_METRIC_REPORTED` | `MUST` | `governance` | `specs.portability.metric_report` | 4 | `active` |
+| `SPEC_PORTABILITY_METRIC_REPORTED` | `MUST` | `governance` | `specs.portability.metric_report` | 3 | `active` |
 | `SPEC_PORTABILITY_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `specs.portability.metric_non_regression` | 3 | `active` |
-| `SPEC_PORTABILITY_THRESHOLD_ENFORCED` | `SHOULD` | `governance` | `specs.portability.metric_thresholds` | 3 | `active` |
+| `SPEC_PORTABILITY_THRESHOLD_ENFORCED` | `SHOULD` | `governance` | `specs.portability.metric_thresholds` | 2 | `active` |
 | `UNIVERSAL_CHAIN_SUPPORT_REQUIRED` | `MUST` | `runtime` | `harness.chain.universal_support` | 3 | `active` |
 <!-- GENERATED:END policy_rule_catalog -->

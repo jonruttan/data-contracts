@@ -7,8 +7,7 @@ links:
   - docs/spec/contract/04_harness.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-CLI-001
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_cli_run_unit.py
   - tests/test_conformance_runner_unit.py
@@ -46,9 +45,7 @@ links:
   - docs/spec/contract/06_conformance.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-CLI-001
-  - SRCONF-CLI-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_contract_governance_unit.py
   - tests/test_conformance_runner_unit.py
@@ -61,22 +58,20 @@ links:
   - docs/spec/contract/06_conformance.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-CLI-001
-  - SRCONF-CLI-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_contract_governance_unit.py
   - tests/test_conformance_runner_unit.py
   implementation_refs: []
-  notes: Conformance fixtures are explicit and do not depend on ambient entrypoint values.
+  notes: Conformance fixtures are explicit and do not depend on ambient entrypoint
+    values.
 - rule_id: ASSERT_HEALTH_MODE_VALID_VALUES
   policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_HEALTH_MODE_VALID_VALUES
   contract_refs:
   - docs/spec/contract/02_case_shape.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-AH-003
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_assertion_health_unit.py
   implementation_refs:
@@ -89,10 +84,7 @@ links:
   - docs/spec/contract/02_case_shape.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-AH-001
-  - SRCONF-AH-002
-  - SRCONF-AH-004
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_assertion_health_unit.py
   - tests/test_harness_cli_run_unit.py
@@ -109,8 +101,7 @@ links:
   - docs/spec/contract/03_assertions.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-AH-005
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_assertion_health_unit.py
   - tests/test_harness_cli_run_unit.py
@@ -126,8 +117,7 @@ links:
   - docs/spec/contract/03a_regex_portability_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-AH-006
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_assertion_health_unit.py
   - tests/test_conformance_runner_unit.py
@@ -143,10 +133,7 @@ links:
   - docs/spec/contract/03b_spec_lang_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-001
-  - SRCONF-EXPR-005
-  - SRCONF-EXPR-006
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_assertions_unit.py
   - tests/test_spec_lang_unit.py
@@ -155,7 +142,8 @@ links:
   - spec_runner/spec_lang.py
   - scripts/php/spec_runner.php
   - scripts/php/conformance_runner.php
-  notes: Evaluate leaves accept mapping-AST expression nodes and reject malformed/legacy forms.
+  notes: Evaluate leaves accept mapping-AST expression nodes and reject malformed/legacy
+    forms.
 - rule_id: SPEC_LANG_PREFERRED_AUTHORING
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PREFERRED_AUTHORING
   contract_refs:
@@ -169,7 +157,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/conformance_spec_lang_preferred.spec.md
-  notes: Governance enforces evaluate-only assertion authoring in conformance and governance case surfaces.
+  notes: Governance enforces evaluate-only assertion authoring in conformance and
+    governance case surfaces.
 - rule_id: SPEC_LANG_PURE_EVALUATOR
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_PURE_EVALUATOR
   contract_refs:
@@ -177,9 +166,7 @@ links:
   - docs/spec/contract/06_conformance.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-001
-  - SRCONF-EXPR-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_unit.py
   implementation_refs:
@@ -193,8 +180,7 @@ links:
   - docs/spec/contract/03b_spec_lang_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-003
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_unit.py
   implementation_refs:
@@ -208,8 +194,7 @@ links:
   - docs/spec/contract/03b_spec_lang_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-007
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_unit.py
   - tests/test_harness_cli_run_unit.py
@@ -217,7 +202,8 @@ links:
   - spec_runner/spec_lang.py
   - scripts/php/spec_runner.php
   - scripts/php/conformance_runner.php
-  notes: Steps/nodes/literal/timeout budgets are enforced with deterministic failure reasons.
+  notes: Steps/nodes/literal/timeout budgets are enforced with deterministic failure
+    reasons.
 - rule_id: SPEC_LANG_ERROR_CLASSIFICATION
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_ERROR_CLASSIFICATION
   contract_refs:
@@ -225,11 +211,7 @@ links:
   - docs/spec/contract/05_errors.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-004
-  - SRCONF-EXPR-005
-  - SRCONF-EXPR-006
-  - SRCONF-EXPR-007
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_unit.py
   - tests/test_conformance_parity_unit.py
@@ -244,11 +226,7 @@ links:
   - docs/spec/contract/03b_spec_lang_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-013
-  - SRCONF-EXPR-014
-  - SRCONF-EXPR-016
-  - SRCONF-EXPR-017
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_unit.py
   implementation_refs:
@@ -262,11 +240,7 @@ links:
   - docs/spec/contract/03b_spec_lang_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-009
-  - SRCONF-EXPR-010
-  - SRCONF-EXPR-011
-  - SRCONF-EXPR-018
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_unit.py
   - tests/test_conformance_parity_unit.py
@@ -281,9 +255,7 @@ links:
   - docs/spec/contract/03b_spec_lang_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-009
-  - SRCONF-EXPR-012
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_unit.py
   implementation_refs:
@@ -296,10 +268,7 @@ links:
   - docs/spec/contract/03b_spec_lang_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-013
-  - SRCONF-EXPR-014
-  - SRCONF-EXPR-015
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_unit.py
   implementation_refs:
@@ -323,7 +292,8 @@ links:
   - spec_runner/harnesses/text_file.py
   - spec_runner/harnesses/cli_run.py
   - spec_runner/harnesses/api_http.py
-  notes: Library symbol loading and evaluation wiring are deterministic and covered by unit tests.
+  notes: Library symbol loading and evaluation wiring are deterministic and covered
+    by unit tests.
 - rule_id: GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS
   policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_SUBJECT_MODEL_SPEC_LANG_DECISIONS
   contract_refs:
@@ -335,7 +305,8 @@ links:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
-  notes: Initial governance checks use subject extraction with spec-lang decision expressions.
+  notes: Initial governance checks use subject extraction with spec-lang decision
+    expressions.
 - rule_id: DOC_NORMATIVE_PAGE_TRACEABILITY
   policy_ref: docs/spec/contract/policy_v1.yaml#DOC_NORMATIVE_PAGE_TRACEABILITY
   contract_refs:
@@ -371,7 +342,8 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - spec_runner/contract_governance.py
-  notes: Governance checks profile references across assertion, schema, and policy docs.
+  notes: Governance checks profile references across assertion, schema, and policy
+    docs.
 - rule_id: DOC_ASSERTION_OPERATOR_DOC_SYNC
   policy_ref: docs/spec/contract/policy_v1.yaml#DOC_ASSERTION_OPERATOR_DOC_SYNC
   contract_refs:
@@ -460,14 +432,13 @@ links:
   - docs/spec/contract/07_portable_spec_authoring.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-CLI-001
-  - SRCONF-AH-004
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_conformance_runner_unit.py
   implementation_refs:
   - spec_runner/conformance.py
-  notes: Portable cases should avoid ambient dependencies and express variability explicitly.
+  notes: Portable cases should avoid ambient dependencies and express variability
+    explicitly.
 - rule_id: CONFORMANCE_NO_AMBIENT_ASSUMPTIONS_GUARD
   policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_NO_AMBIENT_ASSUMPTIONS_GUARD
   contract_refs:
@@ -482,7 +453,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/conformance_no_ambient_assumptions.spec.md
-  notes: Governance enforces ambient env/time/random token bans in portable conformance case content.
+  notes: Governance enforces ambient env/time/random token bans in portable conformance
+    case content.
 - rule_id: CONFORMANCE_PURPOSE_QUALITY_GATE
   policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_PURPOSE_QUALITY_GATE
   contract_refs:
@@ -514,7 +486,8 @@ links:
   - spec_runner/spec_portability.py
   - scripts/spec_portability_report.py
   - scripts/run_governance_specs.py
-  notes: Portability metric report generation and governance wiring are covered by unit and script tests.
+  notes: Portability metric report generation and governance wiring are covered by
+    unit and script tests.
 - rule_id: SPEC_PORTABILITY_NON_REGRESSION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_PORTABILITY_NON_REGRESSION_REQUIRED
   contract_refs:
@@ -530,7 +503,8 @@ links:
   - spec_runner/spec_portability.py
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_portability_baseline.json
-  notes: Governance enforces monotonic non-regression for configured spec-lang self-containment metrics.
+  notes: Governance enforces monotonic non-regression for configured spec-lang self-containment
+    metrics.
 - rule_id: SPEC_LANG_ADOPTION_METRIC_REPORTED
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_ADOPTION_METRIC_REPORTED
   contract_refs:
@@ -547,7 +521,8 @@ links:
   - spec_runner/quality_metrics.py
   - scripts/spec_lang_adoption_report.py
   - scripts/run_governance_specs.py
-  notes: Spec-lang adoption metric report and governance wiring are covered by unit/script tests.
+  notes: Spec-lang adoption metric report and governance wiring are covered by unit/script
+    tests.
 - rule_id: SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
   contract_refs:
@@ -580,7 +555,8 @@ links:
   - spec_runner/quality_metrics.py
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
-  notes: Spec-lang adoption ratchet enforces governance policy symbol resolution ratio non-regression.
+  notes: Spec-lang adoption ratchet enforces governance policy symbol resolution ratio
+    non-regression.
 - rule_id: LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION
   policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION
   contract_refs:
@@ -613,7 +589,8 @@ links:
   - spec_runner/quality_metrics.py
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
-  notes: Conformance evaluate-only coverage is pinned by baseline-backed non-regression checks.
+  notes: Conformance evaluate-only coverage is pinned by baseline-backed non-regression
+    checks.
 - rule_id: IMPL_EVALUATE_FIRST_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_FIRST_REQUIRED
   contract_refs:
@@ -659,7 +636,8 @@ links:
   - spec_runner/quality_metrics.py
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
-  notes: Impl library-backed assertion ratio is ratcheted to preserve reusable helper adoption.
+  notes: Impl library-backed assertion ratio is ratcheted to preserve reusable helper
+    adoption.
 - rule_id: CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
   contract_refs:
@@ -667,30 +645,13 @@ links:
   - docs/spec/governance/cases/core/conformance_spec_lang_fixture_library_usage.spec.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-001
-  - SRCONF-EXPR-002
-  - SRCONF-EXPR-008
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/libraries/conformance/assertion_core.spec.md
   notes: Governance enforces helper-library reuse in spec_lang conformance fixtures.
-- rule_id: CONFORMANCE_LIBRARY_POLICY_USAGE_REQUIRED
-  policy_ref: docs/spec/contract/policy_v1.yaml#CONFORMANCE_LIBRARY_POLICY_USAGE_REQUIRED
-  contract_refs:
-  - docs/spec/contract/14_spec_lang_libraries.md
-  - docs/spec/contract/18_governance_subject_extractors.md
-  - docs/spec/governance/cases/core/conformance_library_policy_usage_required.spec.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - scripts/run_governance_specs.py
-  notes: Conformance-prefixed governance checks require library-backed policy calls.
 - rule_id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   contract_refs:
@@ -706,21 +667,8 @@ links:
   - spec_runner/quality_metrics.py
   - scripts/run_governance_specs.py
   - docs/spec/metrics/spec_lang_adoption_baseline.json
-  notes: Governance ratchets shared library usage for policy expressions and fails regressions.
-- rule_id: GOVERNANCE_POLICY_LIBRARY_USAGE_REQUIRED
-  policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_POLICY_LIBRARY_USAGE_REQUIRED
-  contract_refs:
-  - docs/spec/contract/14_spec_lang_libraries.md
-  - docs/spec/contract/18_governance_subject_extractors.md
-  - docs/spec/governance/cases/core/governance_policy_library_usage_required.spec.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - scripts/run_governance_specs.py
-  notes: Governance requires library-backed policy wiring and policy_evaluate calls to exported library symbols.
+  notes: Governance ratchets shared library usage for policy expressions and fails
+    regressions.
 - rule_id: RUNNER_INDEPENDENCE_METRIC_REPORTED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNNER_INDEPENDENCE_METRIC_REPORTED
   contract_refs:
@@ -736,7 +684,8 @@ links:
   - spec_runner/quality_metrics.py
   - scripts/runner_independence_report.py
   - scripts/run_governance_specs.py
-  notes: Runner-independence metric report generation and governance wiring are covered by tests.
+  notes: Runner-independence metric report generation and governance wiring are covered
+    by tests.
 - rule_id: RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
   contract_refs:
@@ -796,7 +745,8 @@ links:
   implementation_refs:
   - spec_runner/quality_metrics.py
   - scripts/run_governance_specs.py
-  notes: Non-python lane token checks are enforced using python-dependency report inputs.
+  notes: Non-python lane token checks are enforced using python-dependency report
+    inputs.
 - rule_id: RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
   contract_refs:
@@ -838,7 +788,8 @@ links:
   - spec_runner/quality_metrics.py
   - docs/spec/governance/cases/core/runtime_python_dependency_metric.spec.md
   - docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md
-  notes: Python usage is scoped to explicit python-runner surfaces via python-dependency metric and lane checks.
+  notes: Python usage is scoped to explicit python-runner surfaces via python-dependency
+    metric and lane checks.
 - rule_id: DOCS_OPERABILITY_METRIC_REPORTED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_OPERABILITY_METRIC_REPORTED
   contract_refs:
@@ -855,7 +806,8 @@ links:
   - spec_runner/quality_metrics.py
   - scripts/docs_operability_report.py
   - scripts/run_governance_specs.py
-  notes: Docs-operability metric report generation and governance wiring are covered by tests.
+  notes: Docs-operability metric report generation and governance wiring are covered
+    by tests.
 - rule_id: DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
   contract_refs:
@@ -888,7 +840,8 @@ links:
   - spec_runner/quality_metrics.py
   - scripts/contract_assertions_report.py
   - scripts/run_governance_specs.py
-  notes: Contract-assertions metric report generation and governance wiring are covered by tests.
+  notes: Contract-assertions metric report generation and governance wiring are covered
+    by tests.
 - rule_id: CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
   contract_refs:
@@ -919,7 +872,8 @@ links:
   implementation_refs:
   - spec_runner/spec_portability.py
   - scripts/run_governance_specs.py
-  notes: Threshold support is present in config/report model and can be enforced via governance config when enabled.
+  notes: Threshold support is present in config/report model and can be enforced via
+    governance config when enabled.
 - rule_id: DOCS_REF_SURFACE_COMPLETE
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_REF_SURFACE_COMPLETE
   contract_refs:
@@ -978,7 +932,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - spec_runner/contract_governance.py
-  notes: Invalid doc examples fail unless an explicit opt-out marker with reason is present.
+  notes: Invalid doc examples fail unless an explicit opt-out marker with reason is
+    present.
 - rule_id: DOCS_CLI_FLAGS_DOCUMENTED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_CLI_FLAGS_DOCUMENTED
   contract_refs:
@@ -1010,7 +965,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - spec_runner/contract_governance.py
-  notes: Core assertion token vocabulary remains synchronized across book/contract/schema docs.
+  notes: Core assertion token vocabulary remains synchronized across book/contract/schema
+    docs.
 - rule_id: DOCS_META_SCHEMA_VALID
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_META_SCHEMA_VALID
   contract_refs:
@@ -1164,7 +1120,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - spec_runner/contract_governance.py
-  notes: Governance enforces canonical make command entrypoints in core contributor docs.
+  notes: Governance enforces canonical make command entrypoints in core contributor
+    docs.
 - rule_id: DOCS_ADOPTION_PROFILES_SYNC
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_ADOPTION_PROFILES_SYNC
   contract_refs:
@@ -1195,7 +1152,8 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_release_contract_automation_policy.spec.md
   - spec_runner/contract_governance.py
-  notes: Release guidance is automation-first and forbids manual sequential checklist choreography.
+  notes: Release guidance is automation-first and forbids manual sequential checklist
+    choreography.
 - rule_id: RUNTIME_RUNNER_INTERFACE_GATE_SYNC
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUNNER_INTERFACE_GATE_SYNC
   contract_refs:
@@ -1282,7 +1240,8 @@ links:
   - scripts/ci_gate.sh
   - .githooks/pre-push
   - docs/spec/governance/cases/core/runtime_fast_path_consistency_required.spec.md
-  notes: Fast-path tokens remain consistent across local parity, ci gate, and pre-push hook entrypoints.
+  notes: Fast-path tokens remain consistent across local parity, ci gate, and pre-push
+    hook entrypoints.
 - rule_id: RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
   contract_refs:
@@ -1294,7 +1253,6 @@ links:
   - tests/test_contract_governance_unit.py
   implementation_refs:
   - scripts/rust/runner_adapter.sh
-  - docs/spec/governance/cases/core/runtime_rust_adapter_target_fallback_defined.spec.md
   notes: Rust adapter provides host-target fallback and strict-mode override.
 - rule_id: RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED
@@ -1312,7 +1270,8 @@ links:
   - docs/book/05_howto.md
   - docs/book/06_troubleshooting.md
   - docs/spec/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md
-  notes: Contributor docs describe parity default prepush, fast mode, hook install, and bypass semantics.
+  notes: Contributor docs describe parity default prepush, fast mode, hook install,
+    and bypass semantics.
 - rule_id: RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED
   contract_refs:
@@ -1437,7 +1396,8 @@ links:
   - scripts/ci_gate_summary.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - docs/spec/governance/cases/core/runtime_ci_gate_ownership_contract_required.spec.md
-  notes: CI gate owns critical in ci_gate.sh and keeps ci-gate-summary broad-only without critical toggles.
+  notes: CI gate owns critical in ci_gate.sh and keeps ci-gate-summary broad-only
+    without critical toggles.
 - rule_id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
   contract_refs:
@@ -1490,7 +1450,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_scope_sync.spec.md
-  notes: Governance keeps v1 runtime support scope explicitly bounded to declared targets.
+  notes: Governance keeps v1 runtime support scope explicitly bounded to declared
+    targets.
 - rule_id: RUNTIME_ASSERTIONS_VIA_SPEC_LANG
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_ASSERTIONS_VIA_SPEC_LANG
   contract_refs:
@@ -1510,7 +1471,8 @@ links:
   - spec_runner/harnesses/text_file.py
   - spec_runner/harnesses/cli_run.py
   - spec_runner/harnesses/api_http.py
-  notes: Governance enforces spec-lang-backed assertion execution paths for runtime scanners/runners.
+  notes: Governance enforces spec-lang-backed assertion execution paths for runtime
+    scanners/runners.
 - rule_id: CONTRACT_MUST_RULE_COVERAGE_COMPLETE
   policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_MUST_RULE_COVERAGE_COMPLETE
   contract_refs:
@@ -1542,7 +1504,8 @@ links:
   - scripts/php/spec_runner.php
   - scripts/php/conformance_runner.php
   - docs/spec/governance/cases/core/runtime_spec_lang_pure_no_effect_builtins.spec.md
-  notes: Spec-lang core forbids side-effect builtins; adapters provide normalized effect results.
+  notes: Spec-lang core forbids side-effect builtins; adapters provide normalized
+    effect results.
 - rule_id: RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY
   contract_refs:
@@ -1558,7 +1521,8 @@ links:
   - spec_runner/compiler.py
   - spec_runner/assertions.py
   - spec_runner/harnesses/cli_run.py
-  notes: Runtime assertions compile external operators to spec-lang and evaluate through one engine.
+  notes: Runtime assertions compile external operators to spec-lang and evaluate through
+    one engine.
 - rule_id: ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY
   policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY
   contract_refs:
@@ -1567,8 +1531,7 @@ links:
   - docs/spec/contract/09_internal_representation.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-008
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_compiler_unit.py
   - tests/test_run_governance_specs_script_unit.py
@@ -1576,7 +1539,8 @@ links:
   - spec_runner/compiler.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/assert_universal_core_sync.spec.md
-  notes: Universal assertion core is evaluate; sugar operators compile into evaluate-equivalent expressions.
+  notes: Universal assertion core is evaluate; sugar operators compile into evaluate-equivalent
+    expressions.
 - rule_id: ASSERT_SUGAR_OPERATORS_COMPILE_ONLY
   policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_SUGAR_OPERATORS_COMPILE_ONLY
   contract_refs:
@@ -1585,8 +1549,7 @@ links:
   - docs/spec/contract/09_internal_representation.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-EXPR-008
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_compiler_unit.py
   - tests/test_assertions_unit.py
@@ -1629,7 +1592,8 @@ links:
   - spec_runner/compiler.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/assert_compiler_schema_matrix_sync.spec.md
-  notes: Governance enforces compiler/schema/contract alignment for universal evaluate model.
+  notes: Governance enforces compiler/schema/contract alignment for universal evaluate
+    model.
 - rule_id: GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
   policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
   contract_refs:
@@ -1642,7 +1606,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/conformance_spec_lang_preferred.spec.md
-  notes: Governance decision expressions are configured as spec-lang data in harness config.
+  notes: Governance decision expressions are configured as spec-lang data in harness
+    config.
 - rule_id: ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY
   policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY
   contract_refs:
@@ -1655,7 +1620,8 @@ links:
   implementation_refs:
   - scripts/ci_gate_summary.py
   - docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
-  notes: CI gate summary loads a spec-lang decision expression from governance policy case.
+  notes: CI gate summary loads a spec-lang decision expression from governance policy
+    case.
 - rule_id: ORCHESTRATION_OPS_DEEP_DOT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_DEEP_DOT_REQUIRED
   contract_refs:
@@ -1670,20 +1636,6 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/orchestration_ops_symbol_grammar.spec.md
   notes: Ops effect symbols are validated against deep-dot canonical grammar.
-- rule_id: ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN
-  policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN
-  contract_refs:
-  - docs/spec/contract/04_harness.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_ops_namespace_unit.py
-  implementation_refs:
-  - spec_runner/ops_namespace.py
-  - scripts/run_governance_specs.py
-  - docs/spec/governance/cases/core/orchestration_ops_legacy_underscore_forbidden.spec.md
-  notes: Legacy underscore shorthand ops symbols are hard-failed.
 - rule_id: ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED
   contract_refs:
@@ -1698,7 +1650,8 @@ links:
   - docs/spec/tools/rust/tools_v1.yaml
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/orchestration_ops_registry_sync.spec.md
-  notes: Orchestration tools registry must declare effect symbols, capabilities, and schema refs.
+  notes: Orchestration tools registry must declare effect symbols, capabilities, and
+    schema refs.
 - rule_id: ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED
   contract_refs:
@@ -1713,20 +1666,6 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/orchestration_ops_capability_bindings.spec.md
   notes: Orchestration cases must bind required capability ids for selected tools.
-- rule_id: CURRENT_SPEC_POLICY_KEY_NAMES
-  policy_ref: docs/spec/contract/policy_v1.yaml#CURRENT_SPEC_POLICY_KEY_NAMES
-  contract_refs:
-  - docs/spec/contract/03_assertions.md
-  - docs/spec/contract/15_governance_subject_model.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - scripts/run_governance_specs.py
-  - docs/spec/governance/cases/core/docs_current_spec_policy_key_names.spec.md
-  notes: Governance checks align current spec cases to the policy_evaluate key.
 - rule_id: RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUNNER_INTERFACE_SUBCOMMANDS_DECLARED
   contract_refs:
@@ -1739,20 +1678,8 @@ links:
   - scripts/run_governance_specs.py
   - scripts/rust/runner_adapter.sh
   - docs/spec/governance/cases/core/runtime_runner_interface_subcommands.spec.md
-  notes: Governance verifies Rust adapter case labels cover required runner-interface subcommands.
-- rule_id: RUNTIME_CI_PYTHON_LANE_NON_BLOCKING_REQUIRED
-  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_CI_PYTHON_LANE_NON_BLOCKING_REQUIRED
-  contract_refs:
-  - docs/spec/contract/12_runner_interface.md
-  schema_refs: []
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - .github/workflows/ci.yml
-  - scripts/run_governance_specs.py
-  - docs/spec/governance/cases/core/runtime_ci_python_lane_non_blocking_required.spec.md
-  notes: Governance verifies python parity lane remains visible but non-blocking in CI.
+  notes: Governance verifies Rust adapter case labels cover required runner-interface
+    subcommands.
 - rule_id: RUNTIME_RUST_ADAPTER_NO_DELEGATION
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_DELEGATION
   contract_refs:
@@ -1765,7 +1692,8 @@ links:
   - scripts/rust/runner_adapter.sh
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_rust_adapter_no_delegate.spec.md
-  notes: Governance prevents regression back to shell adapter delegation in the Rust lane.
+  notes: Governance prevents regression back to shell adapter delegation in the Rust
+    lane.
 - rule_id: RUST_PRIMARY_GATE_PATH_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_GATE_PATH_REQUIRED
   contract_refs:
@@ -1779,7 +1707,8 @@ links:
   - .github/workflows/ci.yml
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_rust_primary_gate_path.spec.md
-  notes: Rust-primary CI lane requirement is enforced through runner-interface CI lane checks.
+  notes: Rust-primary CI lane requirement is enforced through runner-interface CI
+    lane checks.
 - rule_id: RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
   policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
   contract_refs:
@@ -1795,7 +1724,8 @@ links:
   - scripts/docs_doctor.sh
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_rust_primary_no_python_dependency.spec.md
-  notes: Gate orchestration remains runner-interface based without direct Python command coupling.
+  notes: Gate orchestration remains runner-interface based without direct Python command
+    coupling.
 - rule_id: RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
   contract_refs:
@@ -1839,7 +1769,8 @@ links:
   - scripts/rust/runner_adapter.sh
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md
-  notes: Rust-primary governance includes an executable smoke check for adapter command behavior.
+  notes: Rust-primary governance includes an executable smoke check for adapter command
+    behavior.
 - rule_id: RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
   contract_refs:
@@ -1854,7 +1785,8 @@ links:
   - scripts/rust/spec_runner_cli/src/main.rs
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_rust_primary_subcommand_parity.spec.md
-  notes: Governance enforces parity between shell adapter and Rust CLI subcommand surfaces.
+  notes: Governance enforces parity between shell adapter and Rust CLI subcommand
+    surfaces.
 - rule_id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
   policy_ref: docs/spec/contract/policy_v1.yaml#RUST_PRIMARY_DOCS_ADOPTION_SYNC
   contract_refs:
@@ -1949,20 +1881,6 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/objective_scorecard_non_regression.spec.md
   notes: Baseline update metadata notes are hash-pinned and required by governance.
-- rule_id: GOVERNANCE_POLICY_EVALUATE_REQUIRED
-  policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_POLICY_EVALUATE_REQUIRED
-  contract_refs:
-  - docs/spec/contract/15_governance_subject_model.md
-  - docs/spec/contract/18_governance_subject_extractors.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - scripts/run_governance_specs.py
-  - spec_runner/governance_engine.py
-  notes: Governance decision checks require policy_evaluate and central policy evaluation.
 - rule_id: SPEC_LANG_LIBRARY_INCLUDE_FORMAT_SCOPE
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_LIBRARY_INCLUDE_FORMAT_SCOPE
   contract_refs:
@@ -1977,7 +1895,8 @@ links:
   implementation_refs:
   - spec_runner/spec_lang_libraries.py
   - spec_runner/codecs.py
-  notes: Library include formats allow md/yaml while executable case discovery stays markdown-default unless explicitly enabled.
+  notes: Library include formats allow md/yaml while executable case discovery stays
+    markdown-default unless explicitly enabled.
 - rule_id: NAMING_FILENAME_STRICT_SEPARATORS
   policy_ref: docs/spec/contract/policy_v1.yaml#NAMING_FILENAME_STRICT_SEPARATORS
   contract_refs:
@@ -1989,7 +1908,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/naming_filename_policy.spec.md
-  notes: Filename stems are governance-checked for lowercase + underscore word separators + hyphen section separators.
+  notes: Filename stems are governance-checked for lowercase + underscore word separators
+    + hyphen section separators.
 - rule_id: GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
   policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING
   contract_refs:
@@ -2002,8 +1922,8 @@ links:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
-  - spec_runner/governance_engine.py
-  notes: Per-check policy verdict branching is replaced by extractor output + central policy engine.
+  notes: Per-check policy verdict branching is replaced by extractor output + central
+    policy engine.
 - rule_id: GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#GOVERNANCE_STRUCTURED_ASSERTIONS_REQUIRED
   contract_refs:
@@ -2017,7 +1937,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/governance_structured_assertions_required.spec.md
-  notes: Governance cases use structured result targets for assertion truth instead of PASS text coupling.
+  notes: Governance cases use structured result targets for assertion truth instead
+    of PASS text coupling.
 - rule_id: RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
   contract_refs:
@@ -2071,15 +1992,13 @@ links:
   schema_refs:
   - docs/spec/schema/schema_v1.md
   - docs/spec/schema/normalization_profile_v1.yaml
-  conformance_case_ids:
-  - SRCONF-EXPR-005
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_yaml_ast_unit.py
   - tests/test_normalize_repo_script_unit.py
   implementation_refs:
   - spec_runner/spec_lang_yaml_ast.py
   - scripts/normalize_repo.py
-  - scripts/convert_spec_lang_yaml_ast.py
   - docs/spec/governance/cases/core/normalization_mapping_ast_only.spec.md
   notes: Mapping-AST-only syntax is enforced through compiler and normalization checks.
 - rule_id: NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC
@@ -2126,7 +2045,6 @@ links:
   - tests/test_virtual_paths_unit.py
   implementation_refs:
   - spec_runner/virtual_paths.py
-  - scripts/convert_virtual_root_paths.py
   - docs/spec/governance/cases/core/normalization_virtual_root_paths_only.spec.md
   notes: Scoped path fields normalize to canonical virtual-root `/...` form.
 - rule_id: REFERENCE_CONTRACT_PATHS_EXIST
@@ -2156,20 +2074,6 @@ links:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/reference_symbols_exist.spec.md
   notes: Library exports/symbol references are validated early.
-- rule_id: REFERENCE_POLICY_SYMBOLS_RESOLVE
-  policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_POLICY_SYMBOLS_RESOLVE
-  contract_refs:
-  - docs/spec/contract/14_spec_lang_libraries.md
-  - docs/spec/contract/18_governance_subject_extractors.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - scripts/run_governance_specs.py
-  - docs/spec/governance/cases/core/reference_policy_symbols_resolve.spec.md
-  notes: Dotted policy var symbols must resolve against declared harness.spec_lang library symbols.
 - rule_id: REFERENCE_LIBRARY_EXPORTS_USED
   policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_LIBRARY_EXPORTS_USED
   contract_refs:
@@ -2183,7 +2087,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/reference_library_exports_used.spec.md
-  notes: Library defines.public symbols must be referenced by policies/expressions or harness exports.
+  notes: Library defines.public symbols must be referenced by policies/expressions
+    or harness exports.
 - rule_id: REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
   contract_refs:
@@ -2197,7 +2102,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/reference_private_symbols_forbidden.spec.md
-  notes: defines.private symbols are forbidden from external case policy/assertion references.
+  notes: defines.private symbols are forbidden from external case policy/assertion
+    references.
 - rule_id: REFERENCE_CHECK_IDS_EXIST
   policy_ref: docs/spec/contract/policy_v1.yaml#REFERENCE_CHECK_IDS_EXIST
   contract_refs:
@@ -2250,10 +2156,10 @@ links:
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
-  - scripts/migrate_spec_layout_domain_trees.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/spec_layout_domain_trees.spec.md
-  notes: Domain-tree directories are required for conformance/governance/libraries spec surfaces.
+  notes: Domain-tree directories are required for conformance/governance/libraries
+    spec surfaces.
 - rule_id: SPEC_DOMAIN_INDEX_SYNC
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_DOMAIN_INDEX_SYNC
   contract_refs:
@@ -2264,7 +2170,6 @@ links:
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
-  - scripts/migrate_spec_layout_domain_trees.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/spec_domain_index_sync.spec.md
   notes: Domain index files are checked for completeness and stale entries.
@@ -2293,10 +2198,10 @@ links:
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
-  - scripts/migrate_spec_layout_domain_trees.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/library_domain_index_sync.spec.md
-  notes: Library domain indexes are checked for complete file and exported symbol inventory coverage.
+  notes: Library domain indexes are checked for complete file and exported symbol
+    inventory coverage.
 - rule_id: LIBRARY_PUBLIC_SURFACE_MODEL
   policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_MODEL
   contract_refs:
@@ -2311,7 +2216,8 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/spec_lang_libraries.py
   - docs/spec/governance/cases/core/library_public_surface_model.spec.md
-  notes: spec_lang.export shape enforcement requires defines.public/defines.private scopes.
+  notes: spec_lang.export shape enforcement requires defines.public/defines.private
+    scopes.
 - rule_id: LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
   contract_refs:
@@ -2355,16 +2261,15 @@ links:
   - spec_runner/spec_lang_stdlib_profile.py
   - spec_runner/spec_lang_commands.py
   - docs/spec/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md
-  notes: Defines canonical stdlib profile source of truth for implementation and docs parity checks.
+  notes: Defines canonical stdlib profile source of truth for implementation and docs
+    parity checks.
 - rule_id: SPEC_LANG_STDLIB_PROFILE_COMPLETE
   policy_ref: docs/spec/contract/policy_v1.yaml#SPEC_LANG_STDLIB_PROFILE_COMPLETE
   contract_refs:
   - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
   schema_refs:
   - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
-  conformance_case_ids:
-  - SRCONF-STDLIB-001
-  - SRCONF-STDLIB-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
@@ -2411,15 +2316,14 @@ links:
   - docs/spec/contract/19_spec_lang_stdlib_profile_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-STDLIB-003
-  - SRCONF-STDLIB-004
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/spec_lang_stdlib_conformance_coverage.spec.md
-  notes: Required stdlib conformance fixture files must exist and remain in canonical paths.
+  notes: Required stdlib conformance fixture files must exist and remain in canonical
+    paths.
 - rule_id: RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_SINGLE_PUBLIC_RUNNER_ENTRYPOINT_REQUIRED
   contract_refs:
@@ -2435,7 +2339,8 @@ links:
   - scripts/docs_doctor.sh
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/runtime_public_runner_entrypoint_single.spec.md
-  notes: Gate scripts must reference scripts/runner_adapter.sh as the single public runner entrypoint.
+  notes: Gate scripts must reference scripts/runner_adapter.sh as the single public
+    runner entrypoint.
 - rule_id: RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
   contract_refs:
@@ -2487,16 +2392,15 @@ links:
   - docs/spec/contract/03b_spec_lang_v1.md
   schema_refs:
   - docs/spec/schema/subject_profiles_v1.yaml
-  conformance_case_ids:
-  - SRCONF-PROFILE-001
-  - SRCONF-PROFILE-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md
-  notes: Enforces JSON-core subject model in profile schema and evaluator subject validation.
+  notes: Enforces JSON-core subject model in profile schema and evaluator subject
+    validation.
 - rule_id: ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED
   contract_refs:
@@ -2505,8 +2409,7 @@ links:
   schema_refs:
   - docs/spec/schema/schema_v1.md
   - docs/spec/schema/subject_profiles_v1.yaml
-  conformance_case_ids:
-  - SRCONF-PROFILE-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
@@ -2515,7 +2418,8 @@ links:
   - spec_runner/harnesses/api_http.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/assert_adapter_projection_contract_sync.spec.md
-  notes: Requires context_json projection targets and profile metadata in core harness adapters.
+  notes: Requires context_json projection targets and profile metadata in core harness
+    adapters.
 - rule_id: ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED
   policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED
   contract_refs:
@@ -2523,9 +2427,7 @@ links:
   - docs/spec/contract/07_portable_spec_authoring.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-DOMAIN-LIB-001
-  - SRCONF-DOMAIN-LIB-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_quality_metrics_unit.py
   implementation_refs:
@@ -2536,15 +2438,15 @@ links:
   - docs/spec/libraries/domain/python_core.spec.md
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/assert_domain_library_usage_required.spec.md
-  notes: Domain assertion scenarios must be library-backed rather than ad hoc inline-only expression patterns.
+  notes: Domain assertion scenarios must be library-backed rather than ad hoc inline-only
+    expression patterns.
 - rule_id: ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED
   contract_refs:
   - docs/spec/contract/20_subject_profiles_v1.md
   schema_refs:
   - docs/spec/schema/subject_profiles_v1.yaml
-  conformance_case_ids:
-  - SRCONF-PROFILE-001
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
@@ -2563,15 +2465,15 @@ links:
   - docs/spec/contract/20_subject_profiles_v1.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-PROFILE-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_spec_lang_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/assert_subject_profiles_json_only.spec.md
-  notes: Evaluator rejects non-JSON subject values; adapters project native values to JSON.
+  notes: Evaluator rejects non-JSON subject values; adapters project native values
+    to JSON.
 - rule_id: EXECUTABLE_SURFACES_MUST_BE_SPEC_MD
   policy_ref: docs/spec/contract/policy_v1.yaml#EXECUTABLE_SURFACES_MUST_BE_SPEC_MD
   contract_refs:
@@ -2615,7 +2517,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md
-  notes: Keeps baselines/manifests/schemas as machine data and forbids executable fences in those artifacts.
+  notes: Keeps baselines/manifests/schemas as machine data and forbids executable
+    fences in those artifacts.
 - rule_id: NO_EXECUTABLE_YAML_JSON_CASES_IN_CANONICAL_TREES
   policy_ref: docs/spec/contract/policy_v1.yaml#NO_EXECUTABLE_YAML_JSON_CASES_IN_CANONICAL_TREES
   contract_refs:
@@ -2639,23 +2542,21 @@ links:
   schema_refs:
   - docs/spec/schema/registry/v1/core.yaml
   - docs/spec/schema/registry_schema_v1.yaml
-  conformance_case_ids:
-  - SRCONF-SCHEMA-REG-001
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_schema_registry_unit.py
   implementation_refs:
   - spec_runner/schema_registry.py
   - spec_runner/spec_lang_commands.py
-  notes: Registry YAML profiles are the source of truth for executable case-shape constraints.
+  notes: Registry YAML profiles are the source of truth for executable case-shape
+    constraints.
 - rule_id: SCHEMA_REGISTRY_VALIDATION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_REGISTRY_VALIDATION_REQUIRED
   contract_refs:
   - docs/spec/contract/21_schema_registry_contract.md
   schema_refs:
   - docs/spec/schema/registry/v1/core.yaml
-  conformance_case_ids:
-  - SRCONF-SCHEMA-CASE-001
-  - SRCONF-SCHEMA-CASE-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_schema_validator_unit.py
   implementation_refs:
@@ -2668,21 +2569,20 @@ links:
   - docs/spec/contract/21_schema_registry_contract.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-SCHEMA-REG-001
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_schema_registry_scripts_unit.py
   implementation_refs:
   - scripts/generate_schema_docs.py
-  notes: Generated schema snapshot markers in schema_v1 must stay synchronized with registry data.
+  notes: Generated schema snapshot markers in schema_v1 must stay synchronized with
+    registry data.
 - rule_id: SCHEMA_UNKNOWN_KEYS_HARD_FAIL
   policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_UNKNOWN_KEYS_HARD_FAIL
   contract_refs:
   - docs/spec/contract/21_schema_registry_contract.md
   schema_refs:
   - docs/spec/schema/registry/v1/core.yaml
-  conformance_case_ids:
-  - SRCONF-SCHEMA-CASE-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_schema_validator_unit.py
   implementation_refs:
@@ -2697,8 +2597,7 @@ links:
   - docs/spec/schema/registry/v1/types/text_file.yaml
   - docs/spec/schema/registry/v1/types/governance_check.yaml
   - docs/spec/schema/registry/v1/types/spec_lang_library.yaml
-  conformance_case_ids:
-  - SRCONF-SCHEMA-REG-001
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_schema_registry_unit.py
   implementation_refs:
@@ -2711,8 +2610,7 @@ links:
   - docs/spec/contract/21_schema_registry_contract.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-SCHEMA-REG-001
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
@@ -2861,7 +2759,8 @@ links:
   implementation_refs:
   - scripts/generate_spec_schema_field_catalog.py
   - docs/spec/governance/cases/core/docs_spec_schema_field_catalog_sync.spec.md
-  notes: Schema field catalog is generated from compiled registry into schema and book references.
+  notes: Schema field catalog is generated from compiled registry into schema and
+    book references.
 - rule_id: DOCS_GENERATOR_REPORT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_GENERATOR_REPORT_REQUIRED
   contract_refs:
@@ -2903,7 +2802,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/governance/cases/core/docs_index_filename_policy.spec.md
-  notes: Requires `index.md` for docs directory index files and forbids docs-local README index files.
+  notes: Requires `index.md` for docs directory index files and forbids docs-local
+    README index files.
 - rule_id: DOCS_FILENAME_POLICY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_FILENAME_POLICY_REQUIRED
   contract_refs:
@@ -2992,8 +2892,7 @@ links:
   - docs/spec/contract/types/api_http.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-004
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
@@ -3005,8 +2904,7 @@ links:
   - docs/spec/contract/types/api_http.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-005
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_api_http_unit.py
   - tests/test_run_governance_specs_script_unit.py
@@ -3020,8 +2918,7 @@ links:
   - docs/spec/contract/types/http_profile.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-004
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
@@ -3033,9 +2930,7 @@ links:
   - docs/spec/contract/04_harness.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-001
-  - SRCONF-API-004
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
@@ -3047,8 +2942,7 @@ links:
   - docs/spec/contract/types/api_http.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-006
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_api_http_unit.py
   - tests/test_run_governance_specs_script_unit.py
@@ -3062,14 +2956,7 @@ links:
   - docs/spec/contract/types/api_http.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-004
-  - SRCONF-API-005
-  - SRCONF-API-006
-  - SRCONF-API-007
-  - SRCONF-API-008
-  - SRCONF-API-009
-  - SRCONF-API-010
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
@@ -3083,22 +2970,21 @@ links:
   - docs/spec/contract/types/http_profile.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-011
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
   - spec_runner/harnesses/api_http.py
   - docs/spec/libraries/domain/http_core.spec.md
-  notes: CORS preflight request constraints and normalized response projection are explicit.
+  notes: CORS preflight request constraints and normalized response projection are
+    explicit.
 - rule_id: API_HTTP_SCENARIO_ROUNDTRIP_SUPPORTED
   policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_SCENARIO_ROUNDTRIP_SUPPORTED
   contract_refs:
   - docs/spec/contract/types/api_http.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-012
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
@@ -3111,29 +2997,28 @@ links:
   - docs/spec/contract/types/api_http.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-012
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_harness_api_http_unit.py
   implementation_refs:
   - spec_runner/harnesses/api_http.py
-  notes: Setup/probe/teardown semantics are deterministic with teardown in finally behavior.
+  notes: Setup/probe/teardown semantics are deterministic with teardown in finally
+    behavior.
 - rule_id: API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED
   contract_refs:
   - docs/spec/contract/types/api_http.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-API-001
-  - SRCONF-API-012
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_conformance_parity_unit.py
   - tests/test_php_spec_runner_unit.py
   implementation_refs:
   - spec_runner/conformance_parity.py
   - scripts/php/conformance_runner.php
-  notes: Shared api.http fixture outcomes stay parity-consistent across python/php lanes.
+  notes: Shared api.http fixture outcomes stay parity-consistent across python/php
+    lanes.
 - rule_id: API_HTTP_TUTORIAL_COVERAGE_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#API_HTTP_TUTORIAL_COVERAGE_REQUIRED
   contract_refs:
@@ -3233,22 +3118,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - docs/spec/libraries/domain/markdown_core.spec.md
-  notes: Markdown docs assertions should use structured helper predicates over plain contains checks.
-- rule_id: DOCS_MARKDOWN_NAMESPACE_LEGACY_ALIAS_FORBIDDEN
-  policy_ref: docs/spec/contract/policy_v1.yaml#DOCS_MARKDOWN_NAMESPACE_LEGACY_ALIAS_FORBIDDEN
-  contract_refs:
-  - docs/spec/contract/04_harness.md
-  - docs/spec/contract/14_spec_lang_libraries.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-MARKDOWN-NS-001
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - scripts/run_governance_specs.py
-  - docs/spec/libraries/domain/markdown_core.spec.md
-  notes: Governed docs surfaces forbid md.* symbols and require domain.markdown.*.
+  notes: Markdown docs assertions should use structured helper predicates over plain
+    contains checks.
 - rule_id: HARNESS_WORKFLOW_COMPONENTS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_WORKFLOW_COMPONENTS_REQUIRED
   contract_refs:
@@ -3326,16 +3197,15 @@ links:
   - docs/spec/contract/04_harness.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-CODEMOD-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_dispatcher_unit.py
   - tests/test_chain_engine_unit.py
   implementation_refs:
   - spec_runner/components/chain_engine.py
   - spec_runner/dispatcher.py
-  - scripts/convert_chain_ref_format.py
-  notes: Chain references use scalar ref format [path][#case_id], are schema-checked, and resolve deterministically.
+  notes: Chain references use scalar ref format [path][#case_id], are schema-checked,
+    and resolve deterministically.
 - rule_id: CHAIN_EXPORTS_EXPLICIT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_EXPLICIT_REQUIRED
   contract_refs:
@@ -3369,8 +3239,7 @@ links:
   - docs/spec/contract/04_harness.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-CHAIN-EXPORT-001
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_chain_engine_unit.py
   - tests/test_run_governance_specs_script_unit.py
@@ -3379,23 +3248,6 @@ links:
   - scripts/run_governance_specs.py
   - scripts/normalize_repo.py
   notes: Harness exports are list-only and mapping-form entries are rejected.
-- rule_id: CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
-  policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
-  contract_refs:
-  - docs/spec/contract/04_harness.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-CODEMOD-001
-  unit_test_refs:
-  - tests/test_chain_engine_unit.py
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - spec_runner/components/chain_engine.py
-  - scripts/convert_chain_export_from_key.py
-  - scripts/run_governance_specs.py
-  - scripts/normalize_repo.py
-  notes: Legacy from_target is rejected across runtime and tooling.
 - rule_id: CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
   contract_refs:
@@ -3412,7 +3264,8 @@ links:
   - spec_runner/components/chain_engine.py
   - spec_runner/spec_lang_libraries.py
   - scripts/run_governance_specs.py
-  notes: from=assert.function harness exports require explicit symbol path, with compile-only resolution.
+  notes: from=assert.function harness exports require explicit symbol path, with compile-only
+    resolution.
 - rule_id: CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   contract_refs:
@@ -3450,7 +3303,8 @@ links:
   implementation_refs:
   - spec_runner/dispatcher.py
   - spec_runner/harnesses/api_http.py
-  notes: Shared runtime context carries chain_state and chain_trace across prerequisite execution.
+  notes: Shared runtime context carries chain_state and chain_trace across prerequisite
+    execution.
 - rule_id: UNIVERSAL_CHAIN_SUPPORT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#UNIVERSAL_CHAIN_SUPPORT_REQUIRED
   contract_refs:
@@ -3463,7 +3317,8 @@ links:
   implementation_refs:
   - spec_runner/dispatcher.py
   - scripts/run_governance_specs.py
-  notes: Dispatcher executes chain orchestration before all executable harness dispatch paths.
+  notes: Dispatcher executes chain orchestration before all executable harness dispatch
+    paths.
 - rule_id: CHAIN_STEP_CLASS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_STEP_CLASS_REQUIRED
   contract_refs:
@@ -3491,7 +3346,8 @@ links:
   implementation_refs:
   - spec_runner/components/chain_engine.py
   - scripts/run_governance_specs.py
-  notes: Chain import alias maps are validated for unknown names, collisions, and reserved symbol shadowing.
+  notes: Chain import alias maps are validated for unknown names, collisions, and
+    reserved symbol shadowing.
 - rule_id: CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED
   contract_refs:
@@ -3504,7 +3360,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - scripts/normalize_repo.py
-  notes: Chain declarations are constrained to harness.chain and alternate locations are rejected.
+  notes: Chain declarations are constrained to harness.chain and alternate locations
+    are rejected.
 - rule_id: EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN
   contract_refs:
@@ -3519,7 +3376,6 @@ links:
   - spec_runner/components/execution_context.py
   - scripts/run_governance_specs.py
   - scripts/normalize_repo.py
-  - scripts/migrate_includes_to_chain_symbols.py
   notes: Executable cases must chain-load symbols; includes are library-only.
 - rule_id: LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
@@ -3528,33 +3384,13 @@ links:
   schema_refs:
   - docs/spec/schema/schema_v1.md
   - docs/spec/schema/registry/v1/types/spec_lang_library.yaml
-  conformance_case_ids:
-  - SRCONF-LIB-CONTRACT-001
-  - SRCONF-LIB-CONTRACT-002
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
-  notes: Library contract and governance enforce verb-first defines.public/private schema keys.
-- rule_id: LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN
-  policy_ref: docs/spec/contract/policy_v1.yaml#LIBRARY_LEGACY_DEFINITIONS_KEY_FORBIDDEN
-  contract_refs:
-  - docs/spec/contract/14_spec_lang_libraries.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRCONF-CODEMOD-003
-  unit_test_refs:
-  - tests/test_spec_lang_libraries_unit.py
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - spec_runner/spec_lang_libraries.py
-  - scripts/php/spec_runner.php
-  - scripts/php/conformance_runner.php
-  - scripts/run_governance_specs.py
-  - scripts/normalize_repo.py
-  - scripts/convert_definitions_to_defines.py
-  notes: Runtime, governance, normalization, and codemod tooling hard-cut legacy definitions key usage.
+  notes: Library contract and governance enforce verb-first defines.public/private
+    schema keys.
 - rule_id: SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#SCHEMA_VERB_FIRST_CONTRACT_SYNC_REQUIRED
   contract_refs:
@@ -3567,7 +3403,8 @@ links:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
-  notes: Governance enforces defines wording alignment across schema, contract, and current snapshot docs.
+  notes: Governance enforces defines wording alignment across schema, contract, and
+    current snapshot docs.
 - rule_id: RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_CONTRACT_ARTIFACTS_REQUIRED
   contract_refs:
@@ -3581,7 +3418,8 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   - spec_runner/components/profiler.py
-  notes: Ensures runtime profiling contract and schema artifacts remain present and wired into governance.
+  notes: Ensures runtime profiling contract and schema artifacts remain present and
+    wired into governance.
 - rule_id: RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILING_REDACTION_POLICY_REQUIRED
   contract_refs:
@@ -3608,7 +3446,8 @@ links:
   - scripts/run_governance_specs.py
   - spec_runner/components/profiler.py
   - scripts/rust/spec_runner_cli/src/profiler.rs
-  notes: Runtime profiling traces include required run/case/check/subprocess span taxonomy.
+  notes: Runtime profiling traces include required run/case/check/subprocess span
+    taxonomy.
 - rule_id: RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED
   contract_refs:
@@ -3622,7 +3461,8 @@ links:
   - scripts/ci_gate_summary.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - scripts/run_governance_specs.py
-  notes: Gate orchestration defaults to deterministic fail-fast and emits explicit abort markers.
+  notes: Gate orchestration defaults to deterministic fail-fast and emits explicit
+    abort markers.
 - rule_id: RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
   contract_refs:
@@ -3635,7 +3475,8 @@ links:
   - scripts/ci_gate_summary.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - scripts/run_governance_specs.py
-  notes: Gate summary payload includes deterministic skipped-tail metadata for fail-fast runs.
+  notes: Gate summary payload includes deterministic skipped-tail metadata for fail-fast
+    runs.
 - rule_id: RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED
   contract_refs:
@@ -3663,7 +3504,8 @@ links:
   - scripts/ci_gate_summary.py
   - scripts/rust/spec_runner_cli/src/main.rs
   - scripts/run_governance_specs.py
-  notes: Policy evaluation considers full rows including skipped statuses to preserve fail-fast correctness.
+  notes: Policy evaluation considers full rows including skipped statuses to preserve
+    fail-fast correctness.
 - rule_id: ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
   contract_refs:
@@ -3677,19 +3519,6 @@ links:
   implementation_refs:
   - scripts/run_governance_specs.py
   notes: Governance verdict authority is encoded in assert blocks only.
-- rule_id: POLICY_EVALUATE_FORBIDDEN
-  policy_ref: docs/spec/contract/policy_v1.yaml#POLICY_EVALUATE_FORBIDDEN
-  contract_refs:
-  - docs/spec/contract/03_assertions.md
-  - docs/spec/contract/15_governance_subject_model.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - scripts/run_governance_specs.py
-  notes: governance.check harness policy_evaluate fields are forbidden.
 - rule_id: META_JSON_TARGET_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#META_JSON_TARGET_REQUIRED
   contract_refs:
@@ -3733,19 +3562,6 @@ links:
   - spec_runner/doc_parser.py
   - scripts/run_governance_specs.py
   notes: Executable markdown discovery requires contract-spec fence token.
-- rule_id: LEGACY_SPEC_TEST_FENCE_FORBIDDEN
-  policy_ref: docs/spec/contract/policy_v1.yaml#LEGACY_SPEC_TEST_FENCE_FORBIDDEN
-  contract_refs:
-  - docs/spec/contract/02_case_shape.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - spec_runner/doc_parser.py
-  - scripts/run_governance_specs.py
-  notes: Legacy spec-test token is rejected on canonical surfaces.
 - rule_id: CASE_CONTRACT_BLOCK_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CASE_CONTRACT_BLOCK_REQUIRED
   contract_refs:
@@ -3759,19 +3575,6 @@ links:
   - spec_runner/compiler.py
   - scripts/run_governance_specs.py
   notes: Top-level contract block is required for executable cases.
-- rule_id: LEGACY_ASSERT_BLOCK_FORBIDDEN
-  policy_ref: docs/spec/contract/policy_v1.yaml#LEGACY_ASSERT_BLOCK_FORBIDDEN
-  contract_refs:
-  - docs/spec/contract/03_assertions.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - spec_runner/compiler.py
-  - scripts/run_governance_specs.py
-  notes: Legacy assert block is forbidden after hard cut.
 - rule_id: CONTRACT_STEP_ASSERTS_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_STEP_ASSERTS_REQUIRED
   contract_refs:
@@ -3786,20 +3589,6 @@ links:
   - spec_runner/assertions.py
   - scripts/run_governance_specs.py
   notes: Contract step-form nodes require asserts list.
-- rule_id: LEGACY_CHECKS_KEY_FORBIDDEN
-  policy_ref: docs/spec/contract/policy_v1.yaml#LEGACY_CHECKS_KEY_FORBIDDEN
-  contract_refs:
-  - docs/spec/contract/03_assertions.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - spec_runner/compiler.py
-  - spec_runner/assertions.py
-  - scripts/run_governance_specs.py
-  notes: Legacy checks key is forbidden in contract trees.
 - rule_id: CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED
   contract_refs:
@@ -3826,18 +3615,6 @@ links:
   implementation_refs:
   - scripts/rust/spec_runner_cli/src/main.rs
   notes: contract.job metadata uses harness.jobs.<name> mapping entries.
-- rule_id: HARNESS_JOB_LEGACY_FORBIDDEN
-  policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_JOB_LEGACY_FORBIDDEN
-  contract_refs:
-  - docs/spec/contract/04_harness.md
-  schema_refs:
-  - docs/spec/schema/schema_v1.md
-  conformance_case_ids: []
-  unit_test_refs:
-  - tests/test_run_governance_specs_script_unit.py
-  implementation_refs:
-  - scripts/rust/spec_runner_cli/src/main.rs
-  notes: legacy singular harness.job form is rejected.
 - rule_id: OPS_JOB_CAPABILITY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#OPS_JOB_CAPABILITY_REQUIRED
   contract_refs:
@@ -3861,7 +3638,8 @@ links:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/rust/spec_runner_cli/src/spec_lang.rs
-  notes: nested dispatch produces deterministic runtime.dispatch.nested_forbidden token.
+  notes: nested dispatch produces deterministic runtime.dispatch.nested_forbidden
+    token.
 - rule_id: HARNESS_ON_HOOKS_SCHEMA_VALID
   policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_ON_HOOKS_SCHEMA_VALID
   contract_refs:
@@ -3932,11 +3710,11 @@ links:
   - docs/spec/contract/04_harness.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-JOB-HOOKS-001
+  conformance_case_ids: []
   unit_test_refs:
   - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/refactor_contract_job_hooks.py
   - scripts/run_governance_specs.py
-  notes: rust contract.job specs use when fail/complete dispatch hooks with paired hook job metadata.
+  notes: rust contract.job specs use when fail/complete dispatch hooks with paired
+    hook job metadata.

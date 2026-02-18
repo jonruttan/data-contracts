@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import argparse
-import re
 import subprocess
 import sys
 from pathlib import Path
@@ -36,8 +35,6 @@ _HARNESS_FILES = (
 )
 _CHAIN_CLASS_VALUES = {"must", "can", "cannot"}
 _CONTRACT_CLASS_VALUES = {"MUST", "MAY", "MUST_NOT"}
-_MD_SYMBOL_RE = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
-
 
 def _load_profile(path: Path) -> dict[str, Any]:
     payload = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -411,24 +408,6 @@ def _check_library_single_public_symbol() -> list[str]:
     return []
 
 
-def _check_markdown_namespace_legacy_alias_forbidden() -> list[str]:
-    issues: list[str] = []
-    scan_roots = [ROOT / "docs/spec", ROOT / "docs/book"]
-    for base in scan_roots:
-        if not base.exists():
-            continue
-        for p in sorted(base.rglob("*")):
-            if not p.is_file() or p.suffix not in {".md", ".py", ".yaml", ".yml", ".json"}:
-                continue
-            rel = p.relative_to(ROOT).as_posix()
-            text = p.read_text(encoding="utf-8")
-            if _MD_SYMBOL_RE.search(text):
-                issues.append(
-                    f"{rel}:1: NORMALIZATION_MARKDOWN_NAMESPACE: legacy md.* symbol alias is forbidden; use domain.markdown.*"
-                )
-    return issues
-
-
 def _check_contract_terminology_hard_cut() -> list[str]:
     issues: list[str] = []
     for rel, case in _iter_spec_markdown_cases():
@@ -622,15 +601,6 @@ def main(argv: list[str] | None = None) -> int:
 
     mode_flag = "--check" if ns.check else "--write"
     docs_layout_cmd = [sys.executable, "scripts/normalize_docs_layout.py", mode_flag]
-    domain_layout_cmd = [sys.executable, "scripts/migrate_spec_layout_domain_trees.py", mode_flag]
-    vpath_cmd = [sys.executable, "scripts/convert_virtual_root_paths.py", mode_flag, *scope_paths]
-    conv_cmd = [sys.executable, "scripts/convert_spec_lang_yaml_ast.py", mode_flag, *scope_paths]
-    ops_cmd = [sys.executable, "scripts/convert_ops_symbol_names.py", mode_flag, *scope_paths]
-    chain_ref_cmd = [sys.executable, "scripts/convert_chain_ref_format.py", mode_flag, *scope_paths]
-    chain_from_cmd = [sys.executable, "scripts/convert_chain_export_from_key.py", mode_flag, *scope_paths]
-    chain_exports_cmd = [sys.executable, "scripts/convert_chain_exports_to_list.py", mode_flag, *scope_paths]
-    std_cmd = [sys.executable, "scripts/convert_std_symbol_names.py", mode_flag, *scope_paths]
-    migrate_includes_cmd = [sys.executable, "scripts/migrate_includes_to_chain_symbols.py", mode_flag, *scope_paths]
     split_lib_cases_cmd = [sys.executable, "scripts/split_library_cases_per_symbol.py", mode_flag, "docs/spec/libraries"]
     style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
 
@@ -641,66 +611,12 @@ def main(argv: list[str] | None = None) -> int:
             line = line.strip()
             if line:
                 issues.append(f"docs:1: NORMALIZATION_DOCS_LAYOUT: {line}")
-    domain_code, domain_out = _run(domain_layout_cmd)
-    if domain_code != 0:
-        for line in domain_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_DOMAIN_TREE_LAYOUT: {line}")
-    vpath_code, vpath_out = _run(vpath_cmd)
-    if vpath_code != 0:
-        for line in vpath_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_VIRTUAL_ROOT_PATHS: {line}")
-    conv_code, conv_out = _run(conv_cmd)
-    if conv_code != 0:
-        for line in conv_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_MAPPING_AST_ONLY: {line}")
-    ops_code, ops_out = _run(ops_cmd)
-    if ops_code != 0:
-        for line in ops_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_OPS_SYMBOLS: {line}")
-    chain_code, chain_out = _run(chain_ref_cmd)
-    if chain_code != 0:
-        for line in chain_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_CHAIN_REFS: {line}")
-    chain_from_code, chain_from_out = _run(chain_from_cmd)
-    if chain_from_code != 0:
-        for line in chain_from_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_CHAIN_EXPORT_FROM_KEY: {line}")
-    chain_exports_code, chain_exports_out = _run(chain_exports_cmd)
-    if chain_exports_code != 0:
-        for line in chain_exports_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_CHAIN_EXPORTS_LIST: {line}")
-    mig_inc_code, mig_inc_out = _run(migrate_includes_cmd)
-    if mig_inc_code != 0:
-        for line in mig_inc_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_EXECUTABLE_CHAIN_FIRST: {line}")
     split_lib_code, split_lib_out = _run(split_lib_cases_cmd)
     if split_lib_code != 0:
         for line in split_lib_out.splitlines():
             line = line.strip()
             if line:
                 issues.append(f"docs/spec:1: NORMALIZATION_LIBRARY_SINGLE_PUBLIC_SYMBOL: {line}")
-    std_code, std_out = _run(std_cmd)
-    if std_code != 0:
-        for line in std_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_STD_SYMBOLS: {line}")
     style_code, style_out = _run(style_cmd)
     if style_code != 0:
         for line in style_out.splitlines():
@@ -729,7 +645,6 @@ def main(argv: list[str] | None = None) -> int:
     issues.extend(_check_chain_contract_shape())
     issues.extend(_check_executable_spec_lang_includes_forbidden())
     issues.extend(_check_library_single_public_symbol())
-    issues.extend(_check_markdown_namespace_legacy_alias_forbidden())
     issues.extend(_check_contract_terminology_hard_cut())
     issues.extend(_check_contract_job_dispatch_hard_cut())
     issues.extend(_check_harness_on_hooks_shape())

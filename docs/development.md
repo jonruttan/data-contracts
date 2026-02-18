@@ -389,20 +389,6 @@ Parity diffs are evaluated on case IDs where `expect` resolves to the same
 On slower CI runners, increase `--php-timeout-seconds` (for example `60`) to
 avoid false-negative parity failures caused by host contention.
 
-## External Format Conversion
-
-Convert between external case formats without changing semantics:
-
-```sh
-python scripts/convert_cases.py \
-  --in docs/spec/conformance/cases/core/spec_lang.spec.md \
-  --out .artifacts/spec_lang.spec.json \
-  --out-format json
-```
-
-Default execution discovery remains Markdown-only (`*.spec.md`). YAML/JSON are
-opt-in external adapter formats.
-
 ## Build / Publish
 
 ```sh

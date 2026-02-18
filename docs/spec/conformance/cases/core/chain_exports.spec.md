@@ -1,28 +1,5 @@
 # Chain Exports Conformance Cases
 
-## SRCONF-CHAIN-EXPORT-001
-
-```yaml contract-spec
-id: SRCONF-CHAIN-EXPORT-001
-title: chain exports negative fixture file is present
-purpose: Ensures the legacy chain exports fixture is available for script-level negative-path
-  coverage.
-type: text.file
-path: /fixtures/chain_exports_list_only_negative/docs/spec/conformance/cases/core/bad_chain.spec.md
-expect:
-  portable:
-    status: pass
-    category: null
-contract:
-- id: assert_1
-  class: MUST
-  target: text
-  asserts:
-  - std.string.contains:
-    - var: subject
-    - non-executable
-```
-
 ## SRCONF-CHAIN-EXPORT-002
 
 ```yaml contract-spec

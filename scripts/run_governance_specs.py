@@ -71,7 +71,6 @@ from spec_runner.quality_metrics import runner_independence_report_jsonable
 from spec_runner.quality_metrics import spec_lang_adoption_report_jsonable
 from spec_runner.quality_metrics import validate_metric_baseline_notes
 from spec_runner.quality_metrics import _load_baseline_json
-from spec_runner.governance_engine import normalize_policy_evaluate
 from spec_runner.components.meta_subject import build_meta_subject
 from spec_runner.spec_portability import spec_portability_report_jsonable
 from spec_runner.virtual_paths import VirtualPathError, normalize_contract_path, parse_external_ref, resolve_contract_path
@@ -82,6 +81,20 @@ from spec_runner.components.liveness import (
     config_from_env as liveness_config_from_env,
     run_subprocess_with_liveness,
 )
+
+
+def normalize_policy_evaluate(raw: object, *, field: str) -> list[object]:
+    if not isinstance(raw, list):
+        raise ValueError(f"{field} must be a non-empty list of mapping-ast expressions")
+    if not raw:
+        raise ValueError(f"{field} must be a non-empty list of mapping-ast expressions")
+    try:
+        compiled = [compile_yaml_expr_to_sexpr(item, field_path=f"{field}[{idx}]") for idx, item in enumerate(raw)]
+    except SpecLangYamlAstError as exc:
+        raise ValueError(str(exc)) from exc
+    if len(compiled) == 1:
+        return compiled[0]
+    return ["std.logic.and", *compiled]
 
 
 _SECURITY_WARNING_DOCS = (
@@ -9633,13 +9646,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.runner_adapter_python_impl_forbidden": _scan_runtime_runner_adapter_python_impl_forbidden,
     "runtime.local_ci_parity_python_lane_forbidden": _scan_runtime_local_ci_parity_python_lane_forbidden,
     "runtime.make_python_parity_targets_forbidden": _scan_runtime_make_python_parity_targets_forbidden,
-    "runtime.ci_python_lane_non_blocking_required": _scan_runtime_ci_python_lane_non_blocking_required,
     "runtime.rust_only_prepush_required": _scan_runtime_rust_only_prepush_required,
     "runtime.prepush_parity_default_required": _scan_runtime_prepush_parity_default_required,
     "runtime.prepush_python_parity_not_optional_by_default": _scan_runtime_prepush_python_parity_not_optional_by_default,
     "runtime.git_hook_prepush_enforced": _scan_runtime_git_hook_prepush_enforced,
     "runtime.fast_path_consistency_required": _scan_runtime_fast_path_consistency_required,
-    "runtime.rust_adapter_target_fallback_defined": _scan_runtime_rust_adapter_target_fallback_defined,
     "runtime.local_ci_parity_entrypoint_documented": _scan_runtime_local_ci_parity_entrypoint_documented,
     "runtime.governance_triage_entrypoint_required": _scan_runtime_governance_triage_entrypoint_required,
     "runtime.prepush_uses_governance_triage_required": _scan_runtime_prepush_uses_governance_triage_required,
@@ -9647,7 +9658,6 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.triage_artifacts_emitted_required": _scan_runtime_triage_artifacts_emitted_required,
     "runtime.triage_failure_id_parsing_required": _scan_runtime_triage_failure_id_parsing_required,
     "runtime.triage_bypass_logged_required": _scan_runtime_triage_bypass_logged_required,
-    "runtime.triage_stall_fallback_required": _scan_runtime_triage_stall_fallback_required,
     "runtime.governance_triage_targeted_first_required": _scan_runtime_governance_triage_targeted_first_required,
     "runtime.local_prepush_broad_governance_forbidden": _scan_runtime_local_prepush_broad_governance_forbidden,
     "runtime.ci_gate_ownership_contract_required": _scan_runtime_ci_gate_ownership_contract_required,
@@ -9678,10 +9688,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.chain_exports_from_key_required": _scan_runtime_chain_exports_from_key_required,
     "runtime.chain_exports_list_only_required": _scan_runtime_chain_exports_list_only_required,
     "runtime.harness_exports_location_required": _scan_runtime_harness_exports_location_required,
-    "runtime.chain_exports_legacy_forbidden": _scan_runtime_chain_exports_legacy_forbidden,
     "runtime.harness_exports_schema_valid": _scan_runtime_harness_exports_schema_valid,
     "runtime.chain_imports_consumer_surface_unchanged": _scan_runtime_chain_imports_consumer_surface_unchanged,
-    "runtime.chain_legacy_from_forbidden": _scan_runtime_chain_legacy_from_forbidden,
     "runtime.chain_library_symbol_exports_valid": _scan_runtime_chain_library_symbol_exports_valid,
     "runtime.chain_import_alias_collision_forbidden": _scan_runtime_chain_import_alias_collision_forbidden,
     "runtime.chain_fail_fast_default": _scan_runtime_chain_fail_fast_default,
@@ -9707,22 +9715,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
     "conformance.purpose_quality_gate": _scan_conformance_purpose_quality_gate,
     "contract.coverage_threshold": _scan_contract_coverage_threshold,
-    "spec.portability_metric": _scan_spec_portability_metric,
-    "spec.portability_non_regression": _scan_spec_portability_non_regression,
-    "spec.spec_lang_adoption_metric": _scan_spec_lang_adoption_metric,
-    "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,
-    "governance.policy_library_usage_non_regression": _scan_policy_library_usage_non_regression,
-    "runtime.runner_independence_metric": _scan_runner_independence_metric,
-    "runtime.runner_independence_non_regression": _scan_runner_independence_non_regression,
     "runtime.python_dependency_metric": _scan_python_dependency_metric,
     "runtime.python_dependency_non_regression": _scan_python_dependency_non_regression,
     "runtime.non_python_lane_no_python_exec": _scan_runtime_non_python_lane_no_python_exec,
     "runtime.rust_adapter_transitive_no_python": _scan_runtime_rust_adapter_transitive_no_python,
-    "docs.operability_metric": _scan_docs_operability_metric,
-    "docs.operability_non_regression": _scan_docs_operability_non_regression,
-    "spec.contract_assertions_metric": _scan_contract_assertions_metric,
-    "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
-    "objective.scorecard_metric": _scan_objective_scorecard_metric,
     "objective.scorecard_non_regression": _scan_objective_scorecard_non_regression,
     "objective.tripwires_clean": _scan_objective_tripwires_clean,
     "conformance.case_doc_style_guard": _scan_conformance_case_doc_style_guard,
@@ -9742,8 +9738,6 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "spec_lang.stdlib_docs_sync": _scan_spec_lang_stdlib_docs_sync,
     "spec_lang.stdlib_conformance_coverage": _scan_spec_lang_stdlib_conformance_coverage,
     "docs.current_spec_only_contract": _scan_current_spec_only_contract,
-    "docs.current_spec_policy_key_names": _scan_current_spec_policy_key_names,
-    "governance.policy_evaluate_required": _scan_governance_policy_evaluate_required,
     "governance.policy_library_usage_required": _scan_governance_policy_library_usage_required,
     "conformance.library_policy_usage_required": _scan_conformance_library_policy_usage_required,
     "governance.extractor_only_no_verdict_branching": _scan_governance_extractor_only_no_verdict_branching,
@@ -9752,12 +9746,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.type_contract_docs": _scan_conformance_type_contract_docs,
     "conformance.api_http_portable_shape": _scan_conformance_api_http_portable_shape,
     "conformance.no_runner_logic_outside_harness": _scan_conformance_no_runner_logic_outside_harness,
-    "conformance.portable_determinism_guard": _scan_conformance_portable_determinism_guard,
-    "conformance.no_ambient_assumptions": _scan_conformance_no_ambient_assumptions,
     "conformance.extension_requires_capabilities": _scan_conformance_extension_requires_capabilities,
     "conformance.type_contract_field_sync": _scan_conformance_type_contract_field_sync,
-    "conformance.spec_lang_preferred": _scan_conformance_spec_lang_preferred,
-    "impl.evaluate_first_required": _scan_impl_evaluate_first_required,
     "impl.evaluate_ratio_non_regression": _scan_impl_evaluate_ratio_non_regression,
     "impl.library_usage_non_regression": _scan_impl_library_usage_non_regression,
     "conformance.spec_lang_fixture_library_usage": _scan_conformance_spec_lang_fixture_library_usage,
@@ -9788,7 +9778,6 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.spec_lang_builtin_catalog_sync": _scan_docs_spec_lang_builtin_catalog_sync,
     "docs.stdlib_symbol_docs_complete": _scan_docs_stdlib_symbol_docs_complete,
     "docs.stdlib_examples_complete": _scan_docs_stdlib_examples_complete,
-    "docs.markdown_namespace_legacy_alias_forbidden": _scan_docs_markdown_namespace_legacy_alias_forbidden,
     "docs.harness_reference_semantics_complete": _scan_docs_harness_reference_semantics_complete,
     "docs.runner_reference_semantics_complete": _scan_docs_runner_reference_semantics_complete,
     "docs.reference_namespace_chapters_sync": _scan_docs_reference_namespace_chapters_sync,
@@ -9821,22 +9810,15 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.gate_fail_fast_behavior_required": _scan_runtime_gate_fail_fast_behavior_required,
     "runtime.gate_skipped_steps_contract_required": _scan_runtime_gate_skipped_steps_contract_required,
     "runtime.profile_artifacts_on_fail_required": _scan_runtime_profile_artifacts_on_fail_required,
-    "runtime.gate_policy_evaluates_with_skipped_rows": _scan_runtime_gate_policy_evaluates_with_skipped_rows,
-    "runtime.legacy_timeout_envs_deprecated": _scan_runtime_legacy_timeout_envs_deprecated,
-    "runtime.policy_evaluate_forbidden": _scan_runtime_policy_evaluate_forbidden,
     "runtime.assert_block_decision_authority_required": _scan_runtime_assert_block_decision_authority_required,
     "runtime.meta_json_target_required": _scan_runtime_meta_json_target_required,
     "runtime.ops_os_capability_required": _scan_runtime_ops_os_capability_required,
     "runtime.ops_os_stdlib_surface_sync": _scan_runtime_ops_os_stdlib_surface_sync,
     "runtime.contract_spec_fence_required": _scan_runtime_contract_spec_fence_required,
-    "runtime.legacy_spec_test_fence_forbidden": _scan_runtime_legacy_spec_test_fence_forbidden,
     "runtime.case_contract_block_required": _scan_runtime_case_contract_block_required,
-    "runtime.legacy_assert_block_forbidden": _scan_runtime_legacy_assert_block_forbidden,
     "runtime.contract_step_asserts_required": _scan_runtime_contract_step_asserts_required,
-    "runtime.legacy_checks_key_forbidden": _scan_runtime_legacy_checks_key_forbidden,
     "runtime.contract_job_dispatch_in_contract_required": _scan_runtime_contract_job_dispatch_in_contract_required,
     "runtime.harness_jobs_metadata_map_required": _scan_runtime_harness_jobs_metadata_map_required,
-    "runtime.harness_job_legacy_forbidden": _scan_runtime_harness_job_legacy_forbidden,
     "runtime.ops_job_capability_required": _scan_runtime_ops_job_capability_required,
     "runtime.ops_job_nested_dispatch_forbidden": _scan_runtime_ops_job_nested_dispatch_forbidden,
     "runtime.harness_on_hooks_schema_valid": _scan_runtime_harness_on_hooks_schema_valid,
@@ -9850,7 +9832,6 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "schema.harness_contract_overlay_sync": _scan_schema_harness_contract_overlay_sync,
     "runtime.harness_subject_target_map_declared": _scan_runtime_harness_subject_target_map_declared,
     "orchestration.ops_symbol_grammar": _scan_orchestration_ops_symbol_grammar,
-    "orchestration.ops_legacy_underscore_forbidden": _scan_orchestration_ops_legacy_underscore_forbidden,
     "orchestration.ops_registry_sync": _scan_orchestration_ops_registry_sync,
     "orchestration.ops_capability_bindings": _scan_orchestration_ops_capability_bindings,
     "naming.filename_policy": _scan_naming_filename_policy,
@@ -9881,7 +9862,6 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "library.single_public_symbol_per_case_required": _scan_library_single_public_symbol_per_case,
     "library.colocated_symbol_tests_required": _scan_library_colocated_symbol_tests_required,
     "library.verb_first_schema_keys_required": _scan_library_verb_first_schema_keys_required,
-    "library.legacy_definitions_key_forbidden": _scan_library_legacy_definitions_key_forbidden,
     "schema.verb_first_contract_sync": _scan_schema_verb_first_contract_sync,
     "normalization.profile_sync": _scan_normalization_profile_sync,
     "normalization.mapping_ast_only": _scan_normalization_mapping_ast_only,

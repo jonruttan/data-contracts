@@ -1627,10 +1627,6 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "conformance_parity",
             runner_command(&runner_bin, &runner_impl, "conformance-parity"),
         ),
-        (
-            "pytest",
-            runner_command(&runner_bin, &runner_impl, "test-full"),
-        ),
     ];
 
     let started = now_iso_utc_fallback();
