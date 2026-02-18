@@ -49,12 +49,12 @@ profiles:
         kind: file_tokens
         path: /scripts/run_governance_specs.py
         must_contain:
-          - runtime.ci_gate_critical_first_required
+          - runtime.ci_gate_single_pass_critical_required
       - id: runtime.critical_governance_case_indexed
         kind: file_tokens
         path: /docs/spec/governance/cases/core/index.md
         must_contain:
-          - runtime_ci_gate_critical_first_required.spec.md
+          - runtime_ci_gate_single_pass_critical_required.spec.md
       - id: runtime.critical_gate_slo_sub_10s_required
         kind: slo_budget
         max_ms: 10000

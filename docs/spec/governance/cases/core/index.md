@@ -151,7 +151,6 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_chain_step_class_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_artifact_upload_paths_valid.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_gate_broad_governance_required.spec.md`
-- `/docs/spec/governance/cases/core/runtime_ci_gate_critical_first_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_gate_default_no_python_governance_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_gate_default_report_commands_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_gate_single_pass_critical_required.spec.md`

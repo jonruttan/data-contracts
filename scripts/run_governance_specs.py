@@ -7318,49 +7318,6 @@ def _scan_runtime_ci_gate_broad_governance_required(root: Path, *, harness: dict
     return violations
 
 
-def _scan_runtime_ci_gate_critical_first_required(root: Path, *, harness: dict | None = None) -> list[str]:
-    violations: list[str] = []
-    h = harness or {}
-    cfg = h.get("ci_gate_critical_first")
-    if not isinstance(cfg, dict):
-        return [
-            "runtime.ci_gate_critical_first_required requires harness.ci_gate_critical_first mapping in governance spec"
-        ]
-    files = cfg.get("files", [])
-    ordered_tokens = cfg.get("ordered_tokens", [])
-    if (
-        not isinstance(files, list)
-        or not files
-        or any(not isinstance(x, str) or not x.strip() for x in files)
-    ):
-        return ["harness.ci_gate_critical_first.files must be a non-empty list of non-empty strings"]
-    if (
-        not isinstance(ordered_tokens, list)
-        or len(ordered_tokens) < 2
-        or any(not isinstance(x, str) or not x.strip() for x in ordered_tokens)
-    ):
-        return ["harness.ci_gate_critical_first.ordered_tokens must be a list of at least two non-empty strings"]
-    for rel in files:
-        p = _join_contract_path(root, rel)
-        if not p.exists():
-            violations.append(f"{rel}:1: missing CI gate file for critical-first ordering check")
-            continue
-        text = p.read_text(encoding="utf-8")
-        last_idx = -1
-        for tok in ordered_tokens:
-            idx = text.find(tok)
-            if idx < 0:
-                violations.append(f"{rel}:1: missing CI gate critical-first token {tok}")
-                break
-            if idx < last_idx:
-                violations.append(
-                    f"{rel}:1: token order violation for critical-first gate sequence ({ordered_tokens[0]} -> {ordered_tokens[-1]})"
-                )
-                break
-            last_idx = idx
-    return violations
-
-
 def _scan_runtime_governance_prefix_selection_from_changed_paths(
     root: Path, *, harness: dict | None = None
 ) -> list[str]:
@@ -9043,7 +9000,6 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.governance_triage_targeted_first_required": _scan_runtime_governance_triage_targeted_first_required,
     "runtime.local_prepush_broad_governance_forbidden": _scan_runtime_local_prepush_broad_governance_forbidden,
     "runtime.ci_gate_broad_governance_required": _scan_runtime_ci_gate_broad_governance_required,
-    "runtime.ci_gate_critical_first_required": _scan_runtime_ci_gate_critical_first_required,
     "runtime.governance_prefix_selection_from_changed_paths": _scan_runtime_governance_prefix_selection_from_changed_paths,
     "runtime.governance_triage_artifact_contains_selection_metadata": _scan_runtime_governance_triage_artifact_contains_selection_metadata,
     "runtime.ci_artifact_upload_paths_valid": _scan_runtime_ci_artifact_upload_paths_valid,
