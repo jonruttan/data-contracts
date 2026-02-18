@@ -48,23 +48,23 @@ if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then
   ARM_BIN_ROOT="${ROOT_DIR}/target/${ARM_TARGET}/debug/spec_runner_cli"
   RUST_CLI_TARGET="${ARM_TARGET}"
   RUST_PREFERRED_TARGET="${ARM_TARGET}"
-  if [[ -x "${ARM_BIN_LOCAL}" ]]; then
-    RUST_CLI_BIN="${ARM_BIN_LOCAL}"
-  elif [[ -x "${ARM_BIN_ROOT}" ]]; then
+  if [[ -x "${ARM_BIN_ROOT}" ]]; then
     RUST_CLI_BIN="${ARM_BIN_ROOT}"
-  else
+  elif [[ -x "${ARM_BIN_LOCAL}" ]]; then
     RUST_CLI_BIN="${ARM_BIN_LOCAL}"
+  else
+    RUST_CLI_BIN="${ARM_BIN_ROOT}"
   fi
 fi
 
 # Default host-target binary resolution for non-ARM or when target-specific binary is unset.
 if [[ -z "${RUST_CLI_BIN}" ]]; then
-  if [[ -x "${HOST_BIN_LOCAL}" ]]; then
-    RUST_CLI_BIN="${HOST_BIN_LOCAL}"
-  elif [[ -x "${HOST_BIN_ROOT}" ]]; then
+  if [[ -x "${HOST_BIN_ROOT}" ]]; then
     RUST_CLI_BIN="${HOST_BIN_ROOT}"
-  else
+  elif [[ -x "${HOST_BIN_LOCAL}" ]]; then
     RUST_CLI_BIN="${HOST_BIN_LOCAL}"
+  else
+    RUST_CLI_BIN="${HOST_BIN_ROOT}"
   fi
 fi
 
@@ -97,12 +97,12 @@ resolve_rust_target_mode() {
   fi
   echo "[runner_adapter] preferred target missing; using host target (${RUST_CLI_TARGET} unavailable)." >&2
   RUST_CLI_TARGET=""
-  if [[ -x "${HOST_BIN_LOCAL}" ]]; then
-    RUST_CLI_BIN="${HOST_BIN_LOCAL}"
-  elif [[ -x "${HOST_BIN_ROOT}" ]]; then
+  if [[ -x "${HOST_BIN_ROOT}" ]]; then
     RUST_CLI_BIN="${HOST_BIN_ROOT}"
-  else
+  elif [[ -x "${HOST_BIN_LOCAL}" ]]; then
     RUST_CLI_BIN="${HOST_BIN_LOCAL}"
+  else
+    RUST_CLI_BIN="${HOST_BIN_ROOT}"
   fi
 }
 
@@ -116,14 +116,14 @@ ensure_rust_cli_bin() {
   if [[ -n "${RUST_CLI_TARGET}" ]]; then
     debug_log "building rust cli target=${RUST_CLI_TARGET}"
     cargo build --quiet --manifest-path "${RUST_CLI_MANIFEST}" --target "${RUST_CLI_TARGET}" || return 1
-    RUST_CLI_BIN="${ROOT_DIR}/scripts/rust/spec_runner_cli/target/${RUST_CLI_TARGET}/debug/spec_runner_cli"
+    RUST_CLI_BIN="${ROOT_DIR}/target/${RUST_CLI_TARGET}/debug/spec_runner_cli"
   else
     debug_log "building rust cli host-target"
     cargo build --quiet --manifest-path "${RUST_CLI_MANIFEST}" || return 1
-    if [[ -x "${HOST_BIN_LOCAL}" ]]; then
-      RUST_CLI_BIN="${HOST_BIN_LOCAL}"
-    elif [[ -x "${HOST_BIN_ROOT}" ]]; then
+    if [[ -x "${HOST_BIN_ROOT}" ]]; then
       RUST_CLI_BIN="${HOST_BIN_ROOT}"
+    elif [[ -x "${HOST_BIN_LOCAL}" ]]; then
+      RUST_CLI_BIN="${HOST_BIN_LOCAL}"
     else
       echo "ERROR: rust cli build completed but binary not found at expected host paths." >&2
       return 1

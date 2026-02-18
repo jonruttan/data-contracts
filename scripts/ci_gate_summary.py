@@ -156,11 +156,15 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
     broad_liveness_stall_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_STALL_MS", "5000"))
     broad_liveness_kill_grace_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_KILL_GRACE_MS", "1000"))
     broad_liveness_hard_cap_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS", "120000"))
-    return [
-        (
-            "governance_critical",
-            _runner_command(runner_bin, runner_impl, "critical-gate"),
-        ),
+    steps: list[tuple[str, list[str]]] = []
+    if not _env_bool("SPEC_CI_GATE_SKIP_CRITICAL", False):
+        steps.append(
+            (
+                "governance_critical",
+                _runner_command(runner_bin, runner_impl, "critical-gate"),
+            )
+        )
+    steps.extend([
         (
             "governance_broad",
             _runner_command_with_liveness(
@@ -203,7 +207,8 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
         ("conformance_purpose_md", _runner_command(runner_bin, runner_impl, "conformance-purpose-md")),
         ("conformance_parity", _runner_command(runner_bin, runner_impl, "conformance-parity")),
         ("pytest", _runner_command(runner_bin, runner_impl, "test-full")),
-    ]
+    ])
+    return steps
 
 
 def _run_command(command: list[str]) -> int:

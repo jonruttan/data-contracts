@@ -25,6 +25,34 @@ profiles:
           - critical-gate-summary.json
           - critical-gate-trace.json
           - critical-gate-summary.md
+      - id: runtime.critical_gate_invoked_first_in_ci_gate_sh
+        kind: file_ordered_tokens
+        path: /scripts/ci_gate.sh
+        ordered_tokens:
+          - critical-gate
+          - ci-gate-summary
+      - id: runtime.critical_ci_gate_step_order_python
+        kind: file_ordered_tokens
+        path: /scripts/ci_gate_summary.py
+        ordered_tokens:
+          - governance_critical
+          - governance_broad
+      - id: runtime.critical_ci_gate_step_order_rust
+        kind: file_ordered_tokens
+        path: /scripts/rust/spec_runner_cli/src/main.rs
+        ordered_tokens:
+          - governance_critical
+          - governance_broad
+      - id: runtime.critical_governance_check_registered
+        kind: file_tokens
+        path: /scripts/run_governance_specs.py
+        must_contain:
+          - runtime.ci_gate_critical_first_required
+      - id: runtime.critical_governance_case_indexed
+        kind: file_tokens
+        path: /docs/spec/governance/cases/core/index.md
+        must_contain:
+          - runtime_ci_gate_critical_first_required.spec.md
       - id: runtime.critical_gate_slo_sub_10s_required
         kind: slo_budget
         max_ms: 10000

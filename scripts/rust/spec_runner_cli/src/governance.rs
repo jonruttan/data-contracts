@@ -117,6 +117,46 @@ fn run_file_tokens(root: &Path, cfg: &serde_yaml::Mapping) -> (bool, Vec<String>
     (ok, details)
 }
 
+fn run_file_ordered_tokens(root: &Path, cfg: &serde_yaml::Mapping) -> (bool, Vec<String>) {
+    let path_raw = cfg
+        .get(&YamlValue::String("path".to_string()))
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    if path_raw.trim().is_empty() {
+        return (false, vec!["missing path".to_string()]);
+    }
+    let p = resolve(root, path_raw);
+    if !p.exists() {
+        return (false, vec![format!("missing file: {}", p.display())]);
+    }
+    let text = fs::read_to_string(&p).unwrap_or_default();
+    let ordered_tokens = yaml_str_list(cfg, "ordered_tokens");
+    if ordered_tokens.len() < 2 {
+        return (
+            false,
+            vec!["ordered_tokens must contain at least two entries".to_string()],
+        );
+    }
+    let mut details = Vec::<String>::new();
+    let mut ok = true;
+    let mut last_idx = 0usize;
+    let mut first = true;
+    for tok in ordered_tokens {
+        if let Some(found_idx) = text.find(&tok) {
+            if !first && found_idx < last_idx {
+                ok = false;
+                details.push(format!("token order violation: {tok}"));
+            }
+            last_idx = found_idx;
+            first = false;
+        } else {
+            ok = false;
+            details.push(format!("missing ordered token: {tok}"));
+        }
+    }
+    (ok, details)
+}
+
 fn run_manifest_non_empty(root: &Path, cfg: &serde_yaml::Mapping) -> (bool, Vec<String>) {
     let path_raw = cfg
         .get(&YamlValue::String("path".to_string()))
@@ -274,6 +314,7 @@ pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
         let c0 = Instant::now();
         let (ok, details) = match kind {
             "file_tokens" => run_file_tokens(root, &def),
+            "file_ordered_tokens" => run_file_ordered_tokens(root, &def),
             "manifest_non_empty" => run_manifest_non_empty(root, &def),
             _ => (false, vec![format!("unsupported check kind: {kind}")]),
         };
@@ -284,6 +325,8 @@ pub fn run_critical_gate_native(root: &Path, forwarded: &[String]) -> i32 {
             Some("contract.token_missing".to_string())
         } else if kind == "manifest_non_empty" {
             Some("manifest.empty".to_string())
+        } else if kind == "file_ordered_tokens" {
+            Some("contract.order_violation".to_string())
         } else {
             Some("check.unsupported".to_string())
         };

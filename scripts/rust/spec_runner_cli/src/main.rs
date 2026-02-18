@@ -934,12 +934,16 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         .unwrap_or_else(|_| "1000".to_string());
     let broad_liveness_hard_cap_ms =
         env::var("SPEC_CI_GOV_BROAD_LIVENESS_HARD_CAP_MS").unwrap_or_else(|_| "120000".to_string());
+    let skip_critical = env_bool("SPEC_CI_GATE_SKIP_CRITICAL", false);
 
-    let default_steps = vec![
-        (
+    let mut default_steps: Vec<(&str, Vec<String>)> = Vec::new();
+    if !skip_critical {
+        default_steps.push((
             "governance_critical",
             runner_command(&runner_bin, &runner_impl, "critical-gate"),
-        ),
+        ));
+    }
+    default_steps.extend(vec![
         (
             "governance_broad",
             runner_command_with_liveness(
@@ -1069,7 +1073,7 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "pytest",
             runner_command(&runner_bin, &runner_impl, "test-full"),
         ),
-    ];
+    ]);
 
     let started = now_iso_utc_fallback();
     let t0 = Instant::now();

@@ -11,6 +11,9 @@ if [[ -z "${SPEC_RUNNER_IMPL:-}" ]]; then
   SPEC_RUNNER_IMPL="rust"
 fi
 
+"${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" critical-gate
+
+export SPEC_CI_GATE_SKIP_CRITICAL=1
 "${SPEC_RUNNER_BIN}" ci-gate-summary \
   --runner-bin "${SPEC_RUNNER_BIN}" \
   --runner-impl "${SPEC_RUNNER_IMPL}" \
