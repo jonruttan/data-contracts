@@ -77,3 +77,39 @@ contract:
     - {var: subject}
     - selected zero cases
 ```
+
+## SRPY-SCRIPT-GOV-004
+
+```yaml contract-spec
+id: SRPY-SCRIPT-GOV-004
+title: governance runtime registers required docgen quality checks
+type: contract.check
+harness:
+  check:
+    profile: text.file
+    config:
+      path: /spec_runner/governance_runtime.py
+contract:
+- id: assert_1
+  class: MUST
+  target: text
+  asserts:
+  - std.string.contains:
+    - {var: subject}
+    - docs.stdlib_symbol_docs_complete
+  - std.string.contains:
+    - {var: subject}
+    - docs.stdlib_examples_complete
+  - std.string.contains:
+    - {var: subject}
+    - docs.harness_reference_semantics_complete
+  - std.string.contains:
+    - {var: subject}
+    - docs.runner_reference_semantics_complete
+  - std.string.contains:
+    - {var: subject}
+    - docs.reference_namespace_chapters_sync
+  - std.string.contains:
+    - {var: subject}
+    - docs.docgen_quality_score_threshold
+```

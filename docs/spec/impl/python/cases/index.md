@@ -4,6 +4,7 @@
 - `/docs/spec/impl/python/cases/docs_lint.spec.md`
 - `/docs/spec/impl/python/cases/schema_registry_report.spec.md`
 - `/docs/spec/impl/python/cases/script_ci_and_parity.spec.md`
+- `/docs/spec/impl/python/cases/script_catalog_generators.spec.md`
 - `/docs/spec/impl/python/cases/script_docs_generate.spec.md`
 - `/docs/spec/impl/python/cases/script_governance_runner.spec.md`
 - `/docs/spec/impl/python/cases/script_normalization.spec.md`

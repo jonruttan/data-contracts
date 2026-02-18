@@ -112,6 +112,38 @@ def split_library_cases_per_symbol_main(argv: list[str] | None = None) -> int:
     return _run_script_main("scripts/split_library_cases_per_symbol.py", argv)
 
 
+def generate_governance_check_catalog_main(argv: list[str] | None = None) -> int:
+    return _run_script_main("scripts/generate_governance_check_catalog.py", argv)
+
+
+def generate_harness_type_catalog_main(argv: list[str] | None = None) -> int:
+    return _run_script_main("scripts/generate_harness_type_catalog.py", argv)
+
+
+def generate_metrics_field_catalog_main(argv: list[str] | None = None) -> int:
+    return _run_script_main("scripts/generate_metrics_field_catalog.py", argv)
+
+
+def generate_policy_rule_catalog_main(argv: list[str] | None = None) -> int:
+    return _run_script_main("scripts/generate_policy_rule_catalog.py", argv)
+
+
+def generate_runner_api_catalog_main(argv: list[str] | None = None) -> int:
+    return _run_script_main("scripts/generate_runner_api_catalog.py", argv)
+
+
+def generate_spec_lang_builtin_catalog_main(argv: list[str] | None = None) -> int:
+    return _run_script_main("scripts/generate_spec_lang_builtin_catalog.py", argv)
+
+
+def generate_spec_schema_field_catalog_main(argv: list[str] | None = None) -> int:
+    return _run_script_main("scripts/generate_spec_schema_field_catalog.py", argv)
+
+
+def generate_traceability_catalog_main(argv: list[str] | None = None) -> int:
+    return _run_script_main("scripts/generate_traceability_catalog.py", argv)
+
+
 def run_governance_specs_main(argv: list[str] | None = None) -> int:
     from spec_runner.governance_runtime import main as _main
 
