@@ -7002,6 +7002,32 @@ def _scan_runtime_git_hook_prepush_enforced(root: Path, *, harness: dict | None 
     return violations
 
 
+def _scan_runtime_git_hook_fast_path_routing_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("git_hook_fast_path")
+    if not isinstance(cfg, dict):
+        return ["runtime.git_hook_fast_path_routing_required requires harness.git_hook_fast_path mapping in governance spec"]
+    hook_path = str(cfg.get("hook_path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not hook_path:
+        return ["harness.git_hook_fast_path.hook_path must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.git_hook_fast_path.required_tokens must be a non-empty list of non-empty strings"]
+    hook = _join_contract_path(root, hook_path)
+    if not hook.exists():
+        return [f"{hook_path}:1: missing managed pre-push hook for fast-path routing check"]
+    text = hook.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{hook_path}:1: missing pre-push fast-path routing token {tok}")
+    return violations
+
+
 def _scan_runtime_rust_adapter_target_fallback_defined(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -9063,6 +9089,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.prepush_parity_default_required": _scan_runtime_prepush_parity_default_required,
     "runtime.prepush_python_parity_not_optional_by_default": _scan_runtime_prepush_python_parity_not_optional_by_default,
     "runtime.git_hook_prepush_enforced": _scan_runtime_git_hook_prepush_enforced,
+    "runtime.git_hook_fast_path_routing_required": _scan_runtime_git_hook_fast_path_routing_required,
     "runtime.rust_adapter_target_fallback_defined": _scan_runtime_rust_adapter_target_fallback_defined,
     "runtime.local_ci_parity_entrypoint_documented": _scan_runtime_local_ci_parity_entrypoint_documented,
     "runtime.governance_triage_entrypoint_required": _scan_runtime_governance_triage_entrypoint_required,

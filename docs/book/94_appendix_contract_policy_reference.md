@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 246
-- must_count: 227
+- rule_count: 247
+- must_count: 228
 - should_count: 12
 - must_not_count: 7
-- active_count: 246
+- active_count: 247
 - deprecated_count: 0
 - removed_count: 0
 
@@ -229,6 +229,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `MUST` | `governance` | `runtime.gate.policy` | 4 | `active` |
 | `RUNTIME_GATE_SCRIPT_ONLY_FAST_PATH_REQUIRED` | `MUST` | `governance` | `runtime.gate.script_only_fast_path` | 3 | `active` |
 | `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `MUST` | `governance` | `runtime.gate.summary_contract` | 4 | `active` |
+| `RUNTIME_GIT_HOOK_FAST_PATH_ROUTING_REQUIRED` | `MUST` | `governance` | `runtime.prepush.hook_fast_path` | 2 | `active` |
 | `RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | `MUST` | `governance` | `runtime.prepush.hook` | 4 | `active` |
 | `RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS` | `MUST` | `governance` | `runtime.governance.triage_prefix_selection` | 2 | `active` |
 | `RUNTIME_GOVERNANCE_TRIAGE_ARTIFACT_SELECTION_METADATA_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_artifact_metadata` | 2 | `active` |

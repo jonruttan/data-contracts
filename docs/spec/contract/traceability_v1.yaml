@@ -1256,6 +1256,19 @@ links:
   - Makefile
   - docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md
   notes: Managed pre-push hook and installer enforce local parity checks before push.
+- rule_id: RUNTIME_GIT_HOOK_FAST_PATH_ROUTING_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GIT_HOOK_FAST_PATH_ROUTING_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - .githooks/pre-push
+  - docs/spec/governance/cases/core/runtime_git_hook_fast_path_routing_required.spec.md
+  notes: Managed pre-push hook routes check_sets-only and gate-script-only edits to fast local parity path.
 - rule_id: RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
   contract_refs:

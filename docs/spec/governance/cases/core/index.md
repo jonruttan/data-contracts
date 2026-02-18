@@ -165,6 +165,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_gate_script_only_fast_path_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_gate_skipped_steps_contract_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md`
+- `/docs/spec/governance/cases/core/runtime_git_hook_fast_path_routing_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_governance_prefix_selection_from_changed_paths.spec.md`
 - `/docs/spec/governance/cases/core/runtime_governance_triage_artifact_contains_selection_metadata.spec.md`
 - `/docs/spec/governance/cases/core/runtime_governance_triage_entrypoint_required.spec.md`

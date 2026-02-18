@@ -1300,6 +1300,20 @@ rules:
   - scripts/install_git_hooks.sh
   - Makefile
   - docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md
+- id: RUNTIME_GIT_HOOK_FAST_PATH_ROUTING_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.prepush.hook_fast_path
+  norm: MUST
+  requirement: managed_prepush_hook_must_route_check_sets_and_gate_script_only_edits_to_fast_path
+  description: 'Repository-managed pre-push hook must route check_sets-only and gate-script-only edits to the local fast parity path before broad fallback.
+
+    '
+  rationale: Preserves low-latency local push feedback for known low-risk edit classes.
+  risk_if_violated: Hook regressions reintroduce avoidable full-gate latency during gate script and check-set maintenance.
+  references:
+  - .githooks/pre-push
+  - docs/spec/governance/cases/core/runtime_git_hook_fast_path_routing_required.spec.md
 - id: RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
   introduced_in: v1
   scope: governance
