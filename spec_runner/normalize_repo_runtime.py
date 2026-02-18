@@ -13,6 +13,7 @@ import yaml
 
 from spec_runner.codecs import load_external_cases
 from spec_runner.normalize_docs_layout import main as normalize_docs_layout_main
+from spec_runner.spec_lang_format import main as spec_lang_format_main
 from spec_runner.split_library_cases_per_symbol import main as split_library_cases_per_symbol_main
 
 
@@ -636,7 +637,6 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     mode_flag = "--check" if ns.check else "--write"
-    style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
     changed_path_mode = bool(explicit_paths)
 
     issues: list[str] = []
@@ -656,7 +656,7 @@ def main(argv: list[str] | None = None) -> int:
                 line = line.strip()
                 if line:
                     issues.append(f"docs/spec:1: NORMALIZATION_LIBRARY_SINGLE_PUBLIC_SYMBOL: {line}")
-    style_code, style_out = _run(style_cmd)
+    style_code, style_out = _run_inproc(spec_lang_format_main, [mode_flag, *scope_paths])
     if style_code != 0:
         for line in style_out.splitlines():
             line = line.strip()

@@ -421,8 +421,14 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
         ("schema_registry_build", _runner_command(runner_bin, runner_impl, "schema-registry-build")),
         ("schema_registry_check", _runner_command(runner_bin, runner_impl, "schema-registry-check")),
         ("schema_docs_check", _runner_command(runner_bin, runner_impl, "schema-docs-check")),
-        ("spec_lang_lint_full", [*py, "scripts/spec_lang_lint.py", "--cases", "docs/spec"]),
-        ("spec_lang_format_check_full", [*py, "scripts/spec_lang_format.py", "--check", "docs/spec"]),
+        (
+            "spec_lang_lint_full",
+            [*py, "-m", "spec_runner.spec_lang_commands", "spec-lang-lint", "--cases", "docs/spec"],
+        ),
+        (
+            "spec_lang_format_check_full",
+            [*py, "-m", "spec_runner.spec_lang_commands", "spec-lang-format", "--check", "docs/spec"],
+        ),
         ("ruff", _runner_command(runner_bin, runner_impl, "lint")),
         ("mypy", _runner_command(runner_bin, runner_impl, "typecheck")),
         ("compileall", _runner_command(runner_bin, runner_impl, "compilecheck")),

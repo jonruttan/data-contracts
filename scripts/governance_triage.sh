@@ -203,7 +203,7 @@ select_prefixes_from_changed_paths() {
         if ! add_unique "normalization." "${selected[@]-}"; then selected+=("normalization."); fi
         if ! add_unique "schema." "${selected[@]-}"; then selected+=("schema."); fi
         ;;
-      spec_runner/*|scripts/runner_adapter.sh|scripts/python/runner_adapter.sh|scripts/rust/runner_adapter.sh|scripts/governance_triage.sh|scripts/ci_gate_summary.py|scripts/ci_gate.sh)
+      spec_runner/*|scripts/runner_adapter.sh|scripts/python/runner_adapter.sh|scripts/rust/runner_adapter.sh|scripts/governance_triage.sh|scripts/ci_gate.sh)
         if ! add_unique "runtime." "${selected[@]-}"; then selected+=("runtime."); fi
         ;;
       docs/spec/libraries/*)

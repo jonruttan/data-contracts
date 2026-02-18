@@ -149,14 +149,14 @@ lane_rust_core() {
     echo "[local-ci-parity] skip normalize-check (no matching changes)"
   fi
 
-  if paths_match_prefixes "docs/spec/" "spec_runner/spec_lang_lint.py" "spec_runner/spec_lang_hygiene.py" "spec_runner/spec_lang_format.py" "scripts/spec_lang_lint.py" "scripts/spec_lang_format.py" "scripts/evaluate_style.py" "spec_runner/spec_lang_commands.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "docs/spec/" "spec_runner/spec_lang_lint.py" "spec_runner/spec_lang_hygiene.py" "spec_runner/spec_lang_format.py" "spec_runner/spec_lang_commands.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
     if paths_all_in_list "docs/spec/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip spec-lang-lint (check_sets-only change)"
     elif is_fast_path_script_only_change; then
       echo "[local-ci-parity] skip spec-lang-lint (gate-script-only change)"
     else
-      run_step spec-lang-lint-full "${SPEC_CI_PYTHON}" scripts/spec_lang_lint.py --cases docs/spec
-      run_step spec-lang-format-check-full "${SPEC_CI_PYTHON}" scripts/spec_lang_format.py --check docs/spec
+      run_step spec-lang-lint-full "${SPEC_CI_PYTHON}" -m spec_runner.spec_lang_commands spec-lang-lint --cases docs/spec
+      run_step spec-lang-format-check-full "${SPEC_CI_PYTHON}" -m spec_runner.spec_lang_commands spec-lang-format --check docs/spec
     fi
   else
     echo "[local-ci-parity] skip spec-lang-lint (no matching changes)"
