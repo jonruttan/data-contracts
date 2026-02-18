@@ -1,25 +1,23 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-004
+## SRGOV-RUNTIME-TRIAGE-011
 
 ```yaml spec-test
-id: SRGOV-RUNTIME-TRIAGE-004
-title: triage artifacts are emitted by triage and gate flows
-purpose: Ensures triage artifacts are produced and referenced by governance-triage and ci-gate-summary.
+id: SRGOV-RUNTIME-TRIAGE-011
+title: governance triage selects prefixes from changed paths
 type: governance.check
-check: runtime.triage_artifacts_emitted_required
+purpose: Ensures triage auto mode derives targeted check prefixes from changed paths before
+  fallback prefixes.
+check: runtime.governance_prefix_selection_from_changed_paths
 harness:
   root: .
-  triage_artifacts:
-    files:
-    - /scripts/governance_triage.sh
-    - /scripts/ci_gate_summary.py
+  triage_prefix_selection:
+    path: /scripts/governance_triage.sh
     required_tokens:
-    - governance-triage.json
-    - failing_check_ids
-    - failing_check_prefixes
-    - selected_prefixes
-    - selection_source
+    - collect_changed_paths
+    - select_prefixes_from_changed_paths
+    - selection_source="changed_paths"
+    - CHECK_PREFIXES
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

@@ -1,25 +1,22 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-004
+## SRGOV-RUNTIME-TRIAGE-009
 
 ```yaml spec-test
-id: SRGOV-RUNTIME-TRIAGE-004
-title: triage artifacts are emitted by triage and gate flows
-purpose: Ensures triage artifacts are produced and referenced by governance-triage and ci-gate-summary.
+id: SRGOV-RUNTIME-TRIAGE-009
+title: local prepush does not require broad governance
 type: governance.check
-check: runtime.triage_artifacts_emitted_required
+purpose: Ensures local parity flow keeps broad governance out of default prepush path.
+check: runtime.local_prepush_broad_governance_forbidden
 harness:
   root: .
-  triage_artifacts:
-    files:
-    - /scripts/governance_triage.sh
-    - /scripts/ci_gate_summary.py
+  local_prepush_broad_forbidden:
+    path: /scripts/local_ci_parity.sh
     required_tokens:
-    - governance-triage.json
-    - failing_check_ids
-    - failing_check_prefixes
-    - selected_prefixes
-    - selection_source
+    - SPEC_GOV_TRIAGE_REQUIRE_BROAD=0
+    - governance-triage
+    forbidden_tokens:
+    - run_step governance "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" governance
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

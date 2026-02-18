@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 226
-- checks_with_cases: 220
+- check_count: 232
+- checks_with_cases: 226
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -202,6 +202,8 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.chain_shared_context_required` | 1 | true |
 | `runtime.chain_state_template_resolution` | 1 | true |
 | `runtime.chain_step_class_required` | 1 | true |
+| `runtime.ci_artifact_upload_paths_valid` | 1 | true |
+| `runtime.ci_gate_broad_governance_required` | 1 | true |
 | `runtime.cigate_uses_governance_triage_required` | 1 | true |
 | `runtime.config_literals` | 1 | true |
 | `runtime.domain_library_preferred_for_fs_ops` | 1 | true |
@@ -211,13 +213,17 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.gate_policy_evaluates_with_skipped_rows` | 1 | true |
 | `runtime.gate_skipped_steps_contract_required` | 1 | true |
 | `runtime.git_hook_prepush_enforced` | 1 | true |
+| `runtime.governance_prefix_selection_from_changed_paths` | 1 | true |
+| `runtime.governance_triage_artifact_contains_selection_metadata` | 1 | true |
 | `runtime.governance_triage_entrypoint_required` | 1 | true |
+| `runtime.governance_triage_targeted_first_required` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.legacy_timeout_envs_deprecated` | 1 | true |
 | `runtime.liveness_hard_cap_token_emitted` | 1 | true |
 | `runtime.liveness_stall_token_emitted` | 1 | true |
 | `runtime.liveness_watchdog_contract_valid` | 1 | true |
 | `runtime.local_ci_parity_entrypoint_documented` | 1 | true |
+| `runtime.local_prepush_broad_governance_forbidden` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |

@@ -1370,6 +1370,85 @@ links:
   - .githooks/pre-push
   - docs/spec/governance/cases/core/runtime_triage_bypass_logged_required.spec.md
   notes: Emergency bypass remains explicit and logged.
+- rule_id: RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/cases/core/runtime_governance_triage_targeted_first_required.spec.md
+  notes: Auto triage defaults to targeted-first with broad-first explicit mode.
+- rule_id: RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/local_ci_parity.sh
+  - docs/spec/governance/cases/core/runtime_local_prepush_broad_governance_forbidden.spec.md
+  notes: Local prepush keeps broad governance out of default flow.
+- rule_id: RUNTIME_CI_GATE_BROAD_GOVERNANCE_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_CI_GATE_BROAD_GOVERNANCE_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - docs/spec/governance/cases/core/runtime_ci_gate_broad_governance_required.spec.md
+  notes: CI gate runs targeted governance first and mandatory broad governance second.
+- rule_id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/cases/core/runtime_governance_prefix_selection_from_changed_paths.spec.md
+  notes: Triage resolves changed-path prefixes before fallback prefix sets.
+- rule_id: RUNTIME_GOVERNANCE_TRIAGE_ARTIFACT_SELECTION_METADATA_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_TRIAGE_ARTIFACT_SELECTION_METADATA_REQUIRED
+  contract_refs:
+  - docs/spec/contract/24_runtime_profiling_contract.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/cases/core/runtime_governance_triage_artifact_contains_selection_metadata.spec.md
+  notes: Triage artifact includes selected prefixes, source, and broad-required flags.
+- rule_id: RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - .github/workflows/ci.yml
+  - docs/spec/governance/cases/core/runtime_ci_artifact_upload_paths_valid.spec.md
+  notes: CI workflow uses recursive .artifacts upload paths so diagnostics are retained.
 - rule_id: RUNTIME_SCOPE_BOUNDED_FOR_V1
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_SCOPE_BOUNDED_FOR_V1
   contract_refs:

@@ -12,6 +12,7 @@ if [[ -z "${SPEC_RUNNER_IMPL:-}" ]]; then
 fi
 
 MODE="${SPEC_PREPUSH_MODE:-parity}"
+PARITY_T0="$(date +%s)"
 
 run_step() {
   local name="$1"
@@ -57,6 +58,8 @@ paths_match_prefixes() {
 }
 
 lane_rust_core() {
+  export SPEC_GOV_TRIAGE_REQUIRE_BROAD=0
+  export SPEC_GOV_TRIAGE_MODE_DEFAULT="${SPEC_GOV_TRIAGE_MODE_DEFAULT:-targeted-first}"
   run_step normalize-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" normalize-check
   run_step governance-triage ./scripts/governance_triage.sh --mode auto --impl "${SPEC_RUNNER_IMPL}"
 
@@ -86,6 +89,8 @@ lane_rust_core() {
 }
 
 lane_python_parity() {
+  export SPEC_GOV_TRIAGE_REQUIRE_BROAD=0
+  export SPEC_GOV_TRIAGE_MODE_DEFAULT="${SPEC_GOV_TRIAGE_MODE_DEFAULT:-targeted-first}"
   run_step python-governance-triage ./scripts/governance_triage.sh --mode auto --impl python
   run_step python-conformance-parity "${SPEC_RUNNER_BIN}" --impl python conformance-parity
 }
@@ -105,4 +110,10 @@ case "${MODE}" in
     ;;
 esac
 
+PARITY_T1="$(date +%s)"
+PARITY_ELAPSED="$((PARITY_T1 - PARITY_T0))"
+echo "[local-ci-parity] elapsed_seconds=${PARITY_ELAPSED}"
+if [[ "${PARITY_ELAPSED}" -gt 120 ]]; then
+  echo "[local-ci-parity] WARNING: exceeded target SLO (120s)"
+fi
 echo "[local-ci-parity] PASS"

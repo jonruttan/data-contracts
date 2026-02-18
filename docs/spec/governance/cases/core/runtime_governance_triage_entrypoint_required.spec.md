@@ -14,7 +14,7 @@ harness:
     path: /scripts/governance_triage.sh
     required_tokens:
     - --mode auto
-    - --mode auto|targeted
+    - --mode auto|targeted|broad-first
     - --from-failures
     - --check-prefix
     - --check-id

@@ -1337,7 +1337,7 @@ rules:
   applies_to: runtime.governance.triage_entrypoint
   norm: MUST
   requirement: governance_triage_entrypoint_must_exist_with_required_modes
-  description: 'Canonical governance triage entrypoint must exist with auto/targeted modes and deterministic triage artifact outputs.
+  description: 'Canonical governance triage entrypoint must exist with auto/targeted/broad-first modes and deterministic triage artifact outputs.
 
     '
   rationale: Enforces failure-ID-first triage as the canonical debugging path.
@@ -1419,6 +1419,91 @@ rules:
   references:
   - .githooks/pre-push
   - docs/spec/governance/cases/core/runtime_triage_bypass_logged_required.spec.md
+- id: RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.governance.triage_mode_default
+  norm: MUST
+  requirement: triage_auto_mode_defaults_to_targeted_first
+  description: 'Governance triage auto mode must default to targeted-first selection and expose broad-first as explicit opt-in.
+
+    '
+  rationale: Reduces turnaround latency by avoiding broad-first reruns in local workflows.
+  risk_if_violated: Local prepush cycles remain slow and regress into broad-first waiting.
+  references:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/cases/core/runtime_governance_triage_targeted_first_required.spec.md
+- id: RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.prepush.governance_broad_default
+  norm: MUST
+  requirement: local_prepush_must_not_require_broad_governance_by_default
+  description: 'Local prepush parity flow must not require broad governance in default mode.
+
+    '
+  rationale: Keeps local turnaround fast while preserving CI broad safety.
+  risk_if_violated: Developers wait for broad checks before receiving actionable failures.
+  references:
+  - scripts/local_ci_parity.sh
+  - docs/spec/governance/cases/core/runtime_local_prepush_broad_governance_forbidden.spec.md
+- id: RUNTIME_CI_GATE_BROAD_GOVERNANCE_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.ci_gate.governance_broad_required
+  norm: MUST
+  requirement: ci_gate_must_execute_targeted_then_broad_governance
+  description: 'CI gate summary flow must execute targeted governance before mandatory broad governance.
+
+    '
+  rationale: Preserves full safety coverage in merge gating while retaining fast failure-ID feedback.
+  risk_if_violated: CI may miss broad regressions or fail to provide fast targeted context.
+  references:
+  - scripts/ci_gate_summary.py
+  - scripts/rust/spec_runner_cli/src/main.rs
+  - docs/spec/governance/cases/core/runtime_ci_gate_broad_governance_required.spec.md
+- id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.governance.triage_prefix_selection
+  norm: MUST
+  requirement: triage_prefix_selection_must_use_changed_paths_before_fallback
+  description: 'Governance triage must derive targeted prefixes from changed paths before fallback prefix sets.
+
+    '
+  rationale: Narrows first-run scope to relevant checks for faster turnaround.
+  risk_if_violated: Triage executes unnecessary checks and degrades developer feedback loops.
+  references:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/cases/core/runtime_governance_prefix_selection_from_changed_paths.spec.md
+- id: RUNTIME_GOVERNANCE_TRIAGE_ARTIFACT_SELECTION_METADATA_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.governance.triage_artifact_metadata
+  norm: MUST
+  requirement: triage_artifacts_must_include_selection_metadata
+  description: 'Governance triage artifacts must include selection source and selected prefixes metadata.
+
+    '
+  rationale: Enables deterministic diagnosis of why a targeted set ran.
+  risk_if_violated: Reproduction and debugging of targeted runs become ambiguous.
+  references:
+  - scripts/governance_triage.sh
+  - docs/spec/governance/cases/core/runtime_governance_triage_artifact_contains_selection_metadata.spec.md
+- id: RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.ci.artifact_upload_paths
+  norm: MUST
+  requirement: ci_workflow_uploads_artifacts_from_recursive_artifacts_path
+  description: 'CI workflows must upload artifact outputs from recursive .artifacts paths for failure diagnosis.
+
+    '
+  rationale: Ensures triage and profiling artifacts are available when CI fails.
+  risk_if_violated: CI failures lose diagnostic payloads and require reruns.
+  references:
+  - .github/workflows/ci.yml
+  - docs/spec/governance/cases/core/runtime_ci_artifact_upload_paths_valid.spec.md
 - id: RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
   introduced_in: v1
   scope: governance

@@ -1,25 +1,21 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-004
+## SRGOV-RUNTIME-TRIAGE-013
 
 ```yaml spec-test
-id: SRGOV-RUNTIME-TRIAGE-004
-title: triage artifacts are emitted by triage and gate flows
-purpose: Ensures triage artifacts are produced and referenced by governance-triage and ci-gate-summary.
+id: SRGOV-RUNTIME-TRIAGE-013
+title: ci workflow uploads artifacts from canonical .artifacts path
+purpose: Ensures CI uploads gate and triage artifacts using a recursive .artifacts path.
 type: governance.check
-check: runtime.triage_artifacts_emitted_required
+check: runtime.ci_artifact_upload_paths_valid
 harness:
   root: .
-  triage_artifacts:
-    files:
-    - /scripts/governance_triage.sh
-    - /scripts/ci_gate_summary.py
+  ci_artifact_upload:
+    path: /.github/workflows/ci.yml
     required_tokens:
-    - governance-triage.json
-    - failing_check_ids
-    - failing_check_prefixes
-    - selected_prefixes
-    - selection_source
+    - actions/upload-artifact@v4
+    - .artifacts/**
+    - 'if: always()'
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

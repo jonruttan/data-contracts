@@ -1,25 +1,23 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-004
+## SRGOV-RUNTIME-TRIAGE-012
 
 ```yaml spec-test
-id: SRGOV-RUNTIME-TRIAGE-004
-title: triage artifacts are emitted by triage and gate flows
-purpose: Ensures triage artifacts are produced and referenced by governance-triage and ci-gate-summary.
+id: SRGOV-RUNTIME-TRIAGE-012
+title: triage artifact includes selection metadata
 type: governance.check
-check: runtime.triage_artifacts_emitted_required
+purpose: Ensures governance triage artifacts include selection_source and selected_prefixes
+  metadata.
+check: runtime.governance_triage_artifact_contains_selection_metadata
 harness:
   root: .
-  triage_artifacts:
-    files:
-    - /scripts/governance_triage.sh
-    - /scripts/ci_gate_summary.py
+  triage_artifact_selection_metadata:
+    path: /scripts/governance_triage.sh
     required_tokens:
-    - governance-triage.json
-    - failing_check_ids
-    - failing_check_prefixes
-    - selected_prefixes
     - selection_source
+    - selected_prefixes
+    - broad_required
+    - governance-triage-summary.md
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}

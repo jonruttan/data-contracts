@@ -45,14 +45,15 @@ Required local pre-push gate:
 make prepush
 ```
 
-`make prepush` runs the fast CI-critical checks (`normalize-check`, `governance`,
-`governance-heavy`, `docs-generate-check`, and strict perf-smoke compare).
+`make prepush` runs the fast CI-critical checks (`normalize-check`, targeted
+governance triage, `governance-heavy`, `docs-generate-check`, and strict perf-smoke compare).
 `governance-heavy` and `docs-generate-check` are path-scoped to relevant
 changes.
 It is Rust-default (`SPEC_RUNNER_IMPL=rust`) and now includes Python parity by
 default.
-Governance in this flow is triage-first (`scripts/governance_triage.sh --mode auto`)
-to avoid broad hanging reruns and to emit deterministic triage artifacts.
+Governance in this flow is targeted-first triage (`scripts/governance_triage.sh --mode auto`)
+to avoid broad-first latency and to emit deterministic triage artifacts.
+Broad governance remains mandatory in CI merge-gate (`ci-gate-summary`).
 
 Fast local opt-out mode (skips Python parity lane):
 

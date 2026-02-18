@@ -1,24 +1,23 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-004
+## SRGOV-RUNTIME-TRIAGE-008
 
 ```yaml spec-test
-id: SRGOV-RUNTIME-TRIAGE-004
-title: triage artifacts are emitted by triage and gate flows
-purpose: Ensures triage artifacts are produced and referenced by governance-triage and ci-gate-summary.
+id: SRGOV-RUNTIME-TRIAGE-008
+title: governance triage auto mode is targeted-first by default
+purpose: Ensures triage auto mode resolves to targeted-first and exposes broad-first as an
+  explicit mode.
 type: governance.check
-check: runtime.triage_artifacts_emitted_required
+check: runtime.governance_triage_targeted_first_required
 harness:
   root: .
-  triage_artifacts:
-    files:
-    - /scripts/governance_triage.sh
-    - /scripts/ci_gate_summary.py
+  triage_targeted_first:
+    path: /scripts/governance_triage.sh
     required_tokens:
-    - governance-triage.json
-    - failing_check_ids
-    - failing_check_prefixes
-    - selected_prefixes
+    - TRIAGE_MODE_DEFAULT
+    - targeted-first
+    - broad-first
+    - resolve_targeted_prefixes
     - selection_source
   policy_evaluate:
   - call:

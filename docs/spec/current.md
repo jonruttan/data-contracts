@@ -26,11 +26,13 @@ Notes:
   `SPEC_RUNNER_PROFILE_ON_FAIL`) that emit `/.artifacts/run-trace.json` and
   `/.artifacts/run-trace-summary.md` for failing runs.
 - Governance in prepush and ci-gate now uses failure-ID-first triage through
-  `scripts/governance_triage.sh` (`--mode auto|targeted`) with deterministic
+  `scripts/governance_triage.sh` (`--mode auto|targeted|broad-first`) with deterministic
   artifacts: `/.artifacts/governance-triage.json` and
   `/.artifacts/governance-triage-summary.md`.
-- Triage fallback is automatic on broad governance failure/stall and uses
-  check-id parsing plus deterministic check-prefix mapping from
+- Triage auto mode is targeted-first by default (changed-path prefix selection
+  before fallback), while CI merge gate runs targeted then mandatory broad
+  governance for full safety.
+- Triage fallback uses check-id parsing plus deterministic check-prefix mapping from
   `/docs/spec/governance/check_prefix_map_v1.yaml`.
 - Local drift prevention is parity-default: `make prepush` routes to
   `scripts/local_ci_parity.sh` and runs rust core plus python parity lanes by

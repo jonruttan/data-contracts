@@ -8,13 +8,17 @@ TRIAGE_ENABLED="${SPEC_GOV_TRIAGE_ENABLED:-1}"
 TRIAGE_MAX_RETRIES="${SPEC_GOV_TRIAGE_MAX_RETRIES:-1}"
 TRIAGE_FALLBACK_PREFIXES_RAW="${SPEC_GOV_TRIAGE_FALLBACK_PREFIXES:-docs.,normalization.,runtime.}"
 TRIAGE_PROFILE_LEVEL="${SPEC_GOV_TRIAGE_PROFILE_LEVEL:-basic}"
+TRIAGE_MODE_DEFAULT="${SPEC_GOV_TRIAGE_MODE_DEFAULT:-targeted-first}"
+TRIAGE_BROAD_ON_TARGETED_PASS="${SPEC_GOV_TRIAGE_BROAD_ON_TARGETED_PASS:-0}"
+TRIAGE_REQUIRE_BROAD="${SPEC_GOV_TRIAGE_REQUIRE_BROAD:-0}"
 BROAD_TIMEOUT_SECONDS="${SPEC_GOV_TRIAGE_STALL_TIMEOUT_SECONDS:-90}"
 TRIAGE_LIVENESS_LEVEL="${SPEC_GOV_TRIAGE_LIVENESS_LEVEL:-basic}"
 TRIAGE_LIVENESS_STALL_MS="${SPEC_GOV_TRIAGE_LIVENESS_STALL_MS:-30000}"
 TRIAGE_LIVENESS_KILL_GRACE_MS="${SPEC_GOV_TRIAGE_LIVENESS_KILL_GRACE_MS:-5000}"
-TARGETED_TIMEOUT_SECONDS="${SPEC_GOV_TRIAGE_TARGETED_TIMEOUT_SECONDS:-60}"
+TARGETED_TIMEOUT_SECONDS="${SPEC_GOV_TRIAGE_TARGETED_TIMEOUT_SECONDS:-0}"
 TIMEOUT_BIN="${SPEC_GOV_TRIAGE_TIMEOUT_BIN:-}"
 HEARTBEAT_SECONDS="${SPEC_GOV_TRIAGE_HEARTBEAT_SECONDS:-10}"
+TRIAGE_HARD_CAP_MS="${SPEC_GOV_TRIAGE_HARD_CAP_MS:-1800000}"
 
 MODE="auto"
 IMPL="${SPEC_RUNNER_IMPL:-rust}"
@@ -28,7 +32,7 @@ usage() {
 Usage: scripts/governance_triage.sh [options]
 
 Options:
-  --mode auto|targeted
+  --mode auto|targeted|broad-first
   --impl rust|python
   --check-id <id>            Repeatable (targeted mode)
   --check-prefix <prefix>    Repeatable (targeted mode)
@@ -130,9 +134,9 @@ if [[ -z "${TIMEOUT_BIN}" ]]; then
 fi
 
 case "${MODE}" in
-  auto|targeted) ;;
+  auto|targeted|broad-first) ;;
   *)
-    echo "ERROR: --mode must be auto|targeted (got '${MODE}')" >&2
+    echo "ERROR: --mode must be auto|targeted|broad-first (got '${MODE}')" >&2
     exit 2
     ;;
 esac
@@ -152,6 +156,70 @@ add_unique() {
     [[ "${cur}" == "${needle}" ]] && return 0
   done
   return 1
+}
+
+as_bool() {
+  local raw
+  raw="$(echo "${1:-}" | tr '[:upper:]' '[:lower:]')"
+  case "${raw}" in
+    1|true|yes|on) echo "true" ;;
+    *) echo "false" ;;
+  esac
+}
+
+collect_changed_paths() {
+  local upstream=""
+  local lines=()
+  if upstream="$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null)"; then
+    while IFS= read -r line; do
+      [[ -n "${line}" ]] && lines+=("${line}")
+    done < <(git diff --name-only "${upstream}...HEAD")
+  fi
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && lines+=("${line}")
+  done < <(git diff --name-only)
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && lines+=("${line}")
+  done < <(git diff --name-only --cached)
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && lines+=("${line}")
+  done < <(git ls-files --others --exclude-standard)
+  if [[ "${#lines[@]}" -eq 0 ]]; then
+    return 0
+  fi
+  printf '%s\n' "${lines[@]}" | awk '!seen[$0]++'
+}
+
+select_prefixes_from_changed_paths() {
+  local path
+  local selected=()
+  while IFS= read -r path; do
+    [[ -z "${path}" ]] && continue
+    case "${path}" in
+      docs/spec/governance/*|docs/book/*|docs/spec/contract/*|docs/spec/current.md|README.md)
+        if ! add_unique "docs." "${selected[@]-}"; then selected+=("docs."); fi
+        ;;
+      docs/spec/schema/*|scripts/normalize_repo.py)
+        if ! add_unique "normalization." "${selected[@]-}"; then selected+=("normalization."); fi
+        if ! add_unique "schema." "${selected[@]-}"; then selected+=("schema."); fi
+        ;;
+      spec_runner/*|scripts/runner_adapter.sh|scripts/python/runner_adapter.sh|scripts/rust/runner_adapter.sh|scripts/governance_triage.sh|scripts/ci_gate_summary.py|scripts/ci_gate.sh)
+        if ! add_unique "runtime." "${selected[@]-}"; then selected+=("runtime."); fi
+        ;;
+      docs/spec/libraries/*)
+        if ! add_unique "library." "${selected[@]-}"; then selected+=("library."); fi
+        ;;
+      docs/spec/conformance/*)
+        if ! add_unique "conformance." "${selected[@]-}"; then selected+=("conformance."); fi
+        ;;
+      docs/spec/schema/registry/*)
+        if ! add_unique "schema." "${selected[@]-}"; then selected+=("schema."); fi
+        ;;
+    esac
+  done < <(collect_changed_paths || true)
+  if [[ "${#selected[@]}" -gt 0 ]]; then
+    printf '%s\n' "${selected[@]}"
+  fi
 }
 
 declare -a MAP_PATTERNS=()
@@ -264,7 +332,11 @@ run_governance() {
   if [[ -n "${TRIAGE_LIVENESS_KILL_GRACE_MS}" ]]; then
     cmd+=(--liveness-kill-grace-ms "${TRIAGE_LIVENESS_KILL_GRACE_MS}")
   fi
-  cmd+=(--liveness-hard-cap-ms "$((BROAD_TIMEOUT_SECONDS * 1000))")
+  local hard_cap_ms="${TRIAGE_HARD_CAP_MS}"
+  if [[ "${timeout_seconds}" =~ ^[0-9]+$ ]] && [[ "${timeout_seconds}" -gt 0 ]]; then
+    hard_cap_ms="$((timeout_seconds * 1000))"
+  fi
+  cmd+=(--liveness-hard-cap-ms "${hard_cap_ms}")
   cmd+=("$@")
   echo "[governance-triage] ${label}: ${cmd[*]}"
   local rc=0
@@ -289,14 +361,47 @@ run_governance() {
 }
 
 triage_attempted=true
-triage_mode="broad"
+triage_mode="targeted-first"
 triage_result="not_run"
 stall_detected=false
 stall_phase=""
 broad_exit_code=0
 targeted_exit_code=0
 final_exit=0
+selection_source="none"
+broad_required="$(as_bool "${TRIAGE_REQUIRE_BROAD}")"
+declare -a selected_prefixes=()
 declare -a targeted_cmd_parts=()
+
+resolve_targeted_prefixes() {
+  local source="${1:-auto}"
+  if [[ "${#CHECK_PREFIXES[@]}" -gt 0 ]]; then
+    selection_source="explicit"
+    selected_prefixes=("${CHECK_PREFIXES[@]}")
+    return 0
+  fi
+  build_prefixes_from_ids
+  if [[ "${#CHECK_PREFIXES[@]}" -gt 0 ]]; then
+    selection_source="error_ids"
+    selected_prefixes=("${CHECK_PREFIXES[@]}")
+    return 0
+  fi
+  if [[ "${source}" == "auto" ]]; then
+    selected_prefixes=()
+    while IFS= read -r p; do
+      [[ -n "${p}" ]] || continue
+      selected_prefixes+=("${p}")
+    done < <(select_prefixes_from_changed_paths || true)
+    if [[ "${#selected_prefixes[@]}" -gt 0 ]]; then
+      selection_source="changed_paths"
+      CHECK_PREFIXES=("${selected_prefixes[@]}")
+      return 0
+    fi
+  fi
+  selected_prefixes=("${FALLBACK_PREFIXES[@]}")
+  CHECK_PREFIXES=("${selected_prefixes[@]}")
+  selection_source="fallback"
+}
 
 if [[ "${TRIAGE_ENABLED}" != "1" && "${TRIAGE_ENABLED,,}" != "true" ]]; then
   triage_attempted=false
@@ -305,20 +410,23 @@ if [[ "${TRIAGE_ENABLED}" != "1" && "${TRIAGE_ENABLED,,}" != "true" ]]; then
   triage_result=$([[ "${broad_exit_code}" -eq 0 ]] && echo "pass" || echo "fail")
   final_exit="${broad_exit_code}"
 else
+  if [[ "${MODE}" == "auto" && "${TRIAGE_MODE_DEFAULT}" == "broad-first" ]]; then
+    MODE="broad-first"
+  fi
   if [[ "${MODE}" == "targeted" ]]; then
     triage_mode="targeted"
-    build_prefixes_from_ids
-    if [[ "${#CHECK_PREFIXES[@]}" -eq 0 ]]; then
-      CHECK_PREFIXES=("${FALLBACK_PREFIXES[@]}")
-    fi
+    resolve_targeted_prefixes "targeted"
     local_args=()
     for p in "${CHECK_PREFIXES[@]}"; do
       local_args+=(--check-prefix "${p}")
     done
+    targeted_cmd_parts=("${local_args[@]}")
     run_governance "targeted-governance" "${TARGETED_TIMEOUT_SECONDS}" "${local_args[@]}" || targeted_exit_code=$?
+    parse_error_ids_from_output "${TMP_OUT}"
     triage_result=$([[ "${targeted_exit_code}" -eq 0 ]] && echo "pass" || echo "fail")
     final_exit="${targeted_exit_code}"
-  else
+  elif [[ "${MODE}" == "broad-first" ]]; then
+    triage_mode="broad-first"
     run_governance "broad-governance" "${BROAD_TIMEOUT_SECONDS}" || broad_exit_code=$?
     parse_error_ids_from_output "${TMP_OUT}"
     build_prefixes_from_ids
@@ -327,17 +435,11 @@ else
       stall_phase="governance.broad"
     fi
     if [[ "${broad_exit_code}" -eq 0 ]]; then
-      triage_mode="broad"
       triage_result="pass"
       final_exit=0
     else
+      resolve_targeted_prefixes "targeted"
       triage_mode="both"
-      if [[ "${#CHECK_PREFIXES[@]}" -eq 0 ]]; then
-        CHECK_PREFIXES=("${FALLBACK_PREFIXES[@]}")
-        if [[ "${stall_detected}" == "true" && "${#CHECK_PREFIXES[@]}" -gt 1 ]]; then
-          CHECK_PREFIXES=("${CHECK_PREFIXES[0]}")
-        fi
-      fi
       retry=0
       while [[ "${retry}" -lt "${TRIAGE_MAX_RETRIES}" ]]; do
         retry=$((retry + 1))
@@ -360,15 +462,56 @@ else
         final_exit="${targeted_exit_code:-1}"
       fi
     fi
+  else
+    triage_mode="targeted-first"
+    resolve_targeted_prefixes "auto"
+    retry=0
+    while [[ "${retry}" -lt "${TRIAGE_MAX_RETRIES}" ]]; do
+      retry=$((retry + 1))
+      local_args=()
+      for p in "${CHECK_PREFIXES[@]}"; do
+        local_args+=(--check-prefix "${p}")
+      done
+      targeted_cmd_parts=("${local_args[@]}")
+      run_governance "targeted-governance retry=${retry}" "${TARGETED_TIMEOUT_SECONDS}" "${local_args[@]}" || targeted_exit_code=$?
+      parse_error_ids_from_output "${TMP_OUT}"
+      if [[ "${targeted_exit_code}" -eq 0 ]]; then
+        break
+      fi
+    done
+    if [[ "${targeted_exit_code}" -ne 0 ]]; then
+      triage_result="fail"
+      final_exit="${targeted_exit_code}"
+    else
+      if [[ "${broad_required}" == "true" || "$(as_bool "${TRIAGE_BROAD_ON_TARGETED_PASS}")" == "true" ]]; then
+        triage_mode="both"
+        run_governance "broad-governance" "${BROAD_TIMEOUT_SECONDS}" || broad_exit_code=$?
+        if [[ "${broad_exit_code}" -eq 124 ]]; then
+          stall_detected=true
+          stall_phase="governance.broad"
+        fi
+        if [[ "${broad_exit_code}" -eq 0 ]]; then
+          triage_result="pass"
+          final_exit=0
+        else
+          triage_result=$([[ "${stall_detected}" == "true" ]] && echo "stalled" || echo "fail")
+          final_exit="${broad_exit_code}"
+        fi
+      else
+        triage_mode="targeted-first"
+        triage_result="pass"
+        final_exit=0
+      fi
+    fi
   fi
 fi
 
 python3 - <<'PY' \
   "${TRIAGE_JSON}" "${triage_attempted}" "${triage_mode}" "${triage_result}" \
   "${stall_detected}" "${stall_phase}" "${broad_exit_code}" "${targeted_exit_code}" \
-  "${final_exit}" "${TRIAGE_MD}" "${MODE}" "${IMPL}" \
+  "${final_exit}" "${TRIAGE_MD}" "${MODE}" "${IMPL}" "${selection_source}" "${broad_required}" \
   "$(printf '%s\n' "${CHECK_IDS[@]-}")" "$(printf '%s\n' "${CHECK_PREFIXES[@]-}")" \
-  "$(printf '%s\n' "${targeted_cmd_parts[@]-}")"
+  "$(printf '%s\n' "${targeted_cmd_parts[@]-}")" "$(printf '%s\n' "${selected_prefixes[@]-}")"
 import json, sys
 from pathlib import Path
 
@@ -384,9 +527,12 @@ final_exit = int(sys.argv[9] or "0")
 md_path = Path(sys.argv[10])
 mode = sys.argv[11]
 impl = sys.argv[12]
-ids = [x for x in (sys.argv[13] or "").splitlines() if x.strip()]
-prefixes = [x for x in (sys.argv[14] or "").splitlines() if x.strip()]
-targeted_parts = [x for x in (sys.argv[15] or "").splitlines() if x.strip()]
+selection_source = sys.argv[13]
+broad_required = sys.argv[14].lower() == "true"
+ids = [x for x in (sys.argv[15] or "").splitlines() if x.strip()]
+prefixes = [x for x in (sys.argv[16] or "").splitlines() if x.strip()]
+targeted_parts = [x for x in (sys.argv[17] or "").splitlines() if x.strip()]
+selected_prefixes = [x for x in (sys.argv[18] or "").splitlines() if x.strip()]
 
 payload = {
     "version": 1,
@@ -403,6 +549,9 @@ payload = {
     "final_exit_code": final_exit,
     "impl": impl,
     "requested_mode": mode,
+    "selection_source": selection_source,
+    "selected_prefixes": selected_prefixes,
+    "broad_required": broad_required,
 }
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -415,6 +564,8 @@ summary = [
     f"- triage_result: `{triage_result}`",
     f"- stall_detected: `{str(stall_detected).lower()}`",
     f"- stall_phase: `{stall_phase or ''}`",
+    f"- selection_source: `{selection_source}`",
+    f"- broad_required: `{str(broad_required).lower()}`",
     "",
     "## Failing Check IDs",
     "",

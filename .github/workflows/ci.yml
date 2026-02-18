@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ci-artifacts
-          path: .artifacts/
+          path: .artifacts/**
           if-no-files-found: ignore
 
   python-parity-lane:
@@ -94,7 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: python-parity-artifacts
-          path: .artifacts/
+          path: .artifacts/**
           if-no-files-found: ignore
 
   core-gate-rust-adapter:
@@ -156,5 +156,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: rust-core-gate-artifacts
-          path: .artifacts/
+          path: .artifacts/**
           if-no-files-found: ignore

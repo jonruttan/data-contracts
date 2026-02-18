@@ -44,7 +44,7 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 
 ## Triage Flow
 
-1. Run `make prepush` (parity-default path includes triage-first governance).
+1. Run `make prepush` (parity-default path includes targeted-first governance triage).
 2. If governance fails/stalls, read `/.artifacts/governance-triage-summary.md`.
 3. Run the suggested targeted command from that summary.
 4. Re-run `make prepush`; only then run full gate if needed.
@@ -67,7 +67,7 @@ Provide a deterministic triage flow for docs/spec/governance failures.
 | `normalization.*` | canonical formatting/path drift | `./scripts/runner_adapter.sh normalize-check` |
 | `runtime.*` | adapter/runner contract drift | `./scripts/runner_adapter.sh governance` |
 | `runtime.api_http_*` | `api.http` verbs/CORS/scenario drift | `./scripts/runner_adapter.sh governance` |
-| `SRGOV-*` mixed failure set | broad run failed/stalled; targeted retry needed | `./scripts/governance_triage.sh --mode auto --impl rust` |
+| `SRGOV-*` mixed failure set | targeted run failed; inspect selected prefixes and retry | `./scripts/governance_triage.sh --mode auto --impl rust` |
 
 ## API HTTP Troubleshooting
 
@@ -94,6 +94,7 @@ First command for governance hang/long-cycle issues:
 
 - `./scripts/governance_triage.sh --mode auto --impl rust`
 - Review `/.artifacts/governance-triage-summary.md`
+- CI merge gate still performs mandatory broad governance after targeted pass (`ci-gate-summary`)
 
 ## Liveness Controls
 

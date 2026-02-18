@@ -122,7 +122,7 @@ def _runner_command(runner_bin: str, runner_impl: str, subcommand: str) -> list[
 def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[str]]]:
     return [
         (
-            "governance",
+            "governance_targeted",
             [
                 "./scripts/governance_triage.sh",
                 "--mode",
@@ -146,6 +146,10 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
                 "--triage-liveness-kill-grace-ms",
                 str(os.environ.get("SPEC_GOV_TRIAGE_LIVENESS_KILL_GRACE_MS", "5000")),
             ],
+        ),
+        (
+            "governance_broad",
+            _runner_command(runner_bin, runner_impl, "governance"),
         ),
         ("governance_heavy", _runner_command(runner_bin, runner_impl, "governance-heavy")),
         ("docs_generate_check", _runner_command(runner_bin, runner_impl, "docs-generate-check")),
@@ -205,6 +209,9 @@ def _read_governance_triage_metadata() -> dict[str, object]:
         "failing_check_prefixes",
         "stall_detected",
         "stall_phase",
+        "selection_source",
+        "selected_prefixes",
+        "broad_required",
     )
     out: dict[str, object] = {}
     for key in fields:
@@ -266,8 +273,12 @@ def _run_steps(
                 "duration_ms": duration_ms,
             }
         )
-        if name == "governance":
+        if name == "governance_targeted":
             rows[-1].update(_read_governance_triage_metadata())
+            rows[-1]["triage_phase"] = "targeted"
+        elif name == "governance_broad":
+            rows[-1]["triage_phase"] = "broad"
+            rows[-1]["broad_required"] = True
         events.append(
             {
                 "ts_ns": time.monotonic_ns(),

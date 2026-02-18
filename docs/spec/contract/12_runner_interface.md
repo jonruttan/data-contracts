@@ -106,12 +106,17 @@ Governance triage controls (prepush + ci-gate-summary governance step):
 - `SPEC_GOV_TRIAGE_MAX_RETRIES` (default `1`)
 - `SPEC_GOV_TRIAGE_FALLBACK_PREFIXES` (default `docs.,normalization.,runtime.`)
 - `SPEC_GOV_TRIAGE_PROFILE_LEVEL` (default `basic`)
+- `SPEC_GOV_TRIAGE_MODE_DEFAULT` (`targeted-first|broad-first`, default `targeted-first`)
+- `SPEC_GOV_TRIAGE_BROAD_ON_TARGETED_PASS` (`1|0`, default `0`)
+- `SPEC_GOV_TRIAGE_REQUIRE_BROAD` (`1|0`, default `0` local prepush, required in CI merge gate)
 - `SPEC_GOV_TRIAGE_STALL_TIMEOUT_SECONDS` (default `90`)
 
 Governance triage entrypoint:
 
-- `scripts/governance_triage.sh --mode auto|targeted`
+- `scripts/governance_triage.sh --mode auto|targeted|broad-first`
 - targeted selection supports `--check-id`, `--check-prefix`, `--from-failures`
+- auto mode is targeted-first by default and uses changed-path prefix selection before fallback prefixes
+- CI gate must run targeted governance then mandatory broad governance before merge pass
 
 Liveness controls (governance-first):
 

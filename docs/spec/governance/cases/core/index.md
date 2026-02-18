@@ -149,6 +149,8 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_chain_shared_context_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_state_template_resolution.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_step_class_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_ci_artifact_upload_paths_valid.spec.md`
+- `/docs/spec/governance/cases/core/runtime_ci_gate_broad_governance_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_config_literals.spec.md`
 - `/docs/spec/governance/cases/core/runtime_domain_library_preferred_for_fs_ops.spec.md`
@@ -158,13 +160,17 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_gate_policy_evaluates_with_skipped_rows.spec.md`
 - `/docs/spec/governance/cases/core/runtime_gate_skipped_steps_contract_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md`
+- `/docs/spec/governance/cases/core/runtime_governance_prefix_selection_from_changed_paths.spec.md`
+- `/docs/spec/governance/cases/core/runtime_governance_triage_artifact_contains_selection_metadata.spec.md`
 - `/docs/spec/governance/cases/core/runtime_governance_triage_entrypoint_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_governance_triage_targeted_first_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
 - `/docs/spec/governance/cases/core/runtime_legacy_timeout_envs_deprecated.spec.md`
 - `/docs/spec/governance/cases/core/runtime_liveness_hard_cap_token_emitted.spec.md`
 - `/docs/spec/governance/cases/core/runtime_liveness_stall_token_emitted.spec.md`
 - `/docs/spec/governance/cases/core/runtime_liveness_watchdog_contract_valid.spec.md`
 - `/docs/spec/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md`
+- `/docs/spec/governance/cases/core/runtime_local_prepush_broad_governance_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
 - `/docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md`
 - `/docs/spec/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md`

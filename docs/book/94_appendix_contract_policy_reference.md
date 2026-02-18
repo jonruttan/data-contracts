@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 237
-- must_count: 218
+- rule_count: 243
+- must_count: 224
 - should_count: 12
 - must_not_count: 7
-- active_count: 237
+- active_count: 243
 - deprecated_count: 0
 - removed_count: 0
 
@@ -220,14 +220,20 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `runtime.runner_independence.metric_non_regression` | 3 | `active` |
 | `RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | `MUST` | `implementation` | `runtime.assertion_execution` | 2 | `active` |
 | `RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.governance_step` | 3 | `active` |
+| `RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID` | `MUST` | `governance` | `runtime.ci.artifact_upload_paths` | 2 | `active` |
+| `RUNTIME_CI_GATE_BROAD_GOVERNANCE_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.governance_broad_required` | 3 | `active` |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `implementation` | `runtime.assertion_decisions` | 2 | `active` |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `MUST` | `governance` | `runtime.default_gate.adapter` | 3 | `active` |
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `MUST` | `governance` | `runtime.gate.fail_fast` | 3 | `active` |
 | `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `MUST` | `governance` | `runtime.gate.policy` | 4 | `active` |
 | `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `MUST` | `governance` | `runtime.gate.summary_contract` | 4 | `active` |
 | `RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | `MUST` | `governance` | `runtime.prepush.hook` | 4 | `active` |
+| `RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS` | `MUST` | `governance` | `runtime.governance.triage_prefix_selection` | 2 | `active` |
+| `RUNTIME_GOVERNANCE_TRIAGE_ARTIFACT_SELECTION_METADATA_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_artifact_metadata` | 2 | `active` |
 | `RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_entrypoint` | 3 | `active` |
+| `RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_mode_default` | 2 | `active` |
 | `RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | `MUST` | `governance` | `docs.local_ci_parity` | 5 | `active` |
+| `RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN` | `MUST` | `governance` | `runtime.prepush.governance_broad_default` | 2 | `active` |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `MUST` | `governance` | `runtime.non_python_lanes.exec_tokens` | 2 | `active` |
 | `RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.prepush.governance_step` | 2 | `active` |
 | `RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | `MUST` | `governance` | `runtime.prepush.default_lane` | 4 | `active` |

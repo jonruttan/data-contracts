@@ -820,6 +820,9 @@ fn read_governance_triage_metadata(root: &Path) -> Value {
                     "failing_check_prefixes",
                     "stall_detected",
                     "stall_phase",
+                    "selection_source",
+                    "selected_prefixes",
+                    "broad_required",
                 ] {
                     if let Some(value) = obj.get(key) {
                         out.insert(key.to_string(), value.clone());
@@ -917,7 +920,7 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
 
     let default_steps = vec![
         (
-            "governance",
+            "governance_targeted",
             vec![
                 "./scripts/governance_triage.sh".to_string(),
                 "--mode".to_string(),
@@ -948,6 +951,10 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
                 env::var("SPEC_GOV_TRIAGE_LIVENESS_KILL_GRACE_MS")
                     .unwrap_or_else(|_| "5000".to_string()),
             ],
+        ),
+        (
+            "governance_broad",
+            runner_command(&runner_bin, &runner_impl, "governance"),
         ),
         (
             "governance_heavy",
@@ -1121,12 +1128,20 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "exit_code": code,
             "duration_ms": duration_ms,
         });
-        if name == "governance" {
+        if name == "governance_targeted" {
             let triage_meta = read_governance_triage_metadata(root);
             if let (Some(dst), Some(src)) = (step_row.as_object_mut(), triage_meta.as_object()) {
                 for (k, v) in src {
                     dst.insert(k.clone(), v.clone());
                 }
+            }
+            if let Some(dst) = step_row.as_object_mut() {
+                dst.insert("triage_phase".to_string(), Value::String("targeted".to_string()));
+            }
+        } else if name == "governance_broad" {
+            if let Some(dst) = step_row.as_object_mut() {
+                dst.insert("triage_phase".to_string(), Value::String("broad".to_string()));
+                dst.insert("broad_required".to_string(), Value::Bool(true));
             }
         }
         steps.push(step_row);

@@ -7230,6 +7230,168 @@ def _scan_runtime_triage_stall_fallback_required(root: Path, *, harness: dict | 
     return violations
 
 
+def _scan_runtime_governance_triage_targeted_first_required(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("triage_targeted_first")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.governance_triage_targeted_first_required requires harness.triage_targeted_first mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.triage_targeted_first.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.triage_targeted_first.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing governance triage script for targeted-first check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing targeted-first token {tok}")
+    return violations
+
+
+def _scan_runtime_local_prepush_broad_governance_forbidden(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("local_prepush_broad_forbidden")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.local_prepush_broad_governance_forbidden requires harness.local_prepush_broad_forbidden mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not path:
+        return ["harness.local_prepush_broad_forbidden.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.local_prepush_broad_forbidden.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.local_prepush_broad_forbidden.forbidden_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing local prepush script for broad-governance check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing local prepush token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{path}:1: forbidden local prepush token present {tok}")
+    return violations
+
+
+def _scan_runtime_ci_gate_broad_governance_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("ci_gate_broad_required")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.ci_gate_broad_governance_required requires harness.ci_gate_broad_required mapping in governance spec"
+        ]
+    files = cfg.get("files", [])
+    required_tokens = cfg.get("required_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.ci_gate_broad_required.files must be a non-empty list of non-empty strings"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.ci_gate_broad_required.required_tokens must be a list of non-empty strings"]
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing CI gate file for broad-governance check")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing CI gate broad-governance token {tok}")
+    return violations
+
+
+def _scan_runtime_governance_prefix_selection_from_changed_paths(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("triage_prefix_selection")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.governance_prefix_selection_from_changed_paths requires harness.triage_prefix_selection mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.triage_prefix_selection.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.triage_prefix_selection.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing governance triage script for changed-path selection check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing changed-path selection token {tok}")
+    return violations
+
+
+def _scan_runtime_governance_triage_artifact_contains_selection_metadata(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("triage_artifact_selection_metadata")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.governance_triage_artifact_contains_selection_metadata requires harness.triage_artifact_selection_metadata mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.triage_artifact_selection_metadata.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.triage_artifact_selection_metadata.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing governance triage script for artifact metadata check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing triage artifact metadata token {tok}")
+    return violations
+
+
+def _scan_runtime_ci_artifact_upload_paths_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("ci_artifact_upload")
+    if not isinstance(cfg, dict):
+        return ["runtime.ci_artifact_upload_paths_valid requires harness.ci_artifact_upload mapping in governance spec"]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.ci_artifact_upload.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.ci_artifact_upload.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing workflow file for artifact upload path check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing artifact upload token {tok}")
+    return violations
+
+
 def _scan_runtime_rust_adapter_no_delegate(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -8642,6 +8804,12 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.triage_failure_id_parsing_required": _scan_runtime_triage_failure_id_parsing_required,
     "runtime.triage_bypass_logged_required": _scan_runtime_triage_bypass_logged_required,
     "runtime.triage_stall_fallback_required": _scan_runtime_triage_stall_fallback_required,
+    "runtime.governance_triage_targeted_first_required": _scan_runtime_governance_triage_targeted_first_required,
+    "runtime.local_prepush_broad_governance_forbidden": _scan_runtime_local_prepush_broad_governance_forbidden,
+    "runtime.ci_gate_broad_governance_required": _scan_runtime_ci_gate_broad_governance_required,
+    "runtime.governance_prefix_selection_from_changed_paths": _scan_runtime_governance_prefix_selection_from_changed_paths,
+    "runtime.governance_triage_artifact_contains_selection_metadata": _scan_runtime_governance_triage_artifact_contains_selection_metadata,
+    "runtime.ci_artifact_upload_paths_valid": _scan_runtime_ci_artifact_upload_paths_valid,
     "runtime.public_runner_entrypoint_single": _scan_runtime_public_runner_entrypoint_single,
     "runtime.public_runner_default_rust": _scan_runtime_public_runner_default_rust,
     "runtime.python_lane_explicit_opt_in": _scan_runtime_python_lane_explicit_opt_in,
