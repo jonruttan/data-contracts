@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 244
-- must_count: 225
+- rule_count: 245
+- must_count: 226
 - should_count: 12
 - must_not_count: 7
-- active_count: 244
+- active_count: 245
 - deprecated_count: 0
 - removed_count: 0
 
@@ -221,6 +221,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | `MUST` | `implementation` | `runtime.assertion_execution` | 2 | `active` |
 | `RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.governance_step` | 3 | `active` |
 | `RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID` | `MUST` | `governance` | `runtime.ci.artifact_upload_paths` | 2 | `active` |
+| `RUNTIME_CI_GATE_CHECK_SETS_FAST_PATH_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.check_sets_fast_path` | 2 | `active` |
 | `RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED` | `MUST` | `governance` | `runtime.ci_gate.ownership_contract` | 4 | `active` |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `implementation` | `runtime.assertion_decisions` | 2 | `active` |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `MUST` | `governance` | `runtime.default_gate.adapter` | 3 | `active` |

@@ -1409,6 +1409,19 @@ links:
   - scripts/local_ci_parity.sh
   - docs/spec/governance/cases/core/runtime_local_prepush_check_sets_fast_path_required.spec.md
   notes: Local prepush includes check_sets-only fast path that skips normalize and docs generate checks.
+- rule_id: RUNTIME_CI_GATE_CHECK_SETS_FAST_PATH_REQUIRED
+  policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_CI_GATE_CHECK_SETS_FAST_PATH_REQUIRED
+  contract_refs:
+  - docs/spec/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
+  - tests/test_contract_governance_unit.py
+  implementation_refs:
+  - scripts/ci_gate.sh
+  - docs/spec/governance/cases/core/runtime_ci_gate_check_sets_fast_path_required.spec.md
+  notes: Local ci-gate invocation fast-path delegates check_sets-only edits to local parity while CI stays on full path.
 - rule_id: RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED
   contract_refs:

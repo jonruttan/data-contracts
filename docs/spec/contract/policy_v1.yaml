@@ -1461,6 +1461,20 @@ rules:
   references:
   - scripts/local_ci_parity.sh
   - docs/spec/governance/cases/core/runtime_local_prepush_check_sets_fast_path_required.spec.md
+- id: RUNTIME_CI_GATE_CHECK_SETS_FAST_PATH_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.ci_gate.check_sets_fast_path
+  norm: MUST
+  requirement: local_ci_gate_invocation_must_delegate_to_local_parity_for_check_sets_only_edits
+  description: 'Local ci_gate.sh invocation must short-circuit to local_ci_parity.sh for check_sets-only edits, guarded away from CI lanes.
+
+    '
+  rationale: Keeps manual local gate runs aligned with the optimized prepush feedback loop.
+  risk_if_violated: Local operator runs pay avoidable full-gate cost for check-set manifest maintenance edits.
+  references:
+  - scripts/ci_gate.sh
+  - docs/spec/governance/cases/core/runtime_ci_gate_check_sets_fast_path_required.spec.md
 - id: RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED
   introduced_in: v1
   scope: governance

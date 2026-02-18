@@ -7318,6 +7318,36 @@ def _scan_runtime_local_prepush_check_sets_fast_path_required(
     return violations
 
 
+def _scan_runtime_ci_gate_check_sets_fast_path_required(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("ci_gate_check_sets_fast_path")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.ci_gate_check_sets_fast_path_required requires harness.ci_gate_check_sets_fast_path mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.ci_gate_check_sets_fast_path.path must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.ci_gate_check_sets_fast_path.required_tokens must be a non-empty list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing ci gate script for check_sets fast-path check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing ci gate check_sets fast-path token {tok}")
+    return violations
+
+
 def _scan_runtime_ci_gate_ownership_contract_required(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -8985,6 +9015,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.governance_triage_targeted_first_required": _scan_runtime_governance_triage_targeted_first_required,
     "runtime.local_prepush_broad_governance_forbidden": _scan_runtime_local_prepush_broad_governance_forbidden,
     "runtime.local_prepush_check_sets_fast_path_required": _scan_runtime_local_prepush_check_sets_fast_path_required,
+    "runtime.ci_gate_check_sets_fast_path_required": _scan_runtime_ci_gate_check_sets_fast_path_required,
     "runtime.ci_gate_ownership_contract_required": _scan_runtime_ci_gate_ownership_contract_required,
     "runtime.governance_prefix_selection_from_changed_paths": _scan_runtime_governance_prefix_selection_from_changed_paths,
     "runtime.governance_triage_artifact_contains_selection_metadata": _scan_runtime_governance_triage_artifact_contains_selection_metadata,
