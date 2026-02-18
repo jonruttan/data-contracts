@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 use std::process::{self, Command};
 use std::sync::{Mutex, OnceLock};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use serde_json::{json, Value};
 use serde_yaml::Value as YamlValue;
@@ -196,6 +196,170 @@ fn script(root: &Path, file: &str) -> String {
         .join(file)
         .to_string_lossy()
         .to_string()
+}
+
+fn command_stdout(root: &Path, program: &str, args: &[&str]) -> Option<String> {
+    let output = Command::new(program)
+        .args(args)
+        .current_dir(root)
+        .output()
+        .ok()?;
+    if !output.status.success() {
+        return None;
+    }
+    Some(String::from_utf8_lossy(&output.stdout).to_string())
+}
+
+fn collect_changed_paths(root: &Path) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    let mut seen: HashSet<String> = HashSet::new();
+    let mut push_lines = |raw: &str| {
+        for line in raw.lines() {
+            let rel = line.trim();
+            if rel.is_empty() {
+                continue;
+            }
+            if seen.insert(rel.to_string()) {
+                out.push(rel.to_string());
+            }
+        }
+    };
+
+    if let Some(upstream_raw) = command_stdout(
+        root,
+        "git",
+        &["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"],
+    ) {
+        let upstream = upstream_raw.trim();
+        if !upstream.is_empty() {
+            let range = format!("{upstream}...HEAD");
+            if let Some(diff) = command_stdout(root, "git", &["diff", "--name-only", range.as_str()]) {
+                push_lines(&diff);
+            }
+        }
+    }
+    if let Some(diff) = command_stdout(root, "git", &["diff", "--name-only"]) {
+        push_lines(&diff);
+    }
+    if let Some(diff_cached) = command_stdout(root, "git", &["diff", "--name-only", "--cached"]) {
+        push_lines(&diff_cached);
+    }
+    if let Some(untracked) = command_stdout(root, "git", &["ls-files", "--others", "--exclude-standard"]) {
+        push_lines(&untracked);
+    }
+    out
+}
+
+fn parse_paths_arg(raw: &str) -> Vec<String> {
+    raw.split(',')
+        .map(str::trim)
+        .filter(|s| !s.is_empty())
+        .map(str::to_string)
+        .collect()
+}
+
+fn run_normalize_mode(root: &Path, py: &str, forwarded: &[String], fix: bool) -> i32 {
+    let mut changed_only = env_bool("SPEC_RUNNER_NORMALIZE_CHANGED_ONLY", false);
+    let mut selected_paths: Vec<String> = Vec::new();
+    let mut passthrough: Vec<String> = Vec::new();
+    let mut i = 0usize;
+    while i < forwarded.len() {
+        match forwarded[i].as_str() {
+            "--changed-only" => {
+                changed_only = true;
+                i += 1;
+            }
+            "--paths" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --paths requires value");
+                    return 2;
+                }
+                selected_paths.extend(parse_paths_arg(&forwarded[i + 1]));
+                i += 2;
+            }
+            "--path" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --path requires value");
+                    return 2;
+                }
+                let one = forwarded[i + 1].trim();
+                if !one.is_empty() {
+                    selected_paths.push(one.to_string());
+                }
+                i += 2;
+            }
+            other => {
+                passthrough.push(other.to_string());
+                i += 1;
+            }
+        }
+    }
+
+    if changed_only && selected_paths.is_empty() {
+        selected_paths = collect_changed_paths(root);
+    }
+    if !selected_paths.is_empty() {
+        let mut uniq = HashSet::<String>::new();
+        selected_paths.retain(|p| uniq.insert(p.clone()));
+    }
+
+    if selected_paths.is_empty() && changed_only {
+        println!("OK: normalization {} skipped (no changed paths)", if fix { "fix" } else { "check" });
+        return 0;
+    }
+
+    let mode_flag = if fix { "--write" } else { "--check" };
+    let mut args = vec![script(root, "normalize_repo.py"), mode_flag.to_string()];
+    if !selected_paths.is_empty() {
+        args.push("--paths".to_string());
+        args.push(selected_paths.join(","));
+    }
+    args.extend(passthrough);
+    run_cmd(py, &args, root)
+}
+
+fn normalize_step_metadata_from_command(root: &Path, command: &[String]) -> (String, Option<i64>) {
+    let mut changed_only = env_bool("SPEC_RUNNER_NORMALIZE_CHANGED_ONLY", false);
+    let mut selected_paths: Vec<String> = Vec::new();
+    let mut i = 0usize;
+    while i < command.len() {
+        match command[i].as_str() {
+            "--changed-only" => {
+                changed_only = true;
+                i += 1;
+            }
+            "--paths" => {
+                if i + 1 < command.len() {
+                    changed_only = true;
+                    selected_paths.extend(parse_paths_arg(&command[i + 1]));
+                    i += 2;
+                } else {
+                    i += 1;
+                }
+            }
+            "--path" => {
+                if i + 1 < command.len() {
+                    changed_only = true;
+                    let one = command[i + 1].trim();
+                    if !one.is_empty() {
+                        selected_paths.push(one.to_string());
+                    }
+                    i += 2;
+                } else {
+                    i += 1;
+                }
+            }
+            _ => i += 1,
+        }
+    }
+    if changed_only && selected_paths.is_empty() {
+        selected_paths = collect_changed_paths(root);
+    }
+    if changed_only {
+        ("changed_only".to_string(), Some(selected_paths.len() as i64))
+    } else {
+        ("full_tree".to_string(), None)
+    }
 }
 
 fn now_iso_utc_fallback() -> String {
@@ -1667,6 +1831,13 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut first_failure_step: Option<String> = None;
     let mut aborted = false;
     for (name, command) in default_steps {
+        let mut normalize_mode: Option<String> = None;
+        let mut normalized_file_count: Option<i64> = None;
+        if name == "normalize_check" {
+            let (mode, count) = normalize_step_metadata_from_command(root, &command);
+            normalize_mode = Some(mode);
+            normalized_file_count = count;
+        }
         if aborted {
             steps.push(json!({
                 "name": name,
@@ -1691,6 +1862,20 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "span_id": "run.total",
             "attrs": {"event":"gate.step.start","step":name}
         }));
+        if let Some(mode) = normalize_mode.as_ref() {
+            if let Some(attrs) = events
+                .last_mut()
+                .and_then(Value::as_object_mut)
+                .and_then(|v| v.get_mut("attrs"))
+                .and_then(Value::as_object_mut)
+            {
+                attrs.insert("normalize_mode".to_string(), Value::String(mode.clone()));
+                attrs.insert(
+                    "normalized_file_count".to_string(),
+                    normalized_file_count.map_or(Value::Null, |n| Value::from(n)),
+                );
+            }
+        }
         println!("[gate] {name}: {}", command.join(" "));
         let step_start = Instant::now();
         let code = run_command_capture_code(&command, root);
@@ -1703,6 +1888,15 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "exit_code": code,
             "duration_ms": duration_ms,
         });
+        if let Some(dst) = step_row.as_object_mut() {
+            if let Some(mode) = normalize_mode.as_ref() {
+                dst.insert("normalize_mode".to_string(), Value::String(mode.clone()));
+                dst.insert(
+                    "normalized_file_count".to_string(),
+                    normalized_file_count.map_or(Value::Null, |n| Value::from(n)),
+                );
+            }
+        }
         if name == "governance_broad" {
             if let Some(dst) = step_row.as_object_mut() {
                 dst.insert("triage_phase".to_string(), Value::String("broad".to_string()));
@@ -1775,6 +1969,33 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         "unit_test_opt_out": collect_unit_test_opt_out(root),
     });
     let mut payload = payload;
+    let normalize_step_value = payload
+        .get("steps")
+        .and_then(Value::as_array)
+        .and_then(|steps_arr| {
+            steps_arr
+                .iter()
+                .find(|s| s.get("name").and_then(Value::as_str) == Some("normalize_check"))
+                .cloned()
+        });
+    if let Some(normalize_step) = normalize_step_value {
+        if let Some(obj) = payload.as_object_mut() {
+            obj.insert(
+                "normalize_mode".to_string(),
+                normalize_step
+                    .get("normalize_mode")
+                    .cloned()
+                    .unwrap_or(Value::String("full_tree".to_string())),
+            );
+            obj.insert(
+                "normalized_file_count".to_string(),
+                normalize_step
+                    .get("normalized_file_count")
+                    .cloned()
+                    .unwrap_or(Value::Null),
+            );
+        }
+    }
     let governance_step_value = payload
         .get("steps")
         .and_then(Value::as_array)
@@ -1922,7 +2143,11 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
                 "end_ns": payload.get("total_duration_ms").and_then(Value::as_i64).unwrap_or(0) * 1_000_000,
                 "duration_ms": payload.get("total_duration_ms").and_then(Value::as_i64).unwrap_or(0),
                 "status": if exit_code == 0 { "ok" } else { "error" },
-                "attrs": {"source":"ci-gate-summary"},
+                "attrs": {
+                    "source":"ci-gate-summary",
+                    "normalize_mode": payload.get("normalize_mode").cloned().unwrap_or(Value::Null),
+                    "normalized_file_count": payload.get("normalized_file_count").cloned().unwrap_or(Value::Null)
+                },
                 "error": Value::Null
             }],
             "events": payload.get("events").cloned().unwrap_or(Value::Array(vec![])),
@@ -2160,22 +2385,8 @@ fn main() {
             ),
             &root,
         ),
-        "normalize-check" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![script(&root, "normalize_repo.py"), "--check".to_string()],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "normalize-fix" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![script(&root, "normalize_repo.py"), "--write".to_string()],
-                &forwarded,
-            ),
-            &root,
-        ),
+        "normalize-check" => run_normalize_mode(&root, &py, &forwarded, false),
+        "normalize-fix" => run_normalize_mode(&root, &py, &forwarded, true),
         "schema-registry-check" => run_job_for_command(&root, "schema-registry-check", &forwarded),
         "schema-registry-build" => run_job_for_command(&root, "schema-registry-build", &forwarded),
         "schema-docs-check" => run_cmd(

@@ -37,6 +37,8 @@ def _write_fail_profile_artifacts(
 ) -> None:
     trace_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.parent.mkdir(parents=True, exist_ok=True)
+    normalize_mode = payload.get("normalize_mode")
+    normalized_file_count = payload.get("normalized_file_count")
     run_trace = {
         "version": 1,
         "run_id": f"gate-{int(time.time() * 1000)}",
@@ -58,7 +60,11 @@ def _write_fail_profile_artifacts(
                 "end_ns": int(payload.get("total_duration_ms", 0)) * 1_000_000,
                 "duration_ms": float(payload.get("total_duration_ms", 0)),
                 "status": "ok" if payload.get("status") == "pass" else "error",
-                "attrs": {"source": "ci-gate-summary"},
+                "attrs": {
+                    "source": "ci-gate-summary",
+                    "normalize_mode": normalize_mode,
+                    "normalized_file_count": normalized_file_count,
+                },
                 "error": None,
             }
         ],
@@ -148,6 +154,83 @@ def _runner_command_with_liveness(
     return [runner_bin, subcommand]
 
 
+def _collect_changed_paths() -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+
+    def _push_lines(raw: str) -> None:
+        for line in raw.splitlines():
+            rel = line.strip()
+            if not rel:
+                continue
+            if rel in seen:
+                continue
+            seen.add(rel)
+            out.append(rel)
+
+    try:
+        upstream = (
+            subprocess.run(
+                ["git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"],
+                check=False,
+                capture_output=True,
+                text=True,
+            ).stdout
+            or ""
+        ).strip()
+    except Exception:
+        upstream = ""
+    if upstream:
+        diff = subprocess.run(
+            ["git", "diff", "--name-only", f"{upstream}...HEAD"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if diff.returncode == 0:
+            _push_lines(diff.stdout or "")
+    for cmd in (
+        ["git", "diff", "--name-only"],
+        ["git", "diff", "--name-only", "--cached"],
+        ["git", "ls-files", "--others", "--exclude-standard"],
+    ):
+        proc = subprocess.run(cmd, check=False, capture_output=True, text=True)
+        if proc.returncode == 0:
+            _push_lines(proc.stdout or "")
+    return out
+
+
+def _normalize_step_metadata(command: list[str]) -> dict[str, object]:
+    mode = "full_tree"
+    selected_paths: list[str] = []
+    i = 0
+    while i < len(command):
+        token = command[i]
+        if token == "--changed-only":
+            mode = "changed_only"
+            i += 1
+            continue
+        if token == "--paths" and i + 1 < len(command):
+            mode = "changed_only"
+            selected_paths.extend([x.strip() for x in command[i + 1].split(",") if x.strip()])
+            i += 2
+            continue
+        if token == "--path" and i + 1 < len(command):
+            mode = "changed_only"
+            one = command[i + 1].strip()
+            if one:
+                selected_paths.append(one)
+            i += 2
+            continue
+        i += 1
+    if mode == "changed_only" and not selected_paths:
+        selected_paths = _collect_changed_paths()
+    return {
+        "normalize_mode": mode,
+        "normalized_file_count": len(selected_paths) if mode == "changed_only" else None,
+    }
+
+
 def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[str]]]:
     broad_liveness_level = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_LEVEL", "strict"))
     broad_liveness_stall_ms = str(os.environ.get("SPEC_CI_GOV_BROAD_LIVENESS_STALL_MS", "5000"))
@@ -224,6 +307,13 @@ def _run_steps(
                 "attrs": {"event": "gate.step.start", "step": name},
             }
         )
+        step_meta: dict[str, object] = {}
+        if name == "normalize_check":
+            step_meta = _normalize_step_metadata(command)
+            attrs = events[-1].get("attrs")
+            if isinstance(attrs, dict):
+                attrs["normalize_mode"] = step_meta.get("normalize_mode")
+                attrs["normalized_file_count"] = step_meta.get("normalized_file_count")
         print(f"[gate] {name}: {' '.join(command)}")
         t0 = time.perf_counter()
         code = _run_command(command)
@@ -236,6 +326,7 @@ def _run_steps(
                 "status": status,
                 "exit_code": code,
                 "duration_ms": duration_ms,
+                **step_meta,
             }
         )
         if name == "governance_broad":
@@ -387,6 +478,10 @@ def main(argv: list[str] | None = None) -> int:
         "runner_impl": str(ns.runner_impl),
         "unit_test_opt_out": _collect_unit_test_opt_out(Path.cwd()),
     }
+    normalize_step = next((s for s in steps if s.get("name") == "normalize_check"), None)
+    if isinstance(normalize_step, dict):
+        payload["normalize_mode"] = normalize_step.get("normalize_mode", "full_tree")
+        payload["normalized_file_count"] = normalize_step.get("normalized_file_count")
     governance_step = next((s for s in steps if s.get("name") == "governance_broad"), None)
     if isinstance(governance_step, dict):
         payload["triage_attempted"] = bool(governance_step.get("triage_attempted", False))

@@ -134,7 +134,7 @@ lane_rust_core() {
     elif is_fast_path_script_only_change; then
       echo "[local-ci-parity] skip normalize-check (gate-script-only change)"
     else
-      run_step normalize-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" normalize-check
+      run_step normalize-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" normalize-check --changed-only
     fi
   else
     echo "[local-ci-parity] skip normalize-check (no matching changes)"

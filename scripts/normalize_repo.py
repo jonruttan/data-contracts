@@ -63,6 +63,27 @@ def _scope_paths(profile: dict[str, Any], scope: str) -> list[str]:
     return out
 
 
+def _parse_explicit_paths(raw_csv: str, raw_paths: list[str]) -> list[str]:
+    out: list[str] = []
+    if raw_csv.strip():
+        for item in raw_csv.split(","):
+            token = item.strip()
+            if token:
+                out.append(token)
+    for item in raw_paths:
+        token = str(item).strip()
+        if token:
+            out.append(token)
+    seen: set[str] = set()
+    uniq: list[str] = []
+    for rel in out:
+        if rel in seen:
+            continue
+        seen.add(rel)
+        uniq.append(rel)
+    return uniq
+
+
 def _run(cmd: list[str]) -> tuple[int, str]:
     proc = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, check=False)
     stdout = (proc.stdout or "").strip()
@@ -591,33 +612,38 @@ def main(argv: list[str] | None = None) -> int:
     mode.add_argument("--check", action="store_true", help="verify normalization without modifying files")
     mode.add_argument("--write", action="store_true", help="apply normalization rewrites")
     ap.add_argument("--scope", choices=("specs", "contracts", "tests", "all"), default="all")
+    ap.add_argument("--paths", default="", help="comma-separated files/directories for changed-path normalization")
+    ap.add_argument("--path", action="append", default=[], help="repeatable file/directory path for changed-path normalization")
     ap.add_argument("--profile", default=str(PROFILE_PATH), help="path to normalization profile yaml")
     ns = ap.parse_args(argv)
 
     profile = _load_profile(Path(ns.profile))
-    scope_paths = _scope_paths(profile, ns.scope)
+    explicit_paths = _parse_explicit_paths(str(ns.paths), [str(x) for x in ns.path])
+    scope_paths = explicit_paths if explicit_paths else _scope_paths(profile, ns.scope)
     if not scope_paths:
         print("docs/spec/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: no paths selected for scope")
         return 1
 
     mode_flag = "--check" if ns.check else "--write"
-    docs_layout_cmd = [sys.executable, "scripts/normalize_docs_layout.py", mode_flag]
-    split_lib_cases_cmd = [sys.executable, "scripts/split_library_cases_per_symbol.py", mode_flag, "docs/spec/libraries"]
     style_cmd = [sys.executable, "scripts/evaluate_style.py", mode_flag, *scope_paths]
+    changed_path_mode = bool(explicit_paths)
 
     issues: list[str] = []
-    docs_layout_code, docs_layout_out = _run(docs_layout_cmd)
-    if docs_layout_code != 0:
-        for line in docs_layout_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs:1: NORMALIZATION_DOCS_LAYOUT: {line}")
-    split_lib_code, split_lib_out = _run(split_lib_cases_cmd)
-    if split_lib_code != 0:
-        for line in split_lib_out.splitlines():
-            line = line.strip()
-            if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_LIBRARY_SINGLE_PUBLIC_SYMBOL: {line}")
+    if not changed_path_mode:
+        docs_layout_cmd = [sys.executable, "scripts/normalize_docs_layout.py", mode_flag]
+        split_lib_cases_cmd = [sys.executable, "scripts/split_library_cases_per_symbol.py", mode_flag, "docs/spec/libraries"]
+        docs_layout_code, docs_layout_out = _run(docs_layout_cmd)
+        if docs_layout_code != 0:
+            for line in docs_layout_out.splitlines():
+                line = line.strip()
+                if line:
+                    issues.append(f"docs:1: NORMALIZATION_DOCS_LAYOUT: {line}")
+        split_lib_code, split_lib_out = _run(split_lib_cases_cmd)
+        if split_lib_code != 0:
+            for line in split_lib_out.splitlines():
+                line = line.strip()
+                if line:
+                    issues.append(f"docs/spec:1: NORMALIZATION_LIBRARY_SINGLE_PUBLIC_SYMBOL: {line}")
     style_code, style_out = _run(style_cmd)
     if style_code != 0:
         for line in style_out.splitlines():
@@ -626,11 +652,13 @@ def main(argv: list[str] | None = None) -> int:
                 issues.append(f"docs/spec:1: NORMALIZATION_SPEC_STYLE: {line}")
 
     if ns.write:
-        repl_issues, changed = _apply_replacements(profile)
-        issues.extend(repl_issues)
-        token_issues = _check_docs_tokens(profile)
-        issues.extend(token_issues)
-        issues.extend(_check_dogfood_executable_surface())
+        changed = 0
+        if not changed_path_mode:
+            repl_issues, changed = _apply_replacements(profile)
+            issues.extend(repl_issues)
+            token_issues = _check_docs_tokens(profile)
+            issues.extend(token_issues)
+            issues.extend(_check_dogfood_executable_surface())
         if issues:
             for issue in sorted(issues):
                 print(issue)
@@ -638,17 +666,18 @@ def main(argv: list[str] | None = None) -> int:
         print(f"OK: normalization fix complete (replacement files changed: {changed})")
         return 0
 
-    issues.extend(_check_replacements_drift(profile))
-    issues.extend(_check_docs_tokens(profile))
-    issues.extend(_check_dogfood_executable_surface())
-    issues.extend(_check_harness_componentization())
-    issues.extend(_check_spec_lang_library_type_forbidden())
-    issues.extend(_check_chain_contract_shape())
-    issues.extend(_check_executable_spec_lang_includes_forbidden())
-    issues.extend(_check_library_single_public_symbol())
-    issues.extend(_check_contract_terminology_hard_cut())
-    issues.extend(_check_contract_job_dispatch_hard_cut())
-    issues.extend(_check_when_hooks_shape())
+    if not changed_path_mode:
+        issues.extend(_check_replacements_drift(profile))
+        issues.extend(_check_docs_tokens(profile))
+        issues.extend(_check_dogfood_executable_surface())
+        issues.extend(_check_harness_componentization())
+        issues.extend(_check_spec_lang_library_type_forbidden())
+        issues.extend(_check_chain_contract_shape())
+        issues.extend(_check_executable_spec_lang_includes_forbidden())
+        issues.extend(_check_library_single_public_symbol())
+        issues.extend(_check_contract_terminology_hard_cut())
+        issues.extend(_check_contract_job_dispatch_hard_cut())
+        issues.extend(_check_when_hooks_shape())
     if issues:
         for issue in sorted(issues):
             print(issue)
