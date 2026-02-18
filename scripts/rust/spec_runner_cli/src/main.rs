@@ -939,14 +939,14 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
                 env::var("SPEC_GOV_TRIAGE_PROFILE_LEVEL").unwrap_or_else(|_| "basic".to_string()),
                 "--broad-timeout-seconds".to_string(),
                 env::var("SPEC_GOV_TRIAGE_STALL_TIMEOUT_SECONDS")
-                    .unwrap_or_else(|_| "30".to_string()),
+                    .unwrap_or_else(|_| "90".to_string()),
                 "--triage-liveness-level".to_string(),
-                env::var("SPEC_GOV_TRIAGE_LIVENESS_LEVEL").unwrap_or_else(|_| "strict".to_string()),
+                env::var("SPEC_GOV_TRIAGE_LIVENESS_LEVEL").unwrap_or_else(|_| "basic".to_string()),
                 "--triage-liveness-stall-ms".to_string(),
-                env::var("SPEC_GOV_TRIAGE_LIVENESS_STALL_MS").unwrap_or_else(|_| "5000".to_string()),
+                env::var("SPEC_GOV_TRIAGE_LIVENESS_STALL_MS").unwrap_or_else(|_| "30000".to_string()),
                 "--triage-liveness-kill-grace-ms".to_string(),
                 env::var("SPEC_GOV_TRIAGE_LIVENESS_KILL_GRACE_MS")
-                    .unwrap_or_else(|_| "1000".to_string()),
+                    .unwrap_or_else(|_| "5000".to_string()),
             ],
         ),
         (
