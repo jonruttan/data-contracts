@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
+import io
 import subprocess
 import sys
 from pathlib import Path
@@ -10,6 +12,8 @@ from typing import Any
 import yaml
 
 from spec_runner.codecs import load_external_cases
+from spec_runner.normalize_docs_layout import main as normalize_docs_layout_main
+from spec_runner.split_library_cases_per_symbol import main as split_library_cases_per_symbol_main
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -90,6 +94,13 @@ def _run(cmd: list[str]) -> tuple[int, str]:
     stderr = (proc.stderr or "").strip()
     merged = "\n".join(x for x in (stdout, stderr) if x)
     return int(proc.returncode), merged
+
+
+def _run_inproc(entry: Any, argv: list[str]) -> tuple[int, str]:
+    capture = io.StringIO()
+    with contextlib.redirect_stdout(capture), contextlib.redirect_stderr(capture):
+        code = int(entry(argv))
+    return code, capture.getvalue().strip()
 
 
 def _line_for(text: str, token: str) -> int:
@@ -630,15 +641,16 @@ def main(argv: list[str] | None = None) -> int:
 
     issues: list[str] = []
     if not changed_path_mode:
-        docs_layout_cmd = [sys.executable, "scripts/normalize_docs_layout.py", mode_flag]
-        split_lib_cases_cmd = [sys.executable, "scripts/split_library_cases_per_symbol.py", mode_flag, "docs/spec/libraries"]
-        docs_layout_code, docs_layout_out = _run(docs_layout_cmd)
+        docs_layout_code, docs_layout_out = _run_inproc(normalize_docs_layout_main, [mode_flag])
         if docs_layout_code != 0:
             for line in docs_layout_out.splitlines():
                 line = line.strip()
                 if line:
                     issues.append(f"docs:1: NORMALIZATION_DOCS_LAYOUT: {line}")
-        split_lib_code, split_lib_out = _run(split_lib_cases_cmd)
+        split_lib_code, split_lib_out = _run_inproc(
+            split_library_cases_per_symbol_main,
+            [mode_flag, "docs/spec/libraries"],
+        )
         if split_lib_code != 0:
             for line in split_lib_out.splitlines():
                 line = line.strip()
