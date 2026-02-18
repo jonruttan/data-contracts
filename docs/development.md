@@ -263,7 +263,7 @@ Local equivalent:
 ## Contract Governance Check (via Governance Specs)
 
 ```sh
-python scripts/run_governance_specs.py
+python -m spec_runner.spec_lang_commands run-governance-specs
 ```
 
 ## Lint
