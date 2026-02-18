@@ -7435,6 +7435,30 @@ def _scan_runtime_ci_artifact_upload_paths_valid(root: Path, *, harness: dict | 
     return violations
 
 
+def _scan_runtime_ci_workflow_critical_gate_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("ci_workflow_critical_gate")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.ci_workflow_critical_gate_required requires harness.ci_workflow_critical_gate mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.ci_workflow_critical_gate.path must be a non-empty string"]
+    if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
+        return ["harness.ci_workflow_critical_gate.required_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing workflow file for rust critical gate check"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing rust critical gate workflow token {tok}")
+    return violations
+
+
 def _scan_runtime_rust_adapter_no_delegate(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -8854,6 +8878,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.governance_prefix_selection_from_changed_paths": _scan_runtime_governance_prefix_selection_from_changed_paths,
     "runtime.governance_triage_artifact_contains_selection_metadata": _scan_runtime_governance_triage_artifact_contains_selection_metadata,
     "runtime.ci_artifact_upload_paths_valid": _scan_runtime_ci_artifact_upload_paths_valid,
+    "runtime.ci_workflow_critical_gate_required": _scan_runtime_ci_workflow_critical_gate_required,
     "runtime.public_runner_entrypoint_single": _scan_runtime_public_runner_entrypoint_single,
     "runtime.public_runner_default_rust": _scan_runtime_public_runner_default_rust,
     "runtime.python_lane_explicit_opt_in": _scan_runtime_python_lane_explicit_opt_in,

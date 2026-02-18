@@ -7,9 +7,9 @@ on:
   pull_request:
 
 jobs:
-  ci-gate:
+  rust-critical-gate:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -34,7 +34,47 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e '.[dev]'
 
-      - name: Run CI gate
+      - name: Run rust critical gate
+        run: ./scripts/runner_adapter.sh --impl rust critical-gate
+
+      - name: Upload rust critical gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rust-critical-gate-artifacts
+          path: .artifacts/**
+          if-no-files-found: ignore
+
+  ci-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: rust-critical-gate
+    continue-on-error: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: |
+            pyproject.toml
+
+      - name: Install PHP + yaml extension
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-cli php-yaml
+          php -m | grep -i '^yaml$'
+
+      - name: Install project + dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev]'
+
+      - name: Run CI gate (diagnostic lane)
         run: ./scripts/ci_gate.sh
 
       - name: Upload gate artifacts
@@ -48,7 +88,7 @@ jobs:
   rust-heavy-followup:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: ci-gate
+    needs: rust-critical-gate
     if: always()
 
     steps:

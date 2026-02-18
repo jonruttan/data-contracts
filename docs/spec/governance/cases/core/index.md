@@ -152,6 +152,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_ci_artifact_upload_paths_valid.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_gate_broad_governance_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_gate_critical_first_required.spec.md`
+- `/docs/spec/governance/cases/core/runtime_ci_workflow_critical_gate_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_config_literals.spec.md`
 - `/docs/spec/governance/cases/core/runtime_domain_library_preferred_for_fs_ops.spec.md`
