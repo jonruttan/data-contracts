@@ -1,6 +1,7 @@
 mod spec_lang;
 mod profiler;
 mod governance;
+mod job_helpers;
 
 use std::env;
 use std::fs;
@@ -246,10 +247,52 @@ fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
             "/docs/spec/impl/python/cases/spec_lang_stdlib_report.spec.md#SRPY-STDLIB-REP-002",
         ),
         "contract-assertions-json" => Some(
-            "/docs/spec/impl/python/cases/contract_coverage_report.spec.md#SRPY-CONTRACT-REP-001",
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-005",
         ),
         "contract-assertions-md" => Some(
-            "/docs/spec/impl/python/cases/contract_coverage_report.spec.md#SRPY-CONTRACT-REP-002",
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-006",
+        ),
+        "conformance-purpose-json" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-001",
+        ),
+        "conformance-purpose-md" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-002",
+        ),
+        "spec-portability-json" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-003",
+        ),
+        "spec-portability-md" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-004",
+        ),
+        "spec-lang-adoption-json" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-007",
+        ),
+        "spec-lang-adoption-md" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-008",
+        ),
+        "runner-independence-json" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-009",
+        ),
+        "runner-independence-md" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-010",
+        ),
+        "python-dependency-json" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-011",
+        ),
+        "python-dependency-md" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-012",
+        ),
+        "docs-operability-json" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-013",
+        ),
+        "docs-operability-md" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-014",
+        ),
+        "objective-scorecard-json" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-015",
+        ),
+        "objective-scorecard-md" => Some(
+            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-016",
         ),
         _ => None,
     }
@@ -272,6 +315,25 @@ fn parse_spec_ref(spec_ref: &str) -> Result<(String, Option<String>), String> {
         }
     }
     Ok((path, frag))
+}
+
+fn parse_job_ref(job_ref: &str) -> Result<(Option<String>, String), String> {
+    let raw = job_ref.trim();
+    if raw.is_empty() {
+        return Err("job ref must not be empty".to_string());
+    }
+    if let Some(frag) = raw.strip_prefix('#') {
+        let id = frag.trim();
+        if id.is_empty() {
+            return Err(format!("job ref has empty case id fragment: {job_ref}"));
+        }
+        return Ok((None, id.to_string()));
+    }
+    let (path, frag) = parse_spec_ref(raw)?;
+    let Some(case_id) = frag else {
+        return Err(format!("job ref must include case id fragment: {job_ref}"));
+    };
+    Ok((Some(path), case_id))
 }
 
 fn extract_spec_test_blocks(markdown: &str) -> Vec<String> {
@@ -331,6 +393,301 @@ fn load_case_block_from_spec_ref(root: &Path, spec_ref: &str) -> Result<String, 
         return Ok(block);
     }
     Err(format!("case not found via spec ref: {}", spec_ref))
+}
+
+fn resolve_job_case_block(
+    root: &Path,
+    job_ref: &str,
+    doc_ref: Option<&str>,
+) -> Result<(String, String), String> {
+    let (path_opt, case_id) = parse_job_ref(job_ref)?;
+    let full_ref = if let Some(path) = path_opt {
+        format!("{path}#{case_id}")
+    } else if let Some(doc) = doc_ref {
+        let (path, _frag) = parse_spec_ref(doc)?;
+        format!("{path}#{case_id}")
+    } else {
+        return Err(
+            "same-document job ref (#CASE) requires --doc <path#id> or SPEC_RUNNER_JOB_DOC".to_string(),
+        );
+    };
+    let block = load_case_block_from_spec_ref(root, &full_ref)?;
+    Ok((full_ref, block))
+}
+
+fn json_truthy(v: &Value) -> bool {
+    match v {
+        Value::Null => false,
+        Value::Bool(b) => *b,
+        Value::Number(n) => n.as_f64().map(|x| x != 0.0).unwrap_or(true),
+        Value::String(s) => !s.is_empty(),
+        Value::Array(a) => !a.is_empty(),
+        Value::Object(o) => !o.is_empty(),
+    }
+}
+
+fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
+    let mut ref_arg = String::new();
+    let mut doc_arg: Option<String> = std::env::var("SPEC_RUNNER_JOB_DOC").ok();
+    let mut mode_arg: Option<String> = None;
+    let mut input_pairs = Vec::<(String, String)>::new();
+    let mut i = 0usize;
+    while i < forwarded.len() {
+        match forwarded[i].as_str() {
+            "--ref" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --ref requires value");
+                    return 2;
+                }
+                ref_arg = forwarded[i + 1].clone();
+                i += 2;
+            }
+            "--doc" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --doc requires value");
+                    return 2;
+                }
+                doc_arg = Some(forwarded[i + 1].clone());
+                i += 2;
+            }
+            "--mode" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --mode requires value");
+                    return 2;
+                }
+                mode_arg = Some(forwarded[i + 1].clone());
+                i += 2;
+            }
+            "--input" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --input requires key=value");
+                    return 2;
+                }
+                let raw = forwarded[i + 1].clone();
+                let mut parts = raw.splitn(2, '=');
+                let k = parts.next().unwrap_or("").trim().to_string();
+                let v = parts.next().unwrap_or("").to_string();
+                if k.is_empty() {
+                    eprintln!("ERROR: --input requires key=value");
+                    return 2;
+                }
+                input_pairs.push((k, v));
+                i += 2;
+            }
+            other => {
+                eprintln!("ERROR: unsupported job-run arg: {other}");
+                return 2;
+            }
+        }
+    }
+    if ref_arg.trim().is_empty() {
+        eprintln!("ERROR: job-run requires --ref <path#id|#id>");
+        return 2;
+    }
+
+    let (resolved_ref, case_block) = match resolve_job_case_block(root, &ref_arg, doc_arg.as_deref()) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: {e}");
+            return 1;
+        }
+    };
+    let doc: YamlValue = match serde_yaml::from_str(&case_block) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: failed to parse job case yaml: {e}");
+            return 1;
+        }
+    };
+    let case_map = match doc.as_mapping() {
+        Some(m) => m,
+        None => {
+            eprintln!("ERROR: job case must be yaml mapping");
+            return 1;
+        }
+    };
+    let case_type = case_map
+        .get(&YamlValue::String("type".to_string()))
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    if case_type != "contract.job" {
+        eprintln!("ERROR: referenced case is not type contract.job: {resolved_ref}");
+        return 1;
+    }
+    let harness = case_map
+        .get(&YamlValue::String("harness".to_string()))
+        .and_then(|v| v.as_mapping())
+        .cloned()
+        .unwrap_or_default();
+    let job = harness
+        .get(&YamlValue::String("job".to_string()))
+        .and_then(|v| v.as_mapping())
+        .cloned()
+        .unwrap_or_default();
+    let helper_id = job
+        .get(&YamlValue::String("helper".to_string()))
+        .and_then(|v| v.as_str())
+        .unwrap_or("")
+        .trim()
+        .to_string();
+    if helper_id.is_empty() {
+        eprintln!("ERROR: contract.job requires harness.job.helper");
+        return 1;
+    }
+    let default_mode = job
+        .get(&YamlValue::String("mode".to_string()))
+        .and_then(|v| v.as_str())
+        .unwrap_or("custom")
+        .to_string();
+    let selected_mode = mode_arg.unwrap_or(default_mode);
+
+    let inputs_json = job
+        .get(&YamlValue::String("inputs".to_string()))
+        .map(yaml_to_json)
+        .unwrap_or(Value::Object(serde_json::Map::new()));
+    let outputs_json = job
+        .get(&YamlValue::String("outputs".to_string()))
+        .map(yaml_to_json)
+        .unwrap_or(Value::Object(serde_json::Map::new()));
+
+    let mut input_override = serde_json::Map::<String, Value>::new();
+    for (k, v) in input_pairs {
+        input_override.insert(k, Value::String(v));
+    }
+
+    let mut merged_payload = match inputs_json {
+        Value::Object(map) => map,
+        _ => serde_json::Map::new(),
+    };
+    for (k, v) in input_override {
+        merged_payload.insert(k, v);
+    }
+    merged_payload.insert("_ref".to_string(), Value::String(resolved_ref.clone()));
+    merged_payload.insert("_mode".to_string(), Value::String(selected_mode.clone()));
+    merged_payload.insert("_outputs".to_string(), outputs_json.clone());
+    let helper_payload = Value::Object(merged_payload);
+    let helper_out = match job_helpers::run_helper(root, &helper_id, &helper_payload) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: helper failed `{helper_id}`: {e}");
+            return 1;
+        }
+    };
+
+    let mut caps = Vec::<String>::new();
+    if let Some(spec_lang) = harness
+        .get(&YamlValue::String("spec_lang".to_string()))
+        .and_then(|v| v.as_mapping())
+    {
+        if let Some(seq) = spec_lang
+            .get(&YamlValue::String("capabilities".to_string()))
+            .and_then(|v| v.as_sequence())
+        {
+            for item in seq {
+                if let Some(s) = item.as_str() {
+                    let t = s.trim();
+                    if !t.is_empty() {
+                        caps.push(t.to_string());
+                    }
+                }
+            }
+        }
+    }
+    let prev_caps = std::env::var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES").ok();
+    if !caps.is_empty() {
+        std::env::set_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES", caps.join(","));
+    }
+
+    let mut failed = 0_i64;
+    if let Some(contract_seq) = case_map
+        .get(&YamlValue::String("contract".to_string()))
+        .and_then(|v| v.as_sequence())
+    {
+        for (step_idx, step) in contract_seq.iter().enumerate() {
+            let step_map = match step.as_mapping() {
+                Some(m) => m,
+                None => continue,
+            };
+            let class = step_map
+                .get(&YamlValue::String("class".to_string()))
+                .and_then(|v| v.as_str())
+                .unwrap_or("must");
+            let target = step_map
+                .get(&YamlValue::String("target".to_string()))
+                .and_then(|v| v.as_str())
+                .unwrap_or("summary_json");
+            let subject = match target {
+                "summary_json" => helper_out.clone(),
+                "meta_json" => json!({
+                    "job_ref": ref_arg,
+                    "resolved_ref": resolved_ref,
+                    "helper": helper_id,
+                    "mode": selected_mode,
+                }),
+                "violation_count" => Value::Number(failed.into()),
+                _ => helper_out.clone(),
+            };
+            let asserts = match step_map
+                .get(&YamlValue::String("asserts".to_string()))
+                .and_then(|v| v.as_sequence())
+            {
+                Some(v) => v,
+                None => continue,
+            };
+            for (assert_idx, raw_expr) in asserts.iter().enumerate() {
+                let expr = yaml_to_json(raw_expr);
+                let result = match eval_mapping_ast(
+                    &expr,
+                    subject.clone(),
+                    std::collections::HashMap::new(),
+                    EvalLimits::default(),
+                ) {
+                    Ok(v) => v,
+                    Err(e) => {
+                        eprintln!(
+                            "ERROR: contract evaluation failed at step {} assert {}: {}",
+                            step_idx, assert_idx, e.message
+                        );
+                        failed += 1;
+                        continue;
+                    }
+                };
+                let ok = json_truthy(&result);
+                let violated = match class {
+                    "must" => !ok,
+                    "cannot" => ok,
+                    _ => false,
+                };
+                if violated {
+                    failed += 1;
+                }
+            }
+        }
+    }
+
+    if let Some(prev) = prev_caps {
+        std::env::set_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES", prev);
+    } else {
+        std::env::remove_var("SPEC_RUNNER_SPEC_LANG_CAPABILITIES");
+    }
+
+    if failed == 0 {
+        println!("OK: job-run passed ({resolved_ref})");
+        0
+    } else {
+        eprintln!("ERROR: job-run contract failures ({resolved_ref}): {failed}");
+        1
+    }
+}
+
+fn run_job_for_command(root: &Path, subcommand: &str, forwarded: &[String]) -> i32 {
+    let Some(spec_ref) = command_spec_ref(subcommand) else {
+        eprintln!("ERROR: no registered spec ref for command: {subcommand}");
+        return 1;
+    };
+    let mut args = vec!["--ref".to_string(), spec_ref.to_string()];
+    args.extend(forwarded.iter().cloned());
+    run_job_run_native(root, &args)
 }
 
 fn ensure_validate_report_export_contract(case_block: &str, spec_ref: &str) -> Result<(), String> {
@@ -1447,6 +1804,7 @@ fn main() {
 
     let code = match subcommand.as_str() {
         "spec-eval" => run_spec_eval_native(&root, &forwarded),
+        "job-run" => run_job_run_native(&root, &forwarded),
         "critical-gate" => run_critical_gate_native(&root, &forwarded),
         "governance-broad-native" => run_governance_broad_native(&root, &forwarded),
         "spec-ref" => {
@@ -1583,214 +1941,22 @@ fn main() {
             ),
             &root,
         ),
-        "conformance-purpose-json" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "conformance_purpose_report.py"),
-                    "--out".to_string(),
-                    ".artifacts/conformance-purpose.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "conformance-purpose-md" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "conformance_purpose_report.py"),
-                    "--format".to_string(),
-                    "md".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/conformance-purpose-summary.md".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "spec-portability-json" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "spec_portability_report.py"),
-                    "--out".to_string(),
-                    ".artifacts/spec-portability.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "spec-portability-md" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "spec_portability_report.py"),
-                    "--format".to_string(),
-                    "md".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/spec-portability-summary.md".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "spec-lang-adoption-json" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "spec_lang_adoption_report.py"),
-                    "--out".to_string(),
-                    ".artifacts/spec-lang-adoption.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "spec-lang-adoption-md" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "spec_lang_adoption_report.py"),
-                    "--format".to_string(),
-                    "md".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/spec-lang-adoption-summary.md".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "runner-independence-json" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "runner_independence_report.py"),
-                    "--out".to_string(),
-                    ".artifacts/runner-independence.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "runner-independence-md" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "runner_independence_report.py"),
-                    "--format".to_string(),
-                    "md".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/runner-independence-summary.md".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "python-dependency-json" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "python_dependency_report.py"),
-                    "--out".to_string(),
-                    ".artifacts/python-dependency.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "python-dependency-md" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "python_dependency_report.py"),
-                    "--format".to_string(),
-                    "md".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/python-dependency-summary.md".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "docs-operability-json" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "docs_operability_report.py"),
-                    "--out".to_string(),
-                    ".artifacts/docs-operability.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "docs-operability-md" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "docs_operability_report.py"),
-                    "--format".to_string(),
-                    "md".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/docs-operability-summary.md".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "contract-assertions-json" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "contract_assertions_report.py"),
-                    "--out".to_string(),
-                    ".artifacts/contract-assertions.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "contract-assertions-md" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "contract_assertions_report.py"),
-                    "--format".to_string(),
-                    "md".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/contract-assertions-summary.md".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "objective-scorecard-json" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "objective_scorecard_report.py"),
-                    "--out".to_string(),
-                    ".artifacts/objective-scorecard.json".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
-        "objective-scorecard-md" => run_cmd(
-            &py,
-            &with_forwarded(
-                vec![
-                    script(&root, "objective_scorecard_report.py"),
-                    "--format".to_string(),
-                    "md".to_string(),
-                    "--out".to_string(),
-                    ".artifacts/objective-scorecard-summary.md".to_string(),
-                ],
-                &forwarded,
-            ),
-            &root,
-        ),
+        "conformance-purpose-json" => run_job_for_command(&root, "conformance-purpose-json", &forwarded),
+        "conformance-purpose-md" => run_job_for_command(&root, "conformance-purpose-md", &forwarded),
+        "spec-portability-json" => run_job_for_command(&root, "spec-portability-json", &forwarded),
+        "spec-portability-md" => run_job_for_command(&root, "spec-portability-md", &forwarded),
+        "spec-lang-adoption-json" => run_job_for_command(&root, "spec-lang-adoption-json", &forwarded),
+        "spec-lang-adoption-md" => run_job_for_command(&root, "spec-lang-adoption-md", &forwarded),
+        "runner-independence-json" => run_job_for_command(&root, "runner-independence-json", &forwarded),
+        "runner-independence-md" => run_job_for_command(&root, "runner-independence-md", &forwarded),
+        "python-dependency-json" => run_job_for_command(&root, "python-dependency-json", &forwarded),
+        "python-dependency-md" => run_job_for_command(&root, "python-dependency-md", &forwarded),
+        "docs-operability-json" => run_job_for_command(&root, "docs-operability-json", &forwarded),
+        "docs-operability-md" => run_job_for_command(&root, "docs-operability-md", &forwarded),
+        "contract-assertions-json" => run_job_for_command(&root, "contract-assertions-json", &forwarded),
+        "contract-assertions-md" => run_job_for_command(&root, "contract-assertions-md", &forwarded),
+        "objective-scorecard-json" => run_job_for_command(&root, "objective-scorecard-json", &forwarded),
+        "objective-scorecard-md" => run_job_for_command(&root, "objective-scorecard-md", &forwarded),
         "spec-lang-stdlib-json" => run_cmd(
             &py,
             &with_forwarded(
@@ -1991,6 +2157,24 @@ mod tests {
     fn parse_spec_ref_rejects_empty_path() {
         let err = parse_spec_ref("#CASE-1").expect_err("expected error");
         assert!(err.contains("must include path"));
+    }
+
+    #[test]
+    fn parse_job_ref_accepts_path_and_fragment() {
+        let got = parse_job_ref("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-001")
+            .expect("parse");
+        assert_eq!(
+            got.0.as_deref(),
+            Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md")
+        );
+        assert_eq!(got.1, "SRRUST-JOB-001");
+    }
+
+    #[test]
+    fn parse_job_ref_accepts_same_doc_fragment() {
+        let got = parse_job_ref("#SRRUST-JOB-001").expect("parse");
+        assert!(got.0.is_none());
+        assert_eq!(got.1, "SRRUST-JOB-001");
     }
 
     #[test]

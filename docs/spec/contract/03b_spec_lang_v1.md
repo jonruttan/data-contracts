@@ -220,6 +220,7 @@ OS/system utility (capability-gated):
 - `ops.os.pid`
 - `ops.os.sleep_ms`
 - `ops.os.exit_code`
+- `ops.helper.call`
 
 Recursion/control:
 

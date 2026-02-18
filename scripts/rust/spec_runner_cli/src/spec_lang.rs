@@ -1,3 +1,4 @@
+use crate::job_helpers;
 use std::collections::HashMap;
 use std::env as std_env;
 use std::process::Command;
@@ -484,6 +485,19 @@ fn eval_op(
                 None => Ok(Value::Null),
             }
         }
+        "ops.helper.call" => {
+            require_arity(name, args, 2)?;
+            require_capability(runtime, name, "ops.helper")?;
+            let helper_id = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let payload = eval_runtime(&args[1], env, limits, steps, runtime)?;
+            let Some(id) = helper_id.as_str() else {
+                return Err(EvalError::new("ops.helper.call expects string helper_id"));
+            };
+            let root = std_env::current_dir()
+                .map_err(|e| EvalError::new(format!("ops.helper.call cwd error: {e}")))?;
+            job_helpers::run_helper(&root, id, &payload)
+                .map_err(|e| EvalError::new(format!("ops.helper.call error: {e}")))
+        }
         other => Err(EvalError::new(format!("unsupported spec op: {other}"))),
     }
 }
@@ -691,10 +705,17 @@ fn json_type_name(v: &Value) -> &'static str {
 }
 
 fn require_ops_os(runtime: &RuntimeContext, op: &str) -> EvalResult<()> {
-    if runtime.capabilities.contains("ops.os") {
+    require_capability(runtime, op, "ops.os")
+}
+
+fn require_capability(runtime: &RuntimeContext, op: &str, capability: &str) -> EvalResult<()> {
+    if runtime.capabilities.contains(capability) {
         Ok(())
     } else {
-        Err(EvalError::new(format!("capability.ops_os.required: {op}")))
+        Err(EvalError::new(format!(
+            "capability.{}.required: {op}",
+            capability.replace('.', "_")
+        )))
     }
 }
 

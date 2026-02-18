@@ -530,15 +530,34 @@ contract:
       - '[]'
 ```
 
+`contract.job` executable type (v1):
+
+- `type: contract.job`
+- required:
+  - `harness.job.ref` (scalar path#id ref)
+  - `contract`
+- optional:
+  - `harness.job.mode`
+  - `harness.job.inputs`
+  - `harness.job.outputs`
+  - `harness.job.helper`
+
+Job ref grammar:
+
+- absolute/virtual ref: `/path/to/file.spec.md#CASE-ID`
+- same-doc ref: `#CASE-ID` (requires caller-provided document context)
+- non-scalar refs are invalid
+- missing path/case resolution is schema/runtime error
+
 <!-- BEGIN GENERATED: SCHEMA_REGISTRY_V1 -->
 
 ## Generated Registry Snapshot
 
 This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
-- profile_count: 11
+- profile_count: 12
 - top_level_fields: 10
-- type_profiles: 7
+- type_profiles: 8
 
 ### Top-Level Keys
 
@@ -561,6 +580,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 |---|---|---|
 | `api.http` | - | - |
 | `cli.run` | - | - |
+| `contract.job` | `harness`, `contract` | - |
 | `docs.generate` | - | - |
 | `governance.check` | `check` | - |
 | `orchestration.run` | - | - |
@@ -573,8 +593,8 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 ## Generated Spec Schema Field Catalog
 
 - top_level_field_count: 10
-- type_profile_count: 7
-- total_type_field_count: 23
+- type_profile_count: 8
+- total_type_field_count: 31
 
 ### Top-Level Fields
 
@@ -597,6 +617,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 |---|---|---|
 | `api.http` | 3 | - |
 | `cli.run` | 2 | - |
+| `contract.job` | 8 | `harness`, `contract` |
 | `docs.generate` | 8 | - |
 | `governance.check` | 1 | `check` |
 | `orchestration.run` | 6 | - |

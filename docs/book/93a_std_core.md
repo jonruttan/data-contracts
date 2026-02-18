@@ -1244,6 +1244,39 @@ Provide generated semantic reference for `std.core` and special forms.
   - result: Deterministic result per symbol contract.
 
 
+### `ops.helper.call`
+
+- Signature: `ops.helper.call/2`
+- Summary: Evaluates `call` with arity 2.
+- Since: v1
+- Tags: `pure` `deterministic` 
+- Parity: python=false, php=false, both=false
+
+#### Parameters
+
+| name | type | required | description |
+|---|---|---|---|
+| `arg1` | `json` | true | Positional argument 1. |
+| `arg2` | `json` | true | Positional argument 2. |
+
+
+#### Returns
+
+- Type: `json`
+- Description: Deterministic pure return value.
+
+#### Error Conditions
+
+- `schema`: Unknown symbol, arity mismatch, or invalid argument types.
+
+
+#### Examples
+
+- **Basic usage**
+  - expr: `ops.helper.call(arg1, arg2)`
+  - result: Deterministic result per symbol contract.
+
+
 ### `ops.os.cwd`
 
 - Signature: `ops.os.cwd/0`

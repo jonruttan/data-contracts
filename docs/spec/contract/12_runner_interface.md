@@ -33,6 +33,7 @@ Required subcommands:
 - `conformance-parity`
 - `test-core`
 - `test-full`
+- `job-run`
 
 CI expectation:
 
@@ -77,6 +78,14 @@ Adapter semantic contract:
 - adapters MUST preserve assertion semantics from schema/contract docs
 - universal `evaluate` core and sugar compile-only behavior are runner
   semantics, not adapter-specific policy
+
+Job dispatch contract:
+
+- `job-run` MUST accept scalar `--ref` in path+anchor form:
+  - `/path/to/file.spec.md#CASE-ID`
+  - `#CASE-ID` (same-document form; requires a document context)
+- `job-run` MUST reject non-scalar or malformed refs with deterministic errors.
+- Referenced case MUST resolve to `type: contract.job`.
 
 Profiling controls (opt-in; all adapters):
 

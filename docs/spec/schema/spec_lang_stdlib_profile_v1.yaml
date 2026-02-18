@@ -195,6 +195,8 @@ categories:
   - ops.os.pid
   - ops.os.sleep_ms
   - ops.os.exit_code
+  helper_ops:
+  - ops.helper.call
 symbols:
   std.core.subject:
     category: core_control
@@ -203,6 +205,13 @@ symbols:
     deterministic: true
     error_class: schema
     parity_required: true
+  ops.helper.call:
+    category: helper_ops
+    arity: 2
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: false
   var:
     category: core_control
     arity: null

@@ -47,14 +47,15 @@ Provide generated reference for harness-specific type overlays and required fiel
 
 ## Generated Harness Type Catalog
 
-- type_profile_count: 7
-- total_type_field_count: 23
+- type_profile_count: 8
+- total_type_field_count: 31
 - doc_quality_score: 1.0
 
 | case_type | field_count | required_top_level | allowed_top_level_extra |
 |---|---|---|---|
 | `api.http` | 3 | - | - |
 | `cli.run` | 2 | - | - |
+| `contract.job` | 8 | `harness`, `contract` | - |
 | `docs.generate` | 8 | - | - |
 | `governance.check` | 1 | `check` | - |
 | `orchestration.run` | 6 | - | - |
@@ -92,6 +93,19 @@ Provide generated reference for harness-specific type overlays and required fiel
 
 - Examples:
   - `type: cli.run`
+
+
+#### `contract.job`
+
+- Summary: Harness type profile declared in schema registry.
+- Defaults:
+  - -
+
+- Failure Modes:
+  - schema validation failure
+
+- Examples:
+  - `type: contract.job`
 
 
 #### `docs.generate`

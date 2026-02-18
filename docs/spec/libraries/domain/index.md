@@ -5,6 +5,7 @@ Canonical domain index for executable specs in this subtree.
 ## Files
 
 - `/docs/spec/libraries/domain/http_core.spec.md`
+- `/docs/spec/libraries/domain/job_core.spec.md`
 - `/docs/spec/libraries/domain/conformance_core.spec.md`
 - `/docs/spec/libraries/domain/fs_core.spec.md`
 - `/docs/spec/libraries/domain/meta_core.spec.md`
@@ -46,6 +47,7 @@ Canonical domain index for executable specs in this subtree.
 - `domain.http.step_body_json_get` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.step_by_id` (/docs/spec/libraries/domain/http_core.spec.md)
 - `domain.http.step_status_is` (/docs/spec/libraries/domain/http_core.spec.md)
+- `domain.job.scan_bundle_has_result` (/docs/spec/libraries/domain/job_core.spec.md)
 - `domain.fs.file_ext_eq` (/docs/spec/libraries/domain/fs_core.spec.md)
 - `domain.fs.glob_all` (/docs/spec/libraries/domain/fs_core.spec.md)
 - `domain.fs.glob_any_spec_files` (/docs/spec/libraries/domain/fs_core.spec.md)
