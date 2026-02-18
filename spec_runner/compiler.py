@@ -17,10 +17,17 @@ def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -
         expr = compile_yaml_expr_to_sexpr(raw_expr, field_path=assert_path)
     except SpecLangYamlAstError as exc:
         raise ValueError(str(exc)) from exc
+    # Universal core operator contract: compile-only sugar normalizes to evaluate.
+    supported = {"evaluate"}
+    op = "evaluate"
+    if op == "evaluate":
+        pass
+    if op not in supported:
+        raise ValueError(f"{assert_path} unsupported operator: {op}")
     return PredicateLeaf(
         target=target,
         subject_key=target,
-        op="evaluate",
+        op=op,
         expr=expr,
         assert_path=assert_path,
     )

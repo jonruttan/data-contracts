@@ -93,12 +93,12 @@
     {
       "from": "/docs/book/03_assertions.md",
       "kind": "owns_token",
-      "to": "can"
+      "to": "may"
     },
     {
       "from": "/docs/book/03_assertions.md",
       "kind": "owns_token",
-      "to": "cannot"
+      "to": "must_not"
     },
     {
       "from": "/docs/book/03_assertions.md",

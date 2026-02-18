@@ -11,9 +11,9 @@ type: contract.check
 harness:
   root: .
   assert_decision_authority:
-    path: /scripts/run_governance_specs.py
+    path: /spec_runner/governance_runtime.py
     required_tokens:
-    - governance.check forbids harness.evaluate
+    - governance.scan forbids harness.evaluate
     - eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)
     forbidden_tokens:
     - run_governance_policy(

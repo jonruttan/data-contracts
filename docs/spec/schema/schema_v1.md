@@ -392,7 +392,9 @@ Published extension type contracts:
 
 Universal core assertion model:
 
-- every leaf assertion is a spec-lang operator mapping.
+- every leaf assertion is a spec-lang mapping AST expression.
+- every leaf assertion is represented with operator-keyed mappings.
+- universal core operator semantics are evaluate-only at runtime.
 - evaluator subjects MUST be JSON values only (`null`, boolean, number, string,
   list, object with string keys).
 
@@ -422,7 +424,7 @@ Leaf constraints:
 
 Supported operators:
 
-- universal core: spec-lang v1 operator mappings at each leaf
+- universal core operator: spec-lang v1 operator-keyed mappings at each leaf
 
 Core executable-surface rule:
 
@@ -611,8 +613,8 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 ## Generated Spec Schema Field Catalog
 
 - top_level_field_count: 16
-- type_profile_count: 8
-- total_type_field_count: 30
+- type_profile_count: 3
+- total_type_field_count: 15
 
 ### Top-Level Fields
 
@@ -639,12 +641,7 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 
 | case_type | field_count | required_top_level |
 |---|---|---|
-| `api.http` | 3 | - |
-| `cli.run` | 2 | - |
+| `contract.check` | 5 | `harness`, `contract` |
+| `contract.export` | 3 | `contract`, `harness` |
 | `contract.job` | 7 | `harness`, `contract` |
-| `docs.generate` | 8 | - |
-| `governance.check` | 1 | `check` |
-| `orchestration.run` | 6 | - |
-| `spec.export` | 2 | `contract`, `harness` |
-| `text.file` | 1 | - |
 <!-- GENERATED:END spec_schema_field_catalog -->

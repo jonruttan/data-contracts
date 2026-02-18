@@ -28,3 +28,7 @@ Date: 2026-02-18
 ## Derived Docs
 
 Generated references in `/docs/book/9*.md` are derived from canonical spec sources and must be regenerated when contracts or governance catalogs change.
+
+## Runtime Profiling Snapshot
+
+- `run_trace_v1` contract snapshot is defined in `/docs/spec/schema/run_trace_v1.yaml`.

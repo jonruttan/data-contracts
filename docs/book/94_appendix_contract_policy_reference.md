@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 251
-- must_count: 234
+- rule_count: 254
+- must_count: 237
 - should_count: 12
 - must_not_count: 5
-- active_count: 251
+- active_count: 254
 - deprecated_count: 0
 - removed_count: 0
 
@@ -125,6 +125,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT` | `MUST` | `governance` | `docs.reference.examples` | 2 | `active` |
 | `DOCS_EXAMPLE_IDS_UNIQUE` | `MUST` | `governance` | `docs.reference.example_ids` | 2 | `active` |
 | `DOCS_FILENAME_POLICY_REQUIRED` | `MUST` | `governance` | `docs.layout.filename_policy` | 2 | `active` |
+| `DOCS_FRESHNESS_STRICT_REQUIRED` | `MUST` | `governance` | `docs.freshness.strict` | 2 | `active` |
 | `DOCS_GENERATED_ARTIFACTS_FRESH` | `MUST` | `governance` | `docs.reference.generated_artifacts` | 3 | `active` |
 | `DOCS_GENERATED_SECTIONS_READ_ONLY` | `MUST` | `governance` | `docs.generator.read_only_sections` | 4 | `active` |
 | `DOCS_GENERATED_SURFACES_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.outputs` | 2 | `active` |
@@ -152,6 +153,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY` | `MUST` | `governance` | `docs.release.contract` | 3 | `active` |
 | `DOCS_REQUIRED_SECTIONS_PRESENT` | `MUST` | `governance` | `docs.reference.sections` | 4 | `active` |
 | `DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED` | `MUST` | `governance` | `docs.runner_api.commands` | 2 | `active` |
+| `DOCS_SPEC_IA_CANONICAL_REQUIRED` | `MUST` | `governance` | `docs.spec.information_architecture` | 3 | `active` |
 | `DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED` | `MUST` | `governance` | `docs.book.spec_lang_chapter_order` | 3 | `active` |
 | `DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED` | `MUST` | `governance` | `docs.generator.catalog.spec_schema_fields` | 4 | `active` |
 | `DOCS_STDLIB_EXAMPLES_REQUIRED` | `MUST` | `governance` | `docs.spec_lang.symbols.examples` | 2 | `active` |
@@ -165,6 +167,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `EXECUTABLE_DISCOVERY_MARKDOWN_ONLY` | `MUST` | `runtime` | `discovery.canonical_executable_trees` | 2 | `active` |
 | `EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN` | `MUST_NOT` | `schema` | `harness.spec_lang.includes` | 3 | `active` |
 | `EXECUTABLE_SURFACES_MUST_BE_SPEC_MD` | `MUST` | `governance` | `docs.spec.executable_surfaces` | 2 | `active` |
+| `GOVERNANCE_CHECK_FAMILY_MAP_REQUIRED` | `MUST` | `governance` | `governance.check_catalog_map` | 2 | `active` |
 | `GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY` | `MUST` | `governance` | `governance.check_decisions` | 2 | `active` |
 | `GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING` | `MUST` | `governance` | `scripts.run_governance_specs` | 3 | `active` |
 | `GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION` | `MUST` | `governance` | `governance.policy_libraries.metric_non_regression` | 3 | `active` |

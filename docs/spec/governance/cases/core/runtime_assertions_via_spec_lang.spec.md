@@ -28,7 +28,7 @@ harness:
       forbidden_tokens:
       - strpos($subject, $v)
       - preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject)
-    - path: /scripts/run_governance_specs.py
+    - path: /spec_runner/governance_runtime.py
       required_tokens:
       - eval_predicate(
       forbidden_tokens:

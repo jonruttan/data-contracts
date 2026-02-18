@@ -12,6 +12,8 @@ families:
     check_prefix: conformance.
   - family: spec
     check_prefix: spec.
+  - family: spec_lang
+    check_prefix: spec_lang.
   - family: library
     check_prefix: library.
   - family: assert

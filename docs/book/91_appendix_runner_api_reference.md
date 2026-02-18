@@ -47,15 +47,16 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 ## Generated Runner API Catalog
 
-- command_count: 71
+- command_count: 74
 - python_command_count: 0
-- rust_command_count: 71
+- rust_command_count: 74
 - parity_command_count: 0
 - all_commands_parity: false
 - doc_quality_score: 0.6
 
 | command | group | python | rust | parity |
 |---|---|---|---|---|
+| `--changed-only` | `reporting` | false | true | false |
 | `--doc` | `reporting` | false | true | false |
 | `--expr-file` | `reporting` | false | true | false |
 | `--expr-json` | `metrics` | false | true | false |
@@ -65,6 +66,8 @@ Provide generated command-surface documentation for the canonical runner interfa
 | `--liveness-level` | `reporting` | false | true | false |
 | `--liveness-min-events` | `reporting` | false | true | false |
 | `--liveness-stall-ms` | `reporting` | false | true | false |
+| `--path` | `reporting` | false | true | false |
+| `--paths` | `reporting` | false | true | false |
 | `--profile-heartbeat-ms` | `reporting` | false | true | false |
 | `--profile-level` | `reporting` | false | true | false |
 | `--profile-out` | `reporting` | false | true | false |
@@ -130,6 +133,21 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 
 ### Command Semantics
+
+#### `--changed-only`
+
+- Summary: Runs `--changed-only` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --changed-only`: Execute command with canonical adapter routing.
+
 
 #### `--doc`
 
@@ -264,6 +282,36 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 - Examples:
   - `./scripts/runner_adapter.sh --liveness-stall-ms`: Execute command with canonical adapter routing.
+
+
+#### `--path`
+
+- Summary: Runs `--path` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --path`: Execute command with canonical adapter routing.
+
+
+#### `--paths`
+
+- Summary: Runs `--paths` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh --paths`: Execute command with canonical adapter routing.
 
 
 #### `--profile-heartbeat-ms`

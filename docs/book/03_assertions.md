@@ -61,6 +61,9 @@ Define assertion-step semantics and canonical evaluate usage.
 - `MUST`: all children must pass
 - `MAY`: at least one child must pass
 - `MUST_NOT`: no child may pass
+- Legacy wording synonyms:
+  - `can` corresponds to `MAY`
+  - `cannot` corresponds to `MUST_NOT`
 
 ## Targets
 
