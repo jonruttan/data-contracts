@@ -46,7 +46,7 @@ Provide repeatable recipes for common contributor tasks.
 ## Add A New Spec Case
 
 1. Create `*.spec.md` in the correct domain tree.
-2. Add `yaml contract-spec` case with `id`, `type`, `assert`.
+2. Add `yaml contract-spec` case with `id`, `type`, `contract`.
 3. Prefer `evaluate` for policy logic.
 4. Run:
    - `./scripts/runner_adapter.sh normalize-check`
@@ -54,7 +54,7 @@ Provide repeatable recipes for common contributor tasks.
 
 ## Add Or Reuse A Library Function
 
-1. Add function in a `type: spec.export` case.
+1. Add function in a `type: contract.export` case.
 2. Define function logic in a `contract` step (`class: MUST`) and export from
    producer `harness.exports` using `from: assert.function`.
 3. Import symbols in consumers through `harness.chain.steps` + `harness.chain.imports`.
@@ -83,17 +83,20 @@ harness:
       - domain.markdown.required_sections_present
       - domain.markdown.link_targets_all_resolve
 contract:
-- target: context_json
+- id: assert_1
+  class: MUST
+  target: context_json
   asserts:
-  - MUST:
-    - call:
+  - evaluate:
+      call:
       - {var: domain.markdown.required_sections_present}
       - {var: subject}
       - lit:
         - Purpose
         - Inputs
         - Outputs
-    - call:
+  - evaluate:
+      call:
       - {var: domain.markdown.link_targets_all_resolve}
       - {var: subject}
 ```
@@ -127,13 +130,14 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - MUST:
-    - call:
+  - evaluate:
+      call:
       - {var: domain.fs.json_path_eq_text}
       - '{"meta":{"ok":true}}'
       - lit: [meta, ok]
       - true
-    - std.logic.eq:
+  - evaluate:
+      std.logic.eq:
       - call:
         - {var: domain.fs.glob_filter}
         - lit: [/docs/a.md, /docs/a.spec.md]
@@ -213,86 +217,114 @@ Environment equivalents:
 
 ## REST API How-To (`api.http`)
 
-Use `type: api.http` for endpoint tests. The practical method suite is:
+Use `type: contract.check` with `harness.check.profile: api.http` for endpoint tests. The practical method suite is:
 `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`.
 
 ### GET
 
 ```yaml
-type: api.http
-request:
-  method: GET
-  url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
+type: contract.check
+harness:
+  check:
+    profile: api.http
+    config:
+      request:
+        method: GET
+        url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
 ```
 
 ### POST
 
 ```yaml
-type: api.http
-request:
-  method: POST
-  url: /docs/spec/conformance/cases/fixtures/api_http_created.json
-  body_json:
-    name: example
+type: contract.check
+harness:
+  check:
+    profile: api.http
+    config:
+      request:
+        method: POST
+        url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+        body_json:
+          name: example
 ```
 
 ### UPDATE (PUT and PATCH)
 
 ```yaml
-type: api.http
-request:
-  method: PUT
-  url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
+type: contract.check
+harness:
+  check:
+    profile: api.http
+    config:
+      request:
+        method: PUT
+        url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
 ```
 
 ```yaml
-type: api.http
-request:
-  method: PATCH
-  url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
+type: contract.check
+harness:
+  check:
+    profile: api.http
+    config:
+      request:
+        method: PATCH
+        url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
 ```
 
 ### DELETE
 
 ```yaml
-type: api.http
-request:
-  method: DELETE
-  url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
+type: contract.check
+harness:
+  check:
+    profile: api.http
+    config:
+      request:
+        method: DELETE
+        url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
 ```
 
 ### CORS Preflight (OPTIONS)
 
 ```yaml
-type: api.http
-request:
-  method: OPTIONS
-  url: https://api.example.invalid/items
-  cors:
-    preflight: true
-    origin: https://client.example
-    request_method: POST
-    request_headers: [authorization, content-type]
+type: contract.check
+harness:
+  check:
+    profile: api.http
+    config:
+      request:
+        method: OPTIONS
+        url: https://api.example.invalid/items
+        cors:
+          preflight: true
+          origin: https://client.example
+          request_method: POST
+          request_headers: [authorization, content-type]
 ```
 
 ### Round-Trip Scenario (`requests`)
 
 ```yaml
-type: api.http
+type: contract.check
 harness:
-  api_http:
-    scenario:
-      fail_fast: true
-requests:
-- id: create
-  method: POST
-  url: /docs/spec/conformance/cases/fixtures/api_http_created.json
-- id: get
-  method: GET
-  url: /docs/spec/conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json
-- id: cleanup
-  method: DELETE
-  url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
+  check:
+    profile: api.http
+    config:
+      harness:
+        api_http:
+          scenario:
+            fail_fast: true
+      requests:
+      - id: create
+        method: POST
+        url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+      - id: get
+        method: GET
+        url: /docs/spec/conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json
+      - id: cleanup
+        method: DELETE
+        url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
 ```
 
 Use `steps_json` assertions to validate full round-trip order and output.
@@ -300,52 +332,48 @@ Use `steps_json` assertions to validate full round-trip order and output.
 ### Cross-Spec Chain (GET prerequisite -> POST dependent)
 
 Use `harness.chain.steps` when the dependent case should run prerequisite
-cases first and consume exported state.
+cases first and consume prior step state.
 
 Prerequisite case:
 
 ```yaml
 id: API-GET-PREREQ
-type: api.http
-request:
-  method: GET
-  url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+type: contract.check
+harness:
+  check:
+    profile: api.http
+    config:
+      request:
+        method: GET
+        url: /docs/spec/conformance/cases/fixtures/api_http_created.json
 ```
 
 Dependent case:
 
 ```yaml
 id: API-POST-WITH-CHAIN
-type: api.http
+type: contract.check
 harness:
   chain:
     steps:
     - id: preload
       class: MUST
       ref: '#API-GET-PREREQ'
-      exports:
-        item_id:
-          from: body_json
-          path: /id
-    imports:
-    - from: preload
-      names:
-      - item_id
-      as:
-        item_id: seed_id
-request:
-  method: POST
-  url: /docs/spec/conformance/cases/fixtures/api_http_item_{{chain.preload.item_id}}.json
+  check:
+    profile: api.http
+    config:
+      request:
+        method: POST
+        url: /docs/spec/conformance/cases/fixtures/api_http_created.json
 ```
 
 For chained state sharing:
 
 - do not use `harness.spec_lang.includes` in executable cases
 - keep executable prerequisites under `harness.chain.steps`
-- set explicit step class (`must|can|cannot`) for every chain step
-- export only target-derived values via explicit `exports`
-- import only explicit exported names via `harness.chain.imports` (with
-  optional renaming)
+- set explicit step class (`MUST|MAY|MUST_NOT`) for every chain step
+- keep producer exports on producer `harness.exports`
+- import only explicit exported names via `harness.chain.imports` (with optional renaming)
 
 ## Escalation Path
 

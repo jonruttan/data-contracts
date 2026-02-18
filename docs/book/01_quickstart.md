@@ -36,8 +36,8 @@ Provide the shortest path from no case to passing case execution.
 
 ## Outputs
 
-- runnable `text.file` and `cli.run` examples
-- first sugar and `evaluate` assertion examples
+- runnable `contract.check` examples
+- first canonical `evaluate` assertion examples
 
 ## Failure Modes
 
@@ -50,18 +50,26 @@ Create a Markdown file with a fenced `yaml contract-spec` block:
 
 ```yaml
 id: BK-QS-001
-type: text.file
+type: contract.check
+harness:
+  check:
+    profile: text.file
+    config: {}
 contract:
-- target: text
-  MUST:
-  - contain:
-    - BK-QS-001
+- id: contains_case_id
+  class: MUST
+  target: text
+  asserts:
+  - evaluate:
+      std.string.contains:
+      - var: subject
+      - BK-QS-001
 ```
 
 Why this passes:
 
-- `type: text.file` reads the containing spec file by default.
-- The file contains the case id string, so the `contain` assertion succeeds.
+- `harness.check.profile: text.file` reads the containing spec file by default.
+- The file contains the case id string, so the evaluate expression succeeds.
 
 ## 2) Run The Repo Gate
 
@@ -77,29 +85,43 @@ This runs governance checks, conformance reports, parity checks, and tests.
 
 ```yaml
 id: BK-QS-002
-type: cli.run
-argv:
-- hello
-exit_code: 0
+type: contract.check
 harness:
-  entrypoint: /bin/echo
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - hello
+      exit_code: 0
+      harness:
+        entrypoint: /bin/echo
 contract:
-- target: stdout
-  MUST:
-  - contain:
-    - hello
+- id: stdout_has_hello
+  class: MUST
+  target: stdout
+  asserts:
+  - evaluate:
+      std.string.contains:
+      - var: subject
+      - hello
 ```
 
 ## 4) Add A First `evaluate` Assertion
 
 ```yaml
 id: BK-QS-002B
-type: text.file
+type: contract.check
+harness:
+  check:
+    profile: text.file
+    config: {}
 contract:
-- target: text
-  MUST:
+- id: text_shape_check
+  class: MUST
+  target: text
+  asserts:
   - evaluate:
-    - std.logic.and:
+      std.logic.and:
       - std.string.contains:
         - BK-QS-002B
       - std.string.starts_with:
@@ -112,8 +134,7 @@ boolean/value logic in the spec itself.
 
 Authoring default:
 
-- prefer sugar operators (`contain`, `regex`, `json_type`, `exists`) unless
-  `evaluate` is required for case intent.
+- use `evaluate` expressions only.
 
 ## 5) Common Authoring Mistakes
 
@@ -121,9 +142,9 @@ Invalid:
 
 ```yaml
 id: BK-QS-003
-type: cli.run
+type: contract.check
 entrypoint: /bin/echo
-assert: []
+contract: []
 ```
 
 Problem:
@@ -134,16 +155,20 @@ Expected fix:
 
 ```yaml
 id: BK-QS-003
-type: cli.run
+type: contract.check
 harness:
-  entrypoint: /bin/echo
-assert: []
+  check:
+    profile: cli.run
+    config:
+      harness:
+        entrypoint: /bin/echo
+contract: []
 ```
 
 ## 6) Checklist
 
 - Case has `id` and `type`.
 - Runner-only config lives under `harness:`.
-- `assert` uses canonical groups/operators.
+- `contract` uses `class` + `asserts` with `evaluate`.
 - Case is small and focused.
 - `./scripts/ci_gate.sh` passes locally.

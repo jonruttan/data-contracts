@@ -62,10 +62,13 @@ Example:
 
 ```yaml
 contract:
-- target: text
-  MUST:
+- id: assert_1
+  class: MUST
+  target: text
+  asserts:
   - evaluate:
-    - std.string.contains:
+      std.string.contains:
+      - var: subject
       - hello
 ```
 
@@ -92,28 +95,26 @@ Invalid forms:
 
 Boolean:
 
-- `and`
-- `or`
-- `not`
+- `std.logic.and`
+- `std.logic.or`
+- `std.logic.not`
 
 Value/text:
 
-- `contains`
-- `starts_with`
-- `ends_with`
-- `eq`
-- `neq`
-- `in`
+- `std.string.contains`
+- `std.string.starts_with`
+- `std.string.ends_with`
+- `std.logic.eq`
+- `std.logic.neq`
 
 JSON/value:
 
-- `json_type`
-- `has_key`
-- `get`
+- `std.type.json_type`
+- `std.object.has_key`
+- `std.object.get`
 
 Utility:
 
-- `subject`
 - `len`
 - `count`
 - `first`
@@ -251,7 +252,7 @@ Currying with collection forms:
       - var:
         - add
       - 10
-    - json_parse:
+    - std.json.parse:
       - '[1,2,3]'
 ```
 
@@ -300,10 +301,10 @@ Typical diagnostics include:
 - `target=...`
 - `op=evaluate`
 
-## 7) When To Use `contain` vs `evaluate`
+## 7) Evaluate-Only Guidance
 
-Use `contain` / `regex` when simple string checks are enough (default).
-Use `evaluate` when you need:
+Use `evaluate` for all contract assertions. Use standard library operators
+inside the expression when you need:
 
 - composable boolean logic
 - value/JSON-aware checks

@@ -45,41 +45,64 @@ Provide a compact, copyable set of minimal valid case patterns.
 
 ```yaml
 id: CHEAT-001
-type: text.file
+type: contract.check
+harness:
+  check:
+    profile: text.file
+    config: {}
 contract:
-- target: text
-  MUST:
-  - contain:
-    - hello
+- id: assert_1
+  class: MUST
+  target: text
+  asserts:
+  - evaluate:
+      std.string.contains:
+      - var: subject
+      - hello
 ```
 
 ## Minimal `cli.run`
 
 ```yaml
 id: CHEAT-002
-type: cli.run
-argv:
-- hello
-exit_code: 0
+type: contract.check
 harness:
-  entrypoint: /bin/echo
+  check:
+    profile: cli.run
+    config:
+      argv:
+      - hello
+      exit_code: 0
+      harness:
+        entrypoint: /bin/echo
 contract:
-- target: stdout
-  MUST:
-  - contain:
-    - hello
+- id: assert_1
+  class: MUST
+  target: stdout
+  asserts:
+  - evaluate:
+      std.string.contains:
+      - var: subject
+      - hello
 ```
 
 ## Minimal `evaluate`
 
 ```yaml
 id: CHEAT-003
-type: text.file
+type: contract.check
+harness:
+  check:
+    profile: text.file
+    config: {}
 contract:
-- target: text
-  MUST:
+- id: assert_1
+  class: MUST
+  target: text
+  asserts:
   - evaluate:
-    - std.string.contains:
+      std.string.contains:
+      - var: subject
       - CHEAT-003
 ```
 

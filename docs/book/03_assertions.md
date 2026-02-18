@@ -7,8 +7,8 @@ status: active
 audience: author
 owns_tokens:
 - must
-- can
-- cannot
+- may
+- must_not
 - evaluate
 requires_tokens:
 - spec-lang
@@ -33,7 +33,7 @@ Define assertion-step semantics and canonical evaluate usage.
 
 ## Inputs
 
-- `assert` step lists with `id`, `class`, `target`, and `checks`
+- `contract` step lists with `id`, `class`, `target`, and `asserts`
 
 ## Outputs
 
@@ -47,14 +47,14 @@ Define assertion-step semantics and canonical evaluate usage.
 
 ## Step Shape
 
-`assert` uses one canonical shape:
+`contract` uses one canonical shape:
 
 - list of steps
 - each step declares:
   - `id`
-  - `class` (`must`, `can`, `cannot`)
+  - `class` (`MUST`, `MAY`, `MUST_NOT`)
   - optional `target`
-  - `checks` (non-empty list of assertion nodes)
+  - `asserts` (non-empty list of assertion nodes)
 
 ## Group Semantics
 
@@ -75,7 +75,7 @@ contract:
   target: stdout
   asserts:
   - evaluate:
-    - std.string.contains:
+      std.string.contains:
       - var: subject
       - ok
 ```
@@ -87,9 +87,8 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - target: stdout
-    evaluate:
-    - std.string.contains:
+  - evaluate:
+      std.string.contains:
       - var: subject
       - ok
 ```
@@ -111,10 +110,12 @@ All operator values are lists.
 
 ```yaml
 contract:
-- target: text
-  MUST:
+- id: assert_1
+  class: MUST
+  target: text
+  asserts:
   - evaluate:
-    - std.logic.and:
+      std.logic.and:
       - std.string.contains:
         - version
       - std.string.starts_with:
@@ -131,10 +132,12 @@ Tail-recursive example:
 
 ```yaml
 contract:
-- target: text
-  MUST:
+- id: assert_1
+  class: MUST
+  target: text
+  asserts:
   - evaluate:
-    - let:
+      let:
       - lit:
         - - loop
           - - fn
@@ -171,20 +174,32 @@ contract:
 
 ```yaml
 contract:
-- target: stderr
-  must_not:
-  - contain:
-    - 'ERROR:'
-- target: stdout
-  may:
-  - json_type:
-    - list
-  - contain:
-    - '[]'
-- target: chain_json
-  MUST:
+- id: assert_1
+  class: MUST_NOT
+  target: stderr
+  asserts:
   - evaluate:
-    - std.object.has_key:
+      std.string.contains:
+      - var: subject
+      - 'ERROR:'
+- id: assert_2
+  class: MAY
+  target: stdout
+  asserts:
+  - evaluate:
+      std.type.json_type:
+      - var: subject
+      - list
+  - evaluate:
+      std.string.contains:
+      - var: subject
+      - '[]'
+- id: assert_3
+  class: MUST
+  target: chain_json
+  asserts:
+  - evaluate:
+      std.object.has_key:
       - var: subject
       - state
 ```
@@ -195,20 +210,24 @@ Prefer library-backed markdown predicates over raw token checks.
 
 ```yaml
 contract:
-- target: context_json
-  MUST:
+- id: assert_1
+  class: MUST
+  target: context_json
+  asserts:
   - evaluate:
-    - call:
+      call:
       - {var: domain.markdown.required_sections_present}
       - {var: subject}
       - lit:
         - Purpose
         - Inputs
         - Outputs
-    - call:
+  - evaluate:
+      call:
       - {var: domain.markdown.link_targets_all_resolve}
       - {var: subject}
-    - call:
+  - evaluate:
+      call:
       - {var: domain.markdown.has_yaml_contract_spec_fence}
       - {var: subject}
 ```
@@ -218,10 +237,14 @@ goal:
 
 ```yaml
 contract:
-- target: text
-  MUST:
-  - contain:
-    - "Spec-Version: 1"
+- id: assert_1
+  class: MUST
+  target: text
+  asserts:
+  - evaluate:
+      std.string.contains:
+      - var: subject
+      - "Spec-Version: 1"
 ```
 
 Anti-pattern:
@@ -248,11 +271,9 @@ For `cli.run`:
 
 Common diagnostic examples:
 
-- `AH001`: empty `contain` (always true)
-- `AH002`: always-true regex
-- `AH003`: duplicate operator values
-- `AH004`: redundant sibling branches
-- `AH005`: non-portable regex constructs
+- duplicate operator values
+- redundant sibling branches
+- non-portable expression patterns
 
 ## Troubleshooting Patterns
 
@@ -274,10 +295,9 @@ Symptom: `assert group must include exactly one key`
 ## Checklist
 
 - Every leaf has an inherited target.
-- Every operator value is a list.
-- Group nodes use exactly one of `must/may/must_not`.
-- Sugar is the default authoring form unless `evaluate` is required.
-- Portable regex subset is used when cross-runtime parity matters.
+- Every operator value is valid mapping-AST.
+- Steps use `class: MUST|MAY|MUST_NOT`.
+- Author with `evaluate` expressions.
 
 ## Chain Export Migration
 

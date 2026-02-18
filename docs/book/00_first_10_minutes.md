@@ -77,12 +77,20 @@ cat > .artifacts/first10/hello.spec.md <<'MD'
 
 ```yaml contract-spec
 id: FIRST10-001
-type: text.file
+type: contract.check
+harness:
+  check:
+    profile: text.file
+    config: {}
 contract:
-- target: text
-  MUST:
-  - contain:
-    - FIRST10-001
+- id: contains_case_id
+  class: MUST
+  target: text
+  asserts:
+  - evaluate:
+      std.string.contains:
+      - var: subject
+      - FIRST10-001
 ```
 MD
 ```
