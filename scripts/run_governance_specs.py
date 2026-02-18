@@ -7002,29 +7002,44 @@ def _scan_runtime_git_hook_prepush_enforced(root: Path, *, harness: dict | None 
     return violations
 
 
-def _scan_runtime_git_hook_fast_path_routing_required(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_runtime_fast_path_consistency_required(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
-    cfg = h.get("git_hook_fast_path")
+    cfg = h.get("fast_path_consistency")
     if not isinstance(cfg, dict):
-        return ["runtime.git_hook_fast_path_routing_required requires harness.git_hook_fast_path mapping in governance spec"]
-    hook_path = str(cfg.get("hook_path", "")).strip()
-    required_tokens = cfg.get("required_tokens", [])
-    if not hook_path:
-        return ["harness.git_hook_fast_path.hook_path must be a non-empty string"]
+        return [
+            "runtime.fast_path_consistency_required requires harness.fast_path_consistency mapping in governance spec"
+        ]
+    file_token_sets = cfg.get("file_token_sets", [])
     if (
-        not isinstance(required_tokens, list)
-        or not required_tokens
-        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+        not isinstance(file_token_sets, list)
+        or not file_token_sets
+        or any(not isinstance(x, dict) for x in file_token_sets)
     ):
-        return ["harness.git_hook_fast_path.required_tokens must be a non-empty list of non-empty strings"]
-    hook = _join_contract_path(root, hook_path)
-    if not hook.exists():
-        return [f"{hook_path}:1: missing managed pre-push hook for fast-path routing check"]
-    text = hook.read_text(encoding="utf-8")
-    for tok in required_tokens:
-        if tok not in text:
-            violations.append(f"{hook_path}:1: missing pre-push fast-path routing token {tok}")
+        return [
+            "harness.fast_path_consistency.file_token_sets must be a non-empty list of mappings with path and required_tokens"
+        ]
+    for item in file_token_sets:
+        rel = str(item.get("path", "")).strip()
+        required_tokens = item.get("required_tokens", [])
+        if not rel:
+            return ["harness.fast_path_consistency.file_token_sets[*].path must be non-empty"]
+        if (
+            not isinstance(required_tokens, list)
+            or not required_tokens
+            or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+        ):
+            return [
+                "harness.fast_path_consistency.file_token_sets[*].required_tokens must be a non-empty list of non-empty strings"
+            ]
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing fast-path consistency file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing fast-path consistency token {tok}")
     return violations
 
 
@@ -7311,126 +7326,6 @@ def _scan_runtime_local_prepush_broad_governance_forbidden(
     for tok in forbidden_tokens:
         if tok in text:
             violations.append(f"{path}:1: forbidden local prepush token present {tok}")
-    return violations
-
-
-def _scan_runtime_local_prepush_check_sets_fast_path_required(
-    root: Path, *, harness: dict | None = None
-) -> list[str]:
-    violations: list[str] = []
-    h = harness or {}
-    cfg = h.get("local_prepush_check_sets_fast_path")
-    if not isinstance(cfg, dict):
-        return [
-            "runtime.local_prepush_check_sets_fast_path_required requires harness.local_prepush_check_sets_fast_path mapping in governance spec"
-        ]
-    path = str(cfg.get("path", "")).strip()
-    required_tokens = cfg.get("required_tokens", [])
-    if not path:
-        return ["harness.local_prepush_check_sets_fast_path.path must be a non-empty string"]
-    if (
-        not isinstance(required_tokens, list)
-        or not required_tokens
-        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
-    ):
-        return ["harness.local_prepush_check_sets_fast_path.required_tokens must be a non-empty list of non-empty strings"]
-    p = _join_contract_path(root, path)
-    if not p.exists():
-        return [f"{path}:1: missing local prepush script for check_sets fast-path check"]
-    text = p.read_text(encoding="utf-8")
-    for tok in required_tokens:
-        if tok not in text:
-            violations.append(f"{path}:1: missing local prepush check_sets fast-path token {tok}")
-    return violations
-
-
-def _scan_runtime_ci_gate_check_sets_fast_path_required(
-    root: Path, *, harness: dict | None = None
-) -> list[str]:
-    violations: list[str] = []
-    h = harness or {}
-    cfg = h.get("ci_gate_check_sets_fast_path")
-    if not isinstance(cfg, dict):
-        return [
-            "runtime.ci_gate_check_sets_fast_path_required requires harness.ci_gate_check_sets_fast_path mapping in governance spec"
-        ]
-    path = str(cfg.get("path", "")).strip()
-    required_tokens = cfg.get("required_tokens", [])
-    if not path:
-        return ["harness.ci_gate_check_sets_fast_path.path must be a non-empty string"]
-    if (
-        not isinstance(required_tokens, list)
-        or not required_tokens
-        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
-    ):
-        return ["harness.ci_gate_check_sets_fast_path.required_tokens must be a non-empty list of non-empty strings"]
-    p = _join_contract_path(root, path)
-    if not p.exists():
-        return [f"{path}:1: missing ci gate script for check_sets fast-path check"]
-    text = p.read_text(encoding="utf-8")
-    for tok in required_tokens:
-        if tok not in text:
-            violations.append(f"{path}:1: missing ci gate check_sets fast-path token {tok}")
-    return violations
-
-
-def _scan_runtime_gate_script_only_fast_path_required(
-    root: Path, *, harness: dict | None = None
-) -> list[str]:
-    violations: list[str] = []
-    h = harness or {}
-    cfg = h.get("gate_script_only_fast_path")
-    if not isinstance(cfg, dict):
-        return [
-            "runtime.gate_script_only_fast_path_required requires harness.gate_script_only_fast_path mapping in governance spec"
-        ]
-    file_token_sets = cfg.get("file_token_sets", [])
-    if (
-        isinstance(file_token_sets, list)
-        and file_token_sets
-        and all(isinstance(x, dict) for x in file_token_sets)
-    ):
-        entries: list[tuple[str, list[str]]] = []
-        for item in file_token_sets:
-            rel = str(item.get("path", "")).strip()
-            req = item.get("required_tokens", [])
-            if not rel:
-                return ["harness.gate_script_only_fast_path.file_token_sets[*].path must be non-empty"]
-            if (
-                not isinstance(req, list)
-                or not req
-                or any(not isinstance(x, str) or not x.strip() for x in req)
-            ):
-                return [
-                    "harness.gate_script_only_fast_path.file_token_sets[*].required_tokens must be a non-empty list of non-empty strings"
-                ]
-            entries.append((rel, [str(x) for x in req]))
-    else:
-        files = cfg.get("files", [])
-        required_tokens = cfg.get("required_tokens", [])
-        if (
-            not isinstance(files, list)
-            or not files
-            or any(not isinstance(x, str) or not x.strip() for x in files)
-        ):
-            return ["harness.gate_script_only_fast_path.files must be a non-empty list of non-empty strings"]
-        if (
-            not isinstance(required_tokens, list)
-            or not required_tokens
-            or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
-        ):
-            return ["harness.gate_script_only_fast_path.required_tokens must be a non-empty list of non-empty strings"]
-        entries = [(str(rel), [str(x) for x in required_tokens]) for rel in files]
-
-    for rel, required_tokens in entries:
-        p = _join_contract_path(root, rel)
-        if not p.exists():
-            violations.append(f"{rel}:1: missing gate script for gate-script-only fast-path check")
-            continue
-        text = p.read_text(encoding="utf-8")
-        for tok in required_tokens:
-            if tok not in text:
-                violations.append(f"{rel}:1: missing gate-script-only fast-path token {tok}")
     return violations
 
 
@@ -9089,7 +8984,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.prepush_parity_default_required": _scan_runtime_prepush_parity_default_required,
     "runtime.prepush_python_parity_not_optional_by_default": _scan_runtime_prepush_python_parity_not_optional_by_default,
     "runtime.git_hook_prepush_enforced": _scan_runtime_git_hook_prepush_enforced,
-    "runtime.git_hook_fast_path_routing_required": _scan_runtime_git_hook_fast_path_routing_required,
+    "runtime.fast_path_consistency_required": _scan_runtime_fast_path_consistency_required,
     "runtime.rust_adapter_target_fallback_defined": _scan_runtime_rust_adapter_target_fallback_defined,
     "runtime.local_ci_parity_entrypoint_documented": _scan_runtime_local_ci_parity_entrypoint_documented,
     "runtime.governance_triage_entrypoint_required": _scan_runtime_governance_triage_entrypoint_required,
@@ -9101,9 +8996,6 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.triage_stall_fallback_required": _scan_runtime_triage_stall_fallback_required,
     "runtime.governance_triage_targeted_first_required": _scan_runtime_governance_triage_targeted_first_required,
     "runtime.local_prepush_broad_governance_forbidden": _scan_runtime_local_prepush_broad_governance_forbidden,
-    "runtime.local_prepush_check_sets_fast_path_required": _scan_runtime_local_prepush_check_sets_fast_path_required,
-    "runtime.ci_gate_check_sets_fast_path_required": _scan_runtime_ci_gate_check_sets_fast_path_required,
-    "runtime.gate_script_only_fast_path_required": _scan_runtime_gate_script_only_fast_path_required,
     "runtime.ci_gate_ownership_contract_required": _scan_runtime_ci_gate_ownership_contract_required,
     "runtime.governance_prefix_selection_from_changed_paths": _scan_runtime_governance_prefix_selection_from_changed_paths,
     "runtime.governance_triage_artifact_contains_selection_metadata": _scan_runtime_governance_triage_artifact_contains_selection_metadata,

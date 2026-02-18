@@ -15,9 +15,7 @@ rules:
   SRGOV-RUNTIME-TRIAGE-011: runtime.governance_prefix_selection_from_changed_paths
   SRGOV-RUNTIME-TRIAGE-012: runtime.governance_triage_artifact_contains_selection_metadata
   SRGOV-RUNTIME-TRIAGE-013: runtime.ci_artifact_upload_paths_valid
-  SRGOV-RUNTIME-TRIAGE-021: runtime.ci_gate_check_sets_fast_path_required
-  SRGOV-RUNTIME-TRIAGE-022: runtime.gate_script_only_fast_path_required
-  SRGOV-RUNTIME-PREPUSH-006: runtime.git_hook_fast_path_routing_required
+  SRGOV-RUNTIME-TRIAGE-023: runtime.fast_path_consistency_required
   SRGOV-DOCS-: docs.
   SRGOV-NORM-: normalization.
   SRGOV-RUNTIME-: runtime.

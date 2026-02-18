@@ -1300,20 +1300,22 @@ rules:
   - scripts/install_git_hooks.sh
   - Makefile
   - docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md
-- id: RUNTIME_GIT_HOOK_FAST_PATH_ROUTING_REQUIRED
+- id: RUNTIME_FAST_PATH_CONSISTENCY_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.prepush.hook_fast_path
+  applies_to: runtime.fast_path.consistency
   norm: MUST
-  requirement: managed_prepush_hook_must_route_check_sets_and_gate_script_only_edits_to_fast_path
-  description: 'Repository-managed pre-push hook must route check_sets-only and gate-script-only edits to the local fast parity path before broad fallback.
+  requirement: local_prepush_ci_gate_and_hook_fast_path_tokens_must_remain_consistent
+  description: 'Local parity, ci gate, and managed pre-push hook must preserve consistent fast-path routing tokens for check_sets-only and gate-script-only changes.
 
     '
-  rationale: Preserves low-latency local push feedback for known low-risk edit classes.
-  risk_if_violated: Hook regressions reintroduce avoidable full-gate latency during gate script and check-set maintenance.
+  rationale: Keeps fast-path behavior coherent across all local gate entrypoints and prevents drift.
+  risk_if_violated: Divergent routing behavior causes slow or inconsistent local validation.
   references:
+  - scripts/local_ci_parity.sh
+  - scripts/ci_gate.sh
   - .githooks/pre-push
-  - docs/spec/governance/cases/core/runtime_git_hook_fast_path_routing_required.spec.md
+  - docs/spec/governance/cases/core/runtime_fast_path_consistency_required.spec.md
 - id: RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
   introduced_in: v1
   scope: governance
@@ -1461,49 +1463,6 @@ rules:
   references:
   - scripts/local_ci_parity.sh
   - docs/spec/governance/cases/core/runtime_local_prepush_broad_governance_forbidden.spec.md
-- id: RUNTIME_LOCAL_PREPUSH_CHECK_SETS_FAST_PATH_REQUIRED
-  introduced_in: v1
-  scope: governance
-  applies_to: runtime.prepush.check_sets_fast_path
-  norm: MUST
-  requirement: local_prepush_must_skip_normalize_and_docs_generate_for_check_sets_only_edits
-  description: 'Local prepush parity flow must include a check_sets-only fast path that skips normalize-check and docs-generate-check.
-
-    '
-  rationale: Preserves sub-second to low-second feedback loops for governance check-set maintenance edits.
-  risk_if_violated: Small manifest edits trigger avoidable heavy checks and degrade iteration speed.
-  references:
-  - scripts/local_ci_parity.sh
-  - docs/spec/governance/cases/core/runtime_local_prepush_check_sets_fast_path_required.spec.md
-- id: RUNTIME_CI_GATE_CHECK_SETS_FAST_PATH_REQUIRED
-  introduced_in: v1
-  scope: governance
-  applies_to: runtime.ci_gate.check_sets_fast_path
-  norm: MUST
-  requirement: local_ci_gate_invocation_must_delegate_to_local_parity_for_check_sets_only_edits
-  description: 'Local ci_gate.sh invocation must short-circuit to local_ci_parity.sh for check_sets-only edits, guarded away from CI lanes.
-
-    '
-  rationale: Keeps manual local gate runs aligned with the optimized prepush feedback loop.
-  risk_if_violated: Local operator runs pay avoidable full-gate cost for check-set manifest maintenance edits.
-  references:
-  - scripts/ci_gate.sh
-  - docs/spec/governance/cases/core/runtime_ci_gate_check_sets_fast_path_required.spec.md
-- id: RUNTIME_GATE_SCRIPT_ONLY_FAST_PATH_REQUIRED
-  introduced_in: v1
-  scope: governance
-  applies_to: runtime.gate.script_only_fast_path
-  norm: MUST
-  requirement: local_gate_scripts_must_fast_path_script_only_edits
-  description: 'Local gate scripts must detect gate-script-only edits and apply fast-path skip/delegation behavior.
-
-    '
-  rationale: Preserves rapid feedback while iterating on local gate orchestration scripts.
-  risk_if_violated: Gate-script tuning regresses into unnecessary normalize/docs checks and slows iteration.
-  references:
-  - scripts/local_ci_parity.sh
-  - scripts/ci_gate.sh
-  - docs/spec/governance/cases/core/runtime_gate_script_only_fast_path_required.spec.md
 - id: RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED
   introduced_in: v1
   scope: governance

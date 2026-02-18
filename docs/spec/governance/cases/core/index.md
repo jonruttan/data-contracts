@@ -150,7 +150,6 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_chain_state_template_resolution.spec.md`
 - `/docs/spec/governance/cases/core/runtime_chain_step_class_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_artifact_upload_paths_valid.spec.md`
-- `/docs/spec/governance/cases/core/runtime_ci_gate_check_sets_fast_path_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_gate_default_no_python_governance_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_gate_default_report_commands_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_ci_gate_ownership_contract_required.spec.md`
@@ -160,12 +159,11 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_domain_library_preferred_for_fs_ops.spec.md`
 - `/docs/spec/governance/cases/core/runtime_domain_library_preferred_for_http_helpers.spec.md`
 - `/docs/spec/governance/cases/core/runtime_executable_spec_lang_includes_forbidden.spec.md`
+- `/docs/spec/governance/cases/core/runtime_fast_path_consistency_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_gate_fail_fast_behavior_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_gate_policy_evaluates_with_skipped_rows.spec.md`
-- `/docs/spec/governance/cases/core/runtime_gate_script_only_fast_path_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_gate_skipped_steps_contract_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_git_hook_prepush_enforced.spec.md`
-- `/docs/spec/governance/cases/core/runtime_git_hook_fast_path_routing_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_governance_prefix_selection_from_changed_paths.spec.md`
 - `/docs/spec/governance/cases/core/runtime_governance_triage_artifact_contains_selection_metadata.spec.md`
 - `/docs/spec/governance/cases/core/runtime_governance_triage_entrypoint_required.spec.md`
@@ -176,7 +174,6 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_liveness_stall_token_emitted.spec.md`
 - `/docs/spec/governance/cases/core/runtime_liveness_watchdog_contract_valid.spec.md`
 - `/docs/spec/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md`
-- `/docs/spec/governance/cases/core/runtime_local_prepush_check_sets_fast_path_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_local_prepush_broad_governance_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
 - `/docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md`

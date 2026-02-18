@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 239
-- checks_with_cases: 233
+- check_count: 236
+- checks_with_cases: 230
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -203,7 +203,6 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.chain_state_template_resolution` | 1 | true |
 | `runtime.chain_step_class_required` | 1 | true |
 | `runtime.ci_artifact_upload_paths_valid` | 1 | true |
-| `runtime.ci_gate_check_sets_fast_path_required` | 1 | true |
 | `runtime.ci_gate_default_no_python_governance_required` | 1 | true |
 | `runtime.ci_gate_default_report_commands_forbidden` | 1 | true |
 | `runtime.ci_gate_ownership_contract_required` | 1 | true |
@@ -213,11 +212,10 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.domain_library_preferred_for_fs_ops` | 1 | true |
 | `runtime.domain_library_preferred_for_http_helpers` | 1 | true |
 | `runtime.executable_spec_lang_includes_forbidden` | 1 | true |
+| `runtime.fast_path_consistency_required` | 1 | true |
 | `runtime.gate_fail_fast_behavior_required` | 1 | true |
 | `runtime.gate_policy_evaluates_with_skipped_rows` | 1 | true |
-| `runtime.gate_script_only_fast_path_required` | 1 | true |
 | `runtime.gate_skipped_steps_contract_required` | 1 | true |
-| `runtime.git_hook_fast_path_routing_required` | 1 | true |
 | `runtime.git_hook_prepush_enforced` | 1 | true |
 | `runtime.governance_prefix_selection_from_changed_paths` | 1 | true |
 | `runtime.governance_triage_artifact_contains_selection_metadata` | 1 | true |
@@ -230,7 +228,6 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.liveness_watchdog_contract_valid` | 1 | true |
 | `runtime.local_ci_parity_entrypoint_documented` | 1 | true |
 | `runtime.local_prepush_broad_governance_forbidden` | 1 | true |
-| `runtime.local_prepush_check_sets_fast_path_required` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |

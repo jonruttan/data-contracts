@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 247
+- link_count: 244
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 247
-- rules_with_implementation_refs: 245
+- rules_with_unit_tests: 244
+- rules_with_implementation_refs: 242
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -218,15 +218,13 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | `docs/spec/contract/policy_v1.yaml#RUNTIME_ASSERTIONS_VIA_SPEC_LANG` | 2 | 1 | 0 | 2 | 7 |
 | `RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_CIGATE_GOVERNANCE_TRIAGE_REQUIRED` | 2 | 0 | 0 | 2 | 3 |
 | `RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID` | `docs/spec/contract/policy_v1.yaml#RUNTIME_CI_ARTIFACT_UPLOAD_PATHS_VALID` | 1 | 0 | 0 | 2 | 2 |
-| `RUNTIME_CI_GATE_CHECK_SETS_FAST_PATH_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_CI_GATE_CHECK_SETS_FAST_PATH_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED` | 1 | 0 | 0 | 2 | 4 |
 | `RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DECISIONS_VIA_SPEC_LANG_ONLY` | 2 | 1 | 0 | 2 | 3 |
 | `RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
+| `RUNTIME_FAST_PATH_CONSISTENCY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_FAST_PATH_CONSISTENCY_REQUIRED` | 1 | 0 | 0 | 2 | 4 |
 | `RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_FAIL_FAST_BEHAVIOR_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
 | `RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED` | 2 | 0 | 0 | 1 | 3 |
-| `RUNTIME_GATE_SCRIPT_ONLY_FAST_PATH_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_SCRIPT_ONLY_FAST_PATH_REQUIRED` | 1 | 0 | 0 | 2 | 3 |
 | `RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED` | 1 | 0 | 0 | 1 | 3 |
-| `RUNTIME_GIT_HOOK_FAST_PATH_ROUTING_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GIT_HOOK_FAST_PATH_ROUTING_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GIT_HOOK_PREPUSH_ENFORCED` | 1 | 0 | 0 | 2 | 4 |
 | `RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_GOVERNANCE_TRIAGE_ARTIFACT_SELECTION_METADATA_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_TRIAGE_ARTIFACT_SELECTION_METADATA_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
@@ -234,7 +232,6 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | 2 | 0 | 0 | 2 | 5 |
 | `RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN` | 1 | 0 | 0 | 2 | 2 |
-| `RUNTIME_LOCAL_PREPUSH_CHECK_SETS_FAST_PATH_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_PREPUSH_CHECK_SETS_FAST_PATH_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `docs/spec/contract/policy_v1.yaml#RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | 2 | 0 | 0 | 2 | 2 |
 | `RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | 2 | 0 | 0 | 2 | 4 |
