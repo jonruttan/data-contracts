@@ -14,6 +14,7 @@ TRIAGE_LIVENESS_STALL_MS="${SPEC_GOV_TRIAGE_LIVENESS_STALL_MS:-30000}"
 TRIAGE_LIVENESS_KILL_GRACE_MS="${SPEC_GOV_TRIAGE_LIVENESS_KILL_GRACE_MS:-5000}"
 TARGETED_TIMEOUT_SECONDS="${SPEC_GOV_TRIAGE_TARGETED_TIMEOUT_SECONDS:-60}"
 TIMEOUT_BIN="${SPEC_GOV_TRIAGE_TIMEOUT_BIN:-}"
+HEARTBEAT_SECONDS="${SPEC_GOV_TRIAGE_HEARTBEAT_SECONDS:-10}"
 
 MODE="auto"
 IMPL="${SPEC_RUNNER_IMPL:-rust}"
@@ -266,15 +267,25 @@ run_governance() {
   cmd+=(--liveness-hard-cap-ms "$((BROAD_TIMEOUT_SECONDS * 1000))")
   cmd+=("$@")
   echo "[governance-triage] ${label}: ${cmd[*]}"
-  if [[ "${timeout_seconds}" =~ ^[0-9]+$ ]] && [[ "${timeout_seconds}" -gt 0 ]]; then
-    if [[ -n "${TIMEOUT_BIN}" ]]; then
-      "${TIMEOUT_BIN}" "${timeout_seconds}" "${cmd[@]}" >"${TMP_OUT}" 2>&1 || return $?
-    else
-      "${cmd[@]}" >"${TMP_OUT}" 2>&1 || return $?
-    fi
+  local rc=0
+  local runner_pid=0
+  if [[ "${timeout_seconds}" =~ ^[0-9]+$ ]] && [[ "${timeout_seconds}" -gt 0 ]] && [[ -n "${TIMEOUT_BIN}" ]]; then
+    "${TIMEOUT_BIN}" "${timeout_seconds}" "${cmd[@]}" 2>&1 | tee "${TMP_OUT}" &
   else
-    "${cmd[@]}" >"${TMP_OUT}" 2>&1 || return $?
+    "${cmd[@]}" 2>&1 | tee "${TMP_OUT}" &
   fi
+  runner_pid=$!
+  set +e
+  while kill -0 "${runner_pid}" 2>/dev/null; do
+    sleep "${HEARTBEAT_SECONDS}"
+    if kill -0 "${runner_pid}" 2>/dev/null; then
+      echo "[governance-triage] progress: ${label} still running"
+    fi
+  done
+  wait "${runner_pid}"
+  rc=$?
+  set -e
+  [[ "${rc}" -eq 0 ]] || return "${rc}"
 }
 
 triage_attempted=true
@@ -291,7 +302,6 @@ if [[ "${TRIAGE_ENABLED}" != "1" && "${TRIAGE_ENABLED,,}" != "true" ]]; then
   triage_attempted=false
   triage_mode="broad"
   run_governance "broad-governance (triage disabled)" "${BROAD_TIMEOUT_SECONDS}" || broad_exit_code=$?
-  cat "${TMP_OUT}"
   triage_result=$([[ "${broad_exit_code}" -eq 0 ]] && echo "pass" || echo "fail")
   final_exit="${broad_exit_code}"
 else
@@ -306,12 +316,10 @@ else
       local_args+=(--check-prefix "${p}")
     done
     run_governance "targeted-governance" "${TARGETED_TIMEOUT_SECONDS}" "${local_args[@]}" || targeted_exit_code=$?
-    cat "${TMP_OUT}"
     triage_result=$([[ "${targeted_exit_code}" -eq 0 ]] && echo "pass" || echo "fail")
     final_exit="${targeted_exit_code}"
   else
     run_governance "broad-governance" "${BROAD_TIMEOUT_SECONDS}" || broad_exit_code=$?
-    cat "${TMP_OUT}"
     parse_error_ids_from_output "${TMP_OUT}"
     build_prefixes_from_ids
     if [[ "${broad_exit_code}" -eq 124 ]]; then
@@ -339,7 +347,6 @@ else
         done
         targeted_cmd_parts=("${local_args[@]}")
         run_governance "targeted-governance retry=${retry}" "${TARGETED_TIMEOUT_SECONDS}" "${local_args[@]}" || targeted_exit_code=$?
-        cat "${TMP_OUT}"
         parse_error_ids_from_output "${TMP_OUT}"
         if [[ "${targeted_exit_code}" -eq 0 ]]; then
           break
