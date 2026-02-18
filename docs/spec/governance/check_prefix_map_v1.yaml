@@ -1,5 +1,14 @@
 version: 1
 rules:
+  SRGOV-DOCS-REF-007: docs.make_commands_sync
+  SRGOV-NORM-002: normalization.mapping_ast_only
+  SRGOV-RUNTIME-TRIAGE-001: runtime.governance_triage_entrypoint_required
+  SRGOV-RUNTIME-TRIAGE-002: runtime.prepush_uses_governance_triage_required
+  SRGOV-RUNTIME-TRIAGE-003: runtime.cigate_uses_governance_triage_required
+  SRGOV-RUNTIME-TRIAGE-004: runtime.triage_artifacts_emitted_required
+  SRGOV-RUNTIME-TRIAGE-005: runtime.triage_failure_id_parsing_required
+  SRGOV-RUNTIME-TRIAGE-006: runtime.triage_bypass_logged_required
+  SRGOV-RUNTIME-TRIAGE-007: runtime.triage_stall_fallback_required
   SRGOV-DOCS-: docs.
   SRGOV-NORM-: normalization.
   SRGOV-RUNTIME-: runtime.

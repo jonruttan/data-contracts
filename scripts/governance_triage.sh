@@ -200,15 +200,22 @@ build_prefixes_from_ids() {
     [[ -n "${id}" ]] || continue
     local i
     local matched=0
+    local best_pat=""
+    local best_prefix=""
     for i in "${!MAP_PATTERNS[@]}"; do
       if [[ "${id}" == "${MAP_PATTERNS[$i]}"* ]]; then
-        if ! add_unique "${MAP_PREFIXES[$i]}" "${CHECK_PREFIXES[@]-}"; then
-          CHECK_PREFIXES+=("${MAP_PREFIXES[$i]}")
+        if [[ "${#MAP_PATTERNS[$i]}" -gt "${#best_pat}" ]]; then
+          best_pat="${MAP_PATTERNS[$i]}"
+          best_prefix="${MAP_PREFIXES[$i]}"
         fi
         matched=1
       fi
     done
-    if [[ "${matched}" -eq 0 ]]; then
+    if [[ "${matched}" -eq 1 ]]; then
+      if ! add_unique "${best_prefix}" "${CHECK_PREFIXES[@]-}"; then
+        CHECK_PREFIXES+=("${best_prefix}")
+      fi
+    else
       if ! add_unique "${id}" "${CHECK_PREFIXES[@]-}"; then
         CHECK_PREFIXES+=("${id}")
       fi
