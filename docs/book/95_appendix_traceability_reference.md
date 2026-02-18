@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 243
+- link_count: 244
 - rules_with_conformance_cases: 50
-- rules_with_unit_tests: 243
-- rules_with_implementation_refs: 241
+- rules_with_unit_tests: 244
+- rules_with_implementation_refs: 242
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -231,6 +231,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | 2 | 0 | 0 | 2 | 5 |
 | `RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN` | 1 | 0 | 0 | 2 | 2 |
+| `RUNTIME_LOCAL_PREPUSH_CHECK_SETS_FAST_PATH_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_LOCAL_PREPUSH_CHECK_SETS_FAST_PATH_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `docs/spec/contract/policy_v1.yaml#RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | 2 | 0 | 0 | 2 | 2 |
 | `RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | 1 | 0 | 0 | 2 | 2 |
 | `RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | 2 | 0 | 0 | 2 | 4 |

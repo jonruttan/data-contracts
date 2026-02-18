@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 235
-- checks_with_cases: 229
+- check_count: 236
+- checks_with_cases: 230
 - checks_without_cases: 6
 
 | check_id | case_count | has_case |
@@ -227,6 +227,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.liveness_watchdog_contract_valid` | 1 | true |
 | `runtime.local_ci_parity_entrypoint_documented` | 1 | true |
 | `runtime.local_prepush_broad_governance_forbidden` | 1 | true |
+| `runtime.local_prepush_check_sets_fast_path_required` | 1 | true |
 | `runtime.no_public_direct_rust_adapter_docs` | 1 | true |
 | `runtime.non_python_lane_no_python_exec` | 1 | true |
 | `runtime.orchestration_policy_via_spec_lang` | 1 | true |

@@ -47,11 +47,11 @@ Provide generated policy-rule inventory for governance and traceability review.
 
 ## Generated Contract Policy Rule Catalog
 
-- rule_count: 243
-- must_count: 224
+- rule_count: 244
+- must_count: 225
 - should_count: 12
 - must_not_count: 7
-- active_count: 243
+- active_count: 244
 - deprecated_count: 0
 - removed_count: 0
 
@@ -234,6 +234,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `RUNTIME_GOVERNANCE_TRIAGE_TARGETED_FIRST_REQUIRED` | `MUST` | `governance` | `runtime.governance.triage_mode_default` | 2 | `active` |
 | `RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED` | `MUST` | `governance` | `docs.local_ci_parity` | 5 | `active` |
 | `RUNTIME_LOCAL_PREPUSH_BROAD_GOVERNANCE_FORBIDDEN` | `MUST` | `governance` | `runtime.prepush.governance_broad_default` | 2 | `active` |
+| `RUNTIME_LOCAL_PREPUSH_CHECK_SETS_FAST_PATH_REQUIRED` | `MUST` | `governance` | `runtime.prepush.check_sets_fast_path` | 2 | `active` |
 | `RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC` | `MUST` | `governance` | `runtime.non_python_lanes.exec_tokens` | 2 | `active` |
 | `RUNTIME_PREPUSH_GOVERNANCE_TRIAGE_REQUIRED` | `MUST` | `governance` | `runtime.prepush.governance_step` | 2 | `active` |
 | `RUNTIME_PREPUSH_PARITY_DEFAULT_REQUIRED` | `MUST` | `governance` | `runtime.prepush.default_lane` | 4 | `active` |

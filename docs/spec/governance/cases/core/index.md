@@ -173,6 +173,7 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/governance/cases/core/runtime_liveness_stall_token_emitted.spec.md`
 - `/docs/spec/governance/cases/core/runtime_liveness_watchdog_contract_valid.spec.md`
 - `/docs/spec/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md`
+- `/docs/spec/governance/cases/core/runtime_local_prepush_check_sets_fast_path_required.spec.md`
 - `/docs/spec/governance/cases/core/runtime_local_prepush_broad_governance_forbidden.spec.md`
 - `/docs/spec/governance/cases/core/runtime_no_public_direct_rust_adapter_docs.spec.md`
 - `/docs/spec/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md`

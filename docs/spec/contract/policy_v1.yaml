@@ -1447,6 +1447,20 @@ rules:
   references:
   - scripts/local_ci_parity.sh
   - docs/spec/governance/cases/core/runtime_local_prepush_broad_governance_forbidden.spec.md
+- id: RUNTIME_LOCAL_PREPUSH_CHECK_SETS_FAST_PATH_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.prepush.check_sets_fast_path
+  norm: MUST
+  requirement: local_prepush_must_skip_normalize_and_docs_generate_for_check_sets_only_edits
+  description: 'Local prepush parity flow must include a check_sets-only fast path that skips normalize-check and docs-generate-check.
+
+    '
+  rationale: Preserves sub-second to low-second feedback loops for governance check-set maintenance edits.
+  risk_if_violated: Small manifest edits trigger avoidable heavy checks and degrade iteration speed.
+  references:
+  - scripts/local_ci_parity.sh
+  - docs/spec/governance/cases/core/runtime_local_prepush_check_sets_fast_path_required.spec.md
 - id: RUNTIME_CI_GATE_OWNERSHIP_CONTRACT_REQUIRED
   introduced_in: v1
   scope: governance
