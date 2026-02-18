@@ -38,6 +38,7 @@ from spec_runner.script_entrypoints import (
     split_library_cases_per_symbol_main,
 )
 from spec_runner.spec_lang import SpecLangLimits, eval_expr
+from spec_runner.spec_lang_lint import main as spec_lang_lint_main
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.virtual_paths import VirtualPathError, resolve_contract_path
@@ -331,6 +332,7 @@ def main(argv: list[str] | None = None) -> int:
             "spec-lang-stdlib-report",
             "contract-coverage-report",
             "schema-registry-report",
+            "spec-lang-lint",
             "docs-lint",
             "ci-gate-summary",
             "compare-conformance-parity",
@@ -361,6 +363,8 @@ def main(argv: list[str] | None = None) -> int:
         return contract_coverage_report_main(forwarded)
     if ns.command == "schema-registry-report":
         return schema_registry_report_main(forwarded)
+    if ns.command == "spec-lang-lint":
+        return spec_lang_lint_main(forwarded)
     if ns.command == "docs-lint":
         return docs_lint_main(forwarded)
     if ns.command == "ci-gate-summary":
