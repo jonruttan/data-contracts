@@ -26,7 +26,7 @@ def test_assert_stdout_path_exists(tmp_path):
 
 
 def test_iter_leaf_assertions_requires_mapping_target_and_op_key():
-    with pytest.raises(TypeError, match="assert leaf must be a mapping"):
+    with pytest.raises(TypeError, match="contract leaf must be a mapping"):
         list(iter_leaf_assertions(["nope"]))
     with pytest.raises(ValueError, match="requires inherited target"):
         list(iter_leaf_assertions({"std.logic.eq": [1, 1]}))
@@ -118,7 +118,7 @@ def test_eval_assert_tree_must_only_does_not_evaluate_leaf():
 
 
 def test_eval_assert_tree_group_rejects_extra_keys():
-    with pytest.raises(ValueError, match="unknown key in assert group"):
+    with pytest.raises(ValueError, match="unknown key in contract group"):
         eval_assert_tree({"can": [], "wat": 1}, eval_leaf=lambda _x: None)
 
 

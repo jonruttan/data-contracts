@@ -2966,55 +2966,54 @@ function loadSpecLangLibraryDoc(string $path): array {
             }
         }
         $harness = $case['harness'] ?? null;
-        $chain = (is_array($harness) && !isListArray($harness)) ? ($harness['chain'] ?? null) : null;
-        $producerExports = (is_array($chain) && !isListArray($chain)) ? ($chain['exports'] ?? null) : null;
+        $producerExports = (is_array($harness) && !isListArray($harness)) ? ($harness['exports'] ?? null) : null;
         if (!is_array($producerExports) || !isListArray($producerExports)) {
             continue;
         }
         foreach ($producerExports as $entryIdx => $entryRaw) {
             if (!is_array($entryRaw) || isListArray($entryRaw)) {
-                throw new SchemaError("harness.chain.exports[{$entryIdx}] must be a mapping");
+                throw new SchemaError("harness.exports[{$entryIdx}] must be a mapping");
             }
             $name = trim((string)($entryRaw['as'] ?? ''));
             if ($name === '') {
-                throw new SchemaError("harness.chain.exports[{$entryIdx}].as is required");
+                throw new SchemaError("harness.exports[{$entryIdx}].as is required");
             }
             if (array_key_exists($name, $bindings)) {
                 continue;
             }
             $fromSource = trim((string)($entryRaw['from'] ?? ''));
             if ($fromSource !== 'assert.function') {
-                throw new SchemaError("harness.chain.exports[{$entryIdx}].from must be assert.function");
+                throw new SchemaError("harness.exports[{$entryIdx}].from must be assert.function");
             }
             $stepId = ltrim(trim((string)($entryRaw['path'] ?? '')), '/');
             if ($stepId === '') {
-                throw new SchemaError("harness.chain.exports[{$entryIdx}].path is required for from=assert.function");
+                throw new SchemaError("harness.exports[{$entryIdx}].path is required for from=assert.function");
             }
             if (!array_key_exists($stepId, $assertSteps)) {
-                throw new SchemaError("harness.chain.exports[{$entryIdx}] unresolved assert step id: {$stepId}");
+                throw new SchemaError("harness.exports[{$entryIdx}] unresolved assert step id: {$stepId}");
             }
             $srcStep = $assertSteps[$stepId];
             if (trim((string)($srcStep['class'] ?? '')) !== 'must') {
-                throw new SchemaError("harness.chain.exports[{$entryIdx}] source assert step must use class=must");
+                throw new SchemaError("harness.exports[{$entryIdx}] source assert step must use class=must");
             }
             $checks = $srcStep['asserts'] ?? null;
             if (!is_array($checks) || !isListArray($checks) || count($checks) === 0) {
-                throw new SchemaError("harness.chain.exports[{$entryIdx}] source assert step requires non-empty asserts");
+                throw new SchemaError("harness.exports[{$entryIdx}] source assert step requires non-empty asserts");
             }
             $paramsRaw = $entryRaw['params'] ?? null;
             if (!is_array($paramsRaw) || !isListArray($paramsRaw)) {
-                throw new SchemaError("harness.chain.exports[{$entryIdx}].params must be a list");
+                throw new SchemaError("harness.exports[{$entryIdx}].params must be a list");
             }
             $params = [];
             foreach ($paramsRaw as $pIdx => $rawParam) {
                 if (!is_string($rawParam) || trim($rawParam) === '') {
-                    throw new SchemaError("harness.chain.exports[{$entryIdx}].params[{$pIdx}] must be non-empty string");
+                    throw new SchemaError("harness.exports[{$entryIdx}].params[{$pIdx}] must be non-empty string");
                 }
                 $params[] = trim($rawParam);
             }
             $exprs = [];
             foreach ($checks as $cIdx => $rawCheck) {
-                $exprs[] = compileYamlExprToSexpr($rawCheck, "{$path} harness.chain.exports[{$entryIdx}].asserts[{$cIdx}]");
+                $exprs[] = compileYamlExprToSexpr($rawCheck, "{$path} harness.exports[{$entryIdx}].asserts[{$cIdx}]");
             }
             $body = $exprs[count($exprs) - 1];
             for ($i = count($exprs) - 2; $i >= 0; $i -= 1) {
@@ -3025,7 +3024,7 @@ function loadSpecLangLibraryDoc(string $path): array {
         }
     }
     if (count($bindings) === 0) {
-        throw new SchemaError("library file has no spec.export chain exports: {$path}");
+        throw new SchemaError("library file has no spec.export harness exports: {$path}");
     }
     return [
         'path' => $path,

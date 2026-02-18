@@ -47,8 +47,8 @@ Provide generated inventory of governance check IDs and case coverage.
 
 ## Generated Governance Check Catalog
 
-- check_count: 252
-- checks_with_cases: 243
+- check_count: 256
+- checks_with_cases: 247
 - checks_without_cases: 9
 
 | check_id | case_count | has_case |
@@ -193,10 +193,12 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.chain_cycle_forbidden` | 1 | true |
 | `runtime.chain_exports_explicit_only` | 1 | true |
 | `runtime.chain_exports_from_key_required` | 1 | true |
+| `runtime.chain_exports_legacy_forbidden` | 1 | true |
 | `runtime.chain_exports_list_only_required` | 1 | true |
 | `runtime.chain_exports_target_derived_only` | 1 | true |
 | `runtime.chain_fail_fast_default` | 1 | true |
 | `runtime.chain_import_alias_collision_forbidden` | 1 | true |
+| `runtime.chain_imports_consumer_surface_unchanged` | 1 | true |
 | `runtime.chain_legacy_from_forbidden` | 1 | true |
 | `runtime.chain_library_symbol_exports_valid` | 1 | true |
 | `runtime.chain_ref_scalar_required` | 1 | true |
@@ -226,6 +228,8 @@ Provide generated inventory of governance check IDs and case coverage.
 | `runtime.governance_triage_artifact_contains_selection_metadata` | 1 | true |
 | `runtime.governance_triage_entrypoint_required` | 1 | true |
 | `runtime.governance_triage_targeted_first_required` | 1 | true |
+| `runtime.harness_exports_location_required` | 1 | true |
+| `runtime.harness_exports_schema_valid` | 1 | true |
 | `runtime.harness_subject_target_map_declared` | 1 | true |
 | `runtime.legacy_assert_block_forbidden` | 1 | true |
 | `runtime.legacy_checks_key_forbidden` | 1 | true |

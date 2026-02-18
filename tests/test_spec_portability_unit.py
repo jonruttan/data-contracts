@@ -102,7 +102,7 @@ expect:
   portable: {status: pass, category: null}
   impl:
     php: {status: fail, category: assertion}
-assert: []
+contract: []
 ```
 """,
     )
@@ -126,7 +126,7 @@ def test_no_leaf_assertions_are_neutral(tmp_path: Path) -> None:
 ```yaml contract-spec
 id: C4
 type: text.file
-assert: []
+contract: []
 ```
 """,
     )

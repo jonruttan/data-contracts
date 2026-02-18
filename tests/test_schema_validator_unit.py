@@ -10,7 +10,7 @@ def test_validate_case_shape_accepts_known_keys() -> None:
             "id": "X-1",
             "type": "text.file",
             "title": "ok",
-            "assert": [],
+            "contract": [],
         },
         "text.file",
         "sample.spec.md",
@@ -23,7 +23,7 @@ def test_validate_case_shape_rejects_unknown_top_level_key() -> None:
         {
             "id": "X-2",
             "type": "text.file",
-            "assert": [],
+            "contract": [],
             "unknown_field": True,
         },
         "text.file",

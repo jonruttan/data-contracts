@@ -94,16 +94,9 @@ Cross-spec chaining profile:
   - `id` (unique string)
   - `class` (`must`, `can`, `cannot`)
   - `ref` string in format `[path][#case_id]`
-- `imports` is optional and is a list of producer import entries:
-  - symbol-batch entry:
-    - `from`, optional `required`, optional `prefix`, required `symbols` list
-    - each symbol expands to import name + `path: /<symbol>`
-  - single export entry:
-    - `as` (export name), `from`, optional `path`, optional `required`
-- runtime target imports are valid only when `ref` includes `#case_id`.
-- `from: assert.function` imports are valid with file refs and require
-  non-empty symbol names.
-- legacy key `from_target` is forbidden.
+- producer symbol declarations are canonical at `harness.exports`.
+- `harness.chain.steps[*].imports` and `harness.chain.steps[*].exports` are
+  forbidden legacy locations.
 - `allow_continue` is optional and defaults to `false`.
 - `harness.chain.imports` is optional and declares explicit state imports:
   - `from` (required)

@@ -16,14 +16,13 @@ contract:
     - var: subject
     - var: subject
 harness:
-  chain:
-    exports:
-    - as: bad.path.symbol
-      from: assert.function
-      path: /missing_step
-      params:
-      - subject
-      required: true
+  exports:
+  - as: bad.path.symbol
+    from: assert.function
+    path: /missing_step
+    params:
+    - subject
+    required: true
 ```
 
 ## BAD-EXPORT-CLASS
@@ -39,12 +38,11 @@ contract:
     - var: subject
     - var: subject
 harness:
-  chain:
-    exports:
-    - as: bad.class.symbol
-      from: assert.function
-      path: /non_must_step
-      params:
-      - subject
-      required: true
+  exports:
+  - as: bad.class.symbol
+    from: assert.function
+    path: /non_must_step
+    params:
+    - subject
+    required: true
 ```

@@ -12,14 +12,13 @@ contract:
   - ops.fs.path.normalize:
     - var: path
 harness:
-  chain:
-    exports:
-    - as: domain.path.normalize
-      from: assert.function
-      path: /__export__domain.path.normalize
-      params:
-      - path
-      required: true
+  exports:
+  - as: domain.path.normalize
+    from: assert.function
+    path: /__export__domain.path.normalize
+    params:
+    - path
+    required: true
 ```
 
 ```yaml contract-spec
@@ -35,15 +34,14 @@ contract:
     - ops.fs.path.normalize:
       - var: right
 harness:
-  chain:
-    exports:
-    - as: domain.path.eq
-      from: assert.function
-      path: /__export__domain.path.eq
-      params:
-      - left
-      - right
-      required: true
+  exports:
+  - as: domain.path.eq
+    from: assert.function
+    path: /__export__domain.path.eq
+    params:
+    - left
+    - right
+    required: true
 ```
 
 ```yaml contract-spec
@@ -58,14 +56,13 @@ contract:
       - var: path
     - .spec.md
 harness:
-  chain:
-    exports:
-    - as: domain.path.is_spec_md
-      from: assert.function
-      path: /__export__domain.path.is_spec_md
-      params:
-      - path
-      required: true
+  exports:
+  - as: domain.path.is_spec_md
+    from: assert.function
+    path: /__export__domain.path.is_spec_md
+    params:
+    - path
+    required: true
 ```
 
 ```yaml contract-spec
@@ -80,14 +77,13 @@ contract:
     - ops.fs.path.normalize:
       - var: path
 harness:
-  chain:
-    exports:
-    - as: domain.path.is_in_docs
-      from: assert.function
-      path: /__export__domain.path.is_in_docs
-      params:
-      - path
-      required: true
+  exports:
+  - as: domain.path.is_in_docs
+    from: assert.function
+    path: /__export__domain.path.is_in_docs
+    params:
+    - path
+    required: true
 ```
 
 ```yaml contract-spec
@@ -100,14 +96,13 @@ contract:
   - ops.fs.path.sort:
     - var: paths
 harness:
-  chain:
-    exports:
-    - as: domain.path.sorted
-      from: assert.function
-      path: /__export__domain.path.sorted
-      params:
-      - paths
-      required: true
+  exports:
+  - as: domain.path.sorted
+    from: assert.function
+    path: /__export__domain.path.sorted
+    params:
+    - paths
+    required: true
 ```
 
 ```yaml contract-spec
@@ -123,14 +118,13 @@ contract:
     - ops.fs.file.is_file:
       - var: meta
 harness:
-  chain:
-    exports:
-    - as: domain.file.is_existing_file
-      from: assert.function
-      path: /__export__domain.file.is_existing_file
-      params:
-      - meta
-      required: true
+  exports:
+  - as: domain.file.is_existing_file
+    from: assert.function
+    path: /__export__domain.file.is_existing_file
+    params:
+    - meta
+    required: true
 ```
 
 ```yaml contract-spec
@@ -146,14 +140,13 @@ contract:
     - ops.fs.file.is_dir:
       - var: meta
 harness:
-  chain:
-    exports:
-    - as: domain.file.is_existing_dir
-      from: assert.function
-      path: /__export__domain.file.is_existing_dir
-      params:
-      - meta
-      required: true
+  exports:
+  - as: domain.file.is_existing_dir
+    from: assert.function
+    path: /__export__domain.file.is_existing_dir
+    params:
+    - meta
+    required: true
 ```
 
 ```yaml contract-spec
@@ -168,15 +161,14 @@ contract:
       - var: meta
     - var: ext
 harness:
-  chain:
-    exports:
-    - as: domain.file.has_ext
-      from: assert.function
-      path: /__export__domain.file.has_ext
-      params:
-      - meta
-      - ext
-      required: true
+  exports:
+  - as: domain.file.has_ext
+    from: assert.function
+    path: /__export__domain.file.has_ext
+    params:
+    - meta
+    - ext
+    required: true
 ```
 
 ```yaml contract-spec
@@ -189,12 +181,11 @@ contract:
   - ops.fs.file.name:
     - var: meta
 harness:
-  chain:
-    exports:
-    - as: domain.file.name
-      from: assert.function
-      path: /__export__domain.file.name
-      params:
-      - meta
-      required: true
+  exports:
+  - as: domain.file.name
+    from: assert.function
+    path: /__export__domain.file.name
+    params:
+    - meta
+    required: true
 ```

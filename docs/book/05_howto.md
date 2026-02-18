@@ -56,7 +56,7 @@ Provide repeatable recipes for common contributor tasks.
 
 1. Add function in a `type: spec.export` case.
 2. Define function logic in an `assert` step (`class: must`) and export from
-   producer `harness.chain.exports` using `from: assert.function`.
+   producer `harness.exports` using `from: assert.function`.
 3. Import symbols in consumers through `harness.chain.steps` + `harness.chain.imports`.
 4. Prefer `domain.*` helpers in executable specs; keep raw `ops.*` usage inside
    domain libraries and stdlib primitive conformance cases.

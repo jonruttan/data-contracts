@@ -14,15 +14,14 @@ contract:
     - var: subject
     - var: token
 harness:
-  chain:
-    exports:
-    - as: impl.assert.contains
-      from: assert.function
-      path: /__export__impl.assert.contains
-      params:
-      - subject
-      - token
-      required: true
+  exports:
+  - as: impl.assert.contains
+    from: assert.function
+    path: /__export__impl.assert.contains
+    params:
+    - subject
+    - token
+    required: true
 ```
 
 ```yaml contract-spec
@@ -37,15 +36,14 @@ contract:
     - var: subject
     - var: pattern
 harness:
-  chain:
-    exports:
-    - as: impl.assert.regex
-      from: assert.function
-      path: /__export__impl.assert.regex
-      params:
-      - subject
-      - pattern
-      required: true
+  exports:
+  - as: impl.assert.regex
+    from: assert.function
+    path: /__export__impl.assert.regex
+    params:
+    - subject
+    - pattern
+    required: true
 ```
 
 ```yaml contract-spec
@@ -60,13 +58,12 @@ contract:
     - var: subject
     - var: type_name
 harness:
-  chain:
-    exports:
-    - as: impl.assert.json_type
-      from: assert.function
-      path: /__export__impl.assert.json_type
-      params:
-      - subject
-      - type_name
-      required: true
+  exports:
+  - as: impl.assert.json_type
+    from: assert.function
+    path: /__export__impl.assert.json_type
+    params:
+    - subject
+    - type_name
+    required: true
 ```

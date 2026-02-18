@@ -365,7 +365,7 @@ assert:
             {
                 "id": "SR-PHP-FMT-002",
                 "type": "text.file",
-                "assert": [
+                "contract": [
                     {
                         "target": "text",
                         "must": [{"std.string.contains": [{"var": "subject"}, "SR-PHP-FMT-002"]}],

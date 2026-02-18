@@ -59,7 +59,7 @@ harness:
     - id: self
       class: must
       ref: "#CASE-RECUR"
-assert: []
+contract: []
 ```
 """,
         encoding="utf-8",
@@ -72,7 +72,7 @@ assert: []
             "type": "text.file",
             "path": "/README.md",
             "harness": {"chain": {"steps": [{"id": "self", "class": "must", "ref": "#CASE-RECUR"}]}},
-            "assert": [],
+            "contract": [],
         },
     )
     with pytest.raises(RuntimeError, match="references current case recursively"):

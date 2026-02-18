@@ -3170,12 +3170,11 @@ def _producer_step_exports(
         source_harness = source_case.get("harness")
         if not isinstance(source_harness, dict):
             source_harness = {}
-        source_chain = source_harness.get("chain")
-        if isinstance(source_chain, dict):
-            expanded, parse_errors = _expand_chain_step_exports(source_chain.get("exports"))
+        if "exports" in source_harness:
+            expanded, parse_errors = _expand_chain_step_exports(source_harness.get("exports"))
             if parse_errors:
                 for err in parse_errors:
-                    errors.append(f"producer harness.chain.exports {err}")
+                    errors.append(f"producer harness.exports {err}")
                 continue
             names.update(str(name).strip() for name in expanded.keys() if str(name).strip())
 
@@ -3765,6 +3764,45 @@ def _scan_runtime_chain_exports_list_only_required(root: Path, *, harness: dict 
                     f"{doc_path.relative_to(root)}: case {case_id} step {step_id} exports must be list (canonical form)"
                 )
     return violations
+
+
+def _scan_runtime_harness_exports_location_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, harness_map, chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        case_type = str(case.get("type", "")).strip()
+        if "exports" in chain:
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} harness.chain.exports is forbidden; use harness.exports"
+            )
+        if case_type == "spec.export" and "exports" not in harness_map:
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} spec.export requires harness.exports"
+            )
+    return violations
+
+
+def _scan_runtime_chain_exports_legacy_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    return _scan_runtime_harness_exports_location_required(root, harness=harness)
+
+
+def _scan_runtime_harness_exports_schema_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for doc_path, case, harness_map, _chain in _iter_cases_with_chain(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        raw_exports = harness_map.get("exports")
+        if raw_exports is None:
+            continue
+        _expanded, errors = _expand_chain_step_exports(raw_exports)
+        for err in errors:
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness.exports {err}")
+    return violations
+
+
+def _scan_runtime_chain_imports_consumer_surface_unchanged(root: Path, *, harness: dict | None = None) -> list[str]:
+    return _scan_runtime_chain_import_alias_collision_forbidden(root, harness=harness)
 
 
 def _scan_runtime_chain_library_symbol_exports_valid(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -8552,17 +8590,17 @@ def _scan_schema_verb_first_contract_sync(root: Path, *, harness: dict | None = 
     checks: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         (
             "docs/spec/contract/14_spec_lang_libraries.md",
-            ("type: spec.export", "harness.chain.exports", "from: assert.function"),
+            ("type: spec.export", "harness.exports", "from: assert.function"),
             ("type: spec_lang.export", "defines.public", "defines.private", "definitions.public", "definitions.private"),
         ),
         (
             "docs/spec/schema/schema_v1.md",
-            ("`spec.export`", "`harness.chain.exports`", "`assert.function`"),
+            ("`spec.export`", "`harness.exports`", "`assert.function`"),
             ("`spec_lang.export`", "`defines`", "`definitions`", "definitions.public", "definitions.private"),
         ),
         (
             "docs/spec/current.md",
-            ("spec.export", "harness.chain.exports"),
+            ("spec.export", "harness.exports"),
             ("spec_lang.export", "defines.public", "defines.private", "definitions.public", "definitions.private"),
         ),
     )
@@ -9326,6 +9364,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.chain_exports_explicit_only": _scan_runtime_chain_exports_target_derived_only,
     "runtime.chain_exports_from_key_required": _scan_runtime_chain_exports_from_key_required,
     "runtime.chain_exports_list_only_required": _scan_runtime_chain_exports_list_only_required,
+    "runtime.harness_exports_location_required": _scan_runtime_harness_exports_location_required,
+    "runtime.chain_exports_legacy_forbidden": _scan_runtime_chain_exports_legacy_forbidden,
+    "runtime.harness_exports_schema_valid": _scan_runtime_harness_exports_schema_valid,
+    "runtime.chain_imports_consumer_surface_unchanged": _scan_runtime_chain_imports_consumer_surface_unchanged,
     "runtime.chain_legacy_from_forbidden": _scan_runtime_chain_legacy_from_forbidden,
     "runtime.chain_library_symbol_exports_valid": _scan_runtime_chain_library_symbol_exports_valid,
     "runtime.chain_import_alias_collision_forbidden": _scan_runtime_chain_import_alias_collision_forbidden,

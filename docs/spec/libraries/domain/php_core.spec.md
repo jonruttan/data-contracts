@@ -18,12 +18,11 @@ contract:
       - php_array_kind
     - assoc
 harness:
-  chain:
-    exports:
-    - as: php.is_assoc_projection
-      from: assert.function
-      path: /__export__php.is_assoc_projection
-      params:
-      - subject
-      required: true
+  exports:
+  - as: php.is_assoc_projection
+    from: assert.function
+    path: /__export__php.is_assoc_projection
+    params:
+    - subject
+    required: true
 ```

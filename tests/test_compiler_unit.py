@@ -13,12 +13,10 @@ def test_compile_evaluate_leaf_to_spec_lang_expr() -> None:
     raw = {
         "id": "C-1",
         "type": "cli.run",
-        "assert": [
+        "contract": [
             {
-                "id": "assert_1",
-                "class": "must",
                 "target": "stdout",
-                "checks": [
+                "must": [
                     {"std.string.contains": [{"var": "subject"}, "ok"]},
                 ],
             },
@@ -48,14 +46,14 @@ def test_compile_evaluate_leaf_to_spec_lang_expr() -> None:
 def test_compile_explicit_evaluate_leaf_is_rejected() -> None:
     with pytest.raises(ValueError, match="explicit evaluate leaf is not supported"):
         compile_assert_tree(
-            [{"id": "assert_1", "class": "must", "target": "stdout", "checks": [{"evaluate": {"std.logic.eq": [1, 1]}}]}],
+            [{"target": "stdout", "must": [{"evaluate": {"std.logic.eq": [1, 1]}}]}],
             type_name="cli.run",
         )
 
 
 def test_compile_evaluate_is_universal_across_targets() -> None:
     tree = compile_assert_tree(
-        [{"id": "assert_1", "class": "must", "target": "status", "checks": [{"std.string.contains": [{"var": "subject"}, "200"]}]}],
+        [{"target": "status", "must": [{"std.string.contains": [{"var": "subject"}, "200"]}]}],
         type_name="api.http",
     )
     assert isinstance(tree, GroupNode)
@@ -64,7 +62,7 @@ def test_compile_evaluate_is_universal_across_targets() -> None:
 def test_compile_expression_leaf_requires_valid_mapping_ast() -> None:
     with pytest.raises(ValueError, match="operator args must be a list"):
         compile_assert_tree(
-            [{"id": "assert_1", "class": "must", "target": "stdout", "checks": [{"not_an_expr": "array"}]}],
+            [{"target": "stdout", "must": [{"not_an_expr": "array"}]}],
             type_name="cli.run",
         )
 
@@ -73,7 +71,7 @@ def test_compile_external_case_rejects_unknown_top_level_key() -> None:
     raw = {
         "id": "C-unknown",
         "type": "text.file",
-        "assert": [],
+        "contract": [],
         "bogus_extra": True,
     }
     with pytest.raises(ValueError, match="unknown top-level key: bogus_extra"):

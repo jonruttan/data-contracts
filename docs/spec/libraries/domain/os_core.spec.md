@@ -15,15 +15,14 @@ contract:
       - var: timeout_ms
     - 0
 harness:
-  chain:
-    exports:
-    - as: domain.os.exec_ok
-      from: assert.function
-      path: /__export__domain.os.exec_ok
-      params:
-      - command
-      - timeout_ms
-      required: true
+  exports:
+  - as: domain.os.exec_ok
+    from: assert.function
+    path: /__export__domain.os.exec_ok
+    params:
+    - command
+    - timeout_ms
+    required: true
 ```
 
 ```yaml contract-spec
@@ -41,16 +40,15 @@ contract:
       - code
     - var: expected_code
 harness:
-  chain:
-    exports:
-    - as: domain.os.exec_capture_code
-      from: assert.function
-      path: /__export__domain.os.exec_capture_code
-      params:
-      - command
-      - timeout_ms
-      - expected_code
-      required: true
+  exports:
+  - as: domain.os.exec_capture_code
+    from: assert.function
+    path: /__export__domain.os.exec_capture_code
+    params:
+    - command
+    - timeout_ms
+    - expected_code
+    required: true
 ```
 
 ```yaml contract-spec
@@ -63,12 +61,11 @@ contract:
   - ops.os.env_has:
     - var: key
 harness:
-  chain:
-    exports:
-    - as: domain.os.env_has
-      from: assert.function
-      path: /__export__domain.os.env_has
-      params:
-      - key
-      required: true
+  exports:
+  - as: domain.os.env_has
+    from: assert.function
+    path: /__export__domain.os.env_has
+    params:
+    - key
+    required: true
 ```

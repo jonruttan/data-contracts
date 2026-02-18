@@ -11,7 +11,7 @@ from spec_runner.dispatcher import SpecRunContext
 def _write_spec(path: Path, case_id: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
-        """# Fixtures\n\n## {case_id}\n\n```yaml contract-spec\nid: {case_id}\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    exports:\n    - as: dep_id\n      from: assert.function\n      path: exported_step\n      params: [subject]\nassert:\n- id: exported_step\n  class: must\n  target: body_json\n  checks:\n  - std.object.get:\n    - {{var: subject}}\n    - id\n```\n""".format(case_id=case_id),
+        """# Fixtures\n\n## {case_id}\n\n```yaml contract-spec\nid: {case_id}\ntype: text.file\npath: /README.md\nharness:\n  exports:\n  - as: dep_id\n    from: assert.function\n    path: exported_step\n    params: [subject]\ncontract:\n- id: exported_step\n  class: must\n  target: body_json\n  asserts:\n  - std.object.get:\n    - {{var: subject}}\n    - id\n```\n""".format(case_id=case_id),
         encoding="utf-8",
     )
 
@@ -35,7 +35,7 @@ def test_compile_chain_plan_rejects_empty_ref(tmp_path):
                 ]
             }
         },
-        "assert": [],
+        "contract": [],
     }
     case = compile_external_case(raw, doc_path=doc)
     with pytest.raises(ValueError, match="must be a non-empty string"):
@@ -61,7 +61,7 @@ def test_compile_chain_plan_rejects_legacy_ref_mapping(tmp_path):
                 ]
             }
         },
-        "assert": [],
+        "contract": [],
     }
     case = compile_external_case(raw, doc_path=doc)
     with pytest.raises(TypeError, match="legacy mapping format"):
@@ -77,7 +77,7 @@ def test_compile_chain_plan_rejects_empty_fragment_and_invalid_case_id(tmp_path)
         "id": "CASE-A",
         "type": "text.file",
         "path": "/README.md",
-        "assert": [],
+        "contract": [],
     }
 
     case_empty = compile_external_case(
@@ -122,7 +122,7 @@ def test_compile_chain_plan_rejects_non_bool_flags(tmp_path):
                 ],
             }
         },
-        "assert": [],
+        "contract": [],
     }
     case = compile_external_case(raw, doc_path=doc)
     with pytest.raises(TypeError, match="fail_fast must be a bool"):
@@ -153,7 +153,7 @@ def test_compile_chain_plan_requires_step_class(tmp_path):
                 ],
             }
         },
-        "assert": [],
+        "contract": [],
     }
     case = compile_external_case(raw, doc_path=doc)
     with pytest.raises(ValueError, match="class must be one of"):
@@ -186,7 +186,7 @@ def test_execute_chain_plan_resolves_path_case_and_imports(tmp_path, monkeypatch
                     "imports": [{"from": "preload", "names": ["dep_id"]}],
                 }
             },
-            "assert": [],
+            "contract": [],
         },
         doc_path=host_doc,
     )
@@ -210,7 +210,7 @@ def test_execute_chain_plan_hash_only_local_case_id_resolution(tmp_path, monkeyp
     doc = tmp_path / "docs/spec/mixed.spec.md"
     doc.parent.mkdir(parents=True, exist_ok=True)
     doc.write_text(
-        """# Mixed\n\n## CASE-ONE\n\n```yaml contract-spec\nid: CASE-ONE\ntype: text.file\npath: /README.md\nassert: []\n```\n\n## CASE-TWO\n\n```yaml contract-spec\nid: CASE-TWO\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    steps:\n    - id: local\n      class: must\n      ref: "#CASE-ONE"\nassert: []\n```\n""",
+        """# Mixed\n\n## CASE-ONE\n\n```yaml contract-spec\nid: CASE-ONE\ntype: text.file\npath: /README.md\ncontract: []\n```\n\n## CASE-TWO\n\n```yaml contract-spec\nid: CASE-TWO\ntype: text.file\npath: /README.md\nharness:\n  chain:\n    steps:\n    - id: local\n      class: must\n      ref: "#CASE-ONE"\ncontract: []\n```\n""",
         encoding="utf-8",
     )
 
@@ -220,7 +220,7 @@ def test_execute_chain_plan_hash_only_local_case_id_resolution(tmp_path, monkeyp
             "type": "text.file",
             "path": "/README.md",
             "harness": {"chain": {"steps": [{"id": "local", "class": "must", "ref": "#CASE-ONE"}]}},
-            "assert": [],
+            "contract": [],
         },
         doc_path=doc,
     )
@@ -256,7 +256,7 @@ def test_parse_scalar_ref_supports_relative_and_path_only(tmp_path, monkeypatch,
                     ]
                 }
             },
-            "assert": [],
+            "contract": [],
         },
         doc_path=host_doc,
     )
@@ -301,7 +301,7 @@ def test_execute_chain_plan_resolves_import_aliases(tmp_path, monkeypatch, capsy
                     ],
                 }
             },
-            "assert": [],
+            "contract": [],
         },
         doc_path=host_doc,
     )
@@ -338,7 +338,7 @@ def test_compile_chain_plan_accepts_assert_function_imports(tmp_path):
                 "imports": [{"from": "lib", "names": ["domain.http.status_is"]}],
             }
         },
-        "assert": [],
+        "contract": [],
     }
     case = compile_external_case(raw, doc_path=doc)
     steps, imports, _fail_fast = compile_chain_plan(case)
@@ -366,7 +366,7 @@ def test_compile_chain_plan_rejects_step_symbol_declarations(tmp_path):
                 ]
             }
         },
-        "assert": [],
+        "contract": [],
     }
     case = compile_external_case(raw, doc_path=doc)
     with pytest.raises(ValueError, match="steps\\[0\\]\\.imports is forbidden"):

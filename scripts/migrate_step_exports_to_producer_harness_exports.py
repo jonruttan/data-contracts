@@ -117,7 +117,7 @@ def _rewrite_doc(text: str, mutate_case) -> tuple[str, bool]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Move consumer step exports/imports to producer harness.chain.exports.")
+    ap = argparse.ArgumentParser(description="Move consumer step exports/imports to producer harness.exports.")
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--write", action="store_true")
@@ -198,7 +198,7 @@ def main(argv: list[str] | None = None) -> int:
             if ns.write:
                 doc.write_text(updated, encoding="utf-8")
 
-    # Third pass: inject producer harness.chain.exports
+    # Third pass: inject producer harness.exports
     for (producer_doc, producer_case_id), entries in moved.items():
         if not producer_doc.exists():
             continue
@@ -211,14 +211,10 @@ def main(argv: list[str] | None = None) -> int:
             if not isinstance(harness, dict):
                 harness = {}
                 case["harness"] = harness
-            chain = harness.get("chain")
-            if not isinstance(chain, dict):
-                chain = {}
-                harness["chain"] = chain
-            exports = chain.get("exports")
+            exports = harness.get("exports")
             if not isinstance(exports, list):
                 exports = []
-                chain["exports"] = exports
+                harness["exports"] = exports
             seen = {str(x.get("as", "")).strip() for x in exports if isinstance(x, dict)}
             touched = False
             for item in entries:
@@ -259,4 +255,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

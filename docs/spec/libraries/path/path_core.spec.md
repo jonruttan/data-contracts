@@ -71,41 +71,40 @@ contract:
       - var: path
     - var: pattern
 harness:
-  chain:
-    exports:
-    - as: path.normalize_slashes
-      from: assert.function
-      path: /__export__path.normalize_slashes
-      params:
-      - path
-    - as: path.trim_dot
-      from: assert.function
-      path: /__export__path.trim_dot
-      params:
-      - path
-    - as: path.dirname
-      from: assert.function
-      path: /__export__path.dirname
-      params:
-      - path
-    - as: path.has_extension
-      from: assert.function
-      path: /__export__path.has_extension
-      params:
-      - path
-      - ext
-    - as: path.is_under
-      from: assert.function
-      path: /__export__path.is_under
-      params:
-      - path
-      - prefix
-    - as: path.matches
-      from: assert.function
-      path: /__export__path.matches
-      params:
-      - path
-      - pattern
+  exports:
+  - as: path.normalize_slashes
+    from: assert.function
+    path: /__export__path.normalize_slashes
+    params:
+    - path
+  - as: path.trim_dot
+    from: assert.function
+    path: /__export__path.trim_dot
+    params:
+    - path
+  - as: path.dirname
+    from: assert.function
+    path: /__export__path.dirname
+    params:
+    - path
+  - as: path.has_extension
+    from: assert.function
+    path: /__export__path.has_extension
+    params:
+    - path
+    - ext
+  - as: path.is_under
+    from: assert.function
+    path: /__export__path.is_under
+    params:
+    - path
+    - prefix
+  - as: path.matches
+    from: assert.function
+    path: /__export__path.matches
+    params:
+    - path
+    - pattern
 ```
 
 ```yaml contract-spec
@@ -178,41 +177,40 @@ contract:
       - var: path
     - var: pattern
 harness:
-  chain:
-    exports:
-    - as: path.segments
-      from: assert.function
-      path: /__export__path.segments
-      params:
-      - path
-    - as: path.trim_dot
-      from: assert.function
-      path: /__export__path.trim_dot
-      params:
-      - path
-    - as: path.dirname
-      from: assert.function
-      path: /__export__path.dirname
-      params:
-      - path
-    - as: path.has_extension
-      from: assert.function
-      path: /__export__path.has_extension
-      params:
-      - path
-      - ext
-    - as: path.is_under
-      from: assert.function
-      path: /__export__path.is_under
-      params:
-      - path
-      - prefix
-    - as: path.matches
-      from: assert.function
-      path: /__export__path.matches
-      params:
-      - path
-      - pattern
+  exports:
+  - as: path.segments
+    from: assert.function
+    path: /__export__path.segments
+    params:
+    - path
+  - as: path.trim_dot
+    from: assert.function
+    path: /__export__path.trim_dot
+    params:
+    - path
+  - as: path.dirname
+    from: assert.function
+    path: /__export__path.dirname
+    params:
+    - path
+  - as: path.has_extension
+    from: assert.function
+    path: /__export__path.has_extension
+    params:
+    - path
+    - ext
+  - as: path.is_under
+    from: assert.function
+    path: /__export__path.is_under
+    params:
+    - path
+    - prefix
+  - as: path.matches
+    from: assert.function
+    path: /__export__path.matches
+    params:
+    - path
+    - pattern
 ```
 
 ```yaml contract-spec
@@ -296,41 +294,40 @@ contract:
       - var: path
     - var: pattern
 harness:
-  chain:
-    exports:
-    - as: path.basename
-      from: assert.function
-      path: /__export__path.basename
-      params:
-      - path
-    - as: path.trim_dot
-      from: assert.function
-      path: /__export__path.trim_dot
-      params:
-      - path
-    - as: path.dirname
-      from: assert.function
-      path: /__export__path.dirname
-      params:
-      - path
-    - as: path.has_extension
-      from: assert.function
-      path: /__export__path.has_extension
-      params:
-      - path
-      - ext
-    - as: path.is_under
-      from: assert.function
-      path: /__export__path.is_under
-      params:
-      - path
-      - prefix
-    - as: path.matches
-      from: assert.function
-      path: /__export__path.matches
-      params:
-      - path
-      - pattern
+  exports:
+  - as: path.basename
+    from: assert.function
+    path: /__export__path.basename
+    params:
+    - path
+  - as: path.trim_dot
+    from: assert.function
+    path: /__export__path.trim_dot
+    params:
+    - path
+  - as: path.dirname
+    from: assert.function
+    path: /__export__path.dirname
+    params:
+    - path
+  - as: path.has_extension
+    from: assert.function
+    path: /__export__path.has_extension
+    params:
+    - path
+    - ext
+  - as: path.is_under
+    from: assert.function
+    path: /__export__path.is_under
+    params:
+    - path
+    - prefix
+  - as: path.matches
+    from: assert.function
+    path: /__export__path.matches
+    params:
+    - path
+    - pattern
 ```
 
 ```yaml contract-spec
@@ -422,41 +419,40 @@ contract:
       - var: path
     - var: pattern
 harness:
-  chain:
-    exports:
-    - as: path.extension
-      from: assert.function
-      path: /__export__path.extension
-      params:
-      - path
-    - as: path.trim_dot
-      from: assert.function
-      path: /__export__path.trim_dot
-      params:
-      - path
-    - as: path.dirname
-      from: assert.function
-      path: /__export__path.dirname
-      params:
-      - path
-    - as: path.has_extension
-      from: assert.function
-      path: /__export__path.has_extension
-      params:
-      - path
-      - ext
-    - as: path.is_under
-      from: assert.function
-      path: /__export__path.is_under
-      params:
-      - path
-      - prefix
-    - as: path.matches
-      from: assert.function
-      path: /__export__path.matches
-      params:
-      - path
-      - pattern
+  exports:
+  - as: path.extension
+    from: assert.function
+    path: /__export__path.extension
+    params:
+    - path
+  - as: path.trim_dot
+    from: assert.function
+    path: /__export__path.trim_dot
+    params:
+    - path
+  - as: path.dirname
+    from: assert.function
+    path: /__export__path.dirname
+    params:
+    - path
+  - as: path.has_extension
+    from: assert.function
+    path: /__export__path.has_extension
+    params:
+    - path
+    - ext
+  - as: path.is_under
+    from: assert.function
+    path: /__export__path.is_under
+    params:
+    - path
+    - prefix
+  - as: path.matches
+    from: assert.function
+    path: /__export__path.matches
+    params:
+    - path
+    - pattern
 ```
 
 ```yaml contract-spec

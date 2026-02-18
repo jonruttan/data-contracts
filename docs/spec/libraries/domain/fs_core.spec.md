@@ -19,14 +19,13 @@ contract:
         - var: path
       - .spec.md
 harness:
-  chain:
-    exports:
-    - as: domain.fs.is_docs_spec_file
-      from: assert.function
-      path: /__export__domain.fs.is_docs_spec_file
-      params:
-      - path
-      required: true
+  exports:
+  - as: domain.fs.is_docs_spec_file
+    from: assert.function
+    path: /__export__domain.fs.is_docs_spec_file
+    params:
+    - path
+    required: true
 ```
 
 ```yaml contract-spec
@@ -41,14 +40,13 @@ contract:
       - var: paths
       - '*.spec.md'
 harness:
-  chain:
-    exports:
-    - as: domain.fs.sort_spec_files
-      from: assert.function
-      path: /__export__domain.fs.sort_spec_files
-      params:
-      - paths
-      required: true
+  exports:
+  - as: domain.fs.sort_spec_files
+    from: assert.function
+    path: /__export__domain.fs.sort_spec_files
+    params:
+    - paths
+    required: true
 ```
 
 ```yaml contract-spec
@@ -64,16 +62,15 @@ contract:
     - var: path_segments
     - var: fallback
 harness:
-  chain:
-    exports:
-    - as: domain.fs.json_get_or_text
-      from: assert.function
-      path: /__export__domain.fs.json_get_or_text
-      params:
-      - json_text
-      - path_segments
-      - fallback
-      required: true
+  exports:
+  - as: domain.fs.json_get_or_text
+    from: assert.function
+    path: /__export__domain.fs.json_get_or_text
+    params:
+    - json_text
+    - path_segments
+    - fallback
+    required: true
 ```
 
 ```yaml contract-spec
@@ -88,15 +85,14 @@ contract:
       - var: json_text
     - var: path_segments
 harness:
-  chain:
-    exports:
-    - as: domain.fs.json_has_path_text
-      from: assert.function
-      path: /__export__domain.fs.json_has_path_text
-      params:
-      - json_text
-      - path_segments
-      required: true
+  exports:
+  - as: domain.fs.json_has_path_text
+    from: assert.function
+    path: /__export__domain.fs.json_has_path_text
+    params:
+    - json_text
+    - path_segments
+    required: true
 ```
 
 ```yaml contract-spec
@@ -110,14 +106,13 @@ contract:
     - var: paths
     - '*.spec.md'
 harness:
-  chain:
-    exports:
-    - as: domain.fs.glob_any_spec_files
-      from: assert.function
-      path: /__export__domain.fs.glob_any_spec_files
-      params:
-      - paths
-      required: true
+  exports:
+  - as: domain.fs.glob_any_spec_files
+    from: assert.function
+    path: /__export__domain.fs.glob_any_spec_files
+    params:
+    - paths
+    required: true
 ```
 
 ```yaml contract-spec
@@ -132,15 +127,14 @@ contract:
       - var: meta
     - var: ext
 harness:
-  chain:
-    exports:
-    - as: domain.fs.file_ext_eq
-      from: assert.function
-      path: /__export__domain.fs.file_ext_eq
-      params:
-      - meta
-      - ext
-      required: true
+  exports:
+  - as: domain.fs.file_ext_eq
+    from: assert.function
+    path: /__export__domain.fs.file_ext_eq
+    params:
+    - meta
+    - ext
+    required: true
 ```
 
 ```yaml contract-spec
@@ -155,15 +149,14 @@ contract:
       - var: json_text
     - var: path_segments
 harness:
-  chain:
-    exports:
-    - as: domain.fs.json_get_text
-      from: assert.function
-      path: /__export__domain.fs.json_get_text
-      params:
-      - json_text
-      - path_segments
-      required: true
+  exports:
+  - as: domain.fs.json_get_text
+    from: assert.function
+    path: /__export__domain.fs.json_get_text
+    params:
+    - json_text
+    - path_segments
+    required: true
 ```
 
 ```yaml contract-spec
@@ -181,16 +174,15 @@ contract:
       - null
     - var: expected
 harness:
-  chain:
-    exports:
-    - as: domain.fs.json_path_eq_text
-      from: assert.function
-      path: /__export__domain.fs.json_path_eq_text
-      params:
-      - json_text
-      - path_segments
-      - expected
-      required: true
+  exports:
+  - as: domain.fs.json_path_eq_text
+    from: assert.function
+    path: /__export__domain.fs.json_path_eq_text
+    params:
+    - json_text
+    - path_segments
+    - expected
+    required: true
 ```
 
 ```yaml contract-spec
@@ -204,15 +196,14 @@ contract:
     - var: paths
     - var: pattern
 harness:
-  chain:
-    exports:
-    - as: domain.fs.glob_filter
-      from: assert.function
-      path: /__export__domain.fs.glob_filter
-      params:
-      - paths
-      - pattern
-      required: true
+  exports:
+  - as: domain.fs.glob_filter
+    from: assert.function
+    path: /__export__domain.fs.glob_filter
+    params:
+    - paths
+    - pattern
+    required: true
 ```
 
 ```yaml contract-spec
@@ -226,13 +217,12 @@ contract:
     - var: paths
     - var: pattern
 harness:
-  chain:
-    exports:
-    - as: domain.fs.glob_all
-      from: assert.function
-      path: /__export__domain.fs.glob_all
-      params:
-      - paths
-      - pattern
-      required: true
+  exports:
+  - as: domain.fs.glob_all
+    from: assert.function
+    path: /__export__domain.fs.glob_all
+    params:
+    - paths
+    - pattern
+    required: true
 ```

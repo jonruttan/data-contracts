@@ -69,7 +69,7 @@ surfaces:
                     ],
                 }
             },
-            "assert": [
+            "contract": [
                 {
                     "target": "context_json",
                     "must": [

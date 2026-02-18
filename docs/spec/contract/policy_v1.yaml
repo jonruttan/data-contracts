@@ -3069,24 +3069,24 @@ rules:
 - id: CHAIN_EXPORTS_EXPLICIT_REQUIRED
   introduced_in: v1
   scope: implementation
-  applies_to: harness.chain.steps.imports
+  applies_to: harness.exports
   norm: MUST
-  requirement: chain_state_sharing_requires_explicit_target_derived_exports
-  description: 'State propagation between chained cases must be declared via explicit step imports derived from assertion targets.
+  requirement: producer_symbols_require_explicit_harness_exports
+  description: 'Producer symbols must be declared explicitly on harness.exports.
 
     '
-  rationale: Prevents implicit coupling to internal harness runtime structures.
-  risk_if_violated: Cross-spec state exchange becomes opaque and fragile.
+  rationale: Keeps producer symbol ownership explicit and stable.
+  risk_if_violated: Producer symbol surfaces become ambiguous.
   references:
   - docs/spec/contract/04_harness.md
   - spec_runner/components/chain_engine.py
 - id: CHAIN_EXPORTS_FROM_KEY_REQUIRED
   introduced_in: v1
   scope: schema
-  applies_to: harness.chain.steps.imports[*].from
+  applies_to: harness.exports[*].from
   norm: MUST
-  requirement: chain_exports_must_use_from_key
-  description: 'Each chain step import entry must declare a `from` key.
+  requirement: harness_exports_must_use_from_key
+  description: 'Each harness export entry must declare a `from` key.
 
     '
   rationale: Keeps export source selection explicit and deterministic.
@@ -3099,13 +3099,13 @@ rules:
 - id: CHAIN_EXPORTS_LIST_ONLY_REQUIRED
   introduced_in: v1
   scope: schema
-  applies_to: harness.chain.steps.imports
+  applies_to: harness.exports
   norm: MUST
-  requirement: chain_exports_use_list_form_only
-  description: 'Chain step imports must use list-form entries; mapping-form entries are forbidden.
+  requirement: harness_exports_use_list_form_only
+  description: 'Harness exports must use list-form entries; mapping-form entries are forbidden.
 
     '
-  rationale: Keeps export parsing deterministic and enables batch symbol export syntax.
+  rationale: Keeps producer export parsing deterministic.
   risk_if_violated: Mixed export forms create ambiguous schema and tooling behavior.
   references:
   - docs/spec/contract/04_harness.md
@@ -3116,10 +3116,10 @@ rules:
 - id: CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
   introduced_in: v1
   scope: schema
-  applies_to: harness.chain.steps.imports[*].from_target
+  applies_to: harness.exports[*].from_target
   norm: MUST_NOT
   requirement: chain_exports_legacy_from_target_key_is_rejected
-  description: 'Legacy chain step import key `from_target` is forbidden; use `from`.
+  description: 'Legacy harness export key `from_target` is forbidden; use `from`.
 
     '
   rationale: Enforces hard-cut chain export contract consistency.
@@ -3131,10 +3131,10 @@ rules:
 - id: CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
   introduced_in: v1
   scope: implementation
-  applies_to: harness.chain.steps.imports[*]
+  applies_to: harness.exports[*]
   norm: MUST
   requirement: assert_function_imports_require_symbol_path
-  description: 'Chain step imports using `from: assert.function` must define non-empty `path`.
+  description: 'Harness exports using `from: assert.function` must define non-empty `path`.
 
     '
   rationale: Keeps compile-only function import resolution deterministic.

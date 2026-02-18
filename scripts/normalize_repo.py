@@ -305,7 +305,7 @@ def _check_chain_contract_shape() -> list[str]:
             )
             continue
         steps = chain.get("steps")
-        raw_exports = chain.get("exports")
+        raw_exports = harness.get("exports")
         has_exports = isinstance(raw_exports, list) and bool(raw_exports)
         if steps is None:
             steps = []
@@ -316,7 +316,7 @@ def _check_chain_contract_shape() -> list[str]:
             continue
         if not steps and not has_exports:
             issues.append(
-                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps must be non-empty list when harness.chain.exports is not declared"
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps must be non-empty list when harness.exports is not declared"
             )
             continue
         for idx, step in enumerate(steps):
@@ -341,44 +341,48 @@ def _check_chain_contract_shape() -> list[str]:
                 )
             if "imports" in step:
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].imports is forbidden; declare producer symbols on producer harness.chain.exports"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].imports is forbidden; declare producer symbols on producer harness.exports"
                 )
             if "exports" in step:
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports is forbidden; declare producer symbols on producer harness.chain.exports"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports is forbidden; declare producer symbols on producer harness.exports"
                 )
+        if "exports" in chain:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports is forbidden; use harness.exports"
+            )
         if raw_exports is not None and not isinstance(raw_exports, list):
             issues.append(
-                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports must be a list when provided"
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports must be a list when provided"
             )
         if isinstance(raw_exports, list):
             for exp_idx, exp in enumerate(raw_exports):
                 if not isinstance(exp, dict):
                     issues.append(
-                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}] must be mapping"
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports[{exp_idx}] must be mapping"
                     )
                     continue
                 if "from_target" in exp:
                     issues.append(
-                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}] legacy key from_target is forbidden; use from"
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports[{exp_idx}] legacy key from_target is forbidden; use from"
                     )
                 if "as" not in exp or not str(exp.get("as", "")).strip():
                     issues.append(
-                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}].as is required"
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports[{exp_idx}].as is required"
                     )
                 from_source = str(exp.get("from", "")).strip()
                 if from_source != "assert.function":
                     issues.append(
-                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}].from must be assert.function"
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports[{exp_idx}].from must be assert.function"
                     )
                 if not str(exp.get("path", "")).strip():
                     issues.append(
-                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}].path is required for from=assert.function"
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports[{exp_idx}].path is required for from=assert.function"
                     )
                 params = exp.get("params")
                 if params is not None and (not isinstance(params, list) or not params):
                     issues.append(
-                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.exports[{exp_idx}].params must be non-empty list when provided"
+                        f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports[{exp_idx}].params must be non-empty list when provided"
                     )
     return issues
 

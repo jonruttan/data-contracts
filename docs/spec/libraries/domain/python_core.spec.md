@@ -18,12 +18,11 @@ contract:
       - native_kind
     - python.tuple
 harness:
-  chain:
-    exports:
-    - as: py.is_tuple_projection
-      from: assert.function
-      path: /__export__py.is_tuple_projection
-      params:
-      - subject
-      required: true
+  exports:
+  - as: py.is_tuple_projection
+    from: assert.function
+    path: /__export__py.is_tuple_projection
+    params:
+    - subject
+    required: true
 ```

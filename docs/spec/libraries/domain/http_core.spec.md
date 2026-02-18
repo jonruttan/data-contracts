@@ -15,13 +15,12 @@ contract:
       - value
     - status
 harness:
-  chain:
-    exports:
-    - as: domain.http.status
-      from: assert.function
-      path: /__export__domain.http.status
-      params:
-      - subject
+  exports:
+  - as: domain.http.status
+    from: assert.function
+    path: /__export__domain.http.status
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -39,14 +38,13 @@ contract:
       - status
     - var: allowed
 harness:
-  chain:
-    exports:
-    - as: domain.http.status_in
-      from: assert.function
-      path: /__export__domain.http.status_in
-      params:
-      - subject
-      - allowed
+  exports:
+  - as: domain.http.status_in
+    from: assert.function
+    path: /__export__domain.http.status_in
+    params:
+    - subject
+    - allowed
 ```
 
 ```yaml contract-spec
@@ -64,14 +62,13 @@ contract:
       - status
     - var: expected
 harness:
-  chain:
-    exports:
-    - as: domain.http.status_is
-      from: assert.function
-      path: /__export__domain.http.status_is
-      params:
-      - subject
-      - expected
+  exports:
+  - as: domain.http.status_is
+    from: assert.function
+    path: /__export__domain.http.status_is
+    params:
+    - subject
+    - expected
 ```
 
 ```yaml contract-spec
@@ -86,13 +83,12 @@ contract:
     - var: subject
     - 401
 harness:
-  chain:
-    exports:
-    - as: domain.http.status_is_unauthorized
-      from: assert.function
-      path: /__export__domain.http.status_is_unauthorized
-      params:
-      - subject
+  exports:
+  - as: domain.http.status_is_unauthorized
+    from: assert.function
+    path: /__export__domain.http.status_is_unauthorized
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -107,13 +103,12 @@ contract:
     - var: subject
     - 403
 harness:
-  chain:
-    exports:
-    - as: domain.http.status_is_forbidden
-      from: assert.function
-      path: /__export__domain.http.status_is_forbidden
-      params:
-      - subject
+  exports:
+  - as: domain.http.status_is_forbidden
+    from: assert.function
+    path: /__export__domain.http.status_is_forbidden
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -139,13 +134,12 @@ contract:
         - status
       - 300
 harness:
-  chain:
-    exports:
-    - as: domain.http.ok_2xx
-      from: assert.function
-      path: /__export__domain.http.ok_2xx
-      params:
-      - subject
+  exports:
+  - as: domain.http.ok_2xx
+    from: assert.function
+    path: /__export__domain.http.ok_2xx
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -163,14 +157,13 @@ contract:
       - headers
     - var: key
 harness:
-  chain:
-    exports:
-    - as: domain.http.header_get
-      from: assert.function
-      path: /__export__domain.http.header_get
-      params:
-      - subject
-      - key
+  exports:
+  - as: domain.http.header_get
+    from: assert.function
+    path: /__export__domain.http.header_get
+    params:
+    - subject
+    - key
 ```
 
 ```yaml contract-spec
@@ -190,15 +183,14 @@ contract:
       - var: key
     - var: token
 harness:
-  chain:
-    exports:
-    - as: domain.http.header_contains
-      from: assert.function
-      path: /__export__domain.http.header_contains
-      params:
-      - subject
-      - key
-      - token
+  exports:
+  - as: domain.http.header_contains
+    from: assert.function
+    path: /__export__domain.http.header_contains
+    params:
+    - subject
+    - key
+    - token
 ```
 
 ```yaml contract-spec
@@ -214,13 +206,12 @@ contract:
       - value
     - body_text
 harness:
-  chain:
-    exports:
-    - as: domain.http.body_text
-      from: assert.function
-      path: /__export__domain.http.body_text
-      params:
-      - subject
+  exports:
+  - as: domain.http.body_text
+    from: assert.function
+    path: /__export__domain.http.body_text
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -236,13 +227,12 @@ contract:
       - value
     - body_json
 harness:
-  chain:
-    exports:
-    - as: domain.http.body_json
-      from: assert.function
-      path: /__export__domain.http.body_json
-      params:
-      - subject
+  exports:
+  - as: domain.http.body_json
+    from: assert.function
+    path: /__export__domain.http.body_json
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -260,14 +250,13 @@ contract:
       - body_json
     - var: expected_type
 harness:
-  chain:
-    exports:
-    - as: domain.http.body_json_type_is
-      from: assert.function
-      path: /__export__domain.http.body_json_type_is
-      params:
-      - subject
-      - expected_type
+  exports:
+  - as: domain.http.body_json_type_is
+    from: assert.function
+    path: /__export__domain.http.body_json_type_is
+    params:
+    - subject
+    - expected_type
 ```
 
 ```yaml contract-spec
@@ -285,14 +274,13 @@ contract:
       - body_json
     - var: key
 harness:
-  chain:
-    exports:
-    - as: domain.http.body_json_has_key
-      from: assert.function
-      path: /__export__domain.http.body_json_has_key
-      params:
-      - subject
-      - key
+  exports:
+  - as: domain.http.body_json_has_key
+    from: assert.function
+    path: /__export__domain.http.body_json_has_key
+    params:
+    - subject
+    - key
 ```
 
 ```yaml contract-spec
@@ -310,13 +298,12 @@ contract:
       - auth_mode
     - oauth
 harness:
-  chain:
-    exports:
-    - as: domain.http.auth_is_oauth
-      from: assert.function
-      path: /__export__domain.http.auth_is_oauth
-      params:
-      - subject
+  exports:
+  - as: domain.http.auth_is_oauth
+    from: assert.function
+    path: /__export__domain.http.auth_is_oauth
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -334,14 +321,13 @@ contract:
       - oauth_token_source
     - var: expected
 harness:
-  chain:
-    exports:
-    - as: domain.http.oauth_token_source_is
-      from: assert.function
-      path: /__export__domain.http.oauth_token_source_is
-      params:
-      - subject
-      - expected
+  exports:
+  - as: domain.http.oauth_token_source_is
+    from: assert.function
+    path: /__export__domain.http.oauth_token_source_is
+    params:
+    - subject
+    - expected
 ```
 
 ```yaml contract-spec
@@ -361,13 +347,12 @@ contract:
       - Authorization
     - 'Bearer '
 harness:
-  chain:
-    exports:
-    - as: domain.http.has_bearer_header
-      from: assert.function
-      path: /__export__domain.http.has_bearer_header
-      params:
-      - subject
+  exports:
+  - as: domain.http.has_bearer_header
+    from: assert.function
+    path: /__export__domain.http.has_bearer_header
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -387,13 +372,12 @@ contract:
       - scope_requested
     - null
 harness:
-  chain:
-    exports:
-    - as: domain.http.oauth_scope_requested
-      from: assert.function
-      path: /__export__domain.http.oauth_scope_requested
-      params:
-      - subject
+  exports:
+  - as: domain.http.oauth_scope_requested
+    from: assert.function
+    path: /__export__domain.http.oauth_scope_requested
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -411,13 +395,12 @@ contract:
       - cors
     - allow_origin
 harness:
-  chain:
-    exports:
-    - as: domain.http.cors_allow_origin
-      from: assert.function
-      path: /__export__domain.http.cors_allow_origin
-      params:
-      - subject
+  exports:
+  - as: domain.http.cors_allow_origin
+    from: assert.function
+    path: /__export__domain.http.cors_allow_origin
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -437,14 +420,13 @@ contract:
       - allow_methods
     - var: method_name
 harness:
-  chain:
-    exports:
-    - as: domain.http.cors_allows_method
-      from: assert.function
-      path: /__export__domain.http.cors_allows_method
-      params:
-      - subject
-      - method_name
+  exports:
+  - as: domain.http.cors_allows_method
+    from: assert.function
+    path: /__export__domain.http.cors_allows_method
+    params:
+    - subject
+    - method_name
 ```
 
 ```yaml contract-spec
@@ -464,14 +446,13 @@ contract:
       - allow_headers
     - var: header_name
 harness:
-  chain:
-    exports:
-    - as: domain.http.cors_allows_header
-      from: assert.function
-      path: /__export__domain.http.cors_allows_header
-      params:
-      - subject
-      - header_name
+  exports:
+  - as: domain.http.cors_allows_header
+    from: assert.function
+    path: /__export__domain.http.cors_allows_header
+    params:
+    - subject
+    - header_name
 ```
 
 ```yaml contract-spec
@@ -491,13 +472,12 @@ contract:
       - allow_credentials
     - true
 harness:
-  chain:
-    exports:
-    - as: domain.http.cors_credentials_enabled
-      from: assert.function
-      path: /__export__domain.http.cors_credentials_enabled
-      params:
-      - subject
+  exports:
+  - as: domain.http.cors_credentials_enabled
+    from: assert.function
+    path: /__export__domain.http.cors_credentials_enabled
+    params:
+    - subject
 ```
 
 ```yaml contract-spec
@@ -517,14 +497,13 @@ contract:
       - max_age
     - var: min_age
 harness:
-  chain:
-    exports:
-    - as: domain.http.cors_max_age_gte
-      from: assert.function
-      path: /__export__domain.http.cors_max_age_gte
-      params:
-      - subject
-      - min_age
+  exports:
+  - as: domain.http.cors_max_age_gte
+    from: assert.function
+    path: /__export__domain.http.cors_max_age_gte
+    params:
+    - subject
+    - min_age
 ```
 
 ```yaml contract-spec
@@ -540,13 +519,12 @@ contract:
       - method
     - OPTIONS
 harness:
-  chain:
-    exports:
-    - as: domain.http.is_preflight_step
-      from: assert.function
-      path: /__export__domain.http.is_preflight_step
-      params:
-      - step
+  exports:
+  - as: domain.http.is_preflight_step
+    from: assert.function
+    path: /__export__domain.http.is_preflight_step
+    params:
+    - step
 ```
 
 ```yaml contract-spec
@@ -566,14 +544,13 @@ contract:
         - var: step_id
     - var: steps
 harness:
-  chain:
-    exports:
-    - as: domain.http.step_by_id
-      from: assert.function
-      path: /__export__domain.http.step_by_id
-      params:
-      - steps
-      - step_id
+  exports:
+  - as: domain.http.step_by_id
+    from: assert.function
+    path: /__export__domain.http.step_by_id
+    params:
+    - steps
+    - step_id
 ```
 
 ```yaml contract-spec
@@ -592,15 +569,14 @@ contract:
       - status
     - var: expected
 harness:
-  chain:
-    exports:
-    - as: domain.http.step_status_is
-      from: assert.function
-      path: /__export__domain.http.step_status_is
-      params:
-      - steps
-      - step_id
-      - expected
+  exports:
+  - as: domain.http.step_status_is
+    from: assert.function
+    path: /__export__domain.http.step_status_is
+    params:
+    - steps
+    - step_id
+    - expected
 ```
 
 ```yaml contract-spec
@@ -619,13 +595,12 @@ contract:
       - body_json
     - var: field
 harness:
-  chain:
-    exports:
-    - as: domain.http.step_body_json_get
-      from: assert.function
-      path: /__export__domain.http.step_body_json_get
-      params:
-      - steps
-      - step_id
-      - field
+  exports:
+  - as: domain.http.step_body_json_get
+    from: assert.function
+    path: /__export__domain.http.step_body_json_get
+    params:
+    - steps
+    - step_id
+    - field
 ```

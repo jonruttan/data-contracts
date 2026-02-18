@@ -1,7 +1,6 @@
 # SPEC-OPT-OUT: Exercises script wiring and governance harness behavior not yet representable as stable .spec.md coverage.
 import importlib.util
 from pathlib import Path
-import re
 
 from spec_runner.codecs import load_external_cases
 
@@ -18,23 +17,6 @@ def _load_script_module():
 
 def _write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    if (
-        path.name.endswith(".spec.md")
-        and "type: governance.check" in text
-        and "\n  policy_evaluate:" not in text
-        and "NO_AUTO_POLICY" not in text
-    ):
-        text = re.sub(
-            r"\nassert:\n",
-            "\n  policy_evaluate:\n"
-            "  - std.collection.is_empty:\n"
-            "    - std.object.get:\n"
-            "      - var: subject\n"
-            "      - violations\n"
-            "assert:\n",
-            text,
-            count=1,
-        )
     path.write_text(text, encoding="utf-8")
 
 
@@ -49,12 +31,14 @@ type: governance.check
 check: pending.no_resolved_markers
 harness:
   root: {root}
-assert:
-  - target: text
-    must:
-      - std.string.contains:
-          - var: subject
-          - "PASS:"
+contract:
+- id: assert_1
+  class: must
+  target: text
+  asserts:
+  - std.string.contains:
+    - var: subject
+    - "PASS:"
 ```
 """
 
@@ -70,19 +54,22 @@ type: governance.check
 check: {check}
 harness:
   root: {root}
-assert:
-  - target: summary_json
-    must:
-      - std.logic.eq:
-          - std.object.get:
-            - var: subject
-            - passed
-          - true
-      - std.logic.eq:
-          - std.object.get:
-            - var: subject
-            - check_id
-          - {check}
+contract:
+- id: assert_1
+  class: must
+  target: summary_json
+  asserts:
+  - must:
+    - std.logic.eq:
+      - std.object.get:
+        - var: subject
+        - passed
+      - true
+    - std.logic.eq:
+      - std.object.get:
+        - var: subject
+        - check_id
+      - {check}
 ```
 """
 
@@ -192,11 +179,7 @@ type: governance.check
 check: pending.no_resolved_markers
 harness:
   root: {tmp_path}
-  policy_evaluate:
-  - std.logic.eq:
-    - true
-    - true
-assert:
+contract:
   - target: violation_count
     must:
       - std.logic.eq:
@@ -377,7 +360,7 @@ harness:
       - resolve_python_bin "${{ROOT_DIR}}"
     forbidden_tokens:
       - ROOT_DIR}}/.venv/bin/python
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -438,7 +421,7 @@ harness:
       - scripts/runner_adapter.sh
     forbidden_tokens:
       - scripts/run_governance_specs.py
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -471,7 +454,7 @@ assert:
     assert code == 1
 
 
-def test_script_fails_when_governance_case_missing_policy_evaluate(tmp_path):
+def test_script_allows_governance_case_without_policy_evaluate(tmp_path):
     mod = _load_script_module()
     cases_dir = tmp_path / "cases"
     _write_text(
@@ -491,7 +474,7 @@ harness:
     case_file_pattern: "*.spec.md"
     ignore_checks:
       - governance.policy_evaluate_required
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -521,7 +504,7 @@ type: governance.check
 check: pending.no_resolved_markers
 harness:
   root: .
-assert:
+contract:
   - target: text
     must:
       - std.string.contains:
@@ -531,7 +514,7 @@ assert:
 """,
     )
     code = mod.main(["--cases", str(cases_dir)])
-    assert code == 1
+    assert code == 0
 
 
 def test_script_enforces_governance_structured_assertions_required(tmp_path):
@@ -559,7 +542,7 @@ harness:
     - std.object.get:
       - var: subject
       - violations
-assert:
+contract:
   - target: violation_count
     must:
       - std.logic.eq:
@@ -584,7 +567,7 @@ harness:
   - std.logic.eq:
     - true
     - true
-assert:
+contract:
   - target: text
     must:
       - std.string.contains:
@@ -622,7 +605,7 @@ harness:
     - std.object.get:
       - var: subject
       - violations
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -654,7 +637,7 @@ harness:
   - std.logic.eq:
     - true
     - true
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -694,7 +677,7 @@ harness:
   - std.logic.eq:
     - true
     - true
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -727,17 +710,16 @@ def test_script_enforces_conformance_library_policy_usage_required(tmp_path):
 id: LIB-POLICY-CORE-TEST-001
 type: spec.export
 harness:
-  chain:
-    exports:
-    - as: policy.pass_when_no_violations
-      from: assert.function
-      path: export_policy_pass_when_no_violations
-      params: [subject]
-assert:
+  exports:
+  - as: policy.pass_when_no_violations
+    from: assert.function
+    path: export_policy_pass_when_no_violations
+    params: [subject]
+contract:
 - id: export_policy_pass_when_no_violations
   class: must
   target: subject
-  checks:
+  asserts:
   - std.collection.is_empty:
     - std.object.get:
       - var: subject
@@ -762,12 +744,7 @@ harness:
     case_file_pattern: "*.spec.md"
     ignore_checks:
       - conformance.library_policy_usage_required
-  policy_evaluate:
-  - std.collection.is_empty:
-    - std.object.get:
-      - var: subject
-      - violations
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -800,15 +777,7 @@ harness:
       - id: policy_lib
         class: must
         ref: /cases/libs/policy_core.spec.md
-    imports:
-      - from: policy_lib
-        names:
-          - policy.pass_when_no_violations
-  policy_evaluate:
-  - std.logic.eq:
-    - true
-    - true
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -843,11 +812,7 @@ harness:
       - from: policy_lib
         names:
           - policy.pass_when_no_violations
-  policy_evaluate:
-  - call:
-    - var: policy.pass_when_no_violations
-    - var: subject
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -888,7 +853,7 @@ harness:
       - contract/governance expansion
     forbidden_tokens:
       - Node.js runner
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -939,7 +904,7 @@ def test_script_enforces_conformance_case_index_sync(tmp_path):
 ```yaml contract-spec
 id: SRCONF-IDX-001
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["SRCONF-IDX-001"]
@@ -971,7 +936,7 @@ def test_script_enforces_conformance_type_contract_docs(tmp_path):
 ```yaml contract-spec
 id: SRCONF-TYPE-001
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["SRCONF-TYPE-001"]
@@ -1009,10 +974,10 @@ check: conformance.api_http_portable_shape
 harness:
   root: {tmp_path}
   api_http:
-    allowed_top_level_keys: ["id", "type", "title", "purpose", "request", "assert", "expect", "requires", "assert_health", "harness"]
+    allowed_top_level_keys: ["id", "type", "title", "purpose", "request", "contract", "expect", "requires", "assert_health", "harness"]
     allowed_assert_targets: ["status", "headers", "body_text", "body_json", "context_json"]
     required_request_fields: ["method", "url"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -1040,7 +1005,7 @@ type: api.http
 request:
   method: GET
   url: https://example.test/v1/ping
-assert:
+contract:
   - target: status
     must:
       - contain: ["200"]
@@ -1063,7 +1028,7 @@ method: GET
 request:
   method: GET
   url: https://example.test/v1/ping
-assert:
+contract:
   - target: stdout
     must:
       - contain: ["200"]
@@ -1112,7 +1077,7 @@ harness:
 request:
   method: GET
   url: /fixtures/ok.json
-assert:
+contract:
   - target: status
     must:
       - std.string.contains:
@@ -1143,7 +1108,7 @@ harness:
 request:
   method: GET
   url: /fixtures/ok.json
-assert:
+contract:
   - target: status
     must:
       - std.string.contains:
@@ -1175,7 +1140,7 @@ type: api.http
 request:
   method: GET
   url: /fixtures/ok.json
-assert:
+contract:
   - target: status
     must:
       - std.string.contains:
@@ -1200,7 +1165,7 @@ request:
   url: /fixtures/ok.json
   headers:
     Authorization: Bearer secret-token
-assert:
+contract:
   - target: status
     must:
       - std.string.contains:
@@ -1232,7 +1197,7 @@ type: api.http
 request:
   method: GET
   url: /fixtures/ok.json
-assert:
+contract:
   - target: status
     must:
       - std.string.contains:
@@ -1263,7 +1228,7 @@ harness:
 request:
   method: GET
   url: https://api.example.invalid/items
-assert:
+contract:
   - target: status
     must:
       - std.string.contains:
@@ -1325,7 +1290,7 @@ type: api.http
 request:
   method: GET
   url: /fixtures/ok.json
-assert: []
+contract: []
 ```
 
 ## SRCONF-API-POST
@@ -1336,7 +1301,7 @@ type: api.http
 request:
   method: POST
   url: /fixtures/ok.json
-assert: []
+contract: []
 ```
 
 ## SRCONF-API-PUT
@@ -1347,7 +1312,7 @@ type: api.http
 request:
   method: PUT
   url: /fixtures/ok.json
-assert: []
+contract: []
 ```
 
 ## SRCONF-API-PATCH
@@ -1358,7 +1323,7 @@ type: api.http
 request:
   method: PATCH
   url: /fixtures/ok.json
-assert: []
+contract: []
 ```
 
 ## SRCONF-API-DELETE
@@ -1369,7 +1334,7 @@ type: api.http
 request:
   method: DELETE
   url: /fixtures/ok.json
-assert: []
+contract: []
 ```
 
 ## SRCONF-API-HEAD
@@ -1380,7 +1345,7 @@ type: api.http
 request:
   method: HEAD
   url: /fixtures/ok.json
-assert: []
+contract: []
 ```
 
 ## SRCONF-API-OPTIONS
@@ -1391,7 +1356,7 @@ type: api.http
 request:
   method: OPTIONS
   url: /fixtures/ok.json
-assert: []
+contract: []
 ```
 """,
     )
@@ -1410,7 +1375,7 @@ type: api.http
 request:
   method: GET
   url: /fixtures/ok.json
-assert: []
+contract: []
 ```
 """,
     )
@@ -1441,7 +1406,7 @@ requests:
   - id: get
     method: GET
     url: /fixtures/item_{{steps.create.body_json.id}}.json
-assert:
+contract:
   - target: steps_json
     must:
       - exists: [true]
@@ -1500,7 +1465,7 @@ argv: ["--help"]
 exit_code: 0
 harness:
   entrypoint: /bin/echo
-assert:
+contract:
   - target: stdout
     must:
       - contain: ["--help"]
@@ -1522,7 +1487,7 @@ type: cli.run
 argv: ["--help"]
 exit_code: 0
 entrypoint: /bin/echo
-assert:
+contract:
   - target: stdout
     must:
       - contain: ["--help"]
@@ -1565,7 +1530,7 @@ harness:
         - std.object.get:
           - var: subject
           - violations
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -1590,7 +1555,7 @@ assert:
 ```yaml contract-spec
 id: SRCONF-PORT-003
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["fixed-value"]
@@ -1609,7 +1574,7 @@ assert:
 ```yaml contract-spec
 id: SRCONF-PORT-004
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["datetime.now()"]
@@ -1635,7 +1600,7 @@ type: governance.check
 check: conformance.portable_determinism_guard
 harness:
   root: {tmp_path}
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -1680,7 +1645,7 @@ harness:
         - std.object.get:
           - var: subject
           - violations
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -1705,7 +1670,7 @@ assert:
 ```yaml contract-spec
 id: SRCONF-PORT-005
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["fixed-value"]
@@ -1724,7 +1689,7 @@ assert:
 ```yaml contract-spec
 id: SRCONF-PORT-006
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["os.getenv('HOME')"]
@@ -1750,7 +1715,7 @@ type: governance.check
 check: conformance.no_ambient_assumptions
 harness:
   root: {tmp_path}
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -1791,7 +1756,7 @@ request:
   url: https://example.test/ping
 requires:
   capabilities: ["api.http"]
-assert:
+contract:
   - target: status
     must:
       - contain: ["200"]
@@ -1813,7 +1778,7 @@ type: api.http
 request:
   method: GET
   url: https://example.test/ping
-assert:
+contract:
   - target: status
     must:
       - contain: ["200"]
@@ -1839,7 +1804,7 @@ def test_script_enforces_conformance_type_contract_field_sync(tmp_path):
 
 - `id`
 - `type`
-- `assert`
+- `contract`
 
 ## Optional Fields
 
@@ -1856,7 +1821,7 @@ def test_script_enforces_conformance_type_contract_field_sync(tmp_path):
 id: SRCONF-PORT-007
 type: text.file
 path: fixtures/a.txt
-assert:
+contract:
   - target: text
     must:
       - contain: ["a"]
@@ -1877,7 +1842,7 @@ id: SRCONF-PORT-008
 type: text.file
 path: fixtures/a.txt
 foobar: 1
-assert:
+contract:
   - target: text
     must:
       - contain: ["a"]
@@ -1920,7 +1885,7 @@ harness:
                 - 0
             - var: subject
         - 0
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -1946,7 +1911,7 @@ assert:
 id: SRCONF-SPECLANG-001
 type: text.file
 path: fixtures/a.txt
-assert:
+contract:
   - target: text
     must:
       - std.string.contains:
@@ -1968,7 +1933,7 @@ assert:
 id: SRCONF-SPECLANG-002
 type: text.file
 path: fixtures/a.txt
-assert:
+contract:
   - target: text
     must:
       - contain: ["a"]
@@ -2002,12 +1967,7 @@ harness:
     required_case_ids:
       - SRCONF-EXPR-001
       - SRCONF-EXPR-002
-  policy_evaluate:
-    - std.collection.is_empty:
-      - std.object.get:
-        - var: subject
-        - violations
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2027,7 +1987,7 @@ assert:
 ```yaml contract-spec
 id: SRCONF-EXPR-001
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - std.string.contains:
@@ -2045,15 +2005,11 @@ harness:
       - id: conf_lib
         class: must
         ref: ../../libraries/conformance/assertion_core.spec.md
-        imports:
-          - as: conf.pass_when_text_contains
-            from: assert.function
-            path: conf.pass_when_text_contains
     imports:
       - from: conf_lib
         names:
           - conf.pass_when_text_contains
-assert:
+contract:
   - target: text
     must:
       - call:
@@ -2081,15 +2037,11 @@ harness:
       - id: conf_lib
         class: must
         ref: ../../libraries/conformance/assertion_core.spec.md
-        imports:
-          - as: conf.pass_when_text_contains
-            from: assert.function
-            path: conf.pass_when_text_contains
     imports:
       - from: conf_lib
         names:
           - conf.pass_when_text_contains
-assert:
+contract:
   - target: text
     must:
       - call:
@@ -2109,15 +2061,11 @@ harness:
       - id: conf_lib
         class: must
         ref: ../../libraries/conformance/assertion_core.spec.md
-        imports:
-          - as: conf.pass_when_text_contains
-            from: assert.function
-            path: conf.pass_when_text_contains
     imports:
       - from: conf_lib
         names:
           - conf.pass_when_text_contains
-assert:
+contract:
   - target: text
     must:
       - call:
@@ -2252,7 +2200,7 @@ harness:
       - docs/spec/schema/schema_v1.md
     required_globs:
       - docs/spec/contract/*.md
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2298,7 +2246,7 @@ harness:
     path: docs/book/reference_index.md
     include_glob: docs/book/*.md
     exclude_files: ["docs/book/reference_index.md"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2345,7 +2293,7 @@ harness:
   root: {tmp_path}
   docs_examples:
     files: ["docs/book/03_assertions.md"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2368,7 +2316,7 @@ assert:
 ```yaml contract-spec
 id: T-1
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["x"]
@@ -2430,7 +2378,7 @@ harness:
   root: {tmp_path}
   required_sections:
     docs/book/02_core_model.md: ["## Required Keys", "## Discovery Model"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2475,7 +2423,7 @@ harness:
     php_scripts: ["scripts/php/spec_runner.php"]
     python_docs: ["docs/development.md", "docs/spec/impl/python.md"]
     php_docs: ["docs/development.md", "docs/spec/impl/php.md"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2531,7 +2479,7 @@ harness:
       - docs/spec/contract/03_assertions.md
       - docs/spec/schema/schema_v1.md
     tokens: ["must", "can", "cannot", "contain", "regex", "evaluate"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2575,7 +2523,7 @@ harness:
   root: {tmp_path}
   docs_examples:
     files: ["docs/book/03_assertions.md"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2623,7 +2571,7 @@ harness:
   root: {tmp_path}
   docs_examples:
     files: ["docs/book/01_quickstart.md"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2671,7 +2619,7 @@ harness:
     path: docs/book/reference_index.md
     include_glob: docs/book/*.md
     exclude_files: ["docs/book/reference_index.md"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2730,7 +2678,7 @@ harness:
       - path: spec_runner/harnesses/text_file.py
         required_tokens: ["evaluate_internal_assert_tree("]
         forbidden_tokens: ["contain assertion failed"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2788,7 +2736,7 @@ type: governance.check
 check: contract.governance_check
 harness:
   root: {tmp_path}
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2828,7 +2776,7 @@ harness:
     max_total_warnings: 0
     fail_on_policy_errors: true
     fail_on_severity: warn
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2855,7 +2803,7 @@ id: SRCONF-PURPOSE-001
 title: stable purpose sentence for quality checks
 purpose: This purpose sentence provides concrete deterministic intent for this case.
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["ok"]
@@ -2876,7 +2824,7 @@ id: SRCONF-PURPOSE-001
 title: stable purpose sentence for quality checks
 purpose: short words only
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["ok"]
@@ -2907,7 +2855,7 @@ harness:
     max_total_warnings: 10
     fail_on_policy_errors: true
     fail_on_severity: warn
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -2934,7 +2882,7 @@ id: SRCONF-PURPOSE-002
 title: short purpose title
 purpose: too short
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - contain: ["ok"]
@@ -2963,7 +2911,7 @@ harness:
   contract_coverage:
     require_all_must_covered: true
     min_coverage_ratio: 0.50
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3062,7 +3010,7 @@ harness:
       - make check
       - make prepush
       - make ci-cleanroom
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3122,7 +3070,7 @@ harness:
       - Full profile
       - make core-check
       - make check
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3177,7 +3125,7 @@ harness:
     allow_exact:
       - README.md
     allowed_name_regex: "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3233,7 +3181,7 @@ harness:
       non_core_type: 0.15
     report:
       top_n: 5
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3258,7 +3206,7 @@ assert:
 ```yaml contract-spec
 id: C1
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - ["std.string.contains", ["std.core.subject"], "x"]
@@ -3301,7 +3249,7 @@ harness:
       non_core_type: 0.15
     report:
       top_n: 0
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3326,7 +3274,7 @@ assert:
 ```yaml contract-spec
 id: C1
 type: text.file
-assert: []
+contract: []
 ```
 """,
     )
@@ -3367,7 +3315,7 @@ harness:
       top_n: 5
     policy_evaluate:
       - ["std.logic.eq", 1, 2]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3392,7 +3340,7 @@ assert:
 ```yaml contract-spec
 id: C1
 type: text.file
-assert: []
+contract: []
 ```
 """,
     )
@@ -3441,7 +3389,7 @@ harness:
         - and
         - ["std.object.has_key", ["std.core.subject"], "summary"]
         - ["std.object.has_key", ["std.core.subject"], "segments"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3475,7 +3423,7 @@ assert:
 ```yaml contract-spec
 id: C1
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - ["std.string.contains", ["std.core.subject"], "x"]
@@ -3564,7 +3512,7 @@ harness:
   root: {tmp_path}
   docs_quality:
     manifest: docs/book/reference_manifest.yaml
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3609,7 +3557,7 @@ harness:
     index_out: docs/book/reference_index.md
     coverage_out: docs/book/reference_coverage.md
     graph_out: docs/book/docs_graph.json
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3721,7 +3669,7 @@ harness:
     forbidden_patterns:
       - "(?m)^##\\\\s+[0-9]+\\\\)"
       - "(?m)^\\\\s*[0-9]+\\\\.\\\\s+(Run|Then|Check|Inspect)\\\\b"
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3782,7 +3730,7 @@ harness:
       - spec_runner/spec_lang.py
     forbidden_tokens:
       - \"path_exists\"
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3835,7 +3783,7 @@ harness:
           - \"gate_policy\"
           - \"policy_evaluate\"
     forbidden_tokens: []
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3893,7 +3841,7 @@ harness:
     roots: [docs/spec/conformance/cases]
     policy_evaluate:
       - [\"eq\", 1, 1]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3924,7 +3872,7 @@ harness:
     roots: [docs/spec/conformance/cases]
     policy_expr:
       - [\"eq\", 1, 1]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -3960,7 +3908,7 @@ harness:
     required_subcommands:
       - governance
       - style-check
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4013,7 +3961,7 @@ harness:
       - "core-gate-rust-adapter:"
       - "SPEC_RUNNER_BIN: ./scripts/rust/runner_adapter.sh"
       - "run: ./scripts/core_gate.sh"
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4063,7 +4011,7 @@ harness:
       - "cargo run --quiet"
     forbidden_tokens:
       - "scripts/runner_adapter.sh"
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4119,7 +4067,7 @@ harness:
     forbidden_output_tokens:
       - "scripts/runner_adapter.sh"
     timeout_seconds: 5
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4171,7 +4119,7 @@ harness:
   rust_subcommand_parity:
     adapter_path: scripts/rust/runner_adapter.sh
     cli_main_path: scripts/rust/spec_runner_cli/src/main.rs
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4355,7 +4303,7 @@ harness:
     required_ops:
     - std.logic.eq
     - std.string.contains
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4424,7 +4372,7 @@ harness:
       - std.object.has_key:
         - var: subject
         - summary
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4449,7 +4397,7 @@ assert:
 ```yaml contract-spec
 id: C1
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - std.string.contains:
@@ -4486,7 +4434,7 @@ harness:
       segment_rules:
         - prefix: docs/spec/conformance/cases
           segment: conformance
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4511,7 +4459,7 @@ assert:
 ```yaml contract-spec
 id: C1
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - std.string.contains:
@@ -4559,12 +4507,7 @@ harness:
       segment_rules:
       - prefix: docs/spec/conformance/cases
         segment: conformance
-  policy_evaluate:
-  - std.collection.is_empty:
-    - std.object.get:
-      - var: subject
-      - violations
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4589,7 +4532,7 @@ assert:
 ```yaml contract-spec
 id: C1
 type: text.file
-assert:
+contract:
   - target: text
     must:
       - std.string.contains:
@@ -4649,11 +4592,7 @@ harness:
       segment_rules:
       - prefix: docs/spec/governance/cases
         segment: governance
-  policy_evaluate:
-  - call:
-    - {{var: policy.pass_when_no_violations}}
-    - {{var: subject}}
-assert:
+contract:
   - target: violation_count
     must:
       - std.logic.eq:
@@ -4685,11 +4624,7 @@ harness:
       - policy.pass_when_no_violations
   docs_reference_surface:
     required_files: []
-  policy_evaluate:
-  - call:
-    - {var: policy.pass_when_no_violations}
-    - {var: subject}
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4715,17 +4650,16 @@ assert:
 id: L1
 type: spec.export
 harness:
-  chain:
-    exports:
-    - as: policy.pass_when_no_violations
-      from: assert.function
-      path: export_policy_pass_when_no_violations
-      params: [subject]
-assert:
+  exports:
+  - as: policy.pass_when_no_violations
+    from: assert.function
+    path: export_policy_pass_when_no_violations
+    params: [subject]
+contract:
 - id: export_policy_pass_when_no_violations
   class: must
   target: subject
-  checks:
+  asserts:
   - std.collection.is_empty:
     - std.object.get:
       - var: subject
@@ -4765,7 +4699,7 @@ harness:
   runner_independence:
     segment_files:
       gate_scripts: ["scripts/*.sh"]
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -4817,7 +4751,7 @@ harness:
         policy.pass_when_no_violations:
           from: body_json
           path: id
-assert: []
+contract: []
 ```
 """,
     )
@@ -4844,7 +4778,7 @@ harness:
       - as: policy.pass_when_no_violations
         from: body_json
         path: id
-assert: []
+contract: []
 ```
 """,
     )
@@ -4925,7 +4859,7 @@ harness:
   root: {tmp_path}
   docs_operability:
     reference_manifest: docs/book/reference_manifest.yaml
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -5000,7 +4934,7 @@ harness:
       - docs/spec/schema/schema_v1.md
       - docs/book/03_assertions.md
       - docs/spec/contract/03b_spec_lang_v1.md
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -5256,7 +5190,7 @@ harness:
       - std.object.has_key:
           - var: subject
           - summary
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -5335,7 +5269,7 @@ harness:
         - scripts/runner_adapter.sh
       default_gate_required_tokens:
         - SPEC_RUNNER_BIN
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -5426,7 +5360,7 @@ harness:
               - 0
           - {{var: subject}}
       - 0
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -5446,7 +5380,7 @@ assert:
 ```yaml contract-spec
 id: IMP-1
 type: text.file
-assert:
+contract:
 - target: text
   must:
   - contain:
@@ -5489,7 +5423,7 @@ harness:
       segment_rules:
       - prefix: docs/spec/impl
         segment: impl
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -5509,7 +5443,7 @@ assert:
 ```yaml contract-spec
 id: IMP-2
 type: text.file
-assert:
+contract:
 - target: text
   must:
   - std.string.contains:
@@ -5554,7 +5488,7 @@ harness:
       segment_rules:
       - prefix: docs/spec/impl
         segment: impl
-assert:
+contract:
   - target: summary_json
     must:
       - std.logic.eq:
@@ -5578,7 +5512,7 @@ harness:
   spec_lang:
     includes:
     - /docs/spec/libraries/impl/assertion_core.spec.md
-assert:
+contract:
 - target: text
   must:
   - std.string.contains:
@@ -5608,7 +5542,7 @@ def test_script_accepts_scalar_chain_ref_format(tmp_path):
 id: DEP-1
 type: text.file
 path: /README.md
-assert: []
+contract: []
 ```
 """,
     )
@@ -5628,7 +5562,7 @@ harness:
     - id: preload
       class: must
       ref: /docs/spec/conformance/cases/core/dep.spec.md#DEP-1
-assert: []
+contract: []
 ```
 """,
     )
@@ -5661,7 +5595,7 @@ harness:
       class: must
       ref:
         case_id: DEP-1
-assert: []
+contract: []
 ```
 """,
     )
@@ -5689,7 +5623,7 @@ def test_docs_markdown_structured_assertions_required_flags_plain_contains(tmp_p
 id: SAMPLE-1
 type: text.file
 path: /docs/book/03_assertions.md
-assert:
+contract:
 - target: text
   must:
   - std.string.contains:
@@ -5748,7 +5682,7 @@ harness:
     - /docs/spec/libraries/domain/markdown_core.spec.md
     imports:
     - domain.markdown.has_heading
-assert:
+contract:
 - target: text
   must:
   - call:

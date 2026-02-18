@@ -278,7 +278,7 @@ For `type: docs.generate`, supported `harness` keys include:
 - external references use `external://provider/id` and are deny-by-default
   unless capability and harness policy explicitly allow provider access
 - `type: spec.export` producer cases define reusable symbols through
-  `harness.chain.exports` entries using `from: assert.function`; function
+  `harness.exports` entries using `from: assert.function`; function
   bodies are sourced from producer contract-step `asserts` expression mappings
 - Canonical export source marker is ``assert.function``.
 - default executable case discovery remains Markdown-only (`*.spec.md`) unless
@@ -299,24 +299,17 @@ For `type: docs.generate`, supported `harness` keys include:
       - `#case_id` with no preceding path is valid and resolves in current doc
       - case id fragment must match `[A-Za-z0-9._:-]+` when present
       - YAML authors should quote hash-only refs (for example `ref: "#CASE-1"`)
-    - `imports` (list, optional):
-      - each list entry is one of:
-        - symbol-batch entry:
-          - `from` (string, required)
-          - `required` (bool, optional, default `true`)
-          - `prefix` (string, optional)
-          - `symbols` (list[string], required, non-empty)
-          - each symbol expands to import name + `path: /<symbol>`
-        - single import entry:
-          - `as` (string, required import name)
-          - `from` (string, required)
-          - `path` (string dotted selector, optional)
-          - `required` (bool, optional, default `true`)
-      - runtime target imports are allowed only for refs with `#case_id`
-      - `from: assert.function` imports may use file refs without `#case_id`
-      - `from: assert.function` requires non-empty symbol names
-      - legacy key `from_target` is forbidden
+    - `imports` (forbidden legacy location)
+    - `exports` (forbidden legacy location)
     - `allow_continue` (bool, optional, default `false`)
+- `exports` (list, optional): producer-owned export declarations
+  - each entry:
+    - `as` (string, required)
+    - `from` (string, required; must be `assert.function`)
+    - `path` (string, required for `from: assert.function`)
+    - `params` (list[string], optional; non-empty when provided)
+    - `required` (bool, optional; default `true`)
+  - legacy key `from_target` is forbidden
 - `imports` (list[mapping], optional)
   - each import:
     - `from` (string, required): source step id

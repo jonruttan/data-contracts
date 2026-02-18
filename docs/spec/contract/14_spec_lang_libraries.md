@@ -42,7 +42,7 @@ Required fields for each producer case:
 - `id`
 - `type: spec.export`
 - `assert` (list of step mappings whose `checks` carry function bodies)
-- `harness.chain.exports` (list of exported symbols)
+- `harness.exports` (list of exported symbols)
   - each export entry uses:
     - `as` (symbol name)
     - `from: assert.function`
@@ -55,7 +55,7 @@ Optional fields:
 
 Export model:
 
-- Exported symbols are declared explicitly in `harness.chain.exports`.
+- Exported symbols are declared explicitly in `harness.exports`.
 - Export bodies are compiled from producer assert steps referenced by
   `path` with `from: assert.function`.
 

@@ -5,20 +5,20 @@
 ```yaml contract-spec
 id: LIB-DOMAIN-JOB-001-000A-DOMAIN-JOB-SCAN-BUNDLE-HAS-RESULT
 title: domain.job.scan_bundle_has_result
-purpose: Reusable helper-backed predicate for contract.job governance scan helper output.
+purpose: Reusable helper-backed predicate for contract.job governance scan helper
+  output.
 type: spec.export
 harness:
   spec_lang:
     capabilities:
     - ops.helper
-  chain:
-    exports:
-    - as: domain.job.scan_bundle_has_result
-      from: assert.function
-      path: /__export__domain.job.scan_bundle_has_result
-      params:
-      - scan_path
-      - pattern
+  exports:
+  - as: domain.job.scan_bundle_has_result
+    from: assert.function
+    path: /__export__domain.job.scan_bundle_has_result
+    params:
+    - scan_path
+    - pattern
 contract:
 - id: __export__domain.job.scan_bundle_has_result
   class: must

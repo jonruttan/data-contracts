@@ -16,13 +16,12 @@ contract:
       - value
     - var: target
 harness:
-  chain:
-    exports:
-    - as: make.has_target
-      from: assert.function
-      path: /__export__make.has_target
-      params:
-      - subject
-      - target
-      required: true
+  exports:
+  - as: make.has_target
+    from: assert.function
+    path: /__export__make.has_target
+    params:
+    - subject
+    - target
+    required: true
 ```

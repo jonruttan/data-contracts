@@ -57,7 +57,7 @@ expect:
     category: null
 assert_health:
   mode: ignore
-assert:
+contract:
   - target: text
     must:
       - contains:
@@ -109,7 +109,7 @@ expect:
     php:
       status: fail
       category: assertion
-assert:
+contract:
   - target: text
     must:
       - contains:
@@ -162,7 +162,7 @@ expect:
   portable:
     status: skip
     category: null
-assert:
+contract:
   - target: text
     must:
       - contains:
@@ -197,7 +197,7 @@ expect:
     status: fail
     category: runtime
     message_tokens: ["feature.y"]
-assert:
+contract:
   - target: text
     must:
       - contains:

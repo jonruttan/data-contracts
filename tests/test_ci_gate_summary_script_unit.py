@@ -26,7 +26,6 @@ def test_script_writes_pass_summary(monkeypatch, tmp_path):
             ("b", ["echo", "b"]),
         ],
     )
-    monkeypatch.setattr(mod, "_load_gate_policy_expr", lambda _path: ["eq", 1, 1])
     monkeypatch.setattr(mod, "_evaluate_gate_policy", lambda **_kw: True)
     monkeypatch.setattr(mod, "_run_command", lambda _cmd: 0)
 
@@ -52,7 +51,6 @@ def test_script_stops_at_first_failure_and_writes_summary(monkeypatch, tmp_path)
             ("c", ["echo", "c"]),
         ],
     )
-    monkeypatch.setattr(mod, "_load_gate_policy_expr", lambda _path: ["eq", 1, 1])
     monkeypatch.setattr(mod, "_evaluate_gate_policy", lambda **_kw: False)
     codes = iter((0, 3, 0))
     monkeypatch.setattr(mod, "_run_command", lambda _cmd: next(codes))

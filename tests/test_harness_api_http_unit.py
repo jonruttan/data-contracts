@@ -20,7 +20,7 @@ def test_api_http_relative_fixture_passes(tmp_path, monkeypatch, capsys):
                 "method": "GET",
                 "url": "/fixtures/ok.json",
             },
-            "assert": [
+            "contract": [
                 {"target": "status", "must": [{"contains": [{"var": "subject"}, "200"]}]},
                 {"target": "body_json", "must": [{"json_type": [{"var": "subject"}, "dict"]}]},
             ],
@@ -36,7 +36,7 @@ def test_api_http_requires_request_mapping(tmp_path, monkeypatch, capsys):
     doc.write_text("# case\n", encoding="utf-8")
     case = SpecDocTest(
         doc_path=doc,
-        test={"id": "SR-API-UNIT-002", "type": "api.http", "request": "x", "assert": []},
+        test={"id": "SR-API-UNIT-002", "type": "api.http", "request": "x", "contract": []},
     )
     from spec_runner.harnesses.api_http import run
 
@@ -53,7 +53,7 @@ def test_api_http_requires_url(tmp_path, monkeypatch, capsys):
             "id": "SR-API-UNIT-003",
             "type": "api.http",
             "request": {"method": "GET"},
-            "assert": [],
+            "contract": [],
         },
     )
     from spec_runner.harnesses.api_http import run
@@ -76,7 +76,7 @@ def test_api_http_rejects_relative_escape(tmp_path, monkeypatch, capsys):
             "id": "SR-API-UNIT-004",
             "type": "api.http",
             "request": {"method": "GET", "url": "../../../outside.txt"},
-            "assert": [],
+            "contract": [],
         },
     )
     from spec_runner.harnesses.api_http import run
@@ -100,7 +100,7 @@ def test_api_http_body_json_expr_operator(tmp_path, monkeypatch, capsys):
                 "method": "GET",
                 "url": "/fixtures/ok.json",
             },
-            "assert": [
+            "contract": [
                 {
                     "target": "body_json",
                     "must": [
@@ -146,7 +146,7 @@ def test_api_http_oauth_missing_env_is_schema_error(tmp_path, monkeypatch, capsy
                 }
             },
             "request": {"method": "GET", "url": "/fixtures/ok.json"},
-            "assert": [],
+            "contract": [],
         },
     )
     from spec_runner.harnesses.api_http import run
@@ -182,7 +182,7 @@ def test_api_http_oauth_invalid_auth_style_is_schema_error(tmp_path, monkeypatch
                 }
             },
             "request": {"method": "GET", "url": "/fixtures/ok.json"},
-            "assert": [],
+            "contract": [],
         },
     )
     from spec_runner.harnesses.api_http import run
@@ -244,7 +244,7 @@ def test_api_http_oauth_live_fetch_and_context_metadata(tmp_path, monkeypatch, c
                 }
             },
             "request": {"method": "GET", "url": "https://api.example.invalid/items"},
-            "assert": [
+            "contract": [
                 {
                     "target": "context_json",
                     "must": [
@@ -328,7 +328,7 @@ def test_api_http_oauth_token_cache_reuse_and_header_override(tmp_path, monkeypa
                 "url": "https://api.example.invalid/items",
                 "headers": {"Authorization": "Bearer explicit-token"},
             },
-            "assert": [],
+            "contract": [],
         },
     )
 
@@ -347,7 +347,7 @@ def test_api_http_rejects_unsupported_method(tmp_path, monkeypatch, capsys):
             "id": "SR-API-UNIT-METHOD-001",
             "type": "api.http",
             "request": {"method": "TRACE", "url": "/missing.json"},
-            "assert": [],
+            "contract": [],
         },
     )
     from spec_runner.harnesses.api_http import run
@@ -414,7 +414,7 @@ def test_api_http_query_merge_and_cors_projection(tmp_path, monkeypatch, capsys)
                     "request_headers": ["authorization", "content-type"],
                 },
             },
-            "assert": [],
+            "contract": [],
         },
     )
     from spec_runner.harnesses.api_http import run
@@ -483,7 +483,7 @@ def test_api_http_scenario_round_trip_templating(tmp_path, monkeypatch, capsys):
                 {"id": "get", "method": "GET", "url": "https://api.example.invalid/items/{{steps.create.body_json.id}}"},
                 {"id": "cleanup", "method": "DELETE", "url": "https://api.example.invalid/items/{{steps.get.body_json.id}}"},
             ],
-            "assert": [
+            "contract": [
                 {
                     "target": "status",
                     "must": [{"contains": [{"var": "subject"}, "204"]}],
@@ -518,7 +518,7 @@ def test_api_http_chain_template_interpolation(tmp_path, monkeypatch, capsys):
                     "X-Item": "{{chain.preload.item_id}}",
                 },
             },
-            "assert": [
+            "contract": [
                 {
                     "target": "body_json",
                     "must": [

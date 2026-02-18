@@ -3347,7 +3347,7 @@ links:
   - tests/test_chain_engine_unit.py
   implementation_refs:
   - spec_runner/components/chain_engine.py
-  notes: Cross-case state sharing flows through explicit target-derived exports only.
+  notes: Producer symbol ownership flows through explicit harness.exports declarations.
 - rule_id: CHAIN_EXPORTS_FROM_KEY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_FROM_KEY_REQUIRED
   contract_refs:
@@ -3362,7 +3362,7 @@ links:
   - spec_runner/components/chain_engine.py
   - scripts/run_governance_specs.py
   - scripts/normalize_repo.py
-  notes: Chain exports must use from key only.
+  notes: Harness exports must use from key only.
 - rule_id: CHAIN_EXPORTS_LIST_ONLY_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_LIST_ONLY_REQUIRED
   contract_refs:
@@ -3378,7 +3378,7 @@ links:
   - spec_runner/components/chain_engine.py
   - scripts/run_governance_specs.py
   - scripts/normalize_repo.py
-  notes: Chain step imports are list-only and mapping-form entries are rejected.
+  notes: Harness exports are list-only and mapping-form entries are rejected.
 - rule_id: CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_LEGACY_FROM_TARGET_FORBIDDEN
   contract_refs:
@@ -3412,7 +3412,7 @@ links:
   - spec_runner/components/chain_engine.py
   - spec_runner/spec_lang_libraries.py
   - scripts/run_governance_specs.py
-  notes: from=assert.function step imports require explicit symbol path, with compile-only resolution.
+  notes: from=assert.function harness exports require explicit symbol path, with compile-only resolution.
 - rule_id: CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   contract_refs:
@@ -3671,9 +3671,9 @@ links:
   - docs/spec/contract/15_governance_subject_model.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-ASSERT-AUTH-001
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
   notes: Governance verdict authority is encoded in assert blocks only.
@@ -3684,9 +3684,9 @@ links:
   - docs/spec/contract/15_governance_subject_model.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-POLICY-FORBID-001
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - scripts/run_governance_specs.py
   notes: governance.check harness policy_evaluate fields are forbidden.
@@ -3696,9 +3696,9 @@ links:
   - docs/spec/contract/03_assertions.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-META-TARGET-001
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/harnesses/text_file.py
   - spec_runner/harnesses/cli_run.py
@@ -3712,10 +3712,9 @@ links:
   - docs/spec/contract/03b_spec_lang_v1.md
   schema_refs:
   - docs/spec/schema/spec_lang_stdlib_profile_v1.yaml
-  conformance_case_ids:
-  - SRGOV-RUNTIME-OPS-OS-CAP-001
-  - SRGOV-RUNTIME-OPS-OS-SURFACE-001
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/spec_lang.py
   - spec_runner/spec_lang_std_names.py
@@ -3727,9 +3726,9 @@ links:
   - docs/spec/contract/12_runner_interface.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-CONTRACT-SPEC-001
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/doc_parser.py
   - scripts/run_governance_specs.py
@@ -3740,9 +3739,9 @@ links:
   - docs/spec/contract/02_case_shape.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-CONTRACT-SPEC-002
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/doc_parser.py
   - scripts/run_governance_specs.py
@@ -3753,9 +3752,9 @@ links:
   - docs/spec/contract/03_assertions.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-CONTRACT-BLOCK-001
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/compiler.py
   - scripts/run_governance_specs.py
@@ -3766,9 +3765,9 @@ links:
   - docs/spec/contract/03_assertions.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-CONTRACT-BLOCK-002
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/compiler.py
   - scripts/run_governance_specs.py
@@ -3779,9 +3778,9 @@ links:
   - docs/spec/contract/03_assertions.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-CONTRACT-STEP-001
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/compiler.py
   - spec_runner/assertions.py
@@ -3793,9 +3792,9 @@ links:
   - docs/spec/contract/03_assertions.md
   schema_refs:
   - docs/spec/schema/schema_v1.md
-  conformance_case_ids:
-  - SRGOV-RUNTIME-CONTRACT-STEP-002
-  unit_test_refs: []
+  conformance_case_ids: []
+  unit_test_refs:
+  - tests/test_run_governance_specs_script_unit.py
   implementation_refs:
   - spec_runner/compiler.py
   - spec_runner/assertions.py

@@ -15,15 +15,14 @@ contract:
     - lit:
       - var: message
 harness:
-  chain:
-    exports:
-    - as: domain.conformance.error_when_false
-      from: assert.function
-      path: /__export__domain.conformance.error_when_false
-      params:
-      - condition
-      - message
-      required: true
+  exports:
+  - as: domain.conformance.error_when_false
+    from: assert.function
+    path: /__export__domain.conformance.error_when_false
+    params:
+    - condition
+    - message
+    required: true
 ```
 
 ```yaml contract-spec
@@ -39,14 +38,13 @@ contract:
       - version
     - 1
 harness:
-  chain:
-    exports:
-    - as: domain.conformance.report_version_is_v1
-      from: assert.function
-      path: /__export__domain.conformance.report_version_is_v1
-      params:
-      - report
-      required: true
+  exports:
+  - as: domain.conformance.report_version_is_v1
+    from: assert.function
+    path: /__export__domain.conformance.report_version_is_v1
+    params:
+    - report
+    required: true
 ```
 
 ```yaml contract-spec
@@ -61,14 +59,13 @@ contract:
       - var: report
       - results
 harness:
-  chain:
-    exports:
-    - as: domain.conformance.report_results_is_list
-      from: assert.function
-      path: /__export__domain.conformance.report_results_is_list
-      params:
-      - report
-      required: true
+  exports:
+  - as: domain.conformance.report_results_is_list
+    from: assert.function
+    path: /__export__domain.conformance.report_results_is_list
+    params:
+    - report
+    required: true
 ```
 
 ```yaml contract-spec
@@ -97,12 +94,11 @@ contract:
       - lit:
         - report.results must be a list
 harness:
-  chain:
-    exports:
-    - as: domain.conformance.validate_report_errors
-      from: assert.function
-      path: /__export__domain.conformance.validate_report_errors
-      params:
-      - report
-      required: true
+  exports:
+  - as: domain.conformance.validate_report_errors
+    from: assert.function
+    path: /__export__domain.conformance.validate_report_errors
+    params:
+    - report
+    required: true
 ```

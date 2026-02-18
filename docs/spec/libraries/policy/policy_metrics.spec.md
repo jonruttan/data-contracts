@@ -20,17 +20,16 @@ contract:
       - var: subject
       - var: baseline_field
 harness:
-  chain:
-    exports:
-    - as: policy.metric_non_decrease
-      from: assert.function
-      path: /__export__policy.metric_non_decrease
-      params:
-      - subject
-      - field
-      - baseline_field
-      - epsilon
-      required: true
+  exports:
+  - as: policy.metric_non_decrease
+    from: assert.function
+    path: /__export__policy.metric_non_decrease
+    params:
+    - subject
+    - field
+    - baseline_field
+    - epsilon
+    required: true
 ```
 
 ```yaml contract-spec
@@ -51,17 +50,16 @@ contract:
       - var: subject
       - var: baseline_field
 harness:
-  chain:
-    exports:
-    - as: policy.metric_non_increase
-      from: assert.function
-      path: /__export__policy.metric_non_increase
-      params:
-      - subject
-      - field
-      - baseline_field
-      - epsilon
-      required: true
+  exports:
+  - as: policy.metric_non_increase
+    from: assert.function
+    path: /__export__policy.metric_non_increase
+    params:
+    - subject
+    - field
+    - baseline_field
+    - epsilon
+    required: true
 ```
 
 ```yaml contract-spec

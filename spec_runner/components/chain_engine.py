@@ -166,6 +166,8 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
         return [], [], True
     if not isinstance(raw_chain, dict):
         raise TypeError("harness.chain must be a mapping")
+    if "exports" in raw_chain:
+        raise ValueError("harness.chain.exports is forbidden; use harness.exports")
 
     raw_fail_fast = raw_chain.get("fail_fast", True)
     if not isinstance(raw_fail_fast, bool):
@@ -208,11 +210,11 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
 
         if "imports" in raw:
             raise ValueError(
-                f"harness.chain.steps[{idx}].imports is forbidden; producer symbol declarations must be on producer harness.chain.exports"
+                f"harness.chain.steps[{idx}].imports is forbidden; producer symbol declarations must be on producer harness.exports"
             )
         if "exports" in raw:
             raise ValueError(
-                f"harness.chain.steps[{idx}].exports is forbidden; producer symbol declarations must be on producer harness.chain.exports"
+                f"harness.chain.steps[{idx}].exports is forbidden; producer symbol declarations must be on producer harness.exports"
             )
 
         raw_allow_continue = raw.get("allow_continue", False)
@@ -297,10 +299,7 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
 
 def _producer_case_exports(producer_case: InternalSpecCase) -> dict[str, ChainProducedImport]:
     harness = producer_case.harness or {}
-    chain = harness.get("chain")
-    if not isinstance(chain, dict):
-        return {}
-    return _expand_producer_exports(chain.get("exports"), field_prefix="harness.chain.exports")
+    return _expand_producer_exports(harness.get("exports"), field_prefix="harness.exports")
 
 
 def _resolve_ref_path(*, ref_path: str, current_case: InternalSpecCase) -> Path:

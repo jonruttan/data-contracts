@@ -38,41 +38,40 @@ contract:
     - var: subject
     - var: type_name
 harness:
-  chain:
-    exports:
-    - as: conf.pass_when_text_contains
-      from: assert.function
-      path: /__export__conf.pass_when_text_contains
-      params:
-      - subject
-      - token
-      required: true
-    - as: conf.pass_when_text_regex
-      from: assert.function
-      path: /__export__conf.pass_when_text_regex
-      params:
-      - subject
-      - pattern
-      required: true
-    - as: conf.eq
-      from: assert.function
-      path: /__export__conf.eq
-      params:
-      - subject
-      - value
-      required: true
-    - as: conf.has_error_category
-      from: assert.function
-      path: /__export__conf.has_error_category
-      params:
-      - subject
-      - category
-      required: true
-    - as: conf.json_type_is
-      from: assert.function
-      path: /__export__conf.json_type_is
-      params:
-      - subject
-      - type_name
-      required: true
+  exports:
+  - as: conf.pass_when_text_contains
+    from: assert.function
+    path: /__export__conf.pass_when_text_contains
+    params:
+    - subject
+    - token
+    required: true
+  - as: conf.pass_when_text_regex
+    from: assert.function
+    path: /__export__conf.pass_when_text_regex
+    params:
+    - subject
+    - pattern
+    required: true
+  - as: conf.eq
+    from: assert.function
+    path: /__export__conf.eq
+    params:
+    - subject
+    - value
+    required: true
+  - as: conf.has_error_category
+    from: assert.function
+    path: /__export__conf.has_error_category
+    params:
+    - subject
+    - category
+    required: true
+  - as: conf.json_type_is
+    from: assert.function
+    path: /__export__conf.json_type_is
+    params:
+    - subject
+    - type_name
+    required: true
 ```

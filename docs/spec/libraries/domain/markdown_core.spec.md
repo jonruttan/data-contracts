@@ -165,57 +165,56 @@ contract:
         - var: subject
       - token_dependencies
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.has_heading
-      from: assert.function
-      path: /__export__domain.markdown.has_heading
-      params:
-      - subject
-      - heading
-      required: true
-    - as: markdown._text
-      from: assert.function
-      path: /__export__markdown._text
-      params:
-      - subject
-      required: true
-    - as: markdown._context
-      from: assert.function
-      path: /__export__markdown._context
-      params:
-      - subject
-      required: true
-    - as: markdown._headings
-      from: assert.function
-      path: /__export__markdown._headings
-      params:
-      - subject
-      required: true
-    - as: markdown._links
-      from: assert.function
-      path: /__export__markdown._links
-      params:
-      - subject
-      required: true
-    - as: markdown._tokens_map
-      from: assert.function
-      path: /__export__markdown._tokens_map
-      params:
-      - subject
-      required: true
-    - as: markdown._token_owners
-      from: assert.function
-      path: /__export__markdown._token_owners
-      params:
-      - subject
-      required: true
-    - as: markdown._token_dependencies
-      from: assert.function
-      path: /__export__markdown._token_dependencies
-      params:
-      - subject
-      required: true
+  exports:
+  - as: domain.markdown.has_heading
+    from: assert.function
+    path: /__export__domain.markdown.has_heading
+    params:
+    - subject
+    - heading
+    required: true
+  - as: markdown._text
+    from: assert.function
+    path: /__export__markdown._text
+    params:
+    - subject
+    required: true
+  - as: markdown._context
+    from: assert.function
+    path: /__export__markdown._context
+    params:
+    - subject
+    required: true
+  - as: markdown._headings
+    from: assert.function
+    path: /__export__markdown._headings
+    params:
+    - subject
+    required: true
+  - as: markdown._links
+    from: assert.function
+    path: /__export__markdown._links
+    params:
+    - subject
+    required: true
+  - as: markdown._tokens_map
+    from: assert.function
+    path: /__export__markdown._tokens_map
+    params:
+    - subject
+    required: true
+  - as: markdown._token_owners
+    from: assert.function
+    path: /__export__markdown._token_owners
+    params:
+    - subject
+    required: true
+  - as: markdown._token_dependencies
+    from: assert.function
+    path: /__export__markdown._token_dependencies
+    params:
+    - subject
+    required: true
 ```
 
 
@@ -297,15 +296,14 @@ contract:
                   - (?m)^######\s+
                 - false
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.heading_level_exists
-      from: assert.function
-      path: /__export__domain.markdown.heading_level_exists
-      params:
-      - subject
-      - level
-      required: true
+  exports:
+  - as: domain.markdown.heading_level_exists
+    from: assert.function
+    path: /__export__domain.markdown.heading_level_exists
+    params:
+    - subject
+    - level
+    required: true
 ```
 
 
@@ -361,15 +359,14 @@ contract:
               - var: headings
               - 0
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.section_order_valid
-      from: assert.function
-      path: /__export__domain.markdown.section_order_valid
-      params:
-      - subject
-      - headings
-      required: true
+  exports:
+  - as: domain.markdown.section_order_valid
+    from: assert.function
+    path: /__export__domain.markdown.section_order_valid
+    params:
+    - subject
+    - headings
+    required: true
 ```
 
 
@@ -392,15 +389,14 @@ contract:
           - var: heading
       - var: headings
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.required_sections_present
-      from: assert.function
-      path: /__export__domain.markdown.required_sections_present
-      params:
-      - subject
-      - headings
-      required: true
+  exports:
+  - as: domain.markdown.required_sections_present
+    from: assert.function
+    path: /__export__domain.markdown.required_sections_present
+    params:
+    - subject
+    - headings
+    required: true
 ```
 
 
@@ -426,14 +422,13 @@ contract:
         - var: markdown._links
         - var: subject
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.link_targets_all_resolve
-      from: assert.function
-      path: /__export__domain.markdown.link_targets_all_resolve
-      params:
-      - subject
-      required: true
+  exports:
+  - as: domain.markdown.link_targets_all_resolve
+    from: assert.function
+    path: /__export__domain.markdown.link_targets_all_resolve
+    params:
+    - subject
+    required: true
 ```
 
 
@@ -451,14 +446,13 @@ contract:
       - var: domain.markdown.link_targets_all_resolve
       - var: subject
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.has_broken_links
-      from: assert.function
-      path: /__export__domain.markdown.has_broken_links
-      params:
-      - subject
-      required: true
+  exports:
+  - as: domain.markdown.has_broken_links
+    from: assert.function
+    path: /__export__domain.markdown.has_broken_links
+    params:
+    - subject
+    required: true
 ```
 
 
@@ -483,14 +477,13 @@ contract:
         - var: subject
       - ~~~yaml contract-spec
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.has_yaml_spec_test_fence
-      from: assert.function
-      path: /__export__domain.markdown.has_yaml_spec_test_fence
-      params:
-      - subject
-      required: true
+  exports:
+  - as: domain.markdown.has_yaml_spec_test_fence
+    from: assert.function
+    path: /__export__domain.markdown.has_yaml_spec_test_fence
+    params:
+    - subject
+    required: true
 ```
 
 
@@ -525,15 +518,14 @@ contract:
             - ~~~
         - ''
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.code_fence_language_exists
-      from: assert.function
-      path: /__export__domain.markdown.code_fence_language_exists
-      params:
-      - subject
-      - language
-      required: true
+  exports:
+  - as: domain.markdown.code_fence_language_exists
+    from: assert.function
+    path: /__export__domain.markdown.code_fence_language_exists
+    params:
+    - subject
+    - language
+    required: true
 ```
 
 
@@ -558,15 +550,14 @@ contract:
         - var: subject
       - var: token
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.token_present
-      from: assert.function
-      path: /__export__domain.markdown.token_present
-      params:
-      - subject
-      - token
-      required: true
+  exports:
+  - as: domain.markdown.token_present
+    from: assert.function
+    path: /__export__domain.markdown.token_present
+    params:
+    - subject
+    - token
+    required: true
 ```
 
 
@@ -589,15 +580,14 @@ contract:
           - var: token
       - var: tokens
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.tokens_all_present
-      from: assert.function
-      path: /__export__domain.markdown.tokens_all_present
-      params:
-      - subject
-      - tokens
-      required: true
+  exports:
+  - as: domain.markdown.tokens_all_present
+    from: assert.function
+    path: /__export__domain.markdown.tokens_all_present
+    params:
+    - subject
+    - tokens
+    required: true
 ```
 
 
@@ -623,14 +613,13 @@ contract:
           - var: markdown._token_owners
           - var: subject
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.token_ownership_unique
-      from: assert.function
-      path: /__export__domain.markdown.token_ownership_unique
-      params:
-      - subject
-      required: true
+  exports:
+  - as: domain.markdown.token_ownership_unique
+    from: assert.function
+    path: /__export__domain.markdown.token_ownership_unique
+    params:
+    - subject
+    required: true
 ```
 
 
@@ -656,14 +645,13 @@ contract:
         - var: markdown._token_dependencies
         - var: subject
 harness:
-  chain:
-    exports:
-    - as: domain.markdown.token_dependencies_resolved
-      from: assert.function
-      path: /__export__domain.markdown.token_dependencies_resolved
-      params:
-      - subject
-      required: true
+  exports:
+  - as: domain.markdown.token_dependencies_resolved
+    from: assert.function
+    path: /__export__domain.markdown.token_dependencies_resolved
+    params:
+    - subject
+    required: true
 ```
 
 

@@ -48,14 +48,10 @@ def _rewrite(text: str) -> tuple[str, bool]:
         if not isinstance(harness, dict):
             harness = {}
             case["harness"] = harness
-        chain = harness.get("chain")
-        if not isinstance(chain, dict):
-            chain = {}
-            harness["chain"] = chain
-        exports = chain.get("exports")
+        exports = harness.get("exports")
         if not isinstance(exports, list):
             exports = []
-            chain["exports"] = exports
+            harness["exports"] = exports
         seen = {str(x.get("as", "")).strip() for x in exports if isinstance(x, dict)}
         local_changed = False
         for symbol in public.keys():
@@ -83,7 +79,7 @@ def _rewrite(text: str) -> tuple[str, bool]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Ensure spec_lang.export cases declare harness.chain.exports for public symbols.")
+    ap = argparse.ArgumentParser(description="Ensure spec_lang.export cases declare harness.exports for public symbols.")
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--write", action="store_true")
@@ -103,9 +99,9 @@ def main(argv: list[str] | None = None) -> int:
     if ns.check:
         if changed:
             for f in changed:
-                print(f"{f.as_posix()}: library chain export drift")
+                print(f"{f.as_posix()}: library harness export drift")
             return 1
-        print("OK: library chain exports are canonical")
+        print("OK: library harness exports are canonical")
         return 0
     print(f"OK: rewrote {len(changed)} file(s)")
     return 0

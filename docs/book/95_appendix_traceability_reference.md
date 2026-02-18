@@ -48,8 +48,8 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 ## Generated Traceability Catalog
 
 - link_count: 255
-- rules_with_conformance_cases: 60
-- rules_with_unit_tests: 245
+- rules_with_conformance_cases: 50
+- rules_with_unit_tests: 255
 - rules_with_implementation_refs: 253
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
@@ -66,7 +66,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `API_HTTP_TUTORIAL_COVERAGE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_TUTORIAL_COVERAGE_REQUIRED` | 2 | 0 | 0 | 1 | 1 |
 | `API_HTTP_VERB_SUITE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#API_HTTP_VERB_SUITE_REQUIRED` | 1 | 1 | 7 | 1 | 2 |
 | `ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ASSERT_ADAPTER_PROJECTION_SYNC_REQUIRED` | 1 | 1 | 1 | 1 | 7 |
-| `ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED` | 2 | 1 | 1 | 0 | 1 |
+| `ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED` | 2 | 1 | 0 | 1 | 1 |
 | `ASSERT_COMPILER_SCHEMA_MATRIX_SYNC` | `docs/spec/contract/policy_v1.yaml#ASSERT_COMPILER_SCHEMA_MATRIX_SYNC` | 3 | 1 | 0 | 2 | 3 |
 | `ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED` | 2 | 2 | 1 | 1 | 5 |
 | `ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED` | `docs/spec/contract/policy_v1.yaml#ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED` | 2 | 1 | 2 | 1 | 7 |
@@ -79,7 +79,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `ASSERT_SUGAR_OPERATORS_COMPILE_ONLY` | `docs/spec/contract/policy_v1.yaml#ASSERT_SUGAR_OPERATORS_COMPILE_ONLY` | 3 | 1 | 1 | 3 | 4 |
 | `ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN` | `docs/spec/contract/policy_v1.yaml#ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN` | 4 | 1 | 0 | 1 | 2 |
 | `ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY` | `docs/spec/contract/policy_v1.yaml#ASSERT_UNIVERSAL_CORE_EVALUATE_ONLY` | 3 | 1 | 1 | 2 | 3 |
-| `CASE_CONTRACT_BLOCK_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CASE_CONTRACT_BLOCK_REQUIRED` | 1 | 1 | 1 | 0 | 2 |
+| `CASE_CONTRACT_BLOCK_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CASE_CONTRACT_BLOCK_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_CYCLE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#CHAIN_CYCLE_FORBIDDEN` | 1 | 1 | 0 | 1 | 2 |
 | `CHAIN_EXPORTS_EXPLICIT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CHAIN_EXPORTS_EXPLICIT_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
@@ -108,8 +108,8 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `CONTRACT_ASSERTIONS_METRIC_REPORTED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_METRIC_REPORTED` | 2 | 1 | 0 | 3 | 3 |
 | `CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | `docs/spec/contract/policy_v1.yaml#CONTRACT_MUST_RULE_COVERAGE_COMPLETE` | 2 | 1 | 0 | 2 | 2 |
-| `CONTRACT_SPEC_FENCE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_SPEC_FENCE_REQUIRED` | 2 | 1 | 1 | 0 | 2 |
-| `CONTRACT_STEP_ASSERTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_STEP_ASSERTS_REQUIRED` | 1 | 1 | 1 | 0 | 3 |
+| `CONTRACT_SPEC_FENCE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_SPEC_FENCE_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
+| `CONTRACT_STEP_ASSERTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#CONTRACT_STEP_ASSERTS_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `CURRENT_SPEC_POLICY_KEY_NAMES` | `docs/spec/contract/policy_v1.yaml#CURRENT_SPEC_POLICY_KEY_NAMES` | 2 | 1 | 0 | 1 | 2 |
 | `DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES` | `docs/spec/contract/policy_v1.yaml#DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_ADOPTION_PROFILES_SYNC` | `docs/spec/contract/policy_v1.yaml#DOCS_ADOPTION_PROFILES_SYNC` | 3 | 0 | 0 | 2 | 3 |
@@ -180,9 +180,9 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `IMPL_EVALUATE_FIRST_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_FIRST_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
-| `LEGACY_ASSERT_BLOCK_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LEGACY_ASSERT_BLOCK_FORBIDDEN` | 1 | 1 | 1 | 0 | 2 |
-| `LEGACY_CHECKS_KEY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LEGACY_CHECKS_KEY_FORBIDDEN` | 1 | 1 | 1 | 0 | 3 |
-| `LEGACY_SPEC_TEST_FENCE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LEGACY_SPEC_TEST_FENCE_FORBIDDEN` | 1 | 1 | 1 | 0 | 2 |
+| `LEGACY_ASSERT_BLOCK_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LEGACY_ASSERT_BLOCK_FORBIDDEN` | 1 | 1 | 0 | 1 | 2 |
+| `LEGACY_CHECKS_KEY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LEGACY_CHECKS_KEY_FORBIDDEN` | 1 | 1 | 0 | 1 | 3 |
+| `LEGACY_SPEC_TEST_FENCE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#LEGACY_SPEC_TEST_FENCE_FORBIDDEN` | 1 | 1 | 0 | 1 | 2 |
 | `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `LIBRARY_DOMAIN_INDEX_SYNC` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_INDEX_SYNC` | 2 | 1 | 0 | 1 | 3 |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `docs/spec/contract/policy_v1.yaml#LIBRARY_DOMAIN_OWNERSHIP` | 2 | 1 | 0 | 1 | 2 |
@@ -191,7 +191,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `docs/spec/contract/policy_v1.yaml#LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | 2 | 1 | 0 | 2 | 3 |
 | `LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED` | 1 | 1 | 0 | 3 | 3 |
 | `LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | `docs/spec/contract/policy_v1.yaml#LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED` | 1 | 2 | 2 | 1 | 1 |
-| `META_JSON_TARGET_REQUIRED` | `docs/spec/contract/policy_v1.yaml#META_JSON_TARGET_REQUIRED` | 1 | 1 | 1 | 0 | 5 |
+| `META_JSON_TARGET_REQUIRED` | `docs/spec/contract/policy_v1.yaml#META_JSON_TARGET_REQUIRED` | 1 | 1 | 0 | 1 | 5 |
 | `NAMING_FILENAME_STRICT_SEPARATORS` | `docs/spec/contract/policy_v1.yaml#NAMING_FILENAME_STRICT_SEPARATORS` | 1 | 0 | 0 | 1 | 2 |
 | `NORMALIZATION_CHECK_GATE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#NORMALIZATION_CHECK_GATE_REQUIRED` | 1 | 1 | 0 | 2 | 4 |
 | `NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC` | `docs/spec/contract/policy_v1.yaml#NORMALIZATION_CONTRACT_SCHEMA_BOOK_SYNC` | 2 | 2 | 0 | 2 | 3 |
@@ -205,13 +205,13 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_NON_REGRESSION_REQUIRED` | 1 | 1 | 0 | 2 | 3 |
 | `OBJECTIVE_SCORECARD_REPORTED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_SCORECARD_REPORTED` | 1 | 1 | 0 | 3 | 5 |
 | `OBJECTIVE_TRIPWIRES_ENFORCED` | `docs/spec/contract/policy_v1.yaml#OBJECTIVE_TRIPWIRES_ENFORCED` | 1 | 1 | 0 | 1 | 3 |
-| `OPS_OS_CAPABILITY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#OPS_OS_CAPABILITY_REQUIRED` | 1 | 1 | 2 | 0 | 2 |
+| `OPS_OS_CAPABILITY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#OPS_OS_CAPABILITY_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_DEEP_DOT_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_REGISTRY_DECLARED_REQUIRED` | 1 | 1 | 0 | 1 | 4 |
 | `ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_OPS_UNDERSCORE_LEGACY_FORBIDDEN` | 1 | 1 | 0 | 1 | 3 |
 | `ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY` | 1 | 0 | 0 | 2 | 2 |
-| `POLICY_EVALUATE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#POLICY_EVALUATE_FORBIDDEN` | 2 | 1 | 1 | 0 | 1 |
+| `POLICY_EVALUATE_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#POLICY_EVALUATE_FORBIDDEN` | 2 | 1 | 0 | 1 | 1 |
 | `PORTABLE_SPEC_CANONICAL_SINGLE_SET` | `docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_CANONICAL_SINGLE_SET` | 3 | 1 | 0 | 2 | 2 |
 | `PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION` | `docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_DETERMINISM_BY_CONSTRUCTION` | 2 | 1 | 2 | 1 | 1 |
 | `PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY` | `docs/spec/contract/policy_v1.yaml#PORTABLE_SPEC_EXPECT_PORTABLE_IMPL_OVERLAY` | 2 | 1 | 0 | 2 | 1 |

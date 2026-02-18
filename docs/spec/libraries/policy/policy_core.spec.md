@@ -38,32 +38,31 @@ contract:
       - violation_count
     - var: expected
 harness:
-  chain:
-    exports:
-    - as: policy.pass_when_no_violations
-      from: assert.function
-      path: /__export__policy.pass_when_no_violations
-      params:
-      - subject
-      required: true
-    - as: policy.fail_when_has_violations
-      from: assert.function
-      path: /__export__policy.fail_when_has_violations
-      params:
-      - subject
-      required: true
-    - as: policy.check_id_is
-      from: assert.function
-      path: /__export__policy.check_id_is
-      params:
-      - subject
-      - expected
-      required: true
-    - as: policy.violation_count_is
-      from: assert.function
-      path: /__export__policy.violation_count_is
-      params:
-      - subject
-      - expected
-      required: true
+  exports:
+  - as: policy.pass_when_no_violations
+    from: assert.function
+    path: /__export__policy.pass_when_no_violations
+    params:
+    - subject
+    required: true
+  - as: policy.fail_when_has_violations
+    from: assert.function
+    path: /__export__policy.fail_when_has_violations
+    params:
+    - subject
+    required: true
+  - as: policy.check_id_is
+    from: assert.function
+    path: /__export__policy.check_id_is
+    params:
+    - subject
+    - expected
+    required: true
+  - as: policy.violation_count_is
+    from: assert.function
+    path: /__export__policy.violation_count_is
+    params:
+    - subject
+    - expected
+    required: true
 ```
