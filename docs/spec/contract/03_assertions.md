@@ -93,7 +93,7 @@ warnings/errors depending on policy mode.
 
 ## Harness Lifecycle Hooks
 
-Executable cases may declare optional lifecycle hooks in `harness.when`:
+Executable cases may declare optional lifecycle hooks in `when`:
 
 - `must`, `can`, `cannot`: run after each successful clause of the same class
 - `fail`: runs once on first clause or class-hook failure

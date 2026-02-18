@@ -33,13 +33,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-001.complete.json
         format: json
         report_name: SRRUST-JOB-REP-001.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -52,6 +45,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/conformance-purpose.json
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-002
@@ -87,13 +87,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-002.complete.json
         format: json
         report_name: SRRUST-JOB-REP-002.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -106,6 +99,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/conformance-purpose-summary.md
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-003
@@ -141,13 +141,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-003.complete.json
         format: json
         report_name: SRRUST-JOB-REP-003.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -160,6 +153,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/spec-portability.json
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-004
@@ -195,13 +195,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-004.complete.json
         format: json
         report_name: SRRUST-JOB-REP-004.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -214,6 +207,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/spec-portability-summary.md
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-005
@@ -249,13 +249,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-005.complete.json
         format: json
         report_name: SRRUST-JOB-REP-005.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -268,6 +261,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/contract-assertions.json
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-006
@@ -303,13 +303,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-006.complete.json
         format: json
         report_name: SRRUST-JOB-REP-006.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -322,6 +315,13 @@ contract:
       - var: subject
     - written_path
     - .artifacts/contract-assertions-summary.md
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-007
@@ -357,13 +357,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-007.complete.json
         format: json
         report_name: SRRUST-JOB-REP-007.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -376,6 +369,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/spec-lang-adoption.json
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-008
@@ -411,13 +411,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-008.complete.json
         format: json
         report_name: SRRUST-JOB-REP-008.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -430,6 +423,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/spec-lang-adoption-summary.md
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-009
@@ -465,13 +465,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-009.complete.json
         format: json
         report_name: SRRUST-JOB-REP-009.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -484,6 +477,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/runner-independence.json
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-010
@@ -519,13 +519,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-010.complete.json
         format: json
         report_name: SRRUST-JOB-REP-010.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -538,6 +531,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/runner-independence-summary.md
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-011
@@ -573,13 +573,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-011.complete.json
         format: json
         report_name: SRRUST-JOB-REP-011.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -592,6 +585,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/python-dependency.json
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-012
@@ -627,13 +627,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-012.complete.json
         format: json
         report_name: SRRUST-JOB-REP-012.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -646,6 +639,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/python-dependency-summary.md
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-013
@@ -681,13 +681,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-013.complete.json
         format: json
         report_name: SRRUST-JOB-REP-013.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -700,6 +693,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/docs-operability.json
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-014
@@ -735,13 +735,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-014.complete.json
         format: json
         report_name: SRRUST-JOB-REP-014.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -754,6 +747,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/docs-operability-summary.md
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-015
@@ -789,13 +789,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-015.complete.json
         format: json
         report_name: SRRUST-JOB-REP-015.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -808,6 +801,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/objective-scorecard.json
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-016
@@ -843,13 +843,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-016.complete.json
         format: json
         report_name: SRRUST-JOB-REP-016.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -862,6 +855,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/objective-scorecard-summary.md
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-017
@@ -897,13 +897,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-017.complete.json
         format: json
         report_name: SRRUST-JOB-REP-017.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -916,6 +909,13 @@ contract:
       - var: subject
       - written_path
     - .artifacts/spec-lang-stdlib.json
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-REP-018
@@ -951,13 +951,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-REP-018.complete.json
         format: json
         report_name: SRRUST-JOB-REP-018.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -970,4 +963,11 @@ contract:
       - var: subject
       - written_path
     - .artifacts/spec-lang-stdlib-summary.md
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```

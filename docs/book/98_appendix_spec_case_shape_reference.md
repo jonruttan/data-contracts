@@ -59,18 +59,18 @@ Provide generated case-shape field reference derived from schema registry profil
 | `contract` | `list` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
-| `harness.when` | `mapping` | false | `v1` |
-| `harness.when.can` | `list` | false | `v1` |
-| `harness.when.cannot` | `list` | false | `v1` |
-| `harness.when.complete` | `list` | false | `v1` |
-| `harness.when.fail` | `list` | false | `v1` |
-| `harness.when.must` | `list` | false | `v1` |
 | `id` | `string` | true | `v1` |
 | `path` | `string` | false | `v1` |
 | `purpose` | `string` | false | `v1` |
 | `requires` | `mapping` | false | `v1` |
 | `title` | `string` | false | `v1` |
 | `type` | `string` | true | `v1` |
+| `when` | `mapping` | false | `v1` |
+| `when.can` | `list` | false | `v1` |
+| `when.cannot` | `list` | false | `v1` |
+| `when.complete` | `list` | false | `v1` |
+| `when.fail` | `list` | false | `v1` |
+| `when.must` | `list` | false | `v1` |
 
 ### Type Profiles
 

@@ -132,12 +132,12 @@ Notes:
 - contract.job dispatch is contract-driven:
   `ops.job.dispatch` executes harness-declared metadata from `harness.jobs`,
   with explicit capability gate `ops.job`; legacy `harness.job` is forbidden.
-- Harness lifecycle hooks are supported at `harness.when`:
+- Harness lifecycle hooks are supported at `when`:
   `must|can|cannot` run after successful clauses of their class, `fail` runs
   once on first failure, and `complete` runs after all clauses and class hooks
   pass; hook failures are runtime-fatal. Legacy `harness.on` is forbidden.
 - Rust `contract.job` spec suites now use a consistent lifecycle pattern:
-  each case defines `harness.when.fail` and `harness.when.complete` dispatching
+  each case defines `when.fail` and `when.complete` dispatching
   to paired `harness.jobs.on_fail` and `harness.jobs.on_complete` helper
   metadata entries.
 - Spec-lang now includes Ramda-style deep equality, set algebra

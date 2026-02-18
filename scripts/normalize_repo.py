@@ -561,32 +561,36 @@ def _check_harness_on_hooks_shape() -> list[str]:
             continue
         if "on" in harness:
             issues.append(
-                f"{rel}:1: NORMALIZATION_HARNESS_WHEN_HOOKS: case {case_id} harness.on is forbidden; use harness.when"
+                f"{rel}:1: NORMALIZATION_WHEN_HOOKS: case {case_id} harness.on is forbidden; use when"
             )
-        hooks = harness.get("when")
+        if "when" in harness:
+            issues.append(
+                f"{rel}:1: NORMALIZATION_WHEN_HOOKS: case {case_id} harness.when is forbidden; use when"
+            )
+        hooks = case.get("when")
         if hooks is None:
             continue
         if not isinstance(hooks, dict):
             issues.append(
-                f"{rel}:1: NORMALIZATION_HARNESS_WHEN_HOOKS: case {case_id} harness.when must be a mapping"
+                f"{rel}:1: NORMALIZATION_WHEN_HOOKS: case {case_id} when must be a mapping"
             )
             continue
         for key, exprs in hooks.items():
             key_name = str(key).strip()
             if key_name not in allowed:
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_HARNESS_WHEN_HOOKS: case {case_id} harness.when contains unknown key {key_name}"
+                    f"{rel}:1: NORMALIZATION_WHEN_HOOKS: case {case_id} when contains unknown key {key_name}"
                 )
                 continue
             if not isinstance(exprs, list) or not exprs:
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_HARNESS_WHEN_HOOKS: case {case_id} harness.when.{key_name} must be non-empty list"
+                    f"{rel}:1: NORMALIZATION_WHEN_HOOKS: case {case_id} when.{key_name} must be non-empty list"
                 )
                 continue
             for idx, expr in enumerate(exprs):
                 if not isinstance(expr, dict):
                     issues.append(
-                        f"{rel}:1: NORMALIZATION_HARNESS_WHEN_HOOKS: case {case_id} harness.when.{key_name}[{idx}] must be mapping expression"
+                        f"{rel}:1: NORMALIZATION_WHEN_HOOKS: case {case_id} when.{key_name}[{idx}] must be mapping expression"
                     )
     return issues
 

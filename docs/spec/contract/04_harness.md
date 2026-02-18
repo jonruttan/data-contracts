@@ -171,7 +171,7 @@ Subject profile envelope contract:
 - `harness.spec_lang.imports` MAY declare case-scoped imports using
   `from: std.<namespace>` or `from: ops.<namespace>` and `names: [...]` with
   optional `as` aliases.
-- `harness.when` MAY declare lifecycle hooks as non-empty expression lists:
+- `when` MAY declare lifecycle hooks as non-empty expression lists:
   - `must`, `can`, `cannot`, `fail`, `complete`
   - legacy `harness.on` is forbidden
   - class hooks run after successful clause pass
@@ -183,8 +183,8 @@ Subject profile envelope contract:
   - `harness.jobs.<name>.mode` (optional)
   - `harness.jobs.<name>.inputs` / `outputs` (optional mappings)
 - Rust job spec pattern standardizes lifecycle diagnostics with hook jobs:
-  - `harness.jobs.on_fail` + `harness.when.fail -> ops.job.dispatch(on_fail)`
-  - `harness.jobs.on_complete` + `harness.when.complete -> ops.job.dispatch(on_complete)`
+  - `harness.jobs.on_fail` + `when.fail -> ops.job.dispatch(on_fail)`
+  - `harness.jobs.on_complete` + `when.complete -> ops.job.dispatch(on_complete)`
 - legacy `harness.job` singular shape is forbidden.
 - job execution is dispatched from `contract` expressions via
   `ops.job.dispatch`.

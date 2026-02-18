@@ -3875,7 +3875,7 @@ links:
   - spec_runner/components/hook_engine.py
   - scripts/normalize_repo.py
   - scripts/run_governance_specs.py
-  notes: harness.when shape and allowed key contract are validated.
+  notes: when shape and allowed key contract are validated.
 - rule_id: HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED
   policy_ref: docs/spec/contract/policy_v1.yaml#HARNESS_ON_CLASS_HOOK_ORDER_REQUIRED
   contract_refs:
@@ -3939,4 +3939,4 @@ links:
   implementation_refs:
   - scripts/refactor_contract_job_hooks.py
   - scripts/run_governance_specs.py
-  notes: rust contract.job specs use harness.when fail/complete dispatch hooks with paired hook job metadata.
+  notes: rust contract.job specs use when fail/complete dispatch hooks with paired hook job metadata.

@@ -4,7 +4,7 @@
 
 ```yaml contract-spec
 id: SRGOV-RUNTIME-HOOKS-003
-title: harness.when fail hook must run once on first failure
+title: when fail hook must run once on first failure
 purpose: Ensures fail hook guard and fail-handler token behavior are present.
 type: governance.check
 check: runtime.harness_on_fail_hook_required_behavior

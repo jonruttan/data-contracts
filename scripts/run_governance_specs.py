@@ -142,6 +142,8 @@ _COMMON_CASE_TOP_LEVEL_KEYS = {
     "title",
     "purpose",
     "assert",
+    "contract",
+    "when",
     "expect",
     "requires",
     "assert_health",
@@ -6899,30 +6901,34 @@ def _scan_runtime_harness_on_hooks_schema_valid(root: Path, *, harness: dict | N
             continue
         if "on" in harness_map:
             violations.append(
-                f"{doc_path.relative_to(root)}: case {case_id} harness.on is forbidden; use harness.when"
+                f"{doc_path.relative_to(root)}: case {case_id} harness.on is forbidden; use when"
             )
-        hooks = harness_map.get("when")
+        if "when" in harness_map:
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} harness.when is forbidden; use when"
+            )
+        hooks = case.get("when")
         if hooks is None:
             continue
         if not isinstance(hooks, dict):
-            violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness.when must be mapping")
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} when must be mapping")
             continue
         for key, exprs in hooks.items():
             key_name = str(key).strip()
             if key_name not in allowed:
                 violations.append(
-                    f"{doc_path.relative_to(root)}: case {case_id} harness.when contains unknown key {key_name}"
+                    f"{doc_path.relative_to(root)}: case {case_id} when contains unknown key {key_name}"
                 )
                 continue
             if not isinstance(exprs, list) or not exprs:
                 violations.append(
-                    f"{doc_path.relative_to(root)}: case {case_id} harness.when.{key_name} must be non-empty list"
+                    f"{doc_path.relative_to(root)}: case {case_id} when.{key_name} must be non-empty list"
                 )
                 continue
             for idx, expr in enumerate(exprs):
                 if not isinstance(expr, dict):
                     violations.append(
-                        f"{doc_path.relative_to(root)}: case {case_id} harness.when.{key_name}[{idx}] must be mapping expression"
+                        f"{doc_path.relative_to(root)}: case {case_id} when.{key_name}[{idx}] must be mapping expression"
                     )
     return violations
 
@@ -6942,12 +6948,12 @@ def _scan_runtime_harness_on_ordering_contract_required(
         return ["harness.harness_on_ordering.required_tokens must be list of non-empty strings"]
     p = _join_contract_path(root, rel)
     if not p.exists():
-        return [f"{rel}:1: missing file for harness.when ordering check"]
+        return [f"{rel}:1: missing file for when ordering check"]
     raw = p.read_text(encoding="utf-8")
     violations: list[str] = []
     for tok in required_tokens:
         if tok not in raw:
-            violations.append(f"{rel}:1: missing required harness.when ordering token: {tok}")
+            violations.append(f"{rel}:1: missing required when ordering token: {tok}")
     return violations
 
 
@@ -6966,12 +6972,12 @@ def _scan_runtime_harness_on_fail_hook_required_behavior(
         return ["harness.harness_on_fail.required_tokens must be list of non-empty strings"]
     p = _join_contract_path(root, rel)
     if not p.exists():
-        return [f"{rel}:1: missing file for harness.when fail hook check"]
+        return [f"{rel}:1: missing file for when fail hook check"]
     raw = p.read_text(encoding="utf-8")
     violations: list[str] = []
     for tok in required_tokens:
         if tok not in raw:
-            violations.append(f"{rel}:1: missing required harness.when fail token: {tok}")
+            violations.append(f"{rel}:1: missing required when fail token: {tok}")
     return violations
 
 
@@ -6990,12 +6996,12 @@ def _scan_runtime_harness_on_complete_hook_required_behavior(
         return ["harness.harness_on_complete.required_tokens must be list of non-empty strings"]
     p = _join_contract_path(root, rel)
     if not p.exists():
-        return [f"{rel}:1: missing file for harness.when complete hook check"]
+        return [f"{rel}:1: missing file for when complete hook check"]
     raw = p.read_text(encoding="utf-8")
     violations: list[str] = []
     for tok in required_tokens:
         if tok not in raw:
-            violations.append(f"{rel}:1: missing required harness.when complete token: {tok}")
+            violations.append(f"{rel}:1: missing required when complete token: {tok}")
     return violations
 
 
@@ -7030,16 +7036,16 @@ def _scan_runtime_contract_job_hooks_refactor_applied(
             if not isinstance(entry, dict):
                 violations.append(f"{rel}: case {case_id} missing harness.jobs.{hook_job}")
 
-        on_hooks = harness_map.get("when")
+        on_hooks = case.get("when")
         if not isinstance(on_hooks, dict):
-            violations.append(f"{rel}: case {case_id} missing harness.when mapping")
+            violations.append(f"{rel}: case {case_id} missing when mapping")
             continue
         fail_hook = on_hooks.get("fail")
         complete_hook = on_hooks.get("complete")
         if not _has_dispatch_for_job(fail_hook, "on_fail"):
-            violations.append(f"{rel}: case {case_id} harness.when.fail must dispatch on_fail")
+            violations.append(f"{rel}: case {case_id} when.fail must dispatch on_fail")
         if not _has_dispatch_for_job(complete_hook, "on_complete"):
-            violations.append(f"{rel}: case {case_id} harness.when.complete must dispatch on_complete")
+            violations.append(f"{rel}: case {case_id} when.complete must dispatch on_complete")
 
         contract = case.get("contract")
         if not _contract_dispatches_main(contract):

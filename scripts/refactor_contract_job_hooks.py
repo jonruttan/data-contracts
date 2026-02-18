@@ -88,24 +88,33 @@ def _migrate_case(case: dict[str, Any]) -> tuple[dict[str, Any], bool]:
 
     legacy_bool_on = harness.get(True)
     on_hooks = harness.get("on")
-    when_hooks = harness.get("when")
+    harness_when = harness.get("when")
+    case_when = case.get("when")
+    when_hooks = case_when if isinstance(case_when, dict) else None
     if isinstance(legacy_bool_on, dict):
-        if not isinstance(when_hooks, dict) and not isinstance(on_hooks, dict):
+        if not isinstance(when_hooks, dict) and not isinstance(on_hooks, dict) and not isinstance(harness_when, dict):
             when_hooks = legacy_bool_on
-            harness["when"] = when_hooks
+            case["when"] = when_hooks
             changed = True
         harness.pop(True, None)
         changed = True
     if isinstance(on_hooks, dict):
         if not isinstance(when_hooks, dict):
-            harness["when"] = on_hooks
+            case["when"] = on_hooks
             when_hooks = on_hooks
             changed = True
         harness.pop("on", None)
         changed = True
+    if isinstance(harness_when, dict):
+        if not isinstance(when_hooks, dict):
+            case["when"] = harness_when
+            when_hooks = harness_when
+            changed = True
+        harness.pop("when", None)
+        changed = True
     if not isinstance(when_hooks, dict):
         when_hooks = {}
-        harness["when"] = when_hooks
+        case["when"] = when_hooks
         changed = True
 
     fail_exprs = when_hooks.get("fail")

@@ -665,33 +665,37 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
 
     let mut hook_exprs: HashMap<String, Vec<Value>> = HashMap::new();
     if harness.contains_key(&YamlValue::String("on".to_string())) {
-        eprintln!("ERROR: harness.when.legacy_on_forbidden: harness.on is forbidden; use harness.when");
+        eprintln!("ERROR: when.legacy_harness_on_forbidden: harness.on is forbidden; use case.when");
         return 1;
     }
-    if let Some(raw_when_value) = harness.get(&YamlValue::String("when".to_string())) {
+    if harness.contains_key(&YamlValue::String("when".to_string())) {
+        eprintln!("ERROR: when.legacy_harness_when_forbidden: harness.when is forbidden; use case.when");
+        return 1;
+    }
+    if let Some(raw_when_value) = case_map.get(&YamlValue::String("when".to_string())) {
         let Some(raw_when) = raw_when_value.as_mapping() else {
-            eprintln!("ERROR: harness.when.invalid_shape: harness.when must be a mapping");
+            eprintln!("ERROR: when.invalid_shape: when must be a mapping");
             return 1;
         };
         for (raw_key, raw_values) in raw_when {
             let key = raw_key.as_str().unwrap_or("").trim().to_string();
             if !matches!(key.as_str(), "must" | "can" | "cannot" | "fail" | "complete") {
-                eprintln!("ERROR: harness.when.unknown_key: {key}");
+                eprintln!("ERROR: when.unknown_key: {key}");
                 return 1;
             }
             let Some(seq) = raw_values.as_sequence() else {
-                eprintln!("ERROR: harness.when.invalid_shape: harness.when.{key} must be non-empty list");
+                eprintln!("ERROR: when.invalid_shape: when.{key} must be non-empty list");
                 return 1;
             };
             if seq.is_empty() {
-                eprintln!("ERROR: harness.when.invalid_shape: harness.when.{key} must be non-empty list");
+                eprintln!("ERROR: when.invalid_shape: when.{key} must be non-empty list");
                 return 1;
             }
             let mut compiled = Vec::<Value>::new();
             for (idx, item) in seq.iter().enumerate() {
                 let expr = yaml_to_json(item);
                 if !expr.is_object() {
-                    eprintln!("ERROR: harness.when.expr_invalid: harness.when.{key}[{idx}] must be mapping expression");
+                    eprintln!("ERROR: when.expr_invalid: when.{key}[{idx}] must be mapping expression");
                     return 1;
                 }
                 compiled.push(expr);

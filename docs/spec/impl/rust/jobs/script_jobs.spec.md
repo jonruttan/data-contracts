@@ -37,13 +37,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-001.complete.json
         format: json
         report_name: SRRUST-JOB-001.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -56,6 +49,13 @@ contract:
       - var: subject
       - scanned_files
     - null
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-002
@@ -91,13 +91,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-002.complete.json
         format: json
         report_name: SRRUST-JOB-002.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -110,6 +103,13 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-003
@@ -143,13 +143,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-003.complete.json
         format: json
         report_name: SRRUST-JOB-003.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -162,6 +155,13 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-004
@@ -197,13 +197,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-004.complete.json
         format: json
         report_name: SRRUST-JOB-004.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -216,6 +209,13 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-005
@@ -251,13 +251,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-005.complete.json
         format: json
         report_name: SRRUST-JOB-005.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -270,6 +263,13 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-006
@@ -301,13 +301,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-006.complete.json
         format: json
         report_name: SRRUST-JOB-006.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -320,6 +313,13 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-007
@@ -353,13 +353,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-007.complete.json
         format: json
         report_name: SRRUST-JOB-007.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -372,6 +365,13 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-008
@@ -405,13 +405,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-008.complete.json
         format: json
         report_name: SRRUST-JOB-008.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -424,6 +417,13 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-009
@@ -458,13 +458,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-009.complete.json
         format: json
         report_name: SRRUST-JOB-009.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -477,6 +470,13 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-010
@@ -511,13 +511,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-010.complete.json
         format: json
         report_name: SRRUST-JOB-010.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -530,6 +523,13 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```
 
 ## SRRUST-JOB-011
@@ -564,13 +564,6 @@ harness:
         out: .artifacts/job-hooks/SRRUST-JOB-011.complete.json
         format: json
         report_name: SRRUST-JOB-011.complete
-  when:
-    fail:
-    - ops.job.dispatch:
-      - on_fail
-    complete:
-    - ops.job.dispatch:
-      - on_complete
 contract:
 - id: assert_1
   class: must
@@ -583,4 +576,11 @@ contract:
       - var: subject
       - ok
     - true
+when:
+  fail:
+  - ops.job.dispatch:
+    - on_fail
+  complete:
+  - ops.job.dispatch:
+    - on_complete
 ```

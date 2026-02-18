@@ -5,7 +5,7 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-HOOKS-005
 title: legacy harness.on key is forbidden
-purpose: Enforces hard-cut lifecycle hook key migration to harness.when.
+purpose: Enforces hard-cut lifecycle hook key migration to when.
 type: governance.check
 check: runtime.harness_on_hooks_schema_valid
 harness:

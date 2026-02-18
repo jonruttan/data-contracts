@@ -4,7 +4,7 @@
 
 ```yaml contract-spec
 id: SRGOV-RUNTIME-HOOKS-002
-title: harness.when class hook ordering contract required
+title: when class hook ordering contract required
 purpose: Ensures class hooks run only after successful clause pass and before complete.
 type: governance.check
 check: runtime.harness_on_ordering_contract_required

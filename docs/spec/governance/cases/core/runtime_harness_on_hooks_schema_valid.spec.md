@@ -4,8 +4,8 @@
 
 ```yaml contract-spec
 id: SRGOV-RUNTIME-HOOKS-001
-title: harness.when hooks schema must be valid
-purpose: Enforces harness.when shape and hook expression list requirements.
+title: when hooks schema must be valid
+purpose: Enforces when shape and hook expression list requirements.
 type: governance.check
 check: runtime.harness_on_hooks_schema_valid
 harness:

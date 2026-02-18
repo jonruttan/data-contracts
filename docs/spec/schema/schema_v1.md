@@ -523,9 +523,9 @@ contract:
       - '[]'
 ```
 
-`harness.when` lifecycle hooks (v1):
+`when` lifecycle hooks (v1):
 
-- optional `harness.when` mapping on executable cases
+- optional `when` mapping on executable cases
 - legacy `harness.on` is forbidden (hard cut)
 - allowed keys:
   - `must`
@@ -586,18 +586,18 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `contract` | `list` | `false` | `v1` |
 | `expect` | `mapping` | `false` | `v1` |
 | `harness` | `mapping` | `false` | `v1` |
-| `harness.when` | `mapping` | `false` | `v1` |
-| `harness.when.can` | `list` | `false` | `v1` |
-| `harness.when.cannot` | `list` | `false` | `v1` |
-| `harness.when.complete` | `list` | `false` | `v1` |
-| `harness.when.fail` | `list` | `false` | `v1` |
-| `harness.when.must` | `list` | `false` | `v1` |
 | `id` | `string` | `true` | `v1` |
 | `path` | `string` | `false` | `v1` |
 | `purpose` | `string` | `false` | `v1` |
 | `requires` | `mapping` | `false` | `v1` |
 | `title` | `string` | `false` | `v1` |
 | `type` | `string` | `true` | `v1` |
+| `when` | `mapping` | `false` | `v1` |
+| `when.can` | `list` | `false` | `v1` |
+| `when.cannot` | `list` | `false` | `v1` |
+| `when.complete` | `list` | `false` | `v1` |
+| `when.fail` | `list` | `false` | `v1` |
+| `when.must` | `list` | `false` | `v1` |
 
 ### Type Profiles
 
@@ -629,18 +629,18 @@ This section is generated from `docs/spec/schema/registry/v1/*.yaml`.
 | `contract` | `list` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
-| `harness.when` | `mapping` | false | `v1` |
-| `harness.when.can` | `list` | false | `v1` |
-| `harness.when.cannot` | `list` | false | `v1` |
-| `harness.when.complete` | `list` | false | `v1` |
-| `harness.when.fail` | `list` | false | `v1` |
-| `harness.when.must` | `list` | false | `v1` |
 | `id` | `string` | true | `v1` |
 | `path` | `string` | false | `v1` |
 | `purpose` | `string` | false | `v1` |
 | `requires` | `mapping` | false | `v1` |
 | `title` | `string` | false | `v1` |
 | `type` | `string` | true | `v1` |
+| `when` | `mapping` | false | `v1` |
+| `when.can` | `list` | false | `v1` |
+| `when.cannot` | `list` | false | `v1` |
+| `when.complete` | `list` | false | `v1` |
+| `when.fail` | `list` | false | `v1` |
+| `when.must` | `list` | false | `v1` |
 
 ### Type Profiles
 
