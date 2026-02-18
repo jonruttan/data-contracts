@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import importlib.util
 import json
 import os
 import re
@@ -24,6 +23,7 @@ from spec_runner.conformance_parity import (
     run_python_report,
 )
 from spec_runner.docs_generate_specs import main as _docs_generate_specs_main
+from spec_runner.docs_inventory import build_inventory as _build_docs_inventory
 
 
 def _write_artifact(path: Path, artifact: dict) -> None:
@@ -716,17 +716,6 @@ _EXPECTED_SPEC_INDEX_LINKS = {
 }
 
 
-def _load_docs_inventory_builder(root: Path) -> object:
-    script_path = root / "scripts/docs_inventory.py"
-    spec = importlib.util.spec_from_file_location("docs_inventory", script_path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError("unable to load scripts/docs_inventory.py")
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    return module.build_inventory
-
-
 def _load_check_map(root: Path) -> dict[str, Any]:
     path = root / "docs/spec/governance/check_catalog_map_v1.yaml"
     if not path.exists():
@@ -836,8 +825,7 @@ def check_docs_freshness_main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     root = Path(__file__).resolve().parents[1]
-    build_inventory = _load_docs_inventory_builder(root)
-    inventory = build_inventory(root)
+    inventory = _build_docs_inventory(root)
     violations: list[str] = []
 
     for item in inventory.get("missing_links", []):
