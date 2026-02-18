@@ -1,5 +1,6 @@
 mod spec_lang;
 mod profiler;
+mod governance;
 
 use std::env;
 use std::fs;
@@ -12,6 +13,7 @@ use serde_json::{json, Value};
 use serde_yaml::Value as YamlValue;
 use spec_lang::{eval_mapping_ast, EvalLimits};
 use profiler::{profile_options_from_env, RunProfiler};
+use governance::run_critical_gate_native;
 
 static ACTIVE_PROFILER: OnceLock<Mutex<Option<RunProfiler>>> = OnceLock::new();
 
@@ -1548,6 +1550,7 @@ fn main() {
 
     let code = match subcommand.as_str() {
         "spec-eval" => run_spec_eval_native(&root, &forwarded),
+        "critical-gate" => run_critical_gate_native(&root, &forwarded),
         "spec-ref" => {
             if forwarded.len() != 1 {
                 eprintln!("usage: spec-ref <subcommand>");

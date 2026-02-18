@@ -1,0 +1,32 @@
+version: 1
+profiles:
+  critical:
+    checks:
+      - id: runtime.critical_check_set_manifest_required
+        kind: manifest_non_empty
+        path: /docs/spec/governance/check_sets_v1.yaml
+        profile: critical
+        key: checks
+      - id: runtime.critical_gate_rust_native_only_required
+        kind: file_tokens
+        path: /scripts/rust/spec_runner_cli/src/main.rs
+        must_contain:
+          - '"critical-gate" => run_critical_gate_native'
+      - id: runtime.critical_gate_python_exec_forbidden
+        kind: file_tokens
+        path: /scripts/rust/spec_runner_cli/src/governance.rs
+        must_not_contain:
+          - run_cmd(
+          - run_governance_specs.py
+      - id: runtime.critical_gate_artifacts_required
+        kind: file_tokens
+        path: /scripts/rust/spec_runner_cli/src/governance.rs
+        must_contain:
+          - critical-gate-summary.json
+          - critical-gate-trace.json
+          - critical-gate-summary.md
+      - id: runtime.critical_gate_slo_sub_10s_required
+        kind: slo_budget
+        max_ms: 10000
+  full:
+    checks: []
