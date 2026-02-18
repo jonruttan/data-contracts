@@ -6,4 +6,4 @@ fields:
     type: list
     required: false
     since: v1
-    description: Assertion tree root; evaluate-only leaves on core executable surfaces.
+    description: Assertion tree root; leaves are direct spec-lang operator mappings on core executable surfaces.

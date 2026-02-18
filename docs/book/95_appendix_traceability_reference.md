@@ -47,10 +47,10 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 
 ## Generated Traceability Catalog
 
-- link_count: 251
+- link_count: 254
 - rules_with_conformance_cases: 0
-- rules_with_unit_tests: 251
-- rules_with_implementation_refs: 249
+- rules_with_unit_tests: 254
+- rules_with_implementation_refs: 252
 
 | rule_id | policy_ref | contract_refs | schema_refs | conformance_cases | unit_tests | implementation_refs |
 |---|---|---|---|---|---|---|
@@ -122,6 +122,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT` | `docs/spec/contract/policy_v1.yaml#DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT` | 1 | 1 | 0 | 2 | 2 |
 | `DOCS_EXAMPLE_IDS_UNIQUE` | `docs/spec/contract/policy_v1.yaml#DOCS_EXAMPLE_IDS_UNIQUE` | 1 | 1 | 0 | 3 | 4 |
 | `DOCS_FILENAME_POLICY_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_FILENAME_POLICY_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
+| `DOCS_FRESHNESS_STRICT_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_FRESHNESS_STRICT_REQUIRED` | 2 | 1 | 0 | 1 | 3 |
 | `DOCS_GENERATED_ARTIFACTS_FRESH` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_ARTIFACTS_FRESH` | 2 | 1 | 0 | 3 | 4 |
 | `DOCS_GENERATED_SECTIONS_READ_ONLY` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_SECTIONS_READ_ONLY` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_GENERATED_SURFACES_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_GENERATED_SURFACES_SYNC_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
@@ -149,6 +150,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY` | `docs/spec/contract/policy_v1.yaml#DOCS_RELEASE_CONTRACT_AUTOMATION_ONLY` | 2 | 0 | 0 | 2 | 3 |
 | `DOCS_REQUIRED_SECTIONS_PRESENT` | `docs/spec/contract/policy_v1.yaml#DOCS_REQUIRED_SECTIONS_PRESENT` | 4 | 0 | 0 | 2 | 2 |
 | `DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_RUNNER_COMMAND_SEMANTICS_DOC_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
+| `DOCS_SPEC_IA_CANONICAL_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_SPEC_IA_CANONICAL_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
 | `DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_SPEC_LANG_GUIDE_BEFORE_REFERENCE_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_SPEC_SCHEMA_FIELD_CATALOG_SYNC_REQUIRED` | 2 | 2 | 0 | 1 | 2 |
 | `DOCS_STDLIB_EXAMPLES_REQUIRED` | `docs/spec/contract/policy_v1.yaml#DOCS_STDLIB_EXAMPLES_REQUIRED` | 1 | 1 | 0 | 1 | 1 |
@@ -162,6 +164,7 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `EXECUTABLE_DISCOVERY_MARKDOWN_ONLY` | `docs/spec/contract/policy_v1.yaml#EXECUTABLE_DISCOVERY_MARKDOWN_ONLY` | 2 | 1 | 0 | 2 | 3 |
 | `EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN` | `docs/spec/contract/policy_v1.yaml#EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN` | 1 | 1 | 0 | 2 | 3 |
 | `EXECUTABLE_SURFACES_MUST_BE_SPEC_MD` | `docs/spec/contract/policy_v1.yaml#EXECUTABLE_SURFACES_MUST_BE_SPEC_MD` | 3 | 1 | 0 | 1 | 2 |
+| `GOVERNANCE_CHECK_FAMILY_MAP_REQUIRED` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_CHECK_FAMILY_MAP_REQUIRED` | 1 | 1 | 0 | 1 | 3 |
 | `GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY` | 1 | 1 | 0 | 1 | 2 |
 | `GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_EXTRACTOR_ONLY_NO_VERDICT_BRANCHING` | 2 | 1 | 0 | 1 | 1 |
 | `GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION` | `docs/spec/contract/policy_v1.yaml#GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION` | 2 | 1 | 0 | 2 | 3 |

@@ -20,6 +20,23 @@ from spec_runner.docs_quality import (
     manifest_chapter_paths,
 )
 from spec_runner.schema_registry import compile_registry, write_compiled_registry_artifact
+from spec_runner.script_entrypoints import (
+    ci_gate_summary_main,
+    compare_conformance_parity_main,
+    conformance_purpose_report_main,
+    docs_generate_all_main,
+    docs_generate_specs_main,
+    evaluate_style_main,
+    impl_evaluate_migration_report_main,
+    normalize_docs_layout_main,
+    normalize_repo_main,
+    objective_scorecard_report_main,
+    python_conformance_runner_main,
+    quality_metric_reports_main,
+    run_governance_specs_main,
+    spec_portability_report_main,
+    split_library_cases_per_symbol_main,
+)
 from spec_runner.spec_lang import SpecLangLimits, eval_expr
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
@@ -315,6 +332,21 @@ def main(argv: list[str] | None = None) -> int:
             "contract-coverage-report",
             "schema-registry-report",
             "docs-lint",
+            "ci-gate-summary",
+            "compare-conformance-parity",
+            "conformance-purpose-report",
+            "docs-generate-all",
+            "docs-generate-specs",
+            "evaluate-style",
+            "impl-evaluate-migration-report",
+            "normalize-docs-layout",
+            "normalize-repo",
+            "objective-scorecard-report",
+            "python-conformance-runner",
+            "quality-metric-reports",
+            "run-governance-specs",
+            "spec-portability-report",
+            "split-library-cases-per-symbol",
         ),
         help="Command to run.",
     )
@@ -331,6 +363,36 @@ def main(argv: list[str] | None = None) -> int:
         return schema_registry_report_main(forwarded)
     if ns.command == "docs-lint":
         return docs_lint_main(forwarded)
+    if ns.command == "ci-gate-summary":
+        return ci_gate_summary_main(forwarded)
+    if ns.command == "compare-conformance-parity":
+        return compare_conformance_parity_main(forwarded)
+    if ns.command == "conformance-purpose-report":
+        return conformance_purpose_report_main(forwarded)
+    if ns.command == "docs-generate-all":
+        return docs_generate_all_main(forwarded)
+    if ns.command == "docs-generate-specs":
+        return docs_generate_specs_main(forwarded)
+    if ns.command == "evaluate-style":
+        return evaluate_style_main(forwarded)
+    if ns.command == "impl-evaluate-migration-report":
+        return impl_evaluate_migration_report_main(forwarded)
+    if ns.command == "normalize-docs-layout":
+        return normalize_docs_layout_main(forwarded)
+    if ns.command == "normalize-repo":
+        return normalize_repo_main(forwarded)
+    if ns.command == "objective-scorecard-report":
+        return objective_scorecard_report_main(forwarded)
+    if ns.command == "python-conformance-runner":
+        return python_conformance_runner_main(forwarded)
+    if ns.command == "quality-metric-reports":
+        return quality_metric_reports_main(forwarded)
+    if ns.command == "run-governance-specs":
+        return run_governance_specs_main(forwarded)
+    if ns.command == "spec-portability-report":
+        return spec_portability_report_main(forwarded)
+    if ns.command == "split-library-cases-per-symbol":
+        return split_library_cases_per_symbol_main(forwarded)
     return 2
 
 

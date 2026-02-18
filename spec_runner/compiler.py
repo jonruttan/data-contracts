@@ -9,10 +9,12 @@ from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_ex
 
 
 def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -> PredicateLeaf:
-    if not isinstance(raw_expr, dict) or set(raw_expr.keys()) != {"evaluate"}:
-        raise ValueError(f"{assert_path} must be an evaluate leaf mapping")
+    if not isinstance(raw_expr, dict) or not raw_expr:
+        raise ValueError(f"{assert_path} must be a non-empty expression mapping")
+    if "evaluate" in raw_expr:
+        raise ValueError(f"{assert_path} must not use evaluate wrapper; place operator mapping directly in asserts")
     try:
-        expr = compile_yaml_expr_to_sexpr(raw_expr.get("evaluate"), field_path=f"{assert_path}.evaluate")
+        expr = compile_yaml_expr_to_sexpr(raw_expr, field_path=assert_path)
     except SpecLangYamlAstError as exc:
         raise ValueError(str(exc)) from exc
     return PredicateLeaf(

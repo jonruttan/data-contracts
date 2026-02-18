@@ -78,10 +78,10 @@ def iter_leaf_assertions(leaf: Any, *, target_override: str | None = None):
     if any(k in leaf for k in ("MUST", "MAY", "MUST_NOT")):
         raise ValueError("leaf contract predicate must not include group keys")
     if not leaf:
-        raise ValueError("contract leaf must be a non-empty evaluate mapping")
-    if set(leaf.keys()) != {"evaluate"}:
-        raise ValueError("contract leaf must contain only the evaluate key")
-    yield target, "evaluate", leaf.get("evaluate"), True
+        raise ValueError("contract leaf must be a non-empty expression mapping")
+    if "evaluate" in leaf:
+        raise ValueError("contract leaf must not use evaluate wrapper; place operator mapping directly in asserts")
+    yield target, "evaluate", leaf, True
 
 
 def eval_assert_tree(assert_spec: Any, *, eval_leaf) -> None:

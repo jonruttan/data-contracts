@@ -390,9 +390,9 @@ Published extension type contracts:
 
 ## Assertion Capability Model (Universal Core)
 
-Universal core operator:
+Universal core assertion model:
 
-- `evaluate` applies to every target/type.
+- every leaf assertion is a spec-lang operator mapping.
 - evaluator subjects MUST be JSON values only (`null`, boolean, number, string,
   list, object with string keys).
 
@@ -422,20 +422,19 @@ Leaf constraints:
 
 Supported operators:
 
-- universal core: `evaluate` (spec-lang v1)
+- universal core: spec-lang v1 operator mappings at each leaf
 
 Core executable-surface rule:
 
 - `docs/spec/conformance/cases/**/*.spec.md` assertion trees MUST use
-  `evaluate` leaves only.
+  direct spec-lang expression leaves.
 - `docs/spec/governance/cases/**/*.spec.md` assertion trees MUST use
-  `evaluate` leaves only.
+  direct spec-lang expression leaves.
 
 Operator constraints:
 
 - all operator values MUST be lists
-- `evaluate` values MUST be lists of operator-keyed mapping AST expressions
-- each `evaluate` list item MUST be an expression node using operator-keyed mappings
+- each assertion leaf MUST be an expression node using an operator-keyed mapping
 - subject reference node: `{var: subject}` compiles to zero-arg `subject`
 - bare scalar `subject` is a literal string (not a reference)
 - spec-lang semantics and budget model are defined in
@@ -485,16 +484,15 @@ Canonical negation uses `MUST_NOT`:
 contract:
 - target: stderr
   MUST_NOT:
-  - evaluate:
-      std.string.contains:
-      - var: subject
-      - 'ERROR:'
+  - std.string.contains:
+    - var: subject
+    - 'ERROR:'
 ```
 
 Author in canonical form:
 
 - use `MUST` / `MAY` / `MUST_NOT` for boolean groups
-- use `evaluate` for conformance/governance case assertions
+- use direct operator mappings in `asserts` (no `evaluate` wrapper)
 - put every operator value in a list
 
 Example with target inheritance:
@@ -503,27 +501,23 @@ Example with target inheritance:
 contract:
 - target: stderr
   MUST:
-  - evaluate:
-      std.string.contains:
-      - var: subject
-      - 'WARN:'
+  - std.string.contains:
+    - var: subject
+    - 'WARN:'
 - target: stderr
   MUST_NOT:
-  - evaluate:
-      std.string.contains:
-      - var: subject
-      - 'ERROR:'
+  - std.string.contains:
+    - var: subject
+    - 'ERROR:'
 - target: stdout
   MAY:
-  - evaluate:
-      std.type.json_type:
-      - std.json.parse:
-        - var: subject
-      - list
-  - evaluate:
-      std.string.contains:
+  - std.type.json_type:
+    - std.json.parse:
       - var: subject
-      - '[]'
+    - list
+  - std.string.contains:
+    - var: subject
+    - '[]'
 ```
 
 `when` lifecycle hooks (v1):
