@@ -9,7 +9,10 @@ import time
 from fnmatch import fnmatch
 from collections.abc import Mapping
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
+
+import yaml
 
 from spec_runner.spec_lang_std_names import FLAT_TO_STD, SPECIAL_FORMS, STD_TO_FLAT, namespace_index
 
@@ -60,6 +63,8 @@ class _EvalState:
     imports: dict[str, str]
     capabilities: frozenset[str] = frozenset()
     last_exit_code: int | None = None
+    dispatch_depth: int = 0
+    last_dispatch_result: Any = None
     steps: int = 0
     started: float = 0.0
 
@@ -410,6 +415,11 @@ def _require_ops_os_capability(op: str, st: _EvalState) -> None:
         raise ValueError(f"capability.ops_os.required: {op}")
 
 
+def _require_capability(op: str, st: _EvalState, capability: str) -> None:
+    if capability not in st.capabilities:
+        raise ValueError(f"capability.{capability.replace('.', '_')}.required: {op}")
+
+
 def _coerce_exec_command(op: str, value: Any) -> list[str]:
     if not isinstance(value, list) or not value:
         raise ValueError(f"spec_lang {op} expects non-empty list command")
@@ -423,6 +433,64 @@ def _coerce_exec_command(op: str, value: Any) -> list[str]:
             raise ValueError(f"spec_lang {op} command entries must be non-empty strings")
         out.append(token)
     return out
+
+
+def _load_json_env_mapping(name: str) -> dict[str, Any]:
+    raw = str(os.environ.get(name, "")).strip()
+    if not raw:
+        return {}
+    try:
+        payload = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{name} must contain valid JSON mapping") from exc
+    if not isinstance(payload, dict):
+        raise ValueError(f"{name} must contain JSON mapping")
+    out: dict[str, Any] = {}
+    for raw_k, value in payload.items():
+        k = str(raw_k).strip()
+        if k:
+            out[k] = value
+    return out
+
+
+def _run_helper_call(helper_id: str, payload: Any) -> Any:
+    helpers = _load_json_env_mapping("SPEC_RUNNER_SPEC_LANG_HELPERS_JSON")
+    entry = helpers.get(helper_id)
+    if entry is None:
+        raise ValueError(f"ops.helper.call error: unsupported helper id: {helper_id}")
+    if not isinstance(entry, dict):
+        return entry
+    if "error" in entry:
+        raise ValueError(f"ops.helper.call error: {entry['error']}")
+    if "result" in entry:
+        return entry.get("result")
+    command = entry.get("command")
+    if not isinstance(command, list) or not command or any(not str(x).strip() for x in command):
+        raise ValueError("ops.helper.call error: helper entry requires result or non-empty command list")
+    env = os.environ.copy()
+    extra_env = entry.get("env")
+    if isinstance(extra_env, dict):
+        for k, v in extra_env.items():
+            key = str(k).strip()
+            if key:
+                env[key] = str(v)
+    proc = subprocess.run(
+        [str(x).strip() for x in command],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        check=False,
+        env=env,
+    )
+    if proc.returncode != 0:
+        raise ValueError(f"ops.helper.call error: helper command failed (exit={proc.returncode})")
+    out = str(proc.stdout or "").strip()
+    if not out:
+        return None
+    try:
+        return json.loads(out)
+    except json.JSONDecodeError:
+        return out
 
 
 def _round_half_away_from_zero(v: int | float) -> int:
@@ -753,22 +821,35 @@ def _builtin_arity_table() -> dict[str, int]:
         "ops_fs_file_parent": 1,
         "ops_fs_file_ext": 1,
         "ops_fs_file_get": 3,
+        "ops_fs_walk": 2,
+        "ops_fs_file_set": 2,
+        "ops_fs_file_append": 2,
+        "ops_fs_file_mkdir_p": 1,
+        "ops_fs_file_remove": 1,
         "ops_fs_json_parse": 1,
         "ops_fs_json_get": 2,
         "ops_fs_json_get_or": 3,
         "ops_fs_json_has_path": 2,
+        "ops_fs_yaml_parse": 1,
+        "ops_fs_yaml_stringify": 1,
+        "ops_fs_yaml_get": 2,
+        "ops_fs_yaml_get_or": 3,
+        "ops_fs_yaml_has_path": 2,
         "ops_fs_glob_match": 2,
         "ops_fs_glob_filter": 2,
         "ops_fs_glob_any": 2,
         "ops_fs_glob_all": 2,
         "ops_os_exec": 2,
         "ops_os_exec_capture": 2,
+        "ops_os_exec_capture_ex": 2,
         "ops_os_env_get": 2,
         "ops_os_env_has": 1,
         "ops_os_cwd": 0,
         "ops_os_pid": 0,
         "ops_os_sleep_ms": 1,
         "ops_os_exit_code": 0,
+        "ops_helper_call": 2,
+        "ops_job_dispatch": 1,
         "and": 2,
         "or": 2,
         "not": 1,
@@ -1613,6 +1694,84 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         meta = _require_dict_arg(op, args[0])
         key = str(args[1])
         return meta.get(key, args[2])
+    if op == "ops.fs.walk":
+        _require_arity(op, args, 2)
+        root = args[0]
+        options = _require_dict_arg(op, args[1])
+        if not isinstance(root, str) or not root.strip():
+            raise ValueError("spec_lang ops.fs.walk expects non-empty root path")
+        pattern = str(options.get("pattern", "*"))
+        include_dirs = bool(options.get("include_dirs", False))
+        relative = bool(options.get("relative", True))
+        base = Path(root)
+        if not base.exists():
+            return []
+        out: list[dict[str, Any]] = []
+        for dirpath, dirnames, filenames in os.walk(base):
+            current = Path(dirpath)
+            if include_dirs:
+                for name in sorted(dirnames):
+                    candidate = current / name
+                    rel = str(candidate.relative_to(base)) if relative else str(candidate)
+                    if fnmatch(rel, pattern):
+                        out.append({"path": rel, "type": "dir", "exists": True})
+            for name in sorted(filenames):
+                candidate = current / name
+                rel = str(candidate.relative_to(base)) if relative else str(candidate)
+                if not fnmatch(rel, pattern):
+                    continue
+                size = candidate.stat().st_size if candidate.exists() else None
+                out.append(
+                    {
+                        "path": rel,
+                        "type": "file",
+                        "exists": candidate.exists(),
+                        "size_bytes": int(size) if isinstance(size, int) else None,
+                    }
+                )
+        return out
+    if op == "ops.fs.file.set":
+        _require_arity(op, args, 2)
+        path, content = args
+        if not isinstance(path, str) or not path.strip():
+            raise ValueError("spec_lang ops.fs.file.set expects non-empty path")
+        if not isinstance(content, str):
+            raise ValueError("spec_lang ops.fs.file.set expects string content")
+        target = Path(path)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(content, encoding="utf-8")
+        return True
+    if op == "ops.fs.file.append":
+        _require_arity(op, args, 2)
+        path, content = args
+        if not isinstance(path, str) or not path.strip():
+            raise ValueError("spec_lang ops.fs.file.append expects non-empty path")
+        if not isinstance(content, str):
+            raise ValueError("spec_lang ops.fs.file.append expects string content")
+        target = Path(path)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with target.open("a", encoding="utf-8") as fh:
+            fh.write(content)
+        return True
+    if op == "ops.fs.file.mkdir_p":
+        _require_arity(op, args, 1)
+        path = args[0]
+        if not isinstance(path, str) or not path.strip():
+            raise ValueError("spec_lang ops.fs.file.mkdir_p expects non-empty path")
+        Path(path).mkdir(parents=True, exist_ok=True)
+        return True
+    if op == "ops.fs.file.remove":
+        _require_arity(op, args, 1)
+        path = args[0]
+        if not isinstance(path, str) or not path.strip():
+            raise ValueError("spec_lang ops.fs.file.remove expects non-empty path")
+        target = Path(path)
+        if not target.exists():
+            return False
+        if target.is_dir():
+            raise ValueError("spec_lang ops.fs.file.remove expects file path, got directory")
+        target.unlink()
+        return True
     if op == "ops.fs.json.parse":
         _require_arity(op, args, 1)
         raw = args[0]
@@ -1630,6 +1789,30 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         ok, value = _get_in_path(args[0], path)
         return value if ok else args[2]
     if op == "ops.fs.json.has_path":
+        _require_arity(op, args, 2)
+        path = _require_list_arg(op, args[1])
+        ok, _ = _get_in_path(args[0], path)
+        return ok
+    if op == "ops.fs.yaml.parse":
+        _require_arity(op, args, 1)
+        raw = args[0]
+        if not isinstance(raw, str):
+            raise ValueError("spec_lang ops.fs.yaml.parse expects string input")
+        return yaml.safe_load(raw)
+    if op == "ops.fs.yaml.stringify":
+        _require_arity(op, args, 1)
+        return yaml.safe_dump(args[0], sort_keys=True)
+    if op == "ops.fs.yaml.get":
+        _require_arity(op, args, 2)
+        path = _require_list_arg(op, args[1])
+        ok, value = _get_in_path(args[0], path)
+        return value if ok else None
+    if op == "ops.fs.yaml.get_or":
+        _require_arity(op, args, 3)
+        path = _require_list_arg(op, args[1])
+        ok, value = _get_in_path(args[0], path)
+        return value if ok else args[2]
+    if op == "ops.fs.yaml.has_path":
         _require_arity(op, args, 2)
         path = _require_list_arg(op, args[1])
         ok, _ = _get_in_path(args[0], path)
@@ -1740,6 +1923,63 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
             "duration_ms": duration_ms,
             "timed_out": bool(timed_out),
         }
+    if op == "ops.os.exec_capture_ex":
+        _require_arity(op, args, 2)
+        _require_ops_os_capability(op, st)
+        cmd = _coerce_exec_command(op, args[0])
+        options = _require_dict_arg(op, args[1])
+        timeout_raw = options.get("timeout_ms", 0)
+        timeout_ms = _require_int_arg(op, timeout_raw)
+        if timeout_ms < 0:
+            raise ValueError("spec_lang ops.os.exec_capture_ex expects non-negative timeout_ms")
+        cwd = options.get("cwd")
+        if cwd is not None and not isinstance(cwd, str):
+            raise ValueError("spec_lang ops.os.exec_capture_ex expects cwd string when provided")
+        stdin_text = options.get("stdin_text", "")
+        if stdin_text is not None and not isinstance(stdin_text, str):
+            raise ValueError("spec_lang ops.os.exec_capture_ex expects stdin_text string when provided")
+        proc_env = os.environ.copy()
+        extra_env = options.get("env")
+        if extra_env is not None:
+            if not isinstance(extra_env, dict):
+                raise ValueError("spec_lang ops.os.exec_capture_ex expects env mapping when provided")
+            for k, v in extra_env.items():
+                key = str(k).strip()
+                if key:
+                    proc_env[key] = "" if v is None else str(v)
+        started = time.perf_counter()
+        code = -1
+        stdout = ""
+        stderr = ""
+        timed_out = False
+        try:
+            proc = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                input=stdin_text if isinstance(stdin_text, str) else None,
+                check=False,
+                cwd=cwd if isinstance(cwd, str) and cwd.strip() else None,
+                env=proc_env,
+                timeout=(timeout_ms / 1000.0) if timeout_ms > 0 else None,
+            )
+            code = int(proc.returncode)
+            stdout = str(proc.stdout or "")
+            stderr = str(proc.stderr or "")
+        except subprocess.TimeoutExpired as exc:
+            timed_out = True
+            code = -9
+            stdout = str(exc.stdout or "")
+            stderr = str(exc.stderr or "")
+        duration_ms = int((time.perf_counter() - started) * 1000.0)
+        st.last_exit_code = int(code)
+        return {
+            "code": int(code),
+            "stdout": stdout,
+            "stderr": stderr,
+            "duration_ms": duration_ms,
+            "timed_out": bool(timed_out),
+        }
     if op == "ops.os.env_get":
         _require_arity(op, args, 2)
         _require_ops_os_capability(op, st)
@@ -1775,6 +2015,56 @@ def _eval_builtin_eager(op: str, args: list[Any], st: _EvalState) -> Any:
         _require_arity(op, args, 0)
         _require_ops_os_capability(op, st)
         return st.last_exit_code
+    if op == "ops.helper.call":
+        _require_arity(op, args, 2)
+        _require_capability(op, st, "ops.helper")
+        helper_id = args[0]
+        if not isinstance(helper_id, str) or not helper_id.strip():
+            raise ValueError("ops.helper.call expects string helper_id")
+        return _run_helper_call(helper_id.strip(), args[1])
+    if op == "ops.job.dispatch":
+        _require_min_arity(op, args, 1)
+        _require_capability(op, st, "ops.job")
+        if st.dispatch_depth > 0:
+            raise ValueError("runtime.dispatch.nested_forbidden: ops.job.dispatch")
+        job_name = args[0]
+        if not isinstance(job_name, str) or not job_name.strip():
+            raise ValueError("ops.job.dispatch expects job_name to evaluate to string")
+        jobs = _load_json_env_mapping("SPEC_RUNNER_SPEC_LANG_JOBS_JSON")
+        entry = jobs.get(job_name.strip())
+        if not isinstance(entry, dict):
+            raise ValueError(f"runtime.dispatch.job_not_found: {job_name.strip()}")
+        helper_id = str(entry.get("helper", "")).strip()
+        if not helper_id:
+            raise ValueError(f"runtime.dispatch.helper_required: {job_name.strip()}")
+        inputs = entry.get("inputs", {})
+        if not isinstance(inputs, dict):
+            raise ValueError(f"runtime.dispatch.inputs_must_be_mapping: {job_name.strip()}")
+        merged: dict[str, Any] = dict(inputs)
+        raw_overrides = str(os.environ.get("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON", "")).strip()
+        if raw_overrides:
+            try:
+                parsed_overrides = json.loads(raw_overrides)
+            except json.JSONDecodeError as exc:
+                raise ValueError("SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON must be valid JSON mapping") from exc
+            if isinstance(parsed_overrides, dict):
+                merged.update(parsed_overrides)
+        if len(args) > 1:
+            overrides = args[1]
+            if overrides is not None and not isinstance(overrides, dict):
+                raise ValueError("ops.job.dispatch overrides must evaluate to mapping or null")
+            if isinstance(overrides, dict):
+                merged.update(overrides)
+        merged["_job_name"] = job_name.strip()
+        merged["_mode"] = str(entry.get("mode", "custom"))
+        merged["_outputs"] = entry.get("outputs", {})
+        st.dispatch_depth += 1
+        try:
+            result = _run_helper_call(helper_id, merged)
+        finally:
+            st.dispatch_depth -= 1
+        st.last_dispatch_result = result
+        return result
     if op == "and":
         _require_arity(op, args, 2)
         return _truthy(args[0]) and _truthy(args[1])

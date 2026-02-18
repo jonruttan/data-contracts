@@ -176,11 +176,21 @@ categories:
   - ops.fs.file.parent
   - ops.fs.file.ext
   - ops.fs.file.get
+  - ops.fs.walk
+  - ops.fs.file.set
+  - ops.fs.file.append
+  - ops.fs.file.mkdir_p
+  - ops.fs.file.remove
   fs_json:
   - ops.fs.json.parse
   - ops.fs.json.get
   - ops.fs.json.get_or
   - ops.fs.json.has_path
+  - ops.fs.yaml.parse
+  - ops.fs.yaml.stringify
+  - ops.fs.yaml.get
+  - ops.fs.yaml.get_or
+  - ops.fs.yaml.has_path
   fs_glob:
   - ops.fs.glob.match
   - ops.fs.glob.filter
@@ -189,6 +199,7 @@ categories:
   os_process:
   - ops.os.exec
   - ops.os.exec_capture
+  - ops.os.exec_capture_ex
   - ops.os.env_get
   - ops.os.env_has
   - ops.os.cwd
@@ -1334,6 +1345,41 @@ symbols:
     deterministic: true
     error_class: schema
     parity_required: true
+  ops.fs.walk:
+    category: fs_file
+    arity: 2
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.fs.file.set:
+    category: fs_file
+    arity: 2
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.fs.file.append:
+    category: fs_file
+    arity: 2
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.fs.file.mkdir_p:
+    category: fs_file
+    arity: 1
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.fs.file.remove:
+    category: fs_file
+    arity: 1
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
   ops.fs.json.parse:
     category: fs_json
     arity: 1
@@ -1356,6 +1402,41 @@ symbols:
     error_class: schema
     parity_required: true
   ops.fs.json.has_path:
+    category: fs_json
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.yaml.parse:
+    category: fs_json
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.yaml.stringify:
+    category: fs_json
+    arity: 1
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.yaml.get:
+    category: fs_json
+    arity: 2
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.yaml.get_or:
+    category: fs_json
+    arity: 3
+    pure: true
+    deterministic: true
+    error_class: schema
+    parity_required: true
+  ops.fs.yaml.has_path:
     category: fs_json
     arity: 2
     pure: true
@@ -1398,6 +1479,13 @@ symbols:
     error_class: runtime
     parity_required: true
   ops.os.exec_capture:
+    category: os_process
+    arity: 2
+    pure: false
+    deterministic: false
+    error_class: runtime
+    parity_required: true
+  ops.os.exec_capture_ex:
     category: os_process
     arity: 2
     pure: false

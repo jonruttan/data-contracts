@@ -1281,6 +1281,48 @@ function specLangFsWithin(string $base, string $path): bool {
     return true;
 }
 
+function specLangRequireCapability(string $op, array $state, string $capability): void {
+    $caps = $state['capabilities'] ?? [];
+    if (!is_array($caps) || !in_array($capability, $caps, true)) {
+        $token = str_replace('.', '_', $capability);
+        throw new SchemaError("capability.{$token}.required: {$op}");
+    }
+}
+
+function specLangLoadJsonEnvMap(string $name): array {
+    $raw = trim((string)getenv($name));
+    if ($raw === '') {
+        return [];
+    }
+    try {
+        $payload = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+    } catch (JsonException) {
+        throw new SchemaError("{$name} must contain valid JSON mapping");
+    }
+    if (!is_array($payload) || isListArray($payload)) {
+        throw new SchemaError("{$name} must contain JSON mapping");
+    }
+    return $payload;
+}
+
+function specLangHelperCall(string $helperId, mixed $payload): mixed {
+    $helpers = specLangLoadJsonEnvMap('SPEC_RUNNER_SPEC_LANG_HELPERS_JSON');
+    if (!array_key_exists($helperId, $helpers)) {
+        throw new SchemaError("ops.helper.call error: unsupported helper id: {$helperId}");
+    }
+    $entry = $helpers[$helperId];
+    if (!is_array($entry) || isListArray($entry)) {
+        return $entry;
+    }
+    if (array_key_exists('error', $entry)) {
+        throw new SchemaError('ops.helper.call error: ' . (string)$entry['error']);
+    }
+    if (array_key_exists('result', $entry)) {
+        return $entry['result'];
+    }
+    throw new SchemaError('ops.helper.call error: helper entry requires result or command');
+}
+
 function specLangSpecialForms(): array {
     return ['if' => true, 'let' => true, 'fn' => true, 'call' => true, 'var' => true, 'lit' => true];
 }
@@ -1316,14 +1358,35 @@ function specLangFlatBuiltinFromStd(string $symbol): string {
         'ops.fs.file.parent' => 'ops_fs_file_parent',
         'ops.fs.file.ext' => 'ops_fs_file_ext',
         'ops.fs.file.get' => 'ops_fs_file_get',
+        'ops.fs.walk' => 'ops_fs_walk',
+        'ops.fs.file.set' => 'ops_fs_file_set',
+        'ops.fs.file.append' => 'ops_fs_file_append',
+        'ops.fs.file.mkdir_p' => 'ops_fs_file_mkdir_p',
+        'ops.fs.file.remove' => 'ops_fs_file_remove',
         'ops.fs.json.parse' => 'ops_fs_json_parse',
         'ops.fs.json.get' => 'ops_fs_json_get',
         'ops.fs.json.get_or' => 'ops_fs_json_get_or',
         'ops.fs.json.has_path' => 'ops_fs_json_has_path',
+        'ops.fs.yaml.parse' => 'ops_fs_yaml_parse',
+        'ops.fs.yaml.stringify' => 'ops_fs_yaml_stringify',
+        'ops.fs.yaml.get' => 'ops_fs_yaml_get',
+        'ops.fs.yaml.get_or' => 'ops_fs_yaml_get_or',
+        'ops.fs.yaml.has_path' => 'ops_fs_yaml_has_path',
         'ops.fs.glob.match' => 'ops_fs_glob_match',
         'ops.fs.glob.filter' => 'ops_fs_glob_filter',
         'ops.fs.glob.any' => 'ops_fs_glob_any',
         'ops.fs.glob.all' => 'ops_fs_glob_all',
+        'ops.os.exec' => 'ops_os_exec',
+        'ops.os.exec_capture' => 'ops_os_exec_capture',
+        'ops.os.exec_capture_ex' => 'ops_os_exec_capture_ex',
+        'ops.os.env_get' => 'ops_os_env_get',
+        'ops.os.env_has' => 'ops_os_env_has',
+        'ops.os.cwd' => 'ops_os_cwd',
+        'ops.os.pid' => 'ops_os_pid',
+        'ops.os.sleep_ms' => 'ops_os_sleep_ms',
+        'ops.os.exit_code' => 'ops_os_exit_code',
+        'ops.helper.call' => 'ops_helper_call',
+        'ops.job.dispatch' => 'ops_job_dispatch',
     ];
     if (array_key_exists($symbol, $map)) {
         return $map[$symbol];
@@ -2592,6 +2655,110 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         $default = specLangEvalNonTail($args[2], $env, $subject, $limits, $state);
         return array_key_exists($key, $meta) ? $meta[$key] : $default;
     }
+    if ($op === 'ops_fs_walk') {
+        specLangRequireArity($op, $args, 2);
+        $root = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $options = specLangRequireDictArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        if (!is_string($root) || trim($root) === '') {
+            throw new SchemaError('spec_lang ops.fs.walk expects non-empty root path');
+        }
+        $pattern = (string)($options['pattern'] ?? '*');
+        $includeDirs = (bool)($options['include_dirs'] ?? false);
+        $relative = (bool)($options['relative'] ?? true);
+        if (!file_exists($root)) {
+            return [];
+        }
+        $base = realpath($root);
+        if (!is_string($base) || $base === '') {
+            return [];
+        }
+        $out = [];
+        $iter = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+        foreach ($iter as $entry) {
+            /** @var SplFileInfo $entry */
+            $isDir = $entry->isDir();
+            if ($isDir && !$includeDirs) {
+                continue;
+            }
+            $full = $entry->getPathname();
+            $path = $relative ? ltrim(str_replace('\\', '/', substr($full, strlen($base))), '/') : $full;
+            if (!fnmatch($pattern, $path)) {
+                continue;
+            }
+            $row = [
+                'path' => $path,
+                'type' => $isDir ? 'dir' : 'file',
+                'exists' => true,
+            ];
+            if (!$isDir) {
+                $row['size_bytes'] = (int)$entry->getSize();
+            }
+            $out[] = $row;
+        }
+        return $out;
+    }
+    if ($op === 'ops_fs_file_set') {
+        specLangRequireArity($op, $args, 2);
+        $path = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $content = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if (!is_string($path) || trim($path) === '') {
+            throw new SchemaError('spec_lang ops.fs.file.set expects non-empty path');
+        }
+        if (!is_string($content)) {
+            throw new SchemaError('spec_lang ops.fs.file.set expects string content');
+        }
+        $parent = dirname($path);
+        if ($parent !== '' && $parent !== '.' && !is_dir($parent)) {
+            @mkdir($parent, 0777, true);
+        }
+        file_put_contents($path, $content);
+        return true;
+    }
+    if ($op === 'ops_fs_file_append') {
+        specLangRequireArity($op, $args, 2);
+        $path = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $content = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        if (!is_string($path) || trim($path) === '') {
+            throw new SchemaError('spec_lang ops.fs.file.append expects non-empty path');
+        }
+        if (!is_string($content)) {
+            throw new SchemaError('spec_lang ops.fs.file.append expects string content');
+        }
+        $parent = dirname($path);
+        if ($parent !== '' && $parent !== '.' && !is_dir($parent)) {
+            @mkdir($parent, 0777, true);
+        }
+        file_put_contents($path, $content, FILE_APPEND);
+        return true;
+    }
+    if ($op === 'ops_fs_file_mkdir_p') {
+        specLangRequireArity($op, $args, 1);
+        $path = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!is_string($path) || trim($path) === '') {
+            throw new SchemaError('spec_lang ops.fs.file.mkdir_p expects non-empty path');
+        }
+        if (!is_dir($path)) {
+            @mkdir($path, 0777, true);
+        }
+        return true;
+    }
+    if ($op === 'ops_fs_file_remove') {
+        specLangRequireArity($op, $args, 1);
+        $path = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!is_string($path) || trim($path) === '') {
+            throw new SchemaError('spec_lang ops.fs.file.remove expects non-empty path');
+        }
+        if (!file_exists($path)) {
+            return false;
+        }
+        if (is_dir($path)) {
+            throw new SchemaError('spec_lang ops.fs.file.remove expects file path, got directory');
+        }
+        return (bool)@unlink($path);
+    }
     if ($op === 'ops_fs_json_parse') {
         specLangRequireArity($op, $args, 1);
         $raw = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
@@ -2620,6 +2787,51 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
         return $ok ? $value : $default;
     }
     if ($op === 'ops_fs_json_has_path') {
+        specLangRequireArity($op, $args, 2);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        [$ok, $_value] = specLangGetInPath($obj, $path);
+        return $ok;
+    }
+    if ($op === 'ops_fs_yaml_parse') {
+        specLangRequireArity($op, $args, 1);
+        $raw = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!is_string($raw)) {
+            throw new SchemaError('spec_lang ops.fs.yaml.parse expects string input');
+        }
+        if (!function_exists('yaml_parse')) {
+            throw new SchemaError('spec_lang ops.fs.yaml.parse requires yaml extension');
+        }
+        $parsed = @yaml_parse($raw);
+        if ($parsed === false && trim($raw) !== 'false') {
+            throw new SchemaError('spec_lang ops.fs.yaml.parse invalid YAML');
+        }
+        return $parsed;
+    }
+    if ($op === 'ops_fs_yaml_stringify') {
+        specLangRequireArity($op, $args, 1);
+        $val = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!function_exists('yaml_emit')) {
+            throw new SchemaError('spec_lang ops.fs.yaml.stringify requires yaml extension');
+        }
+        return (string)yaml_emit($val);
+    }
+    if ($op === 'ops_fs_yaml_get') {
+        specLangRequireArity($op, $args, 2);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        [$ok, $value] = specLangGetInPath($obj, $path);
+        return $ok ? $value : null;
+    }
+    if ($op === 'ops_fs_yaml_get_or') {
+        specLangRequireArity($op, $args, 3);
+        $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        $default = specLangEvalNonTail($args[2], $env, $subject, $limits, $state);
+        [$ok, $value] = specLangGetInPath($obj, $path);
+        return $ok ? $value : $default;
+    }
+    if ($op === 'ops_fs_yaml_has_path') {
         specLangRequireArity($op, $args, 2);
         $obj = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
         $path = specLangRequireListArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
@@ -2658,6 +2870,228 @@ function specLangEvalBuiltin(string $op, array $args, SpecLangEnv $env, mixed $s
             return count($matched) > 0;
         }
         return count($matched) === count($paths);
+    }
+    if ($op === 'ops_os_exec') {
+        specLangRequireArity($op, $args, 2);
+        specLangRequireCapability($op, $state, 'ops.os');
+        $cmd = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        $timeoutMs = specLangRequireIntArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+        if ($timeoutMs < 0) {
+            throw new SchemaError('spec_lang ops.os.exec expects non-negative timeout_ms');
+        }
+        $command = [];
+        foreach ($cmd as $part) {
+            $token = trim((string)$part);
+            if ($token === '') {
+                throw new SchemaError('spec_lang ops.os.exec expects non-empty list command');
+            }
+            $command[] = $token;
+        }
+        $descriptors = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+        $proc = @proc_open($command, $descriptors, $pipes, null, null);
+        if (!is_resource($proc)) {
+            throw new SchemaError('ops.os.exec error: failed to start command');
+        }
+        if (isset($pipes[1]) && is_resource($pipes[1])) {
+            fclose($pipes[1]);
+        }
+        if (isset($pipes[2]) && is_resource($pipes[2])) {
+            fclose($pipes[2]);
+        }
+        $code = (int)proc_close($proc);
+        $state['last_exit_code'] = $code;
+        return $code;
+    }
+    if ($op === 'ops_os_exec_capture' || $op === 'ops_os_exec_capture_ex') {
+        if ($op === 'ops_os_exec_capture') {
+            specLangRequireArity($op, $args, 2);
+            $cmd = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+            $timeoutMs = specLangRequireIntArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+            $options = ['timeout_ms' => $timeoutMs];
+        } else {
+            specLangRequireArity($op, $args, 2);
+            $cmd = specLangRequireListArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+            $options = specLangRequireDictArg($op, specLangEvalNonTail($args[1], $env, $subject, $limits, $state));
+            $timeoutMs = specLangRequireIntArg($op, $options['timeout_ms'] ?? 0);
+        }
+        specLangRequireCapability($op, $state, 'ops.os');
+        if ($timeoutMs < 0) {
+            throw new SchemaError("spec_lang {$op} expects non-negative timeout_ms");
+        }
+        $command = [];
+        foreach ($cmd as $part) {
+            $token = trim((string)$part);
+            if ($token === '') {
+                throw new SchemaError("spec_lang {$op} expects non-empty list command");
+            }
+            $command[] = $token;
+        }
+        $cwd = $options['cwd'] ?? null;
+        if ($cwd !== null && !is_string($cwd)) {
+            throw new SchemaError("spec_lang {$op} expects cwd string when provided");
+        }
+        $stdinText = $options['stdin_text'] ?? null;
+        if ($stdinText !== null && !is_string($stdinText)) {
+            throw new SchemaError("spec_lang {$op} expects stdin_text string when provided");
+        }
+        $env = null;
+        if (array_key_exists('env', $options)) {
+            $envMap = specLangRequireDictArg($op, $options['env']);
+            $env = $_ENV;
+            foreach ($envMap as $k => $v) {
+                $env[(string)$k] = $v === null ? '' : (string)$v;
+            }
+        }
+        $descriptors = [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ];
+        $started = microtime(true);
+        $proc = @proc_open($command, $descriptors, $pipes, is_string($cwd) ? $cwd : null, $env);
+        if (!is_resource($proc)) {
+            throw new SchemaError("ops.os.exec_capture error: failed to start command");
+        }
+        if (isset($pipes[0]) && is_resource($pipes[0])) {
+            if (is_string($stdinText) && $stdinText !== '') {
+                fwrite($pipes[0], $stdinText);
+            }
+            fclose($pipes[0]);
+        }
+        $stdout = isset($pipes[1]) && is_resource($pipes[1]) ? stream_get_contents($pipes[1]) : '';
+        if (isset($pipes[1]) && is_resource($pipes[1])) {
+            fclose($pipes[1]);
+        }
+        $stderr = isset($pipes[2]) && is_resource($pipes[2]) ? stream_get_contents($pipes[2]) : '';
+        if (isset($pipes[2]) && is_resource($pipes[2])) {
+            fclose($pipes[2]);
+        }
+        $code = (int)proc_close($proc);
+        $durationMs = (int)round((microtime(true) - $started) * 1000.0);
+        $state['last_exit_code'] = $code;
+        return [
+            'code' => $code,
+            'stdout' => (string)$stdout,
+            'stderr' => (string)$stderr,
+            'duration_ms' => $durationMs,
+            'timed_out' => false,
+        ];
+    }
+    if ($op === 'ops_os_env_get') {
+        specLangRequireArity($op, $args, 2);
+        specLangRequireCapability($op, $state, 'ops.os');
+        $key = trim((string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        if ($key === '') {
+            throw new SchemaError('spec_lang ops.os.env_get expects non-empty env key');
+        }
+        $fallback = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        $v = getenv($key);
+        return $v === false ? $fallback : (string)$v;
+    }
+    if ($op === 'ops_os_env_has') {
+        specLangRequireArity($op, $args, 1);
+        specLangRequireCapability($op, $state, 'ops.os');
+        $key = trim((string)specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        if ($key === '') {
+            throw new SchemaError('spec_lang ops.os.env_has expects non-empty env key');
+        }
+        return getenv($key) !== false;
+    }
+    if ($op === 'ops_os_cwd') {
+        specLangRequireArity($op, $args, 0);
+        specLangRequireCapability($op, $state, 'ops.os');
+        return getcwd() ?: '.';
+    }
+    if ($op === 'ops_os_pid') {
+        specLangRequireArity($op, $args, 0);
+        specLangRequireCapability($op, $state, 'ops.os');
+        return getmypid();
+    }
+    if ($op === 'ops_os_sleep_ms') {
+        specLangRequireArity($op, $args, 1);
+        specLangRequireCapability($op, $state, 'ops.os');
+        $delayMs = specLangRequireIntArg($op, specLangEvalNonTail($args[0], $env, $subject, $limits, $state));
+        if ($delayMs < 0) {
+            throw new SchemaError('spec_lang ops.os.sleep_ms expects non-negative delay');
+        }
+        usleep($delayMs * 1000);
+        return true;
+    }
+    if ($op === 'ops_os_exit_code') {
+        specLangRequireArity($op, $args, 0);
+        specLangRequireCapability($op, $state, 'ops.os');
+        return $state['last_exit_code'] ?? null;
+    }
+    if ($op === 'ops_helper_call') {
+        specLangRequireArity($op, $args, 2);
+        specLangRequireCapability($op, $state, 'ops.helper');
+        $helperId = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!is_string($helperId) || trim($helperId) === '') {
+            throw new SchemaError('ops.helper.call expects string helper_id');
+        }
+        $payload = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+        return specLangHelperCall(trim($helperId), $payload);
+    }
+    if ($op === 'ops_job_dispatch') {
+        specLangRequireMinArity($op, $args, 1);
+        specLangRequireCapability($op, $state, 'ops.job');
+        if (($state['dispatch_depth'] ?? 0) > 0) {
+            throw new SchemaError('runtime.dispatch.nested_forbidden: ops.job.dispatch');
+        }
+        $jobName = specLangEvalNonTail($args[0], $env, $subject, $limits, $state);
+        if (!is_string($jobName) || trim($jobName) === '') {
+            throw new SchemaError('ops.job.dispatch expects job_name to evaluate to string');
+        }
+        $jobName = trim($jobName);
+        $jobs = specLangLoadJsonEnvMap('SPEC_RUNNER_SPEC_LANG_JOBS_JSON');
+        $entry = $jobs[$jobName] ?? null;
+        if (!is_array($entry) || isListArray($entry)) {
+            throw new SchemaError("runtime.dispatch.job_not_found: {$jobName}");
+        }
+        $helperId = trim((string)($entry['helper'] ?? ''));
+        if ($helperId === '') {
+            throw new SchemaError("runtime.dispatch.helper_required: {$jobName}");
+        }
+        $inputs = $entry['inputs'] ?? [];
+        if (!is_array($inputs) || isListArray($inputs)) {
+            throw new SchemaError("runtime.dispatch.inputs_must_be_mapping: {$jobName}");
+        }
+        $merged = $inputs;
+        $rawOverrides = trim((string)getenv('SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON'));
+        if ($rawOverrides !== '') {
+            try {
+                $parsed = json_decode($rawOverrides, true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                throw new SchemaError('SPEC_RUNNER_JOB_INPUT_OVERRIDES_JSON must be valid JSON mapping');
+            }
+            if (is_array($parsed) && !isListArray($parsed)) {
+                foreach ($parsed as $k => $v) {
+                    $merged[(string)$k] = $v;
+                }
+            }
+        }
+        if (count($args) > 1) {
+            $overrides = specLangEvalNonTail($args[1], $env, $subject, $limits, $state);
+            if ($overrides !== null && (!is_array($overrides) || isListArray($overrides))) {
+                throw new SchemaError('ops.job.dispatch overrides must evaluate to mapping or null');
+            }
+            if (is_array($overrides)) {
+                foreach ($overrides as $k => $v) {
+                    $merged[(string)$k] = $v;
+                }
+            }
+        }
+        $merged['_job_name'] = $jobName;
+        $merged['_mode'] = (string)($entry['mode'] ?? 'custom');
+        $merged['_outputs'] = $entry['outputs'] ?? [];
+        $state['dispatch_depth'] = (int)($state['dispatch_depth'] ?? 0) + 1;
+        try {
+            $result = specLangHelperCall($helperId, $merged);
+        } finally {
+            $state['dispatch_depth'] = (int)($state['dispatch_depth'] ?? 1) - 1;
+        }
+        $state['last_dispatch_result'] = $result;
+        return $result;
     }
     if ($op === 'schema_match' || $op === 'schema_errors') {
         specLangRequireArity($op, $args, 2);
@@ -2803,7 +3237,26 @@ function specLangEvalPredicate(
     array $imports = [],
 ): bool {
     specLangValidateExprShape($expr, $limits);
-    $state = ['steps' => 0, 'started' => microtime(true), 'limits' => $limits, 'imports' => $imports];
+    $capsRaw = trim((string)getenv('SPEC_RUNNER_SPEC_LANG_CAPABILITIES'));
+    $caps = [];
+    if ($capsRaw !== '') {
+        foreach (explode(',', $capsRaw) as $part) {
+            $token = trim($part);
+            if ($token !== '') {
+                $caps[] = $token;
+            }
+        }
+    }
+    $state = [
+        'steps' => 0,
+        'started' => microtime(true),
+        'limits' => $limits,
+        'imports' => $imports,
+        'capabilities' => $caps,
+        'last_exit_code' => null,
+        'dispatch_depth' => 0,
+        'last_dispatch_result' => null,
+    ];
     $root = [];
     foreach ($symbols as $rawName => $value) {
         $name = trim((string)$rawName);
@@ -3081,7 +3534,15 @@ function compileSpecLangSymbolBindings(array $bindings, array $limits): array {
         $slots[$name] = specLangUnsetSentinel();
     }
     $env = new SpecLangEnv($slots, null);
-    $state = ['steps' => 0, 'started' => microtime(true), 'limits' => $limits];
+    $state = [
+        'steps' => 0,
+        'started' => microtime(true),
+        'limits' => $limits,
+        'capabilities' => [],
+        'last_exit_code' => null,
+        'dispatch_depth' => 0,
+        'last_dispatch_result' => null,
+    ];
     foreach ($bindings as $rawName => $rawExpr) {
         $name = trim((string)$rawName);
         specLangValidateExprShape($rawExpr, $limits);

@@ -15,6 +15,10 @@ Canonical domain index for executable specs in this subtree.
 - `/docs/spec/libraries/domain/path_core.spec.md`
 - `/docs/spec/libraries/domain/php_core.spec.md`
 - `/docs/spec/libraries/domain/python_core.spec.md`
+- `/docs/spec/libraries/domain/yaml_core.spec.md`
+- `/docs/spec/libraries/domain/process_core.spec.md`
+- `/docs/spec/libraries/domain/repo_core.spec.md`
+- `/docs/spec/libraries/domain/artifact_core.spec.md`
 
 ## Exported Symbols
 
@@ -94,3 +98,9 @@ Canonical domain index for executable specs in this subtree.
 - `domain.path.sorted` (/docs/spec/libraries/domain/path_core.spec.md)
 - `php.is_assoc_projection` (/docs/spec/libraries/domain/php_core.spec.md)
 - `py.is_tuple_projection` (/docs/spec/libraries/domain/python_core.spec.md)
+- `domain.yaml.parse_get_or` (/docs/spec/libraries/domain/yaml_core.spec.md)
+- `domain.yaml.stringify` (/docs/spec/libraries/domain/yaml_core.spec.md)
+- `domain.process.exec_capture_ex_code` (/docs/spec/libraries/domain/process_core.spec.md)
+- `domain.repo.walk_matching` (/docs/spec/libraries/domain/repo_core.spec.md)
+- `domain.artifact.write_yaml` (/docs/spec/libraries/domain/artifact_core.spec.md)
+- `domain.artifact.append_text` (/docs/spec/libraries/domain/artifact_core.spec.md)

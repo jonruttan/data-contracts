@@ -6,6 +6,15 @@ from functools import lru_cache
 from pathlib import Path
 from types import ModuleType
 
+from spec_runner.normalize_repo_runtime import main as _normalize_repo_main
+from spec_runner.script_runtime_commands import (
+    check_docs_freshness_main as _check_docs_freshness_main,
+    ci_gate_summary_main as _ci_gate_summary_main,
+    compare_conformance_parity_main as _compare_conformance_parity_main,
+)
+from spec_runner.script_runtime_commands import docs_generate_all_main as _docs_generate_all_main
+from spec_runner.script_runtime_commands import perf_smoke_main as _perf_smoke_main
+
 
 @lru_cache(maxsize=None)
 def _repo_root() -> Path:
@@ -35,11 +44,15 @@ def _run_script_main(script_relpath: str, argv: list[str] | None = None) -> int:
 
 
 def ci_gate_summary_main(argv: list[str] | None = None) -> int:
-    return _run_script_main("scripts/ci_gate_summary.py", argv)
+    return int(_ci_gate_summary_main(argv))
+
+
+def check_docs_freshness_main(argv: list[str] | None = None) -> int:
+    return int(_check_docs_freshness_main(argv))
 
 
 def compare_conformance_parity_main(argv: list[str] | None = None) -> int:
-    return _run_script_main("scripts/compare_conformance_parity.py", argv)
+    return int(_compare_conformance_parity_main(argv))
 
 
 def conformance_purpose_report_main(argv: list[str] | None = None) -> int:
@@ -47,7 +60,7 @@ def conformance_purpose_report_main(argv: list[str] | None = None) -> int:
 
 
 def docs_generate_all_main(argv: list[str] | None = None) -> int:
-    return _run_script_main("scripts/docs_generate_all.py", argv)
+    return int(_docs_generate_all_main(argv))
 
 
 def docs_generate_specs_main(argv: list[str] | None = None) -> int:
@@ -71,7 +84,7 @@ def normalize_docs_layout_main(argv: list[str] | None = None) -> int:
 
 
 def normalize_repo_main(argv: list[str] | None = None) -> int:
-    return _run_script_main("scripts/normalize_repo.py", argv)
+    return int(_normalize_repo_main(argv))
 
 
 def objective_scorecard_report_main(argv: list[str] | None = None) -> int:
@@ -146,6 +159,10 @@ def generate_spec_schema_field_catalog_main(argv: list[str] | None = None) -> in
 
 def generate_traceability_catalog_main(argv: list[str] | None = None) -> int:
     return _run_script_main("scripts/generate_traceability_catalog.py", argv)
+
+
+def perf_smoke_main(argv: list[str] | None = None) -> int:
+    return int(_perf_smoke_main(argv))
 
 
 def run_governance_specs_main(argv: list[str] | None = None) -> int:

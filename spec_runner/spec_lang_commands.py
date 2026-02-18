@@ -21,6 +21,7 @@ from spec_runner.docs_quality import (
 )
 from spec_runner.schema_registry import compile_registry, write_compiled_registry_artifact
 from spec_runner.script_entrypoints import (
+    check_docs_freshness_main,
     ci_gate_summary_main,
     compare_conformance_parity_main,
     conformance_purpose_report_main,
@@ -33,6 +34,7 @@ from spec_runner.script_entrypoints import (
     python_conformance_runner_main,
     quality_metric_reports_main,
     run_governance_specs_main,
+    perf_smoke_main,
     spec_portability_report_main,
     split_library_cases_per_symbol_main,
 )
@@ -335,6 +337,7 @@ def main(argv: list[str] | None = None) -> int:
             "spec-lang-format",
             "spec-lang-lint",
             "docs-lint",
+            "check-docs-freshness",
             "ci-gate-summary",
             "compare-conformance-parity",
             "conformance-purpose-report",
@@ -348,6 +351,7 @@ def main(argv: list[str] | None = None) -> int:
             "python-conformance-runner",
             "quality-metric-reports",
             "run-governance-specs",
+            "perf-smoke",
             "spec-portability-report",
             "split-library-cases-per-symbol",
         ),
@@ -370,6 +374,8 @@ def main(argv: list[str] | None = None) -> int:
         return spec_lang_lint_main(forwarded)
     if ns.command == "docs-lint":
         return docs_lint_main(forwarded)
+    if ns.command == "check-docs-freshness":
+        return check_docs_freshness_main(forwarded)
     if ns.command == "ci-gate-summary":
         return ci_gate_summary_main(forwarded)
     if ns.command == "compare-conformance-parity":
@@ -396,6 +402,8 @@ def main(argv: list[str] | None = None) -> int:
         return quality_metric_reports_main(forwarded)
     if ns.command == "run-governance-specs":
         return run_governance_specs_main(forwarded)
+    if ns.command == "perf-smoke":
+        return perf_smoke_main(forwarded)
     if ns.command == "spec-portability-report":
         return spec_portability_report_main(forwarded)
     if ns.command == "split-library-cases-per-symbol":

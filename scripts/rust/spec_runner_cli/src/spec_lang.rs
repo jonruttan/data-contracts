@@ -1,11 +1,14 @@
 use crate::job_helpers;
 use std::collections::HashMap;
 use std::env as std_env;
+use std::fs;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::thread;
 use std::time::Duration;
 
 use serde_json::{Map, Number, Value};
+use serde_yaml::Value as YamlValue;
 
 #[derive(Clone, Debug)]
 pub enum Expr {
@@ -424,6 +427,190 @@ fn eval_op(
         "std.math.sub" | "sub" => numeric_sub(name, args, env, limits, steps, runtime),
         "std.math.mul" | "mul" => numeric_fold(name, args, env, limits, steps, runtime, 1.0, |a, b| a * b),
         "std.math.div" | "div" => numeric_div(name, args, env, limits, steps, runtime),
+        "ops.fs.walk" => {
+            require_arity(name, args, 2)?;
+            let root_v = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let opts_v = eval_runtime(&args[1], env, limits, steps, runtime)?;
+            let root = root_v
+                .as_str()
+                .map(str::trim)
+                .filter(|s| !s.is_empty())
+                .ok_or_else(|| EvalError::new("spec_lang ops.fs.walk expects non-empty root path"))?;
+            let opts = opts_v
+                .as_object()
+                .ok_or_else(|| EvalError::new("spec_lang ops.fs.walk expects options mapping"))?;
+            let pattern = opts
+                .get("pattern")
+                .and_then(|v| v.as_str())
+                .unwrap_or("*")
+                .to_string();
+            let include_dirs = opts.get("include_dirs").and_then(|v| v.as_bool()).unwrap_or(false);
+            let relative = opts.get("relative").and_then(|v| v.as_bool()).unwrap_or(true);
+            let base = PathBuf::from(root);
+            if !base.exists() {
+                return Ok(Value::Array(vec![]));
+            }
+            let mut rows: Vec<Value> = vec![];
+            let mut stack = vec![base.clone()];
+            while let Some(cur) = stack.pop() {
+                let rd = match fs::read_dir(&cur) {
+                    Ok(x) => x,
+                    Err(_) => continue,
+                };
+                for entry in rd.flatten() {
+                    let p = entry.path();
+                    let file_type = match entry.file_type() {
+                        Ok(t) => t,
+                        Err(_) => continue,
+                    };
+                    let rel_path = if relative {
+                        p.strip_prefix(&base)
+                            .map(|s| s.to_string_lossy().replace('\\', "/"))
+                            .unwrap_or_else(|_| p.to_string_lossy().replace('\\', "/"))
+                    } else {
+                        p.to_string_lossy().replace('\\', "/")
+                    };
+                    if file_type.is_dir() {
+                        stack.push(p.clone());
+                        if include_dirs && wildcard_match(&pattern, &rel_path) {
+                            let mut row = Map::new();
+                            row.insert("path".to_string(), Value::String(rel_path));
+                            row.insert("type".to_string(), Value::String("dir".to_string()));
+                            row.insert("exists".to_string(), Value::Bool(true));
+                            rows.push(Value::Object(row));
+                        }
+                        continue;
+                    }
+                    if !file_type.is_file() || !wildcard_match(&pattern, &rel_path) {
+                        continue;
+                    }
+                    let mut row = Map::new();
+                    row.insert("path".to_string(), Value::String(rel_path));
+                    row.insert("type".to_string(), Value::String("file".to_string()));
+                    row.insert("exists".to_string(), Value::Bool(true));
+                    if let Ok(meta) = fs::metadata(&p) {
+                        row.insert(
+                            "size_bytes".to_string(),
+                            Value::Number(Number::from(meta.len() as i64)),
+                        );
+                    }
+                    rows.push(Value::Object(row));
+                }
+            }
+            Ok(Value::Array(rows))
+        }
+        "ops.fs.file.set" => {
+            require_arity(name, args, 2)?;
+            let path_v = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let body_v = eval_runtime(&args[1], env, limits, steps, runtime)?;
+            let path = path_v
+                .as_str()
+                .map(str::trim)
+                .filter(|s| !s.is_empty())
+                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.set expects non-empty path"))?;
+            let body = body_v
+                .as_str()
+                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.set expects string content"))?;
+            if let Some(parent) = Path::new(path).parent() {
+                let _ = fs::create_dir_all(parent);
+            }
+            fs::write(path, body).map_err(|e| EvalError::new(format!("ops.fs.file.set error: {e}")))?;
+            Ok(Value::Bool(true))
+        }
+        "ops.fs.file.append" => {
+            require_arity(name, args, 2)?;
+            let path_v = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let body_v = eval_runtime(&args[1], env, limits, steps, runtime)?;
+            let path = path_v
+                .as_str()
+                .map(str::trim)
+                .filter(|s| !s.is_empty())
+                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.append expects non-empty path"))?;
+            let body = body_v
+                .as_str()
+                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.append expects string content"))?;
+            if let Some(parent) = Path::new(path).parent() {
+                let _ = fs::create_dir_all(parent);
+            }
+            let mut existing = String::new();
+            if let Ok(raw) = fs::read_to_string(path) {
+                existing = raw;
+            }
+            existing.push_str(body);
+            fs::write(path, existing).map_err(|e| EvalError::new(format!("ops.fs.file.append error: {e}")))?;
+            Ok(Value::Bool(true))
+        }
+        "ops.fs.file.mkdir_p" => {
+            require_arity(name, args, 1)?;
+            let path_v = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let path = path_v
+                .as_str()
+                .map(str::trim)
+                .filter(|s| !s.is_empty())
+                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.mkdir_p expects non-empty path"))?;
+            fs::create_dir_all(path)
+                .map_err(|e| EvalError::new(format!("ops.fs.file.mkdir_p error: {e}")))?;
+            Ok(Value::Bool(true))
+        }
+        "ops.fs.file.remove" => {
+            require_arity(name, args, 1)?;
+            let path_v = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let path = path_v
+                .as_str()
+                .map(str::trim)
+                .filter(|s| !s.is_empty())
+                .ok_or_else(|| EvalError::new("spec_lang ops.fs.file.remove expects non-empty path"))?;
+            let p = Path::new(path);
+            if !p.exists() {
+                return Ok(Value::Bool(false));
+            }
+            if p.is_dir() {
+                return Err(EvalError::new(
+                    "spec_lang ops.fs.file.remove expects file path, got directory",
+                ));
+            }
+            fs::remove_file(p).map_err(|e| EvalError::new(format!("ops.fs.file.remove error: {e}")))?;
+            Ok(Value::Bool(true))
+        }
+        "ops.fs.yaml.parse" => {
+            require_arity(name, args, 1)?;
+            let raw_v = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let raw = raw_v
+                .as_str()
+                .ok_or_else(|| EvalError::new("spec_lang ops.fs.yaml.parse expects string input"))?;
+            let parsed: YamlValue = serde_yaml::from_str(raw)
+                .map_err(|e| EvalError::new(format!("spec_lang ops.fs.yaml.parse invalid YAML: {e}")))?;
+            Ok(yaml_to_json_value(&parsed))
+        }
+        "ops.fs.yaml.stringify" => {
+            require_arity(name, args, 1)?;
+            let value = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            serde_yaml::to_string(&json_to_yaml_value(&value))
+                .map(Value::String)
+                .map_err(|e| EvalError::new(format!("spec_lang ops.fs.yaml.stringify error: {e}")))
+        }
+        "ops.fs.yaml.get" => {
+            require_arity(name, args, 2)?;
+            let obj = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let path = eval_runtime(&args[1], env, limits, steps, runtime)?;
+            let path_segments = value_to_path_segments(&path, name)?;
+            Ok(get_in_path(&obj, &path_segments).cloned().unwrap_or(Value::Null))
+        }
+        "ops.fs.yaml.get_or" => {
+            require_arity(name, args, 3)?;
+            let obj = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let path = eval_runtime(&args[1], env, limits, steps, runtime)?;
+            let fallback = eval_runtime(&args[2], env, limits, steps, runtime)?;
+            let path_segments = value_to_path_segments(&path, name)?;
+            Ok(get_in_path(&obj, &path_segments).cloned().unwrap_or(fallback))
+        }
+        "ops.fs.yaml.has_path" => {
+            require_arity(name, args, 2)?;
+            let obj = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let path = eval_runtime(&args[1], env, limits, steps, runtime)?;
+            let path_segments = value_to_path_segments(&path, name)?;
+            Ok(Value::Bool(get_in_path(&obj, &path_segments).is_some()))
+        }
         "ops.os.exec" => {
             require_arity(name, args, 2)?;
             require_ops_os(runtime, name)?;
@@ -471,6 +658,95 @@ fn eval_op(
             obj.insert("duration_ms".to_string(), Value::Number(Number::from(0)));
             obj.insert("timed_out".to_string(), Value::Bool(false));
             Ok(Value::Object(obj))
+        }
+        "ops.os.exec_capture_ex" => {
+            require_arity(name, args, 2)?;
+            require_ops_os(runtime, name)?;
+            let cmd = eval_runtime(&args[0], env, limits, steps, runtime)?;
+            let opts = eval_runtime(&args[1], env, limits, steps, runtime)?;
+            let command = coerce_command(name, &cmd)?;
+            let opts_obj = opts
+                .as_object()
+                .ok_or_else(|| EvalError::new("spec_lang ops.os.exec_capture_ex expects options mapping"))?;
+            let timeout = opts_obj
+                .get("timeout_ms")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            if timeout < 0 {
+                return Err(EvalError::new(
+                    "spec_lang ops.os.exec_capture_ex expects non-negative timeout_ms",
+                ));
+            }
+            let cwd = opts_obj.get("cwd").and_then(|v| v.as_str()).map(|s| s.to_string());
+            let stdin_text = opts_obj
+                .get("stdin_text")
+                .and_then(|v| v.as_str())
+                .map(|s| s.to_string())
+                .unwrap_or_default();
+            let mut proc = Command::new(&command[0]);
+            if command.len() > 1 {
+                proc.args(&command[1..]);
+            }
+            if let Some(dir) = cwd {
+                if !dir.trim().is_empty() {
+                    proc.current_dir(dir);
+                }
+            }
+            if let Some(env_obj) = opts_obj.get("env").and_then(|v| v.as_object()) {
+                for (k, v) in env_obj {
+                    proc.env(k, v.as_str().unwrap_or("").to_string());
+                }
+            }
+            if !stdin_text.is_empty() {
+                use std::io::Write;
+                use std::process::Stdio;
+                let mut child = proc
+                    .stdin(Stdio::piped())
+                    .stdout(Stdio::piped())
+                    .stderr(Stdio::piped())
+                    .spawn()
+                    .map_err(|e| EvalError::new(format!("ops.os.exec_capture_ex error: {e}")))?;
+                if let Some(stdin) = child.stdin.as_mut() {
+                    let _ = stdin.write_all(stdin_text.as_bytes());
+                }
+                let out = child
+                    .wait_with_output()
+                    .map_err(|e| EvalError::new(format!("ops.os.exec_capture_ex error: {e}")))?;
+                let code = out.status.code().unwrap_or(-1) as i64;
+                runtime.last_exit_code = Some(code);
+                let mut obj = Map::new();
+                obj.insert("code".to_string(), Value::Number(Number::from(code)));
+                obj.insert(
+                    "stdout".to_string(),
+                    Value::String(String::from_utf8_lossy(&out.stdout).to_string()),
+                );
+                obj.insert(
+                    "stderr".to_string(),
+                    Value::String(String::from_utf8_lossy(&out.stderr).to_string()),
+                );
+                obj.insert("duration_ms".to_string(), Value::Number(Number::from(0)));
+                obj.insert("timed_out".to_string(), Value::Bool(false));
+                Ok(Value::Object(obj))
+            } else {
+                let out = proc
+                    .output()
+                    .map_err(|e| EvalError::new(format!("ops.os.exec_capture_ex error: {e}")))?;
+                let code = out.status.code().unwrap_or(-1) as i64;
+                runtime.last_exit_code = Some(code);
+                let mut obj = Map::new();
+                obj.insert("code".to_string(), Value::Number(Number::from(code)));
+                obj.insert(
+                    "stdout".to_string(),
+                    Value::String(String::from_utf8_lossy(&out.stdout).to_string()),
+                );
+                obj.insert(
+                    "stderr".to_string(),
+                    Value::String(String::from_utf8_lossy(&out.stderr).to_string()),
+                );
+                obj.insert("duration_ms".to_string(), Value::Number(Number::from(0)));
+                obj.insert("timed_out".to_string(), Value::Bool(false));
+                Ok(Value::Object(obj))
+            }
         }
         "ops.os.env_get" => {
             require_arity(name, args, 2)?;
@@ -704,6 +980,132 @@ fn truthy(v: &Value) -> bool {
         Value::Array(a) => !a.is_empty(),
         Value::Object(o) => !o.is_empty(),
     }
+}
+
+fn value_to_path_segments(path: &Value, op: &str) -> EvalResult<Vec<Value>> {
+    let arr = path
+        .as_array()
+        .ok_or_else(|| EvalError::new(format!("spec_lang {op} expects list path")))?;
+    Ok(arr.clone())
+}
+
+fn get_in_path<'a>(root: &'a Value, path: &[Value]) -> Option<&'a Value> {
+    let mut cur = root;
+    for seg in path {
+        match cur {
+            Value::Object(map) => {
+                let key = seg
+                    .as_str()
+                    .map(str::to_string)
+                    .unwrap_or_else(|| seg.to_string());
+                cur = map.get(&key)?;
+            }
+            Value::Array(items) => {
+                let idx = seg.as_i64()? as isize;
+                if idx < 0 {
+                    return None;
+                }
+                cur = items.get(idx as usize)?;
+            }
+            _ => return None,
+        }
+    }
+    Some(cur)
+}
+
+fn yaml_to_json_value(v: &YamlValue) -> Value {
+    match v {
+        YamlValue::Null => Value::Null,
+        YamlValue::Bool(b) => Value::Bool(*b),
+        YamlValue::Number(n) => {
+            if let Some(i) = n.as_i64() {
+                Value::Number(Number::from(i))
+            } else if let Some(f) = n.as_f64() {
+                Number::from_f64(f)
+                    .map(Value::Number)
+                    .unwrap_or(Value::Null)
+            } else {
+                Value::Null
+            }
+        }
+        YamlValue::String(s) => Value::String(s.clone()),
+        YamlValue::Sequence(seq) => Value::Array(seq.iter().map(yaml_to_json_value).collect()),
+        YamlValue::Mapping(map) => {
+            let mut out = Map::new();
+            for (k, v) in map {
+                let key = match k {
+                    YamlValue::String(s) => s.clone(),
+                    _ => serde_yaml::to_string(k)
+                        .unwrap_or_else(|_| "<key>".to_string())
+                        .trim()
+                        .to_string(),
+                };
+                out.insert(key, yaml_to_json_value(v));
+            }
+            Value::Object(out)
+        }
+    }
+}
+
+fn json_to_yaml_value(v: &Value) -> YamlValue {
+    match v {
+        Value::Null => YamlValue::Null,
+        Value::Bool(b) => YamlValue::Bool(*b),
+        Value::Number(n) => {
+            if let Some(i) = n.as_i64() {
+                YamlValue::Number(serde_yaml::Number::from(i))
+            } else if let Some(f) = n.as_f64() {
+                YamlValue::Number(serde_yaml::Number::from(f))
+            } else {
+                YamlValue::Null
+            }
+        }
+        Value::String(s) => YamlValue::String(s.clone()),
+        Value::Array(arr) => YamlValue::Sequence(arr.iter().map(json_to_yaml_value).collect()),
+        Value::Object(map) => {
+            let mut out = serde_yaml::Mapping::new();
+            for (k, v) in map {
+                out.insert(YamlValue::String(k.clone()), json_to_yaml_value(v));
+            }
+            YamlValue::Mapping(out)
+        }
+    }
+}
+
+fn wildcard_match(pattern: &str, text: &str) -> bool {
+    if pattern == "*" {
+        return true;
+    }
+    if !pattern.contains('*') {
+        return pattern == text;
+    }
+    let mut rest = text;
+    let mut first = true;
+    for part in pattern.split('*') {
+        if part.is_empty() {
+            continue;
+        }
+        if first && !pattern.starts_with('*') {
+            if !rest.starts_with(part) {
+                return false;
+            }
+            rest = &rest[part.len()..];
+            first = false;
+            continue;
+        }
+        if let Some(idx) = rest.find(part) {
+            rest = &rest[idx + part.len()..];
+        } else {
+            return false;
+        }
+        first = false;
+    }
+    if !pattern.ends_with('*') {
+        if let Some(last) = pattern.split('*').filter(|s| !s.is_empty()).last() {
+            return text.ends_with(last);
+        }
+    }
+    true
 }
 
 fn require_arity(op: &str, args: &[Expr], n: usize) -> EvalResult<()> {
