@@ -15,8 +15,8 @@ harness:
     - /scripts/ci_gate_summary.py
     - /scripts/rust/spec_runner_cli/src/main.rs
     required_tokens:
-    - governance_triage.sh
-    - governance_targeted
+    - critical-gate
+    - governance_critical
     - governance_broad
     - triage_attempted
     - triage_mode

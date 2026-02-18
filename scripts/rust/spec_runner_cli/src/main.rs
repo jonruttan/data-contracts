@@ -808,35 +808,6 @@ fn collect_unit_test_opt_out(root: &Path) -> Value {
     })
 }
 
-fn read_governance_triage_metadata(root: &Path) -> Value {
-    let p = root.join(".artifacts/governance-triage.json");
-    if let Ok(text) = fs::read_to_string(&p) {
-        if let Ok(v) = serde_json::from_str::<Value>(&text) {
-            if let Some(obj) = v.as_object() {
-                let mut out = serde_json::Map::new();
-                for key in [
-                    "triage_attempted",
-                    "triage_mode",
-                    "triage_result",
-                    "failing_check_ids",
-                    "failing_check_prefixes",
-                    "stall_detected",
-                    "stall_phase",
-                    "selection_source",
-                    "selected_prefixes",
-                    "broad_required",
-                ] {
-                    if let Some(value) = obj.get(key) {
-                        out.insert(key.to_string(), value.clone());
-                    }
-                }
-                return Value::Object(out);
-            }
-        }
-    }
-    Value::Object(serde_json::Map::new())
-}
-
 fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut out = ".artifacts/gate-summary.json".to_string();
     let mut runner_bin = format!("./{}/{}", "scripts", "runner_adapter.sh");
@@ -922,37 +893,8 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
 
     let default_steps = vec![
         (
-            "governance_targeted",
-            vec![
-                "./scripts/governance_triage.sh".to_string(),
-                "--mode".to_string(),
-                "auto".to_string(),
-                "--impl".to_string(),
-                runner_impl.clone(),
-                "--triage-enabled".to_string(),
-                if env_bool("SPEC_GOV_TRIAGE_ENABLED", true) {
-                    "1".to_string()
-                } else {
-                    "0".to_string()
-                },
-                "--triage-max-retries".to_string(),
-                env::var("SPEC_GOV_TRIAGE_MAX_RETRIES").unwrap_or_else(|_| "1".to_string()),
-                "--triage-fallback-prefixes".to_string(),
-                env::var("SPEC_GOV_TRIAGE_FALLBACK_PREFIXES")
-                    .unwrap_or_else(|_| "docs.,normalization.,runtime.".to_string()),
-                "--triage-profile-level".to_string(),
-                env::var("SPEC_GOV_TRIAGE_PROFILE_LEVEL").unwrap_or_else(|_| "basic".to_string()),
-                "--broad-timeout-seconds".to_string(),
-                env::var("SPEC_GOV_TRIAGE_STALL_TIMEOUT_SECONDS")
-                    .unwrap_or_else(|_| "90".to_string()),
-                "--triage-liveness-level".to_string(),
-                env::var("SPEC_GOV_TRIAGE_LIVENESS_LEVEL").unwrap_or_else(|_| "basic".to_string()),
-                "--triage-liveness-stall-ms".to_string(),
-                env::var("SPEC_GOV_TRIAGE_LIVENESS_STALL_MS").unwrap_or_else(|_| "30000".to_string()),
-                "--triage-liveness-kill-grace-ms".to_string(),
-                env::var("SPEC_GOV_TRIAGE_LIVENESS_KILL_GRACE_MS")
-                    .unwrap_or_else(|_| "5000".to_string()),
-            ],
+            "governance_critical",
+            runner_command(&runner_bin, &runner_impl, "critical-gate"),
         ),
         (
             "governance_broad",
@@ -1130,15 +1072,9 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             "exit_code": code,
             "duration_ms": duration_ms,
         });
-        if name == "governance_targeted" {
-            let triage_meta = read_governance_triage_metadata(root);
-            if let (Some(dst), Some(src)) = (step_row.as_object_mut(), triage_meta.as_object()) {
-                for (k, v) in src {
-                    dst.insert(k.clone(), v.clone());
-                }
-            }
+        if name == "governance_critical" {
             if let Some(dst) = step_row.as_object_mut() {
-                dst.insert("triage_phase".to_string(), Value::String("targeted".to_string()));
+                dst.insert("triage_phase".to_string(), Value::String("critical".to_string()));
             }
         } else if name == "governance_broad" {
             if let Some(dst) = step_row.as_object_mut() {
@@ -1218,7 +1154,7 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
         .and_then(|steps_arr| {
             steps_arr
                 .iter()
-                .find(|s| s.get("name").and_then(Value::as_str) == Some("governance"))
+                .find(|s| s.get("name").and_then(Value::as_str) == Some("governance_broad"))
                 .cloned()
         });
     if let Some(governance_step) = governance_step_value {

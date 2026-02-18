@@ -4,8 +4,8 @@
 
 ```yaml spec-test
 id: SRGOV-RUNTIME-TRIAGE-010
-title: ci gate includes mandatory broad governance after targeted phase
-purpose: Ensures ci-gate-summary performs targeted governance first, then mandatory broad
+title: ci gate includes mandatory broad governance after critical phase
+purpose: Ensures ci-gate-summary performs critical governance first, then mandatory broad
   governance.
 type: governance.check
 check: runtime.ci_gate_broad_governance_required
@@ -16,7 +16,7 @@ harness:
     - /scripts/ci_gate_summary.py
     - /scripts/rust/spec_runner_cli/src/main.rs
     required_tokens:
-    - governance_targeted
+    - governance_critical
     - governance_broad
     - triage_phase
     - broad_required
