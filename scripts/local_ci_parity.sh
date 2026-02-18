@@ -11,7 +11,7 @@ if [[ -z "${SPEC_RUNNER_IMPL:-}" ]]; then
   SPEC_RUNNER_IMPL="rust"
 fi
 
-MODE="${SPEC_PREPUSH_MODE:-parity}"
+MODE="${SPEC_PREPUSH_MODE:-critical}"
 PARITY_T0="$(date +%s)"
 
 run_step() {
@@ -57,11 +57,36 @@ paths_match_prefixes() {
   return 1
 }
 
+print_critical_summary() {
+  local summary_file="${ROOT_DIR}/.artifacts/critical-gate-summary.json"
+  if [[ ! -f "${summary_file}" ]]; then
+    echo "[local-ci-parity] critical summary missing: ${summary_file}"
+    return 0
+  fi
+  local total_ms
+  total_ms="$(grep -E '"total_duration_ms"' "${summary_file}" | head -1 | sed -E 's/[^0-9]*([0-9]+).*/\1/')"
+  local first_failure
+  first_failure="$(grep -E '"first_failure_check_id"' "${summary_file}" | head -1 | sed -E 's/.*: (null|"([^"]*)").*/\2/')"
+  echo "[local-ci-parity] critical-gate total_duration_ms=${total_ms:-unknown}"
+  if [[ -n "${first_failure}" ]]; then
+    echo "[local-ci-parity] critical-gate first_failure_check_id=${first_failure}"
+  fi
+}
+
+run_critical_gate() {
+  local code=0
+  set +e
+  run_step critical-gate "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" critical-gate
+  code=$?
+  set -e
+  print_critical_summary
+  if [[ "${code}" -ne 0 ]]; then
+    return "${code}"
+  fi
+}
+
 lane_rust_core() {
-  export SPEC_GOV_TRIAGE_REQUIRE_BROAD=0
-  export SPEC_GOV_TRIAGE_MODE_DEFAULT="${SPEC_GOV_TRIAGE_MODE_DEFAULT:-targeted-first}"
-  run_step normalize-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" normalize-check
-  run_step governance-triage ./scripts/governance_triage.sh --mode auto --impl "${SPEC_RUNNER_IMPL}"
+  run_critical_gate
 
   CHANGED_PATHS="$(collect_changed_paths || true)"
   if [[ -n "${CHANGED_PATHS}" ]]; then
@@ -73,10 +98,16 @@ lane_rust_core() {
     echo "[local-ci-parity] no changed paths detected"
   fi
 
-  if paths_match_prefixes "docs/spec/" "spec_runner/" "scripts/run_governance_specs.py" "scripts/normalize_repo.py"; then
-    run_step governance-heavy "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" governance-heavy
+  if [[ "${SPEC_PREPUSH_REQUIRE_BROAD:-0}" == "1" ]]; then
+    run_step governance-triage ./scripts/governance_triage.sh --mode broad-first --impl "${SPEC_RUNNER_IMPL}"
   else
-    echo "[local-ci-parity] skip governance-heavy (no matching changes)"
+    echo "[local-ci-parity] skip broad governance (set SPEC_PREPUSH_REQUIRE_BROAD=1 to enable)"
+  fi
+
+  if paths_match_prefixes "docs/spec/" "spec_runner/" "scripts/run_governance_specs.py" "scripts/normalize_repo.py"; then
+    run_step normalize-check "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" normalize-check
+  else
+    echo "[local-ci-parity] skip normalize-check (no matching changes)"
   fi
 
   if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "docs/spec/schema/" "docs/spec/metrics/" "spec_runner/docs_" "spec_runner/docs_generators.py"; then
@@ -85,7 +116,11 @@ lane_rust_core() {
     echo "[local-ci-parity] skip docs-generate-check (no matching changes)"
   fi
 
-  run_step perf-smoke "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" perf-smoke --mode strict --compare-only
+  if [[ "${SPEC_PREPUSH_REQUIRE_BROAD:-0}" == "1" ]]; then
+    run_step perf-smoke "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" perf-smoke --mode strict --compare-only
+  else
+    echo "[local-ci-parity] skip perf-smoke (broad mode disabled)"
+  fi
 }
 
 lane_python_parity() {
@@ -96,6 +131,10 @@ lane_python_parity() {
 }
 
 case "${MODE}" in
+  critical)
+    lane_rust_core
+    echo "[local-ci-parity] mode=critical: rust-only critical path"
+    ;;
   parity)
     lane_rust_core
     lane_python_parity
@@ -105,7 +144,7 @@ case "${MODE}" in
     echo "[local-ci-parity] mode=fast: skip python parity lane"
     ;;
   *)
-    echo "ERROR: unsupported SPEC_PREPUSH_MODE '${MODE}' (expected parity|fast)" >&2
+    echo "ERROR: unsupported SPEC_PREPUSH_MODE '${MODE}' (expected critical|parity|fast)" >&2
     exit 2
     ;;
 esac

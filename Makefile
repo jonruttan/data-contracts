@@ -69,14 +69,14 @@ ci-cleanroom: ## Run full CI gate in a fresh git worktree (clean-checkout parity
 perf-smoke: ## Run governance/docs timing checks against perf baselines (warn mode)
 	@./scripts/runner_adapter.sh perf-smoke --mode warn
 
-prepush: ## Required local pre-push gate (default parity: rust core path + python parity lane)
-	@SPEC_PREPUSH_MODE=parity ./scripts/local_ci_parity.sh
+prepush: ## Required local pre-push gate (default rust critical-gate path)
+	@SPEC_PREPUSH_MODE=critical ./scripts/local_ci_parity.sh
 
-prepush-fast: ## Fast opt-out pre-push mode (skips python parity lane)
+prepush-fast: ## Rust-only critical pre-push mode
 	@SPEC_PREPUSH_MODE=fast ./scripts/local_ci_parity.sh
 
-prepush-parity: ## Alias for parity-default pre-push gate
-	@$(MAKE) prepush
+prepush-parity: ## Full parity pre-push gate (rust critical + python parity lane)
+	@SPEC_PREPUSH_MODE=parity ./scripts/local_ci_parity.sh
 
 python-parity: ## Optional Python validation lane (governance + conformance parity)
 	@./scripts/runner_adapter.sh --impl python governance

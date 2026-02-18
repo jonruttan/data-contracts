@@ -47,12 +47,12 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 ## Generated Runner API Catalog
 
-- command_count: 62
+- command_count: 63
 - python_command_count: 43
-- rust_command_count: 62
+- rust_command_count: 63
 - parity_command_count: 43
 - all_commands_parity: false
-- doc_quality_score: 0.8774
+- doc_quality_score: 0.873
 
 | command | group | python | rust | parity |
 |---|---|---|---|---|
@@ -81,6 +81,7 @@ Provide generated command-surface documentation for the canonical runner interfa
 | `conformance-purpose-md` | `metrics` | true | true | true |
 | `contract-assertions-json` | `metrics` | true | true | true |
 | `contract-assertions-md` | `metrics` | true | true | true |
+| `critical-gate` | `reporting` | false | true | false |
 | `docs-build` | `docs` | true | true | true |
 | `docs-build-check` | `docs` | true | true | true |
 | `docs-generate` | `docs` | true | true | true |
@@ -495,6 +496,21 @@ Provide generated command-surface documentation for the canonical runner interfa
 
 - Examples:
   - `./scripts/runner_adapter.sh contract-assertions-md`: Execute command with canonical adapter routing.
+
+
+#### `critical-gate`
+
+- Summary: Runs `critical-gate` through the canonical runner entrypoint.
+- Details: Deterministic command dispatch through scripts/runner_adapter.sh.
+- Defaults:
+  - `impl=rust`: Default runner implementation lane.
+
+- Failure Modes:
+  - Unknown subcommand.
+  - Underlying command returns non-zero status.
+
+- Examples:
+  - `./scripts/runner_adapter.sh critical-gate`: Execute command with canonical adapter routing.
 
 
 #### `docs-build`
