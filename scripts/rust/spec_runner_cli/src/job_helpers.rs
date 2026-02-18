@@ -296,11 +296,18 @@ fn python_bin(root: &Path) -> String {
     "python3".to_string()
 }
 
-fn helper_exec_python_script(root: &Path, script_rel: &str, extra: &[String]) -> Result<Value, String> {
+fn helper_exec_python_command(
+    root: &Path,
+    command: &str,
+    extra: &[String],
+) -> Result<Value, String> {
     let py = python_bin(root);
-    let script_path = resolve(root, script_rel);
     let mut cmd = Command::new(&py);
-    cmd.arg(script_path.to_string_lossy().to_string())
+    cmd.args([
+        "-m",
+        "spec_runner.spec_lang_commands",
+        command,
+    ])
         .args(extra.iter())
         .current_dir(root)
         .stdin(Stdio::inherit())
@@ -308,18 +315,18 @@ fn helper_exec_python_script(root: &Path, script_rel: &str, extra: &[String]) ->
         .stderr(Stdio::inherit());
     let status = cmd
         .status()
-        .map_err(|e| format!("failed to run {} {}: {e}", py, script_path.display()))?;
+        .map_err(|e| format!("failed to run {} -m spec_runner.spec_lang_commands {}: {e}", py, command))?;
     let code = status.code().unwrap_or(1);
     if code != 0 {
         return Err(format!(
-            "script command failed (exit={code}): {} {}",
+            "spec-lang command failed (exit={code}): {} -m spec_runner.spec_lang_commands {}",
             py,
-            script_path.display()
+            command
         ));
     }
     Ok(json!({
         "ok": true,
-        "script": script_path.to_string_lossy().to_string(),
+        "command": command,
         "exit_code": code,
     }))
 }
@@ -349,7 +356,7 @@ fn helper_parity_run_conformance(root: &Path, payload: &Value) -> Result<Value, 
         "--out".to_string(),
         out.clone(),
     ];
-    let mut res = helper_exec_python_script(root, "/scripts/compare_conformance_parity.py", &args)?;
+    let mut res = helper_exec_python_command(root, "compare-conformance-parity", &args)?;
     if let Some(map) = res.as_object_mut() {
         map.insert("out".to_string(), Value::String(out));
     }
@@ -373,7 +380,7 @@ fn helper_perf_run_smoke(root: &Path, payload: &Value) -> Result<Value, String> 
         "--report-out".to_string(),
         report_out.clone(),
     ];
-    let mut res = helper_exec_python_script(root, "/scripts/perf_smoke.py", &args)?;
+    let mut res = helper_exec_python_command(root, "perf-smoke", &args)?;
     if let Some(map) = res.as_object_mut() {
         map.insert("mode".to_string(), Value::String(selected_mode));
         map.insert("report_out".to_string(), Value::String(report_out));
@@ -471,7 +478,7 @@ fn helper_docs_generate_all(root: &Path, payload: &Value) -> Result<Value, Strin
         args.push("--surface".to_string());
         args.push(s.to_string());
     }
-    let mut res = helper_exec_python_script(root, "/scripts/docs_generate_all.py", &args)?;
+    let mut res = helper_exec_python_command(root, "docs-generate-all", &args)?;
     if let Some(map) = res.as_object_mut() {
         map.insert("action".to_string(), Value::String(action));
         if let Some(s) = surface {

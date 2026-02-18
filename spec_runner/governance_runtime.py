@@ -5197,6 +5197,27 @@ def _run_python_script_check(root: Path, args: list[str]) -> list[str]:
     return lines
 
 
+def _run_python_module_check(root: Path, module: str, args: list[str]) -> list[str]:
+    py = root / ".venv/bin/python"
+    cmd = [str(py if py.exists() else Path("python3")), "-m", module, *args]
+    try:
+        cp = _profiled_subprocess_run(
+            cmd,
+            cwd=root,
+            phase="governance.python_module_check",
+        )
+    except LivenessError as exc:
+        return [
+            f"-m {module} {' '.join(args)} failed liveness watchdog: {exc.reason_token}"
+        ]
+    if cp.returncode == 0:
+        return []
+    lines = [x.strip() for x in ((cp.stdout or "") + "\n" + (cp.stderr or "")).splitlines() if x.strip()]
+    if not lines:
+        return [f"-m {module} {' '.join(args)} failed with exit code {cp.returncode}"]
+    return lines
+
+
 def _scan_docs_generator_registry_valid(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     registry, issues = load_docs_generator_registry(root)
@@ -5238,7 +5259,11 @@ def _scan_docs_generator_registry_valid(root: Path, *, harness: dict | None = No
 
 def _scan_docs_generator_outputs_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/docs_generate_all.py", "--check"])
+    return _run_python_module_check(
+        root,
+        "spec_runner.spec_lang_commands",
+        ["docs-generate-all", "--check"],
+    )
 
 
 def _scan_docs_generation_spec_cases_present(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -5361,7 +5386,11 @@ def _scan_docs_output_mode_contract_valid(root: Path, *, harness: dict | None = 
 
 def _scan_docs_generate_check_passes(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/docs_generate_specs.py", "--check"])
+    return _run_python_module_check(
+        root,
+        "spec_runner.spec_lang_commands",
+        ["docs-generate-specs", "--check"],
+    )
 
 
 def _scan_docs_generated_sections_read_only(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -5389,42 +5418,42 @@ def _scan_docs_generated_sections_read_only(root: Path, *, harness: dict | None 
 
 def _scan_docs_runner_api_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/generate_runner_api_catalog.py", "--check"])
+    return _run_python_module_check(root, "spec_runner.generate_runner_api_catalog", ["--check"])
 
 
 def _scan_docs_harness_type_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/generate_harness_type_catalog.py", "--check"])
+    return _run_python_module_check(root, "spec_runner.generate_harness_type_catalog", ["--check"])
 
 
 def _scan_docs_spec_lang_builtin_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/generate_spec_lang_builtin_catalog.py", "--check"])
+    return _run_python_module_check(root, "spec_runner.generate_spec_lang_builtin_catalog", ["--check"])
 
 
 def _scan_docs_policy_rule_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/generate_policy_rule_catalog.py", "--check"])
+    return _run_python_module_check(root, "spec_runner.generate_policy_rule_catalog", ["--check"])
 
 
 def _scan_docs_traceability_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/generate_traceability_catalog.py", "--check"])
+    return _run_python_module_check(root, "spec_runner.generate_traceability_catalog", ["--check"])
 
 
 def _scan_docs_governance_check_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/generate_governance_check_catalog.py", "--check"])
+    return _run_python_module_check(root, "spec_runner.generate_governance_check_catalog", ["--check"])
 
 
 def _scan_docs_metrics_field_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/generate_metrics_field_catalog.py", "--check"])
+    return _run_python_module_check(root, "spec_runner.generate_metrics_field_catalog", ["--check"])
 
 
 def _scan_docs_spec_schema_field_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    return _run_python_script_check(root, ["scripts/generate_spec_schema_field_catalog.py", "--check"])
+    return _run_python_module_check(root, "spec_runner.generate_spec_schema_field_catalog", ["--check"])
 
 
 def _read_json_artifact(root: Path, rel: str) -> tuple[dict | None, list[str]]:
@@ -5560,28 +5589,28 @@ def _scan_docs_reference_namespace_chapters_sync(root: Path, *, harness: dict | 
 def _scan_docs_docgen_quality_score_threshold(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     checks = [
-        ("scripts/generate_spec_lang_builtin_catalog.py", ".artifacts/spec-lang-builtin-catalog.json"),
-        ("scripts/generate_runner_api_catalog.py", ".artifacts/runner-api-catalog.json"),
-        ("scripts/generate_harness_type_catalog.py", ".artifacts/harness-type-catalog.json"),
+        ("spec_runner.generate_spec_lang_builtin_catalog", ".artifacts/spec-lang-builtin-catalog.json"),
+        ("spec_runner.generate_runner_api_catalog", ".artifacts/runner-api-catalog.json"),
+        ("spec_runner.generate_harness_type_catalog", ".artifacts/harness-type-catalog.json"),
     ]
     out: list[str] = []
     py = root / ".venv/bin/python"
-    for script_rel, rel in checks:
+    for module_name, rel in checks:
         # Ensure artifacts exist and are fresh even in cleanroom check-only runs.
         try:
             cp = _profiled_subprocess_run(
-                [str(py if py.exists() else Path("python3")), script_rel],
+                [str(py if py.exists() else Path("python3")), "-m", module_name],
                 cwd=root,
                 phase="governance.docgen_quality",
             )
         except LivenessError as exc:
             out.append(
-                f"{script_rel}: liveness watchdog triggered ({exc.reason_token})"
+                f"-m {module_name}: liveness watchdog triggered ({exc.reason_token})"
             )
             continue
         if cp.returncode != 0:
             lines = [x.strip() for x in ((cp.stdout or "") + "\n" + (cp.stderr or "")).splitlines() if x.strip()]
-            out.extend(lines or [f"{script_rel}: generation failed"])
+            out.extend(lines or [f"-m {module_name}: generation failed"])
             continue
         payload, errs = _read_json_artifact(root, rel)
         if errs:
@@ -9355,7 +9384,7 @@ def _run_normalize_check_cached(root: Path, *, scope: str) -> tuple[int, list[st
         cached = _NORMALIZE_CHECK_CACHE.get(cache_key)
     if cached is not None:
         return cached
-    cmd = [sys.executable, "scripts/normalize_repo.py", "--check", "--scope", scope]
+    cmd = [sys.executable, "-m", "spec_runner.spec_lang_commands", "normalize-repo", "--check", "--scope", scope]
     try:
         proc = _profiled_subprocess_run(
             cmd,
@@ -9369,7 +9398,7 @@ def _run_normalize_check_cached(root: Path, *, scope: str) -> tuple[int, list[st
         result = (
             124,
             [
-                "scripts/normalize_repo.py --check failed liveness watchdog: "
+                "spec_runner.spec_lang_commands normalize-repo --check failed liveness watchdog: "
                 f"{exc.reason_token}"
             ],
         )
@@ -9693,7 +9722,9 @@ def _scan_docs_canonical_freshness_strict(root: Path, *, harness: dict | None = 
     report_path = root / ".artifacts/docs-freshness-report.json"
     cmd = [
         sys.executable,
-        "scripts/check_docs_freshness.py",
+        "-m",
+        "spec_runner.spec_lang_commands",
+        "check-docs-freshness",
         "--strict",
         "--out",
         report_path.relative_to(root).as_posix(),
@@ -9703,7 +9734,7 @@ def _scan_docs_canonical_freshness_strict(root: Path, *, harness: dict | None = 
         return []
     out = (cp.stdout + cp.stderr).strip()
     if not out:
-        return ["scripts/check_docs_freshness.py --strict failed with no output"]
+        return ["spec_runner.spec_lang_commands check-docs-freshness --strict failed with no output"]
     return [line for line in out.splitlines() if line.strip()]
 
 
