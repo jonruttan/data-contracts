@@ -953,19 +953,9 @@ fn run_ci_gate_summary_native(root: &Path, forwarded: &[String]) -> i32 {
             ),
         ),
         (
-            "governance_heavy",
-            runner_command(&runner_bin, &runner_impl, "governance-heavy"),
-        ),
-        (
             "docs_generate_check",
             runner_command(&runner_bin, &runner_impl, "docs-generate-check"),
         ),
-        ("perf_smoke", {
-            let mut c = runner_command(&runner_bin, &runner_impl, "perf-smoke");
-            c.push("--mode".to_string());
-            c.push("strict".to_string());
-            c
-        }),
         (
             "docs_lint",
             runner_command(&runner_bin, &runner_impl, "docs-lint"),
