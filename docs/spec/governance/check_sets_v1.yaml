@@ -32,17 +32,19 @@ profiles:
           - critical-gate
           - ci-gate-summary
       - id: runtime.critical_ci_gate_step_order_python
-        kind: file_ordered_tokens
+        kind: file_tokens
         path: /scripts/ci_gate_summary.py
-        ordered_tokens:
-          - governance_critical
+        must_contain:
           - governance_broad
+        must_not_contain:
+          - governance_critical
       - id: runtime.critical_ci_gate_step_order_rust
         kind: file_tokens
         path: /scripts/rust/spec_runner_cli/src/main.rs
         must_contain:
-          - governance_critical
           - governance_broad
+        must_not_contain:
+          - governance_critical
       - id: runtime.critical_governance_check_registered
         kind: file_tokens
         path: /scripts/run_governance_specs.py
@@ -64,17 +66,19 @@ profiles:
         profile: full
         key: checks
       - id: runtime.full_ci_gate_step_order_python
-        kind: file_ordered_tokens
+        kind: file_tokens
         path: /scripts/ci_gate_summary.py
-        ordered_tokens:
-          - governance_critical
+        must_contain:
           - governance_broad
+        must_not_contain:
+          - governance_critical
       - id: runtime.full_ci_gate_step_tokens_rust
         kind: file_tokens
         path: /scripts/rust/spec_runner_cli/src/main.rs
         must_contain:
-          - governance_critical
           - governance_broad
+        must_not_contain:
+          - governance_critical
       - id: runtime.full_ci_gate_broad_is_native_python
         kind: file_tokens
         path: /scripts/ci_gate_summary.py

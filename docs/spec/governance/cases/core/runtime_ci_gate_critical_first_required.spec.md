@@ -4,18 +4,18 @@
 
 ```yaml spec-test
 id: SRGOV-RUNTIME-TRIAGE-011
-title: ci gate runs governance critical step before broad governance
-purpose: Ensures ci-gate-summary defines governance_critical before governance_broad.
+title: ci gate runs critical-gate before ci-gate-summary
+purpose: Ensures ci_gate.sh runs critical-gate before invoking ci-gate-summary.
 type: governance.check
 check: runtime.ci_gate_critical_first_required
 harness:
   root: .
   ci_gate_critical_first:
     files:
-    - /scripts/ci_gate_summary.py
+    - /scripts/ci_gate.sh
     ordered_tokens:
-    - governance_critical
-    - governance_broad
+    - critical-gate
+    - ci-gate-summary
   policy_evaluate:
   - call:
     - {var: policy.pass_when_no_violations}
