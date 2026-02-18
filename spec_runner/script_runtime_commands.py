@@ -1029,7 +1029,9 @@ def perf_smoke_main(argv: list[str] | None = None) -> int:
             return code
         docs_cmd = [
             py_bin,
-            "scripts/docs_generate_all.py",
+            "-m",
+            "spec_runner.spec_lang_commands",
+            "docs-generate-all",
             "--check",
             "--timing-out",
             str(docs_timing),

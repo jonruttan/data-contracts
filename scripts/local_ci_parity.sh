@@ -174,7 +174,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip docs-generate-check (no matching changes)"
   fi
 
-  if paths_match_prefixes "docs/" "scripts/check_docs_freshness.py" "spec_runner/script_runtime_commands.py" "scripts/docs_inventory.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh" "scripts/run_governance_specs.py"; then
+  if paths_match_prefixes "docs/" "spec_runner/script_runtime_commands.py" "scripts/docs_inventory.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh" "scripts/run_governance_specs.py"; then
     if paths_all_in_list "docs/spec/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip docs-freshness-check (check_sets-only change)"
     elif is_fast_path_script_only_change; then
