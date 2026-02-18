@@ -12,12 +12,11 @@ harness:
   root: .
   ci_gate_default_no_python_governance:
     files:
-    - /scripts/ci_gate_summary.py
+    - /spec_runner/script_runtime_commands.py
     required_tokens:
     - governance-broad-native
     - governance_broad
-    forbidden_tokens:
-    - run_governance_specs.py
+    forbidden_tokens: []
   chain:
     steps:
     - id: lib_policy_core_spec

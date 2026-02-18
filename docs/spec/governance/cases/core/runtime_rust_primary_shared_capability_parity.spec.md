@@ -15,7 +15,7 @@ harness:
     - /scripts/runner_adapter.sh
     - /scripts/rust/runner_adapter.sh
     files:
-    - scripts/ci_gate_summary.py
+    - spec_runner/script_runtime_commands.py
     required_tokens:
     - conformance-parity
     forbidden_tokens: []

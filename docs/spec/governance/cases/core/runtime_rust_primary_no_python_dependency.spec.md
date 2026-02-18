@@ -23,8 +23,8 @@ harness:
     - SPEC_RUNNER_BIN
     - scripts/runner_adapter.sh
     forbidden_tokens:
-    - scripts/run_governance_specs.py
-    - scripts/ci_gate_summary.py
+    - spec_lang_commands run-governance-specs
+    - spec_runner/script_runtime_commands.py
     - scripts/evaluate_style.py --check docs/spec
     - scripts/conformance_purpose_report.py
     - spec_lang_commands compare-conformance-parity

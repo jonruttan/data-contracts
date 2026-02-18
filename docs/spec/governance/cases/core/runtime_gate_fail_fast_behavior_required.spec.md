@@ -12,7 +12,7 @@ harness:
   root: .
   gate_fail_fast:
     files:
-    - /scripts/ci_gate_summary.py
+    - /spec_runner/script_runtime_commands.py
     - /scripts/rust/spec_runner_cli/src/main.rs
     required_tokens:
     - fail_fast
