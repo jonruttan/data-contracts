@@ -1011,7 +1011,9 @@ def perf_smoke_main(argv: list[str] | None = None) -> int:
     if not bool(ns.compare_only):
         governance_cmd = [
             py_bin,
-            "scripts/run_governance_specs.py",
+            "-m",
+            "spec_runner.spec_lang_commands",
+            "run-governance-specs",
             "--timing-out",
             str(governance_timing),
             "--profile",
