@@ -52,7 +52,7 @@ Repository adapters:
 
 - `runners/public/runner_adapter.sh` (single public entrypoint; rust default router)
 - `runners/rust/runner_adapter.sh` (internal rust adapter; invokes Rust CLI)
-- `runners/python/runner_adapter.sh` (deprecated runtime adapter stub; returns migration error)
+- `runners/python/runner_adapter.sh` (internal adapter path)
 - `runners/rust/spec_runner_cli` (Rust runner-interface CLI crate)
 
 Adapters may call implementation-specific scripts/tools internally.

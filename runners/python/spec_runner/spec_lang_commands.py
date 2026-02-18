@@ -326,6 +326,9 @@ def docs_lint_main(argv: list[str] | None = None) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    normalized_argv = list(sys.argv[1:] if argv is None else argv)
+    if normalized_argv and normalized_argv[0] == "evaluate-style":
+        normalized_argv[0] = "spec-lang-format"
     ap = argparse.ArgumentParser(description="Spec-lang backed command entrypoints.")
     ap.add_argument(
         "command",
@@ -343,7 +346,6 @@ def main(argv: list[str] | None = None) -> int:
             "conformance-purpose-report",
             "docs-generate-all",
             "docs-generate-specs",
-            "evaluate-style",
             "impl-evaluate-migration-report",
             "normalize-docs-layout",
             "normalize-repo",
@@ -358,7 +360,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Command to run.",
     )
     ap.add_argument("args", nargs=argparse.REMAINDER)
-    ns = ap.parse_args(argv)
+    ns = ap.parse_args(normalized_argv)
     forwarded = list(ns.args or [])
     if ns.command == "validate-report":
         return validate_report_main(forwarded)
@@ -386,8 +388,6 @@ def main(argv: list[str] | None = None) -> int:
         return docs_generate_all_main(forwarded)
     if ns.command == "docs-generate-specs":
         return docs_generate_specs_main(forwarded)
-    if ns.command == "evaluate-style":
-        return spec_lang_format_main(forwarded)
     if ns.command == "impl-evaluate-migration-report":
         return impl_evaluate_migration_report_main(forwarded)
     if ns.command == "normalize-docs-layout":

@@ -124,6 +124,20 @@ fn run_cmd(program: &str, args: &[String], root: &Path) -> i32 {
         .stdin(process::Stdio::inherit())
         .stdout(process::Stdio::inherit())
         .stderr(process::Stdio::inherit());
+    let py_name = std::path::Path::new(program)
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or(program);
+    if py_name == "python" || py_name == "python3" {
+        let py_pkg = root.join("runners").join("python");
+        let merged = match env::var("PYTHONPATH") {
+            Ok(existing) if !existing.trim().is_empty() => {
+                format!("{}:{}", py_pkg.display(), existing)
+            }
+            _ => py_pkg.display().to_string(),
+        };
+        cmd.env("PYTHONPATH", merged);
+    }
     match cmd.spawn() {
         Ok(mut child) => {
             let pid = child.id();
@@ -2449,7 +2463,6 @@ fn main() {
                     "compileall".to_string(),
                     "-q".to_string(),
                     "runners/python/spec_runner".to_string(),
-                    "spec_runner".to_string(),
                     "scripts".to_string(),
                     "tests".to_string(),
                 ],

@@ -193,7 +193,6 @@ _TOP_LEVEL_DIR_ALLOWLIST = {
     "fixtures",
     "runners",
     "scripts",
-    "spec_runner",
     "specs",
     "tests",
 }
@@ -263,9 +262,6 @@ _RAW_HTTP_META_ALLOWED_CASE_FILES = {
     "specs/conformance/cases/core/api_http.spec.md",
 }
 _OPS_FS_SYMBOL_PATTERN = re.compile(r"\bops\.fs\.[a-z0-9_.]+\b")
-_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS = float(
-    os.environ.get("SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS", "0")
-)
 _GOVERNANCE_TRACE = os.environ.get("SPEC_RUNNER_GOVERNANCE_TRACE", "").strip().lower() in {
     "1",
     "true",
@@ -278,34 +274,27 @@ _ACTIVE_PROFILER: contextvars.ContextVar[RunProfiler | None] = contextvars.Conte
 )
 
 
-def _effective_governance_liveness() -> tuple[LivenessConfig, list[str]]:
-    warnings: list[str] = []
+def _effective_governance_liveness() -> LivenessConfig:
     cfg = liveness_config_from_env(default_level="off")
     hard_cap_ms = int(cfg.hard_cap_ms)
-    legacy_env = ""
-    if _GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS > 0:
-        legacy_env = "SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS"
-        hard_cap_ms = int(_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS * 1000.0)
+    raw_governance_timeout = str(os.environ.get("SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS", "")).strip()
+    if raw_governance_timeout:
+        try:
+            hard_cap_ms = int(float(raw_governance_timeout) * 1000.0)
+        except ValueError:
+            pass
     raw_adapter_timeout = str(os.environ.get("SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS", "")).strip()
     if raw_adapter_timeout:
-        legacy_env = "SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS"
         try:
             hard_cap_ms = int(float(raw_adapter_timeout) * 1000.0)
         except ValueError:
             pass
-    if legacy_env:
-        warnings.append(
-            f"{legacy_env} is deprecated; use SPEC_RUNNER_LIVENESS_HARD_CAP_MS / --liveness-hard-cap-ms"
-        )
-    return (
-        LivenessConfig(
-            level=cfg.level,
-            stall_ms=int(cfg.stall_ms),
-            min_events=int(cfg.min_events),
-            hard_cap_ms=max(int(hard_cap_ms), 1),
-            kill_grace_ms=int(cfg.kill_grace_ms),
-        ),
-        warnings,
+    return LivenessConfig(
+        level=cfg.level,
+        stall_ms=int(cfg.stall_ms),
+        min_events=int(cfg.min_events),
+        hard_cap_ms=max(int(hard_cap_ms), 1),
+        kill_grace_ms=int(cfg.kill_grace_ms),
     )
 
 
@@ -318,7 +307,7 @@ def _profiled_subprocess_run(
 ) -> subprocess.CompletedProcess[str]:
     del text
     profiler = _ACTIVE_PROFILER.get()
-    cfg, _ = _effective_governance_liveness()
+    cfg = _effective_governance_liveness()
     return run_subprocess_with_liveness(
         command=cmd,
         cwd=cwd,
@@ -2516,7 +2505,7 @@ def _scan_runtime_public_runner_entrypoint_single(root: Path, *, harness: dict |
     required_entrypoint = str(cfg.get("required_entrypoint", "")).strip()
     gate_files = cfg.get("gate_files")
     forbidden_tokens = cfg.get("forbidden_tokens", [])
-    legacy_wrappers = cfg.get("legacy_wrappers", [])
+    forbidden_paths = cfg.get("forbidden_paths", [])
     if not required_entrypoint:
         return ["harness.public_runner_entrypoint.required_entrypoint must be a non-empty string"]
     if (
@@ -2527,8 +2516,8 @@ def _scan_runtime_public_runner_entrypoint_single(root: Path, *, harness: dict |
         return ["harness.public_runner_entrypoint.gate_files must be a non-empty list of non-empty strings"]
     if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
         return ["harness.public_runner_entrypoint.forbidden_tokens must be a list of non-empty strings"]
-    if legacy_wrappers is not None and not isinstance(legacy_wrappers, list):
-        return ["harness.public_runner_entrypoint.legacy_wrappers must be a list when provided"]
+    if not isinstance(forbidden_paths, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_paths):
+        return ["harness.public_runner_entrypoint.forbidden_paths must be a list of non-empty strings"]
 
     violations: list[str] = []
     for rel in gate_files:
@@ -2543,49 +2532,10 @@ def _scan_runtime_public_runner_entrypoint_single(root: Path, *, harness: dict |
             if tok in text:
                 violations.append(f"{rel}:1: forbidden direct runner token {tok}")
 
-    wrapper_entries: list[object] = legacy_wrappers if isinstance(legacy_wrappers, list) else []
-    for item in wrapper_entries:
-        if not isinstance(item, dict):
-            violations.append(
-                "harness.public_runner_entrypoint.legacy_wrappers entries must be mappings with path/required_tokens/forbidden_tokens"
-            )
-            continue
-        wrapper_path = str(item.get("path", "")).strip()
-        required_wrapper_tokens = item.get("required_tokens", [])
-        forbidden_wrapper_tokens = item.get("forbidden_tokens", [])
-        if not wrapper_path:
-            violations.append(
-                "harness.public_runner_entrypoint.legacy_wrappers.path must be a non-empty string"
-            )
-            continue
-        if (
-            not isinstance(required_wrapper_tokens, list)
-            or not required_wrapper_tokens
-            or any(not isinstance(x, str) or not x.strip() for x in required_wrapper_tokens)
-        ):
-            violations.append(
-                f"{wrapper_path}:1: legacy wrapper required_tokens must be a non-empty list of non-empty strings"
-            )
-            continue
-        if not isinstance(forbidden_wrapper_tokens, list) or any(
-            not isinstance(x, str) or not x.strip() for x in forbidden_wrapper_tokens
-        ):
-            violations.append(
-                f"{wrapper_path}:1: legacy wrapper forbidden_tokens must be a list of non-empty strings"
-            )
-            continue
-
-        p = _join_contract_path(root, wrapper_path)
-        if not p.exists():
-            violations.append(f"{wrapper_path}:1: missing legacy wrapper file")
-            continue
-        raw = p.read_text(encoding="utf-8")
-        for tok in required_wrapper_tokens:
-            if tok not in raw:
-                violations.append(f"{wrapper_path}:1: missing legacy wrapper forwarding token: {tok}")
-        for tok in forbidden_wrapper_tokens:
-            if tok in raw:
-                violations.append(f"{wrapper_path}:1: forbidden legacy wrapper runtime logic token: {tok}")
+    for rel in forbidden_paths:
+        p = _join_contract_path(root, rel)
+        if p.exists():
+            violations.append(f"{rel}:1: forbidden legacy wrapper path exists")
     return violations
 
 
@@ -6226,15 +6176,6 @@ def _scan_docs_layout_canonical_trees(root: Path, *, harness: dict | None = None
         violations.append(
             f"{name}:1: forbidden top-level directory (allowed: {', '.join(sorted(_TOP_LEVEL_DIR_ALLOWLIST))})"
         )
-    shim_dir = root / "spec_runner"
-    if shim_dir.exists():
-        allowed_shim = {"__init__.py", "__pycache__"}
-        for nested in shim_dir.iterdir():
-            if nested.name in allowed_shim:
-                continue
-            violations.append(
-                f"spec_runner/{nested.name}:1: top-level spec_runner shim may only contain __init__.py"
-            )
     return violations
 
 
@@ -6657,37 +6598,6 @@ def _scan_runtime_gate_evaluates_with_skipped_rows(root: Path, *, harness: dict 
         for tok in required_tokens:
             if tok not in text:
                 violations.append(f"{rel}:1: missing skipped-rows policy token {tok}")
-    return violations
-
-
-def _scan_runtime_legacy_timeout_envs_deprecated(root: Path, *, harness: dict | None = None) -> list[str]:
-    del harness
-    violations: list[str] = []
-    docs = (
-        "docs/book/06_troubleshooting.md",
-        "specs/contract/24_runtime_profiling_contract.md",
-    )
-    required_tokens = (
-        "SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS",
-        "SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS",
-        "deprecated",
-    )
-    for rel in docs:
-        p = _join_contract_path(root, rel)
-        if not p.exists():
-            violations.append(f"{rel}:1: missing deprecation doc")
-            continue
-        text = p.read_text(encoding="utf-8").lower()
-        for token in required_tokens:
-            if token.lower() not in text:
-                violations.append(f"{rel}:1: missing timeout deprecation token {token}")
-    src = _join_contract_path(root, "runners/python/spec_runner/governance_runtime.py")
-    if src.exists():
-        text = src.read_text(encoding="utf-8")
-        if "is deprecated; use SPEC_RUNNER_LIVENESS_HARD_CAP_MS" not in text:
-            violations.append(
-                "runners/python/spec_runner/governance_runtime.py:1: missing legacy-timeout deprecation remediation message"
-            )
     return violations
 
 
@@ -10301,9 +10211,7 @@ def main(argv: list[str] | None = None) -> int:
     if int(ns.liveness_kill_grace_ms or 0) > 0:
         os.environ["SPEC_RUNNER_LIVENESS_KILL_GRACE_MS"] = str(int(ns.liveness_kill_grace_ms))
 
-    liveness_cfg, liveness_warnings = _effective_governance_liveness()
-    for warning in liveness_warnings:
-        print(f"WARN: {warning}", file=sys.stderr)
+    liveness_cfg = _effective_governance_liveness()
 
     _reset_scan_caches()
     repo_root = Path(__file__).resolve().parents[3]

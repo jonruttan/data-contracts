@@ -110,11 +110,10 @@ On failing `ci-gate-summary` runs with profile-on-fail enabled:
 - `watchdog.kill.term`
 - `watchdog.kill.killed`
 
-## Legacy Timeout Deprecation
+## Timeout Environment Inputs
 
-- `SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS` and
-  `SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS` are deprecated.
-- When present, governance maps them to emergency hard-cap behavior.
+- Governance timeout behavior is controlled by liveness settings and
+  adapter/runtime timeout inputs.
 
 ## Redaction
 

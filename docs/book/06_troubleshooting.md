@@ -106,9 +106,7 @@ Governance now uses progress-based hang detection:
 - `--liveness-hard-cap-ms` (default `1800000`)
 - `--liveness-kill-grace-ms` (default `5000`)
 
-Legacy variables `SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS` and
-`SPEC_RUNNER_GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS` are deprecated and map to
-emergency hard-cap behavior.
+Use canonical liveness and timeout controls for governance troubleshooting.
 
 ## Timeout Profiling
 

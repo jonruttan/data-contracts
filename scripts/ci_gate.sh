@@ -19,6 +19,11 @@ if [[ -z "${SPEC_CI_PYTHON:-}" ]]; then
     SPEC_CI_PYTHON="python3"
   fi
 fi
+if [[ -n "${PYTHONPATH:-}" ]]; then
+  export PYTHONPATH="${ROOT_DIR}/runners/python:${PYTHONPATH}"
+else
+  export PYTHONPATH="${ROOT_DIR}/runners/python"
+fi
 
 collect_changed_paths() {
   local upstream=""
