@@ -20,15 +20,15 @@ Use layered artifacts so humans, AI systems, and scripts can each consume what
 they need:
 
 - Design and rationale:
-  `docs/spec/contract/*.md`
+  `specs/contract/*.md`
 - Machine-readable normative policy:
-  `docs/spec/contract/policy_v1.yaml`
+  `specs/contract/policy_v1.yaml`
 - Schema and DSL shape:
-  `docs/spec/schema/schema_v1.md`
+  `specs/schema/schema_v1.md`
 - Evidence and traceability:
-  `docs/spec/contract/traceability_v1.yaml`
+  `specs/contract/traceability_v1.yaml`
 - Conformance report shape:
-  `docs/spec/conformance/report_format.md`
+  `specs/conformance/report_format.md`
 
 ## Quality Bar
 

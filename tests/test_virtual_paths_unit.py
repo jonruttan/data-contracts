@@ -7,8 +7,8 @@ from spec_runner.virtual_paths import VirtualPathError, normalize_contract_path,
 
 
 def test_normalize_virtual_absolute_and_relative_equivalent() -> None:
-    assert normalize_contract_path("/docs/spec/schema/schema_v1.md", field="x") == "/docs/spec/schema/schema_v1.md"
-    assert normalize_contract_path("docs/spec/schema/schema_v1.md", field="x") == "/docs/spec/schema/schema_v1.md"
+    assert normalize_contract_path("/specs/schema/schema_v1.md", field="x") == "/specs/schema/schema_v1.md"
+    assert normalize_contract_path("specs/schema/schema_v1.md", field="x") == "/specs/schema/schema_v1.md"
 
 
 def test_rejects_contract_root_escape() -> None:
@@ -18,10 +18,10 @@ def test_rejects_contract_root_escape() -> None:
 
 def test_resolve_contract_path_within_root(tmp_path: Path) -> None:
     root = tmp_path
-    target = root / "docs/spec/schema/schema_v1.md"
+    target = root / "specs/schema/schema_v1.md"
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("ok", encoding="utf-8")
-    resolved = resolve_contract_path(root, "/docs/spec/schema/schema_v1.md", field="x")
+    resolved = resolve_contract_path(root, "/specs/schema/schema_v1.md", field="x")
     assert resolved == target.resolve()
 
 

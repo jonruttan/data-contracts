@@ -10,9 +10,9 @@ from spec_runner.doc_parser import _iter_spec_test_blocks
 from spec_runner.settings import SETTINGS, resolve_case_file_pattern
 
 _CANONICAL_EXECUTABLE_TREES = (
-    Path("docs/spec/conformance/cases"),
-    Path("docs/spec/governance/cases"),
-    Path("docs/spec/impl"),
+    Path("specs/conformance/cases"),
+    Path("specs/governance/cases"),
+    Path("specs/impl"),
 )
 
 

@@ -22,7 +22,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "paths",
         nargs="*",
-        default=["docs/spec"],
+        default=["specs"],
         help="Files or directories to process",
     )
     ns = ap.parse_args(argv)

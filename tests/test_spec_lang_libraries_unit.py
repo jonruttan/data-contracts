@@ -232,10 +232,10 @@ defines:
 
 def test_markdown_domain_library_rejects_spec_export_only_surface() -> None:
     repo_root = Path(__file__).resolve().parents[1]
-    case_doc = repo_root / "docs/spec/conformance/cases/core/domain_libraries.spec.md"
+    case_doc = repo_root / "specs/conformance/cases/core/domain_libraries.spec.md"
     with pytest.raises(ValueError, match="no spec_lang.export defines"):
         load_spec_lang_symbols_for_case(
             doc_path=case_doc,
-            harness={"spec_lang": {"includes": ["/docs/spec/libraries/domain/markdown_core.spec.md"]}},
+            harness={"spec_lang": {"includes": ["/specs/libraries/domain/markdown_core.spec.md"]}},
             limits=SpecLangLimits(timeout_ms=0),
         )

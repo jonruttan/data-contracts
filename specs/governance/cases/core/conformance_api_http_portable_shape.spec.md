@@ -1,0 +1,72 @@
+# Governance Cases
+
+## SRGOV-CONF-API-001
+
+```yaml contract-spec
+id: SRGOV-CONF-API-001
+title: api.http portable conformance cases use canonical shape
+purpose: Ensures api.http portable fixtures keep setup under harness and use only canonical
+  behavior assertion targets.
+type: contract.check
+harness:
+  root: .
+  api_http:
+    allowed_top_level_keys:
+    - id
+    - type
+    - title
+    - purpose
+    - request
+    - requests
+    - assert
+    - expect
+    - requires
+    - assert_health
+    - harness
+    allowed_assert_targets:
+    - status
+    - headers
+    - body_text
+    - body_json
+    - cors_json
+    - steps_json
+    - context_json
+    required_request_fields:
+    - method
+    - url
+  chain:
+    steps:
+    - id: lib_policy_core_spec
+      class: MUST
+      ref: /specs/libraries/policy/policy_core.spec.md
+    imports:
+    - from: lib_policy_core_spec
+      names:
+      - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: conformance.api_http_portable_shape
+contract:
+- id: assert_1
+  class: MUST
+  asserts:
+  - std.logic.eq:
+    - {var: subject}
+    - 0
+  target: violation_count
+- id: assert_2
+  class: MUST
+  asserts:
+  - std.logic.eq:
+    - std.object.get:
+      - {var: subject}
+      - passed
+    - true
+  - std.logic.eq:
+    - std.object.get:
+      - {var: subject}
+      - check_id
+    - conformance.api_http_portable_shape
+  target: summary_json
+```

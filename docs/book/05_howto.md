@@ -64,7 +64,7 @@ Provide repeatable recipes for common contributor tasks.
 ## Add Markdown Structure Assertions
 
 1. Chain-load markdown helpers:
-   - `/docs/spec/libraries/domain/markdown_core.spec.md`
+   - `/specs/libraries/domain/markdown_core.spec.md`
 2. Prefer `target: context_json` for structural checks.
 3. Use `domain.markdown.*` helpers for heading/link/token checks.
 
@@ -76,7 +76,7 @@ harness:
     steps:
     - id: lib_markdown
       class: MUST
-      ref: /docs/spec/libraries/domain/markdown_core.spec.md
+      ref: /specs/libraries/domain/markdown_core.spec.md
     imports:
     - from: lib_markdown
       names:
@@ -104,7 +104,7 @@ contract:
 ## Prefer Domain FS Helpers Over Raw `ops.fs.*`
 
 1. Chain-load:
-   - `/docs/spec/libraries/domain/fs_core.spec.md`
+   - `/specs/libraries/domain/fs_core.spec.md`
 2. Use domain wrappers in executable specs:
    - `domain.fs.json_get_text`
    - `domain.fs.json_get_or_text`
@@ -120,7 +120,7 @@ harness:
     steps:
     - id: lib_fs
       class: MUST
-      ref: /docs/spec/libraries/domain/fs_core.spec.md
+      ref: /specs/libraries/domain/fs_core.spec.md
     imports:
     - from: lib_fs
       names:
@@ -149,7 +149,7 @@ contract:
 ## Add A Governance Check
 
 1. Add scanner/check implementation and check id.
-2. Add governance case under `/docs/spec/governance/cases/core/`.
+2. Add governance case under `/specs/governance/cases/core/`.
 3. Wire policy + traceability entries.
 4. Run full governance pass.
 
@@ -230,7 +230,7 @@ harness:
     config:
       request:
         method: GET
-        url: /docs/spec/conformance/cases/fixtures/api_http_ok.json
+        url: /specs/conformance/cases/fixtures/api_http_ok.json
 ```
 
 ### POST
@@ -243,7 +243,7 @@ harness:
     config:
       request:
         method: POST
-        url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+        url: /specs/conformance/cases/fixtures/api_http_created.json
         body_json:
           name: example
 ```
@@ -258,7 +258,7 @@ harness:
     config:
       request:
         method: PUT
-        url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
+        url: /specs/conformance/cases/fixtures/api_http_item_abc-123.json
 ```
 
 ```yaml
@@ -269,7 +269,7 @@ harness:
     config:
       request:
         method: PATCH
-        url: /docs/spec/conformance/cases/fixtures/api_http_item_abc-123.json
+        url: /specs/conformance/cases/fixtures/api_http_item_abc-123.json
 ```
 
 ### DELETE
@@ -282,7 +282,7 @@ harness:
     config:
       request:
         method: DELETE
-        url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
+        url: /specs/conformance/cases/fixtures/api_http_deleted.json
 ```
 
 ### CORS Preflight (OPTIONS)
@@ -318,13 +318,13 @@ harness:
       requests:
       - id: create
         method: POST
-        url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+        url: /specs/conformance/cases/fixtures/api_http_created.json
       - id: get
         method: GET
-        url: /docs/spec/conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json
+        url: /specs/conformance/cases/fixtures/api_http_item_{{steps.create.body_json.id}}.json
       - id: cleanup
         method: DELETE
-        url: /docs/spec/conformance/cases/fixtures/api_http_deleted.json
+        url: /specs/conformance/cases/fixtures/api_http_deleted.json
 ```
 
 Use `steps_json` assertions to validate full round-trip order and output.
@@ -345,7 +345,7 @@ harness:
     config:
       request:
         method: GET
-        url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+        url: /specs/conformance/cases/fixtures/api_http_created.json
 ```
 
 Dependent case:
@@ -364,7 +364,7 @@ harness:
     config:
       request:
         method: POST
-        url: /docs/spec/conformance/cases/fixtures/api_http_created.json
+        url: /specs/conformance/cases/fixtures/api_http_created.json
 ```
 
 For chained state sharing:

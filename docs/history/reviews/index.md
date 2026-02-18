@@ -23,7 +23,7 @@ This folder holds review assets with clear lifecycle separation.
 3. Convert snapshot output into pending specs with:
    - `python -m spec_runner.review_to_pending docs/history/reviews/snapshots/<file>.md`
 4. Triage resulting pending items and promote selected candidates into
-   `docs/spec/backlog.md` or directly into `docs/spec/*.md`.
+   `specs/backlog.md` or directly into `specs/*.md`.
 5. Record `Prompt revision` and `Repo revision` in each snapshot.
 
 ## Automation Helpers

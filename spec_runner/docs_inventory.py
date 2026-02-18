@@ -19,20 +19,20 @@ class LinkRef:
 
 
 def _classify(path: str) -> tuple[str, str, bool]:
-    if path == "docs/spec/current.md":
-        return "spec.current", "docs/spec", True
-    if path == "docs/spec/index.md":
-        return "spec.root", "docs/spec", True
-    if path.startswith("docs/spec/schema/"):
-        return "spec.schema", "docs/spec/schema", path.endswith("/index.md")
-    if path.startswith("docs/spec/contract/"):
-        return "spec.contract", "docs/spec/contract", path.endswith("/index.md")
-    if path.startswith("docs/spec/governance/"):
-        return "spec.governance", "docs/spec/governance", path.endswith("/index.md")
-    if path.startswith("docs/spec/libraries/"):
-        return "spec.libraries", "docs/spec/libraries", path.endswith("/index.md")
-    if path.startswith("docs/spec/impl/"):
-        return "spec.impl", "docs/spec/impl", path.endswith("/index.md")
+    if path == "specs/current.md":
+        return "spec.current", "specs", True
+    if path == "specs/index.md":
+        return "spec.root", "specs", True
+    if path.startswith("specs/schema/"):
+        return "spec.schema", "specs/schema", path.endswith("/index.md")
+    if path.startswith("specs/contract/"):
+        return "spec.contract", "specs/contract", path.endswith("/index.md")
+    if path.startswith("specs/governance/"):
+        return "spec.governance", "specs/governance", path.endswith("/index.md")
+    if path.startswith("specs/libraries/"):
+        return "spec.libraries", "specs/libraries", path.endswith("/index.md")
+    if path.startswith("specs/impl/"):
+        return "spec.impl", "specs/impl", path.endswith("/index.md")
     if path.startswith("docs/book/"):
         return "docs.book", "docs/book", path.endswith("/index.md")
     if path.startswith("docs/history/"):
@@ -107,7 +107,7 @@ def build_inventory(root: Path) -> dict[str, Any]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build docs/spec inventory and link graph.")
+    parser = argparse.ArgumentParser(description="Build specs inventory and link graph.")
     parser.add_argument("--out", default=".artifacts/docs-inventory.json", help="output JSON path")
     args = parser.parse_args()
 

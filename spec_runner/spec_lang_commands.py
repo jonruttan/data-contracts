@@ -65,7 +65,7 @@ def validate_report_main(argv: list[str] | None = None) -> int:
 @lru_cache(maxsize=1)
 def _load_conformance_export_functions() -> dict[str, list[object]]:
     repo_root = Path(__file__).resolve().parents[1]
-    lib_path = repo_root / "docs/spec/libraries/domain/conformance_core.spec.md"
+    lib_path = repo_root / "specs/libraries/domain/conformance_core.spec.md"
     if not lib_path.exists():
         raise RuntimeError(f"missing spec library file: {lib_path}")
     out: dict[str, list[object]] = {}

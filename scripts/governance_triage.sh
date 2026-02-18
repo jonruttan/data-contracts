@@ -196,23 +196,23 @@ select_prefixes_from_changed_paths() {
   while IFS= read -r path; do
     [[ -z "${path}" ]] && continue
     case "${path}" in
-      docs/spec/governance/*|docs/book/*|docs/spec/contract/*|docs/spec/current.md|README.md)
+      specs/governance/*|docs/book/*|specs/contract/*|specs/current.md|README.md)
         if ! add_unique "docs." "${selected[@]-}"; then selected+=("docs."); fi
         ;;
-      docs/spec/schema/*|spec_runner/normalize_repo_runtime.py)
+      specs/schema/*|spec_runner/normalize_repo_runtime.py)
         if ! add_unique "normalization." "${selected[@]-}"; then selected+=("normalization."); fi
         if ! add_unique "schema." "${selected[@]-}"; then selected+=("schema."); fi
         ;;
       spec_runner/*|runners/public/runner_adapter.sh|runners/python/runner_adapter.sh|runners/rust/runner_adapter.sh|scripts/governance_triage.sh|scripts/ci_gate.sh)
         if ! add_unique "runtime." "${selected[@]-}"; then selected+=("runtime."); fi
         ;;
-      docs/spec/libraries/*)
+      specs/libraries/*)
         if ! add_unique "library." "${selected[@]-}"; then selected+=("library."); fi
         ;;
-      docs/spec/conformance/*)
+      specs/conformance/*)
         if ! add_unique "conformance." "${selected[@]-}"; then selected+=("conformance."); fi
         ;;
-      docs/spec/schema/registry/*)
+      specs/schema/registry/*)
         if ! add_unique "schema." "${selected[@]-}"; then selected+=("schema."); fi
         ;;
     esac
@@ -224,7 +224,7 @@ select_prefixes_from_changed_paths() {
 
 declare -a MAP_PATTERNS=()
 declare -a MAP_PREFIXES=()
-MAP_FILE="${ROOT_DIR}/docs/spec/governance/check_prefix_map_v1.yaml"
+MAP_FILE="${ROOT_DIR}/specs/governance/check_prefix_map_v1.yaml"
 if [[ -f "${MAP_FILE}" ]]; then
   while IFS='=' read -r pattern prefix; do
     [[ -n "${pattern}" && -n "${prefix}" ]] || continue

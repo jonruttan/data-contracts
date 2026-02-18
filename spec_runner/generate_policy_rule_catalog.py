@@ -19,11 +19,11 @@ def _resolve_cli_path(repo_root: Path, raw: str) -> Path:
 
 
 def _build_payload(repo_root: Path) -> dict[str, Any]:
-    policy_path = repo_root / "docs/spec/contract/policy_v1.yaml"
+    policy_path = repo_root / "specs/contract/policy_v1.yaml"
     payload = yaml.safe_load(policy_path.read_text(encoding="utf-8"))
     rules = payload.get("rules") if isinstance(payload, dict) else None
     if not isinstance(rules, list):
-        raise ValueError("docs/spec/contract/policy_v1.yaml: rules must be a list")
+        raise ValueError("specs/contract/policy_v1.yaml: rules must be a list")
 
     rows: list[dict[str, Any]] = []
     for raw in rules:

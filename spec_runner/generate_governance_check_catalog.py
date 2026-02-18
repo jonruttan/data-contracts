@@ -39,7 +39,7 @@ def _build_payload(repo_root: Path) -> dict[str, Any]:
     checks = _CHECKS
     if not isinstance(checks, dict):
         raise ValueError("spec_runner.governance_runtime._CHECKS must be a mapping")
-    case_map = _cases_by_check(repo_root / "docs/spec/governance/cases/core")
+    case_map = _cases_by_check(repo_root / "specs/governance/cases/core")
 
     rows: list[dict[str, Any]] = []
     for check_id in sorted(str(x) for x in checks.keys()):

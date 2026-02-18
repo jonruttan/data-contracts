@@ -13,7 +13,7 @@ owns_tokens:
 requires_tokens:
 - spec-lang
 commands:
-- run: python -m spec_runner.spec_lang_commands spec-lang-format --check docs/spec
+- run: python -m spec_runner.spec_lang_commands spec-lang-format --check specs
   purpose: Validate canonical evaluate formatting.
 examples:
 - id: EX-ASSERTIONS-001
@@ -129,7 +129,7 @@ contract:
 Reference:
 
 - `docs/book/07_spec_lang_reference.md`
-- `docs/spec/contract/03b_spec_lang_v1.md`
+- `specs/contract/03b_spec_lang_v1.md`
 
 Tail-recursive example:
 

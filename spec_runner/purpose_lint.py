@@ -6,7 +6,7 @@ from typing import Any
 
 import yaml
 
-POLICY_REL_PATH = "docs/spec/conformance/purpose_lint_v1.yaml"
+POLICY_REL_PATH = "specs/conformance/purpose_lint_v1.yaml"
 _DEFAULT_MIN_WORDS = 8
 _DEFAULT_PLACEHOLDERS = ("todo", "tbd", "fixme", "xxx")
 _DEFAULT_SEVERITY_BY_CODE = {

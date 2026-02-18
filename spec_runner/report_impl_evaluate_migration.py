@@ -125,7 +125,7 @@ def _to_md(payload: dict[str, Any]) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Report impl evaluate migration status.")
-    parser.add_argument("--cases", default="docs/spec/impl", help="Impl cases directory")
+    parser.add_argument("--cases", default="specs/impl", help="Impl cases directory")
     parser.add_argument(
         "--out-json",
         default=".artifacts/impl-evaluate-migration.json",

@@ -80,7 +80,7 @@ def compare_parity_main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--cases",
-        default="docs/spec/conformance/cases",
+        default="specs/conformance/cases",
         help="Path to conformance case docs directory",
     )
     ap.add_argument(

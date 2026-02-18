@@ -23,8 +23,8 @@ Installable CLI entrypoints exposed by packaging metadata:
 python -m ruff check .
 python -m mypy spec_runner
 python -m compileall -q spec_runner scripts tests
-python scripts/spec_lang_lint.py --cases docs/spec
-python scripts/spec_lang_format.py --check docs/spec
+python scripts/spec_lang_lint.py --cases specs
+python scripts/spec_lang_format.py --check specs
 python scripts/docs_generate_all.py --check
 python -m spec_runner.spec_lang_commands docs-lint
 ```
@@ -57,7 +57,7 @@ SPEC_RUNNER_BIN=/path/to/compatible-runner ./scripts/ci_gate.sh
 
 Rust-primary transition contract:
 
-- `docs/spec/contract/16_rust_primary_transition.md`
+- `specs/contract/16_rust_primary_transition.md`
 
 Rust-default lane (canonical):
 
@@ -235,8 +235,8 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 
 - contract governance check
 - governance spec-runner checks
-- pedantic spec-lang lint (`scripts/spec_lang_lint.py --cases docs/spec`)
-- pedantic spec-lang format check (`scripts/spec_lang_format.py --check docs/spec`)
+- pedantic spec-lang lint (`scripts/spec_lang_lint.py --cases specs`)
+- pedantic spec-lang format check (`scripts/spec_lang_format.py --check specs`)
 - ruff lint check (`F` + `E9` rules)
 - mypy type check (`spec_runner` package)
 - Python bytecode compile pass (`compileall`)
@@ -252,7 +252,7 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 `run_governance_specs.py` (via `contract.governance_check`) enforces
 conformance case doc freshness:
 every `SRCONF-*` fixture case id must be listed in
-`docs/spec/conformance/cases/index.md`, and stale ids in that index fail CI.
+`specs/conformance/cases/index.md`, and stale ids in that index fail CI.
 
 Local equivalent:
 
@@ -270,8 +270,8 @@ python -m spec_runner.spec_lang_commands run-governance-specs
 
 ```sh
 python -m ruff check .
-python scripts/spec_lang_lint.py --cases docs/spec
-python scripts/spec_lang_format.py --check docs/spec
+python scripts/spec_lang_lint.py --cases specs
+python scripts/spec_lang_format.py --check specs
 ```
 
 ## Type Check
@@ -303,7 +303,7 @@ python scripts/conformance_purpose_report.py --format md --out .artifacts/confor
 
 The purpose report includes `policy` metadata resolved from:
 
-- `docs/spec/conformance/purpose_lint_v1.yaml`
+- `specs/conformance/purpose_lint_v1.yaml`
 
 Optional strict mode for automation:
 
@@ -324,18 +324,18 @@ Purpose warning codes:
 
 Canonical source for these codes:
 
-- `docs/spec/conformance/purpose_warning_codes.md`
+- `specs/conformance/purpose_warning_codes.md`
 
 ## Conformance Fixture Layout
 
 Cross-language fixture data lives in:
 
-- `docs/spec/conformance/cases/`
+- `specs/conformance/cases/`
 
 Contract docs for interpreting those fixtures live in:
 
-- `docs/spec/contract/06_conformance.md`
-- `docs/spec/conformance/report_format.md`
+- `specs/contract/06_conformance.md`
+- `specs/conformance/report_format.md`
 
 ## PHP Bootstrap Parity
 
@@ -343,7 +343,7 @@ Generate a Python conformance report:
 
 ```sh
 spec-runner-conformance \
-  --cases docs/spec/conformance/cases \
+  --cases specs/conformance/cases \
   --case-formats md \
   --out .artifacts/python-conformance-report.json
 ```
@@ -359,7 +359,7 @@ Generate a bootstrap PHP report:
 ```sh
 # Requires PHP yaml_parse extension.
 php runners/php/conformance_runner.php \
-  --cases docs/spec/conformance/cases/core/php_text_file_subset.spec.md \
+  --cases specs/conformance/cases/core/php_text_file_subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
 
@@ -373,7 +373,7 @@ Run end-to-end Python/PHP parity over canonical conformance cases:
 
 ```sh
 spec-runner-parity \
-  --cases docs/spec/conformance/cases \
+  --cases specs/conformance/cases \
   --case-formats md \
   --php-runner runners/php/conformance_runner.php \
   --php-timeout-seconds 30 \
@@ -394,7 +394,7 @@ python -m build
 python -m twine check dist/*
 ```
 
-## Canonical Docs/Spec Checks
+## Canonical Docs And Specs Checks
 
 Run this before `make prepush` when touching docs or governance:
 

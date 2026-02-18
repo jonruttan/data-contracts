@@ -37,7 +37,7 @@ def compare_conformance_parity_main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
         description="Run Python/PHP conformance and report normalized parity diffs by case id."
     )
-    ap.add_argument("--cases", default="docs/spec/conformance/cases")
+    ap.add_argument("--cases", default="specs/conformance/cases")
     ap.add_argument("--php-runner", default="runners/php/conformance_runner.php")
     ap.add_argument("--python-runner", default="spec_runner.python_conformance_runner")
     ap.add_argument("--out", default="")
@@ -439,11 +439,11 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
         ("schema_docs_check", _runner_command(runner_bin, runner_impl, "schema-docs-check")),
         (
             "spec_lang_lint_full",
-            [*py, "-m", "spec_runner.spec_lang_commands", "spec-lang-lint", "--cases", "docs/spec"],
+            [*py, "-m", "spec_runner.spec_lang_commands", "spec-lang-lint", "--cases", "specs"],
         ),
         (
             "spec_lang_format_check_full",
-            [*py, "-m", "spec_runner.spec_lang_commands", "spec-lang-format", "--check", "docs/spec"],
+            [*py, "-m", "spec_runner.spec_lang_commands", "spec-lang-format", "--check", "specs"],
         ),
         ("ruff", _runner_command(runner_bin, runner_impl, "lint")),
         ("mypy", _runner_command(runner_bin, runner_impl, "typecheck")),
@@ -548,7 +548,7 @@ def _run_steps(
 
 def _collect_unit_test_opt_out(root: Path) -> dict[str, int]:
     tests_root = root / "tests"
-    baseline_path = root / "docs/spec/metrics/unit_test_opt_out_baseline.json"
+    baseline_path = root / "specs/metrics/unit_test_opt_out_baseline.json"
     prefix = "# SPEC-OPT-OUT:"
     total = 0
     opted_out = 0
@@ -725,17 +725,17 @@ _FORBIDDEN_TOKENS = {
 
 _SOURCE_OF_TRUTH_RE = re.compile(r"^Source of truth:\s*([^\s]+)\s*$", re.IGNORECASE)
 _EXPECTED_SPEC_INDEX_LINKS = {
-    "/docs/spec/schema/index.md",
-    "/docs/spec/contract/index.md",
-    "/docs/spec/governance/index.md",
-    "/docs/spec/libraries/index.md",
-    "/docs/spec/impl/index.md",
-    "/docs/spec/current.md",
+    "/specs/schema/index.md",
+    "/specs/contract/index.md",
+    "/specs/governance/index.md",
+    "/specs/libraries/index.md",
+    "/specs/impl/index.md",
+    "/specs/current.md",
 }
 
 
 def _load_check_map(root: Path) -> dict[str, Any]:
-    path = root / "docs/spec/governance/check_catalog_map_v1.yaml"
+    path = root / "specs/governance/check_catalog_map_v1.yaml"
     if not path.exists():
         return {}
     prefixes: list[str] = []
@@ -781,14 +781,14 @@ def _check_forbidden_tokens(root: Path) -> list[str]:
 
 
 def _check_spec_index_contract(root: Path) -> list[str]:
-    path = root / "docs/spec/index.md"
+    path = root / "specs/index.md"
     if not path.exists():
-        return ["docs/spec/index.md missing"]
+        return ["specs/index.md missing"]
     text = path.read_text(encoding="utf-8")
     violations: list[str] = []
     for rel in _EXPECTED_SPEC_INDEX_LINKS:
         if rel not in text:
-            violations.append(f"docs/spec/index.md missing canonical link {rel}")
+            violations.append(f"specs/index.md missing canonical link {rel}")
     return violations
 
 
@@ -796,19 +796,19 @@ def _check_governance_family_map(root: Path) -> list[str]:
     mapping = _load_check_map(root)
     families = mapping.get("families") if isinstance(mapping, dict) else None
     if not isinstance(families, list) or not families:
-        return ["docs/spec/governance/check_catalog_map_v1.yaml must declare non-empty families list"]
+        return ["specs/governance/check_catalog_map_v1.yaml must declare non-empty families list"]
 
     prefixes: set[str] = set()
     for entry in families:
         if not isinstance(entry, dict):
-            return ["docs/spec/governance/check_catalog_map_v1.yaml families entries must be mappings"]
+            return ["specs/governance/check_catalog_map_v1.yaml families entries must be mappings"]
         prefix = str(entry.get("check_prefix", "")).strip()
         if not prefix:
-            return ["docs/spec/governance/check_catalog_map_v1.yaml families[].check_prefix required"]
+            return ["specs/governance/check_catalog_map_v1.yaml families[].check_prefix required"]
         prefixes.add(prefix)
 
     violations: list[str] = []
-    for path in sorted((root / "docs/spec/governance/cases/core").glob("*.spec.md")):
+    for path in sorted((root / "specs/governance/cases/core").glob("*.spec.md")):
         name = path.name
         stem = name[:-8] if name.endswith(".spec.md") else name
         if "_" not in stem:
@@ -837,7 +837,7 @@ def _run_docs_generate_check(root: Path) -> list[str]:
 
 
 def check_docs_freshness_main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Strict docs/spec freshness and organization checks")
+    parser = argparse.ArgumentParser(description="Strict specs freshness and organization checks")
     parser.add_argument("--strict", action="store_true", help="return non-zero when violations are detected")
     parser.add_argument("--out", default=".artifacts/docs-freshness-report.json", help="report output path")
     args = parser.parse_args(argv)
@@ -995,15 +995,15 @@ def _perf_ensure_generated_file(
 def perf_smoke_main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Run local perf smoke checks for governance/docs timing.")
     ap.add_argument("--mode", choices=("warn", "strict"), default="warn")
-    ap.add_argument("--governance-baseline", default="/docs/spec/metrics/governance_timing_baseline.json")
-    ap.add_argument("--docs-baseline", default="/docs/spec/metrics/docs_generate_timing_baseline.json")
-    ap.add_argument("--governance-profile-baseline", default="/docs/spec/metrics/governance_profile_baseline.json")
-    ap.add_argument("--docs-profile-baseline", default="/docs/spec/metrics/docs_generate_profile_baseline.json")
+    ap.add_argument("--governance-baseline", default="/specs/metrics/governance_timing_baseline.json")
+    ap.add_argument("--docs-baseline", default="/specs/metrics/docs_generate_timing_baseline.json")
+    ap.add_argument("--governance-profile-baseline", default="/specs/metrics/governance_profile_baseline.json")
+    ap.add_argument("--docs-profile-baseline", default="/specs/metrics/docs_generate_profile_baseline.json")
     ap.add_argument("--governance-timing", default="/.artifacts/governance-timing.json")
     ap.add_argument("--docs-timing", default="/.artifacts/docs-generate-timing.json")
     ap.add_argument("--governance-profile", default="/.artifacts/governance-profile.json")
     ap.add_argument("--docs-profile", default="/.artifacts/docs-generate-profile.json")
-    ap.add_argument("--baseline-notes", default="/docs/spec/metrics/baseline_update_notes.yaml")
+    ap.add_argument("--baseline-notes", default="/specs/metrics/baseline_update_notes.yaml")
     ap.add_argument("--report-out", default="/.artifacts/perf-smoke-report.json")
     ap.add_argument("--compare-only", action="store_true", help="Skip command execution and compare existing timing files")
     ns = ap.parse_args(argv)

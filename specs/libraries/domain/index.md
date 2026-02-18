@@ -1,0 +1,106 @@
+# Domain Libraries Index
+
+Canonical domain index for executable specs in this subtree.
+
+## Files
+
+- `/specs/libraries/domain/http_core.spec.md`
+- `/specs/libraries/domain/job_core.spec.md`
+- `/specs/libraries/domain/conformance_core.spec.md`
+- `/specs/libraries/domain/fs_core.spec.md`
+- `/specs/libraries/domain/meta_core.spec.md`
+- `/specs/libraries/domain/make_core.spec.md`
+- `/specs/libraries/domain/markdown_core.spec.md`
+- `/specs/libraries/domain/os_core.spec.md`
+- `/specs/libraries/domain/path_core.spec.md`
+- `/specs/libraries/domain/php_core.spec.md`
+- `/specs/libraries/domain/python_core.spec.md`
+- `/specs/libraries/domain/yaml_core.spec.md`
+- `/specs/libraries/domain/process_core.spec.md`
+- `/specs/libraries/domain/repo_core.spec.md`
+- `/specs/libraries/domain/artifact_core.spec.md`
+
+## Exported Symbols
+
+- `domain.conformance.validate_report_errors` (/specs/libraries/domain/conformance_core.spec.md)
+- `domain.conformance.error_when_false` (/specs/libraries/domain/conformance_core.spec.md)
+- `domain.conformance.report_results_is_list` (/specs/libraries/domain/conformance_core.spec.md)
+- `domain.conformance.report_version_is_v1` (/specs/libraries/domain/conformance_core.spec.md)
+- `domain.http.auth_is_oauth` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.body_json` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.body_json_has_key` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.body_json_type_is` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.body_text` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.cors_allow_origin` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.cors_allows_header` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.cors_allows_method` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.cors_credentials_enabled` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.cors_max_age_gte` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.has_bearer_header` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.header_contains` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.header_get` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.is_preflight_step` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.oauth_scope_requested` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.oauth_token_source_is` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.ok_2xx` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.status` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.status_is` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.status_is_forbidden` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.status_is_unauthorized` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.status_in` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.step_body_json_get` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.step_by_id` (/specs/libraries/domain/http_core.spec.md)
+- `domain.http.step_status_is` (/specs/libraries/domain/http_core.spec.md)
+- `domain.job.scan_bundle_has_result` (/specs/libraries/domain/job_core.spec.md)
+- `domain.fs.file_ext_eq` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.fs.glob_all` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.fs.glob_any_spec_files` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.fs.glob_filter` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.fs.is_docs_spec_file` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.fs.json_get_text` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.fs.json_get_or_text` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.fs.json_has_path_text` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.fs.json_path_eq_text` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.fs.sort_spec_files` (/specs/libraries/domain/fs_core.spec.md)
+- `domain.meta.case_id_eq` (/specs/libraries/domain/meta_core.spec.md)
+- `domain.meta.has_artifact_target` (/specs/libraries/domain/meta_core.spec.md)
+- `domain.markdown.code_fence_language_exists` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.has_broken_links` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.has_heading` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.has_yaml_spec_test_fence` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.heading_level_exists` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.link_targets_all_resolve` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.required_sections_present` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.section_order_valid` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.token_dependencies_resolved` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.token_ownership_unique` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.token_present` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.markdown.tokens_all_present` (/specs/libraries/domain/markdown_core.spec.md)
+- `make.has_target` (/specs/libraries/domain/make_core.spec.md)
+- `domain.os.env_has` (/specs/libraries/domain/os_core.spec.md)
+- `domain.os.exec_capture_code` (/specs/libraries/domain/os_core.spec.md)
+- `domain.os.exec_ok` (/specs/libraries/domain/os_core.spec.md)
+- `domain.file.has_ext` (/specs/libraries/domain/path_core.spec.md)
+- `domain.file.is_existing_dir` (/specs/libraries/domain/path_core.spec.md)
+- `domain.file.is_existing_file` (/specs/libraries/domain/path_core.spec.md)
+- `domain.file.name` (/specs/libraries/domain/path_core.spec.md)
+- `markdown._context` (/specs/libraries/domain/markdown_core.spec.md)
+- `markdown._headings` (/specs/libraries/domain/markdown_core.spec.md)
+- `markdown._links` (/specs/libraries/domain/markdown_core.spec.md)
+- `markdown._text` (/specs/libraries/domain/markdown_core.spec.md)
+- `markdown._token_dependencies` (/specs/libraries/domain/markdown_core.spec.md)
+- `markdown._token_owners` (/specs/libraries/domain/markdown_core.spec.md)
+- `markdown._tokens_map` (/specs/libraries/domain/markdown_core.spec.md)
+- `domain.path.eq` (/specs/libraries/domain/path_core.spec.md)
+- `domain.path.is_in_docs` (/specs/libraries/domain/path_core.spec.md)
+- `domain.path.is_spec_md` (/specs/libraries/domain/path_core.spec.md)
+- `domain.path.normalize` (/specs/libraries/domain/path_core.spec.md)
+- `domain.path.sorted` (/specs/libraries/domain/path_core.spec.md)
+- `php.is_assoc_projection` (/specs/libraries/domain/php_core.spec.md)
+- `py.is_tuple_projection` (/specs/libraries/domain/python_core.spec.md)
+- `domain.yaml.parse_get_or` (/specs/libraries/domain/yaml_core.spec.md)
+- `domain.yaml.stringify` (/specs/libraries/domain/yaml_core.spec.md)
+- `domain.process.exec_capture_ex_code` (/specs/libraries/domain/process_core.spec.md)
+- `domain.repo.walk_matching` (/specs/libraries/domain/repo_core.spec.md)
+- `domain.artifact.write_yaml` (/specs/libraries/domain/artifact_core.spec.md)
+- `domain.artifact.append_text` (/specs/libraries/domain/artifact_core.spec.md)

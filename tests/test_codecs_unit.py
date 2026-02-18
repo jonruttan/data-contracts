@@ -60,4 +60,4 @@ def test_discover_case_files_rejects_non_md_formats_for_canonical_executable_tre
         ValueError,
         match="canonical executable case trees are markdown-only",
     ):
-        discover_case_files(Path("docs/spec/conformance/cases"), formats={"md", "yaml"})
+        discover_case_files(Path("specs/conformance/cases"), formats={"md", "yaml"})

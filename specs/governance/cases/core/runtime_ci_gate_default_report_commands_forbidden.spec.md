@@ -1,0 +1,57 @@
+# Governance Cases
+
+## SRGOV-RUNTIME-TRIAGE-016
+
+```yaml contract-spec
+id: SRGOV-RUNTIME-TRIAGE-016
+title: default ci gate excludes report-generation commands
+purpose: Ensures ci-gate-summary default step list does not include report-generation command
+  invocations.
+type: contract.check
+harness:
+  root: .
+  ci_gate_default_reports_forbidden:
+    files:
+    - /spec_runner/script_runtime_commands.py
+    - /runners/rust/spec_runner_cli/src/main.rs
+    forbidden_tokens:
+    - spec_portability_json
+    - spec_portability_md
+    - spec_lang_adoption_json
+    - spec_lang_adoption_md
+    - runner_independence_json
+    - runner_independence_md
+    - python_dependency_json
+    - python_dependency_md
+    - docs_operability_json
+    - docs_operability_md
+    - contract_assertions_json
+    - contract_assertions_md
+    - objective_scorecard_json
+    - objective_scorecard_md
+    - spec_lang_stdlib_json
+    - spec_lang_stdlib_md
+    - conformance_purpose_json
+    - conformance_purpose_md
+  chain:
+    steps:
+    - id: lib_policy_core_spec
+      class: MUST
+      ref: /specs/libraries/policy/policy_core.spec.md
+    imports:
+    - from: lib_policy_core_spec
+      names:
+      - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.ci_gate_default_report_commands_forbidden
+contract:
+- id: assert_1
+  class: MUST
+  asserts:
+  - std.logic.eq:
+    - {var: subject}
+    - 0
+  target: violation_count
+```

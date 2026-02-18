@@ -29,21 +29,21 @@ Full authoring:
 5. `docs/book/05_howto.md`
 6. `docs/book/06_troubleshooting.md`
 7. `docs/book/07_spec_lang_reference.md`
-8. `docs/spec/schema/schema_v1.md`
-9. `docs/spec/contract/`
+8. `specs/schema/schema_v1.md`
+9. `specs/contract/`
 
 Portability and conformance:
 
-1. `docs/spec/conformance/index.md`
-2. `docs/spec/conformance/cases/*.spec.md`
-3. `docs/spec/impl/php.md`
+1. `specs/conformance/index.md`
+2. `specs/conformance/cases/*.spec.md`
+3. `specs/impl/php.md`
 
 ## Canonical Sources
 
-- Stable schema: `docs/spec/schema/schema_v1.md`
-- Portable contract: `docs/spec/contract/`
-- Conformance fixtures: `docs/spec/conformance/cases/`
-- PHP implementation fixtures: `docs/spec/impl/php/cases/`
+- Stable schema: `specs/schema/schema_v1.md`
+- Portable contract: `specs/contract/`
+- Conformance fixtures: `specs/conformance/cases/`
+- PHP implementation fixtures: `specs/impl/php/cases/`
 
 ## Chapter Guide
 

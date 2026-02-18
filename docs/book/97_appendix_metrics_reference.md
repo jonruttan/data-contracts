@@ -53,16 +53,16 @@ Provide generated inventory of metric baseline fields used by objective/governan
 
 | baseline | summary_fields | segment_count |
 |---|---|---|
-| `/docs/spec/metrics/contract_assertions_baseline.json` | 5 | 4 |
-| `/docs/spec/metrics/docs_generate_profile_baseline.json` | 0 | 0 |
-| `/docs/spec/metrics/docs_generate_timing_baseline.json` | 0 | 0 |
-| `/docs/spec/metrics/docs_operability_baseline.json` | 2 | 5 |
-| `/docs/spec/metrics/governance_profile_baseline.json` | 0 | 0 |
-| `/docs/spec/metrics/governance_timing_baseline.json` | 0 | 0 |
-| `/docs/spec/metrics/objective_scorecard_baseline.json` | 6 | 0 |
-| `/docs/spec/metrics/python_dependency_baseline.json` | 5 | 0 |
-| `/docs/spec/metrics/runner_independence_baseline.json` | 3 | 3 |
-| `/docs/spec/metrics/spec_lang_adoption_baseline.json` | 11 | 4 |
-| `/docs/spec/metrics/spec_portability_baseline.json` | 7 | 4 |
-| `/docs/spec/metrics/unit_test_opt_out_baseline.json` | 0 | 0 |
+| `/specs/metrics/contract_assertions_baseline.json` | 5 | 4 |
+| `/specs/metrics/docs_generate_profile_baseline.json` | 0 | 0 |
+| `/specs/metrics/docs_generate_timing_baseline.json` | 0 | 0 |
+| `/specs/metrics/docs_operability_baseline.json` | 2 | 5 |
+| `/specs/metrics/governance_profile_baseline.json` | 0 | 0 |
+| `/specs/metrics/governance_timing_baseline.json` | 0 | 0 |
+| `/specs/metrics/objective_scorecard_baseline.json` | 6 | 0 |
+| `/specs/metrics/python_dependency_baseline.json` | 5 | 0 |
+| `/specs/metrics/runner_independence_baseline.json` | 3 | 3 |
+| `/specs/metrics/spec_lang_adoption_baseline.json` | 11 | 4 |
+| `/specs/metrics/spec_portability_baseline.json` | 7 | 4 |
+| `/specs/metrics/unit_test_opt_out_baseline.json` | 0 | 0 |
 <!-- GENERATED:END metrics_field_catalog -->

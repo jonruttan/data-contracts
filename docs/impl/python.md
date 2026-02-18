@@ -2,6 +2,6 @@
 
 Primary Python implementation notes are retained in:
 
-- `docs/spec/impl/python.md`
+- `specs/impl/python.md`
 
 This appendix is the stable implementation-specific entrypoint for contributors.

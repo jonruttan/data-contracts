@@ -183,8 +183,8 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `IMPL_EVALUATE_FIRST_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.surface` | 2 | `active` |
 | `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.metric_ratchet` | 3 | `active` |
 | `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `impl.assertion_authoring.library_usage` | 3 | `active` |
-| `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `MUST` | `governance` | `docs/spec/libraries/**/*.spec.md` | 3 | `active` |
-| `LIBRARY_DOMAIN_INDEX_SYNC` | `MUST` | `governance` | `docs/spec/libraries/*/index.md` | 2 | `active` |
+| `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `MUST` | `governance` | `specs/libraries/**/*.spec.md` | 3 | `active` |
+| `LIBRARY_DOMAIN_INDEX_SYNC` | `MUST` | `governance` | `specs/libraries/*/index.md` | 2 | `active` |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `MUST` | `governance` | `governance_and_conformance_library_paths` | 2 | `active` |
 | `LIBRARY_PUBLIC_SURFACE_MODEL` | `MUST` | `governance` | `type_spec_lang_library_shape` | 3 | `active` |
 | `LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION` | `MUST` | `governance` | `specs.spec_lang_adoption.metric_non_regression` | 3 | `active` |
@@ -217,7 +217,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `REFERENCE_CHECK_IDS_EXIST` | `MUST` | `governance` | `governance.check_ids` | 2 | `active` |
 | `REFERENCE_CONTRACT_PATHS_EXIST` | `MUST` | `governance` | `referenced_contract_paths` | 2 | `active` |
 | `REFERENCE_EXTERNAL_REFS_POLICY` | `MUST` | `governance` | `external_references.policy` | 2 | `active` |
-| `REFERENCE_LIBRARY_EXPORTS_USED` | `MUST` | `governance` | `docs/spec/libraries/* exports` | 2 | `active` |
+| `REFERENCE_LIBRARY_EXPORTS_USED` | `MUST` | `governance` | `specs/libraries/* exports` | 2 | `active` |
 | `REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN` | `MUST` | `governance` | `cross_case_library_symbol_references` | 2 | `active` |
 | `REFERENCE_SYMBOLS_EXIST` | `MUST` | `governance` | `harness.spec_lang.symbol_references` | 2 | `active` |
 | `REFERENCE_TOKEN_ANCHORS_EXIST` | `MUST` | `governance` | `token_anchor_references` | 2 | `active` |
@@ -301,7 +301,7 @@ Provide generated policy-rule inventory for governance and traceability review.
 | `SPEC_LANG_STDLIB_PROFILE_COMPLETE` | `MUST` | `governance` | `spec_lang.stdlib.implementations` | 2 | `active` |
 | `SPEC_LANG_STDLIB_PROFILE_DEFINED` | `MUST` | `contract` | `spec_lang.stdlib.profile` | 2 | `active` |
 | `SPEC_LANG_STDLIB_PY_PHP_PARITY_REQUIRED` | `MUST` | `governance` | `spec_lang.stdlib.parity` | 2 | `active` |
-| `SPEC_LAYOUT_DOMAIN_TREES` | `MUST` | `governance` | `docs/spec tree layout` | 2 | `active` |
+| `SPEC_LAYOUT_DOMAIN_TREES` | `MUST` | `governance` | `specs tree layout` | 2 | `active` |
 | `SPEC_PORTABILITY_METRIC_REPORTED` | `MUST` | `governance` | `specs.portability.metric_report` | 3 | `active` |
 | `SPEC_PORTABILITY_NON_REGRESSION_REQUIRED` | `MUST` | `governance` | `specs.portability.metric_non_regression` | 3 | `active` |
 | `SPEC_PORTABILITY_THRESHOLD_ENFORCED` | `SHOULD` | `governance` | `specs.portability.metric_thresholds` | 2 | `active` |

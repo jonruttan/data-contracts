@@ -9,28 +9,28 @@ from spec_runner.codecs import load_external_cases
 from spec_runner.purpose_lint import load_purpose_lint_policy
 
 _NORMATIVE_CONTRACT_DOCS = [
-    "docs/spec/contract/00_design_goals.md",
-    "docs/spec/contract/versioning.md",
-    "docs/spec/contract/01_discovery.md",
-    "docs/spec/contract/02_case_shape.md",
-    "docs/spec/contract/03_assertions.md",
-    "docs/spec/contract/03a_regex_portability_v1.md",
-    "docs/spec/contract/03b_spec_lang_v1.md",
-    "docs/spec/contract/04_harness.md",
-    "docs/spec/contract/05_errors.md",
-    "docs/spec/contract/06_conformance.md",
-    "docs/spec/contract/07_portable_spec_authoring.md",
-    "docs/spec/contract/08_v1_scope.md",
-    "docs/spec/contract/09_internal_representation.md",
-    "docs/spec/contract/10_docs_quality.md",
-    "docs/spec/contract/11_adoption_profiles.md",
-    "docs/spec/contract/12_runner_interface.md",
-    "docs/spec/contract/13_runtime_scope.md",
-    "docs/spec/contract/14_spec_lang_libraries.md",
-    "docs/spec/contract/15_governance_subject_model.md",
-    "docs/spec/contract/16_rust_primary_transition.md",
-    "docs/spec/contract/17_objective_metrics.md",
-    "docs/spec/contract/20_subject_profiles_v1.md",
+    "specs/contract/00_design_goals.md",
+    "specs/contract/versioning.md",
+    "specs/contract/01_discovery.md",
+    "specs/contract/02_case_shape.md",
+    "specs/contract/03_assertions.md",
+    "specs/contract/03a_regex_portability_v1.md",
+    "specs/contract/03b_spec_lang_v1.md",
+    "specs/contract/04_harness.md",
+    "specs/contract/05_errors.md",
+    "specs/contract/06_conformance.md",
+    "specs/contract/07_portable_spec_authoring.md",
+    "specs/contract/08_v1_scope.md",
+    "specs/contract/09_internal_representation.md",
+    "specs/contract/10_docs_quality.md",
+    "specs/contract/11_adoption_profiles.md",
+    "specs/contract/12_runner_interface.md",
+    "specs/contract/13_runtime_scope.md",
+    "specs/contract/14_spec_lang_libraries.md",
+    "specs/contract/15_governance_subject_model.md",
+    "specs/contract/16_rust_primary_transition.md",
+    "specs/contract/17_objective_metrics.md",
+    "specs/contract/20_subject_profiles_v1.md",
 ]
 
 
@@ -69,9 +69,9 @@ def _exists_repo_or_runner(repo_root: Path, rel: str) -> bool:
 
 
 def _load_policy_and_trace(repo_root: Path) -> tuple[dict[str, Any], dict[str, Any], set[str]]:
-    policy_path = repo_root / "docs/spec/contract/policy_v1.yaml"
-    trace_path = repo_root / "docs/spec/contract/traceability_v1.yaml"
-    cases_dir = repo_root / "docs/spec/conformance/cases"
+    policy_path = repo_root / "specs/contract/policy_v1.yaml"
+    trace_path = repo_root / "specs/contract/traceability_v1.yaml"
+    cases_dir = repo_root / "specs/conformance/cases"
     policy = _read_yaml(policy_path) or {}
     trace = _read_yaml(trace_path) or {}
     conformance_ids = _collect_fixture_case_ids(cases_dir)
@@ -253,7 +253,7 @@ def check_contract_governance(repo_root: Path) -> list[str]:
         links_by_rule[rid] = l
         if rid not in rules_by_id:
             errs.append(f"traceability references unknown policy rule: {rid}")
-        want_policy_ref = f"docs/spec/contract/policy_v1.yaml#{rid}"
+        want_policy_ref = f"specs/contract/policy_v1.yaml#{rid}"
         got_policy_ref = str(l.get("policy_ref", "")).strip()
         if got_policy_ref != want_policy_ref:
             errs.append(

@@ -46,7 +46,7 @@ def _case(doc_path: Path, *, harness: dict[str, Any]) -> InternalSpecCase:
 
 
 def test_orchestration_harness_validates_required_capability(tmp_path: Path) -> None:
-    tools_dir = tmp_path / "docs/spec/tools/python"
+    tools_dir = tmp_path / "specs/tools/python"
     tools_dir.mkdir(parents=True, exist_ok=True)
     (tools_dir / "tools_v1.yaml").write_text(
         """
@@ -56,8 +56,8 @@ tools:
 - tool_id: governance.run
   effect_symbol: ops.proc.command.exec
   capability_id: orchestration.tool.governance.run
-  input_schema_ref: /docs/spec/schema/orchestration_result_v1.yaml#tool_input
-  output_schema_ref: /docs/spec/schema/orchestration_result_v1.yaml#tool_output
+  input_schema_ref: /specs/schema/orchestration_result_v1.yaml#tool_input
+  output_schema_ref: /specs/schema/orchestration_result_v1.yaml#tool_output
   stability: stable
   since: v1
   adapter_subcommand: governance
@@ -68,7 +68,7 @@ tools:
     (tmp_path / ".git").mkdir(parents=True, exist_ok=True)
 
     case = _case(
-        tmp_path / "docs/spec/orchestration/cases/core/sample.spec.md",
+        tmp_path / "specs/orchestration/cases/core/sample.spec.md",
         harness={
             "orchestration": {
                 "impl": "python",
@@ -82,7 +82,7 @@ tools:
 
 
 def test_orchestration_harness_rejects_unknown_tool(tmp_path: Path) -> None:
-    tools_dir = tmp_path / "docs/spec/tools/python"
+    tools_dir = tmp_path / "specs/tools/python"
     tools_dir.mkdir(parents=True, exist_ok=True)
     (tools_dir / "tools_v1.yaml").write_text(
         "version: 1\nimplementation: python\ntools: []\n",
@@ -90,7 +90,7 @@ def test_orchestration_harness_rejects_unknown_tool(tmp_path: Path) -> None:
     )
     (tmp_path / ".git").mkdir(parents=True, exist_ok=True)
     case = _case(
-        tmp_path / "docs/spec/orchestration/cases/core/sample.spec.md",
+        tmp_path / "specs/orchestration/cases/core/sample.spec.md",
         harness={
             "orchestration": {
                 "impl": "python",

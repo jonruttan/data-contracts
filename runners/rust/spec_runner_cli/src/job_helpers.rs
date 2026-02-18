@@ -95,7 +95,7 @@ fn helper_schema_compile_registry(root: &Path, payload: &Value) -> Result<Value,
     let rel = payload
         .get("path")
         .and_then(|v| v.as_str())
-        .unwrap_or("/docs/spec/schema/registry/v1");
+        .unwrap_or("/specs/schema/registry/v1");
     let base = resolve(root, rel);
     if !base.exists() {
         return Err(format!("schema registry path does not exist: {}", base.display()));
@@ -180,7 +180,7 @@ fn helper_governance_scan_bundle(root: &Path, payload: &Value) -> Result<Value, 
     let rel = payload
         .get("path")
         .and_then(|v| v.as_str())
-        .unwrap_or("/docs/spec");
+        .unwrap_or("/specs");
     let patterns = payload
         .get("patterns")
         .and_then(|v| v.as_array())
@@ -335,7 +335,7 @@ fn helper_parity_run_conformance(root: &Path, payload: &Value) -> Result<Value, 
     let cases = payload
         .get("cases")
         .and_then(|v| v.as_str())
-        .unwrap_or("docs/spec/conformance/cases")
+        .unwrap_or("specs/conformance/cases")
         .to_string();
     let php_runner = payload
         .get("php_runner")

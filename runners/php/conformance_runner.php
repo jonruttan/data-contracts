@@ -14,7 +14,7 @@ declare(strict_types=1);
  *
  * Usage:
  *   php runners/php/conformance_runner.php \
- *     --cases docs/spec/conformance/cases \
+ *     --cases specs/conformance/cases \
  *     --out .artifacts/php-conformance-report.json
  */
 

@@ -146,7 +146,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Emit conformance purpose report.")
     ap.add_argument(
         "--cases",
-        default="docs/spec/conformance/cases",
+        default="specs/conformance/cases",
         help="Path to conformance case docs directory",
     )
     ap.add_argument("--out", help="Optional output path for report.")

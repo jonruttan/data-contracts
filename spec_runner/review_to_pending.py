@@ -149,7 +149,7 @@ def _infer_implicit(md: str, *, limit: int = 10) -> list[dict[str, str]]:
         out.append(
             {
                 "id": f"CK-{area}-IMP-{i:03d}",
-                "where": "docs/spec/backlog.md",
+                "where": "specs/backlog.md",
                 "priority": "P1",
                 "statement": f"SHOULD {b[0].lower() + b[1:]}" if b and b[0].isupper() else f"SHOULD {b}",
                 "rationale": "Inferred from repeated narrative concerns in the review output; requires human triage.",
@@ -216,13 +216,13 @@ def _write_pending(
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        description="Extract explicit YAML spec candidates from a review snapshot and infer implicit suggestions into docs/spec/pending.",
+        description="Extract explicit YAML spec candidates from a review snapshot and infer implicit suggestions into specs/pending.",
     )
     ap.add_argument("snapshot", help="Path to review snapshot markdown")
     ap.add_argument(
         "--out",
         default="",
-        help="Output pending markdown path (default: docs/spec/pending/<snapshot-stem>-pending.md)",
+        help="Output pending markdown path (default: specs/pending/<snapshot-stem>-pending.md)",
     )
     ap.add_argument(
         "--implicit-limit",
@@ -238,7 +238,7 @@ def main(argv: list[str] | None = None) -> int:
     cls = _extract_classifications(md)
     implicit = _infer_implicit(md, limit=max(0, int(ns.implicit_limit)))
 
-    out_path = Path(ns.out) if ns.out else Path("docs/spec/pending") / f"{src.stem}-pending.md"
+    out_path = Path(ns.out) if ns.out else Path("specs/pending") / f"{src.stem}-pending.md"
     _write_pending(
         out_path,
         title="Review-Derived Spec Candidates",

@@ -1,0 +1,42 @@
+# Governance Cases
+
+## SRGOV-RUNTIME-APIHTTP-008
+
+```yaml contract-spec
+id: SRGOV-RUNTIME-APIHTTP-008
+title: api.http python/php parity contract surfaces remain synchronized
+purpose: Ensures python/php api.http implementations and contracts expose shared v2 tokens.
+type: contract.check
+harness:
+  root: .
+  chain:
+    steps:
+    - id: lib_policy_core_spec
+      class: MUST
+      ref: /specs/libraries/policy/policy_core.spec.md
+    imports:
+    - from: lib_policy_core_spec
+      names:
+      - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.api_http_parity_contract_sync
+contract:
+- id: assert_1
+  class: MUST
+  asserts:
+  - std.logic.eq:
+    - {var: subject}
+    - 0
+  target: violation_count
+- id: assert_2
+  class: MUST
+  asserts:
+  - std.logic.eq:
+    - std.object.get:
+      - {var: subject}
+      - check_id
+    - runtime.api_http_parity_contract_sync
+  target: summary_json
+```

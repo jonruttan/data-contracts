@@ -12,7 +12,7 @@ owns_tokens:
 requires_tokens:
 - minimal_examples
 commands:
-- run: python -m spec_runner.spec_lang_commands spec-lang-format --check docs/spec
+- run: python -m spec_runner.spec_lang_commands spec-lang-format --check specs
   purpose: Enforce canonical evaluate formatting in specs.
 examples:
 - id: EX-SPECLANG-001
@@ -28,8 +28,8 @@ This chapter is the strict semantic reference for the `evaluate` assertion leaf.
 
 Normative profile references:
 
-- `/docs/spec/schema/spec_lang_stdlib_profile_v1.yaml`
-- `/docs/spec/contract/19_spec_lang_stdlib_profile_v1.md`
+- `/specs/schema/spec_lang_stdlib_profile_v1.yaml`
+- `/specs/contract/19_spec_lang_stdlib_profile_v1.md`
 
 Authoring note:
 
@@ -312,17 +312,17 @@ inside the expression when you need:
 
 ## 8) Cross-References
 
-- `docs/spec/schema/schema_v1.md`
-- `docs/spec/contract/03_assertions.md`
-- `docs/spec/contract/03b_spec_lang_v1.md`
-- `docs/spec/contract/14_spec_lang_libraries.md`
-- `docs/spec/conformance/cases/core/spec_lang.spec.md`
+- `specs/schema/schema_v1.md`
+- `specs/contract/03_assertions.md`
+- `specs/contract/03b_spec_lang_v1.md`
+- `specs/contract/14_spec_lang_libraries.md`
+- `specs/conformance/cases/core/spec_lang.spec.md`
 
 ## 9) Lint + Format
 
 Use the repo tool to keep `evaluate` layout canonical:
 
 ```sh
-python -m spec_runner.spec_lang_commands spec-lang-format --check docs/spec
-python -m spec_runner.spec_lang_commands spec-lang-format --write docs/spec
+python -m spec_runner.spec_lang_commands spec-lang-format --check specs
+python -m spec_runner.spec_lang_commands spec-lang-format --write specs
 ```

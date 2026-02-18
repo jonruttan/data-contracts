@@ -35,7 +35,7 @@ def _segment_keys(payload: dict[str, Any]) -> dict[str, list[str]]:
 
 
 def _build_payload(repo_root: Path) -> dict[str, Any]:
-    metrics_dir = repo_root / "docs/spec/metrics"
+    metrics_dir = repo_root / "specs/metrics"
     files = sorted(metrics_dir.glob("*_baseline.json"))
     baselines: list[dict[str, Any]] = []
     all_summary: set[str] = set()

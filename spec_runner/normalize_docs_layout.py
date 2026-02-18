@@ -9,7 +9,7 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PROFILE_PATH = ROOT / "docs/spec/schema/docs_layout_profile_v1.yaml"
+PROFILE_PATH = ROOT / "specs/schema/docs_layout_profile_v1.yaml"
 
 
 def _load_profile(path: Path) -> dict:
@@ -90,12 +90,12 @@ def _write_layout(profile: dict, root: Path) -> list[str]:
     replacements = [
         ("docs/reviews", "docs/history/reviews"),
         ("docs/book/README.md", "docs/book/index.md"),
-        ("docs/spec/README.md", "docs/spec/index.md"),
-        ("docs/spec/contract/README.md", "docs/spec/contract/index.md"),
-        ("docs/spec/governance/README.md", "docs/spec/governance/index.md"),
-        ("docs/spec/conformance/README.md", "docs/spec/conformance/index.md"),
-        ("docs/spec/conformance/cases/README.md", "docs/spec/conformance/cases/index.md"),
-        ("docs/spec/impl/php/cases/README.md", "docs/spec/impl/php/cases/index.md"),
+        ("specs/README.md", "specs/index.md"),
+        ("specs/contract/README.md", "specs/contract/index.md"),
+        ("specs/governance/README.md", "specs/governance/index.md"),
+        ("specs/conformance/README.md", "specs/conformance/index.md"),
+        ("specs/conformance/cases/README.md", "specs/conformance/cases/index.md"),
+        ("specs/impl/php/cases/README.md", "specs/impl/php/cases/index.md"),
     ]
 
     for p in _all_docs_files(root):
@@ -105,12 +105,12 @@ def _write_layout(profile: dict, root: Path) -> list[str]:
     from_to = [
         ("docs/reviews", "docs/history/reviews"),
         ("docs/book/README.md", "docs/book/index.md"),
-        ("docs/spec/README.md", "docs/spec/index.md"),
-        ("docs/spec/contract/README.md", "docs/spec/contract/index.md"),
-        ("docs/spec/governance/README.md", "docs/spec/governance/index.md"),
-        ("docs/spec/conformance/README.md", "docs/spec/conformance/index.md"),
-        ("docs/spec/conformance/cases/README.md", "docs/spec/conformance/cases/index.md"),
-        ("docs/spec/impl/php/cases/README.md", "docs/spec/impl/php/cases/index.md"),
+        ("specs/README.md", "specs/index.md"),
+        ("specs/contract/README.md", "specs/contract/index.md"),
+        ("specs/governance/README.md", "specs/governance/index.md"),
+        ("specs/conformance/README.md", "specs/conformance/index.md"),
+        ("specs/conformance/cases/README.md", "specs/conformance/cases/index.md"),
+        ("specs/impl/php/cases/README.md", "specs/impl/php/cases/index.md"),
     ]
     for old_rel, new_rel in from_to:
         old = root / old_rel

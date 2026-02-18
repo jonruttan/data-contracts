@@ -23,7 +23,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--cases",
-        default="docs/spec",
+        default="specs",
         help="Path to case docs directory or case file",
     )
     ap.add_argument(

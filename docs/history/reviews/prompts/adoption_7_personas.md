@@ -50,8 +50,8 @@ Context you should assume about this repo:
 - Core types currently include `text.file` and `cli.run`.
 - Runner-only setup keys must live under `harness:`.
 - There is a conformance system and Python/PHP parity checks.
-- Active spec snapshot: `docs/spec/current.md`.
-- Pending work: `docs/spec/pending/`.
+- Active spec snapshot: `specs/current.md`.
+- Pending work: `specs/pending/`.
 
 Important:
 - Reference concrete file paths and nearby section names/keywords when making claims.
@@ -70,8 +70,8 @@ Suggested commands:
 - `./scripts/ci_gate.sh`
 - `.venv/bin/python -m pytest -q`
 - `.venv/bin/python -m build`
-- `.venv/bin/python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases --php-runner runners/php/conformance_runner.php --out .artifacts/conformance-parity.json`
-- Optional: run `runners/php/spec_runner.php` against `docs/spec/impl/php/cases/` if PHP + yaml extension are available
+- `.venv/bin/python scripts/compare_conformance_parity.py --cases specs/conformance/cases --php-runner runners/php/conformance_runner.php --out .artifacts/conformance-parity.json`
+- Optional: run `runners/php/spec_runner.php` against `specs/impl/php/cases/` if PHP + yaml extension are available
 
 Your task:
 A) Identify the core problems this project aims to solve (plain language) and implicit workflow assumptions.

@@ -87,7 +87,7 @@ Load shared libraries in harness and call exported symbols:
 harness:
   spec_lang:
     includes:
-    - /docs/spec/libraries/policy/policy_core.spec.md
+    - /specs/libraries/policy/policy_core.spec.md
     exports:
     - policy.pass_when_no_violations
 evaluate:
@@ -107,5 +107,5 @@ evaluate:
 
 - `/docs/book/03_assertions.md`
 - `/docs/book/07_spec_lang_reference.md`
-- `/docs/spec/contract/03b_spec_lang_v1.md`
-- `/docs/spec/libraries/`
+- `/specs/contract/03b_spec_lang_v1.md`
+- `/specs/libraries/`

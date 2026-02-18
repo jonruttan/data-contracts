@@ -49,7 +49,7 @@ only_check_sets_changes() {
   [[ -n "${changed}" ]] || return 1
   while IFS= read -r path; do
     [[ -z "${path}" ]] && continue
-    if [[ "${path}" != "docs/spec/governance/check_sets_v1.yaml" ]]; then
+    if [[ "${path}" != "specs/governance/check_sets_v1.yaml" ]]; then
       return 1
     fi
   done <<< "${changed}"

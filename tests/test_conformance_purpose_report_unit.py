@@ -39,7 +39,7 @@ expect:
         "warning_severity_counts",
     }
     assert set(payload["policy"].keys()) == {"path", "exists", "config", "errors"}
-    assert payload["policy"]["path"].endswith("docs/spec/conformance/purpose_lint_v1.yaml")
+    assert payload["policy"]["path"].endswith("specs/conformance/purpose_lint_v1.yaml")
     assert payload["policy"]["exists"] is False
     assert payload["policy"]["errors"] == []
     assert isinstance(payload["rows"], list)
@@ -97,7 +97,7 @@ expect:
 
 def test_conformance_purpose_report_uses_runtime_profile_and_override(tmp_path):
     repo_root = tmp_path / "repo"
-    policy_path = repo_root / "docs/spec/conformance/purpose_lint_v1.yaml"
+    policy_path = repo_root / "specs/conformance/purpose_lint_v1.yaml"
     policy_path.parent.mkdir(parents=True, exist_ok=True)
     policy_path.write_text(
         """version: 1
@@ -232,7 +232,7 @@ expect:
 
 def test_conformance_purpose_report_severity_override_from_policy(tmp_path):
     repo_root = tmp_path / "repo"
-    policy_path = repo_root / "docs/spec/conformance/purpose_lint_v1.yaml"
+    policy_path = repo_root / "specs/conformance/purpose_lint_v1.yaml"
     policy_path.parent.mkdir(parents=True, exist_ok=True)
     policy_path.write_text(
         """version: 1

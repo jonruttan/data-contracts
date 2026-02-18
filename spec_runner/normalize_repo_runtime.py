@@ -17,18 +17,18 @@ from spec_runner.split_library_cases_per_symbol import main as split_library_cas
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PROFILE_PATH = ROOT / "docs/spec/schema/normalization_profile_v1.yaml"
+PROFILE_PATH = ROOT / "specs/schema/normalization_profile_v1.yaml"
 _EXECUTABLE_CASE_TREE_ROOTS = (
-    "docs/spec/conformance/cases",
-    "docs/spec/governance/cases",
-    "docs/spec/impl",
+    "specs/conformance/cases",
+    "specs/governance/cases",
+    "specs/impl",
 )
 _NON_MD_SPEC_GLOBS = ("*.spec.yaml", "*.spec.yml", "*.spec.json")
 _DATA_ARTIFACT_GLOBS = (
-    "docs/spec/metrics/*.json",
-    "docs/spec/metrics/*.yaml",
+    "specs/metrics/*.json",
+    "specs/metrics/*.yaml",
     "docs/book/reference_manifest.yaml",
-    "docs/spec/schema/*.yaml",
+    "specs/schema/*.yaml",
 )
 _HARNESS_FILES = (
     "spec_runner/harnesses/text_file.py",
@@ -117,10 +117,10 @@ def _check_docs_tokens(profile: dict[str, Any]) -> list[str]:
     issues: list[str] = []
     token_sync = profile.get("docs_token_sync", {})
     if not isinstance(token_sync, dict):
-        return ["docs/spec/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: docs_token_sync must be a mapping"]
+        return ["specs/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: docs_token_sync must be a mapping"]
     rules = token_sync.get("rules", [])
     if not isinstance(rules, list):
-        return ["docs/spec/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: docs_token_sync.rules must be a list"]
+        return ["specs/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: docs_token_sync.rules must be a list"]
     for rule in rules:
         if not isinstance(rule, dict):
             continue
@@ -152,10 +152,10 @@ def _apply_replacements(profile: dict[str, Any]) -> tuple[list[str], int]:
     issues: list[str] = []
     repl = profile.get("replacements", {})
     if not isinstance(repl, dict):
-        return (["docs/spec/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: replacements must be a mapping"], 0)
+        return (["specs/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: replacements must be a mapping"], 0)
     rules = repl.get("rules", [])
     if not isinstance(rules, list):
-        return (["docs/spec/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: replacements.rules must be a list"], 0)
+        return (["specs/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: replacements.rules must be a list"], 0)
     for rule in rules:
         if not isinstance(rule, dict):
             continue
@@ -229,7 +229,7 @@ def _check_dogfood_executable_surface() -> list[str]:
                 issues.append(
                     f"{rel}:1: NORMALIZATION_EXECUTABLE_SURFACE_MARKDOWN_ONLY: canonical executable surfaces must use .spec.md"
                 )
-    libs_root = ROOT / "docs/spec/libraries"
+    libs_root = ROOT / "specs/libraries"
     if libs_root.exists():
         for pattern in _NON_MD_SPEC_GLOBS:
             for p in sorted(x for x in libs_root.rglob(pattern) if x.is_file()):
@@ -292,7 +292,7 @@ def _check_spec_lang_library_type_forbidden() -> list[str]:
 
 def _iter_spec_markdown_cases() -> list[tuple[str, dict[str, Any]]]:
     pairs: list[tuple[str, dict[str, Any]]] = []
-    roots = (ROOT / "docs/spec", ROOT / "tests")
+    roots = (ROOT / "specs", ROOT / "tests")
     for base in roots:
         if not base.exists():
             continue
@@ -496,7 +496,7 @@ def _check_contract_terminology_hard_cut() -> list[str]:
 
         _walk(contract, "contract")
 
-    spec_root = ROOT / "docs/spec"
+    spec_root = ROOT / "specs"
     if spec_root.exists():
         for p in sorted(spec_root.rglob("*.spec.md")):
             if not p.is_file():
@@ -633,7 +633,7 @@ def main(argv: list[str] | None = None) -> int:
     explicit_paths = _parse_explicit_paths(str(ns.paths), [str(x) for x in ns.path])
     scope_paths = explicit_paths if explicit_paths else _scope_paths(profile, ns.scope)
     if not scope_paths:
-        print("docs/spec/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: no paths selected for scope")
+        print("specs/schema/normalization_profile_v1.yaml:1: NORMALIZATION_PROFILE: no paths selected for scope")
         return 1
 
     mode_flag = "--check" if ns.check else "--write"
@@ -649,19 +649,19 @@ def main(argv: list[str] | None = None) -> int:
                     issues.append(f"docs:1: NORMALIZATION_DOCS_LAYOUT: {line}")
         split_lib_code, split_lib_out = _run_inproc(
             split_library_cases_per_symbol_main,
-            [mode_flag, "docs/spec/libraries"],
+            [mode_flag, "specs/libraries"],
         )
         if split_lib_code != 0:
             for line in split_lib_out.splitlines():
                 line = line.strip()
                 if line:
-                    issues.append(f"docs/spec:1: NORMALIZATION_LIBRARY_SINGLE_PUBLIC_SYMBOL: {line}")
+                    issues.append(f"specs:1: NORMALIZATION_LIBRARY_SINGLE_PUBLIC_SYMBOL: {line}")
     style_code, style_out = _run_inproc(spec_lang_format_main, [mode_flag, *scope_paths])
     if style_code != 0:
         for line in style_out.splitlines():
             line = line.strip()
             if line:
-                issues.append(f"docs/spec:1: NORMALIZATION_SPEC_STYLE: {line}")
+                issues.append(f"specs:1: NORMALIZATION_SPEC_STYLE: {line}")
 
     if ns.write:
         changed = 0

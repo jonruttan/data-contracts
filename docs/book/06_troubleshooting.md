@@ -25,7 +25,7 @@ sections_required:
 
 ## Purpose
 
-Provide a deterministic triage flow for docs/spec/governance failures.
+Provide a deterministic triage flow for specs/governance failures.
 
 ## Inputs
 
@@ -149,4 +149,4 @@ Escalate to implementation docs when the issue is runner-internal behavior:
 - `/docs/impl/index.md`
 - `/docs/impl/python.md`
 - `/docs/impl/php.md`
-- `/docs/spec/contract/12_runner_interface.md`
+- `/specs/contract/12_runner_interface.md`

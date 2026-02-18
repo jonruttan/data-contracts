@@ -15,7 +15,7 @@ def _now_iso() -> str:
 
 
 def load_tools_registry(root: Path, impl: str) -> list[dict[str, Any]]:
-    path = root / "docs/spec/tools" / impl / "tools_v1.yaml"
+    path = root / "specs/tools" / impl / "tools_v1.yaml"
     if not path.exists():
         raise ValueError(f"missing tools registry for impl '{impl}': {path}")
     payload = yaml.safe_load(path.read_text(encoding="utf-8"))

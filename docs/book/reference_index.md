@@ -13,7 +13,7 @@ reference anchors during implementation and conformance review.
 4. `/docs/book/03_assertions.md` - assertion tree and evaluate-first authoring boundary.
 5. `/docs/book/04_spec_lang_guide.md` - practical spec-lang composition patterns and debugging.
 6. `/docs/book/05_howto.md` - common contributor workflows for specs, libraries, and governance.
-7. `/docs/book/06_troubleshooting.md` - deterministic triage playbooks for docs/spec/governance failures.
+7. `/docs/book/06_troubleshooting.md` - deterministic triage playbooks for specs/governance failures.
 8. `/docs/book/07_spec_lang_reference.md` - strict operator semantics and error behavior reference.
 9. `/docs/book/90_appendix_cheatsheet.md` - compact authoring cheatsheet.
 10. `/docs/book/91_appendix_runner_api_reference.md` - generated runner command surface reference.

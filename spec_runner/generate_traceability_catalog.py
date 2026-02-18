@@ -26,11 +26,11 @@ def _count_list(node: dict[str, Any], key: str) -> int:
 
 
 def _build_payload(repo_root: Path) -> dict[str, Any]:
-    trace_path = repo_root / "docs/spec/contract/traceability_v1.yaml"
+    trace_path = repo_root / "specs/contract/traceability_v1.yaml"
     payload = yaml.safe_load(trace_path.read_text(encoding="utf-8"))
     links = payload.get("links") if isinstance(payload, dict) else None
     if not isinstance(links, list):
-        raise ValueError("docs/spec/contract/traceability_v1.yaml: links must be a list")
+        raise ValueError("specs/contract/traceability_v1.yaml: links must be a list")
 
     rows: list[dict[str, Any]] = []
     for raw in links:

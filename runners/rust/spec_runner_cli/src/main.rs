@@ -401,79 +401,79 @@ fn profile_level_or_off(raw: &str) -> String {
 fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
     match subcommand {
         "validate-report" => Some(
-            "/docs/spec/libraries/domain/conformance_core.spec.md#LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS",
+            "/specs/libraries/domain/conformance_core.spec.md#LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS",
         ),
         "schema-registry-build" => Some(
-            "/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-004",
+            "/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-004",
         ),
         "schema-registry-check" => Some(
-            "/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-005",
+            "/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-005",
         ),
-        "docs-lint" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-006"),
-        "docs-generate" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-007"),
-        "docs-generate-check" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-008"),
-        "docs-build" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-009"),
-        "docs-build-check" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-010"),
-        "docs-graph" => Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-011"),
+        "docs-lint" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-006"),
+        "docs-generate" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-007"),
+        "docs-generate-check" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-008"),
+        "docs-build" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-009"),
+        "docs-build-check" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-010"),
+        "docs-graph" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-011"),
         "spec-lang-stdlib-json" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-017",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-017",
         ),
         "spec-lang-stdlib-md" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-018",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-018",
         ),
         "contract-assertions-json" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-005",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-005",
         ),
         "contract-assertions-md" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-006",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-006",
         ),
         "conformance-purpose-json" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-001",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-001",
         ),
         "conformance-purpose-md" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-002",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-002",
         ),
         "spec-portability-json" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-003",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-003",
         ),
         "spec-portability-md" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-004",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-004",
         ),
         "spec-lang-adoption-json" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-007",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-007",
         ),
         "spec-lang-adoption-md" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-008",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-008",
         ),
         "runner-independence-json" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-009",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-009",
         ),
         "runner-independence-md" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-010",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-010",
         ),
         "python-dependency-json" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-011",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-011",
         ),
         "python-dependency-md" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-012",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-012",
         ),
         "docs-operability-json" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-013",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-013",
         ),
         "docs-operability-md" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-014",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-014",
         ),
         "objective-scorecard-json" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-015",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-015",
         ),
         "objective-scorecard-md" => Some(
-            "/docs/spec/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-016",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-016",
         ),
         "conformance-parity" => Some(
-            "/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-002",
+            "/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-002",
         ),
         "perf-smoke" => Some(
-            "/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-003",
+            "/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-003",
         ),
         _ => None,
     }
@@ -1625,7 +1625,7 @@ fn run_command_capture_code(command: &[String], root: &Path) -> i32 {
 
 fn collect_unit_test_opt_out(root: &Path) -> Value {
     let tests_root = root.join("tests");
-    let baseline_path = root.join("docs/spec/metrics/unit_test_opt_out_baseline.json");
+    let baseline_path = root.join("specs/metrics/unit_test_opt_out_baseline.json");
     let mut total = 0_i64;
     let mut opted_out = 0_i64;
     let prefix = "# SPEC-OPT-OUT:";
@@ -2398,7 +2398,7 @@ fn main() {
                     "spec_runner.spec_lang_commands".to_string(),
                     "spec-lang-format".to_string(),
                     "--check".to_string(),
-                    "docs/spec".to_string(),
+                    "specs".to_string(),
                 ],
                 &forwarded,
             ),
@@ -2542,21 +2542,21 @@ mod tests {
 
     #[test]
     fn parse_spec_ref_accepts_path_and_fragment() {
-        let got = parse_spec_ref("/docs/spec/example.spec.md#CASE-1").expect("parse");
-        assert_eq!(got.0, "/docs/spec/example.spec.md");
+        let got = parse_spec_ref("/specs/example.spec.md#CASE-1").expect("parse");
+        assert_eq!(got.0, "/specs/example.spec.md");
         assert_eq!(got.1.as_deref(), Some("CASE-1"));
     }
 
     #[test]
     fn parse_spec_ref_accepts_path_only() {
-        let got = parse_spec_ref("/docs/spec/example.spec.md").expect("parse");
-        assert_eq!(got.0, "/docs/spec/example.spec.md");
+        let got = parse_spec_ref("/specs/example.spec.md").expect("parse");
+        assert_eq!(got.0, "/specs/example.spec.md");
         assert!(got.1.is_none());
     }
 
     #[test]
     fn parse_spec_ref_rejects_empty_fragment() {
-        let err = parse_spec_ref("/docs/spec/example.spec.md#").expect_err("expected error");
+        let err = parse_spec_ref("/specs/example.spec.md#").expect_err("expected error");
         assert!(err.contains("empty case id fragment"));
     }
 
@@ -2568,11 +2568,11 @@ mod tests {
 
     #[test]
     fn parse_job_ref_accepts_path_and_fragment() {
-        let got = parse_job_ref("/docs/spec/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-001")
+        let got = parse_job_ref("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-001")
             .expect("parse");
         assert_eq!(
             got.0.as_deref(),
-            Some("/docs/spec/impl/rust/jobs/script_jobs.spec.md")
+            Some("/specs/impl/rust/jobs/script_jobs.spec.md")
         );
         assert_eq!(got.1, "SRRUST-JOB-001");
     }

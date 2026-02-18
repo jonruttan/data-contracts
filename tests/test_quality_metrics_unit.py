@@ -52,7 +52,7 @@ def test_compare_metric_non_regression_directional_checks() -> None:
 
 def test_spec_lang_adoption_report_basic_shape(tmp_path: Path) -> None:
     _write(
-        tmp_path / "docs/spec/conformance/cases/a.spec.md",
+        tmp_path / "specs/conformance/cases/a.spec.md",
         """# A
 
 ## C1
@@ -72,8 +72,8 @@ assert:
     payload = spec_lang_adoption_report_jsonable(
         tmp_path,
         config={
-            "roots": ["docs/spec/conformance/cases"],
-            "segment_rules": [{"prefix": "docs/spec/conformance/cases", "segment": "conformance"}],
+            "roots": ["specs/conformance/cases"],
+            "segment_rules": [{"prefix": "specs/conformance/cases", "segment": "conformance"}],
             "recursive": True,
             "tests_glob": "tests/test_*_unit.py",
         },
@@ -146,12 +146,12 @@ sections_required: [\"Purpose\", \"Inputs\", \"Outputs\", \"Failure Modes\"]
 
 
 def test_contract_assertions_report_basic_shape(tmp_path: Path) -> None:
-    _write(tmp_path / "docs/spec/contract/03_assertions.md", "must can cannot contain regex evaluate\n")
-    _write(tmp_path / "docs/spec/schema/schema_v1.md", "must can cannot contain regex evaluate\n")
+    _write(tmp_path / "specs/contract/03_assertions.md", "must can cannot contain regex evaluate\n")
+    _write(tmp_path / "specs/schema/schema_v1.md", "must can cannot contain regex evaluate\n")
     _write(tmp_path / "docs/book/03_assertions.md", "must can cannot contain regex evaluate\n")
-    _write(tmp_path / "docs/spec/contract/03b_spec_lang_v1.md", "must can cannot contain regex evaluate\n")
+    _write(tmp_path / "specs/contract/03b_spec_lang_v1.md", "must can cannot contain regex evaluate\n")
     _write(
-        tmp_path / "docs/spec/contract/policy_v1.yaml",
+        tmp_path / "specs/contract/policy_v1.yaml",
         """version: 1
 title: t
 rules:
@@ -163,17 +163,17 @@ rules:
     description: d
     rationale: q
     risk_if_violated: z
-    references: [docs/spec/contract/03_assertions.md]
+    references: [specs/contract/03_assertions.md]
 """,
     )
     _write(
-        tmp_path / "docs/spec/contract/traceability_v1.yaml",
+        tmp_path / "specs/contract/traceability_v1.yaml",
         """version: 1
 links:
   - rule_id: X
-    policy_ref: docs/spec/contract/policy_v1.yaml#X
-    contract_refs: [docs/spec/contract/03_assertions.md]
-    schema_refs: [docs/spec/schema/schema_v1.md]
+    policy_ref: specs/contract/policy_v1.yaml#X
+    contract_refs: [specs/contract/03_assertions.md]
+    schema_refs: [specs/schema/schema_v1.md]
     conformance_case_ids: []
     unit_test_refs: []
     implementation_refs: []

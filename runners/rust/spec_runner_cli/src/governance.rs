@@ -293,7 +293,7 @@ fn run_governance_profile_native(
 
     let started = now_iso_utc_fallback();
     let t0 = Instant::now();
-    let manifest_path = resolve(root, "/docs/spec/governance/check_sets_v1.yaml");
+    let manifest_path = resolve(root, "/specs/governance/check_sets_v1.yaml");
 
     let mut checks = Vec::<CriticalCheckResult>::new();
     let mut traces = Vec::<Value>::new();

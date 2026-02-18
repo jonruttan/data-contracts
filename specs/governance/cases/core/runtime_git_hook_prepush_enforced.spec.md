@@ -1,0 +1,38 @@
+# Governance Cases
+
+## SRGOV-RUNTIME-PREPUSH-003
+
+```yaml contract-spec
+id: SRGOV-RUNTIME-PREPUSH-003
+title: managed pre-push hook enforces local parity gate
+purpose: Ensures repository-managed pre-push hook exists and is installable via canonical
+  script.
+type: contract.check
+harness:
+  root: .
+  git_hook_prepush:
+    hook_path: /.githooks/pre-push
+    install_script: /scripts/install_git_hooks.sh
+    makefile_path: /Makefile
+  chain:
+    steps:
+    - id: lib_policy_core_spec
+      class: MUST
+      ref: /specs/libraries/policy/policy_core.spec.md
+    imports:
+    - from: lib_policy_core_spec
+      names:
+      - policy.pass_when_no_violations
+  check:
+    profile: governance.scan
+    config:
+      check: runtime.git_hook_prepush_enforced
+contract:
+- id: assert_1
+  class: MUST
+  asserts:
+  - std.logic.eq:
+    - {var: subject}
+    - 0
+  target: violation_count
+```

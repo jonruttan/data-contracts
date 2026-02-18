@@ -100,14 +100,14 @@ def normalize_evaluate(raw: object, *, field: str) -> list[object]:
 _SECURITY_WARNING_DOCS = (
     "README.md",
     "docs/book/00_first_10_minutes.md",
-    "docs/spec/schema/schema_v1.md",
+    "specs/schema/schema_v1.md",
 )
 _SECURITY_WARNING_TOKENS = (
     "not a sandbox",
     "trusted inputs",
     "untrusted spec",
 )
-_V1_SCOPE_DOC = "docs/spec/contract/08_v1_scope.md"
+_V1_SCOPE_DOC = "specs/contract/08_v1_scope.md"
 _V1_SCOPE_REQUIRED_TOKENS = (
     "v1 in scope",
     "v1 non-goals",
@@ -117,22 +117,22 @@ _V1_SCOPE_REQUIRED_TOKENS = (
 _PYTHON_RUNTIME_ROOTS = ("spec_runner", "scripts/python")
 _CONFORMANCE_CASE_ID_PATTERN = r"\bSRCONF-[A-Z0-9-]+\b"
 _CONFORMANCE_MAX_BLOCK_LINES = 120
-_REGEX_PROFILE_DOC = "docs/spec/contract/03a_regex_portability_v1.md"
+_REGEX_PROFILE_DOC = "specs/contract/03a_regex_portability_v1.md"
 _ASSERTION_OPERATOR_DOC_SYNC_TOKENS = ("evaluate",)
 _ASSERT_UNIVERSAL_DOC_FILES = (
-    "docs/spec/schema/schema_v1.md",
-    "docs/spec/contract/03_assertions.md",
-    "docs/spec/contract/09_internal_representation.md",
+    "specs/schema/schema_v1.md",
+    "specs/contract/03_assertions.md",
+    "specs/contract/09_internal_representation.md",
 )
 _CURRENT_SPEC_ONLY_DOCS = (
     "README.md",
     "docs/book/02_core_model.md",
-    "docs/spec/schema/schema_v1.md",
-    "docs/spec/contract/01_discovery.md",
-    "docs/spec/contract/02_case_shape.md",
-    "docs/spec/contract/03_assertions.md",
-    "docs/spec/contract/04_harness.md",
-    "docs/spec/contract/08_v1_scope.md",
+    "specs/schema/schema_v1.md",
+    "specs/contract/01_discovery.md",
+    "specs/contract/02_case_shape.md",
+    "specs/contract/03_assertions.md",
+    "specs/contract/04_harness.md",
+    "specs/contract/08_v1_scope.md",
 )
 _CURRENT_SPEC_ONLY_CODE_FILES = (
     "spec_runner/doc_parser.py",
@@ -143,11 +143,11 @@ _CURRENT_SPEC_FORBIDDEN_PATTERNS = (
     r"previous\s+spec",
     r"prior\s+spec",
 )
-_TYPE_CONTRACTS_DIR = "docs/spec/contract/types"
+_TYPE_CONTRACTS_DIR = "specs/contract/types"
 _CORE_TYPES = {"text.file", "cli.run", "contract.check"}
 _ORCHESTRATION_TOOLS_FILES = (
-    "docs/spec/tools/python/tools_v1.yaml",
-    "docs/spec/tools/rust/tools_v1.yaml",
+    "specs/tools/python/tools_v1.yaml",
+    "specs/tools/rust/tools_v1.yaml",
 )
 _COMMON_CASE_TOP_LEVEL_KEYS = {
     "id",
@@ -177,8 +177,8 @@ _RUNNER_KEYS_MUST_BE_UNDER_HARNESS = {
     "patcher",
     "capture",
 }
-_NORMALIZATION_PROFILE_PATH = "docs/spec/schema/normalization_profile_v1.yaml"
-_DOCS_LAYOUT_PROFILE_PATH = "docs/spec/schema/docs_layout_profile_v1.yaml"
+_NORMALIZATION_PROFILE_PATH = "specs/schema/normalization_profile_v1.yaml"
+_DOCS_LAYOUT_PROFILE_PATH = "specs/schema/docs_layout_profile_v1.yaml"
 _PATH_LIKE_KEYS = {
     "path",
     "cases_path",
@@ -195,42 +195,42 @@ _PATH_LIKE_KEYS = {
     "roots",
 }
 _DOMAIN_TREE_ROOTS = (
-    "docs/spec/conformance/cases",
-    "docs/spec/governance/cases",
-    "docs/spec/libraries",
+    "specs/conformance/cases",
+    "specs/governance/cases",
+    "specs/libraries",
 )
 _EXECUTABLE_CASE_TREE_ROOTS = (
-    "docs/spec/conformance/cases",
-    "docs/spec/governance/cases",
-    "docs/spec/impl",
+    "specs/conformance/cases",
+    "specs/governance/cases",
+    "specs/impl",
 )
 _EXECUTABLE_NON_MD_SPEC_GLOBS = ("*.spec.yaml", "*.spec.yml", "*.spec.json")
 _DATA_ARTIFACT_GLOBS = (
-    "docs/spec/metrics/*.json",
-    "docs/spec/metrics/*.yaml",
+    "specs/metrics/*.json",
+    "specs/metrics/*.yaml",
     "docs/book/reference_manifest.yaml",
-    "docs/spec/schema/*.yaml",
+    "specs/schema/*.yaml",
 )
-_GOVERNANCE_CHECK_CATALOG_MAP = "docs/spec/governance/check_catalog_map_v1.yaml"
-_SUBJECT_PROFILE_CONTRACT_DOC = "docs/spec/contract/20_subject_profiles_v1.md"
-_SUBJECT_PROFILE_SCHEMA_DOC = "docs/spec/schema/subject_profiles_v1.yaml"
+_GOVERNANCE_CHECK_CATALOG_MAP = "specs/governance/check_catalog_map_v1.yaml"
+_SUBJECT_PROFILE_CONTRACT_DOC = "specs/contract/20_subject_profiles_v1.md"
+_SUBJECT_PROFILE_SCHEMA_DOC = "specs/schema/subject_profiles_v1.yaml"
 _SUBJECT_PROFILE_TYPE_DOCS = (
-    "docs/spec/contract/types/python_profile.md",
-    "docs/spec/contract/types/php_profile.md",
-    "docs/spec/contract/types/http_profile.md",
-    "docs/spec/contract/types/markdown_profile.md",
-    "docs/spec/contract/types/makefile_profile.md",
+    "specs/contract/types/python_profile.md",
+    "specs/contract/types/php_profile.md",
+    "specs/contract/types/http_profile.md",
+    "specs/contract/types/markdown_profile.md",
+    "specs/contract/types/makefile_profile.md",
 )
 _SUBJECT_PROFILE_DOMAIN_LIBS = (
-    "docs/spec/libraries/domain/python_core.spec.md",
-    "docs/spec/libraries/domain/php_core.spec.md",
-    "docs/spec/libraries/domain/http_core.spec.md",
-    "docs/spec/libraries/domain/markdown_core.spec.md",
-    "docs/spec/libraries/domain/make_core.spec.md",
+    "specs/libraries/domain/python_core.spec.md",
+    "specs/libraries/domain/php_core.spec.md",
+    "specs/libraries/domain/http_core.spec.md",
+    "specs/libraries/domain/markdown_core.spec.md",
+    "specs/libraries/domain/make_core.spec.md",
 )
-_SCHEMA_REGISTRY_ROOT = "docs/spec/schema/registry/v1"
-_SCHEMA_REGISTRY_SCHEMA = "docs/spec/schema/registry_schema_v1.yaml"
-_SCHEMA_REGISTRY_CONTRACT_DOC = "docs/spec/contract/21_schema_registry_contract.md"
+_SCHEMA_REGISTRY_ROOT = "specs/schema/registry/v1"
+_SCHEMA_REGISTRY_SCHEMA = "specs/schema/registry_schema_v1.yaml"
+_SCHEMA_REGISTRY_CONTRACT_DOC = "specs/contract/21_schema_registry_contract.md"
 _SCHEMA_REGISTRY_COMPILED_ARTIFACT = ".artifacts/schema_registry_compiled.json"
 _DOCS_GENERATOR_REPORT = ".artifacts/docs-generator-report.json"
 _DOCS_GENERATOR_SUMMARY = ".artifacts/docs-generator-summary.md"
@@ -239,10 +239,10 @@ _CHAIN_TEMPLATE_PATTERN = re.compile(r"\{\{\s*chain\.([A-Za-z0-9_.-]+)\s*\}\}")
 _CHAIN_REF_CASE_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]+$")
 _MD_NAMESPACE_LEGACY_PATTERN = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
 _RAW_OPS_FS_ALLOWED_CASE_FILES = {
-    "docs/spec/conformance/cases/core/spec_lang_stdlib.spec.md",
+    "specs/conformance/cases/core/spec_lang_stdlib.spec.md",
 }
 _RAW_HTTP_META_ALLOWED_CASE_FILES = {
-    "docs/spec/conformance/cases/core/api_http.spec.md",
+    "specs/conformance/cases/core/api_http.spec.md",
 }
 _OPS_FS_SYMBOL_PATTERN = re.compile(r"\bops\.fs\.[a-z0-9_.]+\b")
 _GOVERNANCE_SUBPROCESS_TIMEOUT_SECONDS = float(
@@ -315,7 +315,7 @@ _HARNESS_FILES = (
     "spec_runner/harnesses/docs_generate.py",
     "spec_runner/harnesses/api_http.py",
 )
-_UNIT_TEST_OPT_OUT_BASELINE_PATH = "docs/spec/metrics/unit_test_opt_out_baseline.json"
+_UNIT_TEST_OPT_OUT_BASELINE_PATH = "specs/metrics/unit_test_opt_out_baseline.json"
 _UNIT_TEST_OPT_OUT_PREFIX = "# SPEC-OPT-OUT:"
 
 _SCAN_CACHE_TOKEN = 0
@@ -454,7 +454,7 @@ def _scan_contract_governance_check(root: Path) -> list[str]:
 
 
 def _scan_pending_no_resolved_markers(root: Path) -> list[str]:
-    pending_dir = root / "docs/spec/pending"
+    pending_dir = root / "specs/pending"
     if not pending_dir.exists():
         return []
     violations: list[str] = []
@@ -665,7 +665,7 @@ def _scan_runtime_orchestration_policy_via_spec_lang(root: Path, *, harness: dic
 
 
 def _collect_conformance_fixture_ids(root: Path) -> set[str]:
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     if not cases_dir.exists():
         return set()
     with _SCAN_CACHE_LOCK:
@@ -685,7 +685,7 @@ def _collect_conformance_fixture_ids(root: Path) -> set[str]:
 
 def _scan_conformance_case_index_sync(root: Path) -> list[str]:
     violations: list[str] = []
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     fixture_ids = _collect_conformance_fixture_ids(root)
     index_path = cases_dir / "index.md"
     if not fixture_ids and not index_path.exists():
@@ -703,7 +703,7 @@ def _scan_conformance_case_index_sync(root: Path) -> list[str]:
 
 
 def _scan_conformance_purpose_warning_codes_sync(root: Path) -> list[str]:
-    p = root / "docs/spec/conformance/purpose_warning_codes.md"
+    p = root / "specs/conformance/purpose_warning_codes.md"
     if not p.exists():
         return [f"{p.relative_to(root)}: missing purpose warning code doc"]
     raw = p.read_text(encoding="utf-8")
@@ -722,7 +722,7 @@ def _scan_conformance_purpose_quality_gate(root: Path, *, harness: dict | None =
     cfg = h.get("purpose_quality")
     if not isinstance(cfg, dict):
         return ["conformance.purpose_quality_gate requires harness.purpose_quality mapping in governance spec"]
-    cases_rel = str(cfg.get("cases", "docs/spec/conformance/cases")).strip() or "docs/spec/conformance/cases"
+    cases_rel = str(cfg.get("cases", "specs/conformance/cases")).strip() or "specs/conformance/cases"
     cases_dir = _join_contract_path(root, cases_rel)
     if not cases_dir.exists():
         return [f"{cases_rel}:1: conformance cases path does not exist"]
@@ -741,7 +741,7 @@ def _scan_conformance_purpose_quality_gate(root: Path, *, harness: dict | None =
     violations: list[str] = []
     if fail_on_policy_errors and policy_error_count > 0:
         violations.append(
-            f"docs/spec/conformance/purpose_lint_v1.yaml:1: policy error count {policy_error_count} > 0"
+            f"specs/conformance/purpose_lint_v1.yaml:1: policy error count {policy_error_count} > 0"
         )
     if total_warning_count > max_total_warnings:
         violations.append(
@@ -771,12 +771,12 @@ def _scan_contract_coverage_threshold(root: Path, *, harness: dict | None = None
     violations: list[str] = []
     if require_all_must and must_covered != must_rules:
         violations.append(
-            "docs/spec/contract/traceability_v1.yaml:1: "
+            "specs/contract/traceability_v1.yaml:1: "
             f"must_covered={must_covered} does not equal must_rules={must_rules}"
         )
     if coverage_ratio < min_coverage_ratio:
         violations.append(
-            "docs/spec/contract/traceability_v1.yaml:1: "
+            "specs/contract/traceability_v1.yaml:1: "
             f"coverage_ratio={coverage_ratio:.4f} below min_coverage_ratio={min_coverage_ratio:.4f}"
         )
     return violations
@@ -1397,8 +1397,8 @@ def _scan_objective_tripwires_clean(root: Path, *, harness: dict | None = None) 
     cfg = h.get("objective_tripwires")
     if not isinstance(cfg, dict):
         return ["objective.tripwires_clean requires harness.objective_tripwires mapping in governance spec"]
-    manifest_path = str(cfg.get("manifest_path", "")).strip() or "docs/spec/metrics/objective_manifest.yaml"
-    cases_path = str(cfg.get("cases_path", "")).strip() or "docs/spec/governance/cases"
+    manifest_path = str(cfg.get("manifest_path", "")).strip() or "specs/metrics/objective_manifest.yaml"
+    cases_path = str(cfg.get("cases_path", "")).strip() or "specs/governance/cases"
     case_file_pattern = str(cfg.get("case_file_pattern", "")).strip() or SETTINGS.case.default_file_pattern
 
     manifest_file = _join_contract_path(root, manifest_path)
@@ -1528,7 +1528,7 @@ def _scan_conformance_case_doc_style_guard(root: Path) -> list[str]:
     violations: list[str] = []
     policy, policy_errs, _ = load_purpose_lint_policy(root)
     violations.extend(policy_errs)
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     if not cases_dir.exists():
         return violations
 
@@ -1600,9 +1600,9 @@ def _scan_conformance_case_doc_style_guard(root: Path) -> list[str]:
 
 def _scan_regex_doc_sync(root: Path) -> list[str]:
     violations: list[str] = []
-    assertions_doc = root / "docs/spec/contract/03_assertions.md"
-    schema_doc = root / "docs/spec/schema/schema_v1.md"
-    policy_doc = root / "docs/spec/contract/policy_v1.yaml"
+    assertions_doc = root / "specs/contract/03_assertions.md"
+    schema_doc = root / "specs/schema/schema_v1.md"
+    policy_doc = root / "specs/contract/policy_v1.yaml"
     if not assertions_doc.exists() or not schema_doc.exists() or not policy_doc.exists():
         return violations
 
@@ -1612,43 +1612,43 @@ def _scan_regex_doc_sync(root: Path) -> list[str]:
 
     if _REGEX_PROFILE_DOC not in assertions_text:
         violations.append(
-            "docs/spec/contract/03_assertions.md: missing regex portability profile reference"
+            "specs/contract/03_assertions.md: missing regex portability profile reference"
         )
     if _REGEX_PROFILE_DOC not in schema_text:
         violations.append(
-            "docs/spec/schema/schema_v1.md: missing regex portability profile reference"
+            "specs/schema/schema_v1.md: missing regex portability profile reference"
         )
     if _REGEX_PROFILE_DOC not in policy_text:
         violations.append(
-            "docs/spec/contract/policy_v1.yaml: missing regex portability profile reference"
+            "specs/contract/policy_v1.yaml: missing regex portability profile reference"
         )
 
     for tok in _ASSERTION_OPERATOR_DOC_SYNC_TOKENS:
         if tok not in assertions_text:
-            violations.append(f"docs/spec/contract/03_assertions.md: missing operator token {tok}")
+            violations.append(f"specs/contract/03_assertions.md: missing operator token {tok}")
         if tok not in schema_text:
-            violations.append(f"docs/spec/schema/schema_v1.md: missing operator token {tok}")
+            violations.append(f"specs/schema/schema_v1.md: missing operator token {tok}")
     return violations
 
 
 def _scan_assert_universal_core_sync(root: Path) -> list[str]:
     violations: list[str] = []
     required_tokens_by_file: dict[str, tuple[object, ...]] = {
-        "docs/spec/schema/schema_v1.md": (
+        "specs/schema/schema_v1.md": (
             "universal core",
             "evaluate",
             ("conformance/cases/*.spec.md", "conformance/cases/**/*.spec.md"),
             ("governance/cases/*.spec.md", "governance/cases/**/*.spec.md"),
             "must use",
         ),
-        "docs/spec/contract/03_assertions.md": (
+        "specs/contract/03_assertions.md": (
             "universal core",
             "evaluate",
             ("conformance/cases/*.spec.md", "conformance/cases/**/*.spec.md"),
             ("governance/cases/*.spec.md", "governance/cases/**/*.spec.md"),
             "must use",
         ),
-        "docs/spec/contract/09_internal_representation.md": (
+        "specs/contract/09_internal_representation.md": (
             "universal core",
             "evaluate",
             "evaluate-only",
@@ -1721,19 +1721,19 @@ def _scan_assert_sugar_compile_only_sync(root: Path) -> list[str]:
 def _scan_assert_type_contract_subject_semantics_sync(root: Path) -> list[str]:
     violations: list[str] = []
     files = (
-        "docs/spec/contract/04_harness.md",
-        "docs/spec/contract/types/text_file.md",
-        "docs/spec/contract/types/cli_run.md",
-        "docs/spec/contract/types/api_http.md",
+        "specs/contract/04_harness.md",
+        "specs/contract/types/text_file.md",
+        "specs/contract/types/cli_run.md",
+        "specs/contract/types/api_http.md",
     )
     required_tokens = {
-        "docs/spec/contract/04_harness.md": ("subject", "availability", "shape"),
-        "docs/spec/contract/types/text_file.md": ("subject semantics",),
-        "docs/spec/contract/types/cli_run.md": ("target semantics",),
-        "docs/spec/contract/types/api_http.md": ("target semantics",),
+        "specs/contract/04_harness.md": ("subject", "availability", "shape"),
+        "specs/contract/types/text_file.md": ("subject semantics",),
+        "specs/contract/types/cli_run.md": ("target semantics",),
+        "specs/contract/types/api_http.md": ("target semantics",),
     }
     forbidden_tokens = {
-        "docs/spec/contract/types/cli_run.md": ("only supports `exists`",),
+        "specs/contract/types/cli_run.md": ("only supports `exists`",),
     }
     for rel in files:
         p = _join_contract_path(root, rel)
@@ -1753,8 +1753,8 @@ def _scan_assert_type_contract_subject_semantics_sync(root: Path) -> list[str]:
 def _scan_assert_compiler_schema_matrix_sync(root: Path) -> list[str]:
     violations: list[str] = []
     compiler = root / "spec_runner/compiler.py"
-    schema = root / "docs/spec/schema/schema_v1.md"
-    assertions_doc = root / "docs/spec/contract/03_assertions.md"
+    schema = root / "specs/schema/schema_v1.md"
+    assertions_doc = root / "specs/contract/03_assertions.md"
     if not compiler.exists() or not schema.exists() or not assertions_doc.exists():
         return ["assert.compiler_schema_matrix_sync requires compiler + schema + assertion contract docs"]
     compiler_raw = compiler.read_text(encoding="utf-8")
@@ -1762,9 +1762,9 @@ def _scan_assert_compiler_schema_matrix_sync(root: Path) -> list[str]:
     assertions_lower = assertions_doc.read_text(encoding="utf-8").lower()
 
     if "universal core operator" not in schema_lower:
-        violations.append("docs/spec/schema/schema_v1.md:1: missing universal core operator section")
+        violations.append("specs/schema/schema_v1.md:1: missing universal core operator section")
     if "only universal assertion operator contract" not in assertions_lower:
-        violations.append("docs/spec/contract/03_assertions.md:1: missing universal evaluate-only contract text")
+        violations.append("specs/contract/03_assertions.md:1: missing universal evaluate-only contract text")
     if 'supported = {"evaluate"}' not in compiler_raw:
         violations.append("spec_runner/compiler.py:1: compiler operator matrix does not match universal-core contract")
     if "if type_name == " in compiler_raw:
@@ -1798,7 +1798,7 @@ def _scan_assert_spec_lang_builtin_surface_sync(root: Path, *, harness: dict | N
     if not profile_symbols:
         # Unit-test fallback: allow contract-only surface checks when stdlib profile
         # fixture is not present.
-        contract = root / "docs/spec/contract/03b_spec_lang_v1.md"
+        contract = root / "specs/contract/03b_spec_lang_v1.md"
         if not contract.exists():
             return [
                 "assert.spec_lang_builtin_surface_sync requires stdlib profile or contract docs with builtin symbols"
@@ -1813,7 +1813,7 @@ def _scan_assert_spec_lang_builtin_surface_sync(root: Path, *, harness: dict | N
     unknown = sorted(required - profile_symbols)
     for op in unknown:
         violations.append(
-            f"docs/spec/schema/spec_lang_stdlib_profile_v1.yaml:1: required_ops entry is not in stdlib profile: {op}"
+            f"specs/schema/spec_lang_stdlib_profile_v1.yaml:1: required_ops entry is not in stdlib profile: {op}"
         )
     required = {op for op in required if op in profile_symbols}
     if not required:
@@ -1904,7 +1904,7 @@ def _scan_assert_subject_profiles_declared(root: Path, *, harness: dict | None =
         _SUBJECT_PROFILE_CONTRACT_DOC,
         _SUBJECT_PROFILE_SCHEMA_DOC,
         *_SUBJECT_PROFILE_TYPE_DOCS,
-        "docs/spec/libraries/domain/index.md",
+        "specs/libraries/domain/index.md",
         *_SUBJECT_PROFILE_DOMAIN_LIBS,
     )
     for rel in required_paths:
@@ -1967,9 +1967,9 @@ def _scan_assert_domain_profiles_docs_sync(root: Path, *, harness: dict | None =
 
 def _scan_assert_domain_library_usage_required(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
-    cases_dir = root / "docs/spec/conformance/cases/core"
+    cases_dir = root / "specs/conformance/cases/core"
     if not cases_dir.exists():
-        return ["docs/spec/conformance/cases/core:1: missing conformance core cases directory"]
+        return ["specs/conformance/cases/core:1: missing conformance core cases directory"]
     target_file = cases_dir / "domain_libraries.spec.md"
     if not target_file.exists():
         return [f"{target_file.relative_to(root)}:1: missing domain library conformance coverage case"]
@@ -1984,7 +1984,7 @@ def _scan_assert_domain_library_usage_required(root: Path, *, harness: dict | No
                 )
                 continue
             lib_paths = _collect_chain_library_refs(case)
-            if not any("/docs/spec/libraries/domain/" in str(x) for x in lib_paths):
+            if not any("/specs/libraries/domain/" in str(x) for x in lib_paths):
                 violations.append(
                     f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing domain library path in harness.chain steps"
                 )
@@ -2050,9 +2050,9 @@ def _scan_schema_registry_compiled_sync(root: Path) -> list[str]:
 
 
 def _scan_schema_registry_docs_sync(root: Path) -> list[str]:
-    schema_doc = _join_contract_path(root, "docs/spec/schema/schema_v1.md")
+    schema_doc = _join_contract_path(root, "specs/schema/schema_v1.md")
     if not schema_doc.exists():
-        return ["docs/spec/schema/schema_v1.md:1: missing schema doc"]
+        return ["specs/schema/schema_v1.md:1: missing schema doc"]
     raw = schema_doc.read_text(encoding="utf-8")
     required_tokens = (
         "BEGIN GENERATED: SCHEMA_REGISTRY_V1",
@@ -2062,19 +2062,19 @@ def _scan_schema_registry_docs_sync(root: Path) -> list[str]:
     violations: list[str] = []
     for tok in required_tokens:
         if tok not in raw:
-            violations.append(f"docs/spec/schema/schema_v1.md:1: missing token {tok}")
+            violations.append(f"specs/schema/schema_v1.md:1: missing token {tok}")
     if _SCHEMA_REGISTRY_ROOT not in raw:
-        violations.append(f"docs/spec/schema/schema_v1.md:1: missing registry root token {_SCHEMA_REGISTRY_ROOT}")
+        violations.append(f"specs/schema/schema_v1.md:1: missing registry root token {_SCHEMA_REGISTRY_ROOT}")
     return violations
 
 
 def _scan_schema_no_prose_only_rules(root: Path) -> list[str]:
     violations: list[str] = []
     contract_doc = _join_contract_path(root, _SCHEMA_REGISTRY_CONTRACT_DOC)
-    schema_doc = _join_contract_path(root, "docs/spec/schema/schema_v1.md")
+    schema_doc = _join_contract_path(root, "specs/schema/schema_v1.md")
     for rel, p in (
         (_SCHEMA_REGISTRY_CONTRACT_DOC, contract_doc),
-        ("docs/spec/schema/schema_v1.md", schema_doc),
+        ("specs/schema/schema_v1.md", schema_doc),
     ):
         if not p.exists():
             violations.append(f"{rel}:1: missing required doc")
@@ -2107,7 +2107,7 @@ def _scan_schema_type_profiles_complete(root: Path) -> list[str]:
 
 
 def _iter_orchestration_cases(root: Path):
-    base = _join_contract_path(root, "docs/spec")
+    base = _join_contract_path(root, "specs")
     if not base.exists():
         return
     for spec in iter_spec_doc_tests(base):
@@ -2254,7 +2254,7 @@ def _iter_mapping_key_paths(value: object, *, path: str = ""):
 
 def _scan_current_spec_policy_key_names(root: Path) -> list[str]:
     violations: list[str] = []
-    specs_root = root / "docs/spec"
+    specs_root = root / "specs"
     if not specs_root.exists():
         return violations
     for p in sorted(specs_root.rglob(SETTINGS.case.default_file_pattern)):
@@ -2281,7 +2281,7 @@ def _scan_governance_evaluate_required(root: Path, *, harness: dict | None = Non
     cfg = h.get("policy_requirements") or h.get("policy_forbidden")
     if not isinstance(cfg, dict):
         return ["runtime.evaluate_forbidden requires harness.policy_forbidden mapping in governance spec"]
-    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
+    cases_rel = str(cfg.get("cases_path", "specs/governance/cases")).strip() or "specs/governance/cases"
     case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
     ignore_checks_raw = cfg.get("ignore_checks", [])
     if not isinstance(ignore_checks_raw, list) or any(not isinstance(x, str) for x in ignore_checks_raw):
@@ -2351,7 +2351,7 @@ def _scan_governance_structured_assertions_required(root: Path, *, harness: dict
     cfg = h.get("structured_assertions")
     if not isinstance(cfg, dict):
         return ["governance.structured_assertions_required requires harness.structured_assertions mapping in governance spec"]
-    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
+    cases_rel = str(cfg.get("cases_path", "specs/governance/cases")).strip() or "specs/governance/cases"
     case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
     ignore_checks_raw = cfg.get("ignore_checks", [])
     if not isinstance(ignore_checks_raw, list) or any(not isinstance(x, str) for x in ignore_checks_raw):
@@ -2688,7 +2688,7 @@ def _type_contract_doc_rel_for(case_type: str) -> str:
 
 def _scan_conformance_type_contract_docs(root: Path) -> list[str]:
     violations: list[str] = []
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     if not cases_dir.exists():
         return violations
 
@@ -2763,7 +2763,7 @@ def _scan_conformance_api_http_portable_shape(root: Path, *, harness: dict | Non
     required_request_fields = {x.strip() for x in raw_required_request_fields if x.strip()}
     if not required_request_fields:
         return ["harness.api_http.required_request_fields must include at least one non-empty field"]
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     if not cases_dir.exists():
         return violations
 
@@ -2829,7 +2829,7 @@ def _scan_conformance_api_http_portable_shape(root: Path, *, harness: dict | Non
 
 
 def _iter_api_http_cases(root: Path):
-    for rel_root in ("docs/spec/conformance/cases", "docs/spec/impl", "docs/spec/governance/cases"):
+    for rel_root in ("specs/conformance/cases", "specs/impl", "specs/governance/cases"):
         base = root / rel_root
         if not base.exists():
             continue
@@ -2954,27 +2954,27 @@ def _scan_runtime_api_http_live_mode_explicit(root: Path) -> list[str]:
 
 def _scan_runtime_api_http_oauth_docs_sync(root: Path) -> list[str]:
     required: dict[str, tuple[str, ...]] = {
-        "docs/spec/schema/schema_v1.md": (
+        "specs/schema/schema_v1.md": (
             "harness.api_http.auth.oauth",
             "client_id_env",
             "client_secret_env",
             "deterministic",
             "live",
         ),
-        "docs/spec/contract/04_harness.md": (
+        "specs/contract/04_harness.md": (
             "harness.api_http.auth.oauth",
             "client_id_env",
             "client_secret_env",
             "Authorization: Bearer",
         ),
-        "docs/spec/contract/types/api_http.md": (
+        "specs/contract/types/api_http.md": (
             "auth.oauth",
             "client_credentials",
             "client_id_env",
             "client_secret_env",
             "mode",
         ),
-        "docs/spec/contract/types/http_profile.md": (
+        "specs/contract/types/http_profile.md": (
             "meta.auth_mode",
             "meta.oauth_token_source",
             "context.oauth",
@@ -3039,22 +3039,22 @@ def _scan_runtime_api_http_cors_support(root: Path) -> list[str]:
             "Access-Control-Request-Method",
             "cors_json",
         ),
-        "docs/spec/contract/types/api_http.md": (
+        "specs/contract/types/api_http.md": (
             "request.cors",
             "preflight",
             "cors_json",
         ),
-        "docs/spec/contract/types/http_profile.md": (
+        "specs/contract/types/http_profile.md": (
             "value.cors",
             "allow_origin",
             "allow_methods",
         ),
-        "docs/spec/libraries/domain/http_core.spec.md": (
+        "specs/libraries/domain/http_core.spec.md": (
             "domain.http.cors_allow_origin",
             "domain.http.cors_allows_method",
             "domain.http.cors_allows_header",
         ),
-        "docs/spec/conformance/cases/core/api_http.spec.md": (
+        "specs/conformance/cases/core/api_http.spec.md": (
             "request.cors",
             "preflight",
         ),
@@ -3096,8 +3096,8 @@ def _scan_runtime_api_http_scenario_roundtrip(root: Path) -> list[str]:
         violations.append("api.http roundtrip conformance requires at least one case using requests list")
     for rel, tokens in {
         "spec_runner/harnesses/api_http.py": ("harness.api_http.scenario", "steps_json", "steps."),
-        "docs/spec/contract/types/api_http.md": ("harness.api_http.scenario", "requests", "steps_json"),
-        "docs/spec/conformance/cases/core/api_http.spec.md": ("requests:", "{{steps.", "steps_json"),
+        "specs/contract/types/api_http.md": ("harness.api_http.scenario", "requests", "steps_json"),
+        "specs/conformance/cases/core/api_http.spec.md": ("requests:", "{{steps.", "steps_json"),
     }.items():
         p = _join_contract_path(root, rel)
         if not p.exists():
@@ -3115,7 +3115,7 @@ def _scan_runtime_api_http_parity_contract_sync(root: Path) -> list[str]:
     checks: dict[str, tuple[str, ...]] = {
         "spec_runner/harnesses/api_http.py": ("_SUPPORTED_METHODS", "cors_json", "steps_json"),
         "runners/php/conformance_runner.php": ("api.http", "request.method", "context_json"),
-        "docs/spec/contract/types/api_http.md": ("GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS", "steps_json", "cors_json"),
+        "specs/contract/types/api_http.md": ("GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS", "steps_json", "cors_json"),
     }
     for rel, tokens in checks.items():
         p = _join_contract_path(root, rel)
@@ -3998,9 +3998,9 @@ def _scan_runtime_domain_library_preferred_for_fs_ops(
     del harness
     violations: list[str] = []
     scan_roots = (
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/impl",
+        root / "specs/conformance/cases",
+        root / "specs/governance/cases",
+        root / "specs/impl",
     )
     for base in scan_roots:
         if not base.exists():
@@ -4056,9 +4056,9 @@ def _scan_runtime_domain_library_preferred_for_http_helpers(
     del harness
     violations: list[str] = []
     scan_roots = (
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/impl",
+        root / "specs/conformance/cases",
+        root / "specs/governance/cases",
+        root / "specs/impl",
     )
     for base in scan_roots:
         if not base.exists():
@@ -4099,10 +4099,10 @@ def _scan_runtime_spec_lang_export_type_forbidden(root: Path, *, harness: dict |
     del harness
     violations: list[str] = []
     scan_roots = [
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/impl",
-        root / "docs/spec/libraries",
+        root / "specs/conformance/cases",
+        root / "specs/governance/cases",
+        root / "specs/impl",
+        root / "specs/libraries",
     ]
     for base in scan_roots:
         if not base.exists():
@@ -4121,7 +4121,7 @@ def _scan_docs_markdown_namespace_legacy_alias_forbidden(
 ) -> list[str]:
     del harness
     violations: list[str] = []
-    for rel in ("docs/spec", "docs/book"):
+    for rel in ("specs", "docs/book"):
         base = root / rel
         if not base.exists():
             continue
@@ -4136,7 +4136,7 @@ def _scan_docs_markdown_namespace_legacy_alias_forbidden(
 
 def _scan_library_single_public_symbol_per_case(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    libs_root = root / "docs/spec/libraries"
+    libs_root = root / "specs/libraries"
     if not libs_root.exists():
         return []
     violations: list[str] = []
@@ -4166,7 +4166,7 @@ def _scan_library_single_public_symbol_per_case(root: Path, *, harness: dict | N
 
 def _scan_library_colocated_symbol_tests_required(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    libs_root = root / "docs/spec/libraries"
+    libs_root = root / "specs/libraries"
     if not libs_root.exists():
         return []
     violations: list[str] = []
@@ -4312,7 +4312,7 @@ def _any_pattern_matches(text: str, patterns: list[re.Pattern[str]]) -> bool:
 
 def _scan_conformance_no_runner_logic_outside_harness(root: Path) -> list[str]:
     violations: list[str] = []
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     if not cases_dir.exists():
         return violations
 
@@ -4358,7 +4358,7 @@ def _scan_conformance_portable_determinism_guard(root: Path, *, harness: dict | 
     exclude_case_keys = {x for x in raw_exclude if x}
     if not compiled_patterns:
         return violations
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     if not cases_dir.exists():
         return violations
 
@@ -4428,7 +4428,7 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
     exclude_case_keys = {x for x in raw_exclude if x}
     if not compiled_patterns:
         return violations
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     if not cases_dir.exists():
         return violations
 
@@ -4465,7 +4465,7 @@ def _scan_conformance_no_ambient_assumptions(root: Path, *, harness: dict | None
 
 def _scan_conformance_extension_requires_capabilities(root: Path) -> list[str]:
     violations: list[str] = []
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     if not cases_dir.exists():
         return violations
 
@@ -4520,7 +4520,7 @@ def _load_type_contract_top_level_fields(root: Path, case_type: str) -> set[str]
 
 def _scan_conformance_type_contract_field_sync(root: Path) -> list[str]:
     violations: list[str] = []
-    cases_dir = root / "docs/spec/conformance/cases"
+    cases_dir = root / "specs/conformance/cases"
     if not cases_dir.exists():
         return violations
 
@@ -4844,7 +4844,7 @@ def _scan_conformance_spec_lang_fixture_library_usage(root: Path, *, harness: di
     cfg = h.get("spec_lang_fixture_library_usage")
     if not isinstance(cfg, dict):
         return ["conformance.spec_lang_fixture_library_usage requires harness.spec_lang_fixture_library_usage mapping in governance spec"]
-    rel = str(cfg.get("path", "docs/spec/conformance/cases/core/spec_lang.spec.md")).strip() or "docs/spec/conformance/cases/core/spec_lang.spec.md"
+    rel = str(cfg.get("path", "specs/conformance/cases/core/spec_lang.spec.md")).strip() or "specs/conformance/cases/core/spec_lang.spec.md"
     required_library_path = str(cfg.get("required_library_path", "")).strip()
     if not required_library_path:
         return ["harness.spec_lang_fixture_library_usage.required_library_path must be a non-empty string"]
@@ -5322,9 +5322,9 @@ def _scan_docs_generator_outputs_sync(root: Path, *, harness: dict | None = None
 
 def _scan_docs_generation_spec_cases_present(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    cases_root = root / "docs/spec/impl/docs_generate/cases"
+    cases_root = root / "specs/impl/docs_generate/cases"
     if not cases_root.exists():
-        return ["docs/spec/impl/docs_generate/cases:1: missing docs.generate case tree"]
+        return ["specs/impl/docs_generate/cases:1: missing docs.generate case tree"]
     hits: list[str] = []
     for spec in iter_spec_doc_tests(cases_root, file_pattern=case_file_name("*")):
         case = spec.test if isinstance(spec.test, dict) else {}
@@ -5334,7 +5334,7 @@ def _scan_docs_generation_spec_cases_present(root: Path, *, harness: dict | None
         if isinstance(docs_generate, dict) and str(docs_generate.get("surface_id", "")).strip():
             hits.append(str(docs_generate.get("surface_id", "")).strip())
     if not hits:
-        return ["docs/spec/impl/docs_generate/cases:1: missing executable docs.generate surface cases"]
+        return ["specs/impl/docs_generate/cases:1: missing executable docs.generate surface cases"]
     return []
 
 
@@ -5349,9 +5349,9 @@ def _scan_docs_generation_registry_surface_case_sync(root: Path, *, harness: dic
         if isinstance(s, dict) and str(s.get("surface_id", "")).strip()
     }
     seen: set[str] = set()
-    cases_root = root / "docs/spec/impl/docs_generate/cases"
+    cases_root = root / "specs/impl/docs_generate/cases"
     if not cases_root.exists():
-        return ["docs/spec/impl/docs_generate/cases:1: missing docs.generate case tree"]
+        return ["specs/impl/docs_generate/cases:1: missing docs.generate case tree"]
     for spec in iter_spec_doc_tests(cases_root, file_pattern=case_file_name("*")):
         case = spec.test if isinstance(spec.test, dict) else {}
         if str(case.get("type", "")).strip() != "docs.generate":
@@ -5366,7 +5366,7 @@ def _scan_docs_generation_registry_surface_case_sync(root: Path, *, harness: dic
         if sid:
             seen.add(sid)
     missing = sorted(expected - seen)
-    return [f"docs/spec/impl/docs_generate/cases: missing docs.generate case for surface_id {sid}" for sid in missing]
+    return [f"specs/impl/docs_generate/cases: missing docs.generate case for surface_id {sid}" for sid in missing]
 
 
 def _scan_docs_template_paths_valid(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -5714,11 +5714,11 @@ def _scan_docs_required_sections(root: Path, *, harness: dict | None = None) -> 
 
 def _scan_docs_markdown_structured_assertions_required(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    cases_dir = root / "docs/spec/governance/cases/core"
+    cases_dir = root / "specs/governance/cases/core"
     if not cases_dir.exists():
         return [f"{cases_dir.relative_to(root)}: missing governance cases directory"]
 
-    markdown_library_path = "/docs/spec/libraries/domain/markdown_core.spec.md"
+    markdown_library_path = "/specs/libraries/domain/markdown_core.spec.md"
     violations: list[str] = []
 
     def _expr_contains_plain_contains(expr: object) -> bool:
@@ -6312,19 +6312,19 @@ def _scan_runtime_scope_sync(root: Path, *, harness: dict | None = None) -> list
 def _scan_runtime_profiling_contract_artifacts(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     required = [
-        "docs/spec/schema/run_trace_v1.yaml",
-        "docs/spec/contract/24_runtime_profiling_contract.md",
+        "specs/schema/run_trace_v1.yaml",
+        "specs/contract/24_runtime_profiling_contract.md",
     ]
     violations: list[str] = []
     for rel in required:
         p = root / rel
         if not p.exists():
             violations.append(f"{rel}:1: missing profiling contract artifact")
-    current = root / "docs/spec/current.md"
+    current = root / "specs/current.md"
     if current.exists():
         text = current.read_text(encoding="utf-8")
         if "run_trace_v1" not in text:
-            violations.append("docs/spec/current.md:1: missing run_trace_v1 snapshot note")
+            violations.append("specs/current.md:1: missing run_trace_v1 snapshot note")
     return violations
 
 
@@ -6403,7 +6403,7 @@ def _scan_runtime_liveness_watchdog_contract_valid(root: Path, *, harness: dict 
     violations: list[str] = []
     required_docs = (
         (
-            "docs/spec/contract/24_runtime_profiling_contract.md",
+            "specs/contract/24_runtime_profiling_contract.md",
             (
                 "SPEC_RUNNER_LIVENESS_LEVEL",
                 "SPEC_RUNNER_LIVENESS_STALL_MS",
@@ -6413,7 +6413,7 @@ def _scan_runtime_liveness_watchdog_contract_valid(root: Path, *, harness: dict 
             ),
         ),
         (
-            "docs/spec/schema/run_trace_v1.yaml",
+            "specs/schema/run_trace_v1.yaml",
             (
                 "stall.runner.no_progress",
                 "stall.subprocess.no_output_no_event",
@@ -6631,7 +6631,7 @@ def _scan_runtime_legacy_timeout_envs_deprecated(root: Path, *, harness: dict | 
     violations: list[str] = []
     docs = (
         "docs/book/06_troubleshooting.md",
-        "docs/spec/contract/24_runtime_profiling_contract.md",
+        "specs/contract/24_runtime_profiling_contract.md",
     )
     required_tokens = (
         "SPEC_RUNNER_TIMEOUT_GOVERNANCE_SECONDS",
@@ -6662,7 +6662,7 @@ def _scan_runtime_evaluate_forbidden(root: Path, *, harness: dict | None = None)
     cfg = h.get("policy_forbidden")
     if not isinstance(cfg, dict):
         return ["runtime.evaluate_forbidden requires harness.policy_forbidden mapping in governance spec"]
-    cases_rel = str(cfg.get("cases_path", "docs/spec/governance/cases")).strip() or "docs/spec/governance/cases"
+    cases_rel = str(cfg.get("cases_path", "specs/governance/cases")).strip() or "specs/governance/cases"
     case_pattern = str(cfg.get("case_file_pattern", SETTINGS.case.default_file_pattern)).strip() or SETTINGS.case.default_file_pattern
     cases_dir = _join_contract_path(root, cases_rel)
     if not cases_dir.exists():
@@ -6787,7 +6787,7 @@ def _scan_runtime_ops_os_stdlib_surface_sync(root: Path, *, harness: dict | None
 
 def _iter_docs_spec_cases(root: Path) -> list[tuple[Path, dict[str, Any]]]:
     out: list[tuple[Path, dict[str, Any]]] = []
-    cases_root = _join_contract_path(root, "docs/spec")
+    cases_root = _join_contract_path(root, "specs")
     if not cases_root.exists():
         return out
     for spec in iter_cases(cases_root, file_pattern="**/*.spec.md"):
@@ -6799,9 +6799,9 @@ def _iter_docs_spec_cases(root: Path) -> list[tuple[Path, dict[str, Any]]]:
 def _scan_runtime_contract_spec_fence_required(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     violations: list[str] = []
-    cases_root = _join_contract_path(root, "docs/spec")
+    cases_root = _join_contract_path(root, "specs")
     if not cases_root.exists():
-        return ["docs/spec:1: missing docs/spec tree"]
+        return ["specs:1: missing specs tree"]
     for p in sorted(cases_root.rglob(SETTINGS.case.default_file_pattern)):
         if not p.is_file():
             continue
@@ -6814,9 +6814,9 @@ def _scan_runtime_contract_spec_fence_required(root: Path, *, harness: dict | No
 def _scan_runtime_legacy_spec_test_fence_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     violations: list[str] = []
-    cases_root = _join_contract_path(root, "docs/spec")
+    cases_root = _join_contract_path(root, "specs")
     if not cases_root.exists():
-        return ["docs/spec:1: missing docs/spec tree"]
+        return ["specs:1: missing specs tree"]
     for p in sorted(cases_root.rglob(SETTINGS.case.default_file_pattern)):
         if not p.is_file():
             continue
@@ -7139,8 +7139,8 @@ def _scan_runtime_contract_job_hooks_refactor_applied(
 ) -> list[str]:
     del harness
     target_files = (
-        "docs/spec/impl/rust/jobs/script_jobs.spec.md",
-        "docs/spec/impl/rust/jobs/report_jobs.spec.md",
+        "specs/impl/rust/jobs/script_jobs.spec.md",
+        "specs/impl/rust/jobs/report_jobs.spec.md",
     )
     target_set = {p.as_posix() for p in (_join_contract_path(root, rel) for rel in target_files)}
     violations: list[str] = []
@@ -7261,12 +7261,12 @@ def _scan_architecture_harness_local_workflow_duplication_forbidden(
 def _scan_schema_harness_type_overlay_complete(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     required = {
-        "docs/spec/schema/registry/v1/types/orchestration_run.yaml": (
+        "specs/schema/registry/v1/types/orchestration_run.yaml": (
             "required_top_level",
             "allowed_top_level_extra",
             "fields",
         ),
-        "docs/spec/schema/registry/v1/types/docs_generate.yaml": (
+        "specs/schema/registry/v1/types/docs_generate.yaml": (
             "required_top_level",
             "allowed_top_level_extra",
             "fields",
@@ -7293,34 +7293,34 @@ def _scan_schema_harness_type_overlay_complete(root: Path, *, harness: dict | No
 
 def _scan_schema_harness_contract_overlay_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    contract = _join_contract_path(root, "docs/spec/contract/04_harness.md")
-    current = _join_contract_path(root, "docs/spec/current.md")
+    contract = _join_contract_path(root, "specs/contract/04_harness.md")
+    current = _join_contract_path(root, "specs/current.md")
     overlays = (
-        _join_contract_path(root, "docs/spec/schema/registry/v1/types/orchestration_run.yaml"),
-        _join_contract_path(root, "docs/spec/schema/registry/v1/types/docs_generate.yaml"),
+        _join_contract_path(root, "specs/schema/registry/v1/types/orchestration_run.yaml"),
+        _join_contract_path(root, "specs/schema/registry/v1/types/docs_generate.yaml"),
     )
     violations: list[str] = []
     if not contract.exists():
-        violations.append("docs/spec/contract/04_harness.md:1: missing harness contract doc")
+        violations.append("specs/contract/04_harness.md:1: missing harness contract doc")
         return violations
     if not current.exists():
-        violations.append("docs/spec/current.md:1: missing current spec doc")
+        violations.append("specs/current.md:1: missing current spec doc")
         return violations
     contract_text = contract.read_text(encoding="utf-8").lower()
     current_text = current.read_text(encoding="utf-8").lower()
     required_tokens = ("orchestration.run", "docs.generate", "components")
     for tok in required_tokens:
         if tok not in contract_text:
-            violations.append(f"docs/spec/contract/04_harness.md:1: missing token {tok}")
+            violations.append(f"specs/contract/04_harness.md:1: missing token {tok}")
         if tok not in current_text:
-            violations.append(f"docs/spec/current.md:1: missing token {tok}")
+            violations.append(f"specs/current.md:1: missing token {tok}")
     for p in overlays:
         if not p.exists():
             continue
         payload = yaml.safe_load(p.read_text(encoding="utf-8"))
         case_type = str((payload or {}).get("case_type", "")).strip()
         if case_type and case_type not in contract_text:
-            violations.append(f"docs/spec/contract/04_harness.md:1: missing overlay case_type token {case_type}")
+            violations.append(f"specs/contract/04_harness.md:1: missing overlay case_type token {case_type}")
     return violations
 
 
@@ -8611,9 +8611,9 @@ def _scan_naming_filename_policy(root: Path, *, harness: dict | None = None) -> 
 def _scan_normalization_virtual_root_paths_only(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     scope = [
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/libraries",
+        root / "specs/conformance/cases",
+        root / "specs/governance/cases",
+        root / "specs/libraries",
     ]
     for base in scope:
         if not base.exists():
@@ -8640,9 +8640,9 @@ def _scan_normalization_virtual_root_paths_only(root: Path, *, harness: dict | N
 def _scan_reference_contract_paths_exist(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     scope = [
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/libraries",
+        root / "specs/conformance/cases",
+        root / "specs/governance/cases",
+        root / "specs/libraries",
     ]
     must_exist_keys = {
         "path",
@@ -8684,7 +8684,7 @@ def _scan_reference_contract_paths_exist(root: Path, *, harness: dict | None = N
 
 
 def _scan_reference_check_ids_exist(root: Path, *, harness: dict | None = None) -> list[str]:
-    cases_dir = root / "docs/spec/governance/cases"
+    cases_dir = root / "specs/governance/cases"
     if not cases_dir.exists():
         return []
     violations: list[str] = []
@@ -8704,7 +8704,7 @@ def _scan_reference_check_ids_exist(root: Path, *, harness: dict | None = None) 
 
 
 def _scan_reference_symbols_exist(root: Path, *, harness: dict | None = None) -> list[str]:
-    cases_dir = root / "docs/spec/governance/cases"
+    cases_dir = root / "specs/governance/cases"
     if not cases_dir.exists():
         return []
     violations: list[str] = []
@@ -8789,10 +8789,10 @@ def _collect_global_symbol_references(root: Path) -> set[str]:
 
     referenced: set[str] = set()
     scan_roots = [
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/impl",
-        root / "docs/spec/libraries",
+        root / "specs/conformance/cases",
+        root / "specs/governance/cases",
+        root / "specs/impl",
+        root / "specs/libraries",
     ]
     for base in scan_roots:
         if not base.exists():
@@ -8848,7 +8848,7 @@ def _collect_global_symbol_references(root: Path) -> set[str]:
 
 
 def _scan_reference_policy_symbols_resolve(root: Path, *, harness: dict | None = None) -> list[str]:
-    cases_dir = root / "docs/spec/governance/cases"
+    cases_dir = root / "specs/governance/cases"
     if not cases_dir.exists():
         return []
     limits = SpecLangLimits()
@@ -8905,7 +8905,7 @@ def _scan_reference_policy_symbols_resolve(root: Path, *, harness: dict | None =
 
 
 def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = None) -> list[str]:
-    libs_root = root / "docs/spec/libraries"
+    libs_root = root / "specs/libraries"
     if not libs_root.exists():
         return []
     exported: dict[str, Path] = {}
@@ -8952,7 +8952,7 @@ def _scan_reference_library_exports_used(root: Path, *, harness: dict | None = N
 
 
 def _scan_library_public_surface_model(root: Path, *, harness: dict | None = None) -> list[str]:
-    libs_root = root / "docs/spec/libraries"
+    libs_root = root / "specs/libraries"
     if not libs_root.exists():
         return []
     violations: list[str] = []
@@ -8999,7 +8999,7 @@ def _scan_library_public_surface_model(root: Path, *, harness: dict | None = Non
 
 def _scan_library_legacy_definitions_key_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
-    libs_root = root / "docs/spec/libraries"
+    libs_root = root / "specs/libraries"
     if not libs_root.exists():
         return []
     violations: list[str] = []
@@ -9031,17 +9031,17 @@ def _scan_schema_verb_first_contract_sync(root: Path, *, harness: dict | None = 
     del harness
     checks: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         (
-            "docs/spec/contract/14_spec_lang_libraries.md",
+            "specs/contract/14_spec_lang_libraries.md",
             ("type: spec.export", "harness.exports", "from: assert.function"),
             ("type: spec_lang.export", "defines.public", "defines.private", "definitions.public", "definitions.private"),
         ),
         (
-            "docs/spec/schema/schema_v1.md",
+            "specs/schema/schema_v1.md",
             ("`spec.export`", "`harness.exports`", "`assert.function`"),
             ("`spec_lang.export`", "`defines`", "`definitions`", "definitions.public", "definitions.private"),
         ),
         (
-            "docs/spec/current.md",
+            "specs/current.md",
             ("spec.export", "harness.exports"),
             ("spec_lang.export", "defines.public", "defines.private", "definitions.public", "definitions.private"),
         ),
@@ -9064,7 +9064,7 @@ def _scan_schema_verb_first_contract_sync(root: Path, *, harness: dict | None = 
 
 
 def _scan_reference_private_symbols_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
-    libs_root = root / "docs/spec/libraries"
+    libs_root = root / "specs/libraries"
     private_symbols: set[str] = set()
     if libs_root.exists():
         for lib_file in sorted(libs_root.rglob(SETTINGS.case.default_file_pattern)):
@@ -9092,9 +9092,9 @@ def _scan_reference_private_symbols_forbidden(root: Path, *, harness: dict | Non
 
     violations: list[str] = []
     scan_roots = [
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/impl",
+        root / "specs/conformance/cases",
+        root / "specs/governance/cases",
+        root / "specs/impl",
     ]
     for base in scan_roots:
         if not base.exists():
@@ -9131,9 +9131,9 @@ def _scan_reference_private_symbols_forbidden(root: Path, *, harness: dict | Non
 def _scan_reference_external_refs_policy(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     scope = [
-        root / "docs/spec/conformance/cases",
-        root / "docs/spec/governance/cases",
-        root / "docs/spec/libraries",
+        root / "specs/conformance/cases",
+        root / "specs/governance/cases",
+        root / "specs/libraries",
     ]
     for base in scope:
         if not base.exists():
@@ -9264,7 +9264,7 @@ def _scan_spec_domain_index_sync(root: Path, *, harness: dict | None = None) -> 
                         f"{index_path.relative_to(root)}: missing indexed path: {rel}"
                     )
             # Ensure stale entries are not retained.
-            for m in re.finditer(r"`(/docs/spec/[^`]+\.spec\.md)`", raw):
+            for m in re.finditer(r"`(/specs/[^`]+\.spec\.md)`", raw):
                 rel = m.group(1)
                 target = _join_contract_path(root, rel)
                 if not target.exists():
@@ -9278,7 +9278,7 @@ def _scan_spec_domain_index_sync(root: Path, *, harness: dict | None = None) -> 
 def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     # Conformance cases: conformance libraries only.
-    conformance_root = root / "docs/spec/conformance/cases"
+    conformance_root = root / "specs/conformance/cases"
     if conformance_root.exists():
         for doc_path, case in _iter_all_spec_cases(conformance_root):
             case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
@@ -9297,17 +9297,17 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
                 except VirtualPathError:
                     continue
                 if not (
-                    normalized.startswith("/docs/spec/libraries/conformance/")
-                    or normalized.startswith("/docs/spec/libraries/domain/")
+                    normalized.startswith("/specs/libraries/conformance/")
+                    or normalized.startswith("/specs/libraries/domain/")
                 ):
                     rel = doc_path.relative_to(root)
                     violations.append(
                         f"{rel}: case {case_id} includes[{idx}] must be under "
-                        "/docs/spec/libraries/conformance/ or /docs/spec/libraries/domain/"
+                        "/specs/libraries/conformance/ or /specs/libraries/domain/"
                     )
 
     # Governance cases: policy/path libraries only.
-    governance_root = root / "docs/spec/governance/cases"
+    governance_root = root / "specs/governance/cases"
     if governance_root.exists():
         for doc_path, case in _iter_all_spec_cases(governance_root):
             case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
@@ -9326,23 +9326,23 @@ def _scan_library_domain_ownership(root: Path, *, harness: dict | None = None) -
                 except VirtualPathError:
                     continue
                 allowed = (
-                    normalized.startswith("/docs/spec/libraries/policy/")
-                    or normalized.startswith("/docs/spec/libraries/path/")
+                    normalized.startswith("/specs/libraries/policy/")
+                    or normalized.startswith("/specs/libraries/path/")
                 )
                 if not allowed:
                     rel = doc_path.relative_to(root)
                     violations.append(
                         f"{rel}: case {case_id} includes[{idx}] must be under "
-                        "/docs/spec/libraries/policy/ or /docs/spec/libraries/path/"
+                        "/specs/libraries/policy/ or /specs/libraries/path/"
                     )
     return violations
 
 
 def _scan_library_domain_index_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
-    libs_root = root / "docs/spec/libraries"
+    libs_root = root / "specs/libraries"
     if not libs_root.exists():
-        return ["docs/spec/libraries:1: missing libraries root"]
+        return ["specs/libraries:1: missing libraries root"]
 
     for domain_dir in sorted(p for p in libs_root.iterdir() if p.is_dir() and not p.name.startswith(".")):
         spec_files = sorted(p for p in domain_dir.glob(SETTINGS.case.default_file_pattern) if p.is_file())
@@ -9384,7 +9384,7 @@ def _scan_library_domain_index_sync(root: Path, *, harness: dict | None = None) 
                     violations.append(
                         f"{index_path.relative_to(root)}: missing exported symbol entry {token}"
                     )
-        for m in re.finditer(r"`(/docs/spec/libraries/[^`]+\.spec\.md)`", raw):
+        for m in re.finditer(r"`(/specs/libraries/[^`]+\.spec\.md)`", raw):
             rel = m.group(1)
             target = _join_contract_path(root, rel)
             if not target.exists():
@@ -9482,7 +9482,7 @@ def _scan_normalization_mapping_ast_only(root: Path, *, harness: dict | None = N
 
 
 def _scan_normalization_library_mapping_ast_only(root: Path, *, harness: dict | None = None) -> list[str]:
-    libs_root = root / "docs/spec/libraries"
+    libs_root = root / "specs/libraries"
     if not libs_root.exists():
         return []
     violations: list[str] = []
@@ -9594,15 +9594,15 @@ def _scan_normalization_spec_style_sync(root: Path, *, harness: dict | None = No
             f"_CONFORMANCE_MAX_BLOCK_LINES={_CONFORMANCE_MAX_BLOCK_LINES} must match profile value {max_lines}"
         )
 
-    style_doc = root / "docs/spec/conformance/style.md"
+    style_doc = root / "specs/conformance/style.md"
     if not style_doc.exists():
-        violations.append("docs/spec/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing style doc")
+        violations.append("specs/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing style doc")
         return violations
     raw = style_doc.read_text(encoding="utf-8")
     expected_token = f"({max_lines} lines max)"
     if expected_token not in raw:
         violations.append(
-            f"docs/spec/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing block-size token {expected_token}"
+            f"specs/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing block-size token {expected_token}"
         )
     required_style_tokens = (
         "block-first multiline expression formatting",
@@ -9613,12 +9613,12 @@ def _scan_normalization_spec_style_sync(root: Path, *, harness: dict | None = No
     for tok in required_style_tokens:
         if tok not in lower:
             violations.append(
-                f"docs/spec/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing readability token {tok!r}"
+                f"specs/conformance/style.md:1: NORMALIZATION_SPEC_STYLE_SYNC: missing readability token {tok!r}"
             )
     if "flow-sequence" in raw:
         line = raw[: raw.find("flow-sequence")].count("\n") + 1
         violations.append(
-            f"docs/spec/conformance/style.md:{line}: NORMALIZATION_SPEC_STYLE_SYNC: forbidden legacy token flow-sequence"
+            f"specs/conformance/style.md:{line}: NORMALIZATION_SPEC_STYLE_SYNC: forbidden legacy token flow-sequence"
         )
     return violations
 
@@ -9655,9 +9655,9 @@ def _scan_spec_no_executable_yaml_json_in_case_trees(root: Path, *, harness: dic
 
 
 def _scan_spec_library_cases_markdown_only(root: Path, *, harness: dict | None = None) -> list[str]:
-    libs_root = root / "docs/spec/libraries"
+    libs_root = root / "specs/libraries"
     if not libs_root.exists():
-        return ["docs/spec/libraries:1: missing libraries root"]
+        return ["specs/libraries:1: missing libraries root"]
     violations: list[str] = []
     for pattern in _EXECUTABLE_NON_MD_SPEC_GLOBS:
         for p in sorted(x for x in libs_root.rglob(pattern) if x.is_file()):
@@ -9732,21 +9732,21 @@ def _scan_tests_unit_opt_out_non_regression(root: Path, *, harness: dict | None 
 
 def _scan_docs_spec_index_reachability(root: Path, *, harness: dict | None = None) -> list[str]:
     expected = {
-        "/docs/spec/current.md",
-        "/docs/spec/schema/index.md",
-        "/docs/spec/contract/index.md",
-        "/docs/spec/governance/index.md",
-        "/docs/spec/libraries/index.md",
-        "/docs/spec/impl/index.md",
+        "/specs/current.md",
+        "/specs/schema/index.md",
+        "/specs/contract/index.md",
+        "/specs/governance/index.md",
+        "/specs/libraries/index.md",
+        "/specs/impl/index.md",
     }
-    path = root / "docs/spec/index.md"
+    path = root / "specs/index.md"
     if not path.exists():
-        return ["docs/spec/index.md:1: missing canonical spec index"]
+        return ["specs/index.md:1: missing canonical spec index"]
     text = path.read_text(encoding="utf-8")
     violations: list[str] = []
     for rel in sorted(expected):
         if rel not in text:
-            violations.append(f"docs/spec/index.md:1: missing canonical link {rel}")
+            violations.append(f"specs/index.md:1: missing canonical link {rel}")
     return violations
 
 
@@ -10219,7 +10219,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
         description="Run governance spec cases with project-owned contract.check governance.scan harness."
     )
-    ap.add_argument("--cases", default="docs/spec/governance/cases", help="Path to governance case docs directory")
+    ap.add_argument("--cases", default="specs/governance/cases", help="Path to governance case docs directory")
     ap.add_argument(
         "--case-file-pattern",
         default=SETTINGS.case.default_file_pattern,

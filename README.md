@@ -20,8 +20,8 @@ Trust model:
 
 Reference contracts:
 
-- `/Users/jon/Workspace/Development/spec_runner/docs/spec/contract/08_v1_scope.md`
-- `/Users/jon/Workspace/Development/spec_runner/docs/spec/contract/04_harness.md`
+- `/Users/jon/Workspace/Development/spec_runner/specs/contract/08_v1_scope.md`
+- `/Users/jon/Workspace/Development/spec_runner/specs/contract/04_harness.md`
 
 ## Quickstart (Contributors)
 
@@ -112,7 +112,7 @@ Python impl in runtime adapter is forbidden (hard cut):
 
 Runner interface contract:
 
-- `/Users/jon/Workspace/Development/spec_runner/docs/spec/contract/12_runner_interface.md`
+- `/Users/jon/Workspace/Development/spec_runner/specs/contract/12_runner_interface.md`
 
 ## Minimal `.spec.md` Example
 
@@ -139,9 +139,9 @@ Notes:
 
 - Development workflows: `/Users/jon/Workspace/Development/spec_runner/docs/development.md`
 - Book index: `/Users/jon/Workspace/Development/spec_runner/docs/book/index.md`
-- Current snapshot: `/Users/jon/Workspace/Development/spec_runner/docs/spec/current.md`
-- Schema: `/Users/jon/Workspace/Development/spec_runner/docs/spec/schema/schema_v1.md`
-- Contract index: `/Users/jon/Workspace/Development/spec_runner/docs/spec/contract/index.md`
+- Current snapshot: `/Users/jon/Workspace/Development/spec_runner/specs/current.md`
+- Schema: `/Users/jon/Workspace/Development/spec_runner/specs/schema/schema_v1.md`
+- Contract index: `/Users/jon/Workspace/Development/spec_runner/specs/contract/index.md`
 - Implementation appendices: `/Users/jon/Workspace/Development/spec_runner/docs/impl/index.md`
 
 ## Repo Layout
@@ -153,7 +153,7 @@ Notes:
 
 ## Documentation Health
 
-Use strict docs/spec drift checks before pushing:
+Use strict specs drift checks before pushing:
 
 ```sh
 python3 -m spec_runner.spec_lang_commands check-docs-freshness --strict

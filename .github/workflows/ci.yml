@@ -165,13 +165,13 @@ jobs:
         continue-on-error: true
         run: |
           python -m spec_runner.spec_lang_commands run-governance-specs --liveness-level basic
-          python -m spec_runner.spec_lang_commands compare-conformance-parity --python-only --cases docs/spec/conformance/cases --out .artifacts/conformance-parity-python.json
+          python -m spec_runner.spec_lang_commands compare-conformance-parity --python-only --cases specs/conformance/cases --out .artifacts/conformance-parity-python.json
 
       - name: Diagnostic rerun with detailed profiling (python parity)
         if: steps.python_parity.outcome == 'failure'
         run: |
           python -m spec_runner.spec_lang_commands run-governance-specs --liveness-level strict --profile-level detailed --profile-out .artifacts/python-parity-run-trace.json --profile-summary-out .artifacts/python-parity-run-trace-summary.md || true
-          python -m spec_runner.spec_lang_commands compare-conformance-parity --python-only --cases docs/spec/conformance/cases --out .artifacts/conformance-parity-python-diagnostic.json || true
+          python -m spec_runner.spec_lang_commands compare-conformance-parity --python-only --cases specs/conformance/cases --out .artifacts/conformance-parity-python-diagnostic.json || true
 
       - name: Upload parity artifacts
         if: always()

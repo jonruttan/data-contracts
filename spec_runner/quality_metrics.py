@@ -273,7 +273,7 @@ def _count_python_decision_branches(repo_root: Path) -> int:
 
 
 def _library_public_surface_ratio(repo_root: Path) -> tuple[float, int, int]:
-    libs_root = repo_root / "docs/spec/libraries"
+    libs_root = repo_root / "specs/libraries"
     if not libs_root.exists():
         return 1.0, 0, 0
     public_count = 0
@@ -523,7 +523,7 @@ def default_runner_independence_config() -> dict[str, Any]:
         },
         "direct_runtime_tokens": [
             "spec_lang_commands run-governance-specs",
-            "spec_lang_commands spec-lang-format --check docs/spec",
+            "spec_lang_commands spec-lang-format --check specs",
             "scripts/spec_portability_report.py",
             "python -m pytest",
             "php runners/php/spec_runner.php",
@@ -845,9 +845,9 @@ def default_docs_operability_config() -> dict[str, Any]:
         "reference_manifest": "docs/book/reference_manifest.yaml",
         "segment_rules": [
             {"prefix": "docs/book", "segment": "book"},
-            {"prefix": "docs/spec/contract", "segment": "contract"},
-            {"prefix": "docs/spec/schema", "segment": "schema"},
-            {"prefix": "docs/spec/impl", "segment": "impl_docs"},
+            {"prefix": "specs/contract", "segment": "contract"},
+            {"prefix": "specs/schema", "segment": "schema"},
+            {"prefix": "specs/impl", "segment": "impl_docs"},
         ],
     }
 
@@ -975,14 +975,14 @@ def docs_operability_report_jsonable(repo_root: Path, config: dict[str, Any] | N
 def default_contract_assertions_config() -> dict[str, Any]:
     return {
         "paths": [
-            "docs/spec/contract/03_assertions.md",
-            "docs/spec/schema/schema_v1.md",
+            "specs/contract/03_assertions.md",
+            "specs/schema/schema_v1.md",
             "docs/book/03_assertions.md",
-            "docs/spec/contract/03b_spec_lang_v1.md",
+            "specs/contract/03b_spec_lang_v1.md",
         ],
         "segment_rules": [
-            {"prefix": "docs/spec/contract", "segment": "contract"},
-            {"prefix": "docs/spec/schema", "segment": "schema"},
+            {"prefix": "specs/contract", "segment": "contract"},
+            {"prefix": "specs/schema", "segment": "schema"},
             {"prefix": "docs/book", "segment": "book"},
         ],
         "required_tokens": ["must", "can", "cannot", "evaluate"],
@@ -1247,7 +1247,7 @@ def validate_metric_baseline_notes(
 
 def default_objective_scorecard_config() -> dict[str, Any]:
     return {
-        "manifest_path": "docs/spec/metrics/objective_manifest.yaml",
+        "manifest_path": "specs/metrics/objective_manifest.yaml",
         "thresholds": {
             "green_min": 0.75,
             "yellow_min": 0.50,
@@ -1272,7 +1272,7 @@ def objective_scorecard_report_jsonable(repo_root: Path, config: dict[str, Any] 
     except (TypeError, ValueError):
         yellow_min = 0.50
 
-    manifest_path = str(cfg.get("manifest_path", "")).strip() or "docs/spec/metrics/objective_manifest.yaml"
+    manifest_path = str(cfg.get("manifest_path", "")).strip() or "specs/metrics/objective_manifest.yaml"
     try:
         manifest_file = resolve_contract_path(root, manifest_path, field="objective_manifest.path")
     except VirtualPathError as exc:

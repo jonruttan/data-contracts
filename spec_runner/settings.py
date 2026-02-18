@@ -72,22 +72,22 @@ SETTINGS = RunnerSettings(
     assertion_health=AssertionHealthSettings(default_mode="ignore"),
     spec_portability=SpecPortabilitySettings(
         roots=(
-            "docs/spec/conformance/cases",
-            "docs/spec/governance/cases",
-            "docs/spec/impl",
+            "specs/conformance/cases",
+            "specs/governance/cases",
+            "specs/impl",
         ),
         core_types=("contract.check", "contract.export", "contract.job"),
         segment_rules=(
             SpecPortabilitySegmentRuleSettings(
-                prefix="docs/spec/conformance/cases",
+                prefix="specs/conformance/cases",
                 segment="conformance",
             ),
             SpecPortabilitySegmentRuleSettings(
-                prefix="docs/spec/governance/cases",
+                prefix="specs/governance/cases",
                 segment="governance",
             ),
             SpecPortabilitySegmentRuleSettings(
-                prefix="docs/spec/impl",
+                prefix="specs/impl",
                 segment="impl",
             ),
         ),
