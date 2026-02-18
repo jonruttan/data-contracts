@@ -19,10 +19,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - x
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - x
   target: text
 harness:
   check:
@@ -49,10 +50,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - outside
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - outside
   target: text
 harness:
   check:
@@ -86,10 +88,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - x
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - x
   target: stdout
 ```
 
@@ -119,9 +122,10 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        not.a.real.symbol:
-        - {var: subject}
+      lit:
+        lit:
+          not.a.real.symbol:
+          - {var: subject}
   target: stdout
 ```
 
@@ -209,10 +213,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        target: text
-        contain:
-        - fixture-content
+      lit:
+        lit:
+          target: text
+          contain:
+          - fixture-content
   target: text
 harness:
   check:

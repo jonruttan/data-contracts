@@ -27,11 +27,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - std.object.get:
-          - {var: subject}
-          - check_id
-        - reference.contract_paths_exist
+      lit:
+        lit:
+          std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - reference.contract_paths_exist
   target: summary_json
 ```

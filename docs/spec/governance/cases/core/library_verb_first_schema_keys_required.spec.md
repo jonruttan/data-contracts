@@ -28,11 +28,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - std.object.get:
-          - {var: subject}
-          - check_id
-        - library.verb_first_schema_keys_required
+      lit:
+        lit:
+          std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - library.verb_first_schema_keys_required
   target: summary_json
 ```

@@ -17,17 +17,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        MUST:
-        - std.string.contains:
-          - {var: subject}
-          - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
-        - std.string.contains:
-          - {var: subject}
-          - 'END GENERATED: SCHEMA_REGISTRY_V1'
-        - std.string.contains:
-          - {var: subject}
-          - Generated Registry Snapshot
+      lit:
+        lit:
+          MUST:
+          - std.string.contains:
+            - {var: subject}
+            - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
+          - std.string.contains:
+            - {var: subject}
+            - 'END GENERATED: SCHEMA_REGISTRY_V1'
+          - std.string.contains:
+            - {var: subject}
+            - Generated Registry Snapshot
   target: text
 harness:
   check:

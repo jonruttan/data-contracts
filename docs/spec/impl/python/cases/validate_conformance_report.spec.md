@@ -20,10 +20,11 @@ contract:
   target: stdout
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - 'OK: valid conformance report'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - 'OK: valid conformance report'
 ```
 
 ## SRPY-VALREP-002
@@ -46,8 +47,9 @@ contract:
   target: stderr
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - 'ERROR: report.version must equal 1'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - 'ERROR: report.version must equal 1'
 ```

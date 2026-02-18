@@ -11,10 +11,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - {var: token}
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - {var: token}
 harness:
   exports:
   - as: impl.assert.contains
@@ -35,10 +36,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - {var: pattern}
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - {var: pattern}
 harness:
   exports:
   - as: impl.assert.regex
@@ -59,10 +61,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.type.json_type:
-        - {var: subject}
-        - {var: type_name}
+      lit:
+        lit:
+          std.type.json_type:
+          - {var: subject}
+          - {var: type_name}
 harness:
   exports:
   - as: impl.assert.json_type

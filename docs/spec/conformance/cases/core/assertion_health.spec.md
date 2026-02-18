@@ -27,10 +27,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - ''
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - ''
   target: text
 harness:
   check:
@@ -57,10 +58,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - ''
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - ''
   target: text
 harness:
   check:
@@ -86,10 +88,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - contract-spec
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - contract-spec
   target: text
 harness:
   check:
@@ -115,10 +118,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - ''
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - ''
   target: text
 harness:
   check:
@@ -145,15 +149,17 @@ contract:
   class: MAY
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - 'version: 1'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - 'version: 1'
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - 'version: 2'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - 'version: 2'
   target: text
 harness:
   check:
@@ -180,10 +186,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - '(?<=version: )1'
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - '(?<=version: )1'
   target: text
 harness:
   check:

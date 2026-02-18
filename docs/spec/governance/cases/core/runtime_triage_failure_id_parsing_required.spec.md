@@ -35,9 +35,10 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - {var: subject}
-        - 0
+      lit:
+        lit:
+          std.logic.eq:
+          - {var: subject}
+          - 0
   target: violation_count
 ```

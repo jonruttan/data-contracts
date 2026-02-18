@@ -39,16 +39,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/conformance-purpose.json
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/conformance-purpose.json
 when:
   fail:
   - ops.job.dispatch:
@@ -97,16 +99,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/conformance-purpose-summary.md
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/conformance-purpose-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -155,16 +159,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/spec-portability.json
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/spec-portability.json
 when:
   fail:
   - ops.job.dispatch:
@@ -213,16 +219,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/spec-portability-summary.md
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/spec-portability-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -271,16 +279,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/contract-assertions.json
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/contract-assertions.json
 when:
   fail:
   - ops.job.dispatch:
@@ -329,16 +339,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-        - written_path
-        - .artifacts/contract-assertions-summary.md
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+          - written_path
+          - .artifacts/contract-assertions-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -387,16 +399,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/spec-lang-adoption.json
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/spec-lang-adoption.json
 when:
   fail:
   - ops.job.dispatch:
@@ -445,16 +459,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/spec-lang-adoption-summary.md
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/spec-lang-adoption-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -503,16 +519,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/runner-independence.json
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/runner-independence.json
 when:
   fail:
   - ops.job.dispatch:
@@ -561,16 +579,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/runner-independence-summary.md
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/runner-independence-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -619,16 +639,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/python-dependency.json
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/python-dependency.json
 when:
   fail:
   - ops.job.dispatch:
@@ -677,16 +699,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/python-dependency-summary.md
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/python-dependency-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -735,16 +759,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/docs-operability.json
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/docs-operability.json
 when:
   fail:
   - ops.job.dispatch:
@@ -793,16 +819,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/docs-operability-summary.md
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/docs-operability-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -851,16 +879,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/objective-scorecard.json
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/objective-scorecard.json
 when:
   fail:
   - ops.job.dispatch:
@@ -909,16 +939,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/objective-scorecard-summary.md
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/objective-scorecard-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -967,16 +999,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/spec-lang-stdlib.json
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/spec-lang-stdlib.json
 when:
   fail:
   - ops.job.dispatch:
@@ -1025,16 +1059,18 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        ops.job.dispatch:
-        - main
+      lit:
+        lit:
+          ops.job.dispatch:
+          - main
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - written_path
-        - .artifacts/spec-lang-stdlib-summary.md
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - written_path
+          - .artifacts/spec-lang-stdlib-summary.md
 when:
   fail:
   - ops.job.dispatch:

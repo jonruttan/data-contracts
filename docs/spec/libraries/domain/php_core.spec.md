@@ -11,14 +11,15 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - std.object.get:
+      lit:
+        lit:
+          std.logic.eq:
           - std.object.get:
-            - {var: subject}
-            - meta
-          - php_array_kind
-        - assoc
+            - std.object.get:
+              - {var: subject}
+              - meta
+            - php_array_kind
+          - assoc
 harness:
   exports:
   - as: php.is_assoc_projection

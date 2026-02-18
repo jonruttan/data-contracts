@@ -11,12 +11,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - std.object.get:
-          - {var: subject}
-          - value
-        - {var: target}
+      lit:
+        lit:
+          std.string.contains:
+          - std.object.get:
+            - {var: subject}
+            - value
+          - {var: target}
 harness:
   exports:
   - as: make.has_target

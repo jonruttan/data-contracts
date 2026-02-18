@@ -28,17 +28,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        MUST:
-        - std.logic.eq:
-          - std.object.get:
-            - {var: subject}
-            - check_id
-          - schema.registry_compiled_sync
-        - std.logic.eq:
-          - std.object.get:
-            - {var: subject}
-            - passed
-          - true
+      lit:
+        lit:
+          MUST:
+          - std.logic.eq:
+            - std.object.get:
+              - {var: subject}
+              - check_id
+            - schema.registry_compiled_sync
+          - std.logic.eq:
+            - std.object.get:
+              - {var: subject}
+              - passed
+            - true
   target: summary_json
 ```

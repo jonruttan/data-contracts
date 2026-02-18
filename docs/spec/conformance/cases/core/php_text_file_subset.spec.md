@@ -16,10 +16,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - 'version: 1'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - 'version: 1'
   target: text
 harness:
   check:
@@ -43,10 +44,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - \A\Z
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - \A\Z
   target: text
 harness:
   check:
@@ -70,11 +72,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        MUST:
-        - std.string.contains:
-          - {var: subject}
-          - 'version: 1'
+      lit:
+        lit:
+          MUST:
+          - std.string.contains:
+            - {var: subject}
+            - 'version: 1'
   target: text
 harness:
   check:
@@ -98,15 +101,17 @@ contract:
   class: MAY
   asserts:
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - (?!)
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - (?!)
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - 'version: 1'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - 'version: 1'
   target: text
 harness:
   check:
@@ -130,15 +135,17 @@ contract:
   class: MAY
   asserts:
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - \A\Z
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - \A\Z
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - (?!)
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - (?!)
   target: text
 harness:
   check:
@@ -162,15 +169,17 @@ contract:
   class: MUST_NOT
   asserts:
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - \A\Z
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - \A\Z
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - (?!)
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - (?!)
   target: text
 harness:
   check:
@@ -194,15 +203,17 @@ contract:
   class: MUST_NOT
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - 'version: 1'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - 'version: 1'
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - (?!)
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - (?!)
   target: text
 harness:
   check:
@@ -226,20 +237,22 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        MAY:
-        - std.string.regex_match:
-          - {var: subject}
-          - \A\Z
-        - std.string.contains:
-          - {var: subject}
-          - 'version: 1'
+      lit:
+        lit:
+          MAY:
+          - std.string.regex_match:
+            - {var: subject}
+            - \A\Z
+          - std.string.contains:
+            - {var: subject}
+            - 'version: 1'
   - evaluate:
-    - lit:
-        MUST_NOT:
-        - std.string.regex_match:
-          - {var: subject}
-          - \A\Z
+      lit:
+        lit:
+          MUST_NOT:
+          - std.string.regex_match:
+            - {var: subject}
+            - \A\Z
   target: text
 harness:
   check:
@@ -266,10 +279,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - '(?<=version: )1'
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - '(?<=version: )1'
   target: text
 harness:
   check:
@@ -296,10 +310,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - ''
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - ''
   target: text
 harness:
   check:
@@ -326,10 +341,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - .*
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - .*
   target: text
 harness:
   check:
@@ -359,14 +375,15 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        MUST:
-        - std.string.contains:
-          - {var: subject}
-          - 'version: 1'
-        - std.string.contains:
-          - {var: subject}
-          - 'version: 1'
+      lit:
+        lit:
+          MUST:
+          - std.string.contains:
+            - {var: subject}
+            - 'version: 1'
+          - std.string.contains:
+            - {var: subject}
+            - 'version: 1'
   target: text
 harness:
   check:
@@ -393,15 +410,17 @@ contract:
   class: MAY
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - 'version: 1'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - 'version: 1'
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - 'version: 2'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - 'version: 2'
   target: text
 harness:
   check:
@@ -427,10 +446,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - ''
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - ''
   target: text
 harness:
   check:

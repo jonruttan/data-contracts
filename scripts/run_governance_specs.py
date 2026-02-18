@@ -9715,6 +9715,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "conformance.purpose_warning_codes_sync": _scan_conformance_purpose_warning_codes_sync,
     "conformance.purpose_quality_gate": _scan_conformance_purpose_quality_gate,
     "contract.coverage_threshold": _scan_contract_coverage_threshold,
+    "runtime.runner_independence_metric": _scan_runner_independence_metric,
+    "runtime.runner_independence_non_regression": _scan_runner_independence_non_regression,
     "runtime.python_dependency_metric": _scan_python_dependency_metric,
     "runtime.python_dependency_non_regression": _scan_python_dependency_non_regression,
     "runtime.non_python_lane_no_python_exec": _scan_runtime_non_python_lane_no_python_exec,
@@ -10137,6 +10139,58 @@ def main(argv: list[str] | None = None) -> int:
     timing_rows: list[dict[str, Any]] = []
     profile_rows: list[dict[str, Any]] = []
     workers_used = 1
+    progress_lock = threading.Lock()
+    last_progress_ts = time.monotonic()
+    active_cases: dict[int, dict[str, Any]] = {}
+
+    def _mark_progress(
+        *,
+        phase: str,
+        idx: int | None = None,
+        case_id: str | None = None,
+        check_id: str | None = None,
+        status: str | None = None,
+        elapsed_ms: float | None = None,
+    ) -> None:
+        nonlocal last_progress_ts
+        now = time.monotonic()
+        with progress_lock:
+            last_progress_ts = now
+            if idx is not None and case_id and check_id:
+                if status in {"pass", "fail"}:
+                    active_cases.pop(int(idx), None)
+                else:
+                    active_cases[int(idx)] = {
+                        "case_id": case_id,
+                        "check_id": check_id,
+                        "started_at": now,
+                    }
+        if _GOVERNANCE_TRACE:
+            parts = [f"[governance.trace] {phase}"]
+            if idx is not None:
+                parts.append(f"idx={idx}")
+            if check_id:
+                parts.append(f"check={check_id}")
+            if case_id:
+                parts.append(f"case={case_id}")
+            if status:
+                parts.append(f"status={status}")
+            if elapsed_ms is not None:
+                parts.append(f"ms={elapsed_ms:.2f}")
+            print(" ".join(parts), flush=True)
+        if profiler.cfg.enabled:
+            attrs: dict[str, Any] = {"phase": phase}
+            if idx is not None:
+                attrs["index"] = int(idx)
+            if case_id:
+                attrs["case_id"] = case_id
+            if check_id:
+                attrs["check_id"] = check_id
+            if status:
+                attrs["status"] = status
+            if elapsed_ms is not None:
+                attrs["elapsed_ms"] = round(float(elapsed_ms), 3)
+            profiler.event(kind="checkpoint", attrs=attrs)
     try:
         with TemporaryDirectory(prefix="spec-runner-governance-") as td:
             td_path = Path(td)
@@ -10145,8 +10199,7 @@ def main(argv: list[str] | None = None) -> int:
                 idx, case = args
                 case_id = str(case.test.get("id", "<unknown>")).strip() or "<unknown>"
                 check_id = _governance_check_id(case.test)
-                if _GOVERNANCE_TRACE:
-                    print(f"[governance.trace] start idx={idx} check={check_id} case={case_id}", flush=True)
+                _mark_progress(phase="governance.case.start", idx=idx, case_id=case_id, check_id=check_id)
                 case_tmp = td_path / f"case_{idx}"
                 case_tmp.mkdir(parents=True, exist_ok=True)
                 ctx = SpecRunContext(
@@ -10199,11 +10252,14 @@ def main(argv: list[str] | None = None) -> int:
                                 },
                             )
                     elapsed_ms = (time.perf_counter() - case_started) * 1000.0
-                    if _GOVERNANCE_TRACE:
-                        print(
-                            f"[governance.trace] done idx={idx} check={check_id} case={case_id} ms={elapsed_ms:.2f}",
-                            flush=True,
-                        )
+                    _mark_progress(
+                        phase="governance.case.finish",
+                        idx=idx,
+                        case_id=case_id,
+                        check_id=check_id,
+                        status="pass",
+                        elapsed_ms=elapsed_ms,
+                    )
                     return idx, case_id, check_id, elapsed_ms, None, list(ctx.profile_rows)
                 except BaseException as e:  # noqa: BLE001
                     elapsed_ms = (time.perf_counter() - case_started) * 1000.0
@@ -10217,11 +10273,14 @@ def main(argv: list[str] | None = None) -> int:
                                 "error": str(e),
                             },
                         )
-                    if _GOVERNANCE_TRACE:
-                        print(
-                            f"[governance.trace] fail idx={idx} check={check_id} case={case_id} ms={elapsed_ms:.2f} err={e}",
-                            flush=True,
-                        )
+                    _mark_progress(
+                        phase="governance.case.finish",
+                        idx=idx,
+                        case_id=case_id,
+                        check_id=check_id,
+                        status="fail",
+                        elapsed_ms=elapsed_ms,
+                    )
                     return idx, case_id, check_id, elapsed_ms, f"{case_id}: {e}", list(ctx.profile_rows)
                 finally:
                     if profiler.cfg.enabled:
@@ -10261,9 +10320,72 @@ def main(argv: list[str] | None = None) -> int:
                     max_workers = min(requested_workers, len(governance_cases))
                 workers_used = max_workers
                 results: list[tuple[int, str, str, float, str | None, list[dict[str, Any]]]] = []
+                stall_ms = int(liveness_cfg.stall_ms) if str(liveness_cfg.level).strip().lower() != "off" else 0
+                heartbeat_ms = int(
+                    str(os.environ.get("SPEC_RUNNER_GOVERNANCE_PROGRESS_HEARTBEAT_MS", "1000")).strip() or "1000"
+                )
+                heartbeat_seconds = max(float(heartbeat_ms) / 1000.0, 0.25)
+                stalled = False
                 with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-                    for result in executor.map(_run_one, enumerate(governance_cases)):
-                        results.append(result)
+                    pending: set[concurrent.futures.Future[tuple[int, str, str, float, str | None, list[dict[str, Any]]]]] = {
+                        executor.submit(_run_one, (idx, case))
+                        for idx, case in enumerate(governance_cases)
+                    }
+                    while pending:
+                        done, pending = concurrent.futures.wait(
+                            pending,
+                            timeout=heartbeat_seconds,
+                            return_when=concurrent.futures.FIRST_COMPLETED,
+                        )
+                        if done:
+                            for fut in done:
+                                results.append(fut.result())
+                            continue
+                        with progress_lock:
+                            inactive_for_ms = (time.monotonic() - last_progress_ts) * 1000.0
+                            running_snapshot = [
+                                {
+                                    "index": idx,
+                                    "case_id": rec.get("case_id"),
+                                    "check_id": rec.get("check_id"),
+                                    "running_ms": round((time.monotonic() - float(rec.get("started_at", 0.0))) * 1000.0, 1),
+                                }
+                                for idx, rec in sorted(active_cases.items(), key=lambda x: x[0])
+                            ]
+                        if profiler.cfg.enabled:
+                            profiler.event(
+                                kind="heartbeat",
+                                attrs={
+                                    "phase": "governance.case_pool.wait",
+                                    "pending_futures": len(pending),
+                                    "running_cases": running_snapshot,
+                                    "inactive_for_ms": round(inactive_for_ms, 1),
+                                },
+                            )
+                        if stall_ms > 0 and inactive_for_ms >= float(stall_ms):
+                            stalled = True
+                            msg = (
+                                f"stall.runner.no_progress after {int(inactive_for_ms)}ms "
+                                f"(pending={len(pending)} running={json.dumps(running_snapshot, sort_keys=True)})"
+                            )
+                            failures.append(msg)
+                            if profiler.cfg.enabled:
+                                profiler.event(
+                                    kind="stall_warning",
+                                    attrs={
+                                        "phase": "governance.case_pool.wait",
+                                        "reason_token": "stall.runner.no_progress",
+                                        "inactive_for_ms": round(inactive_for_ms, 1),
+                                        "pending_futures": len(pending),
+                                        "running_cases": running_snapshot,
+                                    },
+                                )
+                            for fut in pending:
+                                fut.cancel()
+                            executor.shutdown(wait=False, cancel_futures=True)
+                            break
+                if stalled:
+                    pending.clear()
                 for _idx, case_id, check_id, elapsed_ms, failure, case_profile_rows in sorted(results, key=lambda x: x[0]):
                     timing_rows.append(
                         {

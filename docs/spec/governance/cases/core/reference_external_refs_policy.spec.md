@@ -27,11 +27,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - std.object.get:
-          - {var: subject}
-          - check_id
-        - reference.external_refs_policy
+      lit:
+        lit:
+          std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - check_id
+          - reference.external_refs_policy
   target: summary_json
 ```

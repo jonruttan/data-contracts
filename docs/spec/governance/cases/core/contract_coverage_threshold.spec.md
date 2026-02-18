@@ -31,26 +31,28 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - {var: subject}
-        - 0
+      lit:
+        lit:
+          std.logic.eq:
+          - {var: subject}
+          - 0
   target: violation_count
 - id: assert_2
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        MUST:
-        - std.logic.eq:
-          - std.object.get:
-            - {var: subject}
-            - passed
-          - true
-        - std.logic.eq:
-          - std.object.get:
-            - {var: subject}
-            - check_id
-          - contract.coverage_threshold
+      lit:
+        lit:
+          MUST:
+          - std.logic.eq:
+            - std.object.get:
+              - {var: subject}
+              - passed
+            - true
+          - std.logic.eq:
+            - std.object.get:
+              - {var: subject}
+              - check_id
+            - contract.coverage_threshold
   target: summary_json
 ```

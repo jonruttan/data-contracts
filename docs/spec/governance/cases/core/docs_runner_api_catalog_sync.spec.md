@@ -27,17 +27,18 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        MUST:
-        - std.logic.eq:
-          - std.object.get:
-            - {var: subject}
-            - check_id
-          - docs.runner_api_catalog_sync
-        - std.logic.eq:
-          - std.object.get:
-            - {var: subject}
-            - passed
-          - true
+      lit:
+        lit:
+          MUST:
+          - std.logic.eq:
+            - std.object.get:
+              - {var: subject}
+              - check_id
+            - docs.runner_api_catalog_sync
+          - std.logic.eq:
+            - std.object.get:
+              - {var: subject}
+              - passed
+            - true
   target: summary_json
 ```

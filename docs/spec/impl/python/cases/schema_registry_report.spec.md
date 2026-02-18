@@ -23,10 +23,11 @@ contract:
   target: stdout
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - wrote .artifacts/schema-registry-impl-case.json
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - wrote .artifacts/schema-registry-impl-case.json
 ```
 
 ## SRPY-SCHEMA-REG-002
@@ -53,8 +54,9 @@ contract:
   target: stdout
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - stale report artifact
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - stale report artifact
 ```

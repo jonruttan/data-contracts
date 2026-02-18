@@ -165,6 +165,7 @@ pub fn eval_mapping_ast_with_state(
     eval_expr_with_state(&expr, subject, symbols, limits)
 }
 
+#[allow(dead_code)]
 pub fn eval_expr(
     expr: &Expr,
     subject: Value,

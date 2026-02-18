@@ -13,10 +13,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - {var: subject}
-        - {var: subject}
+      lit:
+        lit:
+          std.logic.eq:
+          - {var: subject}
+          - {var: subject}
 harness:
   exports:
   - as: bad.path.symbol
@@ -37,10 +38,11 @@ contract:
   class: MAY
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - {var: subject}
-        - {var: subject}
+      lit:
+        lit:
+          std.logic.eq:
+          - {var: subject}
+          - {var: subject}
 harness:
   exports:
   - as: bad.class.symbol

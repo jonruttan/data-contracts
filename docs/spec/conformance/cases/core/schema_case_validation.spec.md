@@ -17,10 +17,11 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - Spec-Test Schema (v1)
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - Spec-Test Schema (v1)
   target: text
 harness:
   check:
@@ -44,9 +45,10 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        unknown_symbol_for_schema_case:
-        - {var: subject}
+      lit:
+        lit:
+          unknown_symbol_for_schema_case:
+          - {var: subject}
   target: text
 harness:
   check:

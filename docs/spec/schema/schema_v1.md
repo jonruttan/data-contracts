@@ -486,7 +486,7 @@ contract:
 - target: stderr
   MUST_NOT:
   - evaluate:
-    - std.string.contains:
+      std.string.contains:
       - var: subject
       - 'ERROR:'
 ```
@@ -504,24 +504,24 @@ contract:
 - target: stderr
   MUST:
   - evaluate:
-    - std.string.contains:
+      std.string.contains:
       - var: subject
       - 'WARN:'
 - target: stderr
   MUST_NOT:
   - evaluate:
-    - std.string.contains:
+      std.string.contains:
       - var: subject
       - 'ERROR:'
 - target: stdout
   MAY:
   - evaluate:
-    - std.type.json_type:
+      std.type.json_type:
       - std.json.parse:
         - var: subject
       - list
   - evaluate:
-    - std.string.contains:
+      std.string.contains:
       - var: subject
       - '[]'
 ```

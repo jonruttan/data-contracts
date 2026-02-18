@@ -72,9 +72,10 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - '"ok": true'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - '"ok": true'
   target: stdout
 ```

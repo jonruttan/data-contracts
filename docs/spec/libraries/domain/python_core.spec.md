@@ -11,14 +11,15 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - std.object.get:
+      lit:
+        lit:
+          std.logic.eq:
           - std.object.get:
-            - {var: subject}
-            - meta
-          - native_kind
-        - python.tuple
+            - std.object.get:
+              - {var: subject}
+              - meta
+            - native_kind
+          - python.tuple
 harness:
   exports:
   - as: py.is_tuple_projection

@@ -11,42 +11,47 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - {var: token}
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - {var: token}
 - id: __export__conf.pass_when_text_regex
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.regex_match:
-        - {var: subject}
-        - {var: pattern}
+      lit:
+        lit:
+          std.string.regex_match:
+          - {var: subject}
+          - {var: pattern}
 - id: __export__conf.eq
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - {var: subject}
-        - {var: value}
+      lit:
+        lit:
+          std.logic.eq:
+          - {var: subject}
+          - {var: value}
 - id: __export__conf.has_error_category
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - {var: category}
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - {var: category}
 - id: __export__conf.json_type_is
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.type.json_type:
-        - {var: subject}
-        - {var: type_name}
+      lit:
+        lit:
+          std.type.json_type:
+          - {var: subject}
+          - {var: type_name}
 harness:
   exports:
   - as: conf.pass_when_text_contains

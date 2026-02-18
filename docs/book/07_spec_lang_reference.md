@@ -172,7 +172,7 @@ Text + boolean composition:
 
 ```yaml
 - evaluate:
-  - std.logic.and:
+    std.logic.and:
     - std.string.contains:
       - WARN
     - std.logic.not:
@@ -184,7 +184,7 @@ JSON field check (for `target: body_json`):
 
 ```yaml
 - evaluate:
-  - std.logic.and:
+    std.logic.and:
     - std.object.has_key:
       - items
     - std.logic.eq:
@@ -199,7 +199,7 @@ Tail recursion (stack-safe by contract):
 
 ```yaml
 - evaluate:
-  - let:
+    let:
     - lit:
       - - loop
         - - fn
@@ -236,7 +236,7 @@ Set algebra + deep equality:
 
 ```yaml
 - evaluate:
-  - std.set.intersection:
+    std.set.intersection:
     - std.json.parse:
       - '[{"k":1},{"k":2},{"k":2}]'
     - std.json.parse:
@@ -247,7 +247,7 @@ Currying with collection forms:
 
 ```yaml
 - evaluate:
-  - map:
+    map:
     - call:
       - var:
         - add

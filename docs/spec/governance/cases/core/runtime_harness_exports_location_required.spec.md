@@ -18,10 +18,11 @@ contract:
   target: summary_json
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - std.object.get:
-          - {var: subject}
-          - passed
-        - true
+      lit:
+        lit:
+          std.logic.eq:
+          - std.object.get:
+            - {var: subject}
+            - passed
+          - true
 ```

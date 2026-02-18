@@ -31,9 +31,10 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.contains:
-        - {var: subject}
-        - '# PHP Spec Runner Library Export References'
+      lit:
+        lit:
+          std.string.contains:
+          - {var: subject}
+          - '# PHP Spec Runner Library Export References'
   target: text
 ```

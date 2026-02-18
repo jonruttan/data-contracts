@@ -10,9 +10,10 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        ops.fs.path.normalize:
-        - {var: path}
+      lit:
+        lit:
+          ops.fs.path.normalize:
+          - {var: path}
 harness:
   exports:
   - as: domain.path.normalize
@@ -31,12 +32,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.eq:
-        - ops.fs.path.normalize:
-          - {var: left}
-        - ops.fs.path.normalize:
-          - {var: right}
+      lit:
+        lit:
+          std.logic.eq:
+          - ops.fs.path.normalize:
+            - {var: left}
+          - ops.fs.path.normalize:
+            - {var: right}
 harness:
   exports:
   - as: domain.path.eq
@@ -56,11 +58,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.string.ends_with:
-        - ops.fs.path.normalize:
-          - {var: path}
-        - .spec.md
+      lit:
+        lit:
+          std.string.ends_with:
+          - ops.fs.path.normalize:
+            - {var: path}
+          - .spec.md
 harness:
   exports:
   - as: domain.path.is_spec_md
@@ -79,11 +82,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        ops.fs.path.within:
-        - /docs
-        - ops.fs.path.normalize:
-          - {var: path}
+      lit:
+        lit:
+          ops.fs.path.within:
+          - /docs
+          - ops.fs.path.normalize:
+            - {var: path}
 harness:
   exports:
   - as: domain.path.is_in_docs
@@ -102,9 +106,10 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        ops.fs.path.sort:
-        - {var: paths}
+      lit:
+        lit:
+          ops.fs.path.sort:
+          - {var: paths}
 harness:
   exports:
   - as: domain.path.sorted
@@ -123,12 +128,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.and:
-        - ops.fs.file.exists:
-          - {var: meta}
-        - ops.fs.file.is_file:
-          - {var: meta}
+      lit:
+        lit:
+          std.logic.and:
+          - ops.fs.file.exists:
+            - {var: meta}
+          - ops.fs.file.is_file:
+            - {var: meta}
 harness:
   exports:
   - as: domain.file.is_existing_file
@@ -147,12 +153,13 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        std.logic.and:
-        - ops.fs.file.exists:
-          - {var: meta}
-        - ops.fs.file.is_dir:
-          - {var: meta}
+      lit:
+        lit:
+          std.logic.and:
+          - ops.fs.file.exists:
+            - {var: meta}
+          - ops.fs.file.is_dir:
+            - {var: meta}
 harness:
   exports:
   - as: domain.file.is_existing_dir
@@ -171,11 +178,12 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        ops.fs.path.has_ext:
-        - ops.fs.file.path:
-          - {var: meta}
-        - {var: ext}
+      lit:
+        lit:
+          ops.fs.path.has_ext:
+          - ops.fs.file.path:
+            - {var: meta}
+          - {var: ext}
 harness:
   exports:
   - as: domain.file.has_ext
@@ -195,9 +203,10 @@ contract:
   class: MUST
   asserts:
   - evaluate:
-    - lit:
-        ops.fs.file.name:
-        - {var: meta}
+      lit:
+        lit:
+          ops.fs.file.name:
+          - {var: meta}
 harness:
   exports:
   - as: domain.file.name
