@@ -5,7 +5,6 @@ import argparse
 import contextlib
 import io
 import subprocess
-import sys
 from pathlib import Path
 from typing import Any
 

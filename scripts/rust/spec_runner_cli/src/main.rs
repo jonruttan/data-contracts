@@ -2491,9 +2491,9 @@ fn main() {
                 vec![
                     "-q".to_string(),
                     "tests/test_doc_parser_unit.py".to_string(),
-                    "tests/test_dispatcher_unit.py".to_string(),
-                    "tests/test_assertions_unit.py".to_string(),
-                    "tests/test_conformance_runner_unit.py".to_string(),
+                    "tests/test_spec_lang_unit.py".to_string(),
+                    "tests/test_codecs_unit.py".to_string(),
+                    "tests/test_validate_conformance_report_unit.py".to_string(),
                 ],
                 &forwarded,
             ),

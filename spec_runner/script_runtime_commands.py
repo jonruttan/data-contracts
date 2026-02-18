@@ -15,6 +15,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from spec_runner.conformance import ConformanceResult, compare_conformance_results, load_expected_results
 from spec_runner.conformance_parity import (
     ParityConfig,
@@ -144,18 +146,18 @@ def docs_generate_all_main(argv: list[str] | None = None) -> int:
         str(ns.timing_out),
     ]
     if bool(ns.profile):
-        cmd.append("--profile")
-        cmd += ["--profile-out", str(ns.profile_out)]
+        forwarded.append("--profile")
+        forwarded += ["--profile-out", str(ns.profile_out)]
     if str(ns.profile_level).strip():
-        cmd += ["--profile-level", str(ns.profile_level).strip()]
+        forwarded += ["--profile-level", str(ns.profile_level).strip()]
     if str(ns.profile_summary_out).strip():
-        cmd += ["--profile-summary-out", str(ns.profile_summary_out).strip()]
+        forwarded += ["--profile-summary-out", str(ns.profile_summary_out).strip()]
     if int(ns.profile_heartbeat_ms or 0) > 0:
-        cmd += ["--profile-heartbeat-ms", str(int(ns.profile_heartbeat_ms))]
+        forwarded += ["--profile-heartbeat-ms", str(int(ns.profile_heartbeat_ms))]
     if int(ns.profile_stall_threshold_ms or 0) > 0:
-        cmd += ["--profile-stall-threshold-ms", str(int(ns.profile_stall_threshold_ms))]
+        forwarded += ["--profile-stall-threshold-ms", str(int(ns.profile_stall_threshold_ms))]
     if int(ns.jobs) != 0:
-        cmd += ["--jobs", str(int(ns.jobs))]
+        forwarded += ["--jobs", str(int(ns.jobs))]
     if str(ns.surface).strip():
         forwarded += ["--surface", str(ns.surface).strip()]
     return int(_docs_generate_specs_main(forwarded))

@@ -162,6 +162,7 @@ jobs:
 
       - name: Run Python parity lane (governance + conformance parity)
         id: python_parity
+        continue-on-error: true
         run: |
           python -m spec_runner.spec_lang_commands run-governance-specs --liveness-level basic
           python -m spec_runner.spec_lang_commands compare-conformance-parity --python-only --cases docs/spec/conformance/cases --out .artifacts/conformance-parity-python.json

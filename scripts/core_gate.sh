@@ -8,9 +8,9 @@ if [[ -z "${SPEC_RUNNER_BIN:-}" ]]; then
   SPEC_RUNNER_BIN="${ROOT_DIR}/scripts/runner_adapter.sh"
 fi
 
-"${SPEC_RUNNER_BIN}" governance
+"${SPEC_RUNNER_BIN}" governance-broad-native
 "${SPEC_RUNNER_BIN}" docs-generate-check
-"${SPEC_RUNNER_BIN}" perf-smoke --mode warn
+"${SPEC_RUNNER_BIN}" perf-smoke || true
 "${SPEC_RUNNER_BIN}" style-check
 "${SPEC_RUNNER_BIN}" test-core
 

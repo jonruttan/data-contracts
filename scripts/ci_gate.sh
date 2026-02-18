@@ -10,6 +10,15 @@ fi
 if [[ -z "${SPEC_RUNNER_IMPL:-}" ]]; then
   SPEC_RUNNER_IMPL="rust"
 fi
+if [[ -z "${SPEC_CI_PYTHON:-}" ]]; then
+  if [[ -n "${VIRTUAL_ENV:-}" && -x "${VIRTUAL_ENV}/bin/python" ]]; then
+    SPEC_CI_PYTHON="${VIRTUAL_ENV}/bin/python"
+  elif [[ -x "${ROOT_DIR}/.venv/bin/python" ]]; then
+    SPEC_CI_PYTHON="${ROOT_DIR}/.venv/bin/python"
+  else
+    SPEC_CI_PYTHON="python3"
+  fi
+fi
 
 collect_changed_paths() {
   local upstream=""
@@ -73,7 +82,7 @@ fi
 
 "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" critical-gate
 
-python3 -m spec_runner.spec_lang_commands check-docs-freshness --strict
+"${SPEC_CI_PYTHON}" -m spec_runner.spec_lang_commands check-docs-freshness --strict
 
 "${SPEC_RUNNER_BIN}" ci-gate-summary \
   --runner-bin "${SPEC_RUNNER_BIN}" \
