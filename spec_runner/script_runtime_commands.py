@@ -10,6 +10,8 @@ import shutil
 import subprocess
 import sys
 import time
+import contextlib
+import io
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -21,6 +23,7 @@ from spec_runner.conformance_parity import (
     run_parity_check,
     run_python_report,
 )
+from spec_runner.docs_generate_specs import main as _docs_generate_specs_main
 
 
 def _write_artifact(path: Path, artifact: dict) -> None:
@@ -131,11 +134,7 @@ def docs_generate_all_main(argv: list[str] | None = None) -> int:
     ap.add_argument("--profile-stall-threshold-ms", type=int, default=0)
     ns = ap.parse_args(argv)
 
-    repo_root = Path(__file__).resolve().parents[1]
-    py = repo_root / ".venv/bin/python"
-    cmd = [
-        str(py if py.exists() else "python3"),
-        "scripts/docs_generate_specs.py",
+    forwarded = [
         "--check" if ns.check else "--build",
         "--report-out",
         str(ns.report_out),
@@ -158,9 +157,8 @@ def docs_generate_all_main(argv: list[str] | None = None) -> int:
     if int(ns.jobs) != 0:
         cmd += ["--jobs", str(int(ns.jobs))]
     if str(ns.surface).strip():
-        cmd += ["--surface", str(ns.surface).strip()]
-    cp = subprocess.run(cmd, cwd=repo_root, check=False)
-    return int(cp.returncode)
+        forwarded += ["--surface", str(ns.surface).strip()]
+    return int(_docs_generate_specs_main(forwarded))
 
 
 def _env_bool(name: str, default: bool) -> bool:
@@ -813,16 +811,13 @@ def _check_governance_family_map(root: Path) -> list[str]:
 
 
 def _run_docs_generate_check(root: Path) -> list[str]:
-    cp = subprocess.run(
-        [sys.executable, "scripts/docs_generate_all.py", "--check"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if cp.returncode == 0:
+    _ = root
+    capture = io.StringIO()
+    with contextlib.redirect_stdout(capture), contextlib.redirect_stderr(capture):
+        code = int(docs_generate_all_main(["--check"]))
+    if code == 0:
         return []
-    out = (cp.stdout + cp.stderr).strip()
+    out = capture.getvalue().strip()
     if out:
         return [f"docs_generate_all --check failed:\n{out}"]
     return ["docs_generate_all --check failed with no output"]
