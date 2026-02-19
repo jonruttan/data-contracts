@@ -25,14 +25,14 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '# PHP Spec Runner Library Export References'
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```

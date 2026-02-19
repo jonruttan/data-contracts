@@ -54,6 +54,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: subject
   steps:
   - id: __export__domain.job.scan_bundle_has_result
     assert:
@@ -68,10 +72,6 @@ contract:
               - var: pattern
         - scanned_files
       - null
-    imports:
-      subject:
-        from: artifact
-        key: subject
 library:
   id: domain.job.core
   module: domain

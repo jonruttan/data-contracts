@@ -14,6 +14,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -33,10 +37,6 @@ contract:
       - std.string.contains:
         - {var: subject}
         - 'defines:'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -58,6 +58,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -77,10 +81,6 @@ contract:
       - std.string.contains:
         - {var: subject}
         - 'defines:'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -101,6 +101,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -110,10 +114,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - /specs/libraries/policy/policy_metrics.spec.md
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file

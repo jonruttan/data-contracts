@@ -17,16 +17,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --doc-out
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-CATALOG-002
@@ -46,16 +46,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-CATALOG-003
@@ -75,16 +75,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --doc-out
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-CATALOG-004
@@ -104,16 +104,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-CATALOG-005
@@ -133,16 +133,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --doc-out
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-CATALOG-006
@@ -162,16 +162,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-CATALOG-007
@@ -191,16 +191,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --doc-out
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-CATALOG-008
@@ -220,16 +220,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-CATALOG-009
@@ -249,16 +249,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --doc-out
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-CATALOG-010
@@ -278,16 +278,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-CATALOG-011
@@ -307,16 +307,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --doc-out
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-CATALOG-012
@@ -336,16 +336,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-CATALOG-013
@@ -365,16 +365,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --schema-doc-out
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-CATALOG-014
@@ -394,16 +394,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-CATALOG-015
@@ -423,16 +423,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --doc-out
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-CATALOG-016
@@ -452,14 +452,14 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```

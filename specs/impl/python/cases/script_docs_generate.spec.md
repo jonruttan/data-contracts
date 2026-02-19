@@ -17,16 +17,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --surface
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-002
@@ -48,16 +48,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.logic.eq:
       - 1
       - 1
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-003
@@ -77,16 +77,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --cases
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-004
@@ -108,16 +108,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unknown surface_id
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-005
@@ -137,16 +137,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --write
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-006
@@ -166,16 +166,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - formatting is canonical
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-007
@@ -202,6 +202,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
@@ -214,10 +218,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - wrote .artifacts/docs-build-reference-graph.json
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-008
@@ -237,14 +237,14 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```

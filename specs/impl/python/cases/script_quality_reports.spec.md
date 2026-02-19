@@ -18,16 +18,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - wrote .artifacts/objective-scorecard-script-case.json
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-QUALITY-002
@@ -48,16 +48,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - invalid choice
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-QUALITY-003
@@ -79,16 +79,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - wrote .artifacts/spec-lang-adoption-script-case.json
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-QUALITY-004
@@ -110,16 +110,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - unsupported quality report
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-QUALITY-005
@@ -142,16 +142,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - wrote .artifacts/schema-registry-script-case.json
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-QUALITY-006
@@ -172,14 +172,14 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - invalid choice
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```

@@ -18,16 +18,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
   - id: assert_2
     assert:
       std.type.json_type:
@@ -66,16 +66,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 harness:
   check:
     profile: api.http
@@ -104,16 +104,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 harness:
   check:
     profile: api.http
@@ -141,16 +141,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: body_json
   steps:
   - id: assert_1
     assert:
       std.object.has_key:
       - {var: subject}
       - id
-    imports:
-      subject:
-        from: artifact
-        key: body_json
 harness:
   check:
     profile: api.http
@@ -179,16 +179,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 harness:
   check:
     profile: api.http
@@ -215,16 +215,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: body_text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - abc-123
-    imports:
-      subject:
-        from: artifact
-        key: body_text
 harness:
   check:
     profile: api.http
@@ -251,6 +251,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: body_json
   steps:
   - id: assert_1
     assert:
@@ -259,10 +263,6 @@ contract:
         - {var: subject}
         - deleted
       - true
-    imports:
-      subject:
-        from: artifact
-        key: body_json
 harness:
   check:
     profile: api.http
@@ -289,16 +289,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 harness:
   check:
     profile: api.http
@@ -325,16 +325,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 harness:
   check:
     profile: api.http
@@ -363,16 +363,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 harness:
   check:
     profile: api.http
@@ -401,16 +401,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 harness:
   check:
     profile: api.http
@@ -458,16 +458,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
   - id: assert_2
     assert:
       std.logic.eq:
@@ -514,6 +514,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: context_json
   steps:
   - id: assert_1
     assert:
@@ -531,10 +535,6 @@ contract:
           - meta
         - oauth_token_source
       - env_ref
-    imports:
-      subject:
-        from: artifact
-        key: context_json
 ```
 
 ## SRCONF-API-014
@@ -570,16 +570,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 ```
 
 ## SRCONF-API-015
@@ -616,16 +616,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 ```
 
 ## SRCONF-API-016
@@ -663,16 +663,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 ```
 
 ## SRCONF-API-017
@@ -714,14 +714,14 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: status
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
-    imports:
-      subject:
-        from: artifact
-        key: status
 ```

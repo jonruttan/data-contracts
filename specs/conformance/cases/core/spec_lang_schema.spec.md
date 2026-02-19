@@ -13,6 +13,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -30,10 +34,6 @@ contract:
           - tags
         - list
       - true
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -55,6 +55,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -74,10 +78,6 @@ contract:
               - '{"id":"x"}'
             - id
           - 1
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file

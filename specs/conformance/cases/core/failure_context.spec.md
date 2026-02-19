@@ -23,16 +23,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.regex_match:
       - {var: subject}
       - \A\Z
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file

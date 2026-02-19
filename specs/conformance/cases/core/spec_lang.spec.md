@@ -26,6 +26,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -34,10 +38,6 @@ contract:
         - var: conf.pass_when_text_contains
         - var: subject
         - 'version: 1'
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```
 
 ## SRCONF-EXPR-002
@@ -66,6 +66,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -77,10 +81,6 @@ contract:
       - std.string.starts_with:
         - {var: subject}
         - '#'
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```
 
 ## SRCONF-EXPR-003
@@ -103,6 +103,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -132,10 +136,6 @@ contract:
             - 1500
             - 0
           - 1500
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -161,16 +161,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.starts_with:
       - {var: subject}
       - NOPE_PREFIX
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -196,15 +196,15 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       lit:
         bad: shape
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -230,16 +230,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       lit:
         unknown_symbol:
         - 1
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -272,6 +272,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -294,10 +298,6 @@ contract:
         - call:
           - var: loop
           - 1000
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```
 
 ## SRCONF-EXPR-008
@@ -327,6 +327,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -340,10 +344,6 @@ contract:
         - var: conf.pass_when_text_contains
         - var: subject
         - 'version: 1'
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```
 
 ## SRCONF-EXPR-009
@@ -369,6 +369,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -380,10 +384,6 @@ contract:
           - '[{"k":2},{"k":4},{"k":1}]'
       - std.json.parse:
         - '[{"k":1},{"k":2}]'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -412,6 +412,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -423,10 +427,6 @@ contract:
           - '[{"k":2},{"k":4},{"k":1}]'
       - std.json.parse:
         - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -455,6 +455,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -475,10 +479,6 @@ contract:
             - '[{"k":2},{"k":4}]'
         - std.json.parse:
           - '[{"k":1},{"k":3},{"k":4}]'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -507,6 +507,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -531,10 +535,6 @@ contract:
           - '[{"k":1},{"k":2},{"k":3}]'
         - std.json.parse:
           - '{"k":2}'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -563,6 +563,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -585,10 +589,6 @@ contract:
             - '[1,2,3,4,5]'
         - std.json.parse:
           - '[4,5]'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -618,6 +618,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -680,10 +684,6 @@ contract:
             - '[{"k":1},{"k":1},{"k":2}]'
         - std.json.parse:
           - '[{"k":1},{"k":2}]'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -712,6 +712,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -758,10 +762,6 @@ contract:
             - '[1,2,3]'
         - std.json.parse:
           - '[3]'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -791,6 +791,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -801,10 +805,6 @@ contract:
           - 2
         - 3
       - 5
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -836,6 +836,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -846,10 +850,6 @@ contract:
           - 1
         - 2
         - 3
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -880,6 +880,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -887,10 +891,6 @@ contract:
       - not-a-list
       - std.json.parse:
         - '[]'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -919,6 +919,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -1010,10 +1014,6 @@ contract:
       - std.type.is_dict:
         - std.json.parse:
           - '{"a":1}'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -1042,6 +1042,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -1113,10 +1117,6 @@ contract:
           - '{"a":1}'
         - std.json.parse:
           - '{"a":1,"b":2}'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -1145,6 +1145,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -1194,10 +1198,6 @@ contract:
           - 3
           - '0'
         - '700'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -1227,6 +1227,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -1281,10 +1285,6 @@ contract:
         - std.logic.xor:
           - true
           - true
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -1314,6 +1314,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -1463,10 +1467,6 @@ contract:
           - std.json.parse:
             - '[4,2,8]'
         - 8
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -1498,15 +1498,15 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.logic.compare:
       - 1
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file

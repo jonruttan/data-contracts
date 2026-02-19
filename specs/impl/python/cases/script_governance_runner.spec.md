@@ -17,16 +17,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - --check-prefix
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-SCRIPT-GOV-002
@@ -49,16 +49,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - case-file-pattern
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-GOV-003
@@ -81,16 +81,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - selected zero cases
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPY-SCRIPT-GOV-004
@@ -107,6 +107,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -128,8 +132,4 @@ contract:
     - std.string.contains:
       - {var: subject}
       - docs.docgen_quality_score_threshold
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```

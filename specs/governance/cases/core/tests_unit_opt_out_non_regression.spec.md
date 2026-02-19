@@ -22,6 +22,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -30,8 +34,4 @@ contract:
         - {var: subject}
         - check_id
       - tests.unit_opt_out_non_regression
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```

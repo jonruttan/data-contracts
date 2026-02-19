@@ -15,16 +15,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - Spec-Test Schema (v1)
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -45,16 +45,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       lit:
         unknown_symbol_for_schema_case:
         - var: subject
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file

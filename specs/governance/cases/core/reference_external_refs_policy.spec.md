@@ -21,6 +21,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -29,8 +33,4 @@ contract:
         - {var: subject}
         - check_id
       - reference.external_refs_policy
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```

@@ -15,6 +15,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -27,10 +31,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - Generated Registry Snapshot
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file

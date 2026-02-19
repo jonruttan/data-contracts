@@ -16,16 +16,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - 'OK: docs lint passed'
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-DOCSLINT-002
@@ -46,14 +46,14 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - missing reference manifest
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```

@@ -22,15 +22,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: violation_count
   steps:
   - id: assert_1
     assert:
       std.logic.eq:
       - {var: subject}
       - 0
-    imports:
-      subject:
-        from: artifact
-        key: violation_count
 ```
 

@@ -72,14 +72,14 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '"ok": true'
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```

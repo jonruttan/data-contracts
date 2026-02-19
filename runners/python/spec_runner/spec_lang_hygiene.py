@@ -395,11 +395,39 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
                 changed = True
             normalized_steps.append(step)
 
+        # Canonical rule: step-level imports are overrides. If contract imports are
+        # absent, seed them from the first observed step imports per symbol.
+        if not contract_imports:
+            for step in normalized_steps:
+                raw_step_imports = step.get("imports")
+                if not isinstance(raw_step_imports, dict):
+                    continue
+                for name, spec in raw_step_imports.items():
+                    if name not in contract_imports:
+                        contract_imports[name] = spec
+                        changed = True
+        if contract_imports:
+            for step in normalized_steps:
+                raw_step_imports = step.get("imports")
+                if not isinstance(raw_step_imports, dict):
+                    continue
+                reduced = {
+                    name: spec
+                    for name, spec in raw_step_imports.items()
+                    if name not in contract_imports or contract_imports.get(name) != spec
+                }
+                if reduced != raw_step_imports:
+                    changed = True
+                if reduced:
+                    step["imports"] = reduced
+                else:
+                    step.pop("imports", None)
+
         if "class" not in defaults:
             defaults["class"] = "MUST"
         out: dict[str, Any] = {"defaults": defaults, "steps": normalized_steps}
         if contract_imports:
-            out["imports"] = contract_imports
+            out = {"defaults": defaults, "imports": contract_imports, "steps": normalized_steps}
         return out, True or changed
 
     if isinstance(node, list):
@@ -1435,6 +1463,30 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
             message="contract must be a mapping with defaults and steps",
         )
         return
+    contract_imports_raw = contract.get("imports")
+    if isinstance(contract_imports_raw, dict) and not cast(dict[str, Any], contract_imports_raw):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="contract.imports",
+            code="SLINT092",
+            message="contract.imports must be omitted when empty",
+            fixable=True,
+        )
+    steps = contract.get("steps")
+    if isinstance(steps, list):
+        has_step_imports = any(isinstance(step, dict) and isinstance(step.get("imports"), dict) for step in steps)
+        if has_step_imports and not isinstance(contract_imports_raw, dict):
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field="contract.imports",
+                code="SLINT093",
+                message="contract.imports is required when contract.steps[].imports is used",
+                fixable=True,
+            )
     defaults = contract.get("defaults")
     if defaults is not None and not isinstance(defaults, dict):
         _append_issue(
@@ -1489,7 +1541,6 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
                 message="contract.defaults target/on keys are forbidden; use contract.imports",
                 fixable=True,
             )
-    steps = contract.get("steps")
     if not isinstance(steps, list):
         _append_issue(
             issues,

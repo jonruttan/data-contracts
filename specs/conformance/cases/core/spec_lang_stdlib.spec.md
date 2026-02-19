@@ -13,6 +13,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -36,10 +40,6 @@ contract:
         - 3
         - 3
       - 0
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -60,6 +60,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -83,10 +87,6 @@ contract:
           - a
         - dict
       - true
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -107,6 +107,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -141,10 +145,6 @@ contract:
         - a/b.txt
         - ''
       - a/b
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -165,6 +165,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -213,10 +217,6 @@ contract:
         - missing
         - fallback
       - fallback
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -237,6 +237,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -288,10 +292,6 @@ contract:
           - b
           - 0
       - true
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -313,6 +313,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -322,10 +326,6 @@ contract:
             a: 1
         - a
       - 1
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -346,6 +346,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -376,10 +380,6 @@ contract:
           - specs/current.md
         - specs/*.md
       - true
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -401,6 +401,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -411,10 +415,6 @@ contract:
           - specs/current.md
         - specs/*.md
       - true
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -435,6 +435,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -460,10 +464,6 @@ contract:
           - specs/current.md
           - specs/schema/schema_v1.md
       - specs
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -485,6 +485,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -494,10 +498,6 @@ contract:
           - /a/b
           - 7
       - /a
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -518,6 +518,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -550,10 +554,6 @@ contract:
         - /a/b
         - /a/c
       - false
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -575,6 +575,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -582,10 +586,6 @@ contract:
       - ops.fs.path.parents:
         - 7
       - lit: []
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -606,6 +606,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -629,10 +633,6 @@ contract:
         - /a/b
         - /a/c
         - /b/z
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -654,6 +654,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -664,10 +668,6 @@ contract:
           - 7
       - lit:
         - /a/b
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file

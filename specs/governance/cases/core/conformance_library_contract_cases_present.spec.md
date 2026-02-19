@@ -28,6 +28,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -36,8 +40,4 @@ contract:
         - {var: subject}
         - check_id
       - conformance.library_contract_cases_present
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```

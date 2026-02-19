@@ -1256,6 +1256,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -1264,8 +1268,4 @@ contract:
         - {var: path.normalize_slashes}
         - a\\b\\c.txt
       - a/b/c.txt
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```

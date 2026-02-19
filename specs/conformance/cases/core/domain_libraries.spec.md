@@ -38,6 +38,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -190,10 +194,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - 'type: spec.export'
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```
 
 ## SRCONF-DOMAIN-LIB-002
@@ -267,6 +267,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -430,8 +434,4 @@ contract:
     - std.string.contains:
       - {var: subject}
       - /specs/libraries/domain/python_core.spec.md
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```

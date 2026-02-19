@@ -28,15 +28,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-002
@@ -67,15 +67,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-003
@@ -108,15 +108,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-004
@@ -147,15 +147,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-005
@@ -187,15 +187,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-006
@@ -227,15 +227,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-007
@@ -267,15 +267,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-008
@@ -307,15 +307,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-009
@@ -347,15 +347,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-010
@@ -387,15 +387,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-011
@@ -427,15 +427,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-012
@@ -466,15 +466,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-013
@@ -505,15 +505,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-014
@@ -545,15 +545,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-015
@@ -585,15 +585,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-016
@@ -625,15 +625,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-017
@@ -665,15 +665,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-018
@@ -705,15 +705,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-019
@@ -745,15 +745,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-020
@@ -785,15 +785,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-021
@@ -825,15 +825,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-022
@@ -865,15 +865,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-023
@@ -905,15 +905,15 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```
 
 ## SRDOCGEN-024
@@ -945,13 +945,13 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: dispatch_main
     assert:
       ops.job.dispatch:
       - main
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 ```

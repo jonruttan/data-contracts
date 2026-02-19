@@ -22,16 +22,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - port-shell-ok
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-PORT-002
@@ -59,16 +59,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - x:true y:7
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-PORT-003
@@ -93,14 +93,14 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout_path
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - path_target.txt
-    imports:
-      subject:
-        from: artifact
-        key: stdout_path
 ```

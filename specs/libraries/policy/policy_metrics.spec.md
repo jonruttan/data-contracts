@@ -202,6 +202,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -221,8 +225,4 @@ contract:
       - current
       - baseline
       - 0
-    imports:
-      subject:
-        from: artifact
-        key: text
 ```

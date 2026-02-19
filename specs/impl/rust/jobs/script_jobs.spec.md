@@ -39,6 +39,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -49,10 +53,6 @@ contract:
         - {var: subject}
         - scanned_files
       - null
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -98,6 +98,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -108,10 +112,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -155,6 +155,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -165,10 +169,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -214,6 +214,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -224,10 +228,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -273,6 +273,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -283,10 +287,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -329,6 +329,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -339,10 +343,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -386,6 +386,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -396,10 +400,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -443,6 +443,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -453,10 +457,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -501,6 +501,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -511,10 +515,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -559,6 +559,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -569,10 +573,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -617,6 +617,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: summary_json
   steps:
   - id: assert_1
     assert:
@@ -627,10 +631,6 @@ contract:
         - {var: subject}
         - ok
       - true
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
 when:
   fail:
   - ops.job.dispatch:

@@ -16,6 +16,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
@@ -25,10 +29,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - '"summary"'
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-STDLIB-REP-002
@@ -49,6 +49,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
@@ -58,8 +62,4 @@ contract:
     - std.string.contains:
       - {var: subject}
       - '- profile symbols:'
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```

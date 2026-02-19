@@ -25,6 +25,10 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
@@ -34,10 +38,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - ok
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-AH-002
@@ -67,6 +67,10 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
@@ -76,10 +80,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - ok
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-AH-003
@@ -108,16 +108,16 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - ok
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-AH-004
@@ -143,6 +143,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
@@ -152,10 +156,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - ok
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-AH-005
@@ -183,6 +183,10 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
@@ -192,8 +196,4 @@ contract:
     - std.string.contains:
       - {var: subject}
       - ok
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```

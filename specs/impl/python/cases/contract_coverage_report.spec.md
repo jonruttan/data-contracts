@@ -16,6 +16,10 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
@@ -28,10 +32,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - '"rules"'
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-CONTRACT-REP-002
@@ -52,14 +52,14 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - wrote .artifacts/contract-coverage-impl-case.json
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```

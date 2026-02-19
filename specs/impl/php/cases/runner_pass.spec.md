@@ -14,16 +14,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - '# PHP Spec Runner Pass Cases'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -44,16 +44,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - fixture-content
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -75,6 +75,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     class: MAY
@@ -85,10 +89,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - fixture-content
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -118,16 +118,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - hello-runner
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-RUN-005
@@ -154,16 +154,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - 'on'
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-RUN-006
@@ -188,16 +188,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - fallback-ok
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-RUN-007
@@ -222,6 +222,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
@@ -229,10 +233,6 @@ contract:
       - std.json.parse:
         - {var: subject}
       - list
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-RUN-008
@@ -257,16 +257,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - runner-err
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```
 
 ## SRPHP-RUN-009
@@ -291,16 +291,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout_path
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - path_target.txt
-    imports:
-      subject:
-        from: artifact
-        key: stdout_path
   - id: assert_2
     assert:
       std.string.contains:

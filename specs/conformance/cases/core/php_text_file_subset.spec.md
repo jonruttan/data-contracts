@@ -14,16 +14,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - 'version: 1'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -44,16 +44,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.regex_match:
       - {var: subject}
       - \A\Z
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -74,16 +74,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - 'version: 1'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -104,6 +104,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     class: MAY
@@ -114,10 +118,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - 'version: 1'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -138,6 +138,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     class: MAY
@@ -148,10 +152,6 @@ contract:
     - std.string.regex_match:
       - {var: subject}
       - (?!)
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -172,6 +172,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     class: MUST_NOT
@@ -182,10 +186,6 @@ contract:
     - std.string.regex_match:
       - {var: subject}
       - (?!)
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -206,6 +206,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     class: MUST_NOT
@@ -216,10 +220,6 @@ contract:
     - std.string.regex_match:
       - {var: subject}
       - (?!)
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -240,6 +240,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     class: MAY
@@ -250,20 +254,12 @@ contract:
     - std.string.contains:
       - {var: subject}
       - 'version: 1'
-    imports:
-      subject:
-        from: artifact
-        key: text
   - id: assert_2
     class: MUST_NOT
     assert:
       std.string.regex_match:
       - {var: subject}
       - \A\Z
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -287,16 +283,16 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.regex_match:
       - {var: subject}
       - '(?<=version: )1'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -320,16 +316,16 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - ''
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -353,16 +349,16 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.regex_match:
       - {var: subject}
       - .*
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -389,6 +385,10 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -398,10 +398,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - 'version: 1'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -425,6 +421,10 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     class: MAY
@@ -435,10 +435,6 @@ contract:
     - std.string.contains:
       - {var: subject}
       - 'version: 2'
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -461,16 +457,16 @@ assert_health:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - ''
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file

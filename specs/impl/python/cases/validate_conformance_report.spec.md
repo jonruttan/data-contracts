@@ -17,16 +17,16 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - 'OK: valid conformance report'
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPY-VALREP-002
@@ -46,14 +46,14 @@ harness:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stderr
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - 'ERROR: report.version must equal 1'
-    imports:
-      subject:
-        from: artifact
-        key: stderr
 ```

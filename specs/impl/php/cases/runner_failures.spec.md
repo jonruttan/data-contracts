@@ -17,16 +17,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - x
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -50,16 +50,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - outside
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
@@ -90,16 +90,16 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       std.string.contains:
       - {var: subject}
       - x
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-RUN-F004
@@ -126,15 +126,15 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: stdout
   steps:
   - id: assert_1
     assert:
       not.a.real.symbol:
       - {var: subject}
-    imports:
-      subject:
-        from: artifact
-        key: stdout
 ```
 
 ## SRPHP-RUN-F005
@@ -227,6 +227,10 @@ expect:
 contract:
   defaults:
     class: MUST
+  imports:
+    subject:
+      from: artifact
+      key: text
   steps:
   - id: assert_1
     assert:
@@ -234,10 +238,6 @@ contract:
         target: text
         contain:
         - fixture-content
-    imports:
-      subject:
-        from: artifact
-        key: text
 harness:
   check:
     profile: text.file
