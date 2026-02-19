@@ -5,6 +5,7 @@ from typing import Any, Literal, cast
 
 from spec_runner.internal_model import GroupNode, InternalAssertNode, InternalSpecCase, PredicateLeaf
 from spec_runner.schema_validator import validate_case_shape
+from spec_runner.spec_domain import normalize_case_domain, normalize_export_symbol
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 
 _LIBRARY_DOC_ALLOWED_KEYS = {
@@ -59,6 +60,11 @@ def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -
 def _validate_contract_export_docs(raw_case: dict[str, Any]) -> list[str]:
     issues: list[str] = []
     case_id = str(raw_case.get("id", "")).strip() or "<unknown>"
+    try:
+        case_domain = normalize_case_domain(raw_case.get("domain"))
+    except (TypeError, ValueError) as exc:
+        issues.append(f"case {case_id}: {exc}")
+        case_domain = None
     root_doc = raw_case.get("doc")
     if not isinstance(root_doc, dict):
         issues.append(f"case {case_id}: contract.export requires root doc mapping")
@@ -127,6 +133,30 @@ def _validate_contract_export_docs(raw_case: dict[str, Any]) -> list[str]:
         if not isinstance(raw_export, dict):
             issues.append(f"{where} must be mapping")
             continue
+        raw_as = str(raw_export.get("as", "")).strip()
+        if not raw_as:
+            issues.append(f"{where}.as must be non-empty")
+            canonical_as = ""
+        else:
+            try:
+                canonical_as = normalize_export_symbol(case_domain, raw_as)
+            except ValueError as exc:
+                issues.append(f"{where}: {exc}")
+                canonical_as = ""
+        if canonical_as:
+            for prior_idx in range(idx):
+                prior = exports[prior_idx]
+                if not isinstance(prior, dict):
+                    continue
+                prior_as = str(prior.get("as", "")).strip()
+                if not prior_as:
+                    continue
+                if normalize_export_symbol(case_domain, prior_as) == canonical_as:
+                    issues.append(
+                        f"{where}: canonical export symbol collision "
+                        f"(raw_as={raw_as}, domain={case_domain or '<none>'}, canonical={canonical_as})"
+                    )
+                    break
         params = raw_export.get("params")
         if not isinstance(params, list) or any(not isinstance(x, str) or not str(x).strip() for x in params):
             issues.append(f"{where}.params must be list of non-empty strings")

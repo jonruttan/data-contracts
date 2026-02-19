@@ -18,6 +18,10 @@ fields:
     type: string
     required: false
     since: v1
+  domain:
+    type: string
+    required: false
+    since: v1
   harness:
     type: mapping
     required: false

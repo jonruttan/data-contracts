@@ -39,6 +39,7 @@ from spec_runner.spec_lang import (
 )
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
+from spec_runner.spec_domain import normalize_case_domain, normalize_export_symbol
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.schema_registry import compile_registry
 from spec_runner.ops_namespace import validate_ops_symbol
@@ -154,6 +155,7 @@ _COMMON_CASE_TOP_LEVEL_KEYS = {
     "type",
     "title",
     "purpose",
+    "domain",
     "assert",
     "contract",
     "when",
@@ -3157,7 +3159,7 @@ def _rel_path(root: Path, path: Path) -> str:
         return str(path)
 
 
-def _expand_chain_step_exports(raw_exports: object) -> tuple[dict[str, dict], list[str]]:
+def _expand_chain_step_exports(raw_exports: object, *, domain: str | None = None) -> tuple[dict[str, dict], list[str]]:
     if raw_exports is None:
         return {}, []
     if not isinstance(raw_exports, list):
@@ -3174,12 +3176,17 @@ def _expand_chain_step_exports(raw_exports: object) -> tuple[dict[str, dict], li
         unknown = sorted(str(k) for k in raw_entry.keys() if str(k) not in allowed)
         if unknown:
             errors.append(f"exports[{idx}] entry has unsupported keys: {', '.join(unknown)}")
-        export_name = str(raw_entry.get("as", "")).strip()
-        if not export_name:
+        raw_export_name = str(raw_entry.get("as", "")).strip()
+        if not raw_export_name:
             errors.append(f"exports[{idx}] entry requires non-empty as")
             continue
+        export_name = normalize_export_symbol(domain, raw_export_name)
         if export_name in expanded:
-            errors.append(f"exports duplicate key {export_name}")
+            raw_domain = domain if domain is not None else "<none>"
+            errors.append(
+                "exports duplicate key after domain prefix "
+                f"(raw_as={raw_export_name}, domain={raw_domain}, canonical={export_name})"
+            )
             continue
         from_source = str(raw_entry.get("from", "")).strip()
         if not from_source:
@@ -3224,11 +3231,19 @@ def _producer_step_exports(
         return set(), resolve_errors
 
     for _source_doc, source_case in loaded:
+        try:
+            source_domain = normalize_case_domain(source_case.get("domain"))
+        except (TypeError, ValueError) as exc:
+            errors.append(f"producer domain invalid ({exc})")
+            source_domain = None
         source_harness = source_case.get("harness")
         if not isinstance(source_harness, dict):
             source_harness = {}
         if "exports" in source_harness:
-            expanded, parse_errors = _expand_chain_step_exports(source_harness.get("exports"))
+            expanded, parse_errors = _expand_chain_step_exports(
+                source_harness.get("exports"),
+                domain=source_domain,
+            )
             if parse_errors:
                 for err in parse_errors:
                     errors.append(f"producer harness.exports {err}")
@@ -3849,10 +3864,15 @@ def _scan_runtime_harness_exports_schema_valid(root: Path, *, harness: dict | No
     violations: list[str] = []
     for doc_path, case, harness_map, _chain in _iter_cases_with_chain(root):
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        try:
+            case_domain = normalize_case_domain(case.get("domain"))
+        except (TypeError, ValueError) as exc:
+            violations.append(f"{doc_path.relative_to(root)}: case {case_id} invalid domain ({exc})")
+            case_domain = None
         raw_exports = harness_map.get("exports")
         if raw_exports is None:
             continue
-        _expanded, errors = _expand_chain_step_exports(raw_exports)
+        _expanded, errors = _expand_chain_step_exports(raw_exports, domain=case_domain)
         for err in errors:
             violations.append(f"{doc_path.relative_to(root)}: case {case_id} harness.exports {err}")
     return violations
@@ -5518,6 +5538,73 @@ def _scan_docs_spec_case_catalog_sync(root: Path, *, harness: dict | None = None
         "spec_runner.spec_lang_commands",
         ["generate-spec-case-catalog", "--check"],
     )
+
+
+def _scan_docs_spec_domain_grouping_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    check_errors = _run_python_module_check(
+        root,
+        "spec_runner.spec_lang_commands",
+        ["generate-spec-case-catalog", "--check"],
+    )
+    if check_errors:
+        return check_errors
+    catalog_path = root / ".artifacts/spec-case-catalog.json"
+    if not catalog_path.exists():
+        return [".artifacts/spec-case-catalog.json: missing generated artifact for domain grouping"]
+    try:
+        raw = json.loads(catalog_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [f".artifacts/spec-case-catalog.json:{exc.lineno}: invalid JSON ({exc.msg})"]
+    if not isinstance(raw, dict):
+        return [".artifacts/spec-case-catalog.json: expected object root"]
+    domains = raw.get("domains")
+    if not isinstance(domains, list):
+        return [".artifacts/spec-case-catalog.json: missing domains summary list"]
+    rows = raw.get("cases")
+    if not isinstance(rows, list):
+        return [".artifacts/spec-case-catalog.json: missing cases list"]
+    violations: list[str] = []
+    seen_domain_rows: dict[str, int] = {}
+    prior_key: tuple[str, str, str] | None = None
+    for idx, row in enumerate(rows):
+        if not isinstance(row, dict):
+            violations.append(f".artifacts/spec-case-catalog.json: cases[{idx}] must be object")
+            continue
+        domain = str(row.get("domain", "")).strip()
+        if not domain:
+            violations.append(f".artifacts/spec-case-catalog.json: cases[{idx}].domain must be non-empty")
+            continue
+        case_type = str(row.get("type", "")).strip()
+        case_id = str(row.get("case_id", "")).strip()
+        key = (domain, case_type, case_id)
+        if prior_key is not None and key < prior_key:
+            violations.append(
+                ".artifacts/spec-case-catalog.json: cases are not sorted by (domain, type, case_id)"
+            )
+            break
+        prior_key = key
+        seen_domain_rows[domain] = seen_domain_rows.get(domain, 0) + 1
+    prior_domain = ""
+    for idx, item in enumerate(domains):
+        if not isinstance(item, dict):
+            violations.append(f".artifacts/spec-case-catalog.json: domains[{idx}] must be object")
+            continue
+        domain = str(item.get("domain", "")).strip()
+        if not domain:
+            violations.append(f".artifacts/spec-case-catalog.json: domains[{idx}].domain must be non-empty")
+            continue
+        if prior_domain and domain < prior_domain:
+            violations.append(".artifacts/spec-case-catalog.json: domains summary must be sorted by domain")
+            break
+        prior_domain = domain
+        expected_count = seen_domain_rows.get(domain, 0)
+        case_count = item.get("case_count")
+        if not isinstance(case_count, int) or case_count != expected_count:
+            violations.append(
+                f".artifacts/spec-case-catalog.json: domains[{idx}] case_count mismatch for domain {domain}"
+            )
+    return violations
 
 
 def _scan_docs_generation_spec_cases_present(root: Path, *, harness: dict | None = None) -> list[str]:
@@ -10096,6 +10183,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.library_symbol_catalog_sync": _scan_docs_library_symbol_catalog_sync,
     "docs.spec_case_doc_metadata_complete": _scan_docs_spec_case_doc_metadata_complete,
     "docs.spec_case_catalog_sync": _scan_docs_spec_case_catalog_sync,
+    "docs.spec_domain_grouping_sync": _scan_docs_spec_domain_grouping_sync,
     "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
     "spec.portability_non_regression": _scan_spec_portability_non_regression,
     "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,

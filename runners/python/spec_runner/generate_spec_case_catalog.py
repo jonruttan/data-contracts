@@ -10,6 +10,7 @@ from typing import Any
 from spec_runner.codecs import load_external_cases
 from spec_runner.docs_generators import parse_generated_block, replace_generated_block, write_json
 from spec_runner.docs_template_engine import render_moustache
+from spec_runner.spec_domain import normalize_case_domain
 
 _CASE_DOC_ALLOWED_KEYS = {
     "summary",
@@ -39,6 +40,14 @@ def _as_non_empty_string(value: Any, *, field: str, issues: list[str], where: st
 def _anchor_for(case_id: str) -> str:
     slug = re.sub(r"[^a-z0-9_]+", "_", case_id.lower()).strip("_")
     return f"case-{slug}" if slug else "case"
+
+
+def _domain_label(raw: object, *, where: str, issues: list[str]) -> str:
+    try:
+        return normalize_case_domain(raw) or "unscoped"
+    except (TypeError, ValueError):
+        issues.append(f"{where}: domain must be a non-empty string when provided")
+        return "unscoped"
 
 
 def _validate_case_doc(raw_doc: Any, *, where: str, issues: list[str], required: bool) -> dict[str, Any] | None:
@@ -128,6 +137,7 @@ def _build_payload(repo_root: Path, *, specs_root: Path) -> dict[str, Any]:
             {
                 "case_id": case_id,
                 "type": case_type,
+                "domain": _domain_label(case.get("domain"), where=where, issues=issues),
                 "title": str(case.get("title", "")).strip(),
                 "source_doc": rel,
                 "anchor": _anchor_for(case_id),
@@ -144,7 +154,29 @@ def _build_payload(repo_root: Path, *, specs_root: Path) -> dict[str, Any]:
     if issues:
         raise ValueError("\n".join(issues[:200]))
 
-    rows_sorted = sorted(rows, key=lambda r: (str(r.get("type", "")), str(r.get("case_id", ""))))
+    rows_sorted = sorted(
+        rows,
+        key=lambda r: (
+            str(r.get("domain", "")),
+            str(r.get("type", "")),
+            str(r.get("case_id", "")),
+        ),
+    )
+    domain_counts: dict[str, int] = {}
+    domain_types: dict[str, set[str]] = {}
+    for row in rows_sorted:
+        domain = str(row.get("domain", "unscoped")).strip() or "unscoped"
+        domain_counts[domain] = domain_counts.get(domain, 0) + 1
+        domain_types.setdefault(domain, set()).add(str(row.get("type", "")).strip())
+    domain_summary = [
+        {
+            "domain": d,
+            "case_count": domain_counts[d],
+            "types": sorted(x for x in domain_types.get(d, set()) if x),
+            "anchor": _anchor_for(f"domain-{d}"),
+        }
+        for d in sorted(domain_counts)
+    ]
     type_counts: dict[str, int] = {}
     for row in rows_sorted:
         t = str(row.get("type", ""))
@@ -158,8 +190,10 @@ def _build_payload(repo_root: Path, *, specs_root: Path) -> dict[str, Any]:
         "summary": {
             "case_count": len(rows_sorted),
             "type_count": len(type_summary),
+            "domain_count": len(domain_summary),
             "source_root": "/" + specs_root.resolve().relative_to(repo_root.resolve()).as_posix(),
         },
+        "domains": domain_summary,
         "types": type_summary,
         "cases": rows_sorted,
     }

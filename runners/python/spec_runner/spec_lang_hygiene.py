@@ -7,6 +7,7 @@ from typing import Any
 import yaml
 
 from spec_runner.codecs import load_external_cases
+from spec_runner.spec_domain import normalize_case_domain, normalize_export_symbol
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 
 _GROUP_KEYS = {"MUST", "MAY", "MUST_NOT"}
@@ -863,6 +864,10 @@ def _lint_library_export_docs(
 ) -> None:
     if str(case.get("type", "")).strip() != "contract.export":
         return
+    try:
+        case_domain: str | None = normalize_case_domain(case.get("domain"))
+    except (TypeError, ValueError):
+        case_domain = None
     library = case.get("library")
     if not isinstance(library, dict):
         _append_issue(
@@ -907,6 +912,7 @@ def _lint_library_export_docs(
             message="contract.export requires non-empty harness.exports list",
         )
         return
+    canonical_symbols: dict[str, tuple[int, str]] = {}
     for idx, exp in enumerate(exports):
         efield = f"harness.exports[{idx}]"
         if not isinstance(exp, dict):
@@ -919,6 +925,26 @@ def _lint_library_export_docs(
                 message="harness.exports entry must be mapping",
             )
             continue
+        raw_as = str(exp.get("as", "")).strip()
+        if raw_as:
+            canonical = normalize_export_symbol(case_domain, raw_as)
+            prior = canonical_symbols.get(canonical)
+            if prior is not None:
+                prior_idx, prior_raw = prior
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"{efield}.as",
+                    code="SLINT065",
+                    message=(
+                        "export symbol collides after domain prefixing "
+                        f"(domain={case_domain or '<none>'}, raw_as={raw_as}, canonical={canonical}, "
+                        f"prior=harness.exports[{prior_idx}].as={prior_raw})"
+                    ),
+                )
+            else:
+                canonical_symbols[canonical] = (idx, raw_as)
         params = exp.get("params")
         export_params: list[str] = []
         if not isinstance(params, list) or any(not isinstance(x, str) or not str(x).strip() for x in params):
@@ -1115,6 +1141,17 @@ def _lint_case_doc(
     case_id: str,
 ) -> None:
     case_type = str(case.get("type", "")).strip()
+    try:
+        normalize_case_domain(case.get("domain"))
+    except (TypeError, ValueError):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="domain",
+            code="SLINT064",
+            message="domain must be a non-empty string when provided",
+        )
     raw_doc = case.get("doc")
     if case_type == "contract.export" and not isinstance(raw_doc, dict):
         _append_issue(

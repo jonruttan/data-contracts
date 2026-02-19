@@ -8,12 +8,17 @@ Generated API-reference-first documentation for case root doc metadata.
 
 - case_count: 88
 - type_count: 1
+- domain_count: 1
 - source_root: `/specs`
 
 
-### Type `contract.export` {#case-contract_export}
+### Domain `unscoped` {#case-domain_unscoped}
 
 - case_count: 88
+- types:
+
+  - `contract.export`
+
 
 
 
@@ -22,6 +27,7 @@ Generated API-reference-first documentation for case root doc metadata.
 
 ### `BAD-EXPORT-CLASS` {#case-bad_export_class}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -47,6 +53,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `BAD-EXPORT-PATH` {#case-bad_export_path}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -72,6 +79,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-CONF-ASSERT-001` {#case-lib_conf_assert_001}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: reusable conformance assertion helper functions
 - Audience: `spec-authors`
@@ -97,6 +105,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-ARTIFACT-001-001-DOMAIN-ARTIFACT-WRITE-YAML` {#case-lib_domain_artifact_001_001_domain_artifact_write_yaml}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -122,6 +131,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-ARTIFACT-001-002-DOMAIN-ARTIFACT-APPEND-TEXT` {#case-lib_domain_artifact_001_002_domain_artifact_append_text}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -147,6 +157,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-CONFORMANCE-001-000-DOMAIN-CONFORMANCE-ERROR-WHEN-FALSE` {#case-lib_domain_conformance_001_000_domain_conformance_error_when_false}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -172,6 +183,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-CONFORMANCE-001-000A-DOMAIN-CONFORMANCE-REPORT-VERSION-IS-V1` {#case-lib_domain_conformance_001_000a_domain_conformance_report_version_is_v1}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -197,6 +209,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-CONFORMANCE-001-000B-DOMAIN-CONFORMANCE-REPORT-RESULTS-IS-LIST` {#case-lib_domain_conformance_001_000b_domain_conformance_report_results_is_list}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -222,6 +235,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS` {#case-lib_domain_conformance_001_000c_domain_conformance_validate_report_errors}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -247,6 +261,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` {#case-lib_domain_fs_001_001_domain_fs_is_docs_spec_file}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -272,6 +287,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` {#case-lib_domain_fs_001_002_domain_fs_sort_spec_files}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -297,6 +313,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` {#case-lib_domain_fs_001_003_domain_fs_json_get_or_text}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -322,6 +339,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` {#case-lib_domain_fs_001_004_domain_fs_json_has_path_text}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -347,6 +365,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` {#case-lib_domain_fs_001_005_domain_fs_glob_any_spec_files}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -372,6 +391,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` {#case-lib_domain_fs_001_006_domain_fs_file_ext_eq}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -397,6 +417,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` {#case-lib_domain_fs_001_007_domain_fs_json_get_text}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -422,6 +443,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` {#case-lib_domain_fs_001_008_domain_fs_json_path_eq_text}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -447,6 +469,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` {#case-lib_domain_fs_001_009_domain_fs_glob_filter}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -472,6 +495,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` {#case-lib_domain_fs_001_010_domain_fs_glob_all}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -497,6 +521,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS` {#case-lib_domain_http_001_001_domain_http_status}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -522,6 +547,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN` {#case-lib_domain_http_001_002_domain_http_status_in}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -547,6 +573,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS` {#case-lib_domain_http_001_003_domain_http_status_is}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -572,6 +599,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED` {#case-lib_domain_http_001_004_domain_http_status_is_unauthorized}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -597,6 +625,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN` {#case-lib_domain_http_001_005_domain_http_status_is_forbidden}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -622,6 +651,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX` {#case-lib_domain_http_001_006_domain_http_ok_2xx}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -647,6 +677,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET` {#case-lib_domain_http_001_007_domain_http_header_get}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -672,6 +703,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS` {#case-lib_domain_http_001_008_domain_http_header_contains}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -697,6 +729,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT` {#case-lib_domain_http_001_009_domain_http_body_text}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -722,6 +755,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON` {#case-lib_domain_http_001_010_domain_http_body_json}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -747,6 +781,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS` {#case-lib_domain_http_001_011_domain_http_body_json_type_is}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -772,6 +807,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY` {#case-lib_domain_http_001_012_domain_http_body_json_has_key}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -797,6 +833,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH` {#case-lib_domain_http_001_013_domain_http_auth_is_oauth}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -822,6 +859,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-HAS-BEARER-HEADER` {#case-lib_domain_http_001_014_domain_http_has_bearer_header}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -847,6 +885,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-OAUTH-TOKEN-SOURCE-IS` {#case-lib_domain_http_001_014_domain_http_oauth_token_source_is}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -872,6 +911,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED` {#case-lib_domain_http_001_015_domain_http_oauth_scope_requested}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -897,6 +937,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN` {#case-lib_domain_http_001_016_domain_http_cors_allow_origin}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -922,6 +963,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD` {#case-lib_domain_http_001_017_domain_http_cors_allows_method}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -947,6 +989,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER` {#case-lib_domain_http_001_018_domain_http_cors_allows_header}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -972,6 +1015,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED` {#case-lib_domain_http_001_019_domain_http_cors_credentials_enabled}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -997,6 +1041,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE` {#case-lib_domain_http_001_020_domain_http_cors_max_age_gte}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1022,6 +1067,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP` {#case-lib_domain_http_001_021_domain_http_is_preflight_step}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1047,6 +1093,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID` {#case-lib_domain_http_001_022_domain_http_step_by_id}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1072,6 +1119,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS` {#case-lib_domain_http_001_023_domain_http_step_status_is}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1097,6 +1145,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET` {#case-lib_domain_http_001_024_domain_http_step_body_json_get}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1122,6 +1171,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-JOB-001-000A-DOMAIN-JOB-SCAN-BUNDLE-HAS-RESULT` {#case-lib_domain_job_001_000a_domain_job_scan_bundle_has_result}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: domain.job.scan_bundle_has_result
 - Audience: `spec-authors`
@@ -1147,6 +1197,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MAKE-001` {#case-lib_domain_make_001}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: makefile projection helper functions
 - Audience: `spec-authors`
@@ -1172,6 +1223,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` {#case-lib_domain_md_001_001_domain_markdown_has_heading}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.has_heading
 - Audience: `spec-authors`
@@ -1197,6 +1249,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS` {#case-lib_domain_md_001_003_domain_markdown_heading_level_exists}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.heading_level_exists
 - Audience: `spec-authors`
@@ -1222,6 +1275,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID` {#case-lib_domain_md_001_005_domain_markdown_section_order_valid}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.section_order_valid
 - Audience: `spec-authors`
@@ -1247,6 +1301,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT` {#case-lib_domain_md_001_007_domain_markdown_required_sections_present}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.required_sections_present
 - Audience: `spec-authors`
@@ -1272,6 +1327,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE` {#case-lib_domain_md_001_009_domain_markdown_link_targets_all_resolve}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.link_targets_all_resolve
 - Audience: `spec-authors`
@@ -1297,6 +1353,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` {#case-lib_domain_md_001_011_domain_markdown_has_broken_links}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.has_broken_links
 - Audience: `spec-authors`
@@ -1322,6 +1379,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE` {#case-lib_domain_md_001_013_domain_markdown_has_yaml_spec_test_fence}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.has_yaml_spec_test_fence
 - Audience: `spec-authors`
@@ -1347,6 +1405,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS` {#case-lib_domain_md_001_015_domain_markdown_code_fence_language_exists}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.code_fence_language_exists
 - Audience: `spec-authors`
@@ -1372,6 +1431,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` {#case-lib_domain_md_001_017_domain_markdown_token_present}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.token_present
 - Audience: `spec-authors`
@@ -1397,6 +1457,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT` {#case-lib_domain_md_001_019_domain_markdown_tokens_all_present}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.tokens_all_present
 - Audience: `spec-authors`
@@ -1422,6 +1483,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE` {#case-lib_domain_md_001_021_domain_markdown_token_ownership_unique}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.token_ownership_unique
 - Audience: `spec-authors`
@@ -1447,6 +1509,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED` {#case-lib_domain_md_001_023_domain_markdown_token_dependencies_resolved}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: markdown projection helper functions: domain.markdown.token_dependencies_resolved
 - Audience: `spec-authors`
@@ -1472,6 +1535,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ` {#case-lib_domain_meta_001_001_domain_meta_case_id_eq}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1497,6 +1561,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET` {#case-lib_domain_meta_001_002_domain_meta_has_artifact_target}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1522,6 +1587,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-OS-001-001-DOMAIN-OS-EXEC-OK` {#case-lib_domain_os_001_001_domain_os_exec_ok}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1547,6 +1613,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE` {#case-lib_domain_os_001_002_domain_os_exec_capture_code}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1572,6 +1639,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS` {#case-lib_domain_os_001_003_domain_os_env_has}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1597,6 +1665,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PATH-001-001-DOMAIN-PATH-NORMALIZE` {#case-lib_domain_path_001_001_domain_path_normalize}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1622,6 +1691,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PATH-001-002-DOMAIN-PATH-EQ` {#case-lib_domain_path_001_002_domain_path_eq}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1647,6 +1717,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PATH-001-003-DOMAIN-PATH-IS-SPEC-MD` {#case-lib_domain_path_001_003_domain_path_is_spec_md}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1672,6 +1743,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PATH-001-004-DOMAIN-PATH-IS-IN-DOCS` {#case-lib_domain_path_001_004_domain_path_is_in_docs}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1697,6 +1769,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PATH-001-005-DOMAIN-PATH-SORTED` {#case-lib_domain_path_001_005_domain_path_sorted}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1722,6 +1795,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PATH-001-006-DOMAIN-FILE-IS-EXISTING-FILE` {#case-lib_domain_path_001_006_domain_file_is_existing_file}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1747,6 +1821,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PATH-001-007-DOMAIN-FILE-IS-EXISTING-DIR` {#case-lib_domain_path_001_007_domain_file_is_existing_dir}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1772,6 +1847,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PATH-001-008-DOMAIN-FILE-HAS-EXT` {#case-lib_domain_path_001_008_domain_file_has_ext}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1797,6 +1873,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PATH-001-009-DOMAIN-FILE-NAME` {#case-lib_domain_path_001_009_domain_file_name}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1822,6 +1899,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PHP-001` {#case-lib_domain_php_001}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: php projection helper functions
 - Audience: `spec-authors`
@@ -1847,6 +1925,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PROCESS-001-001-DOMAIN-PROCESS-EXEC-CAPTURE-EX-CODE` {#case-lib_domain_process_001_001_domain_process_exec_capture_ex_code}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1872,6 +1951,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-PY-001` {#case-lib_domain_py_001}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: python projection helper functions
 - Audience: `spec-authors`
@@ -1897,6 +1977,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-REPO-001-001-DOMAIN-REPO-WALK-MATCHING` {#case-lib_domain_repo_001_001_domain_repo_walk_matching}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1922,6 +2003,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR` {#case-lib_domain_yaml_001_001_domain_yaml_parse_get_or}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1947,6 +2029,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY` {#case-lib_domain_yaml_001_002_domain_yaml_stringify}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -1972,6 +2055,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-IMPL-ASSERT-001-001-IMPL-ASSERT-CONTAINS` {#case-lib_impl_assert_001_001_impl_assert_contains}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: reusable impl assertion helper functions: impl.assert.contains
 - Audience: `spec-authors`
@@ -1997,6 +2081,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-IMPL-ASSERT-001-002-IMPL-ASSERT-REGEX` {#case-lib_impl_assert_001_002_impl_assert_regex}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: reusable impl assertion helper functions: impl.assert.regex
 - Audience: `spec-authors`
@@ -2022,6 +2107,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-IMPL-ASSERT-001-003-IMPL-ASSERT-JSON-TYPE` {#case-lib_impl_assert_001_003_impl_assert_json_type}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: reusable impl assertion helper functions: impl.assert.json_type
 - Audience: `spec-authors`
@@ -2047,6 +2133,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-PATH-001-001-PATH-NORMALIZE-SLASHES` {#case-lib_path_001_001_path_normalize_slashes}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -2072,6 +2159,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-PATH-001-002-PATH-SEGMENTS` {#case-lib_path_001_002_path_segments}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -2097,6 +2185,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-PATH-001-003-PATH-BASENAME` {#case-lib_path_001_003_path_basename}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -2122,6 +2211,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-PATH-001-004-PATH-EXTENSION` {#case-lib_path_001_004_path_extension}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: 
 - Audience: `spec-authors`
@@ -2147,6 +2237,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-POLICY-001` {#case-lib_policy_001}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: policy-core reusable governance predicates
 - Audience: `spec-authors`
@@ -2172,6 +2263,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE` {#case-lib_policy_002_001_policy_metric_non_decrease}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: policy-metrics reusable non-regression predicates: policy.metric_non_decrease
 - Audience: `spec-authors`
@@ -2197,6 +2289,7 @@ Auto-generated root doc metadata stub. Replace with authored reference text.
 
 ### `LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE` {#case-lib_policy_002_002_policy_metric_non_increase}
 
+- Domain: `unscoped`
 - Type: `contract.export`
 - Title: policy-metrics reusable non-regression predicates: policy.metric_non_increase
 - Audience: `spec-authors`

@@ -10,6 +10,7 @@ from typing import Any
 from spec_runner.codecs import load_external_cases
 from spec_runner.docs_generators import parse_generated_block, replace_generated_block, write_json
 from spec_runner.docs_template_engine import render_moustache
+from spec_runner.spec_domain import normalize_case_domain, normalize_export_symbol
 
 _STABILITY = {"alpha", "beta", "stable", "internal"}
 _ERROR_CATEGORY = {"schema", "assertion", "runtime"}
@@ -211,6 +212,11 @@ def _build_payload(repo_root: Path, *, libs_root: Path) -> dict[str, Any]:
         case_id = str(case.get("id", "")).strip() or "<unknown>"
         rel = "/" + doc_path.resolve().relative_to(repo_root.resolve()).as_posix()
         where = f"{rel}: case {case_id}"
+        try:
+            case_domain = normalize_case_domain(case.get("domain"))
+        except (TypeError, ValueError):
+            issues.append(f"{where}: domain must be a non-empty string when provided")
+            case_domain = None
         library = _validate_library_block(raw_library=case.get("library"), issues=issues, where=where)
 
         harness = case.get("harness")
@@ -227,7 +233,8 @@ def _build_payload(repo_root: Path, *, libs_root: Path) -> dict[str, Any]:
             if not isinstance(exp, dict):
                 issues.append(f"{exp_where}: must be a mapping")
                 continue
-            symbol = _as_non_empty_string(exp.get("as"), field="as", issues=issues, where=exp_where)
+            raw_symbol = _as_non_empty_string(exp.get("as"), field="as", issues=issues, where=exp_where)
+            symbol = normalize_export_symbol(case_domain, raw_symbol) if raw_symbol else ""
             export_from = _as_non_empty_string(exp.get("from"), field="from", issues=issues, where=exp_where)
             export_path = _as_non_empty_string(exp.get("path"), field="path", issues=issues, where=exp_where)
             if export_from and export_from != "assert.function":

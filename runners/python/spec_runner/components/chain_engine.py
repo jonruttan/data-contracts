@@ -11,6 +11,7 @@ from spec_runner.compiler import compile_external_case
 from spec_runner.internal_model import InternalSpecCase
 from spec_runner.spec_lang import _Closure, _Env, compile_symbol_bindings, limits_from_harness
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
+from spec_runner.spec_domain import normalize_case_domain, normalize_export_symbol
 from spec_runner.virtual_paths import contract_root_for, parse_external_ref, resolve_contract_path
 
 _CASE_ID_PART = re.compile(r"^[A-Za-z0-9._:-]+$")
@@ -104,7 +105,12 @@ def _parse_params(
     return tuple(out)
 
 
-def _expand_producer_exports(raw_exports: object, *, field_prefix: str) -> dict[str, ChainProducedImport]:
+def _expand_producer_exports(
+    raw_exports: object,
+    *,
+    field_prefix: str,
+    domain: str | None = None,
+) -> dict[str, ChainProducedImport]:
     if raw_exports is None:
         return {}
     if not isinstance(raw_exports, list):
@@ -120,11 +126,16 @@ def _expand_producer_exports(raw_exports: object, *, field_prefix: str) -> dict[
                 f"{field_prefix}[{idx}] entry has unsupported keys: {', '.join(unknown)}"
             )
 
-        export_name = str(raw_entry.get("as", "")).strip()
-        if not export_name:
+        raw_export_name = str(raw_entry.get("as", "")).strip()
+        if not raw_export_name:
             raise ValueError(f"{field_prefix}[{idx}].as is required")
+        export_name = normalize_export_symbol(domain, raw_export_name)
         if export_name in expanded:
-            raise ValueError(f"{field_prefix} duplicate key: {export_name}")
+            raw_domain = domain if domain is not None else "<none>"
+            raise ValueError(
+                f"{field_prefix} duplicate key after domain prefix "
+                f"(raw_as={raw_export_name}, domain={raw_domain}, canonical={export_name})"
+            )
 
         from_source = str(raw_entry.get("from", "")).strip()
         if from_source != "assert.function":
@@ -353,7 +364,17 @@ def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[Ch
 
 def _producer_case_exports(producer_case: InternalSpecCase) -> dict[str, ChainProducedImport]:
     harness = producer_case.harness or {}
-    return _expand_producer_exports(harness.get("exports"), field_prefix="harness.exports")
+    try:
+        domain = normalize_case_domain((producer_case.raw_case or {}).get("domain"))
+    except (TypeError, ValueError) as exc:
+        raise ValueError(
+            f"producer case {producer_case.id} has invalid domain ({exc})"
+        ) from exc
+    return _expand_producer_exports(
+        harness.get("exports"),
+        field_prefix="harness.exports",
+        domain=domain,
+    )
 
 
 def _resolve_ref_path(*, ref_path: str, current_case: InternalSpecCase) -> Path:

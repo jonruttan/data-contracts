@@ -575,7 +575,7 @@ Job ref grammar:
 This section is generated from `specs/schema/registry/v1/*.yaml`.
 
 - profile_count: 7
-- top_level_fields: 24
+- top_level_fields: 25
 - type_profiles: 3
 
 ### Top-Level Keys
@@ -592,6 +592,7 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 | `doc.since` | `string` | `false` | `v1` |
 | `doc.summary` | `string` | `false` | `v1` |
 | `doc.tags` | `list` | `false` | `v1` |
+| `domain` | `string` | `false` | `v1` |
 | `expect` | `mapping` | `false` | `v1` |
 | `harness` | `mapping` | `false` | `v1` |
 | `id` | `string` | `true` | `v1` |
@@ -620,7 +621,7 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 24
+- top_level_field_count: 25
 - type_profile_count: 3
 - total_type_field_count: 40
 
@@ -638,6 +639,7 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 | `doc.since` | `string` | false | `v1` |
 | `doc.summary` | `string` | false | `v1` |
 | `doc.tags` | `list` | false | `v1` |
+| `domain` | `string` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
 | `id` | `string` | true | `v1` |
