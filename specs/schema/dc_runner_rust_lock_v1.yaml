@@ -5,11 +5,11 @@ runner:
   artifact_name_template: dc-runner-rust-{platform}
 artifacts:
   darwin-arm64:
-    url: https://raw.githubusercontent.com/jonruttan/dc-runner-rust/main/dc-runner-rust-darwin-arm64
+    url: https://github.com/jonruttan/dc-runner-rust/releases/download/v0.1.0/dc-runner-rust-darwin-arm64
     sha256: 9a0f86ddded59416061d2f15d884de4ed6d1b45b14e00ebb88894b1848c6da6b
   darwin-x86_64:
-    url: https://raw.githubusercontent.com/jonruttan/dc-runner-rust/main/dc-runner-rust-darwin-x86_64
+    url: https://github.com/jonruttan/dc-runner-rust/releases/download/v0.1.0/dc-runner-rust-darwin-x86_64
     sha256: fc230941224645e241bed0cedf95fa4c03d4e1991c8058d7a9196b2deba7faa0
   linux-x86_64:
-    url: https://raw.githubusercontent.com/jonruttan/dc-runner-rust/main/dc-runner-rust-linux-x86_64
+    url: https://github.com/jonruttan/dc-runner-rust/releases/download/v0.1.0/dc-runner-rust-linux-x86_64
     sha256: 938e15894ecb57bfd30f9fb2286b14641a5028c909d00b7123563091c682e5f5
