@@ -1,5 +1,5 @@
 version: 1
-title: Spec Runner Schema Registry Profile Schema
+title: Data Contracts Schema Registry Profile Schema
 profile_shape:
   required:
     - id

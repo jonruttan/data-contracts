@@ -1,6 +1,6 @@
 # V1 Scope And Compatibility Commitments
 
-This document defines explicit v1 boundaries for `spec_runner` so adoption and
+This document defines explicit v1 boundaries for `data-contracts` so adoption and
 maintenance decisions stay predictable.
 
 ## V1 In Scope
@@ -57,7 +57,7 @@ maintenance decisions stay predictable.
 
 ## Release Boundary
 
-`spec_runner` v1 readiness requires:
+`data-contracts` v1 readiness requires:
 
 - deterministic CI gate (`./scripts/ci_gate.sh`) green
 - contract governance checks green

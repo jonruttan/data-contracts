@@ -290,7 +290,7 @@ library:
   id: path.path.core
   module: path
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - path
 doc:
@@ -592,7 +592,7 @@ library:
   id: path.path.core
   module: path
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - path
 doc:
@@ -906,7 +906,7 @@ library:
   id: path.path.core
   module: path
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - path
 doc:
@@ -1228,7 +1228,7 @@ library:
   id: path.path.core
   module: path
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - path
 doc:

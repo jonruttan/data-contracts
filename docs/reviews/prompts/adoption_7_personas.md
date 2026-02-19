@@ -1,12 +1,12 @@
-# Review Prompt (Spec Runner): Adoption 7 Personas
+# Review Prompt (Data Contracts): Adoption 7 Personas
 
-Use this prompt to run an adoption-pressure review against current `spec_runner` contracts.
+Use this prompt to run an adoption-pressure review against current `data-contracts` contracts.
 The objective is to find adoption blockers and produce machine-consumable outputs.
 
 ---
 
 ```text
-You are reviewing `spec_runner`, a contract-first executable spec system.
+You are reviewing `data-contracts`, a contract-first executable spec system.
 
 Primary model:
 - Executable Markdown cases using fenced `yaml contract-spec` blocks.

@@ -11,7 +11,7 @@ Shape:
 
 ```yaml
 version: 1
-title: Spec Runner Reference Manual
+title: Data Contracts Reference Manual
 chapters:
 - path: /docs/book/10_getting_started.md
   summary: first-run setup and safety model.

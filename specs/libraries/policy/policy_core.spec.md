@@ -190,7 +190,7 @@ library:
   id: policy.policy.core
   module: policy
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - policy
 doc:

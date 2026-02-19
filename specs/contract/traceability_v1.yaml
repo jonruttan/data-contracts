@@ -1,5 +1,5 @@
 version: 1
-title: Spec Runner Contract Traceability
+title: Data Contracts Contract Traceability
 links:
 - rule_id: CLI_RUN_ENTRYPOINT_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CLI_RUN_ENTRYPOINT_REQUIRED

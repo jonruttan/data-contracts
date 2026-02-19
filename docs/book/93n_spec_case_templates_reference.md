@@ -157,7 +157,7 @@ library:
   id: example.core
   module: example
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
 harness:
   exports:
   - as: example.symbol

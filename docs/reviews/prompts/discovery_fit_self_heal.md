@@ -1,11 +1,11 @@
-# Discovery Fit + Self-Heal Prompt (Spec Runner)
+# Discovery Fit + Self-Heal Prompt (Data Contracts)
 
-Use this prompt to evaluate whether `spec_runner` is a good fit for a target problem by walking real entrypoints first, applying safe low-risk self-heals when obvious, and producing machine-consumable outputs.
+Use this prompt to evaluate whether `data-contracts` is a good fit for a target problem by walking real entrypoints first, applying safe low-risk self-heals when obvious, and producing machine-consumable outputs.
 
 ---
 
 ```text
-You are performing discovery-fit analysis for `spec_runner`.
+You are performing discovery-fit analysis for `data-contracts`.
 
 Your goal:
 1. Determine if this project is a good fit for the problem being evaluated.

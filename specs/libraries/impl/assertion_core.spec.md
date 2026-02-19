@@ -61,7 +61,7 @@ library:
   id: impl.assertion.core
   module: impl
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - impl
 doc:
@@ -133,7 +133,7 @@ library:
   id: impl.assertion.core
   module: impl
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - impl
 doc:
@@ -205,7 +205,7 @@ library:
   id: impl.assertion.core
   module: impl
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - impl
 doc:

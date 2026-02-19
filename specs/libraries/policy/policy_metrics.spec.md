@@ -79,7 +79,7 @@ library:
   id: policy.policy.metrics
   module: policy
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - policy
 doc:
@@ -169,7 +169,7 @@ library:
   id: policy.policy.metrics
   module: policy
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - policy
 doc:

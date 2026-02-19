@@ -241,7 +241,7 @@ library:
   id: conformance.assertion.core
   module: conformance
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - conformance
 doc:

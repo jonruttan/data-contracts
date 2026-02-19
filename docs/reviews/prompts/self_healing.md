@@ -1,6 +1,6 @@
-# Self-Healing Pre-Merge Hardening Pipeline (Spec Runner)
+# Self-Healing Pre-Merge Hardening Pipeline (Data Contracts)
 
-A staged hardening pipeline for `spec_runner` aligned to current contracts, Rust-first required lane policy, and executable-spec governance.
+A staged hardening pipeline for `data-contracts` aligned to current contracts, Rust-first required lane policy, and executable-spec governance.
 
 ## Repository Context (Hard Requirements)
 

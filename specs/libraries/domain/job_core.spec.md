@@ -76,7 +76,7 @@ library:
   id: domain.job.core
   module: domain
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - domain
 doc:

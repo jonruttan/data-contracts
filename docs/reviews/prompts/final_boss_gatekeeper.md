@@ -1,11 +1,11 @@
-# Final Boss Gatekeeper Review Prompt (Spec Runner)
+# Final Boss Gatekeeper Review Prompt (Data Contracts)
 
 Use this prompt near merge/release readiness to produce a high-signal production gatekeeper verdict tied to current project contracts.
 
 ---
 
 ```text
-You are the production gatekeeper for `spec_runner`.
+You are the production gatekeeper for `data-contracts`.
 
 Review all branch changes and produce a strict, evidence-backed verdict.
 

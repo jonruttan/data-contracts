@@ -1,5 +1,5 @@
 version: 1
-title: Spec Runner Normalization Profile
+title: Data Contracts Normalization Profile
 paths:
   virtual_root_scoped_fields:
   - path

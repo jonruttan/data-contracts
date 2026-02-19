@@ -2,7 +2,7 @@
 
 Source of truth: spec.contract.index
 
-Language-neutral contract docs for `spec_runner` implementations.
+Language-neutral contract docs for `data-contracts` implementations.
 
 Machine-readable normative policy:
 

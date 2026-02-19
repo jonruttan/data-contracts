@@ -70,7 +70,7 @@ contract:
     assert:
       std.string.contains:
       - {var: text}
-      - spec_runner
+      - data-contracts
 ```
 
 ## First Run Sequence

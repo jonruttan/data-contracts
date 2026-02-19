@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`spec_runner` decouples external case authoring formats from execution by
+`data-contracts` decouples external case authoring formats from execution by
 compiling cases into a single internal representation before dispatch/runtime
 evaluation.
 

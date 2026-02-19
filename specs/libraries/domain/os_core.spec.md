@@ -62,7 +62,7 @@ library:
   id: domain.os.core
   module: domain
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - domain
 doc:
@@ -143,7 +143,7 @@ library:
   id: domain.os.core
   module: domain
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - domain
 doc:
@@ -207,7 +207,7 @@ library:
   id: domain.os.core
   module: domain
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - domain
 doc:

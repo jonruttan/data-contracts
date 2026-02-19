@@ -1,6 +1,6 @@
 # Design Philosophy
 
-`spec_runner` exists to preserve intent as executable contract, not just to
+`data-contracts` exists to preserve intent as executable contract, not just to
 run tests.
 
 ## Why Specs Exist

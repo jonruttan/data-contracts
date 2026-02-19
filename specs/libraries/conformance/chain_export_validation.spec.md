@@ -57,7 +57,7 @@ library:
   id: conformance.chain.export.validation
   module: conformance
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - conformance
 doc:
@@ -125,7 +125,7 @@ library:
   id: conformance.chain.export.validation
   module: conformance
   stability: alpha
-  owner: spec_runner
+  owner: data-contracts
   tags:
   - conformance
 doc:

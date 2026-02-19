@@ -1,6 +1,6 @@
 # Design Goals (v1)
 
-These are cross-language design goals for `spec_runner`. Contract and schema
+These are cross-language design goals for `data-contracts`. Contract and schema
 changes SHOULD be evaluated against this list.
 
 Project-level philosophy and process bar:

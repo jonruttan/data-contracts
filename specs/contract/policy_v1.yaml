@@ -1,5 +1,5 @@
 version: 1
-title: Spec Runner Portable Contract Policy
+title: Data Contracts Portable Contract Policy
 rules:
 - id: CLI_RUN_ENTRYPOINT_REQUIRED
   introduced_in: v1

@@ -2,7 +2,7 @@
 
 Source of truth: spec.root.index
 
-Canonical specification root for `spec_runner`.
+Canonical specification root for `data-contracts`.
 
 ## Canonical Inputs
 
