@@ -13,7 +13,7 @@ owns_tokens:
 requires_tokens:
 - spec-lang
 commands:
-- run: python -m spec_runner.spec_lang_commands spec-lang-format --check specs
+- run: ./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs
   purpose: Validate canonical evaluate formatting.
 examples:
 - id: EX-ASSERTIONS-001
@@ -77,8 +77,7 @@ contract:
   class: MUST
   target: stdout
   asserts:
-  - evaluate:
-      std.string.contains:
+  -       std.string.contains:
       - var: subject
       - ok
 ```
@@ -90,8 +89,7 @@ contract:
 - id: assert_1
   class: MUST
   asserts:
-  - evaluate:
-      std.string.contains:
+  -       std.string.contains:
       - var: subject
       - ok
 ```
@@ -117,8 +115,7 @@ contract:
   class: MUST
   target: text
   asserts:
-  - evaluate:
-      std.logic.and:
+  -       std.logic.and:
       - std.string.contains:
         - version
       - std.string.starts_with:
@@ -139,8 +136,7 @@ contract:
   class: MUST
   target: text
   asserts:
-  - evaluate:
-      let:
+  -       let:
       - lit:
         - - loop
           - - fn
@@ -181,28 +177,24 @@ contract:
   class: MUST_NOT
   target: stderr
   asserts:
-  - evaluate:
-      std.string.contains:
+  -       std.string.contains:
       - var: subject
       - 'ERROR:'
 - id: assert_2
   class: MAY
   target: stdout
   asserts:
-  - evaluate:
-      std.type.json_type:
+  -       std.type.json_type:
       - var: subject
       - list
-  - evaluate:
-      std.string.contains:
+  -       std.string.contains:
       - var: subject
       - '[]'
 - id: assert_3
   class: MUST
   target: chain_json
   asserts:
-  - evaluate:
-      std.object.has_key:
+  -       std.object.has_key:
       - var: subject
       - state
 ```
@@ -217,20 +209,17 @@ contract:
   class: MUST
   target: context_json
   asserts:
-  - evaluate:
-      call:
+  -       call:
       - {var: domain.markdown.required_sections_present}
       - {var: subject}
       - lit:
         - Purpose
         - Inputs
         - Outputs
-  - evaluate:
-      call:
+  -       call:
       - {var: domain.markdown.link_targets_all_resolve}
       - {var: subject}
-  - evaluate:
-      call:
+  -       call:
       - {var: domain.markdown.has_yaml_contract_spec_fence}
       - {var: subject}
 ```
@@ -244,8 +233,7 @@ contract:
   class: MUST
   target: text
   asserts:
-  - evaluate:
-      std.string.contains:
+  -       std.string.contains:
       - var: subject
       - "Spec-Version: 1"
 ```

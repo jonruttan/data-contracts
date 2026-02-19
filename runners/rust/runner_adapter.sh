@@ -296,7 +296,7 @@ shift
 debug_log "subcommand=${subcommand} forwarded=[$*]"
 
 case "${subcommand}" in
-  spec-eval|spec-ref|validate-report|job-run|critical-gate|governance-broad-native|style-check|schema-registry-check|schema-registry-build|schema-docs-check|schema-docs-build|lint|typecheck|compilecheck|conformance-purpose-json|conformance-purpose-md|spec-portability-json|spec-portability-md|spec-lang-adoption-json|spec-lang-adoption-md|runner-independence-json|runner-independence-md|python-dependency-json|python-dependency-md|docs-operability-json|docs-operability-md|contract-assertions-json|contract-assertions-md|objective-scorecard-json|objective-scorecard-md|spec-lang-stdlib-json|spec-lang-stdlib-md|ci-gate-summary|ci-cleanroom|perf-smoke|docs-generate|docs-generate-check|docs-build|docs-build-check|docs-lint|docs-graph|conformance-parity|test-core|test-full)
+  spec-eval|spec-ref|validate-report|job-run|critical-gate|governance-broad-native|style-check|spec-lang-lint|spec-lang-format|schema-registry-check|schema-registry-build|schema-docs-check|schema-docs-build|lint|typecheck|compilecheck|conformance-purpose-json|conformance-purpose-md|spec-portability-json|spec-portability-md|spec-lang-adoption-json|spec-lang-adoption-md|runner-independence-json|runner-independence-md|python-dependency-json|python-dependency-md|docs-operability-json|docs-operability-md|contract-assertions-json|contract-assertions-md|objective-scorecard-json|objective-scorecard-md|spec-lang-stdlib-json|spec-lang-stdlib-md|ci-gate-summary|ci-cleanroom|perf-smoke|docs-generate|docs-generate-check|docs-build|docs-build-check|docs-lint|docs-graph|conformance-parity|test-core|test-full)
     exec_rust_subcommand "${subcommand}" "$@"
     ;;
 esac

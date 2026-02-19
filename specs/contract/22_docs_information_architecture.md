@@ -29,6 +29,6 @@ The layout is machine-enforced by:
 
 - `specs/schema/docs_layout_profile_v1.yaml`
 - `scripts/normalize_docs_layout.py`
-- governance checks in `python -m spec_runner.spec_lang_commands run-governance-specs`
+- governance checks in `./runners/public/runner_adapter.sh --impl rust governance`
 
 This contract is hard-fail in CI (no compatibility window).

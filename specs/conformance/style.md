@@ -32,9 +32,9 @@ Nested `lit` wrappers are forbidden.
 
 Use tooling to enforce/normalize:
 
-- lint: `python -m spec_runner.spec_lang_commands spec-lang-lint --cases specs`
-- format: `python -m spec_runner.spec_lang_commands spec-lang-format --write specs`
-- library symbol docs sync: `python -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check`
+- lint: `./runners/public/runner_adapter.sh --impl rust spec-lang-lint --cases specs`
+- format: `./runners/public/runner_adapter.sh --impl rust spec-lang-format --write --cases specs`
+- docs sync: `./runners/public/runner_adapter.sh --impl rust docs-generate-check`
   - `runtime`: runtime profile name from policy (for example `php`)
   - `min_words`: integer override
   - `placeholders`: list override

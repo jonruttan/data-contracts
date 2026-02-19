@@ -356,5 +356,5 @@ standardize `evaluate` expression formatting to:
 
 Tooling:
 
-- lint: `python -m spec_runner.spec_lang_commands spec-lang-format --check specs`
-- format: `python -m spec_runner.spec_lang_commands spec-lang-format --write specs`
+- lint: `./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs`
+- format: `./runners/public/runner_adapter.sh --impl rust spec-lang-format --write --cases specs`

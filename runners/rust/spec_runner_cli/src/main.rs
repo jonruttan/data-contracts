@@ -321,6 +321,61 @@ fn run_style_check_native(root: &Path, forwarded: &[String]) -> i32 {
     1
 }
 
+fn run_spec_lang_lint_native(root: &Path, forwarded: &[String]) -> i32 {
+    if forwarded.is_empty() {
+        return run_style_check_native(root, &[]);
+    }
+    if forwarded.len() == 2 && forwarded[0] == "--cases" {
+        return run_style_check_native(root, &[]);
+    }
+    eprintln!("ERROR: spec-lang-lint accepts only optional '--cases <path>'");
+    2
+}
+
+fn run_spec_lang_format_native(root: &Path, forwarded: &[String]) -> i32 {
+    let mut check_mode = true;
+    let mut pass_through: Vec<String> = Vec::new();
+    let mut i = 0usize;
+    while i < forwarded.len() {
+        match forwarded[i].as_str() {
+            "--check" => {
+                check_mode = true;
+                i += 1;
+            }
+            "--write" => {
+                check_mode = false;
+                i += 1;
+            }
+            "--cases" => {
+                if i + 1 >= forwarded.len() {
+                    eprintln!("ERROR: --cases requires value");
+                    return 2;
+                }
+                i += 2;
+            }
+            "--changed-only" | "--paths" | "--path" => {
+                pass_through.push(forwarded[i].clone());
+                if (forwarded[i] == "--paths" || forwarded[i] == "--path")
+                    && i + 1 < forwarded.len()
+                {
+                    pass_through.push(forwarded[i + 1].clone());
+                    i += 2;
+                } else if forwarded[i] == "--changed-only" {
+                    i += 1;
+                } else {
+                    eprintln!("ERROR: {} requires value", forwarded[i]);
+                    return 2;
+                }
+            }
+            other => {
+                eprintln!("ERROR: unsupported spec-lang-format arg: {other}");
+                return 2;
+            }
+        }
+    }
+    run_normalize_mode(root, &pass_through, !check_mode)
+}
+
 fn run_normalize_mode(root: &Path, forwarded: &[String], fix: bool) -> i32 {
     let mut changed_only = env_bool("SPEC_RUNNER_NORMALIZE_CHANGED_ONLY", false);
     let mut selected_paths: Vec<String> = Vec::new();
@@ -2689,6 +2744,8 @@ fn main() {
         "governance" => run_governance_native(&root, &forwarded),
         "governance-heavy" => run_governance_heavy_native(&root, &forwarded),
         "style-check" => run_style_check_native(&root, &forwarded),
+        "spec-lang-lint" => run_spec_lang_lint_native(&root, &forwarded),
+        "spec-lang-format" => run_spec_lang_format_native(&root, &forwarded),
         "normalize-check" => run_normalize_mode(&root, &forwarded, false),
         "normalize-fix" => run_normalize_mode(&root, &forwarded, true),
         "schema-registry-check" => run_job_for_command(&root, "schema-registry-check", &forwarded),

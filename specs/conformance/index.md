@@ -14,5 +14,5 @@ Cross-runner conformance fixtures and report contracts.
 ## Execution
 
 ```sh
-python -m spec_runner.spec_lang_commands compare-conformance-parity --cases specs/conformance/cases --out .artifacts/conformance-parity.json
+./runners/public/runner_adapter.sh --impl rust conformance-parity --cases specs/conformance/cases --out .artifacts/conformance-parity.json
 ```

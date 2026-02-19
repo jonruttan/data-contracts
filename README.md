@@ -106,7 +106,7 @@ Default lane (rust):
 Compatibility lanes (non-blocking):
 
 ```sh
-python -m spec_runner.spec_lang_commands run-governance-specs --liveness-level basic
+./runners/public/runner_adapter.sh --impl rust governance
 php runners/php/conformance_runner.php --cases specs/conformance/cases --case-formats md
 ```
 
@@ -126,8 +126,7 @@ path: /README.md
 assert:
 - target: text
   must:
-  - evaluate:
-    - contains:
+  -     - contains:
       - {var: subject}
       - "Spec Runner"
 ```

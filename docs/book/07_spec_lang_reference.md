@@ -12,7 +12,7 @@ owns_tokens:
 requires_tokens:
 - minimal_examples
 commands:
-- run: python -m spec_runner.spec_lang_commands spec-lang-format --check specs
+- run: ./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs
   purpose: Enforce canonical evaluate formatting in specs.
 examples:
 - id: EX-SPECLANG-001
@@ -66,8 +66,7 @@ contract:
   class: MUST
   target: text
   asserts:
-  - evaluate:
-      std.string.contains:
+  -       std.string.contains:
       - var: subject
       - hello
 ```
@@ -171,8 +170,7 @@ Control/recursion:
 Text + boolean composition:
 
 ```yaml
-- evaluate:
-    std.logic.and:
+-     std.logic.and:
     - std.string.contains:
       - WARN
     - std.logic.not:
@@ -183,8 +181,7 @@ Text + boolean composition:
 JSON field check (for `target: body_json`):
 
 ```yaml
-- evaluate:
-    std.logic.and:
+-     std.logic.and:
     - std.object.has_key:
       - items
     - std.logic.eq:
@@ -198,8 +195,7 @@ JSON field check (for `target: body_json`):
 Tail recursion (stack-safe by contract):
 
 ```yaml
-- evaluate:
-    let:
+-     let:
     - lit:
       - - loop
         - - fn
@@ -235,8 +231,7 @@ Tail recursion (stack-safe by contract):
 Set algebra + deep equality:
 
 ```yaml
-- evaluate:
-    std.set.intersection:
+-     std.set.intersection:
     - std.json.parse:
       - '[{"k":1},{"k":2},{"k":2}]'
     - std.json.parse:
@@ -246,8 +241,7 @@ Set algebra + deep equality:
 Currying with collection forms:
 
 ```yaml
-- evaluate:
-    map:
+-     map:
     - call:
       - var:
         - add
@@ -323,6 +317,6 @@ inside the expression when you need:
 Use the repo tool to keep `evaluate` layout canonical:
 
 ```sh
-python -m spec_runner.spec_lang_commands spec-lang-format --check specs
-python -m spec_runner.spec_lang_commands spec-lang-format --write specs
+./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs
+./runners/public/runner_adapter.sh --impl rust spec-lang-format --write --cases specs
 ```

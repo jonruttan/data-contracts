@@ -13,7 +13,7 @@ Executable governance checks for canonical contract enforcement.
 ## Execution
 
 ```sh
-python -m spec_runner.spec_lang_commands run-governance-specs
+./runners/public/runner_adapter.sh --impl rust governance
 ```
 
 ## Canonical Checks

@@ -11,7 +11,7 @@ owns_tokens:
 requires_tokens:
 - first_run_walkthrough
 commands:
-- run: python -m spec_runner.spec_lang_commands spec-lang-format --check specs
+- run: ./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs
   purpose: Verify canonical evaluate style.
 examples:
 - id: EX-CHEATSHEET-001
@@ -55,8 +55,7 @@ contract:
   class: MUST
   target: text
   asserts:
-  - evaluate:
-      std.string.contains:
+  -       std.string.contains:
       - var: subject
       - hello
 ```
@@ -80,8 +79,7 @@ contract:
   class: MUST
   target: stdout
   asserts:
-  - evaluate:
-      std.string.contains:
+  -       std.string.contains:
       - var: subject
       - hello
 ```
@@ -100,8 +98,7 @@ contract:
   class: MUST
   target: text
   asserts:
-  - evaluate:
-      std.string.contains:
+  -       std.string.contains:
       - var: subject
       - CHEAT-003
 ```

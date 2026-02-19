@@ -32,12 +32,10 @@ Compatibility lanes (non-blocking telemetry):
 python -m ruff check .
 python -m mypy runners/python/spec_runner
 python -m compileall -q runners/python/spec_runner scripts tests
-python -m spec_runner.spec_lang_commands spec-lang-lint --cases specs
-python -m spec_runner.spec_lang_commands spec-lang-format --check specs
-python -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check
-python -m spec_runner.spec_lang_commands generate-spec-case-catalog --check
-python -m spec_runner.spec_lang_commands docs-generate-all --check
-python -m spec_runner.spec_lang_commands docs-lint
+./runners/public/runner_adapter.sh --impl rust spec-lang-lint --cases specs
+./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs
+./runners/public/runner_adapter.sh --impl rust docs-generate-check
+./runners/public/runner_adapter.sh --impl rust docs-lint
 ```
 
 ## Adoption Profiles
@@ -80,7 +78,7 @@ SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh ./scripts/core_gate.sh
 Compatibility lane examples (non-blocking):
 
 ```sh
-python -m spec_runner.spec_lang_commands run-governance-specs --liveness-level basic
+./runners/public/runner_adapter.sh --impl rust governance
 php runners/php/conformance_runner.php --cases specs/conformance/cases --case-formats md
 ```
 
@@ -296,14 +294,6 @@ python -m mypy runners/python/spec_runner
 
 ```sh
 python -m compileall -q runners/python/spec_runner scripts tests
-```
-
-## Contract Coverage Report
-
-Optional wrapper (reporting artifact; not a primary gate):
-
-```sh
-python -m spec_runner.spec_lang_commands contract-coverage-report --out .artifacts/contract-coverage.json
 ```
 
 ## Conformance Purpose Report
