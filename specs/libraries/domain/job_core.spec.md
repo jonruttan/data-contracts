@@ -56,7 +56,7 @@ contract:
     class: MUST
   steps:
   - id: __export__domain.job.scan_bundle_has_result
-    'on': subject
+    target: subject
     assert:
       std.logic.neq:
       - std.object.get:

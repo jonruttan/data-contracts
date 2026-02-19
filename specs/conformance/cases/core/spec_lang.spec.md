@@ -28,7 +28,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       lit:
         call:
@@ -65,7 +65,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - call:
@@ -99,7 +99,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       lit:
         let:
@@ -154,7 +154,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.starts_with:
       - {var: subject}
@@ -186,7 +186,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       lit:
         bad: shape
@@ -217,7 +217,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       lit:
         unknown_symbol:
@@ -256,7 +256,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       lit:
         let:
@@ -308,7 +308,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - lit:
         call:
@@ -347,7 +347,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.eq:
       - std.set.intersection:
@@ -387,7 +387,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.eq:
       - std.set.union:
@@ -427,7 +427,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -476,7 +476,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.set.set_equals:
@@ -529,7 +529,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -581,7 +581,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -672,7 +672,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -748,7 +748,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.eq:
       - call:
@@ -790,7 +790,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       lit:
         call:
@@ -831,7 +831,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.set.intersection:
       - not-a-list
@@ -867,7 +867,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -987,7 +987,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -1087,7 +1087,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -1166,7 +1166,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -1250,7 +1250,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -1431,7 +1431,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.compare:
       - 1

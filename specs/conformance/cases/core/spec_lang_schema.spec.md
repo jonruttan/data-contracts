@@ -15,7 +15,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - std.type.json_type:
@@ -54,7 +54,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.and:
       - std.logic.eq:

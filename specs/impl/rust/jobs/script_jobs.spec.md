@@ -41,7 +41,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -97,7 +97,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -151,7 +151,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -207,7 +207,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -263,7 +263,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -316,7 +316,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -370,7 +370,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -424,7 +424,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -479,7 +479,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -534,7 +534,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -589,7 +589,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
     - ops.job.dispatch:
       - main

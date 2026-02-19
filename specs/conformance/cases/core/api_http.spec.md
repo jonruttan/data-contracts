@@ -20,13 +20,13 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
   - id: assert_2
-    'on': body_json
+    target: body_json
     assert:
       std.type.json_type:
       - {var: subject}
@@ -62,7 +62,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -97,7 +97,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -131,7 +131,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': body_json
+    target: body_json
     assert:
       std.object.has_key:
       - {var: subject}
@@ -166,7 +166,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -199,7 +199,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': body_text
+    target: body_text
     assert:
       std.string.contains:
       - {var: subject}
@@ -232,7 +232,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': body_json
+    target: body_json
     assert:
       std.logic.eq:
       - std.object.get:
@@ -267,7 +267,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -300,7 +300,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -335,7 +335,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -370,7 +370,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -424,13 +424,13 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
   - id: assert_2
-    'on': steps_json
+    target: steps_json
     assert:
       std.logic.eq:
       - std.collection.len:
@@ -474,7 +474,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': context_json
+    target: context_json
     assert:
     - std.logic.eq:
       - std.object.get:
@@ -527,7 +527,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -570,7 +570,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -614,7 +614,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}
@@ -662,7 +662,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': status
+    target: status
     assert:
       std.string.contains:
       - {var: subject}

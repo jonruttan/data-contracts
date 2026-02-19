@@ -311,8 +311,8 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             if "asserts" in step and "assert" not in step:
                 step["assert"] = step.pop("asserts")
                 changed = True
-            if "target" in step and "on" not in step:
-                step["on"] = step.pop("target")
+            if "on" in step and "target" not in step:
+                step["target"] = step.pop("on")
                 changed = True
             raw_assert = step.get("assert")
             if isinstance(raw_assert, list):
@@ -356,16 +356,16 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             if "asserts" in step and "assert" not in step:
                 step["assert"] = step.pop("asserts")
                 changed = True
-            if "target" in step and "on" not in step:
-                step["on"] = step.pop("target")
+            if "on" in step and "target" not in step:
+                step["target"] = step.pop("on")
                 changed = True
             step_id = str(step.get("id", "")).strip() or f"step_{idx+1:03d}"
             step_class = str(step.get("class", "MUST")).strip() or "MUST"
             out_step: dict[str, Any] = {"id": step_id}
             if step_class != "MUST":
                 out_step["class"] = step_class
-            if "on" in step:
-                out_step["on"] = step.get("on")
+            if "target" in step:
+                out_step["target"] = step.get("target")
             raw_assert = step.get("assert")
             if isinstance(raw_assert, list):
                 norm_asserts_v1: list[Any] = []
@@ -1331,14 +1331,14 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
                 message="v1 step key asserts is forbidden; use assert",
                 fixable=True,
             )
-        if "target" in step:
+        if "on" in step:
             _append_issue(
                 issues,
                 path=path,
                 case_id=case_id,
-                field=f"contract.steps[{idx}].target",
+                field=f"contract.steps[{idx}].on",
                 code="SLINT027",
-                message="v1 step key target is forbidden; use on",
+                message="contract step key on is forbidden; use target",
                 fixable=True,
             )
         class_name = str(step.get("class", "MUST")).strip() or "MUST"

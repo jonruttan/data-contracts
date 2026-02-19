@@ -15,7 +15,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - std.math.add:
@@ -59,7 +59,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - std.type.json_type:
@@ -103,7 +103,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - ops.fs.path.normalize:
@@ -158,7 +158,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - ops.fs.file.exists:
@@ -227,7 +227,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - ops.fs.json.parse:
@@ -300,7 +300,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.eq:
       - ops.fs.json.get:
@@ -330,7 +330,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - ops.fs.glob.match:
@@ -382,7 +382,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.eq:
       - ops.fs.glob.any:
@@ -413,7 +413,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - ops.fs.path.relativize:
@@ -460,7 +460,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.eq:
       - ops.fs.path.common_prefix:
@@ -490,7 +490,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - ops.fs.path.parents:
@@ -544,7 +544,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.eq:
       - ops.fs.path.parents:
@@ -572,7 +572,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - ops.fs.path.compare:
@@ -617,7 +617,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.logic.eq:
       - ops.fs.path.sort:

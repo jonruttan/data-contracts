@@ -28,13 +28,13 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': violation_count
+    target: violation_count
     assert:
       std.logic.eq:
       - {var: subject}
       - 0
   - id: assert_2
-    'on': summary_json
+    target: summary_json
     assert:
     - std.logic.eq:
       - std.object.get:

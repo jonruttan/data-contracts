@@ -23,7 +23,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': summary_json
+    target: summary_json
     assert:
       std.logic.eq:
       - std.object.get:

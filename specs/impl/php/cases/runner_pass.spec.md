@@ -16,7 +16,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.contains:
       - {var: subject}
@@ -43,7 +43,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.contains:
       - {var: subject}
@@ -72,7 +72,7 @@ contract:
   steps:
   - id: assert_1
     class: MAY
-    'on': text
+    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -111,7 +111,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': stdout
+    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
@@ -144,7 +144,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': stdout
+    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
@@ -175,7 +175,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': stdout
+    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
@@ -206,7 +206,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': stdout
+    target: stdout
     assert:
       std.type.json_type:
       - std.json.parse:
@@ -238,7 +238,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': stderr
+    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
@@ -269,13 +269,13 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': stdout_path
+    target: stdout_path
     assert:
       std.string.contains:
       - {var: subject}
       - path_target.txt
   - id: assert_2
-    'on': stdout_path_text
+    target: stdout_path_text
     assert:
       std.string.contains:
       - {var: subject}

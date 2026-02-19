@@ -204,7 +204,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - call:
       - {var: policy.metric_non_decrease}

@@ -40,7 +40,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.logic.eq:
       - call:
@@ -266,7 +266,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - call:
       - {var: make.has_target}

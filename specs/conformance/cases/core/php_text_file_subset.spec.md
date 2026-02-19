@@ -16,7 +16,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.contains:
       - {var: subject}
@@ -43,7 +43,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.regex_match:
       - {var: subject}
@@ -70,7 +70,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.contains:
       - {var: subject}
@@ -98,7 +98,7 @@ contract:
   steps:
   - id: assert_1
     class: MAY
-    'on': text
+    target: text
     assert:
     - std.string.regex_match:
       - {var: subject}
@@ -129,7 +129,7 @@ contract:
   steps:
   - id: assert_1
     class: MAY
-    'on': text
+    target: text
     assert:
     - std.string.regex_match:
       - {var: subject}
@@ -160,7 +160,7 @@ contract:
   steps:
   - id: assert_1
     class: MUST_NOT
-    'on': text
+    target: text
     assert:
     - std.string.regex_match:
       - {var: subject}
@@ -191,7 +191,7 @@ contract:
   steps:
   - id: assert_1
     class: MUST_NOT
-    'on': text
+    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -222,7 +222,7 @@ contract:
   steps:
   - id: assert_1
     class: MAY
-    'on': text
+    target: text
     assert:
     - std.string.regex_match:
       - {var: subject}
@@ -232,7 +232,7 @@ contract:
       - 'version: 1'
   - id: assert_2
     class: MUST_NOT
-    'on': text
+    target: text
     assert:
       std.string.regex_match:
       - {var: subject}
@@ -262,7 +262,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.regex_match:
       - {var: subject}
@@ -292,7 +292,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.contains:
       - {var: subject}
@@ -322,7 +322,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.regex_match:
       - {var: subject}
@@ -355,7 +355,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -389,7 +389,7 @@ contract:
   steps:
   - id: assert_1
     class: MAY
-    'on': text
+    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -421,7 +421,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.contains:
       - {var: subject}

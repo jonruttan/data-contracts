@@ -35,7 +35,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': violation_count
+    target: violation_count
     assert:
       std.logic.eq:
       - {var: subject}

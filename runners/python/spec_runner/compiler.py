@@ -290,7 +290,7 @@ def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
         out.append(
             {
                 "class": "MUST",
-                "on": "violation_count",
+                "target": "violation_count",
                 "assert": {
                     "std.logic.eq": [
                         {"var": "subject"},
@@ -303,7 +303,7 @@ def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
         out.append(
             {
                 "class": "MUST",
-                "on": "status",
+                "target": "status",
                 "assert": {
                     "std.logic.eq": [
                         {"var": "subject"},
@@ -318,7 +318,7 @@ def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
             out.append(
                 {
                     "class": "MUST",
-                    "on": "summary_json",
+                    "target": "summary_json",
                     "assert": {
                         "std.logic.eq": [
                             {
@@ -342,7 +342,11 @@ def _normalize_contract_steps(raw_assert: Any, *, raw_expect: Any, assert_path: 
         defaults_raw = raw_assert.get("defaults")
         defaults = defaults_raw if isinstance(defaults_raw, dict) else {}
         default_class = str(defaults.get("class", "MUST")).strip() or "MUST"
-        default_on = str(defaults.get("on", "")).strip() or None
+        default_target = (
+            str(defaults.get("target", "")).strip()
+            or str(defaults.get("on", "")).strip()
+            or None
+        )
         if default_class not in {"MUST", "MAY", "MUST_NOT"}:
             raise ValueError(f"{assert_path}.defaults.class must be one of: MUST, MAY, MUST_NOT")
         raw_steps = raw_assert.get("steps")
@@ -362,7 +366,11 @@ def _normalize_contract_steps(raw_assert: Any, *, raw_expect: Any, assert_path: 
             if step_class not in {"MUST", "MAY", "MUST_NOT"}:
                 raise ValueError(f"{assert_path}.steps[{idx}].class must be one of: MUST, MAY, MUST_NOT")
             step_id = str(raw_step.get("id", "")).strip() or f"step_{idx + 1:03d}"
-            step_target = str(raw_step.get("on", "")).strip() or default_on
+            step_target = (
+                str(raw_step.get("target", "")).strip()
+                or str(raw_step.get("on", "")).strip()
+                or default_target
+            )
             if "assert" not in raw_step:
                 raise ValueError(f"{assert_path}.steps[{idx}].assert is required")
             checks = _normalize_step_assert_list(raw_step.get("assert"), step_path=f"{assert_path}.steps[{idx}]")

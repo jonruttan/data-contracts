@@ -25,7 +25,7 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    'on': text
+    target: text
     assert:
       std.string.regex_match:
       - {var: subject}
