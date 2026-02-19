@@ -82,9 +82,9 @@ Follow `/specs/contract/26_review_output_contract.md` exactly.
 
 Use EXACT top-level section order and titles:
 
-1. `## Repo Intent Summary`
+1. `## Scope Notes`
 2. `## Command Execution Log`
-3. `## Persona Findings`
+3. `## Findings`
 4. `## Synthesis`
 5. `## Spec Candidates (YAML)`
 6. `## Classification Labels`
@@ -96,7 +96,7 @@ Use EXACT top-level section order and titles:
 Use a markdown table with columns:
 `command | status | exit_code | stdout_stderr_summary`
 
-### `## Persona Findings` format
+### `## Findings` format
 
 Subsection per persona in fixed order:
 - `### <persona>`

@@ -146,6 +146,38 @@ run_rust_subcommand() {
   "${RUST_CLI_BIN}" "${cmd}" "$@"
 }
 
+run_rust_subcommand_with_retry() {
+  local cmd="$1"
+  local attempts="$2"
+  shift 2
+
+  if [[ ! "${attempts}" =~ ^[0-9]+$ ]] || [[ "${attempts}" -lt 1 ]]; then
+    echo "ERROR: invalid retry attempt count '${attempts}' for ${cmd}; expected integer >= 1" >&2
+    return 2
+  fi
+
+  local attempt=1
+  local exit_code=0
+  while (( attempt <= attempts )); do
+    if run_rust_subcommand "${cmd}" "$@"; then
+      return 0
+    fi
+    exit_code=$?
+    if [[ "${exit_code}" -ge 128 ]] && (( attempt < attempts )); then
+      echo "WARN: transient ${cmd} termination (exit ${exit_code}) on attempt ${attempt}/${attempts}; retrying." >&2
+      attempt=$((attempt + 1))
+      sleep 1
+      continue
+    fi
+    break
+  done
+
+  if [[ "${exit_code}" -ge 128 ]]; then
+    echo "ERROR: ${cmd} terminated by signal-like exit code ${exit_code}. Set SPEC_RUNNER_DEBUG=1 for more context and retry." >&2
+  fi
+  return "${exit_code}"
+}
+
 exec_rust_subcommand() {
   local cmd="$1"
   shift
@@ -303,7 +335,7 @@ esac
 
 case "${subcommand}" in
   governance)
-    run_rust_subcommand "${subcommand}" "$@"
+    run_rust_subcommand_with_retry "${subcommand}" "${SPEC_RUNNER_RETRY_GOVERNANCE_ATTEMPTS:-2}" "$@"
     ;;
   governance-heavy)
     run_with_timeout_env \
