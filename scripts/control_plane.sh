@@ -36,7 +36,7 @@ check_required_files() {
 }
 
 check_no_runtime_runner_execution() {
-  local pattern='runners/public/runner_adapter\.sh --impl'
+  local pattern='scripts/runner_bin\.sh'
   if rg -n "${pattern}" .github/workflows/ci.yml scripts/ci_gate.sh scripts/core_gate.sh scripts/local_ci_parity.sh Makefile >/dev/null; then
     echo "runtime runner execution references are forbidden in control-plane CI surfaces" >&2
     rg -n "${pattern}" .github/workflows/ci.yml scripts/ci_gate.sh scripts/core_gate.sh scripts/local_ci_parity.sh Makefile || true

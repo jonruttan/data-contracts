@@ -14,7 +14,7 @@
 - Governance policy model and check-set declarations under `specs/governance`
 - Narrative documentation under `docs/`
 - Rust runner lock and resolver (`specs/schema/dc_runner_rust_lock_v1.yaml`, `scripts/runner_bin.sh`)
-- Public compatibility adapter entrypoint (`runners/public/runner_adapter.sh`)
+- Public compatibility adapter entrypoint (`scripts/runner_bin.sh`)
 
 ### dc-runner-rust
 - Rust adapter and CLI implementation

@@ -30,7 +30,7 @@ Bring a new contributor to first successful local validation in the required lan
 
 - clean checkout
 - shell with `bash`, `git`, and Rust toolchain available
-- access to `./runners/public/runner_adapter.sh`
+- access to `./scripts/runner_bin.sh`
 
 ## Outputs
 
@@ -62,6 +62,6 @@ git status --short
 
 | Signature | Likely Cause | Action |
 | --- | --- | --- |
-| `unknown command` from runner adapter | stale shell path or adapter invocation typo | run exactly from repo root with `./runners/public/runner_adapter.sh` |
+| `unknown command` from runner binary | stale command path or invocation typo | run exactly from repo root with `./scripts/runner_bin.sh` |
 | docs freshness drift | generated references stale | run `./scripts/docs_generate_all.py --build` then re-check |
 | governance check id violation | contract/docs mismatch | open referenced contract and align doc content |

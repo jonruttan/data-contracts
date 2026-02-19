@@ -24,7 +24,7 @@ profiles:
         kind: file_tokens
         path: /.github/workflows/ci.yml
         must_not_contain:
-          - runners/public/runner_adapter.sh --impl
+          - scripts/runner_bin.sh
       - id: runtime.compatibility_status_freshness_within_slo
         kind: file_tokens
         path: /scripts/runner_status_ingest.sh

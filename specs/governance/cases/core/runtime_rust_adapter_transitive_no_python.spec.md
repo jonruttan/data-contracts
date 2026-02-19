@@ -15,7 +15,7 @@ harness:
     - dc-runner-rust
     - dc-runner-rust
     forbidden_tokens:
-    - runners/public/runner_adapter.sh
+    - scripts/runner_bin.sh
     - spec_runner.spec_lang_commands
     - PYTHONPATH
     - python

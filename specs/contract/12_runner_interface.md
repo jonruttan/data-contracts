@@ -23,7 +23,7 @@ Runtime execution ownership lives in runner repositories:
 
 The public command boundary remains:
 
-- `runners/public/runner_adapter.sh`
+- `scripts/runner_bin.sh`
 
 This boundary is retained for compatibility, but control-plane CI in this repo
 must not depend on runtime-lane execution through that boundary.

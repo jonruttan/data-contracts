@@ -54,4 +54,4 @@ if [[ "${#PATHS[@]}" -gt 0 ]]; then
   ARGS+=("--paths" "${PATHS_CSV}")
 fi
 
-exec ./runners/public/runner_adapter.sh --impl rust migrate-contract-step-imports-v1 "${ARGS[@]}"
+exec ./scripts/runner_bin.sh migrate-contract-step-imports-v1 "${ARGS[@]}"

@@ -1120,7 +1120,7 @@ links:
   - dc-runner-python
   - specs/governance/cases/core/runtime_runner_interface_gate_sync.spec.md
   - scripts/ci_gate.sh
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - dc-runner-python
   notes: Governance enforces runner-interface boundary usage in gate shell scripts.
 - rule_id: RUNTIME_LOCAL_CI_PARITY_PYTHON_LANE_FORBIDDEN
@@ -1785,7 +1785,7 @@ links:
   implementation_refs:
   - scripts/objective_scorecard_report.py
   - dc-runner-python
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - dc-runner-python
   - specs/governance/cases/core/objective_scorecard_metric.spec.md
   notes: Objective scorecard is generated as JSON/Markdown artifact.
@@ -1933,7 +1933,7 @@ links:
   - dc-runner-python
   implementation_refs:
   - scripts/normalize_repo.py
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - dc-runner-python
   - Makefile
   notes: Normalize check is included in smoke/full gate command paths.
@@ -1982,7 +1982,7 @@ links:
   - dc-runner-python
   implementation_refs:
   - scripts/normalize_repo.py
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - Makefile
   - specs/governance/cases/core/normalization_spec_style_sync.spec.md
   notes: Explicit normalize-fix path is available for local authoring.
@@ -2292,7 +2292,7 @@ links:
   - scripts/docs_doctor.sh
   - dc-runner-python
   - specs/governance/cases/core/runtime_public_runner_entrypoint_single.spec.md
-  notes: Gate scripts must reference runners/public/runner_adapter.sh as the single public
+  notes: Gate scripts must reference scripts/runner_bin.sh as the single public
     runner entrypoint.
 - rule_id: RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
@@ -2305,7 +2305,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - dc-runner-python
   - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Canonical runner adapter defaults to rust implementation mode.
@@ -2319,7 +2319,7 @@ links:
   unit_test_refs:
   - dc-runner-python
   implementation_refs:
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - dc-runner-python
   - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Runtime runner adapter rejects python impl selection with migration guidance.
@@ -2594,7 +2594,7 @@ links:
   - dc-runner-python
   implementation_refs:
   - scripts/docs_generate_all.py
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - dc-runner-python
   - dc-runner-rust
   notes: Ensures a single docs generation orchestrator command path.

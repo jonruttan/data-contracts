@@ -21,7 +21,7 @@ harness:
     - compatibility lanes
     - non-blocking
     forbidden_tokens:
-    - SPEC_RUNNER_IMPL=python ./scripts/core_gate.sh
+    - ./scripts/core_gate.sh
   check:
     profile: governance.scan
     config:

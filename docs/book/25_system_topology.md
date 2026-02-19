@@ -49,7 +49,7 @@ Show the canonical topology of specification surfaces, governance, docs, and run
 flowchart TB
   A[specs/schema] --> D[specs/contract]
   D --> E[specs/governance]
-  E --> F[runners/public/runner_adapter.sh]
+  E --> F[scripts/runner_bin.sh]
   E --> G[docs/book narrative]
   E --> H[docs/book generated references]
 ```

@@ -747,7 +747,7 @@ rules:
   applies_to: runtime.default_gate.adapter
   norm: MUST
   requirement: default_gate_scripts_set_public_runner_adapter_as_default_runner_bin
-  description: 'Default gate scripts must set SPEC_RUNNER_BIN to runners/public/runner_adapter.sh
+  description: 'Default gate scripts must set SPEC_RUNNER_BIN to scripts/runner_bin.sh
     when not explicitly overridden.
 
     '
@@ -1129,7 +1129,7 @@ rules:
   risk_if_violated: Removing Python requires rewriting gate orchestration logic.
   references:
   - specs/contract/12_runner_interface.md
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - scripts/ci_gate.sh
   - scripts/core_gate.sh
   - scripts/docs_doctor.sh
@@ -1153,9 +1153,9 @@ rules:
   scope: governance
   applies_to: runtime.runner_interface.rust_adapter
   norm: MUST
-  requirement: rust_adapter_invokes_rust_cli_without_delegating_to_shell_python_adapter
-  description: 'The Rust adapter script must invoke the Rust runner-interface CLI
-    directly and must not delegate to runners/public/runner_adapter.sh.
+  requirement: rust_runner_binary_executes_without_shell_adapter_delegation
+  description: 'The Rust runner binary must execute runner-interface commands directly
+    without shell adapter delegation.
 
     '
   rationale: Ensures the Rust lane validates real adapter behavior instead of shell
@@ -1170,8 +1170,7 @@ rules:
   applies_to: runtime.required_lane_primary.ci_lane
   norm: MUST
   requirement: rust_primary_ci_lane_executes_core_gate_via_runner_interface
-  description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh
-    and SPEC_RUNNER_IMPL=rust.
+  description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN=./scripts/runner_bin.sh.
 
     '
   rationale: Makes Rust-primary operation continuously verifiable in automation.
@@ -1361,7 +1360,7 @@ rules:
   applies_to: runtime.runner_interface.public_entrypoint
   norm: MUST
   requirement: gate_scripts_use_single_public_runner_entrypoint
-  description: 'Gate shell scripts must reference runners/public/runner_adapter.sh as the
+  description: 'Gate shell scripts must reference scripts/runner_bin.sh as the
     single public runner entrypoint.
 
     '
@@ -1375,9 +1374,9 @@ rules:
   scope: governance
   applies_to: runtime.runner_interface.default_mode
   norm: MUST
-  requirement: public_runner_entrypoint_defaults_to_rust
-  description: 'runners/public/runner_adapter.sh must default to rust mode unless impl is
-    explicitly selected.
+  requirement: public_runner_entrypoint_targets_rust_runner_binary
+  description: 'scripts/runner_bin.sh must resolve and execute the Rust runner
+    binary as the required lane.
 
     '
   rationale: Enforces implementation-agnostic behavior without changing the public command surface.
@@ -2227,7 +2226,7 @@ rules:
     checks.
   references:
   - scripts/normalize_repo.py
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - dc-runner-python
 - id: NORMALIZATION_MAPPING_AST_ONLY
   introduced_in: v1
@@ -2276,7 +2275,7 @@ rules:
   risk_if_violated: Teams rely on manual ad-hoc rewrites and drift accumulates.
   references:
   - Makefile
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - scripts/normalize_repo.py
   - specs/governance/cases/core/normalization_spec_style_sync.spec.md
 - id: NORMALIZATION_VIRTUAL_ROOT_PATHS_ONLY
@@ -2867,7 +2866,7 @@ rules:
   risk_if_violated: Divergent command paths produce inconsistent artifacts.
   references:
   - scripts/docs_generate_all.py
-  - runners/public/runner_adapter.sh
+  - scripts/runner_bin.sh
   - specs/governance/cases/core/docs_generator_outputs_sync.spec.md
 - id: DOCS_GENERATED_SURFACES_SYNC_REQUIRED
   introduced_in: v1

@@ -71,7 +71,7 @@ surfaces:
 - surface_id: runner_api_catalog
   source_type: code_scan
   inputs:
-  - /runners/public/runner_adapter.sh
+  - /scripts/runner_bin.sh
   - /dc-runner-python
   - /specs/schema/dc_runner_rust_lock_v1.yaml
   outputs:

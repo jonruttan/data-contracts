@@ -6,7 +6,7 @@
 id: DCGOV-RUNTIME-CONFIG-006
 title: rust adapter does not delegate to python shell adapter
 purpose: Ensures dc-runner-rust invokes the Rust CLI directly and does not
-  call runners/public/runner_adapter.sh.
+  call scripts/runner_bin.sh.
 type: contract.check
 harness:
   root: .
@@ -16,7 +16,7 @@ harness:
     - spec_runner_cli
     - cargo run --quiet
     forbidden_tokens:
-    - runners/public/runner_adapter.sh
+    - scripts/runner_bin.sh
   check:
     profile: governance.scan
     config:

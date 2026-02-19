@@ -16,7 +16,7 @@ harness:
     - /scripts/core_gate.sh
     - /scripts/local_ci_parity.sh
     forbidden_tokens:
-    - runners/public/runner_adapter.sh --impl
+    - scripts/runner_bin.sh
   check:
     profile: governance.scan
     config:
