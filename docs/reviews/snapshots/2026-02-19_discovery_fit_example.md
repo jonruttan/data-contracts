@@ -36,6 +36,7 @@ Runner lane: rust|required
 |---|---|---|---|---|---|---|
 | P2 | Verified | README.md:1 | Entry point clarity is adequate for first-run | Discovery starts with README and command examples | Onboarding analysis | Keep Rust-first quick path explicit |
 | P2 | Verified | docs/reviews/README.md:1 | Discovery workflow needed explicit scaffold/validate/convert steps | Without explicit sequence, reviewers diverge in output quality | During recurring review runs | Document discovery workflow commands |
+| P3 | Verified | docs/reviews/README.md:31 | Snapshot conversion should explicitly require synthesis completeness | Weak synthesis content can produce low-quality pending candidates even when snapshot format validates | Before review_to_pending conversion | Add checklist item requiring target profile, entrypoint trace, fit scores, and fit verdict |
 
 ## Synthesis
 
@@ -86,6 +87,17 @@ Runner lane: rust|required
   affected_paths:
   - /specs/governance/cases/core/docs_reviews_discovery_workflow_sync.spec.md
   risk: low
+- id: DISCOVERY-CANDIDATE-004
+  title: Require discovery synthesis completeness before pending conversion
+  type: contract.check
+  class: MAY
+  target_area: docs.reviews
+  acceptance_criteria:
+  - docs/reviews README requires synthesis fields before review_to_pending conversion.
+  affected_paths:
+  - /docs/reviews/README.md
+  - /specs/governance/cases/core/docs_reviews_discovery_workflow_sync.spec.md
+  risk: low
 ```
 
 ## Classification Labels
@@ -93,6 +105,7 @@ Runner lane: rust|required
 - `DISCOVERY-CANDIDATE-001`: docs
 - `DISCOVERY-CANDIDATE-002`: docs
 - `DISCOVERY-CANDIDATE-003`: tooling
+- `DISCOVERY-CANDIDATE-004`: docs
 
 ## Reject / Defer List
 

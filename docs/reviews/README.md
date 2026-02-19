@@ -33,6 +33,7 @@ Discovery-fit workflow:
 2. Run discovery prompt and record output in the generated snapshot.
 3. Validate snapshot:
    - `python -m spec_runner.spec_lang_commands review-validate --snapshot docs/reviews/snapshots/<snapshot>.md`
+   - ensure `## Synthesis` includes `target_problem_profile`, `entrypoint_trace_summary`, `fit_scores`, and `fit_verdict`.
 4. Convert to pending artifact:
    - `python -m spec_runner.review_to_pending docs/reviews/snapshots/<snapshot>.md`
    - output: `specs/governance/pending/<snapshot>-pending.md`

@@ -20,10 +20,10 @@ Installable CLI entrypoints exposed by packaging metadata:
 ## Run Checks
 
 ```sh
-./runners/public/runner_adapter.sh critical-gate
-./runners/public/runner_adapter.sh ci-gate-summary --runner-bin ./runners/public/runner_adapter.sh --runner-impl rust --changed-paths-file .artifacts/changed_paths.txt --write-summary .artifacts/gate-summary.json --write-markdown .artifacts/gate-summary.md
-./runners/public/runner_adapter.sh style-check
-./runners/public/runner_adapter.sh docs-lint
+./runners/public/runner_adapter.sh --impl rust critical-gate
+./runners/public/runner_adapter.sh --impl rust ci-gate-summary --runner-bin ./runners/public/runner_adapter.sh --runner-impl rust --changed-paths-file .artifacts/changed_paths.txt --write-summary .artifacts/gate-summary.json --write-markdown .artifacts/gate-summary.md
+./runners/public/runner_adapter.sh --impl rust style-check
+./runners/public/runner_adapter.sh --impl rust docs-lint
 ```
 
 Compatibility lanes (non-blocking telemetry):
@@ -91,14 +91,14 @@ cargo build --manifest-path runners/rust/spec_runner_cli/Cargo.toml
 ## Run Core Gate Checks
 
 ```sh
-./runners/public/runner_adapter.sh governance
-./runners/public/runner_adapter.sh style-check
-./runners/public/runner_adapter.sh conformance-purpose-json
-./runners/public/runner_adapter.sh conformance-purpose-md
-./runners/public/runner_adapter.sh conformance-parity
-./runners/public/runner_adapter.sh python-dependency-json
-./runners/public/runner_adapter.sh python-dependency-md
-./runners/public/runner_adapter.sh test-full
+./runners/public/runner_adapter.sh --impl rust governance
+./runners/public/runner_adapter.sh --impl rust style-check
+./runners/public/runner_adapter.sh --impl rust conformance-purpose-json
+./runners/public/runner_adapter.sh --impl rust conformance-purpose-md
+./runners/public/runner_adapter.sh --impl rust conformance-parity
+./runners/public/runner_adapter.sh --impl rust python-dependency-json
+./runners/public/runner_adapter.sh --impl rust python-dependency-md
+./runners/public/runner_adapter.sh --impl rust test-full
 ```
 
 Canonical pre-merge check:
@@ -273,7 +273,7 @@ Local equivalent:
 ## Contract Governance Check (via Governance Specs)
 
 ```sh
-./runners/public/runner_adapter.sh governance
+./runners/public/runner_adapter.sh --impl rust governance
 ```
 
 ## Lint
