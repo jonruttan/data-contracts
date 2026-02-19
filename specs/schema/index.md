@@ -17,6 +17,7 @@ Canonical schema sources for executable `contract-spec` documents.
 ## Generated and Machine Artifacts
 
 - `/specs/schema/spec_lang_stdlib_profile_v1.yaml`
+- `/specs/schema/runner_certification_registry_v1.yaml`
 - `/specs/schema/normalization_profile_v1.yaml`
 - `/specs/schema/subject_profiles_v1.yaml`
 - `/specs/schema/run_trace_v1.yaml`

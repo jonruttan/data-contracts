@@ -37,6 +37,7 @@ harness:
     - docs-lint
     - docs-graph
     - conformance-parity
+    - runner-certify
     - test-core
     - test-full
   check:

@@ -704,6 +704,615 @@ fn run_tests_native(root: &Path, forwarded: &[String]) -> i32 {
     }
 }
 
+fn yaml_map_get<'a>(map: &'a serde_yaml::Mapping, key: &str) -> Option<&'a YamlValue> {
+    map.get(&YamlValue::String(key.to_string()))
+}
+
+fn yaml_as_non_empty_string(node: Option<&YamlValue>, field: &str) -> Result<String, String> {
+    let Some(value) = node else {
+        return Err(format!("missing required field: {field}"));
+    };
+    let Some(raw) = value.as_str() else {
+        return Err(format!("invalid field type for {field}: expected string"));
+    };
+    let trimmed = raw.trim();
+    if trimmed.is_empty() {
+        return Err(format!("invalid empty field: {field}"));
+    }
+    Ok(trimmed.to_string())
+}
+
+fn yaml_as_string_list(node: Option<&YamlValue>, field: &str) -> Result<Vec<String>, String> {
+    let Some(value) = node else {
+        return Ok(Vec::new());
+    };
+    let Some(items) = value.as_sequence() else {
+        return Err(format!("invalid field type for {field}: expected list"));
+    };
+    let mut out = Vec::new();
+    for (idx, item) in items.iter().enumerate() {
+        let Some(raw) = item.as_str() else {
+            return Err(format!("invalid {field}[{idx}]: expected string"));
+        };
+        let trimmed = raw.trim();
+        if trimmed.is_empty() {
+            return Err(format!("invalid {field}[{idx}]: empty string"));
+        }
+        out.push(trimmed.to_string());
+    }
+    Ok(out)
+}
+
+fn run_cert_command(root: &Path, command: &str, args: &[String]) -> i32 {
+    match command {
+        "governance" => run_governance_native(root, args),
+        "governance-heavy" => run_governance_heavy_native(root, args),
+        "style-check" => run_style_check_native(root, args),
+        "spec-lang-lint" => run_spec_lang_lint_native(root, args),
+        "spec-lang-format" => run_spec_lang_format_native(root, args),
+        "normalize-check" => run_normalize_mode(root, args, false),
+        "normalize-fix" => run_normalize_mode(root, args, true),
+        "schema-docs-check" => run_schema_docs_native(root, args, true),
+        "schema-docs-build" => run_schema_docs_native(root, args, false),
+        "lint" => run_lint_native(root, args),
+        "typecheck" => run_typecheck_native(root, args),
+        "compilecheck" => run_compilecheck_native(root, args),
+        "test-core" => run_tests_native(root, args),
+        "test-full" => run_tests_native(root, args),
+        "docs-generate-check" => run_job_for_command(root, "docs-generate-check", args),
+        "docs-generate" => run_job_for_command(root, "docs-generate", args),
+        "conformance-parity" => run_job_for_command(root, "conformance-parity", args),
+        "perf-smoke" => run_job_for_command(root, "perf-smoke", args),
+        "schema-registry-check" => run_job_for_command(root, "schema-registry-check", args),
+        "schema-registry-build" => run_job_for_command(root, "schema-registry-build", args),
+        "ci-gate-summary" => run_ci_gate_summary_native(root, args),
+        _ => 2,
+    }
+}
+
+fn run_runner_certify_native(root: &Path, forwarded: &[String]) -> i32 {
+    let mut runner_id = String::new();
+    let mut i = 0usize;
+    while i < forwarded.len() {
+        match forwarded[i].as_str() {
+            "--runner" => {
+                i += 1;
+                if i >= forwarded.len() {
+                    eprintln!("ERROR: --runner requires a value");
+                    return 2;
+                }
+                runner_id = forwarded[i].trim().to_string();
+            }
+            "--help" | "-h" => {
+                println!("usage: runner-certify --runner <id>");
+                return 0;
+            }
+            other => {
+                eprintln!("ERROR: unsupported argument for runner-certify: {other}");
+                return 2;
+            }
+        }
+        i += 1;
+    }
+    if runner_id.is_empty() {
+        eprintln!("ERROR: runner-certify requires --runner <id>");
+        return 2;
+    }
+
+    let registry_path = root.join("specs/schema/runner_certification_registry_v1.yaml");
+    let registry_text = match fs::read_to_string(&registry_path) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!(
+                "ERROR: failed to read runner certification registry {}: {e}",
+                registry_path.display()
+            );
+            return 2;
+        }
+    };
+    let registry_yaml: YamlValue = match serde_yaml::from_str(&registry_text) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!(
+                "ERROR: failed to parse runner certification registry {}: {e}",
+                registry_path.display()
+            );
+            return 2;
+        }
+    };
+    let registry_map = match registry_yaml.as_mapping() {
+        Some(m) => m,
+        None => {
+            eprintln!("ERROR: invalid registry root; expected mapping");
+            return 2;
+        }
+    };
+    let runners = match yaml_map_get(registry_map, "runners").and_then(|v| v.as_sequence()) {
+        Some(v) => v,
+        None => {
+            eprintln!("ERROR: runner certification registry missing runners list");
+            return 2;
+        }
+    };
+    let mut selected: Option<&serde_yaml::Mapping> = None;
+    for item in runners {
+        if let Some(map) = item.as_mapping() {
+            let rid = yaml_map_get(map, "runner_id")
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+                .trim()
+                .to_string();
+            if rid == runner_id {
+                selected = Some(map);
+                break;
+            }
+        }
+    }
+    let Some(entry) = selected else {
+        eprintln!("ERROR: unknown runner id for certification: {runner_id}");
+        return 2;
+    };
+
+    let runner_class = match yaml_as_non_empty_string(yaml_map_get(entry, "class"), "class") {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: invalid runner registry entry for {runner_id}: {e}");
+            return 2;
+        }
+    };
+    if runner_class != "required" && runner_class != "compatibility_non_blocking" {
+        eprintln!(
+            "ERROR: invalid runner class for {}: {} (expected required|compatibility_non_blocking)",
+            runner_id, runner_class
+        );
+        return 2;
+    }
+    let runner_status = match yaml_as_non_empty_string(yaml_map_get(entry, "status"), "status") {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: invalid runner registry entry for {runner_id}: {e}");
+            return 2;
+        }
+    };
+    if runner_status != "active" && runner_status != "planned" && runner_status != "retired" {
+        eprintln!(
+            "ERROR: invalid runner status for {}: {} (expected active|planned|retired)",
+            runner_id, runner_status
+        );
+        return 2;
+    }
+
+    let required_core_checks = match yaml_as_string_list(
+        yaml_map_get(entry, "required_core_checks"),
+        "required_core_checks",
+    ) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: invalid required_core_checks for {runner_id}: {e}");
+            return 2;
+        }
+    };
+    let required_core_cases = match yaml_as_string_list(
+        yaml_map_get(entry, "required_core_cases"),
+        "required_core_cases",
+    ) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: invalid required_core_cases for {runner_id}: {e}");
+            return 2;
+        }
+    };
+
+    let command_items = yaml_map_get(entry, "command_contract_subset")
+        .and_then(|v| v.as_sequence())
+        .cloned()
+        .unwrap_or_default();
+    let mut command_specs: Vec<(String, Vec<String>, Vec<i32>)> = Vec::new();
+    for (idx, item) in command_items.iter().enumerate() {
+        let Some(map) = item.as_mapping() else {
+            eprintln!(
+                "ERROR: invalid command_contract_subset[{idx}] for {runner_id}: expected mapping"
+            );
+            return 2;
+        };
+        let name = match yaml_as_non_empty_string(
+            yaml_map_get(map, "name"),
+            "command_contract_subset[].name",
+        ) {
+            Ok(v) => v,
+            Err(e) => {
+                eprintln!("ERROR: invalid command_contract_subset[{idx}] for {runner_id}: {e}");
+                return 2;
+            }
+        };
+        let args = match yaml_as_string_list(
+            yaml_map_get(map, "args"),
+            "command_contract_subset[].args",
+        ) {
+            Ok(v) => v,
+            Err(e) => {
+                eprintln!("ERROR: invalid command args for {runner_id}/{name}: {e}");
+                return 2;
+            }
+        };
+        let expect_exit = match yaml_map_get(map, "expect_exit").and_then(|v| v.as_sequence()) {
+            Some(seq) => {
+                let mut exits = Vec::new();
+                for (eidx, ev) in seq.iter().enumerate() {
+                    let Some(code) = ev.as_i64() else {
+                        eprintln!("ERROR: invalid expect_exit[{eidx}] for {runner_id}/{name}: expected integer");
+                        return 2;
+                    };
+                    exits.push(code as i32);
+                }
+                if exits.is_empty() {
+                    vec![0]
+                } else {
+                    exits
+                }
+            }
+            None => vec![0],
+        };
+        command_specs.push((name, args, expect_exit));
+    }
+
+    let artifact_contract =
+        match yaml_map_get(entry, "artifact_contract").and_then(|v| v.as_mapping()) {
+            Some(v) => v,
+            None => {
+                eprintln!("ERROR: missing artifact_contract for runner {runner_id}");
+                return 2;
+            }
+        };
+    let json_out_pat = match yaml_as_non_empty_string(
+        yaml_map_get(artifact_contract, "json_out"),
+        "artifact_contract.json_out",
+    ) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: invalid artifact contract for {runner_id}: {e}");
+            return 2;
+        }
+    };
+    let md_out_pat = match yaml_as_non_empty_string(
+        yaml_map_get(artifact_contract, "md_out"),
+        "artifact_contract.md_out",
+    ) {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("ERROR: invalid artifact contract for {runner_id}: {e}");
+            return 2;
+        }
+    };
+    let json_out_rel = json_out_pat
+        .replace("{runner}", &runner_id)
+        .trim_start_matches('/')
+        .to_string();
+    let md_out_rel = md_out_pat
+        .replace("{runner}", &runner_id)
+        .trim_start_matches('/')
+        .to_string();
+    if json_out_rel.is_empty() || md_out_rel.is_empty() {
+        eprintln!(
+            "ERROR: invalid artifact contract paths after substitution for runner {runner_id}"
+        );
+        return 2;
+    }
+    let json_out_path = root.join(&json_out_rel);
+    let md_out_path = root.join(&md_out_rel);
+    if let Some(parent) = json_out_path.parent() {
+        if let Err(e) = fs::create_dir_all(parent) {
+            eprintln!(
+                "ERROR: failed to create artifact directory {}: {e}",
+                parent.display()
+            );
+            return 1;
+        }
+    }
+    if let Some(parent) = md_out_path.parent() {
+        if let Err(e) = fs::create_dir_all(parent) {
+            eprintln!(
+                "ERROR: failed to create artifact directory {}: {e}",
+                parent.display()
+            );
+            return 1;
+        }
+    }
+
+    let mut check_results: Vec<Value> = Vec::new();
+    let mut passed = 0usize;
+    let mut failed = 0usize;
+    let mut skipped = 0usize;
+    let blocking = runner_class == "required" && runner_status == "active";
+
+    let mut push_result = |group: &str, id: &str, status: &str, exit_code: i32, detail: &str| {
+        match status {
+            "pass" => passed += 1,
+            "fail" => failed += 1,
+            _ => skipped += 1,
+        }
+        check_results.push(json!({
+            "group": group,
+            "id": id,
+            "status": status,
+            "exit_code": exit_code,
+            "detail": detail,
+        }));
+    };
+
+    push_result(
+        "contract",
+        "registry.entry.shape",
+        "pass",
+        0,
+        "runner certification registry entry parsed and validated",
+    );
+
+    if runner_status != "active" {
+        push_result(
+            "command",
+            "command.subset",
+            "skipped",
+            0,
+            "runner status is not active; command subset execution skipped",
+        );
+    } else if runner_id != "rust" {
+        push_result(
+            "command",
+            "command.subset",
+            "skipped",
+            0,
+            "non-rust lane certification is metadata-only in rust command path",
+        );
+    } else {
+        for (name, args, expected_exits) in &command_specs {
+            let code = run_cert_command(root, name, args);
+            if expected_exits.contains(&code) {
+                push_result(
+                    "command",
+                    &format!("command.{name}"),
+                    "pass",
+                    code,
+                    "command contract subset matched expected exit semantics",
+                );
+            } else {
+                push_result(
+                    "command",
+                    &format!("command.{name}"),
+                    "fail",
+                    code,
+                    &format!("unexpected exit code; expected one of {:?}", expected_exits),
+                );
+            }
+        }
+    }
+
+    if runner_status != "active" {
+        push_result(
+            "governance-sync",
+            "governance.required_core_checks",
+            "skipped",
+            0,
+            "runner status is not active; governance sync checks skipped",
+        );
+    } else if runner_id != "rust" {
+        push_result(
+            "governance-sync",
+            "governance.required_core_checks",
+            "skipped",
+            0,
+            "non-rust lane governance checks are non-blocking and not executed here",
+        );
+    } else {
+        for check_id in &required_core_checks {
+            let args = vec!["--check-id".to_string(), check_id.to_string()];
+            let code = run_governance_native(root, &args);
+            if code == 0 {
+                push_result(
+                    "governance-sync",
+                    &format!("governance.{check_id}"),
+                    "pass",
+                    code,
+                    "governance check passed",
+                );
+            } else {
+                push_result(
+                    "governance-sync",
+                    &format!("governance.{check_id}"),
+                    "fail",
+                    code,
+                    "governance check failed",
+                );
+            }
+        }
+    }
+
+    if runner_status != "active" {
+        push_result(
+            "conformance",
+            "conformance.required_core_cases",
+            "skipped",
+            0,
+            "runner status is not active; conformance subset skipped",
+        );
+    } else if runner_id != "rust" {
+        push_result(
+            "conformance",
+            "conformance.required_core_cases",
+            "skipped",
+            0,
+            "non-rust lane conformance checks are non-blocking and not executed here",
+        );
+    } else {
+        for spec_ref in &required_core_cases {
+            let (path_part, anchor_part) = match parse_spec_ref(spec_ref) {
+                Ok(v) => v,
+                Err(e) => {
+                    push_result(
+                        "conformance",
+                        &format!("spec.{spec_ref}"),
+                        "fail",
+                        1,
+                        &format!("invalid spec ref: {e}"),
+                    );
+                    continue;
+                }
+            };
+            let spec_path = root.join(path_part.trim_start_matches('/'));
+            if !spec_path.exists() {
+                push_result(
+                    "conformance",
+                    &format!("spec.{spec_ref}"),
+                    "fail",
+                    1,
+                    "required core case file not found",
+                );
+                continue;
+            }
+            let text = match fs::read_to_string(&spec_path) {
+                Ok(v) => v,
+                Err(e) => {
+                    push_result(
+                        "conformance",
+                        &format!("spec.{spec_ref}"),
+                        "fail",
+                        1,
+                        &format!("failed to read core case file: {e}"),
+                    );
+                    continue;
+                }
+            };
+            let anchor = anchor_part.unwrap_or_default();
+            if !anchor.is_empty() && !text.contains(&format!("id: {anchor}")) {
+                push_result(
+                    "conformance",
+                    &format!("spec.{spec_ref}"),
+                    "fail",
+                    1,
+                    "required core case id not found in case file",
+                );
+                continue;
+            }
+            if anchor.is_empty() {
+                push_result(
+                    "conformance",
+                    &format!("spec.{spec_ref}"),
+                    "skipped",
+                    0,
+                    "core case ref has no anchor; skipped executable certification check",
+                );
+                continue;
+            }
+            push_result(
+                "conformance",
+                &format!("spec.{spec_ref}"),
+                "pass",
+                0,
+                "required core case ref resolved",
+            );
+        }
+    }
+
+    let status = if failed == 0 { "pass" } else { "fail" };
+    let payload = json!({
+        "version": 1,
+        "runner": {
+            "runner_id": runner_id,
+            "class": runner_class,
+            "status": runner_status,
+            "blocking": blocking
+        },
+        "summary": {
+            "status": status,
+            "passed": passed,
+            "failed": failed,
+            "skipped": skipped,
+            "blocking": blocking
+        },
+        "checks": check_results
+    });
+
+    if let Err(e) = fs::write(
+        &json_out_path,
+        format!(
+            "{}\n",
+            serde_json::to_string_pretty(&payload).unwrap_or_else(|_| "{}".to_string())
+        ),
+    ) {
+        eprintln!(
+            "ERROR: failed writing certification JSON artifact {}: {e}",
+            json_out_path.display()
+        );
+        return 1;
+    }
+
+    let mut md = String::new();
+    md.push_str("# Runner Certification Report\n\n");
+    md.push_str(&format!(
+        "- runner_id: `{}`\n",
+        payload["runner"]["runner_id"]
+    ));
+    md.push_str(&format!("- class: `{}`\n", payload["runner"]["class"]));
+    md.push_str(&format!("- status: `{}`\n", payload["runner"]["status"]));
+    md.push_str(&format!(
+        "- blocking: `{}`\n",
+        payload["runner"]["blocking"]
+    ));
+    md.push_str(&format!(
+        "- summary.status: `{}`\n",
+        payload["summary"]["status"]
+    ));
+    md.push_str(&format!(
+        "- summary.passed: `{}`\n",
+        payload["summary"]["passed"]
+    ));
+    md.push_str(&format!(
+        "- summary.failed: `{}`\n",
+        payload["summary"]["failed"]
+    ));
+    md.push_str(&format!(
+        "- summary.skipped: `{}`\n\n",
+        payload["summary"]["skipped"]
+    ));
+    md.push_str("## Checks\n\n");
+    md.push_str("| group | id | status | exit_code | detail |\n");
+    md.push_str("|---|---|---:|---:|---|\n");
+    if let Some(rows) = payload.get("checks").and_then(|v| v.as_array()) {
+        for row in rows {
+            let group = row.get("group").and_then(|v| v.as_str()).unwrap_or("");
+            let id = row.get("id").and_then(|v| v.as_str()).unwrap_or("");
+            let row_status = row.get("status").and_then(|v| v.as_str()).unwrap_or("");
+            let exit_code = row.get("exit_code").and_then(|v| v.as_i64()).unwrap_or(0);
+            let detail = row.get("detail").and_then(|v| v.as_str()).unwrap_or("");
+            md.push_str(&format!(
+                "| `{}` | `{}` | `{}` | `{}` | {} |\n",
+                group, id, row_status, exit_code, detail
+            ));
+        }
+    }
+    if let Err(e) = fs::write(&md_out_path, md) {
+        eprintln!(
+            "ERROR: failed writing certification markdown artifact {}: {e}",
+            md_out_path.display()
+        );
+        return 1;
+    }
+
+    println!(
+        "OK: runner certification report written: {}",
+        json_out_path.display()
+    );
+    println!(
+        "OK: runner certification report written: {}",
+        md_out_path.display()
+    );
+    if failed == 0 {
+        0
+    } else {
+        1
+    }
+}
+
 fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
     match subcommand {
         "validate-report" => Some(
@@ -721,6 +1330,9 @@ fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
         "docs-build" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-009"),
         "docs-build-check" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-010"),
         "docs-graph" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-011"),
+        "runner-certify" => Some(
+            "/specs/impl/rust/jobs/runner_certification_jobs.spec.md#DCIMPL-RUST-JOB-CERT-001",
+        ),
         "spec-lang-stdlib-json" => Some(
             "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-017",
         ),
@@ -2964,6 +3576,7 @@ fn main() {
         "conformance-parity" => run_job_for_command(&root, "conformance-parity", &forwarded),
         "test-core" => run_tests_native(&root, &forwarded),
         "test-full" => run_tests_native(&root, &forwarded),
+        "runner-certify" => run_runner_certify_native(&root, &forwarded),
         _ => {
             eprintln!("ERROR: unsupported runner adapter subcommand: {subcommand}");
             2

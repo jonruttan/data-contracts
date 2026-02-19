@@ -33,6 +33,11 @@ Defines runtime lane classes and merge-blocking behavior.
 - New non-Rust lanes default to `compatibility_non_blocking`.
 - Promotion of a compatibility lane to `required` is an explicit policy/contract change.
 
+4. Certification registry
+- Runner certification metadata is canonical in `/specs/schema/runner_certification_registry_v1.yaml`.
+- Required lane certification must pass for `rust`.
+- Compatibility lane certification results are recorded but non-blocking by default.
+
 ## Documentation Contract
 
 - Active docs MUST present Rust-first command examples as canonical.

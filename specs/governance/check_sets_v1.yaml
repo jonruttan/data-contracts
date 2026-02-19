@@ -127,6 +127,20 @@ profiles:
           - '`php`'
           - '`node`'
           - '`c`'
+      - id: runtime.full_runner_certification_registry_registered
+        kind: file_tokens
+        path: /specs/schema/runner_certification_registry_v1.yaml
+        must_contain:
+          - runner_id: rust
+          - runner_id: python
+          - runner_id: php
+          - runner_id: node
+          - runner_id: c
+      - id: runtime.full_runner_certification_subcommand_declared
+        kind: file_tokens
+        path: /runners/rust/spec_runner_cli/src/main.rs
+        must_contain:
+          - '"runner-certify" => run_runner_certify_native'
       - id: schema.full_contract_imports_explicit_required
         kind: file_tokens
         path: /runners/python/spec_runner/governance_runtime.py

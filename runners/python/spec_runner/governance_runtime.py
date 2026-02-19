@@ -340,6 +340,7 @@ _CHAIN_REF_CASES_CACHE: dict[
 ] = {}
 _GLOBAL_SYMBOL_REFERENCES_CACHE: dict[tuple[int, str], set[str]] = {}
 _NORMALIZE_CHECK_CACHE: dict[tuple[int, str, str], tuple[int, list[str]]] = {}
+_RUNNER_CERTIFY_CACHE: dict[tuple[int, str, str], tuple[int, str]] = {}
 _SCAN_CACHE_LOCK = threading.RLock()
 
 
@@ -355,6 +356,7 @@ def _reset_scan_caches() -> None:
         _CHAIN_REF_CASES_CACHE.clear()
         _GLOBAL_SYMBOL_REFERENCES_CACHE.clear()
         _NORMALIZE_CHECK_CACHE.clear()
+        _RUNNER_CERTIFY_CACHE.clear()
 
 
 def load_external_cases(path: Path, *, formats: set[str] | None = None, md_pattern: str | None = None):
@@ -8154,6 +8156,242 @@ def _scan_runtime_compatibility_matrix_registration_required(
     return violations
 
 
+def _run_runner_certify_cached(root: Path, runner_id: str) -> tuple[int, str]:
+    key = (_SCAN_CACHE_TOKEN, str(root), runner_id)
+    with _SCAN_CACHE_LOCK:
+        cached = _RUNNER_CERTIFY_CACHE.get(key)
+    if cached is not None:
+        return cached
+    cmd = [
+        "./runners/public/runner_adapter.sh",
+        "--impl",
+        "rust",
+        "runner-certify",
+        "--runner",
+        runner_id,
+    ]
+    try:
+        cp = _profiled_subprocess_run(
+            cmd,
+            cwd=root,
+            phase="governance.runner_certify",
+        )
+    except LivenessError as exc:
+        result = (124, f"runner-certify --runner {runner_id} failed liveness watchdog: {exc.reason_token}")
+        with _SCAN_CACHE_LOCK:
+            _RUNNER_CERTIFY_CACHE[key] = result
+        return result
+    output = ((cp.stdout or "") + "\n" + (cp.stderr or "")).strip()
+    result = (int(cp.returncode), output)
+    with _SCAN_CACHE_LOCK:
+        _RUNNER_CERTIFY_CACHE[key] = result
+    return result
+
+
+def _scan_runtime_runner_certification_registry_valid(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("runner_certification")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.runner_certification_registry_valid requires harness.runner_certification mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_runner_ids = cfg.get("required_runner_ids", [])
+    if not path:
+        return ["harness.runner_certification.path must be a non-empty string"]
+    if (
+        not isinstance(required_runner_ids, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_runner_ids)
+    ):
+        return ["harness.runner_certification.required_runner_ids must be a list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing runner certification registry file"]
+    try:
+        payload = yaml.safe_load(p.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        return [f"{path}:1: invalid YAML ({exc})"]
+    if not isinstance(payload, dict):
+        return [f"{path}:1: expected mapping root"]
+    runners = payload.get("runners")
+    if not isinstance(runners, list) or not runners:
+        return [f"{path}:1: runners must be a non-empty list"]
+    seen: set[str] = set()
+    valid_classes = {"required", "compatibility_non_blocking"}
+    valid_status = {"active", "planned", "retired"}
+    for idx, item in enumerate(runners, start=1):
+        if not isinstance(item, dict):
+            violations.append(f"{path}:1: runners[{idx}] must be a mapping")
+            continue
+        rid = str(item.get("runner_id", "")).strip()
+        if not rid:
+            violations.append(f"{path}:1: runners[{idx}].runner_id required")
+            continue
+        if rid in seen:
+            violations.append(f"{path}:1: duplicate runner_id `{rid}`")
+        seen.add(rid)
+        clazz = str(item.get("class", "")).strip()
+        if clazz not in valid_classes:
+            violations.append(
+                f"{path}:1: runners[{idx}].class must be one of required|compatibility_non_blocking"
+            )
+        status = str(item.get("status", "")).strip()
+        if status not in valid_status:
+            violations.append(f"{path}:1: runners[{idx}].status must be one of active|planned|retired")
+        entrypoints = item.get("entrypoints")
+        if not isinstance(entrypoints, dict):
+            violations.append(f"{path}:1: runners[{idx}].entrypoints must be a mapping")
+        command_subset = item.get("command_contract_subset", [])
+        if not isinstance(command_subset, list):
+            violations.append(f"{path}:1: runners[{idx}].command_contract_subset must be a list")
+        artifact_contract = item.get("artifact_contract")
+        if not isinstance(artifact_contract, dict):
+            violations.append(f"{path}:1: runners[{idx}].artifact_contract must be a mapping")
+        else:
+            if not str(artifact_contract.get("json_out", "")).strip():
+                violations.append(f"{path}:1: runners[{idx}].artifact_contract.json_out required")
+            if not str(artifact_contract.get("md_out", "")).strip():
+                violations.append(f"{path}:1: runners[{idx}].artifact_contract.md_out required")
+    for rid in required_runner_ids:
+        if rid not in seen:
+            violations.append(f"{path}:1: missing required runner registry entry `{rid}`")
+    return violations
+
+
+def _scan_runtime_runner_certification_surfaces_sync(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("runner_certification_surfaces")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.runner_certification_surfaces_sync requires harness.runner_certification_surfaces mapping in governance spec"
+        ]
+    files = cfg.get("files", [])
+    required_tokens = cfg.get("required_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.runner_certification_surfaces.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return [
+            "harness.runner_certification_surfaces.required_tokens must be a non-empty list of non-empty strings"
+        ]
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing runner certification surface file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing runner certification token {tok}")
+    return violations
+
+
+def _scan_runtime_runner_certification_artifacts_contract_sync(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    code, output = _run_runner_certify_cached(root, "rust")
+    if code != 0:
+        msg = output or "runner-certify --runner rust failed"
+        return [msg]
+    json_path = root / ".artifacts/runner-certification-rust.json"
+    md_path = root / ".artifacts/runner-certification-rust.md"
+    violations: list[str] = []
+    if not json_path.exists():
+        violations.append(".artifacts/runner-certification-rust.json:1: certification JSON artifact missing")
+    else:
+        try:
+            payload = json.loads(json_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            violations.append(
+                f".artifacts/runner-certification-rust.json:{exc.lineno}: invalid JSON artifact"
+            )
+        else:
+            if not isinstance(payload, dict):
+                violations.append(".artifacts/runner-certification-rust.json:1: artifact must be JSON object")
+            else:
+                for key in ("runner", "summary", "checks"):
+                    if key not in payload:
+                        violations.append(
+                            f".artifacts/runner-certification-rust.json:1: missing artifact key `{key}`"
+                        )
+    if not md_path.exists():
+        violations.append(".artifacts/runner-certification-rust.md:1: certification markdown artifact missing")
+    return violations
+
+
+def _scan_runtime_runner_certification_required_lane_passes(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    code, output = _run_runner_certify_cached(root, "rust")
+    if code != 0:
+        return [output or "runner-certify --runner rust failed"]
+    json_path = root / ".artifacts/runner-certification-rust.json"
+    if not json_path.exists():
+        return [".artifacts/runner-certification-rust.json:1: certification artifact missing"]
+    try:
+        payload = json.loads(json_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [f".artifacts/runner-certification-rust.json:{exc.lineno}: invalid JSON artifact"]
+    runner = payload.get("runner") if isinstance(payload, dict) else None
+    summary = payload.get("summary") if isinstance(payload, dict) else None
+    violations: list[str] = []
+    if not isinstance(runner, dict) or runner.get("runner_id") != "rust":
+        violations.append(".artifacts/runner-certification-rust.json:1: runner_id must be rust")
+    if isinstance(runner, dict) and runner.get("blocking") is not True:
+        violations.append(".artifacts/runner-certification-rust.json:1: required rust lane must be blocking")
+    if not isinstance(summary, dict) or summary.get("status") != "pass":
+        violations.append(".artifacts/runner-certification-rust.json:1: required rust lane certification must pass")
+    return violations
+
+
+def _scan_runtime_runner_certification_compat_lanes_non_blocking(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    del harness
+    lanes = ("python", "php", "node", "c")
+    violations: list[str] = []
+    for lane in lanes:
+        code, output = _run_runner_certify_cached(root, lane)
+        if code not in (0, 1):
+            violations.append(output or f"runner-certify --runner {lane} failed with exit code {code}")
+            continue
+        json_path = root / f".artifacts/runner-certification-{lane}.json"
+        if not json_path.exists():
+            violations.append(f".artifacts/runner-certification-{lane}.json:1: certification artifact missing")
+            continue
+        try:
+            payload = json.loads(json_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            violations.append(f".artifacts/runner-certification-{lane}.json:{exc.lineno}: invalid JSON artifact")
+            continue
+        runner = payload.get("runner") if isinstance(payload, dict) else None
+        if not isinstance(runner, dict):
+            violations.append(f".artifacts/runner-certification-{lane}.json:1: missing runner metadata")
+            continue
+        if runner.get("class") != "compatibility_non_blocking":
+            violations.append(
+                f".artifacts/runner-certification-{lane}.json:1: runner class must be compatibility_non_blocking"
+            )
+        if runner.get("blocking") is True:
+            violations.append(f".artifacts/runner-certification-{lane}.json:1: compatibility lane must be non-blocking")
+    return violations
+
+
 def _scan_docs_compatibility_examples_labeled(
     root: Path, *, harness: dict | None = None
 ) -> list[str]:
@@ -10528,6 +10766,11 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.required_rust_lane_blocking_status": _scan_runtime_required_rust_lane_blocking_status,
     "runtime.compatibility_lanes_non_blocking_status": _scan_runtime_compatibility_lanes_non_blocking_status,
     "runtime.compatibility_matrix_registration_required": _scan_runtime_compatibility_matrix_registration_required,
+    "runtime.runner_certification_registry_valid": _scan_runtime_runner_certification_registry_valid,
+    "runtime.runner_certification_surfaces_sync": _scan_runtime_runner_certification_surfaces_sync,
+    "runtime.runner_certification_artifacts_contract_sync": _scan_runtime_runner_certification_artifacts_contract_sync,
+    "runtime.runner_certification_required_lane_passes": _scan_runtime_runner_certification_required_lane_passes,
+    "runtime.runner_certification_compat_lanes_non_blocking": _scan_runtime_runner_certification_compat_lanes_non_blocking,
     "runtime.make_python_parity_targets_forbidden": _scan_runtime_make_python_parity_targets_forbidden,
     "runtime.rust_only_prepush_required": _scan_runtime_rust_only_prepush_required,
     "runtime.prepush_parity_default_required": _scan_runtime_prepush_parity_default_required,

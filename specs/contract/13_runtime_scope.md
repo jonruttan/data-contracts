@@ -4,11 +4,13 @@ Defines the bounded cross-runtime scope for v1 to keep maintenance sustainable.
 
 ## Supported Runtimes (v1)
 
-- Python runner
-- PHP runner
+- Rust runner (required blocking lane)
+- Python runner (compatibility non-blocking lane)
+- PHP runner (compatibility non-blocking lane)
+- Node runner (planned compatibility non-blocking lane)
+- C runner (planned compatibility non-blocking lane)
 
-These are the only required conformance/parity runtimes for v1 readiness.
-The required support targets in v1 are exactly: Python runner, PHP runner.
+Rust is the only required support target for merge/release in v1.
 
 ## Scope Constraint
 

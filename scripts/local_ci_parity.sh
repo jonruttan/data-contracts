@@ -112,6 +112,7 @@ run_critical_gate() {
 
 lane_rust_core() {
   run_critical_gate
+  run_step runner-certify-rust "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" runner-certify --runner rust
 
   CHANGED_PATHS="$(collect_changed_paths || true)"
   if [[ -n "${CHANGED_PATHS}" ]]; then
@@ -200,6 +201,7 @@ lane_compatibility_matrix() {
   fi
   if [[ -n "${py_cmd}" ]]; then
     set +e
+    run_step compat-python-certify "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" runner-certify --runner python
     PYTHONPATH="${ROOT_DIR}/runners/python" run_step compat-python-governance "${py_cmd}" -m spec_runner.spec_lang_commands run-governance-specs --liveness-level basic
     PYTHONPATH="${ROOT_DIR}/runners/python" run_step compat-python-parity "${py_cmd}" -m spec_runner.spec_lang_commands compare-conformance-parity --python-only --cases specs/conformance/cases --out .artifacts/conformance-parity-python.json
     set -e
@@ -208,6 +210,7 @@ lane_compatibility_matrix() {
   fi
   if command -v php >/dev/null 2>&1; then
     set +e
+    run_step compat-php-certify "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" runner-certify --runner php
     run_step compat-php-conformance php runners/php/conformance_runner.php --cases specs/conformance/cases --case-formats md --out .artifacts/php-conformance-report.json
     set -e
   else

@@ -431,6 +431,7 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
                 hard_cap_ms=broad_liveness_hard_cap_ms,
             ),
         ),
+        ("runner_certify_rust", _runner_command(runner_bin, runner_impl, "runner-certify", "--runner", "rust")),
         ("docs_generate_check", _runner_command(runner_bin, runner_impl, "docs-generate-check")),
         ("docs_lint", _runner_command(runner_bin, runner_impl, "docs-lint")),
         ("normalize_check", _runner_command(runner_bin, runner_impl, "normalize-check")),

@@ -44,6 +44,7 @@ Provide a concise map from operational author guidance to normative schema/contr
 ## Normative Sources
 
 - `specs/schema/schema_v1.md`
+- `specs/schema/runner_certification_registry_v1.yaml`
 - `specs/contract/02_case_shape.md`
 - `specs/contract/03_assertions.md`
 - `specs/contract/03b_spec_lang_v1.md`

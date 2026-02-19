@@ -191,6 +191,11 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/runtime_python_bin_resolver_sync.spec.md`
 - `/specs/governance/cases/core/runtime_python_dependency_non_regression.spec.md`
 - `/specs/governance/cases/core/runtime_runner_adapter_python_impl_forbidden.spec.md`
+- `/specs/governance/cases/core/runtime_runner_certification_artifacts_contract_sync.spec.md`
+- `/specs/governance/cases/core/runtime_runner_certification_compat_lanes_non_blocking.spec.md`
+- `/specs/governance/cases/core/runtime_runner_certification_registry_valid.spec.md`
+- `/specs/governance/cases/core/runtime_runner_certification_required_lane_passes.spec.md`
+- `/specs/governance/cases/core/runtime_runner_certification_surfaces_sync.spec.md`
 - `/specs/governance/cases/core/runtime_runner_interface_gate_sync.spec.md`
 - `/specs/governance/cases/core/runtime_runner_interface_subcommands.spec.md`
 - `/specs/governance/cases/core/runtime_rust_adapter_no_delegate.spec.md`

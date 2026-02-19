@@ -33,6 +33,7 @@ Required subcommands:
 - `docs-generate`
 - `docs-generate-check`
 - `conformance-parity`
+- `runner-certify`
 - `test-core`
 - `test-full`
 - `job-run`
@@ -72,6 +73,7 @@ Compatibility matrix classing:
 - `python/php` are non-blocking compatibility lanes.
 - `node/c` are planned non-blocking compatibility lanes.
 - Normative matrix contract: `/specs/contract/25_compatibility_matrix.md`.
+- Certification registry contract: `/specs/schema/runner_certification_registry_v1.yaml`.
 
 Rust adapter target behavior:
 

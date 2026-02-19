@@ -72,6 +72,7 @@ if [[ "${CI:-}" != "true" ]] && [[ "${SPEC_CI_GATE_LOCAL_FAST_PATH:-1}" != "0" ]
 fi
 
 "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" critical-gate
+"${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" runner-certify --runner rust
 
 if [[ "${CI:-}" == "true" || "${SPEC_CI_GATE_STRICT_SUMMARY:-0}" == "1" ]]; then
   "${SPEC_RUNNER_BIN}" ci-gate-summary \

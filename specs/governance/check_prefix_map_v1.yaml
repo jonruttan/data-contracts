@@ -24,6 +24,11 @@ rules:
   DCGOV-RUNTIME-CONFIG-006: runtime.required_rust_lane_blocking_status
   DCGOV-RUNTIME-CONFIG-007: runtime.compatibility_lanes_non_blocking_status
   DCGOV-RUNTIME-CONFIG-008: runtime.compatibility_matrix_registration_required
+  DCGOV-RUNTIME-CERT-001: runtime.runner_certification_registry_valid
+  DCGOV-RUNTIME-CERT-002: runtime.runner_certification_surfaces_sync
+  DCGOV-RUNTIME-CERT-003: runtime.runner_certification_artifacts_contract_sync
+  DCGOV-RUNTIME-CERT-004: runtime.runner_certification_required_lane_passes
+  DCGOV-RUNTIME-CERT-005: runtime.runner_certification_compat_lanes_non_blocking
   DCGOV-RUNTIME-CONFIG-009: runtime.implicit_subject_binding_forbidden
   DCGOV-DOCS-REF-008: docs.compatibility_examples_labeled
   DCGOV-DOCS-REF-010: docs.readme_rust_first_coherence
