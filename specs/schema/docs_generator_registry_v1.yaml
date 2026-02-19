@@ -5,6 +5,7 @@ surfaces:
   inputs:
   - /docs/book/reference_manifest.yaml
   - /docs/book
+  - /docs/book/guides
   - /specs/schema/runner_status_report_v1.yaml
   - /specs/schema/runner_status_matrix_v1.yaml
   - /specs/contract/27_runner_status_exchange.md
@@ -51,6 +52,7 @@ surfaces:
   inputs:
   - /docs/book/reference_manifest.yaml
   - /docs/book
+  - /docs/book/guides
   outputs:
   - /docs/book/docs_graph.json
   generator: docs_build_reference

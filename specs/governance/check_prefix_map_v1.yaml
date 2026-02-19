@@ -47,6 +47,12 @@ rules:
   DCGOV-DOCS-REF-016: docs.reviews_discovery_prompt_present
   DCGOV-DOCS-REF-017: docs.reviews_discovery_prompt_contract_sync
   DCGOV-DOCS-REF-018: docs.reviews_discovery_workflow_sync
+  DCGOV-DOCS-REF-019: docs.book_spec_purpose_chapters_present
+  DCGOV-DOCS-REF-020: docs.usage_guides_index_sync
+  DCGOV-DOCS-REF-021: docs.usage_guides_required_set_present
+  DCGOV-DOCS-REF-022: docs.visual_aids_core_chapters_present
+  DCGOV-DOCS-REF-023: docs.reference_manifest_guide_order_canonical
+  DCGOV-DOCS-REF-024: docs.guide_contract_links_valid
   DCGOV-SCHEMA-CONTRACT-001: schema.contract_imports_explicit_required
   DCGOV-SCHEMA-CONTRACT-002: schema.contract_target_on_forbidden
   DCGOV-DOCS-: docs.

@@ -44,11 +44,33 @@ Provide deterministic troubleshooting flow for schema, assertion, runtime, and d
 - fixing generated outputs without fixing source-of-truth inputs
 - partial reruns that miss dependent checks
 
+## Troubleshooting Decision Tree
+
+```mermaid
+flowchart TD
+  A[Failure] --> B{Failure class}
+  B -->|schema| C[Validate case shape and schema docs]
+  B -->|assertion| D[Inspect imports and assertion steps]
+  B -->|runtime| E[Inspect runner command and artifacts]
+  B -->|docs| F[Regenerate reference surfaces]
+  C --> G[Apply source fix]
+  D --> G
+  E --> G
+  F --> G
+  G --> H[Re-run failing command]
+```
+
+Interpretation:
+- classify the failure before changing files.
+- always fix source inputs before generated outputs.
+- re-run the failing command first, then full required sequence.
+
 ## Failure Taxonomy
 
 - `schema`: invalid case/shape/field semantics
 - `assertion`: expected contract condition failed
 - `runtime`: command/helper execution failure
+- `docs`: manifest/reference synchronization failure
 
 ## Deterministic Recovery Flow
 
@@ -61,11 +83,3 @@ Provide deterministic troubleshooting flow for schema, assertion, runtime, and d
 ## Escalation
 
 Escalate when failures are non-deterministic across repeated runs or imply runtime contract regression across lanes.
-
-## API.HTTP Triage Notes
-
-For `api.http` failures, verify:
-
-- request graph and `steps_json` shape
-- `CORS` and `preflight` behavior
-- single-request vs scenario `requests` execution semantics

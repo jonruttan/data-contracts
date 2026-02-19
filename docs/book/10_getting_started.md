@@ -8,12 +8,10 @@ audience: author
 owns_tokens:
 - getting_started_minimal_flow
 requires_tokens:
-- rust_required_lane
+- spec_purpose_foundation
 commands:
 - run: ./runners/public/runner_adapter.sh --impl rust governance
-  purpose: Validate core governance checks in the required lane.
-- run: ./runners/public/runner_adapter.sh --impl rust test-full
-  purpose: Execute full executable-spec coverage in the required lane.
+  purpose: Validate baseline governance before deeper workflows.
 examples:
 - id: EX-GETTING-STARTED-001
   runnable: true
@@ -26,62 +24,41 @@ sections_required:
 
 ## Purpose
 
-Give a minimal, deterministic author workflow for writing and executing a valid `.spec.md` case.
+Provide a short launch page into the spec-first narrative and task guides.
 
 ## Inputs
 
-- repo checkout
-- Rust runner adapter: `./runners/public/runner_adapter.sh`
-- spec files under `specs/**/*.spec.md`
+- this repository checkout
+- required Rust lane command boundary at `./runners/public/runner_adapter.sh`
 
 ## Outputs
 
-- a valid executable case
-- reproducible local validation results
-- clear fail-path diagnostics
+- clear first read path
+- clear first command sequence
 
 ## Failure Modes
 
-- invalid case shape (`contract` not in canonical mapping form)
-- missing explicit imports for assertion variables
-- stale generated docs/reference surfaces
+- starting with generated references before narrative chapters
+- using compatibility lanes as primary merge gate
+- skipping guide workflow for task execution
 
-## Minimal Case Skeleton
+## Start Here
 
-Use canonical v1 assertion shape:
+1. Read `docs/book/05_what_is_data_contracts.md`.
+2. Read `docs/book/15_spec_lifecycle.md`.
+3. Read `docs/book/25_system_topology.md`.
+4. Open `docs/book/35_usage_guides_index.md` and choose a task guide.
 
-```yaml
-id: EX-CASE-001
-type: contract.check
-title: minimal canonical check
-harness:
-  check:
-    profile: text.file
-    config:
-      path: /README.md
-contract:
-  defaults:
-    class: MUST
-  imports:
-  - from: artifact
-    names: [text]
-  steps:
-  - id: contains_title
-    assert:
-      std.string.contains:
-      - {var: text}
-      - data-contracts
+## First Commands
+
+```bash
+./runners/public/runner_adapter.sh --impl rust critical-gate
+./runners/public/runner_adapter.sh --impl rust governance
+./runners/public/runner_adapter.sh --impl rust docs-generate-check
 ```
 
-## First Run Sequence
+## Next Paths
 
-1. `./runners/public/runner_adapter.sh --impl rust governance`
-2. `./runners/public/runner_adapter.sh --impl rust test-full`
-3. `./scripts/local_ci_parity.sh`
-
-## Compatibility (Non-Blocking)
-
-Python and PHP are compatibility lanes. They are informative and non-blocking:
-
-- Run compatibility verification in `dc-runner-python` and `dc-runner-php`.
-- Consume compatibility artifacts in `data-contracts` as telemetry only.
+- New contributor path: `docs/book/guides/guide_01_onboarding.md`
+- First authored case path: `docs/book/guides/guide_02_first_spec_authoring.md`
+- Maintainer operations path: `docs/book/guides/guide_03_running_checks_and_gates.md`

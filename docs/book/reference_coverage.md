@@ -1,18 +1,34 @@
 # Reference Coverage
 
-- docs_count: 32
-- examples_total: 32
-- examples_runnable: 10
-- runnable_example_ratio: 0.3125
+- docs_count: 48
+- examples_total: 96
+- examples_runnable: 26
+- runnable_example_ratio: 0.541667
 
 ## Docs
 
+- `/docs/book/05_what_is_data_contracts.md` (DOC-REF-105)
 - `/docs/book/10_getting_started.md` (DOC-REF-110)
+- `/docs/book/15_spec_lifecycle.md` (DOC-REF-115)
 - `/docs/book/20_case_model.md` (DOC-REF-120)
+- `/docs/book/25_system_topology.md` (DOC-REF-125)
 - `/docs/book/30_assertion_model.md` (DOC-REF-130)
+- `/docs/book/35_usage_guides_index.md` (DOC-REF-135)
+- `/docs/book/guides/index.md` (DOC-GUIDE-200)
+- `/docs/book/guides/guide_01_onboarding.md` (DOC-GUIDE-201)
+- `/docs/book/guides/guide_02_first_spec_authoring.md` (DOC-GUIDE-202)
+- `/docs/book/guides/guide_03_running_checks_and_gates.md` (DOC-GUIDE-203)
+- `/docs/book/guides/guide_04_debugging_failures.md` (DOC-GUIDE-204)
+- `/docs/book/guides/guide_05_release_and_change_control.md` (DOC-GUIDE-205)
+- `/docs/book/guides/guide_06_governance_tuning.md` (DOC-GUIDE-206)
+- `/docs/book/guides/guide_07_schema_extension_workflow.md` (DOC-GUIDE-207)
+- `/docs/book/guides/guide_08_ci_integration.md` (DOC-GUIDE-208)
+- `/docs/book/guides/guide_09_status_exchange_operations.md` (DOC-GUIDE-209)
+- `/docs/book/guides/guide_10_reference_navigation_patterns.md` (DOC-GUIDE-210)
 - `/docs/book/40_spec_lang_authoring.md` (DOC-REF-140)
 - `/docs/book/50_library_authoring.md` (DOC-REF-150)
 - `/docs/book/60_runner_and_gates.md` (DOC-REF-160)
+- `/docs/book/65_runner_status_and_compatibility.md` (DOC-REF-165)
 - `/docs/book/70_governance_and_quality.md` (DOC-REF-170)
 - `/docs/book/80_troubleshooting.md` (DOC-REF-180)
 - `/docs/book/90_reference_guide.md` (DOC-REF-190)

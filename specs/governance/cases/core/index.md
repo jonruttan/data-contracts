@@ -36,6 +36,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_adoption_profiles_sync.spec.md`
 - `/specs/governance/cases/core/docs_api_http_tutorial_sync.spec.md`
 - `/specs/governance/cases/core/docs_book_chapter_order_canonical.spec.md`
+- `/specs/governance/cases/core/docs_book_spec_purpose_chapters_present.spec.md`
 - `/specs/governance/cases/core/docs_cli_flags_documented.spec.md`
 - `/specs/governance/cases/core/docs_command_examples_verified.spec.md`
 - `/specs/governance/cases/core/docs_compatibility_examples_labeled.spec.md`
@@ -52,6 +53,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_generator_outputs_sync.spec.md`
 - `/specs/governance/cases/core/docs_generator_registry_valid.spec.md`
 - `/specs/governance/cases/core/docs_governance_check_catalog_sync.spec.md`
+- `/specs/governance/cases/core/docs_guide_contract_links_valid.spec.md`
 - `/specs/governance/cases/core/docs_harness_reference_semantics_complete.spec.md`
 - `/specs/governance/cases/core/docs_harness_type_catalog_sync.spec.md`
 - `/specs/governance/cases/core/docs_reviews_namespace_active.spec.md`
@@ -77,6 +79,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_operability_non_regression.spec.md`
 - `/specs/governance/cases/core/docs_policy_rule_catalog_sync.spec.md`
 - `/specs/governance/cases/core/docs_reference_index_sync.spec.md`
+- `/specs/governance/cases/core/docs_reference_manifest_guide_order_canonical.spec.md`
 - `/specs/governance/cases/core/docs_reference_manifest_sync.spec.md`
 - `/specs/governance/cases/core/docs_reference_namespace_chapters_sync.spec.md`
 - `/specs/governance/cases/core/docs_reference_surface_complete.spec.md`
@@ -95,6 +98,9 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_token_dependency_resolved.spec.md`
 - `/specs/governance/cases/core/docs_token_ownership_unique.spec.md`
 - `/specs/governance/cases/core/docs_traceability_catalog_sync.spec.md`
+- `/specs/governance/cases/core/docs_usage_guides_index_sync.spec.md`
+- `/specs/governance/cases/core/docs_usage_guides_required_set_present.spec.md`
+- `/specs/governance/cases/core/docs_visual_aids_core_chapters_present.spec.md`
 - `/specs/governance/cases/core/governance_extractor_only_no_verdict_branching.spec.md`
 - `/specs/governance/cases/core/governance_policy_library_usage_non_regression.spec.md`
 - `/specs/governance/cases/core/governance_policy_library_usage_required.spec.md`

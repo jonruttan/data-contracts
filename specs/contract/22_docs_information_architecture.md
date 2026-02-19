@@ -5,6 +5,7 @@
 `docs/` is organized into four canonical surfaces:
 
 - `/docs/book` for user-facing reference manuals.
+- `/docs/book/guides` for task-oriented usage guides linked from the reference manual.
 - `/specs` for executable contracts, schema, conformance, governance, and
   policy sources.
 - `runner-owned implementation docs` for implementation-specific appendices only.
@@ -21,6 +22,7 @@
 - Word separator is `_`.
 - Section separator is `-`.
 - Spaces in docs paths are forbidden.
+- `docs/book/guides/index.md` MUST exist and enumerate the canonical guide set.
 - OS/editor artifact files (for example `.DS_Store`) are forbidden in tracked
   docs paths.
 

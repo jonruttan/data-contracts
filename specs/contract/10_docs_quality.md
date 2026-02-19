@@ -22,16 +22,35 @@ MUST:
 
 The canonical reference-manual narrative surface for v1 is:
 
+- `docs/book/05_what_is_data_contracts.md`
 - `docs/book/10_getting_started.md`
+- `docs/book/15_spec_lifecycle.md`
 - `docs/book/20_case_model.md`
+- `docs/book/25_system_topology.md`
 - `docs/book/30_assertion_model.md`
+- `docs/book/35_usage_guides_index.md`
 - `docs/book/40_spec_lang_authoring.md`
 - `docs/book/50_library_authoring.md`
 - `docs/book/60_runner_and_gates.md`
+- `docs/book/65_runner_status_and_compatibility.md`
 - `docs/book/70_governance_and_quality.md`
 - `docs/book/80_troubleshooting.md`
 - `docs/book/90_reference_guide.md`
 - `docs/book/99_generated_reference_index.md`
+
+The canonical usage-guide surface for v1 is:
+
+- `docs/book/guides/index.md`
+- `docs/book/guides/guide_01_onboarding.md`
+- `docs/book/guides/guide_02_first_spec_authoring.md`
+- `docs/book/guides/guide_03_running_checks_and_gates.md`
+- `docs/book/guides/guide_04_debugging_failures.md`
+- `docs/book/guides/guide_05_release_and_change_control.md`
+- `docs/book/guides/guide_06_governance_tuning.md`
+- `docs/book/guides/guide_07_schema_extension_workflow.md`
+- `docs/book/guides/guide_08_ci_integration.md`
+- `docs/book/guides/guide_09_status_exchange_operations.md`
+- `docs/book/guides/guide_10_reference_navigation_patterns.md`
 
 Generated surfaces remain under `docs/book/91..98` and `docs/book/93*`.
 
@@ -41,22 +60,40 @@ MUST:
 - `docs/book/reference_index.md` MUST match the chapter set/order in `docs/book/reference_manifest.yaml`.
 - `docs/book/reference_manifest.yaml` MUST remain synchronized with generated reference artifacts.
 - book chapter order MUST follow canonical author-first layered flow:
+  - `05_what_is_data_contracts.md`
   - `10_getting_started.md`
+  - `15_spec_lifecycle.md`
   - `20_case_model.md`
+  - `25_system_topology.md`
   - `30_assertion_model.md`
+  - `35_usage_guides_index.md`
   - `40_spec_lang_authoring.md`
   - `50_library_authoring.md`
   - `60_runner_and_gates.md`
+  - `65_runner_status_and_compatibility.md`
   - `70_governance_and_quality.md`
   - `80_troubleshooting.md`
   - `90_reference_guide.md`
   - generated references through `99_generated_reference_index.md`
+- canonical guide order MUST follow `index.md`, then `guide_01` through `guide_10`.
+- `docs/book/index.md` and `docs/book/reference_manifest.yaml` MUST agree on guide discoverability and ordering.
+- `docs/book/05_what_is_data_contracts.md`, `docs/book/15_spec_lifecycle.md`, and `docs/book/25_system_topology.md` MUST each include at least one Mermaid diagram block.
+- `docs/book/guides/guide_03_running_checks_and_gates.md`, `docs/book/guides/guide_04_debugging_failures.md`, `docs/book/guides/guide_07_schema_extension_workflow.md`, `docs/book/guides/guide_08_ci_integration.md`, and `docs/book/guides/guide_09_status_exchange_operations.md` MUST each include at least one Mermaid diagram block.
 
 ## Required Section Coverage
 
 MUST:
 
 - core reference chapters MUST include required section tokens defined by governance policy.
+- every usage guide file MUST include required sections:
+  - `## Purpose`
+  - `## Inputs`
+  - `## Outputs`
+  - `## Failure Modes`
+- every usage guide file MUST include:
+  - a `## Do This Now` command block
+  - a `## How To Verify Success` checklist
+  - a `## Common Failure Signatures` table
 - missing required section tokens MUST fail governance checks.
 
 ## Metadata Schema

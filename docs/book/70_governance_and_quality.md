@@ -8,7 +8,7 @@ audience: maintainer
 owns_tokens:
 - governance_triage_workflow
 requires_tokens:
-- rust_required_lane
+- spec_lifecycle_flow
 commands:
 - run: ./runners/public/runner_adapter.sh --impl rust governance
   purpose: Execute governance checks and policy scans.
@@ -44,11 +44,23 @@ Describe governance enforcement and quality gates for schema/docs/runtime consis
 - missing generated artifacts
 - stale or misordered reference manifest entries
 
-## Governance Model
+## Governance Decision Path
 
-- Checks run as executable specs (`contract.check` / `governance.scan`).
-- Policies are contract-backed and machine enforced.
-- Triage artifacts provide targeted-first failure context.
+```mermaid
+flowchart TD
+  A[Change proposed] --> B[Select check family]
+  B --> C[Run governance scan]
+  C --> D{Violations?}
+  D -->|No| E[Policy pass]
+  D -->|Yes| F[Map check id to source]
+  F --> G[Apply minimal fix]
+  G --> C
+```
+
+Interpretation:
+- Governance checks are executable contract checks, not prose policy.
+- Check IDs are the stable remediation anchor.
+- Fixes should target source-of-truth files, then re-run scan.
 
 ## Quality Gates
 
@@ -56,10 +68,3 @@ Describe governance enforcement and quality gates for schema/docs/runtime consis
 - docs generation/check synchronization
 - governance prefix and broad scans
 - CI summary contract output
-
-## Triage Workflow
-
-1. Run targeted governance checks.
-2. Regenerate affected docs/artifacts.
-3. Re-run lint/format/check gates.
-4. Confirm parity in local CI gate path.

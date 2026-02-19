@@ -172,6 +172,75 @@ profiles:
           - dc%2Drunner%2Drust/
           - dc%2Drunner%2Dpython/
           - dc%2Drunner%2Dphp/
+      - id: docs.book_spec_purpose_chapters_present
+        kind: file_tokens
+        path: /docs/book/reference_manifest.yaml
+        must_contain:
+          - /docs/book/05_what_is_data_contracts.md
+          - /docs/book/15_spec_lifecycle.md
+          - /docs/book/25_system_topology.md
+          - /docs/book/35_usage_guides_index.md
+      - id: docs.usage_guides_index_sync
+        kind: file_tokens
+        path: /docs/book/guides/index.md
+        must_contain:
+          - /docs/book/guides/guide_01_onboarding.md
+          - /docs/book/guides/guide_02_first_spec_authoring.md
+          - /docs/book/guides/guide_03_running_checks_and_gates.md
+          - /docs/book/guides/guide_04_debugging_failures.md
+          - /docs/book/guides/guide_05_release_and_change_control.md
+          - /docs/book/guides/guide_06_governance_tuning.md
+          - /docs/book/guides/guide_07_schema_extension_workflow.md
+          - /docs/book/guides/guide_08_ci_integration.md
+          - /docs/book/guides/guide_09_status_exchange_operations.md
+          - /docs/book/guides/guide_10_reference_navigation_patterns.md
+      - id: docs.usage_guides_required_set_present
+        kind: file_tokens
+        path: /docs/book/reference_manifest.yaml
+        must_contain:
+          - /docs/book/guides/index.md
+          - /docs/book/guides/guide_01_onboarding.md
+          - /docs/book/guides/guide_02_first_spec_authoring.md
+          - /docs/book/guides/guide_03_running_checks_and_gates.md
+          - /docs/book/guides/guide_04_debugging_failures.md
+          - /docs/book/guides/guide_05_release_and_change_control.md
+          - /docs/book/guides/guide_06_governance_tuning.md
+          - /docs/book/guides/guide_07_schema_extension_workflow.md
+          - /docs/book/guides/guide_08_ci_integration.md
+          - /docs/book/guides/guide_09_status_exchange_operations.md
+          - /docs/book/guides/guide_10_reference_navigation_patterns.md
+      - id: docs.visual_aids_core_chapters_present
+        kind: file_tokens
+        path: /specs/contract/10_docs_quality.md
+        must_contain:
+          - 05_what_is_data_contracts.md
+          - 15_spec_lifecycle.md
+          - 25_system_topology.md
+          - Mermaid diagram block
+      - id: docs.reference_manifest_guide_order_canonical
+        kind: file_ordered_tokens
+        path: /docs/book/reference_manifest.yaml
+        ordered_tokens:
+          - /docs/book/guides/index.md
+          - /docs/book/guides/guide_01_onboarding.md
+          - /docs/book/guides/guide_02_first_spec_authoring.md
+          - /docs/book/guides/guide_03_running_checks_and_gates.md
+          - /docs/book/guides/guide_04_debugging_failures.md
+          - /docs/book/guides/guide_05_release_and_change_control.md
+          - /docs/book/guides/guide_06_governance_tuning.md
+          - /docs/book/guides/guide_07_schema_extension_workflow.md
+          - /docs/book/guides/guide_08_ci_integration.md
+          - /docs/book/guides/guide_09_status_exchange_operations.md
+          - /docs/book/guides/guide_10_reference_navigation_patterns.md
+      - id: docs.guide_contract_links_valid
+        kind: file_tokens
+        path: /docs/book/90_reference_guide.md
+        must_contain:
+          - Guide To Contract Map
+          - guide_01_onboarding.md
+          - guide_10_reference_navigation_patterns.md
+          - specs/contract/10_docs_quality.md
+          - specs/contract/27_runner_status_exchange.md
       - id: runtime.full_governance_broad_native_slo
         kind: slo_budget
         max_ms: 120000
