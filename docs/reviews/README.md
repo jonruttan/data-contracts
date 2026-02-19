@@ -1,47 +1,61 @@
 # Reviews
 
-This folder holds review assets with clear lifecycle separation.
+This directory contains active review assets for project-aligned critiques and hardening passes.
 
 ## Structure
 
-- `prompts/`: reusable review prompts.
-- `frameworks/`: review/hardening frameworks used during development.
-- `snapshots/`: dated, immutable outputs from review runs.
-- `templates/`: snapshot templates and helper formats.
+- `prompts/`: reusable prompts
+- `snapshots/`: dated immutable outputs
+- `templates/`: snapshot templates and output contract scaffolds
 
-## Current Canonical Files
+## Canonical Prompt Set
 
-- Prompt: `docs/reviews/prompts/adoption_7_personas.md`
-- Self-healing prompt: `docs/reviews/prompts/self_healing.md`
-- Snapshot template: `docs/reviews/templates/review_snapshot.md`
-- Framework pointer (compat): `docs/reviews/frameworks/hardening_pipeline.md` -> `docs/reviews/prompts/self_healing.md`
+- Adoption/persona review:
+  - `docs/reviews/prompts/adoption_7_personas.md`
+- Self-healing staged hardening:
+  - `docs/reviews/prompts/self_healing.md`
+- Final gatekeeper review:
+  - `docs/reviews/prompts/final_boss_gatekeeper.md`
 
 ## Workflow
 
-1. Run either `adoption_7_personas.md` (critique) or `self_healing.md` (staged hardening) from `docs/reviews/prompts/`.
-2. Save raw output under `docs/reviews/snapshots/` using a dated filename.
-3. Convert snapshot output into pending specs with:
-   - `python scripts/review_to_pending.py docs/reviews/snapshots/<file>.md`
-4. Triage resulting pending items and promote selected candidates into
-   `docs/spec/backlog.md` or directly into `docs/spec/*.md`.
-5. Record `Prompt revision` and `Repo revision` in each snapshot.
+1. Choose a prompt from `docs/reviews/prompts/`.
+2. Produce a dated snapshot in `docs/reviews/snapshots/`.
+3. Preserve raw output and include required metadata from the snapshot template.
+4. Derive pending/governance candidates from the structured sections.
+5. Promote selected candidates into canonical spec/governance surfaces under `specs/`.
 
-## Automation Helpers
+## Snapshot Metadata (required)
 
-Create a dated snapshot stub with revisions prefilled:
+Every snapshot should include:
+- `Prompt`
+- `Prompt revision`
+- `Repo revision`
+- `Contract baseline refs`
+- `Runner lane`
 
-```sh
-python scripts/new_review_snapshot.py --label persona_review
-```
+Use:
+- `docs/reviews/templates/review_snapshot.md`
 
-Extract explicit YAML spec candidates and infer implicit suggestions:
+## Output Contract Policy
 
-```sh
-python scripts/review_to_pending.py docs/reviews/snapshots/<snapshot>.md
-```
+Active review prompts require strict machine-consumable sections:
+- stable heading order
+- structured findings tables
+- explicit `Verified/Hypothesis` evidence tagging
+- deterministic command execution logs
 
-## Recommended Cadence
+This is required so review outputs can be transformed into pending/governance candidates without manual reinterpretation.
 
-- Persona review: run anytime; use extraction script to feed pending specs.
-- Self-healing pipeline: run when actively fixing quality/reliability issues.
-- Final boss review: run near release/merge readiness for high-signal blockers.
+## Contract Alignment Expectations
+
+All active reviews should align to current project contracts:
+- `/specs/schema/schema_v1.md`
+- `/specs/contract/12_runner_interface.md`
+- `/specs/contract/25_compatibility_matrix.md`
+- `/specs/governance/check_sets_v1.yaml`
+- `/specs/schema/runner_certification_registry_v1.yaml`
+
+Runtime lane policy in active reviews:
+- required blocking lane: rust
+- compatibility non-blocking lanes: python/php/node/c

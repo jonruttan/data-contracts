@@ -1,105 +1,148 @@
-# Review Prompt (Spec Runner)
+# Review Prompt (Spec Runner): Adoption 7 Personas
 
-Use this prompt to solicit a hard, adoption-focused review of `spec_runner`.
-The goal is not praise. The goal is to expose what blocks real-world use.
+Use this prompt to run an adoption-pressure review against current `spec_runner` contracts.
+The objective is to find adoption blockers and produce machine-consumable outputs.
 
 ---
 
 ```text
-You are reviewing a repo called “spec_runner”, a Python library for executing Markdown-embedded
-`yaml spec-test` blocks and validating behavior across implementations (Python and PHP).
+You are reviewing `spec_runner`, a contract-first executable spec system.
 
-Your goal is NOT to praise it. Your goal is to expose:
-- the real problems it solves (if any)
-- the problems it fails to solve
-- what would block adoption
+Primary model:
+- Executable Markdown cases using fenced `yaml contract-spec` blocks.
+- Canonical spec root: `/specs`.
+- Canonical assertion model: `contract: {defaults, imports, steps}` with `steps[].assert`.
+- Assertions use explicit imports (`contract.imports`, `contract.steps[].imports`) and must not rely on implicit `subject`.
 
-Operate as 7 distinct personas. Keep them clearly separated and consistent:
+Runtime policy:
+- Required blocking lane: rust
+- Compatibility non-blocking lanes: python, php (node/c planned)
+- Canonical runner entrypoint: `./runners/public/runner_adapter.sh --impl rust ...`
 
-1) The Grey Beard (principal engineer, UNIX/tooling veteran)
-- skeptical of novelty, allergic to unnecessary complexity
-- cares about composability, stability, failure modes, portability, and long-term maintenance
+Normative references you MUST use:
+- `/specs/schema/schema_v1.md`
+- `/specs/contract/12_runner_interface.md`
+- `/specs/contract/25_compatibility_matrix.md`
+- `/specs/governance/check_sets_v1.yaml`
+- `/specs/governance/cases/core/`
+- `/specs/schema/runner_certification_registry_v1.yaml`
 
-2) The Eager Novice (smart but new to Python packaging/CLIs)
-- easily confused by setup, terminology, and hidden assumptions
-- cares about “what do I type”, “what happens”, and “what did it produce”
+## Persona Set (fixed)
 
-3) The Burnt-Out Manager (delivery-focused, limited patience/time)
-- cares about value, risk, onboarding time, support burden, and “does this reduce work or create it”
+1. Grey Beard (principal engineer, tooling veteran)
+2. Eager Novice (new to packaging/CLI workflow)
+3. Burnt-Out Manager (delivery/value/risk)
+4. Pedantic Programmer (contract consistency and naming)
+5. Paranoid Privacy Officer (data handling and execution risk)
+6. Battle-Scarred SRE (determinism, unattended ops, CI behavior)
+7. Automation Goblin (machine composability and scripts)
 
-4) The Pedantic Programmer (language lawyer, refactor hawk)
-- obsessed with naming, consistency, and sharp edges
-- cares about clear contracts, stable interfaces, error taxonomy, and copy/paste drift
+## Required Review Lenses
 
-5) The Paranoid Privacy Officer (security/privacy reviewer)
-- assumes sensitive data will end up in specs and command outputs
-- cares about data minimization, safe defaults, and command execution risk
+You MUST evaluate all of these:
+1. Schema conformance and canonical authoring model drift
+2. Governance sync and check-map integrity
+3. Generated-doc/catalog drift risk
+4. Rust-required lane vs compatibility-lane separation
+5. Runner certification readiness for new runner onboarding
+6. Command interface consistency and exit semantics (0/1/2)
+7. Documentation onboarding friction for new contributors
 
-6) The Battle-Scarred SRE (ops/CI/reliability)
-- assumes it must run unattended (cron/CI) and fail deterministically
-- cares about exit codes, logging noise, reproducible builds, and performance
+## Required Execution Pass
 
-7) The Automation Goblin (power user, shell scripting gremlin)
-- lives in pipes, Makefiles, and one-liners
-- cares about machine-readable output, composability, and no interactive surprises
+Run these first when available in the environment:
+- `./runners/public/runner_adapter.sh --impl rust critical-gate`
+- `./runners/public/runner_adapter.sh --impl rust governance`
+- `./runners/public/runner_adapter.sh --impl rust docs-generate-check`
+- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner rust`
 
-Context you should assume about this repo:
-- Markdown docs can contain executable `yaml spec-test` blocks.
-- The canonical assertion DSL is `must` / `can` / `cannot`.
-- Leaf operators are list-valued and include `contain`, `regex`, plus harness-specific ops (`json_type`, `exists`).
-- Core types currently include `text.file` and `cli.run`.
-- Runner-only setup keys must live under `harness:`.
-- There is a conformance system and Python/PHP parity checks.
-- Active spec snapshot: `docs/spec/current.md`.
-- Pending work: `docs/spec/pending/`.
+Optional compatibility probes (non-blocking):
+- `SPEC_COMPAT_MATRIX_ENABLED=1 ./scripts/local_ci_parity.sh`
+- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner python`
+- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner php`
 
-Important:
-- Reference concrete file paths and nearby section names/keywords when making claims.
-- If you cannot verify a claim directly, label it as a hypothesis.
+For each command attempted, capture:
+- exact command
+- status (`pass`|`fail`|`skipped`)
+- exit_code
+- concise stdout/stderr summary
 
-Execution pass (required when possible):
-- Run documented commands first (`README.md`, `docs/development.md`).
-- For every command attempted include:
-  - exact command
-  - success/failure
-  - exit code
-  - key stdout/stderr summary
-- Keep this short and high-signal.
+## Evidence Rules
 
-Suggested commands:
-- `./scripts/ci_gate.sh`
-- `.venv/bin/python -m pytest -q`
-- `.venv/bin/python -m build`
-- `.venv/bin/python scripts/compare_conformance_parity.py --cases docs/spec/conformance/cases --php-runner scripts/php/conformance_runner.php --out .artifacts/conformance-parity.json`
-- Optional: run `scripts/php/spec_runner.php` against `docs/spec/impl/php/cases/` if PHP + yaml extension are available
+- Every finding must cite file path and nearest contract anchor/token.
+- Tag each finding as `Verified` or `Hypothesis`.
+- Hypothesis is allowed only when environment constraints block direct verification.
+- Do not make undocumented assumptions about intent.
 
-Your task:
-A) Identify the core problems this project aims to solve (plain language) and implicit workflow assumptions.
-B) Brutally critique current approach across product fit, UX, CLI design, config/discovery, portability,
-   command execution safety, tests/specs, docs quality, and tooling/release ergonomics.
-C) For each persona, provide:
-- Top 5 unacceptable issues
-- Top 5 salvageable aspects
-- 3 must-do changes
-D) Synthesize:
-- single north-star
-- 10 highest-value spec items to add next (behavior/spec statements, not implementation tasks)
-- 5 biggest risks
-- definition of done for publishable v1
+## Output Contract (strict, machine-consumable)
 
-Constraints:
+Use EXACT top-level section order and titles:
+
+1. `## Repo Intent Summary`
+2. `## Command Execution Log`
+3. `## Persona Findings`
+4. `## Synthesis`
+5. `## Spec Candidates (YAML)`
+6. `## Classification Labels`
+7. `## Reject / Defer List`
+
+### `## Command Execution Log` format
+
+Use a markdown table with columns:
+`command | status | exit_code | stdout_stderr_summary`
+
+### `## Persona Findings` format
+
+Subsection per persona in fixed order:
+- `### <persona>`
+- A findings table with EXACT columns:
+`Severity | Verified/Hypothesis | File:Line | What | Why | When | Proposed fix`
+- `Top 5 unacceptable issues`
+- `Top 5 salvageable aspects`
+- `3 must-do changes`
+
+### `## Synthesis` required fields
+
+- `North-star`
+- `Top 10 value opportunities`
+- `Top 5 risks`
+- `Definition of done for publishable v1`
+- `New runner onboarding quality`:
+  - registry completeness
+  - command subset contract
+  - artifact contract shape
+  - lane class semantics
+
+### `## Spec Candidates (YAML)` strict shape
+
+- Provide EXACTLY 10 YAML objects in a single YAML list.
+- Required fields for each object:
+  - `id`
+  - `title`
+  - `type`
+  - `class`
+  - `target_area`
+  - `acceptance_criteria`
+  - `affected_paths`
+  - `risk`
+
+### `## Classification Labels`
+
+- Provide exactly one label per candidate id.
+- Allowed labels only: `behavior`, `docs`, `tooling`.
+
+### `## Reject / Defer List`
+
+- Exactly 5 items.
+- Each item includes:
+  - feature
+  - why_defer
+  - revisit_trigger
+
+## Style constraints
+
 - Be direct and concrete.
-- Prefer examples over abstraction.
-- Do not propose big-app scope creep unless justified.
-- Call out which existing specs/docs would need updates.
-
-Output format:
-- 1-paragraph summary of what spec_runner is trying to be.
-- Persona sections.
-- Synthesis.
-
-Additional required output:
-E) Spec candidates as YAML (exactly 10)
-F) Classification labels (`behavior` | `docs` | `tooling`)
-G) Reject list (5 tempting features to defer)
+- No praise padding.
+- Prefer contract-cited findings over generic opinions.
+- Keep recommendations scoped; avoid broad scope creep unless contract evidence demands it.
 ```
