@@ -210,7 +210,7 @@ OAuth and execution rules:
 - deterministic mode forbids network token/request fetches
 - context profile metadata MUST redact secret/token values
 
-`api.http` request shape (v2):
+`api.http` request shape:
 
 - `request` (mapping) for single-request cases, or `requests` (non-empty list) for scenario cases
 - request fields:

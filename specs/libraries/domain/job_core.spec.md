@@ -19,20 +19,22 @@ harness:
     - scan_path
     - pattern
 contract:
-- id: __export__domain.job.scan_bundle_has_result
-  class: MUST
-  target: subject
-  asserts:
-  - std.logic.neq:
-    - std.object.get:
-      - ops.helper.call:
-        - {lit: helper.governance.scan_bundle}
-        - lit:
-            path:
-              var: scan_path
-            patterns:
-            - var: pattern
-      - scanned_files
-    - null
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.job.scan_bundle_has_result
+    'on': subject
+    assert:
+      std.logic.neq:
+      - std.object.get:
+        - ops.helper.call:
+          - {lit: helper.governance.scan_bundle}
+          - lit:
+              path:
+                var: scan_path
+              patterns:
+              - var: pattern
+        - scanned_files
+      - null
 ```
 

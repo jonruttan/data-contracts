@@ -16,20 +16,21 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
-- id: assert_2
-  class: MUST
-  asserts:
-  - std.type.json_type:
-    - {var: subject}
-    - dict
-  target: body_json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
+  - id: assert_2
+    'on': body_json
+    assert:
+      std.type.json_type:
+      - {var: subject}
+      - dict
 harness:
   check:
     profile: api.http
@@ -57,13 +58,15 @@ expect:
     message_tokens:
     - api.http request.url is required
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 harness:
   check:
     profile: api.http
@@ -90,13 +93,15 @@ expect:
     status: skip
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 harness:
   check:
     profile: api.http
@@ -122,13 +127,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.object.has_key:
-    - {var: subject}
-    - id
-  target: body_json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': body_json
+    assert:
+      std.object.has_key:
+      - {var: subject}
+      - id
 harness:
   check:
     profile: api.http
@@ -155,13 +162,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 harness:
   check:
     profile: api.http
@@ -186,13 +195,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - abc-123
-  target: body_text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': body_text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - abc-123
 harness:
   check:
     profile: api.http
@@ -217,15 +228,17 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - deleted
-    - true
-  target: body_json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': body_json
+    assert:
+      std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - deleted
+      - true
 harness:
   check:
     profile: api.http
@@ -250,13 +263,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 harness:
   check:
     profile: api.http
@@ -281,13 +296,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 harness:
   check:
     profile: api.http
@@ -314,13 +331,15 @@ expect:
     message_tokens:
     - request.method must be one of
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 harness:
   check:
     profile: api.http
@@ -347,13 +366,15 @@ expect:
     message_tokens:
     - request.cors.preflight requires request.method OPTIONS
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 harness:
   check:
     profile: api.http
@@ -399,21 +420,22 @@ harness:
         method: DELETE
         url: /specs/conformance/cases/fixtures/api_http_deleted.json
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
-- id: assert_2
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.collection.len:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
       - {var: subject}
-    - 3
-  target: steps_json
+      - '200'
+  - id: assert_2
+    'on': steps_json
+    assert:
+      std.logic.eq:
+      - std.collection.len:
+        - {var: subject}
+      - 3
 ```
 
 ## SRCONF-API-013
@@ -448,24 +470,26 @@ harness:
         method: GET
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': context_json
+    assert:
+    - std.logic.eq:
       - std.object.get:
-        - {var: subject}
-        - meta
-      - auth_mode
-    - oauth
-  - std.logic.eq:
-    - std.object.get:
+        - std.object.get:
+          - {var: subject}
+          - meta
+        - auth_mode
+      - oauth
+    - std.logic.eq:
       - std.object.get:
-        - {var: subject}
-        - meta
-      - oauth_token_source
-    - env_ref
-  target: context_json
+        - std.object.get:
+          - {var: subject}
+          - meta
+        - oauth_token_source
+      - env_ref
 ```
 
 ## SRCONF-API-014
@@ -499,13 +523,15 @@ harness:
         method: GET
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 ```
 
 ## SRCONF-API-015
@@ -540,13 +566,15 @@ harness:
         method: GET
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 ```
 
 ## SRCONF-API-016
@@ -582,13 +610,15 @@ harness:
         method: GET
         url: https://api.example.invalid/items
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 ```
 
 ## SRCONF-API-017
@@ -608,35 +638,33 @@ expect:
     status: skip
     category: null
 harness:
-  chain:
-    steps:
-    - id: lib_http_core_spec
-      class: MUST
-      ref: /specs/libraries/domain/http_core.spec.md
-    imports:
-    - from: lib_http_core_spec
-      names:
-      - domain.http.cors_allow_origin
-      - domain.http.cors_allows_header
-      - domain.http.cors_allows_method
-      - domain.http.cors_credentials_enabled
-      - domain.http.cors_max_age_gte
-      - domain.http.is_preflight_step
-      - domain.http.step_body_json_get
-      - domain.http.step_by_id
-      - domain.http.step_status_is
   check:
     profile: api.http
     config:
       request:
         method: GET
         url: /specs/conformance/cases/fixtures/api_http_ok.json
+  use:
+  - ref: /specs/libraries/domain/http_core.spec.md
+    as: lib_http_core_spec
+    symbols:
+    - domain.http.cors_allow_origin
+    - domain.http.cors_allows_header
+    - domain.http.cors_allows_method
+    - domain.http.cors_credentials_enabled
+    - domain.http.cors_max_age_gte
+    - domain.http.is_preflight_step
+    - domain.http.step_body_json_get
+    - domain.http.step_by_id
+    - domain.http.step_status_is
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '200'
-  target: status
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': status
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '200'
 ```

@@ -17,7 +17,7 @@ Define portable REST endpoint checks with deterministic defaults, CORS-aware res
   - `requests` (non-empty list[mapping]) for scenario mode
 - `assert` (assertion tree)
 
-## Request Model (v2)
+## Request Model
 
 `request` and each `requests[*]` step support:
 
@@ -95,7 +95,7 @@ Target semantics:
 
 - In scenario mode, `status|headers|body_text|body_json|cors_json` target the final step.
 - `steps_json` provides ordered step result envelopes.
-- `context_json` is `api.http/v2` profile and includes scenario + OAuth metadata.
+- `context_json` is `api.http/v1` profile and includes scenario + OAuth metadata.
 
 ## Type Rules
 

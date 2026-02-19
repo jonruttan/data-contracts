@@ -9,24 +9,23 @@ purpose: Ensures from=assert.function exports fail with schema category when exp
   not resolve to a producer assert step.
 type: contract.check
 harness:
-  chain:
-    steps:
-    - id: bad_export_path_fixture
-      class: MUST
-      ref: /specs/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-PATH
-    imports:
-    - from: bad_export_path_fixture
-      names:
-      - bad.path.symbol
   check:
     profile: text.file
     config:
       path: /specs/libraries/conformance/chain_export_validation.spec.md
+  use:
+  - ref: /specs/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-PATH
+    as: bad_export_path_fixture
+    symbols:
+    - bad.path.symbol
 expect:
   portable:
     status: fail
     category: schema
-contract: []
+contract:
+  defaults:
+    class: MUST
+  steps: []
 ```
 
 ## SRCONF-CHAIN-EXPORT-003
@@ -38,22 +37,21 @@ purpose: Ensures from=assert.function exports fail with schema category when sou
   is not must.
 type: contract.check
 harness:
-  chain:
-    steps:
-    - id: bad_export_class_fixture
-      class: MUST
-      ref: /specs/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-CLASS
-    imports:
-    - from: bad_export_class_fixture
-      names:
-      - bad.class.symbol
   check:
     profile: text.file
     config:
       path: /specs/libraries/conformance/chain_export_validation.spec.md
+  use:
+  - ref: /specs/libraries/conformance/chain_export_validation.spec.md#BAD-EXPORT-CLASS
+    as: bad_export_class_fixture
+    symbols:
+    - bad.class.symbol
 expect:
   portable:
     status: fail
     category: schema
-contract: []
+contract:
+  defaults:
+    class: MUST
+  steps: []
 ```

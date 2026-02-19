@@ -14,16 +14,18 @@ harness:
       argv: []
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '"version": 1'
-  - std.string.contains:
-    - {var: subject}
-    - '"summary"'
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - '"version": 1'
+    - std.string.contains:
+      - {var: subject}
+      - '"summary"'
 ```
 
 ## SRPY-STDLIB-REP-002
@@ -42,14 +44,16 @@ harness:
       - md
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '# Spec-Lang Stdlib Profile Report'
-  - std.string.contains:
-    - {var: subject}
-    - '- profile symbols:'
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - '# Spec-Lang Stdlib Profile Report'
+    - std.string.contains:
+      - {var: subject}
+      - '- profile symbols:'
 ```

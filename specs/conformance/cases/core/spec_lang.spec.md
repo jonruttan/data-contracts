@@ -15,28 +15,26 @@ expect:
     status: pass
     category: null
 harness:
-  chain:
-    steps:
-    - id: lib_assertion_core_spec
-      class: MUST
-      ref: /specs/libraries/conformance/assertion_core.spec.md
-    imports:
-    - from: lib_assertion_core_spec
-      names:
-      - conf.pass_when_text_contains
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: /specs/libraries/conformance/assertion_core.spec.md
+    as: lib_assertion_core_spec
+    symbols:
+    - conf.pass_when_text_contains
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - lit:
-      call:
-      - var: conf.pass_when_text_contains
-      - var: subject
-      - 'version: 1'
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      lit:
+        call:
+        - var: conf.pass_when_text_contains
+        - var: subject
+        - 'version: 1'
 ```
 
 ## SRCONF-EXPR-002
@@ -54,31 +52,29 @@ expect:
     status: pass
     category: null
 harness:
-  chain:
-    steps:
-    - id: lib_assertion_core_spec
-      class: MUST
-      ref: /specs/libraries/conformance/assertion_core.spec.md
-    imports:
-    - from: lib_assertion_core_spec
-      names:
-      - conf.pass_when_text_contains
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: /specs/libraries/conformance/assertion_core.spec.md
+    as: lib_assertion_core_spec
+    symbols:
+    - conf.pass_when_text_contains
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - call:
-      - {var: conf.pass_when_text_contains}
-      - {var: subject}
-      - version
-    - std.string.starts_with:
-      - {var: subject}
-      - '#'
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - call:
+        - {var: conf.pass_when_text_contains}
+        - {var: subject}
+        - version
+      - std.string.starts_with:
+        - {var: subject}
+        - '#'
 ```
 
 ## SRCONF-EXPR-003
@@ -99,36 +95,38 @@ expect:
     message_tokens:
     - spec_lang let binding must be [name, expr]
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - lit:
-      let:
-      - lit:
-        - - loop
-          - fn:
-            - - n
-              - acc
-            - if:
-              - eq:
-                - var: n
-                - 0
-              - var: acc
-              - call:
-                - var: loop
-                - sub:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      lit:
+        let:
+        - lit:
+          - - loop
+            - fn:
+              - - n
+                - acc
+              - if:
+                - eq:
                   - var: n
-                  - 1
-                - add:
-                  - var: acc
-                  - 1
-      - std.logic.eq:
-        - call:
-          - var: loop
+                  - 0
+                - var: acc
+                - call:
+                  - var: loop
+                  - sub:
+                    - var: n
+                    - 1
+                  - add:
+                    - var: acc
+                    - 1
+        - std.logic.eq:
+          - call:
+            - var: loop
+            - 1500
+            - 0
           - 1500
-          - 0
-        - 1500
-  target: text
 harness:
   check:
     profile: text.file
@@ -152,13 +150,15 @@ expect:
     message_tokens:
     - op=evaluate
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.starts_with:
-    - {var: subject}
-    - NOPE_PREFIX
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.starts_with:
+      - {var: subject}
+      - NOPE_PREFIX
 harness:
   check:
     profile: text.file
@@ -182,12 +182,14 @@ expect:
     message_tokens:
     - operator args must be a list
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - lit:
-      bad: shape
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      lit:
+        bad: shape
 harness:
   check:
     profile: text.file
@@ -211,13 +213,15 @@ expect:
     message_tokens:
     - unsupported spec_lang symbol
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - lit:
-      unknown_symbol:
-      - 1
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      lit:
+        unknown_symbol:
+        - 1
 harness:
   check:
     profile: text.file
@@ -248,29 +252,31 @@ harness:
     profile: text.file
     config: {}
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - lit:
-      let:
-      - lit:
-        - - loop
-          - fn:
-            - - n
-            - if:
-              - eq:
-                - var: n
-                - 0
-              - true
-              - call:
-                - var: loop
-                - sub:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      lit:
+        let:
+        - lit:
+          - - loop
+            - fn:
+              - - n
+              - if:
+                - eq:
                   - var: n
-                  - 1
-      - call:
-        - var: loop
-        - 1000
-  target: text
+                  - 0
+                - true
+                - call:
+                  - var: loop
+                  - sub:
+                    - var: n
+                    - 1
+        - call:
+          - var: loop
+          - 1000
 ```
 
 ## SRCONF-EXPR-008
@@ -289,33 +295,31 @@ expect:
     status: pass
     category: null
 harness:
-  chain:
-    steps:
-    - id: lib_assertion_core_spec
-      class: MUST
-      ref: /specs/libraries/conformance/assertion_core.spec.md
-    imports:
-    - from: lib_assertion_core_spec
-      names:
-      - conf.pass_when_text_contains
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: /specs/libraries/conformance/assertion_core.spec.md
+    as: lib_assertion_core_spec
+    symbols:
+    - conf.pass_when_text_contains
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - lit:
-      call:
-      - var: conf.pass_when_text_contains
-      - var: subject
-      - 'version: 1'
-  - lit:
-      call:
-      - var: conf.pass_when_text_contains
-      - var: subject
-      - 'version: 1'
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - lit:
+        call:
+        - var: conf.pass_when_text_contains
+        - var: subject
+        - 'version: 1'
+    - lit:
+        call:
+        - var: conf.pass_when_text_contains
+        - var: subject
+        - 'version: 1'
 ```
 
 ## SRCONF-EXPR-009
@@ -339,18 +343,20 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.set.intersection:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.eq:
+      - std.set.intersection:
+        - std.json.parse:
+          - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
+        - std.json.parse:
+          - '[{"k":2},{"k":4},{"k":1}]'
       - std.json.parse:
-        - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
-      - std.json.parse:
-        - '[{"k":2},{"k":4},{"k":1}]'
-    - std.json.parse:
-      - '[{"k":1},{"k":2}]'
-  target: text
+        - '[{"k":1},{"k":2}]'
 harness:
   check:
     profile: text.file
@@ -377,18 +383,20 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.set.union:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.eq:
+      - std.set.union:
+        - std.json.parse:
+          - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
+        - std.json.parse:
+          - '[{"k":2},{"k":4},{"k":1}]'
       - std.json.parse:
-        - '[{"k":1},{"k":2},{"k":2},{"k":3}]'
-      - std.json.parse:
-        - '[{"k":2},{"k":4},{"k":1}]'
-    - std.json.parse:
-      - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
-  target: text
+        - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
 harness:
   check:
     profile: text.file
@@ -415,27 +423,29 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.set.difference:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.logic.eq:
+        - std.set.difference:
+          - std.json.parse:
+            - '[{"k":1},{"k":2},{"k":3}]'
+          - std.json.parse:
+            - '[{"k":2},{"k":4}]'
         - std.json.parse:
-          - '[{"k":1},{"k":2},{"k":3}]'
+          - '[{"k":1},{"k":3}]'
+      - std.logic.eq:
+        - std.set.symmetric_difference:
+          - std.json.parse:
+            - '[{"k":1},{"k":2},{"k":3}]'
+          - std.json.parse:
+            - '[{"k":2},{"k":4}]'
         - std.json.parse:
-          - '[{"k":2},{"k":4}]'
-      - std.json.parse:
-        - '[{"k":1},{"k":3}]'
-    - std.logic.eq:
-      - std.set.symmetric_difference:
-        - std.json.parse:
-          - '[{"k":1},{"k":2},{"k":3}]'
-        - std.json.parse:
-          - '[{"k":2},{"k":4}]'
-      - std.json.parse:
-        - '[{"k":1},{"k":3},{"k":4}]'
-  target: text
+          - '[{"k":1},{"k":3},{"k":4}]'
 harness:
   check:
     profile: text.file
@@ -462,31 +472,33 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.set.set_equals:
-      - std.json.parse:
-        - '[{"k":1},{"k":2},{"k":3}]'
-      - std.json.parse:
-        - '[{"k":3},{"k":1},{"k":2}]'
-    - std.set.is_subset:
-      - std.json.parse:
-        - '[{"k":1},{"k":2}]'
-      - std.json.parse:
-        - '[{"k":1},{"k":2},{"k":3}]'
-    - std.set.is_superset:
-      - std.json.parse:
-        - '[{"k":1},{"k":2},{"k":3}]'
-      - std.json.parse:
-        - '[{"k":1},{"k":3}]'
-    - std.collection.includes:
-      - std.json.parse:
-        - '[{"k":1},{"k":2},{"k":3}]'
-      - std.json.parse:
-        - '{"k":2}'
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.set.set_equals:
+        - std.json.parse:
+          - '[{"k":1},{"k":2},{"k":3}]'
+        - std.json.parse:
+          - '[{"k":3},{"k":1},{"k":2}]'
+      - std.set.is_subset:
+        - std.json.parse:
+          - '[{"k":1},{"k":2}]'
+        - std.json.parse:
+          - '[{"k":1},{"k":2},{"k":3}]'
+      - std.set.is_superset:
+        - std.json.parse:
+          - '[{"k":1},{"k":2},{"k":3}]'
+        - std.json.parse:
+          - '[{"k":1},{"k":3}]'
+      - std.collection.includes:
+        - std.json.parse:
+          - '[{"k":1},{"k":2},{"k":3}]'
+        - std.json.parse:
+          - '{"k":2}'
 harness:
   check:
     profile: text.file
@@ -513,29 +525,31 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.collection.map:
-        - call:
-          - {var: std.math.add}
-          - 10
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.logic.eq:
+        - std.collection.map:
+          - call:
+            - {var: std.math.add}
+            - 10
+          - std.json.parse:
+            - '[1,2,3]'
         - std.json.parse:
-          - '[1,2,3]'
-      - std.json.parse:
-        - '[11,12,13]'
-    - std.logic.eq:
-      - std.collection.filter:
-        - call:
-          - {var: std.logic.lt}
-          - 3
+          - '[11,12,13]'
+      - std.logic.eq:
+        - std.collection.filter:
+          - call:
+            - {var: std.logic.lt}
+            - 3
+          - std.json.parse:
+            - '[1,2,3,4,5]'
         - std.json.parse:
-          - '[1,2,3,4,5]'
-      - std.json.parse:
-        - '[4,5]'
-  target: text
+          - '[4,5]'
 harness:
   check:
     profile: text.file
@@ -563,69 +577,71 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.collection.reduce:
-        - {var: std.math.add}
-        - 0
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.logic.eq:
+        - std.collection.reduce:
+          - {var: std.math.add}
+          - 0
+          - std.json.parse:
+            - '[1,2,3,4]'
+        - 10
+      - std.logic.eq:
+        - std.collection.reject:
+          - call:
+            - {var: std.logic.lt}
+            - 2
+          - std.json.parse:
+            - '[1,2,3,4]'
         - std.json.parse:
-          - '[1,2,3,4]'
-      - 10
-    - std.logic.eq:
-      - std.collection.reject:
-        - call:
-          - {var: std.logic.lt}
-          - 2
+          - '[1,2]'
+      - std.logic.eq:
+        - std.collection.find:
+          - call:
+            - {var: std.logic.lt}
+            - 3
+          - std.json.parse:
+            - '[1,2,3,4]'
+        - 4
+      - std.logic.eq:
+        - std.collection.partition:
+          - call:
+            - {var: std.logic.lt}
+            - 2
+          - std.json.parse:
+            - '[1,2,3,4]'
         - std.json.parse:
-          - '[1,2,3,4]'
-      - std.json.parse:
-        - '[1,2]'
-    - std.logic.eq:
-      - std.collection.find:
-        - call:
-          - {var: std.logic.lt}
-          - 3
+          - '[[3,4],[1,2]]'
+      - std.logic.eq:
+        - std.collection.group_by:
+          - fn:
+            - [x]
+            - if:
+              - std.logic.gt:
+                - {var: x}
+                - 2
+              - hi
+              - lo
+          - std.json.parse:
+            - '[1,2,3,4]'
         - std.json.parse:
-          - '[1,2,3,4]'
-      - 4
-    - std.logic.eq:
-      - std.collection.partition:
-        - call:
-          - {var: std.logic.lt}
-          - 2
-        - std.json.parse:
-          - '[1,2,3,4]'
-      - std.json.parse:
-        - '[[3,4],[1,2]]'
-    - std.logic.eq:
-      - std.collection.group_by:
-        - fn:
-          - [x]
-          - if:
-            - std.logic.gt:
+          - '{"lo":[1,2],"hi":[3,4]}'
+      - std.logic.eq:
+        - std.collection.uniq_by:
+          - fn:
+            - [x]
+            - std.object.get:
               - {var: x}
-              - 2
-            - hi
-            - lo
+              - k
+          - std.json.parse:
+            - '[{"k":1},{"k":1},{"k":2}]'
         - std.json.parse:
-          - '[1,2,3,4]'
-      - std.json.parse:
-        - '{"lo":[1,2],"hi":[3,4]}'
-    - std.logic.eq:
-      - std.collection.uniq_by:
-        - fn:
-          - [x]
-          - std.object.get:
-            - {var: x}
-            - k
-        - std.json.parse:
-          - '[{"k":1},{"k":1},{"k":2}]'
-      - std.json.parse:
-        - '[{"k":1},{"k":2}]'
-  target: text
+          - '[{"k":1},{"k":2}]'
 harness:
   check:
     profile: text.file
@@ -652,53 +668,55 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.collection.flatten:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.logic.eq:
+        - std.collection.flatten:
+          - std.json.parse:
+            - '[1,[2,[3],[]],4]'
         - std.json.parse:
-          - '[1,[2,[3],[]],4]'
-      - std.json.parse:
-        - '[1,2,3,4]'
-    - std.logic.eq:
-      - std.collection.concat:
+          - '[1,2,3,4]'
+      - std.logic.eq:
+        - std.collection.concat:
+          - std.json.parse:
+            - '[1,2]'
+          - std.json.parse:
+            - '[3]'
+        - std.json.parse:
+          - '[1,2,3]'
+      - std.logic.eq:
+        - std.collection.append:
+          - 3
+          - std.json.parse:
+            - '[1,2]'
+        - std.json.parse:
+          - '[1,2,3]'
+      - std.logic.eq:
+        - std.collection.prepend:
+          - 0
+          - std.json.parse:
+            - '[1,2]'
+        - std.json.parse:
+          - '[0,1,2]'
+      - std.logic.eq:
+        - std.collection.take:
+          - 2
+          - std.json.parse:
+            - '[1,2,3]'
         - std.json.parse:
           - '[1,2]'
+      - std.logic.eq:
+        - std.collection.drop:
+          - 2
+          - std.json.parse:
+            - '[1,2,3]'
         - std.json.parse:
           - '[3]'
-      - std.json.parse:
-        - '[1,2,3]'
-    - std.logic.eq:
-      - std.collection.append:
-        - 3
-        - std.json.parse:
-          - '[1,2]'
-      - std.json.parse:
-        - '[1,2,3]'
-    - std.logic.eq:
-      - std.collection.prepend:
-        - 0
-        - std.json.parse:
-          - '[1,2]'
-      - std.json.parse:
-        - '[0,1,2]'
-    - std.logic.eq:
-      - std.collection.take:
-        - 2
-        - std.json.parse:
-          - '[1,2,3]'
-      - std.json.parse:
-        - '[1,2]'
-    - std.logic.eq:
-      - std.collection.drop:
-        - 2
-        - std.json.parse:
-          - '[1,2,3]'
-      - std.json.parse:
-        - '[3]'
-  target: text
 harness:
   check:
     profile: text.file
@@ -726,17 +744,19 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - call:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.eq:
       - call:
-        - {var: std.math.add}
-        - 2
-      - 3
-    - 5
-  target: text
+        - call:
+          - {var: std.math.add}
+          - 2
+        - 3
+      - 5
 harness:
   check:
     profile: text.file
@@ -766,17 +786,19 @@ expect:
       message_tokens:
       - over-application error
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - lit:
-      call:
-      - call:
-        - var: std.math.add
-        - 1
-      - 2
-      - 3
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      lit:
+        call:
+        - call:
+          - var: std.math.add
+          - 1
+        - 2
+        - 3
 harness:
   check:
     profile: text.file
@@ -805,14 +827,16 @@ expect:
       message_tokens:
       - expects list
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.set.intersection:
-    - not-a-list
-    - std.json.parse:
-      - '[]'
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.set.intersection:
+      - not-a-list
+      - std.json.parse:
+        - '[]'
 harness:
   check:
     profile: text.file
@@ -823,12 +847,12 @@ harness:
 
 ```yaml contract-spec
 id: SRCONF-EXPR-019
-title: evaluate ramda v2 arithmetic and list utilities behave deterministically
+title: evaluate ramda v1 arithmetic and list utilities behave deterministically
 purpose: Verifies expanded numeric and list utility forms remain pure, strict-typed, and deterministic.
 type: contract.check
 requires:
   capabilities:
-  - evaluate.spec_lang.ramda.v2
+  - evaluate.spec_lang.ramda.v1
   when_missing: skip
 expect:
   portable:
@@ -839,98 +863,100 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.math.mul:
-        - 3
-        - 4
-      - 12
-    - std.logic.eq:
-      - std.math.div:
-        - 9
-        - 2
-      - 4.5
-    - std.logic.eq:
-      - std.math.mod:
-        - 9
-        - 4
-      - 1
-    - std.logic.eq:
-      - std.math.pow:
-        - 2
-        - 5
-      - 32
-    - std.logic.eq:
-      - std.math.clamp:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.logic.eq:
+        - std.math.mul:
+          - 3
+          - 4
+        - 12
+      - std.logic.eq:
+        - std.math.div:
+          - 9
+          - 2
+        - 4.5
+      - std.logic.eq:
+        - std.math.mod:
+          - 9
+          - 4
         - 1
+      - std.logic.eq:
+        - std.math.pow:
+          - 2
+          - 5
+        - 32
+      - std.logic.eq:
+        - std.math.clamp:
+          - 1
+          - 5
+          - 9
         - 5
-        - 9
-      - 5
-    - std.logic.eq:
-      - std.math.round:
-        - 2.5
-      - 3
-    - std.logic.eq:
-      - std.collection.slice:
-        - 1
+      - std.logic.eq:
+        - std.math.round:
+          - 2.5
         - 3
+      - std.logic.eq:
+        - std.collection.slice:
+          - 1
+          - 3
+          - std.json.parse:
+            - '[0,1,2,3]'
         - std.json.parse:
-          - '[0,1,2,3]'
-      - std.json.parse:
-        - '[1,2]'
-    - std.logic.eq:
-      - std.collection.reverse:
+          - '[1,2]'
+      - std.logic.eq:
+        - std.collection.reverse:
+          - std.json.parse:
+            - '[1,2,3]'
         - std.json.parse:
-          - '[1,2,3]'
-      - std.json.parse:
-        - '[3,2,1]'
-    - std.logic.eq:
-      - std.collection.zip:
+          - '[3,2,1]'
+      - std.logic.eq:
+        - std.collection.zip:
+          - std.json.parse:
+            - '[1,2,3]'
+          - std.json.parse:
+            - '[4,5]'
         - std.json.parse:
-          - '[1,2,3]'
+          - '[[1,4],[2,5]]'
+      - std.logic.eq:
+        - std.collection.zip_with:
+          - {var: std.math.add}
+          - std.json.parse:
+            - '[1,2,3]'
+          - std.json.parse:
+            - '[4,5,6]'
         - std.json.parse:
-          - '[4,5]'
-      - std.json.parse:
-        - '[[1,4],[2,5]]'
-    - std.logic.eq:
-      - std.collection.zip_with:
-        - {var: std.math.add}
+          - '[5,7,9]'
+      - std.logic.eq:
+        - std.math.range:
+          - 2
+          - 5
         - std.json.parse:
-          - '[1,2,3]'
+          - '[2,3,4]'
+      - std.logic.eq:
+        - std.collection.repeat:
+          - x
+          - 3
         - std.json.parse:
-          - '[4,5,6]'
-      - std.json.parse:
-        - '[5,7,9]'
-    - std.logic.eq:
-      - std.math.range:
-        - 2
-        - 5
-      - std.json.parse:
-        - '[2,3,4]'
-    - std.logic.eq:
-      - std.collection.repeat:
+          - '["x","x","x"]'
+      - std.type.is_null:
+        - null
+      - std.type.is_bool:
+        - true
+      - std.type.is_number:
+        - 3.14
+      - std.type.is_string:
         - x
-        - 3
-      - std.json.parse:
-        - '["x","x","x"]'
-    - std.type.is_null:
-      - null
-    - std.type.is_bool:
-      - true
-    - std.type.is_number:
-      - 3.14
-    - std.type.is_string:
-      - x
-    - std.type.is_list:
-      - std.json.parse:
-        - '[1,2]'
-    - std.type.is_dict:
-      - std.json.parse:
-        - '{"a":1}'
-  target: text
+      - std.type.is_list:
+        - std.json.parse:
+          - '[1,2]'
+      - std.type.is_dict:
+        - std.json.parse:
+          - '{"a":1}'
 harness:
   check:
     profile: text.file
@@ -941,12 +967,12 @@ harness:
 
 ```yaml contract-spec
 id: SRCONF-EXPR-020
-title: evaluate ramda v2 object utilities
+title: evaluate ramda v1 object utilities
 purpose: Verifies expanded object helpers keep deterministic dictionary semantics.
 type: contract.check
 requires:
   capabilities:
-  - evaluate.spec_lang.ramda.v2
+  - evaluate.spec_lang.ramda.v1
   when_missing: skip
 expect:
   portable:
@@ -957,78 +983,80 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.object.keys:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.logic.eq:
+        - std.object.keys:
+          - std.json.parse:
+            - '{"a":1,"b":2}'
+        - std.json.parse:
+          - '["a","b"]'
+      - std.logic.eq:
+        - std.object.values:
+          - std.json.parse:
+            - '{"a":1,"b":2}'
+        - std.json.parse:
+          - '[1,2]'
+      - std.logic.eq:
+        - std.object.entries:
+          - std.json.parse:
+            - '{"a":1}'
+        - std.json.parse:
+          - '[["a",1]]'
+      - std.logic.eq:
+        - std.object.merge:
+          - std.json.parse:
+            - '{"a":1}'
+          - std.json.parse:
+            - '{"b":2}'
         - std.json.parse:
           - '{"a":1,"b":2}'
-      - std.json.parse:
-        - '["a","b"]'
-    - std.logic.eq:
-      - std.object.values:
+      - std.logic.eq:
+        - std.object.assoc:
+          - b
+          - 2
+          - std.json.parse:
+            - '{"a":1}'
         - std.json.parse:
           - '{"a":1,"b":2}'
-      - std.json.parse:
-        - '[1,2]'
-    - std.logic.eq:
-      - std.object.entries:
-        - std.json.parse:
-          - '{"a":1}'
-      - std.json.parse:
-        - '[["a",1]]'
-    - std.logic.eq:
-      - std.object.merge:
-        - std.json.parse:
-          - '{"a":1}'
+      - std.logic.eq:
+        - std.object.dissoc:
+          - a
+          - std.json.parse:
+            - '{"a":1,"b":2}'
         - std.json.parse:
           - '{"b":2}'
-      - std.json.parse:
-        - '{"a":1,"b":2}'
-    - std.logic.eq:
-      - std.object.assoc:
-        - b
-        - 2
+      - std.logic.eq:
+        - std.object.pick:
+          - std.json.parse:
+            - '["a"]'
+          - std.json.parse:
+            - '{"a":1,"b":2}'
         - std.json.parse:
           - '{"a":1}'
-      - std.json.parse:
-        - '{"a":1,"b":2}'
-    - std.logic.eq:
-      - std.object.dissoc:
+      - std.logic.eq:
+        - std.object.omit:
+          - std.json.parse:
+            - '["a"]'
+          - std.json.parse:
+            - '{"a":1,"b":2}'
+        - std.json.parse:
+          - '{"b":2}'
+      - std.object.prop_eq:
         - a
+        - 1
+        - std.json.parse:
+          - '{"a":1}'
+      - std.object.where:
+        - std.json.parse:
+          - '{"a":1}'
         - std.json.parse:
           - '{"a":1,"b":2}'
-      - std.json.parse:
-        - '{"b":2}'
-    - std.logic.eq:
-      - std.object.pick:
-        - std.json.parse:
-          - '["a"]'
-        - std.json.parse:
-          - '{"a":1,"b":2}'
-      - std.json.parse:
-        - '{"a":1}'
-    - std.logic.eq:
-      - std.object.omit:
-        - std.json.parse:
-          - '["a"]'
-        - std.json.parse:
-          - '{"a":1,"b":2}'
-      - std.json.parse:
-        - '{"b":2}'
-    - std.object.prop_eq:
-      - a
-      - 1
-      - std.json.parse:
-        - '{"a":1}'
-    - std.object.where:
-      - std.json.parse:
-        - '{"a":1}'
-      - std.json.parse:
-        - '{"a":1,"b":2}'
-  target: text
 harness:
   check:
     profile: text.file
@@ -1039,12 +1067,12 @@ harness:
 
 ```yaml contract-spec
 id: SRCONF-EXPR-021
-title: evaluate ramda v2 combinators and string helpers
+title: evaluate ramda v1 combinators and string helpers
 purpose: Verifies compose/pipe, constant-function behavior, and string transforms are deterministic.
 type: contract.check
 requires:
   capabilities:
-  - evaluate.spec_lang.ramda.v2
+  - evaluate.spec_lang.ramda.v1
   when_missing: skip
 expect:
   portable:
@@ -1055,56 +1083,58 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.fn.compose:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.logic.eq:
+        - std.fn.compose:
+          - call:
+            - {var: std.math.add}
+            - 1
+          - call:
+            - {var: std.math.mul}
+            - 2
+          - 3
+        - 7
+      - std.logic.eq:
+        - std.fn.pipe:
+          - call:
+            - {var: std.math.mul}
+            - 2
+          - call:
+            - {var: std.math.add}
+            - 1
+          - 3
+        - 7
+      - std.logic.eq:
         - call:
-          - {var: std.math.add}
-          - 1
-        - call:
-          - {var: std.math.mul}
-          - 2
-        - 3
-      - 7
-    - std.logic.eq:
-      - std.fn.pipe:
-        - call:
-          - {var: std.math.mul}
-          - 2
-        - call:
-          - {var: std.math.add}
-          - 1
-        - 3
-      - 7
-    - std.logic.eq:
-      - call:
-        - call:
-          - {var: std.fn.always}
-          - k
-        - 999
-      - k
-    - std.logic.eq:
-      - std.string.replace:
-        - a-b-c
-        - '-'
-        - ':'
-      - a:b:c
-    - std.logic.eq:
-      - std.string.pad_left:
-        - '7'
-        - 3
-        - '0'
-      - '007'
-    - std.logic.eq:
-      - std.string.pad_right:
-        - '7'
-        - 3
-        - '0'
-      - '700'
-  target: text
+          - call:
+            - {var: std.fn.always}
+            - k
+          - 999
+        - k
+      - std.logic.eq:
+        - std.string.replace:
+          - a-b-c
+          - '-'
+          - ':'
+        - a:b:c
+      - std.logic.eq:
+        - std.string.pad_left:
+          - '7'
+          - 3
+          - '0'
+        - '007'
+      - std.logic.eq:
+        - std.string.pad_right:
+          - '7'
+          - 3
+          - '0'
+        - '700'
 harness:
   check:
     profile: text.file
@@ -1115,13 +1145,13 @@ harness:
 
 ```yaml contract-spec
 id: SRCONF-EXPR-022
-title: evaluate ramda v2 unary numeric and compare helpers
+title: evaluate ramda v1 unary numeric and compare helpers
 purpose: Verifies unary numeric helpers and comparison helpers produce deterministic values
   for policy expressions.
 type: contract.check
 requires:
   capabilities:
-  - evaluate.spec_lang.ramda.v2
+  - evaluate.spec_lang.ramda.v1
   when_missing: skip
 expect:
   portable:
@@ -1132,61 +1162,63 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.math.abs:
-        - -7
-      - 7
-    - std.logic.eq:
-      - std.math.negate:
-        - 3
-      - -3
-    - std.logic.eq:
-      - std.math.inc:
-        - 3
-      - 4
-    - std.logic.eq:
-      - std.math.dec:
-        - 3
-      - 2
-    - std.logic.eq:
-      - std.math.floor:
-        - 3.9
-      - 3
-    - std.logic.eq:
-      - std.math.ceil:
-        - 3.1
-      - 4
-    - std.logic.eq:
-      - std.logic.compare:
-        - 3
-        - 5
-      - -1
-    - std.logic.eq:
-      - std.logic.compare:
-        - 5
-        - 5
-      - 0
-    - std.logic.eq:
-      - std.logic.compare:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.logic.eq:
+        - std.math.abs:
+          - -7
         - 7
-        - 5
-      - 1
-    - std.logic.between:
-      - 1
-      - 3
-      - 2
-    - std.logic.xor:
-      - true
-      - false
-    - std.logic.not:
+      - std.logic.eq:
+        - std.math.negate:
+          - 3
+        - -3
+      - std.logic.eq:
+        - std.math.inc:
+          - 3
+        - 4
+      - std.logic.eq:
+        - std.math.dec:
+          - 3
+        - 2
+      - std.logic.eq:
+        - std.math.floor:
+          - 3.9
+        - 3
+      - std.logic.eq:
+        - std.math.ceil:
+          - 3.1
+        - 4
+      - std.logic.eq:
+        - std.logic.compare:
+          - 3
+          - 5
+        - -1
+      - std.logic.eq:
+        - std.logic.compare:
+          - 5
+          - 5
+        - 0
+      - std.logic.eq:
+        - std.logic.compare:
+          - 7
+          - 5
+        - 1
+      - std.logic.between:
+        - 1
+        - 3
+        - 2
       - std.logic.xor:
         - true
-        - true
-  target: text
+        - false
+      - std.logic.not:
+        - std.logic.xor:
+          - true
+          - true
 harness:
   check:
     profile: text.file
@@ -1197,13 +1229,13 @@ harness:
 
 ```yaml contract-spec
 id: SRCONF-EXPR-023
-title: evaluate ramda v2 utility and predicate helpers
+title: evaluate ramda v1 utility and predicate helpers
 purpose: Verifies utility and predicate helpers used by governance logic are deterministic
   and pure.
 type: contract.check
 requires:
   capabilities:
-  - evaluate.spec_lang.ramda.v2
+  - evaluate.spec_lang.ramda.v1
   when_missing: skip
 expect:
   portable:
@@ -1214,156 +1246,158 @@ expect:
       status: pass
       category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.collection.count:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
+      - std.logic.eq:
+        - std.collection.count:
+          - std.json.parse:
+            - '[1,2,3]'
+        - 3
+      - std.logic.eq:
+        - std.collection.first:
+          - std.json.parse:
+            - '[9,8,7]'
+        - 9
+      - std.logic.eq:
+        - std.collection.rest:
+          - std.json.parse:
+            - '[9,8,7]'
         - std.json.parse:
-          - '[1,2,3]'
-      - 3
-    - std.logic.eq:
-      - std.collection.first:
-        - std.json.parse:
-          - '[9,8,7]'
-      - 9
-    - std.logic.eq:
-      - std.collection.rest:
-        - std.json.parse:
-          - '[9,8,7]'
-      - std.json.parse:
-        - '[8,7]'
-    - std.logic.eq:
-      - std.string.trim:
-        - '  x  '
-      - x
-    - std.logic.eq:
-      - std.string.lower:
-        - AbC
-      - abc
-    - std.logic.eq:
-      - std.string.upper:
-        - AbC
-      - ABC
-    - std.logic.eq:
-      - std.string.split:
-        - a,b,c
-        - ','
-      - std.json.parse:
-        - '["a","b","c"]'
-    - std.logic.eq:
-      - std.string.join:
+          - '[8,7]'
+      - std.logic.eq:
+        - std.string.trim:
+          - '  x  '
+        - x
+      - std.logic.eq:
+        - std.string.lower:
+          - AbC
+        - abc
+      - std.logic.eq:
+        - std.string.upper:
+          - AbC
+        - ABC
+      - std.logic.eq:
+        - std.string.split:
+          - a,b,c
+          - ','
         - std.json.parse:
           - '["a","b","c"]'
-        - '-'
-      - a-b-c
-    - std.logic.eq:
-      - std.null.coalesce:
-        - null
+      - std.logic.eq:
+        - std.string.join:
+          - std.json.parse:
+            - '["a","b","c"]'
+          - '-'
+        - a-b-c
+      - std.logic.eq:
+        - std.null.coalesce:
+          - null
+          - x
         - x
-      - x
-    - std.logic.eq:
-      - std.collection.distinct:
-        - std.json.parse:
-          - '[1,1,2,2,3]'
-      - std.json.parse:
-        - '[1,2,3]'
-    - std.logic.eq:
-      - std.collection.sort_by:
-        - std.json.parse:
-          - '[3,1,2]'
-        - {var: std.fn.identity}
-      - std.json.parse:
-        - '[1,2,3]'
-    - std.logic.eq:
-      - std.object.pluck:
-        - std.json.parse:
-          - '[{"k":1},{"k":2}]'
-        - k
-      - std.json.parse:
-        - '[1,2]'
-    - std.collection.all:
-      - std.json.parse:
-        - '[true,true,true]'
-    - std.collection.any:
-      - std.json.parse:
-        - '[false,true,false]'
-    - std.collection.none:
-      - std.json.parse:
-        - '[false,false]'
-    - std.collection.is_empty:
-      - std.json.parse:
-        - '[]'
-    - std.string.matches:
-      - a42
-      - a[0-9]+
-    - std.string.matches_all:
-      - a42
-      - std.json.parse:
-        - '["^a","[0-9]+$"]'
-    - std.string.regex_match:
-      - a42
-      - a[0-9]+
-    - std.logic.eq:
-      - std.type.json_type:
-        - std.json.parse:
-          - '[1,2]'
-        - list
-      - true
-    - std.logic.eq:
-      - std.type.json_type:
-        - std.json.parse:
-          - '{"x":1}'
-        - object
-      - true
-    - std.logic.eq:
-      - std.type.json_type:
-        - std.json.parse:
-          - '[1,2]'
-        - array
-      - true
-    - std.logic.eq:
-      - std.type.json_type:
-        - true
-        - boolean
-      - true
-    - std.object.has_key:
-      - std.json.parse:
-        - '{"x":1}'
-      - x
-    - std.collection.in:
-      - x
-      - std.json.parse:
-        - '{"x":1}'
-    - std.logic.eq:
-      - std.collection.len:
-        - abcd
-      - 4
-    - std.type.is_boolean:
-      - true
-    - std.type.is_array:
-      - std.json.parse:
-        - '[1,2]'
-    - std.type.is_object:
-      - std.json.parse:
-        - '{"x":1}'
-    - std.logic.eq:
-      - std.math.sum:
+      - std.logic.eq:
+        - std.collection.distinct:
+          - std.json.parse:
+            - '[1,1,2,2,3]'
         - std.json.parse:
           - '[1,2,3]'
-      - 6
-    - std.logic.eq:
-      - std.math.min:
+      - std.logic.eq:
+        - std.collection.sort_by:
+          - std.json.parse:
+            - '[3,1,2]'
+          - {var: std.fn.identity}
         - std.json.parse:
-          - '[4,2,8]'
-      - 2
-    - std.logic.eq:
-      - std.math.max:
+          - '[1,2,3]'
+      - std.logic.eq:
+        - std.object.pluck:
+          - std.json.parse:
+            - '[{"k":1},{"k":2}]'
+          - k
         - std.json.parse:
-          - '[4,2,8]'
-      - 8
-  target: text
+          - '[1,2]'
+      - std.collection.all:
+        - std.json.parse:
+          - '[true,true,true]'
+      - std.collection.any:
+        - std.json.parse:
+          - '[false,true,false]'
+      - std.collection.none:
+        - std.json.parse:
+          - '[false,false]'
+      - std.collection.is_empty:
+        - std.json.parse:
+          - '[]'
+      - std.string.matches:
+        - a42
+        - a[0-9]+
+      - std.string.matches_all:
+        - a42
+        - std.json.parse:
+          - '["^a","[0-9]+$"]'
+      - std.string.regex_match:
+        - a42
+        - a[0-9]+
+      - std.logic.eq:
+        - std.type.json_type:
+          - std.json.parse:
+            - '[1,2]'
+          - list
+        - true
+      - std.logic.eq:
+        - std.type.json_type:
+          - std.json.parse:
+            - '{"x":1}'
+          - object
+        - true
+      - std.logic.eq:
+        - std.type.json_type:
+          - std.json.parse:
+            - '[1,2]'
+          - array
+        - true
+      - std.logic.eq:
+        - std.type.json_type:
+          - true
+          - boolean
+        - true
+      - std.object.has_key:
+        - std.json.parse:
+          - '{"x":1}'
+        - x
+      - std.collection.in:
+        - x
+        - std.json.parse:
+          - '{"x":1}'
+      - std.logic.eq:
+        - std.collection.len:
+          - abcd
+        - 4
+      - std.type.is_boolean:
+        - true
+      - std.type.is_array:
+        - std.json.parse:
+          - '[1,2]'
+      - std.type.is_object:
+        - std.json.parse:
+          - '{"x":1}'
+      - std.logic.eq:
+        - std.math.sum:
+          - std.json.parse:
+            - '[1,2,3]'
+        - 6
+      - std.logic.eq:
+        - std.math.min:
+          - std.json.parse:
+            - '[4,2,8]'
+        - 2
+      - std.logic.eq:
+        - std.math.max:
+          - std.json.parse:
+            - '[4,2,8]'
+        - 8
 harness:
   check:
     profile: text.file
@@ -1374,13 +1408,13 @@ harness:
 
 ```yaml contract-spec
 id: SRCONF-EXPR-024
-title: evaluate ramda v2 schema failures are deterministic
+title: evaluate ramda v1 schema failures are deterministic
 purpose: Verifies representative arity and type failures stay in schema category for the expanded
   builtin surface.
 type: contract.check
 requires:
   capabilities:
-  - evaluate.spec_lang.ramda.v2
+  - evaluate.spec_lang.ramda.v1
   when_missing: skip
 expect:
   portable:
@@ -1393,12 +1427,14 @@ expect:
       message_tokens:
       - arity error
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.compare:
-    - 1
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.compare:
+      - 1
 harness:
   check:
     profile: text.file

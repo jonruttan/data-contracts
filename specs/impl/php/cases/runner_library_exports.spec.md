@@ -8,30 +8,28 @@ title: impl assertion library exports are referenced by impl fixtures
 purpose: References impl assertion library exports for governance usage tracking.
 type: contract.check
 harness:
-  chain:
-    steps:
-    - id: lib_assertion_core_spec
-      class: MUST
-      ref: /specs/libraries/impl/assertion_core.spec.md
-    imports:
-    - from: lib_assertion_core_spec
-      names:
-      - impl.assert.contains
-      - impl.assert.json_type
-      - impl.assert.regex
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: /specs/libraries/impl/assertion_core.spec.md
+    as: lib_assertion_core_spec
+    symbols:
+    - impl.assert.contains
+    - impl.assert.json_type
+    - impl.assert.regex
 expect:
   portable:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '# PHP Spec Runner Library Export References'
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '# PHP Spec Runner Library Export References'
 ```

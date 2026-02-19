@@ -30,25 +30,23 @@ harness:
       forbidden_tokens:
       - 'python-parity:'
       - SPEC_PREPUSH_MODE=parity ./scripts/local_ci_parity.sh
-  chain:
-    steps:
-    - id: lib_policy_core_spec
-      class: MUST
-      ref: /specs/libraries/policy/policy_core.spec.md
-    imports:
-    - from: lib_policy_core_spec
-      names:
-      - policy.pass_when_no_violations
   check:
     profile: governance.scan
     config:
       check: runtime.rust_only_prepush_required
+  use:
+  - ref: /specs/libraries/policy/policy_core.spec.md
+    as: lib_policy_core_spec
+    symbols:
+    - policy.pass_when_no_violations
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - 0
-  target: violation_count
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': violation_count
+    assert:
+      std.logic.eq:
+      - {var: subject}
+      - 0
 ```

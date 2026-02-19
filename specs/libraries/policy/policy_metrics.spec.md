@@ -7,18 +7,20 @@ id: LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
 type: contract.export
 contract:
-- id: __export__policy.metric_non_decrease
-  class: MUST
-  asserts:
-  - std.logic.gte:
-    - std.math.add:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__policy.metric_non_decrease
+    assert:
+      std.logic.gte:
+      - std.math.add:
+        - std.object.get:
+          - {var: subject}
+          - {var: field}
+        - {var: epsilon}
       - std.object.get:
         - {var: subject}
-        - {var: field}
-      - {var: epsilon}
-    - std.object.get:
-      - {var: subject}
-      - {var: baseline_field}
+        - {var: baseline_field}
 harness:
   exports:
   - as: policy.metric_non_decrease
@@ -37,18 +39,20 @@ id: LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_increase'
 type: contract.export
 contract:
-- id: __export__policy.metric_non_increase
-  class: MUST
-  asserts:
-  - std.logic.lte:
-    - std.math.sub:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__policy.metric_non_increase
+    assert:
+      std.logic.lte:
+      - std.math.sub:
+        - std.object.get:
+          - {var: subject}
+          - {var: field}
+        - {var: epsilon}
       - std.object.get:
         - {var: subject}
-        - {var: field}
-      - {var: epsilon}
-    - std.object.get:
-      - {var: subject}
-      - {var: baseline_field}
+        - {var: baseline_field}
 harness:
   exports:
   - as: policy.metric_non_increase
@@ -67,43 +71,39 @@ id: LIB-POLICY-002-900-POLICY-METRIC-SMOKE
 title: policy metric helpers execute as colocated executable checks
 type: contract.check
 harness:
-  chain:
-    steps:
-    - id: lib_non_decrease
-      class: MUST
-      ref: '#LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE'
-    - id: lib_non_increase
-      class: MUST
-      ref: '#LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE'
-    imports:
-    - from: lib_non_decrease
-      names:
-      - policy.metric_non_decrease
-    - from: lib_non_increase
-      names:
-      - policy.metric_non_increase
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: '#LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE'
+    as: lib_non_decrease
+    symbols:
+    - policy.metric_non_decrease
+  - ref: '#LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE'
+    as: lib_non_increase
+    symbols:
+    - policy.metric_non_increase
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - call:
-    - {var: policy.metric_non_decrease}
-    - lit:
-        current: 10
-        baseline: 9
-    - current
-    - baseline
-    - 0
-  - call:
-    - {var: policy.metric_non_increase}
-    - lit:
-        current: 8
-        baseline: 9
-    - current
-    - baseline
-    - 0
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - call:
+      - {var: policy.metric_non_decrease}
+      - lit:
+          current: 10
+          baseline: 9
+      - current
+      - baseline
+      - 0
+    - call:
+      - {var: policy.metric_non_increase}
+      - lit:
+          current: 8
+          baseline: 9
+      - current
+      - baseline
+      - 0
 ```

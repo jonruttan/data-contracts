@@ -72,8 +72,8 @@ def _load_conformance_export_functions() -> dict[str, list[object]]:
     for _doc_path, raw_case in load_external_cases(lib_path, formats={"md"}):
         if str(raw_case.get("type", "")).strip() != "contract.export":
             continue
-        chain = dict((dict(raw_case.get("harness") or {})).get("chain") or {})
-        exports = chain.get("exports") or []
+        harness = dict(raw_case.get("harness") or {})
+        exports = harness.get("exports") or []
         if not isinstance(exports, list):
             continue
         for exp in exports:
@@ -88,9 +88,12 @@ def _load_conformance_export_functions() -> dict[str, list[object]]:
             params = exp.get("params")
             if not isinstance(params, list) or not params or not all(isinstance(x, str) and x.strip() for x in params):
                 raise RuntimeError(f"{symbol_name} must declare non-empty string params list")
-            assert_steps = raw_case.get("contract")
+            contract = raw_case.get("contract")
+            if not isinstance(contract, dict):
+                raise RuntimeError(f"{symbol_name} producer case must include contract mapping")
+            assert_steps = contract.get("steps")
             if not isinstance(assert_steps, list):
-                raise RuntimeError(f"{symbol_name} producer case must include contract list")
+                raise RuntimeError(f"{symbol_name} producer case contract.steps must be a list")
             found_step = False
             for step in assert_steps:
                 if not isinstance(step, dict):
@@ -98,13 +101,15 @@ def _load_conformance_export_functions() -> dict[str, list[object]]:
                 if str(step.get("id", "")).strip() != step_id:
                     continue
                 found_step = True
-                checks = step.get("asserts")
+                checks = step.get("assert")
+                if isinstance(checks, dict):
+                    checks = [checks]
                 if not isinstance(checks, list) or len(checks) != 1 or not isinstance(checks[0], dict):
                     raise RuntimeError(f"{symbol_name} export step must have exactly one expression assert")
                 try:
                     body_expr = compile_yaml_expr_to_sexpr(
                         checks[0],
-                        field_path=f"{lib_path.as_posix()}#{step_id}.asserts[0]",
+                        field_path=f"{lib_path.as_posix()}#{step_id}.assert[0]",
                     )
                 except SpecLangYamlAstError as exc:
                     raise RuntimeError(str(exc)) from exc

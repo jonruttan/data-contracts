@@ -15,13 +15,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --surface
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --surface
 ```
 
 ## SRPY-SCRIPT-DOCS-002
@@ -41,13 +43,15 @@ harness:
       - nope
       exit_code: 1
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.logic.eq:
-    - 1
-    - 1
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.logic.eq:
+      - 1
+      - 1
 ```
 
 ## SRPY-SCRIPT-DOCS-003
@@ -65,13 +69,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --cases
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --cases
 ```
 
 ## SRPY-SCRIPT-DOCS-004
@@ -91,13 +97,15 @@ harness:
       - nope
       exit_code: 1
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unknown surface_id
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unknown surface_id
 ```
 
 ## SRPY-SCRIPT-DOCS-005
@@ -115,13 +123,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --write
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --write
 ```
 
 ## SRPY-SCRIPT-DOCS-006
@@ -139,13 +149,15 @@ harness:
       - --check
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - formatting is canonical
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - formatting is canonical
 ```
 
 ## SRPY-SCRIPT-DOCS-007
@@ -170,19 +182,21 @@ harness:
       - .artifacts/docs-build-reference-graph.json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/docs-build-reference-index.md
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/docs-build-reference-coverage.md
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/docs-build-reference-graph.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/docs-build-reference-index.md
+    - std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/docs-build-reference-coverage.md
+    - std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/docs-build-reference-graph.json
 ```
 
 ## SRPY-SCRIPT-DOCS-008
@@ -200,11 +214,13 @@ harness:
       - --bad-flag
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```

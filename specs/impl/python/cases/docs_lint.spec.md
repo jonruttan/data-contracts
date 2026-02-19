@@ -14,13 +14,15 @@ harness:
       argv: []
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - 'OK: docs lint passed'
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - 'OK: docs lint passed'
 ```
 
 ## SRPY-DOCSLINT-002
@@ -39,11 +41,13 @@ harness:
       - specs/impl/python/fixtures/missing_reference_manifest.yaml
       exit_code: 1
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - missing reference manifest
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - missing reference manifest
 ```

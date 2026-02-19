@@ -316,73 +316,73 @@ def _check_chain_contract_shape() -> list[str]:
         case_id = str(case.get("id", "<missing>")).strip() or "<missing>"
         if "chain" in case:
             issues.append(
-                f"{rel}:1: NORMALIZATION_CHAIN_SINGLE_LOCATION: case {case_id} top-level chain is forbidden; use harness.chain"
+                f"{rel}:1: NORMALIZATION_CHAIN_SINGLE_LOCATION: case {case_id} top-level chain is forbidden; use harness.use"
             )
         harness = case.get("harness")
         if not isinstance(harness, dict):
             continue
         for key, value in harness.items():
-            if key == "chain":
+            if key in {"chain", "use"}:
                 continue
             if isinstance(value, dict) and "chain" in value:
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SINGLE_LOCATION: case {case_id} type-specific {key}.chain is forbidden; use harness.chain"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SINGLE_LOCATION: case {case_id} type-specific {key}.chain is forbidden; use harness.use"
                 )
-        chain = harness.get("chain")
-        if chain is None:
-            continue
-        if not isinstance(chain, dict):
+        if "chain" in harness:
             issues.append(
-                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain must be mapping"
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain is forbidden; use harness.use"
+            )
+        use = harness.get("use")
+        if use is None:
+            continue
+        if not isinstance(use, list):
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use must be a non-empty list when provided"
             )
             continue
-        steps = chain.get("steps")
-        raw_exports = harness.get("exports")
-        has_exports = isinstance(raw_exports, list) and bool(raw_exports)
-        if steps is None:
-            steps = []
-        if not isinstance(steps, list):
+        if not use:
             issues.append(
-                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps must be a list when provided"
+                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use must be a non-empty list when provided"
             )
             continue
-        if not steps and not has_exports:
-            issues.append(
-                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps must be non-empty list when harness.exports is not declared"
-            )
-            continue
-        for idx, step in enumerate(steps):
+        for idx, step in enumerate(use):
             if not isinstance(step, dict):
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}] must be mapping"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use[{idx}] must be mapping"
                 )
                 continue
-            class_name = str(step.get("class", "")).strip()
-            if class_name not in _CHAIN_CLASS_VALUES:
-                issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].class must be one of MUST, MAY, MUST_NOT"
-                )
+            alias = str(step.get("as", "")).strip()
             ref = step.get("ref")
+            symbols = step.get("symbols")
+            if not alias:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use[{idx}].as must be non-empty string"
+                )
             if isinstance(ref, dict):
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].ref legacy mapping form is forbidden; use scalar [path][#case_id]"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use[{idx}].ref legacy mapping form is forbidden; use scalar [path][#case_id]"
                 )
             elif not isinstance(ref, str) or not ref.strip():
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].ref must be non-empty string"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use[{idx}].ref must be non-empty string"
                 )
-            if "imports" in step:
+            if not isinstance(symbols, list) or not symbols:
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].imports is forbidden; declare producer symbols on producer harness.exports"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use[{idx}].symbols must be non-empty list"
                 )
-            if "exports" in step:
+            elif any(not str(name).strip() for name in symbols):
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.chain.steps[{idx}].exports is forbidden; declare producer symbols on producer harness.exports"
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use[{idx}].symbols entries must be non-empty strings"
                 )
-        if "exports" in chain:
-            issues.append(
-                f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports is forbidden; use harness.exports"
-            )
+            if "class" in step or "allow_continue" in step:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use[{idx}] contains forbidden chain-only keys"
+                )
+            if "imports" in step or "exports" in step:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.use[{idx}] contains forbidden keys imports/exports"
+                )
+        raw_exports = harness.get("exports")
         if raw_exports is not None and not isinstance(raw_exports, list):
             issues.append(
                 f"{rel}:1: NORMALIZATION_CHAIN_SCHEMA: case {case_id} harness.exports must be a list when provided"
@@ -456,45 +456,55 @@ def _check_contract_terminology_hard_cut() -> list[str]:
                 f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} missing required contract key"
             )
             continue
-
-        def _walk(node: Any, path: str) -> None:
-            if isinstance(node, list):
-                for i, child in enumerate(node):
-                    _walk(child, f"{path}[{i}]")
-                return
-            if not isinstance(node, dict):
-                return
-            step_class = str(node.get("class", "")).strip() if "class" in node else ""
-            if step_class in _LEGACY_CLASS_VALUES:
+        if isinstance(contract, list):
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} v1 contract list is forbidden; use contract.defaults + contract.steps"
+            )
+            continue
+        if not isinstance(contract, dict):
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract must be mapping"
+            )
+            continue
+        defaults = contract.get("defaults")
+        if defaults is not None and not isinstance(defaults, dict):
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.defaults must be mapping"
+            )
+        steps = contract.get("steps")
+        if not isinstance(steps, list):
+            issues.append(
+                f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps must be a list"
+            )
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path}.class legacy lowercase class is forbidden; use MUST, MAY, MUST_NOT"
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps[{idx}] must be mapping"
                 )
-            if step_class in _CONTRACT_CLASS_VALUES:
-                if "checks" in node:
-                    issues.append(
-                        f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path} legacy checks key is forbidden; use asserts"
-                    )
-                raw_asserts = node.get("asserts")
-                if not isinstance(raw_asserts, list) or not raw_asserts:
-                    issues.append(
-                        f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path}.asserts must be non-empty list"
-                    )
-                else:
-                    for i, child in enumerate(raw_asserts):
-                        _walk(child, f"{path}.asserts[{i}]")
-                return
-            for key in ("must", "can", "cannot"):
-                if key in node:
-                    issues.append(
-                        f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} {path}.{key} legacy lowercase group key is forbidden; use MUST, MAY, MUST_NOT"
-                    )
-            for key in ("MUST", "MAY", "MUST_NOT"):
-                raw_children = node.get(key)
-                if isinstance(raw_children, list):
-                    for i, child in enumerate(raw_children):
-                        _walk(child, f"{path}.{key}[{i}]")
-
-        _walk(contract, "contract")
+                continue
+            step_class = str(step.get("class", "MUST")).strip() or "MUST"
+            if step_class in _LEGACY_CLASS_VALUES or step_class not in _CONTRACT_CLASS_VALUES:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps[{idx}].class must be MUST, MAY, MUST_NOT"
+                )
+            if "asserts" in step:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps[{idx}].asserts is forbidden; use assert"
+                )
+            if "target" in step:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps[{idx}].target is forbidden; use on"
+                )
+            raw_assert = step.get("assert")
+            if raw_assert is None:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps[{idx}].assert is required"
+                )
+            elif isinstance(raw_assert, list) and not raw_assert:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps[{idx}].assert list must be non-empty"
+                )
 
     spec_root = ROOT / "specs"
     if spec_root.exists():

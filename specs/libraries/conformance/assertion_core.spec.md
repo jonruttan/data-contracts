@@ -7,36 +7,34 @@ id: LIB-CONF-ASSERT-001
 title: reusable conformance assertion helper functions
 type: contract.export
 contract:
-- id: __export__conf.pass_when_text_contains
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - {var: token}
-- id: __export__conf.pass_when_text_regex
-  class: MUST
-  asserts:
-  - std.string.regex_match:
-    - {var: subject}
-    - {var: pattern}
-- id: __export__conf.eq
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - {var: value}
-- id: __export__conf.has_error_category
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - {var: category}
-- id: __export__conf.json_type_is
-  class: MUST
-  asserts:
-  - std.type.json_type:
-    - {var: subject}
-    - {var: type_name}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__conf.pass_when_text_contains
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - {var: token}
+  - id: __export__conf.pass_when_text_regex
+    assert:
+      std.string.regex_match:
+      - {var: subject}
+      - {var: pattern}
+  - id: __export__conf.eq
+    assert:
+      std.logic.eq:
+      - {var: subject}
+      - {var: value}
+  - id: __export__conf.has_error_category
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - {var: category}
+  - id: __export__conf.json_type_is
+    assert:
+      std.type.json_type:
+      - {var: subject}
+      - {var: type_name}
 harness:
   exports:
   - as: conf.pass_when_text_contains

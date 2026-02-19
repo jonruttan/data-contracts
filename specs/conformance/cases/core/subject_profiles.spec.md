@@ -12,22 +12,24 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - profile_id
-  - std.string.contains:
-    - {var: subject}
-    - profile_version
-  - std.string.contains:
-    - {var: subject}
-    - json_core_only
-  - std.string.contains:
-    - {var: subject}
-    - deterministic_projection
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - profile_id
+    - std.string.contains:
+      - {var: subject}
+      - profile_version
+    - std.string.contains:
+      - {var: subject}
+      - json_core_only
+    - std.string.contains:
+      - {var: subject}
+      - deterministic_projection
 harness:
   check:
     profile: text.file
@@ -47,26 +49,28 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': context_json
+    assert:
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - profile_id
+      - text.file/v1
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - profile_version
+      - 1
+    - std.object.has_key:
       - {var: subject}
-      - profile_id
-    - text.file/v1
-  - std.logic.eq:
-    - std.object.get:
+      - value
+    - std.object.has_key:
       - {var: subject}
-      - profile_version
-    - 1
-  - std.object.has_key:
-    - {var: subject}
-    - value
-  - std.object.has_key:
-    - {var: subject}
-    - meta
-  target: context_json
+      - meta
 harness:
   check:
     profile: text.file

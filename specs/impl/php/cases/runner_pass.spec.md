@@ -12,13 +12,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '# PHP Spec Runner Pass Cases'
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '# PHP Spec Runner Pass Cases'
 harness:
   check:
     profile: text.file
@@ -37,13 +39,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - fixture-content
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - fixture-content
 harness:
   check:
     profile: text.file
@@ -63,16 +67,19 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MAY
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - no-match-token
-  - std.string.contains:
-    - {var: subject}
-    - fixture-content
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    class: MAY
+    'on': text
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - no-match-token
+    - std.string.contains:
+      - {var: subject}
+      - fixture-content
 harness:
   check:
     profile: text.file
@@ -100,13 +107,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - hello-runner
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - hello-runner
 ```
 
 ## SRPHP-RUN-005
@@ -131,13 +140,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - 'on'
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - 'on'
 ```
 
 ## SRPHP-RUN-006
@@ -160,13 +171,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - fallback-ok
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - fallback-ok
 ```
 
 ## SRPHP-RUN-007
@@ -189,14 +202,16 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.type.json_type:
-    - std.json.parse:
-      - {var: subject}
-    - list
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.type.json_type:
+      - std.json.parse:
+        - {var: subject}
+      - list
 ```
 
 ## SRPHP-RUN-008
@@ -219,13 +234,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - runner-err
-  target: stderr
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - runner-err
 ```
 
 ## SRPHP-RUN-009
@@ -248,18 +265,19 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - path_target.txt
-  target: stdout_path
-- id: assert_2
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - path target file content
-  target: stdout_path_text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout_path
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - path_target.txt
+  - id: assert_2
+    'on': stdout_path_text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - path target file content
 ```

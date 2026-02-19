@@ -21,13 +21,15 @@ expect:
     - target=text
     - op=evaluate
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.regex_match:
-    - {var: subject}
-    - \A\Z
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.regex_match:
+      - {var: subject}
+      - \A\Z
 harness:
   check:
     profile: text.file

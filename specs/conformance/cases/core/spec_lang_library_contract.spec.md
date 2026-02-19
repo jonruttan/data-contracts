@@ -12,26 +12,28 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - 'type: spec.export'
-  - std.string.contains:
-    - {var: subject}
-    - 'harness:'
-  - std.string.contains:
-    - {var: subject}
-    - 'exports:'
-  - std.string.contains:
-    - {var: subject}
-    - 'from: assert.function'
-  - std.logic.not:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
     - std.string.contains:
       - {var: subject}
-      - 'defines:'
-  target: text
+      - 'type: spec.export'
+    - std.string.contains:
+      - {var: subject}
+      - 'harness:'
+    - std.string.contains:
+      - {var: subject}
+      - 'exports:'
+    - std.string.contains:
+      - {var: subject}
+      - 'from: assert.function'
+    - std.logic.not:
+      - std.string.contains:
+        - {var: subject}
+        - 'defines:'
 harness:
   check:
     profile: text.file
@@ -51,26 +53,28 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - 'type: spec.export'
-  - std.string.contains:
-    - {var: subject}
-    - 'harness:'
-  - std.string.contains:
-    - {var: subject}
-    - 'exports:'
-  - std.string.contains:
-    - {var: subject}
-    - 'from: assert.function'
-  - std.logic.not:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
     - std.string.contains:
       - {var: subject}
-      - 'defines:'
-  target: text
+      - 'type: spec.export'
+    - std.string.contains:
+      - {var: subject}
+      - 'harness:'
+    - std.string.contains:
+      - {var: subject}
+      - 'exports:'
+    - std.string.contains:
+      - {var: subject}
+      - 'from: assert.function'
+    - std.logic.not:
+      - std.string.contains:
+        - {var: subject}
+        - 'defines:'
 harness:
   check:
     profile: text.file
@@ -89,16 +93,18 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - /specs/libraries/policy/policy_core.spec.md
-  - std.string.contains:
-    - {var: subject}
-    - /specs/libraries/policy/policy_metrics.spec.md
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - /specs/libraries/policy/policy_core.spec.md
+    - std.string.contains:
+      - {var: subject}
+      - /specs/libraries/policy/policy_metrics.spec.md
 harness:
   check:
     profile: text.file

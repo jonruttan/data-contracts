@@ -47,7 +47,7 @@ fields:
     required: false
     since: v1
   contract:
-    type: list
+    type: any
     required: false
     since: v1
   expect:

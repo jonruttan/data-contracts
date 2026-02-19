@@ -9,27 +9,25 @@ purpose: Ensures governance cases only reference registered check ids.
 type: contract.check
 harness:
   root: .
-  chain:
-    steps:
-    - id: lib_policy_core_spec
-      class: MUST
-      ref: /specs/libraries/policy/policy_core.spec.md
-    imports:
-    - from: lib_policy_core_spec
-      names:
-      - policy.pass_when_no_violations
   check:
     profile: governance.scan
     config:
       check: reference.check_ids_exist
+  use:
+  - ref: /specs/libraries/policy/policy_core.spec.md
+    as: lib_policy_core_spec
+    symbols:
+    - policy.pass_when_no_violations
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - check_id
-    - reference.check_ids_exist
-  target: summary_json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+      std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - check_id
+      - reference.check_ids_exist
 ```

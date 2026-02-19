@@ -36,7 +36,7 @@ _DEFAULT_CAPABILITIES: dict[str, set[str]] = {
         "assert.op.evaluate",
         "evaluate.spec_lang.v1",
         "evaluate.spec_lang.ramda.v1",
-        "evaluate.spec_lang.ramda.v2",
+        "evaluate.spec_lang.ramda.v1",
         "assert.group.must",
         "assert.group.may",
         "assert.group.must_not",

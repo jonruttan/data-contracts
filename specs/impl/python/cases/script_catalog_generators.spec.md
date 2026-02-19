@@ -15,13 +15,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --doc-out
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --doc-out
 ```
 
 ## SRPY-SCRIPT-CATALOG-002
@@ -39,13 +41,15 @@ harness:
       - --bad-flag
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```
 
 ## SRPY-SCRIPT-CATALOG-003
@@ -63,13 +67,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --doc-out
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --doc-out
 ```
 
 ## SRPY-SCRIPT-CATALOG-004
@@ -87,13 +93,15 @@ harness:
       - --bad-flag
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```
 
 ## SRPY-SCRIPT-CATALOG-005
@@ -111,13 +119,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --doc-out
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --doc-out
 ```
 
 ## SRPY-SCRIPT-CATALOG-006
@@ -135,13 +145,15 @@ harness:
       - --bad-flag
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```
 
 ## SRPY-SCRIPT-CATALOG-007
@@ -159,13 +171,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --doc-out
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --doc-out
 ```
 
 ## SRPY-SCRIPT-CATALOG-008
@@ -183,13 +197,15 @@ harness:
       - --bad-flag
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```
 
 ## SRPY-SCRIPT-CATALOG-009
@@ -207,13 +223,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --doc-out
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --doc-out
 ```
 
 ## SRPY-SCRIPT-CATALOG-010
@@ -231,13 +249,15 @@ harness:
       - --bad-flag
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```
 
 ## SRPY-SCRIPT-CATALOG-011
@@ -255,13 +275,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --doc-out
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --doc-out
 ```
 
 ## SRPY-SCRIPT-CATALOG-012
@@ -279,13 +301,15 @@ harness:
       - --bad-flag
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```
 
 ## SRPY-SCRIPT-CATALOG-013
@@ -303,13 +327,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --schema-doc-out
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --schema-doc-out
 ```
 
 ## SRPY-SCRIPT-CATALOG-014
@@ -327,13 +353,15 @@ harness:
       - --bad-flag
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```
 
 ## SRPY-SCRIPT-CATALOG-015
@@ -351,13 +379,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --doc-out
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --doc-out
 ```
 
 ## SRPY-SCRIPT-CATALOG-016
@@ -375,11 +405,13 @@ harness:
       - --bad-flag
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```

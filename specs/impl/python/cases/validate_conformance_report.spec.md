@@ -15,13 +15,15 @@ harness:
       - specs/impl/python/fixtures/conformance_report_valid.json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - 'OK: valid conformance report'
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - 'OK: valid conformance report'
 ```
 
 ## SRPY-VALREP-002
@@ -39,11 +41,13 @@ harness:
       - specs/impl/python/fixtures/conformance_report_invalid.json
       exit_code: 1
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - 'ERROR: report.version must equal 1'
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - 'ERROR: report.version must equal 1'
 ```

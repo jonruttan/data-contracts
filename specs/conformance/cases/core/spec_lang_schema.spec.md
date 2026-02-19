@@ -11,24 +11,26 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.type.json_type:
-      - std.json.parse:
-        - '{"id":1,"tags":["alpha","beta"]}'
-      - dict
-    - true
-  - std.logic.eq:
-    - std.type.json_type:
-      - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - std.type.json_type:
         - std.json.parse:
           - '{"id":1,"tags":["alpha","beta"]}'
-        - tags
-      - list
-    - true
-  target: text
+        - dict
+      - true
+    - std.logic.eq:
+      - std.type.json_type:
+        - std.object.get:
+          - std.json.parse:
+            - '{"id":1,"tags":["alpha","beta"]}'
+          - tags
+        - list
+      - true
 harness:
   check:
     profile: text.file
@@ -48,26 +50,28 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.eq:
-      - std.type.json_type:
-        - std.object.get:
-          - std.json.parse:
-            - '{"id":"x"}'
-          - id
-        - string
-      - true
-    - std.logic.not:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.and:
       - std.logic.eq:
-        - std.object.get:
-          - std.json.parse:
-            - '{"id":"x"}'
-          - id
-        - 1
-  target: text
+        - std.type.json_type:
+          - std.object.get:
+            - std.json.parse:
+              - '{"id":"x"}'
+            - id
+          - string
+        - true
+      - std.logic.not:
+        - std.logic.eq:
+          - std.object.get:
+            - std.json.parse:
+              - '{"id":"x"}'
+            - id
+          - 1
 harness:
   check:
     profile: text.file

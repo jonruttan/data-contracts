@@ -851,7 +851,7 @@ def run(case, *, ctx) -> None:
     headers_text = "\n".join(f"{k}: {v}" for k, v in sorted(response["headers"].items()))
 
     context_profile = {
-        "profile_id": "api.http/v2",
+        "profile_id": "api.http/v1",
         "profile_version": 2,
         "value": {
             "status": status_value,

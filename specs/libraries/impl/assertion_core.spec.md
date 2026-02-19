@@ -7,12 +7,14 @@ id: LIB-IMPL-ASSERT-001-001-IMPL-ASSERT-CONTAINS
 title: 'reusable impl assertion helper functions: impl.assert.contains'
 type: contract.export
 contract:
-- id: __export__impl.assert.contains
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - {var: token}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__impl.assert.contains
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - {var: token}
 harness:
   exports:
   - as: impl.assert.contains
@@ -29,12 +31,14 @@ id: LIB-IMPL-ASSERT-001-002-IMPL-ASSERT-REGEX
 title: 'reusable impl assertion helper functions: impl.assert.regex'
 type: contract.export
 contract:
-- id: __export__impl.assert.regex
-  class: MUST
-  asserts:
-  - std.string.regex_match:
-    - {var: subject}
-    - {var: pattern}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__impl.assert.regex
+    assert:
+      std.string.regex_match:
+      - {var: subject}
+      - {var: pattern}
 harness:
   exports:
   - as: impl.assert.regex
@@ -51,12 +55,14 @@ id: LIB-IMPL-ASSERT-001-003-IMPL-ASSERT-JSON-TYPE
 title: 'reusable impl assertion helper functions: impl.assert.json_type'
 type: contract.export
 contract:
-- id: __export__impl.assert.json_type
-  class: MUST
-  asserts:
-  - std.type.json_type:
-    - {var: subject}
-    - {var: type_name}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__impl.assert.json_type
+    assert:
+      std.type.json_type:
+      - {var: subject}
+      - {var: type_name}
 harness:
   exports:
   - as: impl.assert.json_type

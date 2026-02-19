@@ -13,13 +13,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - Spec-Test Schema (v1)
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - Spec-Test Schema (v1)
 harness:
   check:
     profile: text.file
@@ -38,13 +40,15 @@ expect:
     status: fail
     category: schema
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - lit:
-      unknown_symbol_for_schema_case:
-      - var: subject
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      lit:
+        unknown_symbol_for_schema_case:
+        - var: subject
 harness:
   check:
     profile: text.file

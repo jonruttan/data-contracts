@@ -3454,7 +3454,7 @@ function evaluateApiHttpCase(string $fixturePath, array $case): array {
                 $stepsOut
             ),
             'context_json' => [
-                'profile_id' => 'api.http/v2',
+                'profile_id' => 'api.http/v1',
                 'profile_version' => 2,
                 'value' => [
                     'status' => (int)$result['status'],

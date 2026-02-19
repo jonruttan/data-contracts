@@ -11,7 +11,7 @@ from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_ex
 
 _GROUP_KEYS = {"MUST", "MAY", "MUST_NOT"}
 _LEGACY_GROUP_KEYS = {"must", "can", "cannot"}
-_WHEN_KEYS = {"must", "can", "cannot", "fail", "complete"}
+_WHEN_KEYS = {"must", "may", "must_not", "fail", "complete"}
 
 
 @dataclass(frozen=True)
@@ -290,12 +290,106 @@ def _normalize_assert_node(node: Any) -> tuple[Any, bool]:
     return norm_expr, changed
 
 
+def _normalize_contract(node: Any) -> tuple[Any, bool]:
+    changed = False
+    if isinstance(node, dict):
+        defaults_raw = node.get("defaults")
+        defaults: dict[str, Any] = dict(defaults_raw) if isinstance(defaults_raw, dict) else {}
+        raw_steps = node.get("steps")
+        if raw_steps is None:
+            raw_steps = []
+        if not isinstance(raw_steps, list):
+            return node, changed
+        normalized_steps: list[dict[str, Any]] = []
+        for idx, raw_step in enumerate(raw_steps):
+            if not isinstance(raw_step, dict):
+                normalized_steps.append({"id": f"step_{idx+1:03d}", "assert": raw_step})
+                changed = True
+                continue
+            step = dict(raw_step)
+            if "asserts" in step and "assert" not in step:
+                step["assert"] = step.pop("asserts")
+                changed = True
+            if "target" in step and "on" not in step:
+                step["on"] = step.pop("target")
+                changed = True
+            raw_assert = step.get("assert")
+            if isinstance(raw_assert, list):
+                norm_asserts: list[Any] = []
+                for child in raw_assert:
+                    norm, ch = _normalize_assert_node(child)
+                    changed = changed or ch
+                    norm_asserts.append(norm)
+                if len(norm_asserts) == 1:
+                    step["assert"] = norm_asserts[0]
+                    changed = True
+                else:
+                    step["assert"] = norm_asserts
+            elif raw_assert is not None:
+                norm, ch = _normalize_assert_node(raw_assert)
+                changed = changed or ch
+                step["assert"] = norm
+            if "id" not in step or not str(step.get("id", "")).strip():
+                step["id"] = f"step_{idx+1:03d}"
+                changed = True
+            step_class = str(step.get("class", "MUST")).strip() or "MUST"
+            if step_class == "MUST" and "class" in step:
+                step.pop("class", None)
+                changed = True
+            normalized_steps.append(step)
+
+        if "class" not in defaults:
+            defaults["class"] = "MUST"
+        out: dict[str, Any] = {"defaults": defaults, "steps": normalized_steps}
+        return out, True or changed
+
+    if isinstance(node, list):
+        # Legacy step-list migration shape.
+        steps: list[dict[str, Any]] = []
+        for idx, raw_step in enumerate(node):
+            if not isinstance(raw_step, dict):
+                steps.append({"id": f"step_{idx+1:03d}", "assert": raw_step})
+                changed = True
+                continue
+            step = dict(raw_step)
+            if "asserts" in step and "assert" not in step:
+                step["assert"] = step.pop("asserts")
+                changed = True
+            if "target" in step and "on" not in step:
+                step["on"] = step.pop("target")
+                changed = True
+            step_id = str(step.get("id", "")).strip() or f"step_{idx+1:03d}"
+            step_class = str(step.get("class", "MUST")).strip() or "MUST"
+            out_step: dict[str, Any] = {"id": step_id}
+            if step_class != "MUST":
+                out_step["class"] = step_class
+            if "on" in step:
+                out_step["on"] = step.get("on")
+            raw_assert = step.get("assert")
+            if isinstance(raw_assert, list):
+                norm_asserts_v1: list[Any] = []
+                for child in raw_assert:
+                    norm, ch = _normalize_assert_node(child)
+                    changed = changed or ch
+                    norm_asserts_v1.append(norm)
+                out_step["assert"] = (
+                    norm_asserts_v1[0] if len(norm_asserts_v1) == 1 else norm_asserts_v1
+                )
+            else:
+                norm, ch = _normalize_assert_node(raw_assert)
+                changed = changed or ch
+                out_step["assert"] = norm
+            steps.append(out_step)
+        return {"defaults": {"class": "MUST"}, "steps": steps}, True or changed
+    return node, changed
+
+
 def _normalize_case(case: dict[str, Any]) -> tuple[dict[str, Any], bool]:
     out = dict(case)
     changed = False
 
     if "contract" in out:
-        norm_contract, ch = _normalize_assert_node(out.get("contract"))
+        norm_contract, ch = _normalize_contract(out.get("contract"))
         out["contract"] = norm_contract
         changed = changed or ch
 
@@ -492,7 +586,7 @@ def _lint_expression_mapping(
             case_id=case_id,
             field=field,
             code="SLINT001",
-            message="evaluate wrapper is forbidden; place operator mapping directly in asserts",
+            message="evaluate wrapper is forbidden; place operator mapping directly in assert",
             fixable=True,
         )
     for key in expr.keys():
@@ -760,6 +854,141 @@ def _lint_defines(case: dict[str, Any], *, issues: list[SpecLangIssue], path: Pa
             )
 
 
+def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: Path, case_id: str) -> None:
+    contract = case.get("contract")
+    if contract is None:
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="contract",
+            code="SLINT020",
+            message="contract is required and must use mapping form",
+        )
+        return
+    if isinstance(contract, list):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="contract",
+            code="SLINT021",
+            message="v1 list contract is forbidden; use contract.defaults + contract.steps",
+            fixable=True,
+        )
+        return
+    if not isinstance(contract, dict):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="contract",
+            code="SLINT022",
+            message="contract must be a mapping with defaults and steps",
+        )
+        return
+    defaults = contract.get("defaults")
+    if defaults is not None and not isinstance(defaults, dict):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="contract.defaults",
+            code="SLINT023",
+            message="contract.defaults must be a mapping when provided",
+        )
+    steps = contract.get("steps")
+    if not isinstance(steps, list):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="contract.steps",
+            code="SLINT024",
+            message="contract.steps must be a list",
+        )
+        return
+    for idx, step in enumerate(steps):
+        if not isinstance(step, dict):
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"contract.steps[{idx}]",
+                code="SLINT025",
+                message="contract step must be a mapping",
+            )
+            continue
+        if "asserts" in step:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"contract.steps[{idx}].asserts",
+                code="SLINT026",
+                message="v1 step key asserts is forbidden; use assert",
+                fixable=True,
+            )
+        if "target" in step:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"contract.steps[{idx}].target",
+                code="SLINT027",
+                message="v1 step key target is forbidden; use on",
+                fixable=True,
+            )
+        class_name = str(step.get("class", "MUST")).strip() or "MUST"
+        if class_name not in _GROUP_KEYS:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"contract.steps[{idx}].class",
+                code="SLINT028",
+                message="contract step class must be MUST, MAY, or MUST_NOT",
+            )
+        raw_assert = step.get("assert")
+        if raw_assert is None:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"contract.steps[{idx}].assert",
+                code="SLINT029",
+                message="contract step assert is required",
+            )
+            continue
+        if isinstance(raw_assert, list):
+            if not raw_assert:
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"contract.steps[{idx}].assert",
+                    code="SLINT030",
+                    message="contract step assert list must be non-empty",
+                )
+                continue
+            for aidx, expr in enumerate(raw_assert):
+                _lint_assert_node(
+                    expr,
+                    issues=issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"contract.steps[{idx}].assert[{aidx}]",
+                )
+        else:
+            _lint_assert_node(
+                raw_assert,
+                issues=issues,
+                path=path,
+                case_id=case_id,
+                field=f"contract.steps[{idx}].assert",
+            )
+
+
 def lint_cases(
     cases_path: Path,
     *,
@@ -773,14 +1002,29 @@ def lint_cases(
         md_pattern=case_file_pattern,
     ):
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
-        contract = case.get("contract", [])
-        _lint_assert_node(
-            contract,
-            issues=issues,
-            path=path,
-            case_id=case_id,
-            field="contract",
-        )
+        _lint_contract(case, issues=issues, path=path, case_id=case_id)
+        harness = case.get("harness")
+        if isinstance(harness, dict):
+            if "chain" in harness:
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field="harness.chain",
+                    code="SLINT031",
+                    message="harness.chain is forbidden; use harness.use",
+                    fixable=True,
+                )
+            raw_use = harness.get("use")
+            if raw_use is not None and (not isinstance(raw_use, list) or not raw_use):
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field="harness.use",
+                    code="SLINT032",
+                    message="harness.use must be a non-empty list when provided",
+                )
         _lint_when(case, issues=issues, path=path, case_id=case_id)
         _lint_defines(case, issues=issues, path=path, case_id=case_id)
 

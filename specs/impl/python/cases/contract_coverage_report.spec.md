@@ -14,19 +14,21 @@ harness:
       argv: []
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '"version": 1'
-  - std.string.contains:
-    - {var: subject}
-    - '"summary"'
-  - std.string.contains:
-    - {var: subject}
-    - '"rules"'
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - '"version": 1'
+    - std.string.contains:
+      - {var: subject}
+      - '"summary"'
+    - std.string.contains:
+      - {var: subject}
+      - '"rules"'
 ```
 
 ## SRPY-CONTRACT-REP-002
@@ -45,11 +47,13 @@ harness:
       - .artifacts/contract-coverage-impl-case.json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/contract-coverage-impl-case.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/contract-coverage-impl-case.json
 ```

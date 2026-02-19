@@ -15,13 +15,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --runner-bin
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --runner-bin
 ```
 
 ## SRPY-SCRIPT-CI-002
@@ -38,13 +40,15 @@ harness:
       argv: []
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --runner-bin
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --runner-bin
 ```
 
 ## SRPY-SCRIPT-CI-003
@@ -62,13 +66,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --cases
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --cases
 ```
 
 ## SRPY-SCRIPT-CI-004
@@ -87,13 +93,15 @@ harness:
       - x
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - invalid int value
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - invalid int value
 ```
 
 ## SRPY-SCRIPT-CI-005
@@ -111,19 +119,21 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --cases
-  - std.string.contains:
-    - {var: subject}
-    - --out
-  - std.string.contains:
-    - {var: subject}
-    - --case-file-pattern
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - --cases
+    - std.string.contains:
+      - {var: subject}
+      - --out
+    - std.string.contains:
+      - {var: subject}
+      - --case-file-pattern
 ```
 
 ## SRPY-SCRIPT-CI-006
@@ -146,13 +156,15 @@ harness:
       - ''
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - case-file-pattern
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - case-file-pattern
 ```
 
 ## SRPY-SCRIPT-CI-007
@@ -167,19 +179,21 @@ harness:
     config:
       path: /runners/php/conformance_runner.php
 contract:
-- id: assert_1
-  class: MUST
-  target: text
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --cases <dir-or-file>
-  - std.string.contains:
-    - {var: subject}
-    - --out <file>
-  - std.string.contains:
-    - {var: subject}
-    - --case-file-pattern <glob>
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - --cases <dir-or-file>
+    - std.string.contains:
+      - {var: subject}
+      - --out <file>
+    - std.string.contains:
+      - {var: subject}
+      - --case-file-pattern <glob>
 ```
 
 ## SRPY-SCRIPT-CI-008
@@ -198,13 +212,15 @@ harness:
       - ''
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --case-formats requires at least one format
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --case-formats requires at least one format
 ```
 
 ## SRPY-SCRIPT-CI-009
@@ -225,11 +241,13 @@ harness:
       - specs/conformance/cases
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - php executable not found in PATH
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - php executable not found in PATH
 ```

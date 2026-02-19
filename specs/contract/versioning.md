@@ -10,7 +10,7 @@ Each policy rule in `policy-v1.yaml` uses:
 - `deprecated_in` (optional): version where the rule is deprecated.
 - `removed_in` (optional): version where the rule is removed.
 
-Version labels use `vN` format (for example `v1`, `v2`).
+Version labels use `vN` format (for example `v1`).
 
 ## State Model
 

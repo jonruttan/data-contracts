@@ -23,16 +23,18 @@ expect:
 assert_health:
   mode: warn
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - ok
-  - std.string.contains:
-    - {var: subject}
-    - ok
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - ok
+    - std.string.contains:
+      - {var: subject}
+      - ok
 ```
 
 ## SRPHP-AH-002
@@ -60,16 +62,18 @@ expect:
 assert_health:
   mode: error
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - ok
-  - std.string.contains:
-    - {var: subject}
-    - ok
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - ok
+    - std.string.contains:
+      - {var: subject}
+      - ok
 ```
 
 ## SRPHP-AH-003
@@ -96,13 +100,15 @@ expect:
 assert_health:
   mode: nope
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - ok
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - ok
 ```
 
 ## SRPHP-AH-004
@@ -126,16 +132,18 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - ok
-  - std.string.contains:
-    - {var: subject}
-    - ok
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - ok
+    - std.string.contains:
+      - {var: subject}
+      - ok
 ```
 
 ## SRPHP-AH-005
@@ -161,14 +169,16 @@ expect:
 assert_health:
   mode: ignore
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - ok
-  - std.string.contains:
-    - {var: subject}
-    - ok
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - ok
+    - std.string.contains:
+      - {var: subject}
+      - ok
 ```

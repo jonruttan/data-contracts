@@ -6,15 +6,17 @@
 id: LIB-DOMAIN-CONFORMANCE-001-000-DOMAIN-CONFORMANCE-ERROR-WHEN-FALSE
 type: contract.export
 contract:
-- id: __export__domain.conformance.error_when_false
-  class: MUST
-  asserts:
-  - lit:
-      if:
-      - var: condition
-      - lit: []
-      - lit:
-        - var: message
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.conformance.error_when_false
+    assert:
+      lit:
+        if:
+        - var: condition
+        - lit: []
+        - lit:
+          - var: message
 harness:
   exports:
   - as: domain.conformance.error_when_false
@@ -30,14 +32,16 @@ harness:
 id: LIB-DOMAIN-CONFORMANCE-001-000A-DOMAIN-CONFORMANCE-REPORT-VERSION-IS-V1
 type: contract.export
 contract:
-- id: __export__domain.conformance.report_version_is_v1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - {var: report}
-      - version
-    - 1
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.conformance.report_version_is_v1
+    assert:
+      std.logic.eq:
+      - std.object.get:
+        - {var: report}
+        - version
+      - 1
 harness:
   exports:
   - as: domain.conformance.report_version_is_v1
@@ -52,13 +56,15 @@ harness:
 id: LIB-DOMAIN-CONFORMANCE-001-000B-DOMAIN-CONFORMANCE-REPORT-RESULTS-IS-LIST
 type: contract.export
 contract:
-- id: __export__domain.conformance.report_results_is_list
-  class: MUST
-  asserts:
-  - std.type.is_list:
-    - std.object.get:
-      - {var: report}
-      - results
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.conformance.report_results_is_list
+    assert:
+      std.type.is_list:
+      - std.object.get:
+        - {var: report}
+        - results
 harness:
   exports:
   - as: domain.conformance.report_results_is_list
@@ -73,27 +79,29 @@ harness:
 id: LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS
 type: contract.export
 contract:
-- id: __export__domain.conformance.validate_report_errors
-  class: MUST
-  asserts:
-  - std.collection.concat:
-    - if:
-      - std.logic.eq:
-        - std.object.get:
-          - {var: report}
-          - version
-        - 1
-      - lit: []
-      - lit:
-        - report.version must equal 1
-    - if:
-      - std.type.is_list:
-        - std.object.get:
-          - {var: report}
-          - results
-      - lit: []
-      - lit:
-        - report.results must be a list
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.conformance.validate_report_errors
+    assert:
+      std.collection.concat:
+      - if:
+        - std.logic.eq:
+          - std.object.get:
+            - {var: report}
+            - version
+          - 1
+        - lit: []
+        - lit:
+          - report.version must equal 1
+      - if:
+        - std.type.is_list:
+          - std.object.get:
+            - {var: report}
+            - results
+        - lit: []
+        - lit:
+          - report.results must be a list
 harness:
   exports:
   - as: domain.conformance.validate_report_errors

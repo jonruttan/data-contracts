@@ -6,14 +6,16 @@
 id: LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR
 type: contract.export
 contract:
-- id: __export__domain.yaml.parse_get_or
-  class: MUST
-  asserts:
-  - ops.fs.yaml.get_or:
-    - ops.fs.yaml.parse:
-      - {var: yaml_text}
-    - {var: path_segments}
-    - {var: fallback}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.yaml.parse_get_or
+    assert:
+      ops.fs.yaml.get_or:
+      - ops.fs.yaml.parse:
+        - {var: yaml_text}
+      - {var: path_segments}
+      - {var: fallback}
 harness:
   exports:
   - as: domain.yaml.parse_get_or
@@ -30,11 +32,13 @@ harness:
 id: LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY
 type: contract.export
 contract:
-- id: __export__domain.yaml.stringify
-  class: MUST
-  asserts:
-  - ops.fs.yaml.stringify:
-    - {var: value}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.yaml.stringify
+    assert:
+      ops.fs.yaml.stringify:
+      - {var: value}
 harness:
   exports:
   - as: domain.yaml.stringify

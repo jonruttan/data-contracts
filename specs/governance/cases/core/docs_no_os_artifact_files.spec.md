@@ -9,32 +9,30 @@ purpose: Prevents tracked filesystem artifacts (for example .DS_Store) in docs s
 type: contract.check
 harness:
   root: .
-  chain:
-    steps:
-    - id: lib_policy_core_spec
-      class: MUST
-      ref: /specs/libraries/policy/policy_core.spec.md
-    imports:
-    - from: lib_policy_core_spec
-      names:
-      - policy.pass_when_no_violations
   check:
     profile: governance.scan
     config:
       check: docs.no_os_artifact_files
+  use:
+  - ref: /specs/libraries/policy/policy_core.spec.md
+    as: lib_policy_core_spec
+    symbols:
+    - policy.pass_when_no_violations
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - check_id
-    - docs.no_os_artifact_files
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - passed
-    - true
-  target: summary_json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - check_id
+      - docs.no_os_artifact_files
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - passed
+      - true
 ```

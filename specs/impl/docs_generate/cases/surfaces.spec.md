@@ -26,12 +26,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-002
@@ -60,12 +62,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-003
@@ -96,12 +100,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-004
@@ -130,12 +136,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-005
@@ -165,12 +173,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-006
@@ -200,12 +210,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-007
@@ -235,12 +247,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-008
@@ -270,12 +284,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-009
@@ -305,12 +321,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-010
@@ -340,12 +358,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-011
@@ -375,12 +395,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-012
@@ -409,12 +431,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-013
@@ -443,12 +467,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-014
@@ -478,12 +504,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-015
@@ -513,12 +541,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-016
@@ -548,12 +578,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-017
@@ -583,12 +615,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-018
@@ -618,12 +652,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-019
@@ -653,12 +689,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-020
@@ -688,12 +726,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-021
@@ -723,12 +763,14 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```
 
 ## SRDOCGEN-022
@@ -758,10 +800,12 @@ harness:
     capabilities:
     - ops.job
 contract:
-- id: dispatch_main
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
 ```

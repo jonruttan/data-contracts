@@ -18,13 +18,15 @@ harness:
       - .artifacts/schema-registry-impl-case.json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/schema-registry-impl-case.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/schema-registry-impl-case.json
 ```
 
 ## SRPY-SCHEMA-REG-002
@@ -46,11 +48,13 @@ harness:
       - specs/impl/python/fixtures/schema_registry_report_stale.json
       exit_code: 1
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - stale report artifact
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - stale report artifact
 ```

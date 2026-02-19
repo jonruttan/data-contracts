@@ -12,7 +12,7 @@ def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -
     if not isinstance(raw_expr, dict) or not raw_expr:
         raise ValueError(f"{assert_path} must be a non-empty expression mapping")
     if "evaluate" in raw_expr:
-        raise ValueError(f"{assert_path} must not use evaluate wrapper; place operator mapping directly in asserts")
+        raise ValueError(f"{assert_path} must not use evaluate wrapper; place operator mapping directly in assert")
     try:
         expr = compile_yaml_expr_to_sexpr(raw_expr, field_path=assert_path)
     except SpecLangYamlAstError as exc:
@@ -33,52 +33,158 @@ def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -
     )
 
 
-def _looks_like_assert_step(item: Any) -> bool:
+def _looks_like_assert_step_v1(item: Any) -> bool:
     return isinstance(item, dict) and "id" in item and "class" in item and "asserts" in item
+
+
+def _normalize_step_assert_list(raw: Any, *, step_path: str) -> list[Any]:
+    if isinstance(raw, dict):
+        return [raw]
+    if isinstance(raw, list) and raw:
+        return list(raw)
+    raise TypeError(f"{step_path}.assert must be a non-empty expression mapping or list")
+
+
+def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
+    if not isinstance(raw_expect, dict):
+        return []
+    out: list[dict[str, Any]] = []
+    if "violation_count" in raw_expect:
+        out.append(
+            {
+                "class": "MUST",
+                "on": "violation_count",
+                "assert": {
+                    "std.logic.eq": [
+                        {"var": "subject"},
+                        {"lit": raw_expect.get("violation_count")},
+                    ]
+                },
+            }
+        )
+    if "status" in raw_expect:
+        out.append(
+            {
+                "class": "MUST",
+                "on": "status",
+                "assert": {
+                    "std.logic.eq": [
+                        {"var": "subject"},
+                        {"lit": raw_expect.get("status")},
+                    ]
+                },
+            }
+        )
+    summary = raw_expect.get("summary_json")
+    if isinstance(summary, dict):
+        for key, val in summary.items():
+            out.append(
+                {
+                    "class": "MUST",
+                    "on": "summary_json",
+                    "assert": {
+                        "std.logic.eq": [
+                            {
+                                "std.object.get_or": [
+                                    {"var": "subject"},
+                                    {"lit": str(key)},
+                                    {"lit": None},
+                                ]
+                            },
+                            {"lit": val},
+                        ]
+                    },
+                }
+            )
+    return out
+
+
+def _normalize_contract_steps(raw_assert: Any, *, raw_expect: Any, assert_path: str) -> list[dict[str, Any]]:
+    # Canonical contract form: mapping with defaults + steps.
+    if isinstance(raw_assert, dict):
+        defaults_raw = raw_assert.get("defaults")
+        defaults = defaults_raw if isinstance(defaults_raw, dict) else {}
+        default_class = str(defaults.get("class", "MUST")).strip() or "MUST"
+        default_on = str(defaults.get("on", "")).strip() or None
+        if default_class not in {"MUST", "MAY", "MUST_NOT"}:
+            raise ValueError(f"{assert_path}.defaults.class must be one of: MUST, MAY, MUST_NOT")
+        raw_steps = raw_assert.get("steps")
+        if raw_steps is None:
+            raw_steps = []
+        if not isinstance(raw_steps, list):
+            raise TypeError(f"{assert_path}.steps must be a list")
+        synthetic = _lower_expect_steps(raw_expect)
+        all_steps = list(raw_steps) + synthetic
+        if not all_steps:
+            return []
+        out: list[dict[str, Any]] = []
+        for idx, raw_step in enumerate(all_steps):
+            if not isinstance(raw_step, dict):
+                raise TypeError(f"{assert_path}.steps[{idx}] must be a mapping")
+            step_class = str(raw_step.get("class", default_class)).strip() or default_class
+            if step_class not in {"MUST", "MAY", "MUST_NOT"}:
+                raise ValueError(f"{assert_path}.steps[{idx}].class must be one of: MUST, MAY, MUST_NOT")
+            step_id = str(raw_step.get("id", "")).strip() or f"step_{idx + 1:03d}"
+            step_target = str(raw_step.get("on", "")).strip() or default_on
+            if "assert" not in raw_step:
+                raise ValueError(f"{assert_path}.steps[{idx}].assert is required")
+            checks = _normalize_step_assert_list(raw_step.get("assert"), step_path=f"{assert_path}.steps[{idx}]")
+            out.append({"id": step_id, "class": step_class, "target": step_target, "asserts": checks})
+        return out
+
+    # Accept v1 only for migration tooling compatibility.
+    if isinstance(raw_assert, list):
+        if not raw_assert:
+            return []
+        if not all(_looks_like_assert_step_v1(x) for x in raw_assert):
+            raise ValueError("contract must use canonical form (mapping with defaults/steps)")
+        return list(cast(list[dict[str, Any]], raw_assert))
+
+    if raw_assert is None:
+        synthetic = _lower_expect_steps(raw_expect)
+        return _normalize_contract_steps(
+            {"defaults": {"class": "MUST"}, "steps": synthetic},
+            raw_expect=None,
+            assert_path=assert_path,
+        )
+    raise TypeError("contract must be a mapping")
 
 
 def compile_assert_tree(
     raw_assert: Any,
     *,
+    raw_expect: Any = None,
     type_name: str,
     inherited_target: str | None = None,
     assert_path: str = "contract",
     strict_steps: bool = True,
 ) -> InternalAssertNode:
-    if raw_assert is None:
+    normalized_steps = _normalize_contract_steps(raw_assert, raw_expect=raw_expect, assert_path=assert_path)
+    if not normalized_steps:
         return GroupNode(op="MUST", target=inherited_target, children=[], assert_path=assert_path)
-    if not isinstance(raw_assert, list):
-        raise TypeError("contract must be a list of step mappings")
-
-    if not raw_assert:
-        return GroupNode(op="MUST", target=inherited_target, children=[], assert_path=assert_path)
-
-    is_step_form = all(_looks_like_assert_step(x) for x in raw_assert)
-    if not is_step_form:
-        raise ValueError("contract must use step form entries with id/class/asserts")
 
     seen_ids: set[str] = set()
     step_nodes: list[InternalAssertNode] = []
-    for idx, raw_step in enumerate(raw_assert):
+    for idx, raw_step in enumerate(normalized_steps):
         assert isinstance(raw_step, dict)
         step_id = str(raw_step.get("id", "")).strip()
         if not step_id:
-            raise ValueError(f"{assert_path}[{idx}].id must be a non-empty string")
+            raise ValueError(f"{assert_path}.steps[{idx}].id must be a non-empty string")
         if step_id in seen_ids:
             raise ValueError(f"{assert_path} has duplicate step id: {step_id}")
         seen_ids.add(step_id)
         class_name = str(raw_step.get("class", "")).strip()
         if class_name not in {"MUST", "MAY", "MUST_NOT"}:
-            raise ValueError(f"{assert_path}[{idx}].class must be one of: MUST, MAY, MUST_NOT")
+            raise ValueError(f"{assert_path}.steps[{idx}].class must be one of: MUST, MAY, MUST_NOT")
         step_target = str(raw_step.get("target", "")).strip() or inherited_target
         raw_checks = raw_step.get("asserts")
         if not isinstance(raw_checks, list) or not raw_checks:
-            raise TypeError(f"{assert_path}[{idx}].asserts must be a non-empty list")
+            raise TypeError(f"{assert_path}.steps[{idx}].assert must be a non-empty mapping or list")
         children: list[InternalAssertNode] = [
             _compile_assert_expr_leaf(
                 check,
                 target=str(step_target or "").strip(),
-                assert_path=f"{assert_path}[{idx}].asserts[{cidx}]",
+                assert_path=f"{assert_path}.steps[{idx}].assert[{cidx}]",
             )
             for cidx, check in enumerate(raw_checks)
         ]
@@ -87,7 +193,7 @@ def compile_assert_tree(
                 op=cast(Literal["MUST", "MAY", "MUST_NOT"], class_name),
                 target=step_target,
                 children=children,
-                assert_path=f"{assert_path}[{idx}]<{step_id}>",
+                assert_path=f"{assert_path}.steps[{idx}]<{step_id}>",
             )
         )
     return GroupNode(op="MUST", target=inherited_target, children=step_nodes, assert_path=assert_path)
@@ -123,7 +229,8 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
         assert_tree = GroupNode(op="MUST", target=None, children=[], assert_path="contract")
     else:
         assert_tree = compile_assert_tree(
-            raw_case.get("contract", []) or [],
+            raw_case.get("contract"),
+            raw_expect=raw_case.get("expect"),
             type_name=type_name,
             strict_steps=True,
         )

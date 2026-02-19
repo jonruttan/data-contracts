@@ -20,13 +20,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - port-shell-ok
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - port-shell-ok
 ```
 
 ## SRPHP-PORT-002
@@ -52,13 +54,15 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - x:true y:7
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - x:true y:7
 ```
 
 ## SRPHP-PORT-003
@@ -81,11 +85,13 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - path_target.txt
-  target: stdout_path
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout_path
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - path_target.txt
 ```

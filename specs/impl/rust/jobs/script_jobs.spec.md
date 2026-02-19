@@ -37,17 +37,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-001.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.neq:
-    - std.object.get:
-      - {var: subject}
-      - scanned_files
-    - null
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.neq:
+      - std.object.get:
+        - {var: subject}
+        - scanned_files
+      - null
 when:
   fail:
   - ops.job.dispatch:
@@ -91,17 +93,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-002.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:
@@ -143,17 +147,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-003.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:
@@ -197,17 +203,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-004.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:
@@ -251,17 +259,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-005.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:
@@ -302,17 +312,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-006.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:
@@ -354,17 +366,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-007.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:
@@ -406,17 +420,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-008.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:
@@ -459,17 +475,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-009.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:
@@ -512,17 +530,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-010.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:
@@ -565,17 +585,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-011.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - ok
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - ok
+      - true
 when:
   fail:
   - ops.job.dispatch:

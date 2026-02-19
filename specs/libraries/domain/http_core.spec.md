@@ -6,14 +6,16 @@
 id: LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS
 type: contract.export
 contract:
-- id: __export__domain.http.status
-  class: MUST
-  asserts:
-  - std.object.get:
-    - std.object.get:
-      - {var: subject}
-      - value
-    - status
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.status
+    assert:
+      std.object.get:
+      - std.object.get:
+        - {var: subject}
+        - value
+      - status
 harness:
   exports:
   - as: domain.http.status
@@ -27,16 +29,18 @@ harness:
 id: LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN
 type: contract.export
 contract:
-- id: __export__domain.http.status_in
-  class: MUST
-  asserts:
-  - std.collection.in:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.status_in
+    assert:
+      std.collection.in:
       - std.object.get:
-        - {var: subject}
-        - value
-      - status
-    - {var: allowed}
+        - std.object.get:
+          - {var: subject}
+          - value
+        - status
+      - {var: allowed}
 harness:
   exports:
   - as: domain.http.status_in
@@ -51,16 +55,18 @@ harness:
 id: LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS
 type: contract.export
 contract:
-- id: __export__domain.http.status_is
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.status_is
+    assert:
+      std.logic.eq:
       - std.object.get:
-        - {var: subject}
-        - value
-      - status
-    - {var: expected}
+        - std.object.get:
+          - {var: subject}
+          - value
+        - status
+      - {var: expected}
 harness:
   exports:
   - as: domain.http.status_is
@@ -75,14 +81,16 @@ harness:
 id: LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED
 type: contract.export
 contract:
-- id: __export__domain.http.status_is_unauthorized
-  class: MUST
-  asserts:
-  - lit:
-      call:
-      - var: domain.http.status_is
-      - var: subject
-      - 401
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.status_is_unauthorized
+    assert:
+      lit:
+        call:
+        - var: domain.http.status_is
+        - var: subject
+        - 401
 harness:
   exports:
   - as: domain.http.status_is_unauthorized
@@ -96,14 +104,16 @@ harness:
 id: LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN
 type: contract.export
 contract:
-- id: __export__domain.http.status_is_forbidden
-  class: MUST
-  asserts:
-  - lit:
-      call:
-      - var: domain.http.status_is
-      - var: subject
-      - 403
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.status_is_forbidden
+    assert:
+      lit:
+        call:
+        - var: domain.http.status_is
+        - var: subject
+        - 403
 harness:
   exports:
   - as: domain.http.status_is_forbidden
@@ -117,24 +127,26 @@ harness:
 id: LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX
 type: contract.export
 contract:
-- id: __export__domain.http.ok_2xx
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - std.logic.gte:
-      - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.ok_2xx
+    assert:
+      std.logic.and:
+      - std.logic.gte:
         - std.object.get:
-          - {var: subject}
-          - value
-        - status
-      - 200
-    - std.logic.lt:
-      - std.object.get:
+          - std.object.get:
+            - {var: subject}
+            - value
+          - status
+        - 200
+      - std.logic.lt:
         - std.object.get:
-          - {var: subject}
-          - value
-        - status
-      - 300
+          - std.object.get:
+            - {var: subject}
+            - value
+          - status
+        - 300
 harness:
   exports:
   - as: domain.http.ok_2xx
@@ -148,16 +160,18 @@ harness:
 id: LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET
 type: contract.export
 contract:
-- id: __export__domain.http.header_get
-  class: MUST
-  asserts:
-  - std.object.get:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.header_get
+    assert:
+      std.object.get:
       - std.object.get:
-        - {var: subject}
-        - value
-      - headers
-    - {var: key}
+        - std.object.get:
+          - {var: subject}
+          - value
+        - headers
+      - {var: key}
 harness:
   exports:
   - as: domain.http.header_get
@@ -172,18 +186,20 @@ harness:
 id: LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS
 type: contract.export
 contract:
-- id: __export__domain.http.header_contains
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.header_contains
+    assert:
+      std.string.contains:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
-          - value
-        - headers
-      - {var: key}
-    - {var: token}
+          - std.object.get:
+            - {var: subject}
+            - value
+          - headers
+        - {var: key}
+      - {var: token}
 harness:
   exports:
   - as: domain.http.header_contains
@@ -199,14 +215,16 @@ harness:
 id: LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT
 type: contract.export
 contract:
-- id: __export__domain.http.body_text
-  class: MUST
-  asserts:
-  - std.object.get:
-    - std.object.get:
-      - {var: subject}
-      - value
-    - body_text
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.body_text
+    assert:
+      std.object.get:
+      - std.object.get:
+        - {var: subject}
+        - value
+      - body_text
 harness:
   exports:
   - as: domain.http.body_text
@@ -220,14 +238,16 @@ harness:
 id: LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON
 type: contract.export
 contract:
-- id: __export__domain.http.body_json
-  class: MUST
-  asserts:
-  - std.object.get:
-    - std.object.get:
-      - {var: subject}
-      - value
-    - body_json
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.body_json
+    assert:
+      std.object.get:
+      - std.object.get:
+        - {var: subject}
+        - value
+      - body_json
 harness:
   exports:
   - as: domain.http.body_json
@@ -241,16 +261,18 @@ harness:
 id: LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS
 type: contract.export
 contract:
-- id: __export__domain.http.body_json_type_is
-  class: MUST
-  asserts:
-  - std.type.json_type:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.body_json_type_is
+    assert:
+      std.type.json_type:
       - std.object.get:
-        - {var: subject}
-        - value
-      - body_json
-    - {var: expected_type}
+        - std.object.get:
+          - {var: subject}
+          - value
+        - body_json
+      - {var: expected_type}
 harness:
   exports:
   - as: domain.http.body_json_type_is
@@ -265,16 +287,18 @@ harness:
 id: LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY
 type: contract.export
 contract:
-- id: __export__domain.http.body_json_has_key
-  class: MUST
-  asserts:
-  - std.object.has_key:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.body_json_has_key
+    assert:
+      std.object.has_key:
       - std.object.get:
-        - {var: subject}
-        - value
-      - body_json
-    - {var: key}
+        - std.object.get:
+          - {var: subject}
+          - value
+        - body_json
+      - {var: key}
 harness:
   exports:
   - as: domain.http.body_json_has_key
@@ -289,16 +313,18 @@ harness:
 id: LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH
 type: contract.export
 contract:
-- id: __export__domain.http.auth_is_oauth
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.auth_is_oauth
+    assert:
+      std.logic.eq:
       - std.object.get:
-        - {var: subject}
-        - meta
-      - auth_mode
-    - oauth
+        - std.object.get:
+          - {var: subject}
+          - meta
+        - auth_mode
+      - oauth
 harness:
   exports:
   - as: domain.http.auth_is_oauth
@@ -312,16 +338,18 @@ harness:
 id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-OAUTH-TOKEN-SOURCE-IS
 type: contract.export
 contract:
-- id: __export__domain.http.oauth_token_source_is
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.oauth_token_source_is
+    assert:
+      std.logic.eq:
       - std.object.get:
-        - {var: subject}
-        - meta
-      - oauth_token_source
-    - {var: expected}
+        - std.object.get:
+          - {var: subject}
+          - meta
+        - oauth_token_source
+      - {var: expected}
 harness:
   exports:
   - as: domain.http.oauth_token_source_is
@@ -336,18 +364,20 @@ harness:
 id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-HAS-BEARER-HEADER
 type: contract.export
 contract:
-- id: __export__domain.http.has_bearer_header
-  class: MUST
-  asserts:
-  - std.string.starts_with:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.has_bearer_header
+    assert:
+      std.string.starts_with:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
-          - value
-        - headers
-      - Authorization
-    - 'Bearer '
+          - std.object.get:
+            - {var: subject}
+            - value
+          - headers
+        - Authorization
+      - 'Bearer '
 harness:
   exports:
   - as: domain.http.has_bearer_header
@@ -361,18 +391,20 @@ harness:
 id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED
 type: contract.export
 contract:
-- id: __export__domain.http.oauth_scope_requested
-  class: MUST
-  asserts:
-  - std.logic.neq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.oauth_scope_requested
+    assert:
+      std.logic.neq:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
-          - context
-        - oauth
-      - scope_requested
-    - null
+          - std.object.get:
+            - {var: subject}
+            - context
+          - oauth
+        - scope_requested
+      - null
 harness:
   exports:
   - as: domain.http.oauth_scope_requested
@@ -386,16 +418,18 @@ harness:
 id: LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN
 type: contract.export
 contract:
-- id: __export__domain.http.cors_allow_origin
-  class: MUST
-  asserts:
-  - std.object.get:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.cors_allow_origin
+    assert:
+      std.object.get:
       - std.object.get:
-        - {var: subject}
-        - value
-      - cors
-    - allow_origin
+        - std.object.get:
+          - {var: subject}
+          - value
+        - cors
+      - allow_origin
 harness:
   exports:
   - as: domain.http.cors_allow_origin
@@ -409,18 +443,20 @@ harness:
 id: LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD
 type: contract.export
 contract:
-- id: __export__domain.http.cors_allows_method
-  class: MUST
-  asserts:
-  - std.collection.includes:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.cors_allows_method
+    assert:
+      std.collection.includes:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
-          - value
-        - cors
-      - allow_methods
-    - {var: method_name}
+          - std.object.get:
+            - {var: subject}
+            - value
+          - cors
+        - allow_methods
+      - {var: method_name}
 harness:
   exports:
   - as: domain.http.cors_allows_method
@@ -435,18 +471,20 @@ harness:
 id: LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER
 type: contract.export
 contract:
-- id: __export__domain.http.cors_allows_header
-  class: MUST
-  asserts:
-  - std.collection.includes:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.cors_allows_header
+    assert:
+      std.collection.includes:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
-          - value
-        - cors
-      - allow_headers
-    - {var: header_name}
+          - std.object.get:
+            - {var: subject}
+            - value
+          - cors
+        - allow_headers
+      - {var: header_name}
 harness:
   exports:
   - as: domain.http.cors_allows_header
@@ -461,18 +499,20 @@ harness:
 id: LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED
 type: contract.export
 contract:
-- id: __export__domain.http.cors_credentials_enabled
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.cors_credentials_enabled
+    assert:
+      std.logic.eq:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
-          - value
-        - cors
-      - allow_credentials
-    - true
+          - std.object.get:
+            - {var: subject}
+            - value
+          - cors
+        - allow_credentials
+      - true
 harness:
   exports:
   - as: domain.http.cors_credentials_enabled
@@ -486,18 +526,20 @@ harness:
 id: LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE
 type: contract.export
 contract:
-- id: __export__domain.http.cors_max_age_gte
-  class: MUST
-  asserts:
-  - std.logic.gte:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.cors_max_age_gte
+    assert:
+      std.logic.gte:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
-          - value
-        - cors
-      - max_age
-    - {var: min_age}
+          - std.object.get:
+            - {var: subject}
+            - value
+          - cors
+        - max_age
+      - {var: min_age}
 harness:
   exports:
   - as: domain.http.cors_max_age_gte
@@ -512,14 +554,16 @@ harness:
 id: LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP
 type: contract.export
 contract:
-- id: __export__domain.http.is_preflight_step
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - {var: step}
-      - method
-    - OPTIONS
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.is_preflight_step
+    assert:
+      std.logic.eq:
+      - std.object.get:
+        - {var: step}
+        - method
+      - OPTIONS
 harness:
   exports:
   - as: domain.http.is_preflight_step
@@ -533,18 +577,20 @@ harness:
 id: LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID
 type: contract.export
 contract:
-- id: __export__domain.http.step_by_id
-  class: MUST
-  asserts:
-  - std.collection.find:
-    - fn:
-      - [row]
-      - std.logic.eq:
-        - std.object.get:
-          - {var: row}
-          - id
-        - {var: step_id}
-    - {var: steps}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.step_by_id
+    assert:
+      std.collection.find:
+      - fn:
+        - [row]
+        - std.logic.eq:
+          - std.object.get:
+            - {var: row}
+            - id
+          - {var: step_id}
+      - {var: steps}
 harness:
   exports:
   - as: domain.http.step_by_id
@@ -559,17 +605,19 @@ harness:
 id: LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS
 type: contract.export
 contract:
-- id: __export__domain.http.step_status_is
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - call:
-        - {var: domain.http.step_by_id}
-        - {var: steps}
-        - {var: step_id}
-      - status
-    - {var: expected}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.step_status_is
+    assert:
+      std.logic.eq:
+      - std.object.get:
+        - call:
+          - {var: domain.http.step_by_id}
+          - {var: steps}
+          - {var: step_id}
+        - status
+      - {var: expected}
 harness:
   exports:
   - as: domain.http.step_status_is
@@ -585,17 +633,19 @@ harness:
 id: LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET
 type: contract.export
 contract:
-- id: __export__domain.http.step_body_json_get
-  class: MUST
-  asserts:
-  - std.object.get:
-    - std.object.get:
-      - call:
-        - {var: domain.http.step_by_id}
-        - {var: steps}
-        - {var: step_id}
-      - body_json
-    - {var: field}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.http.step_body_json_get
+    assert:
+      std.object.get:
+      - std.object.get:
+        - call:
+          - {var: domain.http.step_by_id}
+          - {var: steps}
+          - {var: step_id}
+        - body_json
+      - {var: field}
 harness:
   exports:
   - as: domain.http.step_body_json_get

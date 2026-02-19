@@ -16,13 +16,15 @@ harness:
       - .artifacts/objective-scorecard-script-case.json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/objective-scorecard-script-case.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/objective-scorecard-script-case.json
 ```
 
 ## SRPY-SCRIPT-QUALITY-002
@@ -41,13 +43,15 @@ harness:
       - bad
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - invalid choice
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - invalid choice
 ```
 
 ## SRPY-SCRIPT-QUALITY-003
@@ -67,13 +71,15 @@ harness:
       - .artifacts/spec-lang-adoption-script-case.json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/spec-lang-adoption-script-case.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/spec-lang-adoption-script-case.json
 ```
 
 ## SRPY-SCRIPT-QUALITY-004
@@ -93,13 +99,15 @@ harness:
       - .artifacts/quality-script-case.json
       exit_code: 1
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unsupported quality report
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unsupported quality report
 ```
 
 ## SRPY-SCRIPT-QUALITY-005
@@ -120,13 +128,15 @@ harness:
       - .artifacts/schema-registry-script-case.json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/schema-registry-script-case.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/schema-registry-script-case.json
 ```
 
 ## SRPY-SCRIPT-QUALITY-006
@@ -145,11 +155,13 @@ harness:
       - nope
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - invalid choice
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - invalid choice
 ```

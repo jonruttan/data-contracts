@@ -53,6 +53,10 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
         if not isinstance(node, dict):
             return
 
+        if "steps" in node and isinstance(node.get("steps"), list):
+            _walk(node.get("steps"), path=f"{path}.steps", group_ctx=group_ctx)
+            return
+
         step_class = str(node.get("class", "")).strip() if "class" in node else ""
         if step_class in {"MUST", "MAY", "MUST_NOT"} and "asserts" in node:
             asserts = node.get("asserts")
@@ -76,6 +80,29 @@ def lint_assert_tree(assert_spec: Any) -> list[AssertionHealthDiagnostic]:
                         break
                     step_seen.add(key)
             _walk(asserts, path=f"{path}.asserts", group_ctx=step_class)
+            return
+        if step_class in {"MUST", "MAY", "MUST_NOT"} and "assert" in node:
+            asserts = node.get("assert")
+            checks = asserts if isinstance(asserts, list) else [asserts]
+            step_seen_assert: set[str] = set()
+            for child in checks:
+                try:
+                    import json
+
+                    key = json.dumps(child, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+                except (TypeError, ValueError):
+                    key = repr(child)
+                if key in step_seen_assert:
+                    out.append(
+                        AssertionHealthDiagnostic(
+                            code="AH004",
+                            message=f"redundant sibling assertion branch in '{step_class}'",
+                            path=f"{path}.assert",
+                        )
+                    )
+                    break
+                step_seen_assert.add(key)
+            _walk(asserts, path=f"{path}.assert", group_ctx=step_class)
             return
 
         group_key = None

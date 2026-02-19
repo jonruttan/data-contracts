@@ -8,13 +8,15 @@ title: contract steps must declare asserts
 purpose: Enforces step-form contract nodes to use asserts list and non-empty children.
 type: contract.check
 contract:
-- id: assert_1
-  class: MUST
-  target: violation_count
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - 0
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': violation_count
+    assert:
+      std.logic.eq:
+      - {var: subject}
+      - 0
 harness:
   check:
     profile: governance.scan

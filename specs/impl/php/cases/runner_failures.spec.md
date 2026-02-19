@@ -15,13 +15,15 @@ expect:
     message_tokens:
     - cannot read fixture file
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - x
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - x
 harness:
   check:
     profile: text.file
@@ -43,13 +45,15 @@ expect:
     message_tokens:
     - text.file path escapes contract root
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - outside
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - outside
 harness:
   check:
     profile: text.file
@@ -78,13 +82,15 @@ expect:
     message_tokens:
     - requires explicit harness.entrypoint
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - x
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - x
 ```
 
 ## SRPHP-RUN-F004
@@ -109,12 +115,14 @@ expect:
     message_tokens:
     - unsupported spec_lang symbol
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - not.a.real.symbol:
-    - {var: subject}
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      not.a.real.symbol:
+      - {var: subject}
 ```
 
 ## SRPHP-RUN-F005
@@ -138,7 +146,10 @@ expect:
     category: assertion
     message_tokens:
     - exit_code expected=0 actual=2
-contract: []
+contract:
+  defaults:
+    class: MUST
+  steps: []
 ```
 
 ## SRPHP-RUN-F006
@@ -154,7 +165,10 @@ expect:
     category: runtime
     message_tokens:
     - unknown contract-spec type
-contract: []
+contract:
+  defaults:
+    class: MUST
+  steps: []
 ```
 
 ## SRPHP-RUN-F007
@@ -179,7 +193,10 @@ expect:
     category: schema
     message_tokens:
     - unsupported harness key(s)
-contract: []
+contract:
+  defaults:
+    class: MUST
+  steps: []
 ```
 
 ## SRPHP-RUN-F008
@@ -196,14 +213,16 @@ expect:
     message_tokens:
     - 'leaf assertion must not include key: target'
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - lit:
-      target: text
-      contain:
-      - fixture-content
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      lit:
+        target: text
+        contain:
+        - fixture-content
 harness:
   check:
     profile: text.file

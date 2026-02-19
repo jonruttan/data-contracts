@@ -6,16 +6,18 @@
 id: LIB-DOMAIN-META-001-001-DOMAIN-META-CASE-ID-EQ
 type: contract.export
 contract:
-- id: __export__domain.meta.case_id_eq
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.meta.case_id_eq
+    assert:
+      std.logic.eq:
       - std.object.get:
-        - {var: meta}
-        - case
-      - id
-    - {var: case_id}
+        - std.object.get:
+          - {var: meta}
+          - case
+        - id
+      - {var: case_id}
 harness:
   exports:
   - as: domain.meta.case_id_eq
@@ -31,16 +33,18 @@ harness:
 id: LIB-DOMAIN-META-001-002-DOMAIN-META-HAS-ARTIFACT-TARGET
 type: contract.export
 contract:
-- id: __export__domain.meta.has_artifact_target
-  class: MUST
-  asserts:
-  - std.collection.includes:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.meta.has_artifact_target
+    assert:
+      std.collection.includes:
       - std.object.get:
-        - {var: meta}
-        - artifacts
-      - target_keys
-    - {var: target_name}
+        - std.object.get:
+          - {var: meta}
+          - artifacts
+        - target_keys
+      - {var: target_name}
 harness:
   exports:
   - as: domain.meta.has_artifact_target

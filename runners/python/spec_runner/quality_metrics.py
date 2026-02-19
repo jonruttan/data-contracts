@@ -206,6 +206,20 @@ def _collect_leaf_ops(node: object, *, inherited_target: str | None = None) -> l
         return ops
     if not isinstance(node, dict):
         return ops
+    if "steps" in node and isinstance(node.get("steps"), list):
+        defaults = node.get("defaults")
+        default_on = str((defaults or {}).get("on", "")).strip() if isinstance(defaults, dict) else ""
+        for step in node.get("steps") or []:
+            if not isinstance(step, dict):
+                continue
+            step_target = str(step.get("on", "")).strip() or default_on or inherited_target
+            checks = step.get("assert")
+            if isinstance(checks, list):
+                for child in checks:
+                    ops.extend(_collect_leaf_ops(child, inherited_target=step_target))
+            elif checks is not None:
+                ops.extend(_collect_leaf_ops(checks, inherited_target=step_target))
+        return ops
     step_class = str(node.get("class", "")).strip() if "class" in node else ""
     if step_class in {"MUST", "MAY", "MUST_NOT"} and "asserts" in node:
         node_target = str(node.get("target", "")).strip() or inherited_target

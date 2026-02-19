@@ -11,30 +11,32 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.math.add:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - std.math.add:
+        - 2
+        - 3
+      - 5
+    - std.logic.eq:
+      - std.math.sub:
+        - 9
+        - 4
+      - 5
+    - std.logic.eq:
+      - std.math.add:
+        - 1
+        - 1
       - 2
-      - 3
-    - 5
-  - std.logic.eq:
-    - std.math.sub:
-      - 9
-      - 4
-    - 5
-  - std.logic.eq:
-    - std.math.add:
-      - 1
-      - 1
-    - 2
-  - std.logic.eq:
-    - std.math.sub:
-      - 3
-      - 3
-    - 0
-  target: text
+    - std.logic.eq:
+      - std.math.sub:
+        - 3
+        - 3
+      - 0
 harness:
   check:
     profile: text.file
@@ -53,30 +55,32 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.type.json_type:
-      - std.json.parse:
-        - '{"a":1,"b":2}'
-      - dict
-    - true
-  - std.logic.eq:
-    - std.object.has_key:
-      - std.json.parse:
-        - '{"a":{"b":1}}'
-      - a
-    - true
-  - std.logic.eq:
-    - std.type.json_type:
-      - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - std.type.json_type:
+        - std.json.parse:
+          - '{"a":1,"b":2}'
+        - dict
+      - true
+    - std.logic.eq:
+      - std.object.has_key:
         - std.json.parse:
           - '{"a":{"b":1}}'
         - a
-      - dict
-    - true
-  target: text
+      - true
+    - std.logic.eq:
+      - std.type.json_type:
+        - std.object.get:
+          - std.json.parse:
+            - '{"a":{"b":1}}'
+          - a
+        - dict
+      - true
 harness:
   check:
     profile: text.file
@@ -95,41 +99,43 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.path.normalize:
-      - /a//b/./c
-    - /a/b/c
-  - std.logic.eq:
-    - ops.fs.path.normalize:
-      - /a/b/../c
-    - /a/c
-  - std.logic.eq:
-    - ops.fs.path.join:
-      - /a/b
-      - c
-    - /a/b/c
-  - std.logic.eq:
-    - ops.fs.path.extname:
-      - file.tar.gz
-    - .gz
-  - std.logic.eq:
-    - ops.fs.path.stem:
-      - file.tar.gz
-    - file.tar
-  - std.logic.eq:
-    - ops.fs.path.change_ext:
-      - a/b.txt
-      - md
-    - a/b.md
-  - std.logic.eq:
-    - ops.fs.path.change_ext:
-      - a/b.txt
-      - ''
-    - a/b
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - ops.fs.path.normalize:
+        - /a//b/./c
+      - /a/b/c
+    - std.logic.eq:
+      - ops.fs.path.normalize:
+        - /a/b/../c
+      - /a/c
+    - std.logic.eq:
+      - ops.fs.path.join:
+        - /a/b
+        - c
+      - /a/b/c
+    - std.logic.eq:
+      - ops.fs.path.extname:
+        - file.tar.gz
+      - .gz
+    - std.logic.eq:
+      - ops.fs.path.stem:
+        - file.tar.gz
+      - file.tar
+    - std.logic.eq:
+      - ops.fs.path.change_ext:
+        - a/b.txt
+        - md
+      - a/b.md
+    - std.logic.eq:
+      - ops.fs.path.change_ext:
+        - a/b.txt
+        - ''
+      - a/b
 harness:
   check:
     profile: text.file
@@ -148,55 +154,57 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.file.exists:
-      - lit:
-          path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
-          exists: true
-          type: file
-          size_bytes: 12
-    - true
-  - std.logic.eq:
-    - ops.fs.file.is_file:
-      - lit:
-          path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
-          exists: true
-          type: file
-    - true
-  - std.logic.eq:
-    - ops.fs.file.is_dir:
-      - lit:
-          path: /docs
-          exists: true
-          type: dir
-    - true
-  - std.logic.eq:
-    - ops.fs.file.name:
-      - lit:
-          path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
-    - spec_lang_stdlib.spec.md
-  - std.logic.eq:
-    - ops.fs.file.parent:
-      - lit:
-          path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
-    - /specs/conformance/cases/core
-  - std.logic.eq:
-    - ops.fs.file.ext:
-      - lit:
-          path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
-    - .md
-  - std.logic.eq:
-    - ops.fs.file.get:
-      - lit:
-          path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
-          exists: true
-      - missing
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - ops.fs.file.exists:
+        - lit:
+            path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
+            exists: true
+            type: file
+            size_bytes: 12
+      - true
+    - std.logic.eq:
+      - ops.fs.file.is_file:
+        - lit:
+            path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
+            exists: true
+            type: file
+      - true
+    - std.logic.eq:
+      - ops.fs.file.is_dir:
+        - lit:
+            path: /docs
+            exists: true
+            type: dir
+      - true
+    - std.logic.eq:
+      - ops.fs.file.name:
+        - lit:
+            path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
+      - spec_lang_stdlib.spec.md
+    - std.logic.eq:
+      - ops.fs.file.parent:
+        - lit:
+            path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
+      - /specs/conformance/cases/core
+    - std.logic.eq:
+      - ops.fs.file.ext:
+        - lit:
+            path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
+      - .md
+    - std.logic.eq:
+      - ops.fs.file.get:
+        - lit:
+            path: /specs/conformance/cases/core/spec_lang_stdlib.spec.md
+            exists: true
+        - missing
+        - fallback
       - fallback
-    - fallback
-  target: text
 harness:
   check:
     profile: text.file
@@ -215,58 +223,60 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.json.parse:
-      - '{"a":{"b":[1,2,3]}}'
-    - lit:
-        a:
-          b:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - ops.fs.json.parse:
+        - '{"a":{"b":[1,2,3]}}'
+      - lit:
+          a:
+            b:
+            - 1
+            - 2
+            - 3
+    - std.logic.eq:
+      - ops.fs.json.get:
+        - lit:
+            a:
+              b:
+              - 1
+              - 2
+              - 3
+        - lit:
+          - a
+          - b
           - 1
-          - 2
-          - 3
-  - std.logic.eq:
-    - ops.fs.json.get:
-      - lit:
-          a:
-            b:
-            - 1
-            - 2
-            - 3
-      - lit:
-        - a
-        - b
-        - 1
-    - 2
-  - std.logic.eq:
-    - ops.fs.json.get_or:
-      - lit:
-          a:
-            b:
-            - 1
-            - 2
-            - 3
-      - lit:
-        - a
-        - c
+      - 2
+    - std.logic.eq:
+      - ops.fs.json.get_or:
+        - lit:
+            a:
+              b:
+              - 1
+              - 2
+              - 3
+        - lit:
+          - a
+          - c
+        - fallback
       - fallback
-    - fallback
-  - std.logic.eq:
-    - ops.fs.json.has_path:
-      - lit:
-          a:
-            b:
-            - 1
-            - 2
-            - 3
-      - lit:
-        - a
-        - b
-        - 0
-    - true
-  target: text
+    - std.logic.eq:
+      - ops.fs.json.has_path:
+        - lit:
+            a:
+              b:
+              - 1
+              - 2
+              - 3
+        - lit:
+          - a
+          - b
+          - 0
+      - true
 harness:
   check:
     profile: text.file
@@ -286,16 +296,18 @@ expect:
     status: fail
     category: schema
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.json.get:
-      - lit:
-          a: 1
-      - a
-    - 1
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.eq:
+      - ops.fs.json.get:
+        - lit:
+            a: 1
+        - a
+      - 1
 harness:
   check:
     profile: text.file
@@ -314,37 +326,39 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.glob.match:
-      - specs/current.md
-      - specs/*.md
-    - true
-  - std.logic.eq:
-    - ops.fs.glob.filter:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - ops.fs.glob.match:
+        - specs/current.md
+        - specs/*.md
+      - true
+    - std.logic.eq:
+      - ops.fs.glob.filter:
+        - lit:
+          - specs/current.md
+          - docs/book/index.md
+          - README.md
+        - specs/*.md
       - lit:
         - specs/current.md
-        - docs/book/index.md
-        - README.md
-      - specs/*.md
-    - lit:
-      - specs/current.md
-  - std.logic.eq:
-    - ops.fs.glob.any:
-      - lit:
-        - specs/current.md
-        - docs/book/index.md
-      - specs/*.md
-    - true
-  - std.logic.eq:
-    - ops.fs.glob.all:
-      - lit:
-        - specs/current.md
-      - specs/*.md
-    - true
-  target: text
+    - std.logic.eq:
+      - ops.fs.glob.any:
+        - lit:
+          - specs/current.md
+          - docs/book/index.md
+        - specs/*.md
+      - true
+    - std.logic.eq:
+      - ops.fs.glob.all:
+        - lit:
+          - specs/current.md
+        - specs/*.md
+      - true
 harness:
   check:
     profile: text.file
@@ -364,17 +378,19 @@ expect:
     status: fail
     category: schema
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.glob.any:
-      - lit:
-        - 7
-        - specs/current.md
-      - specs/*.md
-    - true
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.eq:
+      - ops.fs.glob.any:
+        - lit:
+          - 7
+          - specs/current.md
+        - specs/*.md
+      - true
 harness:
   check:
     profile: text.file
@@ -393,32 +409,34 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.path.relativize:
-      - /a/b/c
-      - /a/d/e
-    - ../../d/e
-  - std.logic.eq:
-    - ops.fs.path.relativize:
-      - a/b
-      - a/b/c/d
-    - c/d
-  - std.logic.eq:
-    - ops.fs.path.common_prefix:
-      - lit:
-        - /a/b/c.md
-        - /a/b/d.md
-    - /a/b
-  - std.logic.eq:
-    - ops.fs.path.common_prefix:
-      - lit:
-        - specs/current.md
-        - specs/schema/schema_v1.md
-    - specs
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - ops.fs.path.relativize:
+        - /a/b/c
+        - /a/d/e
+      - ../../d/e
+    - std.logic.eq:
+      - ops.fs.path.relativize:
+        - a/b
+        - a/b/c/d
+      - c/d
+    - std.logic.eq:
+      - ops.fs.path.common_prefix:
+        - lit:
+          - /a/b/c.md
+          - /a/b/d.md
+      - /a/b
+    - std.logic.eq:
+      - ops.fs.path.common_prefix:
+        - lit:
+          - specs/current.md
+          - specs/schema/schema_v1.md
+      - specs
 harness:
   check:
     profile: text.file
@@ -438,16 +456,18 @@ expect:
     status: fail
     category: schema
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.path.common_prefix:
-      - lit:
-        - /a/b
-        - 7
-    - /a
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.eq:
+      - ops.fs.path.common_prefix:
+        - lit:
+          - /a/b
+          - 7
+      - /a
 harness:
   check:
     profile: text.file
@@ -466,39 +486,41 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.path.parents:
-      - /a/b/c
-    - lit:
-      - /a/b
-      - /a
-      - /
-  - std.logic.eq:
-    - ops.fs.path.parents:
-      - a/b/c
-    - lit:
-      - a/b
-      - a
-      - .
-  - std.logic.eq:
-    - ops.fs.path.within:
-      - /a/b
-      - /a/b/c/d
-    - true
-  - std.logic.eq:
-    - ops.fs.path.within:
-      - specs
-      - specs/current.md
-    - true
-  - std.logic.eq:
-    - ops.fs.path.within:
-      - /a/b
-      - /a/c
-    - false
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - ops.fs.path.parents:
+        - /a/b/c
+      - lit:
+        - /a/b
+        - /a
+        - /
+    - std.logic.eq:
+      - ops.fs.path.parents:
+        - a/b/c
+      - lit:
+        - a/b
+        - a
+        - .
+    - std.logic.eq:
+      - ops.fs.path.within:
+        - /a/b
+        - /a/b/c/d
+      - true
+    - std.logic.eq:
+      - ops.fs.path.within:
+        - specs
+        - specs/current.md
+      - true
+    - std.logic.eq:
+      - ops.fs.path.within:
+        - /a/b
+        - /a/c
+      - false
 harness:
   check:
     profile: text.file
@@ -518,14 +540,16 @@ expect:
     status: fail
     category: schema
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.path.parents:
-      - 7
-    - lit: []
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.eq:
+      - ops.fs.path.parents:
+        - 7
+      - lit: []
 harness:
   check:
     profile: text.file
@@ -544,30 +568,32 @@ expect:
   portable:
     status: pass
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.path.compare:
-      - /a//b
-      - /a/b
-    - 0
-  - std.logic.eq:
-    - ops.fs.path.compare:
-      - /a/b
-      - /a/c
-    - -1
-  - std.logic.eq:
-    - ops.fs.path.sort:
-      - lit:
-        - /b/z
-        - /a//c
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.logic.eq:
+      - ops.fs.path.compare:
+        - /a//b
         - /a/b
-    - lit:
-      - /a/b
-      - /a/c
-      - /b/z
-  target: text
+      - 0
+    - std.logic.eq:
+      - ops.fs.path.compare:
+        - /a/b
+        - /a/c
+      - -1
+    - std.logic.eq:
+      - ops.fs.path.sort:
+        - lit:
+          - /b/z
+          - /a//c
+          - /a/b
+      - lit:
+        - /a/b
+        - /a/c
+        - /b/z
 harness:
   check:
     profile: text.file
@@ -587,17 +613,19 @@ expect:
     status: fail
     category: schema
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - ops.fs.path.sort:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.logic.eq:
+      - ops.fs.path.sort:
+        - lit:
+          - /a/b
+          - 7
       - lit:
         - /a/b
-        - 7
-    - lit:
-      - /a/b
-  target: text
 harness:
   check:
     profile: text.file

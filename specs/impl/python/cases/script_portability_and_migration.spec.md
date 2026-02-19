@@ -16,13 +16,15 @@ harness:
       - .artifacts/spec-portability-script-case.json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/spec-portability-script-case.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/spec-portability-script-case.json
 ```
 
 ## SRPY-SCRIPT-PORT-002
@@ -41,13 +43,15 @@ harness:
       - nope
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - invalid choice
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - invalid choice
 ```
 
 ## SRPY-SCRIPT-PORT-003
@@ -65,13 +69,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --cases
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --cases
 ```
 
 ## SRPY-SCRIPT-PORT-004
@@ -89,13 +95,15 @@ harness:
       - --unknown-option
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - unrecognized arguments
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - unrecognized arguments
 ```
 
 ## SRPY-SCRIPT-PORT-005
@@ -113,13 +121,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --write
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --write
 ```
 
 ## SRPY-SCRIPT-PORT-006
@@ -136,13 +146,15 @@ harness:
       argv: []
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - paths
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - paths
 ```
 
 ## SRPY-SCRIPT-PORT-007
@@ -161,13 +173,15 @@ harness:
       - .artifacts/conformance-purpose-script-case.json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - wrote .artifacts/conformance-purpose-script-case.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - wrote .artifacts/conformance-purpose-script-case.json
 ```
 
 ## SRPY-SCRIPT-PORT-008
@@ -186,11 +200,13 @@ harness:
       - nope
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - invalid choice
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - invalid choice
 ```

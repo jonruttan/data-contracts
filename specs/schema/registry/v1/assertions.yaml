@@ -3,7 +3,7 @@ id: schema.registry.v1.assertions
 type: assertions
 fields:
   contract:
-    type: list
+    type: any
     required: false
     since: v1
-    description: Assertion tree root; leaves are direct spec-lang operator mappings on core executable surfaces.
+    description: Canonical assertion tree root mapping with defaults/steps; leaves are direct spec-lang operator mappings.

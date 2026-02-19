@@ -22,7 +22,7 @@ entries:
   measurement_model_change: 'no'
 - baseline: specs/metrics/objective_scorecard_baseline.json
   sha256: 6bf06acb44415f48ee66ed34ee804e9ac099d144f9d81ebd84f448d0f96e7822
-  rationale: Baseline refreshed after api.http v2 verb/cors/scenario uplift adjusted objective aggregate mean score.
+  rationale: Baseline refreshed after api.http v1 verb/cors/scenario uplift adjusted objective aggregate mean score.
   measurement_model_change: 'no'
 - baseline: specs/metrics/python_dependency_baseline.json
   sha256: 8f017d0e8cf87e5e5fffce84e95e1377267cd438a3bc5dc351b7a0ffa1b96f18

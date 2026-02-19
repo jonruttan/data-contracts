@@ -14,11 +14,13 @@ harness:
     config:
       check: docs.governance_check_family_map_complete
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - 0
-  target: violation_count
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': violation_count
+    assert:
+      std.logic.eq:
+      - {var: subject}
+      - 0
 ```

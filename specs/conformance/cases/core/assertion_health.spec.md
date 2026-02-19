@@ -23,13 +23,15 @@ expect:
 assert_health:
   mode: warn
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - ''
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - ''
 harness:
   check:
     profile: text.file
@@ -51,13 +53,15 @@ expect:
 assert_health:
   mode: error
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - ''
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - ''
 harness:
   check:
     profile: text.file
@@ -78,13 +82,15 @@ expect:
 assert_health:
   mode: nope
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - contract-spec
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - contract-spec
 harness:
   check:
     profile: text.file
@@ -105,13 +111,15 @@ expect:
 assert_health:
   mode: ignore
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - ''
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - ''
 harness:
   check:
     profile: text.file
@@ -133,16 +141,19 @@ expect:
 assert_health:
   mode: error
 contract:
-- id: assert_1
-  class: MAY
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - 'version: 1'
-  - std.string.contains:
-    - {var: subject}
-    - 'version: 2'
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    class: MAY
+    'on': text
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - 'version: 1'
+    - std.string.contains:
+      - {var: subject}
+      - 'version: 2'
 harness:
   check:
     profile: text.file
@@ -164,13 +175,15 @@ expect:
 assert_health:
   mode: error
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.regex_match:
-    - {var: subject}
-    - '(?<=version: )1'
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+      std.string.regex_match:
+      - {var: subject}
+      - '(?<=version: )1'
 harness:
   check:
     profile: text.file

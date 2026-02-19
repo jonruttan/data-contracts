@@ -34,17 +34,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-001.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/conformance-purpose.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/conformance-purpose.json
 when:
   fail:
   - ops.job.dispatch:
@@ -88,17 +90,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-002.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/conformance-purpose-summary.md
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/conformance-purpose-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -142,17 +146,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-003.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/spec-portability.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/spec-portability.json
 when:
   fail:
   - ops.job.dispatch:
@@ -196,17 +202,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-004.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/spec-portability-summary.md
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/spec-portability-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -250,17 +258,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-005.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/contract-assertions.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/contract-assertions.json
 when:
   fail:
   - ops.job.dispatch:
@@ -304,17 +314,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-006.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-    - written_path
-    - .artifacts/contract-assertions-summary.md
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+      - written_path
+      - .artifacts/contract-assertions-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -358,17 +370,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-007.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/spec-lang-adoption.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/spec-lang-adoption.json
 when:
   fail:
   - ops.job.dispatch:
@@ -412,17 +426,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-008.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/spec-lang-adoption-summary.md
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/spec-lang-adoption-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -466,17 +482,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-009.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/runner-independence.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/runner-independence.json
 when:
   fail:
   - ops.job.dispatch:
@@ -520,17 +538,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-010.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/runner-independence-summary.md
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/runner-independence-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -574,17 +594,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-011.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/python-dependency.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/python-dependency.json
 when:
   fail:
   - ops.job.dispatch:
@@ -628,17 +650,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-012.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/python-dependency-summary.md
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/python-dependency-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -682,17 +706,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-013.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/docs-operability.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/docs-operability.json
 when:
   fail:
   - ops.job.dispatch:
@@ -736,17 +762,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-014.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/docs-operability-summary.md
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/docs-operability-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -790,17 +818,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-015.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/objective-scorecard.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/objective-scorecard.json
 when:
   fail:
   - ops.job.dispatch:
@@ -844,17 +874,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-016.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/objective-scorecard-summary.md
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/objective-scorecard-summary.md
 when:
   fail:
   - ops.job.dispatch:
@@ -898,17 +930,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-017.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/spec-lang-stdlib.json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/spec-lang-stdlib.json
 when:
   fail:
   - ops.job.dispatch:
@@ -952,17 +986,19 @@ harness:
         format: json
         report_name: SRRUST-JOB-REP-018.complete
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - ops.job.dispatch:
-    - main
-  - std.string.contains:
-    - std.object.get:
-      - {var: subject}
-      - written_path
-    - .artifacts/spec-lang-stdlib-summary.md
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+    - ops.job.dispatch:
+      - main
+    - std.string.contains:
+      - std.object.get:
+        - {var: subject}
+        - written_path
+      - .artifacts/spec-lang-stdlib-summary.md
 when:
   fail:
   - ops.job.dispatch:

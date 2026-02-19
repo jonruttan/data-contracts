@@ -159,9 +159,63 @@ def _expand_producer_exports(raw_exports: object, *, field_prefix: str) -> dict[
     return expanded
 
 
+def _lower_harness_use(harness: dict[str, Any]) -> dict[str, Any] | None:
+    raw_use = harness.get("use")
+    if raw_use is None:
+        return None
+    if not isinstance(raw_use, list):
+        raise TypeError("harness.use must be a non-empty list")
+    if not raw_use:
+        raise TypeError("harness.use must be a non-empty list")
+
+    steps: list[dict[str, Any]] = []
+    imports: list[dict[str, Any]] = []
+    seen_aliases: set[str] = set()
+    for idx, item in enumerate(raw_use):
+        if not isinstance(item, dict):
+            raise TypeError(f"harness.use[{idx}] must be a mapping")
+        ref = str(item.get("ref", "")).strip()
+        alias = str(item.get("as", "")).strip()
+        symbols = item.get("symbols")
+        if not ref:
+            raise ValueError(f"harness.use[{idx}].ref must be a non-empty string")
+        if not alias:
+            raise ValueError(f"harness.use[{idx}].as must be a non-empty string")
+        if alias in seen_aliases:
+            raise ValueError(f"harness.use has duplicate alias: {alias}")
+        seen_aliases.add(alias)
+        if not isinstance(symbols, list) or not symbols:
+            raise TypeError(f"harness.use[{idx}].symbols must be a non-empty list")
+        names: list[str] = []
+        for j, raw_name in enumerate(symbols):
+            symbol = str(raw_name).strip()
+            if not symbol:
+                raise ValueError(f"harness.use[{idx}].symbols[{j}] must be non-empty")
+            names.append(symbol)
+        steps.append(
+            {
+                "id": alias,
+                "class": "MUST",
+                "ref": ref,
+            }
+        )
+        imports.append(
+            {
+                "from": alias,
+                "names": names,
+            }
+        )
+    return {"steps": steps, "imports": imports, "fail_fast": True}
+
+
 def compile_chain_plan(case: InternalSpecCase) -> tuple[list[ChainStep], list[ChainImport], bool]:
     harness = case.harness or {}
     raw_chain = harness.get("chain")
+    lowered_from_use = _lower_harness_use(harness)
+    if raw_chain is not None and lowered_from_use is not None:
+        raise ValueError("harness.chain and harness.use are mutually exclusive")
+    if raw_chain is None and lowered_from_use is not None:
+        raw_chain = lowered_from_use
     if raw_chain is None:
         return [], [], True
     if not isinstance(raw_chain, dict):

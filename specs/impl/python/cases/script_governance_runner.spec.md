@@ -15,13 +15,15 @@ harness:
       - --help
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  target: stdout
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - --check-prefix
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - --check-prefix
 ```
 
 ## SRPY-SCRIPT-GOV-002
@@ -42,13 +44,15 @@ harness:
       - ''
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - case-file-pattern
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - case-file-pattern
 ```
 
 ## SRPY-SCRIPT-GOV-003
@@ -69,13 +73,15 @@ harness:
       - zz.nonexistent.prefix
       exit_code: 2
 contract:
-- id: assert_1
-  class: MUST
-  target: stderr
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - selected zero cases
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stderr
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - selected zero cases
 ```
 
 ## SRPY-SCRIPT-GOV-004
@@ -90,26 +96,28 @@ harness:
     config:
       path: /runners/python/spec_runner/governance_runtime.py
 contract:
-- id: assert_1
-  class: MUST
-  target: text
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - docs.stdlib_symbol_docs_complete
-  - std.string.contains:
-    - {var: subject}
-    - docs.stdlib_examples_complete
-  - std.string.contains:
-    - {var: subject}
-    - docs.harness_reference_semantics_complete
-  - std.string.contains:
-    - {var: subject}
-    - docs.runner_reference_semantics_complete
-  - std.string.contains:
-    - {var: subject}
-    - docs.reference_namespace_chapters_sync
-  - std.string.contains:
-    - {var: subject}
-    - docs.docgen_quality_score_threshold
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - docs.stdlib_symbol_docs_complete
+    - std.string.contains:
+      - {var: subject}
+      - docs.stdlib_examples_complete
+    - std.string.contains:
+      - {var: subject}
+      - docs.harness_reference_semantics_complete
+    - std.string.contains:
+      - {var: subject}
+      - docs.runner_reference_semantics_complete
+    - std.string.contains:
+      - {var: subject}
+      - docs.reference_namespace_chapters_sync
+    - std.string.contains:
+      - {var: subject}
+      - docs.docgen_quality_score_threshold
 ```

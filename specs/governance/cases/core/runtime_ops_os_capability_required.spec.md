@@ -20,11 +20,13 @@ harness:
     config:
       check: runtime.ops_os_capability_required
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - 0
-  target: violation_count
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': violation_count
+    assert:
+      std.logic.eq:
+      - {var: subject}
+      - 0
 ```

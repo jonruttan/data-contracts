@@ -14,27 +14,25 @@ harness:
     - path: /specs/contract/03b_spec_lang_v1.md
       tokens:
       - operator-keyed mapping AST
-  chain:
-    steps:
-    - id: lib_policy_core_spec
-      class: MUST
-      ref: /specs/libraries/policy/policy_core.spec.md
-    imports:
-    - from: lib_policy_core_spec
-      names:
-      - policy.pass_when_no_violations
   check:
     profile: governance.scan
     config:
       check: reference.token_anchors_exist
+  use:
+  - ref: /specs/libraries/policy/policy_core.spec.md
+    as: lib_policy_core_spec
+    symbols:
+    - policy.pass_when_no_violations
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - check_id
-    - reference.token_anchors_exist
-  target: summary_json
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+      std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - check_id
+      - reference.token_anchors_exist
 ```

@@ -1,4 +1,4 @@
-# HTTP Subject Profile Contract (v2)
+# HTTP Subject Profile Contract
 
 HTTP adapter responses MUST be projected to JSON subject envelopes.
 
@@ -35,4 +35,4 @@ Redaction rule:
 
 - raw bearer tokens and secrets MUST NOT appear in context/profile diagnostics.
 
-Profile id: `api.http/v2`.
+Profile id: `api.http/v1`.

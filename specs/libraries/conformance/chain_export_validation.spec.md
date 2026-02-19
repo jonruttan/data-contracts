@@ -9,12 +9,14 @@ It provides producer cases referenced by conformance negative tests.
 id: BAD-EXPORT-PATH
 type: contract.export
 contract:
-- id: valid_step
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - {var: subject}
+  defaults:
+    class: MUST
+  steps:
+  - id: valid_step
+    assert:
+      std.logic.eq:
+      - {var: subject}
+      - {var: subject}
 harness:
   exports:
   - as: bad.path.symbol
@@ -31,12 +33,15 @@ harness:
 id: BAD-EXPORT-CLASS
 type: contract.export
 contract:
-- id: non_must_step
-  class: MAY
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - {var: subject}
+  defaults:
+    class: MUST
+  steps:
+  - id: non_must_step
+    class: MAY
+    assert:
+      std.logic.eq:
+      - {var: subject}
+      - {var: subject}
 harness:
   exports:
   - as: bad.class.symbol

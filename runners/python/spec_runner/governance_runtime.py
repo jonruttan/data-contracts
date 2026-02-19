@@ -1954,7 +1954,7 @@ def _scan_assert_domain_profiles_docs_sync(root: Path, *, harness: dict | None =
     required_profile_ids = {
         "python_profile.md": "python.generic/v1",
         "php_profile.md": "php.generic/v1",
-        "http_profile.md": "api.http/v2",
+        "http_profile.md": "api.http/v1",
         "markdown_profile.md": "markdown.generic/v1",
         "makefile_profile.md": "makefile.generic/v1",
     }

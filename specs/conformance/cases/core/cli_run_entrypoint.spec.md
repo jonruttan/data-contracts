@@ -35,7 +35,10 @@ harness:
       argv:
       - --help
       exit_code: 0
-contract: []
+contract:
+  defaults:
+    class: MUST
+  steps: []
 ```
 
 ## SRCONF-CLI-002
@@ -67,11 +70,13 @@ harness:
       - --json
       exit_code: 0
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - '"ok": true'
-  target: stdout
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': stdout
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - '"ok": true'
 ```

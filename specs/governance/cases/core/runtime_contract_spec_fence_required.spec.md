@@ -8,13 +8,15 @@ title: executable case fences must use contract-spec
 purpose: Enforces hard-cut fence rename to contract-spec across specs cases.
 type: contract.check
 contract:
-- id: assert_1
-  class: MUST
-  target: violation_count
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - 0
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': violation_count
+    assert:
+      std.logic.eq:
+      - {var: subject}
+      - 0
 harness:
   check:
     profile: governance.scan

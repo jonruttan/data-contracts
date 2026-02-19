@@ -7,16 +7,18 @@ id: LIB-DOMAIN-PHP-001
 title: php projection helper functions
 type: contract.export
 contract:
-- id: __export__php.is_assoc_projection
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__php.is_assoc_projection
+    assert:
+      std.logic.eq:
       - std.object.get:
-        - {var: subject}
-        - meta
-      - php_array_kind
-    - assoc
+        - std.object.get:
+          - {var: subject}
+          - meta
+        - php_array_kind
+      - assoc
 harness:
   exports:
   - as: php.is_assoc_projection

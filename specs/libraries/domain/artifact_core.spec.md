@@ -15,13 +15,15 @@ harness:
     - value
     required: true
 contract:
-- id: __export__domain.artifact.write_yaml
-  class: MUST
-  asserts:
-  - ops.fs.file.set:
-    - {var: path}
-    - ops.fs.yaml.stringify:
-      - {var: value}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.artifact.write_yaml
+    assert:
+      ops.fs.file.set:
+      - {var: path}
+      - ops.fs.yaml.stringify:
+        - {var: value}
 ```
 
 ```yaml contract-spec
@@ -37,10 +39,12 @@ harness:
     - content
     required: true
 contract:
-- id: __export__domain.artifact.append_text
-  class: MUST
-  asserts:
-  - ops.fs.file.append:
-    - {var: path}
-    - {var: content}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.artifact.append_text
+    assert:
+      ops.fs.file.append:
+      - {var: path}
+      - {var: content}
 ```

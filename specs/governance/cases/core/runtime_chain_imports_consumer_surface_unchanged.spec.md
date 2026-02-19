@@ -12,13 +12,15 @@ harness:
     config:
       check: runtime.chain_imports_consumer_surface_unchanged
 contract:
-- id: assert_1
-  class: MUST
-  target: summary_json
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - passed
-    - true
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': summary_json
+    assert:
+      std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - passed
+      - true
 ```

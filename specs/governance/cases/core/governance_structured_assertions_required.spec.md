@@ -15,39 +15,36 @@ harness:
     case_file_pattern: '*.spec.md'
     ignore_checks:
     - governance.structured_assertions_required
-  chain:
-    steps:
-    - id: lib_policy_core_spec
-      class: MUST
-      ref: /specs/libraries/policy/policy_core.spec.md
-    imports:
-    - from: lib_policy_core_spec
-      names:
-      - policy.pass_when_no_violations
   check:
     profile: governance.scan
     config:
       check: governance.structured_assertions_required
+  use:
+  - ref: /specs/libraries/policy/policy_core.spec.md
+    as: lib_policy_core_spec
+    symbols:
+    - policy.pass_when_no_violations
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - 0
-  target: violation_count
-- id: assert_2
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': violation_count
+    assert:
+      std.logic.eq:
       - {var: subject}
-      - passed
-    - true
-  - std.logic.eq:
-    - std.object.get:
-      - {var: subject}
-      - check_id
-    - governance.structured_assertions_required
-  target: summary_json
+      - 0
+  - id: assert_2
+    'on': summary_json
+    assert:
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - passed
+      - true
+    - std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - check_id
+      - governance.structured_assertions_required
 ```

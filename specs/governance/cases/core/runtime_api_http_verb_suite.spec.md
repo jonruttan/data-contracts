@@ -10,34 +10,31 @@ purpose: Ensures api.http fixtures cover GET/POST/PUT/PATCH/DELETE/HEAD/OPTIONS 
 type: contract.check
 harness:
   root: .
-  chain:
-    steps:
-    - id: lib_policy_core_spec
-      class: MUST
-      ref: /specs/libraries/policy/policy_core.spec.md
-    imports:
-    - from: lib_policy_core_spec
-      names:
-      - policy.pass_when_no_violations
   check:
     profile: governance.scan
     config:
       check: runtime.api_http_verb_suite
+  use:
+  - ref: /specs/libraries/policy/policy_core.spec.md
+    as: lib_policy_core_spec
+    symbols:
+    - policy.pass_when_no_violations
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - {var: subject}
-    - 0
-  target: violation_count
-- id: assert_2
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': violation_count
+    assert:
+      std.logic.eq:
       - {var: subject}
-      - check_id
-    - runtime.api_http_verb_suite
-  target: summary_json
+      - 0
+  - id: assert_2
+    'on': summary_json
+    assert:
+      std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - check_id
+      - runtime.api_http_verb_suite
 ```

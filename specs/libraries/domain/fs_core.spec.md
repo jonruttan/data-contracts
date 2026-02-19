@@ -6,18 +6,20 @@
 id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE
 type: contract.export
 contract:
-- id: __export__domain.fs.is_docs_spec_file
-  class: MUST
-  asserts:
-  - std.logic.and:
-    - ops.fs.path.within:
-      - /docs
-      - ops.fs.path.normalize:
-        - {var: path}
-    - std.string.ends_with:
-      - ops.fs.path.normalize:
-        - {var: path}
-      - .spec.md
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.is_docs_spec_file
+    assert:
+      std.logic.and:
+      - ops.fs.path.within:
+        - /docs
+        - ops.fs.path.normalize:
+          - {var: path}
+      - std.string.ends_with:
+        - ops.fs.path.normalize:
+          - {var: path}
+        - .spec.md
 harness:
   exports:
   - as: domain.fs.is_docs_spec_file
@@ -32,13 +34,15 @@ harness:
 id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES
 type: contract.export
 contract:
-- id: __export__domain.fs.sort_spec_files
-  class: MUST
-  asserts:
-  - ops.fs.path.sort:
-    - ops.fs.glob.filter:
-      - {var: paths}
-      - '*.spec.md'
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.sort_spec_files
+    assert:
+      ops.fs.path.sort:
+      - ops.fs.glob.filter:
+        - {var: paths}
+        - '*.spec.md'
 harness:
   exports:
   - as: domain.fs.sort_spec_files
@@ -53,14 +57,16 @@ harness:
 id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT
 type: contract.export
 contract:
-- id: __export__domain.fs.json_get_or_text
-  class: MUST
-  asserts:
-  - ops.fs.json.get_or:
-    - ops.fs.json.parse:
-      - {var: json_text}
-    - {var: path_segments}
-    - {var: fallback}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.json_get_or_text
+    assert:
+      ops.fs.json.get_or:
+      - ops.fs.json.parse:
+        - {var: json_text}
+      - {var: path_segments}
+      - {var: fallback}
 harness:
   exports:
   - as: domain.fs.json_get_or_text
@@ -77,13 +83,15 @@ harness:
 id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT
 type: contract.export
 contract:
-- id: __export__domain.fs.json_has_path_text
-  class: MUST
-  asserts:
-  - ops.fs.json.has_path:
-    - ops.fs.json.parse:
-      - {var: json_text}
-    - {var: path_segments}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.json_has_path_text
+    assert:
+      ops.fs.json.has_path:
+      - ops.fs.json.parse:
+        - {var: json_text}
+      - {var: path_segments}
 harness:
   exports:
   - as: domain.fs.json_has_path_text
@@ -99,12 +107,14 @@ harness:
 id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES
 type: contract.export
 contract:
-- id: __export__domain.fs.glob_any_spec_files
-  class: MUST
-  asserts:
-  - ops.fs.glob.any:
-    - {var: paths}
-    - '*.spec.md'
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.glob_any_spec_files
+    assert:
+      ops.fs.glob.any:
+      - {var: paths}
+      - '*.spec.md'
 harness:
   exports:
   - as: domain.fs.glob_any_spec_files
@@ -119,13 +129,15 @@ harness:
 id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ
 type: contract.export
 contract:
-- id: __export__domain.fs.file_ext_eq
-  class: MUST
-  asserts:
-  - ops.fs.path.has_ext:
-    - ops.fs.file.path:
-      - {var: meta}
-    - {var: ext}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.file_ext_eq
+    assert:
+      ops.fs.path.has_ext:
+      - ops.fs.file.path:
+        - {var: meta}
+      - {var: ext}
 harness:
   exports:
   - as: domain.fs.file_ext_eq
@@ -141,13 +153,15 @@ harness:
 id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
 type: contract.export
 contract:
-- id: __export__domain.fs.json_get_text
-  class: MUST
-  asserts:
-  - ops.fs.json.get:
-    - ops.fs.json.parse:
-      - {var: json_text}
-    - {var: path_segments}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.json_get_text
+    assert:
+      ops.fs.json.get:
+      - ops.fs.json.parse:
+        - {var: json_text}
+      - {var: path_segments}
 harness:
   exports:
   - as: domain.fs.json_get_text
@@ -163,16 +177,18 @@ harness:
 id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
 type: contract.export
 contract:
-- id: __export__domain.fs.json_path_eq_text
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - call:
-      - {var: domain.fs.json_get_or_text}
-      - {var: json_text}
-      - {var: path_segments}
-      - null
-    - {var: expected}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.json_path_eq_text
+    assert:
+      std.logic.eq:
+      - call:
+        - {var: domain.fs.json_get_or_text}
+        - {var: json_text}
+        - {var: path_segments}
+        - null
+      - {var: expected}
 harness:
   exports:
   - as: domain.fs.json_path_eq_text
@@ -189,12 +205,14 @@ harness:
 id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
 type: contract.export
 contract:
-- id: __export__domain.fs.glob_filter
-  class: MUST
-  asserts:
-  - ops.fs.glob.filter:
-    - {var: paths}
-    - {var: pattern}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.glob_filter
+    assert:
+      ops.fs.glob.filter:
+      - {var: paths}
+      - {var: pattern}
 harness:
   exports:
   - as: domain.fs.glob_filter
@@ -210,12 +228,14 @@ harness:
 id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
 type: contract.export
 contract:
-- id: __export__domain.fs.glob_all
-  class: MUST
-  asserts:
-  - ops.fs.glob.all:
-    - {var: paths}
-    - {var: pattern}
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.fs.glob_all
+    assert:
+      ops.fs.glob.all:
+      - {var: paths}
+      - {var: pattern}
 harness:
   exports:
   - as: domain.fs.glob_all

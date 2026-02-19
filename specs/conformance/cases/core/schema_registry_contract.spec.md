@@ -13,19 +13,21 @@ expect:
     status: pass
     category: null
 contract:
-- id: assert_1
-  class: MUST
-  asserts:
-  - std.string.contains:
-    - {var: subject}
-    - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
-  - std.string.contains:
-    - {var: subject}
-    - 'END GENERATED: SCHEMA_REGISTRY_V1'
-  - std.string.contains:
-    - {var: subject}
-    - Generated Registry Snapshot
-  target: text
+  defaults:
+    class: MUST
+  steps:
+  - id: assert_1
+    'on': text
+    assert:
+    - std.string.contains:
+      - {var: subject}
+      - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
+    - std.string.contains:
+      - {var: subject}
+      - 'END GENERATED: SCHEMA_REGISTRY_V1'
+    - std.string.contains:
+      - {var: subject}
+      - Generated Registry Snapshot
 harness:
   check:
     profile: text.file

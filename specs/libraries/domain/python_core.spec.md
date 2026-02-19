@@ -7,16 +7,18 @@ id: LIB-DOMAIN-PY-001
 title: python projection helper functions
 type: contract.export
 contract:
-- id: __export__py.is_tuple_projection
-  class: MUST
-  asserts:
-  - std.logic.eq:
-    - std.object.get:
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__py.is_tuple_projection
+    assert:
+      std.logic.eq:
       - std.object.get:
-        - {var: subject}
-        - meta
-      - native_kind
-    - python.tuple
+        - std.object.get:
+          - {var: subject}
+          - meta
+        - native_kind
+      - python.tuple
 harness:
   exports:
   - as: py.is_tuple_projection

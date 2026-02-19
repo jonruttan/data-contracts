@@ -18,12 +18,14 @@ harness:
     - options
     required: true
 contract:
-- id: __export__domain.process.exec_capture_ex_code
-  class: MUST
-  asserts:
-  - std.object.get:
-    - ops.os.exec_capture_ex:
-      - {var: command}
-      - {var: options}
-    - code
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.process.exec_capture_ex_code
+    assert:
+      std.object.get:
+      - ops.os.exec_capture_ex:
+        - {var: command}
+        - {var: options}
+      - code
 ```

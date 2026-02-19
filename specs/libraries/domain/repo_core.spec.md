@@ -15,14 +15,16 @@ harness:
     - pattern
     required: true
 contract:
-- id: __export__domain.repo.walk_matching
-  class: MUST
-  asserts:
-  - ops.fs.walk:
-    - {var: root}
-    - lit:
-        pattern:
-          var: pattern
-        include_dirs: false
-        relative: true
+  defaults:
+    class: MUST
+  steps:
+  - id: __export__domain.repo.walk_matching
+    assert:
+      ops.fs.walk:
+      - {var: root}
+      - lit:
+          pattern:
+            var: pattern
+          include_dirs: false
+          relative: true
 ```
