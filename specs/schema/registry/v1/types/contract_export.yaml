@@ -15,11 +15,11 @@ fields:
     required: true
     since: v1
   contract.imports:
-    type: mapping
+    type: list
     required: false
     since: v1
   contract.steps[].imports:
-    type: mapping
+    type: list
     required: false
     since: v1
   library:

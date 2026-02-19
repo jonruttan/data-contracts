@@ -410,7 +410,7 @@ Each `steps[]` entry requires:
 - `id` (string, unique per case)
 - `class` (`MUST` | `MAY` | `MUST_NOT`, default `MUST`)
 - `assert` (non-empty expression mapping or list)
-- `imports` (optional mapping)
+- `imports` (optional list)
 
 Legacy lowercase contract class/group forms (`must`, `can`, `cannot`) are
 forbidden.
@@ -423,9 +423,11 @@ Forbidden legacy forms:
 
 Import binding shape:
 
-- `imports.<name>.from`: `artifact | symbol | literal`
-- `imports.<name>.key`: required when `from` is `artifact` or `symbol`
-- `imports.<name>.value`: required when `from` is `literal`
+- `imports` is a list of mapping items
+- each item requires `from` and `names`, with optional `as`
+- canonical assertion imports are artifact-only (`from: artifact`)
+- `names` must be a non-empty list of artifact keys
+- `as` is optional mapping `source_name -> local_name`
 
 Import merge behavior:
 
@@ -500,11 +502,11 @@ Canonical negation uses `MUST_NOT`:
 
 ```yaml
 contract:
-  defaults:
-    imports:
-      subject:
-        from: artifact
-        key: text
+  imports:
+  - from: artifact
+    names: [text]
+    as:
+      text: subject
   steps:
   - id: assert_no_error
     class: MUST_NOT
@@ -517,18 +519,18 @@ contract:
 Author in canonical form:
 
 - use `MUST` / `MAY` / `MUST_NOT` for boolean groups
-- use direct operator mappings in `asserts` (no `evaluate` wrapper)
+- use direct operator mappings in `assert` (no `evaluate` wrapper)
 - put every operator value in a list
 
 Example with defaults + step override imports:
 
 ```yaml
 contract:
-  defaults:
-    imports:
-      subject:
-        from: artifact
-        key: summary_json
+  imports:
+  - from: artifact
+    names: [summary_json]
+    as:
+      summary_json: subject
   steps:
   - id: assert_passed
     assert:
@@ -539,9 +541,10 @@ contract:
       - true
   - id: assert_violation_count
     imports:
-      subject:
-        from: artifact
-        key: violation_count
+    - from: artifact
+      names: [violation_count]
+      as:
+        violation_count: subject
     assert:
       std.logic.eq:
       - {var: subject}

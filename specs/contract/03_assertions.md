@@ -11,7 +11,7 @@ Each step has:
 
 - `id` (string)
 - `class` (`MUST` | `MAY` | `MUST_NOT`, default `MUST`)
-- `imports` (optional mapping)
+- `imports` (optional list of import items)
 - `assert` (non-empty expression mapping or list)
 
 Legacy forms are forbidden:
@@ -26,9 +26,12 @@ Assertions must consume explicitly imported values.
 
 Import binding shape:
 
-- `imports.<name>.from`: `artifact | symbol | literal`
-- `imports.<name>.key`: required when `from` is `artifact` or `symbol`
-- `imports.<name>.value`: required when `from` is `literal`
+- `imports` is a list of mapping items
+- each item must be `{from, names, as?}`
+- assertion imports are artifact-only in canonical v1 (`from: artifact`)
+- `names` is a non-empty list of artifact keys
+- `as` is optional mapping of `source_name -> local_name`
+- when `as` is omitted, local symbol defaults to each `names[]` entry
 
 Import merge semantics:
 
@@ -59,9 +62,10 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: violation_count
+  - from: artifact
+    names: [violation_count]
+    as:
+      violation_count: subject
   steps:
   - id: assert_1
     assert:

@@ -18,9 +18,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: violation_count
+  - from: artifact
+    names:
+    - violation_count
+    as:
+      violation_count: subject
   steps:
   - id: assert_1
     assert:

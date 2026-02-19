@@ -292,32 +292,48 @@ def _normalize_step_assert_list(raw: Any, *, step_path: str) -> list[Any]:
 def _normalize_imports(raw: Any, *, field_path: str) -> dict[str, dict[str, Any]]:
     if raw is None:
         return {}
-    if not isinstance(raw, dict):
-        raise TypeError(f"{field_path} must be a mapping")
+    if not isinstance(raw, list):
+        raise TypeError(f"{field_path} must be a list")
     out: dict[str, dict[str, Any]] = {}
-    for raw_name, raw_spec in raw.items():
-        name = str(raw_name).strip()
-        if not name:
-            raise ValueError(f"{field_path} import names must be non-empty")
-        if not isinstance(raw_spec, dict):
-            raise TypeError(f"{field_path}.{name} must be a mapping")
-        src = str(raw_spec.get("from", "")).strip()
-        if src not in {"artifact", "symbol", "literal"}:
-            raise ValueError(f"{field_path}.{name}.from must be one of: artifact, symbol, literal")
-        spec: dict[str, Any] = {"from": src}
-        if src in {"artifact", "symbol"}:
-            key = str(raw_spec.get("key", "")).strip()
-            if not key:
-                raise ValueError(f"{field_path}.{name}.key must be a non-empty string for from={src}")
-            spec["key"] = key
-        else:
-            if "value" not in raw_spec:
-                raise ValueError(f"{field_path}.{name}.value is required for from=literal")
-            spec["value"] = raw_spec.get("value")
-        unknown = sorted(set(str(k) for k in raw_spec.keys()) - {"from", "key", "value"})
+    for idx, raw_item in enumerate(raw):
+        if not isinstance(raw_item, dict):
+            raise TypeError(f"{field_path}[{idx}] must be a mapping")
+        src = str(raw_item.get("from", "")).strip()
+        if src != "artifact":
+            raise ValueError(f"{field_path}[{idx}].from must be artifact")
+        raw_names = raw_item.get("names")
+        if not isinstance(raw_names, list) or not raw_names:
+            raise ValueError(f"{field_path}[{idx}].names must be a non-empty list")
+        for name_idx, raw_name in enumerate(raw_names):
+            source_name = str(raw_name).strip()
+            if not source_name:
+                raise ValueError(f"{field_path}[{idx}].names[{name_idx}] must be a non-empty string")
+        raw_aliases = raw_item.get("as")
+        aliases: dict[str, str] = {}
+        if raw_aliases is not None:
+            if not isinstance(raw_aliases, dict):
+                raise TypeError(f"{field_path}[{idx}].as must be a mapping when provided")
+            for raw_key, raw_val in raw_aliases.items():
+                alias_from = str(raw_key).strip()
+                alias_to = str(raw_val).strip()
+                if not alias_from or not alias_to:
+                    raise ValueError(f"{field_path}[{idx}].as keys and values must be non-empty strings")
+                aliases[alias_from] = alias_to
+            names_set = {str(name).strip() for name in raw_names}
+            extra_alias_keys = sorted(k for k in aliases.keys() if k not in names_set)
+            if extra_alias_keys:
+                raise ValueError(
+                    f"{field_path}[{idx}].as keys must be subset of names: {', '.join(extra_alias_keys)}"
+                )
+        unknown = sorted(set(str(k) for k in raw_item.keys()) - {"from", "names", "as"})
         if unknown:
-            raise ValueError(f"{field_path}.{name} has unknown keys: {', '.join(unknown)}")
-        out[name] = spec
+            raise ValueError(f"{field_path}[{idx}] has unknown keys: {', '.join(unknown)}")
+        for raw_name in raw_names:
+            source_name = str(raw_name).strip()
+            local_name = aliases.get(source_name, source_name)
+            if local_name in out:
+                raise ValueError(f"{field_path} defines duplicate local import symbol: {local_name}")
+            out[local_name] = {"from": "artifact", "key": source_name}
     return out
 
 
@@ -329,7 +345,13 @@ def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
         out.append(
             {
                 "class": "MUST",
-                "imports": {"subject": {"from": "artifact", "key": "violation_count"}},
+                "imports": [
+                    {
+                        "from": "artifact",
+                        "names": ["violation_count"],
+                        "as": {"violation_count": "subject"},
+                    }
+                ],
                 "assert": {
                     "std.logic.eq": [
                         {"var": "subject"},
@@ -342,7 +364,13 @@ def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
         out.append(
             {
                 "class": "MUST",
-                "imports": {"subject": {"from": "artifact", "key": "status"}},
+                "imports": [
+                    {
+                        "from": "artifact",
+                        "names": ["status"],
+                        "as": {"status": "subject"},
+                    }
+                ],
                 "assert": {
                     "std.logic.eq": [
                         {"var": "subject"},
@@ -357,7 +385,13 @@ def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
             out.append(
                 {
                     "class": "MUST",
-                    "imports": {"subject": {"from": "artifact", "key": "summary_json"}},
+                    "imports": [
+                        {
+                            "from": "artifact",
+                            "names": ["summary_json"],
+                            "as": {"summary_json": "subject"},
+                        }
+                    ],
                     "assert": {
                         "std.logic.eq": [
                             {
@@ -395,6 +429,7 @@ def _normalize_contract_steps(raw_assert: Any, *, raw_expect: Any, assert_path: 
                 raise ValueError(
                     f"{assert_path}.imports.steps is forbidden; use {assert_path}.steps[].imports"
                 )
+            raise ValueError(f"{assert_path}.imports must use list form: [{'{from, names, as?}'}]")
         default_imports = _normalize_imports(root_imports_raw, field_path=f"{assert_path}.imports")
         raw_steps = raw_assert.get("steps")
         if raw_steps is None:
@@ -415,6 +450,10 @@ def _normalize_contract_steps(raw_assert: Any, *, raw_expect: Any, assert_path: 
             step_id = str(raw_step.get("id", "")).strip() or f"step_{idx + 1:03d}"
             if "target" in raw_step or "on" in raw_step:
                 raise ValueError(f"{assert_path}.steps[{idx}].target/on is forbidden; use imports")
+            if isinstance(raw_step.get("imports"), dict):
+                raise ValueError(
+                    f"{assert_path}.steps[{idx}].imports must use list form: [{'{from, names, as?}'}]"
+                )
             step_imports = _normalize_imports(raw_step.get("imports"), field_path=f"{assert_path}.steps[{idx}].imports")
             merged_imports = dict(default_imports)
             merged_imports.update(step_imports)

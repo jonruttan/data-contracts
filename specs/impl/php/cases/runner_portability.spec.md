@@ -23,9 +23,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: stdout
+  - from: artifact
+    names:
+    - stdout
+    as:
+      stdout: subject
   steps:
   - id: assert_1
     assert:
@@ -60,9 +62,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: stdout
+  - from: artifact
+    names:
+    - stdout
+    as:
+      stdout: subject
   steps:
   - id: assert_1
     assert:
@@ -94,9 +98,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: stdout_path
+  - from: artifact
+    names:
+    - stdout_path
+    as:
+      stdout_path: subject
   steps:
   - id: assert_1
     assert:

@@ -19,9 +19,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -34,9 +36,11 @@ contract:
       - {var: subject}
       - dict
     imports:
-      subject:
-        from: artifact
-        key: body_json
+    - from: artifact
+      names:
+      - body_json
+      as:
+        body_json: subject
 harness:
   check:
     profile: api.http
@@ -67,9 +71,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -105,9 +111,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -142,9 +150,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: body_json
+  - from: artifact
+    names:
+    - body_json
+    as:
+      body_json: subject
   steps:
   - id: assert_1
     assert:
@@ -180,9 +190,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -216,9 +228,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: body_text
+  - from: artifact
+    names:
+    - body_text
+    as:
+      body_text: subject
   steps:
   - id: assert_1
     assert:
@@ -252,9 +266,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: body_json
+  - from: artifact
+    names:
+    - body_json
+    as:
+      body_json: subject
   steps:
   - id: assert_1
     assert:
@@ -290,9 +306,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -326,9 +344,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -364,9 +384,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -402,9 +424,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -459,9 +483,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -475,9 +501,11 @@ contract:
         - {var: subject}
       - 3
     imports:
-      subject:
-        from: artifact
-        key: steps_json
+    - from: artifact
+      names:
+      - steps_json
+      as:
+        steps_json: subject
 ```
 
 ## SRCONF-API-013
@@ -515,9 +543,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: context_json
+  - from: artifact
+    names:
+    - context_json
+    as:
+      context_json: subject
   steps:
   - id: assert_1
     assert:
@@ -571,9 +601,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -617,9 +649,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -664,9 +698,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:
@@ -715,9 +751,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: status
+  - from: artifact
+    names:
+    - status
+    as:
+      status: subject
   steps:
   - id: assert_1
     assert:

@@ -30,9 +30,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: violation_count
+  - from: artifact
+    names:
+    - violation_count
+    as:
+      violation_count: subject
   steps:
   - id: assert_1
     assert:
@@ -52,7 +54,9 @@ contract:
         - check_id
       - docs.reference_index_sync
     imports:
-      subject:
-        from: artifact
-        key: summary_json
+    - from: artifact
+      names:
+      - summary_json
+      as:
+        summary_json: subject
 ```

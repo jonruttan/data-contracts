@@ -20,6 +20,7 @@ explicitly imported assertion values.
 
 - `contract.imports` may define default bindings.
 - `contract.steps[].imports` may define/override step bindings.
+- import entries use list-form `{from, names, as?}` and `from` must be `artifact`.
 - Assertions must read values through imported symbols (for example `{var: subject}`).
 - `contract.steps[].target` and `contract.steps[].on` are forbidden.
 

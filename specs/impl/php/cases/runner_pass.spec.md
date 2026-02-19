@@ -15,9 +15,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: text
+  - from: artifact
+    names:
+    - text
+    as:
+      text: subject
   steps:
   - id: assert_1
     assert:
@@ -45,9 +47,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: text
+  - from: artifact
+    names:
+    - text
+    as:
+      text: subject
   steps:
   - id: assert_1
     assert:
@@ -76,9 +80,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: text
+  - from: artifact
+    names:
+    - text
+    as:
+      text: subject
   steps:
   - id: assert_1
     class: MAY
@@ -119,9 +125,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: stdout
+  - from: artifact
+    names:
+    - stdout
+    as:
+      stdout: subject
   steps:
   - id: assert_1
     assert:
@@ -155,9 +163,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: stdout
+  - from: artifact
+    names:
+    - stdout
+    as:
+      stdout: subject
   steps:
   - id: assert_1
     assert:
@@ -189,9 +199,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: stdout
+  - from: artifact
+    names:
+    - stdout
+    as:
+      stdout: subject
   steps:
   - id: assert_1
     assert:
@@ -223,9 +235,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: stdout
+  - from: artifact
+    names:
+    - stdout
+    as:
+      stdout: subject
   steps:
   - id: assert_1
     assert:
@@ -258,9 +272,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: stderr
+  - from: artifact
+    names:
+    - stderr
+    as:
+      stderr: subject
   steps:
   - id: assert_1
     assert:
@@ -292,9 +308,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: stdout_path
+  - from: artifact
+    names:
+    - stdout_path
+    as:
+      stdout_path: subject
   steps:
   - id: assert_1
     assert:
@@ -307,7 +325,9 @@ contract:
       - {var: subject}
       - path target file content
     imports:
-      subject:
-        from: artifact
-        key: stdout_path_text
+    - from: artifact
+      names:
+      - stdout_path_text
+      as:
+        stdout_path_text: subject
 ```

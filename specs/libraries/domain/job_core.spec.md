@@ -55,9 +55,9 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: subject
+  - from: artifact
+    names:
+    - subject
   steps:
   - id: __export__domain.job.scan_bundle_has_result
     assert:

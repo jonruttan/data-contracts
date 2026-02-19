@@ -1227,62 +1227,203 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
     let mut may_passed = 0_i64;
     let mut must_not_passed = 0_i64;
 
-    if let Some(contract_seq) = case_map
+    if let Some(contract_map) = case_map
         .get(&YamlValue::String("contract".to_string()))
-        .and_then(|v| v.as_sequence())
+        .and_then(|v| v.as_mapping())
     {
-        for (step_idx, step) in contract_seq.iter().enumerate() {
+        let parse_imports = |raw: Option<&YamlValue>, where_path: &str| -> Result<HashMap<String, String>, String> {
+            let mut out = HashMap::<String, String>::new();
+            let Some(raw_imports) = raw else {
+                return Ok(out);
+            };
+            let Some(items) = raw_imports.as_sequence() else {
+                return Err(format!("{where_path} imports must be list form with from/names/as"));
+            };
+            for (item_idx, raw_item) in items.iter().enumerate() {
+                let Some(item_map) = raw_item.as_mapping() else {
+                    return Err(format!("{where_path}.imports[{item_idx}] must be mapping"));
+                };
+                let src = item_map
+                    .get(&YamlValue::String("from".to_string()))
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("")
+                    .trim();
+                if src != "artifact" {
+                    return Err(format!("{where_path}.imports[{item_idx}].from must be artifact"));
+                }
+                let names_val = item_map.get(&YamlValue::String("names".to_string()));
+                let Some(names_seq) = names_val.and_then(|v| v.as_sequence()) else {
+                    return Err(format!("{where_path}.imports[{item_idx}].names must be non-empty list"));
+                };
+                if names_seq.is_empty() {
+                    return Err(format!("{where_path}.imports[{item_idx}].names must be non-empty list"));
+                }
+                let mut alias_map = HashMap::<String, String>::new();
+                if let Some(raw_alias) = item_map.get(&YamlValue::String("as".to_string())) {
+                    let Some(alias_yaml) = raw_alias.as_mapping() else {
+                        return Err(format!("{where_path}.imports[{item_idx}].as must be mapping"));
+                    };
+                    for (raw_key, raw_value) in alias_yaml {
+                        let source_name = raw_key.as_str().unwrap_or("").trim().to_string();
+                        let local_name = raw_value.as_str().unwrap_or("").trim().to_string();
+                        if source_name.is_empty() || local_name.is_empty() {
+                            return Err(format!(
+                                "{where_path}.imports[{item_idx}].as keys and values must be non-empty strings"
+                            ));
+                        }
+                        alias_map.insert(source_name, local_name);
+                    }
+                }
+                let mut source_names = HashSet::<String>::new();
+                for (name_idx, raw_name) in names_seq.iter().enumerate() {
+                    let source_name = raw_name.as_str().unwrap_or("").trim().to_string();
+                    if source_name.is_empty() {
+                        return Err(format!(
+                            "{where_path}.imports[{item_idx}].names[{name_idx}] must be non-empty string"
+                        ));
+                    }
+                    source_names.insert(source_name.clone());
+                    let local_name = alias_map
+                        .get(&source_name)
+                        .cloned()
+                        .unwrap_or_else(|| source_name.clone());
+                    out.insert(local_name, source_name);
+                }
+                for alias_key in alias_map.keys() {
+                    if !source_names.contains(alias_key) {
+                        return Err(format!(
+                            "{where_path}.imports[{item_idx}].as key {alias_key:?} is not present in names"
+                        ));
+                    }
+                }
+            }
+            Ok(out)
+        };
+
+        let default_class = contract_map
+            .get(&YamlValue::String("defaults".to_string()))
+            .and_then(|v| v.as_mapping())
+            .and_then(|m| m.get(&YamlValue::String("class".to_string())))
+            .and_then(|v| v.as_str())
+            .unwrap_or("MUST")
+            .trim()
+            .to_string();
+        let default_imports = match parse_imports(
+            contract_map.get(&YamlValue::String("imports".to_string())),
+            "contract",
+        ) {
+            Ok(v) => v,
+            Err(err) => {
+                restore_env();
+                eprintln!("ERROR: {err}");
+                return 1;
+            }
+        };
+        let contract_steps = contract_map
+            .get(&YamlValue::String("steps".to_string()))
+            .and_then(|v| v.as_sequence())
+            .cloned()
+            .unwrap_or_default();
+
+        for (step_idx, step) in contract_steps.iter().enumerate() {
             let step_map = match step.as_mapping() {
                 Some(m) => m,
                 None => continue,
             };
+            if step_map.contains_key(&YamlValue::String("target".to_string()))
+                || step_map.contains_key(&YamlValue::String("on".to_string()))
+            {
+                restore_env();
+                eprintln!("ERROR: contract.steps[{step_idx}] target/on is forbidden; use imports");
+                return 1;
+            }
             let class_name = step_map
                 .get(&YamlValue::String("class".to_string()))
                 .and_then(|v| v.as_str())
-                .unwrap_or("MUST");
-            if !matches!(class_name, "MUST" | "MAY" | "MUST_NOT") {
-                continue;
+                .unwrap_or(default_class.as_str())
+                .trim()
+                .to_string();
+            if !matches!(class_name.as_str(), "MUST" | "MAY" | "MUST_NOT") {
+                restore_env();
+                eprintln!("ERROR: contract.steps[{step_idx}].class must be MUST, MAY, or MUST_NOT");
+                return 1;
             }
             let step_id = step_map
                 .get(&YamlValue::String("id".to_string()))
                 .and_then(|v| v.as_str())
                 .map(str::trim)
                 .filter(|s| !s.is_empty());
-            let target = step_map
-                .get(&YamlValue::String("target".to_string()))
-                .and_then(|v| v.as_str())
-                .unwrap_or("summary_json");
             let assert_path = if let Some(id) = step_id {
-                format!("contract[{step_idx}]<{id}>")
+                format!("contract.steps[{step_idx}]<{id}>")
             } else {
-                format!("contract[{step_idx}]")
+                format!("contract.steps[{step_idx}]")
             };
-            let asserts = match step_map
-                .get(&YamlValue::String("asserts".to_string()))
-                .and_then(|v| v.as_sequence())
-            {
+            let step_imports = match parse_imports(
+                step_map.get(&YamlValue::String("imports".to_string())),
+                &format!("contract.steps[{step_idx}]"),
+            ) {
+                Ok(v) => v,
+                Err(err) => {
+                    restore_env();
+                    eprintln!("ERROR: {err}");
+                    return 1;
+                }
+            };
+            let mut effective_imports = default_imports.clone();
+            for (k, v) in step_imports {
+                effective_imports.insert(k, v);
+            }
+
+            let raw_assert = match step_map.get(&YamlValue::String("assert".to_string())) {
                 Some(v) => v,
-                None => continue,
+                None => {
+                    restore_env();
+                    eprintln!("ERROR: contract.steps[{step_idx}].assert is required");
+                    return 1;
+                }
             };
-            let mut clause_pass = matches!(class_name, "MUST" | "MUST_NOT");
+            let assert_items: Vec<&YamlValue> = if let Some(seq) = raw_assert.as_sequence() {
+                if seq.is_empty() {
+                    restore_env();
+                    eprintln!("ERROR: contract.steps[{step_idx}].assert must be non-empty");
+                    return 1;
+                }
+                seq.iter().collect()
+            } else {
+                vec![raw_assert]
+            };
+
+            let mut clause_pass = matches!(class_name.as_str(), "MUST" | "MUST_NOT");
             let mut clause_error: Option<String> = None;
             let mut any_passed = false;
-            for (assert_idx, raw_expr) in asserts.iter().enumerate() {
-                let subject = match target {
-                    "summary_json" => summary_json.clone(),
-                    "meta_json" => json!({
-                        "job_ref": ref_arg,
-                        "resolved_ref": resolved_ref,
-                        "jobs": jobs_obj.clone(),
-                    }),
-                    "violation_count" => Value::Number(failed_clauses.into()),
-                    _ => summary_json.clone(),
-                };
+            let target_name: Option<String> = effective_imports.get("subject").cloned();
+
+            for (assert_idx, raw_expr) in assert_items.iter().enumerate() {
+                let mut symbols = HashMap::<String, Value>::new();
+                let mut subject_value = Value::Null;
+                for (local_name, source_key) in &effective_imports {
+                    let resolved = match source_key.as_str() {
+                        "summary_json" => summary_json.clone(),
+                        "meta_json" => json!({
+                            "job_ref": ref_arg,
+                            "resolved_ref": resolved_ref,
+                            "jobs": jobs_obj.clone(),
+                        }),
+                        "violation_count" => Value::Number(failed_clauses.into()),
+                        "status" => Value::String(if failed_clauses == 0 { "pass" } else { "fail" }.to_string()),
+                        key => summary_json.get(key).cloned().unwrap_or(Value::Null),
+                    };
+                    if local_name == "subject" {
+                        subject_value = resolved.clone();
+                    }
+                    symbols.insert(local_name.clone(), json!({"lit": resolved}));
+                }
+                let subject = subject_value;
                 let expr = yaml_to_json(&normalize_evaluate_yaml_expr(raw_expr));
                 let result = match eval_mapping_ast_with_state(
                     &expr,
                     subject.clone(),
-                    HashMap::new(),
+                    symbols,
                     EvalLimits::default(),
                 ) {
                     Ok(v) => v,
@@ -1299,7 +1440,7 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                     summary_json = dispatched;
                 }
                 let ok = json_truthy(&result.value);
-                match class_name {
+                match class_name.as_str() {
                     "MUST" => {
                         if !ok {
                             clause_pass = false;
@@ -1327,26 +1468,26 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
 
             if clause_pass {
                 passed_clauses += 1;
-                match class_name {
+                match class_name.as_str() {
                     "MUST" => must_passed += 1,
                     "MAY" => may_passed += 1,
                     "MUST_NOT" => must_not_passed += 1,
                     _ => {}
                 }
-                let hook_event = match class_name {
+                let hook_event = match class_name.as_str() {
                     "MUST" => "must",
                     "MAY" => "may",
                     "MUST_NOT" => "must_not",
-                    _ => class_name,
+                    _ => class_name.as_str(),
                 };
                 if let Err(e) = run_job_hook_event(
                     &hook_exprs,
                     hook_event,
                     step_idx,
                     step_id,
-                    class_name,
+                    class_name.as_str(),
                     &assert_path,
-                    Some(target),
+                    target_name.as_deref(),
                     "pass",
                     None,
                     passed_clauses,
@@ -1365,9 +1506,9 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                         "fail",
                         step_idx,
                         step_id,
-                        class_name,
+                        class_name.as_str(),
                         &assert_path,
-                        Some(target),
+                        target_name.as_deref(),
                         "fail",
                         Some(&e),
                         passed_clauses,
@@ -1393,15 +1534,15 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
 
             failed_clauses += 1;
             let fail_message =
-                clause_error.unwrap_or_else(|| format!("contract clause failed: {class_name}"));
+                clause_error.unwrap_or_else(|| format!("contract clause failed: {}", class_name.as_str()));
             if let Err(hook_err) = run_job_hook_event(
                 &hook_exprs,
                 "fail",
                 step_idx,
                 step_id,
-                class_name,
+                class_name.as_str(),
                 &assert_path,
-                Some(target),
+                target_name.as_deref(),
                 "fail",
                 Some(&fail_message),
                 passed_clauses,

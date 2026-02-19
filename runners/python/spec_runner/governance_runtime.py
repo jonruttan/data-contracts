@@ -7042,6 +7042,60 @@ def _scan_schema_contract_target_on_forbidden(root: Path, *, harness: dict | Non
 
 
 def _scan_schema_contract_imports_explicit_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    def _collect_imported_locals(raw_imports: object, *, where: str, violations: list[str]) -> set[str]:
+        locals_out: set[str] = set()
+        if raw_imports is None:
+            return locals_out
+        if isinstance(raw_imports, dict):
+            violations.append(f"{where} imports must use list form with from/names/as")
+            return locals_out
+        if not isinstance(raw_imports, list):
+            violations.append(f"{where} imports must be a list when provided")
+            return locals_out
+        for idx, raw_item in enumerate(raw_imports):
+            if not isinstance(raw_item, dict):
+                violations.append(f"{where}.imports[{idx}] must be mapping")
+                continue
+            src = str(raw_item.get("from", "")).strip()
+            if src != "artifact":
+                violations.append(f"{where}.imports[{idx}].from must be artifact")
+                continue
+            raw_names = raw_item.get("names")
+            if not isinstance(raw_names, list) or not raw_names:
+                violations.append(f"{where}.imports[{idx}].names must be non-empty list")
+                continue
+            raw_as = raw_item.get("as")
+            alias_map: dict[str, str] = {}
+            if raw_as is not None:
+                if not isinstance(raw_as, dict):
+                    violations.append(f"{where}.imports[{idx}].as must be mapping when provided")
+                    continue
+                for raw_key, raw_val in raw_as.items():
+                    source_name = str(raw_key).strip()
+                    local_name = str(raw_val).strip()
+                    if not source_name or not local_name:
+                        violations.append(
+                            f"{where}.imports[{idx}].as keys and values must be non-empty strings"
+                        )
+                        continue
+                    alias_map[source_name] = local_name
+            source_set: set[str] = set()
+            for name_idx, raw_name in enumerate(raw_names):
+                source_name = str(raw_name).strip()
+                if not source_name:
+                    violations.append(
+                        f"{where}.imports[{idx}].names[{name_idx}] must be non-empty string"
+                    )
+                    continue
+                source_set.add(source_name)
+                locals_out.add(alias_map.get(source_name, source_name))
+            for alias_key in sorted(alias_map.keys()):
+                if alias_key not in source_set:
+                    violations.append(
+                        f"{where}.imports[{idx}].as key {alias_key!r} is not present in names"
+                    )
+        return locals_out
+
     def _contains_var_subject(node: object) -> bool:
         if isinstance(node, dict):
             if set(node.keys()) == {"var"} and str(node.get("var", "")).strip() == "subject":
@@ -7072,9 +7126,8 @@ def _scan_schema_contract_imports_explicit_required(root: Path, *, harness: dict
                 violations.append(
                     f"{doc_path.relative_to(root)}: case {case_id} contract.imports.steps is forbidden; use contract.steps[].imports"
                 )
-        default_imports = {}
-        if isinstance(contract_imports_raw, dict):
-            default_imports = cast(dict[str, Any], contract_imports_raw)
+        contract_where = f"{doc_path.relative_to(root)}: case {case_id} contract"
+        default_imports = _collect_imported_locals(contract_imports_raw, where=contract_where, violations=violations)
         steps = contract.get("steps")
         if not isinstance(steps, list):
             continue
@@ -7084,11 +7137,12 @@ def _scan_schema_contract_imports_explicit_required(root: Path, *, harness: dict
             raw_assert = step.get("assert")
             if raw_assert is None or not _contains_var_subject(raw_assert):
                 continue
-            step_imports = step.get("imports")
-            merged: dict[str, Any] = dict(default_imports)
-            if isinstance(step_imports, dict):
-                merged.update(step_imports)
-            if "subject" not in merged:
+            merged_names: set[str] = set(default_imports)
+            step_where = f"{doc_path.relative_to(root)}: case {case_id} contract.steps[{idx}]"
+            merged_names.update(
+                _collect_imported_locals(step.get("imports"), where=step_where, violations=violations)
+            )
+            if "subject" not in merged_names:
                 violations.append(
                     f"{doc_path.relative_to(root)}: case {case_id} contract.steps[{idx}] uses var subject without imports.subject"
                 )

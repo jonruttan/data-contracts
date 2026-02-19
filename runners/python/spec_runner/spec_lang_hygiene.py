@@ -134,6 +134,94 @@ def _is_operatorish_key(key: str) -> bool:
     )
 
 
+def _imports_map_to_list(bindings: dict[str, Any]) -> list[dict[str, Any]]:
+    grouped: dict[str, dict[str, Any]] = {}
+    for local_name in sorted(bindings.keys()):
+        spec = bindings.get(local_name)
+        if not isinstance(spec, dict):
+            continue
+        src = str(spec.get("from", "")).strip()
+        key = str(spec.get("key", "")).strip()
+        if src not in {"artifact", "symbol"} or not key:
+            continue
+        bucket = grouped.setdefault(src, {"names": [], "as": {}})
+        names = cast(list[str], bucket["names"])
+        aliases = cast(dict[str, str], bucket["as"])
+        if key not in names:
+            names.append(key)
+        if local_name != key:
+            aliases[key] = local_name
+    out: list[dict[str, Any]] = []
+    for src in sorted(grouped.keys()):
+        bucket = grouped[src]
+        names = sorted(cast(list[str], bucket["names"]))
+        aliases = {
+            source: local
+            for source, local in sorted(cast(dict[str, str], bucket["as"]).items())
+            if source in names and source != local
+        }
+        item: dict[str, Any] = {"from": src, "names": names}
+        if aliases:
+            item["as"] = aliases
+        out.append(item)
+    return out
+
+
+def _imports_any_to_map(raw_imports: Any) -> tuple[dict[str, dict[str, Any]], bool, bool]:
+    """
+    Returns (bindings, changed, valid_shape).
+    bindings maps local_name -> {from, key} for supported import forms.
+    """
+    if raw_imports is None:
+        return {}, False, True
+    if isinstance(raw_imports, dict):
+        out: dict[str, dict[str, Any]] = {}
+        for raw_name, raw_spec in raw_imports.items():
+            name = str(raw_name).strip()
+            if not name or not isinstance(raw_spec, dict):
+                return {}, False, False
+            src = str(raw_spec.get("from", "")).strip()
+            if src not in {"artifact", "symbol"}:
+                return {}, False, False
+            key = str(raw_spec.get("key", "")).strip()
+            if not key:
+                return {}, False, False
+            out[name] = {"from": src, "key": key}
+        return out, True, True
+    if not isinstance(raw_imports, list):
+        return {}, False, False
+    out: dict[str, dict[str, Any]] = {}
+    for raw_item in raw_imports:
+        if not isinstance(raw_item, dict):
+            return {}, False, False
+        src = str(raw_item.get("from", "")).strip()
+        if src not in {"artifact", "symbol"}:
+            return {}, False, False
+        raw_names = raw_item.get("names")
+        if not isinstance(raw_names, list) or not raw_names:
+            return {}, False, False
+        raw_as = raw_item.get("as")
+        alias_map: dict[str, str] = {}
+        if raw_as is not None:
+            if not isinstance(raw_as, dict):
+                return {}, False, False
+            for raw_k, raw_v in raw_as.items():
+                source_name = str(raw_k).strip()
+                local_name = str(raw_v).strip()
+                if not source_name or not local_name:
+                    return {}, False, False
+                alias_map[source_name] = local_name
+        for raw_name in raw_names:
+            source_name = str(raw_name).strip()
+            if not source_name:
+                return {}, False, False
+            local_name = alias_map.get(source_name, source_name)
+            if not local_name:
+                return {}, False, False
+            out[local_name] = {"from": src, "key": source_name}
+    return out, False, True
+
+
 def _normalize_expr_node(node: Any) -> tuple[Any, bool]:
     changed = False
     if _is_scalar(node):
@@ -296,20 +384,27 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
     if isinstance(node, dict):
         defaults_raw = node.get("defaults")
         defaults: dict[str, Any] = dict(defaults_raw) if isinstance(defaults_raw, dict) else {}
-        contract_imports: dict[str, Any] = {}
+        contract_imports: dict[str, dict[str, Any]] = {}
         imports_raw = node.get("imports")
-        if isinstance(imports_raw, dict):
-            contract_imports = dict(imports_raw)
-        elif imports_raw is not None:
+        contract_imports, imports_changed, imports_valid = _imports_any_to_map(imports_raw)
+        changed = changed or imports_changed
+        if not imports_valid:
             return node, changed
-        nested_defaults = contract_imports.pop("defaults", None)
-        nested_steps = contract_imports.pop("steps", None)
-        if nested_defaults is not None:
-            if isinstance(nested_defaults, dict):
-                for key, value in nested_defaults.items():
+        nested_defaults: dict[str, Any] | None = None
+        nested_steps: dict[str, Any] | None = None
+        if isinstance(imports_raw, dict):
+            raw_defaults = imports_raw.get("defaults")
+            raw_steps = imports_raw.get("steps")
+            nested_defaults = raw_defaults if isinstance(raw_defaults, dict) else None
+            nested_steps = raw_steps if isinstance(raw_steps, dict) else None
+            if raw_defaults is not None or raw_steps is not None:
+                changed = True
+        if isinstance(nested_defaults, dict):
+            defaults_map, _, defaults_ok = _imports_any_to_map(nested_defaults)
+            if defaults_ok:
+                for key, value in defaults_map.items():
                     if key not in contract_imports:
                         contract_imports[key] = value
-            changed = True
         default_target = ""
         if "target" in defaults:
             default_target = str(defaults.pop("target", "")).strip()
@@ -321,12 +416,14 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             if "subject" not in contract_imports:
                 contract_imports["subject"] = {"from": "artifact", "key": default_target}
         defaults_imports = defaults.pop("imports", None)
-        if isinstance(defaults_imports, dict):
-            for key, value in defaults_imports.items():
+        defaults_import_map, defaults_imports_changed, defaults_imports_valid = _imports_any_to_map(defaults_imports)
+        changed = changed or defaults_imports_changed
+        if defaults_imports is not None and not defaults_imports_valid:
+            return node, changed
+        if defaults_import_map:
+            for key, value in defaults_import_map.items():
                 if key not in contract_imports:
                     contract_imports[key] = value
-            changed = True
-        elif defaults_imports is not None:
             changed = True
         raw_steps = node.get("steps")
         if raw_steps is None:
@@ -354,9 +451,10 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
                 step_target = str(step.pop("on", "")).strip()
                 changed = True
             if step_target:
-                imports_map = step.get("imports")
-                if not isinstance(imports_map, dict):
-                    imports_map = {}
+                imports_map, imports_map_changed, imports_map_valid = _imports_any_to_map(step.get("imports"))
+                changed = changed or imports_map_changed
+                if not imports_map_valid:
+                    return node, changed
                 if "subject" not in imports_map:
                     imports_map["subject"] = {"from": "artifact", "key": step_target}
                 step["imports"] = imports_map
@@ -381,10 +479,14 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
                 changed = True
             step_id = str(step.get("id", "")).strip()
             if step_id and step_id in steps_nested_imports and isinstance(steps_nested_imports.get(step_id), dict):
-                imports_map = step.get("imports")
-                if not isinstance(imports_map, dict):
-                    imports_map = {}
-                for key, value in cast(dict[str, Any], steps_nested_imports.get(step_id)).items():
+                imports_map, imports_map_changed, imports_map_valid = _imports_any_to_map(step.get("imports"))
+                changed = changed or imports_map_changed
+                if not imports_map_valid:
+                    return node, changed
+                nested_map, _, nested_ok = _imports_any_to_map(cast(dict[str, Any], steps_nested_imports.get(step_id)))
+                if not nested_ok:
+                    return node, changed
+                for key, value in nested_map.items():
                     if key not in imports_map:
                         imports_map[key] = value
                 step["imports"] = imports_map
@@ -399,8 +501,8 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
         # absent, seed them from the first observed step imports per symbol.
         if not contract_imports:
             for step in normalized_steps:
-                raw_step_imports = step.get("imports")
-                if not isinstance(raw_step_imports, dict):
+                raw_step_imports, _, raw_step_imports_valid = _imports_any_to_map(step.get("imports"))
+                if not raw_step_imports_valid:
                     continue
                 for name, spec in raw_step_imports.items():
                     if name not in contract_imports:
@@ -408,8 +510,8 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
                         changed = True
         if contract_imports:
             for step in normalized_steps:
-                raw_step_imports = step.get("imports")
-                if not isinstance(raw_step_imports, dict):
+                raw_step_imports, _, raw_step_imports_valid = _imports_any_to_map(step.get("imports"))
+                if not raw_step_imports_valid:
                     continue
                 reduced = {
                     name: spec
@@ -427,7 +529,21 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             defaults["class"] = "MUST"
         out: dict[str, Any] = {"defaults": defaults, "steps": normalized_steps}
         if contract_imports:
-            out = {"defaults": defaults, "imports": contract_imports, "steps": normalized_steps}
+            out = {
+                "defaults": defaults,
+                "imports": _imports_map_to_list(contract_imports),
+                "steps": normalized_steps,
+            }
+        for step in out.get("steps", []):
+            if not isinstance(step, dict):
+                continue
+            imports_map, _, imports_ok = _imports_any_to_map(step.get("imports"))
+            if not imports_ok:
+                continue
+            if imports_map:
+                step["imports"] = _imports_map_to_list(imports_map)
+            else:
+                step.pop("imports", None)
         return out, True or changed
 
     if isinstance(node, list):
@@ -454,11 +570,14 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             out_step: dict[str, Any] = {"id": step_id}
             if step_class != "MUST":
                 out_step["class"] = step_class
-            imports_map = step.get("imports") if isinstance(step.get("imports"), dict) else {}
+            imports_map, imports_map_changed, imports_map_valid = _imports_any_to_map(step.get("imports"))
+            changed = changed or imports_map_changed
+            if not imports_map_valid:
+                return node, changed
             if step_target and "subject" not in imports_map:
                 imports_map["subject"] = {"from": "artifact", "key": step_target}
             if imports_map:
-                out_step["imports"] = imports_map
+                out_step["imports"] = _imports_map_to_list(imports_map)
             raw_assert = step.get("assert")
             if isinstance(raw_assert, list):
                 norm_asserts_v1: list[Any] = []
@@ -1367,67 +1486,132 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
         names: set[str] = set()
         if raw_imports is None:
             return names
-        if not isinstance(raw_imports, dict):
+        if not isinstance(raw_imports, list):
             _append_issue(
                 issues,
                 path=path,
                 case_id=case_id,
                 field=field,
                 code="SLINT080",
-                message="imports must be a mapping when provided",
+                message="imports must be a list when provided",
             )
             return names
-        for raw_name, raw_spec in raw_imports.items():
-            name = str(raw_name).strip()
-            if not name:
+        if not raw_imports:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=field,
+                code="SLINT092",
+                message=f"{field} must be omitted when empty",
+                fixable=True,
+            )
+            return names
+        for idx, raw_item in enumerate(raw_imports):
+            if not isinstance(raw_item, dict):
                 _append_issue(
                     issues,
                     path=path,
                     case_id=case_id,
-                    field=field,
-                    code="SLINT081",
-                    message="imports keys must be non-empty strings",
-                )
-                continue
-            names.add(name)
-            if not isinstance(raw_spec, dict):
-                _append_issue(
-                    issues,
-                    path=path,
-                    case_id=case_id,
-                    field=f"{field}.{name}",
+                    field=f"{field}[{idx}]",
                     code="SLINT082",
-                    message="import binding must be a mapping",
+                    message="import item must be a mapping",
                 )
                 continue
-            src = str(raw_spec.get("from", "")).strip()
-            if src not in {"artifact", "symbol", "literal"}:
+            unknown = sorted(set(str(k) for k in raw_item.keys()) - {"from", "names", "as"})
+            if unknown:
                 _append_issue(
                     issues,
                     path=path,
                     case_id=case_id,
-                    field=f"{field}.{name}.from",
+                    field=f"{field}[{idx}]",
+                    code="SLINT094",
+                    message=f"import item has unknown keys: {', '.join(unknown)}",
+                )
+            src = str(raw_item.get("from", "")).strip()
+            if src != "artifact":
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"{field}[{idx}].from",
                     code="SLINT083",
-                    message="import from must be artifact, symbol, or literal",
+                    message="assertion import from must be artifact",
                 )
                 continue
-            if src in {"artifact", "symbol"} and not str(raw_spec.get("key", "")).strip():
+            raw_names = raw_item.get("names")
+            if not isinstance(raw_names, list) or not raw_names:
                 _append_issue(
                     issues,
                     path=path,
                     case_id=case_id,
-                    field=f"{field}.{name}.key",
+                    field=f"{field}[{idx}].names",
                     code="SLINT084",
-                    message=f"import key is required for from={src}",
+                    message="import names is required and must be a non-empty list",
                 )
-            if src == "literal" and "value" not in raw_spec:
+                continue
+            aliases = raw_item.get("as")
+            alias_map: dict[str, str] = {}
+            if aliases is not None:
+                if not isinstance(aliases, dict):
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=f"{field}[{idx}].as",
+                        code="SLINT095",
+                        message="import as must be a mapping when provided",
+                    )
+                    continue
+                for raw_key, raw_value in aliases.items():
+                    source_name = str(raw_key).strip()
+                    local_name = str(raw_value).strip()
+                    if not source_name or not local_name:
+                        _append_issue(
+                            issues,
+                            path=path,
+                            case_id=case_id,
+                            field=f"{field}[{idx}].as",
+                            code="SLINT081",
+                            message="import as keys and values must be non-empty strings",
+                        )
+                        continue
+                    alias_map[source_name] = local_name
+            source_names: set[str] = set()
+            for name_idx, raw_name in enumerate(raw_names):
+                source_name = str(raw_name).strip()
+                if not source_name:
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=f"{field}[{idx}].names[{name_idx}]",
+                        code="SLINT096",
+                        message="import names entries must be non-empty strings",
+                    )
+                    continue
+                source_names.add(source_name)
+                local_name = alias_map.get(source_name, source_name)
+                if local_name in names:
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=f"{field}[{idx}]",
+                        code="SLINT097",
+                        message=f"duplicate local import symbol: {local_name}",
+                    )
+                    continue
+                names.add(local_name)
+            unknown_aliases = sorted(k for k in alias_map.keys() if k not in source_names)
+            if unknown_aliases:
                 _append_issue(
                     issues,
                     path=path,
                     case_id=case_id,
-                    field=f"{field}.{name}.value",
-                    code="SLINT085",
-                    message="import value is required for from=literal",
+                    field=f"{field}[{idx}].as",
+                    code="SLINT098",
+                    message=f"import as keys must be subset of names: {', '.join(unknown_aliases)}",
                 )
         return names
 
@@ -1464,20 +1648,10 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
         )
         return
     contract_imports_raw = contract.get("imports")
-    if isinstance(contract_imports_raw, dict) and not cast(dict[str, Any], contract_imports_raw):
-        _append_issue(
-            issues,
-            path=path,
-            case_id=case_id,
-            field="contract.imports",
-            code="SLINT092",
-            message="contract.imports must be omitted when empty",
-            fixable=True,
-        )
     steps = contract.get("steps")
     if isinstance(steps, list):
-        has_step_imports = any(isinstance(step, dict) and isinstance(step.get("imports"), dict) for step in steps)
-        if has_step_imports and not isinstance(contract_imports_raw, dict):
+        has_step_imports = any(isinstance(step, dict) and step.get("imports") is not None for step in steps)
+        if has_step_imports and not isinstance(contract_imports_raw, list):
             _append_issue(
                 issues,
                 path=path,

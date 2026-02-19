@@ -203,9 +203,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: text
+  - from: artifact
+    names:
+    - text
+    as:
+      text: subject
   steps:
   - id: assert_1
     assert:

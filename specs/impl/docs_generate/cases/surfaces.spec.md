@@ -29,9 +29,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -68,9 +70,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -109,9 +113,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -148,9 +154,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -188,9 +196,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -228,9 +238,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -268,9 +280,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -308,9 +322,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -348,9 +364,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -388,9 +406,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -428,9 +448,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -467,9 +489,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -506,9 +530,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -546,9 +572,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -586,9 +614,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -626,9 +656,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -666,9 +698,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -706,9 +740,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -746,9 +782,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -786,9 +824,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -826,9 +866,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -866,9 +908,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -906,9 +950,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -946,9 +992,11 @@ contract:
   defaults:
     class: MUST
   imports:
-    subject:
-      from: artifact
-      key: summary_json
+  - from: artifact
+    names:
+    - summary_json
+    as:
+      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
