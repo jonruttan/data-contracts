@@ -1849,7 +1849,7 @@
       "type": "governance.check"
     },
     {
-      "file": "specs/governance/cases/core/docs_markdown_namespace_legacy_alias_forbidden.spec.md",
+      "file": "specs/governance/cases/core/docs_markdown_namespace_alias_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 1.0,
       "id": "DCGOV-DOCS-MD-002",
@@ -2257,7 +2257,7 @@
       "type": "governance.check"
     },
     {
-      "file": "specs/governance/cases/core/library_legacy_definitions_key_forbidden.spec.md",
+      "file": "specs/governance/cases/core/library_definitions_key_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 1.0,
       "id": "DCGOV-LIB-VERB-002",
@@ -2437,7 +2437,7 @@
       "type": "governance.check"
     },
     {
-      "file": "specs/governance/cases/core/orchestration_ops_legacy_underscore_forbidden.spec.md",
+      "file": "specs/governance/cases/core/orchestration_ops_underscore_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 1.0,
       "id": "DCGOV-OPS-002",
@@ -2821,7 +2821,7 @@
       "type": "governance.check"
     },
     {
-      "file": "specs/governance/cases/core/runtime_chain_legacy_from_target_forbidden.spec.md",
+      "file": "specs/governance/cases/core/runtime_chain_from_target_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 1.0,
       "id": "DCGOV-CHAIN-FROM-002",
@@ -2965,7 +2965,7 @@
       "type": "governance.check"
     },
     {
-      "file": "specs/governance/cases/core/runtime_legacy_timeout_envs_deprecated.spec.md",
+      "file": "specs/governance/cases/core/runtime_timeout_envs_forbidden.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 1.0,
       "id": "DCGOV-LIVENESS-DEPRECATION-001",

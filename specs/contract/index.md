@@ -33,7 +33,7 @@ Read in order:
 19. `/specs/contract/13_runtime_scope.md`
 20. `/specs/contract/14_spec_lang_libraries.md`
 21. `/specs/contract/15_governance_subject_model.md`
-22. `/specs/contract/16_rust_primary_transition.md`
+22. `/specs/contract/16_control_plane_runtime_separation.md`
 23. `/specs/contract/17_objective_metrics.md`
 24. `/specs/contract/18_governance_subject_extractors.md`
 25. `/specs/contract/19_spec_lang_stdlib_profile_v1.md`

@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - guide_running_checks_and_gates
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust critical-gate
+- run: ./scripts/control_plane.sh critical-gate
   purpose: Reproduce CI required lane behavior locally.
 examples:
 - id: EX-GUIDE-08-001
@@ -62,9 +62,9 @@ Interpretation:
 ## Do This Now
 
 ```bash
-./runners/public/runner_adapter.sh --impl rust critical-gate
-./runners/public/runner_adapter.sh --impl rust governance
-./runners/public/runner_adapter.sh --impl rust docs-generate-check
+./scripts/control_plane.sh critical-gate
+./scripts/control_plane.sh governance
+./scripts/control_plane.sh docs-generate-check
 ```
 
 ## How To Verify Success

@@ -4,7 +4,6 @@ canonical_roots:
 - /docs/book
 - /specs
 - runner-owned implementation docs
-- /docs/reviews
 forbidden_roots: []
 index_filename: index.md
 required_index_dirs:
@@ -17,7 +16,6 @@ required_index_dirs:
 - /specs/conformance/cases
 - /specs/governance
 - runner-owned implementation specs
-- /docs/reviews
 forbidden_filenames:
 - README.md
 - .DS_Store

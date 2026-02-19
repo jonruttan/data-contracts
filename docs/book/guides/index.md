@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - usage_guides_entrypoint
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust docs-generate-check
+- run: ./scripts/control_plane.sh docs-generate-check
   purpose: Ensure guide navigation remains synchronized.
 examples:
 - id: EX-GUIDE-INDEX-001

@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - system_topology_view
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust docs-generate-check
+- run: ./scripts/control_plane.sh docs-generate-check
   purpose: Ensure guide-linked reference surfaces stay synchronized.
 examples:
 - id: EX-USAGE-INDEX-001

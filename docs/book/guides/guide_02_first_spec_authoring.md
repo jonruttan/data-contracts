@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - guide_onboarding_flow
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust critical-gate
+- run: ./scripts/control_plane.sh critical-gate
   purpose: Validate your first spec authoring changes end-to-end.
 examples:
 - id: EX-GUIDE-02-001
@@ -73,7 +73,7 @@ contract:
       - 0
 ```
 SPEC
-./runners/public/runner_adapter.sh --impl rust critical-gate
+./scripts/control_plane.sh critical-gate
 ```
 
 ## How To Verify Success

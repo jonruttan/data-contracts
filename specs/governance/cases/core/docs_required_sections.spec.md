@@ -29,7 +29,7 @@ harness:
     docs/book/30_assertion_model.md:
     - '## Canonical Contract Shape'
     - '## Imports and Precedence'
-    - '## Forbidden Legacy Forms'
+    - '## Forbidden prior Forms'
     - '## Group Semantics'
     docs/book/35_usage_guides_index.md:
     - '## Guide Paths'
@@ -95,7 +95,7 @@ harness:
     - '## Anti-Patterns'
     - '## Library-Backed Reuse'
     docs/book/60_runner_and_gates.md:
-    - '## Required Rust Lane'
+    - '## required lane'
     - '## Gate Sequence'
     - '## Exit Code Semantics'
     - '## Compatibility (Non-Blocking)'

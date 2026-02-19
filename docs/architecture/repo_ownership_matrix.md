@@ -3,7 +3,7 @@
 ## Canonical Repositories
 
 - `data-contracts` (this repository)
-- `dc-runner-rust` (required lane)
+- `dc-runner-rust` (runtime owner)
 - `dc-runner-python` (compatibility lane, non-blocking)
 - `dc-runner-php` (compatibility lane, non-blocking)
 
@@ -14,7 +14,7 @@
 - Governance policy model and check-set declarations under `specs/governance`
 - Narrative documentation under `docs/`
 - Rust runner lock and resolver (`specs/schema/dc_runner_rust_lock_v1.yaml`, `scripts/runner_bin.sh`)
-- Public required-lane adapter entrypoint (`runners/public/runner_adapter.sh`)
+- Public compatibility adapter entrypoint (`runners/public/runner_adapter.sh`)
 
 ### dc-runner-rust
 - Rust adapter and CLI implementation
@@ -43,7 +43,7 @@
 
 | Producer Repo | Produced Artifact | Consumer | Policy Role |
 |---|---|---|---|
-| `dc-runner-rust` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | required lane status input |
+| `dc-runner-rust` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | blocking-class status input |
 | `dc-runner-python` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | compatibility freshness input |
 | `dc-runner-php` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | compatibility freshness input |
 

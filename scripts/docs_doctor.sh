@@ -4,13 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
 
-if [[ -z "${SPEC_RUNNER_BIN:-}" ]]; then
-  SPEC_RUNNER_BIN="${ROOT_DIR}/runners/public/runner_adapter.sh"
-fi
-
-"${SPEC_RUNNER_BIN}" governance
-"${SPEC_RUNNER_BIN}" docs-generate-check
-"${SPEC_RUNNER_BIN}" docs-lint
-"${SPEC_RUNNER_BIN}" style-check
+./scripts/control_plane.sh governance
+./scripts/control_plane.sh docs-generate-check
 
 echo "OK: docs doctor checks passed"

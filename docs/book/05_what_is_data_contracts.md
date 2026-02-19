@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - normative_reference_map
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust governance
+- run: ./scripts/control_plane.sh governance
   purpose: Confirm contracts and governance surfaces are valid.
 examples:
 - id: EX-WHAT-IS-001

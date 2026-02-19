@@ -7,63 +7,9 @@ on:
   pull_request:
 
 jobs:
-  rust-critical-gate:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install PHP + yaml extension
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php-cli php-yaml
-          php -m | grep -i '^yaml$'
-
-      - name: Run rust critical gate
-        run: ./runners/public/runner_adapter.sh --impl rust critical-gate
-
-      - name: Upload rust critical gate artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: rust-critical-gate-artifacts
-          path: .artifacts/**
-          if-no-files-found: ignore
-
-  ci-gate:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    needs:
-      - rust-critical-gate
-      - runner-status-ingest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install PHP + yaml extension
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php-cli php-yaml
-          php -m | grep -i '^yaml$'
-
-      - name: Run CI gate (required rust lane)
-        run: ./scripts/ci_gate.sh
-
-      - name: Upload gate artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ci-artifacts
-          path: .artifacts/**
-          if-no-files-found: ignore
-
   runner-status-ingest:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: rust-critical-gate
 
     steps:
       - name: Checkout
@@ -72,7 +18,7 @@ jobs:
       - name: Install PHP + yaml extension
         run: |
           sudo apt-get update
-          sudo apt-get install -y php-cli php-yaml
+          sudo apt-get install -y php-cli php-yaml jq curl
           php -m | grep -i '^yaml$'
 
       - name: Ingest runner status matrix (freshness enforced)
@@ -83,161 +29,63 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: runner-status-artifacts
-          path: .artifacts/runner-status-*
-          if-no-files-found: ignore
+          path: |
+            .artifacts/runner-status-matrix.json
+            .artifacts/runner-status-matrix.md
+            .artifacts/runner-status-ingest-log.json
+          if-no-files-found: warn
 
-  rust-heavy-followup:
+  control-plane-governance:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    needs: rust-critical-gate
-    if: always()
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Install PHP + yaml extension
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php-cli php-yaml
-          php -m | grep -i '^yaml$'
-
-      - name: Run heavy rust follow-up checks (non-blocking)
-        run: |
-          ./runners/public/runner_adapter.sh --impl rust governance-heavy || true
-          ./runners/public/runner_adapter.sh --impl rust perf-smoke --mode strict || true
-
-      - name: Upload heavy follow-up artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: rust-heavy-followup-artifacts
-          path: .artifacts/**
-          if-no-files-found: ignore
-
-  compatibility-python-lane:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    continue-on-error: true
+    timeout-minutes: 10
     needs: runner-status-ingest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download runner status artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: runner-status-artifacts
-          path: .artifacts
-
-      - name: External python compatibility lane (non-blocking)
-        run: |
-          echo "python compatibility lane is owned by dc-runner-python."
-          echo "status matrix was ingested via release artifacts:"
-          test -f .artifacts/runner-status-matrix.md && cat .artifacts/runner-status-matrix.md || true
-
-      - name: Upload parity artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: compatibility-python-artifacts
-          path: .artifacts/**
-          if-no-files-found: ignore
-
-  compatibility-php-lane:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    continue-on-error: true
-    needs: runner-status-ingest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download runner status artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: runner-status-artifacts
-          path: .artifacts
-
-      - name: External php compatibility lane (non-blocking)
-        run: |
-          echo "php compatibility lane is owned by dc-runner-php."
-          echo "status matrix was ingested via release artifacts:"
-          test -f .artifacts/runner-status-matrix.md && cat .artifacts/runner-status-matrix.md || true
-
-      - name: Upload compatibility PHP artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: compatibility-php-artifacts
-          path: .artifacts/**
-          if-no-files-found: ignore
-
-  compatibility-node-lane:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    continue-on-error: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Node compatibility placeholder (non-blocking)
-        run: |
-          echo "Node compatibility lane is planned and intentionally non-blocking."
-
-  compatibility-c-lane:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    continue-on-error: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: C compatibility placeholder (non-blocking)
-        run: |
-          echo "C compatibility lane is planned and intentionally non-blocking."
-
-  core-gate-rust-adapter:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install PHP + yaml extension
+      - name: Install jq
         run: |
           sudo apt-get update
-          sudo apt-get install -y php-cli php-yaml
-          php -m | grep -i '^yaml$'
+          sudo apt-get install -y jq ripgrep
 
-      - name: Run core gate with Rust adapter interface
-        id: rust_core_gate
-        env:
-          SPEC_RUNNER_BIN: ./runners/public/runner_adapter.sh
-          SPEC_RUNNER_IMPL: rust
-        run: ./scripts/core_gate.sh
+      - name: Run control-plane governance checks
+        run: ./scripts/control_plane.sh governance
 
-      - name: Diagnostic rerun with detailed profiling (rust core gate)
-        if: steps.rust_core_gate.outcome == 'failure'
-        env:
-          SPEC_RUNNER_BIN: ./runners/public/runner_adapter.sh
-          SPEC_RUNNER_IMPL: rust
-        run: |
-          ./runners/public/runner_adapter.sh --impl rust --liveness-level strict --profile-level detailed --profile-out .artifacts/rust-governance-run-trace.json --profile-summary-out .artifacts/rust-governance-run-trace-summary.md governance || true
-          ./runners/public/runner_adapter.sh --impl rust --profile-level detailed --profile-out .artifacts/rust-ci-cleanroom-run-trace.json --profile-summary-out .artifacts/rust-ci-cleanroom-run-trace-summary.md ci-cleanroom || true
+      - name: Run docs reference checks
+        run: ./scripts/control_plane.sh docs-generate-check
 
-      - name: Enforce Rust core gate result
-        if: steps.rust_core_gate.outcome == 'failure'
-        run: exit 1
-
-      - name: Upload rust core gate artifacts
+      - name: Upload governance artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rust-core-gate-artifacts
+          name: control-plane-governance-artifacts
+          path: .artifacts/**
+          if-no-files-found: ignore
+
+  ci-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs:
+      - runner-status-ingest
+      - control-plane-governance
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install runtime deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-cli php-yaml jq curl ripgrep
+
+      - name: Run control-plane CI gate
+        run: ./scripts/ci_gate.sh
+
+      - name: Upload gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-artifacts
           path: .artifacts/**
           if-no-files-found: ignore

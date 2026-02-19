@@ -44,10 +44,5 @@
 - See Also: `{{.}}`
 {{/see_also}}
 
-{{#deprecated}}
-- Deprecated: `true`
-- Replacement: `{{replacement}}`
-- Reason: {{reason}}
-{{/deprecated}}
 
 {{/catalog.cases}}

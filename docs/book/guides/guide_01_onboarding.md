@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - usage_guides_entrypoint
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust governance
+- run: ./scripts/control_plane.sh governance
   purpose: Validate local environment against required governance checks.
 examples:
 - id: EX-GUIDE-01-001
@@ -24,7 +24,7 @@ sections_required:
 
 ## Purpose
 
-Bring a new contributor to first successful local validation in the required Rust lane.
+Bring a new contributor to first successful local validation in the required lane.
 
 ## Inputs
 
@@ -48,8 +48,8 @@ Bring a new contributor to first successful local validation in the required Rus
 
 ```bash
 git status --short
-./runners/public/runner_adapter.sh --impl rust governance
-./runners/public/runner_adapter.sh --impl rust docs-generate-check
+./scripts/control_plane.sh governance
+./scripts/control_plane.sh docs-generate-check
 ```
 
 ## How To Verify Success

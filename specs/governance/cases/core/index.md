@@ -83,7 +83,6 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_reference_manifest_sync.spec.md`
 - `/specs/governance/cases/core/docs_reference_namespace_chapters_sync.spec.md`
 - `/specs/governance/cases/core/docs_reference_surface_complete.spec.md`
-- `/specs/governance/cases/core/docs_readme_rust_first_coherence.spec.md`
 - `/specs/governance/cases/core/docs_release_contract_automation_policy.spec.md`
 - `/specs/governance/cases/core/docs_required_sections.spec.md`
 - `/specs/governance/cases/core/docs_runner_api_catalog_sync.spec.md`
@@ -200,11 +199,9 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/runtime_profiling_contract_artifacts.spec.md`
 - `/specs/governance/cases/core/runtime_profiling_redaction_policy.spec.md`
 - `/specs/governance/cases/core/runtime_profiling_span_taxonomy.spec.md`
-- `/specs/governance/cases/core/runtime_public_runner_default_rust.spec.md`
 - `/specs/governance/cases/core/runtime_public_runner_entrypoint_single.spec.md`
 - `/specs/governance/cases/core/runtime_python_bin_resolver_sync.spec.md`
 - `/specs/governance/cases/core/runtime_python_dependency_non_regression.spec.md`
-- `/specs/governance/cases/core/runtime_runner_adapter_python_impl_forbidden.spec.md`
 - `/specs/governance/cases/core/runtime_runner_certification_artifacts_contract_sync.spec.md`
 - `/specs/governance/cases/core/runtime_runner_certification_compat_lanes_non_blocking.spec.md`
 - `/specs/governance/cases/core/runtime_runner_certification_registry_valid.spec.md`
@@ -219,14 +216,6 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/runtime_rust_adapter_transitive_no_python.spec.md`
 - `/specs/governance/cases/core/runtime_rust_only_prepush_required.spec.md`
 - `/specs/governance/cases/core/runtime_required_lane_status_blocking_enforced.spec.md`
-- `/specs/governance/cases/core/runtime_required_rust_lane_blocking_status.spec.md`
-- `/specs/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md`
-- `/specs/governance/cases/core/runtime_rust_primary_adapter_exec_smoke_success.spec.md`
-- `/specs/governance/cases/core/runtime_rust_primary_gate_path.spec.md`
-- `/specs/governance/cases/core/runtime_rust_primary_interface_stability.spec.md`
-- `/specs/governance/cases/core/runtime_rust_primary_no_python_dependency.spec.md`
-- `/specs/governance/cases/core/runtime_rust_primary_shared_capability_parity.spec.md`
-- `/specs/governance/cases/core/runtime_rust_primary_subcommand_parity.spec.md`
 - `/specs/governance/cases/core/runtime_scope_sync.spec.md`
 - `/specs/governance/cases/core/runtime_settings_import_policy.spec.md`
 - `/specs/governance/cases/core/runtime_assert_block_decision_authority_required.spec.md`
@@ -266,3 +255,10 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_spec_index_reachability.spec.md`
 - `/specs/governance/cases/core/docs_governance_check_family_map_complete.spec.md`
 - `/specs/governance/cases/core/docs_canonical_freshness_strict.spec.md`
+- `/specs/governance/cases/core/docs_readme_task_usage_paths_present.spec.md`
+- `/specs/governance/cases/core/docs_readme_makefile_cookbook_forbidden.spec.md`
+- `/specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md`
+- `/specs/governance/cases/core/runtime_status_ingest_job_present.spec.md`
+- `/specs/governance/cases/core/runtime_matrix_artifacts_emitted.spec.md`
+- `/specs/governance/cases/core/runtime_contracts_no_rust_primary_language.spec.md`
+- `/specs/governance/cases/core/runtime_docs_no_required_lane_language.spec.md`

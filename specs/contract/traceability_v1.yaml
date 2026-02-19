@@ -688,7 +688,7 @@ links:
 - rule_id: RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
   contract_refs:
-  - specs/contract/16_rust_primary_transition.md
+  
   - specs/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md
   schema_refs: []
   conformance_case_ids: []
@@ -703,7 +703,7 @@ links:
 - rule_id: RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
   contract_refs:
-  - specs/contract/16_rust_primary_transition.md
+  
   - specs/governance/cases/core/runtime_rust_adapter_transitive_no_python.spec.md
   schema_refs: []
   conformance_case_ids: []
@@ -717,7 +717,7 @@ links:
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
   contract_refs:
   - specs/contract/12_runner_interface.md
-  - specs/contract/16_rust_primary_transition.md
+  
   schema_refs: []
   conformance_case_ids: []
   unit_test_refs:
@@ -731,7 +731,7 @@ links:
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_PYTHON_USAGE_SCOPED_TO_PYTHON_RUNNER
   contract_refs:
   - specs/contract/12_runner_interface.md
-  - specs/contract/16_rust_primary_transition.md
+  
   schema_refs: []
   conformance_case_ids: []
   unit_test_refs:
@@ -1650,7 +1650,7 @@ links:
 - rule_id: RUST_PRIMARY_GATE_PATH_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#RUST_PRIMARY_GATE_PATH_REQUIRED
   contract_refs:
-  - specs/contract/16_rust_primary_transition.md
+  
   - specs/contract/12_runner_interface.md
   schema_refs: []
   conformance_case_ids: []
@@ -1659,13 +1659,13 @@ links:
   implementation_refs:
   - .github/workflows/ci.yml
   - dc-runner-python
-  - specs/governance/cases/core/runtime_rust_primary_gate_path.spec.md
+  - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Rust-primary CI lane requirement is enforced through runner-interface CI
     lane checks.
 - rule_id: RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
   policy_ref: specs/contract/policy_v1.yaml#RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
   contract_refs:
-  - specs/contract/16_rust_primary_transition.md
+  
   - specs/contract/12_runner_interface.md
   schema_refs: []
   conformance_case_ids: []
@@ -1676,13 +1676,13 @@ links:
   - scripts/core_gate.sh
   - scripts/docs_doctor.sh
   - dc-runner-python
-  - specs/governance/cases/core/runtime_rust_primary_no_python_dependency.spec.md
+  - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Gate orchestration remains runner-interface based without direct Python command
     coupling.
 - rule_id: RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
   contract_refs:
-  - specs/contract/16_rust_primary_transition.md
+  
   - specs/contract/12_runner_interface.md
   schema_refs: []
   conformance_case_ids: []
@@ -1691,12 +1691,12 @@ links:
   implementation_refs:
   - dc-runner-rust
   - dc-runner-python
-  - specs/governance/cases/core/runtime_rust_primary_interface_stability.spec.md
+  - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Rust adapter preserves required runner-interface command surface.
 - rule_id: RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
   contract_refs:
-  - specs/contract/16_rust_primary_transition.md
+  
   - specs/contract/06_conformance.md
   schema_refs: []
   conformance_case_ids: []
@@ -1707,12 +1707,12 @@ links:
   - scripts/core_gate.sh
   - dc-runner-python
   - dc-runner-python
-  - specs/governance/cases/core/runtime_rust_primary_shared_capability_parity.spec.md
+  - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Rust-primary-compatible gate flow retains shared-capability parity step.
 - rule_id: RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED
   contract_refs:
-  - specs/contract/16_rust_primary_transition.md
+  
   - specs/contract/12_runner_interface.md
   schema_refs: []
   conformance_case_ids: []
@@ -1721,13 +1721,13 @@ links:
   implementation_refs:
   - dc-runner-rust
   - dc-runner-python
-  - specs/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md
+  - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Rust-primary governance includes an executable smoke check for adapter command
     behavior.
 - rule_id: RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
   contract_refs:
-  - specs/contract/16_rust_primary_transition.md
+  
   - specs/contract/12_runner_interface.md
   schema_refs: []
   conformance_case_ids: []
@@ -1737,13 +1737,13 @@ links:
   - dc-runner-rust
   - dc-runner-rust
   - dc-runner-python
-  - specs/governance/cases/core/runtime_rust_primary_subcommand_parity.spec.md
+  - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Governance enforces parity between shell adapter and Rust CLI subcommand
     surfaces.
 - rule_id: RUST_PRIMARY_DOCS_ADOPTION_SYNC
   policy_ref: specs/contract/policy_v1.yaml#RUST_PRIMARY_DOCS_ADOPTION_SYNC
   contract_refs:
-  - specs/contract/16_rust_primary_transition.md
+  
   - specs/contract/11_adoption_profiles.md
   schema_refs: []
   conformance_case_ids: []
@@ -1754,7 +1754,7 @@ links:
   - docs/development.md
   - dc-runner-python
   - specs/governance/cases/core/docs_adoption_profiles_sync.spec.md
-  notes: Adoption profile docs remain synchronized during Rust-primary transition.
+  notes: Adoption profile docs remain synchronized during Rust-primary migration.
 - rule_id: OBJECTIVE_METRIC_MANIFEST_VALID
   policy_ref: specs/contract/policy_v1.yaml#OBJECTIVE_METRIC_MANIFEST_VALID
   contract_refs:
@@ -1896,7 +1896,7 @@ links:
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_RUST_ADAPTER_NO_PYTHON_EXEC
   contract_refs:
   - specs/contract/12_runner_interface.md
-  - specs/contract/16_rust_primary_transition.md
+  
   schema_refs:
   - specs/schema/schema_v1.md
   conformance_case_ids: []
@@ -2298,7 +2298,7 @@ links:
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_PUBLIC_ENTRYPOINT_RUST_DEFAULT_REQUIRED
   contract_refs:
   - specs/contract/12_runner_interface.md
-  - specs/contract/16_rust_primary_transition.md
+  
   schema_refs:
   - specs/schema/schema_v1.md
   conformance_case_ids: []
@@ -2307,7 +2307,7 @@ links:
   implementation_refs:
   - runners/public/runner_adapter.sh
   - dc-runner-python
-  - specs/governance/cases/core/runtime_public_runner_default_rust.spec.md
+  - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Canonical runner adapter defaults to rust implementation mode.
 - rule_id: RUNTIME_RUNNER_ADAPTER_PYTHON_IMPL_FORBIDDEN
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_RUNNER_ADAPTER_PYTHON_IMPL_FORBIDDEN
@@ -2321,7 +2321,7 @@ links:
   implementation_refs:
   - runners/public/runner_adapter.sh
   - dc-runner-python
-  - specs/governance/cases/core/runtime_runner_adapter_python_impl_forbidden.spec.md
+  - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
   notes: Runtime runner adapter rejects python impl selection with migration guidance.
 - rule_id: RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_PUBLIC_DOCS_NO_DIRECT_RUST_ADAPTER_INVOCATION
@@ -2783,7 +2783,7 @@ links:
   implementation_refs:
   - dc-runner-python
   - specs/governance/cases/core/docs_reviews_namespace_active.spec.md
-  notes: Requires `docs/reviews` for active review assets and treats the historical review archive root as archive-only.
+  notes: Requires `docs/history/reviews` for active review assets and treats the historical review archive root as archive-only.
 - rule_id: DOCS_NO_OS_ARTIFACT_FILES_TRACKED
   policy_ref: specs/contract/policy_v1.yaml#DOCS_NO_OS_ARTIFACT_FILES_TRACKED
   contract_refs:
@@ -3802,3 +3802,56 @@ links:
   - scripts/runner_status_ingest.sh
   - specs/governance/cases/core/runtime_required_lane_status_blocking_enforced.spec.md
   notes: Required-lane status remains merge-blocking under status exchange.
+- rule_id: CONTROL_PLANE_STATUS_INGEST_INTEGRITY_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#CONTROL_PLANE_STATUS_INGEST_INTEGRITY_REQUIRED
+  contract_refs:
+  - specs/contract/25_compatibility_matrix.md
+  schema_refs:
+  - specs/schema/runner_status_matrix_v1.yaml
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - .github/workflows/ci.yml
+  - scripts/runner_status_ingest.sh
+  - specs/governance/cases/core/runtime_status_ingest_job_present.spec.md
+  - specs/governance/cases/core/runtime_matrix_artifacts_emitted.spec.md
+  notes: Control-plane CI must emit status-ingest artifacts deterministically.
+- rule_id: CONTROL_PLANE_CI_RUNTIME_EXECUTION_FORBIDDEN
+  policy_ref: specs/contract/policy_v1.yaml#CONTROL_PLANE_CI_RUNTIME_EXECUTION_FORBIDDEN
+  contract_refs:
+  - specs/contract/12_runner_interface.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - .github/workflows/ci.yml
+  - scripts/ci_gate.sh
+  - scripts/core_gate.sh
+  - scripts/local_ci_parity.sh
+  - specs/governance/cases/core/runtime_control_plane_ci_runner_execution_forbidden.spec.md
+  notes: Runtime lane execution is externalized to runner repositories.
+- rule_id: CONTROL_PLANE_DOCS_TASK_USAGE_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#CONTROL_PLANE_DOCS_TASK_USAGE_REQUIRED
+  contract_refs:
+  - specs/contract/10_docs_quality.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - README.md
+  - specs/governance/cases/core/docs_readme_task_usage_paths_present.spec.md
+  - specs/governance/cases/core/docs_readme_makefile_cookbook_forbidden.spec.md
+  notes: README must function as usage entrypoint, not build cookbook.
+- rule_id: CONTROL_PLANE_LANGUAGE_AGNOSTIC_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#CONTROL_PLANE_LANGUAGE_AGNOSTIC_REQUIRED
+  contract_refs:
+  - specs/contract/10_docs_quality.md
+  - specs/contract/12_runner_interface.md
+  - specs/contract/25_compatibility_matrix.md
+  schema_refs: []
+  conformance_case_ids: []
+  unit_test_refs: []
+  implementation_refs:
+  - specs/governance/cases/core/runtime_contracts_no_rust_primary_language.spec.md
+  - specs/governance/cases/core/runtime_docs_no_required_lane_language.spec.md
+  notes: Active docs and contracts avoid implementation-specific primary-lane language.

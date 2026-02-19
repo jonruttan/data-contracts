@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - guide_release_change_control
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust governance
+- run: ./scripts/control_plane.sh governance
   purpose: Validate governance check changes.
 examples:
 - id: EX-GUIDE-06-001
@@ -64,7 +64,7 @@ Interpretation:
 ## Do This Now
 
 ```bash
-./runners/public/runner_adapter.sh --impl rust governance
+./scripts/control_plane.sh governance
 rg -n "DCGOV-|docs\." specs/governance/check_prefix_map_v1.yaml specs/governance/cases/core -g '*.yaml' -g '*.md'
 ```
 

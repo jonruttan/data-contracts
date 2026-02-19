@@ -1,150 +1,48 @@
 # Data Contracts
 
-`data-contracts` is a contract-first executable spec system for Markdown-authored cases.
-It discovers `yaml contract-spec` blocks in `*.spec.md`, validates schema/contract
-shape, and executes checks through a stable runner interface.
+`data-contracts` is the implementation-agnostic control plane for the Data Contracts ecosystem.
 
-The source of truth is split by role:
+It defines and governs:
+- canonical specs, contracts, and schemas
+- documentation and reader-facing guidance
+- compatibility/status telemetry ingestion and policy evaluation
 
-- `specs/`: executable specs, contracts, schema, governance
-- `docs/`: author and operator documentation
+It does **not** own runner implementation code and does **not** execute runtime lanes as canonical project behavior.
 
-## Status and Trust Model
+## What This Project Is
 
-This project is **pre-alpha** and changes quickly.
+- Source of truth for contract semantics and schema shape.
+- Source of truth for docs quality, information architecture, and governance checks.
+- Consumer of runner release telemetry via status exchange artifacts.
 
-Trust model:
+## What This Project Is Not
 
-- `data-contracts` is **not a sandbox**.
-- Specs are trusted inputs.
-- Running untrusted specs is unsafe and out of scope for v1.
+- Not a runtime implementation repository.
+- Not a required-lane executor.
+- Not the owner of runner internals (`dc-runner-rust`, `dc-runner-python`, `dc-runner-php`).
 
-Reference contracts:
+## How Users Use This Project
 
-- `/specs/contract/08_v1_scope.md`
-- `/specs/contract/04_harness.md`
+### 1) Author a spec change
+- Start with `/Users/jon/Workspace/Development/data-contracts/docs/book/index.md`
+- Use task guides at `/Users/jon/Workspace/Development/data-contracts/docs/book/35_usage_guides_index.md`
+- Validate contract and schema intent under `/Users/jon/Workspace/Development/data-contracts/specs/contract/index.md`
 
-## Quick Start (Rust Required Lane)
+### 2) Validate docs and contract coherence
+- Run control-plane checks through CI and governance surfaces in this repo.
+- Use `/Users/jon/Workspace/Development/data-contracts/docs/book/90_reference_guide.md` for narrative-to-normative mapping.
 
-Setup:
+### 3) Read compatibility and status telemetry
+- See `/Users/jon/Workspace/Development/data-contracts/docs/book/65_runner_status_and_compatibility.md`
+- Inspect generated ingest artifacts under `/.artifacts/runner-status-*`
 
-```sh
-make setup
-```
+### 4) Debug governance or documentation drift
+- Use troubleshooting and governance chapters in the docs book.
+- Inspect generated governance/docs summary artifacts from CI.
 
-Canonical local verification:
+## Canonical Entry Points
 
-```sh
-make verify-docs
-make core-check
-make check
-```
-
-Run the canonical required lane:
-
-```sh
-./runners/public/runner_adapter.sh --impl rust critical-gate
-./runners/public/runner_adapter.sh --impl rust governance
-./runners/public/runner_adapter.sh --impl rust docs-generate-check
-```
-
-## Required Local Pre-Push
-
-Use the required local gate before pushing:
-
-```sh
-make prepush
-```
-
-Fast mode for local iteration:
-
-```sh
-make prepush-fast
-```
-
-Install managed hooks:
-
-```sh
-make hooks-install
-```
-
-Emergency bypass (only when necessary):
-
-```sh
-SPEC_PREPUSH_BYPASS=1 git push
-```
-
-## Runtime Ownership
-
-Required lane ownership:
-
-- `required`: `dc-runner-rust`
-- `compatibility_non_blocking`: `dc-runner-python`, `dc-runner-php`, node (planned), c (planned)
-
-Data Contracts consumes a pinned `dc-runner-rust` release artifact via:
-
-- `/scripts/runner_bin.sh`
-- `/specs/schema/dc_runner_rust_lock_v1.yaml`
-- Rust-backed migration wrappers under `/scripts/*.sh`
-
-Data Contracts does not directly execute compatibility lanes. Python/PHP
-compatibility execution is owned by `dc-runner-python` and `dc-runner-php`.
-
-Compatibility status communication is release-asset based and ingested via:
-
-- `/scripts/runner_status_ingest.sh`
-- `/specs/schema/runner_status_report_v1.yaml`
-- `/specs/schema/runner_status_matrix_v1.yaml`
-- `/specs/contract/27_runner_status_exchange.md`
-
-Contract reference:
-
-- `/specs/contract/25_compatibility_matrix.md`
-
-## Adoption Profiles
-
-- Core profile: `make core-check`
-- Full profile: `make check`
-
-## Minimal Canonical Spec Example
-
-```yaml contract-spec
-id: EX-README-001
-title: README canonical contract.check shape
-type: contract.check
-harness:
-  root: .
-  check:
-    profile: governance.scan
-    config:
-      check: docs.make_commands_sync
-contract:
-  defaults:
-    class: MUST
-  imports:
-  - from: artifact
-    names:
-    - violation_count
-  steps:
-  - id: assert_1
-    assert:
-      std.logic.eq:
-      - {var: violation_count}
-      - 0
-```
-
-## Repository Entry Points
-
-- Specs root: `/specs/`
-- Book index: `/docs/book/index.md`
-- Generated reference gateway: `/docs/book/99_generated_reference_index.md`
-- Development workflows: `/docs/development.md`
-- Schema: `/specs/schema/schema_v1.md`
-- Contract index: `/specs/contract/index.md`
-
-## Repo Layout
-
-- `runners/`: public adapter boundary only (runner implementations are external repos)
-- `scripts/`: operational entrypoints for local/CI workflows
-- `specs/`: executable specs and normative contracts
-- `docs/`: narrative and generated documentation surfaces
+- Book index: `/Users/jon/Workspace/Development/data-contracts/docs/book/index.md`
+- Usage guides index: `/Users/jon/Workspace/Development/data-contracts/docs/book/35_usage_guides_index.md`
+- Status exchange and compatibility: `/Users/jon/Workspace/Development/data-contracts/docs/book/65_runner_status_and_compatibility.md`
+- Contract index: `/Users/jon/Workspace/Development/data-contracts/specs/contract/index.md`

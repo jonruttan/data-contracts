@@ -10,7 +10,7 @@ Command: `make core-check`
 
 Goal:
 
-- fast local confidence on the required Rust lane
+- fast local confidence on the required lane
 - enforce core documentation/spec hygiene
 
 Minimum checks:

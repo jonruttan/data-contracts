@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - guide_running_checks_and_gates
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust critical-gate
+- run: ./scripts/control_plane.sh critical-gate
   purpose: Ensure release candidate is gate clean.
 examples:
 - id: EX-GUIDE-05-001
@@ -46,9 +46,9 @@ Define merge/release expectations for spec changes in a contract-first repo.
 ## Do This Now
 
 ```bash
-./runners/public/runner_adapter.sh --impl rust critical-gate
-./runners/public/runner_adapter.sh --impl rust governance
-./runners/public/runner_adapter.sh --impl rust docs-generate-check
+./scripts/control_plane.sh critical-gate
+./scripts/control_plane.sh governance
+./scripts/control_plane.sh docs-generate-check
 git status --short
 ```
 

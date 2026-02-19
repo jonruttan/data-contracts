@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - guide_running_checks_and_gates
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust governance
+- run: ./scripts/control_plane.sh governance
   purpose: Reproduce and isolate governance violations.
 examples:
 - id: EX-GUIDE-04-001
@@ -67,7 +67,7 @@ Interpretation:
 ## Do This Now
 
 ```bash
-./runners/public/runner_adapter.sh --impl rust governance
+./scripts/control_plane.sh governance
 rg -n "DCGOV|violation|failed" .artifacts -g '*.json' -g '*.md'
 ```
 

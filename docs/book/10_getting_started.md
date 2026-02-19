@@ -6,12 +6,12 @@ title: Chapter 10 Getting Started
 status: active
 audience: author
 owns_tokens:
-- getting_started_minimal_flow
+- getting_started_control_plane_flow
 requires_tokens:
 - spec_purpose_foundation
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust governance
-  purpose: Validate baseline governance before deeper workflows.
+- run: ./scripts/ci_gate.sh
+  purpose: Run control-plane gate checks for this repository.
 examples:
 - id: EX-GETTING-STARTED-001
   runnable: true
@@ -24,41 +24,33 @@ sections_required:
 
 ## Purpose
 
-Provide a short launch page into the spec-first narrative and task guides.
+Provide a short launch path for users who need to understand and use the `data-contracts` control plane.
 
 ## Inputs
 
 - this repository checkout
-- required Rust lane command boundary at `./runners/public/runner_adapter.sh`
+- intent to author/review contract, schema, docs, or governance changes
 
 ## Outputs
 
-- clear first read path
-- clear first command sequence
+- clear task path to specs/docs/governance usage
+- first successful control-plane check run
 
 ## Failure Modes
 
-- starting with generated references before narrative chapters
-- using compatibility lanes as primary merge gate
-- skipping guide workflow for task execution
+- assuming this repository owns runtime execution
+- starting from generated references before core narrative chapters
+- skipping usage guides and relying on implicit workflow knowledge
 
 ## Start Here
 
-1. Read `docs/book/05_what_is_data_contracts.md`.
-2. Read `docs/book/15_spec_lifecycle.md`.
-3. Read `docs/book/25_system_topology.md`.
-4. Open `docs/book/35_usage_guides_index.md` and choose a task guide.
+1. Read `/Users/jon/Workspace/Development/data-contracts/docs/book/05_what_is_data_contracts.md`.
+2. Read `/Users/jon/Workspace/Development/data-contracts/docs/book/15_spec_lifecycle.md`.
+3. Read `/Users/jon/Workspace/Development/data-contracts/docs/book/25_system_topology.md`.
+4. Open `/Users/jon/Workspace/Development/data-contracts/docs/book/35_usage_guides_index.md` and choose a task path.
 
-## First Commands
+## First Command
 
-```bash
-./runners/public/runner_adapter.sh --impl rust critical-gate
-./runners/public/runner_adapter.sh --impl rust governance
-./runners/public/runner_adapter.sh --impl rust docs-generate-check
+```sh
+./scripts/ci_gate.sh
 ```
-
-## Next Paths
-
-- New contributor path: `docs/book/guides/guide_01_onboarding.md`
-- First authored case path: `docs/book/guides/guide_02_first_spec_authoring.md`
-- Maintainer operations path: `docs/book/guides/guide_03_running_checks_and_gates.md`

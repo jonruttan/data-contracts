@@ -12,7 +12,7 @@ requires_tokens:
 commands:
 - run: ./scripts/local_ci_parity.sh
   purpose: Reproduce critical gate failures with local parity flow.
-- run: ./runners/public/runner_adapter.sh --impl rust governance --check-prefix docs
+- run: ./scripts/control_plane.sh governance --check-prefix docs
   purpose: Isolate docs/governance failures.
 examples:
 - id: EX-TROUBLESHOOT-001

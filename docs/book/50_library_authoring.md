@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - mapping_ast_authoring_patterns
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust docs-generate-check
+- run: ./scripts/control_plane.sh docs-generate-check
   purpose: Ensure library symbol and case reference docs remain synchronized.
 examples:
 - id: EX-LIB-AUTH-001

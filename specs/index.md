@@ -15,7 +15,7 @@ Canonical specification root for `data-contracts`.
 
 ## Subdomains
 
-- Governance support domains: `/specs/governance/metrics/`, `/specs/governance/tools/`, `/specs/governance/pending/`
+- Governance support domains: `/specs/governance/metrics/`, `/specs/governance/tools/`, `/specs/governance/`
 
 ## Ownership Model
 

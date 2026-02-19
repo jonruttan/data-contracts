@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - normative_reference_map
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust docs-generate-check
+- run: ./scripts/control_plane.sh docs-generate-check
   purpose: Confirm reference navigation surfaces are synchronized.
 examples:
 - id: EX-GUIDE-10-001
@@ -46,7 +46,7 @@ Navigate quickly from narrative guidance to normative contracts and generated re
 ## Do This Now
 
 ```bash
-./runners/public/runner_adapter.sh --impl rust docs-generate-check
+./scripts/control_plane.sh docs-generate-check
 rg -n "contract_refs" docs/book/reference_manifest.yaml
 ```
 

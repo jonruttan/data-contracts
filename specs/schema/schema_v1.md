@@ -412,10 +412,10 @@ Each `steps[]` entry requires:
 - `assert` (non-empty expression mapping or list)
 - `imports` (optional list)
 
-Legacy lowercase contract class/group forms (`must`, `can`, `cannot`) are
+prior lowercase contract class/group forms (`must`, `can`, `cannot`) are
 forbidden.
 
-Forbidden legacy forms:
+Forbidden prior forms:
 
 - `contract` list form
 - step key `asserts`
@@ -615,7 +615,6 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 | `contract` | `any` | `false` | `v1` |
 | `doc` | `mapping` | `false` | `v1` |
 | `doc.audience` | `string` | `false` | `v1` |
-| `doc.deprecated` | `mapping` | `false` | `v1` |
 | `doc.description` | `string` | `false` | `v1` |
 | `doc.see_also` | `list` | `false` | `v1` |
 | `doc.since` | `string` | `false` | `v1` |
@@ -662,7 +661,6 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 | `contract` | `any` | false | `v1` |
 | `doc` | `mapping` | false | `v1` |
 | `doc.audience` | `string` | false | `v1` |
-| `doc.deprecated` | `mapping` | false | `v1` |
 | `doc.description` | `string` | false | `v1` |
 | `doc.see_also` | `list` | false | `v1` |
 | `doc.since` | `string` | false | `v1` |

@@ -58,4 +58,4 @@ Guide-first path:
 ## Compatibility (Non-Blocking)
 
 Python/PHP runtime lanes are compatibility telemetry lanes and non-blocking by default.
-Rust lane is the required lane for merge-blocking behavior.
+required-lane policy is evaluated from status telemetry and contracts.

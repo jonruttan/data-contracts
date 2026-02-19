@@ -77,12 +77,6 @@
 {{/see_also}}{{^see_also}}- -
 {{/see_also}}
 
-{{#deprecated}}
-#### Deprecated
-
-- replacement: `{{replacement}}`
-- reason: {{reason}}
-{{/deprecated}}
 
 {{/catalog.symbols}}
 

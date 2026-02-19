@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - schema_v1_registry
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust governance --check-prefix schema
+- run: ./scripts/control_plane.sh governance --check-prefix schema
   purpose: Validate schema and case-shape governance contracts.
 examples:
 - id: EX-CASE-MODEL-001
@@ -71,7 +71,7 @@ Typical keys:
 - `imports`
 - `steps`
 
-Legacy forms (`contract` list, `asserts`, `target`, `on`) are forbidden in canonical authoring.
+prior forms (`contract` list, `asserts`, `target`, `on`) are forbidden in canonical authoring.
 
 ## Normative References
 

@@ -15,9 +15,9 @@ harness:
     - /README.md
     - /docs/development.md
     - /specs/contract/12_runner_interface.md
-    - /specs/contract/16_rust_primary_transition.md
+    
     required_tokens:
-    - Rust-first
+    - implementation-agnostic
     - compatibility lanes
     - non-blocking
     forbidden_tokens:

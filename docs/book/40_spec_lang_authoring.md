@@ -10,9 +10,9 @@ owns_tokens:
 requires_tokens:
 - explicit_assert_imports_v1
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs
+- run: ./scripts/control_plane.sh spec-lang-format --check --cases specs
   purpose: Verify canonical expression formatting.
-- run: ./runners/public/runner_adapter.sh --impl rust spec-lang-lint --cases specs
+- run: ./scripts/control_plane.sh spec-lang-lint --cases specs
   purpose: Verify pedantic expression and schema hygiene.
 examples:
 - id: EX-SPECLANG-AUTH-001
@@ -77,7 +77,7 @@ assert:
 ## Anti-Patterns
 
 - encoding final decision logic in harness adapters
-- mixing legacy syntax with canonical forms
+- mixing prior syntax with canonical forms
 - using ambiguous aliases when direct import names are clearer
 
 ## Library-Backed Reuse

@@ -10,11 +10,11 @@ owns_tokens:
 requires_tokens:
 - guide_first_spec_authoring
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust critical-gate
+- run: ./scripts/control_plane.sh critical-gate
   purpose: Run required blocking checks.
-- run: ./runners/public/runner_adapter.sh --impl rust governance
+- run: ./scripts/control_plane.sh governance
   purpose: Validate policy and docs contracts.
-- run: ./runners/public/runner_adapter.sh --impl rust docs-generate-check
+- run: ./scripts/control_plane.sh docs-generate-check
   purpose: Verify generated docs freshness.
 examples:
 - id: EX-GUIDE-03-001
@@ -68,9 +68,9 @@ Interpretation:
 ## Do This Now
 
 ```bash
-./runners/public/runner_adapter.sh --impl rust critical-gate
-./runners/public/runner_adapter.sh --impl rust governance
-./runners/public/runner_adapter.sh --impl rust docs-generate-check
+./scripts/control_plane.sh critical-gate
+./scripts/control_plane.sh governance
+./scripts/control_plane.sh docs-generate-check
 ```
 
 ## How To Verify Success

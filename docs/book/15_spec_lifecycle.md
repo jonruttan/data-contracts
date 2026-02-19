@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - spec_purpose_foundation
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust critical-gate
+- run: ./scripts/control_plane.sh critical-gate
   purpose: Run lifecycle-critical checks before merge.
 examples:
 - id: EX-SPEC-LIFECYCLE-001

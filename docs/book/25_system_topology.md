@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - spec_lifecycle_flow
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust governance
+- run: ./scripts/control_plane.sh governance
   purpose: Validate topology-linked docs and policy expectations.
 examples:
 - id: EX-TOPOLOGY-001

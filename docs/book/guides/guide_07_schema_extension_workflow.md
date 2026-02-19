@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - guide_first_spec_authoring
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust critical-gate
+- run: ./scripts/control_plane.sh critical-gate
   purpose: Validate schema extension changes against required lane.
 examples:
 - id: EX-GUIDE-07-001
@@ -62,8 +62,8 @@ Interpretation:
 
 ```bash
 ./scripts/docs_generate_all.py --build
-./runners/public/runner_adapter.sh --impl rust critical-gate
-./runners/public/runner_adapter.sh --impl rust governance
+./scripts/control_plane.sh critical-gate
+./scripts/control_plane.sh governance
 ```
 
 ## How To Verify Success

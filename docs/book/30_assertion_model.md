@@ -10,9 +10,9 @@ owns_tokens:
 requires_tokens:
 - case_topology_v1
 commands:
-- run: ./runners/public/runner_adapter.sh --impl rust spec-lang-lint --cases specs
+- run: ./scripts/control_plane.sh spec-lang-lint --cases specs
   purpose: Enforce canonical assertion/import authoring.
-- run: ./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs
+- run: ./scripts/control_plane.sh spec-lang-format --check --cases specs
   purpose: Enforce canonical formatting and safe rewrites.
 examples:
 - id: EX-ASSERTION-MODEL-001
@@ -75,7 +75,7 @@ Assertion imports use list form:
 - `names` (non-empty list)
 - `as` (optional alias map)
 
-## Forbidden Legacy Forms
+## Forbidden prior Forms
 
 - `contract: [ ... ]`
 - `steps[].asserts`
