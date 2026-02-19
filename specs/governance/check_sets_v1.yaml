@@ -159,6 +159,26 @@ profiles:
         must_contain:
           - DCGOV-DOCS-REF-010
           - docs.readme_rust_first_coherence
+      - id: docs.full_reviews_contract_checks_registered
+        kind: file_tokens
+        path: /runners/python/spec_runner/governance_runtime.py
+        must_contain:
+          - docs.reviews_prompt_schema_contract_sync
+          - docs.review_snapshot_template_contract_sync
+          - docs.review_tooling_contract_sync
+          - docs.review_snapshots_schema_valid
+      - id: docs.full_reviews_contract_checks_prefix_mapped
+        kind: file_tokens
+        path: /specs/governance/check_prefix_map_v1.yaml
+        must_contain:
+          - DCGOV-DOCS-REF-012
+          - docs.reviews_prompt_schema_contract_sync
+          - DCGOV-DOCS-REF-013
+          - docs.review_snapshot_template_contract_sync
+          - DCGOV-DOCS-REF-014
+          - docs.review_tooling_contract_sync
+          - DCGOV-DOCS-REF-015
+          - docs.review_snapshots_schema_valid
       - id: runtime.full_governance_broad_native_slo
         kind: slo_budget
         max_ms: 120000

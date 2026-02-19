@@ -40,6 +40,7 @@ from spec_runner.spec_lang import (
 from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonable
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_domain import normalize_case_domain, normalize_export_symbol
+from spec_runner.review_snapshot_validate import validate_review_snapshot_text
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 from spec_runner.compiler import compile_assert_tree
 from spec_runner.schema_registry import compile_registry
@@ -255,6 +256,25 @@ _SCHEMA_REGISTRY_COMPILED_ARTIFACT = ".artifacts/schema_registry_compiled.json"
 _DOCS_GENERATOR_REPORT = ".artifacts/docs-generator-report.json"
 _DOCS_GENERATOR_SUMMARY = ".artifacts/docs-generator-summary.md"
 _DOCGEN_QUALITY_MIN_SCORE = 0.60
+_REVIEW_PROMPT_FILES = (
+    "docs/reviews/prompts/adoption_7_personas.md",
+    "docs/reviews/prompts/self_healing.md",
+    "docs/reviews/prompts/final_boss_gatekeeper.md",
+)
+_REVIEW_SCHEMA_REF_TOKENS = (
+    "/specs/schema/review_snapshot_schema_v1.yaml",
+    "/specs/contract/26_review_output_contract.md",
+)
+_REVIEW_REQUIRED_SECTION_TOKENS = (
+    "## Scope Notes",
+    "## Command Execution Log",
+    "## Findings",
+    "## Synthesis",
+    "## Spec Candidates (YAML)",
+    "## Classification Labels",
+    "## Reject / Defer List",
+    "## Raw Output",
+)
 _CHAIN_TEMPLATE_PATTERN = re.compile(r"\{\{\s*chain\.([A-Za-z0-9_.-]+)\s*\}\}")
 _CHAIN_REF_CASE_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]+$")
 _MD_NAMESPACE_LEGACY_PATTERN = re.compile(r"\bmd\.[A-Za-z0-9_]+\b")
@@ -6595,6 +6615,89 @@ def _scan_docs_reviews_namespace_active(root: Path, *, harness: dict | None = No
     return violations
 
 
+def _scan_docs_reviews_prompt_schema_contract_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    for rel in _REVIEW_PROMPT_FILES:
+        path = root / rel
+        if not path.exists():
+            violations.append(f"{rel}:1: missing prompt file")
+            continue
+        text = path.read_text(encoding="utf-8")
+        for token in _REVIEW_SCHEMA_REF_TOKENS:
+            if token not in text:
+                violations.append(f"{rel}:1: missing required review contract reference {token}")
+        for token in _REVIEW_REQUIRED_SECTION_TOKENS:
+            if token not in text:
+                violations.append(f"{rel}:1: missing required output section token {token}")
+    return violations
+
+
+def _scan_docs_review_snapshot_template_contract_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    rel = "docs/reviews/templates/review_snapshot.md"
+    path = root / rel
+    if not path.exists():
+        return [f"{rel}:1: missing canonical review snapshot template"]
+    text = path.read_text(encoding="utf-8")
+    return validate_review_snapshot_text(text, source=rel)
+
+
+def _scan_docs_review_tooling_contract_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    violations: list[str] = []
+    snapshot_script = root / "runners/python/spec_runner/new_review_snapshot.py"
+    pending_script = root / "runners/python/spec_runner/review_to_pending.py"
+
+    if not snapshot_script.exists():
+        violations.append("runners/python/spec_runner/new_review_snapshot.py:1: missing snapshot scaffold tool")
+    else:
+        text = snapshot_script.read_text(encoding="utf-8")
+        for token in _REVIEW_REQUIRED_SECTION_TOKENS:
+            if token not in text:
+                violations.append(
+                    f"runners/python/spec_runner/new_review_snapshot.py:1: scaffold missing section token {token}"
+                )
+        if "review_snapshot_schema_v1.yaml" not in text:
+            violations.append(
+                "runners/python/spec_runner/new_review_snapshot.py:1: scaffold missing schema baseline reference"
+            )
+
+    if not pending_script.exists():
+        violations.append("runners/python/spec_runner/review_to_pending.py:1: missing pending conversion tool")
+    else:
+        text = pending_script.read_text(encoding="utf-8")
+        if "parse_spec_candidates" not in text or "validate_review_snapshot" not in text:
+            violations.append(
+                "runners/python/spec_runner/review_to_pending.py:1: parser must use review snapshot validator helpers"
+            )
+        legacy_tokens = ("'where'", "\"where\"", "'statement'", "\"statement\"", "'rationale'", "\"rationale\"", "'verification'", "\"verification\"")
+        for token in legacy_tokens:
+            if token in text:
+                violations.append(
+                    f"runners/python/spec_runner/review_to_pending.py:1: legacy candidate key token forbidden ({token})"
+                )
+    return violations
+
+
+def _scan_docs_review_snapshots_schema_valid(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    snapshots_dir = root / "docs/reviews/snapshots"
+    if not snapshots_dir.exists() or not snapshots_dir.is_dir():
+        return ["docs/reviews/snapshots:1: missing snapshots directory"]
+
+    violations: list[str] = []
+    snapshot_files = sorted(p for p in snapshots_dir.glob("*.md") if p.is_file())
+    if not snapshot_files:
+        violations.append("docs/reviews/snapshots:1: at least one canonical snapshot is required")
+        return violations
+    for path in snapshot_files:
+        rel = path.relative_to(root).as_posix()
+        text = path.read_text(encoding="utf-8")
+        violations.extend(validate_review_snapshot_text(text, source=rel))
+    return violations
+
+
 def _scan_docs_no_os_artifact_files(root: Path, *, harness: dict | None = None) -> list[str]:
     docs_root = root / "docs"
     if not docs_root.exists():
@@ -10974,6 +11077,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.index_filename_policy": _scan_docs_index_filename_policy,
     "docs.filename_policy": _scan_docs_filename_policy,
     "docs.reviews_namespace_active": _scan_docs_reviews_namespace_active,
+    "docs.reviews_prompt_schema_contract_sync": _scan_docs_reviews_prompt_schema_contract_sync,
+    "docs.review_snapshot_template_contract_sync": _scan_docs_review_snapshot_template_contract_sync,
+    "docs.review_tooling_contract_sync": _scan_docs_review_tooling_contract_sync,
+    "docs.review_snapshots_schema_valid": _scan_docs_review_snapshots_schema_valid,
     "docs.no_os_artifact_files": _scan_docs_no_os_artifact_files,
     "runtime.scope_sync": _scan_runtime_scope_sync,
     "runtime.profiling_contract_artifacts": _scan_runtime_profiling_contract_artifacts,

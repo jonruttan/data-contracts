@@ -38,6 +38,7 @@ from spec_runner.script_entrypoints import (
     generate_library_symbol_catalog_main,
     generate_spec_case_catalog_main,
     generate_spec_case_templates_main,
+    review_validate_main,
     spec_portability_report_main,
     split_library_cases_per_symbol_main,
 )
@@ -365,6 +366,7 @@ def main(argv: list[str] | None = None) -> int:
             "generate-library-symbol-catalog",
             "generate-spec-case-catalog",
             "generate-spec-case-templates",
+            "review-validate",
             "spec-portability-report",
             "split-library-cases-per-symbol",
         ),
@@ -421,6 +423,8 @@ def main(argv: list[str] | None = None) -> int:
         return generate_spec_case_catalog_main(forwarded)
     if ns.command == "generate-spec-case-templates":
         return generate_spec_case_templates_main(forwarded)
+    if ns.command == "review-validate":
+        return review_validate_main(forwarded)
     if ns.command == "spec-portability-report":
         return spec_portability_report_main(forwarded)
     if ns.command == "split-library-cases-per-symbol":

@@ -21,6 +21,8 @@ Runtime policy:
 
 Normative references you MUST use:
 - `/specs/schema/schema_v1.md`
+- `/specs/schema/review_snapshot_schema_v1.yaml`
+- `/specs/contract/26_review_output_contract.md`
 - `/specs/contract/12_runner_interface.md`
 - `/specs/contract/25_compatibility_matrix.md`
 - `/specs/governance/check_sets_v1.yaml`
@@ -76,6 +78,8 @@ For each command attempted, capture:
 
 ## Output Contract (strict, machine-consumable)
 
+Follow `/specs/contract/26_review_output_contract.md` exactly.
+
 Use EXACT top-level section order and titles:
 
 1. `## Repo Intent Summary`
@@ -85,6 +89,7 @@ Use EXACT top-level section order and titles:
 5. `## Spec Candidates (YAML)`
 6. `## Classification Labels`
 7. `## Reject / Defer List`
+8. `## Raw Output`
 
 ### `## Command Execution Log` format
 
@@ -138,6 +143,10 @@ Subsection per persona in fixed order:
   - feature
   - why_defer
   - revisit_trigger
+
+### `## Raw Output`
+
+- Include full raw model output transcript (light formatting cleanup allowed only).
 
 ## Style constraints
 

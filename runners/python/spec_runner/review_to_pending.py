@@ -3,160 +3,36 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
-import re
 from pathlib import Path
 from typing import Any
 
-_REQUIRED_KEYS = {"id", "where", "priority", "statement", "rationale", "verification"}
+from spec_runner.review_snapshot_validate import (
+    parse_classification_labels,
+    parse_spec_candidates,
+    validate_review_snapshot,
+)
 
 
 def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def _extract_yaml_blocks(md: str) -> list[str]:
-    blocks: list[str] = []
-    in_yaml = False
-    cur: list[str] = []
-    for line in md.splitlines():
-        if not in_yaml and line.strip().startswith("```yaml"):
-            in_yaml = True
-            cur = []
-            continue
-        if in_yaml and line.strip() == "```":
-            blocks.append("\n".join(cur).strip())
-            in_yaml = False
-            cur = []
-            continue
-        if in_yaml:
-            cur.append(line)
-    return [b for b in blocks if b]
-
-
-def _parse_candidates(md: str) -> list[dict[str, Any]]:
-    out: list[dict[str, Any]] = []
-    for block in _extract_yaml_blocks(md):
-        raw = _parse_simple_yaml_candidate(block)
-        if raw is None:
-            continue
-        if not _REQUIRED_KEYS.issubset(raw.keys()):
-            continue
-        out.append({k: raw[k] for k in _REQUIRED_KEYS})
-    return out
-
-
-def _parse_simple_yaml_candidate(block: str) -> dict[str, str] | None:
-    """
-    Parse the limited candidate schema without external YAML dependencies.
-
-    Supports scalar `key: value` and folded style:
-      key: >
-        line 1
-        line 2
-    """
-    out: dict[str, str] = {}
-    lines = block.splitlines()
-    i = 0
-    while i < len(lines):
-        line = lines[i]
-        m = re.match(r"^([a-z_]+):\s*(.*)$", line.strip())
-        if not m:
-            i += 1
-            continue
-        key = m.group(1)
-        val = m.group(2).strip()
-        if val in {">", "|"}:
-            i += 1
-            buf: list[str] = []
-            while i < len(lines):
-                nxt = lines[i]
-                if re.match(r"^[a-z_]+:\s*", nxt.strip()):
-                    break
-                if nxt.startswith("  ") or nxt.startswith("\t") or nxt.strip() == "":
-                    buf.append(nxt.strip())
-                    i += 1
-                    continue
-                break
-            out[key] = " ".join(x for x in buf if x).strip()
-            continue
-        if val.startswith("'") and val.endswith("'") and len(val) >= 2:
-            val = val[1:-1]
-        if val.startswith('"') and val.endswith('"') and len(val) >= 2:
-            val = val[1:-1]
-        out[key] = val
-        i += 1
-    if not out:
-        return None
-    return out
-
-
-def _extract_classifications(md: str) -> dict[str, str]:
-    out: dict[str, str] = {}
-    for line in md.splitlines():
-        m = re.match(r"\s*-\s*`([^`]+)`:\s*(behavior|docs|tooling)\s*$", line.strip(), flags=re.I)
-        if not m:
-            continue
-        out[m.group(1)] = m.group(2).lower()
-    return out
-
-
-def _infer_implicit(md: str, *, limit: int = 10) -> list[dict[str, str]]:
-    bullets: list[str] = []
-    capture = False
-    for line in md.splitlines():
-        s = line.strip()
-        if s.startswith("## "):
-            head = s[3:].lower()
-            capture = any(
-                key in head
-                for key in (
-                    "must-do",
-                    "blocker",
-                    "biggest risk",
-                    "definition of done",
-                    "north-star",
-                )
-            )
-            continue
-        if capture and s.startswith("- "):
-            txt = s[2:].strip()
-            if len(txt) >= 20 and "|" not in txt and "`" not in txt:
-                bullets.append(txt)
-    seen = set()
-    uniq: list[str] = []
-    for b in bullets:
-        k = b.lower()
-        if k in seen:
-            continue
-        seen.add(k)
-        uniq.append(b)
-    uniq = uniq[:limit]
-
-    out: list[dict[str, str]] = []
-    for i, b in enumerate(uniq, start=1):
-        area = "CORE"
-        lower = b.lower()
-        if "security" in lower or "trust" in lower or "safe" in lower:
-            area = "SEC"
-        elif "cli" in lower or "command" in lower:
-            area = "CLI"
-        elif "config" in lower or "discover" in lower:
-            area = "CONF"
-        elif "doc" in lower or "onboarding" in lower:
-            area = "DOC"
-        elif "ci" in lower or "reliab" in lower or "timeout" in lower:
-            area = "OPS"
-        out.append(
-            {
-                "id": f"CK-{area}-IMP-{i:03d}",
-                "where": "specs/backlog.md",
-                "priority": "P1",
-                "statement": f"SHOULD {b[0].lower() + b[1:]}" if b and b[0].isupper() else f"SHOULD {b}",
-                "rationale": "Inferred from repeated narrative concerns in the review output; requires human triage.",
-                "verification": "Define as yaml contract-spec where possible; otherwise add a governance check with deterministic output.",
-            }
-        )
-    return out
+def _extract_section(md: str, heading: str) -> str:
+    lines = md.splitlines()
+    needle = f"## {heading}"
+    start = None
+    for i, line in enumerate(lines):
+        if line.strip() == needle:
+            start = i + 1
+            break
+    if start is None:
+        return ""
+    end = len(lines)
+    for j in range(start, len(lines)):
+        if lines[j].startswith("## "):
+            end = j
+            break
+    return "\n".join(lines[start:end]).strip()
 
 
 def _write_pending(
@@ -164,9 +40,8 @@ def _write_pending(
     *,
     title: str,
     source: Path,
-    explicit: list[dict[str, Any]],
+    candidates: list[dict[str, Any]],
     classifications: dict[str, str],
-    implicit: list[dict[str, str]],
 ) -> None:
     today = dt.date.today().isoformat()
     lines: list[str] = []
@@ -180,35 +55,26 @@ def _write_pending(
     lines.append("")
     lines.append(f"Source snapshot: `{source.as_posix()}`")
     lines.append("")
+    lines.append("## Canonical Candidates")
+    lines.append("")
 
-    if explicit:
-        lines.append("## Explicit Spec Candidates")
+    for candidate in candidates:
+        cid = str(candidate.get("id", "")).strip()
+        lines.append(f"### {cid}")
         lines.append("")
-        for c in explicit:
-            cid = str(c["id"])
-            cls = classifications.get(cid, "unclassified")
-            lines.append(f"### {cid}")
-            lines.append("")
-            lines.append(f"- where: `{c['where']}`")
-            lines.append(f"- priority: `{c['priority']}`")
-            lines.append(f"- classification: `{cls}`")
-            lines.append(f"- statement: {c['statement']}")
-            lines.append(f"- rationale: {c['rationale']}")
-            lines.append(f"- verification: {c['verification']}")
-            lines.append("")
-
-    if implicit:
-        lines.append("## Implicit Suggestions (Inferred, Needs Review)")
+        lines.append(f"- title: {candidate['title']}")
+        lines.append(f"- type: `{candidate['type']}`")
+        lines.append(f"- class: `{candidate['class']}`")
+        lines.append(f"- target_area: `{candidate['target_area']}`")
+        lines.append(f"- risk: `{candidate['risk']}`")
+        lines.append(f"- classification: `{classifications.get(cid, 'unclassified')}`")
+        lines.append("- acceptance_criteria:")
+        for item in candidate.get("acceptance_criteria", []):
+            lines.append(f"  - {item}")
+        lines.append("- affected_paths:")
+        for item in candidate.get("affected_paths", []):
+            lines.append(f"  - `{item}`")
         lines.append("")
-        for c in implicit:
-            lines.append(f"### {c['id']}")
-            lines.append("")
-            lines.append(f"- where: `{c['where']}`")
-            lines.append(f"- priority: `{c['priority']}`")
-            lines.append(f"- statement: {c['statement']}")
-            lines.append(f"- rationale: {c['rationale']}")
-            lines.append(f"- verification: {c['verification']}")
-            lines.append("")
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
@@ -216,7 +82,10 @@ def _write_pending(
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        description="Extract explicit YAML spec candidates from a review snapshot and infer implicit suggestions into specs/governance/pending.",
+        description=(
+            "Extract canonical YAML review candidates from docs/reviews snapshots into "
+            "specs/governance/pending artifacts."
+        ),
     )
     ap.add_argument("snapshot", help="Path to review snapshot markdown")
     ap.add_argument(
@@ -224,31 +93,41 @@ def main(argv: list[str] | None = None) -> int:
         default="",
         help="Output pending markdown path (default: specs/governance/pending/<snapshot-stem>-pending.md)",
     )
-    ap.add_argument(
-        "--implicit-limit",
-        type=int,
-        default=10,
-        help="Maximum inferred implicit suggestions",
-    )
     ns = ap.parse_args(argv)
 
     src = Path(ns.snapshot)
+    if not src.exists() or not src.is_file():
+        print(f"ERROR: snapshot not found: {src}")
+        return 2
+
+    violations = validate_review_snapshot(src)
+    if violations:
+        for line in violations:
+            print(f"ERROR: {line}")
+        return 1
+
     md = _read(src)
-    explicit = _parse_candidates(md)
-    cls = _extract_classifications(md)
-    implicit = _infer_implicit(md, limit=max(0, int(ns.implicit_limit)))
+    candidates_section = _extract_section(md, "Spec Candidates (YAML)")
+    labels_section = _extract_section(md, "Classification Labels")
+
+    candidates, parse_errors = parse_spec_candidates(candidates_section)
+    if parse_errors:
+        for line in parse_errors:
+            print(f"ERROR: {src.as_posix()}: {line}")
+        return 1
+
+    classifications = parse_classification_labels(labels_section)
 
     out_path = Path(ns.out) if ns.out else Path("specs/governance/pending") / f"{src.stem}-pending.md"
     _write_pending(
         out_path,
         title="Review-Derived Spec Candidates",
         source=src,
-        explicit=explicit,
-        classifications=cls,
-        implicit=implicit,
+        candidates=candidates,
+        classifications=classifications,
     )
 
-    print(f"wrote {out_path.as_posix()} (explicit={len(explicit)} implicit={len(implicit)})")
+    print(f"wrote {out_path.as_posix()} (candidates={len(candidates)})")
     return 0
 
 

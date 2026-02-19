@@ -105,7 +105,7 @@ Provide generated inventory of governance check IDs and case coverage.
 | `docs.governance_check_family_map_complete` | 0 | false |
 | `docs.harness_reference_semantics_complete` | 0 | false |
 | `docs.harness_type_catalog_sync` | 0 | false |
-| `docs.history_reviews_namespace` | 0 | false |
+| `docs.reviews_namespace_active` | 0 | false |
 | `docs.index_filename_policy` | 0 | false |
 | `docs.instructions_complete` | 0 | false |
 | `docs.layout_canonical_trees` | 0 | false |

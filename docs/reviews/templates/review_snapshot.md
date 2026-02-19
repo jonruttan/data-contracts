@@ -7,8 +7,10 @@ Prompt revision: <git sha>
 Repo revision: <git sha>
 Contract baseline refs:
 - /specs/schema/schema_v1.md
+- /specs/schema/review_snapshot_schema_v1.yaml
 - /specs/contract/12_runner_interface.md
 - /specs/contract/25_compatibility_matrix.md
+- /specs/contract/26_review_output_contract.md
 - /specs/governance/check_sets_v1.yaml
 Runner lane: rust|required | python|compatibility | php|compatibility | mixed
 
@@ -53,7 +55,7 @@ Runner lane: rust|required | python|compatibility | php|compatibility | mixed
 
 ## Classification Labels
 
-- `<candidate_id>: behavior|docs|tooling`
+- `<ID>`: docs
 
 ## Reject / Defer List
 

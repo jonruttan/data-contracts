@@ -7,8 +7,10 @@ A staged hardening pipeline for `spec_runner` aligned to current contracts, Rust
 - Executable case format: fenced `yaml contract-spec` blocks.
 - Canonical spec root: `/specs`.
 - Canonical schema: `/specs/schema/schema_v1.md`.
+- Review snapshot schema: `/specs/schema/review_snapshot_schema_v1.yaml`.
 - Runtime interface contract: `/specs/contract/12_runner_interface.md`.
 - Compatibility matrix contract: `/specs/contract/25_compatibility_matrix.md`.
+- Review output contract: `/specs/contract/26_review_output_contract.md`.
 - Governance check sets: `/specs/governance/check_sets_v1.yaml`.
 - Runner certification registry: `/specs/schema/runner_certification_registry_v1.yaml`.
 - Required lane: rust.
@@ -181,3 +183,21 @@ If no meaningful risks:
 - `justification`
 - `mitigation`
 - `expiry`
+
+## Final Snapshot Contract (required)
+
+When emitting the final deliverable snapshot, use this exact section order:
+
+1. `## Scope Notes`
+2. `## Command Execution Log`
+3. `## Findings`
+4. `## Synthesis`
+5. `## Spec Candidates (YAML)`
+6. `## Classification Labels`
+7. `## Reject / Defer List`
+8. `## Raw Output`
+
+Required table headers:
+
+- `command | status | exit_code | stdout_stderr_summary`
+- `Severity | Verified/Hypothesis | File:Line | What | Why | When | Proposed fix`

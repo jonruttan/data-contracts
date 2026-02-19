@@ -12,6 +12,8 @@ Review all branch changes and produce a strict, evidence-backed verdict.
 ## Contract Context (must anchor findings here)
 
 - `/specs/schema/schema_v1.md`
+- `/specs/schema/review_snapshot_schema_v1.yaml`
+- `/specs/contract/26_review_output_contract.md`
 - `/specs/contract/12_runner_interface.md`
 - `/specs/contract/25_compatibility_matrix.md`
 - `/specs/governance/check_sets_v1.yaml`
@@ -48,12 +50,18 @@ For each attempted command, record:
 
 ## Output Contract (strict)
 
+Follow `/specs/contract/26_review_output_contract.md` exactly.
+
 Use exact section order and headings:
 
-1. `## Command Execution Log`
-2. `## Findings`
-3. `## Final Verdicts`
-4. `## Required Fixes Before Merge`
+1. `## Scope Notes`
+2. `## Command Execution Log`
+3. `## Findings`
+4. `## Synthesis`
+5. `## Spec Candidates (YAML)`
+6. `## Classification Labels`
+7. `## Reject / Defer List`
+8. `## Raw Output`
 
 ### `## Command Execution Log` format
 
@@ -71,7 +79,7 @@ Severity scale:
 - `P2` medium
 - `P3` low
 
-### `## Final Verdicts` format
+### `## Synthesis` format
 
 Provide exactly these fields:
 1. `production_readiness: ready | conditionally ready | not ready`
@@ -86,8 +94,6 @@ If there are no meaningful production/correctness risks, include the exact state
 ## Scope constraints
 
 - No praise language.
-- No implementation plans.
-- No feature brainstorming.
 - Only report risks/findings/verdicts.
 - Focus on merge safety, correctness, isolation, and contract compliance.
 ```

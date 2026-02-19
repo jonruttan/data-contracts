@@ -43,6 +43,7 @@ Read in order:
 29. `/specs/contract/23_docs_template_contract.md`
 30. `/specs/contract/24_runtime_profiling_contract.md`
 31. `/specs/contract/25_compatibility_matrix.md`
+32. `/specs/contract/26_review_output_contract.md`
 
 Type contracts:
 

@@ -36,6 +36,7 @@ from spec_runner.script_runtime_commands import perf_smoke_main as _perf_smoke_m
 from spec_runner.spec_lang_adoption_report import main as _spec_lang_adoption_report_main
 from spec_runner.spec_lang_format import main as _spec_lang_format_main
 from spec_runner.spec_portability_report import main as _spec_portability_report_main
+from spec_runner.review_snapshot_validate import main as _review_snapshot_validate_main
 from spec_runner.split_library_cases_per_symbol import main as _split_library_cases_per_symbol_main
 
 
@@ -171,6 +172,10 @@ def generate_traceability_catalog_main(argv: list[str] | None = None) -> int:
 
 def perf_smoke_main(argv: list[str] | None = None) -> int:
     return int(_perf_smoke_main(argv))
+
+
+def review_validate_main(argv: list[str] | None = None) -> int:
+    return int(_review_snapshot_validate_main(argv))
 
 
 def run_governance_specs_main(argv: list[str] | None = None) -> int:

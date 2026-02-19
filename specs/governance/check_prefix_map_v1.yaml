@@ -33,6 +33,10 @@ rules:
   DCGOV-DOCS-REF-008: docs.compatibility_examples_labeled
   DCGOV-DOCS-REF-010: docs.readme_rust_first_coherence
   DCGOV-DOCS-REF-011: docs.generated_command_meta_no_python_exec
+  DCGOV-DOCS-REF-012: docs.reviews_prompt_schema_contract_sync
+  DCGOV-DOCS-REF-013: docs.review_snapshot_template_contract_sync
+  DCGOV-DOCS-REF-014: docs.review_tooling_contract_sync
+  DCGOV-DOCS-REF-015: docs.review_snapshots_schema_valid
   DCGOV-SCHEMA-CONTRACT-001: schema.contract_imports_explicit_required
   DCGOV-SCHEMA-CONTRACT-002: schema.contract_target_on_forbidden
   DCGOV-DOCS-: docs.

@@ -47,6 +47,10 @@ Active review prompts require strict machine-consumable sections:
 
 This is required so review outputs can be transformed into pending/governance candidates without manual reinterpretation.
 
+Canonical review-output contract:
+- `/specs/contract/26_review_output_contract.md`
+- `/specs/schema/review_snapshot_schema_v1.yaml`
+
 ## Contract Alignment Expectations
 
 All active reviews should align to current project contracts:
@@ -59,3 +63,10 @@ All active reviews should align to current project contracts:
 Runtime lane policy in active reviews:
 - required blocking lane: rust
 - compatibility non-blocking lanes: python/php/node/c
+
+## Validation Commands
+
+- Validate one snapshot:
+  - `python -m spec_runner.spec_lang_commands review-validate --snapshot docs/reviews/snapshots/<snapshot>.md`
+- Convert validated snapshot to pending:
+  - `python -m spec_runner.review_to_pending docs/reviews/snapshots/<snapshot>.md`
