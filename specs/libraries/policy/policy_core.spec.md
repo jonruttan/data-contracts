@@ -193,4 +193,12 @@ library:
   owner: spec_runner
   tags:
   - policy
+doc:
+  summary: Case `LIB-POLICY-001` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```

@@ -20,6 +20,16 @@ _LIBRARY_DOC_ALLOWED_KEYS = {
     "deprecated",
 }
 
+_CASE_DOC_ALLOWED_KEYS = {
+    "summary",
+    "description",
+    "audience",
+    "since",
+    "tags",
+    "see_also",
+    "deprecated",
+}
+
 
 def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -> PredicateLeaf:
     if not isinstance(raw_expr, dict) or not raw_expr:
@@ -49,9 +59,42 @@ def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -
 def _validate_contract_export_docs(raw_case: dict[str, Any]) -> list[str]:
     issues: list[str] = []
     case_id = str(raw_case.get("id", "")).strip() or "<unknown>"
+    root_doc = raw_case.get("doc")
+    if not isinstance(root_doc, dict):
+        issues.append(f"case {case_id}: contract.export requires root doc mapping")
+    else:
+        unknown_root_doc = sorted(str(k) for k in root_doc.keys() if str(k) not in _CASE_DOC_ALLOWED_KEYS)
+        if unknown_root_doc:
+            issues.append(
+                f"case {case_id}: doc has unsupported keys: {', '.join(unknown_root_doc)}"
+            )
+        for field in ("summary", "description", "audience", "since"):
+            if not str(root_doc.get(field, "")).strip():
+                issues.append(f"case {case_id}: doc.{field} must be non-empty")
+        tags = root_doc.get("tags")
+        if tags is not None and (
+            not isinstance(tags, list) or any(not isinstance(x, str) or not str(x).strip() for x in tags)
+        ):
+            issues.append(f"case {case_id}: doc.tags must be list of non-empty strings when provided")
+        see_also = root_doc.get("see_also")
+        if see_also is not None and (
+            not isinstance(see_also, list)
+            or any(not isinstance(x, str) or not str(x).strip() for x in see_also)
+        ):
+            issues.append(f"case {case_id}: doc.see_also must be list of non-empty strings when provided")
+        deprecated = root_doc.get("deprecated")
+        if deprecated is not None:
+            if not isinstance(deprecated, dict):
+                issues.append(f"case {case_id}: doc.deprecated must be mapping when provided")
+            else:
+                if not str(deprecated.get("replacement", "")).strip():
+                    issues.append(f"case {case_id}: doc.deprecated.replacement must be non-empty")
+                if not str(deprecated.get("reason", "")).strip():
+                    issues.append(f"case {case_id}: doc.deprecated.reason must be non-empty")
+
     library = raw_case.get("library")
     if not isinstance(library, dict):
-        return [f"case {case_id}: contract.export requires library mapping"]
+        return [*issues, f"case {case_id}: contract.export requires library mapping"]
     lid = str(library.get("id", "")).strip()
     module = str(library.get("module", "")).strip()
     stability = str(library.get("stability", "")).strip()

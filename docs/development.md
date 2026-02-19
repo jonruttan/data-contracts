@@ -26,6 +26,7 @@ python -m compileall -q runners/python/spec_runner scripts tests
 python -m spec_runner.spec_lang_commands spec-lang-lint --cases specs
 python -m spec_runner.spec_lang_commands spec-lang-format --check specs
 python -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check
+python -m spec_runner.spec_lang_commands generate-spec-case-catalog --check
 python -m spec_runner.spec_lang_commands docs-generate-all --check
 python -m spec_runner.spec_lang_commands docs-lint
 ```

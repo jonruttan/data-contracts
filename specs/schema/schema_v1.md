@@ -575,7 +575,7 @@ Job ref grammar:
 This section is generated from `specs/schema/registry/v1/*.yaml`.
 
 - profile_count: 7
-- top_level_fields: 16
+- top_level_fields: 24
 - type_profiles: 3
 
 ### Top-Level Keys
@@ -583,7 +583,15 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 | key | type | required | since |
 |---|---|---|---|
 | `assert_health` | `mapping` | `false` | `v1` |
-| `contract` | `list` | `false` | `v1` |
+| `contract` | `any` | `false` | `v1` |
+| `doc` | `mapping` | `false` | `v1` |
+| `doc.audience` | `string` | `false` | `v1` |
+| `doc.deprecated` | `mapping` | `false` | `v1` |
+| `doc.description` | `string` | `false` | `v1` |
+| `doc.see_also` | `list` | `false` | `v1` |
+| `doc.since` | `string` | `false` | `v1` |
+| `doc.summary` | `string` | `false` | `v1` |
+| `doc.tags` | `list` | `false` | `v1` |
 | `expect` | `mapping` | `false` | `v1` |
 | `harness` | `mapping` | `false` | `v1` |
 | `id` | `string` | `true` | `v1` |
@@ -604,7 +612,7 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 | type | required keys | extra keys |
 |---|---|---|
 | `contract.check` | `harness`, `contract` | - |
-| `contract.export` | `contract`, `harness` | `imports` |
+| `contract.export` | `contract`, `harness`, `library`, `doc` | `imports` |
 | `contract.job` | `harness`, `contract` | - |
 
 <!-- END GENERATED: SCHEMA_REGISTRY_V1 -->
@@ -612,16 +620,24 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 16
+- top_level_field_count: 24
 - type_profile_count: 3
-- total_type_field_count: 15
+- total_type_field_count: 40
 
 ### Top-Level Fields
 
 | key | type | required | since |
 |---|---|---|---|
 | `assert_health` | `mapping` | false | `v1` |
-| `contract` | `list` | false | `v1` |
+| `contract` | `any` | false | `v1` |
+| `doc` | `mapping` | false | `v1` |
+| `doc.audience` | `string` | false | `v1` |
+| `doc.deprecated` | `mapping` | false | `v1` |
+| `doc.description` | `string` | false | `v1` |
+| `doc.see_also` | `list` | false | `v1` |
+| `doc.since` | `string` | false | `v1` |
+| `doc.summary` | `string` | false | `v1` |
+| `doc.tags` | `list` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
 | `id` | `string` | true | `v1` |
@@ -642,6 +658,6 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 | case_type | field_count | required_top_level |
 |---|---|---|
 | `contract.check` | 5 | `harness`, `contract` |
-| `contract.export` | 3 | `contract`, `harness` |
+| `contract.export` | 28 | `contract`, `harness`, `library`, `doc` |
 | `contract.job` | 7 | `harness`, `contract` |
 <!-- GENERATED:END spec_schema_field_catalog -->

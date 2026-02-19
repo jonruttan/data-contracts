@@ -108,6 +108,14 @@ chapters:
   summary: generated index for library symbols grouped by module.
   contract_refs:
   - specs/contract/14_spec_lang_libraries.md
+- path: /docs/book/93l_spec_case_reference.md
+  summary: generated API-first reference for root doc metadata on executable cases.
+  contract_refs:
+  - specs/contract/02_case_shape.md
+- path: /docs/book/93m_spec_case_index.md
+  summary: generated index for documented spec cases grouped by type.
+  contract_refs:
+  - specs/contract/02_case_shape.md
 - path: /docs/book/94_appendix_contract_policy_reference.md
   summary: generated policy rule catalog.
   contract_refs:

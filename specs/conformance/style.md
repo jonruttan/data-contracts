@@ -75,6 +75,15 @@ Spec-lang lint code contract:
 - `SLINT049` `doc.params` names/order mismatch exported params
 - `SLINT052` `doc.examples` missing/empty
 - `SLINT054` `doc.portability.<runtime>` must be boolean
+- `SLINT055` `contract.export` case missing root `doc` metadata
+- `SLINT056` root `doc` must be mapping
+- `SLINT057` unsupported key in root `doc`
+- `SLINT058` missing required root `doc` field for `contract.export`
+- `SLINT059` invalid `doc.tags` shape
+- `SLINT060` invalid `doc.see_also` shape
+- `SLINT061` malformed `doc.deprecated`
+- `SLINT062` missing `doc.deprecated.replacement`
+- `SLINT063` missing `doc.deprecated.reason`
 
 Rationale:
 

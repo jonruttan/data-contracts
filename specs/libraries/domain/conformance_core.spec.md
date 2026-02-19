@@ -66,6 +66,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-CONFORMANCE-001-000-DOMAIN-CONFORMANCE-ERROR-WHEN-FALSE` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -125,6 +133,15 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-CONFORMANCE-001-000A-DOMAIN-CONFORMANCE-REPORT-VERSION-IS-V1`
+    for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -183,6 +200,15 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-CONFORMANCE-001-000B-DOMAIN-CONFORMANCE-REPORT-RESULTS-IS-LIST`
+    for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -255,4 +281,13 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS`
+    for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```

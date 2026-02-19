@@ -63,6 +63,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -121,6 +129,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -192,6 +208,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -256,6 +280,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -313,6 +345,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -377,6 +417,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -441,6 +489,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -514,6 +570,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -577,6 +641,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -640,4 +712,12 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```

@@ -71,6 +71,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -127,4 +135,12 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```

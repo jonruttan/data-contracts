@@ -448,6 +448,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -579,6 +587,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -684,6 +700,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -756,6 +780,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -825,6 +857,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -886,6 +926,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -954,6 +1002,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -1038,6 +1094,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -1112,6 +1176,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -1184,6 +1256,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -1253,6 +1333,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 
@@ -1322,6 +1410,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 

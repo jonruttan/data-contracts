@@ -1107,6 +1107,118 @@ def _lint_library_export_docs(
                     )
 
 
+def _lint_case_doc(
+    case: dict[str, Any],
+    *,
+    issues: list[SpecLangIssue],
+    path: Path,
+    case_id: str,
+) -> None:
+    case_type = str(case.get("type", "")).strip()
+    raw_doc = case.get("doc")
+    if case_type == "contract.export" and not isinstance(raw_doc, dict):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="doc",
+            code="SLINT055",
+            message="contract.export requires root doc mapping",
+        )
+        return
+    if raw_doc is None:
+        return
+    if not isinstance(raw_doc, dict):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="doc",
+            code="SLINT056",
+            message="doc must be mapping",
+        )
+        return
+    allowed = {"summary", "description", "audience", "since", "tags", "see_also", "deprecated"}
+    unknown = sorted(str(k) for k in raw_doc.keys() if str(k) not in allowed)
+    if unknown:
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="doc",
+            code="SLINT057",
+            message=f"unsupported doc keys: {', '.join(unknown)}",
+        )
+    if case_type != "contract.export":
+        return
+    for key in ("summary", "description", "audience", "since"):
+        if not str(raw_doc.get(key, "")).strip():
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"doc.{key}",
+                code="SLINT058",
+                message=f"doc.{key} must be non-empty",
+            )
+    tags = raw_doc.get("tags")
+    if tags is not None and (
+        not isinstance(tags, list) or any(not isinstance(x, str) or not str(x).strip() for x in tags)
+    ):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="doc.tags",
+            code="SLINT059",
+            message="doc.tags must be list of non-empty strings when provided",
+        )
+    see_also = raw_doc.get("see_also")
+    if see_also is not None and (
+        not isinstance(see_also, list)
+        or any(not isinstance(x, str) or not str(x).strip() for x in see_also)
+    ):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="doc.see_also",
+            code="SLINT060",
+            message="doc.see_also must be list of non-empty strings when provided",
+        )
+    deprecated = raw_doc.get("deprecated")
+    if deprecated is None:
+        return
+    if not isinstance(deprecated, dict):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="doc.deprecated",
+            code="SLINT061",
+            message="doc.deprecated must be mapping when provided",
+        )
+        return
+    if not str(deprecated.get("replacement", "")).strip():
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="doc.deprecated.replacement",
+            code="SLINT062",
+            message="doc.deprecated.replacement must be non-empty",
+        )
+    if not str(deprecated.get("reason", "")).strip():
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="doc.deprecated.reason",
+            code="SLINT063",
+            message="doc.deprecated.reason must be non-empty",
+        )
+
+
 def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: Path, case_id: str) -> None:
     contract = case.get("contract")
     if contract is None:
@@ -1257,6 +1369,7 @@ def lint_cases(
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
         _lint_contract(case, issues=issues, path=path, case_id=case_id)
         _lint_library_export_docs(case, issues=issues, path=path, case_id=case_id)
+        _lint_case_doc(case, issues=issues, path=path, case_id=case_id)
         harness = case.get("harness")
         if isinstance(harness, dict):
             if "chain" in harness:

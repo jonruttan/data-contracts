@@ -76,6 +76,8 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_runner_api_catalog_sync.spec.md`
 - `/specs/governance/cases/core/docs_runner_reference_semantics_complete.spec.md`
 - `/specs/governance/cases/core/docs_spec_lang_builtin_catalog_sync.spec.md`
+- `/specs/governance/cases/core/docs_spec_case_catalog_sync.spec.md`
+- `/specs/governance/cases/core/docs_spec_case_doc_metadata_complete.spec.md`
 - `/specs/governance/cases/core/docs_spec_schema_field_catalog_sync.spec.md`
 - `/specs/governance/cases/core/docs_stdlib_examples_complete.spec.md`
 - `/specs/governance/cases/core/docs_stdlib_symbol_docs_complete.spec.md`

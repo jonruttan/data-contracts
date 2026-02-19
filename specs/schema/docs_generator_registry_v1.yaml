@@ -142,6 +142,34 @@ surfaces:
   - id: catalog
     source_type: generated_artifact
     path: /.artifacts/library-symbol-catalog.json
+- surface_id: spec_case_reference
+  source_type: manifest_yaml
+  inputs:
+  - /specs
+  - /specs/schema/schema_v1.md
+  outputs:
+  - /.artifacts/spec-case-catalog.json
+  - /docs/book/93l_spec_case_reference.md
+  - /docs/book/93m_spec_case_index.md
+  generator: generate_spec_case_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /specs/contract/02_case_shape.md
+  - /specs/contract/10_docs_quality.md
+  determinism_hash_fields:
+  - summary
+  - types
+  - cases
+  read_only_sections:
+  - /docs/book/93l_spec_case_reference.md
+  - /docs/book/93m_spec_case_index.md
+  template_path: /docs/book/templates/spec_case_reference_template.md
+  output_mode: markers
+  marker_surface_id: spec_case_reference
+  data_sources:
+  - id: catalog
+    source_type: generated_artifact
+    path: /.artifacts/spec-case-catalog.json
 - surface_id: spec_lang_builtin_catalog
   source_type: code_scan
   inputs:

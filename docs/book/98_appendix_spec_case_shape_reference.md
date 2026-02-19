@@ -47,16 +47,24 @@ Provide generated case-shape field reference derived from schema registry profil
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 16
+- top_level_field_count: 24
 - type_profile_count: 3
-- total_type_field_count: 15
+- total_type_field_count: 40
 
 ### Top-Level Fields
 
 | key | type | required | since |
 |---|---|---|---|
 | `assert_health` | `mapping` | false | `v1` |
-| `contract` | `list` | false | `v1` |
+| `contract` | `any` | false | `v1` |
+| `doc` | `mapping` | false | `v1` |
+| `doc.audience` | `string` | false | `v1` |
+| `doc.deprecated` | `mapping` | false | `v1` |
+| `doc.description` | `string` | false | `v1` |
+| `doc.see_also` | `list` | false | `v1` |
+| `doc.since` | `string` | false | `v1` |
+| `doc.summary` | `string` | false | `v1` |
+| `doc.tags` | `list` | false | `v1` |
 | `expect` | `mapping` | false | `v1` |
 | `harness` | `mapping` | false | `v1` |
 | `id` | `string` | true | `v1` |
@@ -77,6 +85,6 @@ Provide generated case-shape field reference derived from schema registry profil
 | case_type | field_count | required_top_level |
 |---|---|---|
 | `contract.check` | 5 | `harness`, `contract` |
-| `contract.export` | 3 | `contract`, `harness` |
+| `contract.export` | 28 | `contract`, `harness`, `library`, `doc` |
 | `contract.job` | 7 | `harness`, `contract` |
 <!-- GENERATED:END spec_schema_field_catalog -->

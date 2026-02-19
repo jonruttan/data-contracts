@@ -65,6 +65,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-OS-001-001-DOMAIN-OS-EXEC-OK` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -138,6 +146,14 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -194,4 +210,12 @@ library:
   owner: spec_runner
   tags:
   - domain
+doc:
+  summary: Case `LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```

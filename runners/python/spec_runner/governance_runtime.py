@@ -5262,6 +5262,7 @@ def _scan_docs_generator_registry_valid(root: Path, *, harness: dict | None = No
         "spec_lang_namespace_type",
         "spec_lang_namespace_set",
         "spec_lang_namespace_json_schema_fn_null",
+        "spec_case_reference",
         "policy_rule_catalog",
         "traceability_catalog",
         "governance_check_catalog",
@@ -5307,6 +5308,19 @@ def _iter_library_export_entries(root: Path) -> list[tuple[str, str, int, dict[s
             if not isinstance(exp, dict):
                 continue
             out.append((rel, case_id, idx, exp))
+    return out
+
+
+def _iter_spec_cases(root: Path) -> list[tuple[str, str, dict[str, Any]]]:
+    out: list[tuple[str, str, dict[str, Any]]] = []
+    specs_root = root / "specs"
+    if not specs_root.exists():
+        return out
+    for spec in iter_spec_doc_tests(specs_root, file_pattern=case_file_name("*")):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        case_id = str(case.get("id", "")).strip() or "<unknown>"
+        rel = spec.doc_path.relative_to(root).as_posix()
+        out.append((rel, case_id, case))
     return out
 
 
@@ -5453,6 +5467,56 @@ def _scan_docs_library_symbol_catalog_sync(root: Path, *, harness: dict | None =
         root,
         "spec_runner.spec_lang_commands",
         ["generate-library-symbol-catalog", "--check"],
+    )
+
+
+def _scan_docs_spec_case_doc_metadata_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    out: list[str] = []
+    allowed = {"summary", "description", "audience", "since", "tags", "see_also", "deprecated"}
+    for rel, case_id, case in _iter_spec_cases(root):
+        if str(case.get("type", "")).strip() != "contract.export":
+            continue
+        where = f"{rel}:{case_id}"
+        raw_doc = case.get("doc")
+        if not isinstance(raw_doc, dict):
+            out.append(f"{where}: contract.export requires root doc mapping")
+            continue
+        unknown = sorted(str(k) for k in raw_doc.keys() if str(k) not in allowed)
+        if unknown:
+            out.append(f"{where}: unsupported doc keys: {', '.join(unknown)}")
+        for key in ("summary", "description", "audience", "since"):
+            if not str(raw_doc.get(key, "")).strip():
+                out.append(f"{where}: doc.{key} must be non-empty")
+        tags = raw_doc.get("tags")
+        if tags is not None and (
+            not isinstance(tags, list) or any(not isinstance(x, str) or not str(x).strip() for x in tags)
+        ):
+            out.append(f"{where}: doc.tags must be list of non-empty strings when provided")
+        see_also = raw_doc.get("see_also")
+        if see_also is not None and (
+            not isinstance(see_also, list)
+            or any(not isinstance(x, str) or not str(x).strip() for x in see_also)
+        ):
+            out.append(f"{where}: doc.see_also must be list of non-empty strings when provided")
+        deprecated = raw_doc.get("deprecated")
+        if deprecated is not None:
+            if not isinstance(deprecated, dict):
+                out.append(f"{where}: doc.deprecated must be mapping when provided")
+            else:
+                if not str(deprecated.get("replacement", "")).strip():
+                    out.append(f"{where}: doc.deprecated.replacement must be non-empty")
+                if not str(deprecated.get("reason", "")).strip():
+                    out.append(f"{where}: doc.deprecated.reason must be non-empty")
+    return out
+
+
+def _scan_docs_spec_case_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_module_check(
+        root,
+        "spec_runner.spec_lang_commands",
+        ["generate-spec-case-catalog", "--check"],
     )
 
 
@@ -10030,6 +10094,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.library_symbol_params_sync": _scan_docs_library_symbol_params_sync,
     "docs.library_symbol_examples_present": _scan_docs_library_symbol_examples_present,
     "docs.library_symbol_catalog_sync": _scan_docs_library_symbol_catalog_sync,
+    "docs.spec_case_doc_metadata_complete": _scan_docs_spec_case_doc_metadata_complete,
+    "docs.spec_case_catalog_sync": _scan_docs_spec_case_catalog_sync,
     "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
     "spec.portability_non_regression": _scan_spec_portability_non_regression,
     "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,

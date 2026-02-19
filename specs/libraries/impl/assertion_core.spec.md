@@ -64,6 +64,14 @@ library:
   owner: spec_runner
   tags:
   - impl
+doc:
+  summary: Case `LIB-IMPL-ASSERT-001-001-IMPL-ASSERT-CONTAINS` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -128,6 +136,14 @@ library:
   owner: spec_runner
   tags:
   - impl
+doc:
+  summary: Case `LIB-IMPL-ASSERT-001-002-IMPL-ASSERT-REGEX` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -192,4 +208,12 @@ library:
   owner: spec_runner
   tags:
   - impl
+doc:
+  summary: Case `LIB-IMPL-ASSERT-001-003-IMPL-ASSERT-JSON-TYPE` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```

@@ -62,3 +62,35 @@ fields:
     type: mapping
     required: false
     since: v1
+  doc:
+    type: mapping
+    required: false
+    since: v1
+  doc.summary:
+    type: string
+    required: false
+    since: v1
+  doc.description:
+    type: string
+    required: false
+    since: v1
+  doc.audience:
+    type: string
+    required: false
+    since: v1
+  doc.since:
+    type: string
+    required: false
+    since: v1
+  doc.tags:
+    type: list
+    required: false
+    since: v1
+  doc.see_also:
+    type: list
+    required: false
+    since: v1
+  doc.deprecated:
+    type: mapping
+    required: false
+    since: v1

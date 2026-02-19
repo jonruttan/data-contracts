@@ -453,6 +453,10 @@ def _default_steps(runner_bin: str, runner_impl: str) -> list[tuple[str, list[st
             "library_symbol_catalog_sync",
             [*py, "-m", "spec_runner.spec_lang_commands", "generate-library-symbol-catalog", "--check"],
         ),
+        (
+            "spec_case_catalog_sync",
+            [*py, "-m", "spec_runner.spec_lang_commands", "generate-spec-case-catalog", "--check"],
+        ),
         ("ruff", _runner_command(runner_bin, runner_impl, "lint")),
         ("mypy", _runner_command(runner_bin, runner_impl, "typecheck")),
         ("compileall", _runner_command(runner_bin, runner_impl, "compilecheck")),

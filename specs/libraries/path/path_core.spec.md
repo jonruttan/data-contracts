@@ -293,6 +293,14 @@ library:
   owner: spec_runner
   tags:
   - path
+doc:
+  summary: Case `LIB-PATH-001-001-PATH-NORMALIZE-SLASHES` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -587,6 +595,14 @@ library:
   owner: spec_runner
   tags:
   - path
+doc:
+  summary: Case `LIB-PATH-001-002-PATH-SEGMENTS` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -893,6 +909,14 @@ library:
   owner: spec_runner
   tags:
   - path
+doc:
+  summary: Case `LIB-PATH-001-003-PATH-BASENAME` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec
@@ -1207,6 +1231,14 @@ library:
   owner: spec_runner
   tags:
   - path
+doc:
+  summary: Case `LIB-PATH-001-004-PATH-EXTENSION` for `contract.export`.
+  description: Auto-generated root doc metadata stub. Replace with authored reference text.
+  audience: spec-authors
+  since: v1
+  tags:
+  - contract.export
+  see_also: []
 ```
 
 ```yaml contract-spec

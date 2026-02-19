@@ -846,3 +846,40 @@ contract:
       ops.job.dispatch:
       - main
 ```
+
+## SRDOCGEN-024
+
+```yaml contract-spec
+id: SRDOCGEN-024
+type: contract.job
+title: spec case reference surface generation
+harness:
+  docs_generate:
+    surface_id: spec_case_reference
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_case_reference_template.md
+    output_path: /docs/book/93l_spec_case_reference.md
+    marker_surface_id: spec_case_reference
+    data_sources:
+    - id: catalog
+      source_type: generated_artifact
+      path: /.artifacts/spec-case-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
+contract:
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
+```
