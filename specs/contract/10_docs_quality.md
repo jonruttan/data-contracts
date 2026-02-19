@@ -89,6 +89,7 @@ MUST:
 
 - primary command examples in active docs use rust lane entrypoints (`./runners/public/runner_adapter.sh --impl rust ...`).
 - Python/PHP examples are allowed only in explicitly labeled `Compatibility (Non-Blocking)` sections.
+- root `README.md` MUST remain gateway-oriented, link to canonical book/contract surfaces, and avoid legacy assertion syntax snippets.
 
 ## Contract/Schema/Book Synchronization
 

@@ -26,6 +26,7 @@ rules:
   SRGOV-RUNTIME-CONFIG-008: runtime.compatibility_matrix_registration_required
   SRGOV-RUNTIME-CONFIG-009: runtime.implicit_subject_binding_forbidden
   SRGOV-DOCS-REF-008: docs.compatibility_examples_labeled
+  SRGOV-DOCS-REF-010: docs.readme_rust_first_coherence
   SRGOV-SCHEMA-CONTRACT-001: schema.contract_imports_explicit_required
   SRGOV-SCHEMA-CONTRACT-002: schema.contract_target_on_forbidden
   SRGOV-DOCS-: docs.

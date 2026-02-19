@@ -72,6 +72,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_reference_manifest_sync.spec.md`
 - `/specs/governance/cases/core/docs_reference_namespace_chapters_sync.spec.md`
 - `/specs/governance/cases/core/docs_reference_surface_complete.spec.md`
+- `/specs/governance/cases/core/docs_readme_rust_first_coherence.spec.md`
 - `/specs/governance/cases/core/docs_release_contract_automation_policy.spec.md`
 - `/specs/governance/cases/core/docs_required_sections.spec.md`
 - `/specs/governance/cases/core/docs_runner_api_catalog_sync.spec.md`

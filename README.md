@@ -1,14 +1,15 @@
 # Spec Runner
 
-`spec_runner` is a data contract spec format and runner for Markdown-authored cases.
-It discovers `yaml contract-spec` blocks in `*.spec.md` files, validates case shape
-against contract/schema rules, and executes typed harnesses through a stable
-runner interface.
+`spec_runner` is a contract-first executable spec system for Markdown-authored cases.
+It discovers `yaml contract-spec` blocks in `*.spec.md`, validates schema/contract
+shape, and executes typed harnesses through a stable runner interface.
 
-The project is contract-first: schema, policy, governance checks, and generated
-docs are treated as product surfaces.
+The source of truth is split by role:
 
-## Project Status and Safety
+- `specs/`: executable specs, contracts, schema, governance
+- `docs/`: author and operator documentation
+
+## Status and Trust Model
 
 This project is **pre-alpha** and changes quickly.
 
@@ -23,7 +24,7 @@ Reference contracts:
 - `/Users/jon/Workspace/Development/spec_runner/specs/contract/08_v1_scope.md`
 - `/Users/jon/Workspace/Development/spec_runner/specs/contract/04_harness.md`
 
-## Quickstart (Contributors)
+## Quick Start (Rust Required Lane)
 
 Setup:
 
@@ -39,126 +40,98 @@ make core-check
 make check
 ```
 
-Required local pre-push gate:
+Run the canonical required lane:
+
+```sh
+./runners/public/runner_adapter.sh --impl rust critical-gate
+./runners/public/runner_adapter.sh --impl rust governance
+./runners/public/runner_adapter.sh --impl rust docs-generate-check
+```
+
+## Required Local Pre-Push
+
+Use the required local gate before pushing:
 
 ```sh
 make prepush
 ```
 
-`make prepush` runs the fast CI-critical checks (`normalize-check`, targeted
-governance triage, `governance-heavy`, `docs-generate-check`, and strict perf-smoke compare).
-`governance-heavy` and `docs-generate-check` are path-scoped to relevant
-changes.
-It is Rust-only on the runtime path.
-Governance in this flow is targeted-first triage (`scripts/governance_triage.sh --mode auto`)
-to avoid broad-first latency and to emit deterministic triage artifacts.
-Broad governance remains mandatory in CI merge-gate (`ci-gate-summary`).
-
-Fast local mode:
+Fast mode for local iteration:
 
 ```sh
 make prepush-fast
-# or
-SPEC_PREPUSH_MODE=fast make prepush
 ```
 
-Managed pre-push hook enforcement:
+Install managed hooks:
 
 ```sh
 make hooks-install
 ```
 
-Emergency bypass (only when absolutely required):
+Emergency bypass (only when necessary):
 
 ```sh
 SPEC_PREPUSH_BYPASS=1 git push
 ```
 
-If governance fails/stalls, inspect:
+## Compatibility Matrix (Non-Blocking)
 
-- `/.artifacts/governance-triage-summary.md`
+Lane classes:
 
-Clean-checkout CI parity gate (recommended before push):
+- `required`: rust
+- `compatibility_non_blocking`: python, php, node, c
 
-```sh
-make ci-cleanroom
-```
+These compatibility lanes are non-blocking telemetry; merge blocking is Rust-first.
 
-Adoption profiles:
+Contract reference:
 
-- **Core profile**: `make core-check`
-- **Full profile**: `make check`
+- `/Users/jon/Workspace/Development/spec_runner/specs/contract/25_compatibility_matrix.md`
 
-## Canonical Runner Interface
+## Adoption Profiles
 
-Single public entrypoint:
+- Core profile: `make core-check`
+- Full profile: `make check`
 
-```sh
-./runners/public/runner_adapter.sh
-```
-
-Default lane (rust):
-
-```sh
-./runners/public/runner_adapter.sh governance
-```
-
-Compatibility lanes (non-blocking):
-
-```sh
-./runners/public/runner_adapter.sh --impl rust governance
-php runners/php/conformance_runner.php --cases specs/conformance/cases --case-formats md
-```
-
-Rust-first policy: Rust is the only required merge-blocking lane. Python/PHP are non-blocking
-compatibility lanes, with Node/C planned under the same non-blocking class.
-
-Runner interface contract:
-
-- `/Users/jon/Workspace/Development/spec_runner/specs/contract/12_runner_interface.md`
-
-## Minimal `.spec.md` Example
+## Minimal Canonical Spec Example
 
 ```yaml contract-spec
-id: EX-TEXT-001
-type: text.file
-path: /README.md
-assert:
-- target: text
-  must:
-  -     - contains:
-      - {var: subject}
-      - "Spec Runner"
+id: EX-README-001
+title: README canonical contract.check shape
+type: contract.check
+harness:
+  root: .
+  check:
+    profile: governance.scan
+    config:
+      check: docs.make_commands_sync
+contract:
+  defaults:
+    class: MUST
+  imports:
+  - from: artifact
+    names:
+    - violation_count
+  steps:
+  - id: assert_1
+    assert:
+      std.logic.eq:
+      - {var: violation_count}
+      - 0
 ```
 
-Notes:
+## Repository Entry Points
 
-- Expression authoring uses mapping-AST form.
-- Runner-only setup belongs under `harness`.
-- Canonical executable format is `*.spec.md`.
-
-## Where To Go Next
-
-- Development workflows: `/Users/jon/Workspace/Development/spec_runner/docs/development.md`
+- Specs root: `/Users/jon/Workspace/Development/spec_runner/specs/`
 - Book index: `/Users/jon/Workspace/Development/spec_runner/docs/book/index.md`
-- Current snapshot: `/Users/jon/Workspace/Development/spec_runner/specs/current.md`
+- Generated reference gateway: `/Users/jon/Workspace/Development/spec_runner/docs/book/99_generated_reference_index.md`
+- Development workflows: `/Users/jon/Workspace/Development/spec_runner/docs/development.md`
 - Schema: `/Users/jon/Workspace/Development/spec_runner/specs/schema/schema_v1.md`
 - Contract index: `/Users/jon/Workspace/Development/spec_runner/specs/contract/index.md`
-- Implementation appendices: `/Users/jon/Workspace/Development/spec_runner/docs/impl/index.md`
 
 ## Repo Layout
 
-- `runners/python/spec_runner/`: core runtime and harness code
-- `scripts/`: runner adapters, gates, and generators
-- `docs/`: book, contract/schema specs, implementation appendices
-- `tests/`: executable and unit-level validation
-
-## Documentation Health
-
-Use strict specs drift checks before pushing:
-
-```sh
-./runners/public/runner_adapter.sh docs-lint
-```
-
-This check is blocking in local parity and CI gate lanes.
+- `runners/`: runtime adapters and implementations
+- `scripts/`: operational entrypoints for local/CI workflows
+- `specs/`: executable specs and normative contracts
+- `docs/`: narrative and generated documentation surfaces
+- `tests/`: test suite

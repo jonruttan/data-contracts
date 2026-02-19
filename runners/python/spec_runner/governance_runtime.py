@@ -8194,6 +8194,54 @@ def _scan_docs_compatibility_examples_labeled(
     return violations
 
 
+def _scan_docs_readme_rust_first_coherence(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("readme_coherence")
+    if not isinstance(cfg, dict):
+        return [
+            "docs.readme_rust_first_coherence requires harness.readme_coherence mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    required_paths = cfg.get("required_paths", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not path:
+        return ["harness.readme_coherence.path must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.readme_coherence.required_tokens must be a list of non-empty strings"]
+    if (
+        not isinstance(required_paths, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_paths)
+    ):
+        return ["harness.readme_coherence.required_paths must be a list of non-empty strings"]
+    if (
+        not isinstance(forbidden_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+    ):
+        return ["harness.readme_coherence.forbidden_tokens must be a list of non-empty strings"]
+
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing README coherence file"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing required README token {tok}")
+    for rel in required_paths:
+        if rel not in text:
+            violations.append(f"{path}:1: missing required README path {rel}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{path}:1: forbidden legacy token present {tok}")
+    return violations
+
+
 def _scan_runtime_rust_only_prepush_required(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -10485,6 +10533,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.spec_case_catalog_sync": _scan_docs_spec_case_catalog_sync,
     "docs.spec_domain_grouping_sync": _scan_docs_spec_domain_grouping_sync,
     "docs.compatibility_examples_labeled": _scan_docs_compatibility_examples_labeled,
+    "docs.readme_rust_first_coherence": _scan_docs_readme_rust_first_coherence,
     "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
     "spec.portability_non_regression": _scan_spec_portability_non_regression,
     "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,

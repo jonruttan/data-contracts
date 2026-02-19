@@ -134,6 +134,17 @@ profiles:
           - schema.contract_imports_explicit_required
           - schema.contract_target_on_forbidden
           - runtime.implicit_subject_binding_forbidden
+      - id: docs.full_readme_rust_first_coherence_registered
+        kind: file_tokens
+        path: /runners/python/spec_runner/governance_runtime.py
+        must_contain:
+          - docs.readme_rust_first_coherence
+      - id: docs.full_readme_rust_first_coherence_prefix_mapped
+        kind: file_tokens
+        path: /specs/governance/check_prefix_map_v1.yaml
+        must_contain:
+          - SRGOV-DOCS-REF-010
+          - docs.readme_rust_first_coherence
       - id: runtime.full_governance_broad_native_slo
         kind: slo_budget
         max_ms: 120000
