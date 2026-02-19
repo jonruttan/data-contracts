@@ -47,6 +47,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_examples_runnable.spec.md`
 - `/specs/governance/cases/core/docs_filename_policy.spec.md`
 - `/specs/governance/cases/core/docs_generated_files_clean.spec.md`
+- `/specs/governance/cases/core/docs_generated_command_meta_no_python_exec.spec.md`
 - `/specs/governance/cases/core/docs_generated_sections_read_only.spec.md`
 - `/specs/governance/cases/core/docs_generator_outputs_sync.spec.md`
 - `/specs/governance/cases/core/docs_generator_registry_valid.spec.md`

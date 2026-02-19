@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - generated_reference_gateway
 commands:
-- run: PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-spec-case-templates --check
+- run: ./runners/public/runner_adapter.sh --impl rust docs-generate-check
   purpose: Verify generated spec case templates reference content is in sync.
 examples:
 - id: EX-REF-TEMPLATE-001

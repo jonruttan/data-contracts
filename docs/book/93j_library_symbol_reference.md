@@ -8,7 +8,7 @@ owns_tokens:
 requires_tokens:
 - generated_docs_sync
 commands:
-- run: PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check
+- run: ./runners/public/runner_adapter.sh --impl rust docs-generate-check
   purpose: Verify generated library symbol reference content is in sync.
 examples:
 - id: EX-REF-LIB-001

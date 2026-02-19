@@ -8247,6 +8247,50 @@ def _scan_docs_readme_rust_first_coherence(
     return violations
 
 
+def _scan_docs_generated_command_meta_no_python_exec(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("generated_command_meta")
+    if not isinstance(cfg, dict):
+        return [
+            "docs.generated_command_meta_no_python_exec requires harness.generated_command_meta mapping in governance spec"
+        ]
+    files = cfg.get("files", [])
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.generated_command_meta.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.generated_command_meta.required_tokens must be a list of non-empty strings"]
+    if (
+        not isinstance(forbidden_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+    ):
+        return ["harness.generated_command_meta.forbidden_tokens must be a list of non-empty strings"]
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing generated docs file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing required generated command token {tok}")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden python command token present {tok}")
+    return violations
+
+
 def _scan_runtime_rust_only_prepush_required(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -10539,6 +10583,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.spec_domain_grouping_sync": _scan_docs_spec_domain_grouping_sync,
     "docs.compatibility_examples_labeled": _scan_docs_compatibility_examples_labeled,
     "docs.readme_rust_first_coherence": _scan_docs_readme_rust_first_coherence,
+    "docs.generated_command_meta_no_python_exec": _scan_docs_generated_command_meta_no_python_exec,
     "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
     "spec.portability_non_regression": _scan_spec_portability_non_regression,
     "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,
