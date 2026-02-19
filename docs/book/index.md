@@ -23,10 +23,11 @@ Full authoring path:
 4. `docs/book/40_spec_lang_authoring.md`
 5. `docs/book/50_library_authoring.md`
 6. `docs/book/60_runner_and_gates.md`
-7. `docs/book/70_governance_and_quality.md`
-8. `docs/book/80_troubleshooting.md`
-9. `docs/book/90_reference_guide.md`
-10. `docs/book/99_generated_reference_index.md`
+7. `docs/book/65_runner_status_and_compatibility.md`
+8. `docs/book/70_governance_and_quality.md`
+9. `docs/book/80_troubleshooting.md`
+10. `docs/book/90_reference_guide.md`
+11. `docs/book/99_generated_reference_index.md`
 
 ## Canonical Sources
 

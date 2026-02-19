@@ -92,3 +92,30 @@ Compatibility lanes are external-only and non-blocking in this repo:
 - `c` (planned)
 
 `data-contracts` does not execute compatibility lanes directly.
+
+## Status Exchange Lifecycle
+
+Runner status is ingested from release assets in external runner repos:
+
+- `dc-runner-rust`
+- `dc-runner-python`
+- `dc-runner-php`
+
+Canonical ingest command:
+
+```sh
+./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
+```
+
+Canonical ingest outputs:
+
+- `/.artifacts/runner-status-matrix.json`
+- `/.artifacts/runner-status-matrix.md`
+- `/.artifacts/runner-status-ingest-log.json`
+
+Failure triage:
+
+1. Open `runner-status-matrix.md` to identify stale/missing lanes.
+2. Inspect `runner-status-ingest-log.json` for fetch, schema, or checksum failures.
+3. Refresh runner status release asset in the owning `dc-runner-*` repository.
+4. Re-run ingest and required rust lane checks.

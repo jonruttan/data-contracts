@@ -190,10 +190,10 @@ lane_compatibility_matrix() {
     echo "[local-ci-parity] compatibility matrix disabled (set SPEC_COMPAT_MATRIX_ENABLED=1 to enable)"
     return 0
   fi
-  echo "[local-ci-parity] compatibility matrix enabled (non-blocking, external repos)"
+  echo "[local-ci-parity] compatibility matrix enabled (external release-asset ingest)"
   echo "[local-ci-parity] python lane owner: dc-runner-python (external)"
   echo "[local-ci-parity] php lane owner: dc-runner-php (external)"
-  echo "[local-ci-parity] compatibility results are ingested as external artifacts in data-contracts CI."
+  run_step runner-status-ingest ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
 }
 
 case "${MODE}" in

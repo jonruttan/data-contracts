@@ -30,6 +30,11 @@ chapters:
   contract_refs:
   - specs/contract/12_runner_interface.md
   - specs/contract/25_compatibility_matrix.md
+- path: /docs/book/65_runner_status_and_compatibility.md
+  summary: status exchange lifecycle, compatibility freshness policy, and ingest artifacts.
+  contract_refs:
+  - specs/contract/25_compatibility_matrix.md
+  - specs/contract/27_runner_status_exchange.md
 - path: /docs/book/70_governance_and_quality.md
   summary: governance check model, docs sync, and quality gates.
   contract_refs:

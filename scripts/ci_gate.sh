@@ -73,6 +73,7 @@ fi
 
 "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" critical-gate
 "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" runner-certify --runner rust
+./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
 
 if [[ "${CI:-}" == "true" || "${SPEC_CI_GATE_STRICT_SUMMARY:-0}" == "1" ]]; then
   "${SPEC_RUNNER_BIN}" ci-gate-summary \

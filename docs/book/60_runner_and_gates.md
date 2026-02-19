@@ -72,6 +72,9 @@ Future lanes (Node, C) follow the same non-blocking default unless promoted by e
 Compatibility certification reports are emitted in `dc-runner-python` and
 `dc-runner-php` CI/release pipelines and ingested as external artifacts.
 
+Detailed status exchange lifecycle and freshness policy are documented in
+`docs/book/65_runner_status_and_compatibility.md`.
+
 
 ## API.HTTP Gate Notes
 

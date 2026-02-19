@@ -30,6 +30,8 @@ Rust-first policy is normative for required gate behavior.
 4. Compatibility lanes are non-blocking
 - Python/PHP compatibility jobs may fail without blocking merge.
 - Compatibility results MUST be published as artifacts/metrics.
+- Compatibility status telemetry MUST be ingested in `data-contracts` from
+  release assets under the status exchange contract.
 
 5. Future lane onboarding
 - New non-Rust lanes default to non-blocking compatibility class.

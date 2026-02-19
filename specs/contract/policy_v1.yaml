@@ -1276,6 +1276,103 @@ rules:
   references:
   - specs/contract/25_compatibility_matrix.md
   - specs/governance/cases/core/runtime_compatibility_matrix_registration_required.spec.md
+- id: RUNTIME_RUNNER_STATUS_REPORT_SCHEMA_VALID
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.status_exchange.report_schema
+  norm: MUST
+  requirement: runner_status_report_schema_must_be_declared_and_complete
+  description: 'Runner status producer payload contract must be declared in
+    /specs/schema/runner_status_report_v1.yaml with required producer fields.
+
+    '
+  rationale: Prevents cross-repo status payload drift and ingestion ambiguity.
+  risk_if_violated: Runner repos publish incompatible status payloads that cannot
+    be consumed deterministically.
+  references:
+  - specs/schema/runner_status_report_v1.yaml
+  - specs/contract/27_runner_status_exchange.md
+  - specs/governance/cases/core/runtime_runner_status_report_schema_valid.spec.md
+- id: RUNTIME_RUNNER_STATUS_MATRIX_SCHEMA_VALID
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.status_exchange.matrix_schema
+  norm: MUST
+  requirement: runner_status_matrix_schema_must_be_declared_and_complete
+  description: 'Aggregated status matrix contract must be declared in
+    /specs/schema/runner_status_matrix_v1.yaml.
+
+    '
+  rationale: Keeps policy/reporting outputs deterministic and machine-readable.
+  risk_if_violated: Status telemetry cannot be consumed consistently by docs/governance.
+  references:
+  - specs/schema/runner_status_matrix_v1.yaml
+  - specs/contract/27_runner_status_exchange.md
+  - specs/governance/cases/core/runtime_runner_status_matrix_schema_valid.spec.md
+- id: RUNTIME_COMPATIBILITY_STATUS_INGESTION_CONFIGURED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.status_exchange.ingestion
+  norm: MUST
+  requirement: compatibility_status_ingestion_must_use_release_assets
+  description: 'Compatibility status ingestion must be configured through
+    /scripts/runner_status_ingest.sh and runner certification registry release
+    asset metadata.
+
+    '
+  rationale: Preserves implementation separation while keeping status exchange explicit.
+  risk_if_violated: Compatibility telemetry becomes ad-hoc or silently absent.
+  references:
+  - scripts/runner_status_ingest.sh
+  - specs/schema/runner_certification_registry_v1.yaml
+  - specs/governance/cases/core/runtime_compatibility_status_ingestion_configured.spec.md
+- id: RUNTIME_COMPATIBILITY_STATUS_FRESHNESS_WITHIN_SLO
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.status_exchange.freshness
+  norm: MUST
+  requirement: compatibility_status_reports_must_be_fresh_within_72_hours
+  description: 'Compatibility lane status telemetry must remain fresh within a
+    72-hour SLO.
+
+    '
+  rationale: Makes stale compatibility health visible before drift becomes chronic.
+  risk_if_violated: Non-blocking lanes can silently rot without governance signal.
+  references:
+  - scripts/runner_status_ingest.sh
+  - scripts/ci_gate.sh
+  - specs/governance/cases/core/runtime_compatibility_status_freshness_within_slo.spec.md
+- id: RUNTIME_COMPATIBILITY_MISSING_STATUS_VISIBILITY_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.status_exchange.missing_status
+  norm: MUST
+  requirement: missing_compatibility_status_must_be_visible_and_policy_scored
+  description: 'Missing compatibility status must be represented in matrix outputs
+    and mapped to a non-blocking policy effect.
+
+    '
+  rationale: Prevents missing data from being interpreted as healthy data.
+  risk_if_violated: CI and reviewers cannot distinguish missing vs passing compatibility state.
+  references:
+  - scripts/runner_status_ingest.sh
+  - specs/governance/cases/core/runtime_compatibility_missing_status_visibility_required.spec.md
+- id: RUNTIME_REQUIRED_LANE_STATUS_BLOCKING_ENFORCED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.status_exchange.required_lane
+  norm: MUST
+  requirement: required_lane_status_must_map_to_blocking_policy_effect
+  description: 'Required lane status outcomes must remain merge-blocking when
+    status exchange data is ingested.
+
+    '
+  rationale: Preserves required lane authority under cross-repo status exchange.
+  risk_if_violated: Merge can proceed when required runtime health is degraded.
+  references:
+  - scripts/runner_status_ingest.sh
+  - specs/contract/25_compatibility_matrix.md
+  - specs/governance/cases/core/runtime_required_lane_status_blocking_enforced.spec.md
 - id: DOCS_COMPATIBILITY_EXAMPLES_LABELING_REQUIRED
   introduced_in: v1
   scope: governance

@@ -90,6 +90,13 @@ Data Contracts consumes a pinned `dc-runner-rust` release artifact via:
 Data Contracts does not directly execute compatibility lanes. Python/PHP
 compatibility execution is owned by `dc-runner-python` and `dc-runner-php`.
 
+Compatibility status communication is release-asset based and ingested via:
+
+- `/scripts/runner_status_ingest.sh`
+- `/specs/schema/runner_status_report_v1.yaml`
+- `/specs/schema/runner_status_matrix_v1.yaml`
+- `/specs/contract/27_runner_status_exchange.md`
+
 Contract reference:
 
 - `/specs/contract/25_compatibility_matrix.md`

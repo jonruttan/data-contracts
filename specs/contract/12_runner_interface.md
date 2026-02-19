@@ -77,6 +77,7 @@ Compatibility matrix classing:
 - `node/c` are planned non-blocking compatibility lanes.
 - Normative matrix contract: `/specs/contract/25_compatibility_matrix.md`.
 - Certification registry contract: `/specs/schema/runner_certification_registry_v1.yaml`.
+- Status exchange contract: `/specs/contract/27_runner_status_exchange.md`.
 - Runtime lock contract: `/specs/schema/dc_runner_rust_lock_v1.yaml`.
 
 Rust adapter target behavior:

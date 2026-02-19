@@ -35,7 +35,9 @@ jobs:
   ci-gate:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: rust-critical-gate
+    needs:
+      - rust-critical-gate
+      - runner-status-ingest
 
     steps:
       - name: Checkout
@@ -56,6 +58,32 @@ jobs:
         with:
           name: ci-artifacts
           path: .artifacts/**
+          if-no-files-found: ignore
+
+  runner-status-ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: rust-critical-gate
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PHP + yaml extension
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-cli php-yaml
+          php -m | grep -i '^yaml$'
+
+      - name: Ingest runner status matrix (freshness enforced)
+        run: ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
+
+      - name: Upload runner status artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: runner-status-artifacts
+          path: .artifacts/runner-status-*
           if-no-files-found: ignore
 
   rust-heavy-followup:
@@ -94,15 +122,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     continue-on-error: true
+    needs: runner-status-ingest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Download runner status artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: runner-status-artifacts
+          path: .artifacts
+
       - name: External python compatibility lane (non-blocking)
         run: |
           echo "python compatibility lane is owned by dc-runner-python."
-          echo "consume compatibility artifacts from that repo's CI/release pipeline."
+          echo "status matrix was ingested via release artifacts:"
+          test -f .artifacts/runner-status-matrix.md && cat .artifacts/runner-status-matrix.md || true
 
       - name: Upload parity artifacts
         if: always()
@@ -116,15 +152,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     continue-on-error: true
+    needs: runner-status-ingest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Download runner status artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: runner-status-artifacts
+          path: .artifacts
+
       - name: External php compatibility lane (non-blocking)
         run: |
           echo "php compatibility lane is owned by dc-runner-php."
-          echo "consume compatibility artifacts from that repo's CI/release pipeline."
+          echo "status matrix was ingested via release artifacts:"
+          test -f .artifacts/runner-status-matrix.md && cat .artifacts/runner-status-matrix.md || true
 
       - name: Upload compatibility PHP artifacts
         if: always()

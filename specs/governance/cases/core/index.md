@@ -160,6 +160,9 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/runtime_ci_python_lane_non_blocking_required.spec.md`
 - `/specs/governance/cases/core/runtime_compatibility_lanes_non_blocking_status.spec.md`
 - `/specs/governance/cases/core/runtime_compatibility_matrix_registration_required.spec.md`
+- `/specs/governance/cases/core/runtime_compatibility_missing_status_visibility_required.spec.md`
+- `/specs/governance/cases/core/runtime_compatibility_status_freshness_within_slo.spec.md`
+- `/specs/governance/cases/core/runtime_compatibility_status_ingestion_configured.spec.md`
 - `/specs/governance/cases/core/runtime_ci_workflow_critical_gate_required.spec.md`
 - `/specs/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md`
 - `/specs/governance/cases/core/runtime_config_literals.spec.md`
@@ -205,10 +208,13 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/runtime_runner_certification_surfaces_sync.spec.md`
 - `/specs/governance/cases/core/runtime_runner_interface_gate_sync.spec.md`
 - `/specs/governance/cases/core/runtime_runner_interface_subcommands.spec.md`
+- `/specs/governance/cases/core/runtime_runner_status_matrix_schema_valid.spec.md`
+- `/specs/governance/cases/core/runtime_runner_status_report_schema_valid.spec.md`
 - `/specs/governance/cases/core/runtime_rust_adapter_no_delegate.spec.md`
 - `/specs/governance/cases/core/runtime_rust_adapter_no_python_exec.spec.md`
 - `/specs/governance/cases/core/runtime_rust_adapter_transitive_no_python.spec.md`
 - `/specs/governance/cases/core/runtime_rust_only_prepush_required.spec.md`
+- `/specs/governance/cases/core/runtime_required_lane_status_blocking_enforced.spec.md`
 - `/specs/governance/cases/core/runtime_required_rust_lane_blocking_status.spec.md`
 - `/specs/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md`
 - `/specs/governance/cases/core/runtime_rust_primary_adapter_exec_smoke_success.spec.md`

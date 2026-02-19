@@ -38,3 +38,17 @@
   - repo identifiers (`dc-runner-rust`, `dc-runner-python`, `dc-runner-php`)
   - release artifact metadata (URLs, checksums, version pins)
   - interface-level command contracts and lane classifications
+
+## Status Exchange Data Flow
+
+| Producer Repo | Produced Artifact | Consumer | Policy Role |
+|---|---|---|---|
+| `dc-runner-rust` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | required lane status input |
+| `dc-runner-python` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | compatibility freshness input |
+| `dc-runner-php` | `runner-status-report-v1.json` release asset | `data-contracts` (`scripts/runner_status_ingest.sh`) | compatibility freshness input |
+
+Ingest outputs are emitted as:
+
+- `/.artifacts/runner-status-matrix.json`
+- `/.artifacts/runner-status-matrix.md`
+- `/.artifacts/runner-status-ingest-log.json`

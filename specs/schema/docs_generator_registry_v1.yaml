@@ -5,6 +5,9 @@ surfaces:
   inputs:
   - /docs/book/reference_manifest.yaml
   - /docs/book
+  - /specs/schema/runner_status_report_v1.yaml
+  - /specs/schema/runner_status_matrix_v1.yaml
+  - /specs/contract/27_runner_status_exchange.md
   outputs:
   - /docs/book/reference_index.md
   - /docs/book/reference_coverage.md

@@ -25,6 +25,12 @@ runners:
   artifact_contract:
     json_out: /.artifacts/runner-certification-{runner}.json
     md_out: /.artifacts/runner-certification-{runner}.md
+  status_exchange:
+    source_kind: release_asset
+    release_api_url: https://api.github.com/repos/jonruttan/dc-runner-rust/releases/latest
+    report_asset_name: runner-status-report-v1.json
+    matrix_role: required
+    freshness_slo_hours: 72
 
 - runner_id: python
   class: compatibility_non_blocking
@@ -38,6 +44,12 @@ runners:
   artifact_contract:
     json_out: /.artifacts/runner-certification-{runner}.json
     md_out: /.artifacts/runner-certification-{runner}.md
+  status_exchange:
+    source_kind: release_asset
+    release_api_url: https://api.github.com/repos/jonruttan/dc-runner-python/releases/latest
+    report_asset_name: runner-status-report-v1.json
+    matrix_role: compatibility
+    freshness_slo_hours: 72
 
 - runner_id: php
   class: compatibility_non_blocking
@@ -51,6 +63,12 @@ runners:
   artifact_contract:
     json_out: /.artifacts/runner-certification-{runner}.json
     md_out: /.artifacts/runner-certification-{runner}.md
+  status_exchange:
+    source_kind: release_asset
+    release_api_url: https://api.github.com/repos/jonruttan/dc-runner-php/releases/latest
+    report_asset_name: runner-status-report-v1.json
+    matrix_role: compatibility
+    freshness_slo_hours: 72
 
 - runner_id: node
   class: compatibility_non_blocking
@@ -64,6 +82,12 @@ runners:
   artifact_contract:
     json_out: /.artifacts/runner-certification-{runner}.json
     md_out: /.artifacts/runner-certification-{runner}.md
+  status_exchange:
+    source_kind: release_asset
+    release_api_url: https://api.github.com/repos/jonruttan/dc-runner-node/releases/latest
+    report_asset_name: runner-status-report-v1.json
+    matrix_role: compatibility
+    freshness_slo_hours: 72
 
 - runner_id: c
   class: compatibility_non_blocking
@@ -77,3 +101,9 @@ runners:
   artifact_contract:
     json_out: /.artifacts/runner-certification-{runner}.json
     md_out: /.artifacts/runner-certification-{runner}.md
+  status_exchange:
+    source_kind: release_asset
+    release_api_url: https://api.github.com/repos/jonruttan/dc-runner-c/releases/latest
+    report_asset_name: runner-status-report-v1.json
+    matrix_role: compatibility
+    freshness_slo_hours: 72

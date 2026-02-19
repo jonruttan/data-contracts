@@ -101,6 +101,56 @@ profiles:
           - implementation_repo: dc-runner-rust
           - implementation_repo: dc-runner-python
           - implementation_repo: dc-runner-php
+      - id: runtime.runner_status_report_schema_valid
+        kind: file_tokens
+        path: /specs/schema/runner_status_report_v1.yaml
+        must_contain:
+          - type: runtime.runner_status_report
+          - runner_id
+          - implementation_repo
+          - generated_at
+          - fresh_until
+          - command_results
+          - artifact_refs
+      - id: runtime.runner_status_matrix_schema_valid
+        kind: file_tokens
+        path: /specs/schema/runner_status_matrix_v1.yaml
+        must_contain:
+          - type: runtime.runner_status_matrix
+          - matrix_rows
+          - freshness_state
+          - policy_effect
+      - id: runtime.compatibility_status_ingestion_configured
+        kind: file_tokens
+        path: /scripts/runner_status_ingest.sh
+        must_contain:
+          - runner-status-matrix.json
+          - runner-status-matrix.md
+          - runner-status-ingest-log.json
+          - release_api_url
+      - id: runtime.compatibility_status_freshness_within_slo
+        kind: file_tokens
+        path: /scripts/runner_status_ingest.sh
+        must_contain:
+          - --max-age-hours
+          - 72
+          - --enforce-freshness
+          - compatibility_stale_or_missing_count
+      - id: runtime.compatibility_missing_status_visibility_required
+        kind: file_tokens
+        path: /scripts/runner_status_ingest.sh
+        must_contain:
+          - freshness_state
+          - missing
+          - policy_effect
+          - non_blocking_fail
+      - id: runtime.required_lane_status_blocking_enforced
+        kind: file_tokens
+        path: /scripts/runner_status_ingest.sh
+        must_contain:
+          - lane_class
+          - required
+          - blocking_fail
       - id: runtime.no_external_runner_file_path_refs_contract_policy
         kind: file_tokens
         path: /specs/contract/policy_v1.yaml

@@ -46,6 +46,17 @@ split:
 - Data Contracts runner execution MUST use pinned release artifacts declared in
   `/specs/schema/dc_runner_rust_lock_v1.yaml`.
 
+5. Status exchange and freshness
+- Runner status reports are exchanged using immutable release artifacts.
+- Report shape is defined by `/specs/schema/runner_status_report_v1.yaml`.
+- Aggregated matrix shape is defined by `/specs/schema/runner_status_matrix_v1.yaml`.
+- Canonical ingest entrypoint is `/scripts/runner_status_ingest.sh`.
+- Compatibility-lane status telemetry older than 72 hours is stale.
+- Compatibility-lane stale/missing telemetry beyond SLO is a governance policy
+  failure in this repository.
+- Required rust lane status failures remain merge-blocking regardless of
+  compatibility lane outcomes.
+
 ## Documentation Contract
 
 - Active docs MUST present Rust-first command examples as canonical.
