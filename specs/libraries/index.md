@@ -9,7 +9,6 @@ Canonical reusable spec-lang libraries.
 - `/specs/libraries/domain/index.md`
 - `/specs/libraries/conformance/index.md`
 - `/specs/libraries/policy/index.md`
-- `/specs/libraries/impl/index.md`
 - `/specs/libraries/path/index.md`
 
 ## Related Generated References

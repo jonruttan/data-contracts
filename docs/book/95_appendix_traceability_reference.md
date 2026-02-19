@@ -177,9 +177,6 @@ Provide generated policy-to-contract/schema/test implementation traceability lin
 | `HARNESS_SUBJECT_TARGET_MAP_DECLARED` | `specs/contract/policy_v1.yaml#HARNESS_SUBJECT_TARGET_MAP_DECLARED` | 1 | 1 | 0 | 1 | 2 |
 | `HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | `specs/contract/policy_v1.yaml#HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED` | 1 | 2 | 0 | 1 | 1 |
 | `HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | `specs/contract/policy_v1.yaml#HARNESS_WORKFLOW_COMPONENTS_REQUIRED` | 1 | 1 | 0 | 1 | 8 |
-| `IMPL_EVALUATE_FIRST_REQUIRED` | `specs/contract/policy_v1.yaml#IMPL_EVALUATE_FIRST_REQUIRED` | 2 | 1 | 0 | 1 | 2 |
-| `IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | `specs/contract/policy_v1.yaml#IMPL_EVALUATE_RATIO_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
-| `IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | `specs/contract/policy_v1.yaml#IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED` | 2 | 1 | 0 | 2 | 3 |
 | `LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | `specs/contract/policy_v1.yaml#LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED` | 1 | 1 | 0 | 1 | 2 |
 | `LIBRARY_DOMAIN_INDEX_SYNC` | `specs/contract/policy_v1.yaml#LIBRARY_DOMAIN_INDEX_SYNC` | 2 | 1 | 0 | 1 | 2 |
 | `LIBRARY_DOMAIN_OWNERSHIP` | `specs/contract/policy_v1.yaml#LIBRARY_DOMAIN_OWNERSHIP` | 2 | 1 | 0 | 1 | 2 |

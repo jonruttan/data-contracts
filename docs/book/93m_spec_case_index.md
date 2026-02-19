@@ -121,9 +121,6 @@ Generated compact index for documented spec cases.
 | `LIB-DOMAIN-REPO-001-001-DOMAIN-REPO-WALK-MATCHING` | `unscoped` | `contract.export` | [jump](/docs/book/93l_spec_case_reference.md#case-lib_domain_repo_001_001_domain_repo_walk_matching) |
 | `LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR` | `unscoped` | `contract.export` | [jump](/docs/book/93l_spec_case_reference.md#case-lib_domain_yaml_001_001_domain_yaml_parse_get_or) |
 | `LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY` | `unscoped` | `contract.export` | [jump](/docs/book/93l_spec_case_reference.md#case-lib_domain_yaml_001_002_domain_yaml_stringify) |
-| `LIB-IMPL-ASSERT-001-001-IMPL-ASSERT-CONTAINS` | `unscoped` | `contract.export` | [jump](/docs/book/93l_spec_case_reference.md#case-lib_impl_assert_001_001_impl_assert_contains) |
-| `LIB-IMPL-ASSERT-001-002-IMPL-ASSERT-REGEX` | `unscoped` | `contract.export` | [jump](/docs/book/93l_spec_case_reference.md#case-lib_impl_assert_001_002_impl_assert_regex) |
-| `LIB-IMPL-ASSERT-001-003-IMPL-ASSERT-JSON-TYPE` | `unscoped` | `contract.export` | [jump](/docs/book/93l_spec_case_reference.md#case-lib_impl_assert_001_003_impl_assert_json_type) |
 | `LIB-PATH-001-001-PATH-NORMALIZE-SLASHES` | `unscoped` | `contract.export` | [jump](/docs/book/93l_spec_case_reference.md#case-lib_path_001_001_path_normalize_slashes) |
 | `LIB-PATH-001-002-PATH-SEGMENTS` | `unscoped` | `contract.export` | [jump](/docs/book/93l_spec_case_reference.md#case-lib_path_001_002_path_segments) |
 | `LIB-PATH-001-003-PATH-BASENAME` | `unscoped` | `contract.export` | [jump](/docs/book/93l_spec_case_reference.md#case-lib_path_001_003_path_basename) |

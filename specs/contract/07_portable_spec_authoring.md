@@ -19,9 +19,6 @@ implementation-independent.
 - Implementation fixture suites SHOULD use evaluate-first assertion trees; sugar
   operators are non-canonical in `runner-owned implementation specs/**` and are only permitted for
   explicitly allowlisted schema-behavior fixtures.
-- Repeated impl assertion predicates SHOULD be expressed via shared helper
-  libraries (for example `/specs/libraries/impl/assertion_core.spec.md`)
-  instead of repeated inline expression trees.
 - Sugar operators (`contain`, `regex`, `json_type`, `exists`) remain schema
   syntax for non-governance/non-conformance surfaces only.
 

@@ -105,8 +105,6 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/governance_policy_library_usage_non_regression.spec.md`
 - `/specs/governance/cases/core/governance_policy_library_usage_required.spec.md`
 - `/specs/governance/cases/core/governance_structured_assertions_required.spec.md`
-- `/specs/governance/cases/core/impl_evaluate_ratio_non_regression.spec.md`
-- `/specs/governance/cases/core/impl_library_usage_non_regression.spec.md`
 - `/specs/governance/cases/core/library_colocated_symbol_tests_required.spec.md`
 - `/specs/governance/cases/core/library_domain_index_sync.spec.md`
 - `/specs/governance/cases/core/library_domain_ownership.spec.md`
