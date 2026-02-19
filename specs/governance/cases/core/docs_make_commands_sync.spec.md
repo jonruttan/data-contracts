@@ -22,6 +22,8 @@ harness:
     - make prepush
     - make prepush-fast
     - make ci-cleanroom
+    forbidden_tokens:
+    - make prepush-parity
   check:
     profile: governance.scan
     config:

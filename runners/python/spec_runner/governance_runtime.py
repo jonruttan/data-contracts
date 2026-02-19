@@ -6412,6 +6412,7 @@ def _scan_docs_make_commands_sync(root: Path, *, harness: dict | None = None) ->
         return ["docs.make_commands_sync requires harness.make_commands mapping in governance spec"]
     files = cfg.get("files")
     required_tokens = cfg.get("required_tokens")
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
     if (
         not isinstance(files, list)
         or not files
@@ -6424,6 +6425,8 @@ def _scan_docs_make_commands_sync(root: Path, *, harness: dict | None = None) ->
         or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
     ):
         return ["harness.make_commands.required_tokens must be a non-empty list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.make_commands.forbidden_tokens must be a list of non-empty strings"]
     for rel in files:
         p = _join_contract_path(root, rel)
         if not p.exists():
@@ -6433,6 +6436,9 @@ def _scan_docs_make_commands_sync(root: Path, *, harness: dict | None = None) ->
         for tok in required_tokens:
             if tok not in text:
                 violations.append(f"{rel}:1: missing required make command token {tok}")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden make command token present {tok}")
     return violations
 
 
