@@ -1,2 +1,0 @@
-"""Shared harness execution components."""
-

@@ -185,7 +185,7 @@ rules:
   references:
   - specs/governance/cases/core/conformance_evaluate_first_ratio_non_regression.spec.md
   - specs/governance/metrics/spec_lang_adoption_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: IMPL_EVALUATE_FIRST_REQUIRED
   introduced_in: v1
   scope: governance
@@ -218,7 +218,7 @@ rules:
   references:
   - specs/governance/cases/core/impl_evaluate_ratio_non_regression.spec.md
   - specs/governance/metrics/spec_lang_adoption_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED
   introduced_in: v1
   scope: governance
@@ -253,7 +253,7 @@ rules:
   references:
   - specs/governance/cases/core/conformance_spec_lang_fixture_library_usage.spec.md
   - specs/libraries/conformance/assertion_core.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: SPEC_LANG_PURE_EVALUATOR
   introduced_in: v1
   scope: implementation
@@ -409,7 +409,7 @@ rules:
     runtimes.
   references:
   - specs/contract/15_governance_subject_model.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: DOC_NORMATIVE_PAGE_TRACEABILITY
   introduced_in: v1
   scope: governance
@@ -598,7 +598,7 @@ rules:
   references:
   - specs/contract/07_portable_spec_authoring.md
   - scripts/spec_portability_report.py
-  - runners/python/spec_runner/spec_portability.py
+  - dc-runner-python/spec_runner/spec_portability.py
 - id: SPEC_PORTABILITY_NON_REGRESSION_REQUIRED
   introduced_in: v1
   scope: governance
@@ -615,7 +615,7 @@ rules:
   references:
   - specs/governance/cases/core/spec_portability_non_regression.spec.md
   - specs/governance/metrics/spec_portability_baseline.json
-  - runners/python/spec_runner/spec_portability.py
+  - dc-runner-python/spec_runner/spec_portability.py
 - id: SPEC_LANG_ADOPTION_METRIC_REPORTED
   introduced_in: v1
   scope: governance
@@ -631,7 +631,7 @@ rules:
   risk_if_violated: Teams cannot measure migration progress toward spec-lang-first
     behavior.
   references:
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: SPEC_LANG_ADOPTION_NON_REGRESSION_REQUIRED
   introduced_in: v1
   scope: governance
@@ -647,7 +647,7 @@ rules:
   references:
   - specs/governance/cases/core/spec_lang_adoption_non_regression.spec.md
   - specs/governance/metrics/spec_lang_adoption_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION
   introduced_in: v1
   scope: governance
@@ -664,7 +664,7 @@ rules:
   references:
   - specs/governance/cases/core/spec_lang_adoption_non_regression.spec.md
   - specs/governance/metrics/spec_lang_adoption_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION
   introduced_in: v1
   scope: governance
@@ -681,7 +681,7 @@ rules:
   references:
   - specs/governance/cases/core/spec_lang_adoption_non_regression.spec.md
   - specs/governance/metrics/spec_lang_adoption_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   introduced_in: v1
   scope: governance
@@ -699,7 +699,7 @@ rules:
   references:
   - specs/governance/cases/core/governance_policy_library_usage_non_regression.spec.md
   - specs/governance/metrics/spec_lang_adoption_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: RUNNER_INDEPENDENCE_METRIC_REPORTED
   introduced_in: v1
   scope: governance
@@ -713,7 +713,7 @@ rules:
   rationale: Quantifies reduction of direct runtime coupling in orchestration paths.
   risk_if_violated: Runtime lock-in can increase unnoticed.
   references:
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: RUNNER_INDEPENDENCE_NON_REGRESSION_REQUIRED
   introduced_in: v1
   scope: governance
@@ -729,7 +729,7 @@ rules:
   references:
   - specs/governance/cases/core/runner_independence_non_regression.spec.md
   - specs/governance/metrics/runner_independence_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
   introduced_in: v1
   scope: governance
@@ -744,7 +744,7 @@ rules:
     alone.
   risk_if_violated: Python coupling can be hidden behind indirection.
   references:
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED
   introduced_in: v1
   scope: governance
@@ -760,7 +760,7 @@ rules:
   references:
   - specs/governance/cases/core/runtime_python_dependency_non_regression.spec.md
   - specs/governance/metrics/python_dependency_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
   introduced_in: v1
   scope: governance
@@ -775,7 +775,7 @@ rules:
   risk_if_violated: Rust/default path remains coupled to Python runtime entrypoints.
   references:
   - specs/governance/cases/core/runtime_non_python_lane_no_python_exec.spec.md
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
   introduced_in: v1
   scope: governance
@@ -790,7 +790,7 @@ rules:
   risk_if_violated: Rust path can mask python dependency through transitive delegation.
   references:
   - specs/governance/cases/core/runtime_rust_adapter_transitive_no_python.spec.md
-  - runners/rust/runner_adapter.sh
+  - dc-runner-rust/runner_adapter.sh
 - id: RUNTIME_DEFAULT_GATE_RUST_ADAPTER_REQUIRED
   introduced_in: v1
   scope: governance
@@ -835,7 +835,7 @@ rules:
   rationale: Measures whether docs remain executable, complete, and actionable.
   risk_if_violated: Documentation quality decays without objective enforcement.
   references:
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: DOCS_OPERABILITY_NON_REGRESSION_REQUIRED
   introduced_in: v1
   scope: governance
@@ -851,7 +851,7 @@ rules:
   references:
   - specs/governance/cases/core/docs_operability_non_regression.spec.md
   - specs/governance/metrics/docs_operability_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: CONTRACT_ASSERTIONS_METRIC_REPORTED
   introduced_in: v1
   scope: governance
@@ -866,7 +866,7 @@ rules:
   risk_if_violated: Assertion contract drift can accumulate across docs and policy
     layers.
   references:
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: CONTRACT_ASSERTIONS_NON_REGRESSION_REQUIRED
   introduced_in: v1
   scope: governance
@@ -882,7 +882,7 @@ rules:
   references:
   - specs/governance/cases/core/contract_assertions_non_regression.spec.md
   - specs/governance/metrics/contract_assertions_baseline.json
-  - runners/python/spec_runner/quality_metrics.py
+  - dc-runner-python/spec_runner/quality_metrics.py
 - id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
   introduced_in: v1
   scope: governance
@@ -897,7 +897,7 @@ rules:
   risk_if_violated: Teams cannot ratchet portability quality over time.
   references:
   - specs/contract/07_portable_spec_authoring.md
-  - runners/python/spec_runner/spec_portability.py
+  - dc-runner-python/spec_runner/spec_portability.py
 - id: DOCS_REF_SURFACE_COMPLETE
   introduced_in: v1
   scope: governance
@@ -1453,7 +1453,7 @@ rules:
     target setup.
   risk_if_violated: Rust lane becomes unusable locally and parity drift increases.
   references:
-  - runners/rust/runner_adapter.sh
+  - dc-runner-rust/runner_adapter.sh
 - id: RUNTIME_LOCAL_CI_PARITY_ENTRYPOINT_DOCUMENTED
   introduced_in: v1
   scope: governance
@@ -1518,8 +1518,8 @@ rules:
     flow.
   risk_if_violated: CI failures lose triage context and are harder to isolate quickly.
   references:
-  - runners/python/spec_runner/script_runtime_commands.py
-  - runners/rust/spec_runner_cli/src/main.rs
+  - dc-runner-python/spec_runner/script_runtime_commands.py
+  - dc-runner-rust/spec_runner_cli/src/main.rs
   - specs/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md
 - id: RUNTIME_TRIAGE_ARTIFACTS_EMITTED_REQUIRED
   introduced_in: v1
@@ -1535,7 +1535,7 @@ rules:
   risk_if_violated: Repeat triage requires ad-hoc reruns and manual log scraping.
   references:
   - scripts/governance_triage.sh
-  - runners/python/spec_runner/script_runtime_commands.py
+  - dc-runner-python/spec_runner/script_runtime_commands.py
   - specs/governance/cases/core/runtime_triage_artifacts_emitted_required.spec.md
 - id: RUNTIME_TRIAGE_FAILURE_ID_PARSING_REQUIRED
   introduced_in: v1
@@ -1615,8 +1615,8 @@ rules:
     latency and inconsistency.
   references:
   - scripts/ci_gate.sh
-  - runners/python/spec_runner/script_runtime_commands.py
-  - runners/rust/spec_runner_cli/src/main.rs
+  - dc-runner-python/spec_runner/script_runtime_commands.py
+  - dc-runner-rust/spec_runner_cli/src/main.rs
   - specs/governance/cases/core/runtime_ci_gate_ownership_contract_required.spec.md
 - id: RUNTIME_GOVERNANCE_PREFIX_SELECTION_FROM_CHANGED_PATHS
   introduced_in: v1
@@ -1670,10 +1670,10 @@ rules:
   applies_to: docs.runner_interface.public_usage
   norm: MUST
   requirement: public_docs_do_not_instruct_direct_internal_rust_adapter_invocation
-  description: 'Public docs must not instruct direct invocation of runners/rust/runner_adapter.sh.
+  description: 'Public docs must not instruct direct invocation of dc-runner-rust/runner_adapter.sh.
 
     '
-  rationale: Keeps runners/rust/runner_adapter.sh an internal implementation detail.
+  rationale: Keeps dc-runner-rust/runner_adapter.sh an internal implementation detail.
   risk_if_violated: Users bypass canonical interface and couple workflows to internals.
   references:
   - specs/contract/12_runner_interface.md
@@ -1731,7 +1731,7 @@ rules:
   norm: MUST
   requirement: rust_adapter_shell_and_rust_cli_subcommand_sets_must_match
   description: 'Rust-primary governance must enforce parity between subcommands exposed
-    by runners/rust/runner_adapter.sh and runners/rust/spec_runner_cli/src/main.rs.
+    by dc-runner-rust/runner_adapter.sh and dc-runner-rust/spec_runner_cli/src/main.rs.
 
     '
   rationale: Prevents runner-interface drift between adapter surface and Rust CLI
@@ -1851,8 +1851,8 @@ rules:
   references:
   - specs/schema/schema_v1.md
   - specs/contract/03_assertions.md
-  - runners/python/spec_runner/compiler.py
-  - runners/python/spec_runner/assertions.py
+  - dc-runner-python/spec_runner/compiler.py
+  - dc-runner-python/spec_runner/assertions.py
 - id: ASSERT_TARGET_CONTRACT_SUBJECT_DRIVEN
   introduced_in: v1
   scope: contract
@@ -1887,7 +1887,7 @@ rules:
   - specs/schema/schema_v1.md
   - specs/contract/03_assertions.md
   - specs/contract/09_internal_representation.md
-  - runners/python/spec_runner/compiler.py
+  - dc-runner-python/spec_runner/compiler.py
 - id: GOVERNANCE_DECISIONS_VIA_SPEC_LANG_ONLY
   introduced_in: v1
   scope: governance
@@ -1904,7 +1904,7 @@ rules:
   risk_if_violated: Governance policy drifts into ad-hoc host-language code.
   references:
   - specs/contract/15_governance_subject_model.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: ORCHESTRATION_POLICY_VIA_SPEC_LANG_ONLY
   introduced_in: v1
   scope: governance
@@ -1918,7 +1918,7 @@ rules:
   rationale: Keeps release policy implementation-independent and auditable.
   risk_if_violated: Gate behavior hardcodes runtime-specific logic in scripts.
   references:
-  - runners/python/spec_runner/script_runtime_commands.py
+  - dc-runner-python/spec_runner/script_runtime_commands.py
   - specs/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
 - id: ORCHESTRATION_OPS_DEEP_DOT_REQUIRED
   introduced_in: v1
@@ -2181,7 +2181,7 @@ rules:
   references:
   - scripts/normalize_repo.py
   - runners/public/runner_adapter.sh
-  - runners/python/spec_runner/script_runtime_commands.py
+  - dc-runner-python/spec_runner/script_runtime_commands.py
 - id: NORMALIZATION_MAPPING_AST_ONLY
   introduced_in: v1
   scope: schema
@@ -2261,7 +2261,7 @@ rules:
   risk_if_violated: Specs become brittle and fail late.
   references:
   - specs/governance/cases/core/reference_contract_paths_exist.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: REFERENCE_SYMBOLS_EXIST
   introduced_in: v1
   scope: governance
@@ -2275,7 +2275,7 @@ rules:
   risk_if_violated: Governance checks fail unpredictably due missing symbols.
   references:
   - specs/governance/cases/core/reference_symbols_exist.spec.md
-  - runners/python/spec_runner/spec_lang_libraries.py
+  - dc-runner-python/spec_runner/spec_lang_libraries.py
 - id: REFERENCE_LIBRARY_EXPORTS_USED
   introduced_in: v1
   scope: governance
@@ -2290,7 +2290,7 @@ rules:
   risk_if_violated: Unused exported symbols create drift and unclear API surfaces.
   references:
   - specs/governance/cases/core/reference_library_exports_used.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: REFERENCE_PRIVATE_SYMBOLS_FORBIDDEN
   introduced_in: v1
   scope: governance
@@ -2305,7 +2305,7 @@ rules:
   risk_if_violated: Private implementation details leak into case contracts.
   references:
   - specs/governance/cases/core/reference_private_symbols_forbidden.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: REFERENCE_CHECK_IDS_EXIST
   introduced_in: v1
   scope: governance
@@ -2319,7 +2319,7 @@ rules:
   risk_if_violated: Cases silently stop enforcing intended rules.
   references:
   - specs/governance/cases/core/reference_check_ids_exist.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: REFERENCE_EXTERNAL_REFS_POLICY
   introduced_in: v1
   scope: governance
@@ -2350,7 +2350,7 @@ rules:
   risk_if_violated: Governance checks become stale and misleading.
   references:
   - specs/governance/cases/core/reference_token_anchors_exist.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: SPEC_LAYOUT_DOMAIN_TREES
   introduced_in: v1
   scope: governance
@@ -2365,7 +2365,7 @@ rules:
   risk_if_violated: Flat trees become hard to navigate and references drift.
   references:
   - specs/governance/cases/core/spec_layout_domain_trees.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: SPEC_DOMAIN_INDEX_SYNC
   introduced_in: v1
   scope: governance
@@ -2380,7 +2380,7 @@ rules:
   risk_if_violated: Index drift hides missing or stale references.
   references:
   - specs/governance/cases/core/spec_domain_index_sync.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: LIBRARY_DOMAIN_OWNERSHIP
   introduced_in: v1
   scope: governance
@@ -2395,7 +2395,7 @@ rules:
   risk_if_violated: Cross-domain coupling increases brittleness and review ambiguity.
   references:
   - specs/governance/cases/core/library_domain_ownership.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: LIBRARY_DOMAIN_INDEX_SYNC
   introduced_in: v1
   scope: governance
@@ -2410,7 +2410,7 @@ rules:
   risk_if_violated: Missing or stale symbol references break policy reuse at runtime.
   references:
   - specs/governance/cases/core/library_domain_index_sync.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: LIBRARY_PUBLIC_SURFACE_MODEL
   introduced_in: v1
   scope: governance
@@ -2427,7 +2427,7 @@ rules:
   references:
   - specs/governance/cases/core/library_public_surface_model.spec.md
   - specs/contract/14_spec_lang_libraries.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: LIBRARY_SINGLE_PUBLIC_SYMBOL_PER_CASE_REQUIRED
   introduced_in: v1
   scope: schema
@@ -2443,7 +2443,7 @@ rules:
   references:
   - specs/contract/14_spec_lang_libraries.md
   - specs/governance/cases/core/library_single_public_symbol_per_case_required.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: LIBRARY_COLOCATED_SYMBOL_TESTS_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2459,7 +2459,7 @@ rules:
   references:
   - specs/contract/14_spec_lang_libraries.md
   - specs/governance/cases/core/library_colocated_symbol_tests_required.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: SPEC_LANG_STDLIB_PROFILE_DEFINED
   introduced_in: v1
   scope: contract
@@ -2489,7 +2489,7 @@ rules:
   risk_if_violated: Conformance and policy behavior diverge by implementation.
   references:
   - specs/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: SPEC_LANG_STDLIB_PY_PHP_PARITY_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2504,7 +2504,7 @@ rules:
   risk_if_violated: Cross-runtime policy/assertion behavior drifts.
   references:
   - specs/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: SPEC_LANG_STDLIB_DOCS_SYNC_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2519,7 +2519,7 @@ rules:
   risk_if_violated: Authors follow stale stdlib docs and produce invalid specs.
   references:
   - specs/governance/cases/core/spec_lang_stdlib_docs_sync.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: SPEC_LANG_STDLIB_CONFORMANCE_COVERAGE_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2551,7 +2551,7 @@ rules:
   references:
   - specs/contract/20_subject_profiles_v1.md
   - specs/schema/subject_profiles_v1.yaml
-  - runners/python/spec_runner/spec_lang.py
+  - dc-runner-python/spec_runner/spec_lang.py
   - specs/governance/cases/core/assert_subject_profiles_json_only.spec.md
 - id: ASSERT_CONTEXT_PROJECTION_CONTRACT_REQUIRED
   introduced_in: v1
@@ -2568,9 +2568,9 @@ rules:
   references:
   - specs/contract/20_subject_profiles_v1.md
   - specs/contract/04_harness.md
-  - runners/python/spec_runner/harnesses/text_file.py
-  - runners/python/spec_runner/harnesses/cli_run.py
-  - runners/python/spec_runner/harnesses/api_http.py
+  - dc-runner-python/spec_runner/harnesses/text_file.py
+  - dc-runner-python/spec_runner/harnesses/cli_run.py
+  - dc-runner-python/spec_runner/harnesses/api_http.py
   - specs/governance/cases/core/assert_adapter_projection_contract_sync.spec.md
 - id: ASSERT_DOMAIN_ASSERTIONS_LIBRARY_BACKED
   introduced_in: v1
@@ -2622,7 +2622,7 @@ rules:
   rationale: Maintains a stable cross-implementation value model.
   risk_if_violated: Behavior differs by host language object model.
   references:
-  - runners/python/spec_runner/spec_lang.py
+  - dc-runner-python/spec_runner/spec_lang.py
   - specs/contract/03b_spec_lang_v1.md
   - specs/governance/cases/core/assert_subject_profiles_json_only.spec.md
 - id: EXECUTABLE_SURFACES_MUST_BE_SPEC_MD
@@ -2641,7 +2641,7 @@ rules:
     portability guarantees.
   references:
   - specs/governance/cases/core/spec_executable_surface_markdown_only.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: EXECUTABLE_DISCOVERY_MARKDOWN_ONLY
   introduced_in: v1
   scope: runtime
@@ -2657,7 +2657,7 @@ rules:
   risk_if_violated: Policy/execution drift can occur via non-canonical runnable file
     formats.
   references:
-  - runners/python/spec_runner/codecs.py
+  - dc-runner-python/spec_runner/codecs.py
   - specs/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
 - id: DATA_ARTIFACT_SURFACES_MUST_REMAIN_MACHINE_FILES
   introduced_in: v1
@@ -2676,7 +2676,7 @@ rules:
     of governance/report pipelines.
   references:
   - specs/governance/cases/core/spec_generated_data_artifacts_not_embedded_in_spec_blocks.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: NO_EXECUTABLE_YAML_JSON_CASES_IN_CANONICAL_TREES
   introduced_in: v1
   scope: governance
@@ -2694,7 +2694,7 @@ rules:
   references:
   - specs/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md
   - specs/governance/cases/core/spec_library_cases_markdown_only.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: SCHEMA_REGISTRY_SOURCE_OF_TRUTH_REQUIRED
   introduced_in: v1
   scope: governance
@@ -2724,8 +2724,8 @@ rules:
   rationale: Ensures unknown/invalid case-shape inputs fail early and deterministically.
   risk_if_violated: Invalid cases can reach runtime harnesses and fail inconsistently.
   references:
-  - runners/python/spec_runner/schema_validator.py
-  - runners/python/spec_runner/compiler.py
+  - dc-runner-python/spec_runner/schema_validator.py
+  - dc-runner-python/spec_runner/compiler.py
   - specs/governance/cases/core/schema_registry_valid.spec.md
 - id: SCHEMA_DOCS_GENERATED_FROM_REGISTRY_REQUIRED
   introduced_in: v1
@@ -2755,7 +2755,7 @@ rules:
   rationale: Prevents silent informal extensions and ambiguous behavior.
   risk_if_violated: Case behavior becomes non-portable and difficult to audit.
   references:
-  - runners/python/spec_runner/schema_validator.py
+  - dc-runner-python/spec_runner/schema_validator.py
   - specs/conformance/cases/core/schema_case_validation.spec.md
 - id: SCHEMA_TYPE_PROFILE_COVERAGE_REQUIRED
   introduced_in: v1
@@ -3139,7 +3139,7 @@ rules:
   risk_if_violated: Token/secret leakage through diagnostics/artifacts.
   references:
   - specs/contract/types/http_profile.md
-  - runners/python/spec_runner/harnesses/api_http.py
+  - dc-runner-python/spec_runner/harnesses/api_http.py
 - id: API_HTTP_DETERMINISTIC_DEFAULT_REQUIRED
   introduced_in: v1
   scope: implementation
@@ -3186,7 +3186,7 @@ rules:
   references:
   - specs/contract/types/api_http.md
   - specs/conformance/cases/core/api_http.spec.md
-  - runners/python/spec_runner/harnesses/api_http.py
+  - dc-runner-python/spec_runner/harnesses/api_http.py
 - id: API_HTTP_CORS_PRELIGHT_AND_ACTUAL_SUPPORTED
   introduced_in: v1
   scope: implementation
@@ -3220,7 +3220,7 @@ rules:
   references:
   - specs/contract/types/api_http.md
   - specs/conformance/cases/core/api_http.spec.md
-  - runners/python/spec_runner/harnesses/api_http.py
+  - dc-runner-python/spec_runner/harnesses/api_http.py
 - id: API_HTTP_SCENARIO_DETERMINISTIC_LIFECYCLE_REQUIRED
   introduced_in: v1
   scope: implementation
@@ -3236,7 +3236,7 @@ rules:
   risk_if_violated: Non-deterministic failures and resource leakage in test runs.
   references:
   - specs/contract/types/api_http.md
-  - runners/python/spec_runner/harnesses/api_http.py
+  - dc-runner-python/spec_runner/harnesses/api_http.py
 - id: API_HTTP_PY_PHP_BEHAVIOR_PARITY_REQUIRED
   introduced_in: v1
   scope: conformance
@@ -3250,8 +3250,8 @@ rules:
   rationale: Keeps extension behavior portable across declared implementations.
   risk_if_violated: Multi-implementation conformance guarantees drift.
   references:
-  - runners/php/conformance_runner.php
-  - runners/python/spec_runner/harnesses/api_http.py
+  - dc-runner-php/conformance_runner.php
+  - dc-runner-python/spec_runner/harnesses/api_http.py
   - tests/test_conformance_parity_unit.py
 - id: API_HTTP_TUTORIAL_COVERAGE_REQUIRED
   introduced_in: v1
@@ -3285,7 +3285,7 @@ rules:
   references:
   - specs/contract/04_harness.md
   - specs/schema/schema_v1.md
-  - runners/python/spec_runner/components/chain_engine.py
+  - dc-runner-python/spec_runner/components/chain_engine.py
 - id: CHAIN_EXPORTS_EXPLICIT_REQUIRED
   introduced_in: v1
   scope: implementation
@@ -3299,7 +3299,7 @@ rules:
   risk_if_violated: Producer symbol surfaces become ambiguous.
   references:
   - specs/contract/04_harness.md
-  - runners/python/spec_runner/components/chain_engine.py
+  - dc-runner-python/spec_runner/components/chain_engine.py
 - id: CHAIN_EXPORTS_FROM_KEY_REQUIRED
   introduced_in: v1
   scope: schema
@@ -3315,7 +3315,7 @@ rules:
   - specs/contract/04_harness.md
   - specs/schema/schema_v1.md
   - specs/governance/cases/core/runtime_chain_exports_from_key_required.spec.md
-  - runners/python/spec_runner/components/chain_engine.py
+  - dc-runner-python/spec_runner/components/chain_engine.py
 - id: CHAIN_EXPORTS_LIST_ONLY_REQUIRED
   introduced_in: v1
   scope: schema
@@ -3333,7 +3333,7 @@ rules:
   - specs/schema/schema_v1.md
   - specs/governance/cases/core/runtime_chain_exports_list_only_required.spec.md
   - specs/conformance/cases/core/chain_exports.spec.md
-  - runners/python/spec_runner/components/chain_engine.py
+  - dc-runner-python/spec_runner/components/chain_engine.py
 - id: CHAIN_LIBRARY_SYMBOL_EXPORTS_VALID
   introduced_in: v1
   scope: implementation
@@ -3350,7 +3350,7 @@ rules:
   - specs/contract/04_harness.md
   - specs/contract/14_spec_lang_libraries.md
   - specs/governance/cases/core/runtime_chain_library_symbol_exports_valid.spec.md
-  - runners/python/spec_runner/components/chain_engine.py
+  - dc-runner-python/spec_runner/components/chain_engine.py
 - id: CHAIN_FAIL_FAST_DEFAULT_REQUIRED
   introduced_in: v1
   scope: implementation
@@ -3365,7 +3365,7 @@ rules:
   risk_if_violated: Downstream assertions may run on invalid state.
   references:
   - specs/contract/04_harness.md
-  - runners/python/spec_runner/components/chain_engine.py
+  - dc-runner-python/spec_runner/components/chain_engine.py
 - id: CHAIN_CYCLE_FORBIDDEN
   introduced_in: v1
   scope: runtime
@@ -3380,8 +3380,8 @@ rules:
   risk_if_violated: Runner instability and unpredictable behavior.
   references:
   - specs/governance/cases/core/runtime_chain_cycle_forbidden.spec.md
-  - runners/python/spec_runner/components/chain_engine.py
-  - runners/python/spec_runner/dispatcher.py
+  - dc-runner-python/spec_runner/components/chain_engine.py
+  - dc-runner-python/spec_runner/dispatcher.py
 - id: CHAIN_SHARED_CONTEXT_REQUIRED
   introduced_in: v1
   scope: runtime
@@ -3396,8 +3396,8 @@ rules:
   risk_if_violated: Step exports cannot be consumed reliably by dependent cases.
   references:
   - specs/contract/04_harness.md
-  - runners/python/spec_runner/dispatcher.py
-  - runners/python/spec_runner/harnesses/api_http.py
+  - dc-runner-python/spec_runner/dispatcher.py
+  - dc-runner-python/spec_runner/harnesses/api_http.py
 - id: UNIVERSAL_CHAIN_SUPPORT_REQUIRED
   introduced_in: v1
   scope: runtime
@@ -3414,7 +3414,7 @@ rules:
   references:
   - specs/contract/04_harness.md
   - specs/governance/cases/core/runtime_universal_chain_support_required.spec.md
-  - runners/python/spec_runner/dispatcher.py
+  - dc-runner-python/spec_runner/dispatcher.py
 - id: CHAIN_STEP_CLASS_REQUIRED
   introduced_in: v1
   scope: implementation
@@ -3431,7 +3431,7 @@ rules:
   - specs/schema/schema_v1.md
   - specs/contract/04_harness.md
   - specs/governance/cases/core/runtime_chain_step_class_required.spec.md
-  - runners/python/spec_runner/components/chain_engine.py
+  - dc-runner-python/spec_runner/components/chain_engine.py
 - id: CHAIN_IMPORT_ALIAS_COLLISION_FORBIDDEN
   introduced_in: v1
   scope: implementation
@@ -3448,7 +3448,7 @@ rules:
   - specs/schema/schema_v1.md
   - specs/contract/04_harness.md
   - specs/governance/cases/core/runtime_chain_import_alias_collision_forbidden.spec.md
-  - runners/python/spec_runner/components/chain_engine.py
+  - dc-runner-python/spec_runner/components/chain_engine.py
 - id: CHAIN_CONTRACT_SINGLE_LOCATION_REQUIRED
   introduced_in: v1
   scope: schema
@@ -3465,7 +3465,7 @@ rules:
   - specs/schema/schema_v1.md
   - specs/contract/04_harness.md
   - specs/governance/cases/core/runtime_chain_contract_single_location.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: EXECUTABLE_SPEC_LANG_INCLUDES_FORBIDDEN
   introduced_in: v1
   scope: schema
@@ -3481,7 +3481,7 @@ rules:
   references:
   - specs/contract/04_harness.md
   - specs/governance/cases/core/runtime_executable_spec_lang_includes_forbidden.spec.md
-  - runners/python/spec_runner/components/execution_context.py
+  - dc-runner-python/spec_runner/components/execution_context.py
 - id: DOCS_STDLIB_SYMBOL_DESCRIPTION_REQUIRED
   introduced_in: v1
   scope: governance
@@ -3573,7 +3573,7 @@ rules:
   risk_if_violated: Generated references degrade into inventory-only output.
   references:
   - specs/governance/cases/core/docs_docgen_quality_score_threshold.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: DOCS_MARKDOWN_STRUCTURED_ASSERTIONS_REQUIRED
   introduced_in: v1
   scope: governance
@@ -3591,7 +3591,7 @@ rules:
   references:
   - specs/governance/cases/core/docs_markdown_structured_assertions_required.spec.md
   - specs/libraries/domain/markdown_core.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: HARNESS_WORKFLOW_COMPONENTS_REQUIRED
   introduced_in: v1
   scope: implementation
@@ -3606,9 +3606,9 @@ rules:
   risk_if_violated: Drift and regressions across harness types.
   references:
   - specs/governance/cases/core/architecture_harness_workflow_components_required.spec.md
-  - runners/python/spec_runner/components/execution_context.py
-  - runners/python/spec_runner/components/assertion_engine.py
-  - runners/python/spec_runner/components/subject_router.py
+  - dc-runner-python/spec_runner/components/execution_context.py
+  - dc-runner-python/spec_runner/components/assertion_engine.py
+  - dc-runner-python/spec_runner/components/subject_router.py
 - id: HARNESS_LOCAL_WORKFLOW_DUPLICATION_FORBIDDEN
   introduced_in: v1
   scope: implementation
@@ -3623,7 +3623,7 @@ rules:
   risk_if_violated: Architecture backslides into per-harness divergence.
   references:
   - specs/governance/cases/core/architecture_harness_local_workflow_duplication_forbidden.spec.md
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
 - id: HARNESS_TYPE_OVERLAY_COMPLETE_REQUIRED
   introduced_in: v1
   scope: schema
@@ -3669,7 +3669,7 @@ rules:
   risk_if_violated: Hidden target behavior and brittle assertions.
   references:
   - specs/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md
-  - runners/python/spec_runner/components/subject_router.py
+  - dc-runner-python/spec_runner/components/subject_router.py
 - id: LIBRARY_VERB_FIRST_SCHEMA_KEYS_REQUIRED
   introduced_in: v1
   scope: schema
@@ -3756,8 +3756,8 @@ rules:
   risk_if_violated: Gates continue expensive work after known failure and slow feedback
     loops.
   references:
-  - runners/python/spec_runner/script_runtime_commands.py
-  - runners/rust/spec_runner_cli/src/main.rs
+  - dc-runner-python/spec_runner/script_runtime_commands.py
+  - dc-runner-rust/spec_runner_cli/src/main.rs
   - specs/governance/cases/core/runtime_gate_fail_fast_behavior_required.spec.md
 - id: RUNTIME_GATE_SKIPPED_STEPS_CONTRACT_REQUIRED
   introduced_in: v1
@@ -3771,8 +3771,8 @@ rules:
     gate.
   risk_if_violated: Diagnostics lose cause-chain detail and become brittle.
   references:
-  - runners/python/spec_runner/script_runtime_commands.py
-  - runners/rust/spec_runner_cli/src/main.rs
+  - dc-runner-python/spec_runner/script_runtime_commands.py
+  - dc-runner-rust/spec_runner_cli/src/main.rs
   - specs/contract/24_runtime_profiling_contract.md
   - specs/governance/cases/core/runtime_gate_skipped_steps_contract_required.spec.md
 - id: RUNTIME_PROFILE_ARTIFACTS_ON_FAIL_REQUIRED
@@ -3786,8 +3786,8 @@ rules:
   rationale: Ensures failures are diagnosable without rerunning first.
   risk_if_violated: Hang and failure triage remains slow and manual.
   references:
-  - runners/python/spec_runner/script_runtime_commands.py
-  - runners/rust/spec_runner_cli/src/main.rs
+  - dc-runner-python/spec_runner/script_runtime_commands.py
+  - dc-runner-rust/spec_runner_cli/src/main.rs
   - specs/contract/24_runtime_profiling_contract.md
   - specs/governance/cases/core/runtime_profile_artifacts_on_fail_required.spec.md
 - id: RUNTIME_GATE_POLICY_SKIPPED_ROWS_REQUIRED
@@ -3801,8 +3801,8 @@ rules:
   rationale: Preserves correctness when fail-fast short-circuits execution.
   risk_if_violated: Fail-fast runs could incorrectly report pass semantics.
   references:
-  - runners/python/spec_runner/script_runtime_commands.py
-  - runners/rust/spec_runner_cli/src/main.rs
+  - dc-runner-python/spec_runner/script_runtime_commands.py
+  - dc-runner-rust/spec_runner_cli/src/main.rs
   - specs/governance/cases/core/runtime_orchestration_policy_via_spec_lang.spec.md
 - id: ASSERT_BLOCK_DECISION_AUTHORITY_REQUIRED
   introduced_in: v1
@@ -3815,7 +3815,7 @@ rules:
   rationale: Keeps contractual decision authority in specs.
   risk_if_violated: Decision logic drifts into harness metadata and runner branches.
   references:
-  - runners/python/spec_runner/governance_runtime.py
+  - dc-runner-python/spec_runner/governance_runtime.py
   - specs/contract/03_assertions.md
   - specs/governance/cases/core/runtime_assert_block_decision_authority_required.spec.md
 - id: META_JSON_TARGET_REQUIRED
@@ -3829,11 +3829,11 @@ rules:
   rationale: Separates metadata from expression source while keeping it assert-accessible.
   risk_if_violated: Contracts cannot assert over metadata deterministically.
   references:
-  - runners/python/spec_runner/harnesses/text_file.py
-  - runners/python/spec_runner/harnesses/cli_run.py
-  - runners/python/spec_runner/harnesses/docs_generate.py
-  - runners/python/spec_runner/harnesses/orchestration_run.py
-  - runners/python/spec_runner/harnesses/api_http.py
+  - dc-runner-python/spec_runner/harnesses/text_file.py
+  - dc-runner-python/spec_runner/harnesses/cli_run.py
+  - dc-runner-python/spec_runner/harnesses/docs_generate.py
+  - dc-runner-python/spec_runner/harnesses/orchestration_run.py
+  - dc-runner-python/spec_runner/harnesses/api_http.py
   - specs/governance/cases/core/runtime_meta_json_target_required.spec.md
 - id: OPS_OS_CAPABILITY_REQUIRED
   introduced_in: v1
@@ -3846,7 +3846,7 @@ rules:
   rationale: Side effects must be explicit and auditable.
   risk_if_violated: Unbounded process/environment side effects from specs.
   references:
-  - runners/python/spec_runner/spec_lang.py
+  - dc-runner-python/spec_runner/spec_lang.py
   - specs/governance/cases/core/runtime_ops_os_capability_required.spec.md
 - id: CONTRACT_SPEC_FENCE_REQUIRED
   introduced_in: v1
@@ -3858,7 +3858,7 @@ rules:
   rationale: Hard-cut terminology keeps parser and docs aligned.
   risk_if_violated: Case discovery becomes ambiguous across non-canonical/new formats.
   references:
-  - runners/python/spec_runner/doc_parser.py
+  - dc-runner-python/spec_runner/doc_parser.py
   - specs/governance/cases/core/runtime_contract_spec_fence_required.spec.md
 - id: CASE_CONTRACT_BLOCK_REQUIRED
   introduced_in: v1
@@ -3882,7 +3882,7 @@ rules:
   rationale: Maintains deterministic step-tree structure.
   risk_if_violated: Step-form nodes fail compilation/evaluation parity.
   references:
-  - runners/python/spec_runner/compiler.py
+  - dc-runner-python/spec_runner/compiler.py
   - specs/governance/cases/core/runtime_contract_step_asserts_required.spec.md
 - id: CONTRACT_JOB_DISPATCH_IN_CONTRACT_REQUIRED
   introduced_in: v1
@@ -3938,7 +3938,7 @@ rules:
   risk_if_violated: Job contracts can deadlock, recurse, or become non-deterministic.
   references:
   - specs/contract/12_runner_interface.md
-  - runners/rust/spec_runner_cli/src/spec_lang.rs
+  - dc-runner-rust/spec_runner_cli/src/spec_lang.rs
 - id: WHEN_HOOKS_SCHEMA_VALID
   introduced_in: v1
   scope: runtime
@@ -3965,7 +3965,7 @@ rules:
   risk_if_violated: Hooks can run at wrong lifecycle points and break contract expectations.
   references:
   - specs/contract/03_assertions.md
-  - runners/python/spec_runner/components/assertion_engine.py
+  - dc-runner-python/spec_runner/components/assertion_engine.py
 - id: WHEN_FAIL_HOOK_ON_FIRST_FAILURE_REQUIRED
   introduced_in: v1
   scope: runtime
@@ -3978,7 +3978,7 @@ rules:
     cause.
   references:
   - specs/contract/03_assertions.md
-  - runners/python/spec_runner/components/assertion_engine.py
+  - dc-runner-python/spec_runner/components/assertion_engine.py
 - id: WHEN_COMPLETE_HOOK_AFTER_FINAL_CLASS_HOOK_REQUIRED
   introduced_in: v1
   scope: runtime
@@ -3991,7 +3991,7 @@ rules:
   risk_if_violated: Completion logic can run before lifecycle work is actually done.
   references:
   - specs/contract/03_assertions.md
-  - runners/python/spec_runner/components/assertion_engine.py
+  - dc-runner-python/spec_runner/components/assertion_engine.py
 - id: WHEN_HOOK_FAILURE_FAILFAST_REQUIRED
   introduced_in: v1
   scope: runtime
@@ -4004,7 +4004,7 @@ rules:
   risk_if_violated: Silent hook failures undermine contract determinism.
   references:
   - specs/contract/12_runner_interface.md
-  - runners/python/spec_runner/components/assertion_engine.py
+  - dc-runner-python/spec_runner/components/assertion_engine.py
 - id: CONTRACT_JOB_FAIL_COMPLETE_HOOK_PATTERN_REQUIRED
   introduced_in: v1
   scope: runtime
@@ -4055,5 +4055,5 @@ rules:
   rationale: Converts documentation drift into fast deterministic failures.
   risk_if_violated: stale and contradictory docs silently accumulate.
   references:
-  - runners/python/spec_runner/script_runtime_commands.py
+  - dc-runner-python/spec_runner/script_runtime_commands.py
   - specs/governance/cases/core/docs_canonical_freshness_strict.spec.md

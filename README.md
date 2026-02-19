@@ -1,8 +1,8 @@
-# Spec Runner
+# Data Contracts
 
-`spec_runner` is a contract-first executable spec system for Markdown-authored cases.
+`data-contracts` is a contract-first executable spec system for Markdown-authored cases.
 It discovers `yaml contract-spec` blocks in `*.spec.md`, validates schema/contract
-shape, and executes typed harnesses through a stable runner interface.
+shape, and executes checks through a stable runner interface.
 
 The source of truth is split by role:
 
@@ -15,7 +15,7 @@ This project is **pre-alpha** and changes quickly.
 
 Trust model:
 
-- `spec_runner` is **not a sandbox**.
+- `data-contracts` is **not a sandbox**.
 - Specs are trusted inputs.
 - Running untrusted specs is unsafe and out of scope for v1.
 
@@ -74,14 +74,17 @@ Emergency bypass (only when necessary):
 SPEC_PREPUSH_BYPASS=1 git push
 ```
 
-## Compatibility Matrix (Non-Blocking)
+## Runtime Ownership
 
-Lane classes:
+Required lane ownership:
 
-- `required`: rust
-- `compatibility_non_blocking`: python, php, node, c
+- `required`: `dc-runner-rust`
+- `compatibility_non_blocking`: `dc-runner-python`, `dc-runner-php`, node (planned), c (planned)
 
-These compatibility lanes are non-blocking telemetry; merge blocking is Rust-first.
+Data Contracts consumes a pinned `dc-runner-rust` release artifact via:
+
+- `/Users/jon/Workspace/Development/spec_runner/scripts/runner_bin.sh`
+- `/Users/jon/Workspace/Development/spec_runner/specs/schema/dc_runner_rust_lock_v1.yaml`
 
 Contract reference:
 
@@ -130,7 +133,7 @@ contract:
 
 ## Repo Layout
 
-- `runners/`: runtime adapters and implementations
+- `runners/`: public adapter boundary only (runner implementations are external repos)
 - `scripts/`: operational entrypoints for local/CI workflows
 - `specs/`: executable specs and normative contracts
 - `docs/`: narrative and generated documentation surfaces

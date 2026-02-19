@@ -3,6 +3,8 @@
 Defines the language-neutral command boundary used by local gate scripts.
 
 Rust-first contract: Rust is the canonical required runtime lane.
+Project split contract: Data Contracts (`data-contracts`) consumes runner
+implementations from external `dc-runner-*` repositories.
 
 Execution classes:
 
@@ -50,15 +52,13 @@ CI expectation:
 
 ## Default Adapter
 
-Repository adapters:
+Repository adapter:
 
-- `runners/public/runner_adapter.sh` (single public entrypoint; rust default router)
-- `runners/rust/runner_adapter.sh` (internal rust adapter; invokes Rust CLI)
-- `runners/python/runner_adapter.sh` (internal compatibility adapter path)
-- `runners/rust/spec_runner_cli` (Rust runner-interface CLI crate)
+- `runners/public/runner_adapter.sh` (single public entrypoint; invokes pinned
+  `dc-runner-rust` release artifact via `scripts/runner_bin.sh`)
 
-Rust adapters MUST NOT require Python process delegation for supported
-subcommands.
+Rust runner binaries from `dc-runner-rust` MUST NOT require Python process
+delegation for supported subcommands.
 Alternative implementations can replace the adapter by setting `SPEC_RUNNER_BIN`
 to a different compatible command.
 
@@ -66,6 +66,8 @@ Runtime hard-cut:
 
 - `runners/public/runner_adapter.sh --impl python ...` is forbidden and must hard-fail
   with migration guidance to Rust commands.
+- source-coupling to local `runners/rust`, `runners/python`, or `runners/php`
+  implementation trees is forbidden in `data-contracts`.
 
 Compatibility matrix classing:
 
@@ -74,6 +76,7 @@ Compatibility matrix classing:
 - `node/c` are planned non-blocking compatibility lanes.
 - Normative matrix contract: `/specs/contract/25_compatibility_matrix.md`.
 - Certification registry contract: `/specs/schema/runner_certification_registry_v1.yaml`.
+- Runtime lock contract: `/specs/schema/dc_runner_rust_lock_v1.yaml`.
 
 Rust adapter target behavior:
 

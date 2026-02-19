@@ -22,7 +22,7 @@ Source snapshot: `docs/reviews/snapshots/2026-02-19_personas-run.md`
   - transient adapter failures include deterministic diagnostic context and retry guidance.
   - repeated governance invocations do not fail with unexplained process kills in steady state.
 - affected_paths:
-  - `/runners/rust/runner_adapter.sh`
+  - `/dc-runner-rust/runner_adapter.sh`
   - `/docs/book/80_troubleshooting.md`
 
 ### PERSONA-RUN-002

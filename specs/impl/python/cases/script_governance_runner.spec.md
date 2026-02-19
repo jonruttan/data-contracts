@@ -103,7 +103,7 @@ harness:
   check:
     profile: text.file
     config:
-      path: /runners/python/spec_runner/governance_runtime.py
+      path: /dc-runner-python/spec_runner/governance_runtime.py
 contract:
   defaults:
     class: MUST

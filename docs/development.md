@@ -79,13 +79,13 @@ Compatibility lane examples (non-blocking):
 
 ```sh
 ./runners/public/runner_adapter.sh --impl rust governance
-php runners/php/conformance_runner.php --cases specs/conformance/cases --case-formats md
+php dc-runner-php/conformance_runner.php --cases specs/conformance/cases --case-formats md
 ```
 
 Optional local prebuild for Rust lane:
 
 ```sh
-cargo build --manifest-path runners/rust/spec_runner_cli/Cargo.toml
+cargo build --manifest-path dc-runner-rust/spec_runner_cli/Cargo.toml
 ```
 
 ## Run Core Gate Checks
@@ -230,8 +230,8 @@ The following exit codes are stable command contracts for CI/scripting.
 | Command | `0` | `1` | `2` |
 | --- | --- | --- | --- |
 | `python -m spec_runner.python_conformance_runner` | runner completed and all case statuses are `pass`/`skip` | at least one case status is `fail`, or runtime execution error occurred | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`, nonexistent `--cases` path) |
-| `php runners/php/conformance_runner.php` | runner completed and report written (case-level failures are reported in JSON, not promoted to process failure) | fatal runtime error (for example YAML extension missing, unreadable path, write failure) | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`) |
-| `php runners/php/spec_runner.php` | runner completed, report written, and all cases passed | one or more cases failed, or fatal runtime error occurred | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`) |
+| `php dc-runner-php/conformance_runner.php` | runner completed and report written (case-level failures are reported in JSON, not promoted to process failure) | fatal runtime error (for example YAML extension missing, unreadable path, write failure) | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`) |
+| `php dc-runner-php/spec_runner.php` | runner completed, report written, and all cases passed | one or more cases failed, or fatal runtime error occurred | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`) |
 
 Notes:
 
@@ -360,7 +360,7 @@ Generate a bootstrap PHP report:
 
 ```sh
 # Requires PHP yaml_parse extension.
-php runners/php/conformance_runner.php \
+php dc-runner-php/conformance_runner.php \
   --cases specs/conformance/cases/core/php_text_file_subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
@@ -377,7 +377,7 @@ Run end-to-end Python/PHP parity over canonical conformance cases:
 spec-runner-parity \
   --cases specs/conformance/cases \
   --case-formats md \
-  --php-runner runners/php/conformance_runner.php \
+  --php-runner dc-runner-php/conformance_runner.php \
   --php-timeout-seconds 30 \
   --out .artifacts/conformance-parity.json
 ```

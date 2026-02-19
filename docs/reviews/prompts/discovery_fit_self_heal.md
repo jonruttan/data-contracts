@@ -84,8 +84,8 @@ When auto-fix is not safe:
 - `./runners/public/runner_adapter.sh --impl rust critical-gate`
 - `./runners/public/runner_adapter.sh --impl rust governance`
 - `./runners/public/runner_adapter.sh --impl rust docs-generate-check`
-- `python -m spec_runner.spec_lang_commands review-validate --snapshot <snapshot>`
-- `python -m spec_runner.review_to_pending <snapshot>`
+- `./runners/public/runner_adapter.sh --impl rust review-validate --snapshot <snapshot>`
+- `./runners/public/runner_adapter.sh --impl rust review-to-pending <snapshot>`
 
 For each attempted command capture:
 - `command`

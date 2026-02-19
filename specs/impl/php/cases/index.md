@@ -2,7 +2,7 @@
 
 Executable fixture cases for the alternate PHP runner:
 
-- `runners/php/spec_runner.php`
+- `dc-runner-php/spec_runner.php`
 
 These files are intentionally `*.spec.md` so behavior expectations live next to
 the executable cases.

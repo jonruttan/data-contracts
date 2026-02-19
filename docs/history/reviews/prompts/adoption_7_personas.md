@@ -70,8 +70,8 @@ Suggested commands:
 - `./scripts/ci_gate.sh`
 - `.venv/bin/python -m pytest -q`
 - `.venv/bin/python -m build`
-- `.venv/bin/python scripts/compare_conformance_parity.py --cases specs/conformance/cases --php-runner runners/php/conformance_runner.php --out .artifacts/conformance-parity.json`
-- Optional: run `runners/php/spec_runner.php` against `specs/impl/php/cases/` if PHP + yaml extension are available
+- `.venv/bin/python scripts/compare_conformance_parity.py --cases specs/conformance/cases --php-runner dc-runner-php/conformance_runner.php --out .artifacts/conformance-parity.json`
+- Optional: run `dc-runner-php/spec_runner.php` against `specs/impl/php/cases/` if PHP + yaml extension are available
 
 Your task:
 A) Identify the core problems this project aims to solve (plain language) and implicit workflow assumptions.

@@ -12,7 +12,7 @@ harness:
   root: .
   ops_os_stdlib_surface:
     files:
-    - /runners/python/spec_runner/spec_lang_std_names.py
+    - /dc-runner-python/spec_runner/spec_lang_std_names.py
     - /specs/schema/spec_lang_stdlib_profile_v1.yaml
     required_symbols:
     - ops.os.exec

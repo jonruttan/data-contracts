@@ -19,8 +19,8 @@ harness:
     - critical-gate
     - ci-gate-summary
     summary_files:
-    - /runners/python/spec_runner/script_runtime_commands.py
-    - /runners/rust/spec_runner_cli/src/main.rs
+    - /dc-runner-python/spec_runner/script_runtime_commands.py
+    - /dc-runner-rust/spec_runner_cli/src/main.rs
     summary_required_tokens:
     - governance_broad
     - triage_phase

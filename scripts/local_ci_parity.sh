@@ -130,7 +130,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip broad governance (set SPEC_PREPUSH_REQUIRE_BROAD=1 to enable)"
   fi
 
-  if paths_match_prefixes "specs/" "runners/python/spec_runner/" "runners/python/spec_runner/normalize_repo_runtime.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "specs/" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh" "scripts/runner_bin.sh"; then
     if paths_all_in_list "specs/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip normalize-check (check_sets-only change)"
     elif is_fast_path_script_only_change; then
@@ -142,7 +142,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip normalize-check (no matching changes)"
   fi
 
-  if paths_match_prefixes "specs/" "runners/python/spec_runner/spec_lang_lint.py" "runners/python/spec_runner/spec_lang_hygiene.py" "runners/python/spec_runner/spec_lang_format.py" "runners/python/spec_runner/spec_lang_commands.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "specs/" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh" "scripts/runner_bin.sh"; then
     if paths_all_in_list "specs/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip style-check (check_sets-only change)"
     elif is_fast_path_script_only_change; then
@@ -154,7 +154,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip style-check (no matching changes)"
   fi
 
-  if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "specs/schema/" "specs/governance/metrics/" "runners/python/spec_runner/docs_" "runners/python/spec_runner/docs_generators.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "specs/schema/" "specs/governance/metrics/" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh" "scripts/runner_bin.sh"; then
     if paths_all_in_list "specs/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip docs-generate-check (check_sets-only change)"
     elif is_fast_path_script_only_change; then
@@ -166,7 +166,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip docs-generate-check (no matching changes)"
   fi
 
-  if paths_match_prefixes "docs/" "runners/python/spec_runner/script_runtime_commands.py" "runners/python/spec_runner/docs_inventory.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "docs/" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh" "scripts/runner_bin.sh"; then
     if paths_all_in_list "specs/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip docs-lint (check_sets-only change)"
     elif is_fast_path_script_only_change; then
@@ -190,32 +190,10 @@ lane_compatibility_matrix() {
     echo "[local-ci-parity] compatibility matrix disabled (set SPEC_COMPAT_MATRIX_ENABLED=1 to enable)"
     return 0
   fi
-  echo "[local-ci-parity] compatibility matrix enabled (non-blocking)"
-  local py_cmd=""
-  if [[ -n "${VIRTUAL_ENV:-}" && -x "${VIRTUAL_ENV}/bin/python" ]]; then
-    py_cmd="${VIRTUAL_ENV}/bin/python"
-  elif [[ -x "${ROOT_DIR}/.venv/bin/python" ]]; then
-    py_cmd="${ROOT_DIR}/.venv/bin/python"
-  elif command -v python3 >/dev/null 2>&1; then
-    py_cmd="python3"
-  fi
-  if [[ -n "${py_cmd}" ]]; then
-    set +e
-    run_step compat-python-certify "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" runner-certify --runner python
-    PYTHONPATH="${ROOT_DIR}/runners/python" run_step compat-python-governance "${py_cmd}" -m spec_runner.spec_lang_commands run-governance-specs --liveness-level basic
-    PYTHONPATH="${ROOT_DIR}/runners/python" run_step compat-python-parity "${py_cmd}" -m spec_runner.spec_lang_commands compare-conformance-parity --python-only --cases specs/conformance/cases --out .artifacts/conformance-parity-python.json
-    set -e
-  else
-    echo "[local-ci-parity] skip python compatibility lane (python interpreter unavailable)"
-  fi
-  if command -v php >/dev/null 2>&1; then
-    set +e
-    run_step compat-php-certify "${SPEC_RUNNER_BIN}" --impl "${SPEC_RUNNER_IMPL}" runner-certify --runner php
-    run_step compat-php-conformance php runners/php/conformance_runner.php --cases specs/conformance/cases --case-formats md --out .artifacts/php-conformance-report.json
-    set -e
-  else
-    echo "[local-ci-parity] skip php compatibility lane (php interpreter unavailable)"
-  fi
+  echo "[local-ci-parity] compatibility matrix enabled (non-blocking, external repos)"
+  echo "[local-ci-parity] python lane owner: dc-runner-python (external)"
+  echo "[local-ci-parity] php lane owner: dc-runner-php (external)"
+  echo "[local-ci-parity] compatibility results are ingested as external artifacts in data-contracts CI."
 }
 
 case "${MODE}" in

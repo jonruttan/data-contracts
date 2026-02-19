@@ -18,7 +18,7 @@ harness:
     - /specs/contract/12_runner_interface.md
     - /specs/contract/16_rust_primary_transition.md
     forbidden_tokens:
-    - runners/rust/runner_adapter.sh
+    - dc-runner-rust/runner_adapter.sh
     allowlist:
     - /specs/contract/12_runner_interface.md
     - /specs/contract/16_rust_primary_transition.md

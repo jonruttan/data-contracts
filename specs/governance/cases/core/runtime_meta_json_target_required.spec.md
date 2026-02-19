@@ -11,11 +11,11 @@ harness:
   root: .
   meta_json_targets:
     files:
-    - /runners/python/spec_runner/harnesses/text_file.py
-    - /runners/python/spec_runner/harnesses/cli_run.py
-    - /runners/python/spec_runner/harnesses/docs_generate.py
-    - /runners/python/spec_runner/harnesses/orchestration_run.py
-    - /runners/python/spec_runner/harnesses/api_http.py
+    - /dc-runner-python/spec_runner/harnesses/text_file.py
+    - /dc-runner-python/spec_runner/harnesses/cli_run.py
+    - /dc-runner-python/spec_runner/harnesses/docs_generate.py
+    - /dc-runner-python/spec_runner/harnesses/orchestration_run.py
+    - /dc-runner-python/spec_runner/harnesses/api_http.py
     required_tokens:
     - meta_json
   check:

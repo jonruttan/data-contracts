@@ -10,7 +10,7 @@ Guidance:
 
 ## Supported Flags
 
-Conformance runner (`runners/php/conformance_runner.php`) flags:
+Conformance runner (`dc-runner-php/conformance_runner.php`) flags:
 
 - `--help` / `-h`: print usage and exit `0`.
 - `--cases` (required): case file or directory path.
@@ -18,7 +18,7 @@ Conformance runner (`runners/php/conformance_runner.php`) flags:
 - `--case-file-pattern` (default: `*.spec.md`): directory-mode case glob.
 - `--case-formats` (default: `md`): comma-separated formats (`md,yaml,json`).
 
-Alternate runner (`runners/php/spec_runner.php`) flags:
+Alternate runner (`dc-runner-php/spec_runner.php`) flags:
 
 - `--help` / `-h`: print usage and exit `0`.
 - `--cases` (required): case file or directory path.
@@ -53,11 +53,11 @@ Alternate runner (`runners/php/spec_runner.php`) flags:
 
 Conformance bootstrap script path:
 
-- `runners/php/conformance_runner.php`
+- `dc-runner-php/conformance_runner.php`
 
 Alternate runner script path:
 
-- `runners/php/spec_runner.php`
+- `dc-runner-php/spec_runner.php`
 
 Fixture-driven runner suites:
 
@@ -91,7 +91,7 @@ Current bootstrap behavior:
 Example:
 
 ```sh
-php runners/php/conformance_runner.php \
+php dc-runner-php/conformance_runner.php \
   --cases specs/conformance/cases/core/php_text_file_subset.spec.md \
   --out .artifacts/php-conformance-report.json
 ```
@@ -132,7 +132,7 @@ Bootstrap parity subset fixture:
 Example:
 
 ```sh
-php runners/php/spec_runner.php \
+php dc-runner-php/spec_runner.php \
   --cases specs/conformance/cases \
   --out .artifacts/php-spec-runner-report.json
 ```
@@ -140,7 +140,7 @@ php runners/php/spec_runner.php \
 To run the implementation-owned fixture suites:
 
 ```sh
-php runners/php/spec_runner.php \
+php dc-runner-php/spec_runner.php \
   --cases specs/impl/php/cases \
   --out .artifacts/php-spec-runner-impl-report.json
 ```

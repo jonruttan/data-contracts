@@ -68,7 +68,7 @@ Allowed labels:
 
 Canonical command:
 
-- `python -m spec_runner.spec_lang_commands review-validate --snapshot <path>`
+- `./runners/public/runner_adapter.sh --impl rust review-validate --snapshot <path>`
 
 Exit semantics:
 

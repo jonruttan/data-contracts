@@ -199,11 +199,11 @@ select_prefixes_from_changed_paths() {
       specs/governance/*|docs/book/*|specs/contract/*|specs/current.md|README.md)
         if ! add_unique "docs." "${selected[@]-}"; then selected+=("docs."); fi
         ;;
-      specs/schema/*|runners/python/spec_runner/normalize_repo_runtime.py)
+      specs/schema/*|scripts/runner_bin.sh)
         if ! add_unique "normalization." "${selected[@]-}"; then selected+=("normalization."); fi
         if ! add_unique "schema." "${selected[@]-}"; then selected+=("schema."); fi
         ;;
-      runners/python/spec_runner/*|runners/public/runner_adapter.sh|runners/python/runner_adapter.sh|runners/rust/runner_adapter.sh|scripts/governance_triage.sh|scripts/ci_gate.sh)
+      runners/public/runner_adapter.sh|scripts/runner_bin.sh|scripts/governance_triage.sh|scripts/ci_gate.sh)
         if ! add_unique "runtime." "${selected[@]-}"; then selected+=("runtime."); fi
         ;;
       specs/libraries/*)

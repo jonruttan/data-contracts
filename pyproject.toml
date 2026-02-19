@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "spec-runner"
+name = "data-contracts"
 version = "0.1.0"
-description = "Executable spec runner for yaml contract-spec blocks in Markdown."
+description = "Data Contracts specs, governance, and docs surfaces."
 readme = "README.md"
 requires-python = ">=3.10"
 # Keep this as a string for compatibility with setuptools' PEP 621 validation.
@@ -20,11 +20,6 @@ dependencies = [
 [project.urls]
 Repository = "https://example.invalid/spec-runner"
 
-[project.scripts]
-spec-runner-conformance = "spec_runner.cli:conformance_runner_main"
-spec-runner-parity = "spec_runner.cli:compare_parity_main"
-spec-runner-validate-report = "spec_runner.spec_lang_commands:validate_report_main"
-
 [project.optional-dependencies]
 dev = [
   "pytest>=8",
@@ -35,11 +30,7 @@ dev = [
 ]
 
 [tool.setuptools]
-package-dir = {"" = "."}
-
-[tool.setuptools.packages.find]
-where = ["runners/python"]
-include = ["spec_runner*"]
+packages = []
 
 [tool.ruff]
 target-version = "py310"
@@ -49,11 +40,11 @@ select = ["F", "E9"]
 
 [tool.mypy]
 python_version = "3.10"
-files = ["runners/python/spec_runner"]
+files = ["scripts"]
 check_untyped_defs = false
 warn_unused_ignores = true
 warn_redundant_casts = true
 disable_error_code = ["import-untyped"]
 
 [tool.pytest.ini_options]
-pythonpath = ["runners/python"]
+pythonpath = []

@@ -12,7 +12,7 @@ harness:
   root: .
   rust_adapter_exec_smoke:
     command:
-    - runners/rust/runner_adapter.sh
+    - dc-runner-rust/runner_adapter.sh
     - critical-gate
     expected_exit_codes:
     - 0

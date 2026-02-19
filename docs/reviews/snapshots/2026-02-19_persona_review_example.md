@@ -89,7 +89,7 @@ Runner lane: rust|required
   acceptance_criteria:
   - review-validate returns 0 for canonical snapshots.
   affected_paths:
-  - /runners/python/spec_runner/review_snapshot_validate.py
+  - /dc-runner-python/spec_runner/review_snapshot_validate.py
   risk: moderate
 - id: REVIEW-CANDIDATE-006
   title: Make snapshot scaffolder contract-complete
@@ -99,7 +99,7 @@ Runner lane: rust|required
   acceptance_criteria:
   - new_review_snapshot scaffolds all required sections.
   affected_paths:
-  - /runners/python/spec_runner/new_review_snapshot.py
+  - /dc-runner-python/spec_runner/new_review_snapshot.py
   risk: low
 - id: REVIEW-CANDIDATE-007
   title: Make pending extraction parse canonical candidates
@@ -109,7 +109,7 @@ Runner lane: rust|required
   acceptance_criteria:
   - review_to_pending parses canonical candidate list and fails on invalid shape.
   affected_paths:
-  - /runners/python/spec_runner/review_to_pending.py
+  - /dc-runner-python/spec_runner/review_to_pending.py
   risk: moderate
 - id: REVIEW-CANDIDATE-008
   title: Publish review output contract doc

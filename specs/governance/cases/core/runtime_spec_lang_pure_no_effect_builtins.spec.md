@@ -12,9 +12,9 @@ harness:
   root: .
   spec_lang_purity:
     files:
-    - runners/python/spec_runner/spec_lang.py
-    - runners/php/spec_runner.php
-    - runners/php/conformance_runner.php
+    - dc-runner-python/spec_runner/spec_lang.py
+    - dc-runner-php/spec_runner.php
+    - dc-runner-php/conformance_runner.php
     forbidden_tokens:
     - path_exists
   check:

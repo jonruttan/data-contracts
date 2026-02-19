@@ -16,7 +16,7 @@ harness:
     - scripts/core_gate.sh
     - scripts/docs_doctor.sh
   forbidden_tokens:
-  - runners/rust/runner_adapter.sh
+  - dc-runner-rust/runner_adapter.sh
   - runners/python/runner_adapter.sh
   forbidden_paths:
   - scripts/runner_adapter.sh

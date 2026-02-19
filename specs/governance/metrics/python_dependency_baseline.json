@@ -1,7 +1,7 @@
 {
   "config": {
     "default_gate_required_tokens": [
-      "SPEC_RUNNER_BIN=\"${ROOT_DIR}/runners/rust/runner_adapter.sh\""
+      "SPEC_RUNNER_BIN=\"${ROOT_DIR}/dc-runner-rust/runner_adapter.sh\""
     ],
     "non_python_segments": [
       "default_gate",
@@ -48,8 +48,8 @@
         "scripts/python/*.py"
       ],
       "rust_adapter": [
-        "runners/rust/runner_adapter.sh",
-        "runners/rust/spec_runner_cli/src/main.rs"
+        "dc-runner-rust/runner_adapter.sh",
+        "dc-runner-rust/spec_runner_cli/src/main.rs"
       ]
     }
   },
@@ -58,7 +58,7 @@
     "runtime_trace": [],
     "static_hits": [
       {
-        "file": "runners/rust/spec_runner_cli/src/main.rs",
+        "file": "dc-runner-rust/spec_runner_cli/src/main.rs",
         "kind": "rust_transitive_token",
         "segment": "rust_adapter",
         "token": "runners/public/runner_adapter.sh"
@@ -110,14 +110,14 @@
     },
     {
       "allowed_python_surface": 0.0,
-      "file": "runners/rust/runner_adapter.sh",
+      "file": "dc-runner-rust/runner_adapter.sh",
       "python_token_count": 0.0,
       "segment": "rust_adapter",
       "transitive_token_count": 0.0
     },
     {
       "allowed_python_surface": 0.0,
-      "file": "runners/rust/spec_runner_cli/src/main.rs",
+      "file": "dc-runner-rust/spec_runner_cli/src/main.rs",
       "python_token_count": 0.0,
       "segment": "rust_adapter",
       "transitive_token_count": 1.0

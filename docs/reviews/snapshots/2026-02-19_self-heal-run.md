@@ -37,7 +37,7 @@ Runner lane: rust|required
 
 | Severity | Verified/Hypothesis | File:Line | What | Why | When | Proposed fix |
 |---|---|---|---|---|---|---|
-| P2 | Verified | runners/rust/runner_adapter.sh:138 | Governance command showed one transient process kill (`exit 137`) before succeeding on retry. | Intermittent process termination in required lane can create noisy false negatives in local/CI runs even when follow-up execution is healthy. | During stage-0 baseline command execution. | Add deterministic retry/diagnostic capture around rust adapter command failures and document retry policy in troubleshooting. |
+| P2 | Verified | dc-runner-rust/runner_adapter.sh:138 | Governance command showed one transient process kill (`exit 137`) before succeeding on retry. | Intermittent process termination in required lane can create noisy false negatives in local/CI runs even when follow-up execution is healthy. | During stage-0 baseline command execution. | Add deterministic retry/diagnostic capture around rust adapter command failures and document retry policy in troubleshooting. |
 
 ## Synthesis
 
@@ -59,7 +59,7 @@ Runner lane: rust|required
   - governance adapter failures emit deterministic diagnostics with retry context.
   - repeated governance invocations in the same environment complete without transient unexplained exit 137 events.
   affected_paths:
-  - /runners/rust/runner_adapter.sh
+  - /dc-runner-rust/runner_adapter.sh
   - /docs/book/80_troubleshooting.md
   risk: moderate
 ```

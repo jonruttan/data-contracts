@@ -12,10 +12,10 @@ harness:
   root: .
   cli_docs:
     python_scripts:
-    - runners/python/spec_runner/python_conformance_runner.py
+    - dc-runner-python/spec_runner/python_conformance_runner.py
     php_scripts:
-    - runners/php/conformance_runner.php
-    - runners/php/spec_runner.php
+    - dc-runner-php/conformance_runner.php
+    - dc-runner-php/spec_runner.php
     python_docs:
     - docs/development.md
     - specs/impl/python.md

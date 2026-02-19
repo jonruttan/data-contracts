@@ -12,7 +12,7 @@ harness:
   root: .
   ci_gate_default_no_python_governance:
     files:
-    - /runners/python/spec_runner/script_runtime_commands.py
+    - /dc-runner-python/spec_runner/script_runtime_commands.py
     required_tokens:
     - governance-broad-native
     - governance_broad

@@ -5,10 +5,10 @@ part of the language-neutral contract.
 
 Current implementation locations:
 
-- parser: `runners/python/spec_runner/doc_parser.py`
-- assertion engine: `runners/python/spec_runner/assertions.py`
-- dispatch: `runners/python/spec_runner/dispatcher.py`
-- harnesses: `runners/python/spec_runner/harnesses/`
+- parser: `dc-runner-python/spec_runner/doc_parser.py`
+- assertion engine: `dc-runner-python/spec_runner/assertions.py`
+- dispatch: `dc-runner-python/spec_runner/dispatcher.py`
+- harnesses: `dc-runner-python/spec_runner/harnesses/`
 
 Implementation-owned executable cases:
 

@@ -12,8 +12,8 @@ harness:
   root: .
   ci_gate_default_reports_forbidden:
     files:
-    - /runners/python/spec_runner/script_runtime_commands.py
-    - /runners/rust/spec_runner_cli/src/main.rs
+    - /dc-runner-python/spec_runner/script_runtime_commands.py
+    - /dc-runner-rust/spec_runner_cli/src/main.rs
     forbidden_tokens:
     - spec_portability_json
     - spec_portability_md

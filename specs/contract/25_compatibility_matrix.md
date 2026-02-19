@@ -1,6 +1,12 @@
 # Compatibility Matrix Contract (v1)
 
-Defines runtime lane classes and merge-blocking behavior.
+Defines runtime lane classes and merge-blocking behavior for the multi-repo
+split:
+
+- `data-contracts` (main contracts/docs/governance project)
+- `dc-runner-rust` (required lane)
+- `dc-runner-python` (compatibility_non_blocking)
+- `dc-runner-php` (compatibility_non_blocking)
 
 ## Lane Classes
 
@@ -10,10 +16,10 @@ Defines runtime lane classes and merge-blocking behavior.
 ## Current Matrix
 
 - `required`:
-  - `rust`
+  - `rust` (`dc-runner-rust`)
 - `compatibility_non_blocking`:
-  - `python`
-  - `php`
+  - `python` (`dc-runner-python`)
+  - `php` (`dc-runner-php`)
   - `node` (planned)
   - `c` (planned)
 
@@ -37,6 +43,8 @@ Defines runtime lane classes and merge-blocking behavior.
 - Runner certification metadata is canonical in `/specs/schema/runner_certification_registry_v1.yaml`.
 - Required lane certification must pass for `rust`.
 - Compatibility lane certification results are recorded but non-blocking by default.
+- Data Contracts runner execution MUST use pinned release artifacts declared in
+  `/specs/schema/dc_runner_rust_lock_v1.yaml`.
 
 ## Documentation Contract
 

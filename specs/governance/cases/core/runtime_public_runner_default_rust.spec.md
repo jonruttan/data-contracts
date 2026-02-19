@@ -14,7 +14,7 @@ harness:
     path: /runners/public/runner_adapter.sh
     required_tokens:
     - impl="${SPEC_RUNNER_IMPL:-rust}"
-    - runners/rust/runner_adapter.sh
+    - dc-runner-rust/runner_adapter.sh
     - python runner impl is no longer supported on the runtime path
     - --impl
     forbidden_tokens:

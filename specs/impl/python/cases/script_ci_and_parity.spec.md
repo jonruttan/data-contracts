@@ -195,7 +195,7 @@ harness:
   check:
     profile: text.file
     config:
-      path: /runners/php/conformance_runner.php
+      path: /dc-runner-php/conformance_runner.php
 contract:
   defaults:
     class: MUST

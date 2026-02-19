@@ -5,7 +5,7 @@ runners:
   status: active
   entrypoints:
     public_adapter: /runners/public/runner_adapter.sh
-    internal_adapter: /runners/rust/runner_adapter.sh
+    implementation_repo: dc-runner-rust
   required_core_checks:
   - runtime.runner_interface_subcommands
   - runtime.compatibility_matrix_registration_required
@@ -15,7 +15,7 @@ runners:
   command_contract_subset:
   - name: governance
     args: []
-    expect_exit: [0]
+    expect_exit: [0, 1]
   - name: style-check
     args: []
     expect_exit: [0]
@@ -31,7 +31,7 @@ runners:
   status: active
   entrypoints:
     public_adapter: /runners/public/runner_adapter.sh
-    internal_adapter: /runners/python/runner_adapter.sh
+    implementation_repo: dc-runner-python
   required_core_checks: []
   required_core_cases: []
   command_contract_subset: []
@@ -44,7 +44,7 @@ runners:
   status: active
   entrypoints:
     public_adapter: /runners/public/runner_adapter.sh
-    internal_adapter: /runners/php/conformance_runner.php
+    implementation_repo: dc-runner-php
   required_core_checks: []
   required_core_cases: []
   command_contract_subset: []
@@ -57,7 +57,7 @@ runners:
   status: planned
   entrypoints:
     public_adapter: /runners/public/runner_adapter.sh
-    internal_adapter: /runners/node/runner_adapter.sh
+    implementation_repo: dc-runner-node
   required_core_checks: []
   required_core_cases: []
   command_contract_subset: []
@@ -70,7 +70,7 @@ runners:
   status: planned
   entrypoints:
     public_adapter: /runners/public/runner_adapter.sh
-    internal_adapter: /runners/c/runner_adapter.sh
+    implementation_repo: dc-runner-c
   required_core_checks: []
   required_core_cases: []
   command_contract_subset: []

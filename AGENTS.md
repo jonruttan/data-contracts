@@ -1,15 +1,17 @@
 # AGENTS.md
 
-Project-specific instructions for AI agents working in `tools/spec_runner/`.
+Project-specific instructions for AI agents working in `data-contracts`.
 
 ## What This Subproject Is
 
-- `spec_runner` is a small Python library for running executable spec tests
-  embedded in Markdown documents as fenced blocks tagged `yaml contract-spec`.
-- It parses contract-spec blocks and dispatches each case to a harness based on
-  `type`.
-- The core library is intended to be reusable and publishable. Project-specific
-  harnesses/adapters should live with the system under test.
+- `data-contracts` is the canonical contracts/specs/governance repository.
+- Executable spec cases remain Markdown files with fenced `yaml contract-spec`
+  blocks.
+- Runner implementations are externalized to:
+  - `dc-runner-rust` (required lane)
+  - `dc-runner-python` (compatibility lane)
+  - `dc-runner-php` (compatibility lane)
+- This repo must not vendor runner implementation logic.
 
 ## Configuration / Schema
 
@@ -21,35 +23,22 @@ Project-specific instructions for AI agents working in `tools/spec_runner/`.
 
 ## Local Commands
 
-- Install editable:
-  - `python -m pip install -e .`
-- Install editable with dev deps:
-  - `python -m pip install -e '.[dev]'`
-- Run tests:
-  - `python -m pytest`
-- Build:
-  - `python -m build`
+- Required lane checks:
+  - `./runners/public/runner_adapter.sh --impl rust critical-gate`
+  - `./runners/public/runner_adapter.sh --impl rust governance`
+  - `./runners/public/runner_adapter.sh --impl rust docs-generate-check`
 
 ## Engineering Rules
 
-- Keep `spec_runner` dependency-minimal:
-  - stdlib preferred
-  - small, stable dependencies only when justified (e.g. `PyYAML`)
-- Keep the core stable:
-  - prefer extending via adapters/harnesses rather than growing a large DSL
-  - avoid test-runner-specific “magic” unless it is clearly schema’d and
-    versioned
+- Keep Data Contracts runner-agnostic and rust-first for required lane checks.
+- Do not add local `runners/rust`, `runners/python`, or `runners/php`
+  implementation code back into this repo.
+- Keep command boundary stable at `runners/public/runner_adapter.sh`.
 - Error messages should be direct and actionable (schema violations should
   explain what to change).
 - Test authoring policy:
   - New behavior tests SHOULD be authored as executable `.spec.md` cases.
-  - Explicit Python unit tests (`tests/test_*_unit.py`) are disallowed by
-    default.
-  - Unit tests are allowed only when a case cannot be represented safely or
-    clearly in the `.spec.md` DSL/harness model.
-  - Any `tests/test_*_unit.py` file MUST include a top-of-file opt-out reason
-    line in this format:
-    `# SPEC-OPT-OUT: <specific reason>`
+  - Runtime implementation tests belong in the owning `dc-runner-*` repo.
 
 ## Change Hygiene
 

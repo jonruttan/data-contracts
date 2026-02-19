@@ -10,7 +10,7 @@ type: contract.check
 harness:
   root: .
   when_ordering:
-    path: /runners/python/spec_runner/components/assertion_engine.py
+    path: /dc-runner-python/spec_runner/components/assertion_engine.py
     required_tokens:
     - def _on_clause_pass
     - 'event_map = {"MUST": "must", "MAY": "may", "MUST_NOT": "must_not"}'
