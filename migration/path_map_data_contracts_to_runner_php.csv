@@ -1,0 +1,9 @@
+source_path,target_repo,target_path
+specs/impl/php/cases/fixtures/path_target.txt,dc-runner-php,specs/impl/php/cases/fixtures/path_target.txt
+specs/impl/php/cases/fixtures/sample.txt,dc-runner-php,specs/impl/php/cases/fixtures/sample.txt
+specs/impl/php/cases/index.md,dc-runner-php,specs/impl/php/cases/index.md
+specs/impl/php/cases/runner_assert_health.spec.md,dc-runner-php,specs/impl/php/cases/runner_assert_health.spec.md
+specs/impl/php/cases/runner_failures.spec.md,dc-runner-php,specs/impl/php/cases/runner_failures.spec.md
+specs/impl/php/cases/runner_library_exports.spec.md,dc-runner-php,specs/impl/php/cases/runner_library_exports.spec.md
+specs/impl/php/cases/runner_pass.spec.md,dc-runner-php,specs/impl/php/cases/runner_pass.spec.md
+specs/impl/php/cases/runner_portability.spec.md,dc-runner-php,specs/impl/php/cases/runner_portability.spec.md

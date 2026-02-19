@@ -72,7 +72,8 @@ Runtime hard-cut:
 Compatibility matrix classing:
 
 - `rust` is merge-blocking required lane.
-- `python/php` are non-blocking compatibility lanes.
+- `python` (`dc-runner-python`) is non-blocking compatibility lane.
+- `php` (`dc-runner-php`) is non-blocking compatibility lane.
 - `node/c` are planned non-blocking compatibility lanes.
 - Normative matrix contract: `/specs/contract/25_compatibility_matrix.md`.
 - Certification registry contract: `/specs/schema/runner_certification_registry_v1.yaml`.

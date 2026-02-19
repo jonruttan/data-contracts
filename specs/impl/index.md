@@ -2,14 +2,16 @@
 
 Source of truth: spec.impl.index
 
-Implementation-owned executable spec suites.
+Runner implementation internals are owned by runner repositories.
 
-## Runners and Jobs
+## Runner-Owned Implementation Specs
 
-- `/specs/impl/rust/jobs/script_jobs.spec.md`
-- `/specs/impl/rust/jobs/report_jobs.spec.md`
-- `/specs/impl/python/index.md`
-- `/specs/impl/php/index.md`
+- `dc-runner-rust`
+- `dc-runner-python`
+- `dc-runner-php`
+
+## Data Contracts Implementation Specs
+
 - `/specs/impl/docs_generate/cases/index.md`
 
 ## Related Generated References

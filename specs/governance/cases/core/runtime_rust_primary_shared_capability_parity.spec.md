@@ -13,9 +13,9 @@ harness:
   runner_interface:
     required_paths:
     - /runners/public/runner_adapter.sh
-    - /dc-runner-rust/runner_adapter.sh
+    - /dc-runner-rust
     files:
-    - dc-runner-python/spec_runner/script_runtime_commands.py
+    - dc-runner-python
     required_tokens:
     - conformance-parity
     forbidden_tokens: []

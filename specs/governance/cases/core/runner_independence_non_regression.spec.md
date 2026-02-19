@@ -29,8 +29,8 @@ harness:
         - .github/workflows/*.yml
         adapter_interfaces:
         - runners/public/runner_adapter.sh
-        - dc-runner-rust/runner_adapter.sh
-        - dc-runner-rust/spec_runner_cli/src/main.rs
+        - dc-runner-rust
+        - dc-runner-rust
       direct_runtime_token_segments:
       - gate_scripts
       - ci_workflows

@@ -30,10 +30,9 @@ Run when possible:
 - `./runners/public/runner_adapter.sh --impl rust governance`
 - `./runners/public/runner_adapter.sh --impl rust docs-generate-check`
 - `./runners/public/runner_adapter.sh --impl rust runner-certify --runner rust`
+- compatibility certification for python/php is executed in `dc-runner-python` and `dc-runner-php`
 
 Optional compatibility checks:
-- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner python`
-- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner php`
 
 For each attempted command, record:
 - command

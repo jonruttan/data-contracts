@@ -5,7 +5,7 @@
       "scripts/evaluate_style.py --check specs",
       "scripts/spec_portability_report.py",
       "python -m pytest",
-      "php dc-runner-php/spec_runner.php"
+      "php dc-runner-php"
     ],
     "gate_required_tokens": [
       "SPEC_RUNNER_BIN",
@@ -13,14 +13,14 @@
     ],
     "rust_ci_required_tokens": [
       "core-gate-rust-adapter:",
-      "SPEC_RUNNER_BIN: ./dc-runner-rust/runner_adapter.sh",
+      "SPEC_RUNNER_BIN: ./dc-runner-rust",
       "run: ./scripts/core_gate.sh"
     ],
     "segment_files": {
       "adapter_interfaces": [
         "runners/public/runner_adapter.sh",
-        "dc-runner-rust/runner_adapter.sh",
-        "dc-runner-rust/spec_runner_cli/src/main.rs"
+        "dc-runner-rust",
+        "dc-runner-rust"
       ],
       "ci_workflows": [
         ".github/workflows/*.yml",
@@ -43,7 +43,7 @@
     },
     {
       "direct_runtime_invocation_count": 0.0,
-      "file": "dc-runner-rust/runner_adapter.sh",
+      "file": "dc-runner-rust",
       "runner_independence_ratio": 1.0,
       "runner_interface_usage_ratio": 1.0,
       "rust_primary_path_coverage_ratio": 1.0,
@@ -51,7 +51,7 @@
     },
     {
       "direct_runtime_invocation_count": 1.0,
-      "file": "dc-runner-rust/spec_runner_cli/src/main.rs",
+      "file": "dc-runner-rust",
       "runner_independence_ratio": 0.6666666666666666,
       "runner_interface_usage_ratio": 1.0,
       "rust_primary_path_coverage_ratio": 1.0,

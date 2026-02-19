@@ -11,8 +11,8 @@ type: contract.check
 harness:
   root: .
   rust_subcommand_parity:
-    adapter_path: /dc-runner-rust/runner_adapter.sh
-    cli_main_path: /dc-runner-rust/spec_runner_cli/src/main.rs
+    adapter_path: /dc-runner-rust
+    cli_main_path: /dc-runner-rust
   check:
     profile: governance.scan
     config:

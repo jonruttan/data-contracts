@@ -29,6 +29,7 @@ rules:
   DCGOV-RUNTIME-CERT-003: runtime.runner_certification_artifacts_contract_sync
   DCGOV-RUNTIME-CERT-004: runtime.runner_certification_required_lane_passes
   DCGOV-RUNTIME-CERT-005: runtime.runner_certification_compat_lanes_non_blocking
+  DCGOV-RUNTIME-CONFIG-010: runtime.no_external_runner_file_path_refs
   DCGOV-RUNTIME-CONFIG-009: runtime.implicit_subject_binding_forbidden
   DCGOV-DOCS-REF-008: docs.compatibility_examples_labeled
   DCGOV-DOCS-REF-010: docs.readme_rust_first_coherence

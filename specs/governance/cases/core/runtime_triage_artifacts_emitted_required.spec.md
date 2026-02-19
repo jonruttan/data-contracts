@@ -12,7 +12,7 @@ harness:
   triage_artifacts:
     files:
     - /scripts/governance_triage.sh
-    - /dc-runner-python/spec_runner/script_runtime_commands.py
+    - /dc-runner-python
     required_tokens:
     - failing_check_ids
     - failing_check_prefixes

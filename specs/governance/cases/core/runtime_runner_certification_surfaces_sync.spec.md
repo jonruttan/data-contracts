@@ -11,8 +11,8 @@ harness:
   root: .
   runner_certification_surfaces:
     files:
-    - /dc-runner-rust/runner_adapter.sh
-    - /dc-runner-rust/spec_runner_cli/src/main.rs
+    - /dc-runner-rust
+    - /dc-runner-rust
     - /specs/governance/cases/core/runtime_runner_interface_subcommands.spec.md
     required_tokens:
     - runner-certify

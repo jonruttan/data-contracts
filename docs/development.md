@@ -30,8 +30,8 @@ Compatibility lanes (non-blocking telemetry):
 
 ```sh
 python -m ruff check .
-python -m mypy runners/python/spec_runner
-python -m compileall -q runners/python/spec_runner scripts tests
+# Typecheck/compile compatibility runner code in the compatibility repos
+# (`dc-runner-python`, `dc-runner-php`) instead of this repository.
 ./runners/public/runner_adapter.sh --impl rust spec-lang-lint --cases specs
 ./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs
 ./runners/public/runner_adapter.sh --impl rust docs-generate-check
@@ -79,13 +79,15 @@ Compatibility lane examples (non-blocking):
 
 ```sh
 ./runners/public/runner_adapter.sh --impl rust governance
-php dc-runner-php/conformance_runner.php --cases specs/conformance/cases --case-formats md
+# Compatibility execution runs in external repos:
+# - dc-runner-python
+# - dc-runner-php
 ```
 
 Optional local prebuild for Rust lane:
 
 ```sh
-cargo build --manifest-path dc-runner-rust/spec_runner_cli/Cargo.toml
+cargo build --manifest-path dc-runner-rust
 ```
 
 ## Run Core Gate Checks
@@ -229,9 +231,7 @@ The following exit codes are stable command contracts for CI/scripting.
 
 | Command | `0` | `1` | `2` |
 | --- | --- | --- | --- |
-| `python -m spec_runner.python_conformance_runner` | runner completed and all case statuses are `pass`/`skip` | at least one case status is `fail`, or runtime execution error occurred | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`, nonexistent `--cases` path) |
-| `php dc-runner-php/conformance_runner.php` | runner completed and report written (case-level failures are reported in JSON, not promoted to process failure) | fatal runtime error (for example YAML extension missing, unreadable path, write failure) | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`) |
-| `php dc-runner-php/spec_runner.php` | runner completed, report written, and all cases passed | one or more cases failed, or fatal runtime error occurred | CLI usage/argument validation error (for example missing required args, empty `--case-file-pattern`) |
+| `./runners/public/runner_adapter.sh --impl rust <command>` | command completed successfully | command-level functional/runtime failure | CLI usage/argument validation error |
 
 Notes:
 
@@ -248,7 +248,7 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 - pedantic spec-lang lint (`scripts/spec_lang_lint.py --cases specs`)
 - pedantic spec-lang format check (`scripts/spec_lang_format.py --check specs`)
 - ruff lint check (`F` + `E9` rules)
-- mypy type check (`runners/python/spec_runner` package)
+- mypy type check (owned in `dc-runner-python`)
 - Python bytecode compile pass (`compileall`)
 - conformance purpose report generation
 - conformance purpose markdown summary generation
@@ -287,13 +287,13 @@ python scripts/spec_lang_format.py --check specs
 ## Type Check
 
 ```sh
-python -m mypy runners/python/spec_runner
+Run mypy in `dc-runner-python` for compatibility-lane type checks.
 ```
 
 ## Static Analysis (Syntax/Import-Time Parse)
 
 ```sh
-python -m compileall -q runners/python/spec_runner scripts tests
+Run compile checks in `dc-runner-python` for compatibility-lane code.
 ```
 
 ## Conformance Purpose Report
@@ -356,13 +356,11 @@ Validate report shape:
 spec-runner-validate-report .artifacts/python-conformance-report.json
 ```
 
-Generate a bootstrap PHP report:
+Generate compatibility reports in the external compatibility repositories:
 
 ```sh
-# Requires PHP yaml_parse extension.
-php dc-runner-php/conformance_runner.php \
-  --cases specs/conformance/cases/core/php_text_file_subset.spec.md \
-  --out .artifacts/php-conformance-report.json
+# run in dc-runner-python and dc-runner-php repositories
+# then ingest resulting artifacts into data-contracts CI telemetry
 ```
 
 Validate bootstrap report shape:
@@ -371,15 +369,11 @@ Validate bootstrap report shape:
 spec-runner-validate-report .artifacts/php-conformance-report.json
 ```
 
-Run end-to-end Python/PHP parity over canonical conformance cases:
+Run end-to-end parity in compatibility runner repositories:
 
 ```sh
-spec-runner-parity \
-  --cases specs/conformance/cases \
-  --case-formats md \
-  --php-runner dc-runner-php/conformance_runner.php \
-  --php-timeout-seconds 30 \
-  --out .artifacts/conformance-parity.json
+# execute compatibility parity in dc-runner-python CI
+# with dc-runner-php as the php lane source
 ```
 
 Parity diffs are evaluated on case IDs where `expect` resolves to the same

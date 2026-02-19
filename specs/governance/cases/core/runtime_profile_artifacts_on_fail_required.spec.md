@@ -11,8 +11,8 @@ harness:
   root: .
   profile_on_fail:
     files:
-    - /dc-runner-python/spec_runner/script_runtime_commands.py
-    - /dc-runner-rust/spec_runner_cli/src/main.rs
+    - /dc-runner-python
+    - /dc-runner-rust
     required_tokens:
     - profile-on-fail
     - .artifacts/run-trace.json

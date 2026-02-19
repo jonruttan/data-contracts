@@ -12,8 +12,8 @@ harness:
   root: .
   gate_fail_fast:
     files:
-    - /dc-runner-python/spec_runner/script_runtime_commands.py
-    - /dc-runner-rust/spec_runner_cli/src/main.rs
+    - /dc-runner-python
+    - /dc-runner-rust
     required_tokens:
     - fail_fast
     - gate.fail_fast.abort

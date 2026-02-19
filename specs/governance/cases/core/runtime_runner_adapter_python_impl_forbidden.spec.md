@@ -16,7 +16,7 @@ harness:
     - python runner impl is no longer supported on the runtime path
     - Use rust impl instead
     forbidden_tokens:
-    - exec "${ROOT_DIR}/runners/python/runner_adapter.sh" "$@"
+    - exec "${ROOT_DIR}/dc-runner-python" "$@"
   check:
     profile: governance.scan
     config:

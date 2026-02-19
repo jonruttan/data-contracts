@@ -12,8 +12,8 @@ harness:
   root: .
   rust_transitive_no_python:
     files:
-    - dc-runner-rust/runner_adapter.sh
-    - dc-runner-rust/spec_runner_cli/src/main.rs
+    - dc-runner-rust
+    - dc-runner-rust
     forbidden_tokens:
     - runners/public/runner_adapter.sh
     - spec_runner.spec_lang_commands

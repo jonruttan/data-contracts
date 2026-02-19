@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   runner_interface_subcommands:
-    path: /dc-runner-rust/runner_adapter.sh
+    path: /dc-runner-rust
     required_subcommands:
     - governance
     - style-check

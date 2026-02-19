@@ -12,16 +12,16 @@ harness:
   root: .
   cli_docs:
     python_scripts:
-    - dc-runner-python/spec_runner/python_conformance_runner.py
+    - dc-runner-python
     php_scripts:
-    - dc-runner-php/conformance_runner.php
-    - dc-runner-php/spec_runner.php
+    - dc-runner-php
+    - dc-runner-php
     python_docs:
     - docs/development.md
-    - specs/impl/python.md
+    - dc-runner-python
     php_docs:
     - docs/development.md
-    - specs/impl/php.md
+    - dc-runner-php
   check:
     profile: governance.scan
     config:

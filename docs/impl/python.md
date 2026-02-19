@@ -2,6 +2,6 @@
 
 Primary Python implementation notes are retained in:
 
-- `specs/impl/python.md`
+- `dc-runner-python` repository (`README.md` and `specs/impl/`)
 
 This appendix is the stable implementation-specific entrypoint for contributors.

@@ -51,6 +51,7 @@ Primary blocking commands:
 - `./runners/public/runner_adapter.sh --impl rust critical-gate`
 - `./runners/public/runner_adapter.sh --impl rust governance`
 - `./runners/public/runner_adapter.sh --impl rust runner-certify --runner rust`
+- compatibility certification for python/php is executed in `dc-runner-python` and `dc-runner-php`
 - `./runners/public/runner_adapter.sh --impl rust test-full`
 
 ## Gate Sequence
@@ -68,10 +69,9 @@ Primary blocking commands:
 
 Python/PHP lanes are compatibility telemetry and non-blocking by default.
 Future lanes (Node, C) follow the same non-blocking default unless promoted by explicit contract change.
-Compatibility certification reports are emitted with:
+Compatibility certification reports are emitted in `dc-runner-python` and
+`dc-runner-php` CI/release pipelines and ingested as external artifacts.
 
-- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner python`
-- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner php`
 
 ## API.HTTP Gate Notes
 

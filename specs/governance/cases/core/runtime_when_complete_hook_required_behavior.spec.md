@@ -10,7 +10,7 @@ type: contract.check
 harness:
   root: .
   when_complete:
-    path: /dc-runner-python/spec_runner/components/assertion_engine.py
+    path: /dc-runner-python
     required_tokens:
     - def _on_complete
     - '"complete"'

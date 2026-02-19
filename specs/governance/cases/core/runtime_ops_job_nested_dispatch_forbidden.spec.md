@@ -10,7 +10,7 @@ type: contract.check
 harness:
   root: .
   ops_job_nested_dispatch:
-    path: /dc-runner-rust/spec_runner_cli/src/spec_lang.rs
+    path: /dc-runner-rust
     required_tokens:
     - runtime.dispatch.nested_forbidden
   check:

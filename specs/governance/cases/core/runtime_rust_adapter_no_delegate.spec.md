@@ -5,13 +5,13 @@
 ```yaml contract-spec
 id: DCGOV-RUNTIME-CONFIG-006
 title: rust adapter does not delegate to python shell adapter
-purpose: Ensures dc-runner-rust/runner_adapter.sh invokes the Rust CLI directly and does not
+purpose: Ensures dc-runner-rust invokes the Rust CLI directly and does not
   call runners/public/runner_adapter.sh.
 type: contract.check
 harness:
   root: .
   rust_adapter:
-    path: /dc-runner-rust/runner_adapter.sh
+    path: /dc-runner-rust
     required_tokens:
     - spec_runner_cli
     - cargo run --quiet

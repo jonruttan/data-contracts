@@ -13,8 +13,8 @@ harness:
   runner_interface:
     required_paths:
     - /runners/public/runner_adapter.sh
-    - /runners/python/runner_adapter.sh
-    - /dc-runner-rust/runner_adapter.sh
+    - /dc-runner-python
+    - /dc-runner-rust
     files:
     - scripts/ci_gate.sh
     - scripts/docs_doctor.sh
@@ -24,7 +24,7 @@ harness:
     - runners/public/runner_adapter.sh
     forbidden_tokens:
     - spec_lang_commands run-governance-specs
-    - dc-runner-python/spec_runner/script_runtime_commands.py
+    - dc-runner-python
     - spec_lang_commands spec-lang-format --check specs
     - scripts/conformance_purpose_report.py
     - spec_lang_commands compare-conformance-parity

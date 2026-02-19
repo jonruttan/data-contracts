@@ -2,6 +2,6 @@
 
 Primary PHP implementation notes are retained in:
 
-- `specs/impl/php.md`
+- `dc-runner-php` repository (`README.md` and `specs/impl/`)
 
 This appendix is the stable implementation-specific entrypoint for contributors.

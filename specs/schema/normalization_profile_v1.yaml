@@ -41,7 +41,7 @@ docs_layout:
   - /specs/conformance
   - /specs/conformance/cases
   - /specs/governance
-  - /specs/impl/php/cases
+  - /dc-runner-php
   - /docs/reviews
   forbidden_filenames:
   - README.md

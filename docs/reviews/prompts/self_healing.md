@@ -67,12 +67,11 @@ Required command probes:
 - `./runners/public/runner_adapter.sh --impl rust governance`
 - `./runners/public/runner_adapter.sh --impl rust docs-generate-check`
 - `./runners/public/runner_adapter.sh --impl rust runner-certify --runner rust`
+- compatibility certification for python/php is executed in `dc-runner-python` and `dc-runner-php`
 - `./scripts/local_ci_parity.sh`
 
 Optional compatibility probes (non-blocking):
 - `SPEC_COMPAT_MATRIX_ENABLED=1 ./scripts/local_ci_parity.sh`
-- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner python`
-- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner php`
 
 For each command include:
 `command | status | exit_code | stdout_stderr_summary`

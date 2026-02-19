@@ -11,8 +11,8 @@ harness:
   root: .
   gate_skipped_contract:
     files:
-    - /dc-runner-python/spec_runner/script_runtime_commands.py
-    - /dc-runner-rust/spec_runner_cli/src/main.rs
+    - /dc-runner-python
+    - /dc-runner-rust
     required_tokens:
     - skipped_step_count
     - first_failure_step

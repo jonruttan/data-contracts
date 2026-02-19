@@ -8,7 +8,7 @@ implementation-independent.
 - The canonical cross-implementation behavior set lives in:
   - `specs/conformance/cases/*.spec.md`
 - New portable behavior coverage SHOULD be added to this canonical set first.
-- Implementation-specific suites (for example `specs/impl/php/cases/`) are
+- Implementation-specific suites (for example `dc-runner-php`) are
   for runner-local coverage and MUST NOT replace portable conformance coverage.
 
 ## Conformance Assertion Authoring

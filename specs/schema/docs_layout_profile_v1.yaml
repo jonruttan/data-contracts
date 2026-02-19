@@ -15,7 +15,7 @@ required_index_dirs:
 - /specs/conformance
 - /specs/conformance/cases
 - /specs/governance
-- /specs/impl/php/cases
+- /specs/impl
 - /docs/reviews
 forbidden_filenames:
 - README.md

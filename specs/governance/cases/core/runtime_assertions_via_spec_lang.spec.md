@@ -12,7 +12,7 @@ harness:
   root: .
   assert_engine:
     files:
-    - path: /dc-runner-php/conformance_runner.php
+    - path: /dc-runner-php
       required_tokens:
       - compileAssertionLeafExpr(
       - assertLeafPredicate(
@@ -20,7 +20,7 @@ harness:
       forbidden_tokens:
       - strpos($subject, $v)
       - preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject)
-    - path: /dc-runner-php/spec_runner.php
+    - path: /dc-runner-php
       required_tokens:
       - compileAssertionLeafExpr(
       - assertLeafPredicate(
@@ -28,28 +28,28 @@ harness:
       forbidden_tokens:
       - strpos($subject, $v)
       - preg_match('/' . str_replace('/', '\/', $v) . '/u', $subject)
-    - path: /dc-runner-python/spec_runner/governance_runtime.py
+    - path: /dc-runner-python
       required_tokens:
       - eval_predicate(
       forbidden_tokens:
       - assert_text_op(
-    - path: /dc-runner-python/spec_runner/assertions.py
+    - path: /dc-runner-python
       required_tokens:
       - evaluate_internal_assert_tree(
       - eval_predicate(
       forbidden_tokens:
       - def assert_text_op(
-    - path: /dc-runner-python/spec_runner/harnesses/text_file.py
+    - path: /dc-runner-python
       required_tokens:
       - run_assertions_with_context(
       forbidden_tokens:
       - contain assertion failed
-    - path: /dc-runner-python/spec_runner/harnesses/cli_run.py
+    - path: /dc-runner-python
       required_tokens:
       - run_assertions_with_context(
       forbidden_tokens:
       - contain assertion failed
-    - path: /dc-runner-python/spec_runner/harnesses/api_http.py
+    - path: /dc-runner-python
       required_tokens:
       - run_assertions_with_context(
       forbidden_tokens:

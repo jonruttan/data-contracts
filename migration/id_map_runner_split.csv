@@ -1,0 +1,4 @@
+old_id,new_id,notes
+DCGOV-RUNTIME-ENTRY-003,DCGOV-RUNTIME-ENTRY-003,Runner interface check retained in data-contracts; runner-internal checks moved to runner repos.
+DCGOV-RUNTIME-CERT-001,DCGOV-RUNTIME-CERT-001,Rust required-lane certification remains blocking in data-contracts.
+DCGOV-RUNTIME-CERT-005,DCGOV-RUNTIME-CERT-005,Compatibility lane status remains non-blocking and external-only.

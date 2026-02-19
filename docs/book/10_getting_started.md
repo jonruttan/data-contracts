@@ -83,5 +83,5 @@ contract:
 
 Python and PHP are compatibility lanes. They are informative and non-blocking:
 
-- `PYTHONPATH=runners/python .venv/bin/python -m pytest`
-- `php dc-runner-php/conformance_runner.php --cases specs/conformance/cases --case-formats md`
+- Run compatibility verification in `dc-runner-python` and `dc-runner-php`.
+- Consume compatibility artifacts in `data-contracts` as telemetry only.

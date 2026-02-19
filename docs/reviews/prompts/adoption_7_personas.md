@@ -57,11 +57,10 @@ Run these first when available in the environment:
 - `./runners/public/runner_adapter.sh --impl rust governance`
 - `./runners/public/runner_adapter.sh --impl rust docs-generate-check`
 - `./runners/public/runner_adapter.sh --impl rust runner-certify --runner rust`
+- compatibility certification for python/php is executed in `dc-runner-python` and `dc-runner-php`
 
 Optional compatibility probes (non-blocking):
 - `SPEC_COMPAT_MATRIX_ENABLED=1 ./scripts/local_ci_parity.sh`
-- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner python`
-- `./runners/public/runner_adapter.sh --impl rust runner-certify --runner php`
 
 For each command attempted, capture:
 - exact command

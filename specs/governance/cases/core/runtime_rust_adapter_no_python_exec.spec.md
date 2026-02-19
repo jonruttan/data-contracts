@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   rust_no_python_exec:
-    path: /dc-runner-rust/spec_runner_cli/src/main.rs
+    path: /dc-runner-rust
     forbidden_tokens:
     - spec_runner.spec_lang_commands
     - PYTHONPATH

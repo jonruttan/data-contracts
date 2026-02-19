@@ -14,12 +14,12 @@ harness:
     path: /runners/public/runner_adapter.sh
     required_tokens:
     - impl="${SPEC_RUNNER_IMPL:-rust}"
-    - dc-runner-rust/runner_adapter.sh
+    - dc-runner-rust
     - python runner impl is no longer supported on the runtime path
     - --impl
     forbidden_tokens:
     - SPEC_RUNNER_IMPL:-python
-    - exec "${ROOT_DIR}/runners/python/runner_adapter.sh"
+    - exec "${ROOT_DIR}/dc-runner-python"
   check:
     profile: governance.scan
     config:

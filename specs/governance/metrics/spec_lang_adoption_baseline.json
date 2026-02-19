@@ -3937,7 +3937,7 @@
       "type": "docs.generate"
     },
     {
-      "file": "specs/impl/php/cases/runner_assert_health.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-AH-001",
@@ -3949,7 +3949,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_assert_health.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-AH-002",
@@ -3961,7 +3961,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_assert_health.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-AH-003",
@@ -3973,7 +3973,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_assert_health.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-AH-004",
@@ -3985,7 +3985,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_assert_health.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-AH-005",
@@ -3997,7 +3997,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_failures.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-F001",
@@ -4009,7 +4009,7 @@
       "type": "text.file"
     },
     {
-      "file": "specs/impl/php/cases/runner_failures.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-F002",
@@ -4021,7 +4021,7 @@
       "type": "text.file"
     },
     {
-      "file": "specs/impl/php/cases/runner_failures.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-F003",
@@ -4033,7 +4033,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_failures.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-F004",
@@ -4045,7 +4045,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_failures.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-F005",
@@ -4057,7 +4057,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_failures.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-F006",
@@ -4069,7 +4069,7 @@
       "type": "nope.type"
     },
     {
-      "file": "specs/impl/php/cases/runner_failures.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-F007",
@@ -4081,7 +4081,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_failures.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-F008",
@@ -4093,7 +4093,7 @@
       "type": "text.file"
     },
     {
-      "file": "specs/impl/php/cases/runner_library_exports.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-LIB-001",
@@ -4105,7 +4105,7 @@
       "type": "text.file"
     },
     {
-      "file": "specs/impl/php/cases/runner_pass.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-001",
@@ -4117,7 +4117,7 @@
       "type": "text.file"
     },
     {
-      "file": "specs/impl/php/cases/runner_pass.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-002",
@@ -4129,7 +4129,7 @@
       "type": "text.file"
     },
     {
-      "file": "specs/impl/php/cases/runner_pass.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-003",
@@ -4141,7 +4141,7 @@
       "type": "text.file"
     },
     {
-      "file": "specs/impl/php/cases/runner_pass.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-004",
@@ -4153,7 +4153,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_pass.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-005",
@@ -4165,7 +4165,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_pass.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-006",
@@ -4177,7 +4177,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_pass.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-007",
@@ -4189,7 +4189,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_pass.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-008",
@@ -4201,7 +4201,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_pass.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-RUN-009",
@@ -4213,7 +4213,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_portability.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-PORT-001",
@@ -4225,7 +4225,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_portability.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-PORT-002",
@@ -4237,7 +4237,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/php/cases/runner_portability.spec.md",
+      "file": "dc-runner-php",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PHP-PORT-003",
@@ -4249,7 +4249,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/contract_coverage_report.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-CONTRACT-REP-001",
@@ -4261,7 +4261,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/contract_coverage_report.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-CONTRACT-REP-002",
@@ -4273,7 +4273,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/docs_lint.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-DOCSLINT-001",
@@ -4285,7 +4285,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/docs_lint.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-DOCSLINT-002",
@@ -4297,7 +4297,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/schema_registry_report.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-SCHEMA-REG-001",
@@ -4309,7 +4309,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/schema_registry_report.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-SCHEMA-REG-002",
@@ -4321,7 +4321,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/spec_lang_stdlib_report.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-STDLIB-REP-001",
@@ -4333,7 +4333,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/spec_lang_stdlib_report.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-STDLIB-REP-002",
@@ -4345,7 +4345,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/validate_conformance_report.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-VALREP-001",
@@ -4357,7 +4357,7 @@
       "type": "cli.run"
     },
     {
-      "file": "specs/impl/python/cases/validate_conformance_report.spec.md",
+      "file": "dc-runner-python",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 0.0,
       "id": "DCIMPL-PY-VALREP-002",
