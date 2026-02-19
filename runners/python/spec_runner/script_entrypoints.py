@@ -13,6 +13,7 @@ from spec_runner.generate_library_symbol_catalog import main as _generate_librar
 from spec_runner.generate_metrics_field_catalog import main as _generate_metrics_field_catalog_main
 from spec_runner.generate_policy_rule_catalog import main as _generate_policy_rule_catalog_main
 from spec_runner.generate_runner_api_catalog import main as _generate_runner_api_catalog_main
+from spec_runner.generate_spec_case_templates import main as _generate_spec_case_templates_main
 from spec_runner.generate_spec_case_catalog import main as _generate_spec_case_catalog_main
 from spec_runner.generate_schema_docs import main as _generate_schema_docs_main
 from spec_runner.generate_spec_lang_builtin_catalog import main as _generate_spec_lang_builtin_catalog_main
@@ -138,6 +139,10 @@ def generate_library_symbol_catalog_main(argv: list[str] | None = None) -> int:
 
 def generate_spec_case_catalog_main(argv: list[str] | None = None) -> int:
     return int(_generate_spec_case_catalog_main(argv))
+
+
+def generate_spec_case_templates_main(argv: list[str] | None = None) -> int:
+    return int(_generate_spec_case_templates_main(argv))
 
 
 def generate_metrics_field_catalog_main(argv: list[str] | None = None) -> int:

@@ -127,6 +127,7 @@ Reference generation and graph artifacts:
   - `docs/book/93k_library_symbol_index.md`
   - `docs/book/93l_spec_case_reference.md`
   - `docs/book/93m_spec_case_index.md`
+  - `docs/book/93n_spec_case_templates_reference.md`
   - `docs/book/94_appendix_contract_policy_reference.md`
   - `docs/book/95_appendix_traceability_reference.md`
   - `docs/book/96_appendix_governance_checks_reference.md`

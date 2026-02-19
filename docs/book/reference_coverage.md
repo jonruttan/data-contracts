@@ -1,9 +1,9 @@
 # Reference Coverage
 
-- docs_count: 31
-- examples_total: 31
+- docs_count: 32
+- examples_total: 32
 - examples_runnable: 10
-- runnable_example_ratio: 0.3226
+- runnable_example_ratio: 0.3125
 
 ## Docs
 
@@ -32,6 +32,7 @@
 - `/docs/book/93k_library_symbol_index.md` (DOC-REF-942)
 - `/docs/book/93l_spec_case_reference.md` (DOC-REF-943)
 - `/docs/book/93m_spec_case_index.md` (DOC-REF-944)
+- `/docs/book/93n_spec_case_templates_reference.md` (DOC-REF-945)
 - `/docs/book/94_appendix_contract_policy_reference.md` (DOC-REF-094)
 - `/docs/book/95_appendix_traceability_reference.md` (DOC-REF-095)
 - `/docs/book/96_appendix_governance_checks_reference.md` (DOC-REF-096)

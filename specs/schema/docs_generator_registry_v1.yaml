@@ -170,6 +170,35 @@ surfaces:
   - id: catalog
     source_type: generated_artifact
     path: /.artifacts/spec-case-catalog.json
+- surface_id: spec_case_templates_reference
+  source_type: manifest_yaml
+  inputs:
+  - /specs/schema/schema_v1.md
+  - /specs/contract/02_case_shape.md
+  - /specs/contract/03_assertions.md
+  - /specs/contract/04_harness.md
+  outputs:
+  - /.artifacts/spec-case-templates.json
+  - /docs/book/93n_spec_case_templates_reference.md
+  generator: generate_spec_case_templates
+  check_mode_supported: true
+  owner_contract_docs:
+  - /specs/contract/02_case_shape.md
+  - /specs/contract/10_docs_quality.md
+  determinism_hash_fields:
+  - version
+  - contract_check
+  - contract_job
+  - contract_export
+  read_only_sections:
+  - /docs/book/93n_spec_case_templates_reference.md
+  template_path: /docs/book/templates/spec_case_templates_reference_template.md
+  output_mode: markers
+  marker_surface_id: spec_case_templates_reference
+  data_sources:
+  - id: templates
+    source_type: generated_artifact
+    path: /.artifacts/spec-case-templates.json
 - surface_id: spec_lang_builtin_catalog
   source_type: code_scan
   inputs:

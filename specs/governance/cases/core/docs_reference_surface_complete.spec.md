@@ -35,6 +35,7 @@ harness:
     - docs/book/93g_std_type.md
     - docs/book/93h_std_set.md
     - docs/book/93i_std_json_schema_fn_null.md
+    - docs/book/93n_spec_case_templates_reference.md
     required_globs:
     - specs/contract/*.md
   check:

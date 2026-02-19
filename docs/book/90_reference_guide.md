@@ -53,3 +53,4 @@ Provide a concise map from operational author guidance to normative schema/contr
 ## Generated References
 
 Use `docs/book/99_generated_reference_index.md` as the canonical entrypoint.
+For canonical full case templates, see `docs/book/93n_spec_case_templates_reference.md`.

@@ -32,9 +32,10 @@ reference anchors during implementation and conformance review.
 23. `/docs/book/93k_library_symbol_index.md` - generated index for library symbols grouped by module.
 24. `/docs/book/93l_spec_case_reference.md` - generated API-first reference for root doc metadata on executable cases.
 25. `/docs/book/93m_spec_case_index.md` - generated index for documented spec cases grouped by type.
-26. `/docs/book/94_appendix_contract_policy_reference.md` - generated policy rule catalog.
-27. `/docs/book/95_appendix_traceability_reference.md` - generated contract traceability catalog.
-28. `/docs/book/96_appendix_governance_checks_reference.md` - generated governance check catalog.
-29. `/docs/book/97_appendix_metrics_reference.md` - generated metrics field catalog.
-30. `/docs/book/98_appendix_spec_case_shape_reference.md` - generated schema field catalog for case shapes.
-31. `/docs/book/99_generated_reference_index.md` - canonical navigation gateway for all generated reference surfaces.
+26. `/docs/book/93n_spec_case_templates_reference.md` - generated canonical full templates for contract.check, contract.job, and contract.export.
+27. `/docs/book/94_appendix_contract_policy_reference.md` - generated policy rule catalog.
+28. `/docs/book/95_appendix_traceability_reference.md` - generated contract traceability catalog.
+29. `/docs/book/96_appendix_governance_checks_reference.md` - generated governance check catalog.
+30. `/docs/book/97_appendix_metrics_reference.md` - generated metrics field catalog.
+31. `/docs/book/98_appendix_spec_case_shape_reference.md` - generated schema field catalog for case shapes.
+32. `/docs/book/99_generated_reference_index.md` - canonical navigation gateway for all generated reference surfaces.

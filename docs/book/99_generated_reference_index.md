@@ -58,6 +58,7 @@ Act as the canonical navigation gateway for generated reference surfaces.
 - `docs/book/93k_library_symbol_index.md`
 - `docs/book/93l_spec_case_reference.md`
 - `docs/book/93m_spec_case_index.md`
+- `docs/book/93n_spec_case_templates_reference.md`
 - `docs/book/94_appendix_contract_policy_reference.md`
 - `docs/book/95_appendix_traceability_reference.md`
 - `docs/book/96_appendix_governance_checks_reference.md`
@@ -71,6 +72,7 @@ Act as the canonical navigation gateway for generated reference surfaces.
 - `.artifacts/spec-lang-builtin-catalog.json`
 - `.artifacts/library-symbol-catalog.json`
 - `.artifacts/spec-case-catalog.json`
+- `.artifacts/spec-case-templates.json`
 - `.artifacts/policy-rule-catalog.json`
 - `.artifacts/traceability-catalog.json`
 - `.artifacts/governance-check-catalog.json`

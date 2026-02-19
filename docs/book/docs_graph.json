@@ -531,6 +531,26 @@
       "to": "EX-REF-CASE-002"
     },
     {
+      "from": "/docs/book/93n_spec_case_templates_reference.md",
+      "kind": "owns_token",
+      "to": "spec_case_templates_reference"
+    },
+    {
+      "from": "/docs/book/93n_spec_case_templates_reference.md",
+      "kind": "requires_token",
+      "to": "generated_reference_gateway"
+    },
+    {
+      "from": "/docs/book/93n_spec_case_templates_reference.md",
+      "kind": "command",
+      "to": "PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-spec-case-templates --check"
+    },
+    {
+      "from": "/docs/book/93n_spec_case_templates_reference.md",
+      "kind": "example",
+      "to": "EX-REF-TEMPLATE-001"
+    },
+    {
       "from": "/docs/book/94_appendix_contract_policy_reference.md",
       "kind": "owns_token",
       "to": "appendix_contract_policy_reference"
@@ -826,6 +846,13 @@
       "path": "/docs/book/93m_spec_case_index.md",
       "status": "active",
       "title": "Spec Case Index"
+    },
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-945",
+      "path": "/docs/book/93n_spec_case_templates_reference.md",
+      "status": "active",
+      "title": "Spec Case Templates Reference"
     },
     {
       "audience": "reviewer",

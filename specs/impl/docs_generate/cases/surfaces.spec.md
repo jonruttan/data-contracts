@@ -955,3 +955,43 @@ contract:
       ops.job.dispatch:
       - main
 ```
+
+## SRDOCGEN-025
+
+```yaml contract-spec
+id: SRDOCGEN-025
+type: contract.job
+title: spec case templates reference surface generation
+harness:
+  docs_generate:
+    surface_id: spec_case_templates_reference
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/spec_case_templates_reference_template.md
+    output_path: /docs/book/93n_spec_case_templates_reference.md
+    marker_surface_id: spec_case_templates_reference
+    data_sources:
+    - id: templates
+      source_type: generated_artifact
+      path: /.artifacts/spec-case-templates.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
+contract:
+  defaults:
+    class: MUST
+  imports:
+  - from: artifact
+    names:
+    - summary_json
+  steps:
+  - id: dispatch_main
+    assert:
+      ops.job.dispatch:
+      - main
+```
