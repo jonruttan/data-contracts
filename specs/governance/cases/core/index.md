@@ -38,6 +38,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_book_chapter_order_canonical.spec.md`
 - `/specs/governance/cases/core/docs_cli_flags_documented.spec.md`
 - `/specs/governance/cases/core/docs_command_examples_verified.spec.md`
+- `/specs/governance/cases/core/docs_compatibility_examples_labeled.spec.md`
 - `/specs/governance/cases/core/docs_contract_schema_book_sync.spec.md`
 - `/specs/governance/cases/core/docs_current_spec_policy_key_names.spec.md`
 - `/specs/governance/cases/core/docs_docgen_quality_score_threshold.spec.md`
@@ -147,6 +148,9 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/runtime_ci_gate_default_no_python_governance_required.spec.md`
 - `/specs/governance/cases/core/runtime_ci_gate_default_report_commands_forbidden.spec.md`
 - `/specs/governance/cases/core/runtime_ci_gate_ownership_contract_required.spec.md`
+- `/specs/governance/cases/core/runtime_ci_python_lane_non_blocking_required.spec.md`
+- `/specs/governance/cases/core/runtime_compatibility_lanes_non_blocking_status.spec.md`
+- `/specs/governance/cases/core/runtime_compatibility_matrix_registration_required.spec.md`
 - `/specs/governance/cases/core/runtime_ci_workflow_critical_gate_required.spec.md`
 - `/specs/governance/cases/core/runtime_cigate_uses_governance_triage_required.spec.md`
 - `/specs/governance/cases/core/runtime_config_literals.spec.md`
@@ -190,6 +194,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/runtime_rust_adapter_no_python_exec.spec.md`
 - `/specs/governance/cases/core/runtime_rust_adapter_transitive_no_python.spec.md`
 - `/specs/governance/cases/core/runtime_rust_only_prepush_required.spec.md`
+- `/specs/governance/cases/core/runtime_required_rust_lane_blocking_status.spec.md`
 - `/specs/governance/cases/core/runtime_rust_primary_adapter_exec_smoke.spec.md`
 - `/specs/governance/cases/core/runtime_rust_primary_adapter_exec_smoke_success.spec.md`
 - `/specs/governance/cases/core/runtime_rust_primary_gate_path.spec.md`

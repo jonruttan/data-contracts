@@ -20,6 +20,15 @@ Installable CLI entrypoints exposed by packaging metadata:
 ## Run Checks
 
 ```sh
+./runners/public/runner_adapter.sh critical-gate
+./runners/public/runner_adapter.sh ci-gate-summary --runner-bin ./runners/public/runner_adapter.sh --runner-impl rust --changed-paths-file .artifacts/changed_paths.txt --write-summary .artifacts/gate-summary.json --write-markdown .artifacts/gate-summary.md
+./runners/public/runner_adapter.sh style-check
+./runners/public/runner_adapter.sh docs-lint
+```
+
+Compatibility lanes (non-blocking telemetry):
+
+```sh
 python -m ruff check .
 python -m mypy runners/python/spec_runner
 python -m compileall -q runners/python/spec_runner scripts tests
@@ -35,6 +44,7 @@ python -m spec_runner.spec_lang_commands docs-lint
 
 Use one of these lanes depending on depth needed:
 
+- Rust-first required lane is canonical for merge-blocking workflows.
 - Core profile (lightweight, fast local confidence): `make core-check`
 - Full profile (release/pre-merge parity confidence): `make check`
 
@@ -67,11 +77,11 @@ Rust-default lane (canonical):
 SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh ./scripts/core_gate.sh
 ```
 
-Runtime Python impl selection (forbidden):
+Compatibility lane examples (non-blocking):
 
 ```sh
-SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh SPEC_RUNNER_IMPL=python ./scripts/core_gate.sh
-# exits non-zero with rust migration guidance
+python -m spec_runner.spec_lang_commands run-governance-specs --liveness-level basic
+php runners/php/conformance_runner.php --cases specs/conformance/cases --case-formats md
 ```
 
 Optional local prebuild for Rust lane:
@@ -244,7 +254,7 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 - Python bytecode compile pass (`compileall`)
 - conformance purpose report generation
 - conformance purpose markdown summary generation
-- Python/PHP conformance parity command
+- non-blocking compatibility matrix lanes (Python/PHP, with Node/C placeholders)
 - `tools/spec_runner` pytest suite
 - artifact upload of `.artifacts/conformance-purpose.json`
 - artifact upload of `.artifacts/conformance-purpose-summary.md`
@@ -265,7 +275,7 @@ Local equivalent:
 ## Contract Governance Check (via Governance Specs)
 
 ```sh
-python -m spec_runner.spec_lang_commands run-governance-specs
+./runners/public/runner_adapter.sh governance
 ```
 
 ## Lint
@@ -285,7 +295,7 @@ python -m mypy runners/python/spec_runner
 ## Static Analysis (Syntax/Import-Time Parse)
 
 ```sh
-python -m compileall -q spec_runner scripts tests
+python -m compileall -q runners/python/spec_runner scripts tests
 ```
 
 ## Contract Coverage Report
@@ -401,7 +411,7 @@ python -m twine check dist/*
 Run this before `make prepush` when touching docs or governance:
 
 ```sh
-python3 -m spec_runner.spec_lang_commands check-docs-freshness --strict
+./runners/public/runner_adapter.sh docs-lint
 ```
 
 The checker validates canonical index ownership, link integrity, stale-term drift, governance family-map coverage, and generated docs sync.

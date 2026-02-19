@@ -626,7 +626,9 @@ def _scan_runtime_orchestration_policy_via_spec_lang(root: Path, *, harness: dic
         return ["harness.orchestration_policy.files must be a non-empty list"]
     if not isinstance(required_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in required_tokens):
         return ["harness.orchestration_policy.required_tokens must be a list of non-empty strings"]
-    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+    if not isinstance(forbidden_tokens, list) or any(
+        not isinstance(x, str) or not x.strip() for x in forbidden_tokens
+    ):
         return ["harness.orchestration_policy.forbidden_tokens must be a list of non-empty strings"]
 
     violations: list[str] = []
@@ -7898,6 +7900,146 @@ def _scan_runtime_ci_python_lane_non_blocking_required(root: Path, *, harness: d
     return violations
 
 
+def _scan_runtime_required_rust_lane_blocking_status(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("required_rust_lane")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.required_rust_lane_blocking_status requires harness.required_rust_lane mapping in governance spec"
+        ]
+    workflow = str(cfg.get("workflow", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if not workflow:
+        return ["harness.required_rust_lane.workflow must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.required_rust_lane.required_tokens must be a list of non-empty strings"]
+    if not isinstance(forbidden_tokens, list) or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens):
+        return ["harness.required_rust_lane.forbidden_tokens must be a list of non-empty strings"]
+    p = _join_contract_path(root, workflow)
+    if not p.exists():
+        return [f"{workflow}:1: missing CI workflow file"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{workflow}:1: missing required rust-lane blocking token {tok}")
+    for tok in forbidden_tokens:
+        if tok in text:
+            violations.append(f"{workflow}:1: forbidden non-blocking rust-lane token present {tok}")
+    return violations
+
+
+def _scan_runtime_compatibility_lanes_non_blocking_status(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("compatibility_lanes")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.compatibility_lanes_non_blocking_status requires harness.compatibility_lanes mapping in governance spec"
+        ]
+    workflow = str(cfg.get("workflow", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not workflow:
+        return ["harness.compatibility_lanes.workflow must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.compatibility_lanes.required_tokens must be a non-empty list of non-empty strings"]
+    p = _join_contract_path(root, workflow)
+    if not p.exists():
+        return [f"{workflow}:1: missing CI workflow file"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{workflow}:1: missing compatibility non-blocking token {tok}")
+    return violations
+
+
+def _scan_runtime_compatibility_matrix_registration_required(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("compatibility_matrix")
+    if not isinstance(cfg, dict):
+        return [
+            "runtime.compatibility_matrix_registration_required requires harness.compatibility_matrix mapping in governance spec"
+        ]
+    path = str(cfg.get("path", "")).strip()
+    required_tokens = cfg.get("required_tokens", [])
+    if not path:
+        return ["harness.compatibility_matrix.path must be a non-empty string"]
+    if (
+        not isinstance(required_tokens, list)
+        or not required_tokens
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.compatibility_matrix.required_tokens must be a non-empty list of non-empty strings"]
+    p = _join_contract_path(root, path)
+    if not p.exists():
+        return [f"{path}:1: missing compatibility matrix contract file"]
+    text = p.read_text(encoding="utf-8")
+    for tok in required_tokens:
+        if tok not in text:
+            violations.append(f"{path}:1: missing compatibility matrix token {tok}")
+    return violations
+
+
+def _scan_docs_compatibility_examples_labeled(
+    root: Path, *, harness: dict | None = None
+) -> list[str]:
+    violations: list[str] = []
+    h = harness or {}
+    cfg = h.get("compatibility_docs")
+    if not isinstance(cfg, dict):
+        return [
+            "docs.compatibility_examples_labeled requires harness.compatibility_docs mapping in governance spec"
+        ]
+    files = cfg.get("files", [])
+    required_tokens = cfg.get("required_tokens", [])
+    forbidden_tokens = cfg.get("forbidden_tokens", [])
+    if (
+        not isinstance(files, list)
+        or not files
+        or any(not isinstance(x, str) or not x.strip() for x in files)
+    ):
+        return ["harness.compatibility_docs.files must be a non-empty list of non-empty strings"]
+    if (
+        not isinstance(required_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_tokens)
+    ):
+        return ["harness.compatibility_docs.required_tokens must be a list of non-empty strings"]
+    if (
+        not isinstance(forbidden_tokens, list)
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_tokens)
+    ):
+        return ["harness.compatibility_docs.forbidden_tokens must be a list of non-empty strings"]
+
+    for rel in files:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing compatibility docs file")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for tok in required_tokens:
+            if tok not in text:
+                violations.append(f"{rel}:1: missing compatibility docs token {tok}")
+        for tok in forbidden_tokens:
+            if tok in text:
+                violations.append(f"{rel}:1: forbidden unlabeled python-first token {tok}")
+    return violations
+
+
 def _scan_runtime_rust_only_prepush_required(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     h = harness or {}
@@ -10102,6 +10244,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.runner_interface_gate_sync": _scan_runtime_runner_interface_gate_sync,
     "runtime.runner_adapter_python_impl_forbidden": _scan_runtime_runner_adapter_python_impl_forbidden,
     "runtime.local_ci_parity_python_lane_forbidden": _scan_runtime_local_ci_parity_python_lane_forbidden,
+    "runtime.ci_python_lane_non_blocking_required": _scan_runtime_ci_python_lane_non_blocking_required,
+    "runtime.required_rust_lane_blocking_status": _scan_runtime_required_rust_lane_blocking_status,
+    "runtime.compatibility_lanes_non_blocking_status": _scan_runtime_compatibility_lanes_non_blocking_status,
+    "runtime.compatibility_matrix_registration_required": _scan_runtime_compatibility_matrix_registration_required,
     "runtime.make_python_parity_targets_forbidden": _scan_runtime_make_python_parity_targets_forbidden,
     "runtime.rust_only_prepush_required": _scan_runtime_rust_only_prepush_required,
     "runtime.prepush_parity_default_required": _scan_runtime_prepush_parity_default_required,
@@ -10184,6 +10330,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.spec_case_doc_metadata_complete": _scan_docs_spec_case_doc_metadata_complete,
     "docs.spec_case_catalog_sync": _scan_docs_spec_case_catalog_sync,
     "docs.spec_domain_grouping_sync": _scan_docs_spec_domain_grouping_sync,
+    "docs.compatibility_examples_labeled": _scan_docs_compatibility_examples_labeled,
     "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
     "spec.portability_non_regression": _scan_spec_portability_non_regression,
     "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,

@@ -101,6 +101,32 @@ profiles:
         must_not_contain:
           - governance --check-prefix
           - run_governance_specs.py
+      - id: runtime.full_required_rust_lane_blocking_status
+        kind: file_tokens
+        path: /.github/workflows/ci.yml
+        must_contain:
+          - ci-gate:
+          - Run CI gate (required rust lane)
+      - id: runtime.full_compatibility_lanes_non_blocking_status
+        kind: file_tokens
+        path: /.github/workflows/ci.yml
+        must_contain:
+          - compatibility-python-lane:
+          - compatibility-php-lane:
+          - compatibility-node-lane:
+          - compatibility-c-lane:
+          - continue-on-error: true
+      - id: runtime.full_compatibility_matrix_contract_registered
+        kind: file_tokens
+        path: /specs/contract/25_compatibility_matrix.md
+        must_contain:
+          - '`required`:'
+          - '`compatibility_non_blocking`:'
+          - '`rust`'
+          - '`python`'
+          - '`php`'
+          - '`node`'
+          - '`c`'
       - id: runtime.full_governance_broad_native_slo
         kind: slo_budget
         max_ms: 120000

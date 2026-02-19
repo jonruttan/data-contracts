@@ -103,12 +103,15 @@ Default lane (rust):
 ./runners/public/runner_adapter.sh governance
 ```
 
-Python impl in runtime adapter is forbidden (hard cut):
+Compatibility lanes (non-blocking):
 
 ```sh
-./runners/public/runner_adapter.sh --impl python governance
-# => exits with migration guidance to --impl rust
+python -m spec_runner.spec_lang_commands run-governance-specs --liveness-level basic
+php runners/php/conformance_runner.php --cases specs/conformance/cases --case-formats md
 ```
+
+Rust-first policy: Rust is the only required merge-blocking lane. Python/PHP are non-blocking
+compatibility lanes, with Node/C planned under the same non-blocking class.
 
 Runner interface contract:
 
@@ -156,7 +159,7 @@ Notes:
 Use strict specs drift checks before pushing:
 
 ```sh
-python3 -m spec_runner.spec_lang_commands check-docs-freshness --strict
+./runners/public/runner_adapter.sh docs-lint
 ```
 
 This check is blocking in local parity and CI gate lanes.

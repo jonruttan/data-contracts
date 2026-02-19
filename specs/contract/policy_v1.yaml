@@ -1229,6 +1229,70 @@ rules:
   references:
   - specs/contract/16_rust_primary_transition.md
   - specs/governance/cases/core/runtime_rust_primary_gate_path.spec.md
+- id: RUNTIME_REQUIRED_RUST_LANE_BLOCKING_STATUS
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.ci.required_lane
+  norm: MUST
+  requirement: required_rust_lane_must_be_blocking
+  description: 'The required Rust CI lane must remain merge-blocking and must not
+    be configured as continue-on-error.
+
+    '
+  rationale: Keeps the required runtime verdict authoritative.
+  risk_if_violated: Merge gate can pass while required Rust behavior is broken.
+  references:
+  - .github/workflows/ci.yml
+  - specs/contract/25_compatibility_matrix.md
+  - specs/governance/cases/core/runtime_required_rust_lane_blocking_status.spec.md
+- id: RUNTIME_COMPATIBILITY_LANES_NON_BLOCKING
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.ci.compatibility_lanes
+  norm: MUST
+  requirement: compatibility_lanes_must_be_non_blocking
+  description: 'Compatibility lanes (python/php and planned node/c) must run as
+    non-blocking CI telemetry lanes.
+
+    '
+  rationale: Preserves Rust-first required gate while surfacing portability drift.
+  risk_if_violated: Compatibility lane failures can incorrectly block merge.
+  references:
+  - .github/workflows/ci.yml
+  - specs/contract/25_compatibility_matrix.md
+  - specs/governance/cases/core/runtime_compatibility_lanes_non_blocking_status.spec.md
+- id: RUNTIME_COMPATIBILITY_MATRIX_REGISTRATION_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: runtime.lane.registration
+  norm: MUST
+  requirement: runtime_lanes_must_be_registered_in_compatibility_matrix
+  description: 'Every runtime lane used by CI/gates must be explicitly registered
+    in the compatibility matrix contract with a lane class.
+
+    '
+  rationale: Prevents implicit lane policy drift and undocumented ownership.
+  risk_if_violated: New lanes can appear without blocking semantics or governance mapping.
+  references:
+  - specs/contract/25_compatibility_matrix.md
+  - specs/governance/cases/core/runtime_compatibility_matrix_registration_required.spec.md
+- id: DOCS_COMPATIBILITY_EXAMPLES_LABELING_REQUIRED
+  introduced_in: v1
+  scope: governance
+  applies_to: docs.runner_interface.compatibility_examples
+  norm: MUST
+  requirement: compatibility_examples_must_be_explicitly_labeled_non_blocking
+  description: 'Active docs must present Rust-first examples as canonical and label
+    Python/PHP examples as non-blocking compatibility lanes.
+
+    '
+  rationale: Reduces contributor confusion about which lane blocks merge.
+  risk_if_violated: Engineers can treat compatibility commands as canonical required path.
+  references:
+  - README.md
+  - docs/development.md
+  - specs/contract/12_runner_interface.md
+  - specs/governance/cases/core/docs_compatibility_examples_labeled.spec.md
 - id: RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
   introduced_in: v1
   scope: governance

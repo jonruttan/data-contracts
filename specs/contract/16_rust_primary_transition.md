@@ -3,51 +3,47 @@
 Defines the contract for operating this repository with a Rust-primary runner
 path while preserving schema/contract behavior guarantees.
 
+Rust-first policy is normative for required gate behavior.
+
 ## Intent
 
-- Rust adapter is the primary operational runner boundary.
-- Python/PHP implementations remain supported for compatibility and parity.
-- Gate/policy behavior remains implementation-neutral and deterministic.
+- Rust adapter is the required operational runner boundary.
+- Python/PHP implementations are supported as non-blocking compatibility lanes.
+- Gate/policy behavior remains deterministic with Rust as merge-blocking lane.
 
 ## Required Rust-Primary Guarantees
 
-1. CI Rust-primary gate path
+1. CI Rust required lane
 - CI MUST exercise core gate commands through the public runner entrypoint
-  (`SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh`) with explicit rust mode
-  (`SPEC_RUNNER_IMPL=rust`).
+  (`SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh`) with rust mode.
+- Rust required lane failures block merge/release.
 
 2. No Python-hardcoded gate dependency
 - Gate scripts MUST use runner-interface boundaries instead of direct Python
   script entrypoints, including `ci-gate-summary` orchestration.
-- Rust adapter/CLI paths MUST avoid transitive delegation through
-  `runners/python/runner_adapter.sh` and Python entrypoints.
+- Rust adapter/CLI paths MUST avoid transitive Python delegation.
 
 3. Runner-interface stability under Rust primary
 - Required runner-interface subcommands and exit-code contracts MUST remain
-  stable when Rust is selected as the primary adapter.
+  stable for Rust mode.
 
-4. Shared-capability parity
-- Shared-capability conformance behavior MUST remain parity-checked across
-  implementations.
+4. Compatibility lanes are non-blocking
+- Python/PHP compatibility jobs may fail without blocking merge.
+- Compatibility results MUST be published as artifacts/metrics.
 
-5. Adapter executable smoke
-- Governance MUST include an executable Rust-adapter smoke check that validates
-  deterministic command behavior (exit code and output tokens).
-
-6. Adapter/CLI subcommand parity
-- Governance MUST enforce parity between subcommands exposed by the shell
-  adapter and those handled by the Rust CLI implementation.
+5. Future lane onboarding
+- New non-Rust lanes default to non-blocking compatibility class.
+- Planned lanes `node` and `c` follow the same policy unless explicitly promoted.
 
 ## Adoption and Scope
 
-- Contributor docs SHOULD describe Rust-primary operation as the default
-  interface path while preserving compatibility notes for Python/PHP lanes.
-- Runtime adapter Python impl selection is hard-forbidden on
-  `runners/public/runner_adapter.sh`; Python parity telemetry, when needed, runs
-  direct Python scripts in non-blocking CI lanes.
+- Active docs MUST present Rust-first examples as canonical interface path.
+- Compatibility examples for Python/PHP MAY appear only in explicit non-blocking
+  compatibility sections.
 - Adding/removing required runtime support targets is governed by:
   - `specs/contract/08_v1_scope.md`
   - `specs/contract/13_runtime_scope.md`
+  - `specs/contract/25_compatibility_matrix.md`
 
 ## Non-Goals
 

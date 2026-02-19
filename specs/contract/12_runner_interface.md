@@ -2,12 +2,14 @@
 
 Defines the language-neutral command boundary used by local gate scripts.
 
+Rust-first contract: Rust is the canonical required runtime lane.
+
 Execution classes:
 
-- `default lane`: canonical adapter with rust mode
+- `required lane`: canonical adapter with rust mode
   (`runners/public/runner_adapter.sh` with `SPEC_RUNNER_IMPL=rust` default)
-- `rust standalone lane`: Rust runner MUST execute on hosts without Python
-  installed.
+- `compatibility lanes`: non-blocking telemetry lanes (`python`, `php`, planned `node`, `c`)
+- `rust standalone lane`: Rust runner MUST execute on hosts without Python installed.
 
 ## Required Interface
 
@@ -37,12 +39,11 @@ Required subcommands:
 
 CI expectation:
 
-- CI default lane MUST run core gate through `runners/public/runner_adapter.sh`
+- CI required lane MUST run core gate through `runners/public/runner_adapter.sh`
   in rust mode.
-- Local pre-push gate is Rust-only by default
+- Local pre-push gate is Rust-first and blocking on Rust-required checks
   (`make prepush` / `scripts/local_ci_parity.sh`).
-- Fast mode is Rust-only as well (`SPEC_PREPUSH_MODE=fast` or
-  `make prepush-fast`).
+- Optional compatibility execution may run behind explicit opt-in controls.
 - Repository-managed pre-push hook MUST invoke `make prepush` and block push
   on failure unless explicit emergency bypass is set (`SPEC_PREPUSH_BYPASS=1`).
 
@@ -52,7 +53,7 @@ Repository adapters:
 
 - `runners/public/runner_adapter.sh` (single public entrypoint; rust default router)
 - `runners/rust/runner_adapter.sh` (internal rust adapter; invokes Rust CLI)
-- `runners/python/runner_adapter.sh` (internal adapter path)
+- `runners/python/runner_adapter.sh` (internal compatibility adapter path)
 - `runners/rust/spec_runner_cli` (Rust runner-interface CLI crate)
 
 Rust adapters MUST NOT require Python process delegation for supported
@@ -64,6 +65,13 @@ Runtime hard-cut:
 
 - `runners/public/runner_adapter.sh --impl python ...` is forbidden and must hard-fail
   with migration guidance to Rust commands.
+
+Compatibility matrix classing:
+
+- `rust` is merge-blocking required lane.
+- `python/php` are non-blocking compatibility lanes.
+- `node/c` are planned non-blocking compatibility lanes.
+- Normative matrix contract: `/specs/contract/25_compatibility_matrix.md`.
 
 Rust adapter target behavior:
 
@@ -164,17 +172,19 @@ Environment equivalents:
 
 Runtime scope note:
 
-- required support targets in v1 remain Python runner and PHP runner
-- adding required support targets requires contract/governance expansion
+- required runtime support target in v1 is `rust`
+- compatibility lanes in v1 are `python` and `php`
+- planned compatibility lanes are `node` and `c`
 
 ## Compatibility Expectation
 
 - Runner interface subcommand names are contributor-facing operational contract.
 - Gate scripts (`ci_gate.sh`, `core_gate.sh`, `docs_doctor.sh`) MUST remain
   implementation-neutral and call the runner interface boundary.
+- Compatibility lanes are non-blocking unless explicitly promoted via policy change.
 
 ## Docs Freshness Contract
 
-- Canonical specs organization is enforced by `python3 -m spec_runner.spec_lang_commands check-docs-freshness --strict`.
-- Local parity and CI gate must execute this check as a blocking step.
+- Canonical specs organization is enforced by runner command `docs-lint`.
+- Local parity and CI gate must execute docs freshness checks in blocking required lane.
 - Freshness checker output must be written to `.artifacts/docs-freshness-report.json`.
