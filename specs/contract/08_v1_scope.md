@@ -50,7 +50,7 @@ maintenance decisions stay predictable.
 - Canonical executable surfaces are markdown-only:
   - conformance cases (`specs/conformance/cases`)
   - governance cases (`specs/governance/cases`)
-  - impl executable cases (`specs/impl`)
+  - impl executable cases (`runner-owned implementation specs`)
   - spec-lang library cases (`specs/libraries`)
 - Machine data artifacts remain YAML/JSON (baselines/manifests/generated
   reports/schema profiles) and are non-executable surfaces.

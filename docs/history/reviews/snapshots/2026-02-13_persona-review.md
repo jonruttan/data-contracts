@@ -26,12 +26,12 @@ gates.
 Top unacceptable:
 - no sandbox model for untrusted specs (`specs/contract/04_harness.md`)
 - policy stack may be too heavy for small teams (`specs/contract/policy_v1.yaml`)
-- env-driven behavior can still surprise (`dc-runner-python/spec_runner/harnesses/cli_run.py`)
+- env-driven behavior can still surprise (`dc%2Drunner%2Dpython/spec_runner/harnesses/cli_run.py`)
 
 Top salvageable:
 - deterministic gate exists (`scripts/ci_gate.sh`)
 - parity is executable, not rhetorical (`scripts/compare_conformance_parity.py`)
-- contract/governance checks are concrete (`dc-runner-python/spec_runner/contract_governance.py`)
+- contract/governance checks are concrete (`dc%2Drunner%2Dpython/spec_runner/contract_governance.py`)
 
 ## Eager Novice
 

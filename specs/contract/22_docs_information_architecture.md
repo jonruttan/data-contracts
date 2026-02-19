@@ -7,7 +7,7 @@
 - `/docs/book` for user-facing reference manuals.
 - `/specs` for executable contracts, schema, conformance, governance, and
   policy sources.
-- `/docs/impl` for implementation-specific appendices only.
+- `runner-owned implementation docs` for implementation-specific appendices only.
 - `/docs/reviews` for active review prompts/templates/snapshots.
 - a separate historical review archive root for archived artifacts only.
 

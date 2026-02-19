@@ -733,7 +733,7 @@ rules:
 - id: RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.python_dependency.metric_report
+  applies_to: runtime.compatibility_python_lane_dependency.metric_report
   norm: MUST
   requirement: python_dependency_metric_report_generation_and_shape_valid
   description: 'Governance must produce a valid python-dependency evidence report
@@ -748,7 +748,7 @@ rules:
 - id: RUNTIME_PYTHON_DEPENDENCY_NON_REGRESSION_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.python_dependency.metric_non_regression
+  applies_to: runtime.compatibility_python_lane_dependency.metric_non_regression
   norm: MUST
   requirement: python_dependency_metrics_must_not_regress_from_baseline
   description: 'Governance must enforce non-regression for configured python-dependency
@@ -779,7 +779,7 @@ rules:
 - id: RUNTIME_RUST_ADAPTER_TRANSITIVE_NO_PYTHON
   introduced_in: v1
   scope: governance
-  applies_to: runtime.rust_adapter.transitive_path
+  applies_to: runtime.required_lane_adapter.transitive_path
   norm: MUST
   requirement: rust_adapter_shell_boundary_avoids_transitive_python_delegation_tokens
   description: 'Rust adapter shell boundary must not include direct delegation tokens
@@ -810,7 +810,7 @@ rules:
 - id: RUNTIME_PYTHON_USAGE_SCOPED_TO_PYTHON_RUNNER
   introduced_in: v1
   scope: governance
-  applies_to: runtime.python_usage.scope
+  applies_to: runtime.compatibility_python_lane_usage.scope
   norm: MUST
   requirement: python_execution_must_be_scoped_to_explicit_python_runner_surfaces
   description: 'Python execution tokens are permitted only on explicit python-runner
@@ -1217,7 +1217,7 @@ rules:
 - id: RUST_PRIMARY_GATE_PATH_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.rust_primary.ci_lane
+  applies_to: runtime.required_lane_primary.ci_lane
   norm: MUST
   requirement: rust_primary_ci_lane_executes_core_gate_via_runner_interface
   description: 'CI must include a Rust-primary lane that executes core gate with SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh
@@ -1393,7 +1393,7 @@ rules:
 - id: RUST_PRIMARY_NO_PYTHON_GATE_DEPENDENCY
   introduced_in: v1
   scope: governance
-  applies_to: runtime.rust_primary.gate_dependency
+  applies_to: runtime.required_lane_primary.gate_dependency
   norm: MUST
   requirement: gate_scripts_avoid_direct_python_runner_entrypoints_under_rust_primary
   description: 'Gate scripts must remain runner-interface driven and must not hardcode
@@ -1539,7 +1539,7 @@ rules:
 - id: RUNTIME_RUST_ADAPTER_TARGET_FALLBACK_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.rust_adapter.target_selection
+  applies_to: runtime.required_lane_adapter.target_selection
   norm: MUST
   requirement: rust_adapter_must_support_host_target_fallback_with_strict_mode_override
   description: 'Rust adapter must fallback to host target when preferred target is
@@ -1778,7 +1778,7 @@ rules:
 - id: RUST_PRIMARY_INTERFACE_STABILITY_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.rust_primary.interface_stability
+  applies_to: runtime.required_lane_primary.interface_stability
   norm: MUST
   requirement: rust_primary_adapter_preserves_required_runner_interface_subcommands
   description: 'Rust-primary adapter path must preserve required runner-interface
@@ -1793,7 +1793,7 @@ rules:
 - id: RUST_PRIMARY_SHARED_CAPABILITY_PARITY_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.rust_primary.parity
+  applies_to: runtime.required_lane_primary.parity
   norm: MUST
   requirement: rust_primary_gate_flow_includes_shared_capability_parity_step
   description: 'Rust-primary-compatible gate flow must include shared-capability conformance
@@ -1808,7 +1808,7 @@ rules:
 - id: RUST_PRIMARY_ADAPTER_EXEC_SMOKE_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.rust_primary.adapter_exec
+  applies_to: runtime.required_lane_primary.adapter_exec
   norm: MUST
   requirement: rust_primary_adapter_executes_deterministic_smoke_command
   description: 'Rust-primary governance must include an execution smoke check that
@@ -1824,7 +1824,7 @@ rules:
 - id: RUST_PRIMARY_SUBCOMMAND_PARITY_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: runtime.rust_primary.interface_parity
+  applies_to: runtime.required_lane_primary.interface_parity
   norm: MUST
   requirement: rust_adapter_shell_and_rust_cli_subcommand_sets_must_match
   description: 'Rust-primary governance must enforce parity between subcommands exposed

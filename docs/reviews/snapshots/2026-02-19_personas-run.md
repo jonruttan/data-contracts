@@ -36,7 +36,7 @@ Runner lane: rust|required
 
 | Severity | Verified/Hypothesis | File:Line | What | Why | When | Proposed fix |
 |---|---|---|---|---|---|---|
-| P2 | Verified | dc-runner-rust/runner_adapter.sh:138 | Required-lane governance invocation exhibited a transient process kill before succeeding. | Persona confidence (SRE/Manager/Automation) degrades when failures are non-deterministic and non-diagnostic. | During required command pass in this review. | Add retry diagnostics and stabilization notes for transient adapter terminations. |
+| P2 | Verified | dc%2Drunner%2Drust/runner_adapter.sh:138 | Required-lane governance invocation exhibited a transient process kill before succeeding. | Persona confidence (SRE/Manager/Automation) degrades when failures are non-deterministic and non-diagnostic. | During required command pass in this review. | Add retry diagnostics and stabilization notes for transient adapter terminations. |
 | P2 | Verified | docs/reviews/prompts/adoption_7_personas.md:81 | Prompt section order does not match canonical review snapshot section contract in active tooling. | Automation pipeline expects strict contract sections (`Scope Notes`, `Findings`, etc.); mismatch increases conversion drift risk. | During reviewer output-format pressure test. | Update persona prompt output section list to canonical contract headings used by validator and template. |
 
 ## Synthesis
@@ -60,7 +60,7 @@ Runner lane: rust|required
   - transient adapter failures include deterministic diagnostic context and retry guidance.
   - repeated governance invocations do not fail with unexplained process kills in steady state.
   affected_paths:
-  - /dc-runner-rust/runner_adapter.sh
+  - /dc%2Drunner%2Drust/runner_adapter.sh
   - /docs/book/80_troubleshooting.md
   risk: moderate
 - id: PERSONA-RUN-002

@@ -19,7 +19,7 @@ rules:
   DCGOV-RUNTIME-ENTRY-003: runtime.runner_adapter_python_impl_forbidden
   DCGOV-RUNTIME-PREPUSH-001: runtime.local_ci_parity_python_lane_forbidden
   DCGOV-RUNTIME-PREPUSH-002: runtime.make_python_parity_targets_forbidden
-  DCGOV-RUNTIME-PREPUSH-006: runtime.rust_only_prepush_required
+  DCGOV-RUNTIME-PREPUSH-006: runtime.required_lane_only_prepush_required
   DCGOV-RUNTIME-CONFIG-005: runtime.ci_python_lane_non_blocking_required
   DCGOV-RUNTIME-CONFIG-006: runtime.required_rust_lane_blocking_status
   DCGOV-RUNTIME-CONFIG-007: runtime.compatibility_lanes_non_blocking_status

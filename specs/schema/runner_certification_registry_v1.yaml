@@ -27,7 +27,7 @@ runners:
     md_out: /.artifacts/runner-certification-{runner}.md
   status_exchange:
     source_kind: release_asset
-    release_api_url: https://api.github.com/repos/jonruttan/dc-runner-rust/releases/latest
+    release_api_url: https://api.github.com/repos/jonruttan/dc%2Drunner%2Drust/releases/latest
     report_asset_name: runner-status-report-v1.json
     matrix_role: required
     freshness_slo_hours: 72
@@ -46,7 +46,7 @@ runners:
     md_out: /.artifacts/runner-certification-{runner}.md
   status_exchange:
     source_kind: release_asset
-    release_api_url: https://api.github.com/repos/jonruttan/dc-runner-python/releases/latest
+    release_api_url: https://api.github.com/repos/jonruttan/dc%2Drunner%2Dpython/releases/latest
     report_asset_name: runner-status-report-v1.json
     matrix_role: compatibility
     freshness_slo_hours: 72
@@ -65,7 +65,7 @@ runners:
     md_out: /.artifacts/runner-certification-{runner}.md
   status_exchange:
     source_kind: release_asset
-    release_api_url: https://api.github.com/repos/jonruttan/dc-runner-php/releases/latest
+    release_api_url: https://api.github.com/repos/jonruttan/dc%2Drunner%2Dphp/releases/latest
     report_asset_name: runner-status-report-v1.json
     matrix_role: compatibility
     freshness_slo_hours: 72

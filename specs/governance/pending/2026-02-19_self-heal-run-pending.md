@@ -22,5 +22,5 @@ Source snapshot: `docs/reviews/snapshots/2026-02-19_self-heal-run.md`
   - governance adapter failures emit deterministic diagnostics with retry context.
   - repeated governance invocations in the same environment complete without transient unexplained exit 137 events.
 - affected_paths:
-  - `/dc-runner-rust/runner_adapter.sh`
+  - `/dc%2Drunner%2Drust/runner_adapter.sh`
   - `/docs/book/80_troubleshooting.md`

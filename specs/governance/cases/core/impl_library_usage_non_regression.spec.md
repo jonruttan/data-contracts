@@ -20,9 +20,9 @@ harness:
     epsilon: 1.0e-12
     spec_lang_adoption:
       roots:
-      - /specs/impl
+      - runner-owned implementation specs
       segment_rules:
-      - prefix: specs/impl
+      - prefix: runner-owned implementation specs
         segment: impl
       recursive: true
   check:

@@ -155,23 +155,23 @@ profiles:
         kind: file_tokens
         path: /specs/contract/policy_v1.yaml
         must_not_contain:
-          - dc-runner-rust/
-          - dc-runner-python/
-          - dc-runner-php/
+          - dc%2Drunner%2Drust/
+          - dc%2Drunner%2Dpython/
+          - dc%2Drunner%2Dphp/
       - id: runtime.no_external_runner_file_path_refs_contract_traceability
         kind: file_tokens
         path: /specs/contract/traceability_v1.yaml
         must_not_contain:
-          - dc-runner-rust/
-          - dc-runner-python/
-          - dc-runner-php/
+          - dc%2Drunner%2Drust/
+          - dc%2Drunner%2Dpython/
+          - dc%2Drunner%2Dphp/
       - id: runtime.no_external_runner_file_path_refs_governance_cases
         kind: file_tokens
         path: /specs/governance/cases/core/index.md
         must_not_contain:
-          - dc-runner-rust/
-          - dc-runner-python/
-          - dc-runner-php/
+          - dc%2Drunner%2Drust/
+          - dc%2Drunner%2Dpython/
+          - dc%2Drunner%2Dphp/
       - id: runtime.full_governance_broad_native_slo
         kind: slo_budget
         max_ms: 120000

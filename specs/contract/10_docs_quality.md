@@ -9,7 +9,7 @@ MUST:
 - docs information architecture MUST follow canonical roots:
   - `docs/book`
   - `specs`
-  - `docs/impl`
+  - `runner-owned implementation docs`
   - `docs/reviews`
 - directory index files under `docs/**` MUST be named `index.md`.
 - `README.md` under `docs/**` is forbidden.
