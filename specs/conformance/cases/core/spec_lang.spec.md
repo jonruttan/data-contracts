@@ -30,15 +30,13 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       lit:
         call:
         - var: conf.pass_when_text_contains
-        - var: subject
+        - var: text
         - 'version: 1'
 ```
 
@@ -72,18 +70,16 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.logic.and:
       - call:
         - {var: conf.pass_when_text_contains}
-        - {var: subject}
+        - {var: text}
         - version
       - std.string.starts_with:
-        - {var: subject}
+        - {var: text}
         - '#'
 ```
 
@@ -111,8 +107,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -171,13 +165,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.starts_with:
-      - {var: subject}
+      - {var: text}
       - NOPE_PREFIX
 harness:
   check:
@@ -208,8 +200,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -244,8 +234,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -288,8 +276,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -345,20 +331,18 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
     - lit:
         call:
         - var: conf.pass_when_text_contains
-        - var: subject
+        - var: text
         - 'version: 1'
     - lit:
         call:
         - var: conf.pass_when_text_contains
-        - var: subject
+        - var: text
         - 'version: 1'
 ```
 
@@ -389,8 +373,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -434,8 +416,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -479,8 +459,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -533,8 +511,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -591,8 +567,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -648,8 +622,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -744,8 +716,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -825,8 +795,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -872,8 +840,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -918,8 +884,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -959,8 +923,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -1084,8 +1046,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -1189,8 +1149,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -1273,8 +1231,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -1362,8 +1318,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -1548,8 +1502,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:

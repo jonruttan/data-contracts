@@ -20,19 +20,17 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - '"version": 1'
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - '"summary"'
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - '"rules"'
 ```
 
@@ -58,12 +56,10 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - wrote .artifacts/contract-coverage-impl-case.json
 ```

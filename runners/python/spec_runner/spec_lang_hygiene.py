@@ -379,6 +379,42 @@ def _normalize_assert_node(node: Any) -> tuple[Any, bool]:
     return norm_expr, changed
 
 
+def _collect_var_symbols(node: Any) -> set[str]:
+    out: set[str] = set()
+    if isinstance(node, dict):
+        if set(node.keys()) == {"var"}:
+            name = str(node.get("var", "")).strip()
+            if name:
+                out.add(name)
+        for value in node.values():
+            out.update(_collect_var_symbols(value))
+    elif isinstance(node, list):
+        for item in node:
+            out.update(_collect_var_symbols(item))
+    return out
+
+
+def _replace_var_symbol(node: Any, *, old: str, new: str) -> tuple[Any, bool]:
+    changed = False
+    if isinstance(node, dict):
+        if set(node.keys()) == {"var"} and str(node.get("var", "")).strip() == old:
+            return _FlowMap({"var": new}), True
+        out: dict[str, Any] = {}
+        for key, value in node.items():
+            nval, ch = _replace_var_symbol(value, old=old, new=new)
+            changed = changed or ch
+            out[str(key)] = nval
+        return out, changed
+    if isinstance(node, list):
+        out_list: list[Any] = []
+        for item in node:
+            nitem, ch = _replace_var_symbol(item, old=old, new=new)
+            changed = changed or ch
+            out_list.append(nitem)
+        return out_list, changed
+    return node, False
+
+
 def _normalize_contract(node: Any) -> tuple[Any, bool]:
     changed = False
     if isinstance(node, dict):
@@ -495,7 +531,60 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             if step_class == "MUST" and "class" in step:
                 step.pop("class", None)
                 changed = True
+            # Safe simplification: replace local alias subject -> artifact key in step scope.
+            step_import_map, _, step_import_ok = _imports_any_to_map(step.get("imports"))
+            if not step_import_ok:
+                return node, changed
+            subject_spec = step_import_map.get("subject")
+            if isinstance(subject_spec, dict) and str(subject_spec.get("from", "")).strip() == "artifact":
+                source_key = str(subject_spec.get("key", "")).strip()
+                if source_key and source_key != "subject":
+                    step_assert = step.get("assert")
+                    refs = _collect_var_symbols(step_assert)
+                    if "subject" in refs and source_key not in refs:
+                        rewritten, ch = _replace_var_symbol(step_assert, old="subject", new=source_key)
+                        changed = changed or ch
+                        step["assert"] = rewritten
+                        step_import_map.pop("subject", None)
+                        if source_key not in step_import_map:
+                            step_import_map[source_key] = {"from": "artifact", "key": source_key}
+                        step["imports"] = step_import_map
+                        changed = True
             normalized_steps.append(step)
+
+        # Safe simplification: replace contract-level alias subject -> artifact key.
+        subject_spec = contract_imports.get("subject")
+        if isinstance(subject_spec, dict) and str(subject_spec.get("from", "")).strip() == "artifact":
+            source_key = str(subject_spec.get("key", "")).strip()
+            if source_key and source_key != "subject" and source_key not in contract_imports:
+                can_rewrite_all = True
+                for step in normalized_steps:
+                    if not isinstance(step, dict):
+                        continue
+                    step_imports, _, step_ok = _imports_any_to_map(step.get("imports"))
+                    if not step_ok:
+                        can_rewrite_all = False
+                        break
+                    if "subject" in step_imports or source_key in step_imports:
+                        can_rewrite_all = False
+                        break
+                    refs = _collect_var_symbols(step.get("assert"))
+                    if "subject" in refs and source_key in refs:
+                        can_rewrite_all = False
+                        break
+                if can_rewrite_all:
+                    for step in normalized_steps:
+                        if not isinstance(step, dict):
+                            continue
+                        refs = _collect_var_symbols(step.get("assert"))
+                        if "subject" not in refs:
+                            continue
+                        rewritten, ch = _replace_var_symbol(step.get("assert"), old="subject", new=source_key)
+                        changed = changed or ch
+                        step["assert"] = rewritten
+                    contract_imports.pop("subject", None)
+                    contract_imports[source_key] = {"from": "artifact", "key": source_key}
+                    changed = True
 
         # Canonical rule: step-level imports are overrides. If contract imports are
         # absent, seed them from the first observed step imports per symbol.

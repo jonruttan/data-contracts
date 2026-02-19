@@ -21,13 +21,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - 'OK: valid conformance report'
 ```
 
@@ -52,12 +50,10 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - 'ERROR: report.version must equal 1'
 ```

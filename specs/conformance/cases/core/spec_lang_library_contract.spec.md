@@ -18,26 +18,24 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'type: spec.export'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'harness:'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'exports:'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'from: assert.function'
     - std.logic.not:
       - std.string.contains:
-        - {var: subject}
+        - {var: text}
         - 'defines:'
 harness:
   check:
@@ -64,26 +62,24 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'type: spec.export'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'harness:'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'exports:'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'from: assert.function'
     - std.logic.not:
       - std.string.contains:
-        - {var: subject}
+        - {var: text}
         - 'defines:'
 harness:
   check:
@@ -109,16 +105,14 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - /specs/libraries/policy/policy_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - /specs/libraries/policy/policy_metrics.spec.md
 harness:
   check:

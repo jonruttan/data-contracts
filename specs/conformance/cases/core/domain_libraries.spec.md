@@ -42,8 +42,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -188,13 +186,13 @@ contract:
             oauth_token_source: env_ref
       - env_ref
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - domain.http.status_in
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - domain.http.auth_is_oauth
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'type: spec.export'
 ```
 
@@ -273,8 +271,6 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
@@ -418,24 +414,24 @@ contract:
             path: /specs/libraries/domain/http_core.spec.md
       - http_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - /specs/libraries/domain/http_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - /specs/libraries/domain/fs_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - /specs/libraries/domain/make_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - /specs/libraries/domain/markdown_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - /specs/libraries/domain/path_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - /specs/libraries/domain/php_core.spec.md
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - /specs/libraries/domain/python_core.spec.md
 ```

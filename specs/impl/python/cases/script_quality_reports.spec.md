@@ -22,13 +22,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - wrote .artifacts/objective-scorecard-script-case.json
 ```
 
@@ -54,13 +52,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - invalid choice
 ```
 
@@ -87,13 +83,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - wrote .artifacts/spec-lang-adoption-script-case.json
 ```
 
@@ -120,13 +114,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - unsupported quality report
 ```
 
@@ -154,13 +146,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - wrote .artifacts/schema-registry-script-case.json
 ```
 
@@ -186,12 +176,10 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - invalid choice
 ```

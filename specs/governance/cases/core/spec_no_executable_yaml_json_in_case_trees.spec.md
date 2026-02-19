@@ -26,19 +26,17 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - check_id
       - spec.no_executable_yaml_json_in_case_trees
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - passed
       - true
 ```

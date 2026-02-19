@@ -20,16 +20,14 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - '"version": 1'
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - '"summary"'
 ```
 
@@ -55,15 +53,13 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - '# Spec-Lang Stdlib Profile Report'
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - '- profile symbols:'
 ```

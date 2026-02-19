@@ -33,12 +33,10 @@ contract:
   - from: artifact
     names:
     - violation_count
-    as:
-      violation_count: subject
   steps:
   - id: assert_1
     assert:
       std.logic.eq:
-      - {var: subject}
+      - {var: violation_count}
       - 0
 ```

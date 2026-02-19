@@ -19,19 +19,17 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'END GENERATED: SCHEMA_REGISTRY_V1'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - Generated Registry Snapshot
 harness:
   check:

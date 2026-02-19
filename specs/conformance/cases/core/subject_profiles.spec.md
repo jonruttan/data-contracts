@@ -18,22 +18,20 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - profile_id
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - profile_version
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - json_core_only
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - deterministic_projection
 harness:
   check:
@@ -60,26 +58,24 @@ contract:
   - from: artifact
     names:
     - context_json
-    as:
-      context_json: subject
   steps:
   - id: assert_1
     assert:
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - {var: context_json}
         - profile_id
       - text.file/v1
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - {var: context_json}
         - profile_version
       - 1
     - std.object.has_key:
-      - {var: subject}
+      - {var: context_json}
       - value
     - std.object.has_key:
-      - {var: subject}
+      - {var: context_json}
       - meta
 harness:
   check:

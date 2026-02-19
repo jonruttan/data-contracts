@@ -76,12 +76,10 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - '"ok": true'
 ```

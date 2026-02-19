@@ -22,25 +22,21 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
   - id: assert_2
     assert:
       std.type.json_type:
-      - {var: subject}
+      - {var: body_json}
       - dict
     imports:
     - from: artifact
       names:
       - body_json
-      as:
-        body_json: subject
 harness:
   check:
     profile: api.http
@@ -74,13 +70,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 harness:
   check:
@@ -114,13 +108,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 harness:
   check:
@@ -153,13 +145,11 @@ contract:
   - from: artifact
     names:
     - body_json
-    as:
-      body_json: subject
   steps:
   - id: assert_1
     assert:
       std.object.has_key:
-      - {var: subject}
+      - {var: body_json}
       - id
 harness:
   check:
@@ -193,13 +183,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 harness:
   check:
@@ -231,13 +219,11 @@ contract:
   - from: artifact
     names:
     - body_text
-    as:
-      body_text: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: body_text}
       - abc-123
 harness:
   check:
@@ -269,14 +255,12 @@ contract:
   - from: artifact
     names:
     - body_json
-    as:
-      body_json: subject
   steps:
   - id: assert_1
     assert:
       std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - {var: body_json}
         - deleted
       - true
 harness:
@@ -309,13 +293,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 harness:
   check:
@@ -347,13 +329,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 harness:
   check:
@@ -387,13 +367,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 harness:
   check:
@@ -427,13 +405,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 harness:
   check:
@@ -486,26 +462,22 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
   - id: assert_2
     assert:
       std.logic.eq:
       - std.collection.len:
-        - {var: subject}
+        - {var: steps_json}
       - 3
     imports:
     - from: artifact
       names:
       - steps_json
-      as:
-        steps_json: subject
 ```
 
 ## SRCONF-API-013
@@ -546,22 +518,20 @@ contract:
   - from: artifact
     names:
     - context_json
-    as:
-      context_json: subject
   steps:
   - id: assert_1
     assert:
     - std.logic.eq:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
+          - {var: context_json}
           - meta
         - auth_mode
       - oauth
     - std.logic.eq:
       - std.object.get:
         - std.object.get:
-          - {var: subject}
+          - {var: context_json}
           - meta
         - oauth_token_source
       - env_ref
@@ -604,13 +574,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 ```
 
@@ -652,13 +620,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 ```
 
@@ -701,13 +667,11 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 ```
 
@@ -754,12 +718,10 @@ contract:
   - from: artifact
     names:
     - status
-    as:
-      status: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: status}
       - '200'
 ```

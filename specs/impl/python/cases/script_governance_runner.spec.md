@@ -21,13 +21,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - --check-prefix
 ```
 
@@ -55,13 +53,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - case-file-pattern
 ```
 
@@ -89,13 +85,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - selected zero cases
 ```
 
@@ -117,27 +111,25 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - docs.stdlib_symbol_docs_complete
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - docs.stdlib_examples_complete
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - docs.harness_reference_semantics_complete
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - docs.runner_reference_semantics_complete
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - docs.reference_namespace_chapters_sync
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - docs.docgen_quality_score_threshold
 ```

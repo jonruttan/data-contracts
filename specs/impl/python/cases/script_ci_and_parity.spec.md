@@ -21,13 +21,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - --runner-bin
 ```
 
@@ -51,13 +49,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - --runner-bin
 ```
 
@@ -82,13 +78,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - --cases
 ```
 
@@ -114,13 +108,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - invalid int value
 ```
 
@@ -145,19 +137,17 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - --cases
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - --out
     - std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - --case-file-pattern
 ```
 
@@ -187,13 +177,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - case-file-pattern
 ```
 
@@ -215,19 +203,17 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - --cases <dir-or-file>
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - --out <file>
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - --case-file-pattern <glob>
 ```
 
@@ -253,13 +239,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - --case-formats requires at least one format
 ```
 
@@ -287,12 +271,10 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - php executable not found in PATH
 ```

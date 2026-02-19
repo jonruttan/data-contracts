@@ -26,13 +26,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - port-shell-ok
 ```
 
@@ -65,13 +63,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - x:true y:7
 ```
 
@@ -101,12 +97,10 @@ contract:
   - from: artifact
     names:
     - stdout_path
-    as:
-      stdout_path: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout_path}
       - path_target.txt
 ```

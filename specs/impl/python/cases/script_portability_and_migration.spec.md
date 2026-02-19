@@ -22,13 +22,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - wrote .artifacts/spec-portability-script-case.json
 ```
 
@@ -54,13 +52,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - invalid choice
 ```
 
@@ -85,13 +81,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - --cases
 ```
 
@@ -116,13 +110,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - unrecognized arguments
 ```
 
@@ -147,13 +139,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - --write
 ```
 
@@ -177,13 +167,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - paths
 ```
 
@@ -209,13 +197,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - wrote .artifacts/conformance-purpose-script-case.json
 ```
 
@@ -241,12 +227,10 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - invalid choice
 ```

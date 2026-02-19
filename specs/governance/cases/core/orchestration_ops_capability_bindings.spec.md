@@ -25,19 +25,17 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - check_id
       - orchestration.ops_capability_bindings
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - passed
       - true
 ```

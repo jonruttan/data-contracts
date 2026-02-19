@@ -32,8 +32,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -73,8 +71,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -116,8 +112,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -157,8 +151,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -199,8 +191,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -241,8 +231,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -283,8 +271,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -325,8 +311,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -367,8 +351,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -409,8 +391,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -451,8 +431,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -492,8 +470,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -533,8 +509,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -575,8 +549,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -617,8 +589,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -659,8 +629,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -701,8 +669,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -743,8 +709,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -785,8 +749,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -827,8 +789,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -869,8 +829,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -911,8 +869,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -953,8 +909,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:
@@ -995,8 +949,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: dispatch_main
     assert:

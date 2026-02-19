@@ -27,13 +27,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - \A\Z
 harness:
   check:

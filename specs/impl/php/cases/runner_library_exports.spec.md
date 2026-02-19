@@ -29,12 +29,10 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: text}
       - '# PHP Spec Runner Library Export References'
 ```

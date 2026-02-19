@@ -32,30 +32,26 @@ contract:
   - from: artifact
     names:
     - violation_count
-    as:
-      violation_count: subject
   steps:
   - id: assert_1
     assert:
       std.logic.eq:
-      - {var: subject}
+      - {var: violation_count}
       - 0
   - id: assert_2
     assert:
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - passed
       - true
     - std.logic.eq:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - check_id
       - runtime.runner_interface_ci_lane
     imports:
     - from: artifact
       names:
       - summary_json
-      as:
-        summary_json: subject
 ```

@@ -18,13 +18,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'version: 1'
 harness:
   check:
@@ -50,13 +48,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - \A\Z
 harness:
   check:
@@ -82,13 +78,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'version: 1'
 harness:
   check:
@@ -114,17 +108,15 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     class: MAY
     assert:
     - std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - (?!)
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'version: 1'
 harness:
   check:
@@ -150,17 +142,15 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     class: MAY
     assert:
     - std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - \A\Z
     - std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - (?!)
 harness:
   check:
@@ -186,17 +176,15 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     class: MUST_NOT
     assert:
     - std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - \A\Z
     - std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - (?!)
 harness:
   check:
@@ -222,17 +210,15 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     class: MUST_NOT
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'version: 1'
     - std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - (?!)
 harness:
   check:
@@ -258,23 +244,21 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     class: MAY
     assert:
     - std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - \A\Z
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'version: 1'
   - id: assert_2
     class: MUST_NOT
     assert:
       std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - \A\Z
 harness:
   check:
@@ -303,13 +287,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - '(?<=version: )1'
 harness:
   check:
@@ -338,13 +320,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: text}
       - ''
 harness:
   check:
@@ -373,13 +353,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.regex_match:
-      - {var: subject}
+      - {var: text}
       - .*
 harness:
   check:
@@ -411,16 +389,14 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'version: 1'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'version: 1'
 harness:
   check:
@@ -449,17 +425,15 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     class: MAY
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'version: 1'
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - 'version: 2'
 harness:
   check:
@@ -487,13 +461,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: text}
       - ''
 harness:
   check:

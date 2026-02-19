@@ -40,8 +40,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -49,7 +47,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/conformance-purpose.json
 when:
@@ -101,8 +99,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -110,7 +106,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/conformance-purpose-summary.md
 when:
@@ -162,8 +158,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -171,7 +165,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/spec-portability.json
 when:
@@ -223,8 +217,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -232,7 +224,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/spec-portability-summary.md
 when:
@@ -284,8 +276,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -293,7 +283,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/contract-assertions.json
 when:
@@ -345,8 +335,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -354,7 +342,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
       - written_path
       - .artifacts/contract-assertions-summary.md
 when:
@@ -406,8 +394,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -415,7 +401,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/spec-lang-adoption.json
 when:
@@ -467,8 +453,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -476,7 +460,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/spec-lang-adoption-summary.md
 when:
@@ -528,8 +512,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -537,7 +519,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/runner-independence.json
 when:
@@ -589,8 +571,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -598,7 +578,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/runner-independence-summary.md
 when:
@@ -650,8 +630,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -659,7 +637,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/python-dependency.json
 when:
@@ -711,8 +689,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -720,7 +696,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/python-dependency-summary.md
 when:
@@ -772,8 +748,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -781,7 +755,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/docs-operability.json
 when:
@@ -833,8 +807,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -842,7 +814,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/docs-operability-summary.md
 when:
@@ -894,8 +866,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -903,7 +873,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/objective-scorecard.json
 when:
@@ -955,8 +925,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -964,7 +932,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/objective-scorecard-summary.md
 when:
@@ -1016,8 +984,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -1025,7 +991,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/spec-lang-stdlib.json
 when:
@@ -1077,8 +1043,6 @@ contract:
   - from: artifact
     names:
     - summary_json
-    as:
-      summary_json: subject
   steps:
   - id: assert_1
     assert:
@@ -1086,7 +1050,7 @@ contract:
       - main
     - std.string.contains:
       - std.object.get:
-        - {var: subject}
+        - {var: summary_json}
         - written_path
       - .artifacts/spec-lang-stdlib-summary.md
 when:

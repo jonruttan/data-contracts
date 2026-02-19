@@ -19,13 +19,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: text}
       - Spec-Test Schema (v1)
 harness:
   check:
@@ -51,14 +49,12 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       lit:
         unknown_symbol_for_schema_case:
-        - var: subject
+        - var: text
 harness:
   check:
     profile: text.file

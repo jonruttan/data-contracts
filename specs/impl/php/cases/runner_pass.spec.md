@@ -18,13 +18,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: text}
       - '# PHP Spec Runner Pass Cases'
 harness:
   check:
@@ -50,13 +48,11 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: text}
       - fixture-content
 harness:
   check:
@@ -83,17 +79,15 @@ contract:
   - from: artifact
     names:
     - text
-    as:
-      text: subject
   steps:
   - id: assert_1
     class: MAY
     assert:
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - no-match-token
     - std.string.contains:
-      - {var: subject}
+      - {var: text}
       - fixture-content
 harness:
   check:
@@ -128,13 +122,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - hello-runner
 ```
 
@@ -166,13 +158,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - 'on'
 ```
 
@@ -202,13 +192,11 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout}
       - fallback-ok
 ```
 
@@ -238,14 +226,12 @@ contract:
   - from: artifact
     names:
     - stdout
-    as:
-      stdout: subject
   steps:
   - id: assert_1
     assert:
       std.type.json_type:
       - std.json.parse:
-        - {var: subject}
+        - {var: stdout}
       - list
 ```
 
@@ -275,13 +261,11 @@ contract:
   - from: artifact
     names:
     - stderr
-    as:
-      stderr: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stderr}
       - runner-err
 ```
 
@@ -311,23 +295,19 @@ contract:
   - from: artifact
     names:
     - stdout_path
-    as:
-      stdout_path: subject
   steps:
   - id: assert_1
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout_path}
       - path_target.txt
   - id: assert_2
     assert:
       std.string.contains:
-      - {var: subject}
+      - {var: stdout_path_text}
       - path target file content
     imports:
     - from: artifact
       names:
       - stdout_path_text
-      as:
-        stdout_path_text: subject
 ```
