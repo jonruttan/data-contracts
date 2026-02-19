@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-SCHEMA-CONTRACT-001
 title: contract assertions require explicit imports
-purpose: Ensures cases using var subject define imports.subject via defaults or step imports.
+purpose: Ensures cases using var subject define imports.subject via contract imports or step
+  imports.
 type: contract.check
 harness:
   root: .

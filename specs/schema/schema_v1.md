@@ -429,7 +429,7 @@ Import binding shape:
 
 Import merge behavior:
 
-- effective step imports = `contract.defaults.imports` merged with
+- effective step imports = `contract.imports` merged with
   `contract.steps[].imports`
 - step imports override defaults on key collision
 

@@ -14,7 +14,7 @@ fields:
     type: any
     required: true
     since: v1
-  contract.defaults.imports:
+  contract.imports:
     type: mapping
     required: false
     since: v1

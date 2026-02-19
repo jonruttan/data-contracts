@@ -7014,6 +7014,16 @@ def _scan_schema_contract_target_on_forbidden(root: Path, *, harness: dict | Non
         contract = case.get("contract")
         if not isinstance(contract, dict):
             continue
+        defaults = contract.get("defaults")
+        if isinstance(defaults, dict):
+            if "target" in defaults:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} contract.defaults.target is forbidden; use contract.imports"
+                )
+            if "on" in defaults:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} contract.defaults.on is forbidden; use contract.imports"
+                )
         steps = contract.get("steps")
         if not isinstance(steps, list):
             continue
@@ -7048,9 +7058,23 @@ def _scan_schema_contract_imports_explicit_required(root: Path, *, harness: dict
         if not isinstance(contract, dict):
             continue
         defaults = contract.get("defaults")
+        if isinstance(defaults, dict) and "imports" in defaults:
+            violations.append(
+                f"{doc_path.relative_to(root)}: case {case_id} contract.defaults.imports is forbidden; use contract.imports"
+            )
+        contract_imports_raw = contract.get("imports")
+        if isinstance(contract_imports_raw, dict):
+            if "defaults" in contract_imports_raw:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} contract.imports.defaults is forbidden; use contract.imports directly"
+                )
+            if "steps" in contract_imports_raw:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} contract.imports.steps is forbidden; use contract.steps[].imports"
+                )
         default_imports = {}
-        if isinstance(defaults, dict) and isinstance(defaults.get("imports"), dict):
-            default_imports = cast(dict[str, Any], defaults.get("imports"))
+        if isinstance(contract_imports_raw, dict):
+            default_imports = cast(dict[str, Any], contract_imports_raw)
         steps = contract.get("steps")
         if not isinstance(steps, list):
             continue

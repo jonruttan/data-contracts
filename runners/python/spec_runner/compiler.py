@@ -384,8 +384,18 @@ def _normalize_contract_steps(raw_assert: Any, *, raw_expect: Any, assert_path: 
         if default_class not in {"MUST", "MAY", "MUST_NOT"}:
             raise ValueError(f"{assert_path}.defaults.class must be one of: MUST, MAY, MUST_NOT")
         if "target" in defaults or "on" in defaults:
-            raise ValueError(f"{assert_path}.defaults.target/on is forbidden; use defaults.imports")
-        default_imports = _normalize_imports(defaults.get("imports"), field_path=f"{assert_path}.defaults.imports")
+            raise ValueError(f"{assert_path}.defaults.target/on is forbidden; use contract.imports")
+        if "imports" in defaults:
+            raise ValueError(f"{assert_path}.defaults.imports is forbidden; use {assert_path}.imports")
+        root_imports_raw = raw_assert.get("imports")
+        if isinstance(root_imports_raw, dict):
+            if "defaults" in root_imports_raw:
+                raise ValueError(f"{assert_path}.imports.defaults is forbidden; use {assert_path}.imports directly")
+            if "steps" in root_imports_raw:
+                raise ValueError(
+                    f"{assert_path}.imports.steps is forbidden; use {assert_path}.steps[].imports"
+                )
+        default_imports = _normalize_imports(root_imports_raw, field_path=f"{assert_path}.imports")
         raw_steps = raw_assert.get("steps")
         if raw_steps is None:
             raw_steps = []

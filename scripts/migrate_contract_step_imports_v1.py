@@ -11,7 +11,7 @@ from spec_runner.spec_lang_hygiene import format_file, iter_case_files
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
         description=(
-            "Migrate legacy contract step target/on bindings to explicit imports bindings."
+            "Migrate legacy contract assertion imports to canonical contract.imports and contract.steps[].imports."
         )
     )
     mode = ap.add_mutually_exclusive_group(required=True)

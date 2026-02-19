@@ -18,7 +18,7 @@ explicitly imported assertion values.
 
 ## Contract Import Rules
 
-- `contract.defaults.imports` may define default bindings.
+- `contract.imports` may define default bindings.
 - `contract.steps[].imports` may define/override step bindings.
 - Assertions must read values through imported symbols (for example `{var: subject}`).
 - `contract.steps[].target` and `contract.steps[].on` are forbidden.

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import yaml
 
@@ -296,6 +296,20 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
     if isinstance(node, dict):
         defaults_raw = node.get("defaults")
         defaults: dict[str, Any] = dict(defaults_raw) if isinstance(defaults_raw, dict) else {}
+        contract_imports: dict[str, Any] = {}
+        imports_raw = node.get("imports")
+        if isinstance(imports_raw, dict):
+            contract_imports = dict(imports_raw)
+        elif imports_raw is not None:
+            return node, changed
+        nested_defaults = contract_imports.pop("defaults", None)
+        nested_steps = contract_imports.pop("steps", None)
+        if nested_defaults is not None:
+            if isinstance(nested_defaults, dict):
+                for key, value in nested_defaults.items():
+                    if key not in contract_imports:
+                        contract_imports[key] = value
+            changed = True
         default_target = ""
         if "target" in defaults:
             default_target = str(defaults.pop("target", "")).strip()
@@ -304,17 +318,24 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             default_target = str(defaults.pop("on", "")).strip()
             changed = True
         if default_target:
-            imports_map = defaults.get("imports")
-            if not isinstance(imports_map, dict):
-                imports_map = {}
-            if "subject" not in imports_map:
-                imports_map["subject"] = {"from": "artifact", "key": default_target}
-            defaults["imports"] = imports_map
+            if "subject" not in contract_imports:
+                contract_imports["subject"] = {"from": "artifact", "key": default_target}
+        defaults_imports = defaults.pop("imports", None)
+        if isinstance(defaults_imports, dict):
+            for key, value in defaults_imports.items():
+                if key not in contract_imports:
+                    contract_imports[key] = value
+            changed = True
+        elif defaults_imports is not None:
+            changed = True
         raw_steps = node.get("steps")
         if raw_steps is None:
             raw_steps = []
         if not isinstance(raw_steps, list):
             return node, changed
+        steps_nested_imports: dict[str, Any] = {}
+        if isinstance(nested_steps, dict):
+            steps_nested_imports = nested_steps
         normalized_steps: list[dict[str, Any]] = []
         for idx, raw_step in enumerate(raw_steps):
             if not isinstance(raw_step, dict):
@@ -358,6 +379,16 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             if "id" not in step or not str(step.get("id", "")).strip():
                 step["id"] = f"step_{idx+1:03d}"
                 changed = True
+            step_id = str(step.get("id", "")).strip()
+            if step_id and step_id in steps_nested_imports and isinstance(steps_nested_imports.get(step_id), dict):
+                imports_map = step.get("imports")
+                if not isinstance(imports_map, dict):
+                    imports_map = {}
+                for key, value in cast(dict[str, Any], steps_nested_imports.get(step_id)).items():
+                    if key not in imports_map:
+                        imports_map[key] = value
+                step["imports"] = imports_map
+                changed = True
             step_class = str(step.get("class", "MUST")).strip() or "MUST"
             if step_class == "MUST" and "class" in step:
                 step.pop("class", None)
@@ -367,6 +398,8 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
         if "class" not in defaults:
             defaults["class"] = "MUST"
         out: dict[str, Any] = {"defaults": defaults, "steps": normalized_steps}
+        if contract_imports:
+            out["imports"] = contract_imports
         return out, True or changed
 
     if isinstance(node, list):
@@ -1412,11 +1445,40 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
             code="SLINT023",
             message="contract.defaults must be a mapping when provided",
         )
-    default_import_names = _validate_imports(
-        defaults.get("imports") if isinstance(defaults, dict) else None,
-        field="contract.defaults.imports",
-    )
+    contract_import_names = _validate_imports(contract.get("imports"), field="contract.imports")
+    if isinstance(contract.get("imports"), dict):
+        contract_imports = cast(dict[str, Any], contract.get("imports"))
+        if "defaults" in contract_imports:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field="contract.imports.defaults",
+                code="SLINT090",
+                message="contract.imports.defaults is forbidden; use contract.imports directly",
+                fixable=True,
+            )
+        if "steps" in contract_imports:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field="contract.imports.steps",
+                code="SLINT091",
+                message="contract.imports.steps is forbidden; use contract.steps[].imports",
+                fixable=True,
+            )
     if isinstance(defaults, dict):
+        if "imports" in defaults:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field="contract.defaults.imports",
+                code="SLINT089",
+                message="contract.defaults.imports is forbidden; use contract.imports",
+                fixable=True,
+            )
         if "target" in defaults or "on" in defaults:
             _append_issue(
                 issues,
@@ -1424,7 +1486,7 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
                 case_id=case_id,
                 field="contract.defaults",
                 code="SLINT086",
-                message="contract.defaults target/on keys are forbidden; use defaults.imports",
+                message="contract.defaults target/on keys are forbidden; use contract.imports",
                 fixable=True,
             )
     steps = contract.get("steps")
@@ -1480,7 +1542,7 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
                 fixable=True,
             )
         step_import_names = _validate_imports(step.get("imports"), field=f"contract.steps[{idx}].imports")
-        import_names = set(default_import_names) | set(step_import_names)
+        import_names = set(contract_import_names) | set(step_import_names)
         class_name = str(step.get("class", "MUST")).strip() or "MUST"
         if class_name not in _GROUP_KEYS:
             _append_issue(

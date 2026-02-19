@@ -32,7 +32,7 @@ Import binding shape:
 
 Import merge semantics:
 
-- effective imports = `contract.defaults.imports` + `contract.steps[].imports`
+- effective imports = `contract.imports` + `contract.steps[].imports`
 - step imports override same-name defaults
 
 `{var: subject}` is valid only when `subject` is imported explicitly.
@@ -58,10 +58,10 @@ Example:
 contract:
   defaults:
     class: MUST
-    imports:
-      subject:
-        from: artifact
-        key: violation_count
+  imports:
+    subject:
+      from: artifact
+      key: violation_count
   steps:
   - id: assert_1
     assert:
