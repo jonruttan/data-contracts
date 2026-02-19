@@ -16,6 +16,8 @@ This directory contains active review assets for project-aligned critiques and h
   - `docs/reviews/prompts/self_healing.md`
 - Final gatekeeper review:
   - `docs/reviews/prompts/final_boss_gatekeeper.md`
+- Discovery fit + self-heal review:
+  - `docs/reviews/prompts/discovery_fit_self_heal.md`
 
 ## Workflow
 
@@ -24,6 +26,16 @@ This directory contains active review assets for project-aligned critiques and h
 3. Preserve raw output and include required metadata from the snapshot template.
 4. Derive pending/governance candidates from the structured sections.
 5. Promote selected candidates into canonical spec/governance surfaces under `specs/`.
+
+Discovery-fit workflow:
+1. Scaffold snapshot:
+   - `python -m spec_runner.new_review_snapshot --prompt docs/reviews/prompts/discovery_fit_self_heal.md --label discovery_fit`
+2. Run discovery prompt and record output in the generated snapshot.
+3. Validate snapshot:
+   - `python -m spec_runner.spec_lang_commands review-validate --snapshot docs/reviews/snapshots/<snapshot>.md`
+4. Convert to pending artifact:
+   - `python -m spec_runner.review_to_pending docs/reviews/snapshots/<snapshot>.md`
+   - output: `specs/governance/pending/<snapshot>-pending.md`
 
 ## Snapshot Metadata (required)
 

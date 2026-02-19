@@ -59,6 +59,9 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_review_snapshot_template_contract_sync.spec.md`
 - `/specs/governance/cases/core/docs_review_tooling_contract_sync.spec.md`
 - `/specs/governance/cases/core/docs_review_snapshots_schema_valid.spec.md`
+- `/specs/governance/cases/core/docs_reviews_discovery_prompt_present.spec.md`
+- `/specs/governance/cases/core/docs_reviews_discovery_prompt_contract_sync.spec.md`
+- `/specs/governance/cases/core/docs_reviews_discovery_workflow_sync.spec.md`
 - `/specs/governance/cases/core/docs_index_filename_policy.spec.md`
 - `/specs/governance/cases/core/docs_instructions_complete.spec.md`
 - `/specs/governance/cases/core/docs_layout_canonical_trees.spec.md`

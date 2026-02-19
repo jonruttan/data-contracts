@@ -167,6 +167,9 @@ profiles:
           - docs.review_snapshot_template_contract_sync
           - docs.review_tooling_contract_sync
           - docs.review_snapshots_schema_valid
+          - docs.reviews_discovery_prompt_present
+          - docs.reviews_discovery_prompt_contract_sync
+          - docs.reviews_discovery_workflow_sync
       - id: docs.full_reviews_contract_checks_prefix_mapped
         kind: file_tokens
         path: /specs/governance/check_prefix_map_v1.yaml
@@ -179,6 +182,12 @@ profiles:
           - docs.review_tooling_contract_sync
           - DCGOV-DOCS-REF-015
           - docs.review_snapshots_schema_valid
+          - DCGOV-DOCS-REF-016
+          - docs.reviews_discovery_prompt_present
+          - DCGOV-DOCS-REF-017
+          - docs.reviews_discovery_prompt_contract_sync
+          - DCGOV-DOCS-REF-018
+          - docs.reviews_discovery_workflow_sync
       - id: runtime.full_governance_broad_native_slo
         kind: slo_budget
         max_ms: 120000

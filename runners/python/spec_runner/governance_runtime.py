@@ -260,7 +260,9 @@ _REVIEW_PROMPT_FILES = (
     "docs/reviews/prompts/adoption_7_personas.md",
     "docs/reviews/prompts/self_healing.md",
     "docs/reviews/prompts/final_boss_gatekeeper.md",
+    "docs/reviews/prompts/discovery_fit_self_heal.md",
 )
+_REVIEW_DISCOVERY_PROMPT = "docs/reviews/prompts/discovery_fit_self_heal.md"
 _REVIEW_SCHEMA_REF_TOKENS = (
     "/specs/schema/review_snapshot_schema_v1.yaml",
     "/specs/contract/26_review_output_contract.md",
@@ -274,6 +276,30 @@ _REVIEW_REQUIRED_SECTION_TOKENS = (
     "## Classification Labels",
     "## Reject / Defer List",
     "## Raw Output",
+)
+_REVIEW_DISCOVERY_ENTRYPOINT_TOKENS = (
+    "/README.md",
+    "/docs/book/index.md",
+    "/docs/development.md",
+    "/specs/current.md",
+    "/specs/contract/index.md",
+    "/specs/schema/schema_v1.md",
+)
+_REVIEW_DISCOVERY_SELF_HEAL_ALLOWED_TOKENS = (
+    "Allowed auto-fixes",
+    "docs wording/path drift",
+    "command example drift",
+    "governance map/index/catalog token sync",
+    "missing or incorrect prompt/template refs",
+    "strict-schema output contract drift",
+    "low-risk parser/CLI wiring inconsistencies",
+)
+_REVIEW_DISCOVERY_SELF_HEAL_FORBIDDEN_TOKENS = (
+    "Forbidden auto-fixes",
+    "architecture redesign",
+    "schema semantic changes",
+    "risky runtime logic changes",
+    "dependency additions",
 )
 _CHAIN_TEMPLATE_PATTERN = re.compile(r"\{\{\s*chain\.([A-Za-z0-9_.-]+)\s*\}\}")
 _CHAIN_REF_CASE_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]+$")
@@ -6698,6 +6724,64 @@ def _scan_docs_review_snapshots_schema_valid(root: Path, *, harness: dict | None
     return violations
 
 
+def _scan_docs_reviews_discovery_prompt_present(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    path = root / _REVIEW_DISCOVERY_PROMPT
+    if not path.exists() or not path.is_file():
+        return [f"{_REVIEW_DISCOVERY_PROMPT}:1: missing discovery prompt"]
+    return []
+
+
+def _scan_docs_reviews_discovery_prompt_contract_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    path = root / _REVIEW_DISCOVERY_PROMPT
+    if not path.exists() or not path.is_file():
+        return [f"{_REVIEW_DISCOVERY_PROMPT}:1: missing discovery prompt"]
+    text = path.read_text(encoding="utf-8")
+    violations: list[str] = []
+    for token in _REVIEW_SCHEMA_REF_TOKENS:
+        if token not in text:
+            violations.append(f"{_REVIEW_DISCOVERY_PROMPT}:1: missing required review contract reference {token}")
+    for token in _REVIEW_REQUIRED_SECTION_TOKENS:
+        if token not in text:
+            violations.append(f"{_REVIEW_DISCOVERY_PROMPT}:1: missing required output section token {token}")
+    for token in _REVIEW_DISCOVERY_ENTRYPOINT_TOKENS:
+        if token not in text:
+            violations.append(f"{_REVIEW_DISCOVERY_PROMPT}:1: missing discovery entrypoint token {token}")
+    for token in _REVIEW_DISCOVERY_SELF_HEAL_ALLOWED_TOKENS:
+        if token not in text:
+            violations.append(f"{_REVIEW_DISCOVERY_PROMPT}:1: missing allowed self-heal policy token {token}")
+    for token in _REVIEW_DISCOVERY_SELF_HEAL_FORBIDDEN_TOKENS:
+        if token not in text:
+            violations.append(f"{_REVIEW_DISCOVERY_PROMPT}:1: missing forbidden self-heal policy token {token}")
+    if "Start at:" not in text:
+        violations.append(f"{_REVIEW_DISCOVERY_PROMPT}:1: missing explicit discovery start directive")
+    if "If missing or insufficient, continue in this exact fallback order:" not in text:
+        violations.append(f"{_REVIEW_DISCOVERY_PROMPT}:1: missing fallback order directive")
+    return violations
+
+
+def _scan_docs_reviews_discovery_workflow_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    rel = "docs/reviews/README.md"
+    path = root / rel
+    if not path.exists() or not path.is_file():
+        return [f"{rel}:1: missing docs/reviews README"]
+    text = path.read_text(encoding="utf-8")
+    violations: list[str] = []
+    required_tokens = (
+        "docs/reviews/prompts/discovery_fit_self_heal.md",
+        "python -m spec_runner.new_review_snapshot --prompt docs/reviews/prompts/discovery_fit_self_heal.md",
+        "python -m spec_runner.spec_lang_commands review-validate --snapshot",
+        "python -m spec_runner.review_to_pending",
+        "specs/governance/pending/<snapshot>-pending.md",
+    )
+    for token in required_tokens:
+        if token not in text:
+            violations.append(f"{rel}:1: missing discovery workflow token {token}")
+    return violations
+
+
 def _scan_docs_no_os_artifact_files(root: Path, *, harness: dict | None = None) -> list[str]:
     docs_root = root / "docs"
     if not docs_root.exists():
@@ -11081,6 +11165,9 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.review_snapshot_template_contract_sync": _scan_docs_review_snapshot_template_contract_sync,
     "docs.review_tooling_contract_sync": _scan_docs_review_tooling_contract_sync,
     "docs.review_snapshots_schema_valid": _scan_docs_review_snapshots_schema_valid,
+    "docs.reviews_discovery_prompt_present": _scan_docs_reviews_discovery_prompt_present,
+    "docs.reviews_discovery_prompt_contract_sync": _scan_docs_reviews_discovery_prompt_contract_sync,
+    "docs.reviews_discovery_workflow_sync": _scan_docs_reviews_discovery_workflow_sync,
     "docs.no_os_artifact_files": _scan_docs_no_os_artifact_files,
     "runtime.scope_sync": _scan_runtime_scope_sync,
     "runtime.profiling_contract_artifacts": _scan_runtime_profiling_contract_artifacts,

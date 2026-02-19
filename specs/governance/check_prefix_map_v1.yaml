@@ -37,6 +37,9 @@ rules:
   DCGOV-DOCS-REF-013: docs.review_snapshot_template_contract_sync
   DCGOV-DOCS-REF-014: docs.review_tooling_contract_sync
   DCGOV-DOCS-REF-015: docs.review_snapshots_schema_valid
+  DCGOV-DOCS-REF-016: docs.reviews_discovery_prompt_present
+  DCGOV-DOCS-REF-017: docs.reviews_discovery_prompt_contract_sync
+  DCGOV-DOCS-REF-018: docs.reviews_discovery_workflow_sync
   DCGOV-SCHEMA-CONTRACT-001: schema.contract_imports_explicit_required
   DCGOV-SCHEMA-CONTRACT-002: schema.contract_target_on_forbidden
   DCGOV-DOCS-: docs.

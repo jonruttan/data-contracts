@@ -37,6 +37,7 @@ Runner lane: rust|required | python|compatibility | php|compatibility | mixed
 - North-star:
 - Top risks:
 - Definition of done:
+- Discovery-fit reviews: include target profile, fit scores (0-5), and fit verdict (`good_fit|conditional_fit|poor_fit`).
 
 ## Spec Candidates (YAML)
 
