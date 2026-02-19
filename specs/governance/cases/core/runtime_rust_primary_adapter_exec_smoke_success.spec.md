@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUST-PRIMARY-006
+## DCGOV-RUST-PRIMARY-006
 
 ```yaml contract-spec
-id: SRGOV-RUST-PRIMARY-006
+id: DCGOV-RUST-PRIMARY-006
 title: rust-primary adapter executes success-path smoke command deterministically
 purpose: Ensures the Rust adapter can execute a supported success-path command with deterministic
   success output and exit-code behavior.

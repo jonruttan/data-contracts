@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-003
+## DCGOV-RUNTIME-TRIAGE-003
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-003
+id: DCGOV-RUNTIME-TRIAGE-003
 title: ci gate summary uses governance triage and emits triage metadata
 purpose: Ensures both Python and Rust ci-gate-summary paths reference governance triage flow.
 type: contract.check

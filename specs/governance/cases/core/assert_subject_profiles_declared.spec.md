@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-PROFILE-001
+## DCGOV-ASSERT-PROFILE-001
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-PROFILE-001
+id: DCGOV-ASSERT-PROFILE-001
 title: subject profile contract artifacts are declared
 purpose: Ensures subject profile contract/schema/type docs and domain libraries are present
   as required artifacts.

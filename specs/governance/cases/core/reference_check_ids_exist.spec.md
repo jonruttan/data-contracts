@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-REF-CHECKS-001
+## DCGOV-REF-CHECKS-001
 
 ```yaml contract-spec
-id: SRGOV-REF-CHECKS-001
+id: DCGOV-REF-CHECKS-001
 title: governance check ids exist
 purpose: Ensures governance cases only reference registered check ids.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-ORCH-001
+## DCGOV-RUNTIME-ORCH-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-ORCH-001
+id: DCGOV-RUNTIME-ORCH-001
 title: gate orchestration verdict is policy-driven via spec-lang
 purpose: Ensures CI gate summary determines final verdict from assert-derived step statuses
   without evaluate expressions.

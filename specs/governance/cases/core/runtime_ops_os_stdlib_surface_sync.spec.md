@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-OPS-OS-SURFACE-001
+## DCGOV-RUNTIME-OPS-OS-SURFACE-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-OPS-OS-SURFACE-001
+id: DCGOV-RUNTIME-OPS-OS-SURFACE-001
 title: ops.os stdlib symbols are declared in profile and symbol maps
 purpose: Ensures ops.os builtins are synchronized across stdlib mapping and stdlib profile
   contract surfaces.

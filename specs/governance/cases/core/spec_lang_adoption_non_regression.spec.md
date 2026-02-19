@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SPEC-LANG-002
+## DCGOV-SPEC-LANG-002
 
 ```yaml contract-spec
-id: SRGOV-SPEC-LANG-002
+id: DCGOV-SPEC-LANG-002
 title: spec-lang adoption metric is non-regressing
 purpose: Enforces monotonic non-regression for spec-lang adoption metrics against checked-in
   baseline.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   spec_lang_adoption_non_regression:
-    baseline_path: /specs/metrics/spec_lang_adoption_baseline.json
+    baseline_path: /specs/governance/metrics/spec_lang_adoption_baseline.json
     summary_fields:
       overall_logic_self_contained_ratio: non_decrease
       native_logic_escape_case_ratio: non_increase

@@ -1,9 +1,9 @@
 # Python Script CLI Cases: Portability and Migration
 
-## SRPY-SCRIPT-PORT-001
+## DCIMPL-PY-SCRIPT-PORT-001
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-PORT-001
+id: DCIMPL-PY-SCRIPT-PORT-001
 title: spec_portability_report writes json artifact
 type: contract.check
 harness:
@@ -30,10 +30,10 @@ contract:
       - wrote .artifacts/spec-portability-script-case.json
 ```
 
-## SRPY-SCRIPT-PORT-002
+## DCIMPL-PY-SCRIPT-PORT-002
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-PORT-002
+id: DCIMPL-PY-SCRIPT-PORT-002
 title: spec_portability_report rejects invalid format
 type: contract.check
 harness:
@@ -60,10 +60,10 @@ contract:
       - invalid choice
 ```
 
-## SRPY-SCRIPT-PORT-003
+## DCIMPL-PY-SCRIPT-PORT-003
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-PORT-003
+id: DCIMPL-PY-SCRIPT-PORT-003
 title: impl evaluate migration report help renders usage
 type: contract.check
 harness:
@@ -89,10 +89,10 @@ contract:
       - --cases
 ```
 
-## SRPY-SCRIPT-PORT-004
+## DCIMPL-PY-SCRIPT-PORT-004
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-PORT-004
+id: DCIMPL-PY-SCRIPT-PORT-004
 title: impl evaluate migration report rejects invalid option
 type: contract.check
 harness:
@@ -118,10 +118,10 @@ contract:
       - unrecognized arguments
 ```
 
-## SRPY-SCRIPT-PORT-005
+## DCIMPL-PY-SCRIPT-PORT-005
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-PORT-005
+id: DCIMPL-PY-SCRIPT-PORT-005
 title: split library cases command help renders usage
 type: contract.check
 harness:
@@ -147,10 +147,10 @@ contract:
       - --write
 ```
 
-## SRPY-SCRIPT-PORT-006
+## DCIMPL-PY-SCRIPT-PORT-006
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-PORT-006
+id: DCIMPL-PY-SCRIPT-PORT-006
 title: split library cases command requires input paths
 type: contract.check
 harness:
@@ -175,10 +175,10 @@ contract:
       - paths
 ```
 
-## SRPY-SCRIPT-PORT-007
+## DCIMPL-PY-SCRIPT-PORT-007
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-PORT-007
+id: DCIMPL-PY-SCRIPT-PORT-007
 title: conformance purpose report writes json artifact
 type: contract.check
 harness:
@@ -205,10 +205,10 @@ contract:
       - wrote .artifacts/conformance-purpose-script-case.json
 ```
 
-## SRPY-SCRIPT-PORT-008
+## DCIMPL-PY-SCRIPT-PORT-008
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-PORT-008
+id: DCIMPL-PY-SCRIPT-PORT-008
 title: conformance purpose report rejects invalid format
 type: contract.check
 harness:

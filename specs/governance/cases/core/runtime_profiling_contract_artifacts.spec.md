@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-PROFILE-CONTRACT-001
+## DCGOV-PROFILE-CONTRACT-001
 
 ```yaml contract-spec
-id: SRGOV-PROFILE-CONTRACT-001
+id: DCGOV-PROFILE-CONTRACT-001
 title: runtime profiling contract artifacts exist and are discoverable
 purpose: Ensures run trace schema and profiling contract docs are present and linked in current
   snapshot notes.

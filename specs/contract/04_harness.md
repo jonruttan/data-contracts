@@ -194,8 +194,8 @@ Subject profile envelope contract:
 - `type: orchestration.run` uses `harness.orchestration` for runner tool
   dispatch contracts.
 - tool definitions are registry-backed per implementation:
-  - `specs/tools/python/tools_v1.yaml`
-  - `specs/tools/rust/tools_v1.yaml`
+  - `specs/governance/tools/python/tools_v1.yaml`
+  - `specs/governance/tools/rust/tools_v1.yaml`
 - `effect_symbol` naming MUST use deep-dot `ops.*` hierarchy:
   `ops.<segment>(.<segment>)+`
   (for example `ops.fs.file.read`, `ops.time.clock.now_utc`,

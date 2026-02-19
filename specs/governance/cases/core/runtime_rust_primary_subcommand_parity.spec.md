@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUST-PRIMARY-007
+## DCGOV-RUST-PRIMARY-007
 
 ```yaml contract-spec
-id: SRGOV-RUST-PRIMARY-007
+id: DCGOV-RUST-PRIMARY-007
 title: rust adapter and rust cli expose the same runner subcommand set
 purpose: Ensures the shell adapter and Rust CLI subcommand surfaces stay synchronized to prevent
   runtime interface drift.

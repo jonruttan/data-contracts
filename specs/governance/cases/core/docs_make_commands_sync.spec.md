@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-007
+## DCGOV-DOCS-REF-007
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-007
+id: DCGOV-DOCS-REF-007
 title: docs use canonical make command entrypoints
 purpose: Keeps contributor docs aligned on the canonical make-based command entrypoints for
   verification and gate execution.

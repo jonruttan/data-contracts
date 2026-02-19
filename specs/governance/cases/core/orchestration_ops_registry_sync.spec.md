@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-OPS-003
+## DCGOV-OPS-003
 
 ```yaml contract-spec
-id: SRGOV-OPS-003
+id: DCGOV-OPS-003
 title: orchestration ops registries are synchronized and complete
 purpose: Ensures runner tool registries include required fields and declared tool ids.
 type: contract.check

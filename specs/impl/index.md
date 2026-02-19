@@ -11,3 +11,8 @@ Implementation-owned executable spec suites.
 - `/specs/impl/python/index.md`
 - `/specs/impl/php/index.md`
 - `/specs/impl/docs_generate/cases/index.md`
+
+## Related Generated References
+
+- `/docs/book/91_appendix_runner_api_reference.md`
+- `/docs/book/92_appendix_harness_type_reference.md`

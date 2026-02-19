@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-REF-SYMBOLS-004
+## DCGOV-REF-SYMBOLS-004
 
 ```yaml contract-spec
-id: SRGOV-REF-SYMBOLS-004
+id: DCGOV-REF-SYMBOLS-004
 title: private library symbols are not referenced externally
 purpose: Ensures conformance/governance/impl cases do not reference defines.private symbols
   from library docs.

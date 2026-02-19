@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-007
+## DCGOV-DOCS-GEN-007
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-007
+id: DCGOV-DOCS-GEN-007
 title: policy rule catalog artifacts are synchronized
 purpose: Ensures generated policy rule JSON and markdown artifacts are up-to-date.
 type: contract.check

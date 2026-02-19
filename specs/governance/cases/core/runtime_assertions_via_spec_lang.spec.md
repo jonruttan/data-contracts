@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-ASSERT-001
+## DCGOV-RUNTIME-ASSERT-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-ASSERT-001
+id: DCGOV-RUNTIME-ASSERT-001
 title: runtime assertion paths compile and evaluate through spec-lang
 purpose: Enforces that runner assertion semantics route through spec-lang expression evaluation
   and avoid direct ad-hoc contain or regex execution paths.

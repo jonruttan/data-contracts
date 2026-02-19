@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-019
+## DCGOV-RUNTIME-TRIAGE-019
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-019
+id: DCGOV-RUNTIME-TRIAGE-019
 title: ci gate ownership contract is single-source and broad-only in summary
 purpose: Ensures ci_gate.sh owns critical execution ordering and ci-gate-summary owns broad
   governance only.

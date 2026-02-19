@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-ENTRY-003
+## DCGOV-RUNTIME-ENTRY-003
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-ENTRY-003
+id: DCGOV-RUNTIME-ENTRY-003
 title: runner adapter hard-fails python impl selection
 purpose: Ensures `runners/public/runner_adapter.sh` rejects `--impl python` with migration
   guidance.

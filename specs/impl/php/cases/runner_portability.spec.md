@@ -1,9 +1,9 @@
 # PHP Spec Runner Portability Cases
 
-## SRPHP-PORT-001
+## DCIMPL-PHP-PORT-001
 
 ```yaml contract-spec
-id: SRPHP-PORT-001
+id: DCIMPL-PHP-PORT-001
 title: shell command via sh -c works when shell exists
 purpose: Captures a shell-based cli.run case to detect environments where sh is unavailable.
 type: contract.check
@@ -34,10 +34,10 @@ contract:
       - port-shell-ok
 ```
 
-## SRPHP-PORT-002
+## DCIMPL-PHP-PORT-002
 
 ```yaml contract-spec
-id: SRPHP-PORT-002
+id: DCIMPL-PHP-PORT-002
 title: process env passthrough remains stringly typed
 purpose: Verifies env values passed through cli.run are observed as strings by child processes.
 type: contract.check
@@ -71,10 +71,10 @@ contract:
       - x:true y:7
 ```
 
-## SRPHP-PORT-003
+## DCIMPL-PHP-PORT-003
 
 ```yaml contract-spec
-id: SRPHP-PORT-003
+id: DCIMPL-PHP-PORT-003
 title: relative stdout path resolves from runner cwd
 purpose: Detects portability differences in cwd/path handling for stdout_path assertions.
 type: contract.check

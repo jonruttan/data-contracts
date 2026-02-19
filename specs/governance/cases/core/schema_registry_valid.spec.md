@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SCHEMA-REG-001
+## DCGOV-SCHEMA-REG-001
 
 ```yaml contract-spec
-id: SRGOV-SCHEMA-REG-001
+id: DCGOV-SCHEMA-REG-001
 title: schema registry model is present and valid
 purpose: Ensures schema registry source files and contract docs are present and compile without
   registry errors.

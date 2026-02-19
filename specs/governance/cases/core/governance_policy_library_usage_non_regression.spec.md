@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-POLICY-LIB-001
+## DCGOV-POLICY-LIB-001
 
 ```yaml contract-spec
-id: SRGOV-POLICY-LIB-001
+id: DCGOV-POLICY-LIB-001
 title: governance library-backed policy usage is non-regressing
 purpose: Enforces monotonic non-regression for governance policy expressions that use shared
   spec-lang libraries.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   policy_library_usage_non_regression:
-    baseline_path: /specs/metrics/spec_lang_adoption_baseline.json
+    baseline_path: /specs/governance/metrics/spec_lang_adoption_baseline.json
     summary_fields:
       governance_library_backed_policy_ratio: non_decrease
     segment_fields:

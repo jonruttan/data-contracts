@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-006
+## DCGOV-DOCS-GEN-006
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-006
+id: DCGOV-DOCS-GEN-006
 title: spec lang builtin catalog artifacts are synchronized
 purpose: Ensures generated spec-lang builtin JSON and markdown artifacts are up-to-date.
 type: contract.check

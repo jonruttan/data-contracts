@@ -1,9 +1,9 @@
 # PHP Spec Runner Expected Failure Cases
 
-## SRPHP-RUN-F001
+## DCIMPL-PHP-RUN-F001
 
 ```yaml contract-spec
-id: SRPHP-RUN-F001
+id: DCIMPL-PHP-RUN-F001
 title: text.file virtual absolute path missing file fails runtime
 purpose: Verifies virtual-root absolute paths resolve under contract root and fail at runtime
   when the file is missing.
@@ -34,10 +34,10 @@ harness:
       path: /tmp/not-allowed.txt
 ```
 
-## SRPHP-RUN-F002
+## DCIMPL-PHP-RUN-F002
 
 ```yaml contract-spec
-id: SRPHP-RUN-F002
+id: DCIMPL-PHP-RUN-F002
 title: text.file path escape is rejected
 purpose: Verifies text.file rejects relative paths that escape the contract root boundary.
 type: contract.check
@@ -67,10 +67,10 @@ harness:
       path: ../../../../../../outside.txt
 ```
 
-## SRPHP-RUN-F003
+## DCIMPL-PHP-RUN-F003
 
 ```yaml contract-spec
-id: SRPHP-RUN-F003
+id: DCIMPL-PHP-RUN-F003
 title: cli.run without entrypoint fails
 purpose: Verifies cli.run reports runtime failure when no entrypoint source is available.
 type: contract.check
@@ -102,10 +102,10 @@ contract:
       - x
 ```
 
-## SRPHP-RUN-F004
+## DCIMPL-PHP-RUN-F004
 
 ```yaml contract-spec
-id: SRPHP-RUN-F004
+id: DCIMPL-PHP-RUN-F004
 title: cli.run rejects unknown spec-lang symbol usage
 purpose: Verifies unknown expression symbols are rejected as schema failures.
 type: contract.check
@@ -137,10 +137,10 @@ contract:
       - {var: stdout}
 ```
 
-## SRPHP-RUN-F005
+## DCIMPL-PHP-RUN-F005
 
 ```yaml contract-spec
-id: SRPHP-RUN-F005
+id: DCIMPL-PHP-RUN-F005
 title: cli.run exit_code mismatch is assertion failure
 purpose: Verifies cli.run reports assertion failure when observed exit code differs from expected.
 type: contract.check
@@ -164,10 +164,10 @@ contract:
   steps: []
 ```
 
-## SRPHP-RUN-F006
+## DCIMPL-PHP-RUN-F006
 
 ```yaml contract-spec
-id: SRPHP-RUN-F006
+id: DCIMPL-PHP-RUN-F006
 title: unknown type reports runtime failure
 purpose: Verifies unknown contract-spec types are reported as runtime failures.
 type: nope.type
@@ -183,10 +183,10 @@ contract:
   steps: []
 ```
 
-## SRPHP-RUN-F007
+## DCIMPL-PHP-RUN-F007
 
 ```yaml contract-spec
-id: SRPHP-RUN-F007
+id: DCIMPL-PHP-RUN-F007
 title: cli.run rejects unsupported harness keys
 purpose: Verifies cli.run validates supported harness keys and rejects unknown ones.
 type: contract.check
@@ -211,10 +211,10 @@ contract:
   steps: []
 ```
 
-## SRPHP-RUN-F008
+## DCIMPL-PHP-RUN-F008
 
 ```yaml contract-spec
-id: SRPHP-RUN-F008
+id: DCIMPL-PHP-RUN-F008
 title: leaf target key is rejected
 purpose: Verifies leaf assertions including target key are rejected as schema violations.
 type: contract.check

@@ -710,76 +710,76 @@ fn command_spec_ref(subcommand: &str) -> Option<&'static str> {
             "/specs/libraries/domain/conformance_core.spec.md#LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS",
         ),
         "schema-registry-build" => Some(
-            "/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-004",
+            "/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-004",
         ),
         "schema-registry-check" => Some(
-            "/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-005",
+            "/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-005",
         ),
-        "docs-lint" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-006"),
-        "docs-generate" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-007"),
-        "docs-generate-check" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-008"),
-        "docs-build" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-009"),
-        "docs-build-check" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-010"),
-        "docs-graph" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-011"),
+        "docs-lint" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-006"),
+        "docs-generate" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-007"),
+        "docs-generate-check" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-008"),
+        "docs-build" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-009"),
+        "docs-build-check" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-010"),
+        "docs-graph" => Some("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-011"),
         "spec-lang-stdlib-json" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-017",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-017",
         ),
         "spec-lang-stdlib-md" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-018",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-018",
         ),
         "contract-assertions-json" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-005",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-005",
         ),
         "contract-assertions-md" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-006",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-006",
         ),
         "conformance-purpose-json" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-001",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-001",
         ),
         "conformance-purpose-md" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-002",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-002",
         ),
         "spec-portability-json" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-003",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-003",
         ),
         "spec-portability-md" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-004",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-004",
         ),
         "spec-lang-adoption-json" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-007",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-007",
         ),
         "spec-lang-adoption-md" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-008",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-008",
         ),
         "runner-independence-json" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-009",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-009",
         ),
         "runner-independence-md" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-010",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-010",
         ),
         "python-dependency-json" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-011",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-011",
         ),
         "python-dependency-md" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-012",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-012",
         ),
         "docs-operability-json" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-013",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-013",
         ),
         "docs-operability-md" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-014",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-014",
         ),
         "objective-scorecard-json" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-015",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-015",
         ),
         "objective-scorecard-md" => Some(
-            "/specs/impl/rust/jobs/report_jobs.spec.md#SRRUST-JOB-REP-016",
+            "/specs/impl/rust/jobs/report_jobs.spec.md#DCIMPL-RUST-JOB-REP-016",
         ),
         "conformance-parity" => Some(
-            "/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-002",
+            "/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-002",
         ),
         "perf-smoke" => Some(
-            "/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-003",
+            "/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-003",
         ),
         _ => None,
     }
@@ -2133,7 +2133,7 @@ fn run_command_capture_code(command: &[String], root: &Path) -> i32 {
 
 fn collect_unit_test_opt_out(root: &Path) -> Value {
     let tests_root = root.join("tests");
-    let baseline_path = root.join("specs/metrics/unit_test_opt_out_baseline.json");
+    let baseline_path = root.join("specs/governance/metrics/unit_test_opt_out_baseline.json");
     let mut total = 0_i64;
     let mut opted_out = 0_i64;
     let prefix = "# SPEC-OPT-OUT:";
@@ -3031,20 +3031,20 @@ mod tests {
 
     #[test]
     fn parse_job_ref_accepts_path_and_fragment() {
-        let got = parse_job_ref("/specs/impl/rust/jobs/script_jobs.spec.md#SRRUST-JOB-001")
+        let got = parse_job_ref("/specs/impl/rust/jobs/script_jobs.spec.md#DCIMPL-RUST-JOB-001")
             .expect("parse");
         assert_eq!(
             got.0.as_deref(),
             Some("/specs/impl/rust/jobs/script_jobs.spec.md")
         );
-        assert_eq!(got.1, "SRRUST-JOB-001");
+        assert_eq!(got.1, "DCIMPL-RUST-JOB-001");
     }
 
     #[test]
     fn parse_job_ref_accepts_same_doc_fragment() {
-        let got = parse_job_ref("#SRRUST-JOB-001").expect("parse");
+        let got = parse_job_ref("#DCIMPL-RUST-JOB-001").expect("parse");
         assert!(got.0.is_none());
-        assert_eq!(got.1, "SRRUST-JOB-001");
+        assert_eq!(got.1, "DCIMPL-RUST-JOB-001");
     }
 
     #[test]
@@ -3072,8 +3072,8 @@ after
 
     #[test]
     fn block_id_extracts_id() {
-        let block = "id: SRTEST-001\ncheck: runtime.foo\n";
-        assert_eq!(block_id(block).as_deref(), Some("SRTEST-001"));
+        let block = "id: DCTEST-001\ncheck: runtime.foo\n";
+        assert_eq!(block_id(block).as_deref(), Some("DCTEST-001"));
     }
 
     #[test]

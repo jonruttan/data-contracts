@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-QUAL-003
+## DCGOV-DOCS-QUAL-003
 
 ```yaml contract-spec
-id: SRGOV-DOCS-QUAL-003
+id: DCGOV-DOCS-QUAL-003
 title: doc token ownership is unique
 purpose: Ensures canonical documentation tokens have a single owner page.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SCHEMA-CONTRACT-002
+## DCGOV-SCHEMA-CONTRACT-002
 
 ```yaml contract-spec
-id: SRGOV-SCHEMA-CONTRACT-002
+id: DCGOV-SCHEMA-CONTRACT-002
 title: contract target and on keys are forbidden
 purpose: Ensures canonical contract steps use imports bindings instead of target/on keys.
 type: contract.check

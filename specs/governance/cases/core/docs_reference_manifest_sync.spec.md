@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-QUAL-002
+## DCGOV-DOCS-QUAL-002
 
 ```yaml contract-spec
-id: SRGOV-DOCS-QUAL-002
+id: DCGOV-DOCS-QUAL-002
 title: reference index is generated from manifest
 purpose: Ensures reference index markdown remains synchronized with the manifest source of
   truth.

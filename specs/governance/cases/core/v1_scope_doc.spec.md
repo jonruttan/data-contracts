@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOC-V1-001
+## DCGOV-DOC-V1-001
 
 ```yaml contract-spec
-id: SRGOV-DOC-V1-001
+id: DCGOV-DOC-V1-001
 title: v1 scope contract doc exists and includes required sections
 purpose: Ensures v1 scope and compatibility commitments remain explicit and discoverable.
 type: contract.check

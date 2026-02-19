@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-001
+## DCGOV-CHAIN-001
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-001
+id: DCGOV-CHAIN-001
 title: chain references resolve deterministically
 purpose: Ensures harness.chain step references resolve by contract for
 type: contract.check

@@ -1,7 +1,7 @@
 # runtime_harness_exports_location_required
 
 ```yaml contract-spec
-id: SRGOV-HARNESS-EXPORTS-001
+id: DCGOV-HARNESS-EXPORTS-001
 title: producer exports are declared at harness.exports
 purpose: Ensures producer symbol declarations are declared at harness.exports and non-canonical
   harness.chain.exports is rejected.

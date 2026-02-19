@@ -1,7 +1,7 @@
 # runtime.domain_library_preferred_for_fs_ops
 
 ```yaml contract-spec
-id: SRGOV-DOMAIN-LIB-OPS-FS-001
+id: DCGOV-DOMAIN-LIB-OPS-FS-001
 title: executable specs prefer domain library helpers over raw ops fs symbols
 purpose: Enforces domain.path/domain.fs usage in executable specs and allows raw ops.fs usage
   only in stdlib primitive conformance coverage.

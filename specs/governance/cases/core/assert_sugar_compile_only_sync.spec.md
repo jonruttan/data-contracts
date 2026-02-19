@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-COMPILE-001
+## DCGOV-ASSERT-COMPILE-001
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-COMPILE-001
+id: DCGOV-ASSERT-COMPILE-001
 title: compiler keeps sugar operators compile-only
 purpose: Ensures compiler and runtime assertion path keep non-evaluate operators as compile-only
   sugar with spec-lang execution.

@@ -25,8 +25,8 @@ _EXECUTABLE_CASE_TREE_ROOTS = (
 )
 _NON_MD_SPEC_GLOBS = ("*.spec.yaml", "*.spec.yml", "*.spec.json")
 _DATA_ARTIFACT_GLOBS = (
-    "specs/metrics/*.json",
-    "specs/metrics/*.yaml",
+    "specs/governance/metrics/*.json",
+    "specs/governance/metrics/*.yaml",
     "docs/book/reference_manifest.yaml",
     "specs/schema/*.yaml",
 )

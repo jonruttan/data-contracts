@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-003
+## DCGOV-RUNTIME-CONFIG-003
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-003
+id: DCGOV-RUNTIME-CONFIG-003
 title: gate scripts call runner interface boundary
 purpose: Ensures gate scripts call a runner command boundary instead of hardcoding Python
   implementation entrypoints.

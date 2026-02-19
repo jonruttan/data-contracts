@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-001
+## DCGOV-RUNTIME-CONFIG-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-001
+id: DCGOV-RUNTIME-CONFIG-001
 title: runtime python code does not duplicate governed config literals
 purpose: Enforces centralized configuration by rejecting duplicated governed literals in runtime
   python sources.

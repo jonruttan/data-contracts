@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-NORM-003
+## DCGOV-NORM-003
 
 ```yaml contract-spec
-id: SRGOV-NORM-003
+id: DCGOV-NORM-003
 title: normalization docs token sync is enforced
 purpose: Ensures schema contract and book docs maintain required mapping-AST wording and forbid
   stale expression-shape tokens.

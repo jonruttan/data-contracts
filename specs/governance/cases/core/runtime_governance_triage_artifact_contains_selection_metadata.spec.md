@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-012
+## DCGOV-RUNTIME-TRIAGE-012
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-012
+id: DCGOV-RUNTIME-TRIAGE-012
 title: triage artifact includes selection metadata
 type: contract.check
 purpose: Ensures governance triage artifacts include selection_source and selected_prefixes

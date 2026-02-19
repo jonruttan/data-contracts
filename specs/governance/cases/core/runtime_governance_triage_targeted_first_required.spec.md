@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-008
+## DCGOV-RUNTIME-TRIAGE-008
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-008
+id: DCGOV-RUNTIME-TRIAGE-008
 title: governance triage auto mode is targeted-first by default
 purpose: Ensures triage auto mode resolves to targeted-first and exposes broad-first as an
   explicit mode.

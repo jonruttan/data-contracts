@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-QUAL-004
+## DCGOV-DOCS-QUAL-004
 
 ```yaml contract-spec
-id: SRGOV-DOCS-QUAL-004
+id: DCGOV-DOCS-QUAL-004
 title: doc token dependencies resolve to owner docs
 purpose: Ensures required tokens in doc metadata are owned and present in owner docs.
 type: contract.check

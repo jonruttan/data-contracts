@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-OBJECTIVE-003
+## DCGOV-OBJECTIVE-003
 
 ```yaml contract-spec
-id: SRGOV-OBJECTIVE-003
+id: DCGOV-OBJECTIVE-003
 title: objective tripwires are clean
 purpose: Ensures objective manifest tripwire checks map to valid governance checks and currently
   pass.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   objective_tripwires:
-    manifest_path: /specs/metrics/objective_manifest.yaml
+    manifest_path: /specs/governance/metrics/objective_manifest.yaml
     cases_path: /specs/governance/cases
     case_file_pattern: '*.spec.md'
   check:

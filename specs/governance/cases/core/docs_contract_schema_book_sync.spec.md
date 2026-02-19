@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-006
+## DCGOV-DOCS-REF-006
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-006
+id: DCGOV-DOCS-REF-006
 title: assertion tokens stay aligned across book contract and schema docs
 purpose: Ensures core assertion terminology remains synchronized across author-facing and
   normative specification documents.

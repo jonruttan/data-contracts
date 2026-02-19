@@ -235,6 +235,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/spec_lang_stdlib_profile_complete.spec.md`
 - `/specs/governance/cases/core/spec_lang_stdlib_py_php_parity.spec.md`
 - `/specs/governance/cases/core/spec_layout_domain_trees.spec.md`
+- `/specs/governance/cases/core/spec_taxonomy_hard_cut_required.spec.md`
 - `/specs/governance/cases/core/spec_library_cases_markdown_only.spec.md`
 - `/specs/governance/cases/core/spec_no_executable_yaml_json_in_case_trees.spec.md`
 - `/specs/governance/cases/core/spec_portability_non_regression.spec.md`

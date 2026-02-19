@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-009
+## DCGOV-RUNTIME-CONFIG-009
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-009
+id: DCGOV-RUNTIME-CONFIG-009
 title: implicit subject binding is forbidden
 purpose: Ensures evaluator does not inject subject implicitly and requires explicit imports.
 type: contract.check

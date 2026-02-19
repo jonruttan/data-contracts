@@ -1,7 +1,7 @@
 # library.colocated_symbol_tests_required
 
 ```yaml contract-spec
-id: SRGOV-LIB-SINGLE-002
+id: DCGOV-LIB-SINGLE-002
 title: library exports are referenced by executable tests
 purpose: Ensures library exported symbols are exercised by colocated or downstream executable
   assertion/policy usage.

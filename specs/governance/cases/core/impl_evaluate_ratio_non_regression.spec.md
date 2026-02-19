@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-IMPL-SPECLANG-002
+## DCGOV-IMPL-SPECLANG-002
 
 ```yaml contract-spec
-id: SRGOV-IMPL-SPECLANG-002
+id: DCGOV-IMPL-SPECLANG-002
 title: impl evaluate-first ratio is non-regressing
 purpose: Enforces ratchet-style non-regression for impl evaluate coverage against the checked-in
   spec-lang adoption baseline.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   impl_evaluate_first_non_regression:
-    baseline_path: /specs/metrics/spec_lang_adoption_baseline.json
+    baseline_path: /specs/governance/metrics/spec_lang_adoption_baseline.json
     summary_fields:
       overall_logic_self_contained_ratio: non_decrease
     segment_fields:

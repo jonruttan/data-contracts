@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-APIHTTP-005
+## DCGOV-RUNTIME-APIHTTP-005
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-APIHTTP-005
+id: DCGOV-RUNTIME-APIHTTP-005
 title: api.http practical verb suite remains covered and validated
 purpose: Ensures api.http fixtures cover GET/POST/PUT/PATCH/DELETE/HEAD/OPTIONS and reject
   unsupported methods.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-010
+## DCGOV-DOCS-GEN-010
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-010
+id: DCGOV-DOCS-GEN-010
 title: metrics field catalog artifacts are synchronized
 purpose: Ensures generated metrics field catalog JSON and markdown artifacts are up-to-date.
 type: contract.check

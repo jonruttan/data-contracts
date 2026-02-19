@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-SPECLANG-PURE-001
+## DCGOV-RUNTIME-SPECLANG-PURE-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-SPECLANG-PURE-001
+id: DCGOV-RUNTIME-SPECLANG-PURE-001
 title: spec-lang evaluators avoid side-effectful builtins
 purpose: Enforces pure evaluation semantics by forbidding side-effectful probes in spec-lang
   implementations.

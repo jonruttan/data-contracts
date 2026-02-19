@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOC-SEC-001
+## DCGOV-DOC-SEC-001
 
 ```yaml contract-spec
-id: SRGOV-DOC-SEC-001
+id: DCGOV-DOC-SEC-001
 title: required trust-model docs declare non-sandboxed trusted-input contract
 purpose: Ensures required docs state that spec execution is not sandboxed and untrusted specs
   are unsafe.

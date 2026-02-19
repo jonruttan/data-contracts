@@ -6,7 +6,7 @@ Schema for objective scorecard configuration.
 
 Canonical manifest path:
 
-- `specs/metrics/objective_manifest.yaml`
+- `specs/governance/metrics/objective_manifest.yaml`
 
 Root shape:
 
@@ -71,14 +71,14 @@ Optional fields:
 
 File:
 
-- `specs/metrics/baseline_update_notes.yaml`
+- `specs/governance/metrics/baseline_update_notes.yaml`
 
 Shape:
 
 ```yaml
 version: 1
 entries:
-- baseline: specs/metrics/objective_scorecard_baseline.json
+- baseline: specs/governance/metrics/objective_scorecard_baseline.json
   sha256: <64 hex chars>
   rationale: <non-empty>
   measurement_model_change: 'no'

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-001
+## DCGOV-RUNTIME-TRIAGE-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-001
+id: DCGOV-RUNTIME-TRIAGE-001
 title: governance triage entrypoint exists with required surface
 purpose: Ensures canonical governance triage script exists and exposes required flags.
 type: contract.check

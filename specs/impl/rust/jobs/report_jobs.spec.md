@@ -1,9 +1,9 @@
 # Rust Report Job Cases
 
-## SRRUST-JOB-REP-001
+## DCIMPL-RUST-JOB-REP-001
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-001
+id: DCIMPL-RUST-JOB-REP-001
 title: conformance purpose json report
 type: contract.job
 harness:
@@ -23,16 +23,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-001.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-001.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-001.fail
+        report_name: DCIMPL-RUST-JOB-REP-001.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-001.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-001.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-001.complete
+        report_name: DCIMPL-RUST-JOB-REP-001.complete
 contract:
   defaults:
     class: MUST
@@ -59,10 +59,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-002
+## DCIMPL-RUST-JOB-REP-002
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-002
+id: DCIMPL-RUST-JOB-REP-002
 title: conformance purpose markdown report
 type: contract.job
 harness:
@@ -82,16 +82,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-002.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-002.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-002.fail
+        report_name: DCIMPL-RUST-JOB-REP-002.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-002.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-002.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-002.complete
+        report_name: DCIMPL-RUST-JOB-REP-002.complete
 contract:
   defaults:
     class: MUST
@@ -118,10 +118,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-003
+## DCIMPL-RUST-JOB-REP-003
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-003
+id: DCIMPL-RUST-JOB-REP-003
 title: spec portability json report
 type: contract.job
 harness:
@@ -141,16 +141,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-003.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-003.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-003.fail
+        report_name: DCIMPL-RUST-JOB-REP-003.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-003.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-003.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-003.complete
+        report_name: DCIMPL-RUST-JOB-REP-003.complete
 contract:
   defaults:
     class: MUST
@@ -177,10 +177,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-004
+## DCIMPL-RUST-JOB-REP-004
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-004
+id: DCIMPL-RUST-JOB-REP-004
 title: spec portability markdown report
 type: contract.job
 harness:
@@ -200,16 +200,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-004.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-004.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-004.fail
+        report_name: DCIMPL-RUST-JOB-REP-004.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-004.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-004.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-004.complete
+        report_name: DCIMPL-RUST-JOB-REP-004.complete
 contract:
   defaults:
     class: MUST
@@ -236,10 +236,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-005
+## DCIMPL-RUST-JOB-REP-005
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-005
+id: DCIMPL-RUST-JOB-REP-005
 title: contract assertions json report
 type: contract.job
 harness:
@@ -259,16 +259,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-005.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-005.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-005.fail
+        report_name: DCIMPL-RUST-JOB-REP-005.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-005.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-005.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-005.complete
+        report_name: DCIMPL-RUST-JOB-REP-005.complete
 contract:
   defaults:
     class: MUST
@@ -295,10 +295,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-006
+## DCIMPL-RUST-JOB-REP-006
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-006
+id: DCIMPL-RUST-JOB-REP-006
 title: contract assertions markdown report
 type: contract.job
 harness:
@@ -318,16 +318,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-006.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-006.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-006.fail
+        report_name: DCIMPL-RUST-JOB-REP-006.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-006.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-006.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-006.complete
+        report_name: DCIMPL-RUST-JOB-REP-006.complete
 contract:
   defaults:
     class: MUST
@@ -354,10 +354,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-007
+## DCIMPL-RUST-JOB-REP-007
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-007
+id: DCIMPL-RUST-JOB-REP-007
 title: spec lang adoption json report
 type: contract.job
 harness:
@@ -377,16 +377,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-007.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-007.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-007.fail
+        report_name: DCIMPL-RUST-JOB-REP-007.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-007.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-007.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-007.complete
+        report_name: DCIMPL-RUST-JOB-REP-007.complete
 contract:
   defaults:
     class: MUST
@@ -413,10 +413,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-008
+## DCIMPL-RUST-JOB-REP-008
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-008
+id: DCIMPL-RUST-JOB-REP-008
 title: spec lang adoption markdown report
 type: contract.job
 harness:
@@ -436,16 +436,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-008.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-008.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-008.fail
+        report_name: DCIMPL-RUST-JOB-REP-008.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-008.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-008.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-008.complete
+        report_name: DCIMPL-RUST-JOB-REP-008.complete
 contract:
   defaults:
     class: MUST
@@ -472,10 +472,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-009
+## DCIMPL-RUST-JOB-REP-009
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-009
+id: DCIMPL-RUST-JOB-REP-009
 title: runner independence json report
 type: contract.job
 harness:
@@ -495,16 +495,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-009.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-009.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-009.fail
+        report_name: DCIMPL-RUST-JOB-REP-009.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-009.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-009.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-009.complete
+        report_name: DCIMPL-RUST-JOB-REP-009.complete
 contract:
   defaults:
     class: MUST
@@ -531,10 +531,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-010
+## DCIMPL-RUST-JOB-REP-010
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-010
+id: DCIMPL-RUST-JOB-REP-010
 title: runner independence markdown report
 type: contract.job
 harness:
@@ -554,16 +554,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-010.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-010.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-010.fail
+        report_name: DCIMPL-RUST-JOB-REP-010.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-010.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-010.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-010.complete
+        report_name: DCIMPL-RUST-JOB-REP-010.complete
 contract:
   defaults:
     class: MUST
@@ -590,10 +590,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-011
+## DCIMPL-RUST-JOB-REP-011
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-011
+id: DCIMPL-RUST-JOB-REP-011
 title: python dependency json report
 type: contract.job
 harness:
@@ -613,16 +613,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-011.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-011.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-011.fail
+        report_name: DCIMPL-RUST-JOB-REP-011.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-011.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-011.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-011.complete
+        report_name: DCIMPL-RUST-JOB-REP-011.complete
 contract:
   defaults:
     class: MUST
@@ -649,10 +649,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-012
+## DCIMPL-RUST-JOB-REP-012
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-012
+id: DCIMPL-RUST-JOB-REP-012
 title: python dependency markdown report
 type: contract.job
 harness:
@@ -672,16 +672,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-012.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-012.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-012.fail
+        report_name: DCIMPL-RUST-JOB-REP-012.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-012.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-012.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-012.complete
+        report_name: DCIMPL-RUST-JOB-REP-012.complete
 contract:
   defaults:
     class: MUST
@@ -708,10 +708,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-013
+## DCIMPL-RUST-JOB-REP-013
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-013
+id: DCIMPL-RUST-JOB-REP-013
 title: docs operability json report
 type: contract.job
 harness:
@@ -731,16 +731,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-013.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-013.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-013.fail
+        report_name: DCIMPL-RUST-JOB-REP-013.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-013.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-013.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-013.complete
+        report_name: DCIMPL-RUST-JOB-REP-013.complete
 contract:
   defaults:
     class: MUST
@@ -767,10 +767,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-014
+## DCIMPL-RUST-JOB-REP-014
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-014
+id: DCIMPL-RUST-JOB-REP-014
 title: docs operability markdown report
 type: contract.job
 harness:
@@ -790,16 +790,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-014.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-014.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-014.fail
+        report_name: DCIMPL-RUST-JOB-REP-014.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-014.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-014.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-014.complete
+        report_name: DCIMPL-RUST-JOB-REP-014.complete
 contract:
   defaults:
     class: MUST
@@ -826,10 +826,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-015
+## DCIMPL-RUST-JOB-REP-015
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-015
+id: DCIMPL-RUST-JOB-REP-015
 title: objective scorecard json report
 type: contract.job
 harness:
@@ -849,16 +849,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-015.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-015.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-015.fail
+        report_name: DCIMPL-RUST-JOB-REP-015.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-015.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-015.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-015.complete
+        report_name: DCIMPL-RUST-JOB-REP-015.complete
 contract:
   defaults:
     class: MUST
@@ -885,10 +885,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-016
+## DCIMPL-RUST-JOB-REP-016
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-016
+id: DCIMPL-RUST-JOB-REP-016
 title: objective scorecard markdown report
 type: contract.job
 harness:
@@ -908,16 +908,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-016.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-016.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-016.fail
+        report_name: DCIMPL-RUST-JOB-REP-016.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-016.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-016.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-016.complete
+        report_name: DCIMPL-RUST-JOB-REP-016.complete
 contract:
   defaults:
     class: MUST
@@ -944,10 +944,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-017
+## DCIMPL-RUST-JOB-REP-017
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-017
+id: DCIMPL-RUST-JOB-REP-017
 title: spec lang stdlib json report
 type: contract.job
 harness:
@@ -967,16 +967,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-017.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-017.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-017.fail
+        report_name: DCIMPL-RUST-JOB-REP-017.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-017.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-017.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-017.complete
+        report_name: DCIMPL-RUST-JOB-REP-017.complete
 contract:
   defaults:
     class: MUST
@@ -1003,10 +1003,10 @@ when:
     - on_complete
 ```
 
-## SRRUST-JOB-REP-018
+## DCIMPL-RUST-JOB-REP-018
 
 ```yaml contract-spec
-id: SRRUST-JOB-REP-018
+id: DCIMPL-RUST-JOB-REP-018
 title: spec lang stdlib markdown report
 type: contract.job
 harness:
@@ -1026,16 +1026,16 @@ harness:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-018.fail.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-018.fail.json
         format: json
-        report_name: SRRUST-JOB-REP-018.fail
+        report_name: DCIMPL-RUST-JOB-REP-018.fail
     on_complete:
       helper: helper.report.emit
       mode: report
       inputs:
-        out: .artifacts/job-hooks/SRRUST-JOB-REP-018.complete.json
+        out: .artifacts/job-hooks/DCIMPL-RUST-JOB-REP-018.complete.json
         format: json
-        report_name: SRRUST-JOB-REP-018.complete
+        report_name: DCIMPL-RUST-JOB-REP-018.complete
 contract:
   defaults:
     class: MUST

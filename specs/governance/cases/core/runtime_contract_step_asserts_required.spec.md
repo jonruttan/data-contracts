@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONTRACT-STEP-001
+## DCGOV-RUNTIME-CONTRACT-STEP-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONTRACT-STEP-001
+id: DCGOV-RUNTIME-CONTRACT-STEP-001
 title: contract steps must declare asserts
 purpose: Enforces step-form contract nodes to use asserts list and non-empty children.
 type: contract.check

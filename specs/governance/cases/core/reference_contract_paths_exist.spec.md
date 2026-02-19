@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-REF-PATHS-001
+## DCGOV-REF-PATHS-001
 
 ```yaml contract-spec
-id: SRGOV-REF-PATHS-001
+id: DCGOV-REF-PATHS-001
 title: contract paths referenced by specs exist
 purpose: Ensures referenced contract-root paths fail fast when missing.
 type: contract.check

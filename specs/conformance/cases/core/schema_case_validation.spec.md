@@ -1,9 +1,9 @@
 # Schema Case Validation Conformance Cases
 
-## SRCONF-SCHEMA-CASE-001
+## DCCONF-SCHEMA-CASE-001
 
 ```yaml contract-spec
-id: SRCONF-SCHEMA-CASE-001
+id: DCCONF-SCHEMA-CASE-001
 title: valid core shape compiles and runs
 purpose: Ensures standard top-level keys accepted by registry validation continue to execute
   successfully.
@@ -31,10 +31,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-SCHEMA-CASE-002
+## DCCONF-SCHEMA-CASE-002
 
 ```yaml contract-spec
-id: SRCONF-SCHEMA-CASE-002
+id: DCCONF-SCHEMA-CASE-002
 title: unknown evaluate symbol is rejected as schema
 purpose: Ensures unknown spec-lang symbols fail as schema in both runtimes.
 type: contract.check

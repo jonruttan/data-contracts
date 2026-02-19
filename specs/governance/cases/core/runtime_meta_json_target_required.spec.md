@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-META-TARGET-001
+## DCGOV-RUNTIME-META-TARGET-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-META-TARGET-001
+id: DCGOV-RUNTIME-META-TARGET-001
 title: executable harnesses expose meta_json assertion target
 purpose: Ensures all core executable harness adapters project meta_json.
 type: contract.check

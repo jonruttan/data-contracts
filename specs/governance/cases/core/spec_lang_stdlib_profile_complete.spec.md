@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-STDLIB-001
+## DCGOV-STDLIB-001
 
 ```yaml contract-spec
-id: SRGOV-STDLIB-001
+id: DCGOV-STDLIB-001
 title: spec-lang stdlib profile is complete
 purpose: Ensures the declared stdlib profile symbols are implemented in Python and PHP.
 type: contract.check

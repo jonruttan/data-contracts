@@ -2,7 +2,7 @@
 
 This is a lightweight queue of spec work to draft next.
 
-Pending specs live in `specs/pending/` as individual files with frontmatter
+Pending specs live in `specs/governance/pending/` as individual files with frontmatter
 metadata (id/title/priority).
 
 Sorting: Items are ordered top-to-bottom by priority (`P0` then `P1` then `P2`).
@@ -11,4 +11,4 @@ and low-risk scaffolding first).
 
 ## Next
 
-- `CK-REVIEW-20260213`: `specs/pending/2026-02-13_persona-review-pending.md`
+- No active pending specs are queued in `specs/governance/pending/`.

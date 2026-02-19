@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUST-PRIMARY-008
+## DCGOV-RUST-PRIMARY-008
 
 ```yaml contract-spec
-id: SRGOV-RUST-PRIMARY-008
+id: DCGOV-RUST-PRIMARY-008
 title: rust runner interface avoids direct python execution tokens
 purpose: Ensures the Rust runner interface implementation does not hardcode direct python
   executable invocation.

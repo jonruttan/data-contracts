@@ -27,7 +27,7 @@ def _fake_report(summary_key: str, value: float) -> dict:
 
 def test_objective_scorecard_deterministic_scoring(monkeypatch, tmp_path: Path) -> None:
     _write(
-        tmp_path / "specs/metrics/objective_manifest.yaml",
+        tmp_path / "specs/governance/metrics/objective_manifest.yaml",
         yaml.safe_dump(
             {
                 "version": 1,
@@ -73,7 +73,7 @@ def test_objective_scorecard_deterministic_scoring(monkeypatch, tmp_path: Path) 
 
 def test_objective_scorecard_tripwire_sets_red(monkeypatch, tmp_path: Path) -> None:
     _write(
-        tmp_path / "specs/metrics/objective_manifest.yaml",
+        tmp_path / "specs/governance/metrics/objective_manifest.yaml",
         yaml.safe_dump(
             {
                 "version": 1,
@@ -105,7 +105,7 @@ def test_objective_scorecard_tripwire_sets_red(monkeypatch, tmp_path: Path) -> N
 
 def test_objective_scorecard_missing_source_reports_error(monkeypatch, tmp_path: Path) -> None:
     _write(
-        tmp_path / "specs/metrics/objective_manifest.yaml",
+        tmp_path / "specs/governance/metrics/objective_manifest.yaml",
         yaml.safe_dump(
             {
                 "version": 1,
@@ -134,10 +134,10 @@ def test_objective_scorecard_missing_source_reports_error(monkeypatch, tmp_path:
 
 
 def test_validate_metric_baseline_notes_hashes(tmp_path: Path) -> None:
-    baseline = tmp_path / "specs/metrics/a.json"
+    baseline = tmp_path / "specs/governance/metrics/a.json"
     _write(baseline, json.dumps({"x": 1}) + "\n")
     digest = hashlib.sha256(baseline.read_bytes()).hexdigest()
-    notes = tmp_path / "specs/metrics/baseline_update_notes.yaml"
+    notes = tmp_path / "specs/governance/metrics/baseline_update_notes.yaml"
     _write(
         notes,
         yaml.safe_dump(
@@ -145,7 +145,7 @@ def test_validate_metric_baseline_notes_hashes(tmp_path: Path) -> None:
                 "version": 1,
                 "entries": [
                     {
-                        "baseline": "specs/metrics/a.json",
+                        "baseline": "specs/governance/metrics/a.json",
                         "sha256": digest,
                         "rationale": "update",
                         "measurement_model_change": "no",
@@ -158,15 +158,15 @@ def test_validate_metric_baseline_notes_hashes(tmp_path: Path) -> None:
 
     violations = qm.validate_metric_baseline_notes(
         tmp_path,
-        notes_path="specs/metrics/baseline_update_notes.yaml",
-        baseline_paths=["specs/metrics/a.json"],
+        notes_path="specs/governance/metrics/baseline_update_notes.yaml",
+        baseline_paths=["specs/governance/metrics/a.json"],
     )
     assert violations == []
 
     _write(baseline, json.dumps({"x": 2}) + "\n")
     violations = qm.validate_metric_baseline_notes(
         tmp_path,
-        notes_path="specs/metrics/baseline_update_notes.yaml",
-        baseline_paths=["specs/metrics/a.json"],
+        notes_path="specs/governance/metrics/baseline_update_notes.yaml",
+        baseline_paths=["specs/governance/metrics/a.json"],
     )
     assert any("sha256 mismatch" in v for v in violations)

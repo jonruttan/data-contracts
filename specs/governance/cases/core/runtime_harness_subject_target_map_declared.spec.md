@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ARCH-COMPONENTS-005
+## DCGOV-ARCH-COMPONENTS-005
 
 ```yaml contract-spec
-id: SRGOV-ARCH-COMPONENTS-005
+id: DCGOV-ARCH-COMPONENTS-005
 title: harnesses declare target subject maps
 purpose: Enforces explicit target-to-subject mapping declarations so assertion targets remain
   deterministic and reviewable.

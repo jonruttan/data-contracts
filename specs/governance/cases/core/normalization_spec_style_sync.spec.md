@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-NORM-004
+## DCGOV-NORM-004
 
 ```yaml contract-spec
-id: SRGOV-NORM-004
+id: DCGOV-NORM-004
 title: normalization spec style policy stays profile-driven
 purpose: Ensures conformance style limits and wording remain synchronized with the normalization
   profile and governance scanner constants.

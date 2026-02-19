@@ -9,10 +9,10 @@ Coverage focus:
 - canonical diagnostic codes (`AH001`-`AH005`)
 - expected outcome category (`pass` vs assertion/schema failure)
 
-## SRCONF-AH-001
+## DCCONF-AH-001
 
 ```yaml contract-spec
-id: SRCONF-AH-001
+id: DCCONF-AH-001
 title: assert_health warn emits diagnostics but case still passes
 purpose: Covers warn mode behavior where diagnostics are emitted but verdict remains pass.
 type: contract.check
@@ -41,10 +41,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-AH-002
+## DCCONF-AH-002
 
 ```yaml contract-spec
-id: SRCONF-AH-002
+id: DCCONF-AH-002
 title: assert_health error mode can pass for evaluate-only assertions
 purpose: Confirms error mode does not fail evaluate-only assertions when no assertion-health
   diagnostics are emitted.
@@ -74,10 +74,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-AH-003
+## DCCONF-AH-003
 
 ```yaml contract-spec
-id: SRCONF-AH-003
+id: DCCONF-AH-003
 title: invalid assert_health.mode is a schema error
 purpose: Ensures unsupported assert_health modes are rejected as schema violations.
 type: contract.check
@@ -106,10 +106,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-AH-004
+## DCCONF-AH-004
 
 ```yaml contract-spec
-id: SRCONF-AH-004
+id: DCCONF-AH-004
 title: per-case ignore override can neutralize global strict mode
 purpose: Verifies local mode override can disable stricter global assertion-health settings.
 type: contract.check
@@ -138,10 +138,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-AH-005
+## DCCONF-AH-005
 
 ```yaml contract-spec
-id: SRCONF-AH-005
+id: DCCONF-AH-005
 title: evaluate-only sibling branches remain valid under assert_health error
 purpose: Confirms evaluate-only non-redundant sibling branches do not trigger AH004 under
   assert_health error mode.
@@ -175,10 +175,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-AH-006
+## DCCONF-AH-006
 
 ```yaml contract-spec
-id: SRCONF-AH-006
+id: DCCONF-AH-006
 title: evaluate regex portability is handled without sugar diagnostics
 purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level portability
   diagnostics.

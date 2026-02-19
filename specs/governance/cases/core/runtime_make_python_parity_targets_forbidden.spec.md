@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-PREPUSH-002
+## DCGOV-RUNTIME-PREPUSH-002
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-PREPUSH-002
+id: DCGOV-RUNTIME-PREPUSH-002
 title: makefile contains no python parity prepush targets
 purpose: Ensures contributor-facing make targets do not expose python runner lane execution.
 type: contract.check

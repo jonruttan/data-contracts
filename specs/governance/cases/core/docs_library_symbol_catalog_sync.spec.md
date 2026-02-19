@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-LIBSYM-004
+## DCGOV-DOCS-LIBSYM-004
 
 ```yaml contract-spec
-id: SRGOV-DOCS-LIBSYM-004
+id: DCGOV-DOCS-LIBSYM-004
 title: library symbol catalog artifacts are synchronized
 purpose: Ensures generated library symbol catalog and markdown references are up-to-date.
 type: contract.check

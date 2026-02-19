@@ -1,7 +1,7 @@
 # runtime_harness_exports_schema_valid
 
 ```yaml contract-spec
-id: SRGOV-HARNESS-EXPORTS-003
+id: DCGOV-HARNESS-EXPORTS-003
 title: harness exports schema is valid
 purpose: Ensures harness.exports entries enforce as/from/path/params/required schema requirements.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-SPECCASE-001
+## DCGOV-DOCS-SPECCASE-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-SPECCASE-001
+id: DCGOV-DOCS-SPECCASE-001
 title: spec case root doc metadata is complete
 purpose: Ensures contract.export cases declare required root doc metadata fields.
 type: contract.check

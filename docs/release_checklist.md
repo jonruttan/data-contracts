@@ -33,7 +33,7 @@ separate release requirement.
 Use:
 
 - `docs/development.md` (CI/docs triage section)
-- governance failure IDs (for example `SRGOV-*`) as the source of truth
+- governance failure IDs (for example `DCGOV-*`) as the source of truth
 
 When a failure requires repeated human steps, convert it into an executable
 check rather than expanding manual procedure docs.

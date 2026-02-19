@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-STYLE-001
+## DCGOV-CONF-STYLE-001
 
 ```yaml contract-spec
-id: SRGOV-CONF-STYLE-001
+id: DCGOV-CONF-STYLE-001
 title: conformance case documents satisfy style and purpose lint rules
 purpose: Ensures conformance fixtures remain readable, deterministic, and policy-compliant.
 type: contract.check

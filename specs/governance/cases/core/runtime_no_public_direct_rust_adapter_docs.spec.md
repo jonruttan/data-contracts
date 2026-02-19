@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-ENTRY-004
+## DCGOV-RUNTIME-ENTRY-004
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-ENTRY-004
+id: DCGOV-RUNTIME-ENTRY-004
 title: public docs do not instruct direct rust adapter invocation
 purpose: Ensures public docs point to the canonical adapter entrypoint rather than internal
   rust adapter paths.

@@ -564,7 +564,7 @@ def _run_steps(
 
 def _collect_unit_test_opt_out(root: Path) -> dict[str, int]:
     tests_root = root / "tests"
-    baseline_path = root / "specs/metrics/unit_test_opt_out_baseline.json"
+    baseline_path = root / "specs/governance/metrics/unit_test_opt_out_baseline.json"
     prefix = "# SPEC-OPT-OUT:"
     total = 0
     opted_out = 0
@@ -1011,15 +1011,15 @@ def _perf_ensure_generated_file(
 def perf_smoke_main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Run local perf smoke checks for governance/docs timing.")
     ap.add_argument("--mode", choices=("warn", "strict"), default="warn")
-    ap.add_argument("--governance-baseline", default="/specs/metrics/governance_timing_baseline.json")
-    ap.add_argument("--docs-baseline", default="/specs/metrics/docs_generate_timing_baseline.json")
-    ap.add_argument("--governance-profile-baseline", default="/specs/metrics/governance_profile_baseline.json")
-    ap.add_argument("--docs-profile-baseline", default="/specs/metrics/docs_generate_profile_baseline.json")
+    ap.add_argument("--governance-baseline", default="/specs/governance/metrics/governance_timing_baseline.json")
+    ap.add_argument("--docs-baseline", default="/specs/governance/metrics/docs_generate_timing_baseline.json")
+    ap.add_argument("--governance-profile-baseline", default="/specs/governance/metrics/governance_profile_baseline.json")
+    ap.add_argument("--docs-profile-baseline", default="/specs/governance/metrics/docs_generate_profile_baseline.json")
     ap.add_argument("--governance-timing", default="/.artifacts/governance-timing.json")
     ap.add_argument("--docs-timing", default="/.artifacts/docs-generate-timing.json")
     ap.add_argument("--governance-profile", default="/.artifacts/governance-profile.json")
     ap.add_argument("--docs-profile", default="/.artifacts/docs-generate-profile.json")
-    ap.add_argument("--baseline-notes", default="/specs/metrics/baseline_update_notes.yaml")
+    ap.add_argument("--baseline-notes", default="/specs/governance/metrics/baseline_update_notes.yaml")
     ap.add_argument("--report-out", default="/.artifacts/perf-smoke-report.json")
     ap.add_argument("--compare-only", action="store_true", help="Skip command execution and compare existing timing files")
     ns = ap.parse_args(argv)

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SPEC-MD-003
+## DCGOV-SPEC-MD-003
 
 ```yaml contract-spec
-id: SRGOV-SPEC-MD-003
+id: DCGOV-SPEC-MD-003
 title: spec-lang library cases are markdown only
 purpose: Ensures type spec_lang.export cases are authored only in .spec.md files under specs/libraries.
 type: contract.check

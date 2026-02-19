@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-PORT-001
+## DCGOV-CONF-PORT-001
 
 ```yaml contract-spec
-id: SRGOV-CONF-PORT-001
+id: DCGOV-CONF-PORT-001
 title: conformance cases keep runner logic under harness
 purpose: Ensures portable conformance fixtures do not place runner/setup keys at top level.
 type: contract.check

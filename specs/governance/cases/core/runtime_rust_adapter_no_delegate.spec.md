@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-006
+## DCGOV-RUNTIME-CONFIG-006
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-006
+id: DCGOV-RUNTIME-CONFIG-006
 title: rust adapter does not delegate to python shell adapter
 purpose: Ensures runners/rust/runner_adapter.sh invokes the Rust CLI directly and does not
   call runners/public/runner_adapter.sh.

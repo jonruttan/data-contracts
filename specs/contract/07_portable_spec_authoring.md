@@ -51,7 +51,7 @@ Governance enforcement:
 
 ## Portability Boundaries
 
-- Portable case IDs use `SRCONF-*`.
+- Portable case IDs use `DCCONF-*`.
 - Runtime/implementation-specific behavior should be represented via:
   - `requires.capabilities`
   - `expect.impl.<runtime>`

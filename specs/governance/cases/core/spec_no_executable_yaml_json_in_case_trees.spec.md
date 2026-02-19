@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SPEC-MD-002
+## DCGOV-SPEC-MD-002
 
 ```yaml contract-spec
-id: SRGOV-SPEC-MD-002
+id: DCGOV-SPEC-MD-002
 title: canonical executable trees forbid yaml and json case files
 purpose: Ensures no runnable .spec.yaml, .spec.yml, or .spec.json files exist under canonical
   executable case roots.

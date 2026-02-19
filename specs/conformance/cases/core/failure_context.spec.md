@@ -3,10 +3,10 @@
 These fixtures ensure assertion failures expose stable context tokens so
 debugging and parity checks remain deterministic.
 
-## SRCONF-ERR-001
+## DCCONF-ERR-001
 
 ```yaml contract-spec
-id: SRCONF-ERR-001
+id: DCCONF-ERR-001
 title: failing assertion includes context tokens in message
 purpose: Guarantees failure messages carry deterministic context tokens for debugging and
   parity.
@@ -16,7 +16,7 @@ expect:
     status: fail
     category: assertion
     message_tokens:
-    - case_id=SRCONF-ERR-001
+    - case_id=DCCONF-ERR-001
     - contract_path=contract[0]
     - target=text
     - op=evaluate

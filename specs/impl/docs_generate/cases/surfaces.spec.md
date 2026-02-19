@@ -1,9 +1,9 @@
 # Docs Generate Surfaces
 
-## SRDOCGEN-001
+## DCIMPL-DOCGEN-001
 
 ```yaml contract-spec
-id: SRDOCGEN-001
+id: DCIMPL-DOCGEN-001
 type: contract.job
 title: reference index surface generation
 harness:
@@ -39,10 +39,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-002
+## DCIMPL-DOCGEN-002
 
 ```yaml contract-spec
-id: SRDOCGEN-002
+id: DCIMPL-DOCGEN-002
 type: contract.job
 title: reference coverage surface generation
 harness:
@@ -78,10 +78,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-003
+## DCIMPL-DOCGEN-003
 
 ```yaml contract-spec
-id: SRDOCGEN-003
+id: DCIMPL-DOCGEN-003
 type: contract.job
 title: docs graph surface generation
 harness:
@@ -119,10 +119,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-004
+## DCIMPL-DOCGEN-004
 
 ```yaml contract-spec
-id: SRDOCGEN-004
+id: DCIMPL-DOCGEN-004
 type: contract.job
 title: schema docs surface generation
 harness:
@@ -158,10 +158,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-005
+## DCIMPL-DOCGEN-005
 
 ```yaml contract-spec
-id: SRDOCGEN-005
+id: DCIMPL-DOCGEN-005
 type: contract.job
 title: runner api catalog surface generation
 harness:
@@ -198,10 +198,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-006
+## DCIMPL-DOCGEN-006
 
 ```yaml contract-spec
-id: SRDOCGEN-006
+id: DCIMPL-DOCGEN-006
 type: contract.job
 title: harness type catalog surface generation
 harness:
@@ -238,10 +238,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-007
+## DCIMPL-DOCGEN-007
 
 ```yaml contract-spec
-id: SRDOCGEN-007
+id: DCIMPL-DOCGEN-007
 type: contract.job
 title: spec lang builtin catalog surface generation
 harness:
@@ -278,10 +278,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-008
+## DCIMPL-DOCGEN-008
 
 ```yaml contract-spec
-id: SRDOCGEN-008
+id: DCIMPL-DOCGEN-008
 type: contract.job
 title: policy rule catalog surface generation
 harness:
@@ -318,10 +318,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-009
+## DCIMPL-DOCGEN-009
 
 ```yaml contract-spec
-id: SRDOCGEN-009
+id: DCIMPL-DOCGEN-009
 type: contract.job
 title: traceability catalog surface generation
 harness:
@@ -358,10 +358,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-010
+## DCIMPL-DOCGEN-010
 
 ```yaml contract-spec
-id: SRDOCGEN-010
+id: DCIMPL-DOCGEN-010
 type: contract.job
 title: governance check catalog surface generation
 harness:
@@ -398,10 +398,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-011
+## DCIMPL-DOCGEN-011
 
 ```yaml contract-spec
-id: SRDOCGEN-011
+id: DCIMPL-DOCGEN-011
 type: contract.job
 title: metrics field catalog surface generation
 harness:
@@ -438,10 +438,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-012
+## DCIMPL-DOCGEN-012
 
 ```yaml contract-spec
-id: SRDOCGEN-012
+id: DCIMPL-DOCGEN-012
 type: contract.job
 title: spec schema field catalog surface generation for appendix
 harness:
@@ -477,10 +477,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-013
+## DCIMPL-DOCGEN-013
 
 ```yaml contract-spec
-id: SRDOCGEN-013
+id: DCIMPL-DOCGEN-013
 type: contract.job
 title: spec schema field catalog surface generation for schema docs
 harness:
@@ -516,10 +516,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-014
+## DCIMPL-DOCGEN-014
 
 ```yaml contract-spec
-id: SRDOCGEN-014
+id: DCIMPL-DOCGEN-014
 type: contract.job
 title: spec lang core namespace chapter generation
 harness:
@@ -556,10 +556,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-015
+## DCIMPL-DOCGEN-015
 
 ```yaml contract-spec
-id: SRDOCGEN-015
+id: DCIMPL-DOCGEN-015
 type: contract.job
 title: spec lang logic namespace chapter generation
 harness:
@@ -596,10 +596,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-016
+## DCIMPL-DOCGEN-016
 
 ```yaml contract-spec
-id: SRDOCGEN-016
+id: DCIMPL-DOCGEN-016
 type: contract.job
 title: spec lang math namespace chapter generation
 harness:
@@ -636,10 +636,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-017
+## DCIMPL-DOCGEN-017
 
 ```yaml contract-spec
-id: SRDOCGEN-017
+id: DCIMPL-DOCGEN-017
 type: contract.job
 title: spec lang string namespace chapter generation
 harness:
@@ -676,10 +676,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-018
+## DCIMPL-DOCGEN-018
 
 ```yaml contract-spec
-id: SRDOCGEN-018
+id: DCIMPL-DOCGEN-018
 type: contract.job
 title: spec lang collection namespace chapter generation
 harness:
@@ -716,10 +716,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-019
+## DCIMPL-DOCGEN-019
 
 ```yaml contract-spec
-id: SRDOCGEN-019
+id: DCIMPL-DOCGEN-019
 type: contract.job
 title: spec lang object namespace chapter generation
 harness:
@@ -756,10 +756,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-020
+## DCIMPL-DOCGEN-020
 
 ```yaml contract-spec
-id: SRDOCGEN-020
+id: DCIMPL-DOCGEN-020
 type: contract.job
 title: spec lang type namespace chapter generation
 harness:
@@ -796,10 +796,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-021
+## DCIMPL-DOCGEN-021
 
 ```yaml contract-spec
-id: SRDOCGEN-021
+id: DCIMPL-DOCGEN-021
 type: contract.job
 title: spec lang set namespace chapter generation
 harness:
@@ -836,10 +836,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-022
+## DCIMPL-DOCGEN-022
 
 ```yaml contract-spec
-id: SRDOCGEN-022
+id: DCIMPL-DOCGEN-022
 type: contract.job
 title: spec lang json schema fn null namespace chapter generation
 harness:
@@ -876,10 +876,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-023
+## DCIMPL-DOCGEN-023
 
 ```yaml contract-spec
-id: SRDOCGEN-023
+id: DCIMPL-DOCGEN-023
 type: contract.job
 title: library symbol reference surface generation
 harness:
@@ -916,10 +916,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-024
+## DCIMPL-DOCGEN-024
 
 ```yaml contract-spec
-id: SRDOCGEN-024
+id: DCIMPL-DOCGEN-024
 type: contract.job
 title: spec case reference surface generation
 harness:
@@ -956,10 +956,10 @@ contract:
       - main
 ```
 
-## SRDOCGEN-025
+## DCIMPL-DOCGEN-025
 
 ```yaml contract-spec
-id: SRDOCGEN-025
+id: DCIMPL-DOCGEN-025
 type: contract.job
 title: spec case templates reference surface generation
 harness:

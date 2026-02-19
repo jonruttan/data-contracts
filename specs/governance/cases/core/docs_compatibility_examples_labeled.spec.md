@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-008
+## DCGOV-DOCS-REF-008
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-008
+id: DCGOV-DOCS-REF-008
 title: compatibility examples are explicitly labeled
 purpose: Ensures active documentation keeps Rust as canonical and labels Python/PHP examples
   as non-blocking compatibility lanes.

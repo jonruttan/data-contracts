@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONTRACT-001
+## DCGOV-CONTRACT-001
 
 ```yaml contract-spec
-id: SRGOV-CONTRACT-001
+id: DCGOV-CONTRACT-001
 title: contract governance rules pass via governance harness
 purpose: Ensures contract policy and traceability integrity checks are enforced through the
   governance spec pipeline.

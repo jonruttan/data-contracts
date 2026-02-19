@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-REF-SYMBOLS-002
+## DCGOV-REF-SYMBOLS-002
 
 ```yaml contract-spec
-id: SRGOV-REF-SYMBOLS-002
+id: DCGOV-REF-SYMBOLS-002
 title: governance policy symbols resolve through declared libraries
 purpose: Ensures every dotted var reference used in evaluate resolves from declared library
   symbols.

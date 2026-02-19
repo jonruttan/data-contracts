@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-010
+## DCGOV-CHAIN-010
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-010
+id: DCGOV-CHAIN-010
 title: universal chain support is present in dispatcher
 purpose: Ensures all executable task types execute through shared harness.chain orchestration
   in dispatcher.

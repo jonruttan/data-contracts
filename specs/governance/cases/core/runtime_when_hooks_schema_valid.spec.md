@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-HOOKS-001
+## DCGOV-RUNTIME-HOOKS-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-HOOKS-001
+id: DCGOV-RUNTIME-HOOKS-001
 title: when hooks schema must be valid
 purpose: Enforces when shape and hook expression list requirements.
 type: contract.check

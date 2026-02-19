@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-008
+## DCGOV-RUNTIME-CONFIG-008
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-008
+id: DCGOV-RUNTIME-CONFIG-008
 title: compatibility matrix registration is explicit
 purpose: Ensures runtime lanes are registered in the compatibility matrix contract before
   use.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-NORM-PATHS-001
+## DCGOV-NORM-PATHS-001
 
 ```yaml contract-spec
-id: SRGOV-NORM-PATHS-001
+id: DCGOV-NORM-PATHS-001
 title: scoped spec paths use canonical virtual-root form
 purpose: Ensures path-bearing spec fields use canonical virtual-root `/...` form.
 type: contract.check

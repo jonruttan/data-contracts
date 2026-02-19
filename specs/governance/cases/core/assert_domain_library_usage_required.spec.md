@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-PROFILE-004
+## DCGOV-ASSERT-PROFILE-004
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-PROFILE-004
+id: DCGOV-ASSERT-PROFILE-004
 title: domain conformance checks are library-backed
 purpose: Ensures domain conformance checks use harness.spec_lang domain libraries rather than
   ad hoc inline-only policy.

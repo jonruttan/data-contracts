@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-SPECDOMAIN-001
+## DCGOV-DOCS-SPECDOMAIN-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-SPECDOMAIN-001
+id: DCGOV-DOCS-SPECDOMAIN-001
 title: spec case catalog domain grouping is synchronized
 purpose: Ensures generated spec case catalog includes stable domain-grouped sections.
 type: contract.check

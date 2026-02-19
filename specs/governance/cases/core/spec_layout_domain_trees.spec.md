@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SPECLAYOUT-DOMAIN-001
+## DCGOV-SPECLAYOUT-DOMAIN-001
 
 ```yaml contract-spec
-id: SRGOV-SPECLAYOUT-DOMAIN-001
+id: DCGOV-SPECLAYOUT-DOMAIN-001
 title: spec layout uses domain tree directories
 purpose: Ensures conformance, governance, and library specs are organized under domain subdirectories
   with index files.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-LIBSYM-002
+## DCGOV-DOCS-LIBSYM-002
 
 ```yaml contract-spec
-id: SRGOV-DOCS-LIBSYM-002
+id: DCGOV-DOCS-LIBSYM-002
 title: library symbol doc params stay in sync
 purpose: Ensures harness.exports params match doc.params names and order.
 type: contract.check

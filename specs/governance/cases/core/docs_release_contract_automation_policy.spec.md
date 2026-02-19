@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-QUAL-009
+## DCGOV-DOCS-QUAL-009
 
 ```yaml contract-spec
-id: SRGOV-DOCS-QUAL-009
+id: DCGOV-DOCS-QUAL-009
 title: release contract forbids manual sequential checklist choreography
 purpose: Ensures release guidance uses executable gate entrypoints and codifies that manual
   do-X-then-inspect-Y sequences are an anti-pattern.

@@ -184,7 +184,7 @@ rules:
     semantics.
   references:
   - specs/governance/cases/core/conformance_evaluate_first_ratio_non_regression.spec.md
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: IMPL_EVALUATE_FIRST_REQUIRED
   introduced_in: v1
@@ -217,7 +217,7 @@ rules:
   risk_if_violated: Impl evaluate coverage can regress silently between merges.
   references:
   - specs/governance/cases/core/impl_evaluate_ratio_non_regression.spec.md
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED
   introduced_in: v1
@@ -235,7 +235,7 @@ rules:
   references:
   - specs/governance/cases/core/impl_library_usage_non_regression.spec.md
   - specs/libraries/impl/assertion_core.spec.md
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
 - id: CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
   introduced_in: v1
   scope: governance
@@ -614,7 +614,7 @@ rules:
     still exists.
   references:
   - specs/governance/cases/core/spec_portability_non_regression.spec.md
-  - specs/metrics/spec_portability_baseline.json
+  - specs/governance/metrics/spec_portability_baseline.json
   - runners/python/spec_runner/spec_portability.py
 - id: SPEC_LANG_ADOPTION_METRIC_REPORTED
   introduced_in: v1
@@ -646,7 +646,7 @@ rules:
   risk_if_violated: Adoption can drift backward without visibility or merge protection.
   references:
   - specs/governance/cases/core/spec_lang_adoption_non_regression.spec.md
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION
   introduced_in: v1
@@ -663,7 +663,7 @@ rules:
   risk_if_violated: Governance checks can fail late or become implementation-coupled.
   references:
   - specs/governance/cases/core/spec_lang_adoption_non_regression.spec.md
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION
   introduced_in: v1
@@ -680,7 +680,7 @@ rules:
   risk_if_violated: Library APIs bloat and become harder to maintain across runners.
   references:
   - specs/governance/cases/core/spec_lang_adoption_non_regression.spec.md
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: GOVERNANCE_POLICY_LIBRARY_USAGE_NON_REGRESSION
   introduced_in: v1
@@ -698,7 +698,7 @@ rules:
     expressions.
   references:
   - specs/governance/cases/core/governance_policy_library_usage_non_regression.spec.md
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: RUNNER_INDEPENDENCE_METRIC_REPORTED
   introduced_in: v1
@@ -728,7 +728,7 @@ rules:
   risk_if_violated: Gate and CI scripts can silently revert to runtime-specific hardcoding.
   references:
   - specs/governance/cases/core/runner_independence_non_regression.spec.md
-  - specs/metrics/runner_independence_baseline.json
+  - specs/governance/metrics/runner_independence_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
   introduced_in: v1
@@ -759,7 +759,7 @@ rules:
   risk_if_violated: Python dependency can increase silently across merges.
   references:
   - specs/governance/cases/core/runtime_python_dependency_non_regression.spec.md
-  - specs/metrics/python_dependency_baseline.json
+  - specs/governance/metrics/python_dependency_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
   introduced_in: v1
@@ -850,7 +850,7 @@ rules:
   risk_if_violated: Repeated support burden and ambiguous docs behavior return.
   references:
   - specs/governance/cases/core/docs_operability_non_regression.spec.md
-  - specs/metrics/docs_operability_baseline.json
+  - specs/governance/metrics/docs_operability_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: CONTRACT_ASSERTIONS_METRIC_REPORTED
   introduced_in: v1
@@ -881,7 +881,7 @@ rules:
   risk_if_violated: Contract quality may degrade while core tests remain green.
   references:
   - specs/governance/cases/core/contract_assertions_non_regression.spec.md
-  - specs/metrics/contract_assertions_baseline.json
+  - specs/governance/metrics/contract_assertions_baseline.json
   - runners/python/spec_runner/quality_metrics.py
 - id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
   introduced_in: v1
@@ -1950,8 +1950,8 @@ rules:
   rationale: Keeps orchestration tooling explicit and cross-implementation auditable.
   risk_if_violated: Tool behavior and contract assertions drift apart.
   references:
-  - specs/tools/python/tools_v1.yaml
-  - specs/tools/rust/tools_v1.yaml
+  - specs/governance/tools/python/tools_v1.yaml
+  - specs/governance/tools/rust/tools_v1.yaml
   - specs/schema/orchestration_result_v1.yaml
   - specs/governance/cases/core/orchestration_ops_registry_sync.spec.md
 - id: ORCHESTRATION_OPS_CAPABILITY_BINDING_REQUIRED
@@ -2001,7 +2001,7 @@ rules:
   references:
   - specs/contract/17_objective_metrics.md
   - specs/schema/objective_metrics_schema_v1.md
-  - specs/metrics/objective_manifest.yaml
+  - specs/governance/metrics/objective_manifest.yaml
 - id: OBJECTIVE_SCORECARD_REPORTED
   introduced_in: v1
   scope: governance
@@ -2031,7 +2031,7 @@ rules:
   risk_if_violated: Temporary regressions can become the new normal without explicit
     approval.
   references:
-  - specs/metrics/objective_scorecard_baseline.json
+  - specs/governance/metrics/objective_scorecard_baseline.json
   - specs/governance/cases/core/objective_scorecard_non_regression.spec.md
 - id: OBJECTIVE_TRIPWIRES_ENFORCED
   introduced_in: v1
@@ -2047,7 +2047,7 @@ rules:
   risk_if_violated: Score improvements can hide critical contract/security/runtime
     failures.
   references:
-  - specs/metrics/objective_manifest.yaml
+  - specs/governance/metrics/objective_manifest.yaml
   - specs/governance/cases/core/objective_tripwires_clean.spec.md
 - id: OBJECTIVE_COURSE_CORRECTION_POLICY_DEFINED
   introduced_in: v1
@@ -2062,7 +2062,7 @@ rules:
   rationale: Forces explicit correction narrative and prevents silent baseline manipulation.
   risk_if_violated: Teams can \"move the goalposts\" without reviewable justification.
   references:
-  - specs/metrics/baseline_update_notes.yaml
+  - specs/governance/metrics/baseline_update_notes.yaml
   - specs/contract/17_objective_metrics.md
   - specs/governance/cases/core/objective_scorecard_non_regression.spec.md
 - id: SPEC_LANG_LIBRARY_INCLUDE_FORMAT_SCOPE

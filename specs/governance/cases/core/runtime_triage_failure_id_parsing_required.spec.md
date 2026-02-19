@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-005
+## DCGOV-RUNTIME-TRIAGE-005
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-005
+id: DCGOV-RUNTIME-TRIAGE-005
 title: triage parser derives failing check ids and prefixes
 purpose: Ensures triage script parses governance ERROR lines and maps check ids to check-prefix
   retries.

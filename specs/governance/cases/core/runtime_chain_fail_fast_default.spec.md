@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-004
+## DCGOV-CHAIN-004
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-004
+id: DCGOV-CHAIN-004
 title: chain fail_fast defaults stay canonical
 purpose: Ensures harness.chain fail_fast and allow_continue fields preserve bool/default contracts.
 type: contract.check

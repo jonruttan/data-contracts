@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUST-PRIMARY-004
+## DCGOV-RUST-PRIMARY-004
 
 ```yaml contract-spec
-id: SRGOV-RUST-PRIMARY-004
+id: DCGOV-RUST-PRIMARY-004
 title: rust-primary gate path includes shared-capability parity step
 purpose: Ensures gate orchestration keeps conformance parity as part of Rust-primary-compatible
   gate flow.

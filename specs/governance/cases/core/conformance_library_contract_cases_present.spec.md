@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-LIB-CONTRACT-001
+## DCGOV-CONF-LIB-CONTRACT-001
 
 ```yaml contract-spec
-id: SRGOV-CONF-LIB-CONTRACT-001
+id: DCGOV-CONF-LIB-CONTRACT-001
 title: conformance library contract coverage cases are present
 purpose: Ensures conformance includes executable evaluate-based coverage for flat spec_lang.export
   defines contract behavior.
@@ -13,9 +13,9 @@ harness:
   conformance_library_contract_cases_present:
     path: /specs/conformance/cases/core/spec_lang_library_contract.spec.md
     required_case_ids:
-    - SRCONF-LIB-CONTRACT-001
-    - SRCONF-LIB-CONTRACT-002
-    - SRCONF-LIB-CONTRACT-003
+    - DCCONF-LIB-CONTRACT-001
+    - DCCONF-LIB-CONTRACT-002
+    - DCCONF-LIB-CONTRACT-003
   check:
     profile: governance.scan
     config:

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-ENTRY-001
+## DCGOV-RUNTIME-ENTRY-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-ENTRY-001
+id: DCGOV-RUNTIME-ENTRY-001
 title: gate scripts use a single public runner entrypoint
 purpose: Ensures gate scripts reference only the canonical public runner entrypoint.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-005
+## DCGOV-DOCS-REF-005
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-005
+id: DCGOV-DOCS-REF-005
 title: runner cli flags are documented in development and impl docs
 purpose: Prevents CLI contract drift by requiring script flags to be documented in the development
   guide and implementation reference pages.

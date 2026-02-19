@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ARCH-COMPONENTS-002
+## DCGOV-ARCH-COMPONENTS-002
 
 ```yaml contract-spec
-id: SRGOV-ARCH-COMPONENTS-002
+id: DCGOV-ARCH-COMPONENTS-002
 title: non-canonical harness workflow duplication is forbidden
 purpose: Prevents harness modules from reintroducing local spec-lang setup and direct assertion-evaluation
   glue after component hard cut.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONTRACT-ASSERT-002
+## DCGOV-CONTRACT-ASSERT-002
 
 ```yaml contract-spec
-id: SRGOV-CONTRACT-ASSERT-002
+id: DCGOV-CONTRACT-ASSERT-002
 title: contract assertions metric is non-regressing
 purpose: Enforces monotonic non-regression for contract assertions metrics against checked-in
   baseline.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   contract_assertions_non_regression:
-    baseline_path: /specs/metrics/contract_assertions_baseline.json
+    baseline_path: /specs/governance/metrics/contract_assertions_baseline.json
     summary_fields:
       overall_contract_assertions_ratio: non_decrease
       overall_required_token_coverage_ratio: non_decrease

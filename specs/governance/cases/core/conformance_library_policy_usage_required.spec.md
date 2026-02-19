@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-POLICY-LIB-001
+## DCGOV-CONF-POLICY-LIB-001
 
 ```yaml contract-spec
-id: SRGOV-CONF-POLICY-LIB-001
+id: DCGOV-CONF-POLICY-LIB-001
 title: conformance governance checks require library-backed policy calls
 purpose: Ensures conformance-prefixed governance checks use shared spec-lang library wiring
   and evaluate library calls.

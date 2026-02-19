@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-002
+## DCGOV-CHAIN-002
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-002
+id: DCGOV-CHAIN-002
 title: chain cycles are forbidden
 purpose: Ensures direct and indirect harness.chain dependency cycles are rejected.
 type: contract.check

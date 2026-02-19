@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONTRACT-002
+## DCGOV-CONTRACT-002
 
 ```yaml contract-spec
-id: SRGOV-CONTRACT-002
+id: DCGOV-CONTRACT-002
 title: contract must-rule coverage stays complete
 purpose: Ensures all MUST policy rules remain covered by traceability evidence and keeps overall
   contract coverage above a minimum baseline.

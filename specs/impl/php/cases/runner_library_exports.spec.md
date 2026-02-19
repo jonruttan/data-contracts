@@ -1,9 +1,9 @@
 # PHP Spec Runner Library Export References
 
-## SRPHP-RUN-LIB-001
+## DCIMPL-PHP-RUN-LIB-001
 
 ```yaml contract-spec
-id: SRPHP-RUN-LIB-001
+id: DCIMPL-PHP-RUN-LIB-001
 title: impl assertion library exports are referenced by impl fixtures
 purpose: References impl assertion library exports for governance usage tracking.
 type: contract.check

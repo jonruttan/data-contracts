@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-REF-EXTERNAL-001
+## DCGOV-REF-EXTERNAL-001
 
 ```yaml contract-spec
-id: SRGOV-REF-EXTERNAL-001
+id: DCGOV-REF-EXTERNAL-001
 title: external refs require explicit policy and capability
 purpose: Ensures external:// references are deny-by-default and must declare allow policy.
 type: contract.check

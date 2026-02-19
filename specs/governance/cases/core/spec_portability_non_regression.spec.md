@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SPEC-PORT-002
+## DCGOV-SPEC-PORT-002
 
 ```yaml contract-spec
-id: SRGOV-SPEC-PORT-002
+id: DCGOV-SPEC-PORT-002
 title: spec-lang self-containment metric is non-regressing
 purpose: Enforces a monotonic ratchet so configured spec-lang self-containment metrics cannot
   decrease from baseline.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   portability_non_regression:
-    baseline_path: /specs/metrics/spec_portability_baseline.json
+    baseline_path: /specs/governance/metrics/spec_portability_baseline.json
     summary_fields:
     - overall_logic_self_contained_ratio
     segment_fields:

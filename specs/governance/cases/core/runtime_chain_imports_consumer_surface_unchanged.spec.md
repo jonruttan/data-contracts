@@ -1,7 +1,7 @@
 # runtime_chain_imports_consumer_surface_unchanged
 
 ```yaml contract-spec
-id: SRGOV-HARNESS-EXPORTS-004
+id: DCGOV-HARNESS-EXPORTS-004
 title: chain imports consumer surface remains unchanged
 purpose: Ensures consumer bindings continue to use harness.chain.imports semantics.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-HOOKS-002
+## DCGOV-RUNTIME-HOOKS-002
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-HOOKS-002
+id: DCGOV-RUNTIME-HOOKS-002
 title: when class hook ordering contract required
 purpose: Ensures class hooks run only after successful clause pass and before complete.
 type: contract.check

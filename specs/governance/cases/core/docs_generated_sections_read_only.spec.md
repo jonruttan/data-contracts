@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-003
+## DCGOV-DOCS-GEN-003
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-003
+id: DCGOV-DOCS-GEN-003
 title: generated markdown sections are read-only blocks
 purpose: Ensures configured generated markdown outputs contain valid generated section markers.
 type: contract.check

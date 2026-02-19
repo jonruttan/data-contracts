@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-QUAL-007
+## DCGOV-DOCS-QUAL-007
 
 ```yaml contract-spec
-id: SRGOV-DOCS-QUAL-007
+id: DCGOV-DOCS-QUAL-007
 title: docs example ids are unique
 purpose: Ensures example identifiers are unique across canonical docs metadata.
 type: contract.check

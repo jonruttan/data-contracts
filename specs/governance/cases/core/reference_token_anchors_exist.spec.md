@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-REF-TOKENS-001
+## DCGOV-REF-TOKENS-001
 
 ```yaml contract-spec
-id: SRGOV-REF-TOKENS-001
+id: DCGOV-REF-TOKENS-001
 title: configured token anchors exist
 purpose: Ensures configured token anchors resolve to existing files and token matches.
 type: contract.check

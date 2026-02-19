@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-SPECCASE-002
+## DCGOV-DOCS-SPECCASE-002
 
 ```yaml contract-spec
-id: SRGOV-DOCS-SPECCASE-002
+id: DCGOV-DOCS-SPECCASE-002
 title: spec case catalog artifacts are synchronized
 purpose: Ensures generated spec case catalog and markdown references stay in sync.
 type: contract.check

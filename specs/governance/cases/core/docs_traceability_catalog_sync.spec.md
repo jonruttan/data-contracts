@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-008
+## DCGOV-DOCS-GEN-008
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-008
+id: DCGOV-DOCS-GEN-008
 title: traceability catalog artifacts are synchronized
 purpose: Ensures generated traceability catalog JSON and markdown artifacts are up-to-date.
 type: contract.check

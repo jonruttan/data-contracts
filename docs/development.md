@@ -180,7 +180,7 @@ Governance triage artifacts:
 
 ## CI Triage (Docs Quality)
 
-When CI fails with `SRGOV-DOCS-QUAL-*`:
+When CI fails with `DCGOV-DOCS-QUAL-*`:
 
 1. Reproduce quickly:
 
@@ -205,11 +205,11 @@ make docs-check
 
 Common failures:
 
-- `SRGOV-DOCS-QUAL-002`: `docs/book/reference_index.md` is out of sync with
+- `DCGOV-DOCS-QUAL-002`: `docs/book/reference_index.md` is out of sync with
   `docs/book/reference_manifest.yaml`.
-- `SRGOV-DOCS-QUAL-008`: generated files drifted
+- `DCGOV-DOCS-QUAL-008`: generated files drifted
   (`reference_index.md`, `reference_coverage.md`, `docs_graph.json`).
-- `SRGOV-DOCS-QUAL-003/004`: token ownership/dependency issues in chapter
+- `DCGOV-DOCS-QUAL-003/004`: token ownership/dependency issues in chapter
   `doc-meta`.
 
 Suggested pre-commit hook:
@@ -261,7 +261,7 @@ Merges are expected to pass the `spec_runner` CI job, which runs:
 
 `run_governance_specs.py` (via `contract.governance_check`) enforces
 conformance case doc freshness:
-every `SRCONF-*` fixture case id must be listed in
+every `DCCONF-*` fixture case id must be listed in
 `specs/conformance/cases/index.md`, and stale ids in that index fail CI.
 
 Local equivalent:

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SCHEMA-REG-005
+## DCGOV-SCHEMA-REG-005
 
 ```yaml contract-spec
-id: SRGOV-SCHEMA-REG-005
+id: DCGOV-SCHEMA-REG-005
 title: required schema type profiles exist
 purpose: Ensures required type profiles are defined in registry for core runtime case types.
 type: contract.check

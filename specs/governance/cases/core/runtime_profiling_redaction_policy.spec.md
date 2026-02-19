@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-PROFILE-REDACT-001
+## DCGOV-PROFILE-REDACT-001
 
 ```yaml contract-spec
-id: SRGOV-PROFILE-REDACT-001
+id: DCGOV-PROFILE-REDACT-001
 title: run trace redaction policy prevents secret leakage
 purpose: Ensures profiling env metadata does not store raw values and trace payloads do not
   include common secret-like tokens.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-STDLIB-003
+## DCGOV-STDLIB-003
 
 ```yaml contract-spec
-id: SRGOV-STDLIB-003
+id: DCGOV-STDLIB-003
 title: stdlib profile references are synchronized in schema contract and book docs
 purpose: Ensures core docs reference the canonical stdlib profile artifacts.
 type: contract.check

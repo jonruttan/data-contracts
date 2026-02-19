@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-CANON-002
+## DCGOV-DOCS-CANON-002
 
 ```yaml contract-spec
-id: SRGOV-DOCS-CANON-002
+id: DCGOV-DOCS-CANON-002
 title: governance check family map covers all registered checks
 purpose: Ensures each governance check id is mapped to a canonical check family prefix.
 type: contract.check

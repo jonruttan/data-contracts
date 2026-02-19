@@ -1,9 +1,9 @@
 # PHP Spec Runner Assertion Health Cases
 
-## SRPHP-AH-001
+## DCIMPL-PHP-AH-001
 
 ```yaml contract-spec
-id: SRPHP-AH-001
+id: DCIMPL-PHP-AH-001
 title: cli.run warn mode emits diagnostics without failing
 purpose: Verifies assert_health warn mode on cli.run preserves pass outcome while emitting
   warnings.
@@ -40,10 +40,10 @@ contract:
       - ok
 ```
 
-## SRPHP-AH-002
+## DCIMPL-PHP-AH-002
 
 ```yaml contract-spec
-id: SRPHP-AH-002
+id: DCIMPL-PHP-AH-002
 title: cli.run error mode fails on assertion-health diagnostics
 purpose: Verifies assert_health error mode on cli.run converts assertion-health findings into
   assertion failures.
@@ -82,10 +82,10 @@ contract:
       - ok
 ```
 
-## SRPHP-AH-003
+## DCIMPL-PHP-AH-003
 
 ```yaml contract-spec
-id: SRPHP-AH-003
+id: DCIMPL-PHP-AH-003
 title: invalid assert_health mode is schema failure
 purpose: Verifies invalid assert_health mode values are rejected as schema errors.
 type: contract.check
@@ -120,10 +120,10 @@ contract:
       - ok
 ```
 
-## SRPHP-AH-004
+## DCIMPL-PHP-AH-004
 
 ```yaml contract-spec
-id: SRPHP-AH-004
+id: DCIMPL-PHP-AH-004
 title: global assert health mode applies when case mode is omitted
 purpose: Verifies SPEC_RUNNER_ASSERT_HEALTH controls diagnostics when assert_health.mode is
   not set in a case.
@@ -158,10 +158,10 @@ contract:
       - ok
 ```
 
-## SRPHP-AH-005
+## DCIMPL-PHP-AH-005
 
 ```yaml contract-spec
-id: SRPHP-AH-005
+id: DCIMPL-PHP-AH-005
 title: per-case ignore overrides global warn policy
 purpose: Verifies assert_health.mode ignore suppresses diagnostics even when global policy
   is warn.

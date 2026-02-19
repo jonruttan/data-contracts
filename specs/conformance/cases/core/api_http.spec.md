@@ -1,9 +1,9 @@
 # API HTTP Conformance Fixtures
 
-## SRCONF-API-001
+## DCCONF-API-001
 
 ```yaml contract-spec
-id: SRCONF-API-001
+id: DCCONF-API-001
 title: api.http GET reads relative fixture and exposes body assertions
 purpose: Verifies api.http can resolve a local relative request url and assert deterministic
   status and json body shape.
@@ -46,10 +46,10 @@ harness:
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 ```
 
-## SRCONF-API-002
+## DCCONF-API-002
 
 ```yaml contract-spec
-id: SRCONF-API-002
+id: DCCONF-API-002
 title: api.http requires request.url
 purpose: Verifies api.http reports a schema violation when request url is missing from portable
   fixture input.
@@ -84,10 +84,10 @@ harness:
         method: GET
 ```
 
-## SRCONF-API-003
+## DCCONF-API-003
 
 ```yaml contract-spec
-id: SRCONF-API-003
+id: DCCONF-API-003
 title: api.http skip path honors requires.when_missing
 purpose: Verifies extension capability gating can skip fixtures when a required capability
   is absent.
@@ -123,10 +123,10 @@ harness:
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 ```
 
-## SRCONF-API-004
+## DCCONF-API-004
 
 ```yaml contract-spec
-id: SRCONF-API-004
+id: DCCONF-API-004
 title: api.http supports POST with body_json
 purpose: Verifies practical REST mutating verb support for POST requests in deterministic
   mode.
@@ -162,10 +162,10 @@ harness:
           name: sample
 ```
 
-## SRCONF-API-005
+## DCCONF-API-005
 
 ```yaml contract-spec
-id: SRCONF-API-005
+id: DCCONF-API-005
 title: api.http supports PUT
 purpose: Verifies practical REST verb support for PUT in deterministic mode.
 type: contract.check
@@ -198,10 +198,10 @@ harness:
         url: /specs/conformance/cases/fixtures/api_http_item_abc-123.json
 ```
 
-## SRCONF-API-006
+## DCCONF-API-006
 
 ```yaml contract-spec
-id: SRCONF-API-006
+id: DCCONF-API-006
 title: api.http supports PATCH
 purpose: Verifies practical REST verb support for PATCH in deterministic mode.
 type: contract.check
@@ -234,10 +234,10 @@ harness:
         url: /specs/conformance/cases/fixtures/api_http_item_abc-123.json
 ```
 
-## SRCONF-API-007
+## DCCONF-API-007
 
 ```yaml contract-spec
-id: SRCONF-API-007
+id: DCCONF-API-007
 title: api.http supports DELETE
 purpose: Verifies practical REST verb support for DELETE in deterministic mode.
 type: contract.check
@@ -272,10 +272,10 @@ harness:
         url: /specs/conformance/cases/fixtures/api_http_deleted.json
 ```
 
-## SRCONF-API-008
+## DCCONF-API-008
 
 ```yaml contract-spec
-id: SRCONF-API-008
+id: DCCONF-API-008
 title: api.http supports HEAD
 purpose: Verifies practical REST verb support for HEAD in deterministic mode.
 type: contract.check
@@ -308,10 +308,10 @@ harness:
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 ```
 
-## SRCONF-API-009
+## DCCONF-API-009
 
 ```yaml contract-spec
-id: SRCONF-API-009
+id: DCCONF-API-009
 title: api.http supports OPTIONS
 purpose: Verifies practical REST verb support for OPTIONS in deterministic mode.
 type: contract.check
@@ -344,10 +344,10 @@ harness:
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 ```
 
-## SRCONF-API-010
+## DCCONF-API-010
 
 ```yaml contract-spec
-id: SRCONF-API-010
+id: DCCONF-API-010
 title: api.http rejects unsupported request method
 purpose: Verifies unsupported HTTP verbs are rejected as schema violations.
 type: contract.check
@@ -382,10 +382,10 @@ harness:
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 ```
 
-## SRCONF-API-011
+## DCCONF-API-011
 
 ```yaml contract-spec
-id: SRCONF-API-011
+id: DCCONF-API-011
 title: api.http preflight requires OPTIONS method
 purpose: Verifies cors preflight helper enforces request.method OPTIONS.
 type: contract.check
@@ -424,10 +424,10 @@ harness:
           request_method: POST
 ```
 
-## SRCONF-API-012
+## DCCONF-API-012
 
 ```yaml contract-spec
-id: SRCONF-API-012
+id: DCCONF-API-012
 title: api.http scenario executes round-trip requests in order
 purpose: Verifies requests scenario supports step templating and exposes steps_json target.
 type: contract.check
@@ -480,10 +480,10 @@ contract:
       - steps_json
 ```
 
-## SRCONF-API-013
+## DCCONF-API-013
 
 ```yaml contract-spec
-id: SRCONF-API-013
+id: DCCONF-API-013
 title: api.http oauth deterministic local token exchange
 purpose: Verifies oauth auth profile resolves env refs and produces oauth context metadata
   without network access.
@@ -537,10 +537,10 @@ contract:
       - env_ref
 ```
 
-## SRCONF-API-014
+## DCCONF-API-014
 
 ```yaml contract-spec
-id: SRCONF-API-014
+id: DCCONF-API-014
 title: api.http oauth missing env refs is schema failure
 purpose: Verifies oauth env-ref credentials are required and missing env vars fail as schema.
 type: contract.check
@@ -582,10 +582,10 @@ contract:
       - '200'
 ```
 
-## SRCONF-API-015
+## DCCONF-API-015
 
 ```yaml contract-spec
-id: SRCONF-API-015
+id: DCCONF-API-015
 title: api.http oauth invalid auth_style is schema failure
 purpose: Verifies oauth auth_style is validated against supported values.
 type: contract.check
@@ -628,10 +628,10 @@ contract:
       - '200'
 ```
 
-## SRCONF-API-016
+## DCCONF-API-016
 
 ```yaml contract-spec
-id: SRCONF-API-016
+id: DCCONF-API-016
 title: api.http oauth live mode is optional capability
 type: contract.check
 purpose: Verifies optional live oauth/network execution can be capability-gated and skipped
@@ -675,10 +675,10 @@ contract:
       - '200'
 ```
 
-## SRCONF-API-017
+## DCCONF-API-017
 
 ```yaml contract-spec
-id: SRCONF-API-017
+id: DCCONF-API-017
 title: api.http exposes new domain.http helper exports for CORS and steps
 purpose: Maintains reference usage for domain.http CORS and scenario helper symbol exports.
 type: contract.check

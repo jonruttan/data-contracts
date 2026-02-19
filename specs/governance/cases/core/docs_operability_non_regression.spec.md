@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-OPER-002
+## DCGOV-DOCS-OPER-002
 
 ```yaml contract-spec
-id: SRGOV-DOCS-OPER-002
+id: DCGOV-DOCS-OPER-002
 title: docs operability metric is non-regressing
 purpose: Enforces monotonic non-regression for docs operability metrics against checked-in
   baseline.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   docs_operability_non_regression:
-    baseline_path: /specs/metrics/docs_operability_baseline.json
+    baseline_path: /specs/governance/metrics/docs_operability_baseline.json
     summary_fields:
       overall_docs_operability_ratio: non_decrease
     segment_fields:

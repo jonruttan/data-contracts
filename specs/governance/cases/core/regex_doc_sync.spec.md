@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOC-REGEX-001
+## DCGOV-DOC-REGEX-001
 
 ```yaml contract-spec
-id: SRGOV-DOC-REGEX-001
+id: DCGOV-DOC-REGEX-001
 title: regex profile and operator tokens are synchronized across core docs
 purpose: Ensures regex portability linkage and core assertion operator tokens remain aligned
   in contract/schema/policy docs.

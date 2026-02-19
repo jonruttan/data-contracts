@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-APIHTTP-001
+## DCGOV-RUNTIME-APIHTTP-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-APIHTTP-001
+id: DCGOV-RUNTIME-APIHTTP-001
 title: api.http oauth credentials use env references only
 purpose: Ensures api.http OAuth credential fields are env-reference based and forbid inline
   credential literals.

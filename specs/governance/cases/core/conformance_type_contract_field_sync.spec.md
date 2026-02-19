@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-PORT-004
+## DCGOV-CONF-PORT-004
 
 ```yaml contract-spec
-id: SRGOV-CONF-PORT-004
+id: DCGOV-CONF-PORT-004
 title: conformance case fields stay aligned with type contract docs
 purpose: Ensures portable fixture top-level keys are declared by each type contract plus common
   schema keys.

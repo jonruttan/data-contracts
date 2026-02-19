@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-022
+## DCGOV-DOCS-GEN-022
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-022
+id: DCGOV-DOCS-GEN-022
 title: stdlib symbols include examples
 purpose: Ensures generated stdlib reference includes at least one complete example per symbol.
 type: contract.check

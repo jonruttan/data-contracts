@@ -51,7 +51,7 @@ Context you should assume about this repo:
 - Runner-only setup keys must live under `harness:`.
 - There is a conformance system and Python/PHP parity checks.
 - Active spec snapshot: `specs/current.md`.
-- Pending work: `specs/pending/`.
+- Pending work: `specs/governance/pending/`.
 
 Important:
 - Reference concrete file paths and nearby section names/keywords when making claims.

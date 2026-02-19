@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-JOB-DISPATCH-005
+## DCGOV-RUNTIME-JOB-DISPATCH-005
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-JOB-DISPATCH-005
+id: DCGOV-RUNTIME-JOB-DISPATCH-005
 title: ops.job.dispatch nested dispatch is forbidden
 purpose: Ensures runtime emits deterministic failure token when nested dispatch is attempted.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-OPS-OS-CAP-001
+## DCGOV-RUNTIME-OPS-OS-CAP-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-OPS-OS-CAP-001
+id: DCGOV-RUNTIME-OPS-OS-CAP-001
 title: ops.os usage requires explicit capability gate
 purpose: Ensures spec-lang enforces capability.ops_os.required and harness capability parsing.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-007
+## DCGOV-RUNTIME-CONFIG-007
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-007
+id: DCGOV-RUNTIME-CONFIG-007
 title: compatibility lanes remain non-blocking
 purpose: Ensures compatibility runtime lanes are present in CI and explicitly non-blocking.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-JOB-DISPATCH-004
+## DCGOV-RUNTIME-JOB-DISPATCH-004
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-JOB-DISPATCH-004
+id: DCGOV-RUNTIME-JOB-DISPATCH-004
 title: ops.job.dispatch requires ops.job capability
 purpose: Ensures cases that call ops.job.dispatch declare harness.spec_lang.capabilities including
   ops.job.

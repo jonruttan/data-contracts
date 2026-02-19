@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-POLICY-LIB-002
+## DCGOV-POLICY-LIB-002
 
 ```yaml contract-spec
-id: SRGOV-POLICY-LIB-002
+id: DCGOV-POLICY-LIB-002
 title: governance policy expressions require shared library wiring
 purpose: Ensures governance decision policies use shared spec-lang libraries and call exported
   library symbols.

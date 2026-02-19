@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SCHEMA-VERB-001
+## DCGOV-SCHEMA-VERB-001
 
 ```yaml contract-spec
-id: SRGOV-SCHEMA-VERB-001
+id: DCGOV-SCHEMA-VERB-001
 title: verb-first contract wording remains synchronized
 purpose: Ensures schema/contract/current docs use defines wording and reject non-canonical
   definitions wording.

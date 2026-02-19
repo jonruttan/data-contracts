@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-008
+## DCGOV-CHAIN-008
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-008
+id: DCGOV-CHAIN-008
 title: chain import alias collisions are forbidden
 purpose: Ensures harness.chain.imports bindings are valid and do not collide or shadow reserved
   symbols.

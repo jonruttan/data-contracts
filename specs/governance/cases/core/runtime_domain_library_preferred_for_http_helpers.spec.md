@@ -1,7 +1,7 @@
 # runtime.domain_library_preferred_for_http_helpers
 
 ```yaml contract-spec
-id: SRGOV-DOMAIN-LIB-HTTP-001
+id: DCGOV-DOMAIN-LIB-HTTP-001
 title: api.http context assertions prefer domain http helpers
 purpose: Enforces `domain.http.*` helper usage for oauth meta assertions in api.http cases
   instead of raw std.object.get projection chains.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-004
+## DCGOV-DOCS-REF-004
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-004
+id: DCGOV-DOCS-REF-004
 title: reference examples parse or are explicitly opted out
 purpose: Ensures reference examples are trustworthy by requiring parseable or statically valid
   fenced examples unless explicitly opted out.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-LAYOUT-003
+## DCGOV-DOCS-LAYOUT-003
 
 ```yaml contract-spec
-id: SRGOV-DOCS-LAYOUT-003
+id: DCGOV-DOCS-LAYOUT-003
 title: docs filenames follow canonical lowercase policy
 purpose: Enforces lowercase, underscore, and hyphen filename policy across docs.
 type: contract.check

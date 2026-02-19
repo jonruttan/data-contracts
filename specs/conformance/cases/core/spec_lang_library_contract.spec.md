@@ -1,9 +1,9 @@
 # Spec-Lang Library Contract Conformance Cases
 
-## SRCONF-LIB-CONTRACT-001
+## DCCONF-LIB-CONTRACT-001
 
 ```yaml contract-spec
-id: SRCONF-LIB-CONTRACT-001
+id: DCCONF-LIB-CONTRACT-001
 title: policy library uses producer harness exports
 purpose: Ensures policy library authoring uses producer-owned harness.exports with assert.function
   source mappings.
@@ -44,10 +44,10 @@ harness:
       path: /specs/libraries/policy/policy_core.spec.md
 ```
 
-## SRCONF-LIB-CONTRACT-002
+## DCCONF-LIB-CONTRACT-002
 
 ```yaml contract-spec
-id: SRCONF-LIB-CONTRACT-002
+id: DCCONF-LIB-CONTRACT-002
 title: path library uses producer harness exports
 purpose: Ensures path library authoring uses producer-owned harness.exports with assert.function
   source mappings.
@@ -88,10 +88,10 @@ harness:
       path: /specs/libraries/path/path_core.spec.md
 ```
 
-## SRCONF-LIB-CONTRACT-003
+## DCCONF-LIB-CONTRACT-003
 
 ```yaml contract-spec
-id: SRCONF-LIB-CONTRACT-003
+id: DCCONF-LIB-CONTRACT-003
 title: policy library index tracks canonical files
 purpose: Ensures generated policy library index includes canonical file references.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-012
+## DCGOV-CHAIN-012
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-012
+id: DCGOV-CHAIN-012
 title: chain state sharing uses explicit exports only
 purpose: Ensures chain state propagation is declared through explicit target-derived exports.
 type: contract.check

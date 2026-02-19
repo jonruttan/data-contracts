@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUST-PRIMARY-001
+## DCGOV-RUST-PRIMARY-001
 
 ```yaml contract-spec
-id: SRGOV-RUST-PRIMARY-001
+id: DCGOV-RUST-PRIMARY-001
 title: rust-primary ci lane runs core gate via runner interface
 purpose: Ensures CI includes a Rust-primary lane that executes core gate through SPEC_RUNNER_BIN.
 type: contract.check

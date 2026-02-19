@@ -1,9 +1,9 @@
 # Python Script CLI Cases: Quality and Registry Reports
 
-## SRPY-SCRIPT-QUALITY-001
+## DCIMPL-PY-SCRIPT-QUALITY-001
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-QUALITY-001
+id: DCIMPL-PY-SCRIPT-QUALITY-001
 title: objective_scorecard_report writes json artifact
 type: contract.check
 harness:
@@ -30,10 +30,10 @@ contract:
       - wrote .artifacts/objective-scorecard-script-case.json
 ```
 
-## SRPY-SCRIPT-QUALITY-002
+## DCIMPL-PY-SCRIPT-QUALITY-002
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-QUALITY-002
+id: DCIMPL-PY-SCRIPT-QUALITY-002
 title: objective_scorecard_report rejects invalid format
 type: contract.check
 harness:
@@ -60,10 +60,10 @@ contract:
       - invalid choice
 ```
 
-## SRPY-SCRIPT-QUALITY-003
+## DCIMPL-PY-SCRIPT-QUALITY-003
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-QUALITY-003
+id: DCIMPL-PY-SCRIPT-QUALITY-003
 title: quality metric report fanout writes json artifact
 type: contract.check
 harness:
@@ -91,10 +91,10 @@ contract:
       - wrote .artifacts/spec-lang-adoption-script-case.json
 ```
 
-## SRPY-SCRIPT-QUALITY-004
+## DCIMPL-PY-SCRIPT-QUALITY-004
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-QUALITY-004
+id: DCIMPL-PY-SCRIPT-QUALITY-004
 title: quality metric report fanout rejects unknown report key
 type: contract.check
 harness:
@@ -122,10 +122,10 @@ contract:
       - unsupported quality report
 ```
 
-## SRPY-SCRIPT-QUALITY-005
+## DCIMPL-PY-SCRIPT-QUALITY-005
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-QUALITY-005
+id: DCIMPL-PY-SCRIPT-QUALITY-005
 title: schema registry report writes json artifact
 type: contract.check
 harness:
@@ -154,10 +154,10 @@ contract:
       - wrote .artifacts/schema-registry-script-case.json
 ```
 
-## SRPY-SCRIPT-QUALITY-006
+## DCIMPL-PY-SCRIPT-QUALITY-006
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-QUALITY-006
+id: DCIMPL-PY-SCRIPT-QUALITY-006
 title: schema registry report rejects invalid format
 type: contract.check
 harness:

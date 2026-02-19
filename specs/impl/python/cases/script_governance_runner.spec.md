@@ -1,9 +1,9 @@
 # Python Script CLI Cases: Governance Runner
 
-## SRPY-SCRIPT-GOV-001
+## DCIMPL-PY-SCRIPT-GOV-001
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-GOV-001
+id: DCIMPL-PY-SCRIPT-GOV-001
 title: governance runner help renders usage
 type: contract.check
 harness:
@@ -29,10 +29,10 @@ contract:
       - --check-prefix
 ```
 
-## SRPY-SCRIPT-GOV-002
+## DCIMPL-PY-SCRIPT-GOV-002
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-GOV-002
+id: DCIMPL-PY-SCRIPT-GOV-002
 title: governance runner rejects empty case pattern
 type: contract.check
 harness:
@@ -61,10 +61,10 @@ contract:
       - case-file-pattern
 ```
 
-## SRPY-SCRIPT-GOV-003
+## DCIMPL-PY-SCRIPT-GOV-003
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-GOV-003
+id: DCIMPL-PY-SCRIPT-GOV-003
 title: governance runner rejects check prefix that selects no cases
 type: contract.check
 harness:
@@ -93,10 +93,10 @@ contract:
       - selected zero cases
 ```
 
-## SRPY-SCRIPT-GOV-004
+## DCIMPL-PY-SCRIPT-GOV-004
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-GOV-004
+id: DCIMPL-PY-SCRIPT-GOV-004
 title: governance runtime registers required docgen quality checks
 type: contract.check
 harness:

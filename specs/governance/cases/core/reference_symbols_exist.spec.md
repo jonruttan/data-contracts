@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-REF-SYMBOLS-001
+## DCGOV-REF-SYMBOLS-001
 
 ```yaml contract-spec
-id: SRGOV-REF-SYMBOLS-001
+id: DCGOV-REF-SYMBOLS-001
 title: referenced library symbols resolve
 purpose: Ensures harness.spec_lang exports and library symbols resolve deterministically.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-QUAL-005
+## DCGOV-DOCS-QUAL-005
 
 ```yaml contract-spec
-id: SRGOV-DOCS-QUAL-005
+id: DCGOV-DOCS-QUAL-005
 title: instruction pages contain required operational sections
 purpose: Ensures docs metadata required sections are present in canonical chapter content.
 type: contract.check

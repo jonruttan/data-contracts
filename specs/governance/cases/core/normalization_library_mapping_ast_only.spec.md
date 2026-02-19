@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-NORM-005
+## DCGOV-NORM-005
 
 ```yaml contract-spec
-id: SRGOV-NORM-005
+id: DCGOV-NORM-005
 title: library function expressions use mapping-ast authoring
 purpose: Enforces spec-lang library function defines use canonical mapping-ast expression
   syntax only.

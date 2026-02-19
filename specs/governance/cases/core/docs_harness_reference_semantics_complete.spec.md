@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-023
+## DCGOV-DOCS-GEN-023
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-023
+id: DCGOV-DOCS-GEN-023
 title: harness reference includes semantic sections
 purpose: Ensures generated harness reference includes summary/defaults/failure modes/examples
   per case type.

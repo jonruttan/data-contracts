@@ -1,9 +1,9 @@
 # Python Spec-Lang Stdlib Report Command Cases
 
-## SRPY-STDLIB-REP-001
+## DCIMPL-PY-STDLIB-REP-001
 
 ```yaml contract-spec
-id: SRPY-STDLIB-REP-001
+id: DCIMPL-PY-STDLIB-REP-001
 title: spec_lang_stdlib_report_main emits json by default
 type: contract.check
 harness:
@@ -31,10 +31,10 @@ contract:
       - '"summary"'
 ```
 
-## SRPY-STDLIB-REP-002
+## DCIMPL-PY-STDLIB-REP-002
 
 ```yaml contract-spec
-id: SRPY-STDLIB-REP-002
+id: DCIMPL-PY-STDLIB-REP-002
 title: spec_lang_stdlib_report_main emits markdown with format md
 type: contract.check
 harness:

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SPECLAYOUT-INDEX-001
+## DCGOV-SPECLAYOUT-INDEX-001
 
 ```yaml contract-spec
-id: SRGOV-SPECLAYOUT-INDEX-001
+id: DCGOV-SPECLAYOUT-INDEX-001
 title: spec domain indexes are synchronized
 purpose: Ensures each domain index tracks all spec files in its subtree and has no stale paths.
 type: contract.check

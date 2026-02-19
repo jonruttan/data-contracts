@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SPEC-MD-001
+## DCGOV-SPEC-MD-001
 
 ```yaml contract-spec
-id: SRGOV-SPEC-MD-001
+id: DCGOV-SPEC-MD-001
 title: executable spec surfaces are markdown only
 purpose: Ensures all canonical executable case trees are authored as .spec.md and do not use
   runnable yaml/json case files.

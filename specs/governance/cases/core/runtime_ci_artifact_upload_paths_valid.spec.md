@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-013
+## DCGOV-RUNTIME-TRIAGE-013
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-013
+id: DCGOV-RUNTIME-TRIAGE-013
 title: ci workflow uploads artifacts from canonical .artifacts path
 purpose: Ensures CI uploads gate and triage artifacts using a recursive .artifacts path.
 type: contract.check

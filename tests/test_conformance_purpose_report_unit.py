@@ -11,10 +11,10 @@ def test_conformance_purpose_report_schema_and_fields(tmp_path):
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
 
-## SRCONF-PURPOSE-REPORT-001
+## DCCONF-PURPOSE-REPORT-001
 
 ```yaml contract-spec
-id: SRCONF-PURPOSE-REPORT-001
+id: DCCONF-PURPOSE-REPORT-001
 title: report row contains purpose metadata
 purpose: Ensures purpose report exposes machine-readable case intent metadata.
 type: text.file
@@ -46,7 +46,7 @@ expect:
     assert len(payload["rows"]) == 1
     row = payload["rows"][0]
     assert set(row.keys()) == {"id", "title", "purpose", "type", "file", "purpose_lint", "warnings"}
-    assert row["id"] == "SRCONF-PURPOSE-REPORT-001"
+    assert row["id"] == "DCCONF-PURPOSE-REPORT-001"
     assert row["title"] == "report row contains purpose metadata"
     assert row["type"] == "text.file"
     assert "machine-readable case intent metadata" in row["purpose"]
@@ -64,9 +64,9 @@ def test_conformance_purpose_report_rows_are_sorted_by_id(tmp_path):
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("b")).write_text(
         """# B
-## SRCONF-PURPOSE-REPORT-200
+## DCCONF-PURPOSE-REPORT-200
 ```yaml contract-spec
-id: SRCONF-PURPOSE-REPORT-200
+id: DCCONF-PURPOSE-REPORT-200
 title: b title
 purpose: Valid purpose text with enough words for sorted report output.
 type: text.file
@@ -78,9 +78,9 @@ expect:
     )
     (cases_dir / case_file_name("a")).write_text(
         """# A
-## SRCONF-PURPOSE-REPORT-100
+## DCCONF-PURPOSE-REPORT-100
 ```yaml contract-spec
-id: SRCONF-PURPOSE-REPORT-100
+id: DCCONF-PURPOSE-REPORT-100
 title: a title
 purpose: Valid purpose text with enough words for sorted report output.
 type: text.file
@@ -92,7 +92,7 @@ expect:
     )
 
     rows = conformance_purpose_report_jsonable(cases_dir, repo_root=repo_root)["rows"]
-    assert [r["id"] for r in rows] == ["SRCONF-PURPOSE-REPORT-100", "SRCONF-PURPOSE-REPORT-200"]
+    assert [r["id"] for r in rows] == ["DCCONF-PURPOSE-REPORT-100", "DCCONF-PURPOSE-REPORT-200"]
 
 
 def test_conformance_purpose_report_uses_runtime_profile_and_override(tmp_path):
@@ -115,9 +115,9 @@ runtime:
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
-## SRCONF-PURPOSE-REPORT-300
+## DCCONF-PURPOSE-REPORT-300
 ```yaml contract-spec
-id: SRCONF-PURPOSE-REPORT-300
+id: DCCONF-PURPOSE-REPORT-300
 title: sample
 purpose: tiny words pass here
 purpose_lint:
@@ -143,9 +143,9 @@ def test_conformance_purpose_report_includes_warnings_even_when_case_lint_disabl
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
-## SRCONF-PURPOSE-REPORT-400
+## DCCONF-PURPOSE-REPORT-400
 ```yaml contract-spec
-id: SRCONF-PURPOSE-REPORT-400
+id: DCCONF-PURPOSE-REPORT-400
 title: same text
 purpose: same text
 purpose_lint:
@@ -177,9 +177,9 @@ def test_conformance_purpose_report_warning_codes_are_grouped(tmp_path):
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
-## SRCONF-PURPOSE-REPORT-500
+## DCCONF-PURPOSE-REPORT-500
 ```yaml contract-spec
-id: SRCONF-PURPOSE-REPORT-500
+id: DCCONF-PURPOSE-REPORT-500
 title: TODO
 purpose: TODO
 type: text.file
@@ -205,9 +205,9 @@ def test_conformance_purpose_report_uses_safe_default_hint_for_unknown_warning(m
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
-## SRCONF-PURPOSE-REPORT-600
+## DCCONF-PURPOSE-REPORT-600
 ```yaml contract-spec
-id: SRCONF-PURPOSE-REPORT-600
+id: DCCONF-PURPOSE-REPORT-600
 title: sample title
 purpose: Purpose text with enough words to avoid quality warnings.
 type: text.file
@@ -250,9 +250,9 @@ runtime: {}
     cases_dir.mkdir(parents=True)
     (cases_dir / case_file_name("sample")).write_text(
         """# Sample
-## SRCONF-PURPOSE-REPORT-700
+## DCCONF-PURPOSE-REPORT-700
 ```yaml contract-spec
-id: SRCONF-PURPOSE-REPORT-700
+id: DCCONF-PURPOSE-REPORT-700
 title: short purpose case
 purpose: tiny purpose
 type: text.file

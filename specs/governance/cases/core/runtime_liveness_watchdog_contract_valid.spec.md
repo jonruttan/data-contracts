@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-LIVENESS-CONTRACT-001
+## DCGOV-LIVENESS-CONTRACT-001
 
 ```yaml contract-spec
-id: SRGOV-LIVENESS-CONTRACT-001
+id: DCGOV-LIVENESS-CONTRACT-001
 title: runtime liveness watchdog contract docs and schema are synchronized
 purpose: Ensures liveness controls and reason tokens are declared in runtime profiling contract
   and schema artifacts.

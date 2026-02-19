@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SPEC-MD-004
+## DCGOV-SPEC-MD-004
 
 ```yaml contract-spec
-id: SRGOV-SPEC-MD-004
+id: DCGOV-SPEC-MD-004
 title: generated data artifacts do not embed executable spec blocks
 purpose: Ensures machine-native yaml and json data artifact surfaces remain non-executable
   and do not contain yaml contract-spec fences.

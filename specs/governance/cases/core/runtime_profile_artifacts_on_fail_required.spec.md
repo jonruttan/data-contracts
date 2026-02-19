@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-FAILFAST-003
+## DCGOV-RUNTIME-FAILFAST-003
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-FAILFAST-003
+id: DCGOV-RUNTIME-FAILFAST-003
 title: gate failures emit profile artifacts when profile-on-fail is enabled
 purpose: Ensures failure paths generate deterministic run-trace and run-trace-summary artifacts.
 type: contract.check

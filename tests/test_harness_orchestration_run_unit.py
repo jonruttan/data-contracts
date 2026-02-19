@@ -46,7 +46,7 @@ def _case(doc_path: Path, *, harness: dict[str, Any]) -> InternalSpecCase:
 
 
 def test_orchestration_harness_validates_required_capability(tmp_path: Path) -> None:
-    tools_dir = tmp_path / "specs/tools/python"
+    tools_dir = tmp_path / "specs/governance/tools/python"
     tools_dir.mkdir(parents=True, exist_ok=True)
     (tools_dir / "tools_v1.yaml").write_text(
         """
@@ -82,7 +82,7 @@ tools:
 
 
 def test_orchestration_harness_rejects_unknown_tool(tmp_path: Path) -> None:
-    tools_dir = tmp_path / "specs/tools/python"
+    tools_dir = tmp_path / "specs/governance/tools/python"
     tools_dir.mkdir(parents=True, exist_ok=True)
     (tools_dir / "tools_v1.yaml").write_text(
         "version: 1\nimplementation: python\ntools: []\n",

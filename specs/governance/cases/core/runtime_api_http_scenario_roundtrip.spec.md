@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-APIHTTP-007
+## DCGOV-RUNTIME-APIHTTP-007
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-APIHTTP-007
+id: DCGOV-RUNTIME-APIHTTP-007
 title: api.http scenario roundtrip support remains present
 purpose: Ensures requests-list roundtrip support, step templating, and steps_json targeting
   remain implemented.

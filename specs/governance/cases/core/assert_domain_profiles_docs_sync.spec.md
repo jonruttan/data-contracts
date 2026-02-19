@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-PROFILE-003
+## DCGOV-ASSERT-PROFILE-003
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-PROFILE-003
+id: DCGOV-ASSERT-PROFILE-003
 title: domain profile docs synchronize with profile schema ids
 purpose: Ensures python/php/http/markdown/makefile profile docs and subject profile schema
   stay synchronized.

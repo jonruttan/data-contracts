@@ -16,3 +16,7 @@ Cross-runner conformance fixtures and report contracts.
 ```sh
 ./runners/public/runner_adapter.sh --impl rust conformance-parity --cases specs/conformance/cases --out .artifacts/conformance-parity.json
 ```
+
+## Related Generated References
+
+- `/docs/book/97_appendix_metrics_reference.md`

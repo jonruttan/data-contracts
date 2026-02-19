@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-SCOPE-001
+## DCGOV-RUNTIME-SCOPE-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-SCOPE-001
+id: DCGOV-RUNTIME-SCOPE-001
 title: runtime support scope remains bounded for v1
 purpose: Prevents uncontrolled cross-runtime expansion by enforcing explicit v1 runtime scope
   tokens in contract docs.

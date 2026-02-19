@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-HOOKS-003
+## DCGOV-RUNTIME-HOOKS-003
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-HOOKS-003
+id: DCGOV-RUNTIME-HOOKS-003
 title: when fail hook must run once on first failure
 purpose: Ensures fail hook guard and fail-handler token behavior are present.
 type: contract.check

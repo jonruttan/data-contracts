@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-SUBJECT-001
+## DCGOV-ASSERT-SUBJECT-001
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-SUBJECT-001
+id: DCGOV-ASSERT-SUBJECT-001
 title: type contracts define subject semantics
 purpose: Ensures harness and type contracts define target subject semantics and avoid per-type
   operator allowlists.

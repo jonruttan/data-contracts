@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-026
+## DCGOV-DOCS-GEN-026
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-026
+id: DCGOV-DOCS-GEN-026
 title: docgen quality score meets minimum threshold
 purpose: Ensures generated runner/harness/stdlib catalogs meet minimum semantic quality score.
 type: contract.check

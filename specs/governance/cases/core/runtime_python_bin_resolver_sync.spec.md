@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-002
+## DCGOV-RUNTIME-CONFIG-002
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-002
+id: DCGOV-RUNTIME-CONFIG-002
 title: python-invoking adapter scripts use shared python-bin resolver helper
 purpose: Keeps shared Python resolver helper contract stable for remaining tooling paths.
 type: contract.check

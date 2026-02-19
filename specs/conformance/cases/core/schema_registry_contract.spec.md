@@ -1,9 +1,9 @@
 # Schema Registry Contract Conformance Cases
 
-## SRCONF-SCHEMA-REG-001
+## DCCONF-SCHEMA-REG-001
 
 ```yaml contract-spec
-id: SRCONF-SCHEMA-REG-001
+id: DCCONF-SCHEMA-REG-001
 title: schema docs include generated registry snapshot markers
 purpose: Ensures generated schema registry snapshot markers and section header are present
   in schema_v1 documentation.

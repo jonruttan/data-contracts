@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-OBJECTIVE-002
+## DCGOV-OBJECTIVE-002
 
 ```yaml contract-spec
-id: SRGOV-OBJECTIVE-002
+id: DCGOV-OBJECTIVE-002
 title: objective scorecard is non-regressing
 purpose: Enforces ratchet non-regression for objective scorecard summary metrics and baseline-note
   integrity.
@@ -11,23 +11,23 @@ type: contract.check
 harness:
   root: .
   objective_scorecard_non_regression:
-    baseline_path: /specs/metrics/objective_scorecard_baseline.json
+    baseline_path: /specs/governance/metrics/objective_scorecard_baseline.json
     summary_fields:
       overall_min_score: non_decrease
       overall_mean_score: non_decrease
       tripwire_hit_count: non_increase
     epsilon: 1.0e-12
     objective_scorecard:
-      manifest_path: /specs/metrics/objective_manifest.yaml
+      manifest_path: /specs/governance/metrics/objective_manifest.yaml
     baseline_notes:
-      path: /specs/metrics/baseline_update_notes.yaml
+      path: /specs/governance/metrics/baseline_update_notes.yaml
       baseline_paths:
-      - /specs/metrics/spec_portability_baseline.json
-      - /specs/metrics/spec_lang_adoption_baseline.json
-      - /specs/metrics/runner_independence_baseline.json
-      - /specs/metrics/docs_operability_baseline.json
-      - /specs/metrics/contract_assertions_baseline.json
-      - /specs/metrics/objective_scorecard_baseline.json
+      - /specs/governance/metrics/spec_portability_baseline.json
+      - /specs/governance/metrics/spec_lang_adoption_baseline.json
+      - /specs/governance/metrics/runner_independence_baseline.json
+      - /specs/governance/metrics/docs_operability_baseline.json
+      - /specs/governance/metrics/contract_assertions_baseline.json
+      - /specs/governance/metrics/objective_scorecard_baseline.json
   check:
     profile: governance.scan
     config:

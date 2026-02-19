@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-OPS-004
+## DCGOV-OPS-004
 
 ```yaml contract-spec
-id: SRGOV-OPS-004
+id: DCGOV-OPS-004
 title: orchestration ops capability bindings are enforced
 purpose: Ensures orchestration tools and case capability bindings remain synchronized.
 type: contract.check

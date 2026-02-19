@@ -1,7 +1,7 @@
 # runtime.chain_exports_list_only_required
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-FORM-001
+id: DCGOV-CHAIN-FORM-001
 title: chain exports use list-only canonical form
 purpose: Ensures harness.chain step exports reject non-canonical mapping form and require
   list-form entries.

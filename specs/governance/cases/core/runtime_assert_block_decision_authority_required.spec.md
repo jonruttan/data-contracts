@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-ASSERT-AUTH-001
+## DCGOV-RUNTIME-ASSERT-AUTH-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-ASSERT-AUTH-001
+id: DCGOV-RUNTIME-ASSERT-AUTH-001
 title: governance verdict authority lives in assert blocks
 purpose: Ensures governance runtime no longer uses evaluate verdict branching and enforces
   assert-driven obligations.

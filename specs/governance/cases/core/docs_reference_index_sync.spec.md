@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-002
+## DCGOV-DOCS-REF-002
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-002
+id: DCGOV-DOCS-REF-002
 title: reference index stays synced with chapter files
 purpose: Ensures the machine-checked reference index entries stay aligned with the actual
   chapter set and order.

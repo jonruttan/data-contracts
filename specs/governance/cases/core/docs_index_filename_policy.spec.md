@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-LAYOUT-002
+## DCGOV-DOCS-LAYOUT-002
 
 ```yaml contract-spec
-id: SRGOV-DOCS-LAYOUT-002
+id: DCGOV-DOCS-LAYOUT-002
 title: docs use index.md as canonical directory index filename
 purpose: Enforces index.md-only docs directory index policy.
 type: contract.check

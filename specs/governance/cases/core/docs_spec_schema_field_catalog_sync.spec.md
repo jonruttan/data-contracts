@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-011
+## DCGOV-DOCS-GEN-011
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-011
+id: DCGOV-DOCS-GEN-011
 title: spec schema field catalog artifacts are synchronized
 purpose: Ensures generated spec schema field catalog JSON and markdown artifacts are up-to-date.
 type: contract.check

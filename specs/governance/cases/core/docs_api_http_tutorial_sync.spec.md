@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-APIHTTP-001
+## DCGOV-DOCS-APIHTTP-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-APIHTTP-001
+id: DCGOV-DOCS-APIHTTP-001
 title: api.http tutorials remain present in howto and troubleshooting docs
 purpose: Ensures contributor docs cover practical REST verbs, CORS preflight, and round-trip
   scenario guidance.

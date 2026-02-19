@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-007
+## DCGOV-CHAIN-007
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-007
+id: DCGOV-CHAIN-007
 title: chain steps declare must can cannot class
 purpose: Ensures harness.chain.steps[*].class is explicit and valid for all chained cases.
 type: contract.check

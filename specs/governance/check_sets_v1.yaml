@@ -143,7 +143,7 @@ profiles:
         kind: file_tokens
         path: /specs/governance/check_prefix_map_v1.yaml
         must_contain:
-          - SRGOV-DOCS-REF-010
+          - DCGOV-DOCS-REF-010
           - docs.readme_rust_first_coherence
       - id: runtime.full_governance_broad_native_slo
         kind: slo_budget

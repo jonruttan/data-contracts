@@ -1,9 +1,9 @@
 # Subject Profiles Conformance Cases
 
-## SRCONF-PROFILE-001
+## DCCONF-PROFILE-001
 
 ```yaml contract-spec
-id: SRCONF-PROFILE-001
+id: DCCONF-PROFILE-001
 title: subject profile schema defines canonical envelope fields
 purpose: Ensures subject profile schema defines JSON-core envelope and deterministic projection
   constraints.
@@ -40,10 +40,10 @@ harness:
       path: /specs/schema/subject_profiles_v1.yaml
 ```
 
-## SRCONF-PROFILE-002
+## DCCONF-PROFILE-002
 
 ```yaml contract-spec
-id: SRCONF-PROFILE-002
+id: DCCONF-PROFILE-002
 title: text.file exposes context_json subject profile envelope
 purpose: Ensures text.file harness provides context_json target with profile metadata and
   JSON value payload.

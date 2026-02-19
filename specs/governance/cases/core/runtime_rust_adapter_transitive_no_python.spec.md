@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-PYDEP-004
+## DCGOV-RUNTIME-PYDEP-004
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-PYDEP-004
+id: DCGOV-RUNTIME-PYDEP-004
 title: rust adapter boundary avoids transitive python delegation tokens
 purpose: Ensures rust adapter boundary files do not delegate to python adapter entrypoints
   or direct python execution tokens.

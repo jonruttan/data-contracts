@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-POLICY-REQ-002
+## DCGOV-POLICY-REQ-002
 
 ```yaml contract-spec
-id: SRGOV-POLICY-REQ-002
+id: DCGOV-POLICY-REQ-002
 title: governance checks avoid check-level policy verdict branching
 purpose: Ensures check functions do not embed per-check policy verdict strings and rely on
   central governance policy evaluation.

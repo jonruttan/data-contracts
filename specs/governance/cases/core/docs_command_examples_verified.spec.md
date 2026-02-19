@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-QUAL-006
+## DCGOV-DOCS-QUAL-006
 
 ```yaml contract-spec
-id: SRGOV-DOCS-QUAL-006
+id: DCGOV-DOCS-QUAL-006
 title: docs command and example blocks are validated
 purpose: Ensures runnable example blocks parse/validate unless explicitly opted out.
 type: contract.check

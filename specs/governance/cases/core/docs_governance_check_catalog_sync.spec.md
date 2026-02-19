@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-009
+## DCGOV-DOCS-GEN-009
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-009
+id: DCGOV-DOCS-GEN-009
 title: governance check catalog artifacts are synchronized
 purpose: Ensures generated governance check catalog JSON and markdown artifacts are up-to-date.
 type: contract.check

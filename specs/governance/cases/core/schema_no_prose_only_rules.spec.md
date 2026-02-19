@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SCHEMA-REG-004
+## DCGOV-SCHEMA-REG-004
 
 ```yaml contract-spec
-id: SRGOV-SCHEMA-REG-004
+id: DCGOV-SCHEMA-REG-004
 title: schema contract avoids prose-only rules
 purpose: Ensures schema contract docs explicitly tie behavior to registry source-of-truth
   wording.

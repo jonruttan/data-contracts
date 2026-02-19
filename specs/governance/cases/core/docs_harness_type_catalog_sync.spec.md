@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-005
+## DCGOV-DOCS-GEN-005
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-005
+id: DCGOV-DOCS-GEN-005
 title: harness type catalog artifacts are synchronized
 purpose: Ensures generated harness type JSON and markdown artifacts are up-to-date.
 type: contract.check

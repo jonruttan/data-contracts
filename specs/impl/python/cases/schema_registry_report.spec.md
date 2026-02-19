@@ -1,9 +1,9 @@
 # Python Schema Registry Report Command Cases
 
-## SRPY-SCHEMA-REG-001
+## DCIMPL-PY-SCHEMA-REG-001
 
 ```yaml contract-spec
-id: SRPY-SCHEMA-REG-001
+id: DCIMPL-PY-SCHEMA-REG-001
 title: schema_registry_report_main writes report file
 type: contract.check
 harness:
@@ -32,10 +32,10 @@ contract:
       - wrote .artifacts/schema-registry-impl-case.json
 ```
 
-## SRPY-SCHEMA-REG-002
+## DCIMPL-PY-SCHEMA-REG-002
 
 ```yaml contract-spec
-id: SRPY-SCHEMA-REG-002
+id: DCIMPL-PY-SCHEMA-REG-002
 title: schema_registry_report_main check mode fails on stale artifact
 type: contract.check
 harness:

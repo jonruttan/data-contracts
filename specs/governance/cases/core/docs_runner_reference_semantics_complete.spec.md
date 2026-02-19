@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-024
+## DCGOV-DOCS-GEN-024
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-024
+id: DCGOV-DOCS-GEN-024
 title: runner reference includes semantic sections
 purpose: Ensures generated runner API reference includes summary/defaults/failure modes/examples
   per command.

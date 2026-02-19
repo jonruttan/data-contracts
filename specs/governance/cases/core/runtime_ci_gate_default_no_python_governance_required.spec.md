@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-015
+## DCGOV-RUNTIME-TRIAGE-015
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-015
+id: DCGOV-RUNTIME-TRIAGE-015
 title: ci gate default broad governance path is rust-native
 purpose: Ensures ci-gate-summary defaults to governance-broad-native and does not route broad
   through Python governance scripts.

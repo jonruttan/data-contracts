@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-FAILFAST-002
+## DCGOV-RUNTIME-FAILFAST-002
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-FAILFAST-002
+id: DCGOV-RUNTIME-FAILFAST-002
 title: gate summary payload includes skipped step contract
 purpose: Ensures gate summary output includes skipped-step and abort metadata fields.
 type: contract.check

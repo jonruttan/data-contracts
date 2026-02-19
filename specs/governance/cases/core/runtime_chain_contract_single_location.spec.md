@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-009
+## DCGOV-CHAIN-009
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-009
+id: DCGOV-CHAIN-009
 title: chain contract uses harness.chain only
 purpose: Ensures chain declarations appear only at harness.chain and not in alternate top-level
   or type-specific locations.

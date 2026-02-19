@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-PURPOSE-002
+## DCGOV-CONF-PURPOSE-002
 
 ```yaml contract-spec
-id: SRGOV-CONF-PURPOSE-002
+id: DCGOV-CONF-PURPOSE-002
 title: conformance purpose quality remains warning free
 purpose: Ensures conformance purpose lint policy and case purpose text stay clean with no
   accumulated warning debt.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-004
+## DCGOV-RUNTIME-CONFIG-004
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-004
+id: DCGOV-RUNTIME-CONFIG-004
 title: rust runner adapter declares required interface subcommands
 purpose: Ensures the Rust runner adapter exposes the required runner interface subcommand
   labels.

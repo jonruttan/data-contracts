@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-CORE-001
+## DCGOV-ASSERT-CORE-001
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-CORE-001
+id: DCGOV-ASSERT-CORE-001
 title: assertion docs define universal evaluate core
 purpose: Ensures schema and contract docs consistently define evaluate as the universal assertion
   core and classify other operators as authoring sugar.

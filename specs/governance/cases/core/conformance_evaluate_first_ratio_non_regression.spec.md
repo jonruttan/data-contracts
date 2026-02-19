@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-SPECLANG-002
+## DCGOV-CONF-SPECLANG-002
 
 ```yaml contract-spec
-id: SRGOV-CONF-SPECLANG-002
+id: DCGOV-CONF-SPECLANG-002
 title: conformance evaluate-first ratio is non-regressing
 purpose: Enforces ratchet-style non-regression for conformance evaluate coverage against the
   checked-in spec-lang adoption baseline.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   conformance_evaluate_first_non_regression:
-    baseline_path: /specs/metrics/spec_lang_adoption_baseline.json
+    baseline_path: /specs/governance/metrics/spec_lang_adoption_baseline.json
     segment_fields:
       conformance:
         mean_logic_self_contained_ratio: non_decrease

@@ -1,9 +1,9 @@
 # Python Script CLI Cases: CI and Parity
 
-## SRPY-SCRIPT-CI-001
+## DCIMPL-PY-SCRIPT-CI-001
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CI-001
+id: DCIMPL-PY-SCRIPT-CI-001
 title: ci_gate_summary command help renders usage
 type: contract.check
 harness:
@@ -29,10 +29,10 @@ contract:
       - --runner-bin
 ```
 
-## SRPY-SCRIPT-CI-002
+## DCIMPL-PY-SCRIPT-CI-002
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CI-002
+id: DCIMPL-PY-SCRIPT-CI-002
 title: ci_gate_summary requires runner-bin
 type: contract.check
 harness:
@@ -57,10 +57,10 @@ contract:
       - --runner-bin
 ```
 
-## SRPY-SCRIPT-CI-003
+## DCIMPL-PY-SCRIPT-CI-003
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CI-003
+id: DCIMPL-PY-SCRIPT-CI-003
 title: compare_conformance_parity command help renders usage
 type: contract.check
 harness:
@@ -86,10 +86,10 @@ contract:
       - --cases
 ```
 
-## SRPY-SCRIPT-CI-004
+## DCIMPL-PY-SCRIPT-CI-004
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CI-004
+id: DCIMPL-PY-SCRIPT-CI-004
 title: compare_conformance_parity rejects invalid timeout arg
 type: contract.check
 harness:
@@ -116,10 +116,10 @@ contract:
       - invalid int value
 ```
 
-## SRPY-SCRIPT-CI-005
+## DCIMPL-PY-SCRIPT-CI-005
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CI-005
+id: DCIMPL-PY-SCRIPT-CI-005
 title: python conformance runner help renders required flags
 type: contract.check
 harness:
@@ -151,10 +151,10 @@ contract:
       - --case-file-pattern
 ```
 
-## SRPY-SCRIPT-CI-006
+## DCIMPL-PY-SCRIPT-CI-006
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CI-006
+id: DCIMPL-PY-SCRIPT-CI-006
 title: python conformance runner rejects empty case pattern
 type: contract.check
 harness:
@@ -185,10 +185,10 @@ contract:
       - case-file-pattern
 ```
 
-## SRPY-SCRIPT-CI-007
+## DCIMPL-PY-SCRIPT-CI-007
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CI-007
+id: DCIMPL-PY-SCRIPT-CI-007
 title: php conformance runner usage includes required flags
 type: contract.check
 harness:
@@ -217,10 +217,10 @@ contract:
       - --case-file-pattern <glob>
 ```
 
-## SRPY-SCRIPT-CI-008
+## DCIMPL-PY-SCRIPT-CI-008
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CI-008
+id: DCIMPL-PY-SCRIPT-CI-008
 title: compare_conformance_parity rejects empty case formats
 type: contract.check
 harness:
@@ -247,10 +247,10 @@ contract:
       - --case-formats requires at least one format
 ```
 
-## SRPY-SCRIPT-CI-009
+## DCIMPL-PY-SCRIPT-CI-009
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CI-009
+id: DCIMPL-PY-SCRIPT-CI-009
 title: compare_conformance_parity reports missing php executable
 type: contract.check
 harness:

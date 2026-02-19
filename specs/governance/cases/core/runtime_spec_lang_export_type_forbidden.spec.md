@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-SPECLANG-EXPORT-001
+## DCGOV-RUNTIME-SPECLANG-EXPORT-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-SPECLANG-EXPORT-001
+id: DCGOV-RUNTIME-SPECLANG-EXPORT-001
 title: non-canonical spec_lang.export type is forbidden after hard cut
 purpose: Ensures executable spec surfaces reject type spec_lang.export and require spec.export
   producer cases.

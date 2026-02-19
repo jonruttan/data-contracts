@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-011
+## DCGOV-DOCS-REF-011
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-011
+id: DCGOV-DOCS-REF-011
 title: generated docs command metadata avoids python execution
 purpose: Ensures generated docs `doc-meta.commands` use canonical rust adapter commands and do not reintroduce python execution tokens.
 type: contract.check

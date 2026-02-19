@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-002
+## DCGOV-DOCS-GEN-002
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-002
+id: DCGOV-DOCS-GEN-002
 title: docs generator outputs are synchronized
 purpose: Ensures all registry-backed docs generator outputs are up-to-date in check mode.
 type: contract.check

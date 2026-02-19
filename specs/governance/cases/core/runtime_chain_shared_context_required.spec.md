@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-011
+## DCGOV-CHAIN-011
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-011
+id: DCGOV-CHAIN-011
 title: chain shared context is declared in dispatcher
 purpose: Ensures chain state, trace, imports, and chain payload surfaces are carried in shared
   runtime context.

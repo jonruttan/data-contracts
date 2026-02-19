@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-LAYOUT-004
+## DCGOV-DOCS-LAYOUT-004
 
 ```yaml contract-spec
-id: SRGOV-DOCS-LAYOUT-004
+id: DCGOV-DOCS-LAYOUT-004
 title: review artifacts live under docs/history/reviews
 purpose: Enforces canonical historical review namespace and forbids non-canonical docs/history/reviews.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-LIB-EXPR-001
+## DCGOV-CONF-LIB-EXPR-001
 
 ```yaml contract-spec
-id: SRGOV-CONF-LIB-EXPR-001
+id: DCGOV-CONF-LIB-EXPR-001
 title: spec_lang conformance fixture uses shared helper library calls
 purpose: Ensures spec_lang conformance fixtures reuse shared conformance helper library functions
   for repeated expression patterns.
@@ -16,9 +16,9 @@ harness:
     required_call_prefix: conf.
     min_call_count: 4
     required_case_ids:
-    - SRCONF-EXPR-001
-    - SRCONF-EXPR-002
-    - SRCONF-EXPR-008
+    - DCCONF-EXPR-001
+    - DCCONF-EXPR-002
+    - DCCONF-EXPR-008
   check:
     profile: governance.scan
     config:

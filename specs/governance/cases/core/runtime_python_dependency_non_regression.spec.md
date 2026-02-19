@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-PYDEP-002
+## DCGOV-RUNTIME-PYDEP-002
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-PYDEP-002
+id: DCGOV-RUNTIME-PYDEP-002
 title: python dependency metric is non-regressing
 purpose: Enforces monotonic non-regression for python dependency metrics against checked-in
   baseline.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   python_dependency_non_regression:
-    baseline_path: /specs/metrics/python_dependency_baseline.json
+    baseline_path: /specs/governance/metrics/python_dependency_baseline.json
     summary_fields:
       non_python_lane_python_exec_count: non_increase
       transitive_adapter_python_exec_count: non_increase

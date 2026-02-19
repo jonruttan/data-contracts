@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-HOOKS-004
+## DCGOV-RUNTIME-HOOKS-004
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-HOOKS-004
+id: DCGOV-RUNTIME-HOOKS-004
 title: when complete hook must run after successful contract
 purpose: Ensures complete hook dispatch is explicit and ordered after clause pass handling.
 type: contract.check

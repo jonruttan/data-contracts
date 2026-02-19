@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ARCH-COMPONENTS-003
+## DCGOV-ARCH-COMPONENTS-003
 
 ```yaml contract-spec
-id: SRGOV-ARCH-COMPONENTS-003
+id: DCGOV-ARCH-COMPONENTS-003
 title: harness type overlays are complete
 purpose: Ensures behavior-heavy harness types publish non-empty schema overlays for machine
   validation and drift prevention.

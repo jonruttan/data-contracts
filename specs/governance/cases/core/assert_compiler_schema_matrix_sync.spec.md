@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-SYNC-001
+## DCGOV-ASSERT-SYNC-001
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-SYNC-001
+id: DCGOV-ASSERT-SYNC-001
 title: compiler behavior stays aligned with universal assertion contract
 purpose: Ensures compiler operator handling, schema wording, and assertion contract wording
   stay synchronized for universal evaluate core semantics.

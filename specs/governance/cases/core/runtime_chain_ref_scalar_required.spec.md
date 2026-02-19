@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-006
+## DCGOV-CHAIN-006
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-006
+id: DCGOV-CHAIN-006
 title: chain refs use canonical scalar format
 purpose: Ensures harness.chain step refs are scalar [path][#case_id] values and reject non-canonical
   mapping form.

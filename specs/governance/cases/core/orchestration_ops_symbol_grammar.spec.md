@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-OPS-001
+## DCGOV-OPS-001
 
 ```yaml contract-spec
-id: SRGOV-OPS-001
+id: DCGOV-OPS-001
 title: orchestration ops symbols follow deep-dot grammar
 purpose: Ensures effect symbols use canonical deep-dot ops names.
 type: contract.check

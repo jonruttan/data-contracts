@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-NORM-001
+## DCGOV-NORM-001
 
 ```yaml contract-spec
-id: SRGOV-NORM-001
+id: DCGOV-NORM-001
 title: normalization profile defines required source-of-truth fields
 purpose: Ensures normalization profile exists and includes all required top-level keys and
   path scopes.

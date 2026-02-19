@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-REF-SYMBOLS-003
+## DCGOV-REF-SYMBOLS-003
 
 ```yaml contract-spec
-id: SRGOV-REF-SYMBOLS-003
+id: DCGOV-REF-SYMBOLS-003
 title: library exports are referenced
 purpose: Ensures exported library symbols are referenced by case policies/expressions or harness
   exports.

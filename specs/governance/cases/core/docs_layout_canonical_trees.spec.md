@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-LAYOUT-001
+## DCGOV-DOCS-LAYOUT-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-LAYOUT-001
+id: DCGOV-DOCS-LAYOUT-001
 title: docs layout canonical trees exist
 purpose: Enforces canonical docs root namespaces.
 type: contract.check

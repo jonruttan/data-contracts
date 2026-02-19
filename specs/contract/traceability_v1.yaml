@@ -502,7 +502,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/spec_portability.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/spec_portability_baseline.json
+  - specs/governance/metrics/spec_portability_baseline.json
   notes: Governance enforces monotonic non-regression for configured spec-lang self-containment
     metrics.
 - rule_id: SPEC_LANG_ADOPTION_METRIC_REPORTED
@@ -537,7 +537,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   notes: Governance enforces non-regression on configured spec-lang adoption metrics.
 - rule_id: GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION
   policy_ref: specs/contract/policy_v1.yaml#GOVERNANCE_SYMBOL_RESOLUTION_RATIO_NON_REGRESSION
@@ -554,7 +554,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   notes: Spec-lang adoption ratchet enforces governance policy symbol resolution ratio
     non-regression.
 - rule_id: LIBRARY_PUBLIC_SURFACE_RATIO_NON_REGRESSION
@@ -571,7 +571,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   notes: Spec-lang adoption ratchet enforces library public surface ratio non-regression.
 - rule_id: CONFORMANCE_EVALUATE_FIRST_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CONFORMANCE_EVALUATE_FIRST_REQUIRED
@@ -588,7 +588,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   notes: Conformance evaluate-only coverage is pinned by baseline-backed non-regression
     checks.
 - rule_id: IMPL_EVALUATE_FIRST_REQUIRED
@@ -619,7 +619,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   notes: Impl evaluate ratio is ratcheted via baseline-backed non-regression checks.
 - rule_id: IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#IMPL_LIBRARY_BACKED_ASSERTIONS_NON_REGRESSION_REQUIRED
@@ -635,7 +635,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   notes: Impl library-backed assertion ratio is ratcheted to preserve reusable helper
     adoption.
 - rule_id: CONFORMANCE_SPEC_LANG_FIXTURE_LIBRARY_USAGE_REQUIRED
@@ -666,7 +666,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/spec_lang_adoption_baseline.json
+  - specs/governance/metrics/spec_lang_adoption_baseline.json
   notes: Governance ratchets shared library usage for policy expressions and fails
     regressions.
 - rule_id: RUNNER_INDEPENDENCE_METRIC_REPORTED
@@ -699,7 +699,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/runner_independence_baseline.json
+  - specs/governance/metrics/runner_independence_baseline.json
   notes: Governance enforces non-regression on configured runner-independence metrics.
 - rule_id: RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_PYTHON_DEPENDENCY_EVIDENCE_REPORTED
@@ -730,7 +730,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/python_dependency_baseline.json
+  - specs/governance/metrics/python_dependency_baseline.json
   notes: Python-dependency metrics are ratcheted with checked-in baseline values.
 - rule_id: RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
   policy_ref: specs/contract/policy_v1.yaml#RUNTIME_NON_PYTHON_LANES_FORBID_PYTHON_EXEC
@@ -822,7 +822,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/docs_operability_baseline.json
+  - specs/governance/metrics/docs_operability_baseline.json
   notes: Governance enforces non-regression on configured docs-operability metrics.
 - rule_id: CONTRACT_ASSERTIONS_METRIC_REPORTED
   policy_ref: specs/contract/policy_v1.yaml#CONTRACT_ASSERTIONS_METRIC_REPORTED
@@ -856,7 +856,7 @@ links:
   implementation_refs:
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
-  - specs/metrics/contract_assertions_baseline.json
+  - specs/governance/metrics/contract_assertions_baseline.json
   notes: Governance enforces non-regression on configured contract-assertions metrics.
 - rule_id: SPEC_PORTABILITY_THRESHOLD_ENFORCED
   policy_ref: specs/contract/policy_v1.yaml#SPEC_PORTABILITY_THRESHOLD_ENFORCED
@@ -1646,8 +1646,8 @@ links:
   unit_test_refs:
   - tests/test_harness_orchestration_run_unit.py
   implementation_refs:
-  - specs/tools/python/tools_v1.yaml
-  - specs/tools/rust/tools_v1.yaml
+  - specs/governance/tools/python/tools_v1.yaml
+  - specs/governance/tools/rust/tools_v1.yaml
   - runners/python/spec_runner/governance_runtime.py
   - specs/governance/cases/core/orchestration_ops_registry_sync.spec.md
   notes: Orchestration tools registry must declare effect symbols, capabilities, and
@@ -1813,7 +1813,7 @@ links:
   - tests/test_objective_scorecard_unit.py
   - specs/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - specs/metrics/objective_manifest.yaml
+  - specs/governance/metrics/objective_manifest.yaml
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
   - specs/governance/cases/core/objective_scorecard_metric.spec.md
@@ -1847,7 +1847,7 @@ links:
   - tests/test_objective_scorecard_unit.py
   - specs/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - specs/metrics/objective_scorecard_baseline.json
+  - specs/governance/metrics/objective_scorecard_baseline.json
   - runners/python/spec_runner/governance_runtime.py
   - specs/governance/cases/core/objective_scorecard_non_regression.spec.md
   notes: Objective scorecard summary values are ratchet-gated by baseline.
@@ -1861,7 +1861,7 @@ links:
   unit_test_refs:
   - specs/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - specs/metrics/objective_manifest.yaml
+  - specs/governance/metrics/objective_manifest.yaml
   - runners/python/spec_runner/governance_runtime.py
   - specs/governance/cases/core/objective_tripwires_clean.spec.md
   notes: Tripwire check IDs in objective manifest must map to passing governance checks.
@@ -1876,7 +1876,7 @@ links:
   - tests/test_objective_scorecard_unit.py
   - specs/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
-  - specs/metrics/baseline_update_notes.yaml
+  - specs/governance/metrics/baseline_update_notes.yaml
   - runners/python/spec_runner/quality_metrics.py
   - runners/python/spec_runner/governance_runtime.py
   - specs/governance/cases/core/objective_scorecard_non_regression.spec.md

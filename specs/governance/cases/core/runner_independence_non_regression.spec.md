@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-INDEP-002
+## DCGOV-RUNTIME-INDEP-002
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-INDEP-002
+id: DCGOV-RUNTIME-INDEP-002
 title: runner independence metric is non-regressing
 purpose: Enforces monotonic non-regression for runner independence metrics against checked-in
   baseline.
@@ -11,7 +11,7 @@ type: contract.check
 harness:
   root: .
   runner_independence_non_regression:
-    baseline_path: /specs/metrics/runner_independence_baseline.json
+    baseline_path: /specs/governance/metrics/runner_independence_baseline.json
     summary_fields:
       overall_runner_independence_ratio: non_decrease
       direct_runtime_invocation_count: non_increase

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-APIHTTP-008
+## DCGOV-RUNTIME-APIHTTP-008
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-APIHTTP-008
+id: DCGOV-RUNTIME-APIHTTP-008
 title: api.http python/php parity contract surfaces remain synchronized
 purpose: Ensures python/php api.http implementations and contracts expose shared v1 tokens.
 type: contract.check

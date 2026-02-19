@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-018
+## DCGOV-DOCS-REF-018
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-018
+id: DCGOV-DOCS-REF-018
 title: docs book chapter order is canonical
 purpose: Enforces the hard-cut Learn -> Do -> Debug chapter order and appendix namespace ordering
   in the reference manifest.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-006
+## DCGOV-RUNTIME-CONFIG-006
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-006
+id: DCGOV-RUNTIME-CONFIG-006
 title: required rust lane remains blocking
 purpose: Ensures the required CI gate lane is rust-first and not configured as non-blocking.
 type: contract.check

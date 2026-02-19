@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-LIB-DOMAIN-001
+## DCGOV-LIB-DOMAIN-001
 
 ```yaml contract-spec
-id: SRGOV-LIB-DOMAIN-001
+id: DCGOV-LIB-DOMAIN-001
 title: library paths obey domain ownership
 purpose: Ensures conformance cases use conformance libraries and governance cases use policy/path
   libraries.

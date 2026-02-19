@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-014
+## DCGOV-RUNTIME-TRIAGE-014
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-014
+id: DCGOV-RUNTIME-TRIAGE-014
 title: ci workflow defines rust critical gate as first-class lane
 purpose: Ensures CI has a dedicated rust critical gate job and diagnostic ci-gate depends
   on it.

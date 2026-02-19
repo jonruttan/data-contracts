@@ -151,7 +151,7 @@ case "${impl}" in
     exec "${ROOT_DIR}/runners/rust/runner_adapter.sh" "$@"
     ;;
   python)
-    echo "ERROR: python runner impl is no longer supported on the runtime path (SRRUN-IMPL-001)." >&2
+    echo "ERROR: python runner impl is no longer supported on the runtime path (DCRUN-IMPL-001)." >&2
     echo "Use rust impl instead: ./runners/public/runner_adapter.sh --impl rust ${subcommand}" >&2
     exit 2
     ;;

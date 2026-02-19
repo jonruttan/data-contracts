@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-004
+## DCGOV-DOCS-GEN-004
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-004
+id: DCGOV-DOCS-GEN-004
 title: runner api catalog artifacts are synchronized
 purpose: Ensures generated runner API JSON and markdown artifacts are up-to-date.
 type: contract.check

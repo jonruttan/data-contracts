@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-PROFILE-002
+## DCGOV-ASSERT-PROFILE-002
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-PROFILE-002
+id: DCGOV-ASSERT-PROFILE-002
 title: evaluator and schema enforce json-core subjects
 purpose: Ensures subject profile schema and evaluator enforce JSON-core subject values.
 type: contract.check

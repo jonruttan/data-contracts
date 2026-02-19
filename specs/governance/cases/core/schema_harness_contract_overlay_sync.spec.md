@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ARCH-COMPONENTS-004
+## DCGOV-ARCH-COMPONENTS-004
 
 ```yaml contract-spec
-id: SRGOV-ARCH-COMPONENTS-004
+id: DCGOV-ARCH-COMPONENTS-004
 title: harness contract and overlays remain synchronized
 purpose: Verifies contract/current docs and harness type overlays describe the same orchestration.run
   and docs.generate architecture.

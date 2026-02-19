@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-APIHTTP-003
+## DCGOV-RUNTIME-APIHTTP-003
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-APIHTTP-003
+id: DCGOV-RUNTIME-APIHTTP-003
 title: api.http network oauth/request flows require explicit live mode
 purpose: Ensures network token/request URLs are only used when harness.api_http.mode is explicitly
   live.

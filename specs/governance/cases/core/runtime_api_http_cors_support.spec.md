@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-APIHTTP-006
+## DCGOV-RUNTIME-APIHTTP-006
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-APIHTTP-006
+id: DCGOV-RUNTIME-APIHTTP-006
 title: api.http CORS support surfaces remain synchronized
 purpose: Ensures CORS preflight and normalized cors_json projection are documented and implemented.
 type: contract.check

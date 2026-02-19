@@ -153,7 +153,7 @@ lane_rust_core() {
     echo "[local-ci-parity] skip style-check (no matching changes)"
   fi
 
-  if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "specs/schema/" "specs/metrics/" "runners/python/spec_runner/docs_" "runners/python/spec_runner/docs_generators.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
+  if paths_match_prefixes "docs/" "scripts/docs_" "scripts/generate_" "specs/schema/" "specs/governance/metrics/" "runners/python/spec_runner/docs_" "runners/python/spec_runner/docs_generators.py" "scripts/local_ci_parity.sh" "scripts/ci_gate.sh"; then
     if paths_all_in_list "specs/governance/check_sets_v1.yaml"; then
       echo "[local-ci-parity] skip docs-generate-check (check_sets-only change)"
     elif is_fast_path_script_only_change; then

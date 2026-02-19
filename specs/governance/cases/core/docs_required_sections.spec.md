@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-003
+## DCGOV-DOCS-REF-003
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-003
+id: DCGOV-DOCS-REF-003
 title: key reference chapters include required sections
 purpose: Keeps the core reference pages structurally complete by requiring stable section
   tokens for author and implementer workflows.

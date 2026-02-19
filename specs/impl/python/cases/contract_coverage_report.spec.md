@@ -1,9 +1,9 @@
 # Python Contract Coverage Report Command Cases
 
-## SRPY-CONTRACT-REP-001
+## DCIMPL-PY-CONTRACT-REP-001
 
 ```yaml contract-spec
-id: SRPY-CONTRACT-REP-001
+id: DCIMPL-PY-CONTRACT-REP-001
 title: contract_coverage_report_main emits json payload to stdout
 type: contract.check
 harness:
@@ -34,10 +34,10 @@ contract:
       - '"rules"'
 ```
 
-## SRPY-CONTRACT-REP-002
+## DCIMPL-PY-CONTRACT-REP-002
 
 ```yaml contract-spec
-id: SRPY-CONTRACT-REP-002
+id: DCIMPL-PY-CONTRACT-REP-002
 title: contract_coverage_report_main writes output file with --out
 type: contract.check
 harness:

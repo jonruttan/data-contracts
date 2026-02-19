@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-LIBSYM-001
+## DCGOV-DOCS-LIBSYM-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-LIBSYM-001
+id: DCGOV-DOCS-LIBSYM-001
 title: library symbol docs metadata is complete
 purpose: Ensures every contract.export symbol declares required documentation metadata.
 type: contract.check

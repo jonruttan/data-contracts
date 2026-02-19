@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-IMPORT-001
+## DCGOV-RUNTIME-IMPORT-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-IMPORT-001
+id: DCGOV-RUNTIME-IMPORT-001
 title: runtime python code uses SETTINGS object instead of settings constants
 purpose: Enforces settings access policy by rejecting DEFAULT and ENV constant imports outside
   settings module.

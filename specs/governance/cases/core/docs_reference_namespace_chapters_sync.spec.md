@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-025
+## DCGOV-DOCS-GEN-025
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-025
+id: DCGOV-DOCS-GEN-025
 title: spec lang namespace chapters are present and manifest-synced
 purpose: Ensures generated namespace chapter files exist and are listed in the book manifest.
 type: contract.check

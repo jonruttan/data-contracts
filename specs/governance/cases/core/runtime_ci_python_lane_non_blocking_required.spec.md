@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONFIG-005
+## DCGOV-RUNTIME-CONFIG-005
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONFIG-005
+id: DCGOV-RUNTIME-CONFIG-005
 title: python compatibility lane remains non-blocking
 purpose: Ensures Python compatibility lane exists in CI and is configured as non-blocking.
 type: contract.check

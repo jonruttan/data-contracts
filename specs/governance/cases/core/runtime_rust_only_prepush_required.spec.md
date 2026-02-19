@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-PREPUSH-006
+## DCGOV-RUNTIME-PREPUSH-006
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-PREPUSH-006
+id: DCGOV-RUNTIME-PREPUSH-006
 title: prepush path is rust-only
 purpose: Ensures prepush entrypoints and hook routing remain rust-only.
 type: contract.check

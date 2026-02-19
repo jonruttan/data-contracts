@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-PREPUSH-003
+## DCGOV-RUNTIME-PREPUSH-003
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-PREPUSH-003
+id: DCGOV-RUNTIME-PREPUSH-003
 title: managed pre-push hook enforces local parity gate
 purpose: Ensures repository-managed pre-push hook exists and is installable via canonical
   script.

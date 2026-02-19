@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-016
+## DCGOV-RUNTIME-TRIAGE-016
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-016
+id: DCGOV-RUNTIME-TRIAGE-016
 title: default ci gate excludes report-generation commands
 purpose: Ensures ci-gate-summary default step list does not include report-generation command
   invocations.

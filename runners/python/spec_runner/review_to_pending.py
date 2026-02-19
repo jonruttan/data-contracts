@@ -222,7 +222,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--out",
         default="",
-        help="Output pending markdown path (default: specs/pending/<snapshot-stem>-pending.md)",
+        help="Output pending markdown path (default: specs/governance/pending/<snapshot-stem>-pending.md)",
     )
     ap.add_argument(
         "--implicit-limit",

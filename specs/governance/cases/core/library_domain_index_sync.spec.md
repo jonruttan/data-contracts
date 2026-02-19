@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-LIB-INDEX-001
+## DCGOV-LIB-INDEX-001
 
 ```yaml contract-spec
-id: SRGOV-LIB-INDEX-001
+id: DCGOV-LIB-INDEX-001
 title: library domain indexes are synchronized
 purpose: Ensures each library domain index lists all library files and exported symbols without
   stale entries.

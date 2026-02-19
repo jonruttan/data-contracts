@@ -9,7 +9,7 @@ def test_validate_sample_php_bootstrap_report_shape(tmp_path):
         "version": 1,
         "results": [
             {
-                "id": "SRCONF-PHP-BOOT-001",
+                "id": "DCCONF-PHP-BOOT-001",
                 "status": "fail",
                 "category": "runtime",
                 "message": "PHP conformance runner bootstrap placeholder",
@@ -28,7 +28,7 @@ def test_validate_report_accepts_skip_status():
         "version": 1,
         "results": [
             {
-                "id": "SRCONF-SKIP-001",
+                "id": "DCCONF-SKIP-001",
                 "status": "skip",
                 "category": None,
                 "message": None,

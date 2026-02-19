@@ -1,7 +1,7 @@
 # runtime.chain_library_symbol_exports_valid
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-FROM-003
+id: DCGOV-CHAIN-FROM-003
 title: chain assert function imports are valid
 purpose: Ensures from=assert.function step imports include valid symbol path and contract
   shape.

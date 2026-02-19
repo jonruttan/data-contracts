@@ -4,7 +4,7 @@ Source of truth: spec.root.index
 
 Canonical specification root for `spec_runner`.
 
-## Start Here
+## Canonical Inputs
 
 - Active model snapshot: `/specs/current.md`
 - Schema contracts: `/specs/schema/index.md`
@@ -12,6 +12,10 @@ Canonical specification root for `spec_runner`.
 - Governance checks: `/specs/governance/index.md`
 - Reusable libraries: `/specs/libraries/index.md`
 - Implementation suites: `/specs/impl/index.md`
+
+## Subdomains
+
+- Governance support domains: `/specs/governance/metrics/`, `/specs/governance/tools/`, `/specs/governance/pending/`
 
 ## Ownership Model
 

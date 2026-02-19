@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-INDEX-001
+## DCGOV-CONF-INDEX-001
 
 ```yaml contract-spec
-id: SRGOV-CONF-INDEX-001
+id: DCGOV-CONF-INDEX-001
 title: conformance index stays in sync with fixture ids
 purpose: Ensures conformance case index includes all fixture ids and no stale ids.
 type: contract.check

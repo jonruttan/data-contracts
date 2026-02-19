@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SCHEMA-REG-003
+## DCGOV-SCHEMA-REG-003
 
 ```yaml contract-spec
-id: SRGOV-SCHEMA-REG-003
+id: DCGOV-SCHEMA-REG-003
 title: schema registry compiled artifact is synchronized
 purpose: Ensures checked-in schema registry compiled artifact matches current registry source
   files.

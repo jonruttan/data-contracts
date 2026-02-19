@@ -1,7 +1,7 @@
 # library.single_public_symbol_per_case_required
 
 ```yaml contract-spec
-id: SRGOV-LIB-SINGLE-001
+id: DCGOV-LIB-SINGLE-001
 title: library cases use single public symbol granularity
 purpose: Ensures each spec_lang.export case defines exactly one symbol under defines.public.
 type: contract.check

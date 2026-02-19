@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-LAYOUT-005
+## DCGOV-DOCS-LAYOUT-005
 
 ```yaml contract-spec
-id: SRGOV-DOCS-LAYOUT-005
+id: DCGOV-DOCS-LAYOUT-005
 title: docs tree excludes OS/editor artifact files
 purpose: Prevents tracked filesystem artifacts (for example .DS_Store) in docs surfaces.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-LIBSYM-003
+## DCGOV-DOCS-LIBSYM-003
 
 ```yaml contract-spec
-id: SRGOV-DOCS-LIBSYM-003
+id: DCGOV-DOCS-LIBSYM-003
 title: library symbol docs include examples
 purpose: Ensures each exported symbol has at least one structured documentation example.
 type: contract.check

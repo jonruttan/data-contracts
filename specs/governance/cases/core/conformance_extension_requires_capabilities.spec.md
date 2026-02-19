@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-PORT-003
+## DCGOV-CONF-PORT-003
 
 ```yaml contract-spec
-id: SRGOV-CONF-PORT-003
+id: DCGOV-CONF-PORT-003
 title: extension type conformance cases declare requires.capabilities
 purpose: Ensures non-core type fixtures explicitly declare required capabilities for portable
   parity.

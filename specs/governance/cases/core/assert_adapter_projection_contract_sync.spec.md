@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-PROFILE-005
+## DCGOV-ASSERT-PROFILE-005
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-PROFILE-005
+id: DCGOV-ASSERT-PROFILE-005
 title: harness adapters expose context profile projections
 type: contract.check
 purpose: Ensures core harness adapters expose context_json subject profile targets with profile

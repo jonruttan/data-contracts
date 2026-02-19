@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-003
+## DCGOV-CHAIN-003
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-003
+id: DCGOV-CHAIN-003
 title: chain exports remain target-derived only
 purpose: Ensures harness.chain step exports declare only explicit target-derived extraction
   keys.

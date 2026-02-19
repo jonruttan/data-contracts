@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-004
+## DCGOV-RUNTIME-TRIAGE-004
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-004
+id: DCGOV-RUNTIME-TRIAGE-004
 title: triage artifacts are emitted by triage and gate flows
 purpose: Ensures triage artifacts are produced and referenced by governance-triage and ci-gate-summary.
 type: contract.check

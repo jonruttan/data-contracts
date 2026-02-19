@@ -11,3 +11,8 @@ Canonical reusable spec-lang libraries.
 - `/specs/libraries/policy/index.md`
 - `/specs/libraries/impl/index.md`
 - `/specs/libraries/path/index.md`
+
+## Related Generated References
+
+- `/docs/book/93j_library_symbol_reference.md`
+- `/docs/book/93k_library_symbol_index.md`

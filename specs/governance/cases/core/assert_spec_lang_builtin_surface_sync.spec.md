@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-ASSERT-SYNC-005
+## DCGOV-ASSERT-SYNC-005
 
 ```yaml contract-spec
-id: SRGOV-ASSERT-SYNC-005
+id: DCGOV-ASSERT-SYNC-005
 title: spec-lang builtin surface remains synced across contract and runners
 purpose: Ensures builtin operators documented in the spec-lang contract are implemented in
   both Python and PHP runner evaluators.

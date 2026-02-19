@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-POLICY-REQ-002
+## DCGOV-POLICY-REQ-002
 
 ```yaml contract-spec
-id: SRGOV-POLICY-REQ-002
+id: DCGOV-POLICY-REQ-002
 title: governance checks require structured assertion targets
 purpose: Ensures governance cases validate deterministic structured result targets instead
   of relying on PASS text markers as primary contract truth.

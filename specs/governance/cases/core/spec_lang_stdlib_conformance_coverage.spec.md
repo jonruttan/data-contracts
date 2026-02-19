@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-STDLIB-004
+## DCGOV-STDLIB-004
 
 ```yaml contract-spec
-id: SRGOV-STDLIB-004
+id: DCGOV-STDLIB-004
 title: stdlib conformance coverage files are present
 purpose: Ensures canonical stdlib conformance fixtures are present and discoverable.
 type: contract.check

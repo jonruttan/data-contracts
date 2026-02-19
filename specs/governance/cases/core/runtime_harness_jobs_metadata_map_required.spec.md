@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-JOB-DISPATCH-002
+## DCGOV-RUNTIME-JOB-DISPATCH-002
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-JOB-DISPATCH-002
+id: DCGOV-RUNTIME-JOB-DISPATCH-002
 title: contract.job harness uses jobs metadata map
 purpose: Ensures contract.job cases declare helper metadata under harness.jobs entries.
 type: contract.check

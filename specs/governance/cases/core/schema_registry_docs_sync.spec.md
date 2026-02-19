@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-SCHEMA-REG-002
+## DCGOV-SCHEMA-REG-002
 
 ```yaml contract-spec
-id: SRGOV-SCHEMA-REG-002
+id: DCGOV-SCHEMA-REG-002
 title: schema registry docs snapshot is synchronized
 purpose: Ensures schema_v1 markdown contains synchronized generated registry snapshot markers
   and tokens.

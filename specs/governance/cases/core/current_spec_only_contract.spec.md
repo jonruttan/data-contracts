@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOC-CURRENT-001
+## DCGOV-DOC-CURRENT-001
 
 ```yaml contract-spec
-id: SRGOV-DOC-CURRENT-001
+id: DCGOV-DOC-CURRENT-001
 title: current-spec-only contract forbids prior-schema references and shims
 purpose: Ensures pre-v1 docs and parser paths stay focused on current schema only, without
   prior-spec wording or compatibility rewrites.

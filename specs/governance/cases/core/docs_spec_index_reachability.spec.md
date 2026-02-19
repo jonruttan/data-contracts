@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-CANON-001
+## DCGOV-DOCS-CANON-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-CANON-001
+id: DCGOV-DOCS-CANON-001
 title: specs index links all canonical spec entrypoints
 purpose: Ensures /specs/index.md links every canonical spec subtree and current snapshot.
 type: contract.check

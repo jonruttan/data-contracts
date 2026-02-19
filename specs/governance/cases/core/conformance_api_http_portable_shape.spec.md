@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-API-001
+## DCGOV-CONF-API-001
 
 ```yaml contract-spec
-id: SRGOV-CONF-API-001
+id: DCGOV-CONF-API-001
 title: api.http portable conformance cases use canonical shape
 purpose: Ensures api.http portable fixtures keep setup under harness and use only canonical
   behavior assertion targets.

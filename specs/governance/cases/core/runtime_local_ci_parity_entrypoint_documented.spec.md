@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-PREPUSH-005
+## DCGOV-RUNTIME-PREPUSH-005
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-PREPUSH-005
+id: DCGOV-RUNTIME-PREPUSH-005
 title: local ci parity entrypoint is documented for contributors
 purpose: Ensures contributor docs cover parity-default prepush, fast opt-out, and hook installation.
 type: contract.check

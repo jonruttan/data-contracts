@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-MD-001
+## DCGOV-DOCS-MD-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-MD-001
+id: DCGOV-DOCS-MD-001
 title: markdown checks use structured markdown helper library
 purpose: Prevent brittle plain string-contains markdown assertions in governed docs cases.
 type: contract.check

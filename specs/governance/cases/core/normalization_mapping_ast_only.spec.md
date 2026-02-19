@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-NORM-002
+## DCGOV-NORM-002
 
 ```yaml contract-spec
-id: SRGOV-NORM-002
+id: DCGOV-NORM-002
 title: normalization enforces mapping-ast-only expression authoring
 purpose: Ensures expression-bearing YAML fields remain mapping-AST only and normalized through
   the unified normalize check.

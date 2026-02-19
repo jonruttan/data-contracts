@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CONF-PURPOSE-001
+## DCGOV-CONF-PURPOSE-001
 
 ```yaml contract-spec
-id: SRGOV-CONF-PURPOSE-001
+id: DCGOV-CONF-PURPOSE-001
 title: purpose warning code doc stays in sync with implementation codes
 purpose: Ensures docs for purpose warning codes include all implementation codes and no stale
   entries.

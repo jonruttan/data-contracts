@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-APIHTTP-004
+## DCGOV-RUNTIME-APIHTTP-004
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-APIHTTP-004
+id: DCGOV-RUNTIME-APIHTTP-004
 title: api.http oauth contract docs remain synchronized
 purpose: Ensures schema and contract docs contain the required api.http OAuth profile tokens.
 type: contract.check

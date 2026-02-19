@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-QUAL-008
+## DCGOV-DOCS-QUAL-008
 
 ```yaml contract-spec
-id: SRGOV-DOCS-QUAL-008
+id: DCGOV-DOCS-QUAL-008
 title: generated docs artifacts are up-to-date
 purpose: Ensures generated reference index, coverage, and docs graph artifacts are kept fresh.
 type: contract.check

@@ -1,9 +1,9 @@
 # Python Docs Lint Command Cases
 
-## SRPY-DOCSLINT-001
+## DCIMPL-PY-DOCSLINT-001
 
 ```yaml contract-spec
-id: SRPY-DOCSLINT-001
+id: DCIMPL-PY-DOCSLINT-001
 title: docs_lint_main passes for canonical reference manifest
 type: contract.check
 harness:
@@ -28,10 +28,10 @@ contract:
       - 'OK: docs lint passed'
 ```
 
-## SRPY-DOCSLINT-002
+## DCIMPL-PY-DOCSLINT-002
 
 ```yaml contract-spec
-id: SRPY-DOCSLINT-002
+id: DCIMPL-PY-DOCSLINT-002
 title: docs_lint_main fails when manifest path is missing
 type: contract.check
 harness:

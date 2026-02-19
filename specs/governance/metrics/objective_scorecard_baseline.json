@@ -1,6 +1,6 @@
 {
   "config": {
-    "manifest_path": "specs/metrics/objective_manifest.yaml",
+    "manifest_path": "specs/governance/metrics/objective_manifest.yaml",
     "thresholds": {
       "green_min": 0.75,
       "yellow_min": 0.5
@@ -11,7 +11,7 @@
     "OBJ-DOCS-OPERABILITY: repair docs build/lint drift and re-generate canonical artifacts."
   ],
   "errors": [],
-  "manifest_path": "specs/metrics/objective_manifest.yaml",
+  "manifest_path": "specs/governance/metrics/objective_manifest.yaml",
   "objectives": [
     {
       "counters": [

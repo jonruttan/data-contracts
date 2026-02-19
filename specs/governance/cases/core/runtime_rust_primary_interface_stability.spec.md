@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUST-PRIMARY-003
+## DCGOV-RUST-PRIMARY-003
 
 ```yaml contract-spec
-id: SRGOV-RUST-PRIMARY-003
+id: DCGOV-RUST-PRIMARY-003
 title: rust-primary adapter keeps required runner-interface subcommands
 purpose: Ensures Rust-primary operation preserves required runner-interface subcommand compatibility.
 type: contract.check

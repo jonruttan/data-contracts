@@ -1,7 +1,7 @@
 # runtime.chain_exports_from_key_required
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-FROM-001
+id: DCGOV-CHAIN-FROM-001
 title: chain exports use canonical from key
 purpose: Ensures harness.chain step exports declare the required from field and do not rely
   on non-canonical key forms.

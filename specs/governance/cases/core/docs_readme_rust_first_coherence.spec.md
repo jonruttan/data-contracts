@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-010
+## DCGOV-DOCS-REF-010
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-010
+id: DCGOV-DOCS-REF-010
 title: readme remains rust-first and canonical for v1 authoring
 purpose: Ensures root README stays gateway-oriented, rust-first, and free from legacy assertion-surface
   snippets.

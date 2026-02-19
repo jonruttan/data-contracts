@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-009
+## DCGOV-DOCS-REF-009
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-009
+id: DCGOV-DOCS-REF-009
 title: core and full adoption profile docs stay synchronized
 purpose: Keeps contributor-facing docs aligned on core-check and full-check adoption profile
   wording.

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-GEN-021
+## DCGOV-DOCS-GEN-021
 
 ```yaml contract-spec
-id: SRGOV-DOCS-GEN-021
+id: DCGOV-DOCS-GEN-021
 title: stdlib symbols include semantic docs payload
 purpose: Ensures every stdlib symbol has summary, params, returns, errors, and examples in
   generated catalogs.

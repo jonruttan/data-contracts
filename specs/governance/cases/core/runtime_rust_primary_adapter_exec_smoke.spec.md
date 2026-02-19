@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUST-PRIMARY-005
+## DCGOV-RUST-PRIMARY-005
 
 ```yaml contract-spec
-id: SRGOV-RUST-PRIMARY-005
+id: DCGOV-RUST-PRIMARY-005
 title: rust-primary adapter executes and returns deterministic smoke output
 purpose: Ensures the Rust adapter is executable in governance and emits deterministic output/exit-code
   behavior for a smoke command.

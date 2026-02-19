@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-ENTRY-002
+## DCGOV-RUNTIME-ENTRY-002
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-ENTRY-002
+id: DCGOV-RUNTIME-ENTRY-002
 title: public runner defaults to rust mode
 purpose: Ensures the canonical public adapter defaults to rust and forbids python impl runtime
   dispatch.

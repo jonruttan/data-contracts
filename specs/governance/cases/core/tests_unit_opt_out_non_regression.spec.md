@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-TEST-UNIT-OPT-OUT-001
+## DCGOV-TEST-UNIT-OPT-OUT-001
 
 ```yaml contract-spec
-id: SRGOV-TEST-UNIT-OPT-OUT-001
+id: DCGOV-TEST-UNIT-OPT-OUT-001
 title: unit test opt-out usage is measured and non-regressing
 purpose: Tracks unit-test opt-out usage and enforces a non-regression baseline so opt-out
   coverage is reduced over time.

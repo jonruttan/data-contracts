@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-PYDEP-003
+## DCGOV-RUNTIME-PYDEP-003
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-PYDEP-003
+id: DCGOV-RUNTIME-PYDEP-003
 title: non-python lanes avoid direct python execution tokens
 purpose: Ensures default gate/orchestration and rust adapter lane files do not contain python
   execution tokens.

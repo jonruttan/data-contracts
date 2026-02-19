@@ -1,9 +1,9 @@
 # Spec Lang Conformance Cases
 
-## SRCONF-EXPR-001
+## DCCONF-EXPR-001
 
 ```yaml contract-spec
-id: SRCONF-EXPR-001
+id: DCCONF-EXPR-001
 title: evaluate simple predicate passes
 purpose: Verifies evaluate runs a basic true predicate against the target subject.
 type: contract.check
@@ -40,10 +40,10 @@ contract:
         - 'version: 1'
 ```
 
-## SRCONF-EXPR-002
+## DCCONF-EXPR-002
 
 ```yaml contract-spec
-id: SRCONF-EXPR-002
+id: DCCONF-EXPR-002
 title: evaluate composed boolean passes
 purpose: Verifies composed boolean expressions evaluate correctly across both runner implementations.
 type: contract.check
@@ -83,10 +83,10 @@ contract:
         - '#'
 ```
 
-## SRCONF-EXPR-003
+## DCCONF-EXPR-003
 
 ```yaml contract-spec
-id: SRCONF-EXPR-003
+id: DCCONF-EXPR-003
 title: evaluate tail recursion is stack safe
 purpose: Verifies unsupported mixed literal-expression recursive forms fail deterministically
   under mapping AST hard-cut rules.
@@ -142,10 +142,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-004
+## DCCONF-EXPR-004
 
 ```yaml contract-spec
-id: SRCONF-EXPR-004
+id: DCCONF-EXPR-004
 title: evaluate false predicate fails assertion
 purpose: Verifies evaluate false result is categorized as assertion failure.
 type: contract.check
@@ -177,10 +177,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-005
+## DCCONF-EXPR-005
 
 ```yaml contract-spec
-id: SRCONF-EXPR-005
+id: DCCONF-EXPR-005
 title: evaluate malformed form fails schema
 purpose: Verifies malformed evaluate forms fail with schema classification.
 type: contract.check
@@ -211,10 +211,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-006
+## DCCONF-EXPR-006
 
 ```yaml contract-spec
-id: SRCONF-EXPR-006
+id: DCCONF-EXPR-006
 title: evaluate unknown symbol fails schema
 purpose: Verifies unknown symbols are rejected as schema violations.
 type: contract.check
@@ -246,10 +246,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-007
+## DCCONF-EXPR-007
 
 ```yaml contract-spec
-id: SRCONF-EXPR-007
+id: DCCONF-EXPR-007
 title: evaluate recursive literal-expression shape fails schema
 purpose: Verifies unsupported recursive literal-expression authoring shape fails deterministically
   as schema.
@@ -300,10 +300,10 @@ contract:
           - 1000
 ```
 
-## SRCONF-EXPR-008
+## DCCONF-EXPR-008
 
 ```yaml contract-spec
-id: SRCONF-EXPR-008
+id: DCCONF-EXPR-008
 title: evaluate contains supports explicit subject form
 purpose: Verifies evaluate contains succeeds with explicit subject arguments for the same
   target subject.
@@ -346,10 +346,10 @@ contract:
         - 'version: 1'
 ```
 
-## SRCONF-EXPR-009
+## DCCONF-EXPR-009
 
 ```yaml contract-spec
-id: SRCONF-EXPR-009
+id: DCCONF-EXPR-009
 title: evaluate set intersection supports deep structural equality
 purpose: Verifies intersection deduplicates and compares nested values structurally with stable
   left-first output.
@@ -390,10 +390,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-010
+## DCCONF-EXPR-010
 
 ```yaml contract-spec
-id: SRCONF-EXPR-010
+id: DCCONF-EXPR-010
 title: evaluate set union keeps stable left-first unique ordering
 purpose: Verifies union preserves first-seen ordering while removing deep-equal duplicates.
 type: contract.check
@@ -433,10 +433,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-011
+## DCCONF-EXPR-011
 
 ```yaml contract-spec
-id: SRCONF-EXPR-011
+id: DCCONF-EXPR-011
 title: evaluate difference and symmetric_difference are deterministic
 purpose: Verifies set difference semantics and deterministic ordering for symmetric_difference.
 type: contract.check
@@ -485,10 +485,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-012
+## DCCONF-EXPR-012
 
 ```yaml contract-spec
-id: SRCONF-EXPR-012
+id: DCCONF-EXPR-012
 title: evaluate set predicates compare by deep equality
 purpose: Verifies set_equals, is_subset, is_superset, and includes use deep structural equality.
 type: contract.check
@@ -541,10 +541,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-013
+## DCCONF-EXPR-013
 
 ```yaml contract-spec
-id: SRCONF-EXPR-013
+id: DCCONF-EXPR-013
 title: evaluate map and filter support curried builtins
 purpose: Verifies builtin partial application works with map/filter collection transforms.
 type: contract.check
@@ -595,10 +595,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-014
+## DCCONF-EXPR-014
 
 ```yaml contract-spec
-id: SRCONF-EXPR-014
+id: DCCONF-EXPR-014
 title: evaluate reduce and collection helpers are deterministic
 purpose: Verifies reduce, reject, find, partition, group_by, and uniq_by behavior with curried
   predicates.
@@ -690,10 +690,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-015
+## DCCONF-EXPR-015
 
 ```yaml contract-spec
-id: SRCONF-EXPR-015
+id: DCCONF-EXPR-015
 title: evaluate flatten and list composition helpers
 purpose: Verifies flatten, concat, append, prepend, take, and drop operations.
 type: contract.check
@@ -768,10 +768,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-016
+## DCCONF-EXPR-016
 
 ```yaml contract-spec
-id: SRCONF-EXPR-016
+id: DCCONF-EXPR-016
 title: evaluate currying chain with nested call succeeds
 purpose: Verifies repeated partial application resolves deterministically to a final non-callable
   value.
@@ -811,10 +811,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-017
+## DCCONF-EXPR-017
 
 ```yaml contract-spec
-id: SRCONF-EXPR-017
+id: DCCONF-EXPR-017
 title: evaluate over-application of non-callable result is schema failure
 purpose: Verifies deterministic schema failure when extra call arguments remain after returning
   non-callable value.
@@ -856,10 +856,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-018
+## DCCONF-EXPR-018
 
 ```yaml contract-spec
-id: SRCONF-EXPR-018
+id: DCCONF-EXPR-018
 title: evaluate set ops enforce list inputs
 purpose: Verifies set algebra operators reject non-list inputs with schema errors.
 type: contract.check
@@ -897,10 +897,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-019
+## DCCONF-EXPR-019
 
 ```yaml contract-spec
-id: SRCONF-EXPR-019
+id: DCCONF-EXPR-019
 title: evaluate ramda v1 arithmetic and list utilities behave deterministically
 purpose: Verifies expanded numeric and list utility forms remain pure, strict-typed, and deterministic.
 type: contract.check
@@ -1020,10 +1020,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-020
+## DCCONF-EXPR-020
 
 ```yaml contract-spec
-id: SRCONF-EXPR-020
+id: DCCONF-EXPR-020
 title: evaluate ramda v1 object utilities
 purpose: Verifies expanded object helpers keep deterministic dictionary semantics.
 type: contract.check
@@ -1123,10 +1123,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-021
+## DCCONF-EXPR-021
 
 ```yaml contract-spec
-id: SRCONF-EXPR-021
+id: DCCONF-EXPR-021
 title: evaluate ramda v1 combinators and string helpers
 purpose: Verifies compose/pipe, constant-function behavior, and string transforms are deterministic.
 type: contract.check
@@ -1204,10 +1204,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-022
+## DCCONF-EXPR-022
 
 ```yaml contract-spec
-id: SRCONF-EXPR-022
+id: DCCONF-EXPR-022
 title: evaluate ramda v1 unary numeric and compare helpers
 purpose: Verifies unary numeric helpers and comparison helpers produce deterministic values
   for policy expressions.
@@ -1291,10 +1291,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-023
+## DCCONF-EXPR-023
 
 ```yaml contract-spec
-id: SRCONF-EXPR-023
+id: DCCONF-EXPR-023
 title: evaluate ramda v1 utility and predicate helpers
 purpose: Verifies utility and predicate helpers used by governance logic are deterministic
   and pure.
@@ -1473,10 +1473,10 @@ harness:
     config: {}
 ```
 
-## SRCONF-EXPR-024
+## DCCONF-EXPR-024
 
 ```yaml contract-spec
-id: SRCONF-EXPR-024
+id: DCCONF-EXPR-024
 title: evaluate ramda v1 schema failures are deterministic
 purpose: Verifies representative arity and type failures stay in schema category for the expanded
   builtin surface.

@@ -1,9 +1,9 @@
 # Python Validate Conformance Report Command Cases
 
-## SRPY-VALREP-001
+## DCIMPL-PY-VALREP-001
 
 ```yaml contract-spec
-id: SRPY-VALREP-001
+id: DCIMPL-PY-VALREP-001
 title: validate_report_main passes for valid report payload
 type: contract.check
 harness:
@@ -29,10 +29,10 @@ contract:
       - 'OK: valid conformance report'
 ```
 
-## SRPY-VALREP-002
+## DCIMPL-PY-VALREP-002
 
 ```yaml contract-spec
-id: SRPY-VALREP-002
+id: DCIMPL-PY-VALREP-002
 title: validate_report_main fails for invalid report payload
 type: contract.check
 harness:

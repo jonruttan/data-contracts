@@ -1,9 +1,9 @@
 # Python Script CLI Cases: Catalog Generators
 
-## SRPY-SCRIPT-CATALOG-001
+## DCIMPL-PY-SCRIPT-CATALOG-001
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-001
+id: DCIMPL-PY-SCRIPT-CATALOG-001
 title: generate governance check catalog help renders usage
 type: contract.check
 harness:
@@ -29,10 +29,10 @@ contract:
       - --doc-out
 ```
 
-## SRPY-SCRIPT-CATALOG-002
+## DCIMPL-PY-SCRIPT-CATALOG-002
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-002
+id: DCIMPL-PY-SCRIPT-CATALOG-002
 title: generate governance check catalog rejects unknown arg
 type: contract.check
 harness:
@@ -58,10 +58,10 @@ contract:
       - unrecognized arguments
 ```
 
-## SRPY-SCRIPT-CATALOG-003
+## DCIMPL-PY-SCRIPT-CATALOG-003
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-003
+id: DCIMPL-PY-SCRIPT-CATALOG-003
 title: generate harness type catalog help renders usage
 type: contract.check
 harness:
@@ -87,10 +87,10 @@ contract:
       - --doc-out
 ```
 
-## SRPY-SCRIPT-CATALOG-004
+## DCIMPL-PY-SCRIPT-CATALOG-004
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-004
+id: DCIMPL-PY-SCRIPT-CATALOG-004
 title: generate harness type catalog rejects unknown arg
 type: contract.check
 harness:
@@ -116,10 +116,10 @@ contract:
       - unrecognized arguments
 ```
 
-## SRPY-SCRIPT-CATALOG-005
+## DCIMPL-PY-SCRIPT-CATALOG-005
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-005
+id: DCIMPL-PY-SCRIPT-CATALOG-005
 title: generate metrics field catalog help renders usage
 type: contract.check
 harness:
@@ -145,10 +145,10 @@ contract:
       - --doc-out
 ```
 
-## SRPY-SCRIPT-CATALOG-006
+## DCIMPL-PY-SCRIPT-CATALOG-006
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-006
+id: DCIMPL-PY-SCRIPT-CATALOG-006
 title: generate metrics field catalog rejects unknown arg
 type: contract.check
 harness:
@@ -174,10 +174,10 @@ contract:
       - unrecognized arguments
 ```
 
-## SRPY-SCRIPT-CATALOG-007
+## DCIMPL-PY-SCRIPT-CATALOG-007
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-007
+id: DCIMPL-PY-SCRIPT-CATALOG-007
 title: generate policy rule catalog help renders usage
 type: contract.check
 harness:
@@ -203,10 +203,10 @@ contract:
       - --doc-out
 ```
 
-## SRPY-SCRIPT-CATALOG-008
+## DCIMPL-PY-SCRIPT-CATALOG-008
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-008
+id: DCIMPL-PY-SCRIPT-CATALOG-008
 title: generate policy rule catalog rejects unknown arg
 type: contract.check
 harness:
@@ -232,10 +232,10 @@ contract:
       - unrecognized arguments
 ```
 
-## SRPY-SCRIPT-CATALOG-009
+## DCIMPL-PY-SCRIPT-CATALOG-009
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-009
+id: DCIMPL-PY-SCRIPT-CATALOG-009
 title: generate runner api catalog help renders usage
 type: contract.check
 harness:
@@ -261,10 +261,10 @@ contract:
       - --doc-out
 ```
 
-## SRPY-SCRIPT-CATALOG-010
+## DCIMPL-PY-SCRIPT-CATALOG-010
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-010
+id: DCIMPL-PY-SCRIPT-CATALOG-010
 title: generate runner api catalog rejects unknown arg
 type: contract.check
 harness:
@@ -290,10 +290,10 @@ contract:
       - unrecognized arguments
 ```
 
-## SRPY-SCRIPT-CATALOG-011
+## DCIMPL-PY-SCRIPT-CATALOG-011
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-011
+id: DCIMPL-PY-SCRIPT-CATALOG-011
 title: generate spec lang builtin catalog help renders usage
 type: contract.check
 harness:
@@ -319,10 +319,10 @@ contract:
       - --doc-out
 ```
 
-## SRPY-SCRIPT-CATALOG-012
+## DCIMPL-PY-SCRIPT-CATALOG-012
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-012
+id: DCIMPL-PY-SCRIPT-CATALOG-012
 title: generate spec lang builtin catalog rejects unknown arg
 type: contract.check
 harness:
@@ -348,10 +348,10 @@ contract:
       - unrecognized arguments
 ```
 
-## SRPY-SCRIPT-CATALOG-013
+## DCIMPL-PY-SCRIPT-CATALOG-013
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-013
+id: DCIMPL-PY-SCRIPT-CATALOG-013
 title: generate spec schema field catalog help renders usage
 type: contract.check
 harness:
@@ -377,10 +377,10 @@ contract:
       - --schema-doc-out
 ```
 
-## SRPY-SCRIPT-CATALOG-014
+## DCIMPL-PY-SCRIPT-CATALOG-014
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-014
+id: DCIMPL-PY-SCRIPT-CATALOG-014
 title: generate spec schema field catalog rejects unknown arg
 type: contract.check
 harness:
@@ -406,10 +406,10 @@ contract:
       - unrecognized arguments
 ```
 
-## SRPY-SCRIPT-CATALOG-015
+## DCIMPL-PY-SCRIPT-CATALOG-015
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-015
+id: DCIMPL-PY-SCRIPT-CATALOG-015
 title: generate traceability catalog help renders usage
 type: contract.check
 harness:
@@ -435,10 +435,10 @@ contract:
       - --doc-out
 ```
 
-## SRPY-SCRIPT-CATALOG-016
+## DCIMPL-PY-SCRIPT-CATALOG-016
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-CATALOG-016
+id: DCIMPL-PY-SCRIPT-CATALOG-016
 title: generate traceability catalog rejects unknown arg
 type: contract.check
 harness:

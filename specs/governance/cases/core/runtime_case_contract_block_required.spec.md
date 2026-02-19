@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONTRACT-BLOCK-001
+## DCGOV-RUNTIME-CONTRACT-BLOCK-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONTRACT-BLOCK-001
+id: DCGOV-RUNTIME-CONTRACT-BLOCK-001
 title: cases must use contract block
 purpose: Enforces top-level contract block requirement for executable cases.
 type: contract.check

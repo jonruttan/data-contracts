@@ -1,9 +1,9 @@
 # Python Script CLI Cases: Normalization
 
-## SRPY-SCRIPT-NORM-001
+## DCIMPL-PY-SCRIPT-NORM-001
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-NORM-001
+id: DCIMPL-PY-SCRIPT-NORM-001
 title: normalize_docs_layout help renders usage
 type: contract.check
 harness:
@@ -29,10 +29,10 @@ contract:
       - --profile
 ```
 
-## SRPY-SCRIPT-NORM-002
+## DCIMPL-PY-SCRIPT-NORM-002
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-NORM-002
+id: DCIMPL-PY-SCRIPT-NORM-002
 title: normalize_docs_layout rejects conflicting modes
 type: contract.check
 harness:
@@ -59,10 +59,10 @@ contract:
       - not allowed with argument
 ```
 
-## SRPY-SCRIPT-NORM-003
+## DCIMPL-PY-SCRIPT-NORM-003
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-NORM-003
+id: DCIMPL-PY-SCRIPT-NORM-003
 title: normalize_repo help renders usage
 type: contract.check
 harness:
@@ -88,10 +88,10 @@ contract:
       - --scope
 ```
 
-## SRPY-SCRIPT-NORM-004
+## DCIMPL-PY-SCRIPT-NORM-004
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-NORM-004
+id: DCIMPL-PY-SCRIPT-NORM-004
 title: normalize_repo rejects invalid scope
 type: contract.check
 harness:

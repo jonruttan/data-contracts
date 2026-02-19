@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUST-PRIMARY-002
+## DCGOV-RUST-PRIMARY-002
 
 ```yaml contract-spec
-id: SRGOV-RUST-PRIMARY-002
+id: DCGOV-RUST-PRIMARY-002
 title: rust-primary gate scripts avoid direct python runner entrypoints
 purpose: Ensures gate scripts stay runner-interface based and do not hardcode Python runner
   commands.

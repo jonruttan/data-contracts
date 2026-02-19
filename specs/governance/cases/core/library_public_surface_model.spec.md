@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-LIB-SURFACE-001
+## DCGOV-LIB-SURFACE-001
 
 ```yaml contract-spec
-id: SRGOV-LIB-SURFACE-001
+id: DCGOV-LIB-SURFACE-001
 title: library public/private surface model is enforced
 purpose: Ensures spec_lang.export cases use defines.public/defines.private scopes and do not
   use non-canonical export shape.

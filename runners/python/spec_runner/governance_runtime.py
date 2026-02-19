@@ -148,8 +148,8 @@ _CURRENT_SPEC_FORBIDDEN_PATTERNS = (
 _TYPE_CONTRACTS_DIR = "specs/contract/types"
 _CORE_TYPES = {"text.file", "cli.run", "contract.check"}
 _ORCHESTRATION_TOOLS_FILES = (
-    "specs/tools/python/tools_v1.yaml",
-    "specs/tools/rust/tools_v1.yaml",
+    "specs/governance/tools/python/tools_v1.yaml",
+    "specs/governance/tools/rust/tools_v1.yaml",
 )
 _COMMON_CASE_TOP_LEVEL_KEYS = {
     "id",
@@ -226,8 +226,8 @@ _EXECUTABLE_CASE_TREE_ROOTS = (
 )
 _EXECUTABLE_NON_MD_SPEC_GLOBS = ("*.spec.yaml", "*.spec.yml", "*.spec.json")
 _DATA_ARTIFACT_GLOBS = (
-    "specs/metrics/*.json",
-    "specs/metrics/*.yaml",
+    "specs/governance/metrics/*.json",
+    "specs/governance/metrics/*.yaml",
     "docs/book/reference_manifest.yaml",
     "specs/schema/*.yaml",
 )
@@ -325,7 +325,7 @@ _HARNESS_FILES = (
     "runners/python/spec_runner/harnesses/docs_generate.py",
     "runners/python/spec_runner/harnesses/api_http.py",
 )
-_UNIT_TEST_OPT_OUT_BASELINE_PATH = "specs/metrics/unit_test_opt_out_baseline.json"
+_UNIT_TEST_OPT_OUT_BASELINE_PATH = "specs/governance/metrics/unit_test_opt_out_baseline.json"
 _UNIT_TEST_OPT_OUT_PREFIX = "# SPEC-OPT-OUT:"
 
 _SCAN_CACHE_TOKEN = 0
@@ -1409,7 +1409,7 @@ def _scan_objective_tripwires_clean(root: Path, *, harness: dict | None = None) 
     cfg = h.get("objective_tripwires")
     if not isinstance(cfg, dict):
         return ["objective.tripwires_clean requires harness.objective_tripwires mapping in governance spec"]
-    manifest_path = str(cfg.get("manifest_path", "")).strip() or "specs/metrics/objective_manifest.yaml"
+    manifest_path = str(cfg.get("manifest_path", "")).strip() or "specs/governance/metrics/objective_manifest.yaml"
     cases_path = str(cfg.get("cases_path", "")).strip() or "specs/governance/cases"
     case_file_pattern = str(cfg.get("case_file_pattern", "")).strip() or SETTINGS.case.default_file_pattern
 
@@ -1987,7 +1987,7 @@ def _scan_assert_domain_library_usage_required(root: Path, *, harness: dict | No
         return [f"{target_file.relative_to(root)}:1: missing domain library conformance coverage case"]
     found = False
     for _doc_path, case in load_external_cases(target_file, formats={"md"}):
-        if str(case.get("id", "")).strip().startswith("SRCONF-DOMAIN-LIB-"):
+        if str(case.get("id", "")).strip().startswith("DCCONF-DOMAIN-LIB-"):
             found = True
             harness_map = case.get("harness")
             if not isinstance(harness_map, dict):
@@ -2001,7 +2001,7 @@ def _scan_assert_domain_library_usage_required(root: Path, *, harness: dict | No
                     f"{target_file.relative_to(root)}: case {case.get('id', '<unknown>')} missing domain library path in harness.chain steps"
                 )
     if not found:
-        violations.append(f"{target_file.relative_to(root)}:1: expected SRCONF-DOMAIN-LIB-* cases")
+        violations.append(f"{target_file.relative_to(root)}:1: expected DCCONF-DOMAIN-LIB-* cases")
     return violations
 
 
@@ -9896,6 +9896,35 @@ def _scan_spec_layout_domain_trees(root: Path, *, harness: dict | None = None) -
     return violations
 
 
+def _scan_spec_taxonomy_hard_cut_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    h = harness or {}
+    cfg = h.get("taxonomy_layout")
+    if not isinstance(cfg, dict):
+        return ["spec.taxonomy_hard_cut_required requires harness.taxonomy_layout mapping in governance spec"]
+    required_paths = cfg.get("required_paths", [])
+    forbidden_paths = cfg.get("forbidden_paths", [])
+    if (
+        not isinstance(required_paths, list)
+        or any(not isinstance(x, str) or not x.strip() for x in required_paths)
+    ):
+        return ["harness.taxonomy_layout.required_paths must be a list of non-empty strings"]
+    if (
+        not isinstance(forbidden_paths, list)
+        or any(not isinstance(x, str) or not x.strip() for x in forbidden_paths)
+    ):
+        return ["harness.taxonomy_layout.forbidden_paths must be a list of non-empty strings"]
+    violations: list[str] = []
+    for rel in required_paths:
+        p = _join_contract_path(root, rel)
+        if not p.exists():
+            violations.append(f"{rel}:1: missing required canonical taxonomy path")
+    for rel in forbidden_paths:
+        p = _join_contract_path(root, rel)
+        if p.exists():
+            violations.append(f"{rel}:1: forbidden legacy taxonomy path exists")
+    return violations
+
+
 def _scan_spec_domain_index_sync(root: Path, *, harness: dict | None = None) -> list[str]:
     violations: list[str] = []
     for rel_root in _DOMAIN_TREE_ROOTS:
@@ -10718,6 +10747,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "reference.external_refs_policy": _scan_reference_external_refs_policy,
     "reference.token_anchors_exist": _scan_reference_token_anchors_exist,
     "spec.layout_domain_trees": _scan_spec_layout_domain_trees,
+    "spec.taxonomy_hard_cut_required": _scan_spec_taxonomy_hard_cut_required,
     "spec.domain_index_sync": _scan_spec_domain_index_sync,
     "spec.executable_surface_markdown_only": _scan_spec_executable_surface_markdown_only,
     "spec.no_executable_yaml_json_in_case_trees": _scan_spec_no_executable_yaml_json_in_case_trees,

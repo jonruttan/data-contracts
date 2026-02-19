@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-CHAIN-005
+## DCGOV-CHAIN-005
 
 ```yaml contract-spec
-id: SRGOV-CHAIN-005
+id: DCGOV-CHAIN-005
 title: chain template references resolve against explicit exports
 purpose: Ensures api.http chain templates use declared step export names and fail on unresolved
   references.

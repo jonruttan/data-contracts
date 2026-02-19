@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-REF-001
+## DCGOV-DOCS-REF-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-REF-001
+id: DCGOV-DOCS-REF-001
 title: docs reference surface files exist
 purpose: Enforces that the canonical docs reference surface remains complete and cannot silently
   lose required files.

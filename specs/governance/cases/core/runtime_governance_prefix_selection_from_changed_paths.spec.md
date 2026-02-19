@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-TRIAGE-011
+## DCGOV-RUNTIME-TRIAGE-011
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-TRIAGE-011
+id: DCGOV-RUNTIME-TRIAGE-011
 title: governance triage selects prefixes from changed paths
 type: contract.check
 purpose: Ensures triage auto mode derives targeted check prefixes from changed paths before

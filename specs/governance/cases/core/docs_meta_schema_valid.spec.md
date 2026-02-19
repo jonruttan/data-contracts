@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-QUAL-001
+## DCGOV-DOCS-QUAL-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-QUAL-001
+id: DCGOV-DOCS-QUAL-001
 title: docs metadata schema is valid for canonical reference chapters
 purpose: Ensures each canonical reference chapter contains valid machine-checkable doc metadata.
 type: contract.check

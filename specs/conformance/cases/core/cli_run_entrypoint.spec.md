@@ -7,10 +7,10 @@ Coverage focus:
 - explicit `harness.entrypoint` behavior
 - capability-gated skip behavior for runtimes without `cli.run`
 
-## SRCONF-CLI-001
+## DCCONF-CLI-001
 
 ```yaml contract-spec
-id: SRCONF-CLI-001
+id: DCCONF-CLI-001
 title: conformance fixture sets explicit cli.run harness.entrypoint
 purpose: Defines portable behavior for explicit cli.run entrypoint when capability is present.
 type: contract.check
@@ -41,10 +41,10 @@ contract:
   steps: []
 ```
 
-## SRCONF-CLI-002
+## DCCONF-CLI-002
 
 ```yaml contract-spec
-id: SRCONF-CLI-002
+id: DCCONF-CLI-002
 title: explicit entrypoint drives cli.run behavior deterministically
 purpose: Pins deterministic behavior for explicit harness entrypoint execution.
 type: contract.check

@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-NAME-001
+## DCGOV-DOCS-NAME-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-NAME-001
+id: DCGOV-DOCS-NAME-001
 title: docs filenames follow lowercase separator policy
 purpose: Enforces deterministic docs filename shape using underscores for words and hyphens
   for section separators.

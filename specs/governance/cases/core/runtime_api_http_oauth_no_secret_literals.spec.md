@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-APIHTTP-002
+## DCGOV-RUNTIME-APIHTTP-002
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-APIHTTP-002
+id: DCGOV-RUNTIME-APIHTTP-002
 title: api.http oauth specs contain no secret literals
 purpose: Ensures api.http fixtures avoid inline bearer tokens and secret literal OAuth fields.
 type: contract.check

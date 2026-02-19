@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-PREPUSH-001
+## DCGOV-RUNTIME-PREPUSH-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-PREPUSH-001
+id: DCGOV-RUNTIME-PREPUSH-001
 title: local ci parity script is rust-only
 purpose: Ensures local prepush parity flow contains no python parity lane hooks.
 type: contract.check

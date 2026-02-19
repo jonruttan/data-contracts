@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-PENDING-001
+## DCGOV-PENDING-001
 
 ```yaml contract-spec
-id: SRGOV-PENDING-001
+id: DCGOV-PENDING-001
 title: pending specs remain draft-only and must not include resolved/completed markers
 purpose: Ensures pending-spec files do not retain completed markers and keeps completed work
   out of pending.

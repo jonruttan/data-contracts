@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-CANON-003
+## DCGOV-DOCS-CANON-003
 
 ```yaml contract-spec
-id: SRGOV-DOCS-CANON-003
+id: DCGOV-DOCS-CANON-003
 title: docs freshness strict checker passes
 purpose: Ensures specs freshness checks are strict, deterministic, and currently clean.
 type: contract.check

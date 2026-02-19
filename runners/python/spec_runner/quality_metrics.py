@@ -1261,7 +1261,7 @@ def validate_metric_baseline_notes(
 
 def default_objective_scorecard_config() -> dict[str, Any]:
     return {
-        "manifest_path": "specs/metrics/objective_manifest.yaml",
+        "manifest_path": "specs/governance/metrics/objective_manifest.yaml",
         "thresholds": {
             "green_min": 0.75,
             "yellow_min": 0.50,
@@ -1286,7 +1286,7 @@ def objective_scorecard_report_jsonable(repo_root: Path, config: dict[str, Any] 
     except (TypeError, ValueError):
         yellow_min = 0.50
 
-    manifest_path = str(cfg.get("manifest_path", "")).strip() or "specs/metrics/objective_manifest.yaml"
+    manifest_path = str(cfg.get("manifest_path", "")).strip() or "specs/governance/metrics/objective_manifest.yaml"
     try:
         manifest_file = resolve_contract_path(root, manifest_path, field="objective_manifest.path")
     except VirtualPathError as exc:

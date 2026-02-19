@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-STDLIB-002
+## DCGOV-STDLIB-002
 
 ```yaml contract-spec
-id: SRGOV-STDLIB-002
+id: DCGOV-STDLIB-002
 title: spec-lang stdlib symbols are parity-clean across python and php
 purpose: Ensures no profile symbol is missing in either runtime implementation.
 type: contract.check

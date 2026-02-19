@@ -1,9 +1,9 @@
 # Python Script CLI Cases: Docs Generate and Style
 
-## SRPY-SCRIPT-DOCS-001
+## DCIMPL-PY-SCRIPT-DOCS-001
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-DOCS-001
+id: DCIMPL-PY-SCRIPT-DOCS-001
 title: docs_generate_all help renders usage
 type: contract.check
 harness:
@@ -29,10 +29,10 @@ contract:
       - --surface
 ```
 
-## SRPY-SCRIPT-DOCS-002
+## DCIMPL-PY-SCRIPT-DOCS-002
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-DOCS-002
+id: DCIMPL-PY-SCRIPT-DOCS-002
 title: docs_generate_all fails on unknown surface
 type: contract.check
 harness:
@@ -60,10 +60,10 @@ contract:
       - 1
 ```
 
-## SRPY-SCRIPT-DOCS-003
+## DCIMPL-PY-SCRIPT-DOCS-003
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-DOCS-003
+id: DCIMPL-PY-SCRIPT-DOCS-003
 title: docs_generate_specs help renders usage
 type: contract.check
 harness:
@@ -89,10 +89,10 @@ contract:
       - --cases
 ```
 
-## SRPY-SCRIPT-DOCS-004
+## DCIMPL-PY-SCRIPT-DOCS-004
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-DOCS-004
+id: DCIMPL-PY-SCRIPT-DOCS-004
 title: docs_generate_specs fails on unknown surface
 type: contract.check
 harness:
@@ -120,10 +120,10 @@ contract:
       - unknown surface_id
 ```
 
-## SRPY-SCRIPT-DOCS-005
+## DCIMPL-PY-SCRIPT-DOCS-005
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-DOCS-005
+id: DCIMPL-PY-SCRIPT-DOCS-005
 title: evaluate_style help renders usage
 type: contract.check
 harness:
@@ -149,10 +149,10 @@ contract:
       - --write
 ```
 
-## SRPY-SCRIPT-DOCS-006
+## DCIMPL-PY-SCRIPT-DOCS-006
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-DOCS-006
+id: DCIMPL-PY-SCRIPT-DOCS-006
 title: evaluate_style check defaults to docs spec tree
 type: contract.check
 harness:
@@ -178,10 +178,10 @@ contract:
       - formatting is canonical
 ```
 
-## SRPY-SCRIPT-DOCS-007
+## DCIMPL-PY-SCRIPT-DOCS-007
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-DOCS-007
+id: DCIMPL-PY-SCRIPT-DOCS-007
 title: docs_build_reference writes artifacts to explicit outputs
 type: contract.check
 harness:
@@ -220,10 +220,10 @@ contract:
       - wrote .artifacts/docs-build-reference-graph.json
 ```
 
-## SRPY-SCRIPT-DOCS-008
+## DCIMPL-PY-SCRIPT-DOCS-008
 
 ```yaml contract-spec
-id: SRPY-SCRIPT-DOCS-008
+id: DCIMPL-PY-SCRIPT-DOCS-008
 title: docs_build_reference rejects unknown args
 type: contract.check
 harness:

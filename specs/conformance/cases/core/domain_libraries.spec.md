@@ -1,9 +1,9 @@
 # Domain Library Conformance Cases
 
-## SRCONF-DOMAIN-LIB-001
+## DCCONF-DOMAIN-LIB-001
 
 ```yaml contract-spec
-id: SRCONF-DOMAIN-LIB-001
+id: DCCONF-DOMAIN-LIB-001
 title: domain http library defines status helper
 purpose: Ensures domain HTTP library exports reusable status-based assertion helper.
 type: contract.check
@@ -196,10 +196,10 @@ contract:
       - 'type: spec.export'
 ```
 
-## SRCONF-DOMAIN-LIB-002
+## DCCONF-DOMAIN-LIB-002
 
 ```yaml contract-spec
-id: SRCONF-DOMAIN-LIB-002
+id: DCCONF-DOMAIN-LIB-002
 title: domain library index references all domain library files
 purpose: Ensures domain index remains synchronized with all domain library spec files.
 type: contract.check

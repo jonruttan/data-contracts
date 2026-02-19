@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-RUNTIME-CONTRACT-SPEC-001
+## DCGOV-RUNTIME-CONTRACT-SPEC-001
 
 ```yaml contract-spec
-id: SRGOV-RUNTIME-CONTRACT-SPEC-001
+id: DCGOV-RUNTIME-CONTRACT-SPEC-001
 title: executable case fences must use contract-spec
 purpose: Enforces hard-cut fence rename to contract-spec across specs cases.
 type: contract.check

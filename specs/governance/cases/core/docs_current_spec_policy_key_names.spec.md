@@ -1,9 +1,9 @@
 # Governance Cases
 
-## SRGOV-DOCS-CURRENT-KEYS-001
+## DCGOV-DOCS-CURRENT-KEYS-001
 
 ```yaml contract-spec
-id: SRGOV-DOCS-CURRENT-KEYS-001
+id: DCGOV-DOCS-CURRENT-KEYS-001
 title: current spec policy key names stay canonical
 purpose: Enforces policy expression naming consistency by allowing only `evaluate` in `.spec.md`
   cases.
