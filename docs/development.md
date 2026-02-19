@@ -1,178 +1,74 @@
 # Development
 
-## Install (Editable)
+## Toolchain
+
+`data-contracts` is Rust + shell only.
+
+Required local tools:
+
+- `cargo`
+- `php` with `yaml` extension
+- `bash`
+
+Quick setup check:
 
 ```sh
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install -e '.[dev]'
+make setup
 ```
 
-Using Homebrew/system Python without a venv may fail with
-`externally-managed-environment` (PEP 668). Prefer the venv flow above.
+## Canonical Commands
 
-Installable CLI entrypoints exposed by packaging metadata:
-
-- `spec-runner-conformance` (Python conformance runner)
-- `spec-runner-parity` (Python/PHP parity comparison)
-- `spec-runner-validate-report` (conformance report validator)
-
-## Run Checks
+Required lane (Rust) commands:
 
 ```sh
 ./runners/public/runner_adapter.sh --impl rust critical-gate
-./runners/public/runner_adapter.sh --impl rust ci-gate-summary --runner-bin ./runners/public/runner_adapter.sh --runner-impl rust --changed-paths-file .artifacts/changed_paths.txt --write-summary .artifacts/gate-summary.json --write-markdown .artifacts/gate-summary.md
-./runners/public/runner_adapter.sh --impl rust style-check
-./runners/public/runner_adapter.sh --impl rust docs-lint
-```
-
-Compatibility lanes (non-blocking telemetry):
-
-```sh
-python -m ruff check .
-# Typecheck/compile compatibility runner code in the compatibility repos
-# (`dc-runner-python`, `dc-runner-php`) instead of this repository.
-./runners/public/runner_adapter.sh --impl rust spec-lang-lint --cases specs
-./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs
+./runners/public/runner_adapter.sh --impl rust governance
 ./runners/public/runner_adapter.sh --impl rust docs-generate-check
-./runners/public/runner_adapter.sh --impl rust docs-lint
 ```
 
-## Adoption Profiles
-
-Use one of these lanes depending on depth needed:
-
-- Rust-first required lane is canonical for merge-blocking workflows.
-- Core profile (lightweight, fast local confidence): `make core-check`
-- Full profile (release/pre-merge parity confidence): `make check`
-
-Core profile runs:
-
-- governance specs
-- spec-lang lint + format checks
-- focused core runner unit tests (`doc_parser`, `dispatcher`, `assertions`, `conformance_runner`)
-
-Full profile runs the complete CI-equivalent gate including parity and full test suite.
-
-Runner interface override:
-
-- Gate scripts call `SPEC_RUNNER_BIN` (default: `runners/public/runner_adapter.sh`).
-- To exercise a non-Python runner implementation while keeping gate orchestration
-  unchanged:
+Common local flows:
 
 ```sh
-SPEC_RUNNER_BIN=/path/to/compatible-runner ./scripts/core_gate.sh
-SPEC_RUNNER_BIN=/path/to/compatible-runner ./scripts/ci_gate.sh
-```
-
-Rust-primary transition contract:
-
-- `specs/contract/16_rust_primary_transition.md`
-
-Rust-default lane (canonical):
-
-```sh
-SPEC_RUNNER_BIN=./runners/public/runner_adapter.sh ./scripts/core_gate.sh
-```
-
-Compatibility lane examples (non-blocking):
-
-```sh
-./runners/public/runner_adapter.sh --impl rust governance
-# Compatibility execution runs in external repos:
-# - dc-runner-python
-# - dc-runner-php
-```
-
-Optional local prebuild for Rust lane:
-
-```sh
-cargo build --manifest-path dc-runner-rust
-```
-
-## Run Core Gate Checks
-
-```sh
-./runners/public/runner_adapter.sh --impl rust governance
-./runners/public/runner_adapter.sh --impl rust style-check
-./runners/public/runner_adapter.sh --impl rust conformance-purpose-json
-./runners/public/runner_adapter.sh --impl rust conformance-purpose-md
-./runners/public/runner_adapter.sh --impl rust conformance-parity
-./runners/public/runner_adapter.sh --impl rust python-dependency-json
-./runners/public/runner_adapter.sh --impl rust python-dependency-md
-./runners/public/runner_adapter.sh --impl rust test-full
-```
-
-Canonical pre-merge check:
-
-```sh
-./scripts/ci_gate.sh
+make verify-docs
 make core-check
 make check
-```
-
-Release readiness checklist:
-
-- `docs/release_checklist.md`
-
-Gate summary artifact produced by `ci_gate.sh`:
-
-- `.artifacts/gate-summary.json` (machine-readable step status, exit code, and duration)
-
-Fast docs-only gate:
-
-```sh
-./scripts/docs_doctor.sh
-make docs-doctor
-make verify-docs
-make docs-generate
-make docs-check
-make ci-smoke
-
-# Clean-checkout parity (recommended before push)
+make prepush
+make prepush-fast
 make ci-cleanroom
 ```
 
-Required local pre-push gate:
+## Migration Utilities (Rust-backed)
+
+Stable shell entrypoints:
 
 ```sh
-make prepush
+./scripts/migrate_case_domain_prefix_v1.sh --check specs
+./scripts/migrate_case_doc_metadata_v1.sh --check specs
+./scripts/migrate_contract_step_imports_v1.sh --check specs
+./scripts/migrate_library_docs_metadata_v1.sh --check specs/libraries
 ```
 
-The pre-push gate runs the fast CI-critical contract path:
-
-- `normalize-check`
-- `governance` via `scripts/governance_triage.sh --mode auto`
-- `governance-heavy`
-- `docs-generate-check`
-- `perf-smoke --mode strict --compare-only`
-
-`governance-heavy` and `docs-generate-check` are path-scoped and only run when
-relevant files changed.
-
-`make prepush` is Rust-only on the runtime path.
-
-Fast local opt-out mode:
+Write mode:
 
 ```sh
-make prepush-fast
-# or
-SPEC_PREPUSH_MODE=fast make prepush
+./scripts/migrate_case_domain_prefix_v1.sh --write specs
+./scripts/migrate_case_doc_metadata_v1.sh --write specs
+./scripts/migrate_contract_step_imports_v1.sh --write specs
+./scripts/migrate_library_docs_metadata_v1.sh --write specs/libraries
 ```
 
-Runtime impl is rust-only; `SPEC_RUNNER_IMPL=python` is rejected by
-`runners/public/runner_adapter.sh` with migration guidance.
+Exit semantics are stable:
 
-Install managed git hooks to enforce local pre-push parity gate:
+- `0`: clean/success
+- `1`: drift/functional failure
+- `2`: invalid usage/config
+
+## CI and Triage
+
+Run full gate locally:
 
 ```sh
-make hooks-install
-```
-
-Emergency bypass for blocked pushes (use sparingly and follow with parity run):
-
-```sh
-SPEC_PREPUSH_BYPASS=1 git push
+./scripts/ci_gate.sh
 ```
 
 Governance triage artifacts:
@@ -180,222 +76,19 @@ Governance triage artifacts:
 - `/.artifacts/governance-triage.json`
 - `/.artifacts/governance-triage-summary.md`
 
-## CI Triage (Docs Quality)
-
-When CI fails with `DCGOV-DOCS-QUAL-*`:
-
-1. Reproduce quickly:
+Generate them directly:
 
 ```sh
-make ci-smoke
-
-# Run full gate exactly from a fresh worktree clone state
-make ci-cleanroom
+./scripts/governance_triage.sh --mode auto --impl rust
 ```
 
-2. Regenerate docs artifacts:
+## Compatibility Lanes
 
-```sh
-make docs-generate
-```
+Compatibility lanes are external-only and non-blocking in this repo:
 
-3. Re-run docs checks:
+- `dc-runner-python`
+- `dc-runner-php`
+- `node` (planned)
+- `c` (planned)
 
-```sh
-make docs-check
-```
-
-Common failures:
-
-- `DCGOV-DOCS-QUAL-002`: `docs/book/reference_index.md` is out of sync with
-  `docs/book/reference_manifest.yaml`.
-- `DCGOV-DOCS-QUAL-008`: generated files drifted
-  (`reference_index.md`, `reference_coverage.md`, `docs_graph.json`).
-- `DCGOV-DOCS-QUAL-003/004`: token ownership/dependency issues in chapter
-  `doc-meta`.
-
-Suggested pre-commit hook:
-
-```sh
-cat > .git/hooks/pre-commit <<'SH'
-#!/usr/bin/env bash
-set -euo pipefail
-./scripts/docs_doctor.sh
-SH
-chmod +x .git/hooks/pre-commit
-```
-
-## Runner Exit-Code Contract
-
-The following exit codes are stable command contracts for CI/scripting.
-
-| Command | `0` | `1` | `2` |
-| --- | --- | --- | --- |
-| `./runners/public/runner_adapter.sh --impl rust <command>` | command completed successfully | command-level functional/runtime failure | CLI usage/argument validation error |
-
-Notes:
-
-- `--help` exits `0` for all three commands.
-- `2` is reserved for invocation/argument issues so automation can distinguish
-  operator errors from runner/case failures.
-
-## Required CI Gate
-
-Merges are expected to pass the `spec_runner` CI job, which runs:
-
-- contract governance check
-- governance spec-runner checks
-- pedantic spec-lang lint (`scripts/spec_lang_lint.py --cases specs`)
-- pedantic spec-lang format check (`scripts/spec_lang_format.py --check specs`)
-- ruff lint check (`F` + `E9` rules)
-- mypy type check (owned in `dc-runner-python`)
-- Python bytecode compile pass (`compileall`)
-- conformance purpose report generation
-- conformance purpose markdown summary generation
-- non-blocking compatibility matrix lanes (Python/PHP, with Node/C placeholders)
-- `tools/spec_runner` pytest suite
-- artifact upload of `.artifacts/conformance-purpose.json`
-- artifact upload of `.artifacts/conformance-purpose-summary.md`
-- artifact upload of `.artifacts/conformance-parity.json`
-- artifact upload of `.artifacts/gate-summary.json`
-
-`run_governance_specs.py` (via `contract.governance_check`) enforces
-conformance case doc freshness:
-every `DCCONF-*` fixture case id must be listed in
-`specs/conformance/cases/index.md`, and stale ids in that index fail CI.
-
-Local equivalent:
-
-```sh
-./scripts/ci_gate.sh
-```
-
-## Contract Governance Check (via Governance Specs)
-
-```sh
-./runners/public/runner_adapter.sh --impl rust governance
-```
-
-## Lint
-
-```sh
-python -m ruff check .
-python scripts/spec_lang_lint.py --cases specs
-python scripts/spec_lang_format.py --check specs
-```
-
-## Type Check
-
-```sh
-Run mypy in `dc-runner-python` for compatibility-lane type checks.
-```
-
-## Static Analysis (Syntax/Import-Time Parse)
-
-```sh
-Run compile checks in `dc-runner-python` for compatibility-lane code.
-```
-
-## Conformance Purpose Report
-
-```sh
-python scripts/conformance_purpose_report.py --out .artifacts/conformance-purpose.json
-python scripts/conformance_purpose_report.py --format md --out .artifacts/conformance-purpose-summary.md
-```
-
-The purpose report includes `policy` metadata resolved from:
-
-- `specs/conformance/purpose_lint_v1.yaml`
-
-Optional strict mode for automation:
-
-```sh
-python scripts/conformance_purpose_report.py --fail-on-warn
-python scripts/conformance_purpose_report.py --fail-on-severity warn
-python scripts/conformance_purpose_report.py --fail-on-severity error
-python scripts/conformance_purpose_report.py --only-warnings --format md --out .artifacts/conformance-purpose-warnings.md
-python scripts/conformance_purpose_report.py --only-warnings --emit-patches .artifacts/conformance-purpose-patches
-```
-
-Purpose warning codes:
-
-- `PUR001`: purpose duplicates title
-- `PUR002`: purpose word count below minimum
-- `PUR003`: purpose contains placeholder token
-- `PUR004`: purpose lint configuration/policy error
-
-Canonical source for these codes:
-
-- `specs/conformance/purpose_warning_codes.md`
-
-## Conformance Fixture Layout
-
-Cross-language fixture data lives in:
-
-- `specs/conformance/cases/`
-
-Contract docs for interpreting those fixtures live in:
-
-- `specs/contract/06_conformance.md`
-- `specs/conformance/report_format.md`
-
-## PHP Bootstrap Parity
-
-Generate a Python conformance report:
-
-```sh
-spec-runner-conformance \
-  --cases specs/conformance/cases \
-  --case-formats md \
-  --out .artifacts/python-conformance-report.json
-```
-
-Validate report shape:
-
-```sh
-spec-runner-validate-report .artifacts/python-conformance-report.json
-```
-
-Generate compatibility reports in the external compatibility repositories:
-
-```sh
-# run in dc-runner-python and dc-runner-php repositories
-# then ingest resulting artifacts into data-contracts CI telemetry
-```
-
-Validate bootstrap report shape:
-
-```sh
-spec-runner-validate-report .artifacts/php-conformance-report.json
-```
-
-Run end-to-end parity in compatibility runner repositories:
-
-```sh
-# execute compatibility parity in dc-runner-python CI
-# with dc-runner-php as the php lane source
-```
-
-Parity diffs are evaluated on case IDs where `expect` resolves to the same
-`status` + `category` for both implementations.
-
-On slower CI runners, increase `--php-timeout-seconds` (for example `60`) to
-avoid false-negative parity failures caused by host contention.
-
-## Build / Publish
-
-```sh
-python -m pip install -U build twine
-python -m build
-python -m twine check dist/*
-```
-
-## Canonical Docs And Specs Checks
-
-Run this before `make prepush` when touching docs or governance:
-
-```sh
-./runners/public/runner_adapter.sh docs-lint
-```
-
-The checker validates canonical index ownership, link integrity, stale-term drift, governance family-map coverage, and generated docs sync.
+`data-contracts` does not execute compatibility lanes directly.

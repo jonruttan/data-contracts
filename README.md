@@ -21,8 +21,8 @@ Trust model:
 
 Reference contracts:
 
-- `/Users/jon/Workspace/Development/spec_runner/specs/contract/08_v1_scope.md`
-- `/Users/jon/Workspace/Development/spec_runner/specs/contract/04_harness.md`
+- `/specs/contract/08_v1_scope.md`
+- `/specs/contract/04_harness.md`
 
 ## Quick Start (Rust Required Lane)
 
@@ -83,15 +83,16 @@ Required lane ownership:
 
 Data Contracts consumes a pinned `dc-runner-rust` release artifact via:
 
-- `/Users/jon/Workspace/Development/spec_runner/scripts/runner_bin.sh`
-- `/Users/jon/Workspace/Development/spec_runner/specs/schema/dc_runner_rust_lock_v1.yaml`
+- `/scripts/runner_bin.sh`
+- `/specs/schema/dc_runner_rust_lock_v1.yaml`
+- Rust-backed migration wrappers under `/scripts/*.sh`
 
 Data Contracts does not directly execute compatibility lanes. Python/PHP
 compatibility execution is owned by `dc-runner-python` and `dc-runner-php`.
 
 Contract reference:
 
-- `/Users/jon/Workspace/Development/spec_runner/specs/contract/25_compatibility_matrix.md`
+- `/specs/contract/25_compatibility_matrix.md`
 
 ## Adoption Profiles
 
@@ -127,12 +128,12 @@ contract:
 
 ## Repository Entry Points
 
-- Specs root: `/Users/jon/Workspace/Development/spec_runner/specs/`
-- Book index: `/Users/jon/Workspace/Development/spec_runner/docs/book/index.md`
-- Generated reference gateway: `/Users/jon/Workspace/Development/spec_runner/docs/book/99_generated_reference_index.md`
-- Development workflows: `/Users/jon/Workspace/Development/spec_runner/docs/development.md`
-- Schema: `/Users/jon/Workspace/Development/spec_runner/specs/schema/schema_v1.md`
-- Contract index: `/Users/jon/Workspace/Development/spec_runner/specs/contract/index.md`
+- Specs root: `/specs/`
+- Book index: `/docs/book/index.md`
+- Generated reference gateway: `/docs/book/99_generated_reference_index.md`
+- Development workflows: `/docs/development.md`
+- Schema: `/specs/schema/schema_v1.md`
+- Contract index: `/specs/contract/index.md`
 
 ## Repo Layout
 
@@ -140,4 +141,3 @@ contract:
 - `scripts/`: operational entrypoints for local/CI workflows
 - `specs/`: executable specs and normative contracts
 - `docs/`: narrative and generated documentation surfaces
-- `tests/`: test suite

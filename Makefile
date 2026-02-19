@@ -8,10 +8,10 @@ help: ## Display this help section
 # Bootstrap
 # ---------------------------------------------------------------------------
 
-setup: ## Create .venv and install editable package with dev deps
-	@python3 -m venv .venv
-	@.venv/bin/python -m pip install -U pip
-	@.venv/bin/python -m pip install -e '.[dev]'
+setup: ## Verify required local toolchain (rust + shell)
+	@command -v cargo >/dev/null
+	@command -v php >/dev/null
+	@mkdir -p .artifacts
 
 hooks-install: ## Install managed git hooks (enforces local pre-push parity gate)
 	@./scripts/install_git_hooks.sh

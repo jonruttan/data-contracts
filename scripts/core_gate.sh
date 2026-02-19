@@ -10,8 +10,6 @@ fi
 
 "${SPEC_RUNNER_BIN}" governance-broad-native
 "${SPEC_RUNNER_BIN}" docs-generate-check
-"${SPEC_RUNNER_BIN}" perf-smoke || true
 "${SPEC_RUNNER_BIN}" style-check
-"${SPEC_RUNNER_BIN}" test-core
 
 echo "OK: core gate checks passed"

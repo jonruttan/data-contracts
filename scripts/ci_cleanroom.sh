@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 REF="${1:-HEAD}"
 SOURCE_MODE="${SPEC_CLEANROOM_SOURCE_MODE:-working-tree}"
 
-TMP_PARENT="$(mktemp -d "${TMPDIR:-/tmp}/spec-runner-cleanroom.XXXXXX")"
+TMP_PARENT="$(mktemp -d "${TMPDIR:-/tmp}/data-contracts-cleanroom.XXXXXX")"
 WORKTREE_DIR="${TMP_PARENT}/repo"
 
 cleanup() {
@@ -24,32 +24,19 @@ else
   if command -v rsync >/dev/null 2>&1; then
     rsync -a \
       --exclude=".git/" \
-      --exclude=".venv/" \
       --exclude=".artifacts/" \
       --exclude="target/" \
-      --exclude="__pycache__/" \
-      --exclude=".pytest_cache/" \
-      --exclude=".mypy_cache/" \
       "${ROOT_DIR}/" "${WORKTREE_DIR}/"
   else
     (
       cd "${ROOT_DIR}" && \
-      tar --exclude=".git" --exclude=".venv" --exclude=".artifacts" --exclude="target" \
-          --exclude="__pycache__" --exclude=".pytest_cache" --exclude=".mypy_cache" \
-          -cf - .
+      tar --exclude=".git" --exclude=".artifacts" --exclude="target" -cf - .
     ) | (cd "${WORKTREE_DIR}" && tar -xf -)
   fi
-  # Simulate worktree metadata shape for path/root discovery checks.
   printf "gitdir: /dev/null\n" > "${WORKTREE_DIR}/.git"
 fi
 
 cd "${WORKTREE_DIR}"
-
-echo "[cleanroom] creating venv"
-python3 -m venv .venv
-
-echo "[cleanroom] installing project + dev dependencies"
-.venv/bin/python -m pip install -q -e ".[dev]"
 
 echo "[cleanroom] running ci gate"
 ./scripts/ci_gate.sh
