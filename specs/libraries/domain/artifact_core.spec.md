@@ -14,6 +14,39 @@ harness:
     - path
     - value
     required: true
+    doc:
+      summary: Contract export for `domain.artifact.write_yaml`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: path
+        type: any
+        required: true
+        description: Input parameter `path`.
+      - name: value
+        type: any
+        required: true
+        description: Input parameter `value`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          path: <path>
+          value: <value>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
 contract:
   defaults:
     class: MUST
@@ -24,6 +57,13 @@ contract:
       - {var: path}
       - ops.fs.yaml.stringify:
         - {var: value}
+library:
+  id: domain.artifact.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -38,6 +78,39 @@ harness:
     - path
     - content
     required: true
+    doc:
+      summary: Contract export for `domain.artifact.append_text`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: path
+        type: any
+        required: true
+        description: Input parameter `path`.
+      - name: content
+        type: any
+        required: true
+        description: Input parameter `content`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          path: <path>
+          content: <content>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
 contract:
   defaults:
     class: MUST
@@ -47,4 +120,11 @@ contract:
       ops.fs.file.append:
       - {var: path}
       - {var: content}
+library:
+  id: domain.artifact.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```

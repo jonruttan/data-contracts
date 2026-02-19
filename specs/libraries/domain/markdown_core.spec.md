@@ -170,48 +170,284 @@ harness:
     - subject
     - heading
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.has_heading`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: heading
+        type: any
+        required: true
+        description: Input parameter `heading`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          heading: <heading>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: markdown._text
     from: assert.function
     path: /__export__markdown._text
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `markdown._text`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: markdown._context
     from: assert.function
     path: /__export__markdown._context
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `markdown._context`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: markdown._headings
     from: assert.function
     path: /__export__markdown._headings
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `markdown._headings`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: markdown._links
     from: assert.function
     path: /__export__markdown._links
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `markdown._links`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: markdown._tokens_map
     from: assert.function
     path: /__export__markdown._tokens_map
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `markdown._tokens_map`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: markdown._token_owners
     from: assert.function
     path: /__export__markdown._token_owners
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `markdown._token_owners`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: markdown._token_dependencies
     from: assert.function
     path: /__export__markdown._token_dependencies
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `markdown._token_dependencies`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -303,6 +539,46 @@ harness:
     - subject
     - level
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.heading_level_exists`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: level
+        type: any
+        required: true
+        description: Input parameter `level`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          level: <level>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -368,6 +644,46 @@ harness:
     - subject
     - headings
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.section_order_valid`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: headings
+        type: any
+        required: true
+        description: Input parameter `headings`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          headings: <headings>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -400,6 +716,46 @@ harness:
     - subject
     - headings
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.required_sections_present`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: headings
+        type: any
+        required: true
+        description: Input parameter `headings`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          headings: <headings>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -434,6 +790,41 @@ harness:
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.link_targets_all_resolve`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -460,6 +851,41 @@ harness:
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.has_broken_links`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -493,6 +919,41 @@ harness:
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.has_yaml_spec_test_fence`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -537,6 +998,46 @@ harness:
     - subject
     - language
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.code_fence_language_exists`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: language
+        type: any
+        required: true
+        description: Input parameter `language`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          language: <language>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -571,6 +1072,46 @@ harness:
     - subject
     - token
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.token_present`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: token
+        type: any
+        required: true
+        description: Input parameter `token`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          token: <token>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -603,6 +1144,46 @@ harness:
     - subject
     - tokens
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.tokens_all_present`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: tokens
+        type: any
+        required: true
+        description: Input parameter `tokens`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          tokens: <tokens>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -637,6 +1218,41 @@ harness:
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.token_ownership_unique`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 
@@ -671,6 +1287,41 @@ harness:
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `domain.markdown.token_dependencies_resolved`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.markdown.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 

@@ -14,6 +14,39 @@ harness:
     - root
     - pattern
     required: true
+    doc:
+      summary: Contract export for `domain.repo.walk_matching`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: root
+        type: any
+        required: true
+        description: Input parameter `root`.
+      - name: pattern
+        type: any
+        required: true
+        description: Input parameter `pattern`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          root: <root>
+          pattern: <pattern>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
 contract:
   defaults:
     class: MUST
@@ -27,4 +60,11 @@ contract:
             var: pattern
           include_dirs: false
           relative: true
+library:
+  id: domain.repo.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```

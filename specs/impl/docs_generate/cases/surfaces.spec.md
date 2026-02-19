@@ -809,3 +809,40 @@ contract:
       ops.job.dispatch:
       - main
 ```
+
+## SRDOCGEN-023
+
+```yaml contract-spec
+id: SRDOCGEN-023
+type: contract.job
+title: library symbol reference surface generation
+harness:
+  docs_generate:
+    surface_id: library_symbol_reference
+    mode: write
+    output_mode: markers
+    template_path: /docs/book/templates/library_symbol_reference_template.md
+    output_path: /docs/book/93j_library_symbol_reference.md
+    marker_surface_id: library_symbol_reference
+    data_sources:
+    - id: catalog
+      source_type: generated_artifact
+      path: /.artifacts/library-symbol-catalog.json
+  jobs:
+    main:
+      helper: helper.docs.generate_all
+      mode: custom
+      inputs: {}
+  spec_lang:
+    capabilities:
+    - ops.job
+contract:
+  defaults:
+    class: MUST
+  steps:
+  - id: dispatch_main
+    'on': summary_json
+    assert:
+      ops.job.dispatch:
+      - main
+```

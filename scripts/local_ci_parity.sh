@@ -162,6 +162,7 @@ lane_rust_core() {
     else
       run_step spec-lang-lint-full "${SPEC_CI_PYTHON}" -m spec_runner.spec_lang_commands spec-lang-lint --cases specs
       run_step spec-lang-format-check-full "${SPEC_CI_PYTHON}" -m spec_runner.spec_lang_commands spec-lang-format --check specs
+      run_step library-symbol-catalog-check "${SPEC_CI_PYTHON}" -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check
     fi
   else
     echo "[local-ci-parity] skip spec-lang-lint (no matching changes)"

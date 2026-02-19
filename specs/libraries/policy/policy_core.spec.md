@@ -44,12 +44,68 @@ harness:
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `policy.pass_when_no_violations`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: policy.fail_when_has_violations
     from: assert.function
     path: /__export__policy.fail_when_has_violations
     params:
     - subject
     required: true
+    doc:
+      summary: Contract export for `policy.fail_when_has_violations`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: policy.check_id_is
     from: assert.function
     path: /__export__policy.check_id_is
@@ -57,6 +113,39 @@ harness:
     - subject
     - expected
     required: true
+    doc:
+      summary: Contract export for `policy.check_id_is`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: expected
+        type: any
+        required: true
+        description: Input parameter `expected`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          expected: <expected>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: policy.violation_count_is
     from: assert.function
     path: /__export__policy.violation_count_is
@@ -64,4 +153,44 @@ harness:
     - subject
     - expected
     required: true
+    doc:
+      summary: Contract export for `policy.violation_count_is`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: expected
+        type: any
+        required: true
+        description: Input parameter `expected`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          expected: <expected>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: policy.policy.core
+  module: policy
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - policy
 ```

@@ -32,8 +32,9 @@ Nested `lit` wrappers are forbidden.
 
 Use tooling to enforce/normalize:
 
-- lint: `python scripts/spec_lang_lint.py --cases specs`
-- format: `python scripts/spec_lang_format.py --write specs`
+- lint: `python -m spec_runner.spec_lang_commands spec-lang-lint --cases specs`
+- format: `python -m spec_runner.spec_lang_commands spec-lang-format --write specs`
+- library symbol docs sync: `python -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check`
   - `runtime`: runtime profile name from policy (for example `php`)
   - `min_words`: integer override
   - `placeholders`: list override
@@ -66,6 +67,14 @@ Spec-lang lint code contract:
 - `SLINT017` operator-shaped `lit` wrapper forbidden (autofixable)
 - `SLINT018` redundant nested group matches step class (autofixable)
 - `SLINT019` nested assert groups forbidden inside step `asserts`
+- `SLINT033` `contract.export` case missing `library` metadata
+- `SLINT034` `library.stability` must be `alpha|beta|stable|internal`
+- `SLINT035` `library` required scalar metadata field is empty
+- `SLINT036` `contract.export` must declare non-empty `harness.exports`
+- `SLINT039` `harness.exports[].doc` missing or wrong shape
+- `SLINT049` `doc.params` names/order mismatch exported params
+- `SLINT052` `doc.examples` missing/empty
+- `SLINT054` `doc.portability.<runtime>` must be boolean
 
 Rationale:
 

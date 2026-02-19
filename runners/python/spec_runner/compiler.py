@@ -7,6 +7,19 @@ from spec_runner.internal_model import GroupNode, InternalAssertNode, InternalSp
 from spec_runner.schema_validator import validate_case_shape
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
 
+_LIBRARY_DOC_ALLOWED_KEYS = {
+    "summary",
+    "description",
+    "params",
+    "returns",
+    "errors",
+    "examples",
+    "portability",
+    "see_also",
+    "since",
+    "deprecated",
+}
+
 
 def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -> PredicateLeaf:
     if not isinstance(raw_expr, dict) or not raw_expr:
@@ -31,6 +44,157 @@ def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -
         expr=expr,
         assert_path=assert_path,
     )
+
+
+def _validate_contract_export_docs(raw_case: dict[str, Any]) -> list[str]:
+    issues: list[str] = []
+    case_id = str(raw_case.get("id", "")).strip() or "<unknown>"
+    library = raw_case.get("library")
+    if not isinstance(library, dict):
+        return [f"case {case_id}: contract.export requires library mapping"]
+    lid = str(library.get("id", "")).strip()
+    module = str(library.get("module", "")).strip()
+    stability = str(library.get("stability", "")).strip()
+    owner = str(library.get("owner", "")).strip()
+    if not lid:
+        issues.append(f"case {case_id}: library.id must be non-empty")
+    if not module:
+        issues.append(f"case {case_id}: library.module must be non-empty")
+    if stability not in {"alpha", "beta", "stable", "internal"}:
+        issues.append(
+            f"case {case_id}: library.stability must be one of alpha|beta|stable|internal"
+        )
+    if not owner:
+        issues.append(f"case {case_id}: library.owner must be non-empty")
+    tags = library.get("tags")
+    if tags is not None and (
+        not isinstance(tags, list) or any(not isinstance(x, str) or not str(x).strip() for x in tags)
+    ):
+        issues.append(f"case {case_id}: library.tags must be list of non-empty strings when provided")
+
+    harness = raw_case.get("harness")
+    if not isinstance(harness, dict):
+        return [*issues, f"case {case_id}: contract.export requires harness mapping"]
+    exports = harness.get("exports")
+    if not isinstance(exports, list) or not exports:
+        return [*issues, f"case {case_id}: harness.exports must be a non-empty list"]
+
+    for idx, raw_export in enumerate(exports):
+        where = f"case {case_id}: harness.exports[{idx}]"
+        if not isinstance(raw_export, dict):
+            issues.append(f"{where} must be mapping")
+            continue
+        params = raw_export.get("params")
+        if not isinstance(params, list) or any(not isinstance(x, str) or not str(x).strip() for x in params):
+            issues.append(f"{where}.params must be list of non-empty strings")
+            params = []
+        else:
+            params = [str(x).strip() for x in params]
+        doc = raw_export.get("doc")
+        if not isinstance(doc, dict):
+            issues.append(f"{where}.doc must be mapping")
+            continue
+        unknown_doc = sorted(str(k) for k in doc.keys() if str(k) not in _LIBRARY_DOC_ALLOWED_KEYS)
+        if unknown_doc:
+            issues.append(f"{where}.doc has unsupported keys: {', '.join(unknown_doc)}")
+        summary = str(doc.get("summary", "")).strip()
+        description = str(doc.get("description", "")).strip()
+        if not summary:
+            issues.append(f"{where}.doc.summary must be non-empty")
+        if not description:
+            issues.append(f"{where}.doc.description must be non-empty")
+
+        doc_params = doc.get("params")
+        if not isinstance(doc_params, list) or not doc_params:
+            issues.append(f"{where}.doc.params must be non-empty list")
+        else:
+            names: list[str] = []
+            for pidx, item in enumerate(doc_params):
+                pwhere = f"{where}.doc.params[{pidx}]"
+                if not isinstance(item, dict):
+                    issues.append(f"{pwhere} must be mapping")
+                    continue
+                name = str(item.get("name", "")).strip()
+                ptype = str(item.get("type", "")).strip()
+                pdesc = str(item.get("description", "")).strip()
+                preq = item.get("required")
+                if not name:
+                    issues.append(f"{pwhere}.name must be non-empty")
+                if not ptype:
+                    issues.append(f"{pwhere}.type must be non-empty")
+                if not pdesc:
+                    issues.append(f"{pwhere}.description must be non-empty")
+                if not isinstance(preq, bool):
+                    issues.append(f"{pwhere}.required must be bool")
+                names.append(name)
+            if names != list(params):
+                issues.append(f"{where}.doc.params names must match params exactly")
+
+        returns = doc.get("returns")
+        if not isinstance(returns, dict):
+            issues.append(f"{where}.doc.returns must be mapping")
+        else:
+            if not str(returns.get("type", "")).strip():
+                issues.append(f"{where}.doc.returns.type must be non-empty")
+            if not str(returns.get("description", "")).strip():
+                issues.append(f"{where}.doc.returns.description must be non-empty")
+
+        errors = doc.get("errors")
+        if not isinstance(errors, list) or not errors:
+            issues.append(f"{where}.doc.errors must be non-empty list")
+        else:
+            for eidx, item in enumerate(errors):
+                ewhere = f"{where}.doc.errors[{eidx}]"
+                if not isinstance(item, dict):
+                    issues.append(f"{ewhere} must be mapping")
+                    continue
+                if not str(item.get("code", "")).strip():
+                    issues.append(f"{ewhere}.code must be non-empty")
+                if not str(item.get("when", "")).strip():
+                    issues.append(f"{ewhere}.when must be non-empty")
+                category = str(item.get("category", "")).strip()
+                if category not in {"schema", "assertion", "runtime"}:
+                    issues.append(f"{ewhere}.category must be schema|assertion|runtime")
+
+        examples = doc.get("examples")
+        if not isinstance(examples, list) or not examples:
+            issues.append(f"{where}.doc.examples must be non-empty list")
+        else:
+            for xidx, item in enumerate(examples):
+                xwhere = f"{where}.doc.examples[{xidx}]"
+                if not isinstance(item, dict):
+                    issues.append(f"{xwhere} must be mapping")
+                    continue
+                if not str(item.get("title", "")).strip():
+                    issues.append(f"{xwhere}.title must be non-empty")
+                if item.get("input") is None:
+                    issues.append(f"{xwhere}.input is required")
+                if item.get("expected") is None:
+                    issues.append(f"{xwhere}.expected is required")
+
+        portability = doc.get("portability")
+        if not isinstance(portability, dict):
+            issues.append(f"{where}.doc.portability must be mapping")
+        else:
+            for key in ("python", "php", "rust"):
+                if not isinstance(portability.get(key), bool):
+                    issues.append(f"{where}.doc.portability.{key} must be bool")
+        see_also = doc.get("see_also")
+        if see_also is not None and (
+            not isinstance(see_also, list)
+            or any(not isinstance(x, str) or not str(x).strip() for x in see_also)
+        ):
+            issues.append(f"{where}.doc.see_also must be list of non-empty strings when provided")
+        deprecated = doc.get("deprecated")
+        if deprecated is not None:
+            if not isinstance(deprecated, dict):
+                issues.append(f"{where}.doc.deprecated must be mapping when provided")
+            else:
+                if not str(deprecated.get("replacement", "")).strip():
+                    issues.append(f"{where}.doc.deprecated.replacement must be non-empty")
+                if not str(deprecated.get("reason", "")).strip():
+                    issues.append(f"{where}.doc.deprecated.reason must be non-empty")
+    return issues
 
 
 def _looks_like_assert_step_v1(item: Any) -> bool:
@@ -224,6 +388,9 @@ def compile_external_case(raw_case: dict[str, Any], *, doc_path: Path) -> Intern
     assert_tree: InternalAssertNode
     producer_export_type = type_name in {"contract.export"}
     if producer_export_type:
+        export_doc_issues = _validate_contract_export_docs(raw_case)
+        if export_doc_issues:
+            raise ValueError("; ".join(export_doc_issues))
         # Producer-only case type: exported callables are compiled from raw
         # contract step asserts via chain_engine, not from runtime assertion targets.
         assert_tree = GroupNode(op="MUST", target=None, children=[], assert_path="contract")

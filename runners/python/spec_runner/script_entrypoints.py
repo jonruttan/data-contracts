@@ -9,6 +9,7 @@ from spec_runner.docs_generate_specs import main as _docs_generate_specs_main
 from spec_runner.docs_operability_report import main as _docs_operability_report_main
 from spec_runner.generate_governance_check_catalog import main as _generate_governance_check_catalog_main
 from spec_runner.generate_harness_type_catalog import main as _generate_harness_type_catalog_main
+from spec_runner.generate_library_symbol_catalog import main as _generate_library_symbol_catalog_main
 from spec_runner.generate_metrics_field_catalog import main as _generate_metrics_field_catalog_main
 from spec_runner.generate_policy_rule_catalog import main as _generate_policy_rule_catalog_main
 from spec_runner.generate_runner_api_catalog import main as _generate_runner_api_catalog_main
@@ -128,6 +129,10 @@ def generate_governance_check_catalog_main(argv: list[str] | None = None) -> int
 
 def generate_harness_type_catalog_main(argv: list[str] | None = None) -> int:
     return int(_generate_harness_type_catalog_main(argv))
+
+
+def generate_library_symbol_catalog_main(argv: list[str] | None = None) -> int:
+    return int(_generate_library_symbol_catalog_main(argv))
 
 
 def generate_metrics_field_catalog_main(argv: list[str] | None = None) -> int:

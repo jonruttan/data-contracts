@@ -28,6 +28,41 @@ harness:
     params:
     - path
     required: true
+    doc:
+      summary: Contract export for `domain.fs.is_docs_spec_file`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: path
+        type: any
+        required: true
+        description: Input parameter `path`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          path: <path>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -51,6 +86,41 @@ harness:
     params:
     - paths
     required: true
+    doc:
+      summary: Contract export for `domain.fs.sort_spec_files`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: paths
+        type: any
+        required: true
+        description: Input parameter `paths`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          paths: <paths>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -77,6 +147,51 @@ harness:
     - path_segments
     - fallback
     required: true
+    doc:
+      summary: Contract export for `domain.fs.json_get_or_text`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: json_text
+        type: any
+        required: true
+        description: Input parameter `json_text`.
+      - name: path_segments
+        type: any
+        required: true
+        description: Input parameter `path_segments`.
+      - name: fallback
+        type: any
+        required: true
+        description: Input parameter `fallback`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          json_text: <json_text>
+          path_segments: <path_segments>
+          fallback: <fallback>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -101,6 +216,46 @@ harness:
     - json_text
     - path_segments
     required: true
+    doc:
+      summary: Contract export for `domain.fs.json_has_path_text`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: json_text
+        type: any
+        required: true
+        description: Input parameter `json_text`.
+      - name: path_segments
+        type: any
+        required: true
+        description: Input parameter `path_segments`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          json_text: <json_text>
+          path_segments: <path_segments>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -123,6 +278,41 @@ harness:
     params:
     - paths
     required: true
+    doc:
+      summary: Contract export for `domain.fs.glob_any_spec_files`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: paths
+        type: any
+        required: true
+        description: Input parameter `paths`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          paths: <paths>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -147,6 +337,46 @@ harness:
     - meta
     - ext
     required: true
+    doc:
+      summary: Contract export for `domain.fs.file_ext_eq`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: meta
+        type: any
+        required: true
+        description: Input parameter `meta`.
+      - name: ext
+        type: any
+        required: true
+        description: Input parameter `ext`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          meta: <meta>
+          ext: <ext>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -171,6 +401,46 @@ harness:
     - json_text
     - path_segments
     required: true
+    doc:
+      summary: Contract export for `domain.fs.json_get_text`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: json_text
+        type: any
+        required: true
+        description: Input parameter `json_text`.
+      - name: path_segments
+        type: any
+        required: true
+        description: Input parameter `path_segments`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          json_text: <json_text>
+          path_segments: <path_segments>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -199,6 +469,51 @@ harness:
     - path_segments
     - expected
     required: true
+    doc:
+      summary: Contract export for `domain.fs.json_path_eq_text`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: json_text
+        type: any
+        required: true
+        description: Input parameter `json_text`.
+      - name: path_segments
+        type: any
+        required: true
+        description: Input parameter `path_segments`.
+      - name: expected
+        type: any
+        required: true
+        description: Input parameter `expected`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          json_text: <json_text>
+          path_segments: <path_segments>
+          expected: <expected>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -222,6 +537,46 @@ harness:
     - paths
     - pattern
     required: true
+    doc:
+      summary: Contract export for `domain.fs.glob_filter`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: paths
+        type: any
+        required: true
+        description: Input parameter `paths`.
+      - name: pattern
+        type: any
+        required: true
+        description: Input parameter `pattern`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          paths: <paths>
+          pattern: <pattern>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -245,4 +600,44 @@ harness:
     - paths
     - pattern
     required: true
+    doc:
+      summary: Contract export for `domain.fs.glob_all`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: paths
+        type: any
+        required: true
+        description: Input parameter `paths`.
+      - name: pattern
+        type: any
+        required: true
+        description: Input parameter `pattern`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          paths: <paths>
+          pattern: <pattern>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.fs.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```

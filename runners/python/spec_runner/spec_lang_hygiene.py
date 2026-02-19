@@ -854,6 +854,259 @@ def _lint_defines(case: dict[str, Any], *, issues: list[SpecLangIssue], path: Pa
             )
 
 
+def _lint_library_export_docs(
+    case: dict[str, Any],
+    *,
+    issues: list[SpecLangIssue],
+    path: Path,
+    case_id: str,
+) -> None:
+    if str(case.get("type", "")).strip() != "contract.export":
+        return
+    library = case.get("library")
+    if not isinstance(library, dict):
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="library",
+            code="SLINT033",
+            message="contract.export requires library metadata mapping",
+        )
+        return
+    stability = str(library.get("stability", "")).strip()
+    if stability not in {"alpha", "beta", "stable", "internal"}:
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="library.stability",
+            code="SLINT034",
+            message="library.stability must be alpha|beta|stable|internal",
+        )
+    for req in ("id", "module", "owner"):
+        if not str(library.get(req, "")).strip():
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"library.{req}",
+                code="SLINT035",
+                message=f"library.{req} must be non-empty",
+            )
+
+    harness = case.get("harness")
+    exports = harness.get("exports") if isinstance(harness, dict) else None
+    if not isinstance(exports, list) or not exports:
+        _append_issue(
+            issues,
+            path=path,
+            case_id=case_id,
+            field="harness.exports",
+            code="SLINT036",
+            message="contract.export requires non-empty harness.exports list",
+        )
+        return
+    for idx, exp in enumerate(exports):
+        efield = f"harness.exports[{idx}]"
+        if not isinstance(exp, dict):
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=efield,
+                code="SLINT037",
+                message="harness.exports entry must be mapping",
+            )
+            continue
+        params = exp.get("params")
+        export_params: list[str] = []
+        if not isinstance(params, list) or any(not isinstance(x, str) or not str(x).strip() for x in params):
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.params",
+                code="SLINT038",
+                message="harness.exports[].params must be list of non-empty strings",
+            )
+        else:
+            export_params = [str(x).strip() for x in params]
+        doc = exp.get("doc")
+        if not isinstance(doc, dict):
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.doc",
+                code="SLINT039",
+                message="harness.exports[].doc must be mapping",
+            )
+            continue
+        allowed = {
+            "summary",
+            "description",
+            "params",
+            "returns",
+            "errors",
+            "examples",
+            "portability",
+            "see_also",
+            "since",
+            "deprecated",
+        }
+        unknown = sorted(str(k) for k in doc.keys() if str(k) not in allowed)
+        if unknown:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.doc",
+                code="SLINT040",
+                message=f"unsupported doc keys: {', '.join(unknown)}",
+            )
+        if not str(doc.get("summary", "")).strip():
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.doc.summary",
+                code="SLINT041",
+                message="doc.summary must be non-empty",
+            )
+        if not str(doc.get("description", "")).strip():
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.doc.description",
+                code="SLINT042",
+                message="doc.description must be non-empty",
+            )
+        doc_params = doc.get("params")
+        if not isinstance(doc_params, list) or not doc_params:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.doc.params",
+                code="SLINT043",
+                message="doc.params must be non-empty list",
+            )
+        else:
+            names: list[str] = []
+            for pidx, item in enumerate(doc_params):
+                pfield = f"{efield}.doc.params[{pidx}]"
+                if not isinstance(item, dict):
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=pfield,
+                        code="SLINT044",
+                        message="doc.params entry must be mapping",
+                    )
+                    continue
+                name = str(item.get("name", "")).strip()
+                if not name:
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=f"{pfield}.name",
+                        code="SLINT045",
+                        message="doc.params.name must be non-empty",
+                    )
+                if not str(item.get("type", "")).strip():
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=f"{pfield}.type",
+                        code="SLINT046",
+                        message="doc.params.type must be non-empty",
+                    )
+                if not str(item.get("description", "")).strip():
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=f"{pfield}.description",
+                        code="SLINT047",
+                        message="doc.params.description must be non-empty",
+                    )
+                if not isinstance(item.get("required"), bool):
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=f"{pfield}.required",
+                        code="SLINT048",
+                        message="doc.params.required must be bool",
+                    )
+                names.append(name)
+            if names != export_params:
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"{efield}.doc.params",
+                    code="SLINT049",
+                    message="doc.params names must exactly match harness.exports[].params",
+                )
+        returns = doc.get("returns")
+        if not isinstance(returns, dict):
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.doc.returns",
+                code="SLINT050",
+                message="doc.returns must be mapping",
+            )
+        errors = doc.get("errors")
+        if not isinstance(errors, list) or not errors:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.doc.errors",
+                code="SLINT051",
+                message="doc.errors must be non-empty list",
+            )
+        examples = doc.get("examples")
+        if not isinstance(examples, list) or not examples:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.doc.examples",
+                code="SLINT052",
+                message="doc.examples must be non-empty list",
+            )
+        portability = doc.get("portability")
+        if not isinstance(portability, dict):
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"{efield}.doc.portability",
+                code="SLINT053",
+                message="doc.portability must be mapping",
+            )
+        else:
+            for runtime in ("python", "php", "rust"):
+                if not isinstance(portability.get(runtime), bool):
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=f"{efield}.doc.portability.{runtime}",
+                        code="SLINT054",
+                        message=f"doc.portability.{runtime} must be bool",
+                    )
+
+
 def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: Path, case_id: str) -> None:
     contract = case.get("contract")
     if contract is None:
@@ -1003,6 +1256,7 @@ def lint_cases(
     ):
         case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
         _lint_contract(case, issues=issues, path=path, case_id=case_id)
+        _lint_library_export_docs(case, issues=issues, path=path, case_id=case_id)
         harness = case.get("harness")
         if isinstance(harness, dict):
             if "chain" in harness:

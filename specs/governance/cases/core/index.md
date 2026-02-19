@@ -56,6 +56,10 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/docs_index_filename_policy.spec.md`
 - `/specs/governance/cases/core/docs_instructions_complete.spec.md`
 - `/specs/governance/cases/core/docs_layout_canonical_trees.spec.md`
+- `/specs/governance/cases/core/docs_library_symbol_catalog_sync.spec.md`
+- `/specs/governance/cases/core/docs_library_symbol_examples_present.spec.md`
+- `/specs/governance/cases/core/docs_library_symbol_metadata_complete.spec.md`
+- `/specs/governance/cases/core/docs_library_symbol_params_sync.spec.md`
 - `/specs/governance/cases/core/docs_make_commands_sync.spec.md`
 - `/specs/governance/cases/core/docs_markdown_structured_assertions_required.spec.md`
 - `/specs/governance/cases/core/docs_meta_schema_valid.spec.md`

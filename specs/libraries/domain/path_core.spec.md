@@ -21,6 +21,41 @@ harness:
     params:
     - path
     required: true
+    doc:
+      summary: Contract export for `domain.path.normalize`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: path
+        type: any
+        required: true
+        description: Input parameter `path`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          path: <path>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.path.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -46,6 +81,46 @@ harness:
     - left
     - right
     required: true
+    doc:
+      summary: Contract export for `domain.path.eq`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: left
+        type: any
+        required: true
+        description: Input parameter `left`.
+      - name: right
+        type: any
+        required: true
+        description: Input parameter `right`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          left: <left>
+          right: <right>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.path.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -69,6 +144,41 @@ harness:
     params:
     - path
     required: true
+    doc:
+      summary: Contract export for `domain.path.is_spec_md`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: path
+        type: any
+        required: true
+        description: Input parameter `path`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          path: <path>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.path.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -92,6 +202,41 @@ harness:
     params:
     - path
     required: true
+    doc:
+      summary: Contract export for `domain.path.is_in_docs`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: path
+        type: any
+        required: true
+        description: Input parameter `path`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          path: <path>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.path.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -113,6 +258,41 @@ harness:
     params:
     - paths
     required: true
+    doc:
+      summary: Contract export for `domain.path.sorted`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: paths
+        type: any
+        required: true
+        description: Input parameter `paths`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          paths: <paths>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.path.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -137,6 +317,41 @@ harness:
     params:
     - meta
     required: true
+    doc:
+      summary: Contract export for `domain.file.is_existing_file`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: meta
+        type: any
+        required: true
+        description: Input parameter `meta`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          meta: <meta>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.path.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -161,6 +376,41 @@ harness:
     params:
     - meta
     required: true
+    doc:
+      summary: Contract export for `domain.file.is_existing_dir`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: meta
+        type: any
+        required: true
+        description: Input parameter `meta`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          meta: <meta>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.path.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -185,6 +435,46 @@ harness:
     - meta
     - ext
     required: true
+    doc:
+      summary: Contract export for `domain.file.has_ext`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: meta
+        type: any
+        required: true
+        description: Input parameter `meta`.
+      - name: ext
+        type: any
+        required: true
+        description: Input parameter `ext`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          meta: <meta>
+          ext: <ext>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.path.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -206,4 +496,39 @@ harness:
     params:
     - meta
     required: true
+    doc:
+      summary: Contract export for `domain.file.name`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: meta
+        type: any
+        required: true
+        description: Input parameter `meta`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          meta: <meta>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.path.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```

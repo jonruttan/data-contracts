@@ -44,6 +44,39 @@ harness:
     - subject
     - token
     required: true
+    doc:
+      summary: Contract export for `conf.pass_when_text_contains`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: token
+        type: any
+        required: true
+        description: Input parameter `token`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          token: <token>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: conf.pass_when_text_regex
     from: assert.function
     path: /__export__conf.pass_when_text_regex
@@ -51,6 +84,39 @@ harness:
     - subject
     - pattern
     required: true
+    doc:
+      summary: Contract export for `conf.pass_when_text_regex`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: pattern
+        type: any
+        required: true
+        description: Input parameter `pattern`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          pattern: <pattern>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: conf.eq
     from: assert.function
     path: /__export__conf.eq
@@ -58,6 +124,39 @@ harness:
     - subject
     - value
     required: true
+    doc:
+      summary: Contract export for `conf.eq`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: value
+        type: any
+        required: true
+        description: Input parameter `value`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          value: <value>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: conf.has_error_category
     from: assert.function
     path: /__export__conf.has_error_category
@@ -65,6 +164,39 @@ harness:
     - subject
     - category
     required: true
+    doc:
+      summary: Contract export for `conf.has_error_category`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: category
+        type: any
+        required: true
+        description: Input parameter `category`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          category: <category>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
   - as: conf.json_type_is
     from: assert.function
     path: /__export__conf.json_type_is
@@ -72,4 +204,44 @@ harness:
     - subject
     - type_name
     required: true
+    doc:
+      summary: Contract export for `conf.json_type_is`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: type_name
+        type: any
+        required: true
+        description: Input parameter `type_name`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          type_name: <type_name>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: conformance.assertion.core
+  module: conformance
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - conformance
 ```

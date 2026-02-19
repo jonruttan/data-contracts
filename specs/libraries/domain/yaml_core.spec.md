@@ -26,6 +26,51 @@ harness:
     - path_segments
     - fallback
     required: true
+    doc:
+      summary: Contract export for `domain.yaml.parse_get_or`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: yaml_text
+        type: any
+        required: true
+        description: Input parameter `yaml_text`.
+      - name: path_segments
+        type: any
+        required: true
+        description: Input parameter `path_segments`.
+      - name: fallback
+        type: any
+        required: true
+        description: Input parameter `fallback`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          yaml_text: <yaml_text>
+          path_segments: <path_segments>
+          fallback: <fallback>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.yaml.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -47,4 +92,39 @@ harness:
     params:
     - value
     required: true
+    doc:
+      summary: Contract export for `domain.yaml.stringify`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: value
+        type: any
+        required: true
+        description: Input parameter `value`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          value: <value>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.yaml.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```

@@ -25,6 +25,46 @@ harness:
     - command
     - timeout_ms
     required: true
+    doc:
+      summary: Contract export for `domain.os.exec_ok`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: command
+        type: any
+        required: true
+        description: Input parameter `command`.
+      - name: timeout_ms
+        type: any
+        required: true
+        description: Input parameter `timeout_ms`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          command: <command>
+          timeout_ms: <timeout_ms>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.os.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -53,6 +93,51 @@ harness:
     - timeout_ms
     - expected_code
     required: true
+    doc:
+      summary: Contract export for `domain.os.exec_capture_code`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: command
+        type: any
+        required: true
+        description: Input parameter `command`.
+      - name: timeout_ms
+        type: any
+        required: true
+        description: Input parameter `timeout_ms`.
+      - name: expected_code
+        type: any
+        required: true
+        description: Input parameter `expected_code`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          command: <command>
+          timeout_ms: <timeout_ms>
+          expected_code: <expected_code>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.os.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -74,4 +159,39 @@ harness:
     params:
     - key
     required: true
+    doc:
+      summary: Contract export for `domain.os.env_has`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: key
+        type: any
+        required: true
+        description: Input parameter `key`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          key: <key>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.os.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```

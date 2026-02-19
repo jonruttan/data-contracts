@@ -23,6 +23,41 @@ harness:
     path: /__export__domain.http.status
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.status`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -49,6 +84,46 @@ harness:
     params:
     - subject
     - allowed
+    doc:
+      summary: Contract export for `domain.http.status_in`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: allowed
+        type: any
+        required: true
+        description: Input parameter `allowed`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          allowed: <allowed>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -75,6 +150,46 @@ harness:
     params:
     - subject
     - expected
+    doc:
+      summary: Contract export for `domain.http.status_is`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: expected
+        type: any
+        required: true
+        description: Input parameter `expected`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          expected: <expected>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -98,6 +213,41 @@ harness:
     path: /__export__domain.http.status_is_unauthorized
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.status_is_unauthorized`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -121,6 +271,41 @@ harness:
     path: /__export__domain.http.status_is_forbidden
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.status_is_forbidden`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -154,6 +339,41 @@ harness:
     path: /__export__domain.http.ok_2xx
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.ok_2xx`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -180,6 +400,46 @@ harness:
     params:
     - subject
     - key
+    doc:
+      summary: Contract export for `domain.http.header_get`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: key
+        type: any
+        required: true
+        description: Input parameter `key`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          key: <key>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -209,6 +469,51 @@ harness:
     - subject
     - key
     - token
+    doc:
+      summary: Contract export for `domain.http.header_contains`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: key
+        type: any
+        required: true
+        description: Input parameter `key`.
+      - name: token
+        type: any
+        required: true
+        description: Input parameter `token`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          key: <key>
+          token: <token>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -232,6 +537,41 @@ harness:
     path: /__export__domain.http.body_text
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.body_text`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -255,6 +595,41 @@ harness:
     path: /__export__domain.http.body_json
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.body_json`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -281,6 +656,46 @@ harness:
     params:
     - subject
     - expected_type
+    doc:
+      summary: Contract export for `domain.http.body_json_type_is`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: expected_type
+        type: any
+        required: true
+        description: Input parameter `expected_type`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          expected_type: <expected_type>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -307,6 +722,46 @@ harness:
     params:
     - subject
     - key
+    doc:
+      summary: Contract export for `domain.http.body_json_has_key`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: key
+        type: any
+        required: true
+        description: Input parameter `key`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          key: <key>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -332,6 +787,41 @@ harness:
     path: /__export__domain.http.auth_is_oauth
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.auth_is_oauth`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -358,6 +848,46 @@ harness:
     params:
     - subject
     - expected
+    doc:
+      summary: Contract export for `domain.http.oauth_token_source_is`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: expected
+        type: any
+        required: true
+        description: Input parameter `expected`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          expected: <expected>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -385,6 +915,41 @@ harness:
     path: /__export__domain.http.has_bearer_header
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.has_bearer_header`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -412,6 +977,41 @@ harness:
     path: /__export__domain.http.oauth_scope_requested
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.oauth_scope_requested`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -437,6 +1037,41 @@ harness:
     path: /__export__domain.http.cors_allow_origin
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.cors_allow_origin`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -465,6 +1100,46 @@ harness:
     params:
     - subject
     - method_name
+    doc:
+      summary: Contract export for `domain.http.cors_allows_method`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: method_name
+        type: any
+        required: true
+        description: Input parameter `method_name`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          method_name: <method_name>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -493,6 +1168,46 @@ harness:
     params:
     - subject
     - header_name
+    doc:
+      summary: Contract export for `domain.http.cors_allows_header`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: header_name
+        type: any
+        required: true
+        description: Input parameter `header_name`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          header_name: <header_name>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -520,6 +1235,41 @@ harness:
     path: /__export__domain.http.cors_credentials_enabled
     params:
     - subject
+    doc:
+      summary: Contract export for `domain.http.cors_credentials_enabled`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -548,6 +1298,46 @@ harness:
     params:
     - subject
     - min_age
+    doc:
+      summary: Contract export for `domain.http.cors_max_age_gte`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: min_age
+        type: any
+        required: true
+        description: Input parameter `min_age`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          min_age: <min_age>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -571,6 +1361,41 @@ harness:
     path: /__export__domain.http.is_preflight_step
     params:
     - step
+    doc:
+      summary: Contract export for `domain.http.is_preflight_step`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: step
+        type: any
+        required: true
+        description: Input parameter `step`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          step: <step>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -599,6 +1424,46 @@ harness:
     params:
     - steps
     - step_id
+    doc:
+      summary: Contract export for `domain.http.step_by_id`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: steps
+        type: any
+        required: true
+        description: Input parameter `steps`.
+      - name: step_id
+        type: any
+        required: true
+        description: Input parameter `step_id`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          steps: <steps>
+          step_id: <step_id>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -627,6 +1492,51 @@ harness:
     - steps
     - step_id
     - expected
+    doc:
+      summary: Contract export for `domain.http.step_status_is`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: steps
+        type: any
+        required: true
+        description: Input parameter `steps`.
+      - name: step_id
+        type: any
+        required: true
+        description: Input parameter `step_id`.
+      - name: expected
+        type: any
+        required: true
+        description: Input parameter `expected`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          steps: <steps>
+          step_id: <step_id>
+          expected: <expected>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -655,4 +1565,49 @@ harness:
     - steps
     - step_id
     - field
+    doc:
+      summary: Contract export for `domain.http.step_body_json_get`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: steps
+        type: any
+        required: true
+        description: Input parameter `steps`.
+      - name: step_id
+        type: any
+        required: true
+        description: Input parameter `step_id`.
+      - name: field
+        type: any
+        required: true
+        description: Input parameter `field`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          steps: <steps>
+          step_id: <step_id>
+          field: <field>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.http.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```

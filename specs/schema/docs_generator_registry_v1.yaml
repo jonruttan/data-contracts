@@ -114,6 +114,34 @@ surfaces:
   - id: harness
     source_type: generated_artifact
     path: /.artifacts/harness-type-catalog.json
+- surface_id: library_symbol_reference
+  source_type: manifest_yaml
+  inputs:
+  - /specs/libraries
+  - /specs/schema/schema_v1.md
+  outputs:
+  - /.artifacts/library-symbol-catalog.json
+  - /docs/book/93j_library_symbol_reference.md
+  - /docs/book/93k_library_symbol_index.md
+  generator: generate_library_symbol_catalog
+  check_mode_supported: true
+  owner_contract_docs:
+  - /specs/contract/14_spec_lang_libraries.md
+  - /specs/contract/10_docs_quality.md
+  determinism_hash_fields:
+  - summary
+  - modules
+  - symbols
+  read_only_sections:
+  - /docs/book/93j_library_symbol_reference.md
+  - /docs/book/93k_library_symbol_index.md
+  template_path: /docs/book/templates/library_symbol_reference_template.md
+  output_mode: markers
+  marker_surface_id: library_symbol_reference
+  data_sources:
+  - id: catalog
+    source_type: generated_artifact
+    path: /.artifacts/library-symbol-catalog.json
 - surface_id: spec_lang_builtin_catalog
   source_type: code_scan
   inputs:

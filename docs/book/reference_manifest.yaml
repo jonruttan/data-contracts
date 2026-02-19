@@ -100,6 +100,14 @@ chapters:
   contract_refs:
   - specs/contract/03b_spec_lang_v1.md
   - specs/contract/19_spec_lang_stdlib_profile_v1.md
+- path: /docs/book/93j_library_symbol_reference.md
+  summary: generated API-first reference for spec library export symbols.
+  contract_refs:
+  - specs/contract/14_spec_lang_libraries.md
+- path: /docs/book/93k_library_symbol_index.md
+  summary: generated index for library symbols grouped by module.
+  contract_refs:
+  - specs/contract/14_spec_lang_libraries.md
 - path: /docs/book/94_appendix_contract_policy_reference.md
   summary: generated policy rule catalog.
   contract_refs:

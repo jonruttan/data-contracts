@@ -26,6 +26,46 @@ harness:
     - condition
     - message
     required: true
+    doc:
+      summary: Contract export for `domain.conformance.error_when_false`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: condition
+        type: any
+        required: true
+        description: Input parameter `condition`.
+      - name: message
+        type: any
+        required: true
+        description: Input parameter `message`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          condition: <condition>
+          message: <message>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.conformance.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -50,6 +90,41 @@ harness:
     params:
     - report
     required: true
+    doc:
+      summary: Contract export for `domain.conformance.report_version_is_v1`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: report
+        type: any
+        required: true
+        description: Input parameter `report`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          report: <report>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.conformance.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -73,6 +148,41 @@ harness:
     params:
     - report
     required: true
+    doc:
+      summary: Contract export for `domain.conformance.report_results_is_list`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: report
+        type: any
+        required: true
+        description: Input parameter `report`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          report: <report>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.conformance.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```
 
 ```yaml contract-spec
@@ -110,4 +220,39 @@ harness:
     params:
     - report
     required: true
+    doc:
+      summary: Contract export for `domain.conformance.validate_report_errors`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: report
+        type: any
+        required: true
+        description: Input parameter `report`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          report: <report>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: domain.conformance.core
+  module: domain
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - domain
 ```

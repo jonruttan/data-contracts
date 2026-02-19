@@ -32,6 +32,56 @@ harness:
     - baseline_field
     - epsilon
     required: true
+    doc:
+      summary: Contract export for `policy.metric_non_decrease`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: field
+        type: any
+        required: true
+        description: Input parameter `field`.
+      - name: baseline_field
+        type: any
+        required: true
+        description: Input parameter `baseline_field`.
+      - name: epsilon
+        type: any
+        required: true
+        description: Input parameter `epsilon`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          field: <field>
+          baseline_field: <baseline_field>
+          epsilon: <epsilon>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: policy.policy.metrics
+  module: policy
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - policy
 ```
 
 ```yaml contract-spec
@@ -64,6 +114,56 @@ harness:
     - baseline_field
     - epsilon
     required: true
+    doc:
+      summary: Contract export for `policy.metric_non_increase`.
+      description: Auto-generated metadata stub. Replace with authored reference text.
+      params:
+      - name: subject
+        type: any
+        required: true
+        description: Input parameter `subject`.
+      - name: field
+        type: any
+        required: true
+        description: Input parameter `field`.
+      - name: baseline_field
+        type: any
+        required: true
+        description: Input parameter `baseline_field`.
+      - name: epsilon
+        type: any
+        required: true
+        description: Input parameter `epsilon`.
+      returns:
+        type: any
+        description: Result payload for this symbol.
+      errors:
+      - code: SCHEMA_ERROR
+        when: Input payload does not satisfy contract shape requirements.
+        category: schema
+      examples:
+      - title: Basic usage
+        input:
+          subject: <subject>
+          field: <field>
+          baseline_field: <baseline_field>
+          epsilon: <epsilon>
+        expected: <result>
+        notes: Replace with a concrete scenario.
+      portability:
+        python: true
+        php: true
+        rust: true
+        notes: Confirm per-runtime behavior and caveats.
+      see_also: []
+      since: v1
+library:
+  id: policy.policy.metrics
+  module: policy
+  stability: alpha
+  owner: spec_runner
+  tags:
+  - policy
 ```
 
 ```yaml contract-spec

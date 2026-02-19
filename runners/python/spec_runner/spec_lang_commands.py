@@ -35,6 +35,7 @@ from spec_runner.script_entrypoints import (
     quality_metric_reports_main,
     run_governance_specs_main,
     perf_smoke_main,
+    generate_library_symbol_catalog_main,
     spec_portability_report_main,
     split_library_cases_per_symbol_main,
 )
@@ -359,6 +360,7 @@ def main(argv: list[str] | None = None) -> int:
             "quality-metric-reports",
             "run-governance-specs",
             "perf-smoke",
+            "generate-library-symbol-catalog",
             "spec-portability-report",
             "split-library-cases-per-symbol",
         ),
@@ -409,6 +411,8 @@ def main(argv: list[str] | None = None) -> int:
         return run_governance_specs_main(forwarded)
     if ns.command == "perf-smoke":
         return perf_smoke_main(forwarded)
+    if ns.command == "generate-library-symbol-catalog":
+        return generate_library_symbol_catalog_main(forwarded)
     if ns.command == "spec-portability-report":
         return spec_portability_report_main(forwarded)
     if ns.command == "split-library-cases-per-symbol":

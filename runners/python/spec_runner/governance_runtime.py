@@ -5288,6 +5288,174 @@ def _scan_docs_generator_outputs_sync(root: Path, *, harness: dict | None = None
     )
 
 
+def _iter_library_export_entries(root: Path) -> list[tuple[str, str, int, dict[str, Any]]]:
+    out: list[tuple[str, str, int, dict[str, Any]]] = []
+    libs_root = root / "specs/libraries"
+    if not libs_root.exists():
+        return out
+    for spec in iter_spec_doc_tests(libs_root, file_pattern=case_file_name("*")):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() != "contract.export":
+            continue
+        case_id = str(case.get("id", "")).strip() or "<unknown>"
+        harness_map = case.get("harness")
+        exports = harness_map.get("exports") if isinstance(harness_map, dict) else None
+        if not isinstance(exports, list):
+            continue
+        rel = spec.doc_path.relative_to(root).as_posix()
+        for idx, exp in enumerate(exports):
+            if not isinstance(exp, dict):
+                continue
+            out.append((rel, case_id, idx, exp))
+    return out
+
+
+def _scan_docs_library_symbol_metadata_complete(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    out: list[str] = []
+    libs_root = root / "specs/libraries"
+    if not libs_root.exists():
+        return ["specs/libraries:1: missing library spec root"]
+    for spec in iter_spec_doc_tests(libs_root, file_pattern=case_file_name("*")):
+        case = spec.test if isinstance(spec.test, dict) else {}
+        if str(case.get("type", "")).strip() != "contract.export":
+            continue
+        case_id = str(case.get("id", "")).strip() or "<unknown>"
+        rel = spec.doc_path.relative_to(root).as_posix()
+        library = case.get("library")
+        if not isinstance(library, dict):
+            out.append(f"{rel}:{case_id}: missing required library metadata mapping")
+            continue
+        for key in ("id", "module", "stability", "owner"):
+            if not str(library.get(key, "")).strip():
+                out.append(f"{rel}:{case_id}: library.{key} must be non-empty")
+        stability = str(library.get("stability", "")).strip()
+        if stability not in {"alpha", "beta", "stable", "internal"}:
+            out.append(
+                f"{rel}:{case_id}: library.stability must be alpha|beta|stable|internal"
+            )
+
+    allowed_doc_keys = {
+        "summary",
+        "description",
+        "params",
+        "returns",
+        "errors",
+        "examples",
+        "portability",
+        "see_also",
+        "since",
+        "deprecated",
+    }
+    for rel, case_id, idx, exp in _iter_library_export_entries(root):
+        doc = exp.get("doc")
+        if not isinstance(doc, dict):
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc must be mapping")
+            continue
+        unknown = sorted(str(k) for k in doc.keys() if str(k) not in allowed_doc_keys)
+        if unknown:
+            out.append(
+                f"{rel}:{case_id}: harness.exports[{idx}].doc has unsupported keys: {', '.join(unknown)}"
+            )
+        if not str(doc.get("summary", "")).strip():
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc.summary must be non-empty")
+        if not str(doc.get("description", "")).strip():
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc.description must be non-empty")
+        returns = doc.get("returns")
+        if not isinstance(returns, dict):
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc.returns must be mapping")
+        else:
+            if not str(returns.get("type", "")).strip():
+                out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc.returns.type must be non-empty")
+            if not str(returns.get("description", "")).strip():
+                out.append(
+                    f"{rel}:{case_id}: harness.exports[{idx}].doc.returns.description must be non-empty"
+                )
+        errors = doc.get("errors")
+        if not isinstance(errors, list) or not errors:
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc.errors must be non-empty list")
+        portability = doc.get("portability")
+        if not isinstance(portability, dict):
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc.portability must be mapping")
+        else:
+            for runtime in ("python", "php", "rust"):
+                if not isinstance(portability.get(runtime), bool):
+                    out.append(
+                        f"{rel}:{case_id}: harness.exports[{idx}].doc.portability.{runtime} must be bool"
+                    )
+    return out
+
+
+def _scan_docs_library_symbol_params_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    out: list[str] = []
+    for rel, case_id, idx, exp in _iter_library_export_entries(root):
+        params = exp.get("params")
+        if not isinstance(params, list):
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].params must be list")
+            continue
+        param_names = [str(x).strip() for x in params]
+        if any(not name for name in param_names):
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].params must be non-empty strings")
+            continue
+        doc = exp.get("doc")
+        if not isinstance(doc, dict):
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc must be mapping")
+            continue
+        doc_params = doc.get("params")
+        if not isinstance(doc_params, list):
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc.params must be list")
+            continue
+        doc_names = [str(item.get("name", "")).strip() for item in doc_params if isinstance(item, dict)]
+        if doc_names != param_names:
+            out.append(
+                f"{rel}:{case_id}: harness.exports[{idx}].doc.params names must match params exactly"
+            )
+    return out
+
+
+def _scan_docs_library_symbol_examples_present(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    out: list[str] = []
+    for rel, case_id, idx, exp in _iter_library_export_entries(root):
+        doc = exp.get("doc")
+        if not isinstance(doc, dict):
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc must be mapping")
+            continue
+        examples = doc.get("examples")
+        if not isinstance(examples, list) or not examples:
+            out.append(f"{rel}:{case_id}: harness.exports[{idx}].doc.examples must be non-empty list")
+            continue
+        for ex_idx, example in enumerate(examples):
+            if not isinstance(example, dict):
+                out.append(
+                    f"{rel}:{case_id}: harness.exports[{idx}].doc.examples[{ex_idx}] must be mapping"
+                )
+                continue
+            if not str(example.get("title", "")).strip():
+                out.append(
+                    f"{rel}:{case_id}: harness.exports[{idx}].doc.examples[{ex_idx}].title must be non-empty"
+                )
+            if example.get("input") is None:
+                out.append(
+                    f"{rel}:{case_id}: harness.exports[{idx}].doc.examples[{ex_idx}].input is required"
+                )
+            if example.get("expected") is None:
+                out.append(
+                    f"{rel}:{case_id}: harness.exports[{idx}].doc.examples[{ex_idx}].expected is required"
+                )
+    return out
+
+
+def _scan_docs_library_symbol_catalog_sync(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
+    return _run_python_module_check(
+        root,
+        "spec_runner.spec_lang_commands",
+        ["generate-library-symbol-catalog", "--check"],
+    )
+
+
 def _scan_docs_generation_spec_cases_present(root: Path, *, harness: dict | None = None) -> list[str]:
     del harness
     cases_root = root / "specs/impl/docs_generate/cases"
@@ -9858,6 +10026,10 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.python_dependency_metric": _scan_python_dependency_metric,
     "runtime.python_dependency_non_regression": _scan_python_dependency_non_regression,
     "docs.operability_non_regression": _scan_docs_operability_non_regression,
+    "docs.library_symbol_metadata_complete": _scan_docs_library_symbol_metadata_complete,
+    "docs.library_symbol_params_sync": _scan_docs_library_symbol_params_sync,
+    "docs.library_symbol_examples_present": _scan_docs_library_symbol_examples_present,
+    "docs.library_symbol_catalog_sync": _scan_docs_library_symbol_catalog_sync,
     "spec.contract_assertions_non_regression": _scan_contract_assertions_non_regression,
     "spec.portability_non_regression": _scan_spec_portability_non_regression,
     "spec.spec_lang_adoption_non_regression": _scan_spec_lang_adoption_non_regression,
