@@ -13,8 +13,8 @@ harness:
     files:
     - /README.md
     - /docs/development.md
-    - /docs/book/05_howto.md
-    - /docs/book/06_troubleshooting.md
+    - /docs/book/60_runner_and_gates.md
+    - /docs/book/80_troubleshooting.md
     required_tokens:
     - make prepush
     - make prepush-fast

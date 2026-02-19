@@ -15,12 +15,16 @@ harness:
     - docs/book/reference_index.md
     - specs/schema/schema_v1.md
     - specs/contract/10_docs_quality.md
-    - docs/book/02_core_model.md
-    - docs/book/03_assertions.md
-    - docs/book/04_spec_lang_guide.md
-    - docs/book/05_howto.md
-    - docs/book/06_troubleshooting.md
-    - docs/book/07_spec_lang_reference.md
+    - docs/book/10_getting_started.md
+    - docs/book/20_case_model.md
+    - docs/book/30_assertion_model.md
+    - docs/book/40_spec_lang_authoring.md
+    - docs/book/50_library_authoring.md
+    - docs/book/60_runner_and_gates.md
+    - docs/book/70_governance_and_quality.md
+    - docs/book/80_troubleshooting.md
+    - docs/book/90_reference_guide.md
+    - docs/book/99_generated_reference_index.md
     - docs/book/93_appendix_spec_lang_builtin_catalog.md
     - docs/book/93a_std_core.md
     - docs/book/93b_std_logic.md

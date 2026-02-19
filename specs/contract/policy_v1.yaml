@@ -943,9 +943,9 @@ rules:
   risk_if_violated: Critical usage/failure guidance disappears over time.
   references:
   - specs/contract/10_docs_quality.md
-  - docs/book/02_core_model.md
-  - docs/book/03_assertions.md
-  - docs/book/07_spec_lang_reference.md
+  - docs/book/20_case_model.md
+  - docs/book/30_assertion_model.md
+  - docs/book/90_reference_guide.md
 - id: DOCS_EXAMPLES_RUNNABLE_OR_EXPLICITLY_OPTED_OUT
   introduced_in: v1
   scope: governance
@@ -992,7 +992,7 @@ rules:
   risk_if_violated: Authoring and implementation drift leads to false failures.
   references:
   - specs/contract/10_docs_quality.md
-  - docs/book/03_assertions.md
+  - docs/book/30_assertion_model.md
   - specs/contract/03_assertions.md
   - specs/schema/schema_v1.md
 - id: DOCS_META_SCHEMA_VALID
@@ -1469,8 +1469,8 @@ rules:
   references:
   - README.md
   - docs/development.md
-  - docs/book/05_howto.md
-  - docs/book/06_troubleshooting.md
+  - docs/book/60_runner_and_gates.md
+  - docs/book/80_troubleshooting.md
   - specs/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md
 - id: RUNTIME_GOVERNANCE_TRIAGE_ENTRYPOINT_REQUIRED
   introduced_in: v1
@@ -3090,8 +3090,8 @@ rules:
   risk_if_violated: Increased onboarding friction and misuse of reference chapter
     as tutorial.
   references:
-  - docs/book/04_spec_lang_guide.md
-  - docs/book/07_spec_lang_reference.md
+  - docs/book/40_spec_lang_authoring.md
+  - docs/book/90_reference_guide.md
   - specs/governance/cases/core/docs_book_chapter_order_canonical.spec.md
 - id: API_HTTP_OAUTH_HARNESS_PROFILE_SUPPORTED
   introduced_in: v1
@@ -3267,8 +3267,8 @@ rules:
     source-diving.
   risk_if_violated: Feature surface exists but remains hard to adopt correctly.
   references:
-  - docs/book/05_howto.md
-  - docs/book/06_troubleshooting.md
+  - docs/book/60_runner_and_gates.md
+  - docs/book/80_troubleshooting.md
   - specs/contract/types/api_http.md
 - id: CHAIN_REFERENCE_CONTRACT_REQUIRED
   introduced_in: v1

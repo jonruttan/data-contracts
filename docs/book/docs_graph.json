@@ -1,254 +1,214 @@
 {
   "edges": [
     {
-      "from": "/docs/book/00_first_10_minutes.md",
+      "from": "/docs/book/10_getting_started.md",
       "kind": "owns_token",
-      "to": "first_run_walkthrough"
+      "to": "getting_started_minimal_flow"
     },
     {
-      "from": "/docs/book/00_first_10_minutes.md",
-      "kind": "owns_token",
-      "to": "trusted_inputs_required"
-    },
-    {
-      "from": "/docs/book/00_first_10_minutes.md",
+      "from": "/docs/book/10_getting_started.md",
       "kind": "requires_token",
-      "to": "quickstart_minimal_case"
+      "to": "rust_required_lane"
     },
     {
-      "from": "/docs/book/00_first_10_minutes.md",
+      "from": "/docs/book/10_getting_started.md",
       "kind": "command",
-      "to": "python -m pip install -e '.[dev]'"
+      "to": "./runners/public/runner_adapter.sh --impl rust governance"
     },
     {
-      "from": "/docs/book/00_first_10_minutes.md",
+      "from": "/docs/book/10_getting_started.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust test-full"
+    },
+    {
+      "from": "/docs/book/10_getting_started.md",
+      "kind": "example",
+      "to": "EX-GETTING-STARTED-001"
+    },
+    {
+      "from": "/docs/book/20_case_model.md",
+      "kind": "owns_token",
+      "to": "case_topology_v1"
+    },
+    {
+      "from": "/docs/book/20_case_model.md",
+      "kind": "requires_token",
+      "to": "schema_v1_registry"
+    },
+    {
+      "from": "/docs/book/20_case_model.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust governance --check-prefix schema"
+    },
+    {
+      "from": "/docs/book/20_case_model.md",
+      "kind": "example",
+      "to": "EX-CASE-MODEL-001"
+    },
+    {
+      "from": "/docs/book/30_assertion_model.md",
+      "kind": "owns_token",
+      "to": "explicit_assert_imports_v1"
+    },
+    {
+      "from": "/docs/book/30_assertion_model.md",
+      "kind": "requires_token",
+      "to": "case_topology_v1"
+    },
+    {
+      "from": "/docs/book/30_assertion_model.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust spec-lang-lint --cases specs"
+    },
+    {
+      "from": "/docs/book/30_assertion_model.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs"
+    },
+    {
+      "from": "/docs/book/30_assertion_model.md",
+      "kind": "example",
+      "to": "EX-ASSERTION-MODEL-001"
+    },
+    {
+      "from": "/docs/book/40_spec_lang_authoring.md",
+      "kind": "owns_token",
+      "to": "mapping_ast_authoring_patterns"
+    },
+    {
+      "from": "/docs/book/40_spec_lang_authoring.md",
+      "kind": "requires_token",
+      "to": "explicit_assert_imports_v1"
+    },
+    {
+      "from": "/docs/book/40_spec_lang_authoring.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust spec-lang-format --check --cases specs"
+    },
+    {
+      "from": "/docs/book/40_spec_lang_authoring.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust spec-lang-lint --cases specs"
+    },
+    {
+      "from": "/docs/book/40_spec_lang_authoring.md",
+      "kind": "example",
+      "to": "EX-SPECLANG-AUTH-001"
+    },
+    {
+      "from": "/docs/book/50_library_authoring.md",
+      "kind": "owns_token",
+      "to": "export_doc_metadata_contract"
+    },
+    {
+      "from": "/docs/book/50_library_authoring.md",
+      "kind": "requires_token",
+      "to": "mapping_ast_authoring_patterns"
+    },
+    {
+      "from": "/docs/book/50_library_authoring.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust docs-generate-check"
+    },
+    {
+      "from": "/docs/book/50_library_authoring.md",
+      "kind": "example",
+      "to": "EX-LIB-AUTH-001"
+    },
+    {
+      "from": "/docs/book/60_runner_and_gates.md",
+      "kind": "owns_token",
+      "to": "rust_required_lane"
+    },
+    {
+      "from": "/docs/book/60_runner_and_gates.md",
+      "kind": "requires_token",
+      "to": "getting_started_minimal_flow"
+    },
+    {
+      "from": "/docs/book/60_runner_and_gates.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust critical-gate"
+    },
+    {
+      "from": "/docs/book/60_runner_and_gates.md",
       "kind": "command",
       "to": "./scripts/ci_gate.sh"
     },
     {
-      "from": "/docs/book/00_first_10_minutes.md",
+      "from": "/docs/book/60_runner_and_gates.md",
       "kind": "example",
-      "to": "EX-FIRST10-001"
+      "to": "EX-RUNNER-GATES-001"
     },
     {
-      "from": "/docs/book/01_quickstart.md",
+      "from": "/docs/book/70_governance_and_quality.md",
       "kind": "owns_token",
-      "to": "quickstart_minimal_case"
+      "to": "governance_triage_workflow"
     },
     {
-      "from": "/docs/book/01_quickstart.md",
-      "kind": "owns_token",
-      "to": "quickstart_gate"
-    },
-    {
-      "from": "/docs/book/01_quickstart.md",
+      "from": "/docs/book/70_governance_and_quality.md",
       "kind": "requires_token",
-      "to": "core_case_model"
+      "to": "rust_required_lane"
     },
     {
-      "from": "/docs/book/01_quickstart.md",
+      "from": "/docs/book/70_governance_and_quality.md",
       "kind": "command",
-      "to": "./scripts/ci_gate.sh"
+      "to": "./runners/public/runner_adapter.sh --impl rust governance"
     },
     {
-      "from": "/docs/book/01_quickstart.md",
+      "from": "/docs/book/70_governance_and_quality.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust docs-generate-check"
+    },
+    {
+      "from": "/docs/book/70_governance_and_quality.md",
       "kind": "example",
-      "to": "EX-QUICKSTART-001"
+      "to": "EX-GOV-QUALITY-001"
     },
     {
-      "from": "/docs/book/02_core_model.md",
+      "from": "/docs/book/80_troubleshooting.md",
       "kind": "owns_token",
-      "to": "core_case_model"
+      "to": "deterministic_failure_triage"
     },
     {
-      "from": "/docs/book/02_core_model.md",
-      "kind": "owns_token",
-      "to": "harness_namespace_rule"
-    },
-    {
-      "from": "/docs/book/02_core_model.md",
-      "kind": "owns_token",
-      "to": "discovery_model"
-    },
-    {
-      "from": "/docs/book/02_core_model.md",
+      "from": "/docs/book/80_troubleshooting.md",
       "kind": "requires_token",
-      "to": "must"
+      "to": "governance_triage_workflow"
     },
     {
-      "from": "/docs/book/02_core_model.md",
+      "from": "/docs/book/80_troubleshooting.md",
       "kind": "command",
-      "to": "python -m spec_runner.spec_lang_commands run-governance-specs"
+      "to": "./scripts/local_ci_parity.sh"
     },
     {
-      "from": "/docs/book/02_core_model.md",
+      "from": "/docs/book/80_troubleshooting.md",
+      "kind": "command",
+      "to": "./runners/public/runner_adapter.sh --impl rust governance --check-prefix docs"
+    },
+    {
+      "from": "/docs/book/80_troubleshooting.md",
       "kind": "example",
-      "to": "EX-COREMODEL-001"
+      "to": "EX-TROUBLESHOOT-001"
     },
     {
-      "from": "/docs/book/03_assertions.md",
+      "from": "/docs/book/90_reference_guide.md",
       "kind": "owns_token",
-      "to": "must"
+      "to": "normative_reference_map"
     },
     {
-      "from": "/docs/book/03_assertions.md",
-      "kind": "owns_token",
-      "to": "may"
-    },
-    {
-      "from": "/docs/book/03_assertions.md",
-      "kind": "owns_token",
-      "to": "must_not"
-    },
-    {
-      "from": "/docs/book/03_assertions.md",
-      "kind": "owns_token",
-      "to": "evaluate"
-    },
-    {
-      "from": "/docs/book/03_assertions.md",
+      "from": "/docs/book/90_reference_guide.md",
       "kind": "requires_token",
-      "to": "spec-lang"
+      "to": "deterministic_failure_triage"
     },
     {
-      "from": "/docs/book/03_assertions.md",
+      "from": "/docs/book/90_reference_guide.md",
       "kind": "command",
-      "to": "python -m spec_runner.spec_lang_commands spec-lang-format --check specs"
+      "to": "./runners/public/runner_adapter.sh --impl rust docs-generate-check"
     },
     {
-      "from": "/docs/book/03_assertions.md",
+      "from": "/docs/book/90_reference_guide.md",
       "kind": "example",
-      "to": "EX-ASSERTIONS-001"
-    },
-    {
-      "from": "/docs/book/04_spec_lang_guide.md",
-      "kind": "owns_token",
-      "to": "spec_lang_guide_patterns"
-    },
-    {
-      "from": "/docs/book/04_spec_lang_guide.md",
-      "kind": "owns_token",
-      "to": "spec_lang_debug_patterns"
-    },
-    {
-      "from": "/docs/book/04_spec_lang_guide.md",
-      "kind": "requires_token",
-      "to": "must"
-    },
-    {
-      "from": "/docs/book/04_spec_lang_guide.md",
-      "kind": "command",
-      "to": "./runners/public/runner_adapter.sh normalize-check"
-    },
-    {
-      "from": "/docs/book/04_spec_lang_guide.md",
-      "kind": "example",
-      "to": "EX-SPECLANG-GUIDE-001"
-    },
-    {
-      "from": "/docs/book/05_howto.md",
-      "kind": "owns_token",
-      "to": "authoring_workflows"
-    },
-    {
-      "from": "/docs/book/05_howto.md",
-      "kind": "owns_token",
-      "to": "governance_workflow_quickpath"
-    },
-    {
-      "from": "/docs/book/05_howto.md",
-      "kind": "requires_token",
-      "to": "spec_lang_guide_patterns"
-    },
-    {
-      "from": "/docs/book/05_howto.md",
-      "kind": "command",
-      "to": "./runners/public/runner_adapter.sh governance"
-    },
-    {
-      "from": "/docs/book/05_howto.md",
-      "kind": "example",
-      "to": "EX-HOWTO-001"
-    },
-    {
-      "from": "/docs/book/06_troubleshooting.md",
-      "kind": "owns_token",
-      "to": "troubleshooting_triage_matrix"
-    },
-    {
-      "from": "/docs/book/06_troubleshooting.md",
-      "kind": "owns_token",
-      "to": "first_command_on_failure"
-    },
-    {
-      "from": "/docs/book/06_troubleshooting.md",
-      "kind": "requires_token",
-      "to": "governance_workflow_quickpath"
-    },
-    {
-      "from": "/docs/book/06_troubleshooting.md",
-      "kind": "command",
-      "to": "./runners/public/runner_adapter.sh ci-cleanroom"
-    },
-    {
-      "from": "/docs/book/06_troubleshooting.md",
-      "kind": "example",
-      "to": "EX-TROUBLE-001"
-    },
-    {
-      "from": "/docs/book/07_spec_lang_reference.md",
-      "kind": "owns_token",
-      "to": "spec-lang"
-    },
-    {
-      "from": "/docs/book/07_spec_lang_reference.md",
-      "kind": "owns_token",
-      "to": "tail-call-optimization"
-    },
-    {
-      "from": "/docs/book/07_spec_lang_reference.md",
-      "kind": "owns_token",
-      "to": "spec_lang_forms"
-    },
-    {
-      "from": "/docs/book/07_spec_lang_reference.md",
-      "kind": "requires_token",
-      "to": "minimal_examples"
-    },
-    {
-      "from": "/docs/book/07_spec_lang_reference.md",
-      "kind": "command",
-      "to": "python -m spec_runner.spec_lang_commands spec-lang-format --check specs"
-    },
-    {
-      "from": "/docs/book/07_spec_lang_reference.md",
-      "kind": "example",
-      "to": "EX-SPECLANG-001"
-    },
-    {
-      "from": "/docs/book/90_appendix_cheatsheet.md",
-      "kind": "owns_token",
-      "to": "cheatsheet"
-    },
-    {
-      "from": "/docs/book/90_appendix_cheatsheet.md",
-      "kind": "owns_token",
-      "to": "minimal_examples"
-    },
-    {
-      "from": "/docs/book/90_appendix_cheatsheet.md",
-      "kind": "requires_token",
-      "to": "first_run_walkthrough"
-    },
-    {
-      "from": "/docs/book/90_appendix_cheatsheet.md",
-      "kind": "command",
-      "to": "python -m spec_runner.spec_lang_commands spec-lang-format --check specs"
-    },
-    {
-      "from": "/docs/book/90_appendix_cheatsheet.md",
-      "kind": "example",
-      "to": "EX-CHEATSHEET-001"
+      "to": "EX-REFERENCE-GUIDE-001"
     },
     {
       "from": "/docs/book/91_appendix_runner_api_reference.md",
@@ -491,6 +451,86 @@
       "to": "EX-APP-STD-JSFN-001"
     },
     {
+      "from": "/docs/book/93j_library_symbol_reference.md",
+      "kind": "owns_token",
+      "to": "library_symbol_reference"
+    },
+    {
+      "from": "/docs/book/93j_library_symbol_reference.md",
+      "kind": "requires_token",
+      "to": "generated_docs_sync"
+    },
+    {
+      "from": "/docs/book/93j_library_symbol_reference.md",
+      "kind": "command",
+      "to": "PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check"
+    },
+    {
+      "from": "/docs/book/93j_library_symbol_reference.md",
+      "kind": "example",
+      "to": "EX-REF-LIB-001"
+    },
+    {
+      "from": "/docs/book/93k_library_symbol_index.md",
+      "kind": "owns_token",
+      "to": "library_symbol_index"
+    },
+    {
+      "from": "/docs/book/93k_library_symbol_index.md",
+      "kind": "requires_token",
+      "to": "generated_docs_sync"
+    },
+    {
+      "from": "/docs/book/93k_library_symbol_index.md",
+      "kind": "command",
+      "to": "PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check"
+    },
+    {
+      "from": "/docs/book/93k_library_symbol_index.md",
+      "kind": "example",
+      "to": "EX-REF-LIB-002"
+    },
+    {
+      "from": "/docs/book/93l_spec_case_reference.md",
+      "kind": "owns_token",
+      "to": "spec_case_reference"
+    },
+    {
+      "from": "/docs/book/93l_spec_case_reference.md",
+      "kind": "requires_token",
+      "to": "generated_docs_sync"
+    },
+    {
+      "from": "/docs/book/93l_spec_case_reference.md",
+      "kind": "command",
+      "to": "PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-spec-case-catalog --check"
+    },
+    {
+      "from": "/docs/book/93l_spec_case_reference.md",
+      "kind": "example",
+      "to": "EX-REF-CASE-001"
+    },
+    {
+      "from": "/docs/book/93m_spec_case_index.md",
+      "kind": "owns_token",
+      "to": "spec_case_index"
+    },
+    {
+      "from": "/docs/book/93m_spec_case_index.md",
+      "kind": "requires_token",
+      "to": "generated_docs_sync"
+    },
+    {
+      "from": "/docs/book/93m_spec_case_index.md",
+      "kind": "command",
+      "to": "PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-spec-case-catalog --check"
+    },
+    {
+      "from": "/docs/book/93m_spec_case_index.md",
+      "kind": "example",
+      "to": "EX-REF-CASE-002"
+    },
+    {
       "from": "/docs/book/94_appendix_contract_policy_reference.md",
       "kind": "owns_token",
       "to": "appendix_contract_policy_reference"
@@ -591,89 +631,89 @@
       "to": "EX-APP-SCHEMA-001"
     },
     {
-      "from": "/docs/book/99_appendix_reference_index.md",
+      "from": "/docs/book/99_generated_reference_index.md",
       "kind": "owns_token",
-      "to": "appendix_reference_index_wrapper"
+      "to": "generated_reference_gateway"
     },
     {
-      "from": "/docs/book/99_appendix_reference_index.md",
+      "from": "/docs/book/99_generated_reference_index.md",
       "kind": "requires_token",
-      "to": "quickstart_minimal_case"
+      "to": "normative_reference_map"
     },
     {
-      "from": "/docs/book/99_appendix_reference_index.md",
+      "from": "/docs/book/99_generated_reference_index.md",
       "kind": "command",
-      "to": "./runners/public/runner_adapter.sh docs-generate-check"
+      "to": "./runners/public/runner_adapter.sh --impl rust docs-generate-check"
     },
     {
-      "from": "/docs/book/99_appendix_reference_index.md",
+      "from": "/docs/book/99_generated_reference_index.md",
       "kind": "example",
-      "to": "EX-APP-REFIDX-001"
+      "to": "EX-GENERATED-INDEX-001"
     }
   ],
   "nodes": [
     {
       "audience": "author",
-      "doc_id": "DOC-REF-001",
-      "path": "/docs/book/00_first_10_minutes.md",
+      "doc_id": "DOC-REF-110",
+      "path": "/docs/book/10_getting_started.md",
       "status": "active",
-      "title": "First 10 Minutes (Deterministic Walkthrough)"
+      "title": "Chapter 10 Getting Started"
     },
     {
       "audience": "author",
-      "doc_id": "DOC-REF-002",
-      "path": "/docs/book/01_quickstart.md",
+      "doc_id": "DOC-REF-120",
+      "path": "/docs/book/20_case_model.md",
       "status": "active",
-      "title": "Chapter 1 Quickstart"
+      "title": "Chapter 20 Case Model"
+    },
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-130",
+      "path": "/docs/book/30_assertion_model.md",
+      "status": "active",
+      "title": "Chapter 30 Assertion Model"
+    },
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-140",
+      "path": "/docs/book/40_spec_lang_authoring.md",
+      "status": "active",
+      "title": "Chapter 40 Spec-Lang Authoring"
+    },
+    {
+      "audience": "author",
+      "doc_id": "DOC-REF-150",
+      "path": "/docs/book/50_library_authoring.md",
+      "status": "active",
+      "title": "Chapter 50 Library Authoring"
     },
     {
       "audience": "maintainer",
-      "doc_id": "DOC-REF-003",
-      "path": "/docs/book/02_core_model.md",
+      "doc_id": "DOC-REF-160",
+      "path": "/docs/book/60_runner_and_gates.md",
       "status": "active",
-      "title": "Chapter 2 Core Model"
-    },
-    {
-      "audience": "author",
-      "doc_id": "DOC-REF-004",
-      "path": "/docs/book/03_assertions.md",
-      "status": "active",
-      "title": "Chapter 3 Assertions"
-    },
-    {
-      "audience": "author",
-      "doc_id": "DOC-REF-005",
-      "path": "/docs/book/04_spec_lang_guide.md",
-      "status": "active",
-      "title": "Chapter 4 Spec-Lang Guide"
-    },
-    {
-      "audience": "author",
-      "doc_id": "DOC-REF-008",
-      "path": "/docs/book/05_howto.md",
-      "status": "active",
-      "title": "Chapter 5 How-To Workflows"
+      "title": "Chapter 60 Runner And Gates"
     },
     {
       "audience": "maintainer",
-      "doc_id": "DOC-REF-010",
-      "path": "/docs/book/06_troubleshooting.md",
+      "doc_id": "DOC-REF-170",
+      "path": "/docs/book/70_governance_and_quality.md",
       "status": "active",
-      "title": "Chapter 6 Troubleshooting"
+      "title": "Chapter 70 Governance And Quality"
+    },
+    {
+      "audience": "maintainer",
+      "doc_id": "DOC-REF-180",
+      "path": "/docs/book/80_troubleshooting.md",
+      "status": "active",
+      "title": "Chapter 80 Troubleshooting"
     },
     {
       "audience": "reviewer",
-      "doc_id": "DOC-REF-007",
-      "path": "/docs/book/07_spec_lang_reference.md",
+      "doc_id": "DOC-REF-190",
+      "path": "/docs/book/90_reference_guide.md",
       "status": "active",
-      "title": "Chapter 7 Spec-Lang Reference"
-    },
-    {
-      "audience": "author",
-      "doc_id": "DOC-REF-006",
-      "path": "/docs/book/90_appendix_cheatsheet.md",
-      "status": "active",
-      "title": "Appendix Cheatsheet"
+      "title": "Chapter 90 Reference Guide"
     },
     {
       "audience": "reviewer",
@@ -761,6 +801,34 @@
     },
     {
       "audience": "reviewer",
+      "doc_id": "DOC-REF-941",
+      "path": "/docs/book/93j_library_symbol_reference.md",
+      "status": "active",
+      "title": "Library Symbol Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-942",
+      "path": "/docs/book/93k_library_symbol_index.md",
+      "status": "active",
+      "title": "Library Symbol Index"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-943",
+      "path": "/docs/book/93l_spec_case_reference.md",
+      "status": "active",
+      "title": "Spec Case Reference"
+    },
+    {
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-944",
+      "path": "/docs/book/93m_spec_case_index.md",
+      "status": "active",
+      "title": "Spec Case Index"
+    },
+    {
+      "audience": "reviewer",
       "doc_id": "DOC-REF-094",
       "path": "/docs/book/94_appendix_contract_policy_reference.md",
       "status": "active",
@@ -795,11 +863,11 @@
       "title": "Appendix Spec Case Shape Reference"
     },
     {
-      "audience": "author",
-      "doc_id": "DOC-REF-099",
-      "path": "/docs/book/99_appendix_reference_index.md",
+      "audience": "reviewer",
+      "doc_id": "DOC-REF-199",
+      "path": "/docs/book/99_generated_reference_index.md",
       "status": "active",
-      "title": "Appendix Reference Index Wrapper"
+      "title": "Generated Reference Index"
     }
   ],
   "root": ".",

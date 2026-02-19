@@ -1231,13 +1231,17 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
         .get(&YamlValue::String("contract".to_string()))
         .and_then(|v| v.as_mapping())
     {
-        let parse_imports = |raw: Option<&YamlValue>, where_path: &str| -> Result<HashMap<String, String>, String> {
+        let parse_imports = |raw: Option<&YamlValue>,
+                             where_path: &str|
+         -> Result<HashMap<String, String>, String> {
             let mut out = HashMap::<String, String>::new();
             let Some(raw_imports) = raw else {
                 return Ok(out);
             };
             let Some(items) = raw_imports.as_sequence() else {
-                return Err(format!("{where_path} imports must be list form with from/names/as"));
+                return Err(format!(
+                    "{where_path} imports must be list form with from/names/as"
+                ));
             };
             for (item_idx, raw_item) in items.iter().enumerate() {
                 let Some(item_map) = raw_item.as_mapping() else {
@@ -1249,19 +1253,27 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                     .unwrap_or("")
                     .trim();
                 if src != "artifact" {
-                    return Err(format!("{where_path}.imports[{item_idx}].from must be artifact"));
+                    return Err(format!(
+                        "{where_path}.imports[{item_idx}].from must be artifact"
+                    ));
                 }
                 let names_val = item_map.get(&YamlValue::String("names".to_string()));
                 let Some(names_seq) = names_val.and_then(|v| v.as_sequence()) else {
-                    return Err(format!("{where_path}.imports[{item_idx}].names must be non-empty list"));
+                    return Err(format!(
+                        "{where_path}.imports[{item_idx}].names must be non-empty list"
+                    ));
                 };
                 if names_seq.is_empty() {
-                    return Err(format!("{where_path}.imports[{item_idx}].names must be non-empty list"));
+                    return Err(format!(
+                        "{where_path}.imports[{item_idx}].names must be non-empty list"
+                    ));
                 }
                 let mut alias_map = HashMap::<String, String>::new();
                 if let Some(raw_alias) = item_map.get(&YamlValue::String("as".to_string())) {
                     let Some(alias_yaml) = raw_alias.as_mapping() else {
-                        return Err(format!("{where_path}.imports[{item_idx}].as must be mapping"));
+                        return Err(format!(
+                            "{where_path}.imports[{item_idx}].as must be mapping"
+                        ));
                     };
                     for (raw_key, raw_value) in alias_yaml {
                         let source_name = raw_key.as_str().unwrap_or("").trim().to_string();
@@ -1410,7 +1422,9 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
                             "jobs": jobs_obj.clone(),
                         }),
                         "violation_count" => Value::Number(failed_clauses.into()),
-                        "status" => Value::String(if failed_clauses == 0 { "pass" } else { "fail" }.to_string()),
+                        "status" => Value::String(
+                            if failed_clauses == 0 { "pass" } else { "fail" }.to_string(),
+                        ),
                         key => summary_json.get(key).cloned().unwrap_or(Value::Null),
                     };
                     if local_name == "subject" {
@@ -1533,8 +1547,8 @@ fn run_job_run_native(root: &Path, forwarded: &[String]) -> i32 {
             }
 
             failed_clauses += 1;
-            let fail_message =
-                clause_error.unwrap_or_else(|| format!("contract clause failed: {}", class_name.as_str()));
+            let fail_message = clause_error
+                .unwrap_or_else(|| format!("contract clause failed: {}", class_name.as_str()));
             if let Err(hook_err) = run_job_hook_event(
                 &hook_exprs,
                 "fail",

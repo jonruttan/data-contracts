@@ -907,9 +907,9 @@ links:
   policy_ref: specs/contract/policy_v1.yaml#DOCS_REQUIRED_SECTIONS_PRESENT
   contract_refs:
   - specs/contract/10_docs_quality.md
-  - docs/book/02_core_model.md
-  - docs/book/03_assertions.md
-  - docs/book/07_spec_lang_reference.md
+  - docs/book/20_case_model.md
+  - docs/book/30_assertion_model.md
+  - docs/book/90_reference_guide.md
   schema_refs: []
   conformance_case_ids: []
   unit_test_refs:
@@ -954,7 +954,7 @@ links:
   policy_ref: specs/contract/policy_v1.yaml#DOCS_CONTRACT_SCHEMA_BOOK_TOKEN_SYNC
   contract_refs:
   - specs/contract/10_docs_quality.md
-  - docs/book/03_assertions.md
+  - docs/book/30_assertion_model.md
   - specs/contract/03_assertions.md
   schema_refs:
   - specs/schema/schema_v1.md
@@ -1267,8 +1267,8 @@ links:
   implementation_refs:
   - README.md
   - docs/development.md
-  - docs/book/05_howto.md
-  - docs/book/06_troubleshooting.md
+  - docs/book/60_runner_and_gates.md
+  - docs/book/80_troubleshooting.md
   - specs/governance/cases/core/runtime_local_ci_parity_entrypoint_documented.spec.md
   notes: Contributor docs describe parity default prepush, fast mode, hook install,
     and bypass semantics.
@@ -3022,8 +3022,8 @@ links:
 - rule_id: API_HTTP_TUTORIAL_COVERAGE_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#API_HTTP_TUTORIAL_COVERAGE_REQUIRED
   contract_refs:
-  - docs/book/05_howto.md
-  - docs/book/06_troubleshooting.md
+  - docs/book/60_runner_and_gates.md
+  - docs/book/80_troubleshooting.md
   schema_refs: []
   conformance_case_ids: []
   unit_test_refs:

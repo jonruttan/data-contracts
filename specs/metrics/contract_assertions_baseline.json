@@ -3,7 +3,7 @@
     "paths": [
       "specs/contract/03_assertions.md",
       "specs/schema/schema_v1.md",
-      "docs/book/03_assertions.md",
+      "docs/book/30_assertion_model.md",
       "specs/contract/03b_spec_lang_v1.md"
     ],
     "required_tokens": [
@@ -32,7 +32,7 @@
   "docs": [
     {
       "missing_required_token_count": 0.0,
-      "path": "docs/book/03_assertions.md",
+      "path": "docs/book/30_assertion_model.md",
       "required_token_coverage_ratio": 1.0,
       "segment": "book"
     },

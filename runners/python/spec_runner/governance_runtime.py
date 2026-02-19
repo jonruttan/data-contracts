@@ -101,7 +101,7 @@ def normalize_evaluate(raw: object, *, field: str) -> list[object]:
 
 _SECURITY_WARNING_DOCS = (
     "README.md",
-    "docs/book/00_first_10_minutes.md",
+    "docs/book/10_getting_started.md",
     "specs/schema/schema_v1.md",
 )
 _SECURITY_WARNING_TOKENS = (
@@ -128,7 +128,7 @@ _ASSERT_UNIVERSAL_DOC_FILES = (
 )
 _CURRENT_SPEC_ONLY_DOCS = (
     "README.md",
-    "docs/book/02_core_model.md",
+    "docs/book/20_case_model.md",
     "specs/schema/schema_v1.md",
     "specs/contract/01_discovery.md",
     "specs/contract/02_case_shape.md",
@@ -3104,7 +3104,7 @@ def _scan_runtime_api_http_parity_contract_sync(root: Path) -> list[str]:
 
 def _scan_docs_api_http_tutorial_sync(root: Path) -> list[str]:
     required_tokens: dict[str, tuple[str, ...]] = {
-        "docs/book/05_howto.md": (
+        "docs/book/60_runner_and_gates.md": (
             "GET",
             "POST",
             "PUT",
@@ -3115,7 +3115,7 @@ def _scan_docs_api_http_tutorial_sync(root: Path) -> list[str]:
             "round-trip",
             "api.http",
         ),
-        "docs/book/06_troubleshooting.md": (
+        "docs/book/80_troubleshooting.md": (
             "api.http",
             "CORS",
             "preflight",
@@ -5056,15 +5056,15 @@ def _scan_docs_book_chapter_order_canonical(root: Path, *, harness: dict | None 
         if isinstance(row, dict):
             actual.append(str(row.get("path", "")).strip())
     expected = [
-        "/docs/book/00_first_10_minutes.md",
-        "/docs/book/01_quickstart.md",
-        "/docs/book/02_core_model.md",
-        "/docs/book/03_assertions.md",
-        "/docs/book/04_spec_lang_guide.md",
-        "/docs/book/05_howto.md",
-        "/docs/book/06_troubleshooting.md",
-        "/docs/book/07_spec_lang_reference.md",
-        "/docs/book/90_appendix_cheatsheet.md",
+        "/docs/book/10_getting_started.md",
+        "/docs/book/20_case_model.md",
+        "/docs/book/30_assertion_model.md",
+        "/docs/book/40_spec_lang_authoring.md",
+        "/docs/book/50_library_authoring.md",
+        "/docs/book/60_runner_and_gates.md",
+        "/docs/book/70_governance_and_quality.md",
+        "/docs/book/80_troubleshooting.md",
+        "/docs/book/90_reference_guide.md",
         "/docs/book/91_appendix_runner_api_reference.md",
         "/docs/book/92_appendix_harness_type_reference.md",
         "/docs/book/93_appendix_spec_lang_builtin_catalog.md",
@@ -5082,7 +5082,7 @@ def _scan_docs_book_chapter_order_canonical(root: Path, *, harness: dict | None 
         "/docs/book/96_appendix_governance_checks_reference.md",
         "/docs/book/97_appendix_metrics_reference.md",
         "/docs/book/98_appendix_spec_case_shape_reference.md",
-        "/docs/book/99_appendix_reference_index.md",
+        "/docs/book/99_generated_reference_index.md",
     ]
     if actual != expected:
         return [

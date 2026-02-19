@@ -1,3 +1,24 @@
+```yaml doc-meta
+doc_id: DOC-REF-942
+title: Library Symbol Index
+status: active
+audience: reviewer
+owns_tokens:
+- library_symbol_index
+requires_tokens:
+- generated_docs_sync
+commands:
+- run: PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check
+  purpose: Verify generated library symbol index content is in sync.
+examples:
+- id: EX-REF-LIB-002
+  runnable: false
+  opt_out_reason: Generated reference page intentionally contains no runnable fenced examples.
+sections_required:
+- '## Generated Library Symbol Index'
+- '## Symbol Anchors'
+```
+
 # Library Symbol Index
 
 Generated compact index for library symbols grouped by module.
@@ -142,4 +163,3 @@ Generated compact index for library symbols grouped by module.
 | `policy.pass_when_no_violations` | `policy` | [jump](/docs/book/93j_library_symbol_reference.md#symbol-policy_pass_when_no_violations) |
 | `policy.violation_count_is` | `policy` | [jump](/docs/book/93j_library_symbol_reference.md#symbol-policy_violation_count_is) |
 <!-- GENERATED:END library_symbol_index -->
-

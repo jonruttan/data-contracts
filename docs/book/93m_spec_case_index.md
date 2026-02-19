@@ -1,3 +1,24 @@
+```yaml doc-meta
+doc_id: DOC-REF-944
+title: Spec Case Index
+status: active
+audience: reviewer
+owns_tokens:
+- spec_case_index
+requires_tokens:
+- generated_docs_sync
+commands:
+- run: PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-spec-case-catalog --check
+  purpose: Verify generated spec case index content is in sync.
+examples:
+- id: EX-REF-CASE-002
+  runnable: false
+  opt_out_reason: Generated reference page intentionally contains no runnable fenced examples.
+sections_required:
+- '## Generated Spec Case Index'
+- '## Case Anchors'
+```
+
 # Spec Case Index
 
 Generated compact index for documented spec cases.

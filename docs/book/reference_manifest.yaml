@@ -1,47 +1,50 @@
 version: 1
 title: Spec Runner Reference Manual
 chapters:
-- path: /docs/book/00_first_10_minutes.md
-  summary: first-run setup and safety model.
+- path: /docs/book/10_getting_started.md
+  summary: minimal author-first startup path in the rust required lane.
   contract_refs:
   - specs/contract/10_docs_quality.md
-- path: /docs/book/01_quickstart.md
-  summary: minimal runnable path.
-  contract_refs:
-  - specs/contract/10_docs_quality.md
-- path: /docs/book/02_core_model.md
-  summary: case model and discovery contract.
+  - specs/contract/12_runner_interface.md
+- path: /docs/book/20_case_model.md
+  summary: canonical case topology and harness-contract responsibility boundaries.
   contract_refs:
   - specs/contract/02_case_shape.md
-  - specs/contract/01_discovery.md
-- path: /docs/book/03_assertions.md
-  summary: assertion tree and evaluate-first authoring boundary.
+  - specs/contract/04_harness.md
+- path: /docs/book/30_assertion_model.md
+  summary: canonical contract assertion model with explicit imports.
   contract_refs:
   - specs/contract/03_assertions.md
-- path: /docs/book/04_spec_lang_guide.md
-  summary: practical spec-lang composition patterns and debugging.
+- path: /docs/book/40_spec_lang_authoring.md
+  summary: practical mapping-ast authoring patterns and anti-patterns.
   contract_refs:
   - specs/contract/03b_spec_lang_v1.md
   - specs/contract/14_spec_lang_libraries.md
-- path: /docs/book/05_howto.md
-  summary: common contributor workflows for specs, libraries, and governance.
+- path: /docs/book/50_library_authoring.md
+  summary: contract.export authoring and metadata requirements.
+  contract_refs:
+  - specs/contract/14_spec_lang_libraries.md
+  - specs/contract/10_docs_quality.md
+- path: /docs/book/60_runner_and_gates.md
+  summary: rust-first runner and gate execution contracts.
+  contract_refs:
+  - specs/contract/12_runner_interface.md
+  - specs/contract/25_compatibility_matrix.md
+- path: /docs/book/70_governance_and_quality.md
+  summary: governance check model, docs sync, and quality gates.
+  contract_refs:
+  - specs/contract/10_docs_quality.md
+  - specs/contract/15_governance_subject_model.md
+- path: /docs/book/80_troubleshooting.md
+  summary: deterministic failure taxonomy and remediation flow.
   contract_refs:
   - specs/contract/10_docs_quality.md
   - specs/contract/12_runner_interface.md
-- path: /docs/book/06_troubleshooting.md
-  summary: deterministic triage playbooks for specs/governance failures.
-  contract_refs:
-  - specs/contract/10_docs_quality.md
-  - specs/contract/12_runner_interface.md
-- path: /docs/book/07_spec_lang_reference.md
-  summary: strict operator semantics and error behavior reference.
-  contract_refs:
-  - specs/contract/03b_spec_lang_v1.md
-  - specs/contract/19_spec_lang_stdlib_profile_v1.md
-- path: /docs/book/90_appendix_cheatsheet.md
-  summary: compact authoring cheatsheet.
+- path: /docs/book/90_reference_guide.md
+  summary: map from narrative guidance to normative schema and contract sources.
   contract_refs:
   - specs/schema/schema_v1.md
+  - specs/contract/03_assertions.md
 - path: /docs/book/91_appendix_runner_api_reference.md
   summary: generated runner command surface reference.
   contract_refs:
@@ -136,7 +139,7 @@ chapters:
   summary: generated schema field catalog for case shapes.
   contract_refs:
   - specs/contract/21_schema_registry_contract.md
-- path: /docs/book/99_appendix_reference_index.md
-  summary: wrapper page linking generated reference index and coverage pages.
+- path: /docs/book/99_generated_reference_index.md
+  summary: canonical navigation gateway for all generated reference surfaces.
   contract_refs:
   - specs/contract/10_docs_quality.md

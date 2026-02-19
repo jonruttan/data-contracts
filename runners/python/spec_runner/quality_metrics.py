@@ -991,7 +991,7 @@ def default_contract_assertions_config() -> dict[str, Any]:
         "paths": [
             "specs/contract/03_assertions.md",
             "specs/schema/schema_v1.md",
-            "docs/book/03_assertions.md",
+            "docs/book/30_assertion_model.md",
             "specs/contract/03b_spec_lang_v1.md",
         ],
         "segment_rules": [

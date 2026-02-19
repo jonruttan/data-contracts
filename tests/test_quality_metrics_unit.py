@@ -148,7 +148,7 @@ sections_required: [\"Purpose\", \"Inputs\", \"Outputs\", \"Failure Modes\"]
 def test_contract_assertions_report_basic_shape(tmp_path: Path) -> None:
     _write(tmp_path / "specs/contract/03_assertions.md", "must can cannot contain regex evaluate\n")
     _write(tmp_path / "specs/schema/schema_v1.md", "must can cannot contain regex evaluate\n")
-    _write(tmp_path / "docs/book/03_assertions.md", "must can cannot contain regex evaluate\n")
+    _write(tmp_path / "docs/book/30_assertion_model.md", "must can cannot contain regex evaluate\n")
     _write(tmp_path / "specs/contract/03b_spec_lang_v1.md", "must can cannot contain regex evaluate\n")
     _write(
         tmp_path / "specs/contract/policy_v1.yaml",

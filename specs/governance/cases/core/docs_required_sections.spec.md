@@ -11,44 +11,37 @@ type: contract.check
 harness:
   root: .
   required_sections:
-    docs/book/02_core_model.md:
-    - '## Required Keys'
-    - '## Discovery Model'
-    - '## Type Model'
-    - '## `harness` Namespace Rule'
-    - '## Checklist'
-    docs/book/03_assertions.md:
-    - '## Step Shape'
+    docs/book/20_case_model.md:
+    - '## Canonical Top-Level Topology'
+    - '## Responsibility Split'
+    - '## Contract Form'
+    - '## Normative References'
+    docs/book/30_assertion_model.md:
+    - '## Canonical Contract Shape'
+    - '## Imports and Precedence'
+    - '## Forbidden Legacy Forms'
     - '## Group Semantics'
-    - '## Targets'
-    - '## Operators'
-    - '## Checklist'
-    docs/book/07_spec_lang_reference.md:
-    - '## 1) What `evaluate` Is'
-    - '## 3) Core Forms'
-    - '## 5) Budgets (`harness.spec_lang`)'
-    - '## 6) Error Categories'
-    - '## 9) Lint + Format'
+    docs/book/90_reference_guide.md:
+    - '## Normative Sources'
+    - '## Generated References'
     docs/book/reference_index.md:
     - '# Reference Index'
     - Canonical order for reference-manual chapters.
     - how to use
-    docs/book/04_spec_lang_guide.md:
-    - '## Mental Model'
-    - '## Common Authoring Patterns'
+    docs/book/40_spec_lang_authoring.md:
+    - '## Mapping-AST Rules'
+    - '## Readability Patterns'
     - '## Anti-Patterns'
-    - '## Library Usage Patterns'
-    - '## Debugging Evaluate Expressions'
-    docs/book/05_howto.md:
-    - '## Add A New Spec Case'
-    - '## Add Or Reuse A Library Function'
-    - '## Add A Governance Check'
-    - '## Run Local Gate Subsets'
-    docs/book/06_troubleshooting.md:
-    - '## Triage Flow'
-    - '## Check-ID To Cause Mapping'
-    - '## Fast Recovery Playbook'
-    - '## When To Escalate'
+    - '## Library-Backed Reuse'
+    docs/book/60_runner_and_gates.md:
+    - '## Required Rust Lane'
+    - '## Gate Sequence'
+    - '## Exit Code Semantics'
+    - '## Compatibility (Non-Blocking)'
+    docs/book/80_troubleshooting.md:
+    - '## Failure Taxonomy'
+    - '## Deterministic Recovery Flow'
+    - '## Escalation'
   check:
     profile: governance.scan
     config:

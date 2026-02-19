@@ -7,15 +7,15 @@ Canonical order for reference-manual chapters.
 Read top-to-bottom for first adoption, then use chapter links as stable
 reference anchors during implementation and conformance review.
 
-1. `/docs/book/00_first_10_minutes.md` - first-run setup and safety model.
-2. `/docs/book/01_quickstart.md` - minimal runnable path.
-3. `/docs/book/02_core_model.md` - case model and discovery contract.
-4. `/docs/book/03_assertions.md` - assertion tree and evaluate-first authoring boundary.
-5. `/docs/book/04_spec_lang_guide.md` - practical spec-lang composition patterns and debugging.
-6. `/docs/book/05_howto.md` - common contributor workflows for specs, libraries, and governance.
-7. `/docs/book/06_troubleshooting.md` - deterministic triage playbooks for specs/governance failures.
-8. `/docs/book/07_spec_lang_reference.md` - strict operator semantics and error behavior reference.
-9. `/docs/book/90_appendix_cheatsheet.md` - compact authoring cheatsheet.
+1. `/docs/book/10_getting_started.md` - minimal author-first startup path in the rust required lane.
+2. `/docs/book/20_case_model.md` - canonical case topology and harness-contract responsibility boundaries.
+3. `/docs/book/30_assertion_model.md` - canonical contract assertion model with explicit imports.
+4. `/docs/book/40_spec_lang_authoring.md` - practical mapping-ast authoring patterns and anti-patterns.
+5. `/docs/book/50_library_authoring.md` - contract.export authoring and metadata requirements.
+6. `/docs/book/60_runner_and_gates.md` - rust-first runner and gate execution contracts.
+7. `/docs/book/70_governance_and_quality.md` - governance check model, docs sync, and quality gates.
+8. `/docs/book/80_troubleshooting.md` - deterministic failure taxonomy and remediation flow.
+9. `/docs/book/90_reference_guide.md` - map from narrative guidance to normative schema and contract sources.
 10. `/docs/book/91_appendix_runner_api_reference.md` - generated runner command surface reference.
 11. `/docs/book/92_appendix_harness_type_reference.md` - generated harness type profile reference.
 12. `/docs/book/93_appendix_spec_lang_builtin_catalog.md` - generated spec-lang builtin index and namespace toc.
@@ -28,9 +28,13 @@ reference anchors during implementation and conformance review.
 19. `/docs/book/93g_std_type.md` - generated std.type semantic reference.
 20. `/docs/book/93h_std_set.md` - generated std.set semantic reference.
 21. `/docs/book/93i_std_json_schema_fn_null.md` - generated std.json/std.schema/std.fn/std.null semantic reference.
-22. `/docs/book/94_appendix_contract_policy_reference.md` - generated policy rule catalog.
-23. `/docs/book/95_appendix_traceability_reference.md` - generated contract traceability catalog.
-24. `/docs/book/96_appendix_governance_checks_reference.md` - generated governance check catalog.
-25. `/docs/book/97_appendix_metrics_reference.md` - generated metrics field catalog.
-26. `/docs/book/98_appendix_spec_case_shape_reference.md` - generated schema field catalog for case shapes.
-27. `/docs/book/99_appendix_reference_index.md` - wrapper page linking generated reference index and coverage pages.
+22. `/docs/book/93j_library_symbol_reference.md` - generated API-first reference for spec library export symbols.
+23. `/docs/book/93k_library_symbol_index.md` - generated index for library symbols grouped by module.
+24. `/docs/book/93l_spec_case_reference.md` - generated API-first reference for root doc metadata on executable cases.
+25. `/docs/book/93m_spec_case_index.md` - generated index for documented spec cases grouped by type.
+26. `/docs/book/94_appendix_contract_policy_reference.md` - generated policy rule catalog.
+27. `/docs/book/95_appendix_traceability_reference.md` - generated contract traceability catalog.
+28. `/docs/book/96_appendix_governance_checks_reference.md` - generated governance check catalog.
+29. `/docs/book/97_appendix_metrics_reference.md` - generated metrics field catalog.
+30. `/docs/book/98_appendix_spec_case_shape_reference.md` - generated schema field catalog for case shapes.
+31. `/docs/book/99_generated_reference_index.md` - canonical navigation gateway for all generated reference surfaces.

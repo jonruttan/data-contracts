@@ -12,14 +12,14 @@ harness:
   root: .
   doc_sync:
     files:
-    - docs/book/03_assertions.md
+    - docs/book/30_assertion_model.md
     - specs/contract/03_assertions.md
     - specs/schema/schema_v1.md
     tokens:
-    - must
-    - can
-    - cannot
-    - evaluate
+    - MUST
+    - MAY
+    - MUST_NOT
+    - contract.imports
   check:
     profile: governance.scan
     config:

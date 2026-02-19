@@ -1,3 +1,24 @@
+```yaml doc-meta
+doc_id: DOC-REF-941
+title: Library Symbol Reference
+status: active
+audience: reviewer
+owns_tokens:
+- library_symbol_reference
+requires_tokens:
+- generated_docs_sync
+commands:
+- run: PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-library-symbol-catalog --check
+  purpose: Verify generated library symbol reference content is in sync.
+examples:
+- id: EX-REF-LIB-001
+  runnable: false
+  opt_out_reason: Generated reference page intentionally contains no runnable fenced examples.
+sections_required:
+- '## Generated Library Symbol Reference'
+- '## Symbols'
+```
+
 # Library Symbol Reference
 
 Generated API-reference-first documentation for spec library export symbols.
@@ -7925,4 +7946,3 @@ Auto-generated metadata stub. Replace with authored reference text.
 
 - -
 <!-- GENERATED:END library_symbol_reference -->
-

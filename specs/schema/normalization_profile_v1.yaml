@@ -93,13 +93,13 @@ docs_token_sync:
     must_not_contain:
     - "Expression encoding is YAML list S-expression form"
   - id: NORMALIZATION_BOOK_ASSERTIONS_MAPPING_AST_WORDING
-    file: docs/book/03_assertions.md
+    file: docs/book/30_assertion_model.md
     must_contain:
     - "operator-keyed mapping AST"
     must_not_contain:
     - "YAML list S-expressions"
   - id: NORMALIZATION_BOOK_REFERENCE_MAPPING_AST_WORDING
-    file: docs/book/07_spec_lang_reference.md
+    file: docs/book/90_reference_guide.md
     must_contain:
     - "operator-keyed mapping AST"
     must_not_contain:

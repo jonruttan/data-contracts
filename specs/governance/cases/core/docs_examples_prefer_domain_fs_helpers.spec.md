@@ -10,8 +10,8 @@ harness:
   root: .
   examples_prefer_domain_fs_helpers:
     files:
-    - docs/book/05_howto.md
-    - docs/book/07_spec_lang_reference.md
+    - docs/book/60_runner_and_gates.md
+    - docs/book/90_reference_guide.md
     - specs/contract/04_harness.md
   check:
     profile: governance.scan

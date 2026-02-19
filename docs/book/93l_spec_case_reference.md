@@ -1,3 +1,24 @@
+```yaml doc-meta
+doc_id: DOC-REF-943
+title: Spec Case Reference
+status: active
+audience: reviewer
+owns_tokens:
+- spec_case_reference
+requires_tokens:
+- generated_docs_sync
+commands:
+- run: PYTHONPATH=runners/python .venv/bin/python -m spec_runner.spec_lang_commands generate-spec-case-catalog --check
+  purpose: Verify generated spec case reference content is in sync.
+examples:
+- id: EX-REF-CASE-001
+  runnable: false
+  opt_out_reason: Generated reference page intentionally contains no runnable fenced examples.
+sections_required:
+- '## Generated Spec Case Reference'
+- '## Cases'
+```
+
 # Spec Case Reference
 
 Generated API-reference-first documentation for case root doc metadata.
