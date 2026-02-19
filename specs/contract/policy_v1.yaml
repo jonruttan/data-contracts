@@ -3016,21 +3016,21 @@ rules:
   references:
   - specs/governance/cases/core/docs_filename_policy.spec.md
   - specs/governance/cases/core/naming_filename_policy.spec.md
-- id: DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED
+- id: DOCS_REVIEWS_NAMESPACE_ACTIVE_REQUIRED
   introduced_in: v1
   scope: governance
-  applies_to: docs.history.reviews
+  applies_to: docs.reviews
   norm: MUST
-  requirement: reviews_artifacts_must_live_under_docs_history_reviews
-  description: 'Historical review artifacts must live under `docs/history/reviews`;
-    non-canonical `docs/history/reviews` is forbidden.
+  requirement: reviews_active_assets_must_live_under_docs_reviews
+  description: 'Active review prompts/templates/workflow assets must use `docs/reviews`;
+    the historical review archive root is archival-only and must not be used by active tooling guidance.
 
     '
   rationale: Separates historical artifacts from canonical product docs.
   risk_if_violated: Review snapshots pollute active docs surface and increase confusion.
   references:
   - specs/contract/22_docs_information_architecture.md
-  - specs/governance/cases/core/docs_history_reviews_namespace.spec.md
+  - specs/governance/cases/core/docs_reviews_namespace_active.spec.md
 - id: DOCS_NO_OS_ARTIFACT_FILES_TRACKED
   introduced_in: v1
   scope: governance

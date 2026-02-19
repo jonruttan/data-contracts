@@ -6553,14 +6553,45 @@ def _scan_docs_filename_policy(root: Path, *, harness: dict | None = None) -> li
     return violations
 
 
-def _scan_docs_history_reviews_namespace(root: Path, *, harness: dict | None = None) -> list[str]:
+def _scan_docs_reviews_namespace_active(root: Path, *, harness: dict | None = None) -> list[str]:
+    del harness
     violations: list[str] = []
-    legacy = root / "docs/reviews"
-    canonical = root / "docs/history/reviews"
-    if legacy.exists():
-        violations.append("docs/reviews: forbidden legacy review root exists")
-    if not canonical.exists() or not canonical.is_dir():
-        violations.append("docs/history/reviews: missing canonical review root")
+    active_root = root / "docs/reviews"
+    history_root = root / "docs/history/reviews"
+    if not active_root.exists() or not active_root.is_dir():
+        violations.append("docs/reviews: missing canonical active review root")
+        return violations
+    if not history_root.exists() or not history_root.is_dir():
+        violations.append("docs/history/reviews: missing historical review archive root")
+    roots_to_scan: list[Path] = [
+        root / "docs",
+        root / "specs",
+        root / "scripts",
+        root / "README.md",
+    ]
+    needle = "docs/history/reviews"
+    for base in roots_to_scan:
+        if not base.exists():
+            continue
+        files: list[Path] = []
+        if base.is_file():
+            files = [base]
+        else:
+            files = [p for p in base.rglob("*") if p.is_file()]
+        for p in sorted(files):
+            rel = p.relative_to(root).as_posix()
+            if rel.startswith("docs/history/"):
+                continue
+            if rel.startswith(".artifacts/"):
+                continue
+            try:
+                text = p.read_text(encoding="utf-8")
+            except Exception:
+                continue
+            if needle in text:
+                violations.append(
+                    f"{rel}:1: active surfaces must not reference historical review namespace `{needle}`"
+                )
     return violations
 
 
@@ -10942,7 +10973,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "docs.layout_canonical_trees": _scan_docs_layout_canonical_trees,
     "docs.index_filename_policy": _scan_docs_index_filename_policy,
     "docs.filename_policy": _scan_docs_filename_policy,
-    "docs.history_reviews_namespace": _scan_docs_history_reviews_namespace,
+    "docs.reviews_namespace_active": _scan_docs_reviews_namespace_active,
     "docs.no_os_artifact_files": _scan_docs_no_os_artifact_files,
     "runtime.scope_sync": _scan_runtime_scope_sync,
     "runtime.profiling_contract_artifacts": _scan_runtime_profiling_contract_artifacts,

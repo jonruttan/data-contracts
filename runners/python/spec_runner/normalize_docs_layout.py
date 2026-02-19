@@ -46,7 +46,7 @@ def _check_layout(profile: dict, root: Path) -> list[str]:
     for raw in profile.get("forbidden_roots", []):
         p = _from_contract_path(root, str(raw))
         if p.exists():
-            issues.append(f"{str(raw).lstrip('/')}:1: DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED: forbidden root exists")
+            issues.append(f"{str(raw).lstrip('/')}:1: DOCS_REVIEWS_NAMESPACE_ACTIVE_REQUIRED: forbidden root exists")
 
     required_index_dirs = profile.get("required_index_dirs", [])
     for raw in required_index_dirs:
@@ -88,7 +88,6 @@ def _rewrite_file(path: Path, replacements: list[tuple[str, str]]) -> None:
 def _write_layout(profile: dict, root: Path) -> list[str]:
     issues: list[str] = []
     replacements = [
-        ("docs/reviews", "docs/history/reviews"),
         ("docs/book/README.md", "docs/book/index.md"),
         ("specs/README.md", "specs/index.md"),
         ("specs/contract/README.md", "specs/contract/index.md"),
@@ -103,7 +102,6 @@ def _write_layout(profile: dict, root: Path) -> list[str]:
             _rewrite_file(p, replacements)
 
     from_to = [
-        ("docs/reviews", "docs/history/reviews"),
         ("docs/book/README.md", "docs/book/index.md"),
         ("specs/README.md", "specs/index.md"),
         ("specs/contract/README.md", "specs/contract/index.md"),

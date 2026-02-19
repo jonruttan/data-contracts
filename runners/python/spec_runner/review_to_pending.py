@@ -216,7 +216,7 @@ def _write_pending(
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        description="Extract explicit YAML spec candidates from a review snapshot and infer implicit suggestions into specs/pending.",
+        description="Extract explicit YAML spec candidates from a review snapshot and infer implicit suggestions into specs/governance/pending.",
     )
     ap.add_argument("snapshot", help="Path to review snapshot markdown")
     ap.add_argument(
@@ -238,7 +238,7 @@ def main(argv: list[str] | None = None) -> int:
     cls = _extract_classifications(md)
     implicit = _infer_implicit(md, limit=max(0, int(ns.implicit_limit)))
 
-    out_path = Path(ns.out) if ns.out else Path("specs/pending") / f"{src.stem}-pending.md"
+    out_path = Path(ns.out) if ns.out else Path("specs/governance/pending") / f"{src.stem}-pending.md"
     _write_pending(
         out_path,
         title="Review-Derived Spec Candidates",

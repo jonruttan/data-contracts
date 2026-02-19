@@ -2818,8 +2818,8 @@ links:
   - runners/python/spec_runner/governance_runtime.py
   - specs/governance/cases/core/docs_filename_policy.spec.md
   notes: Enforces lowercase/no-space docs filename policy.
-- rule_id: DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED
-  policy_ref: specs/contract/policy_v1.yaml#DOCS_HISTORY_REVIEWS_NAMESPACE_REQUIRED
+- rule_id: DOCS_REVIEWS_NAMESPACE_ACTIVE_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#DOCS_REVIEWS_NAMESPACE_ACTIVE_REQUIRED
   contract_refs:
   - specs/contract/22_docs_information_architecture.md
   schema_refs:
@@ -2829,8 +2829,8 @@ links:
   - specs/impl/python/cases/script_governance_runner.spec.md
   implementation_refs:
   - runners/python/spec_runner/governance_runtime.py
-  - specs/governance/cases/core/docs_history_reviews_namespace.spec.md
-  notes: Requires `docs/history/reviews` namespace and forbids `docs/history/reviews`.
+  - specs/governance/cases/core/docs_reviews_namespace_active.spec.md
+  notes: Requires `docs/reviews` for active review assets and treats the historical review archive root as archive-only.
 - rule_id: DOCS_NO_OS_ARTIFACT_FILES_TRACKED
   policy_ref: specs/contract/policy_v1.yaml#DOCS_NO_OS_ARTIFACT_FILES_TRACKED
   contract_refs:

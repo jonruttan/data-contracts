@@ -4,15 +4,15 @@
 
 ```yaml contract-spec
 id: DCGOV-DOCS-LAYOUT-004
-title: review artifacts live under docs/history/reviews
-purpose: Enforces canonical historical review namespace and forbids non-canonical docs/history/reviews.
+title: active review assets live under docs/reviews
+purpose: Enforces docs/reviews as canonical active review namespace while keeping historical review archives out of active workflow references.
 type: contract.check
 harness:
   root: .
   check:
     profile: governance.scan
     config:
-      check: docs.history_reviews_namespace
+      check: docs.reviews_namespace_active
   use:
   - ref: /specs/libraries/policy/policy_core.spec.md
     as: lib_policy_core_spec
@@ -32,7 +32,7 @@ contract:
       - std.object.get:
         - {var: summary_json}
         - check_id
-      - docs.history_reviews_namespace
+      - docs.reviews_namespace_active
     - std.logic.eq:
       - std.object.get:
         - {var: summary_json}

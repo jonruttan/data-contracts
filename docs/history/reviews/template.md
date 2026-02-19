@@ -1,5 +1,7 @@
-# Template (Moved)
+# Template (Archive Pointer)
 
-Canonical location:
+Active canonical location:
 
-- `docs/history/reviews/templates/review_snapshot.md`
+- `docs/reviews/templates/review_snapshot.md`
+
+This file is retained for historical reference only.

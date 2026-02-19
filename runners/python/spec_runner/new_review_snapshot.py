@@ -28,7 +28,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--prompt",
-        default="docs/history/reviews/prompts/adoption_7_personas.md",
+        default="docs/reviews/prompts/adoption_7_personas.md",
         help="Path to prompt file used for the review",
     )
     ap.add_argument(
@@ -43,7 +43,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--out-dir",
-        default="docs/history/reviews/snapshots",
+        default="docs/reviews/snapshots",
         help="Directory where snapshot file is written",
     )
     ns = ap.parse_args(argv)
@@ -66,7 +66,38 @@ def main(argv: list[str] | None = None) -> int:
                 break
             i += 1
 
-    body = f"""# Review Snapshot\n\nDate: {today}\nModel: {ns.model}\nPrompt: `{prompt_path.as_posix()}`\nPrompt revision: {prompt_sha}\nRepo revision: {repo_sha}\n\n## Notes (optional)\n\n- What changed since last time:\n- What you asked the reviewer to focus on:\n- Where spec candidates were copied:\n  - backlog: yes/no\n  - promoted specs: (list files) or none\n\n## Raw Output\n\nPaste the full AI output here. Do not edit it beyond formatting fixes.\n"""
+    body = (
+        f"# Review Snapshot\n\n"
+        f"Date: {today}\n"
+        f"Model: {ns.model}\n"
+        f"Prompt: `{prompt_path.as_posix()}`\n"
+        f"Prompt revision: {prompt_sha}\n"
+        f"Repo revision: {repo_sha}\n"
+        "Contract baseline refs:\n"
+        "- /specs/schema/schema_v1.md\n"
+        "- /specs/contract/12_runner_interface.md\n"
+        "- /specs/contract/25_compatibility_matrix.md\n"
+        "- /specs/governance/check_sets_v1.yaml\n"
+        "Runner lane: rust|required | python|compatibility | php|compatibility | mixed\n\n"
+        "## Scope Notes\n\n"
+        "- What changed since last review:\n"
+        "- What this run focused on:\n"
+        "- Environment limitations:\n\n"
+        "## Command Execution Log\n\n"
+        "| command | status | exit_code | stdout_stderr_summary |\n"
+        "|---|---|---:|---|\n"
+        "| <command> | pass/fail/skipped | <code> | <summary> |\n\n"
+        "## Findings\n\n"
+        "| Severity | Verified/Hypothesis | File:Line | What | Why | When | Proposed fix |\n"
+        "|---|---|---|---|---|---|---|\n"
+        "| P1 | Verified | path:line | ... | ... | ... | ... |\n\n"
+        "## Synthesis\n\n"
+        "- North-star:\n"
+        "- Top risks:\n"
+        "- Definition of done:\n\n"
+        "## Raw Output\n\n"
+        "Paste the full AI output here. Keep content intact except light formatting cleanup.\n"
+    )
     out_path.write_text(body, encoding="utf-8")
     print(out_path.as_posix())
     return 0

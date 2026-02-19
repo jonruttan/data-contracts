@@ -1789,7 +1789,7 @@
       "type": "governance.check"
     },
     {
-      "file": "specs/governance/cases/core/docs_history_reviews_namespace.spec.md",
+      "file": "specs/governance/cases/core/docs_reviews_namespace_active.spec.md",
       "governance_symbol_resolution": 1.0,
       "has_evaluate": 1.0,
       "id": "DCGOV-DOCS-LAYOUT-004",

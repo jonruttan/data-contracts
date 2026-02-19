@@ -4,7 +4,7 @@ canonical_roots:
 - /docs/book
 - /specs
 - /docs/impl
-- /docs/history/reviews
+- /docs/reviews
 forbidden_roots: []
 index_filename: index.md
 required_index_dirs:
@@ -16,7 +16,7 @@ required_index_dirs:
 - /specs/conformance/cases
 - /specs/governance
 - /specs/impl/php/cases
-- /docs/history/reviews
+- /docs/reviews
 forbidden_filenames:
 - README.md
 - .DS_Store

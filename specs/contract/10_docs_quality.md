@@ -10,11 +10,13 @@ MUST:
   - `docs/book`
   - `specs`
   - `docs/impl`
-  - `docs/history/reviews`
+  - `docs/reviews`
 - directory index files under `docs/**` MUST be named `index.md`.
 - `README.md` under `docs/**` is forbidden.
 - `.DS_Store` and similar OS/editor artifact files are forbidden in tracked docs paths.
 - docs filenames MUST be lowercase and MUST NOT include spaces.
+- active review workflows and prompts MUST use `docs/reviews` paths.
+- the historical reviews archive root is archival-only and MUST NOT be used by active tooling guidance.
 
 ## Reference Surface
 
