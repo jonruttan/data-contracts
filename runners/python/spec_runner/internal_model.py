@@ -1,17 +1,18 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
 
 
 @dataclass(frozen=True)
 class PredicateLeaf:
-    target: str
-    subject_key: str
     op: str
     expr: Any
     assert_path: str
+    target: str | None = None
+    subject_key: str | None = None
+    imports: dict[str, dict[str, Any]] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)

@@ -32,7 +32,13 @@ _CASE_DOC_ALLOWED_KEYS = {
 }
 
 
-def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -> PredicateLeaf:
+def _compile_assert_expr_leaf(
+    raw_expr: Any,
+    *,
+    target: str | None,
+    imports: dict[str, dict[str, Any]],
+    assert_path: str,
+) -> PredicateLeaf:
     if not isinstance(raw_expr, dict) or not raw_expr:
         raise ValueError(f"{assert_path} must be a non-empty expression mapping")
     if "evaluate" in raw_expr:
@@ -50,7 +56,8 @@ def _compile_assert_expr_leaf(raw_expr: Any, *, target: str, assert_path: str) -
         raise ValueError(f"{assert_path} unsupported operator: {op}")
     return PredicateLeaf(
         target=target,
-        subject_key=target,
+        subject_key=None,
+        imports=imports,
         op=op,
         expr=expr,
         assert_path=assert_path,
@@ -282,6 +289,38 @@ def _normalize_step_assert_list(raw: Any, *, step_path: str) -> list[Any]:
     raise TypeError(f"{step_path}.assert must be a non-empty expression mapping or list")
 
 
+def _normalize_imports(raw: Any, *, field_path: str) -> dict[str, dict[str, Any]]:
+    if raw is None:
+        return {}
+    if not isinstance(raw, dict):
+        raise TypeError(f"{field_path} must be a mapping")
+    out: dict[str, dict[str, Any]] = {}
+    for raw_name, raw_spec in raw.items():
+        name = str(raw_name).strip()
+        if not name:
+            raise ValueError(f"{field_path} import names must be non-empty")
+        if not isinstance(raw_spec, dict):
+            raise TypeError(f"{field_path}.{name} must be a mapping")
+        src = str(raw_spec.get("from", "")).strip()
+        if src not in {"artifact", "symbol", "literal"}:
+            raise ValueError(f"{field_path}.{name}.from must be one of: artifact, symbol, literal")
+        spec: dict[str, Any] = {"from": src}
+        if src in {"artifact", "symbol"}:
+            key = str(raw_spec.get("key", "")).strip()
+            if not key:
+                raise ValueError(f"{field_path}.{name}.key must be a non-empty string for from={src}")
+            spec["key"] = key
+        else:
+            if "value" not in raw_spec:
+                raise ValueError(f"{field_path}.{name}.value is required for from=literal")
+            spec["value"] = raw_spec.get("value")
+        unknown = sorted(set(str(k) for k in raw_spec.keys()) - {"from", "key", "value"})
+        if unknown:
+            raise ValueError(f"{field_path}.{name} has unknown keys: {', '.join(unknown)}")
+        out[name] = spec
+    return out
+
+
 def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
     if not isinstance(raw_expect, dict):
         return []
@@ -290,7 +329,7 @@ def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
         out.append(
             {
                 "class": "MUST",
-                "target": "violation_count",
+                "imports": {"subject": {"from": "artifact", "key": "violation_count"}},
                 "assert": {
                     "std.logic.eq": [
                         {"var": "subject"},
@@ -303,7 +342,7 @@ def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
         out.append(
             {
                 "class": "MUST",
-                "target": "status",
+                "imports": {"subject": {"from": "artifact", "key": "status"}},
                 "assert": {
                     "std.logic.eq": [
                         {"var": "subject"},
@@ -318,7 +357,7 @@ def _lower_expect_steps(raw_expect: Any) -> list[dict[str, Any]]:
             out.append(
                 {
                     "class": "MUST",
-                    "target": "summary_json",
+                    "imports": {"subject": {"from": "artifact", "key": "summary_json"}},
                     "assert": {
                         "std.logic.eq": [
                             {
@@ -342,13 +381,11 @@ def _normalize_contract_steps(raw_assert: Any, *, raw_expect: Any, assert_path: 
         defaults_raw = raw_assert.get("defaults")
         defaults = defaults_raw if isinstance(defaults_raw, dict) else {}
         default_class = str(defaults.get("class", "MUST")).strip() or "MUST"
-        default_target = (
-            str(defaults.get("target", "")).strip()
-            or str(defaults.get("on", "")).strip()
-            or None
-        )
         if default_class not in {"MUST", "MAY", "MUST_NOT"}:
             raise ValueError(f"{assert_path}.defaults.class must be one of: MUST, MAY, MUST_NOT")
+        if "target" in defaults or "on" in defaults:
+            raise ValueError(f"{assert_path}.defaults.target/on is forbidden; use defaults.imports")
+        default_imports = _normalize_imports(defaults.get("imports"), field_path=f"{assert_path}.defaults.imports")
         raw_steps = raw_assert.get("steps")
         if raw_steps is None:
             raw_steps = []
@@ -366,15 +403,15 @@ def _normalize_contract_steps(raw_assert: Any, *, raw_expect: Any, assert_path: 
             if step_class not in {"MUST", "MAY", "MUST_NOT"}:
                 raise ValueError(f"{assert_path}.steps[{idx}].class must be one of: MUST, MAY, MUST_NOT")
             step_id = str(raw_step.get("id", "")).strip() or f"step_{idx + 1:03d}"
-            step_target = (
-                str(raw_step.get("target", "")).strip()
-                or str(raw_step.get("on", "")).strip()
-                or default_target
-            )
+            if "target" in raw_step or "on" in raw_step:
+                raise ValueError(f"{assert_path}.steps[{idx}].target/on is forbidden; use imports")
+            step_imports = _normalize_imports(raw_step.get("imports"), field_path=f"{assert_path}.steps[{idx}].imports")
+            merged_imports = dict(default_imports)
+            merged_imports.update(step_imports)
             if "assert" not in raw_step:
                 raise ValueError(f"{assert_path}.steps[{idx}].assert is required")
             checks = _normalize_step_assert_list(raw_step.get("assert"), step_path=f"{assert_path}.steps[{idx}]")
-            out.append({"id": step_id, "class": step_class, "target": step_target, "asserts": checks})
+            out.append({"id": step_id, "class": step_class, "imports": merged_imports, "asserts": checks})
         return out
 
     # Accept v1 only for migration tooling compatibility.
@@ -421,14 +458,17 @@ def compile_assert_tree(
         class_name = str(raw_step.get("class", "")).strip()
         if class_name not in {"MUST", "MAY", "MUST_NOT"}:
             raise ValueError(f"{assert_path}.steps[{idx}].class must be one of: MUST, MAY, MUST_NOT")
-        step_target = str(raw_step.get("target", "")).strip() or inherited_target
+        step_imports = raw_step.get("imports")
+        if not isinstance(step_imports, dict):
+            raise TypeError(f"{assert_path}.steps[{idx}].imports must be a mapping")
         raw_checks = raw_step.get("asserts")
         if not isinstance(raw_checks, list) or not raw_checks:
             raise TypeError(f"{assert_path}.steps[{idx}].assert must be a non-empty mapping or list")
         children: list[InternalAssertNode] = [
             _compile_assert_expr_leaf(
                 check,
-                target=str(step_target or "").strip(),
+                target=None,
+                imports=dict(step_imports),
                 assert_path=f"{assert_path}.steps[{idx}].assert[{cidx}]",
             )
             for cidx, check in enumerate(raw_checks)
@@ -436,7 +476,7 @@ def compile_assert_tree(
         step_nodes.append(
             GroupNode(
                 op=cast(Literal["MUST", "MAY", "MUST_NOT"], class_name),
-                target=step_target,
+                target=None,
                 children=children,
                 assert_path=f"{assert_path}.steps[{idx}]<{step_id}>",
             )

@@ -19,11 +19,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - 'OK: valid conformance report'
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-VALREP-002
@@ -45,9 +48,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - 'ERROR: report.version must equal 1'
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```

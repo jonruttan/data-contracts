@@ -19,7 +19,7 @@ from tempfile import TemporaryDirectory
 from typing import Any, Callable, cast
 
 import yaml
-from spec_runner.assertions import eval_assert_tree, iter_leaf_assertions
+from spec_runner.assertions import evaluate_internal_assert_tree
 from spec_runner.codecs import load_external_cases as _load_external_cases_uncached
 from spec_runner.dispatcher import SpecRunContext, iter_cases as _iter_cases_uncached, run_case
 from spec_runner.doc_parser import iter_spec_doc_tests
@@ -41,6 +41,7 @@ from spec_runner.spec_lang_stdlib_profile import spec_lang_stdlib_report_jsonabl
 from spec_runner.spec_lang_libraries import load_spec_lang_symbols_for_case
 from spec_runner.spec_domain import normalize_case_domain, normalize_export_symbol
 from spec_runner.spec_lang_yaml_ast import SpecLangYamlAstError, compile_yaml_expr_to_sexpr
+from spec_runner.compiler import compile_assert_tree
 from spec_runner.schema_registry import compile_registry
 from spec_runner.ops_namespace import validate_ops_symbol
 from spec_runner.ops_namespace import is_legacy_underscore_form
@@ -7006,6 +7007,81 @@ def _scan_runtime_meta_json_target_required(root: Path, *, harness: dict | None 
     return violations
 
 
+def _scan_schema_contract_target_on_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    violations: list[str] = []
+    for doc_path, case in _iter_all_spec_cases(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        contract = case.get("contract")
+        if not isinstance(contract, dict):
+            continue
+        steps = contract.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                continue
+            if "target" in step:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} contract.steps[{idx}].target is forbidden; use imports"
+                )
+            if "on" in step:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} contract.steps[{idx}].on is forbidden; use imports"
+                )
+    return violations
+
+
+def _scan_schema_contract_imports_explicit_required(root: Path, *, harness: dict | None = None) -> list[str]:
+    def _contains_var_subject(node: object) -> bool:
+        if isinstance(node, dict):
+            if set(node.keys()) == {"var"} and str(node.get("var", "")).strip() == "subject":
+                return True
+            return any(_contains_var_subject(v) for v in node.values())
+        if isinstance(node, list):
+            return any(_contains_var_subject(v) for v in node)
+        return False
+
+    violations: list[str] = []
+    for doc_path, case in _iter_all_spec_cases(root):
+        case_id = str(case.get("id", "<unknown>")).strip() or "<unknown>"
+        contract = case.get("contract")
+        if not isinstance(contract, dict):
+            continue
+        defaults = contract.get("defaults")
+        default_imports = {}
+        if isinstance(defaults, dict) and isinstance(defaults.get("imports"), dict):
+            default_imports = cast(dict[str, Any], defaults.get("imports"))
+        steps = contract.get("steps")
+        if not isinstance(steps, list):
+            continue
+        for idx, step in enumerate(steps):
+            if not isinstance(step, dict):
+                continue
+            raw_assert = step.get("assert")
+            if raw_assert is None or not _contains_var_subject(raw_assert):
+                continue
+            step_imports = step.get("imports")
+            merged: dict[str, Any] = dict(default_imports)
+            if isinstance(step_imports, dict):
+                merged.update(step_imports)
+            if "subject" not in merged:
+                violations.append(
+                    f"{doc_path.relative_to(root)}: case {case_id} contract.steps[{idx}] uses var subject without imports.subject"
+                )
+    return violations
+
+
+def _scan_runtime_implicit_subject_binding_forbidden(root: Path, *, harness: dict | None = None) -> list[str]:
+    rel = "runners/python/spec_runner/spec_lang.py"
+    p = _join_contract_path(root, rel)
+    if not p.exists():
+        return [f"{rel}:1: missing spec_lang evaluator file"]
+    text = p.read_text(encoding="utf-8")
+    if 'root_symbols["subject"]' in text:
+        return [f"{rel}:1: implicit subject injection is forbidden; use explicit imports"]
+    return []
+
+
 def _scan_runtime_ops_os_capability_required(root: Path, *, harness: dict | None = None) -> list[str]:
     h = harness or {}
     cfg = h.get("ops_os_capability")
@@ -10431,6 +10507,7 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "runtime.profile_artifacts_on_fail_required": _scan_runtime_profile_artifacts_on_fail_required,
     "runtime.assert_block_decision_authority_required": _scan_runtime_assert_block_decision_authority_required,
     "runtime.meta_json_target_required": _scan_runtime_meta_json_target_required,
+    "runtime.implicit_subject_binding_forbidden": _scan_runtime_implicit_subject_binding_forbidden,
     "runtime.ops_os_capability_required": _scan_runtime_ops_os_capability_required,
     "runtime.ops_os_stdlib_surface_sync": _scan_runtime_ops_os_stdlib_surface_sync,
     "runtime.contract_spec_fence_required": _scan_runtime_contract_spec_fence_required,
@@ -10475,6 +10552,8 @@ _CHECKS: dict[str, GovernanceCheck] = {
     "schema.registry_compiled_sync": _scan_schema_registry_compiled_sync,
     "schema.no_prose_only_rules": _scan_schema_no_prose_only_rules,
     "schema.type_profiles_complete": _scan_schema_type_profiles_complete,
+    "schema.contract_target_on_forbidden": _scan_schema_contract_target_on_forbidden,
+    "schema.contract_imports_explicit_required": _scan_schema_contract_imports_explicit_required,
     "library.domain_ownership": _scan_library_domain_ownership,
     "library.domain_index_sync": _scan_library_domain_index_sync,
     "library.public_surface_model": _scan_library_public_surface_model,
@@ -10593,43 +10672,33 @@ def run_governance_check(case, *, ctx) -> None:
         artifacts={"text": text, "summary_json": summary, "violation_count": len(violations)},
     )
 
-    assert_spec = t.get("contract", []) or []
-    spec_lang_limits = SpecLangLimits()
+    assert_tree = compile_assert_tree(
+        t.get("contract"),
+        raw_expect=t.get("expect"),
+        type_name="contract.check",
+        strict_steps=True,
+    )
 
-    def _eval_leaf(leaf: dict, *, inherited_target: str | None = None, assert_path: str = "assert") -> None:
-        for target, op, value, is_true in iter_leaf_assertions(leaf, target_override=inherited_target):
-            subject_value: object
-            if target == "text":
-                subject_value = text
-            elif target == "summary_json":
-                subject_value = summary
-            elif target == "violation_count":
-                subject_value = len(violations)
-            elif target == "meta_json":
-                subject_value = meta_json
-            else:
-                raise ValueError(f"unknown assert target for contract.check governance.scan: {target}")
-            if op != "evaluate":
-                raise ValueError(f"unsupported governance assertion op: {op}")
-            if isinstance(value, list):
-                raw_expr_list = value
-            elif isinstance(value, dict):
-                raw_expr_list = [value]
-            else:
-                raise TypeError("evaluate assertion op value must be a list or mapping AST expression")
-            expr = normalize_evaluate(raw_expr_list, field=f"{assert_path}.{target}.evaluate")
-            ok = eval_predicate(
-                expr,
-                subject=subject_value,
-                limits=spec_lang_limits,
-                symbols=symbols,
-                imports=spec_lang_imports,
-                capabilities=spec_lang_capabilities,
-            )
-            if bool(ok) is not bool(is_true):
-                raise AssertionError(f"{op} assertion failed")
+    def _artifact_for_key(key: str) -> object:
+        if key == "text":
+            return text
+        if key == "summary_json":
+            return summary
+        if key == "violation_count":
+            return len(violations)
+        if key == "meta_json":
+            return meta_json
+        raise ValueError(f"unknown assertion artifact for contract.check governance.scan: {key}")
 
-    eval_assert_tree(assert_spec, eval_leaf=_eval_leaf)
+    evaluate_internal_assert_tree(
+        assert_tree,
+        case_id=case_id,
+        subject_for_key=_artifact_for_key,
+        limits=SpecLangLimits(),
+        symbols=symbols,
+        imports=spec_lang_imports,
+        capabilities=spec_lang_capabilities,
+    )
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -1258,11 +1258,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.eq:
       - call:
         - {var: path.normalize_slashes}
         - a\\b\\c.txt
       - a/b/c.txt
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```

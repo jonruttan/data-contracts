@@ -15,7 +15,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - std.math.add:
@@ -37,6 +36,10 @@ contract:
         - 3
         - 3
       - 0
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -59,7 +62,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - std.type.json_type:
@@ -81,6 +83,10 @@ contract:
           - a
         - dict
       - true
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -103,7 +109,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - ops.fs.path.normalize:
@@ -136,6 +141,10 @@ contract:
         - a/b.txt
         - ''
       - a/b
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -158,7 +167,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - ops.fs.file.exists:
@@ -205,6 +213,10 @@ contract:
         - missing
         - fallback
       - fallback
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -227,7 +239,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - ops.fs.json.parse:
@@ -277,6 +288,10 @@ contract:
           - b
           - 0
       - true
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -300,7 +315,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.eq:
       - ops.fs.json.get:
@@ -308,6 +322,10 @@ contract:
             a: 1
         - a
       - 1
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -330,7 +348,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - ops.fs.glob.match:
@@ -359,6 +376,10 @@ contract:
           - specs/current.md
         - specs/*.md
       - true
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -382,7 +403,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.eq:
       - ops.fs.glob.any:
@@ -391,6 +411,10 @@ contract:
           - specs/current.md
         - specs/*.md
       - true
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -413,7 +437,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - ops.fs.path.relativize:
@@ -437,6 +460,10 @@ contract:
           - specs/current.md
           - specs/schema/schema_v1.md
       - specs
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -460,7 +487,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.eq:
       - ops.fs.path.common_prefix:
@@ -468,6 +494,10 @@ contract:
           - /a/b
           - 7
       - /a
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -490,7 +520,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - ops.fs.path.parents:
@@ -521,6 +550,10 @@ contract:
         - /a/b
         - /a/c
       - false
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -544,12 +577,15 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.eq:
       - ops.fs.path.parents:
         - 7
       - lit: []
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -572,7 +608,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - ops.fs.path.compare:
@@ -594,6 +629,10 @@ contract:
         - /a/b
         - /a/c
         - /b/z
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -617,7 +656,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.eq:
       - ops.fs.path.sort:
@@ -626,6 +664,10 @@ contract:
           - 7
       - lit:
         - /a/b
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file

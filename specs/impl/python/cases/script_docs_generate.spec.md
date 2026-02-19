@@ -19,11 +19,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --surface
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-002
@@ -47,11 +50,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.logic.eq:
       - 1
       - 1
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-003
@@ -73,11 +79,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --cases
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-004
@@ -101,11 +110,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - unknown surface_id
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-005
@@ -127,11 +139,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --write
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-006
@@ -153,11 +168,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - formatting is canonical
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-007
@@ -186,7 +204,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
     - std.string.contains:
       - {var: subject}
@@ -197,6 +214,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - wrote .artifacts/docs-build-reference-graph.json
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-DOCS-008
@@ -218,9 +239,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```

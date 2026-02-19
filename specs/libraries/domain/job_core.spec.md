@@ -56,7 +56,6 @@ contract:
     class: MUST
   steps:
   - id: __export__domain.job.scan_bundle_has_result
-    target: subject
     assert:
       std.logic.neq:
       - std.object.get:
@@ -69,6 +68,10 @@ contract:
               - var: pattern
         - scanned_files
       - null
+    imports:
+      subject:
+        from: artifact
+        key: subject
 library:
   id: domain.job.core
   module: domain

@@ -40,7 +40,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - call:
@@ -191,6 +190,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - 'type: spec.export'
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```
 
 ## SRCONF-DOMAIN-LIB-002
@@ -266,7 +269,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - call:
       - {var: make.has_target}
@@ -428,4 +430,8 @@ contract:
     - std.string.contains:
       - {var: subject}
       - /specs/libraries/domain/python_core.spec.md
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```

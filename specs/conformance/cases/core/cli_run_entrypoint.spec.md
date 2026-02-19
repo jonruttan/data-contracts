@@ -74,9 +74,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - '"ok": true'
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```

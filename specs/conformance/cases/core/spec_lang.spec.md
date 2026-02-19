@@ -28,13 +28,16 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       lit:
         call:
         - var: conf.pass_when_text_contains
         - var: subject
         - 'version: 1'
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```
 
 ## SRCONF-EXPR-002
@@ -65,7 +68,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - call:
@@ -75,6 +77,10 @@ contract:
       - std.string.starts_with:
         - {var: subject}
         - '#'
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```
 
 ## SRCONF-EXPR-003
@@ -99,7 +105,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       lit:
         let:
@@ -127,6 +132,10 @@ contract:
             - 1500
             - 0
           - 1500
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -154,11 +163,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.starts_with:
       - {var: subject}
       - NOPE_PREFIX
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -186,10 +198,13 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       lit:
         bad: shape
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -217,11 +232,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       lit:
         unknown_symbol:
         - 1
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -256,7 +274,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       lit:
         let:
@@ -277,6 +294,10 @@ contract:
         - call:
           - var: loop
           - 1000
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```
 
 ## SRCONF-EXPR-008
@@ -308,7 +329,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - lit:
         call:
@@ -320,6 +340,10 @@ contract:
         - var: conf.pass_when_text_contains
         - var: subject
         - 'version: 1'
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```
 
 ## SRCONF-EXPR-009
@@ -347,7 +371,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.eq:
       - std.set.intersection:
@@ -357,6 +380,10 @@ contract:
           - '[{"k":2},{"k":4},{"k":1}]'
       - std.json.parse:
         - '[{"k":1},{"k":2}]'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -387,7 +414,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.eq:
       - std.set.union:
@@ -397,6 +423,10 @@ contract:
           - '[{"k":2},{"k":4},{"k":1}]'
       - std.json.parse:
         - '[{"k":1},{"k":2},{"k":3},{"k":4}]'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -427,7 +457,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -446,6 +475,10 @@ contract:
             - '[{"k":2},{"k":4}]'
         - std.json.parse:
           - '[{"k":1},{"k":3},{"k":4}]'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -476,7 +509,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.set.set_equals:
@@ -499,6 +531,10 @@ contract:
           - '[{"k":1},{"k":2},{"k":3}]'
         - std.json.parse:
           - '{"k":2}'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -529,7 +565,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -550,6 +585,10 @@ contract:
             - '[1,2,3,4,5]'
         - std.json.parse:
           - '[4,5]'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -581,7 +620,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -642,6 +680,10 @@ contract:
             - '[{"k":1},{"k":1},{"k":2}]'
         - std.json.parse:
           - '[{"k":1},{"k":2}]'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -672,7 +714,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -717,6 +758,10 @@ contract:
             - '[1,2,3]'
         - std.json.parse:
           - '[3]'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -748,7 +793,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.eq:
       - call:
@@ -757,6 +801,10 @@ contract:
           - 2
         - 3
       - 5
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -790,7 +838,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       lit:
         call:
@@ -799,6 +846,10 @@ contract:
           - 1
         - 2
         - 3
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -831,12 +882,15 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.set.intersection:
       - not-a-list
       - std.json.parse:
         - '[]'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -867,7 +921,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -957,6 +1010,10 @@ contract:
       - std.type.is_dict:
         - std.json.parse:
           - '{"a":1}'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -987,7 +1044,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -1057,6 +1113,10 @@ contract:
           - '{"a":1}'
         - std.json.parse:
           - '{"a":1,"b":2}'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -1087,7 +1147,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -1135,6 +1194,10 @@ contract:
           - 3
           - '0'
         - '700'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -1166,7 +1229,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -1219,6 +1281,10 @@ contract:
         - std.logic.xor:
           - true
           - true
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -1250,7 +1316,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -1398,6 +1463,10 @@ contract:
           - std.json.parse:
             - '[4,2,8]'
         - 8
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -1431,10 +1500,13 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.compare:
       - 1
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file

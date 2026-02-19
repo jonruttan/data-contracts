@@ -32,6 +32,14 @@ fields:
     required: false
     since: v1
   contract:
-    type: list
+    type: any
     required: true
+    since: v1
+  contract.defaults.imports:
+    type: mapping
+    required: false
+    since: v1
+  contract.steps[].imports:
+    type: mapping
+    required: false
     since: v1

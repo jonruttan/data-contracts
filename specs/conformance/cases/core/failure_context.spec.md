@@ -25,11 +25,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.regex_match:
       - {var: subject}
       - \A\Z
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file

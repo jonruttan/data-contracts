@@ -18,11 +18,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - 'OK: docs lint passed'
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-DOCSLINT-002
@@ -45,9 +48,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - missing reference manifest
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```

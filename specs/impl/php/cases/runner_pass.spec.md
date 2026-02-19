@@ -16,11 +16,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.contains:
       - {var: subject}
       - '# PHP Spec Runner Pass Cases'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -43,11 +46,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.contains:
       - {var: subject}
       - fixture-content
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -72,7 +78,6 @@ contract:
   steps:
   - id: assert_1
     class: MAY
-    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -80,6 +85,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - fixture-content
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -111,11 +120,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - hello-runner
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-RUN-005
@@ -144,11 +156,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - 'on'
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-RUN-006
@@ -175,11 +190,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - fallback-ok
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-RUN-007
@@ -206,12 +224,15 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.type.json_type:
       - std.json.parse:
         - {var: subject}
       - list
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-RUN-008
@@ -238,11 +259,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - runner-err
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPHP-RUN-009
@@ -269,15 +293,21 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout_path
     assert:
       std.string.contains:
       - {var: subject}
       - path_target.txt
+    imports:
+      subject:
+        from: artifact
+        key: stdout_path
   - id: assert_2
-    target: stdout_path_text
     assert:
       std.string.contains:
       - {var: subject}
       - path target file content
+    imports:
+      subject:
+        from: artifact
+        key: stdout_path_text
 ```

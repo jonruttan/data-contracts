@@ -24,9 +24,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: violation_count
     assert:
       std.logic.eq:
       - {var: subject}
       - 0
+    imports:
+      subject:
+        from: artifact
+        key: violation_count
 ```

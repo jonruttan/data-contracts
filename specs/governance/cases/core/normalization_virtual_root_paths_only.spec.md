@@ -23,11 +23,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
       std.logic.eq:
       - std.object.get:
         - {var: subject}
         - check_id
       - normalization.virtual_root_paths_only
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 ```

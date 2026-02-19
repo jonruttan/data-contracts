@@ -18,7 +18,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
     - std.string.contains:
       - {var: subject}
@@ -26,6 +25,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - '"summary"'
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-STDLIB-REP-002
@@ -48,7 +51,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
     - std.string.contains:
       - {var: subject}
@@ -56,4 +58,8 @@ contract:
     - std.string.contains:
       - {var: subject}
       - '- profile symbols:'
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```

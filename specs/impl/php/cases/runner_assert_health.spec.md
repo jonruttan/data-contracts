@@ -27,7 +27,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
     - std.string.contains:
       - {var: subject}
@@ -35,6 +34,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - ok
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-AH-002
@@ -66,7 +69,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
     - std.string.contains:
       - {var: subject}
@@ -74,6 +76,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - ok
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-AH-003
@@ -104,11 +110,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - ok
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-AH-004
@@ -136,7 +145,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
     - std.string.contains:
       - {var: subject}
@@ -144,6 +152,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - ok
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-AH-005
@@ -173,7 +185,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
     - std.string.contains:
       - {var: subject}
@@ -181,4 +192,8 @@ contract:
     - std.string.contains:
       - {var: subject}
       - ok
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```

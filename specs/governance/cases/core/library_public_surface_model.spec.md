@@ -24,11 +24,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
       std.logic.eq:
       - std.object.get:
         - {var: subject}
         - check_id
       - library.public_surface_model
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 ```

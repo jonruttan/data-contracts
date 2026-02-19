@@ -15,7 +15,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.logic.eq:
       - std.type.json_type:
@@ -31,6 +30,10 @@ contract:
           - tags
         - list
       - true
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -54,7 +57,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.logic.and:
       - std.logic.eq:
@@ -72,6 +74,10 @@ contract:
               - '{"id":"x"}'
             - id
           - 1
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file

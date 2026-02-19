@@ -19,11 +19,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --check-prefix
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-GOV-002
@@ -48,11 +51,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - case-file-pattern
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-GOV-003
@@ -77,11 +83,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - selected zero cases
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-GOV-004
@@ -100,7 +109,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -120,4 +128,8 @@ contract:
     - std.string.contains:
       - {var: subject}
       - docs.docgen_quality_score_threshold
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```

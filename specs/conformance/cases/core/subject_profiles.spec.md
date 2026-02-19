@@ -16,7 +16,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -30,6 +29,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - deterministic_projection
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -53,7 +56,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: context_json
     assert:
     - std.logic.eq:
       - std.object.get:
@@ -71,6 +73,10 @@ contract:
     - std.object.has_key:
       - {var: subject}
       - meta
+    imports:
+      subject:
+        from: artifact
+        key: context_json
 harness:
   check:
     profile: text.file

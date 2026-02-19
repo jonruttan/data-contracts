@@ -166,6 +166,7 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/runtime_governance_triage_entrypoint_required.spec.md`
 - `/specs/governance/cases/core/runtime_governance_triage_targeted_first_required.spec.md`
 - `/specs/governance/cases/core/runtime_harness_subject_target_map_declared.spec.md`
+- `/specs/governance/cases/core/runtime_implicit_subject_binding_forbidden.spec.md`
 - `/specs/governance/cases/core/runtime_liveness_hard_cap_token_emitted.spec.md`
 - `/specs/governance/cases/core/runtime_liveness_stall_token_emitted.spec.md`
 - `/specs/governance/cases/core/runtime_liveness_watchdog_contract_valid.spec.md`
@@ -213,6 +214,8 @@ Canonical domain index for executable specs in this subtree.
 - `/specs/governance/cases/core/runtime_triage_failure_id_parsing_required.spec.md`
 - `/specs/governance/cases/core/runtime_universal_chain_support_required.spec.md`
 - `/specs/governance/cases/core/schema_harness_contract_overlay_sync.spec.md`
+- `/specs/governance/cases/core/schema_contract_imports_explicit_required.spec.md`
+- `/specs/governance/cases/core/schema_contract_target_on_forbidden.spec.md`
 - `/specs/governance/cases/core/schema_harness_type_overlay_complete.spec.md`
 - `/specs/governance/cases/core/schema_no_prose_only_rules.spec.md`
 - `/specs/governance/cases/core/schema_registry_compiled_sync.spec.md`

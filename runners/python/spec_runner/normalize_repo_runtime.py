@@ -494,7 +494,11 @@ def _check_contract_terminology_hard_cut() -> list[str]:
                 )
             if "target" in step:
                 issues.append(
-                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps[{idx}].target is forbidden; use on"
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps[{idx}].target is forbidden; use imports"
+                )
+            if "on" in step:
+                issues.append(
+                    f"{rel}:1: NORMALIZATION_CONTRACT_TERMS: case {case_id} contract.steps[{idx}].on is forbidden; use imports"
                 )
             raw_assert = step.get("assert")
             if raw_assert is None:

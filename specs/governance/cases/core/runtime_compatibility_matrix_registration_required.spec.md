@@ -5,20 +5,21 @@
 ```yaml contract-spec
 id: SRGOV-RUNTIME-CONFIG-008
 title: compatibility matrix registration is explicit
-purpose: Ensures runtime lanes are registered in the compatibility matrix contract before use.
+purpose: Ensures runtime lanes are registered in the compatibility matrix contract before
+  use.
 type: contract.check
 harness:
   root: .
   compatibility_matrix:
     path: /specs/contract/25_compatibility_matrix.md
     required_tokens:
-    - "- `required`:"
-    - "- `compatibility_non_blocking`:"
-    - "- `rust`"
-    - "- `python`"
-    - "- `php`"
-    - "- `node`"
-    - "- `c`"
+    - '- `required`:'
+    - '- `compatibility_non_blocking`:'
+    - '- `rust`'
+    - '- `python`'
+    - '- `php`'
+    - '- `node`'
+    - '- `c`'
   check:
     profile: governance.scan
     config:
@@ -33,9 +34,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: violation_count
     assert:
       std.logic.eq:
       - {var: subject}
       - 0
+    imports:
+      subject:
+        from: artifact
+        key: violation_count
 ```

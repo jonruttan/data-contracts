@@ -19,11 +19,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --profile
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-NORM-002
@@ -46,11 +49,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - not allowed with argument
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-NORM-003
@@ -72,11 +78,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --scope
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-NORM-004
@@ -100,9 +109,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - invalid choice
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```

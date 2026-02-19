@@ -296,6 +296,20 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
     if isinstance(node, dict):
         defaults_raw = node.get("defaults")
         defaults: dict[str, Any] = dict(defaults_raw) if isinstance(defaults_raw, dict) else {}
+        default_target = ""
+        if "target" in defaults:
+            default_target = str(defaults.pop("target", "")).strip()
+            changed = True
+        elif "on" in defaults:
+            default_target = str(defaults.pop("on", "")).strip()
+            changed = True
+        if default_target:
+            imports_map = defaults.get("imports")
+            if not isinstance(imports_map, dict):
+                imports_map = {}
+            if "subject" not in imports_map:
+                imports_map["subject"] = {"from": "artifact", "key": default_target}
+            defaults["imports"] = imports_map
         raw_steps = node.get("steps")
         if raw_steps is None:
             raw_steps = []
@@ -311,9 +325,20 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             if "asserts" in step and "assert" not in step:
                 step["assert"] = step.pop("asserts")
                 changed = True
-            if "on" in step and "target" not in step:
-                step["target"] = step.pop("on")
+            step_target = ""
+            if "target" in step:
+                step_target = str(step.pop("target", "")).strip()
                 changed = True
+            elif "on" in step:
+                step_target = str(step.pop("on", "")).strip()
+                changed = True
+            if step_target:
+                imports_map = step.get("imports")
+                if not isinstance(imports_map, dict):
+                    imports_map = {}
+                if "subject" not in imports_map:
+                    imports_map["subject"] = {"from": "artifact", "key": step_target}
+                step["imports"] = imports_map
             raw_assert = step.get("assert")
             if isinstance(raw_assert, list):
                 norm_asserts: list[Any] = []
@@ -356,16 +381,23 @@ def _normalize_contract(node: Any) -> tuple[Any, bool]:
             if "asserts" in step and "assert" not in step:
                 step["assert"] = step.pop("asserts")
                 changed = True
-            if "on" in step and "target" not in step:
-                step["target"] = step.pop("on")
+            step_target = ""
+            if "target" in step:
+                step_target = str(step.pop("target", "")).strip()
+                changed = True
+            elif "on" in step:
+                step_target = str(step.pop("on", "")).strip()
                 changed = True
             step_id = str(step.get("id", "")).strip() or f"step_{idx+1:03d}"
             step_class = str(step.get("class", "MUST")).strip() or "MUST"
             out_step: dict[str, Any] = {"id": step_id}
             if step_class != "MUST":
                 out_step["class"] = step_class
-            if "target" in step:
-                out_step["target"] = step.get("target")
+            imports_map = step.get("imports") if isinstance(step.get("imports"), dict) else {}
+            if step_target and "subject" not in imports_map:
+                imports_map["subject"] = {"from": "artifact", "key": step_target}
+            if imports_map:
+                out_step["imports"] = imports_map
             raw_assert = step.get("assert")
             if isinstance(raw_assert, list):
                 norm_asserts_v1: list[Any] = []
@@ -1257,6 +1289,87 @@ def _lint_case_doc(
 
 
 def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: Path, case_id: str) -> None:
+    case_type = str(case.get("type", "")).strip()
+    def _collect_subject_refs(node: Any) -> int:
+        if isinstance(node, dict):
+            count = 0
+            if set(node.keys()) == {"var"} and str(node.get("var", "")).strip() == "subject":
+                count += 1
+            for val in node.values():
+                count += _collect_subject_refs(val)
+            return count
+        if isinstance(node, list):
+            return sum(_collect_subject_refs(x) for x in node)
+        return 0
+
+    def _validate_imports(raw_imports: Any, *, field: str) -> set[str]:
+        names: set[str] = set()
+        if raw_imports is None:
+            return names
+        if not isinstance(raw_imports, dict):
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=field,
+                code="SLINT080",
+                message="imports must be a mapping when provided",
+            )
+            return names
+        for raw_name, raw_spec in raw_imports.items():
+            name = str(raw_name).strip()
+            if not name:
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=field,
+                    code="SLINT081",
+                    message="imports keys must be non-empty strings",
+                )
+                continue
+            names.add(name)
+            if not isinstance(raw_spec, dict):
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"{field}.{name}",
+                    code="SLINT082",
+                    message="import binding must be a mapping",
+                )
+                continue
+            src = str(raw_spec.get("from", "")).strip()
+            if src not in {"artifact", "symbol", "literal"}:
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"{field}.{name}.from",
+                    code="SLINT083",
+                    message="import from must be artifact, symbol, or literal",
+                )
+                continue
+            if src in {"artifact", "symbol"} and not str(raw_spec.get("key", "")).strip():
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"{field}.{name}.key",
+                    code="SLINT084",
+                    message=f"import key is required for from={src}",
+                )
+            if src == "literal" and "value" not in raw_spec:
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"{field}.{name}.value",
+                    code="SLINT085",
+                    message="import value is required for from=literal",
+                )
+        return names
+
     contract = case.get("contract")
     if contract is None:
         _append_issue(
@@ -1299,6 +1412,21 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
             code="SLINT023",
             message="contract.defaults must be a mapping when provided",
         )
+    default_import_names = _validate_imports(
+        defaults.get("imports") if isinstance(defaults, dict) else None,
+        field="contract.defaults.imports",
+    )
+    if isinstance(defaults, dict):
+        if "target" in defaults or "on" in defaults:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field="contract.defaults",
+                code="SLINT086",
+                message="contract.defaults target/on keys are forbidden; use defaults.imports",
+                fixable=True,
+            )
     steps = contract.get("steps")
     if not isinstance(steps, list):
         _append_issue(
@@ -1338,9 +1466,21 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
                 case_id=case_id,
                 field=f"contract.steps[{idx}].on",
                 code="SLINT027",
-                message="contract step key on is forbidden; use target",
+                message="contract step key on is forbidden; use imports",
                 fixable=True,
             )
+        if "target" in step:
+            _append_issue(
+                issues,
+                path=path,
+                case_id=case_id,
+                field=f"contract.steps[{idx}].target",
+                code="SLINT087",
+                message="contract step key target is forbidden; use imports",
+                fixable=True,
+            )
+        step_import_names = _validate_imports(step.get("imports"), field=f"contract.steps[{idx}].imports")
+        import_names = set(default_import_names) | set(step_import_names)
         class_name = str(step.get("class", "MUST")).strip() or "MUST"
         if class_name not in _GROUP_KEYS:
             _append_issue(
@@ -1381,6 +1521,20 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
                     case_id=case_id,
                     field=f"contract.steps[{idx}].assert[{aidx}]",
                 )
+                if (
+                    case_type != "contract.export"
+                    and _collect_subject_refs(expr) > 0
+                    and "subject" not in import_names
+                ):
+                    _append_issue(
+                        issues,
+                        path=path,
+                        case_id=case_id,
+                        field=f"contract.steps[{idx}].assert[{aidx}]",
+                        code="SLINT088",
+                        message="var subject requires explicit imports.subject binding",
+                        fixable=True,
+                    )
         else:
             _lint_assert_node(
                 raw_assert,
@@ -1389,6 +1543,20 @@ def _lint_contract(case: dict[str, Any], *, issues: list[SpecLangIssue], path: P
                 case_id=case_id,
                 field=f"contract.steps[{idx}].assert",
             )
+            if (
+                case_type != "contract.export"
+                and _collect_subject_refs(raw_assert) > 0
+                and "subject" not in import_names
+            ):
+                _append_issue(
+                    issues,
+                    path=path,
+                    case_id=case_id,
+                    field=f"contract.steps[{idx}].assert",
+                    code="SLINT088",
+                    message="var subject requires explicit imports.subject binding",
+                    fixable=True,
+                )
 
 
 def lint_cases(

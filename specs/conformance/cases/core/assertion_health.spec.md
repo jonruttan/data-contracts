@@ -27,11 +27,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.contains:
       - {var: subject}
       - ''
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -57,11 +60,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.contains:
       - {var: subject}
       - ''
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -86,11 +92,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.contains:
       - {var: subject}
       - contract-spec
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -115,11 +124,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.contains:
       - {var: subject}
       - ''
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -146,7 +158,6 @@ contract:
   steps:
   - id: assert_1
     class: MAY
-    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -154,6 +165,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - 'version: 2'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -179,11 +194,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.regex_match:
       - {var: subject}
       - '(?<=version: )1'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file

@@ -2411,8 +2411,6 @@ def eval_expr(
             root_symbols[name] = value
     for local_name, canonical_symbol in resolved_imports.items():
         root_symbols[local_name] = _BuiltinFn(canonical_symbol, _BUILTIN_ARITY[canonical_symbol])
-    # Canonical authoring uses `{var: subject}` for the current subject.
-    root_symbols["subject"] = subject
     return _eval_tail(expr, _Env(vars=root_symbols, parent=None), st)
 
 

@@ -18,7 +18,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
     - std.string.contains:
       - {var: subject}
@@ -29,6 +28,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - '"rules"'
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-CONTRACT-REP-002
@@ -51,9 +54,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - wrote .artifacts/contract-coverage-impl-case.json
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```

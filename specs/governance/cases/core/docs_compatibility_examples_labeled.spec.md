@@ -5,7 +5,8 @@
 ```yaml contract-spec
 id: SRGOV-DOCS-REF-008
 title: compatibility examples are explicitly labeled
-purpose: Ensures active documentation keeps Rust as canonical and labels Python/PHP examples as non-blocking compatibility lanes.
+purpose: Ensures active documentation keeps Rust as canonical and labels Python/PHP examples
+  as non-blocking compatibility lanes.
 type: contract.check
 harness:
   root: .
@@ -35,9 +36,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: violation_count
     assert:
       std.logic.eq:
       - {var: subject}
       - 0
+    imports:
+      subject:
+        from: artifact
+        key: violation_count
 ```

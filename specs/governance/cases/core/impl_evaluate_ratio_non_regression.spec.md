@@ -45,13 +45,15 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: violation_count
     assert:
       std.logic.eq:
       - {var: subject}
       - 0
+    imports:
+      subject:
+        from: artifact
+        key: violation_count
   - id: assert_2
-    target: summary_json
     assert:
     - std.logic.eq:
       - std.object.get:
@@ -63,4 +65,8 @@ contract:
         - {var: subject}
         - check_id
       - impl.evaluate_ratio_non_regression
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 ```

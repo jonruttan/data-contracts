@@ -346,7 +346,7 @@ standardize `evaluate` expression formatting to:
 - one operator-keyed mapping expression per `evaluate` list entry
 - explicit list args for operators in mapping form
 - canonical subject reference form is explicit:
-  `{var: subject}` compiles to zero-arg `subject` operation
+  `{var: subject}` resolves only when `subject` is explicitly imported in contract step imports/defaults
 - `lit` wrapper for collection literal nodes
 - bare scalar `subject` is a literal string (not a special form)
 - condensed inline args for short forms (for example

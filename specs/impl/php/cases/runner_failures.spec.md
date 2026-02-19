@@ -19,11 +19,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.contains:
       - {var: subject}
       - x
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -49,11 +52,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.contains:
       - {var: subject}
       - outside
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -86,11 +92,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - x
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-RUN-F004
@@ -119,10 +128,13 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       not.a.real.symbol:
       - {var: subject}
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPHP-RUN-F005
@@ -217,12 +229,15 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       lit:
         target: text
         contain:
         - fixture-content
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file

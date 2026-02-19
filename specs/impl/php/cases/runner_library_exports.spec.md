@@ -27,9 +27,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
       std.string.contains:
       - {var: subject}
       - '# PHP Spec Runner Library Export References'
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```

@@ -12,11 +12,11 @@ harness:
   ci_python_lane_non_blocking:
     workflow: /.github/workflows/ci.yml
     required_tokens:
-    - compatibility-python-lane:
+    - compatibility-python-lane: null
     - continue-on-error: true
     - Run Python compatibility lane (non-blocking)
     forbidden_tokens:
-    - python-parity-lane:
+    - python-parity-lane: null
   check:
     profile: governance.scan
     config:
@@ -31,9 +31,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: violation_count
     assert:
       std.logic.eq:
       - {var: subject}
       - 0
+    imports:
+      subject:
+        from: artifact
+        key: violation_count
 ```

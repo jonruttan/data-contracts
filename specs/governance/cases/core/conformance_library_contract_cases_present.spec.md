@@ -30,11 +30,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
       std.logic.eq:
       - std.object.get:
         - {var: subject}
         - check_id
       - conformance.library_contract_cases_present
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 ```

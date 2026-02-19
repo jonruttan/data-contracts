@@ -20,17 +20,23 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
   - id: assert_2
-    target: body_json
     assert:
       std.type.json_type:
       - {var: subject}
       - dict
+    imports:
+      subject:
+        from: artifact
+        key: body_json
 harness:
   check:
     profile: api.http
@@ -62,11 +68,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 harness:
   check:
     profile: api.http
@@ -97,11 +106,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 harness:
   check:
     profile: api.http
@@ -131,11 +143,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: body_json
     assert:
       std.object.has_key:
       - {var: subject}
       - id
+    imports:
+      subject:
+        from: artifact
+        key: body_json
 harness:
   check:
     profile: api.http
@@ -166,11 +181,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 harness:
   check:
     profile: api.http
@@ -199,11 +217,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: body_text
     assert:
       std.string.contains:
       - {var: subject}
       - abc-123
+    imports:
+      subject:
+        from: artifact
+        key: body_text
 harness:
   check:
     profile: api.http
@@ -232,13 +253,16 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: body_json
     assert:
       std.logic.eq:
       - std.object.get:
         - {var: subject}
         - deleted
       - true
+    imports:
+      subject:
+        from: artifact
+        key: body_json
 harness:
   check:
     profile: api.http
@@ -267,11 +291,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 harness:
   check:
     profile: api.http
@@ -300,11 +327,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 harness:
   check:
     profile: api.http
@@ -335,11 +365,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 harness:
   check:
     profile: api.http
@@ -370,11 +403,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 harness:
   check:
     profile: api.http
@@ -424,18 +460,24 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
   - id: assert_2
-    target: steps_json
     assert:
       std.logic.eq:
       - std.collection.len:
         - {var: subject}
       - 3
+    imports:
+      subject:
+        from: artifact
+        key: steps_json
 ```
 
 ## SRCONF-API-013
@@ -474,7 +516,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: context_json
     assert:
     - std.logic.eq:
       - std.object.get:
@@ -490,6 +531,10 @@ contract:
           - meta
         - oauth_token_source
       - env_ref
+    imports:
+      subject:
+        from: artifact
+        key: context_json
 ```
 
 ## SRCONF-API-014
@@ -527,11 +572,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 ```
 
 ## SRCONF-API-015
@@ -570,11 +618,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 ```
 
 ## SRCONF-API-016
@@ -614,11 +665,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 ```
 
 ## SRCONF-API-017
@@ -662,9 +716,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: status
     assert:
       std.string.contains:
       - {var: subject}
       - '200'
+    imports:
+      subject:
+        from: artifact
+        key: status
 ```

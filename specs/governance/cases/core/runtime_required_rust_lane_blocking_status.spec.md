@@ -12,7 +12,7 @@ harness:
   required_rust_lane:
     workflow: /.github/workflows/ci.yml
     required_tokens:
-    - ci-gate:
+    - ci-gate: null
     - Run CI gate (required rust lane)
     - run: ./scripts/ci_gate.sh
     forbidden_tokens:
@@ -32,9 +32,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: violation_count
     assert:
       std.logic.eq:
       - {var: subject}
       - 0
+    imports:
+      subject:
+        from: artifact
+        key: violation_count
 ```

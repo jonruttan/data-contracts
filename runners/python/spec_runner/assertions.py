@@ -266,12 +266,31 @@ def evaluate_internal_assert_tree(
     def _eval_node(node: InternalAssertNode) -> None:
         if isinstance(node, PredicateLeaf):
             try:
-                subject = subject_for_key(node.subject_key)
+                leaf_symbols: dict[str, Any] = dict(symbols or {})
+                for name, spec in (node.imports or {}).items():
+                    src = str(spec.get("from", "")).strip()
+                    if src == "artifact":
+                        key = str(spec.get("key", "")).strip()
+                        if not key:
+                            raise ValueError(f"{node.assert_path}: imports.{name}.key must be non-empty")
+                        leaf_symbols[name] = subject_for_key(key)
+                    elif src == "symbol":
+                        key = str(spec.get("key", "")).strip()
+                        if not key:
+                            raise ValueError(f"{node.assert_path}: imports.{name}.key must be non-empty")
+                        if key not in leaf_symbols:
+                            raise ValueError(f"{node.assert_path}: imports.{name} unknown symbol key: {key}")
+                        leaf_symbols[name] = leaf_symbols[key]
+                    elif src == "literal":
+                        leaf_symbols[name] = spec.get("value")
+                    else:
+                        raise ValueError(f"{node.assert_path}: imports.{name}.from invalid: {src}")
+                subject = leaf_symbols.get("subject")
                 ok = eval_predicate(
                     node.expr,
                     subject=subject,
                     limits=limits,
-                    symbols=symbols,
+                    symbols=leaf_symbols,
                     imports=imports,
                     capabilities=capabilities,
                 )

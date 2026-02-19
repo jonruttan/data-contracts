@@ -16,7 +16,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -34,6 +33,10 @@ contract:
       - std.string.contains:
         - {var: subject}
         - 'defines:'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -57,7 +60,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -75,6 +77,10 @@ contract:
       - std.string.contains:
         - {var: subject}
         - 'defines:'
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file
@@ -97,7 +103,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -105,6 +110,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - /specs/libraries/policy/policy_metrics.spec.md
+    imports:
+      subject:
+        from: artifact
+        key: text
 harness:
   check:
     profile: text.file

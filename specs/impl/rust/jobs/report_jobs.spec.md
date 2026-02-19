@@ -38,7 +38,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -47,6 +46,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/conformance-purpose.json
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -94,7 +97,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -103,6 +105,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/conformance-purpose-summary.md
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -150,7 +156,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -159,6 +164,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/spec-portability.json
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -206,7 +215,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -215,6 +223,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/spec-portability-summary.md
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -262,7 +274,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -271,6 +282,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/contract-assertions.json
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -318,7 +333,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -327,6 +341,10 @@ contract:
         - {var: subject}
       - written_path
       - .artifacts/contract-assertions-summary.md
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -374,7 +392,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -383,6 +400,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/spec-lang-adoption.json
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -430,7 +451,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -439,6 +459,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/spec-lang-adoption-summary.md
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -486,7 +510,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -495,6 +518,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/runner-independence.json
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -542,7 +569,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -551,6 +577,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/runner-independence-summary.md
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -598,7 +628,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -607,6 +636,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/python-dependency.json
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -654,7 +687,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -663,6 +695,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/python-dependency-summary.md
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -710,7 +746,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -719,6 +754,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/docs-operability.json
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -766,7 +805,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -775,6 +813,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/docs-operability-summary.md
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -822,7 +864,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -831,6 +872,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/objective-scorecard.json
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -878,7 +923,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -887,6 +931,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/objective-scorecard-summary.md
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -934,7 +982,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -943,6 +990,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/spec-lang-stdlib.json
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:
@@ -990,7 +1041,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: summary_json
     assert:
     - ops.job.dispatch:
       - main
@@ -999,6 +1049,10 @@ contract:
         - {var: subject}
         - written_path
       - .artifacts/spec-lang-stdlib-summary.md
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
 when:
   fail:
   - ops.job.dispatch:

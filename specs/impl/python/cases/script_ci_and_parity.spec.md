@@ -19,11 +19,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --runner-bin
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-CI-002
@@ -44,11 +47,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - --runner-bin
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-CI-003
@@ -70,11 +76,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --cases
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-CI-004
@@ -97,11 +106,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - invalid int value
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-CI-005
@@ -123,7 +135,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
     - std.string.contains:
       - {var: subject}
@@ -134,6 +145,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - --case-file-pattern
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-CI-006
@@ -160,11 +175,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - case-file-pattern
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-CI-007
@@ -183,7 +201,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - std.string.contains:
       - {var: subject}
@@ -194,6 +211,10 @@ contract:
     - std.string.contains:
       - {var: subject}
       - --case-file-pattern <glob>
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```
 
 ## SRPY-SCRIPT-CI-008
@@ -216,11 +237,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - --case-formats requires at least one format
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-CI-009
@@ -245,9 +269,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - php executable not found in PATH
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```

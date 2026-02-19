@@ -7,29 +7,28 @@
 ## Purpose
 
 Execute a typed harness check profile and assert externally visible behavior through
-contract assertions.
+explicitly imported assertion values.
 
 ## Required Fields
 
 - `id` (string)
 - `type` (must equal `contract.check`)
 - `harness` (mapping with `check.profile` and `check.config`)
-- `contract` (list of assertion steps)
+- `contract` (mapping with `defaults`/`steps`)
 
-## Optional Fields
+## Contract Import Rules
 
-- common optional fields from schema v1 (`title`, `purpose`, `assert_health`, `expect`, `requires`)
-
-## Targets
-
-- profile-defined subject targets (for example `text`, `stdout`, `stderr`, `summary_json`, `violation_count`)
+- `contract.defaults.imports` may define default bindings.
+- `contract.steps[].imports` may define/override step bindings.
+- Assertions must read values through imported symbols (for example `{var: subject}`).
+- `contract.steps[].target` and `contract.steps[].on` are forbidden.
 
 ## Type Rules
 
 - runner-only setup/config keys MUST live under `harness`.
-- `harness.check.profile` selects the canonical runtime profile.
-- `harness.check.config` carries profile-specific input fields.
-- assertions evaluate profile subjects only; they must not depend on internal runtime structures.
+- `harness.check.profile` selects runtime profile.
+- `harness.check.config` carries profile-specific inputs.
+- assertions must not depend on implicit runtime bindings.
 
 ## Failure Category Guidance
 

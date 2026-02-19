@@ -400,27 +400,43 @@ Universal core assertion model:
 
 ## Assertion Step Shape
 
-`contract` is a list of assertion step mappings.
+`contract` is a mapping with:
 
-Each step requires:
+- `defaults` (optional mapping)
+- `steps` (required list)
+
+Each `steps[]` entry requires:
 
 - `id` (string, unique per case)
-- `class` (`MUST` | `MAY` | `MUST_NOT`)
-- `asserts` (non-empty list of assertion nodes)
-- `target` (optional; inherited by asserts when provided)
+- `class` (`MUST` | `MAY` | `MUST_NOT`, default `MUST`)
+- `assert` (non-empty expression mapping or list)
+- `imports` (optional mapping)
 
 Legacy lowercase contract class/group forms (`must`, `can`, `cannot`) are
 forbidden.
 
-Checks are non-canonical assertion nodes:
+Forbidden legacy forms:
 
-- group mapping with exactly one of `MUST` / `MAY` / `MUST_NOT`
-- leaf mapping with operator keys and list values
+- `contract` list form
+- step key `asserts`
+- step keys `target` and `on`
 
-Leaf constraints:
+Import binding shape:
 
-- leaf assertions MUST NOT include `target`
-- leaves require inherited target from the step or an enclosing group
+- `imports.<name>.from`: `artifact | symbol | literal`
+- `imports.<name>.key`: required when `from` is `artifact` or `symbol`
+- `imports.<name>.value`: required when `from` is `literal`
+
+Import merge behavior:
+
+- effective step imports = `contract.defaults.imports` merged with
+  `contract.steps[].imports`
+- step imports override defaults on key collision
+
+Symbol resolution:
+
+- `{var: subject}` is valid only when `subject` is explicitly imported
+- implicit subject/target injection is forbidden in canonical authoring
 
 Supported operators:
 
@@ -437,7 +453,7 @@ Operator constraints:
 
 - all operator values MUST be lists
 - each assertion leaf MUST be an expression node using an operator-keyed mapping
-- subject reference node: `{var: subject}` compiles to zero-arg `subject`
+- subject reference node: `{var: subject}` resolves via explicit imports
 - bare scalar `subject` is a literal string (not a reference)
 - spec-lang semantics and budget model are defined in
   `specs/contract/03b_spec_lang_v1.md`
@@ -484,11 +500,18 @@ Canonical negation uses `MUST_NOT`:
 
 ```yaml
 contract:
-- target: stderr
-  MUST_NOT:
-  - std.string.contains:
-    - var: subject
-    - 'ERROR:'
+  defaults:
+    imports:
+      subject:
+        from: artifact
+        key: text
+  steps:
+  - id: assert_no_error
+    class: MUST_NOT
+    assert:
+      std.string.contains:
+      - {var: subject}
+      - 'ERROR:'
 ```
 
 Author in canonical form:
@@ -497,29 +520,32 @@ Author in canonical form:
 - use direct operator mappings in `asserts` (no `evaluate` wrapper)
 - put every operator value in a list
 
-Example with target inheritance:
+Example with defaults + step override imports:
 
 ```yaml
 contract:
-- target: stderr
-  MUST:
-  - std.string.contains:
-    - var: subject
-    - 'WARN:'
-- target: stderr
-  MUST_NOT:
-  - std.string.contains:
-    - var: subject
-    - 'ERROR:'
-- target: stdout
-  MAY:
-  - std.type.json_type:
-    - std.json.parse:
-      - var: subject
-    - list
-  - std.string.contains:
-    - var: subject
-    - '[]'
+  defaults:
+    imports:
+      subject:
+        from: artifact
+        key: summary_json
+  steps:
+  - id: assert_passed
+    assert:
+      std.logic.eq:
+      - std.object.get:
+        - {var: subject}
+        - passed
+      - true
+  - id: assert_violation_count
+    imports:
+      subject:
+        from: artifact
+        key: violation_count
+    assert:
+      std.logic.eq:
+      - {var: subject}
+      - 0
 ```
 
 `when` lifecycle hooks (v1):

@@ -204,7 +204,6 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: text
     assert:
     - call:
       - {var: policy.metric_non_decrease}
@@ -222,4 +221,8 @@ contract:
       - current
       - baseline
       - 0
+    imports:
+      subject:
+        from: artifact
+        key: text
 ```

@@ -20,11 +20,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - wrote .artifacts/spec-portability-script-case.json
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-PORT-002
@@ -47,11 +50,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - invalid choice
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-PORT-003
@@ -73,11 +79,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --cases
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-PORT-004
@@ -99,11 +108,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - unrecognized arguments
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-PORT-005
@@ -125,11 +137,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - --write
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-PORT-006
@@ -150,11 +165,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - paths
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
 
 ## SRPY-SCRIPT-PORT-007
@@ -177,11 +195,14 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stdout
     assert:
       std.string.contains:
       - {var: subject}
       - wrote .artifacts/conformance-purpose-script-case.json
+    imports:
+      subject:
+        from: artifact
+        key: stdout
 ```
 
 ## SRPY-SCRIPT-PORT-008
@@ -204,9 +225,12 @@ contract:
     class: MUST
   steps:
   - id: assert_1
-    target: stderr
     assert:
       std.string.contains:
       - {var: subject}
       - invalid choice
+    imports:
+      subject:
+        from: artifact
+        key: stderr
 ```
