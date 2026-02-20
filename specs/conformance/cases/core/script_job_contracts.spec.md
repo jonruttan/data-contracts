@@ -10,6 +10,12 @@ title: schema registry build via contract.job
 purpose: Ensures script command contracts dispatch and return deterministic success state.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -48,11 +54,9 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.logic.eq:
-      - std.object.get:
-        - {var: summary_json}
-        - ok
-      - true
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
 when:
   fail:
   - ops.job.dispatch:
@@ -72,6 +76,12 @@ title: schema registry check via contract.job
 purpose: Ensures script command contracts dispatch and return deterministic success state.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -110,11 +120,9 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.logic.eq:
-      - std.object.get:
-        - {var: summary_json}
-        - ok
-      - true
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
 when:
   fail:
   - ops.job.dispatch:
@@ -134,6 +142,12 @@ title: docs lint via contract.job
 purpose: Ensures script command contracts dispatch and return deterministic success state.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -169,11 +183,9 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.logic.eq:
-      - std.object.get:
-        - {var: summary_json}
-        - ok
-      - true
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
 when:
   fail:
   - ops.job.dispatch:
@@ -193,6 +205,12 @@ title: docs generate build via contract.job
 purpose: Ensures script command contracts dispatch and return deterministic success state.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -229,11 +247,9 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.logic.eq:
-      - std.object.get:
-        - {var: summary_json}
-        - ok
-      - true
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
 when:
   fail:
   - ops.job.dispatch:
@@ -253,6 +269,12 @@ title: docs generate check via contract.job
 purpose: Ensures script command contracts dispatch and return deterministic success state.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -289,11 +311,9 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.logic.eq:
-      - std.object.get:
-        - {var: summary_json}
-        - ok
-      - true
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
 when:
   fail:
   - ops.job.dispatch:
@@ -313,6 +333,12 @@ title: docs build reference book via contract.job
 purpose: Ensures script command contracts dispatch and return deterministic success state.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -350,11 +376,9 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.logic.eq:
-      - std.object.get:
-        - {var: summary_json}
-        - ok
-      - true
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
 when:
   fail:
   - ops.job.dispatch:
@@ -374,6 +398,12 @@ title: docs build check reference book via contract.job
 purpose: Ensures script command contracts dispatch and return deterministic success state.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -411,11 +441,9 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.logic.eq:
-      - std.object.get:
-        - {var: summary_json}
-        - ok
-      - true
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
 when:
   fail:
   - ops.job.dispatch:
@@ -435,6 +463,12 @@ title: docs graph export via contract.job
 purpose: Ensures script command contracts dispatch and return deterministic success state.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -472,11 +506,9 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.logic.eq:
-      - std.object.get:
-        - {var: summary_json}
-        - ok
-      - true
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
 when:
   fail:
   - ops.job.dispatch:

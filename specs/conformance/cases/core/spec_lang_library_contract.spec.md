@@ -23,27 +23,30 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_all}
       - {var: text}
-      - 'type: spec.export'
-    - std.string.contains:
+      - lit:
+        - 'type: spec.export'
+        - 'harness:'
+        - 'exports:'
+        - 'from: assert.function'
+    - call:
+      - {var: policy.text.contains_none}
       - {var: text}
-      - 'harness:'
-    - std.string.contains:
-      - {var: text}
-      - 'exports:'
-    - std.string.contains:
-      - {var: text}
-      - 'from: assert.function'
-    - std.logic.not:
-      - std.string.contains:
-        - {var: text}
+      - lit:
         - 'defines:'
 harness:
   check:
     profile: text.file
     config:
       path: /specs/libraries/policy/policy_core.spec.md
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_all
+    - policy.text.contains_none
 ```
 
 ## DCCONF-LIB-CONTRACT-002
@@ -69,27 +72,30 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_all}
       - {var: text}
-      - 'type: spec.export'
-    - std.string.contains:
+      - lit:
+        - 'type: spec.export'
+        - 'harness:'
+        - 'exports:'
+        - 'from: assert.function'
+    - call:
+      - {var: policy.text.contains_none}
       - {var: text}
-      - 'harness:'
-    - std.string.contains:
-      - {var: text}
-      - 'exports:'
-    - std.string.contains:
-      - {var: text}
-      - 'from: assert.function'
-    - std.logic.not:
-      - std.string.contains:
-        - {var: text}
+      - lit:
         - 'defines:'
 harness:
   check:
     profile: text.file
     config:
       path: /specs/libraries/path/path_core.spec.md
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_all
+    - policy.text.contains_none
 ```
 
 ## DCCONF-LIB-CONTRACT-003
@@ -114,15 +120,20 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_all}
       - {var: text}
-      - /specs/libraries/policy/policy_core.spec.md
-    - std.string.contains:
-      - {var: text}
-      - /specs/libraries/policy/policy_metrics.spec.md
+      - lit:
+        - /specs/libraries/policy/policy_core.spec.md
+        - /specs/libraries/policy/policy_metrics.spec.md
 harness:
   check:
     profile: text.file
     config:
       path: /specs/libraries/policy/index.md
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_all
 ```

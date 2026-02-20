@@ -11,6 +11,12 @@ title: conformance purpose json report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -49,10 +55,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/conformance-purpose.json
 when:
   fail:
@@ -73,6 +81,12 @@ title: conformance purpose markdown report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -111,10 +125,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/conformance-purpose-summary.md
 when:
   fail:
@@ -135,6 +151,12 @@ title: spec portability json report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -173,10 +195,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/spec-portability.json
 when:
   fail:
@@ -197,6 +221,12 @@ title: spec portability markdown report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -235,10 +265,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/spec-portability-summary.md
 when:
   fail:
@@ -259,6 +291,12 @@ title: contract assertions json report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -297,10 +335,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/contract-assertions.json
 when:
   fail:
@@ -321,6 +361,12 @@ title: contract assertions markdown report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -359,10 +405,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/contract-assertions-summary.md
 when:
   fail:
@@ -383,6 +431,12 @@ title: spec lang adoption json report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -421,10 +475,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/spec-lang-adoption.json
 when:
   fail:
@@ -445,6 +501,12 @@ title: spec lang adoption markdown report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -483,10 +545,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/spec-lang-adoption-summary.md
 when:
   fail:
@@ -507,6 +571,12 @@ title: runner independence json report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -545,10 +615,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/runner-independence.json
 when:
   fail:
@@ -569,6 +641,12 @@ title: runner independence markdown report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -607,10 +685,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/runner-independence-summary.md
 when:
   fail:
@@ -631,6 +711,12 @@ title: python dependency json report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -669,10 +755,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/python-dependency.json
 when:
   fail:
@@ -693,6 +781,12 @@ title: python dependency markdown report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -731,10 +825,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/python-dependency-summary.md
 when:
   fail:
@@ -755,6 +851,12 @@ title: docs operability json report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -793,10 +895,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/docs-operability.json
 when:
   fail:
@@ -817,6 +921,12 @@ title: docs operability markdown report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -855,10 +965,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/docs-operability-summary.md
 when:
   fail:
@@ -879,6 +991,12 @@ title: objective scorecard json report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -917,10 +1035,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/objective-scorecard.json
 when:
   fail:
@@ -941,6 +1061,12 @@ title: objective scorecard markdown report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -979,10 +1105,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/objective-scorecard-summary.md
 when:
   fail:
@@ -1003,6 +1131,12 @@ title: spec lang stdlib json report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -1041,10 +1175,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/spec-lang-stdlib.json
 when:
   fail:
@@ -1065,6 +1201,12 @@ title: spec lang stdlib markdown report
 purpose: Ensures report contract jobs dispatch and write the expected artifact output path.
 type: contract.job
 harness:
+  use:
+  - ref: /specs/libraries/policy/policy_job.spec.md
+    as: lib_policy_job
+    symbols:
+    - policy.job.dispatch_ok
+    - policy.job.written_path_contains
   spec_lang:
     capabilities:
     - ops.helper
@@ -1103,10 +1245,12 @@ contract:
     assert:
     - ops.job.dispatch:
       - main
-    - std.string.contains:
-      - std.object.get:
-        - {var: summary_json}
-        - written_path
+    - call:
+      - {var: policy.job.dispatch_ok}
+      - {var: summary_json}
+    - call:
+      - {var: policy.job.written_path_contains}
+      - {var: summary_json}
       - .artifacts/spec-lang-stdlib-summary.md
 when:
   fail:

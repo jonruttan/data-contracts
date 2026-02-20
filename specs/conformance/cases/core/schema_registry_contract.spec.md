@@ -24,18 +24,21 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_all}
       - {var: text}
-      - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
-    - std.string.contains:
-      - {var: text}
-      - 'END GENERATED: SCHEMA_REGISTRY_V1'
-    - std.string.contains:
-      - {var: text}
-      - Generated Registry Snapshot
+      - lit:
+        - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
+        - 'END GENERATED: SCHEMA_REGISTRY_V1'
+        - Generated Registry Snapshot
 harness:
   check:
     profile: text.file
     config:
       path: /specs/schema/schema_v1.md
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_all
 ```

@@ -17,10 +17,13 @@ harness:
     config:
       check: spec.generated_data_artifacts_not_embedded_in_spec_blocks
   use:
-  - ref: /specs/libraries/policy/policy_core.spec.md
+  - ref: /specs/libraries/policy/policy_assertions.spec.md
     as: lib_policy_core_spec
     symbols:
-    - policy.pass_when_no_violations
+    - policy.assert.no_violations
+    - policy.assert.summary_passed
+    - policy.assert.summary_check_id
+    - policy.assert.scan_pass
 contract:
   defaults:
     class: MUST
@@ -31,14 +34,17 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.logic.eq:
-      - std.object.get:
+    - call:
+      - {var: policy.assert.summary_check_id}
+      - std.object.assoc:
+        - summary_json
         - {var: summary_json}
-        - check_id
+        - lit: {}
       - spec.generated_data_artifacts_not_embedded_in_spec_blocks
-    - std.logic.eq:
-      - std.object.get:
+    - call:
+      - {var: policy.assert.summary_passed}
+      - std.object.assoc:
+        - summary_json
         - {var: summary_json}
-        - passed
-      - true
+        - lit: {}
 ```

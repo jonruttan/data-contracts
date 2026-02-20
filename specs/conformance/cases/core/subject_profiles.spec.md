@@ -23,23 +23,24 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_all}
       - {var: text}
-      - profile_id
-    - std.string.contains:
-      - {var: text}
-      - profile_version
-    - std.string.contains:
-      - {var: text}
-      - json_core_only
-    - std.string.contains:
-      - {var: text}
-      - deterministic_projection
+      - lit:
+        - profile_id
+        - profile_version
+        - json_core_only
+        - deterministic_projection
 harness:
   check:
     profile: text.file
     config:
       path: /specs/schema/subject_profiles_v1.yaml
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_all
 ```
 
 ## DCCONF-PROFILE-002

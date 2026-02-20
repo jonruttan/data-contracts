@@ -44,9 +44,12 @@ contract:
   steps:
     - id: assert_1
       assert:
-        std.logic.eq:
-          - {var: violation_count}
-          - 0
+        call:
+      - {var: policy.assert.no_violations}
+      - std.object.assoc:
+        - violation_count
+        - {var: violation_count}
+        - lit: {}
     - id: assert_2
       assert:
         - call:

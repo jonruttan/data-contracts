@@ -13,6 +13,11 @@ harness:
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_pair
 contract:
   defaults:
     class: MUST
@@ -23,11 +28,10 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_pair}
       - {var: text}
       - runtime.runner_status_report
-    - std.string.contains:
-      - {var: text}
       - command_results
 ```
 
@@ -44,6 +48,11 @@ harness:
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_pair
 contract:
   defaults:
     class: MUST
@@ -54,11 +63,10 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_pair}
       - {var: text}
       - runtime.runner_status_matrix
-    - std.string.contains:
-      - {var: text}
       - freshness_state
 ```
 
@@ -75,6 +83,11 @@ harness:
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_pair
 contract:
   defaults:
     class: MUST
@@ -85,11 +98,10 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_pair}
       - {var: text}
       - --max-age-hours
-    - std.string.contains:
-      - {var: text}
       - --enforce-freshness
 ```
 
@@ -106,6 +118,11 @@ harness:
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_pair
 contract:
   defaults:
     class: MUST
@@ -116,11 +133,10 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_pair}
       - {var: text}
       - freshness_state
-    - std.string.contains:
-      - {var: text}
       - non_blocking_fail
 ```
 
@@ -137,6 +153,11 @@ harness:
   check:
     profile: text.file
     config: {}
+  use:
+  - ref: /specs/libraries/policy/policy_text.spec.md
+    as: lib_policy_text
+    symbols:
+    - policy.text.contains_pair
 contract:
   defaults:
     class: MUST
@@ -147,11 +168,10 @@ contract:
   steps:
   - id: assert_1
     assert:
-    - std.string.contains:
+    - call:
+      - {var: policy.text.contains_pair}
       - {var: text}
       - lane_class
-    - std.string.contains:
-      - {var: text}
       - blocking_fail
 ```
 
