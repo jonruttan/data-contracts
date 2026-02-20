@@ -123,6 +123,9 @@ Canonical domain index for executable specs in this subtree.
 - /specs/governance/cases/core/runner_contract/runtime_runner_certification_compat_lanes_non_blocking.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_runner_certification_registry_valid.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_runner_certification_required_lane_passes.spec.md
+- /specs/governance/cases/core/runner_contract/runtime_runner_build_tool_contract_defined.spec.md
+- /specs/governance/cases/core/runner_contract/runtime_runner_build_tool_pack_complete.spec.md
+- /specs/governance/cases/core/runner_contract/runtime_runner_build_tool_schema_defined.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_runner_status_matrix_schema_valid.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_runner_status_report_schema_valid.spec.md
 - /specs/governance/cases/core/runner_contract/runtime_shell_extractors_fact_only_enforced.spec.md

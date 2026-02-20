@@ -3970,6 +3970,27 @@ links:
   - specs/conformance/cases/runner_cli/runner_cli_unknown_command.spec.md
   - specs/conformance/cases/runner_cli/runner_cli_optional_capability_negotiation.spec.md
   notes: Portable CLI interface is required while runtime-specific subcommands remain optional.
+- rule_id: RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#RUNNER_BUILD_TOOL_CONTRACT_REQUIRED
+  contract_refs:
+  - specs/contract/30_build_tool_command_set.md
+  schema_refs:
+  - specs/schema/runner_build_tool_contract_v1.yaml
+  conformance_case_ids:
+  - DCCONF-BTOOL-001
+  - DCCONF-BTOOL-002
+  - DCCONF-BTOOL-003
+  - DCCONF-BTOOL-004
+  - DCCONF-BTOOL-005
+  unit_test_refs: []
+  implementation_refs:
+  - specs/conformance/cases/runner_build_tool/runner_build_tool_required_core.spec.md
+  - specs/conformance/cases/runner_build_tool/runner_build_tool_required_sync.spec.md
+  - specs/conformance/cases/runner_build_tool/runner_build_tool_required_compat.spec.md
+  - specs/conformance/cases/runner_build_tool/runner_build_tool_may_catalog.spec.md
+  - specs/conformance/cases/runner_build_tool/runner_build_tool_manifest_path.spec.md
+  - specs/packs/runner_contract_pack_v1.yaml
+  notes: Build-tool command semantics are portable and tool-agnostic across runner repos.
 - rule_id: CORE_SCRIPT_ALLOWLIST_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#CORE_SCRIPT_ALLOWLIST_REQUIRED
   contract_refs:
