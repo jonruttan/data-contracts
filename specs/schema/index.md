@@ -22,6 +22,9 @@ Canonical schema sources for executable `contract-spec` documents.
 - `/specs/schema/runner_status_report_v1.yaml`
 - `/specs/schema/runner_status_matrix_v1.yaml`
 - `/specs/schema/runner_cli_contract_v1.yaml`
+- `/specs/schema/runner_build_tool_contract_v1.yaml`
+- `/specs/schema/contract_set_manifest_v1.yaml`
+- `/specs/schema/resolved_contract_set_lock_v1.yaml`
 - `/specs/schema/core_script_allowlist_v1.yaml`
 - `/specs/schema/normalization_profile_v1.yaml`
 - `/specs/schema/subject_profiles_v1.yaml`

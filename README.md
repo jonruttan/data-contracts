@@ -63,6 +63,12 @@ This repository does not execute runtime lanes.
 - `/Users/jon/Workspace/Development/data-contracts/specs/contract/29_runner_cli_interface.md`
 - `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_cli_contract_v1.yaml`
 
+## Contract Set Resolver
+
+- Command: `/Users/jon/Workspace/Development/data-contracts/scripts/contract-set resolve --runner <runner> --root <contract_set_id> --out <dir>`
+- Manifest schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/contract_set_manifest_v1.yaml`
+- Lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/resolved_contract_set_lock_v1.yaml`
+
 ## Core Script Allowlist
 
 - `/Users/jon/Workspace/Development/data-contracts/scripts/control_plane.sh`

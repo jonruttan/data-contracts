@@ -1,0 +1,323 @@
+#!/usr/bin/env zsh
+emulate -L zsh
+set -euo pipefail
+setopt NO_NOMATCH
+unsetopt XTRACE VERBOSE 2>/dev/null || true
+set +x +v
+
+ROOT_DIR="$(cd "$(dirname "${0}")/.." && pwd)"
+LOCK_FILENAME="resolved_contract_set_lock_v1.yaml"
+MANIFEST_FILENAME="resolved_files.sha256"
+
+source "${ROOT_DIR}/scripts/lib/yaml_to_json.sh"
+
+usage() {
+  cat <<USAGE
+Usage:
+  scripts/contract-set resolve --runner <runner> --root <contract_set_id> --out <dir> [--repo-root <dir>] [--source-repo <value>] [--source-ref <value>] [--source-commit <sha>]
+USAGE
+}
+
+err() {
+  echo "ERROR: $*" >&2
+  exit 1
+}
+
+sha256_file() {
+  local file="$1"
+  if command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$file" | awk '{print $1}'
+  else
+    sha256sum "$file" | awk '{print $1}'
+  fi
+}
+
+array_contains() {
+  local json_array="$1"
+  local value="$2"
+  jq -e --arg v "$value" 'index($v) != null' <<<"$json_array" >/dev/null 2>&1
+}
+
+resolve_cmd() {
+  exec 1>/dev/null
+  command -v jq >/dev/null 2>&1 || err "jq is required"
+  command -v php >/dev/null 2>&1 || err "php is required"
+
+  local runner=""
+  local root_contract_set=""
+  local out_dir=""
+  local repo_root="."
+  local source_repo=""
+  local source_ref="HEAD"
+  local source_commit=""
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --runner) runner="$2"; shift 2 ;;
+      --root) root_contract_set="$2"; shift 2 ;;
+      --out) out_dir="$2"; shift 2 ;;
+      --repo-root) repo_root="$2"; shift 2 ;;
+      --source-repo) source_repo="$2"; shift 2 ;;
+      --source-ref) source_ref="$2"; shift 2 ;;
+      --source-commit) source_commit="$2"; shift 2 ;;
+      *) err "unknown arg: $1" ;;
+    esac
+  done
+
+  [[ "$runner" == "python" || "$runner" == "php" || "$runner" == "rust" ]] || err "--runner must be one of: python|php|rust"
+  [[ -n "$root_contract_set" ]] || err "--root is required"
+  [[ -n "$out_dir" ]] || err "--out is required"
+
+  repo_root="$(cd "$repo_root" && pwd)"
+  [[ -d "${repo_root}/specs/contract_sets" ]] || err "manifest root not found: ${repo_root}/specs/contract_sets"
+
+  local tmp_dir
+  tmp_dir="$(mktemp -d)"
+  trap '[[ -n "${tmp_dir:-}" ]] && rm -rf "$tmp_dir"' EXIT
+
+  typeset -A PATH_BY_ID
+  typeset -A MODE_BY_ID
+  typeset -A DEPENDS_JSON_BY_ID
+  typeset -A INCLUDE_JSON_BY_ID
+  typeset -A EXCLUDE_JSON_BY_ID
+  typeset -A RUNNERS_JSON_BY_ID
+
+  local manifest_paths_file="${tmp_dir}/manifest_paths.txt"
+  find "${repo_root}/specs/contract_sets" -type f -name '*.yaml' | LC_ALL=C sort > "$manifest_paths_file"
+  [[ -s "$manifest_paths_file" ]] || err "no contract set manifests found"
+
+  while IFS= read -r abs_path; do
+    local rel_path="${abs_path#${repo_root}/}"
+    local json
+    json="$(parse_yaml_file_to_json "$abs_path")" || err "failed parsing manifest: $rel_path"
+
+    local id mode depends_json include_json exclude_json runners_json
+    id="$(jq -r '.contract_set_id // empty' <<<"$json")"
+    [[ -n "$id" ]] || err "manifest ${rel_path}: contract_set_id must be non-empty string"
+    [[ -z "${PATH_BY_ID[$id]-}" ]] || err "duplicate contract_set_id '${id}' in ${PATH_BY_ID[$id]} and ${rel_path}"
+
+    jq -e '.version | type == "number"' <<<"$json" >/dev/null || err "manifest ${rel_path}: version must be integer"
+    mode="$(jq -r '.dependency_mode // "required"' <<<"$json")"
+    [[ "$mode" == "required" || "$mode" == "optional" ]] || err "manifest ${rel_path}: dependency_mode must be required|optional"
+
+    depends_json="$(jq -c '.depends_on // []' <<<"$json")"
+    jq -e 'type=="array" and all(.[]; type=="string" and length>0)' <<<"$depends_json" >/dev/null || err "manifest ${rel_path}: depends_on must be list of strings"
+
+    include_json="$(jq -c '.include_paths // empty' <<<"$json")"
+    [[ -n "$include_json" ]] || err "manifest ${rel_path}: include_paths is required"
+    jq -e 'type=="array" and length>0 and all(.[]; type=="string" and length>0)' <<<"$include_json" >/dev/null || err "manifest ${rel_path}: include_paths must be non-empty list of strings"
+
+    exclude_json="$(jq -c '.exclude_paths // []' <<<"$json")"
+    jq -e 'type=="array" and all(.[]; type=="string" and length>0)' <<<"$exclude_json" >/dev/null || err "manifest ${rel_path}: exclude_paths must be list of strings"
+
+    runners_json="$(jq -c '.applies_to_runners // []' <<<"$json")"
+    jq -e 'type=="array" and all(.[]; type=="string" and length>0)' <<<"$runners_json" >/dev/null || err "manifest ${rel_path}: applies_to_runners must be list of strings"
+
+    PATH_BY_ID[$id]="$rel_path"
+    MODE_BY_ID[$id]="$mode"
+    DEPENDS_JSON_BY_ID[$id]="$depends_json"
+    INCLUDE_JSON_BY_ID[$id]="$include_json"
+    EXCLUDE_JSON_BY_ID[$id]="$exclude_json"
+    RUNNERS_JSON_BY_ID[$id]="$runners_json"
+  done < "$manifest_paths_file"
+
+  [[ -n "${PATH_BY_ID[$root_contract_set]-}" ]] || err "missing dependency/root contract_set_id: $root_contract_set"
+
+  typeset -A VISITING
+  typeset -A VISITED
+  typeset -A REACHABLE
+
+  dfs() {
+    local node="$1"
+    [[ -n "${PATH_BY_ID[$node]-}" ]] || err "missing dependency '${node}'"
+    [[ -z "${VISITING[$node]-}" ]] || err "cycle detected in contract set graph at '${node}'"
+    [[ -z "${VISITED[$node]-}" ]] || return
+
+    VISITING[$node]=1
+    while IFS= read -r dep; do
+      [[ -z "$dep" ]] && continue
+      [[ -n "${PATH_BY_ID[$dep]-}" ]] || err "missing dependency '${dep}' referenced by '${node}'"
+      dfs "$dep"
+    done < <(jq -r '.[]' <<<"${DEPENDS_JSON_BY_ID[$node]}")
+    unset VISITING[$node]
+    VISITED[$node]=1
+    REACHABLE[$node]=1
+  }
+
+  dfs "$root_contract_set"
+
+  local reachable_file="${tmp_dir}/reachable.txt"
+  for id in ${(k)REACHABLE}; do
+    echo "$id"
+  done | LC_ALL=C sort > "$reachable_file"
+
+  typeset -A INDEGREE
+  typeset -A CHILDREN
+  typeset -A EMITTED
+
+  while IFS= read -r id; do
+    INDEGREE[$id]=0
+    CHILDREN[$id]=""
+  done < "$reachable_file"
+
+  while IFS= read -r id; do
+    while IFS= read -r dep; do
+      [[ -z "$dep" ]] && continue
+      [[ -n "${REACHABLE[$dep]-}" ]] || continue
+      INDEGREE[$id]=$(( INDEGREE[$id] + 1 ))
+      CHILDREN[$dep]="${CHILDREN[$dep]}${id}"$'\n'
+    done < <(jq -r '.[]' <<<"${DEPENDS_JSON_BY_ID[$id]}")
+  done < "$reachable_file"
+
+  local ordered_file="${tmp_dir}/ordered.txt"
+  : > "$ordered_file"
+  local total_nodes emitted_count
+  total_nodes="$(wc -l < "$reachable_file" | tr -d ' ')"
+  emitted_count=0
+
+  while [[ "$emitted_count" -lt "$total_nodes" ]]; do
+    local ready_file="${tmp_dir}/ready.txt"
+    : > "$ready_file"
+    while IFS= read -r id; do
+      if [[ -z "${EMITTED[$id]-}" && "${INDEGREE[$id]}" -eq 0 ]]; then
+        echo "$id" >> "$ready_file"
+      fi
+    done < "$reachable_file"
+    [[ -s "$ready_file" ]] || err "cycle detected during topological sort"
+
+    local node
+    node="$(LC_ALL=C sort "$ready_file" | head -n 1)"
+    EMITTED[$node]=1
+    emitted_count=$(( emitted_count + 1 ))
+    echo "$node" >> "$ordered_file"
+    while IFS= read -r child; do
+      [[ -z "$child" ]] && continue
+      INDEGREE[$child]=$(( INDEGREE[$child] - 1 ))
+    done <<<"${CHILDREN[$node]}"
+  done
+
+  local selected_file="${tmp_dir}/selected.txt"
+  : > "$selected_file"
+  while IFS= read -r id; do
+    local applies=1
+    local runners_json="${RUNNERS_JSON_BY_ID[$id]}"
+    if [[ "$(jq 'length' <<<"$runners_json")" -gt 0 ]]; then
+      array_contains "$runners_json" "$runner" || applies=0
+    fi
+    if [[ "$applies" -eq 0 ]]; then
+      if [[ "$id" == "$root_contract_set" || "${MODE_BY_ID[$id]}" == "required" ]]; then
+        err "contract set '${id}' does not apply to runner '${runner}' and dependency_mode is required"
+      fi
+      continue
+    fi
+    echo "$id" >> "$selected_file"
+  done < "$ordered_file"
+
+  local repo_files_file="${tmp_dir}/repo_files.txt"
+  find "$repo_root" -type f ! -path "*/.git/*" | sed "s#^${repo_root}/##" | LC_ALL=C sort > "$repo_files_file"
+
+  typeset -A MERGED_SHA
+  typeset -A INCLUDED_THIS
+
+  while IFS= read -r id; do
+    INCLUDED_THIS=()
+    while IFS= read -r pattern; do
+      [[ -z "$pattern" ]] && continue
+      local matched=0
+      while IFS= read -r rel; do
+        [[ -z "$rel" ]] && continue
+        if [[ "$rel" == ${~pattern} ]]; then
+          matched=1
+          INCLUDED_THIS[$rel]=1
+        fi
+      done < "$repo_files_file"
+      [[ "$matched" -eq 1 ]] || err "invalid include path/glob '${pattern}' in contract_set_id '${id}'"
+    done < <(jq -r '.[]' <<<"${INCLUDE_JSON_BY_ID[$id]}")
+
+    while IFS= read -r pattern; do
+      [[ -z "$pattern" ]] && continue
+      for rel in ${(k)INCLUDED_THIS}; do
+        [[ "$rel" == ${~pattern} ]] && unset INCLUDED_THIS[$rel]
+      done
+    done < <(jq -r '.[]' <<<"${EXCLUDE_JSON_BY_ID[$id]}")
+
+    for rel in ${(k)INCLUDED_THIS}; do
+      local file_sha
+      file_sha="$(sha256_file "${repo_root}/${rel}")"
+      if [[ -n "${MERGED_SHA[$rel]-}" && "${MERGED_SHA[$rel]}" != "$file_sha" ]]; then
+        err "conflicting file bytes for '${rel}' between contract sets; same path with different bytes is not allowed"
+      fi
+      MERGED_SHA[$rel]="$file_sha"
+    done
+  done < "$selected_file"
+
+  mkdir -p "$out_dir"
+  find "$out_dir" -type f -delete
+  while IFS= read -r d; do
+    rmdir "$d" 2>/dev/null || true
+  done < <(find "$out_dir" -depth -type d)
+  mkdir -p "$out_dir"
+
+  local merged_paths_file="${tmp_dir}/merged_paths.txt"
+  for rel in ${(k)MERGED_SHA}; do
+    echo "$rel"
+  done | LC_ALL=C sort > "$merged_paths_file"
+
+  while IFS= read -r rel; do
+    [[ -z "$rel" ]] && continue
+    mkdir -p "${out_dir}/$(dirname "$rel")"
+    cp "${repo_root}/${rel}" "${out_dir}/${rel}"
+  done < "$merged_paths_file"
+
+  local manifest_path="${out_dir}/${MANIFEST_FILENAME}"
+  : > "$manifest_path"
+  while IFS= read -r rel; do
+    [[ -z "$rel" ]] && continue
+    printf '%s  %s\n' "$(sha256_file "${out_dir}/${rel}")" "$rel" >> "$manifest_path"
+  done < "$merged_paths_file"
+
+  local manifest_hash file_count
+  manifest_hash="$(sha256_file "$manifest_path")"
+  file_count="$(wc -l < "$merged_paths_file" | tr -d ' ')"
+
+  local manifests_index="${tmp_dir}/selected_manifests.sha256"
+  : > "$manifests_index"
+  while IFS= read -r id; do
+    local rel_path="${PATH_BY_ID[$id]}"
+    printf '%s  %s\n' "$(sha256_file "${repo_root}/${rel_path}")" "$rel_path" >> "$manifests_index"
+  done < "$selected_file"
+  local manifests_hash
+  manifests_hash="$(sha256_file "$manifests_index")"
+
+  [[ -n "$source_repo" ]] || source_repo="$repo_root"
+  if [[ -z "$source_commit" ]]; then
+    source_commit="$(git -C "$repo_root" rev-parse HEAD 2>/dev/null || true)"
+    [[ -n "$source_commit" ]] || source_commit="unknown"
+  fi
+
+  local lock_path="${out_dir}/${LOCK_FILENAME}"
+  {
+    echo "version: 1"
+    echo "root_contract_set: ${root_contract_set}"
+    echo "runner: ${runner}"
+    echo "source:"
+    echo "  repo: ${source_repo}"
+    echo "  ref: ${source_ref}"
+    echo "  commit: ${source_commit}"
+    echo "resolved_order:"
+    while IFS= read -r id; do
+      echo "- ${id}"
+    done < "$selected_file"
+    echo "integrity:"
+    echo "  file_count: ${file_count}"
+    echo "  sha256_manifest: ${manifest_hash}"
+    echo "  sha256_manifests: ${manifests_hash}"
+  } > "$lock_path"
+}
+
+[[ $# -gt 0 ]] || { usage >&2; exit 2; }
+case "$1" in
+  resolve) shift; resolve_cmd "$@" ;;
+  -h|--help|help) usage ;;
+  *) err "unknown subcommand: $1" ;;
+esac
