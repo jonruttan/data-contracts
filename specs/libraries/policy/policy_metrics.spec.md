@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-POLICY-002-001-POLICY-METRIC-NON-DECREASE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
 type: contract.export
 contract:
@@ -94,6 +96,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-POLICY-002-002-POLICY-METRIC-NON-INCREASE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_increase'
 type: contract.export
 contract:
@@ -184,6 +188,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-POLICY-002-900-POLICY-METRIC-SMOKE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: policy metric helpers execute as colocated executable checks
 type: contract.check
 harness:

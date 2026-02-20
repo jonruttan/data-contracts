@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-CONFORMANCE-001-000-DOMAIN-CONFORMANCE-ERROR-WHEN-FALSE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -78,6 +80,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-CONFORMANCE-001-000A-DOMAIN-CONFORMANCE-REPORT-VERSION-IS-V1
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -146,6 +150,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-CONFORMANCE-001-000B-DOMAIN-CONFORMANCE-REPORT-RESULTS-IS-LIST
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -213,6 +219,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-CONFORMANCE-001-000C-DOMAIN-CONFORMANCE-VALIDATE-REPORT-ERRORS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:

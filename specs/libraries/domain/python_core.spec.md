@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PY-001
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: python projection helper functions
 type: contract.export
 contract:

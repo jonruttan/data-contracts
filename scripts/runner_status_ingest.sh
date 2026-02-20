@@ -46,6 +46,23 @@ read_report_json() {
   jq -c . "${report_path}" 2>/dev/null || return 1
 }
 
+validate_report_shape() {
+  local report_json="$1"
+  jq -e '
+    .version == 1 and
+    (.runner_id | type == "string" and length > 0) and
+    (.implementation_repo | type == "string" and length > 0) and
+    (.release_version | type == "string" and length > 0) and
+    (.commit_sha | type == "string" and length > 0) and
+    (.generated_at | type == "string" and length > 0) and
+    (.lane_class == "required" or .lane_class == "compatibility_non_blocking") and
+    (.overall_status == "pass" or .overall_status == "fail" or .overall_status == "degraded" or .overall_status == "unknown") and
+    (.fresh_until | type == "string" and length > 0) and
+    (.command_results | type == "array") and
+    (.artifact_refs | type == "array")
+  ' >/dev/null <<<"${report_json}" 2>/dev/null
+}
+
 require_tool() {
   local tool="$1"
   if ! command -v "${tool}" >/dev/null 2>&1; then
@@ -194,18 +211,22 @@ while IFS= read -r runner; do
           fi
           if [[ -z "${error}" ]]; then
             if report_json="$(read_report_json "${tmp_report}")"; then
-              overall_status="$(jq -r '.overall_status // "unknown"' <<<"${report_json}")"
-              report_generated_at="$(jq -r '.generated_at // empty' <<<"${report_json}")"
-              if [[ -n "${report_generated_at}" ]] && report_epoch="$(iso_to_epoch "${report_generated_at}")"; then
-                age_hours="$(( (NOW_EPOCH - report_epoch) / 3600 ))"
-                if [[ "${age_hours}" -le "${runner_slo}" ]]; then
-                  freshness_state="fresh"
+              if validate_report_shape "${report_json}"; then
+                overall_status="$(jq -r '.overall_status // "unknown"' <<<"${report_json}")"
+                report_generated_at="$(jq -r '.generated_at // empty' <<<"${report_json}")"
+                if [[ -n "${report_generated_at}" ]] && report_epoch="$(iso_to_epoch "${report_generated_at}")"; then
+                  age_hours="$(( (NOW_EPOCH - report_epoch) / 3600 ))"
+                  if [[ "${age_hours}" -le "${runner_slo}" ]]; then
+                    freshness_state="fresh"
+                  else
+                    freshness_state="stale"
+                  fi
                 else
-                  freshness_state="stale"
+                  freshness_state="missing"
+                  error="report missing valid generated_at"
                 fi
               else
-                freshness_state="missing"
-                error="report missing valid generated_at"
+                error="report schema validation failed"
               fi
             else
               error="invalid report JSON"
@@ -326,4 +347,3 @@ fi
 echo "wrote ${OUT_JSON_FILE}"
 echo "wrote ${OUT_MD_FILE}"
 echo "wrote ${OUT_LOG_FILE}"
-

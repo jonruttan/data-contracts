@@ -7,6 +7,8 @@ It provides producer cases referenced by conformance negative tests.
 
 ```yaml contract-spec
 id: BAD-EXPORT-PATH
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -74,6 +76,8 @@ doc:
 
 ```yaml contract-spec
 id: BAD-EXPORT-CLASS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:

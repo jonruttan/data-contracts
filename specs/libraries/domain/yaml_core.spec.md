@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-YAML-001-001-DOMAIN-YAML-PARSE-GET-OR
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -83,6 +85,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-YAML-001-002-DOMAIN-YAML-STRINGIFY
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:

@@ -7,6 +7,31 @@ on:
   pull_request:
 
 jobs:
+  local-status-exchange:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install ingest deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-cli php-yaml jq curl
+          php -m | grep -i '^yaml$'
+
+      - name: Run deterministic local status exchange scenarios
+        run: ./scripts/local_status_exchange_test.sh
+
+      - name: Upload local status exchange artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-status-exchange-artifacts
+          path: .artifacts/**
+          if-no-files-found: ignore
+
   runner-status-ingest:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -38,7 +63,9 @@ jobs:
   control-plane-governance:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: runner-status-ingest
+    needs:
+      - runner-status-ingest
+      - local-status-exchange
 
     steps:
       - name: Checkout
@@ -54,6 +81,9 @@ jobs:
 
       - name: Run docs reference checks
         run: ./scripts/control_plane.sh docs-generate-check
+      - name: Run optional governance report (non-blocking)
+        run: python3 ./scripts/governance_optional_report.py || true
+
 
       - name: Upload governance artifacts
         if: always()

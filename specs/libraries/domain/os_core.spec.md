@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-OS-001-001-DOMAIN-OS-EXEC-OK
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -77,6 +79,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-OS-001-002-DOMAIN-OS-EXEC-CAPTURE-CODE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -158,6 +162,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-OS-001-003-DOMAIN-OS-ENV-HAS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:

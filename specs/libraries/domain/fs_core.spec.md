@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-001-DOMAIN-FS-IS-DOCS-SPEC-FILE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -75,6 +77,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-002-DOMAIN-FS-SORT-SPEC-FILES
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -141,6 +145,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-003-DOMAIN-FS-JSON-GET-OR-TEXT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -220,6 +226,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-004-DOMAIN-FS-JSON-HAS-PATH-TEXT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -292,6 +300,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-005-DOMAIN-FS-GLOB-ANY-SPEC-FILES
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -357,6 +367,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-006-DOMAIN-FS-FILE-EXT-EQ
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -429,6 +441,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-007-DOMAIN-FS-JSON-GET-TEXT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -501,6 +515,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-008-DOMAIN-FS-JSON-PATH-EQ-TEXT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -582,6 +598,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-009-DOMAIN-FS-GLOB-FILTER
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -653,6 +671,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-FS-001-010-DOMAIN-FS-GLOB-ALL
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:

@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-001-DOMAIN-MARKDOWN-HAS-HEADING
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.has_heading'
 type: contract.export
 contract:
@@ -462,6 +464,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-003-DOMAIN-MARKDOWN-HEADING-LEVEL-EXISTS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.heading_level_exists'
 type: contract.export
 contract:
@@ -601,6 +605,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-005-DOMAIN-MARKDOWN-SECTION-ORDER-VALID
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.section_order_valid'
 type: contract.export
 contract:
@@ -714,6 +720,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-007-DOMAIN-MARKDOWN-REQUIRED-SECTIONS-PRESENT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.required_sections_present'
 type: contract.export
 contract:
@@ -794,6 +802,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-009-DOMAIN-MARKDOWN-LINK-TARGETS-ALL-RESOLVE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.link_targets_all_resolve'
 type: contract.export
 contract:
@@ -871,6 +881,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-011-DOMAIN-MARKDOWN-HAS-BROKEN-LINKS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.has_broken_links'
 type: contract.export
 contract:
@@ -940,6 +952,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-013-DOMAIN-MARKDOWN-HAS-YAML-SPEC-TEST-FENCE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.has_yaml_spec_test_fence'
 type: contract.export
 contract:
@@ -1016,6 +1030,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-015-DOMAIN-MARKDOWN-CODE-FENCE-LANGUAGE-EXISTS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.code_fence_language_exists'
 type: contract.export
 contract:
@@ -1108,6 +1124,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-017-DOMAIN-MARKDOWN-TOKEN-PRESENT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.token_present'
 type: contract.export
 contract:
@@ -1190,6 +1208,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-019-DOMAIN-MARKDOWN-TOKENS-ALL-PRESENT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.tokens_all_present'
 type: contract.export
 contract:
@@ -1270,6 +1290,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-021-DOMAIN-MARKDOWN-TOKEN-OWNERSHIP-UNIQUE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.token_ownership_unique'
 type: contract.export
 contract:
@@ -1347,6 +1369,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-MD-001-023-DOMAIN-MARKDOWN-TOKEN-DEPENDENCIES-RESOLVED
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.token_dependencies_resolved'
 type: contract.export
 contract:

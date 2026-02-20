@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-REPO-001-001-DOMAIN-REPO-WALK-MATCHING
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 harness:
   exports:

@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PROCESS-001-001-DOMAIN-PROCESS-EXEC-CAPTURE-EX-CODE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 harness:
   spec_lang:

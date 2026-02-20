@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-POLICY-001
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: policy-core reusable governance predicates
 type: contract.export
 contract:

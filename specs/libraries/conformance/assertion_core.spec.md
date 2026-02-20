@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-CONF-ASSERT-001
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: reusable conformance assertion helper functions
 type: contract.export
 contract:

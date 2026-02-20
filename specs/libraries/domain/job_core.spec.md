@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-JOB-001-000A-DOMAIN-JOB-SCAN-BUNDLE-HAS-RESULT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 title: domain.job.scan_bundle_has_result
 purpose: Reusable helper-backed predicate for contract.job governance scan helper output.
 type: contract.export

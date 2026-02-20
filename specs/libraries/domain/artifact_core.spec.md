@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-ARTIFACT-001-001-DOMAIN-ARTIFACT-WRITE-YAML
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 harness:
   exports:
@@ -76,6 +78,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-ARTIFACT-001-002-DOMAIN-ARTIFACT-APPEND-TEXT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 harness:
   exports:

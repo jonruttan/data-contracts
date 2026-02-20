@@ -19,6 +19,7 @@ check_required_files() {
     "specs/contract/27_runner_status_exchange.md"
     "specs/schema/runner_status_report_v1.yaml"
     "specs/schema/runner_status_matrix_v1.yaml"
+    "specs/schema/schema_catalog_v1.yaml"
     "specs/schema/runner_certification_registry_v1.yaml"
     "specs/governance/check_sets_v1.yaml"
     "specs/governance/check_prefix_map_v1.yaml"
@@ -80,6 +81,8 @@ run_governance() {
   check_no_runtime_runner_execution
   check_control_plane_language
   check_readme_usage_paths
+  python3 ./scripts/governance_catalog_validate.py
+  python3 ./scripts/spec_schema_pin_validate.py
 
   cat > .artifacts/control-plane-governance-summary.md <<'MD'
 # Control-Plane Governance Summary
@@ -90,9 +93,10 @@ run_governance() {
   - CI/runtime execution forbidden in this repository
   - control-plane language present in docs/contracts
   - README task-based usage paths present
+  - schema pin validation passed
 MD
 
-  jq -n '{status:"pass", checks:["required_files","control_plane_ci_runner_execution_forbidden","control_plane_language_present","readme_task_usage_paths_present"]}' > .artifacts/control-plane-governance-summary.json
+  jq -n '{status:"pass", checks:["required_files","control_plane_ci_runner_execution_forbidden","control_plane_language_present","readme_task_usage_paths_present","schema_pin_validation"]}' > .artifacts/control-plane-governance-summary.json
   echo "OK: governance checks passed"
 }
 

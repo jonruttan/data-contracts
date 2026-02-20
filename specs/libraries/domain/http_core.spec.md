@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-001-DOMAIN-HTTP-STATUS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -70,6 +72,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-002-DOMAIN-HTTP-STATUS-IN
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -144,6 +148,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-003-DOMAIN-HTTP-STATUS-IS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -218,6 +224,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-004-DOMAIN-HTTP-STATUS-IS-UNAUTHORIZED
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -284,6 +292,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-005-DOMAIN-HTTP-STATUS-IS-FORBIDDEN
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -350,6 +360,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-006-DOMAIN-HTTP-OK-2XX
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -426,6 +438,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-007-DOMAIN-HTTP-HEADER-GET
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -500,6 +514,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-008-DOMAIN-HTTP-HEADER-CONTAINS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -582,6 +598,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-009-DOMAIN-HTTP-BODY-TEXT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -648,6 +666,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-010-DOMAIN-HTTP-BODY-JSON
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -714,6 +734,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-011-DOMAIN-HTTP-BODY-JSON-TYPE-IS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -788,6 +810,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-012-DOMAIN-HTTP-BODY-JSON-HAS-KEY
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -862,6 +886,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-013-DOMAIN-HTTP-AUTH-IS-OAUTH
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -930,6 +956,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-OAUTH-TOKEN-SOURCE-IS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1003,7 +1031,9 @@ doc:
 ```
 
 ```yaml contract-spec
-id: LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-HAS-BEARER-HEADER
+id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-HAS-BEARER-HEADER
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1063,7 +1093,7 @@ library:
   tags:
   - domain
 doc:
-  summary: Case `LIB-DOMAIN-HTTP-001-014-DOMAIN-HTTP-HAS-BEARER-HEADER` for `contract.export`.
+  summary: Case `LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-HAS-BEARER-HEADER` for `contract.export`.
   description: Auto-generated root doc metadata stub. Replace with authored reference text.
   audience: spec-authors
   since: v1
@@ -1074,6 +1104,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-015-DOMAIN-HTTP-OAUTH-SCOPE-REQUESTED
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1144,6 +1176,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-016-DOMAIN-HTTP-CORS-ALLOW-ORIGIN
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1212,6 +1246,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-017-DOMAIN-HTTP-CORS-ALLOWS-METHOD
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1288,6 +1324,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-018-DOMAIN-HTTP-CORS-ALLOWS-HEADER
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1364,6 +1402,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-019-DOMAIN-HTTP-CORS-CREDENTIALS-ENABLED
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1434,6 +1474,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-020-DOMAIN-HTTP-CORS-MAX-AGE-GTE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1510,6 +1552,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-021-DOMAIN-HTTP-IS-PREFLIGHT-STEP
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1576,6 +1620,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-022-DOMAIN-HTTP-STEP-BY-ID
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1652,6 +1698,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-023-DOMAIN-HTTP-STEP-STATUS-IS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1733,6 +1781,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-HTTP-001-024-DOMAIN-HTTP-STEP-BODY-JSON-GET
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:

@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-001-DOMAIN-PATH-NORMALIZE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -68,6 +70,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-002-DOMAIN-PATH-EQ
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -141,6 +145,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-003-DOMAIN-PATH-IS-SPEC-MD
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -207,6 +213,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-004-DOMAIN-PATH-IS-IN-DOCS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -273,6 +281,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-005-DOMAIN-PATH-SORTED
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -337,6 +347,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-006-DOMAIN-FILE-IS-EXISTING-FILE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -404,6 +416,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-007-DOMAIN-FILE-IS-EXISTING-DIR
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -471,6 +485,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-008-DOMAIN-FILE-HAS-EXT
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -543,6 +559,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-DOMAIN-PATH-001-009-DOMAIN-FILE-NAME
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:

@@ -4,6 +4,8 @@
 
 ```yaml contract-spec
 id: LIB-PATH-001-001-PATH-NORMALIZE-SLASHES
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -305,6 +307,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-PATH-001-002-PATH-SEGMENTS
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -607,6 +611,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-PATH-001-003-PATH-BASENAME
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -921,6 +927,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-PATH-001-004-PATH-EXTENSION
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
   defaults:
@@ -1243,6 +1251,8 @@ doc:
 
 ```yaml contract-spec
 id: LIB-PATH-001-900-PATH-SMOKE
+spec_version: 1
+schema_ref: /specs/schema/schema_v1.md
 type: contract.check
 harness:
   check:
