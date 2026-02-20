@@ -15,8 +15,8 @@ harness:
     required_entrypoint: scripts/runner_bin.sh
     gate_files:
     - scripts/ci_gate.sh
-    - scripts/core_gate.sh
-    - scripts/docs_doctor.sh
+    - scripts/ci_gate.sh
+    - scripts/control_plane.sh
   forbidden_tokens:
   - dc-runner-rust
   - dc-runner-python

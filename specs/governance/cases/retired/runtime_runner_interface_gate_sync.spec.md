@@ -19,8 +19,8 @@ harness:
     - /dc-runner-rust
     files:
     - scripts/ci_gate.sh
-    - scripts/docs_doctor.sh
-    - scripts/core_gate.sh
+    - scripts/control_plane.sh
+    - scripts/ci_gate.sh
     required_tokens:
     - SPEC_RUNNER_BIN
     - scripts/runner_bin.sh

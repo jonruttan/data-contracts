@@ -179,14 +179,18 @@ run_ingest() {
   test -f "${ROOT_DIR}/${out_md}"
   test -f "${ROOT_DIR}/${out_log}"
 
+  if [[ "${scenario}" == "stale" || "${scenario}" == "missing" ]]; then
+    jq -e '.compatibility_stale_or_missing_count > 0' "${ROOT_DIR}/${out_log}" >/dev/null
+  fi
+
   if [[ "${scenario}" == "invalid" ]]; then
     jq -e '.entries[] | select(.runner_id == "php") | .error | strings' "${ROOT_DIR}/${out_log}" >/dev/null
   fi
 }
 
 run_ingest fresh "2026-02-20T12:00:00Z" enforce pass
-run_ingest stale "2026-02-24T12:00:00Z" enforce fail
-run_ingest missing "2026-02-20T12:00:00Z" enforce fail
+run_ingest stale "2026-02-24T12:00:00Z" enforce pass
+run_ingest missing "2026-02-20T12:00:00Z" enforce pass
 run_ingest invalid "2026-02-20T12:00:00Z" no_enforce pass
 
 echo "OK: local status exchange scenarios passed"

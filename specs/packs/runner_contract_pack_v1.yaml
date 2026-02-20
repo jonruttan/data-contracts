@@ -1,0 +1,26 @@
+version: 1
+pack_id: runner_contract_pack_v1
+pack_role: runner_contract
+runner_consumption: required
+entry_cases:
+  - /specs/conformance/cases/core/runner_certification_core.spec.md
+  - /specs/conformance/cases/core/runner_status_exchange.spec.md
+  - /specs/conformance/cases/runner_cli/runner_cli_required_help.spec.md
+  - /specs/conformance/cases/runner_cli/runner_cli_required_governance.spec.md
+  - /specs/conformance/cases/runner_cli/runner_cli_required_conformance.spec.md
+  - /specs/conformance/cases/runner_cli/runner_cli_unknown_command.spec.md
+  - /specs/conformance/cases/runner_cli/runner_cli_optional_capability_negotiation.spec.md
+  - /specs/governance/cases/core/runner_contract/runtime_status_ingest_pipeline_chain.spec.md
+contracts:
+  - /specs/contract/12_runner_interface.md
+  - /specs/contract/25_compatibility_matrix.md
+  - /specs/contract/27_runner_status_exchange.md
+  - /specs/contract/29_runner_cli_interface.md
+schemas:
+  - /specs/schema/runner_status_report_v1.yaml
+  - /specs/schema/runner_status_matrix_v1.yaml
+  - /specs/schema/runner_cli_contract_v1.yaml
+artifacts_expected:
+  - /.artifacts/runner-status-matrix.json
+  - /.artifacts/runner-status-matrix.md
+  - /.artifacts/runner-status-ingest-log.json

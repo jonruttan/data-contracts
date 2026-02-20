@@ -4,6 +4,14 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
 
+source "${ROOT_DIR}/scripts/lib/artifact_paths.sh"
+source "${ROOT_DIR}/scripts/lib/yaml_to_json.sh"
+source "${ROOT_DIR}/scripts/ingest/parse_args.sh"
+source "${ROOT_DIR}/scripts/ingest/resolve_registry.sh"
+source "${ROOT_DIR}/scripts/ingest/fetch_release_asset.sh"
+source "${ROOT_DIR}/scripts/ingest/emit_matrix_artifacts.sh"
+source "${ROOT_DIR}/scripts/ingest/emit_ingest_log.sh"
+
 REGISTRY_PATH="/specs/schema/runner_certification_registry_v1.yaml"
 OUT_JSON="/.artifacts/runner-status-matrix.json"
 OUT_MD="/.artifacts/runner-status-matrix.md"
@@ -12,120 +20,21 @@ MAX_AGE_HOURS="${RUNNER_STATUS_MAX_AGE_HOURS:-72}"
 ENFORCE_FRESHNESS=0
 NOW_UTC="${RUNNER_STATUS_NOW_UTC:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}"
 
-usage() {
-  cat <<'EOF'
-Usage: ./scripts/runner_status_ingest.sh [options]
-
-Options:
-  --registry <path>        Runner certification registry path (default: /specs/schema/runner_certification_registry_v1.yaml)
-  --out-json <path>        Matrix JSON output path (default: /.artifacts/runner-status-matrix.json)
-  --out-md <path>          Matrix Markdown output path (default: /.artifacts/runner-status-matrix.md)
-  --log-json <path>        Ingest log output path (default: /.artifacts/runner-status-ingest-log.json)
-  --max-age-hours <int>    Freshness SLO in hours (default: 72)
-  --enforce-freshness      Exit non-zero when active compatibility telemetry is stale or missing
-  --now-utc <rfc3339>      Override current UTC time (test support)
-EOF
-}
-
-to_abs_path() {
-  local p="$1"
-  if [[ "${p}" == /* ]]; then
-    echo "${ROOT_DIR}${p}"
-  else
-    echo "${ROOT_DIR}/${p}"
-  fi
-}
-
-iso_to_epoch() {
-  local iso="$1"
-  jq -nr --arg iso "${iso}" '$iso | fromdateiso8601' 2>/dev/null || return 1
-}
-
-read_report_json() {
-  local report_path="$1"
-  jq -c . "${report_path}" 2>/dev/null || return 1
-}
-
-validate_report_shape() {
-  local report_json="$1"
-  jq -e '
-    .version == 1 and
-    (.runner_id | type == "string" and length > 0) and
-    (.implementation_repo | type == "string" and length > 0) and
-    (.release_version | type == "string" and length > 0) and
-    (.commit_sha | type == "string" and length > 0) and
-    (.generated_at | type == "string" and length > 0) and
-    (.lane_class == "required" or .lane_class == "compatibility_non_blocking") and
-    (.overall_status == "pass" or .overall_status == "fail" or .overall_status == "degraded" or .overall_status == "unknown") and
-    (.fresh_until | type == "string" and length > 0) and
-    (.command_results | type == "array") and
-    (.artifact_refs | type == "array")
-  ' >/dev/null <<<"${report_json}" 2>/dev/null
-}
-
-require_tool() {
-  local tool="$1"
-  if ! command -v "${tool}" >/dev/null 2>&1; then
-    echo "ERROR: required tool not found: ${tool}" >&2
-    exit 2
-  fi
-}
-
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --registry)
-      REGISTRY_PATH="$2"
-      shift 2
-      ;;
-    --out-json)
-      OUT_JSON="$2"
-      shift 2
-      ;;
-    --out-md)
-      OUT_MD="$2"
-      shift 2
-      ;;
-    --log-json)
-      OUT_LOG_JSON="$2"
-      shift 2
-      ;;
-    --max-age-hours)
-      MAX_AGE_HOURS="$2"
-      shift 2
-      ;;
-    --enforce-freshness)
-      ENFORCE_FRESHNESS=1
-      shift
-      ;;
-    --now-utc)
-      NOW_UTC="$2"
-      shift 2
-      ;;
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    *)
-      echo "ERROR: unknown argument: $1" >&2
-      usage >&2
-      exit 2
-      ;;
-  esac
-done
+parse_ingest_args "$@"
 
 require_tool php
 require_tool jq
 require_tool curl
 require_tool shasum
 
-REGISTRY_FILE="$(to_abs_path "${REGISTRY_PATH}")"
-OUT_JSON_FILE="$(to_abs_path "${OUT_JSON}")"
-OUT_MD_FILE="$(to_abs_path "${OUT_MD}")"
-OUT_LOG_FILE="$(to_abs_path "${OUT_LOG_JSON}")"
+REGISTRY_FILE="$(resolve_artifact_path "${ROOT_DIR}" "${REGISTRY_PATH}")"
+OUT_JSON_FILE="$(resolve_artifact_path "${ROOT_DIR}" "${OUT_JSON}")"
+OUT_MD_FILE="$(resolve_artifact_path "${ROOT_DIR}" "${OUT_MD}")"
+OUT_LOG_FILE="$(resolve_artifact_path "${ROOT_DIR}" "${OUT_LOG_JSON}")"
 
-mkdir -p "$(dirname "${OUT_JSON_FILE}")"
-mkdir -p "$(dirname "${OUT_MD_FILE}")"
-mkdir -p "$(dirname "${OUT_LOG_FILE}")"
+ensure_parent_dir "${OUT_JSON_FILE}"
+ensure_parent_dir "${OUT_MD_FILE}"
+ensure_parent_dir "${OUT_LOG_FILE}"
 
 if [[ ! -f "${REGISTRY_FILE}" ]]; then
   echo "ERROR: registry file not found: ${REGISTRY_FILE}" >&2
@@ -137,14 +46,7 @@ if ! NOW_EPOCH="$(iso_to_epoch "${NOW_UTC}")"; then
   exit 2
 fi
 
-REGISTRY_JSON="$(php -r '
-$data = yaml_parse_file($argv[1]);
-if ($data === false) {
-  fwrite(STDERR, "ERROR: failed parsing YAML registry\n");
-  exit(2);
-}
-echo json_encode($data, JSON_UNESCAPED_SLASHES);
-' "${REGISTRY_FILE}")"
+REGISTRY_JSON="$(parse_yaml_file_to_json "${REGISTRY_FILE}")"
 
 RUNNER_ROWS='[]'
 LOG_ROWS='[]'
@@ -153,7 +55,7 @@ COMPAT_STALE_OR_MISSING=0
 while IFS= read -r runner; do
   runner_id="$(jq -r '.runner_id' <<<"${runner}")"
   runner_class="$(jq -r '.class' <<<"${runner}")"
-  runner_status="$(jq -r '.status' <<<"${runner}")"
+  runner_declared_status="$(jq -r '.status' <<<"${runner}")"
   impl_repo="$(jq -r '.entrypoints.implementation_repo // "unknown"' <<<"${runner}")"
   release_api_url="$(jq -r '.status_exchange.release_api_url // empty' <<<"${runner}")"
   report_asset_name="$(jq -r '.status_exchange.report_asset_name // "runner-status-report-v1.json"' <<<"${runner}")"
@@ -172,35 +74,26 @@ while IFS= read -r runner; do
   error=""
   age_hours=""
 
-  if [[ "${runner_status}" == "planned" ]]; then
+  if [[ "${runner_declared_status}" == "planned" ]]; then
     freshness_state="missing"
     policy_effect="non_blocking_warn"
     error="planned lane (no active status exchange required)"
   elif [[ -z "${release_api_url}" ]]; then
     error="status_exchange.release_api_url missing"
   else
-    release_json=""
-    set +e
-    release_json="$(curl --fail --location --silent --show-error "${release_api_url}")"
-    curl_code=$?
-    set -e
-    if [[ "${curl_code}" -ne 0 || -z "${release_json}" ]]; then
+    if ! release_json="$(fetch_release_json "${release_api_url}")"; then
       error="failed fetching release metadata"
     else
-      release_version="$(jq -r '.tag_name // empty' <<<"${release_json}")"
-      source_url="$(jq -r --arg name "${report_asset_name}" '.assets[]? | select(.name == $name) | .browser_download_url' <<<"${release_json}" | head -n1)"
-      sha256_reported="$(jq -r --arg name "${report_asset_name}" '.assets[]? | select(.name == $name) | (.digest // "")' <<<"${release_json}" | head -n1)"
-      sha256_reported="${sha256_reported#sha256:}"
+      meta_json="$(extract_release_asset_metadata "${release_json}" "${report_asset_name}")"
+      release_version="$(jq -r '.release_version' <<<"${meta_json}")"
+      source_url="$(jq -r '.source_url' <<<"${meta_json}")"
+      sha256_reported="$(jq -r '.sha256_reported' <<<"${meta_json}")"
 
       if [[ -z "${source_url}" ]]; then
         error="missing report asset '${report_asset_name}'"
       else
         tmp_report="$(mktemp)"
-        set +e
-        curl --fail --location --silent --show-error "${source_url}" --output "${tmp_report}"
-        fetch_code=$?
-        set -e
-        if [[ "${fetch_code}" -ne 0 ]]; then
+        if ! download_report_asset "${source_url}" "${tmp_report}"; then
           error="failed downloading report asset"
         else
           if [[ -n "${sha256_reported}" ]]; then
@@ -238,6 +131,8 @@ while IFS= read -r runner; do
     fi
   fi
 
+  # Transport layer computes observable status fields for artifacts;
+  # blocking policy is enforced in governance spec checks.
   if [[ "${runner_class}" == "required" ]]; then
     if [[ "${overall_status}" == "fail" || "${overall_status}" == "degraded" || "${overall_status}" == "unknown" || "${freshness_state}" == "missing" ]]; then
       policy_effect="blocking_fail"
@@ -247,7 +142,7 @@ while IFS= read -r runner; do
   else
     if [[ "${freshness_state}" == "stale" || "${freshness_state}" == "missing" ]]; then
       policy_effect="non_blocking_fail"
-      if [[ "${runner_status}" == "active" ]]; then
+      if [[ "${runner_declared_status}" == "active" ]]; then
         COMPAT_STALE_OR_MISSING=$((COMPAT_STALE_OR_MISSING + 1))
       fi
     else
@@ -306,42 +201,15 @@ while IFS= read -r runner; do
   LOG_ROWS="$(jq -c --argjson row "${log_row}" '. + [$row]' <<<"${LOG_ROWS}")"
 done < <(jq -c '.runners[]' <<<"${REGISTRY_JSON}")
 
-MATRIX_JSON="$(jq -cn \
-  --arg updated_at "${NOW_UTC}" \
-  --argjson matrix_rows "${RUNNER_ROWS}" \
-  '{version: 1, updated_at: $updated_at, matrix_rows: $matrix_rows}')"
-
-LOG_JSON="$(jq -cn \
-  --arg generated_at "${NOW_UTC}" \
-  --argjson max_age_hours "${MAX_AGE_HOURS}" \
-  --argjson compat_stale_or_missing "${COMPAT_STALE_OR_MISSING}" \
-  --argjson entries "${LOG_ROWS}" \
-  '{
-    version: 1,
-    generated_at: $generated_at,
-    max_age_hours: $max_age_hours,
-    compatibility_stale_or_missing_count: $compat_stale_or_missing,
-    entries: $entries
-  }')"
+MATRIX_JSON="$(emit_matrix_json "${NOW_UTC}" "${RUNNER_ROWS}")"
+LOG_JSON="$(emit_ingest_log_json "${NOW_UTC}" "${MAX_AGE_HOURS}" "${COMPAT_STALE_OR_MISSING}" "${LOG_ROWS}")"
 
 printf '%s\n' "${MATRIX_JSON}" > "${OUT_JSON_FILE}"
 printf '%s\n' "${LOG_JSON}" > "${OUT_LOG_FILE}"
+emit_matrix_markdown "${OUT_JSON_FILE}" "${OUT_MD_FILE}" "${NOW_UTC}" "${MAX_AGE_HOURS}" "${COMPAT_STALE_OR_MISSING}"
 
-{
-  echo "# Runner Status Matrix"
-  echo
-  echo "- updated_at: \`${NOW_UTC}\`"
-  echo "- freshness_slo_hours: \`${MAX_AGE_HOURS}\`"
-  echo "- compatibility_stale_or_missing_count: \`${COMPAT_STALE_OR_MISSING}\`"
-  echo
-  echo "| runner_id | class | status | freshness | policy_effect |"
-  echo "|---|---|---|---|---|"
-  jq -r '.matrix_rows[] | "| \(.runner_id) | \(.lane_class) | \(.runner_status) | \(.freshness_state) | \(.policy_effect) |"' "${OUT_JSON_FILE}"
-} > "${OUT_MD_FILE}"
-
-if [[ "${ENFORCE_FRESHNESS}" == "1" && "${COMPAT_STALE_OR_MISSING}" -gt 0 ]]; then
-  echo "ERROR: compatibility status freshness policy violation count=${COMPAT_STALE_OR_MISSING}" >&2
-  exit 1
+if [[ "${ENFORCE_FRESHNESS}" == "1" ]]; then
+  echo "INFO: --enforce-freshness accepted for compatibility; policy decided by governance checks"
 fi
 
 echo "wrote ${OUT_JSON_FILE}"

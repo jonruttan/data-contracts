@@ -3,6 +3,8 @@
 ## Purpose
 
 This repository is developed as a control plane: specs, contracts, schemas, governance, docs, and status-ingest policy.
+This repository is an implementation-agnostic control plane.
+runtime execution ownership lives in runner repositories.
 
 ## Inputs
 
@@ -34,6 +36,12 @@ Canonical local gate for this repository:
 ```sh
 ./scripts/ci_gate.sh
 ```
+
+Canonical runner-ingestible pack manifests:
+
+- `/Users/jon/Workspace/Development/data-contracts/specs/packs/runner_contract_pack_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/packs/spec_core_maintenance_pack_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/packs/project_docs_maintenance_pack_v1.yaml`
 
 ## Runtime Ownership Boundary
 

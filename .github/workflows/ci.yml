@@ -7,98 +7,9 @@ on:
   pull_request:
 
 jobs:
-  local-status-exchange:
+  runner-contract:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install ingest deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php-cli php-yaml jq curl
-          php -m | grep -i '^yaml$'
-
-      - name: Run deterministic local status exchange scenarios
-        run: ./scripts/local_status_exchange_test.sh
-
-      - name: Upload local status exchange artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: local-status-exchange-artifacts
-          path: .artifacts/**
-          if-no-files-found: ignore
-
-  runner-status-ingest:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install PHP + yaml extension
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php-cli php-yaml jq curl
-          php -m | grep -i '^yaml$'
-
-      - name: Ingest runner status matrix (freshness enforced)
-        run: ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
-
-      - name: Upload runner status artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: runner-status-artifacts
-          path: |
-            .artifacts/runner-status-matrix.json
-            .artifacts/runner-status-matrix.md
-            .artifacts/runner-status-ingest-log.json
-          if-no-files-found: warn
-
-  control-plane-governance:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs:
-      - runner-status-ingest
-      - local-status-exchange
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install jq
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq ripgrep
-
-      - name: Run control-plane governance checks
-        run: ./scripts/control_plane.sh governance
-
-      - name: Run docs reference checks
-        run: ./scripts/control_plane.sh docs-generate-check
-      - name: Run optional governance report (non-blocking)
-        run: python3 ./scripts/governance_optional_report.py || true
-
-
-      - name: Upload governance artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: control-plane-governance-artifacts
-          path: .artifacts/**
-          if-no-files-found: ignore
-
-  ci-gate:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs:
-      - runner-status-ingest
-      - control-plane-governance
 
     steps:
       - name: Checkout
@@ -108,14 +19,119 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y php-cli php-yaml jq curl ripgrep
+          php -m | grep -i '^yaml$'
 
-      - name: Run control-plane CI gate
-        run: ./scripts/ci_gate.sh
+      - name: Emit governance catalog facts
+        run: ./scripts/governance_catalog_validate.sh
 
-      - name: Upload gate artifacts
+      - name: Emit schema pin facts
+        run: ./scripts/spec_schema_pin_validate.sh
+
+      - name: Ingest runner status matrix facts
+        run: ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
+
+      - name: Emit runner-contract pack artifact
+        run: |
+          jq -n --arg generated_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '{generated_at:$generated_at, pack_manifest:"/specs/packs/runner_contract_pack_v1.yaml", status:"present"}' > .artifacts/spec-pack-runner-contract.json
+
+      - name: Upload runner-contract artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ci-artifacts
-          path: .artifacts/**
-          if-no-files-found: ignore
+          name: runner-contract-artifacts
+          path: |
+            .artifacts/runner-status-matrix.json
+            .artifacts/runner-status-matrix.md
+            .artifacts/runner-status-ingest-log.json
+            .artifacts/spec-pack-runner-contract.json
+          if-no-files-found: warn
+
+  spec-core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs:
+      - runner-contract
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq ripgrep
+
+      - name: Run governance
+        run: ./scripts/control_plane.sh governance
+
+      - name: Emit spec-core pack artifact
+        run: |
+          jq -n --arg generated_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '{generated_at:$generated_at, pack_manifest:"/specs/packs/spec_core_maintenance_pack_v1.yaml", status:"present"}' > .artifacts/spec-pack-spec-core.json
+
+      - name: Upload spec-core artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-core-artifacts
+          path: |
+            .artifacts/governance-summary.json
+            .artifacts/governance-trace.json
+            .artifacts/governance-summary.md
+            .artifacts/spec-pack-spec-core.json
+          if-no-files-found: warn
+
+  project-docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs:
+      - spec-core
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run docs checks
+        run: ./scripts/control_plane.sh docs-generate-check
+
+      - name: Emit project-docs pack artifact
+        run: |
+          mkdir -p .artifacts
+          jq -n --arg generated_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '{generated_at:$generated_at, pack_manifest:"/specs/packs/project_docs_maintenance_pack_v1.yaml", status:"present"}' > .artifacts/spec-pack-project-docs.json
+
+      - name: Upload project-docs artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-docs-artifacts
+          path: |
+            .artifacts/spec-pack-project-docs.json
+          if-no-files-found: warn
+
+  optional-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs:
+      - project-docs
+    continue-on-error: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Run optional governance report
+        run: ./scripts/governance_optional_report.sh
+
+      - name: Upload optional artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: optional-report-artifacts
+          path: |
+            .artifacts/governance-optional-summary.md
+            .artifacts/governance-optional-report.json
+          if-no-files-found: warn

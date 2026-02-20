@@ -10,7 +10,7 @@ owns_tokens:
 requires_tokens:
 - governance_triage_workflow
 commands:
-- run: ./scripts/local_ci_parity.sh
+- run: ./scripts/ci_gate.sh
   purpose: Reproduce critical gate failures with local parity flow.
 - run: ./scripts/control_plane.sh governance --check-prefix docs
   purpose: Isolate docs/governance failures.

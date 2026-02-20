@@ -35,6 +35,7 @@ Describe policy enforcement for control-plane coherence across specs, contracts,
 
 - deterministic integrity verdicts for control-plane changes
 - traceable failure IDs and remediation paths
+- policy verdicts sourced from executable spec-lang assertions, with shell as extractor/orchestrator only
 
 ## Failure Modes
 
@@ -47,7 +48,9 @@ Describe policy enforcement for control-plane coherence across specs, contracts,
 ```mermaid
 flowchart TD
   A[Change proposed] --> B[Run control-plane checks]
-  B --> C{Violations?}
+  B --> B1[Run extractor scripts to emit artifacts]
+  B1 --> B2[Run governance spec-lang checks]
+  B2 --> C{Violations?}
   C -->|No| D[Policy pass]
   C -->|Yes| E[Map check id to source]
   E --> F[Apply minimal source fix]

@@ -1,6 +1,7 @@
 # Data Contracts
 
 `data-contracts` is the implementation-agnostic control plane for the Data Contracts ecosystem.
+runtime execution ownership lives in runner repositories.
 
 It defines and governs:
 - canonical specs, contracts, and schemas
@@ -8,12 +9,15 @@ It defines and governs:
 - compatibility/status telemetry ingestion and policy evaluation
 
 It does **not** own runner implementation code and does **not** execute runtime lanes as canonical project behavior.
+This repository does not execute runtime lanes.
 
 ## What This Project Is
 
 - Source of truth for contract semantics and schema shape.
 - Source of truth for docs quality, information architecture, and governance checks.
 - Consumer of runner release telemetry via status exchange artifacts.
+- Policy source: executable spec-lang governance cases.
+- Policy composition: chained spec cases (`harness.chain`) with reusable policy-library exports.
 
 ## What This Project Is Not
 
@@ -46,3 +50,26 @@ It does **not** own runner implementation code and does **not** execute runtime 
 - Usage guides index: `/Users/jon/Workspace/Development/data-contracts/docs/book/35_usage_guides_index.md`
 - Status exchange and compatibility: `/Users/jon/Workspace/Development/data-contracts/docs/book/65_runner_status_and_compatibility.md`
 - Contract index: `/Users/jon/Workspace/Development/data-contracts/specs/contract/index.md`
+- Policy execution boundary: `/Users/jon/Workspace/Development/data-contracts/specs/contract/28_spec_lang_policy_execution.md`
+
+## Runner Test Packs
+
+- `/Users/jon/Workspace/Development/data-contracts/specs/packs/runner_contract_pack_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/packs/spec_core_maintenance_pack_v1.yaml`
+- `/Users/jon/Workspace/Development/data-contracts/specs/packs/project_docs_maintenance_pack_v1.yaml`
+
+## Portable CLI Contract
+
+- `/Users/jon/Workspace/Development/data-contracts/specs/contract/29_runner_cli_interface.md`
+- `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_cli_contract_v1.yaml`
+
+## Core Script Allowlist
+
+- `/Users/jon/Workspace/Development/data-contracts/scripts/control_plane.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/ci_gate.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/runner_status_ingest.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/runner_bin.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_catalog_validate.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/spec_schema_pin_validate.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_optional_report.sh`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/governance_triage.sh`

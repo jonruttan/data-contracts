@@ -25,6 +25,7 @@ sections_required:
 ## Purpose
 
 Explain boundary separation between control-plane governance in this repo and runtime execution in runner repos.
+This chapter documents an implementation-agnostic control plane where runtime execution ownership lives in runner repositories.
 
 ## Inputs
 
@@ -52,6 +53,11 @@ Explain boundary separation between control-plane governance in this repo and ru
 - Rust implementation owner: `dc-runner-rust`
 - Python implementation owner: `dc-runner-python`
 - PHP implementation owner: `dc-runner-php`
+
+## Portable CLI Contract
+
+- `/Users/jon/Workspace/Development/data-contracts/specs/contract/29_runner_cli_interface.md`
+- `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_cli_contract_v1.yaml`
 
 ## Control-Plane Gate
 

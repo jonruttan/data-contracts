@@ -21,4 +21,4 @@ check:
 	@./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
 
 prepush:
-	@./scripts/local_ci_parity.sh
+	@./scripts/ci_gate.sh

@@ -16,7 +16,7 @@ harness:
     required_tokens:
     - 'core-gate-rust-adapter:'
     - 'SPEC_RUNNER_BIN: ./scripts/runner_bin.sh'
-    - 'run: ./scripts/core_gate.sh'
+    - 'run: ./scripts/ci_gate.sh'
   check:
     profile: governance.scan
     config:

@@ -1,6 +1,8 @@
 # Spec Book
 
 Spec-first, contract-backed documentation for authors, maintainers, and reviewers.
+This book describes an implementation-agnostic control plane.
+runtime execution ownership lives in runner repositories.
 
 ## Primary Audience
 

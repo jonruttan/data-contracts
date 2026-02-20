@@ -25,8 +25,8 @@ harness:
       segment_files:
         gate_scripts:
         - scripts/ci_gate.sh
-        - scripts/core_gate.sh
-        - scripts/docs_doctor.sh
+        - scripts/ci_gate.sh
+        - scripts/control_plane.sh
         ci_workflows:
         - .github/workflows/*.yml
         adapter_interfaces:
