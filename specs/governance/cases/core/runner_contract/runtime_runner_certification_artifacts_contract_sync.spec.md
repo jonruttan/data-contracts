@@ -1,33 +1,31 @@
-# Governance Cases
-
-## DCGOV-RUNTIME-CERT-003
-
 ```yaml contract-spec
-id: DCGOV-RUNTIME-CERT-003
 spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
-title: runner certification artifacts follow contract shape
-purpose: Ensures runner-certify generates contract-shaped JSON and markdown artifacts.
-type: contract.check
-harness:
-  root: .
-  check:
-    profile: governance.scan
-    config:
-      check: runtime.runner_certification_artifacts_contract_sync
-contract:
-  defaults: {}
-  imports:
-  - from: artifact
-    names:
-    - violation_count
-  steps:
-  - id: assert_1
-    assert:
-      call:
-      - {var: policy.assert.no_violations}
-      - std.object.assoc:
+defaults:
+  type: contract.check
+contracts:
+  - id: DCGOV-RUNTIME-CERT-003
+    title: runner certification artifacts follow contract shape
+    purpose: Ensures runner-certify generates contract-shaped JSON and markdown artifacts.
+    harness:
+      root: .
+      check:
+        profile: governance.scan
+        config:
+          check: runtime.runner_certification_artifacts_contract_sync
+    clauses:
+      defaults: {}
+      imports:
+      - from: artifact
+        names:
         - violation_count
-        - {var: violation_count}
-        - lit: {}
+      predicates:
+      - id: assert_1
+        assert:
+          call:
+          - {var: policy.assert.no_violations}
+          - std.object.assoc:
+            - violation_count
+            - {var: violation_count}
+            - lit: {}
 ```

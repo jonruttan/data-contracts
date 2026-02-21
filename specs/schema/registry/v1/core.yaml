@@ -2,13 +2,33 @@ version: 1
 id: schema.registry.v1.core
 type: core
 fields:
-  id:
+  spec_version:
+    type: int
+    required: true
+    since: v1
+  schema_ref:
     type: string
     required: true
     since: v1
-  type:
+  defaults:
+    type: mapping
+    required: false
+    since: v1
+  defaults.type:
+    type: string
+    required: false
+    since: v1
+  contracts:
+    type: list
+    required: true
+    since: v1
+  contracts[].id:
     type: string
     required: true
+    since: v1
+  contracts[].type:
+    type: string
+    required: false
     since: v1
   title:
     type: string
@@ -22,71 +42,71 @@ fields:
     type: string
     required: false
     since: v1
-  harness:
+  contracts[].harness:
     type: mapping
     required: false
     since: v1
-  when:
+  contracts[].when:
     type: mapping
     required: false
     since: v1
-  when.required:
+  contracts[].when.required:
     type: list
     required: false
     since: v1
-  when.optional:
+  contracts[].when.optional:
     type: list
     required: false
     since: v1
-  when.fail:
+  contracts[].when.fail:
     type: list
     required: false
     since: v1
-  when.complete:
+  contracts[].when.complete:
     type: list
     required: false
     since: v1
-  contract:
+  contracts[].clauses:
     type: any
     required: false
     since: v1
-  expect:
+  contracts[].expect:
     type: mapping
     required: false
     since: v1
-  requires:
+  contracts[].requires:
     type: mapping
     required: false
     since: v1
-  assert_health:
+  contracts[].assert_health:
     type: mapping
     required: false
     since: v1
-  doc:
+  contracts[].doc:
     type: mapping
     required: false
     since: v1
-  doc.summary:
+  contracts[].doc.summary:
     type: string
     required: false
     since: v1
-  doc.description:
+  contracts[].doc.description:
     type: string
     required: false
     since: v1
-  doc.audience:
+  contracts[].doc.audience:
     type: string
     required: false
     since: v1
-  doc.since:
+  contracts[].doc.since:
     type: string
     required: false
     since: v1
-  doc.tags:
+  contracts[].doc.tags:
     type: list
     required: false
     since: v1
-  doc.see_also:
+  contracts[].doc.see_also:
     type: list
     required: false
     since: v1

@@ -1,40 +1,38 @@
-# Governance Cases
-
-## DCGOV-PACK-006
-
 ```yaml contract-spec
-id: DCGOV-PACK-006
 spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
-title: pack case ids remain unique
-purpose: Ensures newly introduced runner-cli cases do not collide on case id.
-type: contract.check
-harness:
-  root: .
-  runner_cli_cases:
-    path: /specs/conformance/cases/runner_cli
-    required_ids:
-      - DCCONF-RCLI-001
-      - DCCONF-RCLI-002
-      - DCCONF-RCLI-003
-      - DCCONF-RCLI-004
-      - DCCONF-RCLI-005
-  check:
-    profile: governance.scan
-    config:
-      check: packs.pack_case_ids_unique
-contract:
-  defaults: {}
-  imports:
-    - from: artifact
-      names: [violation_count]
-  steps:
-    - id: assert_1
-      assert:
-        call:
-      - {var: policy.assert.no_violations}
-      - std.object.assoc:
-        - violation_count
-        - {var: violation_count}
-        - lit: {}
+defaults:
+  type: contract.check
+contracts:
+  - id: DCGOV-PACK-006
+    title: pack case ids remain unique
+    purpose: Ensures newly introduced runner-cli cases do not collide on case id.
+    harness:
+      root: .
+      runner_cli_cases:
+        path: /specs/conformance/cases/runner_cli
+        required_ids:
+          - DCCONF-RCLI-001
+          - DCCONF-RCLI-002
+          - DCCONF-RCLI-003
+          - DCCONF-RCLI-004
+          - DCCONF-RCLI-005
+      check:
+        profile: governance.scan
+        config:
+          check: packs.pack_case_ids_unique
+    clauses:
+      defaults: {}
+      imports:
+        - from: artifact
+          names: [violation_count]
+      predicates:
+        - id: assert_1
+          assert:
+            call:
+          - {var: policy.assert.no_violations}
+          - std.object.assoc:
+            - violation_count
+            - {var: violation_count}
+            - lit: {}
 ```

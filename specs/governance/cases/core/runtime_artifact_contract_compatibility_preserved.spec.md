@@ -1,39 +1,37 @@
-# Governance Cases
-
-## DCGOV-RUNTIME-SHELL-002
-
 ```yaml contract-spec
-id: DCGOV-RUNTIME-SHELL-002
 spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
-title: extractor artifact compatibility preserved
-purpose: Ensures extractor scripts keep canonical artifact file paths and key names stable.
-type: contract.check
-harness:
-  root: .
-  extractor_script:
-    path: /scripts/governance_catalog_validate.sh
-    required_tokens:
-      - .artifacts/governance-catalog-validate.json
-      - duplicate_case_id_count
-      - unmapped_case_check_count
-  check:
-    profile: governance.scan
-    config:
-      check: runtime.artifact_contract_compatibility_preserved
-contract:
-  defaults: {}
-  imports:
-    - from: artifact
-      names:
-        - violation_count
-  steps:
-    - id: assert_1
-      assert:
-        call:
-      - {var: policy.assert.no_violations}
-      - std.object.assoc:
-        - violation_count
-        - {var: violation_count}
-        - lit: {}
+defaults:
+  type: contract.check
+contracts:
+  - id: DCGOV-RUNTIME-SHELL-002
+    title: extractor artifact compatibility preserved
+    purpose: Ensures extractor scripts keep canonical artifact file paths and key names stable.
+    harness:
+      root: .
+      extractor_script:
+        path: /scripts/governance_catalog_validate.sh
+        required_tokens:
+          - .artifacts/governance-catalog-validate.json
+          - duplicate_case_id_count
+          - unmapped_case_check_count
+      check:
+        profile: governance.scan
+        config:
+          check: runtime.artifact_contract_compatibility_preserved
+    clauses:
+      defaults: {}
+      imports:
+        - from: artifact
+          names:
+            - violation_count
+      predicates:
+        - id: assert_1
+          assert:
+            call:
+          - {var: policy.assert.no_violations}
+          - std.object.assoc:
+            - violation_count
+            - {var: violation_count}
+            - lit: {}
 ```

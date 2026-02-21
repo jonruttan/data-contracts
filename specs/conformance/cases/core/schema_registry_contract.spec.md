@@ -1,43 +1,41 @@
-# Schema Registry Contract Conformance Cases
-
-## DCCONF-SCHEMA-REG-001
-
 ```yaml contract-spec
-id: DCCONF-SCHEMA-REG-001
 spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
-title: schema docs include generated registry snapshot markers
-purpose: Ensures generated schema registry snapshot markers and section header are present
-  in schema_v1 documentation.
-type: contract.check
-expect:
-  portable:
-    status: pass
-    category: null
-contract:
-  defaults: {}
-  imports:
-  - from: artifact
-    names:
-    - text
-  steps:
-  - id: assert_1
-    assert:
-    - call:
-      - {var: policy.text.contains_all}
-      - {var: text}
-      - lit:
-        - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
-        - 'END GENERATED: SCHEMA_REGISTRY_V1'
-        - Generated Registry Snapshot
-harness:
-  check:
-    profile: text.file
-    config:
-      path: /specs/schema/schema_v1.md
-  use:
-  - ref: /specs/libraries/policy/policy_text.spec.md
-    as: lib_policy_text
-    symbols:
-    - policy.text.contains_all
+defaults:
+  type: contract.check
+contracts:
+  - id: DCCONF-SCHEMA-REG-001
+    title: schema docs include generated registry snapshot markers
+    purpose: Ensures generated schema registry snapshot markers and section header are present
+      in schema_v1 documentation.
+    expect:
+      portable:
+        status: pass
+        category: null
+    clauses:
+      defaults: {}
+      imports:
+      - from: artifact
+        names:
+        - text
+      predicates:
+      - id: assert_1
+        assert:
+        - call:
+          - {var: policy.text.contains_all}
+          - {var: text}
+          - lit:
+            - 'BEGIN GENERATED: SCHEMA_REGISTRY_V1'
+            - 'END GENERATED: SCHEMA_REGISTRY_V1'
+            - Generated Registry Snapshot
+    harness:
+      check:
+        profile: text.file
+        config:
+          path: /specs/schema/schema_v1.md
+      use:
+      - ref: /specs/libraries/policy/policy_text.spec.md
+        as: lib_policy_text
+        symbols:
+        - policy.text.contains_all
 ```

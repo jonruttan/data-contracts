@@ -2,12 +2,12 @@
 
 ## Tree Model
 
-`contract` uses mapping form:
+`clauses` uses mapping form:
 
 - `defaults` (optional mapping)
-- `steps` (required non-empty list)
+- `predicates` (required non-empty list)
 
-Each step has:
+Each predicate has:
 
 - `id` (string)
 - `purpose` (optional string)
@@ -19,9 +19,9 @@ Each step has:
 
 prior forms are forbidden:
 
-- top-level list `contract: [...]`
-- step key `asserts`
-- step keys `target` / `on`
+- top-level list `clauses: [...]`
+- predicate key `asserts`
+- predicate keys `target` / `on`
 
 ## Explicit Import Bindings
 
@@ -38,15 +38,15 @@ Import binding shape:
 
 Import merge semantics:
 
-- effective imports = `contract.imports` + `contract.steps[].imports`
-- step imports override same-name defaults
+- effective imports = `clauses.imports` + `clauses.predicates[].imports`
+- predicate imports override same-name defaults
 
 `{var: subject}` is valid only when `subject` is imported explicitly.
 
 ## Step Semantics
 
-- `required: true` (or omitted): step failure fails the case.
-- `required: false`: step still evaluates; failure is recorded but does not fail
+- `required: true` (or omitted): predicate failure fails the case.
+- `required: false`: predicate still evaluates; failure is recorded but does not fail
   overall case verdict.
 - `priority` and `severity` are metadata-only for reporting/triage and do not
   affect execution order or pass/fail computation.
@@ -65,14 +65,14 @@ For `type: contract.check` with governance profile, common artifact imports incl
 Example:
 
 ```yaml
-contract:
+clauses:
   defaults: {}
   imports:
   - from: artifact
     names: [violation_count]
     as:
       violation_count: subject
-  steps:
+  predicates:
   - id: assert_1
     purpose: Ensures no governance violations are reported.
     required: true

@@ -1,38 +1,36 @@
-# Governance Cases
-
-## DCGOV-RUNTIME-CI-002
-
 ```yaml contract-spec
-id: DCGOV-RUNTIME-CI-002
 spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
-title: status ingest job present in ci
-purpose: Ensures CI includes a status-ingest control-plane job.
-type: contract.check
-harness:
-  root: .
-  ci_ingest_job:
-    path: /.github/workflows/ci.yml
-    required_tokens:
-    - runner-status-ingest:
-    - ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
-  check:
-    profile: governance.scan
-    config:
-      check: runtime.status_ingest_job_present
-contract:
-  defaults: {}
-  imports:
-  - from: artifact
-    names:
-    - violation_count
-  steps:
-  - id: assert_1
-    assert:
-      call:
-      - {var: policy.assert.no_violations}
-      - std.object.assoc:
+defaults:
+  type: contract.check
+contracts:
+  - id: DCGOV-RUNTIME-CI-002
+    title: status ingest job present in ci
+    purpose: Ensures CI includes a status-ingest control-plane job.
+    harness:
+      root: .
+      ci_ingest_job:
+        path: /.github/workflows/ci.yml
+        required_tokens:
+        - runner-status-ingest:
+        - ./scripts/runner_status_ingest.sh --max-age-hours 72 --enforce-freshness
+      check:
+        profile: governance.scan
+        config:
+          check: runtime.status_ingest_job_present
+    clauses:
+      defaults: {}
+      imports:
+      - from: artifact
+        names:
         - violation_count
-        - {var: violation_count}
-        - lit: {}
+      predicates:
+      - id: assert_1
+        assert:
+          call:
+          - {var: policy.assert.no_violations}
+          - std.object.assoc:
+            - violation_count
+            - {var: violation_count}
+            - lit: {}
 ```

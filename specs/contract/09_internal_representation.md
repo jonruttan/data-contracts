@@ -17,7 +17,7 @@ Each compiled case contains:
 - `harness` (runner-only config mapping)
 - `raw_case` (original external mapping for compatibility/tooling)
 - `metadata` (expect/requires/assert_health/source)
-- `assert_tree` (compiled internal assertion tree)
+- `assert_tree` (compiled internal clause/predicate assertion tree)
 
 Internal assertion node forms:
 
@@ -42,7 +42,7 @@ external behavior).
 
 ## Discovery and Codec Rules
 
-Default discovery remains `.spec.md` only.
+Default discovery remains `.spec.md` only with one suite fence.
 
 Opt-in external formats:
 
@@ -52,6 +52,7 @@ Opt-in external formats:
 The compile contract is semantic-lossless:
 
 - case ids must remain stable
+- suite defaults must be shallow-merged into each expanded contract item
 - pass/fail/category behavior must remain equivalent
 - formatting/comments are not guaranteed to round-trip
 

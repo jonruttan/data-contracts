@@ -30,20 +30,27 @@ Related docs/reference schemas:
 - `specs/contract/24_runtime_profiling_contract.md`
 ```
 
-## Common Fields
+## Suite Fields
 
 - Machine source of truth for case-shape constraints lives in
   `specs/schema/registry/v1/*.yaml`; this document includes a generated
   registry snapshot section.
 
-- `id` (string, required): stable identifier like `CK-CLI-001`
-- `spec_version` (int, required): schema major used by this case
+- `spec_version` (int, required): schema major used by this suite
 - `schema_ref` (string, required): canonical virtual-root schema path
-- `type` (string, required): dispatch key (e.g. `cli.run`)
-- `title` (string, optional): human description
-- `assert_health` (mapping, optional): assertion-health policy override
-- `expect` (mapping, optional): conformance outcome expectations
-- `requires` (mapping, optional): capability requirements metadata
+- `contracts` (list, required): non-empty list of executable contract items
+- `defaults` (mapping, optional): shallow defaults merged into each contract item
+- `domain` (string, optional): suite-level domain hint
+- `title` (string, optional): suite-level label
+- `purpose` (string, optional): suite-level description
+
+Each `contracts[]` item:
+
+- `id` (string, required): stable identifier like `CK-CLI-001`
+- `type` (string, required directly or inherited from `defaults.type`)
+- `clauses` (mapping, required)
+- `title`/`purpose`/`domain` (optional overrides)
+- `assert_health`/`expect`/`requires`/`harness`/`when` (optional)
 
 Parser behavior:
 
@@ -59,9 +66,10 @@ Parser behavior:
   (3+), with info tokens including `contract-spec` and `yaml`/`yml`
 - closing fences must use the same fence character and at least the opener
   length
-- `type` is required
+- `contracts` is required and must be non-empty
 - `spec_version` is required
 - `schema_ref` is required
+- each `contracts[]` item requires `id`
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v1.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
 
@@ -145,7 +153,7 @@ concerns and keep the spec format portable.
 Governance assertion contract:
 
 - For `type: governance.check` cases, decision obligations MUST be encoded in
-  `contract` blocks.
+  `clauses` blocks.
 - `harness.evaluate` and
   `harness.orchestration_policy.evaluate` are forbidden.
 - Extractors may emit candidate violations and subject payloads, but MUST NOT
@@ -407,14 +415,14 @@ Universal core assertion model:
 - evaluator subjects MUST be JSON values only (`null`, boolean, number, string,
   list, object with string keys).
 
-## Assertion Step Shape
+## Assertion Predicate Shape
 
-`contract` is a mapping with:
+`clauses` is a mapping with:
 
 - `defaults` (optional mapping)
-- `steps` (required list)
+- `predicates` (required list)
 
-Each `steps[]` entry requires:
+Each `predicates[]` entry requires:
 
 - `id` (string, unique per case)
 - `assert` (non-empty expression mapping or list)
@@ -426,9 +434,9 @@ Each `steps[]` entry requires:
 
 Forbidden prior forms:
 
-- `contract` list form
-- step key `asserts`
-- step keys `target` and `on`
+- `clauses` list form
+- predicate key `asserts`
+- predicate keys `target` and `on`
 
 Import binding shape:
 
@@ -440,9 +448,9 @@ Import binding shape:
 
 Import merge behavior:
 
-- effective step imports = `contract.imports` merged with
-  `contract.steps[].imports`
-- step imports override defaults on key collision
+- effective predicate imports = `clauses.imports` merged with
+  `clauses.predicates[].imports`
+- predicate imports override defaults on key collision
 
 Symbol resolution:
 
@@ -504,24 +512,24 @@ Operator constraints:
 
 Step metadata constraints:
 
-- `contract.steps[].required` is optional and defaults to `true`
-- `contract.steps[].priority` is optional integer metadata (`>=1`, default `1`)
-- `contract.steps[].severity` is optional integer metadata (`>=1`, default `1`)
-- `contract.steps[].purpose` is optional human-readable text
-- optional steps (`required: false`) are non-blocking for overall case verdict
+- `clauses.predicates[].required` is optional and defaults to `true`
+- `clauses.predicates[].priority` is optional integer metadata (`>=1`, default `1`)
+- `clauses.predicates[].severity` is optional integer metadata (`>=1`, default `1`)
+- `clauses.predicates[].purpose` is optional human-readable text
+- optional predicates (`required: false`) are non-blocking for overall case verdict
 - prohibition intent is expressed directly with negation operators
   (for example `std.logic.not`)
 
 Canonical negation form:
 
 ```yaml
-contract:
+clauses:
   imports:
   - from: artifact
     names: [text]
     as:
       text: subject
-  steps:
+  predicates:
   - id: assert_no_error
     required: true
     assert:
@@ -542,13 +550,13 @@ Author in canonical form:
 Example with defaults + step override imports:
 
 ```yaml
-contract:
+clauses:
   imports:
   - from: artifact
     names: [summary_json]
     as:
       summary_json: subject
-  steps:
+  predicates:
   - id: assert_passed
     assert:
       std.logic.eq:
@@ -599,7 +607,7 @@ Lifecycle order:
   - `harness.jobs.<name>.inputs`
   - `harness.jobs.<name>.outputs`
 
-Dispatch contract:
+Dispatch clauses:
 
 - dispatch is contract-driven using `ops.job.dispatch`
 - dispatch metadata is read from `harness.jobs.<name>`

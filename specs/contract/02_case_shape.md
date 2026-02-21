@@ -2,13 +2,21 @@
 
 ## Common Keys
 
-- `id` (required)
 - `spec_version` (required integer)
 - `schema_ref` (required absolute virtual-root path)
-- `type` (required)
+- `contracts` (required non-empty list)
+- `defaults` (optional mapping)
+- `domain` (optional)
 - `title` (optional)
-- `harness` (optional mapping)
-- `assert_health` (optional mapping)
+- `purpose` (optional)
+
+Each `contracts[]` item:
+
+- `id` (required)
+- `type` (required directly or inherited from `defaults.type`)
+- `clauses` (required mapping)
+- `title`/`purpose`/`domain` (optional overrides)
+- `harness`/`when`/`expect`/`requires`/`assert_health` (optional)
 
 ## Source Of Truth
 
@@ -26,7 +34,7 @@ Runner-only setup keys MUST live under `harness`.
 ## Executable Authoring Surface
 
 - Executable contract/spec behavior MUST be authored in `.spec.md` with
-  fenced `yaml contract-spec` blocks.
+  exactly one fenced `yaml contract-spec` block containing one suite mapping.
 - This requirement applies to:
   - conformance cases
   - governance cases
