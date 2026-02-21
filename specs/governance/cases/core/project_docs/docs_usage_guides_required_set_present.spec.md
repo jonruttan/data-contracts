@@ -30,8 +30,7 @@ harness:
     config:
       check: docs.usage_guides_required_set_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

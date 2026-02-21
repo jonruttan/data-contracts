@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 title: status ingest predicates
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
     - id: __export__policy.ingest.matrix_has_rows
       assert:
@@ -108,8 +107,7 @@ harness:
         - policy.ingest.compat_stale_missing_count_within_limit
         - policy.ingest.log_entries_correlate_matrix_rows
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [text]

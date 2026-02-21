@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: policy-core reusable governance predicates
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__policy.pass_when_no_violations
     assert:

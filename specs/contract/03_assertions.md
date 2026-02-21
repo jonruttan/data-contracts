@@ -10,7 +10,10 @@
 Each step has:
 
 - `id` (string)
-- `class` (`MUST` | `MAY` | `MUST_NOT`, default `MUST`)
+- `purpose` (optional string)
+- `required` (optional bool, default `true`)
+- `priority` (optional int, default `1`; must be `>=1`)
+- `severity` (optional int, default `1`; must be `>=1`)
 - `imports` (optional list of import items)
 - `assert` (non-empty expression mapping or list)
 
@@ -40,11 +43,15 @@ Import merge semantics:
 
 `{var: subject}` is valid only when `subject` is imported explicitly.
 
-## Group Semantics
+## Step Semantics
 
-- `MUST`: all assertions in the step must pass
-- `MAY`: at least one assertion in the step must pass
-- `MUST_NOT`: no assertion in the step may pass
+- `required: true` (or omitted): step failure fails the case.
+- `required: false`: step still evaluates; failure is recorded but does not fail
+  overall case verdict.
+- `priority` and `severity` are metadata-only for reporting/triage and do not
+  affect execution order or pass/fail computation.
+- prohibition assertions are authored explicitly with negation operators
+  (for example `std.logic.not`).
 
 ## Governance Artifact Keys
 
@@ -59,8 +66,7 @@ Example:
 
 ```yaml
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names: [violation_count]
@@ -68,6 +74,10 @@ contract:
       violation_count: subject
   steps:
   - id: assert_1
+    purpose: Ensures no governance violations are reported.
+    required: true
+    priority: 1
+    severity: 1
     assert:
       std.logic.eq:
       - {var: subject}

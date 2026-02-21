@@ -25,8 +25,7 @@ harness:
     config:
       check: runtime.compatibility_status_ingestion_configured
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

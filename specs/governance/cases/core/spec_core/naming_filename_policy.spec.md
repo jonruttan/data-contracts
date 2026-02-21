@@ -36,8 +36,7 @@ harness:
     - policy.assert.summary_check_id
     - policy.assert.scan_pass
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

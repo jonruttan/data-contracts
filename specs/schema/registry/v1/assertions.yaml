@@ -17,3 +17,23 @@ fields:
     required: false
     since: v1
     description: Step-level import bindings merged over contract.imports (list of from/names/as items).
+  contract.steps[].purpose:
+    type: string
+    required: false
+    since: v1
+    description: Optional human-readable step intent.
+  contract.steps[].required:
+    type: bool
+    required: false
+    since: v1
+    description: Optional requiredness flag; defaults to true when omitted.
+  contract.steps[].priority:
+    type: int
+    required: false
+    since: v1
+    description: Optional positive integer priority metadata (default 1; lower means lower implementation value).
+  contract.steps[].severity:
+    type: int
+    required: false
+    since: v1
+    description: Optional positive integer severity metadata (default 1; lower means lower impact).

@@ -19,13 +19,13 @@ harness:
     fail_fast: true
     steps:
       - id: step_optional_artifact_emit
-        class: must
+        required: true
         ref: /specs/governance/cases/core/runtime_matrix_artifacts_emitted.spec.md#DCGOV-RUNTIME-CI-003
       - id: step_optional_status_ingest_job
-        class: can
+        required: false
         ref: /specs/governance/cases/core/runner_contract/runtime_status_ingest_job_present.spec.md#DCGOV-RUNTIME-CI-002
       - id: step_optional_docs_links
-        class: can
+        required: false
         ref: /specs/governance/cases/core/project_docs/docs_usage_guides_index_sync.spec.md#DCGOV-DOCS-REF-020
   use:
     - ref: /specs/libraries/policy/policy_ci_gate.spec.md#LIB-POLICY-CI-001
@@ -34,8 +34,7 @@ harness:
         - policy.ci.optional_profile_report_only
         - policy.ci.artifacts_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names:

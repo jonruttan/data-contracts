@@ -11,8 +11,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: valid_step
     assert:
@@ -80,11 +79,10 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: non_must_step
-    class: MAY
+    required: false
     assert:
       std.logic.eq:
       - {var: subject}

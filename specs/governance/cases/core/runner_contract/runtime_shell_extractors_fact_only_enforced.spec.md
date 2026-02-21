@@ -21,8 +21,7 @@ harness:
     config:
       check: runtime.shell_extractors_fact_only_enforced
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

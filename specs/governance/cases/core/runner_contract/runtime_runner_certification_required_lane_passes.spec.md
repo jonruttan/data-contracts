@@ -16,8 +16,7 @@ harness:
     config:
       check: runtime.runner_certification_required_lane_passes
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

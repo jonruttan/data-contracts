@@ -22,8 +22,7 @@ harness:
     config:
       check: docs.readme_makefile_cookbook_forbidden
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

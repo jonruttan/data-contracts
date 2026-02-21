@@ -16,8 +16,7 @@ harness:
     config:
       check: governance.structured_assertions_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

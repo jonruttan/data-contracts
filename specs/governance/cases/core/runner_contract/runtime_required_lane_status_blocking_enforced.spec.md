@@ -22,8 +22,7 @@ harness:
     config:
       check: runtime.required_lane_status_blocking_enforced
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

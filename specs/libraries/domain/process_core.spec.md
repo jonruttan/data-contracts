@@ -53,8 +53,7 @@ harness:
       see_also: []
       since: v1
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.process.exec_capture_ex_code
     assert:

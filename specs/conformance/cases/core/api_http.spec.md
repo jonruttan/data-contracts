@@ -18,8 +18,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -68,8 +67,7 @@ expect:
     message_tokens:
     - api.http request.url is required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -108,8 +106,7 @@ expect:
     status: skip
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -147,8 +144,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -187,8 +183,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -225,8 +220,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -263,8 +257,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -303,8 +296,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -341,8 +333,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -381,8 +372,7 @@ expect:
     message_tokens:
     - request.method must be one of
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -421,8 +411,7 @@ expect:
     message_tokens:
     - request.cors.preflight requires request.method OPTIONS
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -480,8 +469,7 @@ harness:
         method: DELETE
         url: /specs/conformance/cases/fixtures/api_http_deleted.json
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -538,8 +526,7 @@ harness:
         method: GET
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -596,8 +583,7 @@ harness:
         method: GET
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -644,8 +630,7 @@ harness:
         method: GET
         url: /specs/conformance/cases/fixtures/api_http_ok.json
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -693,8 +678,7 @@ harness:
         method: GET
         url: https://api.example.invalid/items
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -746,8 +730,7 @@ harness:
     - domain.http.step_by_id
     - domain.http.step_status_is
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

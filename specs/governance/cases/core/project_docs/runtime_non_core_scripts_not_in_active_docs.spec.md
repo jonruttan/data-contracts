@@ -28,8 +28,7 @@ harness:
     config:
       check: runtime.non_core_scripts_not_in_active_docs
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

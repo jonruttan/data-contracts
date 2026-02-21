@@ -25,8 +25,7 @@ harness:
     config:
       check: runtime.docs_no_required_lane_language
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

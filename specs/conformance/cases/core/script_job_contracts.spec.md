@@ -43,8 +43,7 @@ harness:
         format: json
         report_name: DCCONF-JOB-004.complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -109,8 +108,7 @@ harness:
         format: json
         report_name: DCCONF-JOB-005.complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -172,8 +170,7 @@ harness:
         format: json
         report_name: DCCONF-JOB-006.complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -236,8 +233,7 @@ harness:
         format: json
         report_name: DCCONF-JOB-007.complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -300,8 +296,7 @@ harness:
         format: json
         report_name: DCCONF-JOB-008.complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -365,8 +360,7 @@ harness:
         format: json
         report_name: DCCONF-JOB-009.complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -430,8 +424,7 @@ harness:
         format: json
         report_name: DCCONF-JOB-010.complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -495,8 +488,7 @@ harness:
         format: json
         report_name: DCCONF-JOB-011.complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

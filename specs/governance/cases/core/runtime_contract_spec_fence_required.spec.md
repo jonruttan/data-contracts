@@ -10,8 +10,7 @@ title: executable case fences must use contract-spec
 purpose: Enforces hard-cut fence rename to contract-spec across specs cases.
 type: contract.check
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

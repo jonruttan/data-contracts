@@ -22,8 +22,7 @@ harness:
     config:
       check: packs.project_docs_pack_complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

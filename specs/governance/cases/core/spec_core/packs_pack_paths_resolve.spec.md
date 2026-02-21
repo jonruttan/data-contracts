@@ -25,8 +25,7 @@ harness:
     config:
       check: packs.pack_paths_resolve
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

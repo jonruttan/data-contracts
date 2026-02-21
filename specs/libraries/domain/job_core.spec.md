@@ -54,8 +54,7 @@ harness:
       see_also: []
       since: v1
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

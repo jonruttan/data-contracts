@@ -29,8 +29,7 @@ harness:
     config:
       check: docs.usage_guides_index_sync
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

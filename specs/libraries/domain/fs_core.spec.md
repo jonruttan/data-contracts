@@ -8,8 +8,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.is_docs_spec_file
     assert:
@@ -81,8 +80,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.sort_spec_files
     assert:
@@ -149,8 +147,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.json_get_or_text
     assert:
@@ -230,8 +227,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.json_has_path_text
     assert:
@@ -304,8 +300,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.glob_any_spec_files
     assert:
@@ -371,8 +366,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.file_ext_eq
     assert:
@@ -445,8 +439,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.json_get_text
     assert:
@@ -519,8 +512,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.json_path_eq_text
     assert:
@@ -602,8 +594,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.glob_filter
     assert:
@@ -675,8 +666,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.fs.glob_all
     assert:

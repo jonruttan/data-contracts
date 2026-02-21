@@ -12,14 +12,13 @@ harness:
     profile: text.file
     config: {}
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [text]
   steps:
     - id: assert_1
-      class: MAY
+      required: false
       assert:
         std.string.contains:
           - {var: text}

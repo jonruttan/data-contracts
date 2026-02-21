@@ -33,8 +33,7 @@ harness:
     config:
       check: runtime.policy_library_exports_resolve
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

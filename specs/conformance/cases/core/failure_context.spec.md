@@ -23,8 +23,7 @@ expect:
     - target=text
     - op=evaluate
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

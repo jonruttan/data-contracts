@@ -27,8 +27,7 @@ harness:
     config:
       check: runtime.core_script_allowlist_enforced
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

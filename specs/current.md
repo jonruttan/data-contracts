@@ -12,8 +12,8 @@ Date: 2026-02-18
 - Assertion root: `contract`
 - Assertion step shape: `contract.steps[].assert` (mapping or list of expression mappings)
 - Assertion imports: `contract.imports` with per-step overrides at `contract.steps[].imports`
-- Contract class schema: `MUST|MAY|MUST_NOT`
-- Hook root and events: `when.must|when.may|when.must_not|when.fail|when.complete`
+- Contract step metadata: `required` (default `true`), `priority` (default `1`), `severity` (default `1`)
+- Hook root and events: `when.required|when.optional|when.fail|when.complete`
 - Producer exports: `harness.exports`
 - Consumer imports: `harness.use[*].symbols`
 - Job metadata and dispatch: `harness.jobs` + `ops.job.dispatch`

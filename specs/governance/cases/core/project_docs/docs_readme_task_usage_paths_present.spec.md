@@ -24,8 +24,7 @@ harness:
     config:
       check: docs.readme_task_usage_paths_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

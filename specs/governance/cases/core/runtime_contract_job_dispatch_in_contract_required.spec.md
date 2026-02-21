@@ -16,8 +16,7 @@ harness:
     config:
       check: runtime.contract_job_dispatch_in_contract_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

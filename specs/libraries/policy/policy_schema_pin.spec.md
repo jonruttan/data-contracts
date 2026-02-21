@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 title: schema pin extractor predicates
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
     - id: __export__policy.schema_pin.missing_spec_version_zero
       assert:
@@ -91,8 +90,7 @@ harness:
         - policy.schema_pin.unknown_schema_ref_zero
         - policy.schema_pin.version_match_zero
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [text]

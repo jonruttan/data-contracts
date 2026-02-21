@@ -12,38 +12,43 @@ harness:
     profile: text.file
     config: {}
 contract:
-  defaults:
-    class: SHOULD
+  defaults: {}
   imports:
     - from: artifact
       names: [text]
   steps:
     - id: assert_1
+      required: false
       assert:
         std.string.contains:
           - {var: text}
           - smoke
     - id: assert_2
+      required: false
       assert:
         std.string.contains:
           - {var: text}
           - package-check
     - id: assert_3
+      required: false
       assert:
         std.string.contains:
           - {var: text}
           - release-verify
     - id: assert_4
+      required: false
       assert:
         std.string.contains:
           - {var: text}
           - docs-check
     - id: assert_5
+      required: false
       assert:
         std.string.contains:
           - {var: text}
           - lint
     - id: assert_6
+      required: false
       assert:
         std.string.contains:
           - {var: text}

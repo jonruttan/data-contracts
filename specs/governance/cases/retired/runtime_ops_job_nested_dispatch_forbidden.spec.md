@@ -20,8 +20,7 @@ harness:
     config:
       check: runtime.ops_job_nested_dispatch_forbidden
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

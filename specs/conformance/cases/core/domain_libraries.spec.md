@@ -38,8 +38,7 @@ expect:
   portable:
     status: pass
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -269,8 +268,7 @@ expect:
   portable:
     status: pass
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

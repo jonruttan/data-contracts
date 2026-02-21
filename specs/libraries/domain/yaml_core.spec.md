@@ -8,8 +8,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.yaml.parse_get_or
     assert:
@@ -89,8 +88,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.yaml.stringify
     assert:

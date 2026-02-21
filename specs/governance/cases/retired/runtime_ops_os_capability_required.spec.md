@@ -22,8 +22,7 @@ harness:
     config:
       check: runtime.ops_os_capability_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

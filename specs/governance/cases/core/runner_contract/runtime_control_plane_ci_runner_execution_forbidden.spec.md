@@ -24,8 +24,7 @@ harness:
     config:
       check: runtime.control_plane_ci_runner_execution_forbidden
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

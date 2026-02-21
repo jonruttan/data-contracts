@@ -15,8 +15,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -47,8 +46,7 @@ expect:
     status: fail
     category: schema
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

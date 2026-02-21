@@ -30,15 +30,11 @@ fields:
     type: mapping
     required: false
     since: v1
-  when.must:
+  when.required:
     type: list
     required: false
     since: v1
-  when.may:
-    type: list
-    required: false
-    since: v1
-  when.must_not:
+  when.optional:
     type: list
     required: false
     since: v1

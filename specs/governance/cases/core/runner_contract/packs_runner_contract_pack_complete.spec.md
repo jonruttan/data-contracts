@@ -26,8 +26,7 @@ harness:
     config:
       check: packs.runner_contract_pack_complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

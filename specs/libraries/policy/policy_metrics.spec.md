@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_decrease'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__policy.metric_non_decrease
     assert:
@@ -101,8 +100,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'policy-metrics reusable non-regression predicates: policy.metric_non_increase'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__policy.metric_non_increase
     assert:
@@ -206,8 +204,7 @@ harness:
     symbols:
     - policy.metric_non_increase
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

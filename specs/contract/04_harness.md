@@ -92,7 +92,10 @@ Cross-spec chaining profile:
   be non-empty.
 - each step requires:
   - `id` (unique string)
-  - `class` (`must`, `can`, `cannot`)
+  - `required` (bool, optional, default `true`)
+  - `priority` (int, optional, default `1`, must be `>=1`)
+  - `severity` (int, optional, default `1`, must be `>=1`)
+  - `purpose` (string, optional, non-empty when provided)
   - `ref` string in format `[path][#case_id]`
 - producer symbol declarations are canonical at `harness.exports`.
 - `harness.chain.steps[*].imports` and `harness.chain.steps[*].exports` are
@@ -172,11 +175,12 @@ Subject profile envelope contract:
   `from: std.<namespace>` or `from: ops.<namespace>` and `names: [...]` with
   optional `as` aliases.
 - `when` MAY declare lifecycle hooks as non-empty expression lists:
-  - `must`, `can`, `cannot`, `fail`, `complete`
+  - `required`, `optional`, `fail`, `complete`
   - non-canonical `harness.on` is forbidden
-  - class hooks run after successful clause pass
+  - `required` runs after successful required-step evaluation
+  - `optional` runs after successful optional-step evaluation
   - `fail` runs once on first failure
-  - `complete` runs after all clauses and class hooks pass
+  - `complete` runs after all steps and hooks pass
   - hook failures are runtime-fatal
 - for `type: contract.job`, harness stores job metadata at `harness.jobs`:
   - `harness.jobs.<name>.helper` (required)

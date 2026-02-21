@@ -19,16 +19,16 @@ harness:
     fail_fast: true
     steps:
       - id: step_catalog_shape
-        class: must
+        required: true
         ref: /specs/governance/cases/core/runtime_artifact_contract_compatibility_preserved.spec.md#DCGOV-RUNTIME-SHELL-002
       - id: step_duplicate_ids
-        class: must
+        required: true
         ref: /specs/governance/cases/core/spec_core/governance_policy_source_spec_lang_required.spec.md#DCGOV-POLICY-SRC-001
       - id: step_unmapped
-        class: must
+        required: true
         ref: /specs/governance/cases/core/runner_contract/runtime_shell_policy_branches_forbidden.spec.md#DCGOV-RUNTIME-SHELL-001
       - id: step_tier_collision
-        class: must
+        required: true
         ref: /specs/governance/cases/core/runtime_infra_script_boundary_enforced.spec.md#DCGOV-RUNTIME-SHELL-003
   use:
     - ref: /specs/libraries/policy/policy_governance_catalog.spec.md#LIB-POLICY-GOV-CATALOG-001
@@ -39,8 +39,7 @@ harness:
         - policy.catalog.multi_tier_collisions_zero
         - policy.catalog.check_field_presence_zero
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names:

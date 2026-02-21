@@ -60,8 +60,7 @@ harness:
     config:
       check: docs.reference_manifest_sync
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names: [violation_count]

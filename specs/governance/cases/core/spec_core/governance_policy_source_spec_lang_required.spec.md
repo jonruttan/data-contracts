@@ -21,8 +21,7 @@ harness:
     config:
       check: governance.policy_source_spec_lang_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names:

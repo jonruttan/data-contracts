@@ -16,8 +16,7 @@ harness:
     config:
       check: docs.spec_index_reachability
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

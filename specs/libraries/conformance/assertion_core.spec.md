@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: reusable conformance assertion helper functions
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__conf.pass_when_text_contains
     assert:

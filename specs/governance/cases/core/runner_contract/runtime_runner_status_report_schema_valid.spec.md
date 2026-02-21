@@ -26,8 +26,7 @@ harness:
     config:
       check: runtime.runner_status_report_schema_valid
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

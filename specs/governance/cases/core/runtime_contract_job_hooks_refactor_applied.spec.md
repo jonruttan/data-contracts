@@ -17,8 +17,7 @@ harness:
     config:
       check: runtime.contract_job_hooks_refactor_applied
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

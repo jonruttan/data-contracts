@@ -15,8 +15,7 @@ harness:
     config:
       check: runtime.harness_exports_location_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

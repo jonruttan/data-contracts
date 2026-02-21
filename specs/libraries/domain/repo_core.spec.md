@@ -50,8 +50,7 @@ harness:
       see_also: []
       since: v1
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.repo.walk_matching
     assert:

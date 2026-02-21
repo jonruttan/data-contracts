@@ -22,8 +22,7 @@ harness:
     config:
       check: packs.manifest_index_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

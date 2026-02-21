@@ -23,8 +23,7 @@ harness:
     config:
       check: docs.visual_aids_core_chapters_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

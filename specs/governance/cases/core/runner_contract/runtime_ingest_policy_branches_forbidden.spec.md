@@ -21,8 +21,7 @@ harness:
     config:
       check: runtime.ingest_policy_branches_forbidden
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

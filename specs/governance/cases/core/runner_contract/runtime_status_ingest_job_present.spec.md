@@ -21,8 +21,7 @@ harness:
     config:
       check: runtime.status_ingest_job_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

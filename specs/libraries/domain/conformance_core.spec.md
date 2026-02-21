@@ -8,8 +8,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.conformance.error_when_false
     assert:
@@ -84,8 +83,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.conformance.report_version_is_v1
     assert:
@@ -154,8 +152,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.conformance.report_results_is_list
     assert:
@@ -223,8 +220,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.conformance.validate_report_errors
     assert:

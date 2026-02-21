@@ -8,8 +8,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__path.normalize_slashes
     assert:
@@ -311,8 +310,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__path.segments
     assert:
@@ -615,8 +613,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__path.basename
     assert:
@@ -931,8 +928,7 @@ spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__path.extension
     assert:
@@ -1264,8 +1260,7 @@ harness:
     symbols:
     - path.normalize_slashes
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

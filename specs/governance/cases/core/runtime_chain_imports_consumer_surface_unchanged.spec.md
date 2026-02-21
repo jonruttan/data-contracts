@@ -14,8 +14,7 @@ harness:
     config:
       check: runtime.chain_imports_consumer_surface_unchanged
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

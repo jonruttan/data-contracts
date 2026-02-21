@@ -24,8 +24,7 @@ harness:
     config:
       check: runtime.assert_block_decision_authority_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

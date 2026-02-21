@@ -25,8 +25,7 @@ expect:
 assert_health:
   mode: warn
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -60,8 +59,7 @@ expect:
 assert_health:
   mode: error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -94,8 +92,7 @@ expect:
 assert_health:
   mode: nope
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -128,8 +125,7 @@ expect:
 assert_health:
   mode: ignore
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -163,15 +159,14 @@ expect:
 assert_health:
   mode: error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
     - text
   steps:
   - id: assert_1
-    class: MAY
+    required: false
     assert:
     - std.string.contains:
       - {var: text}
@@ -202,8 +197,7 @@ expect:
 assert_health:
   mode: error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

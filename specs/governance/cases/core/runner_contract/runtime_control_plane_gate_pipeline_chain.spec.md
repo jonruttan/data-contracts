@@ -19,16 +19,16 @@ harness:
     fail_fast: true
     steps:
       - id: step_catalog_pipeline
-        class: must
+        required: true
         ref: /specs/governance/cases/core/spec_core/runtime_governance_catalog_pipeline_chain.spec.md#DCGOV-PIPE-CATALOG-001
       - id: step_schema_pipeline
-        class: must
+        required: true
         ref: /specs/governance/cases/core/spec_core/runtime_schema_pin_pipeline_chain.spec.md#DCGOV-PIPE-SCHEMA-001
       - id: step_ingest_pipeline
-        class: must
+        required: true
         ref: /specs/governance/cases/core/runner_contract/runtime_status_ingest_pipeline_chain.spec.md#DCGOV-PIPE-INGEST-001
       - id: step_optional_pipeline
-        class: can
+        required: false
         ref: /specs/governance/cases/core/runtime_optional_report_pipeline_chain.spec.md#DCGOV-PIPE-OPTIONAL-001
   use:
     - ref: /specs/libraries/policy/policy_ci_gate.spec.md#LIB-POLICY-CI-001
@@ -38,8 +38,7 @@ harness:
         - policy.ci.optional_profile_report_only
         - policy.ci.artifacts_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names:

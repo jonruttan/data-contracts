@@ -10,8 +10,7 @@ title: contract steps must declare asserts
 purpose: Enforces step-form contract nodes to use asserts list and non-empty children.
 type: contract.check
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

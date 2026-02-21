@@ -23,8 +23,7 @@ harness:
     config:
       check: schema.catalog_contains_active_schema_v1
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

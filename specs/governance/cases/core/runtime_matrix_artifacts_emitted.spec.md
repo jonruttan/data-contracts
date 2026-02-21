@@ -22,8 +22,7 @@ harness:
     config:
       check: runtime.matrix_artifacts_emitted
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

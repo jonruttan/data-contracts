@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 title: ci gate predicates
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
     - id: __export__policy.ci.required_profiles_pass
       assert:
@@ -84,8 +83,7 @@ harness:
         - policy.ci.optional_profile_report_only
         - policy.ci.artifacts_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [text]

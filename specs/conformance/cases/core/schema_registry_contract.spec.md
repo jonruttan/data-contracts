@@ -15,8 +15,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

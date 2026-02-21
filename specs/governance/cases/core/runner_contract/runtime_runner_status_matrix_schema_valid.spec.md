@@ -23,8 +23,7 @@ harness:
     config:
       check: runtime.runner_status_matrix_schema_valid
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

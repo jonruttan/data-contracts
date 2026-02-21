@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 title: reusable scan envelope assertions
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__policy.assert.no_violations
     assert:
@@ -101,8 +100,7 @@ harness:
     - policy.assert.summary_check_id
     - policy.assert.scan_pass
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names: [text]

@@ -25,8 +25,7 @@ harness:
     config:
       check: runtime.meta_json_target_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

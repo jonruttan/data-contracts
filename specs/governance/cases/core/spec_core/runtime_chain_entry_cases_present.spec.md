@@ -23,8 +23,7 @@ harness:
     config:
       check: runtime.chain_entry_cases_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

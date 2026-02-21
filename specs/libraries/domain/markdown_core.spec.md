@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.has_heading'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.has_heading
     assert:
@@ -469,8 +468,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.heading_level_exists'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.heading_level_exists
     assert:
@@ -610,8 +608,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.section_order_valid'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.section_order_valid
     assert:
@@ -725,8 +722,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.required_sections_present'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.required_sections_present
     assert:
@@ -807,8 +803,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.link_targets_all_resolve'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.link_targets_all_resolve
     assert:
@@ -886,8 +881,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.has_broken_links'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.has_broken_links
     assert:
@@ -957,8 +951,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.has_yaml_spec_test_fence'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.has_yaml_spec_test_fence
     assert:
@@ -1035,8 +1028,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.code_fence_language_exists'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.code_fence_language_exists
     assert:
@@ -1129,8 +1121,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.token_present'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.token_present
     assert:
@@ -1213,8 +1204,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.tokens_all_present'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.tokens_all_present
     assert:
@@ -1295,8 +1285,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.token_ownership_unique'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.token_ownership_unique
     assert:
@@ -1374,8 +1363,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: 'markdown projection helper functions: domain.markdown.token_dependencies_resolved'
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.markdown.token_dependencies_resolved
     assert:

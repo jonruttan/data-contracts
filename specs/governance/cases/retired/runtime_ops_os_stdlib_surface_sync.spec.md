@@ -30,8 +30,7 @@ harness:
     config:
       check: runtime.ops_os_stdlib_surface_sync
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

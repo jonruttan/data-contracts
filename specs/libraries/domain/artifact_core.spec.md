@@ -50,8 +50,7 @@ harness:
       see_also: []
       since: v1
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.artifact.write_yaml
     assert:
@@ -124,8 +123,7 @@ harness:
       see_also: []
       since: v1
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__domain.artifact.append_text
     assert:

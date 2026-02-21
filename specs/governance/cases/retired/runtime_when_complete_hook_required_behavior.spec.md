@@ -22,8 +22,7 @@ harness:
     config:
       check: runtime.when_complete_hook_required_behavior
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

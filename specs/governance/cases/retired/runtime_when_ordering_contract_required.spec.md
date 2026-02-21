@@ -25,8 +25,7 @@ harness:
     config:
       check: runtime.when_ordering_contract_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

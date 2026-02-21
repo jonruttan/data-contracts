@@ -20,8 +20,7 @@ harness:
     config:
       check: schema.spec_case_schema_ref_known
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

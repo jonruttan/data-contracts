@@ -19,8 +19,7 @@ harness:
     symbols:
     - policy.text.contains_pair
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -54,8 +53,7 @@ harness:
     symbols:
     - policy.text.contains_pair
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -89,8 +87,7 @@ harness:
     symbols:
     - policy.text.contains_pair
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -124,8 +121,7 @@ harness:
     symbols:
     - policy.text.contains_pair
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -159,8 +155,7 @@ harness:
     symbols:
     - policy.text.contains_pair
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 title: python projection helper functions
 type: contract.export
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__py.is_tuple_projection
     assert:

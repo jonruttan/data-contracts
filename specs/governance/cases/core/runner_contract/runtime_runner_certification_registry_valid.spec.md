@@ -24,8 +24,7 @@ harness:
     config:
       check: runtime.runner_certification_registry_valid
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

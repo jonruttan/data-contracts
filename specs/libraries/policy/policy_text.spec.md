@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 title: reusable text token assertions
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__policy.text.contains_all
     assert:
@@ -87,8 +86,7 @@ harness:
     - policy.text.contains_none
     - policy.text.contains_pair
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names: [text]

@@ -38,8 +38,7 @@ harness:
       - --help
       exit_code: 0
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps: []
 ```
 
@@ -74,8 +73,7 @@ harness:
       - --json
       exit_code: 0
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

@@ -25,8 +25,7 @@ expect:
     status: fail
     category: schema
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps: []
 ```
 
@@ -55,7 +54,6 @@ expect:
     status: fail
     category: schema
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps: []
 ```

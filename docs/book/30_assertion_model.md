@@ -48,8 +48,7 @@ Define canonical assertion semantics and explicit import binding rules.
 
 ```yaml
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names: [summary_json]

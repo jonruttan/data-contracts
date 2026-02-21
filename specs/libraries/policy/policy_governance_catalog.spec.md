@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 title: governance catalog extractor predicates
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
     - id: __export__policy.catalog.duplicate_ids_zero
       assert:
@@ -91,8 +90,7 @@ harness:
         - policy.catalog.multi_tier_collisions_zero
         - policy.catalog.check_field_presence_zero
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [text]

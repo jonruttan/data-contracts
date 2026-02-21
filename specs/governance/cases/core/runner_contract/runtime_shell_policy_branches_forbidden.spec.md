@@ -22,8 +22,7 @@ harness:
     config:
       check: runtime.shell_policy_branches_forbidden
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names:

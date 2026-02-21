@@ -24,8 +24,7 @@ harness:
     config:
       check: docs.guide_contract_links_valid
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

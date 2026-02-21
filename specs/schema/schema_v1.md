@@ -298,7 +298,10 @@ For `type: docs.generate`, supported `harness` keys include:
 - `steps` (list, required when `harness.chain` is present; non-empty)
   - each step:
     - `id` (string, required, unique)
-    - `class` (string, required): one of `must`, `can`, `cannot`
+    - `required` (bool, optional, default `true`)
+    - `priority` (int, optional, default `1`, minimum `1`)
+    - `severity` (int, optional, default `1`, minimum `1`)
+    - `purpose` (string, optional, non-empty when provided)
     - `ref` (string, required): `[path][#case_id]`
       - path may be virtual-absolute (`/...`) or relative
       - `#case_id` fragment is optional
@@ -414,12 +417,12 @@ Universal core assertion model:
 Each `steps[]` entry requires:
 
 - `id` (string, unique per case)
-- `class` (`MUST` | `MAY` | `MUST_NOT`, default `MUST`)
 - `assert` (non-empty expression mapping or list)
 - `imports` (optional list)
-
-prior lowercase contract class/group forms (`must`, `can`, `cannot`) are
-forbidden.
+- `purpose` (optional string)
+- `required` (optional bool, default `true`)
+- `priority` (optional int, default `1`, must be `>=1`)
+- `severity` (optional int, default `1`, must be `>=1`)
 
 Forbidden prior forms:
 
@@ -499,12 +502,17 @@ Operator constraints:
 - regex portability guidance for spec-lang expressions is defined in
   `specs/contract/03a_regex_portability_v1.md`
 
-Group constraints:
+Step metadata constraints:
 
-- `MUST`, `MAY`, and `MUST_NOT` values MUST be lists
-- `MUST`, `MAY`, and `MUST_NOT` lists MUST NOT be empty
+- `contract.steps[].required` is optional and defaults to `true`
+- `contract.steps[].priority` is optional integer metadata (`>=1`, default `1`)
+- `contract.steps[].severity` is optional integer metadata (`>=1`, default `1`)
+- `contract.steps[].purpose` is optional human-readable text
+- optional steps (`required: false`) are non-blocking for overall case verdict
+- prohibition intent is expressed directly with negation operators
+  (for example `std.logic.not`)
 
-Canonical negation uses `MUST_NOT`:
+Canonical negation form:
 
 ```yaml
 contract:
@@ -515,16 +523,19 @@ contract:
       text: subject
   steps:
   - id: assert_no_error
-    class: MUST_NOT
+    required: true
     assert:
-      std.string.contains:
-      - {var: subject}
-      - 'ERROR:'
+      std.logic.not:
+      - std.string.contains:
+        - {var: subject}
+        - 'ERROR:'
 ```
 
 Author in canonical form:
 
-- use `MUST` / `MAY` / `MUST_NOT` for boolean groups
+- use explicit assertion expressions; do not use step classes
+- use `required: false` for non-blocking steps
+- use `priority` / `severity` as metadata-only ranking hints
 - use direct operator mappings in `assert` (no `evaluate` wrapper)
 - put every operator value in a list
 
@@ -562,9 +573,8 @@ contract:
 - optional `when` mapping on executable cases
 - non-canonical `harness.on` is forbidden (hard cut)
 - allowed keys:
-  - `must`
-  - `can`
-  - `cannot`
+  - `required`
+  - `optional`
   - `fail`
   - `complete`
 - each hook key, when present, must be a non-empty list of mapping-AST expressions
@@ -573,10 +583,10 @@ contract:
 
 Lifecycle order:
 
-- class hooks (`must`/`can`/`cannot`) run after successful clause of
-  `MUST`/`MAY`/`MUST_NOT` respectively
-- `fail` runs once on first clause or class-hook failure
-- `complete` runs only after all clauses and class hooks pass
+- `required` hook runs after successful required-step evaluation
+- `optional` hook runs after successful optional-step evaluation
+- `fail` runs once on first blocking step or hook failure
+- `complete` runs only after all steps and hooks pass
 
 `contract.job` executable type (v1):
 
@@ -610,7 +620,7 @@ Job ref grammar:
 This section is generated from `specs/schema/registry/v1/*.yaml`.
 
 - profile_count: 7
-- top_level_fields: 25
+- top_level_fields: 24
 - type_profiles: 3
 
 ### Top-Level Keys
@@ -638,9 +648,8 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 | `when` | `mapping` | `false` | `v1` |
 | `when.complete` | `list` | `false` | `v1` |
 | `when.fail` | `list` | `false` | `v1` |
-| `when.may` | `list` | `false` | `v1` |
-| `when.must` | `list` | `false` | `v1` |
-| `when.must_not` | `list` | `false` | `v1` |
+| `when.optional` | `list` | `false` | `v1` |
+| `when.required` | `list` | `false` | `v1` |
 
 ### Type Profiles
 
@@ -655,7 +664,7 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 25
+- top_level_field_count: 24
 - type_profile_count: 3
 - total_type_field_count: 40
 
@@ -684,9 +693,8 @@ This section is generated from `specs/schema/registry/v1/*.yaml`.
 | `when` | `mapping` | false | `v1` |
 | `when.complete` | `list` | false | `v1` |
 | `when.fail` | `list` | false | `v1` |
-| `when.may` | `list` | false | `v1` |
-| `when.must` | `list` | false | `v1` |
-| `when.must_not` | `list` | false | `v1` |
+| `when.optional` | `list` | false | `v1` |
+| `when.required` | `list` | false | `v1` |
 
 ### Type Profiles
 

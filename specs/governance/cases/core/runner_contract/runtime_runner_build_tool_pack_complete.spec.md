@@ -22,18 +22,18 @@ harness:
     config:
       check: packs.runner_contract_pack_complete
 contract:
-  defaults:
-    class: SHOULD
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]
   steps:
     - id: assert_1
+      required: false
       assert:
         call:
-      - {var: policy.assert.no_violations}
-      - std.object.assoc:
-        - violation_count
-        - {var: violation_count}
-        - lit: {}
+          - {var: policy.assert.no_violations}
+          - std.object.assoc:
+            - violation_count
+            - {var: violation_count}
+            - lit: {}
 ```

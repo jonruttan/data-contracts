@@ -26,8 +26,7 @@ harness:
     symbols:
     - conf.pass_when_text_contains
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -68,8 +67,7 @@ harness:
     symbols:
     - conf.pass_when_text_contains
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -107,8 +105,7 @@ expect:
     message_tokens:
     - spec_lang let binding must be [name, expr]
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -167,8 +164,7 @@ expect:
     message_tokens:
     - op=evaluate
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -204,8 +200,7 @@ expect:
     message_tokens:
     - operator args must be a list
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -240,8 +235,7 @@ expect:
     message_tokens:
     - unsupported spec_lang symbol
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -284,8 +278,7 @@ harness:
     profile: text.file
     config: {}
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -341,8 +334,7 @@ harness:
     symbols:
     - conf.pass_when_text_contains
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -385,8 +377,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -430,8 +421,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -475,8 +465,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -529,8 +518,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -587,8 +575,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -644,8 +631,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -740,8 +726,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -821,8 +806,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -868,8 +852,7 @@ expect:
       message_tokens:
       - over-application error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -914,8 +897,7 @@ expect:
       message_tokens:
       - expects list
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -955,8 +937,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -1080,8 +1061,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -1185,8 +1165,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -1269,8 +1248,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -1358,8 +1336,7 @@ expect:
       status: pass
       category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -1544,8 +1521,7 @@ expect:
       message_tokens:
       - arity error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

@@ -14,8 +14,7 @@ harness:
     config:
       check: runtime.harness_exports_schema_valid
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

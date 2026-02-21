@@ -12,8 +12,7 @@ harness:
     profile: text.file
     config: {}
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [text]

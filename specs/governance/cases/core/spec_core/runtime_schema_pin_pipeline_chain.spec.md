@@ -19,16 +19,16 @@ harness:
     fail_fast: true
     steps:
       - id: step_spec_version_present
-        class: must
+        required: true
         ref: /specs/governance/cases/core/spec_core/schema_spec_case_version_present.spec.md#DCGOV-SCHEMA-PIN-001
       - id: step_schema_ref_present
-        class: must
+        required: true
         ref: /specs/governance/cases/core/spec_core/schema_spec_case_schema_ref_present.spec.md#DCGOV-SCHEMA-PIN-002
       - id: step_schema_ref_known
-        class: must
+        required: true
         ref: /specs/governance/cases/core/spec_core/schema_spec_case_schema_ref_known.spec.md#DCGOV-SCHEMA-PIN-003
       - id: step_version_match
-        class: must
+        required: true
         ref: /specs/governance/cases/core/spec_core/schema_spec_case_version_matches_schema_ref.spec.md#DCGOV-SCHEMA-PIN-004
   use:
     - ref: /specs/libraries/policy/policy_schema_pin.spec.md#LIB-POLICY-SCHEMA-PIN-001
@@ -39,8 +39,7 @@ harness:
         - policy.schema_pin.unknown_schema_ref_zero
         - policy.schema_pin.version_match_zero
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names:

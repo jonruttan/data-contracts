@@ -16,8 +16,7 @@ harness:
     config:
       check: runtime.harness_jobs_metadata_map_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

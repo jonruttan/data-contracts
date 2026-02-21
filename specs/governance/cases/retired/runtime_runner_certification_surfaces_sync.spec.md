@@ -23,8 +23,7 @@ harness:
     config:
       check: runtime.runner_certification_surfaces_sync
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

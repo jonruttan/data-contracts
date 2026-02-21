@@ -25,8 +25,7 @@ harness:
     config:
       check: runtime.infra_script_boundary_enforced
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names:

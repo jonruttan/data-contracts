@@ -17,8 +17,7 @@ harness:
     config:
       check: runtime.ops_job_capability_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

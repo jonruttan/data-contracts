@@ -9,8 +9,7 @@ schema_ref: /specs/schema/schema_v1.md
 type: contract.export
 title: reusable contract.job assertions
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   steps:
   - id: __export__policy.job.dispatch_ok
     assert:
@@ -80,8 +79,7 @@ harness:
     - policy.job.written_path_contains
     - policy.job.hooks_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names: [text]

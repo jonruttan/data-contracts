@@ -23,8 +23,7 @@ harness:
     config:
       check: runtime.compatibility_missing_status_visibility_required
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

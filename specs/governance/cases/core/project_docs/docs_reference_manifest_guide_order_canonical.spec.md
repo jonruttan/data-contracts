@@ -30,8 +30,7 @@ harness:
     config:
       check: docs.reference_manifest_guide_order_canonical
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

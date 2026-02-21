@@ -16,8 +16,7 @@ harness:
     config:
       check: docs.canonical_freshness_strict
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

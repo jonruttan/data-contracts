@@ -16,8 +16,7 @@ harness:
     config:
       check: docs.governance_check_family_map_complete
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

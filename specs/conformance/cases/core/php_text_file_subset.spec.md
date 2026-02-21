@@ -14,8 +14,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -46,8 +45,7 @@ expect:
     status: fail
     category: assertion
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -78,8 +76,7 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -110,15 +107,14 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
     - text
   steps:
   - id: assert_1
-    class: MAY
+    required: false
     assert:
     - std.string.regex_match:
       - {var: text}
@@ -146,15 +142,14 @@ expect:
     status: fail
     category: assertion
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
     - text
   steps:
   - id: assert_1
-    class: MAY
+    required: false
     assert:
     - std.string.regex_match:
       - {var: text}
@@ -182,22 +177,22 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
     - text
   steps:
   - id: assert_1
-    class: MUST_NOT
     assert:
-    - std.string.regex_match:
-      - {var: text}
-      - \A\Z
-    - std.string.regex_match:
-      - {var: text}
-      - (?!)
+      std.logic.not:
+      - std.logic.or:
+        - std.string.regex_match:
+          - {var: text}
+          - \A\Z
+        - std.string.regex_match:
+          - {var: text}
+          - (?!)
 harness:
   check:
     profile: text.file
@@ -218,22 +213,22 @@ expect:
     status: fail
     category: assertion
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
     - text
   steps:
   - id: assert_1
-    class: MUST_NOT
     assert:
-    - std.string.contains:
-      - {var: text}
-      - 'version: 1'
-    - std.string.regex_match:
-      - {var: text}
-      - (?!)
+      std.logic.not:
+      - std.logic.or:
+        - std.string.contains:
+          - {var: text}
+          - 'version: 1'
+        - std.string.regex_match:
+          - {var: text}
+          - (?!)
 harness:
   check:
     profile: text.file
@@ -254,15 +249,14 @@ expect:
     status: pass
     category: null
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
     - text
   steps:
   - id: assert_1
-    class: MAY
+    required: false
     assert:
     - std.string.regex_match:
       - {var: text}
@@ -271,11 +265,11 @@ contract:
       - {var: text}
       - 'version: 1'
   - id: assert_2
-    class: MUST_NOT
     assert:
-      std.string.regex_match:
-      - {var: text}
-      - \A\Z
+      std.logic.not:
+      - std.string.regex_match:
+        - {var: text}
+        - \A\Z
 harness:
   check:
     profile: text.file
@@ -299,8 +293,7 @@ expect:
 assert_health:
   mode: error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -334,8 +327,7 @@ expect:
 assert_health:
   mode: error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -369,8 +361,7 @@ expect:
 assert_health:
   mode: error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -407,8 +398,7 @@ expect:
 assert_health:
   mode: error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
@@ -445,15 +435,14 @@ expect:
 assert_health:
   mode: error
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:
     - text
   steps:
   - id: assert_1
-    class: MAY
+    required: false
     assert:
     - std.string.contains:
       - {var: text}
@@ -483,8 +472,7 @@ expect:
 assert_health:
   mode: warn
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

@@ -6,8 +6,8 @@
 id: DCGOV-CHAIN-007
 spec_version: 1
 schema_ref: /specs/schema/schema_v1.md
-title: chain steps declare must can cannot class
-purpose: Ensures harness.chain.steps[*].class is explicit and valid for all chained cases.
+title: chain steps declare required metadata
+purpose: Ensures harness.chain.steps[*].required (and optional priority/severity metadata) are valid for chained cases.
 type: contract.check
 harness:
   root: .
@@ -24,8 +24,7 @@ harness:
     - policy.assert.summary_check_id
     - policy.assert.scan_pass
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

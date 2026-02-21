@@ -10,8 +10,7 @@ title: cases must use contract block
 purpose: Enforces top-level contract block requirement for executable cases.
 type: contract.check
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

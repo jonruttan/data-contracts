@@ -16,8 +16,7 @@ harness:
     config:
       check: runtime.runner_certification_compat_lanes_non_blocking
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

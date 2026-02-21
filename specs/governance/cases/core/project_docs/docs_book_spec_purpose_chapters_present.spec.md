@@ -23,8 +23,7 @@ harness:
     config:
       check: docs.book_spec_purpose_chapters_present
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

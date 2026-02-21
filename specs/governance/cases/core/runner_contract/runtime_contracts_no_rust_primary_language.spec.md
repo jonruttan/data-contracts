@@ -24,8 +24,7 @@ harness:
     config:
       check: runtime.contracts_no_rust_primary_language
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

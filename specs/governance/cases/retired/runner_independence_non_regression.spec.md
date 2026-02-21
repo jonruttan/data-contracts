@@ -46,8 +46,7 @@ harness:
     symbols:
     - policy.pass_when_no_violations
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
   - from: artifact
     names:

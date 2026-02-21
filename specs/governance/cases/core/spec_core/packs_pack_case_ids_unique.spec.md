@@ -24,8 +24,7 @@ harness:
     config:
       check: packs.pack_case_ids_unique
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names: [violation_count]

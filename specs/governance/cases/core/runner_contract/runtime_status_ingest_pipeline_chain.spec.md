@@ -19,16 +19,16 @@ harness:
     fail_fast: true
     steps:
       - id: step_status_report_schema
-        class: must
+        required: true
         ref: /specs/governance/cases/core/runner_contract/runtime_runner_status_report_schema_valid.spec.md#DCGOV-RUNTIME-STATUS-001
       - id: step_status_matrix_schema
-        class: must
+        required: true
         ref: /specs/governance/cases/core/runner_contract/runtime_runner_status_matrix_schema_valid.spec.md#DCGOV-RUNTIME-STATUS-002
       - id: step_freshness
-        class: must
+        required: true
         ref: /specs/governance/cases/core/runner_contract/runtime_compatibility_status_freshness_within_slo.spec.md#DCGOV-RUNTIME-STATUS-004
       - id: step_missing_visibility
-        class: must
+        required: true
         ref: /specs/governance/cases/core/runner_contract/runtime_compatibility_missing_status_visibility_required.spec.md#DCGOV-RUNTIME-STATUS-005
   use:
     - ref: /specs/libraries/policy/policy_status_ingest.spec.md#LIB-POLICY-INGEST-001
@@ -39,8 +39,7 @@ harness:
         - policy.ingest.compat_stale_missing_count_within_limit
         - policy.ingest.log_entries_correlate_matrix_rows
 contract:
-  defaults:
-    class: MUST
+  defaults: {}
   imports:
     - from: artifact
       names:
