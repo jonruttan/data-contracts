@@ -17,6 +17,8 @@ Date: 2026-02-18
 - Producer exports: `harness.exports`
 - Consumer imports: `harness.use[*].symbols`
 - Job metadata and dispatch: `harness.jobs` + `ops.job.dispatch`
+- Bundle taxonomy: `bundle -> domains[] -> modules[] -> contracts[]` with canonical metadata
+  names `bundle_version` and `maintainers`
 
 ## Canonical Specs
 

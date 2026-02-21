@@ -5,6 +5,7 @@ Canonical domain index for executable specs in this subtree.
 ## Files
 
 - `/specs/conformance/cases/core/api_http.spec.md`
+- `/specs/conformance/cases/core/bundle_taxonomy_v2_fields.spec.md`
 - `/specs/conformance/cases/core/chain_exports.spec.md`
 - `/specs/conformance/cases/core/cli_run_entrypoint.spec.md`
 - `/specs/conformance/cases/core/domain_libraries.spec.md`

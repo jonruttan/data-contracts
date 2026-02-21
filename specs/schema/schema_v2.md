@@ -43,6 +43,33 @@ Related docs/reference schemas:
 - `domain` (string, optional): suite-level domain hint
 - `title` (string, optional): suite-level label
 - `purpose` (string, optional): suite-level description
+- `bundle` (mapping, optional): bundle taxonomy metadata for project-scoped validation packs
+
+`bundle` metadata keys:
+
+- `bundle.id` (string, optional): stable bundle identifier
+- `bundle.bundle_version` (string, optional): semantic bundle revision string
+- `bundle.summary` (string, optional): concise bundle description
+- `bundle.maintainers` (list, optional): owner list
+  - `bundle.maintainers[].name` (string, required when maintainer entry is present)
+  - `bundle.maintainers[].contact` (string, optional)
+- `bundle.domains` (list, optional): functional grouping entries
+  - `bundle.domains[].id` (string, required when domain entry is present)
+  - `bundle.domains[].modules` (list, optional)
+  - `bundle.domains[].modules[].id` (string, required when module entry is present)
+  - `bundle.domains[].modules[].include_paths` (list[string], optional)
+  - `bundle.domains[].modules[].exclude_paths` (list[string], optional)
+  - `bundle.domains[].modules[].artifacts` (list, optional)
+    - `bundle.domains[].modules[].artifacts[].path` (string, required when artifact entry is present)
+    - `bundle.domains[].modules[].artifacts[].kind` (required):
+      `file|dir|report|manifest|lock`
+  - `bundle.domains[].modules[].contracts` (list[string], optional): contract path references
+
+Bundle terminology policy:
+
+- Canonical metadata names are `bundle_version` and `maintainers`.
+- `version` and `author` are migration aliases in prose only and are not canonical
+  schema keys.
 
 Each `contracts[]` item:
 

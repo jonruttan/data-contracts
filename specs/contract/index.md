@@ -49,6 +49,7 @@ Read in order:
 35. `/specs/contract/29_runner_cli_interface.md`
 36. `/specs/contract/30_build_tool_command_set.md`
 37. `/specs/contract/31_contract_set_resolution.md`
+38. `/specs/contract/32_contract_bundle_taxonomy.md`
 
 Type contracts:
 

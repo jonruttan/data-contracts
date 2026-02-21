@@ -2,6 +2,12 @@
 
 Defines deterministic contract-set dependency resolution for runner-facing spec pulls.
 
+Legacy vocabulary note:
+
+- `contract_set` remains a compatibility alias.
+- Canonical bundle taxonomy terms are defined in
+  `/specs/contract/32_contract_bundle_taxonomy.md`.
+
 ## Canonical Unit
 
 - Consumers MUST request one root `contract_set_id`.

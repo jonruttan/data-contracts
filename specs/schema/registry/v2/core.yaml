@@ -38,6 +38,80 @@ fields:
     type: string
     required: false
     since: v2
+  bundle:
+    type: mapping
+    required: false
+    since: v2
+  bundle.id:
+    type: string
+    required: false
+    since: v2
+  bundle.bundle_version:
+    type: string
+    required: false
+    since: v2
+  bundle.summary:
+    type: string
+    required: false
+    since: v2
+  bundle.maintainers:
+    type: list
+    required: false
+    since: v2
+  bundle.maintainers[].name:
+    type: string
+    required: true
+    since: v2
+  bundle.maintainers[].contact:
+    type: string
+    required: false
+    since: v2
+  bundle.domains:
+    type: list
+    required: false
+    since: v2
+  bundle.domains[].id:
+    type: string
+    required: true
+    since: v2
+  bundle.domains[].modules:
+    type: list
+    required: false
+    since: v2
+  bundle.domains[].modules[].id:
+    type: string
+    required: true
+    since: v2
+  bundle.domains[].modules[].include_paths:
+    type: list
+    required: false
+    since: v2
+  bundle.domains[].modules[].exclude_paths:
+    type: list
+    required: false
+    since: v2
+  bundle.domains[].modules[].artifacts:
+    type: list
+    required: false
+    since: v2
+  bundle.domains[].modules[].artifacts[].path:
+    type: string
+    required: true
+    since: v2
+  bundle.domains[].modules[].artifacts[].kind:
+    type: string
+    required: true
+    since: v2
+    enum:
+      - file
+      - dir
+      - report
+      - manifest
+      - lock
+  bundle.domains[].modules[].contracts:
+    type: list
+    required: false
+    since: v2
   domain:
     type: string
     required: false

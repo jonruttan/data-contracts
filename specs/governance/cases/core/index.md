@@ -215,6 +215,7 @@ Canonical domain index for executable specs in this subtree.
 - /specs/governance/cases/core/spec_core/assert_sugar_compile_only_sync.spec.md
 - /specs/governance/cases/core/spec_core/assert_type_contract_subject_semantics_sync.spec.md
 - /specs/governance/cases/core/spec_core/assert_universal_core_sync.spec.md
+- /specs/governance/cases/core/spec_core/bundle_taxonomy_alias_policy.spec.md
 - /specs/governance/cases/core/spec_core/contract_assertions_non_regression.spec.md
 - /specs/governance/cases/core/spec_core/contract_coverage_threshold.spec.md
 - /specs/governance/cases/core/spec_core/contract_governance_check.spec.md
