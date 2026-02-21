@@ -126,10 +126,6 @@ fields:
     type: mapping
     required: false
     since: v2
-  contracts[].assert_health:
-    type: mapping
-    required: false
-    since: v2
   contracts[].doc:
     type: mapping
     required: false

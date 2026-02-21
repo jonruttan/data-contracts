@@ -50,7 +50,7 @@ Each `contracts[]` item:
 - `type` (string, required directly or inherited from `defaults.type`)
 - `clauses` (mapping, required)
 - `title`/`purpose`/`domain` (optional overrides)
-- `assert_health`/`expect`/`requires`/`harness`/`when` (optional)
+- `expect`/`requires`/`harness`/`when` (optional)
 
 Parser behavior:
 
@@ -72,12 +72,6 @@ Parser behavior:
 - each `contracts[]` item requires `id`
 - `schema_ref` MUST resolve in `/specs/schema/schema_catalog_v1.yaml`
 - `spec_version` MUST match the schema major encoded by `schema_ref`
-
-`assert_health`:
-
-- `mode` (string): one of `ignore`, `warn`, `error`
-- if omitted, implementations may use a global default (for example env policy)
-- policy-driven diagnostics may include redundant sibling assertion branches
 
 `expect` (conformance metadata):
 
@@ -628,14 +622,13 @@ Job ref grammar:
 This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 - profile_count: 7
-- top_level_fields: 24
+- top_level_fields: 23
 - type_profiles: 3
 
 ### Top-Level Keys
 
 | key | type | required | since |
 |---|---|---|---|
-| `assert_health` | `mapping` | `false` | `v1` |
 | `clauses` | `any` | `false` | `v1` |
 | `doc` | `mapping` | `false` | `v1` |
 | `doc.audience` | `string` | `false` | `v1` |
@@ -672,7 +665,7 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 ## Generated Spec Schema Field Catalog
 
-- top_level_field_count: 24
+- top_level_field_count: 23
 - type_profile_count: 3
 - total_type_field_count: 40
 
@@ -680,7 +673,6 @@ This section is generated from `specs/schema/registry/v2/*.yaml`.
 
 | key | type | required | since |
 |---|---|---|---|
-| `assert_health` | `mapping` | false | `v1` |
 | `clauses` | `any` | false | `v1` |
 | `doc` | `mapping` | false | `v1` |
 | `doc.audience` | `string` | false | `v1` |

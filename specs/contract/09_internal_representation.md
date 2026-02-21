@@ -16,7 +16,7 @@ Each compiled case contains:
 - `doc_path` (source location)
 - `harness` (runner-only config mapping)
 - `raw_case` (original external mapping for compatibility/tooling)
-- `metadata` (expect/requires/assert_health/source)
+- `metadata` (expect/requires/source)
 - `assert_tree` (compiled internal clause/predicate assertion tree)
 
 Internal assertion node forms:

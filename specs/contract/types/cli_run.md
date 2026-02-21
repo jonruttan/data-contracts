@@ -19,7 +19,7 @@ Run a command entrypoint and assert against process outputs.
 ## Optional Fields
 
 - `harness` (mapping, runner setup keys only)
-- common optional fields from schema v1 (`title`, `assert_health`, `expect`, `requires`)
+- common optional fields from schema v1 (`title`, `expect`, `requires`)
 
 ## Targets
 

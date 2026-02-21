@@ -21,7 +21,6 @@ contracts:
         - assert
         - expect
         - requires
-        - assert_health
         - harness
         allowed_assert_targets:
         - status

@@ -17,7 +17,7 @@ Assert text content from the containing spec document or an explicit contract-ro
 ## Optional Fields
 
 - `path` (string, virtual-root `/...` or root-relative normalized to `/...`)
-- common optional fields from schema v1 (`title`, `assert_health`, `expect`, `requires`, `harness`)
+- common optional fields from schema v1 (`title`, `expect`, `requires`, `harness`)
 
 ## Targets
 

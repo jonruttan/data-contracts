@@ -16,7 +16,7 @@ Each `contracts[]` item:
 - `type` (required directly or inherited from `defaults.type`)
 - `clauses` (required mapping)
 - `title`/`purpose`/`domain` (optional overrides)
-- `harness`/`when`/`expect`/`requires`/`assert_health` (optional)
+- `harness`/`when`/`expect`/`requires` (optional)
 
 ## Source Of Truth
 
@@ -44,8 +44,3 @@ Runner-only setup keys MUST live under `harness`.
 ## Type-Specific Fields
 
 Type-specific keys are defined per harness contract and schema docs.
-
-## Assertion Health Policy Override
-
-- `assert_health.mode` MAY be provided per case.
-- Allowed values: `ignore`, `warn`, `error`.

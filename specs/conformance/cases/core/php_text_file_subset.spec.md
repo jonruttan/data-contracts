@@ -217,15 +217,12 @@ contracts:
         profile: text.file
         config: {}
   - id: DCCONF-PHP-TEXT-009
-    title: evaluate regex remains pass under assert_health error mode
-    purpose: Confirms evaluate regex assertions bypass sugar diagnostics and can pass under error
-      mode.
+    title: evaluate regex remains pass
+    purpose: Confirms evaluate regex assertions can pass on the baseline text fixture.
     expect:
       portable:
         status: pass
         category: null
-    assert_health:
-      mode: error
     clauses:
       defaults: {}
       imports:
@@ -243,15 +240,12 @@ contracts:
         profile: text.file
         config: {}
   - id: DCCONF-PHP-TEXT-010
-    title: evaluate empty contains remains pass under assert_health error mode
-    purpose: Confirms evaluate contains with empty string does not trigger sugar diagnostic failures
-      in error mode.
+    title: evaluate empty contains remains pass
+    purpose: Confirms evaluate contains with an empty string passes.
     expect:
       portable:
         status: pass
         category: null
-    assert_health:
-      mode: error
     clauses:
       defaults: {}
       imports:
@@ -269,15 +263,12 @@ contracts:
         profile: text.file
         config: {}
   - id: DCCONF-PHP-TEXT-011
-    title: evaluate always-true regex remains pass under assert_health error mode
-    purpose: Confirms evaluate regex assertions are evaluated directly without sugar-level AH002
-      failures.
+    title: evaluate always-true regex remains pass
+    purpose: Confirms evaluate regex assertions are evaluated directly.
     expect:
       portable:
         status: pass
         category: null
-    assert_health:
-      mode: error
     clauses:
       defaults: {}
       imports:
@@ -295,18 +286,12 @@ contracts:
         profile: text.file
         config: {}
   - id: DCCONF-PHP-TEXT-012
-    title: evaluate duplicate contains remain pass under assert_health error mode
-    purpose: Confirms evaluate duplicate contains expressions do not trigger sugar-level AH003
-      diagnostics.
+    title: mixed contains with unmet sibling fails assertion
+    purpose: Confirms sibling contains predicates fail when one branch does not match.
     expect:
       portable:
         status: fail
         category: assertion
-        message_tokens:
-        - AH004
-        - contract[0].asserts[0].MUST
-    assert_health:
-      mode: error
     clauses:
       defaults: {}
       imports:
@@ -318,24 +303,18 @@ contracts:
         assert:
         - std.string.contains:
           - {var: text}
-          - 'version: 1'
-        - std.string.contains:
-          - {var: text}
-          - 'version: 1'
+          - 'version: 2'
     harness:
       check:
         profile: text.file
         config: {}
   - id: DCCONF-PHP-TEXT-013
-    title: evaluate sibling branches remain pass under assert_health error mode
-    purpose: Confirms evaluate-only non-redundant sibling branches in can groups remain valid
-      in error mode.
+    title: evaluate sibling branches remain pass
+    purpose: Confirms evaluate-only non-redundant sibling branches remain valid.
     expect:
       portable:
         status: pass
         category: null
-    assert_health:
-      mode: error
     clauses:
       defaults: {}
       imports:
@@ -357,14 +336,12 @@ contracts:
         profile: text.file
         config: {}
   - id: DCCONF-PHP-TEXT-014
-    title: warn mode emits diagnostics without failing the case
-    purpose: Checks warn mode emits diagnostics without converting the case to failure.
+    title: empty contains baseline remains pass
+    purpose: Confirms baseline contains behavior remains pass for this fixture.
     expect:
       portable:
         status: pass
         category: null
-    assert_health:
-      mode: warn
     clauses:
       defaults: {}
       imports:
@@ -382,8 +359,6 @@ contracts:
         profile: text.file
         config: {}
 ```
-
-
 
 
 

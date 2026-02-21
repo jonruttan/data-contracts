@@ -19,7 +19,6 @@ Case fixtures that portable runner implementations execute.
 
 - `core/report_job_contracts.spec.md`: command report job contract coverage for JSON/Markdown report surfaces
 - `core/script_job_contracts.spec.md`: script command contract coverage for schema registry and docs workflows
-- `assertion-health.spec.md`: assertion-health diagnostics and mode behavior
 - `core/api_http.spec.md`: portable `api.http` extension behavior, CORS, verbs, and scenario coverage
 - `domain_libraries.spec.md`: domain library contract coverage for non-core projection helpers
 - `spec_lang.spec.md`: `evaluate` operator behavior, schema/runtime failures, TCO, and ramda-style utility conformance
@@ -33,12 +32,6 @@ Case fixtures that portable runner implementations execute.
 
 ## Case Index
 
-- `DCCONF-AH-001`
-- `DCCONF-AH-002`
-- `DCCONF-AH-003`
-- `DCCONF-AH-004`
-- `DCCONF-AH-005`
-- `DCCONF-AH-006`
 - `DCCONF-API-001`
 - `DCCONF-API-002`
 - `DCCONF-API-003`
