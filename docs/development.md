@@ -37,6 +37,14 @@ Canonical local gate for this repository:
 ./scripts/ci_gate.sh
 ```
 
+Canonical bundle package operations:
+
+```sh
+./scripts/bundle resolve --runner rust --root runner_contract_bundle --out .artifacts/bundles/runner_contract_bundle
+./scripts/bundle package --runner rust --root runner_contract_bundle --version 1.0.0 --out .artifacts/bundles
+./scripts/bundle package-check --package .artifacts/bundles/bundle-runner_contract_bundle-1.0.0.tar.gz --sha256 .artifacts/bundles/bundle-runner_contract_bundle-1.0.0.tar.gz.sha256
+```
+
 Canonical runner-ingestible pack manifests:
 
 - `/Users/jon/Workspace/Development/data-contracts/specs/packs/runner_contract_pack_v1.yaml`

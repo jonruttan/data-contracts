@@ -14,8 +14,8 @@ Runner repositories MUST provide deterministic support for:
 - `build`
 - `test`
 - `verify`
-- `spec-sync`
-- `spec-sync-check`
+- `bundle-sync`
+- `bundle-sync-check`
 - `compat-check`
 
 ## MAY Task IDs
@@ -34,8 +34,10 @@ Runner repositories MAY provide:
 - `build`: compile/build project artifacts required for runner operation.
 - `test`: execute implementation test suite used for required lane confidence.
 - `verify`: execute canonical local gate sequence for required lane.
-- `spec-sync`: update pinned upstream compatibility snapshot and lock metadata.
-- `spec-sync-check`: validate pinned snapshot, lock, and manifest consistency.
+- `bundle-sync`: pull pinned bundle package release assets, verify checksum, and
+  materialize resolved lock + file manifest metadata locally.
+- `bundle-sync-check`: validate local materialization and lock/manifests against
+  pinned bundle package checksum and lock metadata.
 - `compat-check`: verify runner compatibility surface against pinned upstream contracts.
 
 For MAY tasks, behavior MUST match task-id intent and MUST NOT weaken MUST task

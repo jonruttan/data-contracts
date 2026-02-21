@@ -63,14 +63,23 @@ This repository does not execute runtime lanes.
 - `/Users/jon/Workspace/Development/data-contracts/specs/contract/29_runner_cli_interface.md`
 - `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_cli_contract_v1.yaml`
 
-## Contract Set Resolver
+## Bundle Resolver and Package Tooling
 
-- Command: `/Users/jon/Workspace/Development/data-contracts/scripts/contract-set resolve --runner <runner> --root <contract_set_id> --out <dir>`
-- Manifest schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/contract_set_manifest_v1.yaml`
-- Lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/resolved_contract_set_lock_v1.yaml`
+- Resolve: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle resolve --runner <runner> --root <bundle_id> --out <dir>`
+- Package: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle package --runner <runner> --root <bundle_id> --version <bundle_version> --out <dir>`
+- Verify package: `/Users/jon/Workspace/Development/data-contracts/scripts/bundle package-check --package <path> --sha256 <path>`
+- Manifest schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/bundle_manifest_v1.yaml`
+- Resolved lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/resolved_bundle_lock_v1.yaml`
+- Runner lock schema: `/Users/jon/Workspace/Development/data-contracts/specs/schema/runner_bundle_lock_v1.yaml`
+
+Legacy alias:
+
+- `/Users/jon/Workspace/Development/data-contracts/scripts/contract-set` is deprecated and forwards to `scripts/bundle`.
 
 ## Core Script Allowlist
 
+- `/Users/jon/Workspace/Development/data-contracts/scripts/bundle`
+- `/Users/jon/Workspace/Development/data-contracts/scripts/contract-set`
 - `/Users/jon/Workspace/Development/data-contracts/scripts/control_plane.sh`
 - `/Users/jon/Workspace/Development/data-contracts/scripts/ci_gate.sh`
 - `/Users/jon/Workspace/Development/data-contracts/scripts/runner_status_ingest.sh`

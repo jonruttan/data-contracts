@@ -23,6 +23,9 @@ Related docs/reference schemas:
 - `specs/schema/run_trace_v2.yaml`
 - `specs/schema/orchestration_result_v2.yaml`
 - `specs/schema/registry_schema_v2.yaml`
+- `specs/schema/bundle_manifest_v1.yaml`
+- `specs/schema/resolved_bundle_lock_v1.yaml`
+- `specs/schema/runner_bundle_lock_v1.yaml`
 - `specs/schema/registry/v2/*.yaml`
 - `specs/contract/19_spec_lang_stdlib_profile_v2.md`
 - `specs/contract/20_subject_profiles_v2.md`

@@ -19,6 +19,19 @@ properties:
         task_id:
           type: string
           minLength: 1
+          enum:
+            - build
+            - test
+            - verify
+            - bundle-sync
+            - bundle-sync-check
+            - compat-check
+            - smoke
+            - package-check
+            - release-verify
+            - docs-check
+            - lint
+            - typecheck
         norm:
           type: string
           enum: [MUST]
@@ -31,6 +44,19 @@ properties:
         task_id:
           type: string
           minLength: 1
+          enum:
+            - build
+            - test
+            - verify
+            - bundle-sync
+            - bundle-sync-check
+            - compat-check
+            - smoke
+            - package-check
+            - release-verify
+            - docs-check
+            - lint
+            - typecheck
         norm:
           type: string
           enum: [MAY]

@@ -12,6 +12,7 @@ Canonical specification root for `data-contracts`.
 - Governance checks: `/specs/governance/index.md`
 - Reusable libraries: `/specs/libraries/index.md`
 - Runner-ingestible packs: `/specs/packs/index.md`
+- Bundle manifests: `/specs/bundles/index.md`
 
 ## Subdomains
 

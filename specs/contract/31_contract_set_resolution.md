@@ -28,9 +28,13 @@ Each contract set manifest MUST declare:
 
 ## Resolver Interface
 
-Canonical resolver command contract:
+Canonical resolver command contract (legacy alias):
 
 - `contract-set resolve --runner <runner> --root <contract_set_id> --out <dir>`
+
+Preferred command contract:
+
+- `bundle resolve --runner <runner> --root <bundle_id> --out <dir>`
 
 Resolver output MUST materialize:
 

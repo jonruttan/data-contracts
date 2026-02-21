@@ -1,0 +1,46 @@
+bundle_id: runner_contract_bundle
+bundle_version: 1.0.0
+summary: Runner-facing portable contract, schema, and conformance surfaces.
+maintainers:
+  - name: data-contracts maintainers
+dependency_mode: required
+depends_on: []
+domains:
+  - id: tooling
+    modules:
+      - id: runner_contract_surface
+        include_paths:
+          - specs/packs/runner_contract_pack_v1.yaml
+          - specs/conformance/cases/runner_cli/*.spec.md
+          - specs/conformance/cases/runner_build_tool/*.spec.md
+          - specs/conformance/cases/core/runner_certification_core.spec.md
+          - specs/conformance/cases/core/runner_status_exchange.spec.md
+          - specs/contract/12_runner_interface.md
+          - specs/contract/25_compatibility_matrix.md
+          - specs/contract/27_runner_status_exchange.md
+          - specs/contract/29_runner_cli_interface.md
+          - specs/contract/30_build_tool_command_set.md
+          - specs/contract/33_bundle_package_management.md
+          - specs/schema/runner_status_report_v1.yaml
+          - specs/schema/runner_status_matrix_v1.yaml
+          - specs/schema/runner_cli_contract_v1.yaml
+          - specs/schema/runner_build_tool_contract_v1.yaml
+          - specs/schema/runner_bundle_lock_v1.yaml
+        artifacts:
+          - path: /.artifacts/runner-status-matrix.json
+            kind: report
+          - path: /.artifacts/runner-status-matrix.md
+            kind: report
+          - path: /.artifacts/runner-status-ingest-log.json
+            kind: report
+        contracts:
+          - /specs/contract/12_runner_interface.md
+          - /specs/contract/25_compatibility_matrix.md
+          - /specs/contract/27_runner_status_exchange.md
+          - /specs/contract/29_runner_cli_interface.md
+          - /specs/contract/30_build_tool_command_set.md
+          - /specs/contract/33_bundle_package_management.md
+applies_to_runners:
+  - python
+  - php
+  - rust

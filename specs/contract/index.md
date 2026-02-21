@@ -50,6 +50,7 @@ Read in order:
 36. `/specs/contract/30_build_tool_command_set.md`
 37. `/specs/contract/31_contract_set_resolution.md`
 38. `/specs/contract/32_contract_bundle_taxonomy.md`
+39. `/specs/contract/33_bundle_package_management.md`
 
 Type contracts:
 

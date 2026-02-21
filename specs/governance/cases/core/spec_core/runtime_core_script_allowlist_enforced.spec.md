@@ -12,6 +12,8 @@ contracts:
       scripts_manifest:
         path: /specs/schema/core_script_allowlist_v1.yaml
         required_tokens:
+          - bundle
+          - contract-set
           - control_plane.sh
           - ci_gate.sh
           - runner_status_ingest.sh

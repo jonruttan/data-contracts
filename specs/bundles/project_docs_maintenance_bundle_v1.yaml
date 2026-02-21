@@ -1,0 +1,25 @@
+bundle_id: project_docs_maintenance_bundle
+bundle_version: 1.0.0
+summary: Project documentation quality and information-architecture maintenance bundle.
+maintainers:
+  - name: data-contracts maintainers
+dependency_mode: required
+depends_on: []
+domains:
+  - id: docs
+    modules:
+      - id: project_docs_maintenance
+        include_paths:
+          - specs/packs/project_docs_maintenance_pack_v1.yaml
+          - specs/contract/10_docs_quality.md
+          - specs/contract/22_docs_information_architecture.md
+          - specs/schema/docs_schema_v1.md
+          - specs/schema/docs_layout_profile_v1.yaml
+        artifacts:
+          - path: /.artifacts/governance-summary.json
+            kind: report
+          - path: /.artifacts/governance-optional-summary.md
+            kind: report
+        contracts:
+          - /specs/contract/10_docs_quality.md
+          - /specs/contract/22_docs_information_architecture.md

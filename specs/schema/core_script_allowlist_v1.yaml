@@ -1,5 +1,7 @@
 version: 1
 core_scripts:
+  - /scripts/bundle
+  - /scripts/contract-set
   - /scripts/control_plane.sh
   - /scripts/ci_gate.sh
   - /scripts/runner_status_ingest.sh

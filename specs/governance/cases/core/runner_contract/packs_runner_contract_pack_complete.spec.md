@@ -15,10 +15,13 @@ contracts:
           - pack_id: runner_contract_pack_v1
           - /specs/contract/29_runner_cli_interface.md
           - /specs/contract/30_build_tool_command_set.md
+          - /specs/contract/33_bundle_package_management.md
           - /specs/schema/runner_cli_contract_v1.yaml
           - /specs/schema/runner_build_tool_contract_v1.yaml
+          - /specs/schema/runner_bundle_lock_v1.yaml
           - /specs/conformance/cases/runner_cli/runner_cli_required_help.spec.md
           - /specs/conformance/cases/runner_build_tool/runner_build_tool_required_core.spec.md
+          - /specs/conformance/cases/runner_build_tool/runner_build_tool_required_sync.spec.md
       check:
         profile: governance.scan
         config:

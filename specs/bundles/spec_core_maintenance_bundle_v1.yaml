@@ -1,0 +1,31 @@
+bundle_id: spec_core_maintenance_bundle
+bundle_version: 1.0.0
+summary: Core spec-maintenance and schema/governance coherence bundle.
+maintainers:
+  - name: data-contracts maintainers
+dependency_mode: required
+depends_on: []
+domains:
+  - id: source
+    modules:
+      - id: spec_core_maintenance
+        include_paths:
+          - specs/packs/spec_core_maintenance_pack_v1.yaml
+          - specs/contract/02_case_shape.md
+          - specs/contract/04_harness.md
+          - specs/contract/28_spec_lang_policy_execution.md
+          - specs/schema/schema_v1.md
+          - specs/schema/schema_v2.md
+          - specs/schema/schema_catalog_v1.yaml
+          - specs/schema/schema_catalog_v2.yaml
+        artifacts:
+          - path: /.artifacts/governance-catalog-validate.json
+            kind: report
+          - path: /.artifacts/spec-schema-pin-validate.json
+            kind: report
+          - path: /.artifacts/governance-summary.json
+            kind: report
+        contracts:
+          - /specs/contract/02_case_shape.md
+          - /specs/contract/04_harness.md
+          - /specs/contract/28_spec_lang_policy_execution.md

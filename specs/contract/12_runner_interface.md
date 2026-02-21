@@ -15,6 +15,7 @@ Runtime execution ownership lives in runner repositories:
 `data-contracts` owns:
 
 - contract/schema definitions for status exchange
+- contract/schema definitions for bundle package management
 - compatibility matrix normalization rules
 - governance rules for freshness and visibility
 - docs and reference integrity
@@ -47,6 +48,13 @@ Portable CLI surface is defined by:
 
 - `/specs/contract/29_runner_cli_interface.md`
 - `/specs/schema/runner_cli_contract_v1.yaml`
+
+Bundle package management surface is defined by:
+
+- `/specs/contract/33_bundle_package_management.md`
+- `/specs/schema/bundle_manifest_v1.yaml`
+- `/specs/schema/resolved_bundle_lock_v1.yaml`
+- `/specs/schema/runner_bundle_lock_v1.yaml`
 
 ## Policy Semantics
 

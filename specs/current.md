@@ -19,6 +19,7 @@ Date: 2026-02-18
 - Job metadata and dispatch: `harness.jobs` + `ops.job.dispatch`
 - Bundle taxonomy: `bundle -> domains[] -> modules[] -> contracts[]` with canonical metadata
   names `bundle_version` and `maintainers`
+- Runner sync task contract: required task IDs are `bundle-sync` and `bundle-sync-check`
 
 ## Canonical Specs
 
