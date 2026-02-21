@@ -1,0 +1,49 @@
+version: 2
+id: schema.registry.v2.type.contract_job
+type: type
+case_type: contract.job
+required_top_level:
+  - harness
+  - clauses
+allowed_top_level_extra: []
+fields:
+  harness:
+    type: mapping
+    required: true
+    since: v2
+  harness.jobs:
+    type: list
+    required: false
+    since: v2
+  harness.jobs[].id:
+    type: string
+    required: true
+    since: v2
+  harness.jobs[].helper:
+    type: string
+    required: false
+    since: v2
+  harness.jobs[].mode:
+    type: string
+    required: false
+    since: v2
+  harness.jobs[].inputs:
+    type: mapping
+    required: false
+    since: v2
+  harness.jobs[].outputs:
+    type: mapping
+    required: false
+    since: v2
+  clauses:
+    type: mapping
+    required: true
+    since: v2
+  clauses.imports:
+    type: list
+    required: false
+    since: v2
+  clauses.predicates[].imports:
+    type: list
+    required: false
+    since: v2

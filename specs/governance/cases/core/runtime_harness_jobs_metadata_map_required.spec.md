@@ -1,18 +1,18 @@
 ```yaml contract-spec
-spec_version: 1
-schema_ref: /specs/schema/schema_v1.md
+spec_version: 2
+schema_ref: /specs/schema/schema_v2.md
 defaults:
   type: contract.check
 contracts:
   - id: DCGOV-RUNTIME-JOB-DISPATCH-002
-    title: contract.job harness uses jobs metadata map
+    title: contract.job harness uses jobs metadata list
     purpose: Ensures contract.job cases declare helper metadata under harness.jobs entries.
     harness:
       root: .
       check:
         profile: governance.scan
         config:
-          check: runtime.harness_jobs_metadata_map_required
+          check: runtime.harness_jobs_metadata_list_required
     clauses:
       defaults: {}
       imports:

@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 1
-schema_ref: /specs/schema/schema_v1.md
+spec_version: 2
+schema_ref: /specs/schema/schema_v2.md
 defaults:
   type: contract.check
 contracts:
@@ -13,7 +13,7 @@ contracts:
         path: /specs/packs/spec_core_maintenance_pack_v1.yaml
         required_tokens:
           - pack_id: spec_core_maintenance_pack_v1
-          - /specs/schema/schema_v1.md
+          - /specs/schema/schema_v2.md
           - /specs/schema/schema_catalog_v1.yaml
           - /specs/governance/cases/core/spec_core/runtime_schema_pin_pipeline_chain.spec.md
       check:

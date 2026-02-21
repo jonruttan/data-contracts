@@ -3,22 +3,22 @@ id: schema.registry.v1.type.contract_export
 type: type
 case_type: contract.export
 required_top_level:
-  - contract
+  - clauses
   - harness
   - library
   - doc
 allowed_top_level_extra:
   - imports
 fields:
-  contract:
-    type: any
+  clauses:
+    type: mapping
     required: true
     since: v1
-  contract.imports:
+  clauses.imports:
     type: list
     required: false
     since: v1
-  contract.steps[].imports:
+  clauses.predicates[].imports:
     type: list
     required: false
     since: v1

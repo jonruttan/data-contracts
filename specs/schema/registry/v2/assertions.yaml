@@ -1,0 +1,59 @@
+version: 2
+id: schema.registry.v2.assertions
+type: assertions
+fields:
+  contracts[].clauses:
+    type: mapping
+    required: true
+    since: v2
+    description: Canonical clause tree root mapping with defaults/predicates; leaves are direct spec-lang operator mappings.
+  contracts[].clauses.defaults:
+    type: mapping
+    required: false
+    since: v2
+    description: Optional clause-level defaults mapping.
+  contracts[].clauses.imports:
+    type: list
+    required: false
+    since: v2
+    description: Clause-level default import bindings inherited by predicates.
+  contracts[].clauses.predicates:
+    type: list
+    required: true
+    since: v2
+    description: Non-empty predicate list.
+  contracts[].clauses.predicates[].id:
+    type: string
+    required: true
+    since: v2
+    description: Stable predicate id.
+  contracts[].clauses.predicates[].imports:
+    type: list
+    required: false
+    since: v2
+    description: Predicate-level imports merged over clauses.imports.
+  contracts[].clauses.predicates[].purpose:
+    type: string
+    required: false
+    since: v2
+    description: Optional human-readable predicate intent.
+  contracts[].clauses.predicates[].required:
+    type: bool
+    required: false
+    since: v2
+    description: Optional requiredness flag; defaults to true when omitted.
+  contracts[].clauses.predicates[].priority:
+    type: int
+    required: false
+    since: v2
+    description: Optional positive integer priority metadata (default 1).
+  contracts[].clauses.predicates[].severity:
+    type: int
+    required: false
+    since: v2
+    description: Optional positive integer severity metadata (default 1).
+  contracts[].clauses.predicates[].assert:
+    type: any
+    required: true
+    since: v2
+    description: Non-empty expression mapping or non-empty expression list.

@@ -1,4 +1,4 @@
-# Conformance Contract (v1)
+# Conformance Contract (v2)
 
 Implementations are conformant when equivalent fixture sets produce equivalent:
 
@@ -12,8 +12,8 @@ Stack traces and language-specific exception classes need not match.
 Conformance cases define expected outcomes directly in case records using:
 
 - `expect.portable`: shared expectations for all implementations
-- `expect.impl.<name>`: implementation-specific overrides (for example
-  `python`, `php`)
+- `expect.overrides[]`: implementation-specific overrides keyed by `runner`
+  (for example `python`, `php`)
 
 Expected keys:
 
@@ -24,7 +24,7 @@ Expected keys:
 Resolution order:
 
 1. Start from `expect.portable`.
-2. If `expect.impl.<implementation>` exists, overlay its keys.
+2. If an `expect.overrides[]` row with matching `runner` exists, overlay its keys.
 
 `expect` is required for conformance fixture cases.
 

@@ -182,15 +182,16 @@ Subject profile envelope contract:
   - `fail` runs once on first failure
   - `complete` runs after all steps and hooks pass
   - hook failures are runtime-fatal
-- for `type: contract.job`, harness stores job metadata at `harness.jobs`:
-  - `harness.jobs.<name>.helper` (required)
-  - `harness.jobs.<name>.mode` (optional)
-  - `harness.jobs.<name>.inputs` / `outputs` (optional mappings)
+- for `type: contract.job`, harness stores job metadata at `harness.jobs[]`:
+  - `harness.jobs[].id` (required, unique)
+  - `harness.jobs[].helper` (required)
+  - `harness.jobs[].mode` (optional)
+  - `harness.jobs[].inputs` / `outputs` (optional mappings)
 - Rust job spec pattern standardizes lifecycle diagnostics with hook jobs:
-  - `harness.jobs.on_fail` + `when.fail -> ops.job.dispatch(on_fail)`
-  - `harness.jobs.on_complete` + `when.complete -> ops.job.dispatch(on_complete)`
+  - job id `on_fail` + `when.fail -> ops.job.dispatch(on_fail)`
+  - job id `on_complete` + `when.complete -> ops.job.dispatch(on_complete)`
 - non-canonical `harness.job` singular shape is forbidden.
-- job execution is dispatched from `contract` expressions via
+- job execution is dispatched from `clauses` expressions via
   `ops.job.dispatch`.
 
 ## Orchestration Tooling

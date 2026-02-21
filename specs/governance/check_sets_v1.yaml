@@ -203,13 +203,13 @@ profiles:
         path: /scripts/spec_schema_pin_validate.sh
         must_contain:
           - mismatched_version_count
-      - id: schema.catalog_contains_active_schema_v1
+      - id: schema.catalog_contains_active_schema_v2
         kind: file_tokens
         path: /specs/schema/schema_catalog_v1.yaml
         must_contain:
           - schema_id: contract_spec
-          - major: 1
-          - path: /specs/schema/schema_v1.md
+          - major: 2
+          - path: /specs/schema/schema_v2.md
           - status: active
       - id: governance.policy_source_spec_lang_required
         kind: file_tokens
@@ -699,7 +699,7 @@ profiles:
         kind: report_only
       - id: runtime.harness_exports_schema_valid
         kind: report_only
-      - id: runtime.harness_jobs_metadata_map_required
+      - id: runtime.harness_jobs_metadata_list_required
         kind: report_only
       - id: runtime.harness_subject_target_map_declared
         kind: report_only

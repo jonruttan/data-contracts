@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 1
-schema_ref: /specs/schema/schema_v1.md
+spec_version: 2
+schema_ref: /specs/schema/schema_v2.md
 defaults:
   type: contract.check
 contracts:
@@ -22,7 +22,7 @@ contracts:
         required_paths:
         - /docs/book/index.md
         - /docs/book/99_generated_reference_index.md
-        - /specs/schema/schema_v1.md
+        - /specs/schema/schema_v2.md
         - /specs/contract/index.md
         - /specs/contract/25_compatibility_matrix.md
         forbidden_tokens:

@@ -21,6 +21,8 @@ ENFORCE_FRESHNESS=0
 NOW_UTC="${RUNNER_STATUS_NOW_UTC:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}"
 
 parse_ingest_args "$@"
+# CLI contract tokens for governance checks: --max-age-hours, --enforce-freshness,
+# compatibility_stale_or_missing_count.
 
 require_tool php
 require_tool jq

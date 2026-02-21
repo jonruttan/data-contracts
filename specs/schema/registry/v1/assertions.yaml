@@ -3,8 +3,8 @@ id: schema.registry.v1.assertions
 type: assertions
 fields:
   contracts[].clauses:
-    type: any
-    required: false
+    type: mapping
+    required: true
     since: v1
     description: Canonical clause tree root mapping with defaults/predicates; leaves are direct spec-lang operator mappings.
   contracts[].clauses.imports:

@@ -67,7 +67,7 @@ fields:
     required: false
     since: v1
   contracts[].clauses:
-    type: any
+    type: mapping
     required: false
     since: v1
   contracts[].expect:

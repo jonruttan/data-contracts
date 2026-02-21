@@ -415,7 +415,7 @@ rules:
   requirement: resolve_expectations_portable_then_impl_overlay
   description: 'When conformance cases define inline expect metadata, implementations
     must resolve expected outcomes by starting from expect.portable and then overlaying
-    expect.impl.<implementation> keys.
+    expect.overrides[] rows selected by runner.
 
     '
   rationale: Keeps portable intent primary while allowing explicit runtime deltas.
@@ -478,7 +478,7 @@ rules:
   norm: MUST
   requirement: portable_baseline_with_runtime_overlays_only
   description: 'Portable expectations must be defined in expect.portable; runtime
-    deltas must be represented only via expect.impl.<runtime> overlays.
+    deltas must be represented only via expect.overrides[] rows.
 
     '
   rationale: Preserves a single portable baseline while allowing explicit deltas.
@@ -3944,13 +3944,13 @@ rules:
   - specs/contract/03b_spec_lang_v1.md
   - specs/contract/12_runner_interface.md
   - specs/schema/schema_v1.md
-- id: HARNESS_JOBS_METADATA_MAP_REQUIRED
+- id: HARNESS_JOBS_METADATA_LIST_REQUIRED
   introduced_in: v1
   scope: runtime
   applies_to: contract.job.harness.jobs
   norm: MUST
-  requirement: contract_job_cases_use_harness_jobs_metadata_map
-  description: contract.job cases must declare job metadata under harness.jobs.<name>
+  requirement: contract_job_cases_use_harness_jobs_metadata_list
+  description: contract.job cases must declare job metadata under harness.jobs[]
     entries.
   rationale: Separates execution metadata from contract decision logic.
   risk_if_violated: Job metadata shape becomes inconsistent across cases and runtimes.

@@ -9,7 +9,7 @@ Case fixtures that portable runner implementations execute.
 - Include both pass and fail cases.
 - Use Markdown `.spec.md` files with fenced `yaml contract-spec` blocks.
 - Prefer inline expectations via:
-  - optional `expect.impl.<runtime>` overrides
+  - optional `expect.overrides[]` rows with `runner` selectors
 - Conformance fixture cases should always include `expect.portable.status`.
 - Conformance fixture cases must include a non-empty `purpose`.
 - Purpose lint defaults/runtime profiles live in `specs/conformance/purpose_lint_v1.yaml`.

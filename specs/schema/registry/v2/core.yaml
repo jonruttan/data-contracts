@@ -1,0 +1,160 @@
+version: 2
+id: schema.registry.v2.core
+type: core
+fields:
+  spec_version:
+    type: int
+    required: true
+    since: v2
+  schema_ref:
+    type: string
+    required: true
+    since: v2
+  defaults:
+    type: mapping
+    required: false
+    since: v2
+  defaults.type:
+    type: string
+    required: false
+    since: v2
+  contracts:
+    type: list
+    required: true
+    since: v2
+  contracts[].id:
+    type: string
+    required: true
+    since: v2
+  contracts[].type:
+    type: string
+    required: false
+    since: v2
+  title:
+    type: string
+    required: false
+    since: v2
+  purpose:
+    type: string
+    required: false
+    since: v2
+  domain:
+    type: string
+    required: false
+    since: v2
+  contracts[].title:
+    type: string
+    required: false
+    since: v2
+  contracts[].purpose:
+    type: string
+    required: false
+    since: v2
+  contracts[].domain:
+    type: string
+    required: false
+    since: v2
+  contracts[].harness:
+    type: mapping
+    required: false
+    since: v2
+  contracts[].when:
+    type: mapping
+    required: false
+    since: v2
+  contracts[].when.required:
+    type: list
+    required: false
+    since: v2
+  contracts[].when.optional:
+    type: list
+    required: false
+    since: v2
+  contracts[].when.fail:
+    type: list
+    required: false
+    since: v2
+  contracts[].when.complete:
+    type: list
+    required: false
+    since: v2
+  contracts[].clauses:
+    type: mapping
+    required: true
+    since: v2
+  contracts[].expect:
+    type: mapping
+    required: false
+    since: v2
+  contracts[].expect.portable:
+    type: mapping
+    required: false
+    since: v2
+  contracts[].expect.portable.status:
+    type: string
+    required: false
+    since: v2
+  contracts[].expect.portable.category:
+    type: string
+    required: false
+    since: v2
+  contracts[].expect.portable.message_tokens:
+    type: list
+    required: false
+    since: v2
+  contracts[].expect.overrides:
+    type: list
+    required: false
+    since: v2
+  contracts[].expect.overrides[].runner:
+    type: string
+    required: true
+    since: v2
+  contracts[].expect.overrides[].status:
+    type: string
+    required: false
+    since: v2
+  contracts[].expect.overrides[].category:
+    type: string
+    required: false
+    since: v2
+  contracts[].expect.overrides[].message_tokens:
+    type: list
+    required: false
+    since: v2
+  contracts[].requires:
+    type: mapping
+    required: false
+    since: v2
+  contracts[].assert_health:
+    type: mapping
+    required: false
+    since: v2
+  contracts[].doc:
+    type: mapping
+    required: false
+    since: v2
+  contracts[].doc.summary:
+    type: string
+    required: false
+    since: v2
+  contracts[].doc.description:
+    type: string
+    required: false
+    since: v2
+  contracts[].doc.audience:
+    type: string
+    required: false
+    since: v2
+  contracts[].doc.since:
+    type: string
+    required: false
+    since: v2
+  contracts[].doc.tags:
+    type: list
+    required: false
+    since: v2
+  contracts[].doc.see_also:
+    type: list
+    required: false
+    since: v2

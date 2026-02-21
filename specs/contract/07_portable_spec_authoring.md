@@ -25,8 +25,8 @@ implementation-independent.
 ## Expected Outcome Shape
 
 - Portable expectations MUST be expressed in `expect.portable`.
-- Implementation deltas MUST be expressed only via `expect.impl.<runtime>`
-  overlays.
+- Implementation deltas MUST be expressed only via `expect.overrides[]`
+  rows keyed by `runner`.
 - Portable semantics should not be duplicated in per-runtime case copies.
 
 ## Determinism Requirements
@@ -51,7 +51,7 @@ Governance enforcement:
 - Portable case IDs use `DCCONF-*`.
 - Runtime/implementation-specific behavior should be represented via:
   - `requires.capabilities`
-  - `expect.impl.<runtime>`
+  - `expect.overrides[]`
 - Portable case text SHOULD avoid language/runtime branding unless the case is
   explicitly testing portability deltas.
 

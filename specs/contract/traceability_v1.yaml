@@ -3554,8 +3554,8 @@ links:
   - dc-runner-rust
   - dc-runner-rust
   notes: contract.job helper execution is initiated from contract assertions via ops.job.dispatch.
-- rule_id: HARNESS_JOBS_METADATA_MAP_REQUIRED
-  policy_ref: specs/contract/policy_v1.yaml#HARNESS_JOBS_METADATA_MAP_REQUIRED
+- rule_id: HARNESS_JOBS_METADATA_LIST_REQUIRED
+  policy_ref: specs/contract/policy_v1.yaml#HARNESS_JOBS_METADATA_LIST_REQUIRED
   contract_refs:
   - specs/contract/04_harness.md
   schema_refs:
@@ -3565,7 +3565,7 @@ links:
   - dc-runner-python
   implementation_refs:
   - dc-runner-rust
-  notes: contract.job metadata uses harness.jobs.<name> mapping entries.
+  notes: contract.job metadata uses harness.jobs[] list entries.
 - rule_id: OPS_JOB_CAPABILITY_REQUIRED
   policy_ref: specs/contract/policy_v1.yaml#OPS_JOB_CAPABILITY_REQUIRED
   contract_refs:

@@ -1,6 +1,6 @@
 ```yaml contract-spec
-spec_version: 1
-schema_ref: /specs/schema/schema_v1.md
+spec_version: 2
+schema_ref: /specs/schema/schema_v2.md
 defaults:
   type: contract.check
 contracts:
